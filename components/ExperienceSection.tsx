@@ -143,7 +143,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                 e.currentTarget.style.background = "transparent";
                 e.currentTarget.style.color = "#1A1814";
               }}
-              className="hidden sm:block"
+              className="block"
             >
               Open full resume ↗
             </button>
@@ -183,7 +183,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                       <img
                         src={role.logoSrc}
                         alt={role.company}
-                        style={{ width: "30px", height: "30px", objectFit: "contain" }}
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
                         onError={(e) => {
                           e.currentTarget.style.display = "none";
                           if (e.currentTarget.nextSibling) {
@@ -314,7 +314,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                 period: "2022 — 2023",
                 name: "Ironhack",
                 degree: "UX/UI Design Bootcamp",
-                logo: "/images/logos/ironhack.png",
+                logo: "/images/logos/Ironhack.png",
                 logoBg: "#1A1A1A",
               },
               {
@@ -347,7 +347,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                     <img
                       src={edu.logo}
                       alt={edu.name}
-                      style={{ width: "30px", height: "30px", objectFit: "contain" }}
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
                     />
                   </div>
                   <span style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "#8A8480", fontWeight: 500 }}>
