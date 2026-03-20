@@ -158,8 +158,7 @@ export default function ProcessSection() {
                       href={`/case-studies/${step.caseStudySlug}`}
                       onClick={(e) => e.stopPropagation()}
                       className="font-semibold underline underline-offset-2 opacity-80 hover:opacity-100 transition-opacity"
-                      style={{ fontSize: "13px" }}
-                      style={{ color: step.textColor }}
+                      style={{ fontSize: "13px", color: step.textColor }}
                     >
                       {step.caseStudyLabel}
                     </Link>
