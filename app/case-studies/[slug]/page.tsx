@@ -5,6 +5,7 @@ import { getCaseStudy, getAdjacentStudies } from "@/data/caseStudies";
 import caseStudies from "@/data/caseStudies";
 import CustomCursor from "@/components/CustomCursor";
 import OverlayNav from "@/components/OverlayNav";
+import ArtifactPlaceholder from "@/components/ArtifactPlaceholder";
 
 export async function generateStaticParams() {
   return caseStudies.map((cs) => ({ slug: cs.slug }));
@@ -37,31 +38,6 @@ function RichPara({ text }: { text: string }) {
         )
       )}
     </p>
-  );
-}
-
-// Visual placeholder component — marks where real assets should go
-function VisualPlaceholder({ label, aspectRatio = "16/9" }: { label: string; aspectRatio?: string }) {
-  return (
-    <div style={{
-      aspectRatio,
-      background: "linear-gradient(135deg, #E8E4DC 0%, #D8D4CC 100%)",
-      borderRadius: "12px",
-      border: "2px dashed rgba(26,24,20,0.2)",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "8px",
-      padding: "24px",
-    }}>
-      <div style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "rgba(26,24,20,0.4)" }}>
-        Visual Needed
-      </div>
-      <div style={{ fontFamily: "var(--font-body)", fontSize: "14px", color: "rgba(26,24,20,0.6)", textAlign: "center", lineHeight: 1.4 }}>
-        {label}
-      </div>
-    </div>
   );
 }
 
@@ -340,7 +316,11 @@ export default async function CaseStudyPage({
 
             {/* Visual placeholder — after problem */}
             <div style={{ marginBottom: "56px" }}>
-              <VisualPlaceholder label="Problem framing — audit screenshot or annotation" aspectRatio="16/9" />
+              <ArtifactPlaceholder
+                title="Problem Framing Artifact"
+                description="Add an audit screenshot or annotated snapshot that documents the core problem context."
+                aspectRatio="16/9"
+              />
             </div>
 
             <section style={{ marginBottom: "56px", paddingBottom: "56px", borderBottom: "1px solid rgba(26,24,20,0.08)" }}>
@@ -361,7 +341,11 @@ export default async function CaseStudyPage({
 
             {/* Visual placeholder — after process */}
             <div style={{ marginBottom: "56px" }}>
-              <VisualPlaceholder label="Key deliverable — component overview, flow diagram, or final design" aspectRatio="4/3" />
+              <ArtifactPlaceholder
+                title="Key Deliverable Artifact"
+                description="Add a flow diagram, component overview, or final output that captures the implementation direction."
+                aspectRatio="4/3"
+              />
             </div>
 
             <section style={{ marginBottom: "56px" }}>
