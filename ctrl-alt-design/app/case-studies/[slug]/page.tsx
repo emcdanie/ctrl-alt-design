@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { getCaseStudy, getAdjacentStudies } from "@/data/caseStudies";
 import caseStudies from "@/data/caseStudies";
+import CustomCursor from "@/components/CustomCursor";
+import OverlayNav from "@/components/OverlayNav";
 
 export async function generateStaticParams() {
   return caseStudies.map((cs) => ({ slug: cs.slug }));
@@ -55,34 +57,18 @@ export default async function CaseStudyPage({
 
   return (
     <main className="bg-[#EDE8DF] min-h-screen">
-
-      {/* ── Fixed nav ───────────────────────────────────────────── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-4 bg-[#EDE8DF]/90 backdrop-blur-md border-b border-[#1A1814]/08">
-        <Link href="/" className="text-[13px] font-medium text-[#1A1814]">
-          Elleta McDaniel
-        </Link>
-        <div className="hidden md:flex items-center gap-8 text-[13px] text-[#4A4640]">
-          <Link href="/#work" className="hover:text-[#1A1814] transition-colors">Work</Link>
-          <Link href="/#capabilities" className="hover:text-[#1A1814] transition-colors">Capabilities</Link>
-          <Link href="/#experience" className="hover:text-[#1A1814] transition-colors">Experience</Link>
-        </div>
-        <Link
-          href="/#contact"
-          className="text-[13px] font-semibold bg-[#1A1814] text-[#EDE8DF] px-4 py-2 rounded-full hover:bg-[#4A4640] transition-colors"
-        >
-          Get in touch ↗
-        </Link>
-      </nav>
+      <CustomCursor />
+      <OverlayNav />
 
       {/* ── Full-width video / image hero ───────────────────────── */}
-      <div className="pt-[57px]">
+      <div>
         <div style={{ width: "100%", aspectRatio: "16/9", maxHeight: "80vh", background: "#0A0A1C", position: "relative", overflow: "hidden" }}>
           {cs.heroVideo ? (
             <video
               autoPlay muted loop playsInline
               style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
             >
-              <source src={cs.heroVideo} type={cs.heroVideo.endsWith(".mp4") ? "video/mp4" : "video/quicktime"} />
+              <source src={cs.heroVideo} type="video/mp4" />
             </video>
           ) : (
             <Image
@@ -101,15 +87,20 @@ export default async function CaseStudyPage({
       <div style={{ padding: "24px 40px 0" }}>
         <Link
           href="/#work"
+          className="hover:opacity-75 transition-opacity duration-150"
           style={{
-            display: "inline-block",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
             fontFamily: "var(--font-body)",
             fontSize: "13px",
-            color: "#1A1A1A",
+            fontWeight: 600,
+            color: "#EDE8DF",
             textDecoration: "none",
-            background: "rgba(255,255,255,0.8)",
+            background: "#1A1814",
             borderRadius: "999px",
-            padding: "6px 14px",
+            padding: "10px 20px",
+            letterSpacing: "0.02em",
           }}
         >
           ← All work

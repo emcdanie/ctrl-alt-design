@@ -8,7 +8,6 @@ import Carousel from "@/components/Carousel";
 import MetricsStrip from "@/components/MetricsStrip";
 import CaseStudyGrid from "@/components/CaseStudyGrid";
 import VideoWalkthrough from "@/components/VideoWalkthrough";
-import ProcessSection from "@/components/ProcessSection";
 import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import ContactSection from "@/components/ContactSection";
@@ -26,7 +25,6 @@ export default function Home() {
       <MetricsStrip />
       <CaseStudyGrid />
       <VideoWalkthrough />
-      <ProcessSection />
       <CtrlAltDesignSection />
       <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
       <ContactSection />

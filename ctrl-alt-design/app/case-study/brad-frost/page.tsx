@@ -1,4 +1,20 @@
 import Link from "next/link";
+import CustomCursor from "@/components/CustomCursor";
+import OverlayNav from "@/components/OverlayNav";
+
+const TAG_COLORS = [
+  { bg: "#E8F2FA", color: "#2A6A9E" },
+  { bg: "#F0EDF8", color: "#5C4A9A" },
+  { bg: "#FDF3E3", color: "#9A6020" },
+  { bg: "#EBF5EC", color: "#2A7A32" },
+  { bg: "#FAF0EC", color: "#9A4020" },
+  { bg: "#F5EDF5", color: "#8A3A8A" },
+];
+function tagColor(tag: string) {
+  let hash = 0;
+  for (let i = 0; i < tag.length; i++) hash = tag.charCodeAt(i) + ((hash << 5) - hash);
+  return TAG_COLORS[Math.abs(hash) % TAG_COLORS.length];
+}
 
 const sidebar = [
   { label: "YEAR", value: "2024–2025" },
@@ -119,6 +135,8 @@ function Section({ eyebrow, heading, children }: {
 export default function BradFrostPage() {
   return (
     <main style={{ background: "#EDE8DF", minHeight: "100vh" }}>
+      <CustomCursor />
+      <OverlayNav />
 
       {/* Hero */}
       <div style={{
@@ -141,16 +159,20 @@ export default function BradFrostPage() {
       <div style={{ padding: "24px 40px 0" }}>
         <Link
           href="/#work"
+          className="hover:opacity-75 transition-opacity duration-150"
           style={{
-            display: "inline-block",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
             fontFamily: "var(--font-body)",
             fontSize: "13px",
-            color: "#1A1A1A",
+            fontWeight: 600,
+            color: "#EDE8DF",
             textDecoration: "none",
-            background: "rgba(255,255,255,0.8)",
+            background: "#1A1814",
             borderRadius: "999px",
-            padding: "6px 14px",
-            transition: "opacity 150ms ease",
+            padding: "10px 20px",
+            letterSpacing: "0.02em",
           }}
         >
           ← All work
@@ -195,11 +217,16 @@ export default function BradFrostPage() {
               </div>
             ))}
 
-            {/* Tags */}
+            {/* Tags — coloured */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "8px" }}>
-              {tags.map(tag => (
-                <span key={tag} className="tag">{tag}</span>
-              ))}
+              {tags.map(tag => {
+                const c = tagColor(tag);
+                return (
+                  <span key={tag} style={{ display: "inline-flex", alignItems: "center", padding: "4px 10px", borderRadius: "999px", fontFamily: "var(--font-body)", fontSize: "12px", fontWeight: 500, background: c.bg, color: c.color, letterSpacing: "0.02em" }}>
+                    {tag}
+                  </span>
+                );
+              })}
             </div>
           </div>
         </aside>
@@ -317,6 +344,74 @@ export default function BradFrostPage() {
               <strong>AI tooling changes what's feasible in investigation.</strong> MCP-assisted system investigation made structural questions answerable in minutes that would previously have taken hours. That changes what you can reasonably attempt in a bounded project.
             </Body>
           </Section>
+
+          {/* ── Live Demo Video ────────────────────────────────── */}
+          <section style={{ marginBottom: "72px" }}>
+            <p style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "11px",
+              fontWeight: 500,
+              textTransform: "uppercase" as const,
+              letterSpacing: "0.12em",
+              color: "#8A8A8A",
+              marginBottom: "12px",
+            }}>
+              LIVE DEMO
+            </p>
+            <h2 style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(22px, 3vw, 32px)",
+              fontWeight: 400,
+              color: "#1A1A1A",
+              lineHeight: 1.2,
+              marginBottom: "16px",
+            }}>
+              Connecting the System to AI in Real Time
+            </h2>
+            <p style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "16px",
+              color: "#2C2C2C",
+              lineHeight: 1.7,
+              marginBottom: "24px",
+            }}>
+              To explore how AI tools could interact with a live design system, we connected the Figma component library to an MCP workflow and tested it in real time — alongside Brad Frost and TJ Pitre. This session demonstrates how AI can interrogate system structure, surface token relationships, and close the loop between design and code.
+            </p>
+            {/* YouTube embed */}
+            <div style={{
+              position: "relative",
+              width: "100%",
+              aspectRatio: "16/9",
+              borderRadius: "16px",
+              overflow: "hidden",
+              background: "#0A0A0A",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
+            }}>
+              <iframe
+                src="https://www.youtube.com/embed/w6bHNKU_Tn8?start=2376"
+                title="Brad Frost, Elleta McDaniel & TJ Pitre — Connecting Figma Design System to MCP"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  border: "none",
+                }}
+              />
+            </div>
+            <p style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "13px",
+              color: "#8A8A8A",
+              marginTop: "12px",
+              lineHeight: 1.5,
+            }}>
+              Recorded session with Brad Frost, TJ Pitre, and Elleta McDaniel — starts at the MCP integration demo (39:36).
+            </p>
+          </section>
 
           <Section eyebrow="REFLECTION" heading="Reflection">
             <Body>

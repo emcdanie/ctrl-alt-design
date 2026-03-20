@@ -4,6 +4,17 @@ import Link from "next/link";
 import Image from "next/image";
 import caseStudies from "@/data/caseStudies";
 
+const CATEGORY_COLORS: Record<string, { bg: string; color: string }> = {
+  "DESIGN SYSTEMS": { bg: "#2A5FA8", color: "#FFFFFF" },
+  "DATA VIZ":       { bg: "#6B3FA8", color: "#FFFFFF" },
+  "UX STRATEGY":    { bg: "#A85F20", color: "#FFFFFF" },
+  "PRODUCT UX":     { bg: "#206B4A", color: "#FFFFFF" },
+};
+
+function getCategoryStyle(category: string) {
+  return CATEGORY_COLORS[category] ?? { bg: "#1A1814", color: "#FFFFFF" };
+}
+
 export default function CaseStudyGrid() {
   return (
     <section id="work" className="py-20 px-6">
@@ -59,17 +70,54 @@ export default function CaseStudyGrid() {
                   className="absolute inset-0"
                   style={{ background: "rgba(0,0,0,0.4)", zIndex: 2 }}
                 />
-                {/* z-index 3: category pill + year */}
-                <span className="absolute bottom-3 left-4 text-[13px] font-semibold tracking-widest px-2.5 py-1 rounded-full bg-white/15 text-white backdrop-blur-sm" style={{ zIndex: 3 }}>
+                {/* z-index 3: category pill + year + client logo */}
+                {/* Category badge — coloured by type */}
+                <span
+                  className="absolute bottom-3 left-4 text-[11px] font-bold tracking-widest px-3 py-1 rounded-full"
+                  style={{ zIndex: 3, background: getCategoryStyle(cs.category).bg, color: getCategoryStyle(cs.category).color, letterSpacing: "0.1em" }}
+                >
                   {cs.category}
                 </span>
+                {/* Year */}
                 <span className="absolute top-3 right-3 text-[13px] font-medium text-white/70" style={{ zIndex: 3 }}>
                   {cs.year}
                 </span>
+                {/* Client logo — top left */}
+                {cs.clientLogo && (
+                  <div
+                    className="absolute top-3 left-3 flex items-center gap-2"
+                    style={{ zIndex: 3 }}
+                  >
+                    <div style={{
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "8px",
+                      background: "rgba(255,255,255,0.95)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      overflow: "hidden",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+                    }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={cs.clientLogo}
+                        alt={cs.clientName ?? ""}
+                        style={{ width: "22px", height: "22px", objectFit: "contain" }}
+                        onError={(e) => { e.currentTarget.parentElement!.style.display = "none"; }}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Content */}
               <div className="p-5">
+                {cs.clientName && (
+                  <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#8A8480", marginBottom: "6px" }}>
+                    {cs.clientName}
+                  </p>
+                )}
                 <h3
                   style={{
                     fontFamily: "var(--font-display)",

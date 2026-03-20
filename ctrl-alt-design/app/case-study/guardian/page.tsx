@@ -1,4 +1,20 @@
 import Link from "next/link";
+import CustomCursor from "@/components/CustomCursor";
+import OverlayNav from "@/components/OverlayNav";
+
+const TAG_COLORS = [
+  { bg: "#E8F2FA", color: "#2A6A9E" },
+  { bg: "#F0EDF8", color: "#5C4A9A" },
+  { bg: "#FDF3E3", color: "#9A6020" },
+  { bg: "#EBF5EC", color: "#2A7A32" },
+  { bg: "#FAF0EC", color: "#9A4020" },
+  { bg: "#F5EDF5", color: "#8A3A8A" },
+];
+function tagColor(tag: string) {
+  let hash = 0;
+  for (let i = 0; i < tag.length; i++) hash = tag.charCodeAt(i) + ((hash << 5) - hash);
+  return TAG_COLORS[Math.abs(hash) % TAG_COLORS.length];
+}
 
 const sidebar = [
   { label: "YEAR", value: "2026" },
@@ -119,6 +135,8 @@ function Section({ eyebrow, heading, children }: {
 export default function GuardianPage() {
   return (
     <main style={{ background: "#EDE8DF", minHeight: "100vh" }}>
+      <CustomCursor />
+      <OverlayNav />
 
       {/* Hero */}
       <div style={{
@@ -156,16 +174,20 @@ export default function GuardianPage() {
       <div style={{ padding: "24px 40px 0" }}>
         <Link
           href="/#work"
+          className="hover:opacity-75 transition-opacity duration-150"
           style={{
-            display: "inline-block",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
             fontFamily: "var(--font-body)",
             fontSize: "13px",
-            color: "#1A1A1A",
+            fontWeight: 600,
+            color: "#EDE8DF",
             textDecoration: "none",
-            background: "rgba(255,255,255,0.8)",
+            background: "#1A1814",
             borderRadius: "999px",
-            padding: "6px 14px",
-            transition: "opacity 150ms ease",
+            padding: "10px 20px",
+            letterSpacing: "0.02em",
           }}
         >
           ← All work
@@ -210,11 +232,16 @@ export default function GuardianPage() {
               </div>
             ))}
 
-            {/* Tags */}
+            {/* Tags — coloured */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "8px" }}>
-              {tags.map(tag => (
-                <span key={tag} className="tag">{tag}</span>
-              ))}
+              {tags.map(tag => {
+                const c = tagColor(tag);
+                return (
+                  <span key={tag} style={{ display: "inline-flex", alignItems: "center", padding: "4px 10px", borderRadius: "999px", fontFamily: "var(--font-body)", fontSize: "12px", fontWeight: 500, background: c.bg, color: c.color, letterSpacing: "0.02em" }}>
+                    {tag}
+                  </span>
+                );
+              })}
             </div>
           </div>
         </aside>
