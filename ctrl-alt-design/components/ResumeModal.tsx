@@ -138,6 +138,8 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
               <a href="mailto:elletamc@gmail.com" className="hover:text-[#1A1814] transition-colors">elletamc@gmail.com</a>
               <span>·</span>
               <span>+34 633287939</span>
+              <span>·</span>
+              <a href="https://www.linkedin.com/in/elleta-mcdaniel" className="hover:text-[#1A1814] transition-colors">linkedin.com/in/elleta-mcdaniel</a>
             </div>
           </div>
 

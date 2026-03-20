@@ -22,10 +22,7 @@ const footerNav = {
     { label: "Archive", href: "#" },
   ],
   Contact: [
-    { label: "LinkedIn", href: "#" },
-    { label: "Dribbble", href: "#" },
-    { label: "Twitter / X", href: "#" },
-    { label: "Email", href: "mailto:hello@elleta.design" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/elleta-mcdaniel" },
   ],
 };
 
