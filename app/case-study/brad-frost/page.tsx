@@ -1,6 +1,7 @@
 import Link from "next/link";
 import CustomCursor from "@/components/CustomCursor";
 import OverlayNav from "@/components/OverlayNav";
+import ArtifactPlaceholder from "@/components/ArtifactPlaceholder";
 
 const TAG_COLORS = [
   { bg: "#E8F2FA", color: "#2A6A9E" },
@@ -91,30 +92,6 @@ function PullQuote({ children }: { children: React.ReactNode }) {
     }}>
       {children}
     </blockquote>
-  );
-}
-
-function ImagePlaceholder({ caption }: { caption?: string }) {
-  return (
-    <div style={{
-      width: "100%",
-      aspectRatio: "16/9",
-      background: "#F0EFEB",
-      borderRadius: "8px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      margin: "40px 0",
-      position: "relative",
-    }}>
-      <span style={{
-        fontFamily: "var(--font-body)",
-        fontSize: "12px",
-        color: "#8A8A8A",
-      }}>
-        {caption || "[ insert screenshot ]"}
-      </span>
-    </div>
   );
 }
 
@@ -273,7 +250,12 @@ export default function BradFrostPage() {
             </Body>
           </Section>
 
-          <ImagePlaceholder caption="[ insert screenshot — Figma component library aligned to Storybook ]" />
+          <ArtifactPlaceholder
+            title="Figma/Storybook alignment artifact"
+            description="Insert screenshot of the Figma component library aligned to Storybook."
+            aspectRatio="16/9"
+            className="my-10"
+          />
 
           <Section eyebrow="CONTEXT" heading="Starting From Code">
             <Body>
@@ -327,7 +309,12 @@ export default function BradFrostPage() {
             </Body>
           </Section>
 
-          <ImagePlaceholder caption="[ insert screenshot — MCP workflow / token investigation ]" />
+          <ArtifactPlaceholder
+            title="MCP workflow artifact"
+            description="Insert screenshot of MCP-assisted token investigation workflow."
+            aspectRatio="16/9"
+            className="my-10"
+          />
 
           <PullQuote>
             "The best use of AI in design system work isn't generating components — it's accelerating the investigation that good system decisions depend on."
