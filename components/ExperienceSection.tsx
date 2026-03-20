@@ -183,7 +183,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                       <img
                         src={role.logoSrc}
                         alt={role.company}
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        style={{ width: "80%", height: "80%", objectFit: "contain" }}
                         onError={(e) => {
                           e.currentTarget.style.display = "none";
                           if (e.currentTarget.nextSibling) {
@@ -347,7 +347,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                     <img
                       src={edu.logo}
                       alt={edu.name}
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      style={{ width: "80%", height: "80%", objectFit: "contain" }}
                     />
                   </div>
                   <span style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "#8A8480", fontWeight: 500 }}>
