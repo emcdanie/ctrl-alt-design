@@ -674,7 +674,7 @@ const caseStudies: CaseStudy[] = [
       completionTag: "PROJECT COMPLETE · 2025",
     },
     tags: ["Design Systems", "Atomic Design", "Code-First", "AI Tooling"],
-    clientLogo: \"/images/logos/ASU-logo.png\",
+    clientLogo: "/images/logos/bradfrostwebjpeg.jpeg",
     clientName: "Brad Frost Web",
     description: "What Building Brad Frost's Component System in Reverse Taught Me About Design",
   },
