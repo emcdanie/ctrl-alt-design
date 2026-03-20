@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import Header from "@/components/Header";
+import CustomCursor from "@/components/CustomCursor";
+import OverlayNav from "@/components/OverlayNav";
 import Hero from "@/components/Hero";
 import Carousel from "@/components/Carousel";
+import MetricsStrip from "@/components/MetricsStrip";
 import CaseStudyGrid from "@/components/CaseStudyGrid";
 import VideoWalkthrough from "@/components/VideoWalkthrough";
 import ProcessSection from "@/components/ProcessSection";
@@ -16,15 +18,17 @@ export default function Home() {
   const [resumeOpen, setResumeOpen] = useState(false);
 
   return (
-    <main className="bg-[#EDE8DF] text-[#1A1814] min-h-screen overflow-x-hidden">
-      <Header onResumeClick={() => setResumeOpen(true)} />
+    <main className="bg-[#EDE8DF] text-[#1A1A1A] min-h-screen overflow-x-hidden">
+      <CustomCursor />
+      <OverlayNav />
       <Hero />
       <Carousel />
+      <MetricsStrip />
       <CaseStudyGrid />
       <VideoWalkthrough />
       <ProcessSection />
       <CtrlAltDesignSection />
-      <ExperienceSection />
+      <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
       <ContactSection />
       <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
     </main>

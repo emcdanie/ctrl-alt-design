@@ -27,8 +27,9 @@ export default function CaseStudyGrid() {
           {caseStudies.map((cs) => (
             <Link
               key={cs.slug}
-              href={`/case-studies/${cs.slug}`}
-              className="group rounded-2xl overflow-hidden block bg-white/60 shadow-[0_10px_30px_rgba(0,0,0,0.05)] transition-transform duration-300 hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(0,0,0,0.12)]"
+              href={cs.href ?? `/case-studies/${cs.slug}`}
+              data-cursor="card"
+              className="group rounded-2xl overflow-hidden block bg-white/60 transition-all duration-300 hover:scale-[1.02]"
             >
               {/* Thumbnail */}
               <div className="aspect-[16/10] relative overflow-hidden bg-[#2A2420]">
@@ -69,17 +70,24 @@ export default function CaseStudyGrid() {
 
               {/* Content */}
               <div className="p-5">
-                <h3 className="font-display font-bold text-[#1A1814] mb-2 leading-snug" style={{ fontSize: "20px" }}>
+                <h3
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "22px",
+                    fontWeight: 400,
+                    color: "#1A1A1A",
+                    marginBottom: "8px",
+                    lineHeight: 1.2,
+                  }}
+                >
                   {cs.title}
                 </h3>
-                <p className="leading-relaxed mb-4 line-clamp-2" style={{ fontSize: "15px", color: "#8A8480" }}>
+                <p
+                  className="line-clamp-2"
+                  style={{ fontFamily: "var(--font-body)", fontSize: "14px", color: "#666666", lineHeight: 1.6 }}
+                >
                   {cs.description}
                 </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {cs.tags.slice(0, 4).map((tag) => (
-                    <span key={tag} className="tag">{tag}</span>
-                  ))}
-                </div>
               </div>
             </Link>
           ))}

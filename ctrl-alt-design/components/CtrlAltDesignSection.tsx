@@ -57,12 +57,12 @@ export default function CtrlAltDesignSection() {
 
         {/* Header */}
         <div className="mb-6">
-          <p className="section-label mb-3">— Alt Routes</p>
+          <p className="section-label mb-3">— Design Lab</p>
           <h2
             className="font-display font-extrabold text-[#1A1814] tracking-tight leading-none"
-            style={{ fontSize: "clamp(32px, 6vw, 72px)" }}
+            style={{ fontSize: "clamp(28px, 4vw, 52px)" }}
           >
-            CTRL_ALT_DESIGN — Interface Explorations
+            CTRL_ALT_DESIGN
           </h2>
           <p className="mt-3 max-w-md" style={{ fontSize: "16px", color: "#8A8480", lineHeight: "1.6" }}>
             Rapid investigations into complex interaction patterns, system dashboards, and AI-assisted workflows.

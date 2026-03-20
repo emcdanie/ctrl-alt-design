@@ -19,6 +19,7 @@ export interface NarrativeSection {
 
 export interface CaseStudy {
   slug: string;
+  href?: string;
   title: string;
   category: string;
   year: string;
@@ -255,21 +256,20 @@ const caseStudies: CaseStudy[] = [
         label: "OUTCOMES",
         heading: "Outcome & Expected Impact",
         paragraphs: [
-          "The outcome wasn't a single redesign. It was a more scalable foundation — a shared language for how the product should look, behave, and grow.",
-          "Concretely: duplicated components were consolidated into a smaller set of flexible, well-defined building blocks. Interaction patterns for filtering, sorting, and form behaviour were defined so users encountered predictable experiences across flows. Component states and usage guidance were documented so that design intent didn't get lost between Figma and code. The design file structure was reorganised from a single monolithic file into a tiered system where each layer — foundations, components, documentation, assets — had a clear home.",
-          "The UI shifted from being whatever the last sprint produced to feeling like a coherent product language.",
-          "Without formal metrics in place at the start of the project, I can't quantify the impact precisely. What I can say is that the expected direction of change was clear: fewer decisions repeated from scratch, fewer inconsistencies accumulating across flows, easier onboarding for new team members joining a product with a shared vocabulary, and more confidence when scaling because the foundation was designed to hold.",
+          "The outcome wasn't a single redesign. **It was a more scalable foundation — a shared language for how the product should look, behave, and grow.**",
+          "Concretely: **duplicated components were consolidated into a smaller set of flexible, well-defined building blocks.** Interaction patterns for filtering, sorting, and form behaviour were defined so users encountered predictable experiences across flows. Component states and usage guidance were documented so that design intent didn't get lost between Figma and code. **The design file structure was reorganised from a single monolithic file into a tiered system** where each layer — foundations, components, documentation, assets — had a clear home.",
+          "\"The UI shifted from being whatever the last sprint produced to feeling like a coherent product language.\"",
+          "Without formal metrics in place at the start of the project, I can't quantify the impact precisely. What I can say is that the expected direction of change was clear: **fewer decisions repeated from scratch, fewer inconsistencies accumulating across flows, easier onboarding for new team members** joining a product with a shared vocabulary, and more confidence when scaling because the foundation was designed to hold.",
         ],
       },
       {
         label: "REFLECTION",
         heading: "Reflection",
         paragraphs: [
-          "The most useful shift for me on this project was recognising that inconsistency is rarely the root problem. It's a symptom — of missing structure, of undocumented decisions, of a system that grew faster than the rules that were supposed to govern it. Treating it as a visual problem would have produced a tidier UI for a few sprints and then the same drift would have resumed, because nothing structural had changed.",
-          "Design systems, when done well, are not a visual cleanup exercise. They are an organisational tool. They make product teams more effective by reducing the cognitive overhead of repeated decision-making. They make user experiences more predictable by ensuring that familiar patterns stay familiar.",
-          "Doing this work as a solo designer, without a dedicated systems team, also reinforced something about advocacy: the work itself is not enough. Stakeholders need to understand what the system solves before they'll invest in building it properly. The audit framework wasn't just a research method — it was a communication tool. Framing the problem in terms of business alignment and delivery cost made it possible to have a different kind of conversation about the value of the work.",
-          "If I were doing this again, I'd invest earlier in shared definitions and concrete examples — not because they're the most interesting part of the work, but because they're what prevents the slow drift from beginning in the first place. The documentation that feels like overhead in week two is the thing that saves a team from six months of inconsistency in year two.",
-          "The best time to build the foundation was at the start. The second best time is before the drift becomes too expensive to reverse.",
+          "The most useful shift for me on this project was recognising that **inconsistency is rarely the root problem — it's a symptom** of missing structure, of undocumented decisions, of a system that grew faster than the rules that were supposed to govern it.",
+          "**Design systems, when done well, are not a visual cleanup exercise. They are an organisational tool.** They make product teams more effective by reducing the cognitive overhead of repeated decision-making. They make user experiences more predictable by ensuring that familiar patterns stay familiar.",
+          "Doing this work as a solo designer, without a dedicated systems team, also reinforced something about advocacy: **the audit framework wasn't just a research method — it was a communication tool.** Framing the problem in terms of business alignment and delivery cost made it possible to have a different kind of conversation about the value of the work.",
+          "\"The best governance is invisible. It works because the right choice was always easier than the wrong one.\"",
         ],
       },
     ],
@@ -611,6 +611,62 @@ const caseStudies: CaseStudy[] = [
         ],
       },
     ],
+  },
+  // ─────────────────────────────────────────────────────────────────
+  // 4. BRAD FROST — CODE FIRST
+  // ─────────────────────────────────────────────────────────────────
+  {
+    slug: "brad-frost",
+    href: "/case-study/brad-frost",
+    title: "Code First",
+    category: "DESIGN SYSTEMS",
+    year: "2024–2025",
+    scope: "Component Architecture, Token Alignment, Figma–Storybook Integration",
+    timeline: "Oct 2024 – Jan 2025",
+    heroImage: "https://images.unsplash.com/photo-1555066931-4365d14431b9?w=1400&h=800&fit=crop&q=80",
+    heroVideo: "/videos/eddie.mov",
+    metrics: {
+      role: "Design System Collaborator",
+      team: "Brad Frost Web Maker Program",
+      timeline: "Oct 2024 – Jan 2025",
+      scope: "Component Architecture, Token Alignment, Figma–Storybook Integration, MCP",
+    },
+    overview: {
+      headline: "Building Brad Frost's component system in reverse — code-first, token-aligned, AI-assisted.",
+      body: "Working as part of Brad Frost's Maker Program, I joined a project where the code already existed. The challenge was to understand an existing system deeply enough to contribute meaningfully at the component and token level, bring Figma into alignment with code reality, and use AI tooling to close the loop between the two.",
+    },
+    images: [],
+    problem: {
+      title: "Starting From Code",
+      body: "Most design system work starts in Figma. This project inverted that entirely. Every decision had to be justified against an existing, principled structure rather than invented from first principles — which turned out to be enormously useful.",
+    },
+    process: {
+      title: "Component Archaeology",
+      steps: [
+        {
+          number: "01",
+          title: "System Investigation",
+          description: "Reading Storybook stories, tracing prop structures, and mapping how existing components composed.",
+        },
+        {
+          number: "02",
+          title: "Figma Alignment",
+          description: "Rebuilding Figma components to match code counterparts — matching variant names to prop names, ensuring token consistency.",
+        },
+        {
+          number: "03",
+          title: "AI-Assisted Investigation",
+          description: "Using Claude via MCP to surface token relationships and accelerate structural investigation.",
+        },
+      ],
+    },
+    outcomes: {
+      title: "Aligned, Documented, Maintainable",
+      body: "Figma and Storybook components aligned across the system. Token layer documented with explicit primitive → semantic → component chain. MCP workflow established for ongoing system investigation.",
+      completionTag: "PROJECT COMPLETE · 2025",
+    },
+    tags: ["Design Systems", "Atomic Design", "Code-First", "AI Tooling"],
+    description: "What Building Brad Frost's Component System in Reverse Taught Me About Design",
   },
 ];
 
