@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+/* ─── Design tokens ─────────────────────────────────────────────── */
+@theme {
+  /* Brand colors */
+  --color-cream:      #EDE8DF;
+  --color-ink:        #1A1814;
+  --color-ink-soft:   #4A4640;
+  --color-ink-muted:  #8A8480;
+  --color-white-pure: #FAFAF8;
+
+  /* Process palette */
+  --color-process-1: #E8B86D;
+  --color-process-2: #C8D97A;
+  --color-process-3: #7DC4C4;
+  --color-process-4: #E8A0A0;
+  --color-process-5: #B8A8D8;
+
+  /* Typography — CSS vars injected by next/font in layout.tsx */
+  --font-display: var(--font-inter), system-ui, sans-serif;
+  --font-body:    var(--font-chivo-mono), monospace;
+
+  /* Named animations */
+  --animate-scroll-left: scroll-left 35s linear infinite;
+  --animate-fade-in-up:  fadeInUp 0.6s ease-out forwards;
+}
+
+/* ─── Keyframes ─────────────────────────────────────────────────── */
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Base ──────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  background-color: #EDE8DF;
+  color: #1A1814;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─── Utility classes ───────────────────────────────────────────── */
+
+/* Small all-caps label above section headings */
+.section-label {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #8A8480;
+  line-height: 1;
+}
+
+/* Pill tag with border */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(26, 24, 20, 0.16);
+  font-size: 13px;
+  font-weight: 500;
+  color: #4A4640;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+/* Card lift on hover */
+.card-hover {
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  cursor: pointer;
+}
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(26, 24, 20, 0.10);
+}
+
+/* 1-px hairline divider */
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: rgba(26, 24, 20, 0.08);
+}
+
+/* Hide scrollbar */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Modal glass backdrop */
+.modal-backdrop {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* ─── Carousel ──────────────────────────────────────────────────── */
+
+.carousel-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 35s linear infinite;
+}
+.carousel-track:hover {
+  animation-play-state: paused;
+}
