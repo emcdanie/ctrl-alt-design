@@ -2,25 +2,16 @@
 
 /* ─── Design tokens ─────────────────────────────────────────────── */
 @theme {
-  /* Brand colors */
   --color-cream:      #EDE8DF;
-  --color-ink:        #1A1814;
-  --color-ink-soft:   #4A4640;
-  --color-ink-muted:  #8A8480;
+  --color-ink:        #1A1A1A;
+  --color-ink-soft:   #2C2C2C;
+  --color-ink-muted:  #8A8A8A;
+  --color-surface:    #F5F4F1;
   --color-white-pure: #FAFAF8;
 
-  /* Process palette */
-  --color-process-1: #E8B86D;
-  --color-process-2: #C8D97A;
-  --color-process-3: #7DC4C4;
-  --color-process-4: #E8A0A0;
-  --color-process-5: #B8A8D8;
+  --font-display: 'Clash Display', system-ui, sans-serif;
+  --font-body:    var(--font-chivo-mono), 'Chivo Mono', monospace;
 
-  /* Typography — CSS vars injected by next/font in layout.tsx */
-  --font-display: var(--font-inter), system-ui, sans-serif;
-  --font-body:    var(--font-chivo-mono), monospace;
-
-  /* Named animations */
   --animate-scroll-left: scroll-left 35s linear infinite;
   --animate-fade-in-up:  fadeInUp 0.6s ease-out forwards;
 }
@@ -37,92 +28,94 @@
 }
 
 /* ─── Base ──────────────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 html {
   scroll-behavior: smooth;
+  cursor: none;
 }
 
 body {
   font-family: var(--font-body);
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.7;
   background-color: #EDE8DF;
-  color: #1A1814;
+  color: #2C2C2C;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  cursor: none;
 }
+
+@media (hover: none) and (pointer: coarse) {
+  html, body, a, button, [role="button"] { cursor: auto; }
+}
+
+a, button, [role="button"] { cursor: none; }
+
+h1, h2 { font-family: var(--font-display); }
 
 /* ─── Utility classes ───────────────────────────────────────────── */
 
-/* Small all-caps label above section headings */
-.section-label {
-  font-size: 13px;
-  font-weight: 600;
+.eyebrow, .section-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: #8A8480;
+  letter-spacing: 0.12em;
+  color: #8A8A8A;
   line-height: 1;
 }
 
-/* Pill tag with border */
 .tag {
   display: inline-flex;
   align-items: center;
   padding: 0.25rem 0.7rem;
   border-radius: 9999px;
-  border: 1px solid rgba(26, 24, 20, 0.16);
-  font-size: 13px;
+  border: 1px solid #E0E0E0;
+  font-family: var(--font-body);
+  font-size: 11px;
   font-weight: 500;
-  color: #4A4640;
+  color: #2C2C2C;
   white-space: nowrap;
   line-height: 1.6;
 }
 
-/* Card lift on hover */
 .card-hover {
   transition: transform 0.28s ease, box-shadow 0.28s ease;
-  cursor: pointer;
-}
-.card-hover:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 48px rgba(26, 24, 20, 0.10);
+  cursor: none;
 }
 
-/* 1-px hairline divider */
 .divider {
   height: 1px;
   width: 100%;
-  background-color: rgba(26, 24, 20, 0.08);
+  background-color: rgba(26, 26, 26, 0.08);
 }
 
-/* Hide scrollbar */
-.no-scrollbar {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
-/* Modal glass backdrop */
 .modal-backdrop {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
 
-/* ─── Carousel ──────────────────────────────────────────────────── */
+.pull-quote {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-style: italic;
+  color: #2C2C2C;
+  border-left: 3px solid #1A1A1A;
+  padding: 20px 24px;
+  background: #F9F8F5;
+  border-radius: 4px;
+  margin: 40px 0;
+}
 
+/* ─── Carousel ──────────────────────────────────────────────────── */
 .carousel-track {
   display: flex;
   width: max-content;
   animation: scroll-left 35s linear infinite;
 }
-.carousel-track:hover {
-  animation-play-state: paused;
-}
+.carousel-track:hover { animation-play-state: paused; }

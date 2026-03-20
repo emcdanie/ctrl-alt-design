@@ -45,8 +45,21 @@ export default function VideoWalkthrough() {
             ))}
           </div>
           <Link
-            href="/guardian"
-            className="inline-flex items-center gap-1 text-[15px] font-medium text-[#1A1814] hover:opacity-60 transition-opacity duration-200"
+            href="/case-study/guardian"
+            style={{
+              display: "inline-block",
+              fontFamily: "var(--font-body)",
+              fontSize: "14px",
+              fontWeight: 500,
+              color: "#FFFFFF",
+              background: "#1A1A1A",
+              borderRadius: "999px",
+              padding: "14px 28px",
+              textDecoration: "none",
+              transition: "opacity 200ms ease",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = "0.8")}
+            onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
           >
             View Full Case Study →
           </Link>

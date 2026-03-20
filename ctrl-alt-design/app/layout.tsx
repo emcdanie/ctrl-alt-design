@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, Chivo_Mono } from "next/font/google";
+import { Chivo_Mono } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "900"],
-});
 
 const chivoMono = Chivo_Mono({
   variable: "--font-chivo-mono",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -27,9 +21,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${chivoMono.variable} antialiased`}
-      >
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap"
+        />
+      </head>
+      <body className={`${chivoMono.variable} antialiased`}>
         {children}
       </body>
     </html>

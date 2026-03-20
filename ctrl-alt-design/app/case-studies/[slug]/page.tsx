@@ -8,6 +8,40 @@ export async function generateStaticParams() {
   return caseStudies.map((cs) => ({ slug: cs.slug }));
 }
 
+// Tag colour palette — cycles through warm, readable tints
+const TAG_COLORS = [
+  { bg: "#E8F2FA", color: "#2A6A9E" },
+  { bg: "#F0EDF8", color: "#5C4A9A" },
+  { bg: "#FDF3E3", color: "#9A6020" },
+  { bg: "#EBF5EC", color: "#2A7A32" },
+  { bg: "#FAF0EC", color: "#9A4020" },
+  { bg: "#F5EDF5", color: "#8A3A8A" },
+];
+
+function tagColor(tag: string) {
+  let hash = 0;
+  for (let i = 0; i < tag.length; i++) hash = tag.charCodeAt(i) + ((hash << 5) - hash);
+  return TAG_COLORS[Math.abs(hash) % TAG_COLORS.length];
+}
+
+// Renders a paragraph with **bold** markdown support
+function RichPara({ text }: { text: string }) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return (
+    <p style={{ fontFamily: "var(--font-body)", fontSize: "16px", color: "#2C2C2C", lineHeight: 1.75 }}>
+      {parts.map((part, i) =>
+        part.startsWith("**") && part.endsWith("**") ? (
+          <strong key={i} style={{ fontWeight: 600, color: "#1A1A1A" }}>
+            {part.slice(2, -2)}
+          </strong>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </p>
+  );
+}
+
 export default async function CaseStudyPage({
   params,
 }: {
@@ -22,7 +56,7 @@ export default async function CaseStudyPage({
   return (
     <main className="bg-[#EDE8DF] min-h-screen">
 
-      {/* ── Nav ─────────────────────────────────────────────────── */}
+      {/* ── Fixed nav ───────────────────────────────────────────── */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-4 bg-[#EDE8DF]/90 backdrop-blur-md border-b border-[#1A1814]/08">
         <Link href="/" className="text-[13px] font-medium text-[#1A1814]">
           Elleta McDaniel
@@ -40,314 +74,300 @@ export default async function CaseStudyPage({
         </Link>
       </nav>
 
-      {/* ── Back nav strip ──────────────────────────────────────── */}
+      {/* ── Full-width video / image hero ───────────────────────── */}
       <div className="pt-[57px]">
-        <div className="px-6 md:px-10 py-3 border-b border-[#1A1814]/08">
-          <Link
-            href="/#work"
-            className="inline-flex items-center gap-2 text-[13px] text-[#8A8480] hover:text-[#1A1814] transition-colors"
-          >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M9 2L4 7l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            Back to Case Studies
-          </Link>
-        </div>
-      </div>
-
-      {/* ── Two-column layout ───────────────────────────────────── */}
-      <div className="flex flex-col md:flex-row min-h-screen">
-
-        {/* ── LEFT — sticky sidebar ────────────────────────────── */}
-        <aside className="md:w-[320px] lg:w-[360px] flex-shrink-0 md:sticky md:top-[98px] md:self-start md:h-[calc(100vh-98px)] md:overflow-y-auto px-6 md:px-8 py-10 md:py-12 flex flex-col justify-between border-r border-[#1A1814]/08 no-scrollbar">
-          <div>
-            <p className="section-label mb-4">{cs.category}</p>
-
-            <h1 className="font-display font-black text-[2rem] leading-[1.05] text-[#1A1814] mb-5">
-              {cs.title}
-            </h1>
-
-            <p className="text-[13px] text-[#4A4640] leading-relaxed mb-8">
-              {cs.description}
-            </p>
-
-            {/* Meta table */}
-            <div className="space-y-0">
-              <div className="flex items-center justify-between py-3 border-t border-[#1A1814]/10">
-                <span className="text-[13px] text-[#8A8480] uppercase tracking-wide">Year</span>
-                <span className="text-[13px] font-medium text-[#1A1814]">{cs.year}</span>
-              </div>
-              {cs.metrics?.role && (
-                <div className="flex items-start justify-between py-3 border-t border-[#1A1814]/10 gap-4">
-                  <span className="text-[13px] text-[#8A8480] uppercase tracking-wide flex-shrink-0">Role</span>
-                  <span className="text-[13px] font-medium text-[#1A1814] text-right">{cs.metrics.role}</span>
-                </div>
-              )}
-              {cs.metrics?.team && (
-                <div className="flex items-start justify-between py-3 border-t border-[#1A1814]/10 gap-4">
-                  <span className="text-[13px] text-[#8A8480] uppercase tracking-wide flex-shrink-0">Team</span>
-                  <span className="text-[13px] font-medium text-[#1A1814] text-right">{cs.metrics.team}</span>
-                </div>
-              )}
-              <div className="flex items-center justify-between py-3 border-t border-[#1A1814]/10">
-                <span className="text-[13px] text-[#8A8480] uppercase tracking-wide">Timeline</span>
-                <span className="text-[13px] font-medium text-[#1A1814]">{cs.timeline}</span>
-              </div>
-              <div className="flex items-start justify-between py-3 border-t border-[#1A1814]/10 gap-4">
-                <span className="text-[13px] text-[#8A8480] uppercase tracking-wide flex-shrink-0">Scope</span>
-                <span className="text-[13px] font-medium text-[#1A1814] text-right">{cs.scope}</span>
-              </div>
-              {cs.liveUrl && (
-                <div className="flex items-center justify-between py-3 border-t border-[#1A1814]/10">
-                  <span className="text-[13px] text-[#8A8480] uppercase tracking-wide">Live</span>
-                  <a
-                    href={cs.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[13px] font-semibold text-[#1A1814] underline underline-offset-4 hover:text-[#4A4640]"
-                  >
-                    Preview ↗
-                  </a>
-                </div>
-              )}
-              <div className="flex items-start justify-between py-3 border-t border-b border-[#1A1814]/10 gap-4">
-                <span className="text-[13px] text-[#8A8480] uppercase tracking-wide flex-shrink-0">Tools</span>
-                <div className="flex flex-wrap gap-1 justify-end">
-                  {cs.tags.map((tag) => (
-                    <span key={tag} className="tag">{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Link
-            href="/"
-            className="mt-10 text-[13px] text-[#8A8480] hover:text-[#1A1814] transition-colors flex items-center gap-2"
-          >
-            ← All work
-          </Link>
-        </aside>
-
-        {/* ── RIGHT — scrolling content ────────────────────────── */}
-        <div className="flex-1 min-w-0">
-
-          {/* Hero image */}
-          <div className="relative w-full aspect-[16/9] overflow-hidden">
+        <div style={{ width: "100%", aspectRatio: "16/9", maxHeight: "80vh", background: "#0A0A1C", position: "relative", overflow: "hidden" }}>
+          {cs.heroVideo ? (
+            <video
+              autoPlay muted loop playsInline
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+            >
+              <source src={cs.heroVideo} type={cs.heroVideo.endsWith(".mp4") ? "video/mp4" : "video/quicktime"} />
+            </video>
+          ) : (
             <Image
               src={cs.heroImage}
               alt={cs.title}
               fill
               className="object-cover"
               priority
-              sizes="(max-width: 768px) 100vw, calc(100vw - 360px)"
+              sizes="100vw"
             />
+          )}
+        </div>
+      </div>
+
+      {/* ── Back button ─────────────────────────────────────────── */}
+      <div style={{ padding: "24px 40px 0" }}>
+        <Link
+          href="/#work"
+          style={{
+            display: "inline-block",
+            fontFamily: "var(--font-body)",
+            fontSize: "13px",
+            color: "#1A1A1A",
+            textDecoration: "none",
+            background: "rgba(255,255,255,0.8)",
+            borderRadius: "999px",
+            padding: "6px 14px",
+          }}
+        >
+          ← All work
+        </Link>
+      </div>
+
+      {/* ── Two-column layout ───────────────────────────────────── */}
+      <div style={{
+        maxWidth: "1200px",
+        margin: "0 auto",
+        padding: "64px 40px 80px",
+        display: "grid",
+        gridTemplateColumns: "240px 1fr",
+        gap: "80px",
+        alignItems: "start",
+      }} className="grid-cols-1 md:grid-cols-[240px_1fr]">
+
+        {/* ── Sticky sidebar ──────────────────────────────────── */}
+        <aside style={{ position: "sticky", top: "80px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            {[
+              { label: "YEAR", value: cs.year },
+              cs.metrics?.role ? { label: "ROLE", value: cs.metrics.role } : null,
+              cs.metrics?.team ? { label: "TEAM", value: cs.metrics.team } : null,
+              { label: "TIMELINE", value: cs.timeline },
+              { label: "SCOPE", value: cs.scope },
+            ].filter(Boolean).map((item) => item && (
+              <div key={item.label}>
+                <div style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "4px" }}>
+                  {item.label}
+                </div>
+                <div style={{ fontFamily: "var(--font-body)", fontSize: "15px", color: "#1A1A1A", lineHeight: 1.4 }}>
+                  {item.value}
+                </div>
+              </div>
+            ))}
+
+            {/* Coloured tags */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "4px" }}>
+              {cs.tags.map(tag => {
+                const c = tagColor(tag);
+                return (
+                  <span key={tag} style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    padding: "4px 10px",
+                    borderRadius: "999px",
+                    fontFamily: "var(--font-body)",
+                    fontSize: "12px",
+                    fontWeight: 500,
+                    background: c.bg,
+                    color: c.color,
+                    letterSpacing: "0.02em",
+                  }}>
+                    {tag}
+                  </span>
+                );
+              })}
+            </div>
+
+            {cs.liveUrl && (
+              <a
+                href={cs.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontFamily: "var(--font-body)", fontSize: "13px", fontWeight: 600, color: "#1A1814", textDecoration: "underline", textUnderlineOffset: "3px" }}
+              >
+                Live preview ↗
+              </a>
+            )}
+          </div>
+        </aside>
+
+        {/* ── Main article ────────────────────────────────────── */}
+        <article style={{ maxWidth: "720px" }}>
+
+          {/* Title block */}
+          <div style={{ marginBottom: "64px" }}>
+            <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "12px" }}>
+              {cs.category} · {cs.year}
+            </p>
+            <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05, color: "#1A1A1A", margin: "0 0 16px 0" }}>
+              {cs.title}
+            </h1>
+            <p style={{ fontFamily: "var(--font-body)", fontSize: "18px", color: "#666666", lineHeight: 1.6 }}>
+              {cs.description}
+            </p>
           </div>
 
-          {/* ── NARRATIVE LAYOUT ──────────────────────────────── */}
-          {cs.narrative ? (
-            <div className="max-w-[860px] mx-auto px-6 md:px-12">
-
-              {/* Overview headline */}
-              <div className="py-14 border-b border-[#1A1814]/08">
-                <p className="section-label mb-5">Overview</p>
-                <p className="font-display font-bold text-[1.65rem] md:text-[2rem] text-[#1A1814] leading-[1.25] mb-6">
-                  {cs.overview.headline}
-                </p>
-                <p className="text-[18px] text-[#4A4640] leading-[1.75]">
-                  {cs.overview.body}
-                </p>
-              </div>
-
-              {/* Supporting images */}
-              {cs.images.length > 0 && (
-                <div className="py-10 border-b border-[#1A1814]/08">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {cs.images.map((src, i) => (
-                      <div key={i} className="relative aspect-[4/3] rounded-xl overflow-hidden">
-                        <Image
-                          src={src}
-                          alt={`${cs.title} — image ${i + 1}`}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 640px) 100vw, 420px"
-                        />
-                      </div>
-                    ))}
+          {/* Supporting images */}
+          {cs.images.length > 0 && (
+            <div style={{ marginBottom: "64px" }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {cs.images.map((src, i) => (
+                  <div key={i} className="relative aspect-[4/3] rounded-xl overflow-hidden">
+                    <Image src={src} alt={`${cs.title} — image ${i + 1}`} fill className="object-cover" sizes="(max-width: 640px) 100vw, 350px" />
                   </div>
-                </div>
-              )}
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── NARRATIVE layout ──────────────────────────────── */}
+          {cs.narrative ? (
+            <div>
+              {/* Overview */}
+              <section style={{ marginBottom: "72px" }}>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "12px" }}>OVERVIEW</p>
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(24px, 3.5vw, 36px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.15, marginBottom: "20px" }}>
+                  {cs.overview.headline}
+                </h2>
+                <RichPara text={cs.overview.body} />
+              </section>
 
               {/* Narrative sections */}
               {cs.narrative.map((section, idx) => (
-                <div
-                  key={idx}
-                  className="py-12 border-b border-[#1A1814]/08"
-                >
+                <section key={idx} style={{ marginBottom: "72px" }}>
                   {section.label && (
-                    <p className="section-label mb-4">{section.label}</p>
+                    <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "12px" }}>
+                      {section.label}
+                    </p>
                   )}
-                  <h2 className="font-display font-bold text-[1.35rem] md:text-[1.6rem] text-[#1A1814] leading-snug mb-6">
+                  <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.2, marginBottom: "20px" }}>
                     {section.heading}
                   </h2>
-                  <div className="space-y-5">
-                    {section.paragraphs.map((para, pIdx) => (
-                      <p
-                        key={pIdx}
-                        className="text-[18px] text-[#4A4640] leading-[1.75]"
-                      >
-                        {para}
-                      </p>
-                    ))}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                    {section.paragraphs.map((para, pIdx) => {
+                      const isPullQuote = para.startsWith('"') || para.startsWith('\u201c');
+                      return isPullQuote ? (
+                        <blockquote key={pIdx} style={{
+                          fontFamily: "var(--font-display)",
+                          fontSize: "clamp(18px, 2.2vw, 22px)",
+                          fontStyle: "italic",
+                          fontWeight: 400,
+                          color: "#1A1A1A",
+                          borderLeft: "3px solid #1A1814",
+                          paddingLeft: "24px",
+                          paddingTop: "12px",
+                          paddingBottom: "12px",
+                          background: "#F0EDE8",
+                          borderRadius: "0 6px 6px 0",
+                          margin: "8px 0",
+                          lineHeight: 1.5,
+                        }}>
+                          {para}
+                        </blockquote>
+                      ) : (
+                        <RichPara key={pIdx} text={para} />
+                      );
+                    })}
                   </div>
-                </div>
+                </section>
               ))}
 
-              {/* Completion tag */}
-              <div className="py-12 border-b border-[#1A1814]/08">
-                <span className="inline-flex items-center px-4 py-2 rounded-full bg-[#1A1814] text-[#EDE8DF] text-[13px] font-semibold tracking-widest uppercase">
+              {/* Completion pill */}
+              <div style={{ marginBottom: "72px" }}>
+                <span style={{ display: "inline-flex", alignItems: "center", padding: "8px 20px", borderRadius: "999px", background: "#1A1814", color: "#EDE8DF", fontFamily: "var(--font-body)", fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" }}>
                   {cs.outcomes.completionTag}
                 </span>
               </div>
-
             </div>
 
           ) : (
-            /* ── STRUCTURED LAYOUT (fallback) ───────────────── */
-            <>
-              <div className="px-8 md:px-12 py-12 border-b border-[#1A1814]/08">
-                <p className="section-label mb-5">Overview</p>
-                <p className="font-display font-bold text-2xl md:text-[1.9rem] text-[#1A1814] leading-snug mb-6 max-w-2xl">
+            /* ── STRUCTURED fallback ──────────────────────────── */
+            <div>
+              <section style={{ marginBottom: "56px", paddingBottom: "56px", borderBottom: "1px solid rgba(26,24,20,0.08)" }}>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "12px" }}>OVERVIEW</p>
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(24px, 3.5vw, 36px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.15, marginBottom: "20px" }}>
                   {cs.overview.headline}
-                </p>
-                <p className="text-[15px] text-[#4A4640] leading-relaxed max-w-xl">
-                  {cs.overview.body}
-                </p>
-              </div>
+                </h2>
+                <RichPara text={cs.overview.body} />
+              </section>
 
-              {cs.images.length > 0 && (
-                <div className="px-8 md:px-12 py-10 border-b border-[#1A1814]/08">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {cs.images.map((src, i) => (
-                      <div key={i} className="relative aspect-[4/3] rounded-2xl overflow-hidden">
-                        <Image
-                          src={src}
-                          alt={`${cs.title} image ${i + 1}`}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 640px) 100vw, 50vw"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="px-8 md:px-12 py-12 border-b border-[#1A1814]/08">
-                <p className="section-label mb-5">The Problem</p>
-                <h2 className="font-display font-black text-2xl md:text-3xl text-[#1A1814] uppercase mb-5 leading-tight max-w-xl">
+              <section style={{ marginBottom: "56px", paddingBottom: "56px", borderBottom: "1px solid rgba(26,24,20,0.08)" }}>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "12px" }}>THE PROBLEM</p>
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.2, marginBottom: "20px" }}>
                   {cs.problem.title}
                 </h2>
-                <p className="text-[15px] text-[#4A4640] leading-relaxed max-w-xl">
-                  {cs.problem.body}
-                </p>
-              </div>
+                <RichPara text={cs.problem.body} />
+              </section>
 
-              <div className="px-8 md:px-12 py-12 border-b border-[#1A1814]/08">
-                <p className="section-label mb-5">Process</p>
-                <h2 className="font-display font-black text-2xl md:text-3xl text-[#1A1814] uppercase mb-8 leading-tight max-w-xl">
+              <section style={{ marginBottom: "56px", paddingBottom: "56px", borderBottom: "1px solid rgba(26,24,20,0.08)" }}>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "16px" }}>PROCESS</p>
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.2, marginBottom: "28px" }}>
                   {cs.process.title}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {cs.process.steps.map((step) => (
-                    <div key={step.number} className="bg-white/60 rounded-2xl p-6 border border-[#1A1814]/08">
-                      <span className="section-label text-[#1A1814]/30 mb-3 block">{step.number}</span>
-                      <h3 className="font-display font-bold text-[15px] text-[#1A1814] mb-2">{step.title}</h3>
-                      <p className="text-[13px] text-[#4A4640] leading-relaxed">{step.description}</p>
+                    <div key={step.number} style={{ background: "rgba(255,255,255,0.5)", borderRadius: "12px", padding: "20px", border: "1px solid rgba(26,24,20,0.07)" }}>
+                      <span style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", display: "block", marginBottom: "8px" }}>{step.number}</span>
+                      <h3 style={{ fontFamily: "var(--font-display)", fontSize: "15px", fontWeight: 600, color: "#1A1A1A", marginBottom: "6px" }}>{step.title}</h3>
+                      <p style={{ fontFamily: "var(--font-body)", fontSize: "14px", color: "#4A4640", lineHeight: 1.6 }}>{step.description}</p>
                     </div>
                   ))}
                 </div>
-              </div>
+              </section>
 
-              <div className="px-8 md:px-12 py-12 border-b border-[#1A1814]/08">
-                <p className="section-label mb-5">Outcomes</p>
-                <h2 className="font-display font-black text-2xl md:text-3xl text-[#1A1814] uppercase mb-5 leading-tight max-w-xl">
+              <section style={{ marginBottom: "56px" }}>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "12px" }}>OUTCOMES</p>
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.2, marginBottom: "20px" }}>
                   {cs.outcomes.title}
                 </h2>
-                <p className="text-[15px] text-[#4A4640] leading-relaxed max-w-xl mb-8">
-                  {cs.outcomes.body}
-                </p>
-                <span className="inline-flex items-center px-4 py-2 rounded-full bg-[#1A1814] text-[#EDE8DF] text-[13px] font-semibold tracking-widest uppercase">
-                  {cs.outcomes.completionTag}
-                </span>
-              </div>
-            </>
+                <RichPara text={cs.outcomes.body} />
+                <div style={{ marginTop: "32px" }}>
+                  <span style={{ display: "inline-flex", alignItems: "center", padding: "8px 20px", borderRadius: "999px", background: "#1A1814", color: "#EDE8DF", fontFamily: "var(--font-body)", fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                    {cs.outcomes.completionTag}
+                  </span>
+                </div>
+              </section>
+            </div>
           )}
 
           {/* Full-width image */}
           {cs.fullWidthImage && (
-            <div className="px-6 md:px-12 py-10 border-b border-[#1A1814]/08">
+            <div style={{ marginBottom: "64px" }}>
               <div className="relative aspect-[2/1] rounded-2xl overflow-hidden">
-                <Image
-                  src={cs.fullWidthImage}
-                  alt={`${cs.title} full view`}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, calc(100vw - 360px)"
-                />
+                <Image src={cs.fullWidthImage} alt={`${cs.title} full view`} fill className="object-cover" sizes="720px" />
               </div>
             </div>
           )}
 
           {/* ── Prev / Next ──────────────────────────────────── */}
-          <div className="px-6 md:px-12 py-10 border-b border-[#1A1814]/08">
+          <div style={{ borderTop: "1px solid rgba(26,24,20,0.1)", paddingTop: "48px", marginBottom: "64px" }}>
             <div className="flex items-stretch justify-between gap-4">
               {prev ? (
-                <Link
-                  href={`/case-studies/${prev.slug}`}
-                  className="group flex flex-col gap-1.5 max-w-[45%]"
-                >
+                <Link href={`/case-studies/${prev.slug}`} className="group flex flex-col gap-1.5 max-w-[45%]">
                   <span className="section-label">← Previous</span>
-                  <span className="font-display font-bold text-[15px] text-[#1A1814] group-hover:text-[#4A4640] transition-colors leading-snug">
-                    {prev.title}
-                  </span>
-                  <span className="text-[13px] text-[#8A8480]">{prev.category}</span>
+                  <span style={{ fontFamily: "var(--font-display)", fontSize: "15px", fontWeight: 600, color: "#1A1814", lineHeight: 1.3 }}>{prev.title}</span>
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "#8A8480" }}>{prev.category}</span>
                 </Link>
               ) : <div />}
               {next ? (
-                <Link
-                  href={`/case-studies/${next.slug}`}
-                  className="group flex flex-col items-end gap-1.5 max-w-[45%]"
-                >
+                <Link href={`/case-studies/${next.slug}`} className="group flex flex-col items-end gap-1.5 max-w-[45%]">
                   <span className="section-label">Next →</span>
-                  <span className="font-display font-bold text-[15px] text-[#1A1814] group-hover:text-[#4A4640] transition-colors leading-snug text-right">
-                    {next.title}
-                  </span>
-                  <span className="text-[13px] text-[#8A8480]">{next.category}</span>
+                  <span style={{ fontFamily: "var(--font-display)", fontSize: "15px", fontWeight: 600, color: "#1A1814", lineHeight: 1.3, textAlign: "right" }}>{next.title}</span>
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "#8A8480" }}>{next.category}</span>
                 </Link>
               ) : <div />}
             </div>
           </div>
 
           {/* ── CTA ─────────────────────────────────────────── */}
-          <div className="px-6 md:px-12 py-16">
-            <div className="bg-[#1A1814] rounded-3xl px-10 py-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-              <div>
-                <p className="section-label text-white/40 mb-3">Have a project in mind?</p>
-                <h2 className="font-display font-black text-2xl md:text-3xl text-white leading-tight uppercase">
-                  Open to full-time roles &<br />select freelance projects.
-                </h2>
-              </div>
-              <Link
-                href="/#contact"
-                className="flex-shrink-0 bg-[#EDE8DF] text-[#1A1814] font-semibold text-[13px] px-6 py-3 rounded-full hover:bg-white transition-colors uppercase tracking-wide"
-              >
-                Get in touch ↗
-              </Link>
+          <div style={{ background: "#1A1814", borderRadius: "24px", padding: "56px 48px", display: "flex", flexDirection: "column", gap: "32px" }} className="md:flex-row md:items-center md:justify-between">
+            <div>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "rgba(255,255,255,0.4)", marginBottom: "10px" }}>Have a project in mind?</p>
+              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.15, textTransform: "uppercase" }}>
+                Open to full-time roles &<br />select freelance projects.
+              </h2>
             </div>
+            <Link
+              href="/#contact"
+              style={{ flexShrink: 0, background: "#EDE8DF", color: "#1A1814", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: "13px", padding: "12px 24px", borderRadius: "999px", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
+            >
+              Get in touch ↗
+            </Link>
           </div>
 
-        </div>
+        </article>
       </div>
     </main>
   );

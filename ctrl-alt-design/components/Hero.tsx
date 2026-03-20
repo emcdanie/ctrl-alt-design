@@ -1,68 +1,66 @@
 "use client";
 
-const stats = [
-  { number: "3+", label: "Years Product Design" },
-  { number: "2", label: "Design Systems Built from Scratch" },
-  { number: "B2B", label: "SaaS & Enterprise Platforms" },
-  { number: "BCN", label: "Barcelona — Open to Hybrid/Remote" },
-];
-
 export default function Hero() {
   return (
-    <section className="pt-32 pb-10 px-6">
-      <div className="max-w-7xl mx-auto text-center">
-        {/* Main heading */}
+    <section style={{ paddingTop: "120px", paddingBottom: "40px", paddingLeft: "24px", paddingRight: "24px" }}>
+      <div style={{ maxWidth: "1280px", margin: "0 auto", textAlign: "center" }}>
+
+        {/* Eyebrow */}
+        <p className="eyebrow" style={{ marginBottom: "24px" }}>
+          Product Designer — Design Systems &amp; AI
+        </p>
+
+        {/* Name */}
         <h1
-          className="font-display font-medium text-[#1A1814] tracking-tight mb-6"
-          style={{ fontSize: "80px", lineHeight: "88px" }}
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(64px, 9vw, 96px)",
+            fontWeight: 700,
+            letterSpacing: "-0.02em",
+            lineHeight: 0.95,
+            color: "#1A1A1A",
+            margin: "0 0 32px 0",
+          }}
         >
           Elleta McDaniel
         </h1>
 
-        {/* Subtitle */}
+        {/* Tagline */}
         <p
-          className="text-[15px] text-[#4A4640] mb-4"
-          style={{ animationDelay: "100ms" }}
-        >
-          Product Designer — Design Systems, Data Platforms &amp; Complex UX
-        </p>
-
-        {/* Description */}
-        <p
-          className="text-[14px] text-[#8A8480] max-w-xl mx-auto leading-relaxed mb-8"
-          style={{ animationDelay: "200ms" }}
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "18px",
+            fontWeight: 400,
+            color: "#666666",
+            lineHeight: 1.6,
+            maxWidth: "520px",
+            margin: "0 auto 32px",
+          }}
         >
           I design scalable systems, intuitive workflows, and structured design
           languages that bring clarity to complex digital products.
         </p>
 
         {/* CTA */}
-        <div className="mb-14">
-          <a
-            href="#contact"
-            className="inline-block text-[15px] font-medium text-[#EDE8DF] bg-[#1A1814] rounded-full px-7 py-3 hover:opacity-80 transition-opacity duration-200"
-          >
-            Say Hi
-          </a>
-        </div>
-
-        {/* Stat cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto">
-          {stats.map((stat, i) => (
-            <div
-              key={stat.label}
-              className="bg-white/60 rounded-2xl px-5 py-5 text-center shadow-[0_10px_30px_rgba(0,0,0,0.05)] animate-[fadeInUp_0.6s_ease-out_forwards] opacity-0"
-              style={{ animationDelay: `${(i + 1) * 100}ms` }}
-            >
-              <div className="font-display font-black text-[#1A1814] text-3xl leading-none mb-1">
-                {stat.number}
-              </div>
-              <div className="text-[13px] text-[#8A8480] leading-snug">
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
+        <a
+          href="#work"
+          style={{
+            display: "inline-block",
+            fontFamily: "var(--font-body)",
+            fontSize: "14px",
+            fontWeight: 500,
+            color: "#FFFFFF",
+            background: "#1A1A1A",
+            borderRadius: "999px",
+            padding: "14px 28px",
+            textDecoration: "none",
+            transition: "opacity 200ms ease",
+          }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = "0.8")}
+          onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+        >
+          View my work ↓
+        </a>
       </div>
     </section>
   );
