@@ -170,29 +170,32 @@ export default function GuardianPage() {
         </div>
       </div>
 
-      {/* Back button */}
-      <div style={{ padding: "24px 40px 0" }}>
-        <Link
-          href="/#work"
-          className="hover:opacity-75 transition-opacity duration-150"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "8px",
-            fontFamily: "var(--font-body)",
-            fontSize: "13px",
-            fontWeight: 600,
-            color: "#EDE8DF",
-            textDecoration: "none",
-            background: "#1A1814",
-            borderRadius: "999px",
-            padding: "10px 20px",
-            letterSpacing: "0.02em",
-          }}
-        >
-          ← All work
-        </Link>
-      </div>
+      {/* Back button (fixed floating) */}
+      <Link
+        href="/#work"
+        className="hover:opacity-75 transition-opacity duration-150"
+        style={{
+          position: "fixed",
+          bottom: "28px",
+          left: "28px",
+          zIndex: 50,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          fontFamily: "var(--font-body)",
+          fontSize: "13px",
+          fontWeight: 600,
+          color: "#EDE8DF",
+          textDecoration: "none",
+          background: "#1A1814",
+          borderRadius: "999px",
+          padding: "10px 20px",
+          letterSpacing: "0.02em",
+          boxShadow: "0 4px 16px rgba(0,0,0,0.18)",
+        }}
+      >
+        ← All work
+      </Link>
 
       {/* Content area */}
       <div style={{
