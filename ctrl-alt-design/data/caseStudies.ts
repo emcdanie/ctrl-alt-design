@@ -51,6 +51,8 @@ export interface CaseStudy {
   tags: string[];
   description: string;
   narrative?: NarrativeSection[];
+  clientLogo?: string;
+  clientName?: string;
 }
 
 const caseStudies: CaseStudy[] = [
@@ -122,6 +124,8 @@ const caseStudies: CaseStudy[] = [
     },
     fullWidthImage: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=1400&h=700&fit=crop&q=80",
     tags: ["Figma", "Design Tokens", "Atomic Design", "Governance", "BizAway"],
+    clientLogo: "/images/logos/bizaway.png",
+    clientName: "BizAway",
     description:
       "Rebuilding Design System Thinking in a Scaling SaaS Product",
     narrative: [
@@ -343,6 +347,8 @@ const caseStudies: CaseStudy[] = [
     },
     fullWidthImage: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1400&h=700&fit=crop&q=80",
     tags: ["Figma", "Data Visualisation", "Enterprise UX", "UNOG ICTS"],
+    clientLogo: "/images/logos/un.png",
+    clientName: "United Nations",
     description:
       "A Unified ICT Platform Concept for a Complex International Organization",
     narrative: [
@@ -479,6 +485,8 @@ const caseStudies: CaseStudy[] = [
     },
     fullWidthImage: "https://images.unsplash.com/photo-1579403124614-197f69d8187b?w=1400&h=700&fit=crop&q=80",
     tags: ["Figma", "Interaction Design", "Cognitive UX", "BizAway"],
+    clientLogo: "/images/logos/bizaway.png",
+    clientName: "BizAway",
     description:
       "Designing Structured Filtering for Complex Product Discovery",
     narrative: [
@@ -666,6 +674,8 @@ const caseStudies: CaseStudy[] = [
       completionTag: "PROJECT COMPLETE · 2025",
     },
     tags: ["Design Systems", "Atomic Design", "Code-First", "AI Tooling"],
+    clientLogo: "/images/logos/brad-frost.png",
+    clientName: "Brad Frost Web",
     description: "What Building Brad Frost's Component System in Reverse Taught Me About Design",
   },
 ];

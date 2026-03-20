@@ -1,38 +1,21 @@
 "use client";
 
-const slides = [
-  {
-    img: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=400&q=80",
-    label: "UI Design",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&q=80",
-    label: "SaaS Dashboard",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1559028012-481c04fa702d?w=400&q=80",
-    label: "Design Systems",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1612831455359-970e23a1e4e9?w=400&q=80",
-    label: "Dark Mode UI",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1545235617-9465d2a55698?w=400&q=80",
-    label: "Wireframes",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=400&q=80",
-    label: "Product Design",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80",
-    label: "Data Viz",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=400&q=80",
-    label: "Figma",
-  },
+// Real work screenshots, photos, and a looping video — no text labels
+const slides: { img?: string; video?: string }[] = [
+  { img: "/images/thumbnails/Screenshot 2026-03-17 at 21.45.53.png" },
+  { img: "/images/thumbnails/IMG_3144.jpeg" },
+  { img: "/images/thumbnails/Screenshot 2026-03-17 at 21.46.04.png" },
+  { img: "/images/thumbnails/FINVIZ.png" },
+  { img: "/images/thumbnails/IMG_3153.jpeg" },
+  { img: "/images/thumbnails/Screenshot 2026-03-17 at 21.46.12.png" },
+  { img: "/images/thumbnails/AIPoweredSearch.png" },
+  { img: "/images/thumbnails/IMG_3170.jpeg" },
+  { img: "/images/thumbnails/Screenshot 2026-03-17 at 21.46.17.png" },
+  { img: "/images/thumbnails/FormularOne.png" },
+  { img: "/images/thumbnails/IMG_3182.jpeg" },
+  { img: "/images/thumbnails/Screenshot 2026-03-17 at 21.46.26.png" },
+  { img: "/images/thumbnails/HealthForm.png" },
+  { video: "/videos/hackathon-showreel.mp4" },
 ];
 
 const allSlides = [...slides, ...slides];
@@ -58,29 +41,30 @@ export default function Carousel() {
         {allSlides.map((slide, i) => (
           <div
             key={i}
-            className="flex-shrink-0 relative overflow-hidden"
+            className="flex-shrink-0 relative overflow-hidden bg-[#2A2420]"
             style={{
               width: "168px",
               height: "470px",
               ...(i % 2 === 0 ? patternA : patternB),
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={slide.img}
-              alt={slide.label}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            {/* Dark overlay for text legibility */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.10) 50%, transparent 100%)",
-              }}
-            />
-            <span className="absolute bottom-8 left-0 right-0 text-center text-white text-[13px] font-medium tracking-wider leading-snug px-4">
-              {slide.label}
-            </span>
+            {slide.video ? (
+              <video
+                src={slide.video}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={slide.img}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
           </div>
         ))}
       </div>

@@ -21,69 +21,76 @@ const roles: Role[] = [
     company: "Brad Frost Web (Maker Program)",
     period: "Oct 2025 — Present",
     isCurrent: true,
-    logoSrc: "https://logo.clearbit.com/bradfrost.com",
+    logoSrc: "/images/logos/brad-frost.png",
     logoBg: "#1A1A1A",
     caseStudySlug: "case-study/brad-frost",
-    caseStudyLabel: "View project →",
+    caseStudyLabel: "Code First — View case study →",
     highlights: [
-      "Building a scalable Figma component library aligned with Brad Frost's Atomic Design methodology, contributing to a production-ready design system used across client web interfaces.",
-      "Defining reusable UI components and interaction patterns to support consistent implementation, with direct input into accessibility standards and usage documentation.",
-      "Contributing to design system governance: component ownership criteria, documentation structure, and the framework for deciding when to extend versus build feature-specific solutions.",
-      "Applying Atomic Design principles (atoms → molecules → organisms → templates) to create a component hierarchy that supports both design consistency and engineering reuse.",
+      "**Built a production-ready Figma component library** aligned with Brad Frost's Atomic Design methodology — atoms, molecules, organisms, and templates across a real client design system.",
+      "**Connected Figma to MCP** (Model Context Protocol) to enable AI-assisted design system investigation — demonstrated live alongside Brad Frost and TJ Pitre in a recorded session.",
+      "**Established component governance** criteria: ownership rules, documentation structure, and the decision framework for when to extend versus build feature-specific solutions.",
+      "**Worked code-first** — traced prop structures in Storybook, aligned Figma variant names to code, and closed the token chain from primitive → semantic → component.",
     ],
   },
   {
     title: "UX/UI Designer — Product & Design Systems",
     company: "BizAway",
     period: "Jul 2024 — Feb 2026",
-    logoSrc: "https://logo.clearbit.com/bizaway.com",
+    logoSrc: "/images/logos/bizaway.png",
     logoBg: "#F0F4FF",
     caseStudySlug: "case-studies/design-system-transformation",
     caseStudyLabel: "From Drift to Foundation →",
     highlights: [
-      "Led the UX transformation of a complex B2B SaaS travel platform — redesigning the booking foundation across flights, car rentals, finance, admin, and multi-role dashboards.",
-      "Built and implemented the company's first scalable design system from scratch: token architecture, reusable component library, and theme support, with tokens integrated directly into production code.",
-      "Re-architected end-to-end booking verticals including search, filtering, sorting, seat selection, and post-booking management — designing consistent interaction patterns across API and edge-case constraints.",
-      "Delivered high-fidelity prototypes for executive and investor presentations, contributing to funding that accelerated product development and team expansion.",
+      "**Led the full UX transformation** of a B2B SaaS travel platform — redesigning booking flows across flights, car rentals, finance, admin, and multi-role dashboards from the ground up.",
+      "**Built the company's first scalable design system** — token architecture, reusable component library, and theme support, with tokens integrated directly into production code by engineering.",
+      "**Redesigned 5+ end-to-end booking verticals** — search, filtering, sorting, seat selection, and post-booking management — with consistent interaction patterns across a complex multi-team product.",
+      "**Delivered investor-grade prototypes** for executive presentations that contributed to funding rounds and accelerated product team expansion.",
     ],
   },
   {
-    title: "Product Designer — Data Dashboard Prototype (Contract)",
+    title: "Product Designer — Data Dashboard (Contract)",
     company: "United Nations Office at Geneva (UNOG ICTS)",
     period: "Oct 2025 — Dec 2025",
-    logoSrc: "https://logo.clearbit.com/un.org",
+    logoSrc: "/images/logos/un.png",
     logoBg: "#E8F0FA",
     caseStudySlug: "case-studies/un-operational-dashboard",
     caseStudyLabel: "Designing Operational Clarity →",
     highlights: [
-      "Designed a high-fidelity dashboard prototype supporting operational transparency across multiple UN teams — translating complex organisational workflows into clear data visualisations and interactive analytics interfaces.",
-      "Conducted stakeholder interviews and requirements gathering across technical and non-technical users to define information architecture and layout structure.",
-      "Created modular UI components and scalable layout patterns suited to a high-stakes, multi-role enterprise environment with strict accessibility and usability requirements.",
-      "Delivered annotated design specs and a component usage guide to support engineering handoff within a compressed 8-week timeline.",
+      "**Designed a high-fidelity operational dashboard** for the UN ICT division — translating complex multi-team workflows into clear data visualisations and role-based analytics interfaces.",
+      "**Delivered within an 8-week contract** — from stakeholder interviews and IA definition through interactive prototype and annotated engineering handoff specs.",
+      "**Mapped 6+ operational domains** into a unified interface — making siloed data accessible and legible to both technical and non-technical users across the organisation.",
+      "**Created reusable component patterns** for a high-stakes enterprise environment with strict accessibility and multi-role usage requirements.",
     ],
   },
   {
     title: "UX/UI Designer",
     company: "VML",
     period: "Feb 2023 — Feb 2024",
-    logoSrc: "https://logo.clearbit.com/vml.com",
+    logoSrc: "/images/logos/vml.png",
     logoBg: "#FFF0F0",
     highlights: [
-      "Designed mobile-native interfaces and digital products for client-facing applications across multiple industry verticals, from wireframes through high-fidelity prototypes.",
-      "Conducted UX research, benchmarking, and usability evaluations to ground design decisions in observed user behaviour rather than assumption.",
-      "Collaborated cross-functionally with product managers and developers to ensure consistent implementation of user-centred designs through handoff documentation and design QA.",
-      "Contributed to pitch and proposal materials for new business, translating complex briefs into clear UX frameworks and interaction concepts within tight turnaround timelines.",
+      "**Designed across multiple industry verticals** — mobile-native apps, digital products, and client-facing platforms from wireframes through production-ready high-fidelity prototypes.",
+      "**Grounded decisions in research** — UX benchmarking, usability evaluations, and user interviews to challenge assumptions before committing to a design direction.",
+      "**Partnered directly with engineering** on design QA and handoff documentation to close the gap between design intent and built output.",
+      "**Contributed to new business pitches** — translating complex briefs into clear UX frameworks within tight turnaround timelines.",
     ],
   },
 ];
 
+// Renders inline **bold** markdown anywhere in the string
 function BoldLead({ text }: { text: string }) {
-  const dashIdx = text.indexOf(" — ");
-  if (dashIdx === -1) return <span>{text}</span>;
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
   return (
     <>
-      <strong style={{ fontWeight: 600, color: "#1A1A1A" }}>{text.slice(0, dashIdx)}</strong>
-      <span>{text.slice(dashIdx)}</span>
+      {parts.map((part, i) =>
+        part.startsWith("**") && part.endsWith("**") ? (
+          <strong key={i} style={{ fontWeight: 700, color: "#1A1814" }}>
+            {part.slice(2, -2)}
+          </strong>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
     </>
   );
 }
@@ -160,9 +167,9 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
                   {/* Company logo */}
                   <div style={{
-                    width: "36px",
-                    height: "36px",
-                    borderRadius: "8px",
+                    width: "48px",
+                    height: "48px",
+                    borderRadius: "10px",
                     background: role.logoBg || "#E8E4DC",
                     display: "flex",
                     alignItems: "center",
@@ -170,12 +177,13 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                     flexShrink: 0,
                     overflow: "hidden",
                     border: "1px solid rgba(0,0,0,0.06)",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
                   }}>
                     {role.logoSrc ? (
                       <img
                         src={role.logoSrc}
                         alt={role.company}
-                        style={{ width: "24px", height: "24px", objectFit: "contain" }}
+                        style={{ width: "30px", height: "30px", objectFit: "contain" }}
                         onError={(e) => {
                           e.currentTarget.style.display = "none";
                           if (e.currentTarget.nextSibling) {
@@ -306,14 +314,14 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                 period: "2022 — 2023",
                 name: "Ironhack",
                 degree: "UX/UI Design Bootcamp",
-                logo: "https://logo.clearbit.com/ironhack.com",
+                logo: "/images/logos/ironhack.png",
                 logoBg: "#1A1A1A",
               },
               {
                 period: "2005 — 2009",
                 name: "Arizona State University",
                 degree: "BSc in Design, GPA: 3.9/4.0",
-                logo: "https://logo.clearbit.com/asu.edu",
+                logo: "/images/logos/asu.png",
                 logoBg: "#8C1D40",
               },
             ].map((edu) => (
@@ -324,9 +332,9 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
               }}>
                 <div style={{ paddingTop: "2px" }}>
                   <div style={{
-                    width: "36px",
-                    height: "36px",
-                    borderRadius: "8px",
+                    width: "48px",
+                    height: "48px",
+                    borderRadius: "10px",
                     background: edu.logoBg,
                     display: "flex",
                     alignItems: "center",
@@ -334,11 +342,12 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                     marginBottom: "8px",
                     overflow: "hidden",
                     border: "1px solid rgba(0,0,0,0.06)",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
                   }}>
                     <img
                       src={edu.logo}
                       alt={edu.name}
-                      style={{ width: "24px", height: "24px", objectFit: "contain" }}
+                      style={{ width: "30px", height: "30px", objectFit: "contain" }}
                     />
                   </div>
                   <span style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "#8A8480", fontWeight: 500 }}>

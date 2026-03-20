@@ -7,8 +7,7 @@ const menuItems = [
   { num: "01", label: "Work", href: "#work" },
   { num: "02", label: "Guardian", href: "/case-study/guardian" },
   { num: "03", label: "Experience", href: "#experience" },
-  { num: "04", label: "Capabilities", href: "#process" },
-  { num: "05", label: "Get in Touch", href: "#contact" },
+  { num: "04", label: "Get in Touch", href: "#contact" },
 ];
 
 export default function OverlayNav() {

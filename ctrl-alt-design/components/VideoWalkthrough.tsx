@@ -14,10 +14,12 @@ export default function VideoWalkthrough() {
           "Designing clarity for complex digital platforms and scaling teams."
         </h2>
 
-        {/* Looping video */}
-        <div
-          className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.12)] mb-8"
+        {/* Looping video — clicking opens the Guardian case study */}
+        <Link
+          href="/case-study/guardian"
+          className="group relative block w-full aspect-video rounded-2xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.12)] mb-8"
           style={{ background: GRADIENT }}
+          aria-label="View Guardian case study"
         >
           <video
             autoPlay
@@ -28,7 +30,13 @@ export default function VideoWalkthrough() {
           >
             <source src="/videos/hackathon-showreel.mp4" type="video/mp4" />
           </video>
-        </div>
+          {/* Hover overlay */}
+          <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-all duration-300" style={{ zIndex: 2 }}>
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 bg-white/90 text-[#1A1814] font-semibold text-sm px-5 py-3 rounded-full shadow-lg" style={{ fontFamily: "var(--font-body)" }}>
+              View Case Study →
+            </div>
+          </div>
+        </Link>
 
         {/* Video info */}
         <div className="max-w-2xl">
