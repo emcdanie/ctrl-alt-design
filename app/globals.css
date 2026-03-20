@@ -1,26 +1,121 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─── Design tokens ─────────────────────────────────────────────── */
+@theme {
+  --color-cream:      #EDE8DF;
+  --color-ink:        #1A1A1A;
+  --color-ink-soft:   #2C2C2C;
+  --color-ink-muted:  #8A8A8A;
+  --color-surface:    #F5F4F1;
+  --color-white-pure: #FAFAF8;
+
+  --font-display: 'Clash Display', system-ui, sans-serif;
+  --font-body:    var(--font-chivo-mono), 'Chivo Mono', monospace;
+
+  --animate-scroll-left: scroll-left 35s linear infinite;
+  --animate-fade-in-up:  fadeInUp 0.6s ease-out forwards;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Keyframes ─────────────────────────────────────────────────── */
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Base ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  cursor: none;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  background-color: #EDE8DF;
+  color: #2C2C2C;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  cursor: none;
 }
+
+@media (hover: none) and (pointer: coarse) {
+  html, body, a, button, [role="button"] { cursor: auto; }
+}
+
+a, button, [role="button"] { cursor: none; }
+
+h1, h2 { font-family: var(--font-display); }
+
+/* ─── Utility classes ───────────────────────────────────────────── */
+
+.eyebrow, .section-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #8A8A8A;
+  line-height: 1;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+  border: 1px solid #E0E0E0;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  color: #2C2C2C;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+.card-hover {
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  cursor: none;
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: rgba(26, 26, 26, 0.08);
+}
+
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+.modal-backdrop {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.pull-quote {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-style: italic;
+  color: #2C2C2C;
+  border-left: 3px solid #1A1A1A;
+  padding: 20px 24px;
+  background: #F9F8F5;
+  border-radius: 4px;
+  margin: 40px 0;
+}
+
+/* ─── Carousel ──────────────────────────────────────────────────── */
+.carousel-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 35s linear infinite;
+}
+.carousel-track:hover { animation-play-state: paused; }
