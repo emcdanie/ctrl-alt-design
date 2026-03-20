@@ -251,8 +251,8 @@ export default function BradFrostPage() {
           </Section>
 
           <ArtifactPlaceholder
-            title="Figma/Storybook alignment artifact"
-            description="Insert screenshot of the Figma component library aligned to Storybook."
+            title="Figma/Storybook Alignment Artifact"
+            description="Add a screenshot showing Figma components aligned with their Storybook counterparts."
             aspectRatio="16/9"
             className="my-10"
           />
@@ -310,8 +310,8 @@ export default function BradFrostPage() {
           </Section>
 
           <ArtifactPlaceholder
-            title="MCP workflow artifact"
-            description="Insert screenshot of MCP-assisted token investigation workflow."
+            title="MCP Workflow Artifact"
+            description="Add a screenshot of the MCP-assisted investigation flow for token and structure analysis."
             aspectRatio="16/9"
             className="my-10"
           />
