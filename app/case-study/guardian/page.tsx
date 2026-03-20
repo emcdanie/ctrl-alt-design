@@ -266,8 +266,8 @@ export default function GuardianPage() {
           </Section>
 
           <ArtifactPlaceholder
-            title="Overview artifact"
-            description="Insert supporting screenshot for the project overview."
+            title="Overview Artifact"
+            description="Add a supporting screenshot that grounds the project overview in a concrete visual."
             aspectRatio="16/9"
             className="my-10"
           />
@@ -333,8 +333,8 @@ export default function GuardianPage() {
           </Section>
 
           <ArtifactPlaceholder
-            title="Interaction artifact"
-            description="Insert screenshot of the interaction flow or console state."
+            title="Interaction Artifact"
+            description="Add a screenshot of the interaction flow or console state to document behavior."
             aspectRatio="16/9"
             className="my-10"
           />
