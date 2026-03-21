@@ -151,16 +151,17 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
         </div>
 
         {/* Roles */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
-          {roles.map((role) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {roles.map((role, i) => (
             <div
               key={role.title + role.company}
               style={{
-                display: "grid",
-                gridTemplateColumns: "180px 1fr",
                 gap: "32px",
+                paddingTop: i === 0 ? 0 : "52px",
+                paddingBottom: "52px",
+                borderBottom: "1px solid rgba(26,24,20,0.08)",
               }}
-              className="grid-cols-1 sm:grid-cols-[180px_1fr]"
+              className="grid grid-cols-1 sm:grid-cols-[180px_1fr]"
             >
               {/* Left — period + logo */}
               <div style={{ paddingTop: "2px" }}>
@@ -250,15 +251,15 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                     {role.company}
                   </span>
                 </div>
-                <ul style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                <ul style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                   {role.highlights.map((h) => (
                     <li
                       key={h}
                       style={{
                         fontFamily: "var(--font-body)",
-                        fontSize: "15px",
+                        fontSize: "16px",
                         color: "#4A4640",
-                        lineHeight: 1.65,
+                        lineHeight: 1.75,
                         display: "flex",
                         gap: "8px",
                       }}
@@ -325,11 +326,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                 logoBg: "#8C1D40",
               },
             ].map((edu) => (
-              <div key={edu.name} style={{
-                display: "grid",
-                gridTemplateColumns: "180px 1fr",
-                gap: "32px",
-              }}>
+              <div key={edu.name} className="grid grid-cols-1 sm:grid-cols-[180px_1fr]" style={{ gap: "32px" }}>
                 <div style={{ paddingTop: "2px" }}>
                   <div style={{
                     width: "48px",
