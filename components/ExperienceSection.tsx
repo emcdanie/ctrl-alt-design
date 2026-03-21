@@ -1,7 +1,7 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 interface Role {
   title: string;
@@ -77,7 +77,6 @@ const roles: Role[] = [
   },
 ];
 
-// Renders inline **bold** markdown anywhere in the string
 function BoldLead({ text }: { text: string }) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
   return (
@@ -100,12 +99,14 @@ interface ExperienceSectionProps {
 }
 
 export default function ExperienceSection({ onResumeClick }: ExperienceSectionProps) {
+  const [expanded, setExpanded] = useState<number | null>(0);
+
   return (
     <section id="experience" className="py-20 px-6">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="flex items-end justify-between mb-12">
+        <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
           <div>
             <p className="section-label mb-3">— Track Record</p>
             <h2
@@ -125,180 +126,222 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
               onClick={onResumeClick}
               style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "13px",
-                fontWeight: 500,
-                color: "#1A1814",
-                border: "1px solid rgba(26,24,20,0.2)",
+                fontSize: "14px",
+                fontWeight: 600,
+                color: "#EDE8DF",
+                border: "none",
                 borderRadius: "999px",
-                padding: "8px 20px",
-                background: "transparent",
+                padding: "12px 24px",
+                background: "#1A1814",
                 cursor: "pointer",
-                transition: "background 150ms ease, color 150ms ease",
+                transition: "background 150ms ease, box-shadow 150ms ease",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.background = "#1A1814";
-                e.currentTarget.style.color = "#EDE8DF";
+                e.currentTarget.style.background = "#3A3430";
+                e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.25)";
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.background = "transparent";
-                e.currentTarget.style.color = "#1A1814";
+                e.currentTarget.style.background = "#1A1814";
+                e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
               }}
-              className="block"
             >
-              Open full resume ↗
+              Download Resume
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M7 2v7M4 7l3 3 3-3M2 11h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </button>
           )}
         </div>
 
-        {/* Roles */}
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          {roles.map((role, i) => (
-            <div
-              key={role.title + role.company}
-              style={{
-                gap: "32px",
-                paddingTop: i === 0 ? 0 : "52px",
-                paddingBottom: "52px",
-                borderBottom: "1px solid rgba(26,24,20,0.08)",
-              }}
-              className="grid grid-cols-1 sm:grid-cols-[180px_1fr]"
-            >
-              {/* Left — period + logo */}
-              <div style={{ paddingTop: "2px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
-                  {/* Company logo */}
-                  <div style={{
-                    width: "48px",
-                    height: "48px",
-                    borderRadius: "10px",
-                    background: role.logoBg || "#E8E4DC",
+        {/* Expandable role cards */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          {roles.map((role, i) => {
+            const isOpen = expanded === i;
+            return (
+              <div
+                key={role.title + role.company}
+                style={{
+                  borderRadius: "16px",
+                  border: "1px solid rgba(26,24,20,0.10)",
+                  background: isOpen ? "#FFFFFF" : "#F8F7F4",
+                  boxShadow: isOpen
+                    ? "0 4px 24px rgba(0,0,0,0.08)"
+                    : "0 1px 4px rgba(0,0,0,0.04)",
+                  overflow: "hidden",
+                  transition: "background 200ms ease, box-shadow 200ms ease",
+                }}
+                onMouseEnter={e => {
+                  if (!isOpen) {
+                    (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 16px rgba(0,0,0,0.08)";
+                    (e.currentTarget as HTMLDivElement).style.background = "#FAFAF8";
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (!isOpen) {
+                    (e.currentTarget as HTMLDivElement).style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
+                    (e.currentTarget as HTMLDivElement).style.background = "#F8F7F4";
+                  }
+                }}
+              >
+                {/* Card header — always visible, clickable */}
+                <button
+                  onClick={() => setExpanded(isOpen ? null : i)}
+                  style={{
+                    width: "100%",
+                    padding: "20px 24px",
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                    overflow: "hidden",
-                    border: "1px solid rgba(0,0,0,0.06)",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-                  }}>
-                    {role.logoSrc ? (
-                      <img
-                        src={role.logoSrc}
-                        alt={role.company}
-                        style={{ width: "80%", height: "80%", objectFit: "contain" }}
-                        onError={(e) => {
-                          e.currentTarget.style.display = "none";
-                          if (e.currentTarget.nextSibling) {
-                            (e.currentTarget.nextSibling as HTMLElement).style.display = "flex";
-                          }
-                        }}
-                      />
-                    ) : null}
-                    <span style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "13px",
-                      fontWeight: 700,
-                      color: "#1A1A1A",
-                      lineHeight: 1,
-                      display: role.logoSrc ? "none" : "flex",
-                    }}>
-                      {role.company.charAt(0)}
-                    </span>
-                  </div>
-                  {role.isCurrent && (
-                    <span style={{
-                      fontFamily: "var(--font-body)",
-                      fontSize: "10px",
-                      fontWeight: 600,
-                      letterSpacing: "0.08em",
-                      textTransform: "uppercase" as const,
-                      color: "#FFFFFF",
-                      background: "#1A1A1A",
-                      borderRadius: "999px",
-                      padding: "2px 8px",
-                    }}>
-                      NOW
-                    </span>
-                  )}
-                </div>
-                <span style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "13px",
-                  color: "#8A8480",
-                  fontWeight: 500,
-                }}>
-                  {role.period}
-                </span>
-              </div>
-
-              {/* Right — role + highlights */}
-              <div>
-                <div style={{ marginBottom: "16px" }}>
-                  <h3 style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "22px",
-                    fontWeight: 600,
-                    color: "#1A1814",
-                    lineHeight: 1.2,
-                    marginBottom: "4px",
-                  }}>
-                    {role.title}
-                  </h3>
-                  <span style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "15px",
-                    color: "#8A8480",
-                  }}>
-                    {role.company}
-                  </span>
-                </div>
-                <ul style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                  {role.highlights.map((h) => (
-                    <li
-                      key={h}
-                      style={{
-                        fontFamily: "var(--font-body)",
-                        fontSize: "16px",
-                        color: "#4A4640",
-                        lineHeight: 1.75,
-                        display: "flex",
-                        gap: "8px",
-                      }}
-                    >
-                      <span style={{ color: "#BBBBBB", flexShrink: 0, marginTop: "1px" }}>—</span>
-                      <span><BoldLead text={h} /></span>
-                    </li>
-                  ))}
-                </ul>
-                {role.caseStudySlug && (
-                  <Link
-                    href={`/${role.caseStudySlug}`}
-                    style={{
-                      display: "inline-flex",
+                    justifyContent: "space-between",
+                    gap: "16px",
+                    cursor: "pointer",
+                    background: "none",
+                    border: "none",
+                    textAlign: "left",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "16px", minWidth: 0 }}>
+                    {/* Logo */}
+                    <div style={{
+                      width: "44px",
+                      height: "44px",
+                      borderRadius: "10px",
+                      background: role.logoBg || "#E8E4DC",
+                      display: "flex",
                       alignItems: "center",
-                      gap: "6px",
-                      marginTop: "16px",
-                      fontFamily: "var(--font-body)",
-                      fontSize: "13px",
-                      fontWeight: 600,
-                      color: "#1A1814",
-                      textDecoration: "underline",
-                      textUnderlineOffset: "3px",
-                      opacity: 0.6,
-                      transition: "opacity 150ms ease",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                      overflow: "hidden",
+                      border: "1px solid rgba(0,0,0,0.06)",
+                    }}>
+                      {role.logoSrc ? (
+                        /* eslint-disable-next-line @next/next/no-img-element */
+                        <img
+                          src={role.logoSrc}
+                          alt={role.company}
+                          style={{ width: "80%", height: "80%", objectFit: "contain" }}
+                          onError={e => { (e.currentTarget.parentElement as HTMLElement).style.background = "#E8E4DC"; e.currentTarget.style.display = "none"; }}
+                        />
+                      ) : (
+                        <span style={{ fontFamily: "var(--font-display)", fontSize: "14px", fontWeight: 700, color: "#1A1A1A" }}>
+                          {role.company.charAt(0)}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Role summary */}
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                        <span style={{
+                          fontFamily: "var(--font-display)",
+                          fontSize: "16px",
+                          fontWeight: 600,
+                          color: "#1A1814",
+                          lineHeight: 1.3,
+                        }}>
+                          {role.title}
+                        </span>
+                        {role.isCurrent && (
+                          <span style={{
+                            fontFamily: "var(--font-body)",
+                            fontSize: "10px",
+                            fontWeight: 700,
+                            letterSpacing: "0.08em",
+                            textTransform: "uppercase",
+                            color: "#FFFFFF",
+                            background: "#1A1A1A",
+                            borderRadius: "999px",
+                            padding: "2px 8px",
+                          }}>
+                            NOW
+                          </span>
+                        )}
+                      </div>
+                      <div style={{
+                        fontFamily: "var(--font-body)",
+                        fontSize: "14px",
+                        color: "#8A8480",
+                        marginTop: "2px",
+                      }}>
+                        {role.company} · {role.period}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Chevron */}
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    style={{
+                      flexShrink: 0,
+                      transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      transition: "transform 250ms ease",
+                      color: "#8A8480",
                     }}
-                    onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
-                    onMouseLeave={e => (e.currentTarget.style.opacity = "0.6")}
+                    aria-hidden="true"
                   >
-                    {role.caseStudyLabel}
-                  </Link>
+                    <path d="M4.5 7l4.5 4.5L13.5 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+
+                {/* Expanded content */}
+                {isOpen && (
+                  <div style={{ padding: "0 24px 28px", borderTop: "1px solid rgba(26,24,20,0.06)" }}>
+                    <ul style={{ display: "flex", flexDirection: "column", gap: "12px", paddingTop: "20px" }}>
+                      {role.highlights.map((h, hi) => (
+                        <li
+                          key={hi}
+                          style={{
+                            fontFamily: "var(--font-body)",
+                            fontSize: "15px",
+                            color: "#4A4640",
+                            lineHeight: 1.75,
+                            display: "flex",
+                            gap: "10px",
+                          }}
+                        >
+                          <span style={{ color: "#CCCCCC", flexShrink: 0, marginTop: "1px" }}>—</span>
+                          <span><BoldLead text={h} /></span>
+                        </li>
+                      ))}
+                    </ul>
+                    {role.caseStudySlug && (
+                      <Link
+                        href={`/${role.caseStudySlug}`}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          marginTop: "20px",
+                          fontFamily: "var(--font-body)",
+                          fontSize: "13px",
+                          fontWeight: 600,
+                          color: "#1A1814",
+                          textDecoration: "underline",
+                          textUnderlineOffset: "3px",
+                          opacity: 0.6,
+                          transition: "opacity 150ms ease",
+                        }}
+                        onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+                        onMouseLeave={e => (e.currentTarget.style.opacity = "0.6")}
+                      >
+                        {role.caseStudyLabel}
+                      </Link>
+                    )}
+                  </div>
                 )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Education */}
-        <div style={{ marginTop: "64px" }}>
+        <div style={{ marginTop: "72px" }}>
           <h2 style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(28px, 4vw, 40px)",
@@ -341,6 +384,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                     border: "1px solid rgba(0,0,0,0.06)",
                     boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
                   }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={edu.logo}
                       alt={edu.name}

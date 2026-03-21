@@ -10,6 +10,8 @@ import CaseStudyGrid from "@/components/CaseStudyGrid";
 import VideoWalkthrough from "@/components/VideoWalkthrough";
 import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
 import ExperienceSection from "@/components/ExperienceSection";
+import AboutSection from "@/components/AboutSection";
+import PersonalSection from "@/components/PersonalSection";
 import ContactSection from "@/components/ContactSection";
 import ResumeModal from "@/components/ResumeModal";
 
@@ -26,6 +28,8 @@ export default function Home() {
       <CaseStudyGrid />
       <VideoWalkthrough />
       <CtrlAltDesignSection />
+      <AboutSection />
+      <PersonalSection />
       <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
       <ContactSection />
       <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
