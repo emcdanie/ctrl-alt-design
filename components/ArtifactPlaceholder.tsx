@@ -1,8 +1,12 @@
+import Image from "next/image";
+
 interface ArtifactPlaceholderProps {
   title: string;
   description: string;
   aspectRatio?: string;
   className?: string;
+  /** If provided, renders the actual image instead of the placeholder. Path relative to /public, e.g. "/artifacts/un-system-landscape.svg" */
+  src?: string;
 }
 
 export default function ArtifactPlaceholder({
@@ -10,7 +14,25 @@ export default function ArtifactPlaceholder({
   description,
   aspectRatio = "16/9",
   className = "",
+  src,
 }: ArtifactPlaceholderProps) {
+  if (src) {
+    return (
+      <div
+        className={className}
+        style={{ width: "100%", aspectRatio, borderRadius: "12px", overflow: "hidden", position: "relative" }}
+      >
+        <Image
+          src={src}
+          alt={title}
+          fill
+          className="object-contain"
+          sizes="(max-width: 760px) 100vw, 760px"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       className={className}

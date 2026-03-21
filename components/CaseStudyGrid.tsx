@@ -33,78 +33,96 @@ export default function CaseStudyGrid() {
           </div>
         </div>
 
-        {/* Grid — 1 col mobile, 2 col tablet, 3 col desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch">
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-start">
           {caseStudies.map((cs) => (
             <Link
               key={cs.slug}
               href={cs.href ?? `/case-studies/${cs.slug}`}
               data-cursor="card"
-              className="group rounded-2xl overflow-hidden block bg-white/60 transition-all duration-300 hover:scale-[1.02] h-full"
+              className="group rounded-2xl overflow-hidden block bg-white/60 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+              style={{ border: "1px solid rgba(26,24,20,0.07)" }}
             >
-              {/* Thumbnail */}
-              <div className="aspect-video relative overflow-hidden bg-[#2A2420]">
-                {/* z-index 0: always-visible image fallback */}
+              {/* ── Thumbnail — enforced 16:9 ── */}
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  aspectRatio: "16 / 9",
+                  overflow: "hidden",
+                  background: "#2A2420",
+                }}
+              >
+                {/* Base image */}
                 <Image
                   src={cs.heroImage}
                   alt={cs.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                  style={{ zIndex: 0 }}
                 />
-                {/* z-index 1: video on top — hides itself on error so image shows through */}
+
+                {/* Video layer — covers image when loaded */}
                 {cs.heroVideo && (
                   <video
                     autoPlay
                     loop
                     muted
                     playsInline
-                    src={cs.heroVideo}
                     onError={(e) => { e.currentTarget.style.display = "none"; }}
-                    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 1 }}
-                  />
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      zIndex: 1,
+                    }}
+                  >
+                    <source src={cs.heroVideo} type="video/mp4" />
+                  </video>
                 )}
-                {/* z-index 2.5: play icon for video thumbnails */}
+
+                {/* Dark overlay */}
+                <div
+                  className="absolute inset-0 transition-opacity duration-300 group-hover:opacity-60"
+                  style={{ background: "rgba(0,0,0,0.22)", zIndex: 2 }}
+                />
+
+                {/* Play icon — shown for video cards */}
                 {cs.heroVideo && (
                   <div
                     className="absolute inset-0 flex items-center justify-center pointer-events-none"
                     style={{ zIndex: 3 }}
                   >
-                    <div
-                      style={{
-                        width: "56px",
-                        height: "56px",
-                        borderRadius: "999px",
-                        background: "rgba(255,255,255,0.88)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        boxShadow: "0 8px 20px rgba(0,0,0,0.22)",
-                      }}
-                    >
-                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                        <path d="M6 4l8 5-8 5V4z" fill="#1A1814" />
+                    <div style={{
+                      width: "52px",
+                      height: "52px",
+                      borderRadius: "999px",
+                      background: "rgba(255,255,255,0.85)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
+                    }}>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M5 3.5l9 4.5-9 4.5V3.5z" fill="#1A1814" />
                       </svg>
                     </div>
                   </div>
                 )}
-                {/* z-index 2: dark overlay */}
-                <div
-                  className="absolute inset-0"
-                  style={{ background: "rgba(0,0,0,0.4)", zIndex: 2 }}
-                />
-                {/* z-index 3: year + client logo */}
-                {/* Year */}
-                <span className="absolute top-3 right-3 text-[13px] font-medium text-white/70" style={{ zIndex: 3 }}>
+
+                {/* Year badge */}
+                <span
+                  className="absolute top-3 right-3 text-[13px] font-medium text-white/70"
+                  style={{ zIndex: 4 }}
+                >
                   {cs.year}
                 </span>
-                {/* Client logo — top left */}
+
+                {/* Client logo */}
                 {cs.clientLogo && (
-                  <div
-                    className="absolute top-3 left-3 flex items-center gap-2"
-                    style={{ zIndex: 3 }}
-                  >
+                  <div className="absolute top-3 left-3 flex items-center gap-2" style={{ zIndex: 4 }}>
                     <div style={{
                       width: "32px",
                       height: "32px",
@@ -128,13 +146,17 @@ export default function CaseStudyGrid() {
                 )}
               </div>
 
-              {/* Content */}
-              <div className="p-5 flex flex-col h-[220px]">
+              {/* ── Content: tags → title → description ── */}
+              <div className="p-5 flex flex-col gap-2">
                 {/* Project tags */}
-                <div className="flex flex-wrap gap-2 mb-3">
+                <div className="flex flex-wrap gap-2">
                   <span
-                    className="text-[11px] font-bold tracking-widest px-3 py-1 rounded-full"
-                    style={{ background: getCategoryStyle(cs.category).bg, color: getCategoryStyle(cs.category).color, letterSpacing: "0.1em" }}
+                    className="text-[11px] font-bold px-3 py-1 rounded-full"
+                    style={{
+                      background: getCategoryStyle(cs.category).bg,
+                      color: getCategoryStyle(cs.category).color,
+                      letterSpacing: "0.1em",
+                    }}
                   >
                     {cs.category}
                   </span>
@@ -148,22 +170,30 @@ export default function CaseStudyGrid() {
                     </span>
                   ))}
                 </div>
+
+                {/* Title */}
                 <h3
                   className="line-clamp-2"
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontSize: "22px",
+                    fontSize: "20px",
                     fontWeight: 400,
                     color: "#1A1A1A",
-                    marginBottom: "8px",
-                    lineHeight: 1.2,
+                    lineHeight: 1.25,
                   }}
                 >
                   {cs.title}
                 </h3>
+
+                {/* Description */}
                 <p
                   className="line-clamp-3"
-                  style={{ fontFamily: "var(--font-body)", fontSize: "14px", color: "#666666", lineHeight: 1.6, marginTop: "auto" }}
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "14px",
+                    color: "#666666",
+                    lineHeight: 1.6,
+                  }}
                 >
                   {cs.description}
                 </p>

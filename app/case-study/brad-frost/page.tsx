@@ -1,6 +1,5 @@
-import Link from "next/link";
-import CustomCursor from "@/components/CustomCursor";
-import OverlayNav from "@/components/OverlayNav";
+import CaseStudyShell from "@/components/CaseStudyShell";
+import { Eyebrow, H2, Body, PullQuote, Section } from "@/components/CaseStudyTypography";
 import ArtifactPlaceholder from "@/components/ArtifactPlaceholder";
 
 const TAG_COLORS = [
@@ -28,92 +27,10 @@ const sidebar = [
 
 const tags = ["Design Systems", "Atomic Design", "Code-First", "AI Tooling"];
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <p style={{
-      fontFamily: "var(--font-body)",
-      fontSize: "11px",
-      fontWeight: 500,
-      textTransform: "uppercase" as const,
-      letterSpacing: "0.12em",
-      color: "#8A8A8A",
-      marginBottom: "12px",
-    }}>
-      {children}
-    </p>
-  );
-}
-
-function H2({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 style={{
-      fontFamily: "var(--font-display)",
-      fontSize: "clamp(28px, 4vw, 40px)",
-      fontWeight: 400,
-      color: "#1A1A1A",
-      lineHeight: 1.1,
-      marginBottom: "20px",
-      marginTop: "0",
-    }}>
-      {children}
-    </h2>
-  );
-}
-
-function Body({ children }: { children: React.ReactNode }) {
-  return (
-    <p style={{
-      fontFamily: "var(--font-body)",
-      fontSize: "16px",
-      fontWeight: 400,
-      color: "#2C2C2C",
-      lineHeight: 1.7,
-      marginBottom: "20px",
-    }}>
-      {children}
-    </p>
-  );
-}
-
-function PullQuote({ children }: { children: React.ReactNode }) {
-  return (
-    <blockquote style={{
-      fontFamily: "var(--font-display)",
-      fontSize: "clamp(20px, 2.5vw, 26px)",
-      fontStyle: "italic",
-      color: "#2C2C2C",
-      borderLeft: "3px solid #1A1A1A",
-      paddingLeft: "24px",
-      paddingTop: "16px",
-      paddingBottom: "16px",
-      background: "#F9F8F5",
-      borderRadius: "4px",
-      margin: "40px 0",
-    }}>
-      {children}
-    </blockquote>
-  );
-}
-
-function Section({ eyebrow, heading, children }: {
-  eyebrow: string;
-  heading: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section style={{ marginBottom: "80px" }}>
-      <Eyebrow>{eyebrow}</Eyebrow>
-      <H2>{heading}</H2>
-      {children}
-    </section>
-  );
-}
 
 export default function BradFrostPage() {
   return (
-    <main style={{ background: "#EDE8DF", minHeight: "100vh" }}>
-      <CustomCursor />
-      <OverlayNav />
+    <CaseStudyShell>
 
       {/* Hero */}
       <div style={{
@@ -131,33 +48,6 @@ export default function BradFrostPage() {
           <source src="/videos/eddie.mov" type="video/mp4" />
         </video>
       </div>
-
-      {/* Back button (fixed floating) */}
-      <Link
-        href="/#work"
-        className="hover:opacity-75 transition-opacity duration-150"
-        style={{
-          position: "fixed",
-          bottom: "28px",
-          left: "28px",
-          zIndex: 50,
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "8px",
-          fontFamily: "var(--font-body)",
-          fontSize: "13px",
-          fontWeight: 600,
-          color: "#EDE8DF",
-          textDecoration: "none",
-          background: "#1A1814",
-          borderRadius: "999px",
-          padding: "10px 20px",
-          letterSpacing: "0.02em",
-          boxShadow: "0 4px 16px rgba(0,0,0,0.18)",
-        }}
-      >
-        ← All work
-      </Link>
 
       {/* Content area */}
       <div style={{
@@ -432,6 +322,6 @@ export default function BradFrostPage() {
 
         </article>
       </div>
-    </main>
+    </CaseStudyShell>
   );
 }
