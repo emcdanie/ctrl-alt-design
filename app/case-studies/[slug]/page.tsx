@@ -3,27 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { getCaseStudy, getAdjacentStudies } from "@/data/caseStudies";
 import caseStudies from "@/data/caseStudies";
-import CustomCursor from "@/components/CustomCursor";
-import OverlayNav from "@/components/OverlayNav";
+import CaseStudyLayout from "@/components/CaseStudyLayout";
+import CaseStudyHero from "@/components/CaseStudyHero";
 import ArtifactPlaceholder from "@/components/ArtifactPlaceholder";
 
 export async function generateStaticParams() {
   return caseStudies.map((cs) => ({ slug: cs.slug }));
-}
-
-const TAG_COLORS = [
-  { bg: "#E8F2FA", color: "#2A6A9E" },
-  { bg: "#F0EDF8", color: "#5C4A9A" },
-  { bg: "#FDF3E3", color: "#9A6020" },
-  { bg: "#EBF5EC", color: "#2A7A32" },
-  { bg: "#FAF0EC", color: "#9A4020" },
-  { bg: "#F5EDF5", color: "#8A3A8A" },
-];
-
-function tagColor(tag: string) {
-  let hash = 0;
-  for (let i = 0; i < tag.length; i++) hash = tag.charCodeAt(i) + ((hash << 5) - hash);
-  return TAG_COLORS[Math.abs(hash) % TAG_COLORS.length];
 }
 
 function RichPara({ text }: { text: string }) {
@@ -52,193 +37,58 @@ export default async function CaseStudyPage({
 
   const { prev, next } = getAdjacentStudies(slug);
 
-  const metaItems = [
-    { label: "YEAR", value: cs.year },
-    cs.metrics?.role ? { label: "ROLE", value: cs.metrics.role } : null,
-    cs.metrics?.team ? { label: "TEAM", value: cs.metrics.team } : null,
-    { label: "TIMELINE", value: cs.timeline },
-    { label: "SCOPE", value: cs.scope },
+  const metadata = [
+    { label: "Year", value: cs.year },
+    cs.metrics?.role ? { label: "Role", value: cs.metrics.role } : null,
+    cs.metrics?.team ? { label: "Team", value: cs.metrics.team } : null,
+    { label: "Timeline", value: cs.timeline },
+    { label: "Scope", value: cs.scope },
   ].filter(Boolean) as { label: string; value: string }[];
 
   return (
-    <main className="bg-[#EDE8DF] min-h-screen">
-      <CustomCursor />
-      <OverlayNav />
+    <CaseStudyLayout>
+      <CaseStudyHero
+        eyebrow={`${cs.category} · ${cs.year}`}
+        title={cs.title}
+        intro={cs.description}
+        metadata={metadata}
+        tags={cs.tags}
+        media={
+          cs.heroVideo
+            ? { type: "video", src: cs.heroVideo }
+            : { type: "image", src: cs.heroImage, alt: cs.title }
+        }
+        liveUrl={cs.liveUrl || undefined}
+      />
 
-      {/* ── Fixed floating back button ───────────────────────────── */}
-      <Link
-        href="/#work"
-        className="hover:opacity-75 transition-opacity duration-150"
-        style={{
-          position: "fixed",
-          bottom: "28px",
-          left: "28px",
-          zIndex: 50,
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "8px",
-          fontFamily: "var(--font-body)",
-          fontSize: "13px",
-          fontWeight: 600,
-          color: "#EDE8DF",
-          textDecoration: "none",
-          background: "#1A1814",
-          borderRadius: "999px",
-          padding: "10px 20px",
-          letterSpacing: "0.02em",
-          boxShadow: "0 4px 16px rgba(0,0,0,0.18)",
-        }}
-      >
-        ← All work
-      </Link>
-
-      {/* ── HERO — two-column intro ──────────────────────────────── */}
-      <div style={{
-        maxWidth: "1200px",
-        margin: "0 auto",
-        padding: "100px 40px 72px",
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: "72px",
-        alignItems: "center",
-      }} className="grid-cols-1 md:grid-cols-2">
-
-        {/* LEFT — title, description, meta */}
-        <div>
-          <p style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "11px",
-            fontWeight: 500,
-            textTransform: "uppercase",
-            letterSpacing: "0.12em",
-            color: "#8A8A8A",
-            marginBottom: "16px",
-          }}>
-            {cs.category} · {cs.year}
-          </p>
-
-          <h1 style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(32px, 4.5vw, 56px)",
-            fontWeight: 700,
-            letterSpacing: "-0.02em",
-            lineHeight: 1.05,
-            color: "#1A1A1A",
-            margin: "0 0 20px 0",
-          }}>
-            {cs.title}
-          </h1>
-
-          <p style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "17px",
-            color: "#555555",
-            lineHeight: 1.65,
-            marginBottom: "36px",
-          }}>
-            {cs.description}
-          </p>
-
-          {/* Meta grid */}
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "16px 32px",
-            marginBottom: "28px",
-            paddingBottom: "28px",
-            borderBottom: "1px solid rgba(26,24,20,0.1)",
-          }}>
-            {metaItems.map(item => (
-              <div key={item.label}>
-                <div style={{ fontFamily: "var(--font-body)", fontSize: "10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "3px" }}>
-                  {item.label}
-                </div>
-                <div style={{ fontFamily: "var(--font-body)", fontSize: "14px", color: "#1A1A1A", lineHeight: 1.4 }}>
-                  {item.value}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Tags */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "24px" }}>
-            {cs.tags.map(tag => {
-              const c = tagColor(tag);
-              return (
-                <span key={tag} style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  padding: "4px 12px",
-                  borderRadius: "999px",
-                  fontFamily: "var(--font-body)",
-                  fontSize: "12px",
-                  fontWeight: 500,
-                  background: c.bg,
-                  color: c.color,
-                  letterSpacing: "0.02em",
-                }}>
-                  {tag}
-                </span>
-              );
-            })}
-          </div>
-
-          {cs.liveUrl && (
-            <a
-              href={cs.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ fontFamily: "var(--font-body)", fontSize: "13px", fontWeight: 600, color: "#1A1814", textDecoration: "underline", textUnderlineOffset: "3px" }}
-            >
-              Live preview ↗
-            </a>
-          )}
-        </div>
-
-        {/* RIGHT — video or hero image */}
-        <div style={{ borderRadius: "16px", overflow: "hidden", background: "#0A0A1C", aspectRatio: "4/3", position: "relative" }}>
-          {cs.heroVideo ? (
-            <video
-              autoPlay muted loop playsInline
-              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-            >
-              <source src={cs.heroVideo} type="video/mp4" />
-            </video>
-          ) : (
-            <Image
-              src={cs.heroImage}
-              alt={cs.title}
-              fill
-              className="object-cover"
-              priority
-              sizes="50vw"
-            />
-          )}
-        </div>
-      </div>
-
-      {/* ── Divider ─────────────────────────────────────────────── */}
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 40px" }}>
+      {/* ── Divider ── */}
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
         <div style={{ borderTop: "1px solid rgba(26,24,20,0.1)" }} />
       </div>
 
-      {/* ── CONTENT — single centered column ────────────────────── */}
-      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "72px 40px 80px" }}>
+      {/* ── Content ── */}
+      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "64px 24px 80px" }}>
 
-        {/* Supporting images / visual placeholders */}
+        {/* Supporting images */}
         {cs.images.length > 0 && (
           <div style={{ marginBottom: "64px" }}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {cs.images.map((src, i) => (
                 <div key={i} className="relative aspect-[4/3] rounded-xl overflow-hidden">
-                  <Image src={src} alt={`${cs.title} — image ${i + 1}`} fill className="object-cover" sizes="(max-width: 640px) 100vw, 350px" />
+                  <Image
+                    src={src}
+                    alt={`${cs.title} — image ${i + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, 350px"
+                  />
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {/* ── NARRATIVE ──────────────────────────────────────────── */}
+        {/* Narrative or structured content */}
         {cs.narrative ? (
           <div>
             <section style={{ marginBottom: "72px" }}>
@@ -263,21 +113,7 @@ export default async function CaseStudyPage({
                   {section.paragraphs.map((para, pIdx) => {
                     const isPullQuote = para.startsWith('"') || para.startsWith('\u201c');
                     return isPullQuote ? (
-                      <blockquote key={pIdx} style={{
-                        fontFamily: "var(--font-display)",
-                        fontSize: "clamp(18px, 2.2vw, 22px)",
-                        fontStyle: "italic",
-                        fontWeight: 400,
-                        color: "#1A1A1A",
-                        borderLeft: "3px solid #1A1814",
-                        paddingLeft: "24px",
-                        paddingTop: "12px",
-                        paddingBottom: "12px",
-                        background: "#F0EDE8",
-                        borderRadius: "0 6px 6px 0",
-                        margin: "8px 0",
-                        lineHeight: 1.5,
-                      }}>
+                      <blockquote key={pIdx} style={{ fontFamily: "var(--font-display)", fontSize: "clamp(18px, 2.2vw, 22px)", fontStyle: "italic", fontWeight: 400, color: "#1A1A1A", borderLeft: "3px solid #1A1814", paddingLeft: "24px", paddingTop: "12px", paddingBottom: "12px", background: "#F0EDE8", borderRadius: "0 6px 6px 0", margin: "8px 0", lineHeight: 1.5 }}>
                         {para}
                       </blockquote>
                     ) : (
@@ -296,7 +132,6 @@ export default async function CaseStudyPage({
           </div>
 
         ) : (
-          /* ── STRUCTURED fallback ─────────────────────────────── */
           <div>
             <section style={{ marginBottom: "56px", paddingBottom: "56px", borderBottom: "1px solid rgba(26,24,20,0.08)" }}>
               <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "12px" }}>OVERVIEW</p>
@@ -314,7 +149,6 @@ export default async function CaseStudyPage({
               <RichPara text={cs.problem.body} />
             </section>
 
-            {/* Visual placeholder — after problem */}
             <div style={{ marginBottom: "56px" }}>
               <ArtifactPlaceholder
                 title="Problem Framing Artifact"
@@ -339,7 +173,6 @@ export default async function CaseStudyPage({
               </div>
             </section>
 
-            {/* Visual placeholder — after process */}
             <div style={{ marginBottom: "56px" }}>
               <ArtifactPlaceholder
                 title="Key Deliverable Artifact"
@@ -372,7 +205,7 @@ export default async function CaseStudyPage({
           </div>
         )}
 
-        {/* ── Prev / Next ──────────────────────────────────────── */}
+        {/* Prev / Next */}
         <div style={{ borderTop: "1px solid rgba(26,24,20,0.1)", paddingTop: "48px", marginBottom: "64px" }}>
           <div className="flex items-stretch justify-between gap-4">
             {prev ? (
@@ -392,8 +225,11 @@ export default async function CaseStudyPage({
           </div>
         </div>
 
-        {/* ── CTA ──────────────────────────────────────────────── */}
-        <div style={{ background: "#1A1814", borderRadius: "24px", padding: "56px 48px", display: "flex", flexDirection: "column", gap: "32px" }} className="md:flex-row md:items-center md:justify-between">
+        {/* CTA */}
+        <div
+          style={{ background: "#1A1814", borderRadius: "24px", padding: "56px 48px", display: "flex", flexDirection: "column", gap: "32px" }}
+          className="md:flex-row md:items-center md:justify-between"
+        >
           <div>
             <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "rgba(255,255,255,0.4)", marginBottom: "10px" }}>Have a project in mind?</p>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.15, textTransform: "uppercase" }}>
@@ -409,6 +245,6 @@ export default async function CaseStudyPage({
         </div>
 
       </div>
-    </main>
+    </CaseStudyLayout>
   );
 }
