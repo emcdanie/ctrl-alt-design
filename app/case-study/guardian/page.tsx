@@ -1,167 +1,26 @@
-import CaseStudyShell from "@/components/CaseStudyShell";
+import CaseStudyLayout from "@/components/CaseStudyLayout";
+import CaseStudyHero from "@/components/CaseStudyHero";
 import { Body, PullQuote, Section } from "@/components/CaseStudyTypography";
 import ArtifactPlaceholder from "@/components/ArtifactPlaceholder";
 
-const metadata = [
-  { label: "Year", value: "2026" },
-  { label: "Role", value: "Concept Lead — Interaction & Strategy" },
-  { label: "Scope", value: "AI UX · Design System Governance · Figma Plugin Concept" },
-  { label: "Organisation", value: "Into Design Systems Hackathon (sponsored by Figma)" },
-];
-
-const tags = ["Design Systems", "AI UX", "Hackathon", "Governance"];
-
-const TAG_COLORS = [
-  { bg: "#E8F2FA", color: "#2A6A9E" },
-  { bg: "#F0EDF8", color: "#5C4A9A" },
-  { bg: "#FDF3E3", color: "#9A6020" },
-  { bg: "#EBF5EC", color: "#2A7A32" },
-  { bg: "#FAF0EC", color: "#9A4020" },
-  { bg: "#F5EDF5", color: "#8A3A8A" },
-];
-function tagColor(tag: string) {
-  let hash = 0;
-  for (let i = 0; i < tag.length; i++) hash = tag.charCodeAt(i) + ((hash << 5) - hash);
-  return TAG_COLORS[Math.abs(hash) % TAG_COLORS.length];
-}
-
 export default function GuardianPage() {
   return (
-    <CaseStudyShell>
+    <CaseStudyLayout>
+      <CaseStudyHero
+        eyebrow="Hackathon Concept · 2026"
+        title="From Isolation to Interpretation"
+        intro="Designing a Context-Aware Design System Guardian — an AI-assisted concept that detects drift, surfaces contextual guidance, and helps teams make confident system decisions without leaving their workflow."
+        metadata={[
+          { label: "Year", value: "2026" },
+          { label: "Role", value: "Concept Lead — Interaction & Strategy" },
+          { label: "Scope", value: "AI UX · Design System Governance · Figma Plugin Concept" },
+          { label: "Organisation", value: "Into Design Systems Hackathon (sponsored by Figma)" },
+        ]}
+        tags={["Design Systems", "AI UX", "Hackathon", "Governance"]}
+        media={{ type: "video", src: "/videos/hackathon-showreel.mp4" }}
+      />
 
-      {/* ── Editorial Hero ── */}
-      <div style={{
-        maxWidth: "1200px",
-        margin: "0 auto",
-        padding: "80px 40px 64px",
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: "64px",
-        alignItems: "center",
-      }}
-        className="grid-cols-1 sm:grid-cols-2"
-      >
-        {/* Left: title + intro + metadata */}
-        <div>
-          <p style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "11px",
-            fontWeight: 600,
-            textTransform: "uppercase",
-            letterSpacing: "0.14em",
-            color: "#8A8A8A",
-            marginBottom: "20px",
-          }}>
-            Hackathon Concept · 2026
-          </p>
-
-          <h1 style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(40px, 5.5vw, 72px)",
-            fontWeight: 700,
-            letterSpacing: "-0.025em",
-            lineHeight: 1.05,
-            color: "#1A1A1A",
-            margin: "0 0 24px 0",
-          }}>
-            From Isolation to Interpretation
-          </h1>
-
-          <p style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "clamp(16px, 1.5vw, 20px)",
-            color: "#555555",
-            lineHeight: 1.65,
-            maxWidth: "620px",
-            marginBottom: "40px",
-          }}>
-            Designing a Context-Aware Design System Guardian — an AI-assisted concept that detects drift, surfaces contextual guidance, and helps teams make confident system decisions without leaving their workflow.
-          </p>
-
-          {/* Metadata */}
-          <dl style={{ display: "flex", flexDirection: "column", gap: "14px", marginBottom: "32px" }}>
-            {metadata.map(({ label, value }) => (
-              <div key={label} style={{ display: "flex", gap: "16px", alignItems: "baseline" }}>
-                <dt style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "11px",
-                  fontWeight: 600,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  color: "#AAAAAA",
-                  minWidth: "100px",
-                  flexShrink: 0,
-                }}>
-                  {label}
-                </dt>
-                <dd style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "15px",
-                  color: "#1A1A1A",
-                  lineHeight: 1.4,
-                  margin: 0,
-                }}>
-                  {value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-
-          {/* Tags */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-            {tags.map(tag => {
-              const c = tagColor(tag);
-              return (
-                <span key={tag} style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  padding: "4px 12px",
-                  borderRadius: "999px",
-                  fontFamily: "var(--font-body)",
-                  fontSize: "12px",
-                  fontWeight: 500,
-                  background: c.bg,
-                  color: c.color,
-                  letterSpacing: "0.02em",
-                }}>
-                  {tag}
-                </span>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Right: hero video */}
-        <div style={{
-          position: "relative",
-          width: "100%",
-          aspectRatio: "16 / 9",
-          borderRadius: "20px",
-          overflow: "hidden",
-          background: "#0A0A1C",
-          boxShadow: "0 16px 64px rgba(0,0,0,0.18)",
-        }}>
-          <video
-            autoPlay muted loop playsInline
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-          >
-            <source src="/videos/hackathon-showreel.mp4" type="video/mp4" />
-          </video>
-          {/* Gradient overlay for readability */}
-          <div style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.35) 100%)",
-          }} />
-        </div>
-      </div>
-
-      {/* ── Article content ── */}
-      <div style={{
-        maxWidth: "760px",
-        margin: "0 auto",
-        padding: "0 40px 120px",
-      }}>
+      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "0 24px 120px" }}>
 
         <Section eyebrow="OVERVIEW" heading="Project Overview">
           <Body>
@@ -294,18 +153,7 @@ export default function GuardianPage() {
           </PullQuote>
         </Section>
 
-        {/* Visual assets annotation */}
-        <div style={{
-          background: "#F5F4F1",
-          borderLeft: "3px solid #CCCCCC",
-          padding: "20px 24px",
-          borderRadius: "4px",
-          fontFamily: "var(--font-body)",
-          fontSize: "13px",
-          color: "#666666",
-          lineHeight: 1.6,
-          marginTop: "64px",
-        }}>
+        <div style={{ background: "#F5F4F1", borderLeft: "3px solid #CCCCCC", padding: "20px 24px", borderRadius: "4px", fontFamily: "var(--font-body)", fontSize: "13px", color: "#666666", lineHeight: 1.6, marginTop: "64px" }}>
           <strong style={{ color: "#2C2C2C" }}>Visual assets to add:</strong>
           {" "}(1) Guardian Loop circular diagram — Observe, Interpret, Communicate, Learn.
           {" "}(2) FigPal state map — idle, alert, thinking, success.
@@ -314,6 +162,6 @@ export default function GuardianPage() {
         </div>
 
       </div>
-    </CaseStudyShell>
+    </CaseStudyLayout>
   );
 }
