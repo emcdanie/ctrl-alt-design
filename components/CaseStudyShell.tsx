@@ -12,14 +12,14 @@ export default function CaseStudyShell({ children }: CaseStudyShellProps) {
       <CustomCursor />
       <OverlayNav />
 
-      {/* Fixed floating back button */}
+      {/* Sticky back button — top-left */}
       <Link
         href="/#work"
-        className="hover:opacity-75 transition-opacity duration-150"
+        className="hover:opacity-100 transition-opacity duration-150"
         style={{
           position: "fixed",
-          bottom: "28px",
-          left: "28px",
+          top: "24px",
+          left: "24px",
           zIndex: 50,
           display: "inline-flex",
           alignItems: "center",
@@ -31,12 +31,13 @@ export default function CaseStudyShell({ children }: CaseStudyShellProps) {
           textDecoration: "none",
           background: "#1A1814",
           borderRadius: "999px",
-          padding: "10px 20px",
+          padding: "10px 18px",
           letterSpacing: "0.02em",
           boxShadow: "0 4px 16px rgba(0,0,0,0.18)",
+          opacity: 0.88,
         }}
       >
-        ← All work
+        ← Back to Work
       </Link>
 
       {children}

@@ -119,31 +119,6 @@ export default function CaseStudyGrid() {
                 >
                   {cs.year}
                 </span>
-
-                {/* Client logo */}
-                {cs.clientLogo && (
-                  <div className="absolute top-3 left-3 flex items-center gap-2" style={{ zIndex: 4 }}>
-                    <div style={{
-                      width: "32px",
-                      height: "32px",
-                      borderRadius: "8px",
-                      background: "rgba(255,255,255,0.95)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      overflow: "hidden",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-                    }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={cs.clientLogo}
-                        alt={cs.clientName ?? ""}
-                        style={{ width: "22px", height: "22px", objectFit: "contain" }}
-                        onError={(e) => { e.currentTarget.parentElement!.style.display = "none"; }}
-                      />
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* ── Content: tags → title → description ── */}
