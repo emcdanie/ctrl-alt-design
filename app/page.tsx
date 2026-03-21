@@ -9,9 +9,9 @@ import MetricsStrip from "@/components/MetricsStrip";
 import CaseStudyGrid from "@/components/CaseStudyGrid";
 import VideoWalkthrough from "@/components/VideoWalkthrough";
 import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
-import ExperienceSection from "@/components/ExperienceSection";
 import AboutSection from "@/components/AboutSection";
-import PersonalSection from "@/components/PersonalSection";
+import ExperienceSection from "@/components/ExperienceSection";
+import LearningSection from "@/components/LearningSection";
 import ContactSection from "@/components/ContactSection";
 import ResumeModal from "@/components/ResumeModal";
 
@@ -22,16 +22,33 @@ export default function Home() {
     <main className="bg-[#EDE8DF] text-[#1A1A1A] min-h-screen overflow-x-hidden">
       <CustomCursor />
       <OverlayNav />
+
+      {/* 1 — Hero */}
       <Hero />
       <Carousel />
       <MetricsStrip />
+
+      {/* 2 — Case Studies */}
       <CaseStudyGrid />
+
+      {/* 3 — Guardian Highlight */}
       <VideoWalkthrough />
+
+      {/* 4 — CTRL_ALT_DESIGN Experiments */}
       <CtrlAltDesignSection />
+
+      {/* 5 — About */}
       <AboutSection />
-      <PersonalSection />
+
+      {/* 6 — Experience */}
       <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
+
+      {/* 7 — Learning & Inspiration */}
+      <LearningSection />
+
+      {/* 8 — Contact */}
       <ContactSection />
+
       <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
     </main>
   );
