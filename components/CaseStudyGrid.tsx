@@ -18,26 +18,21 @@ function getCategoryStyle(category: string) {
 
 export default function CaseStudyGrid() {
   return (
-    <section id="work" className="py-20 px-6">
-      <div className="max-w-5xl mx-auto">
+    <section id="work" className="px-6 py-20 md:py-24">
+      <div className="mx-auto max-w-5xl">
         <FadeIn>
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+          <div className="mb-12 flex flex-col justify-between gap-4 sm:flex-row sm:items-end md:mb-14">
             <div>
               <p className="section-label mb-3">— Selected Work</p>
               <h2
-                className="font-display font-extrabold text-[#1A1814] leading-tight"
+                className="font-display font-extrabold leading-tight text-[#1A1814]"
                 style={{ fontSize: "clamp(32px, 5vw, 48px)" }}
               >
                 Case Studies
               </h2>
               <p
-                className="mt-2 max-w-md"
-                style={{
-                  fontSize: "17px",
-                  color: "#6B6560",
-                  lineHeight: 1.65,
-                  letterSpacing: "0.01em",
-                }}
+                className="mt-3 max-w-xl text-[16px] leading-[1.72] text-[#6B6560] md:text-[17px]"
+                style={{ letterSpacing: "0.01em" }}
               >
                 Long-form project work across design systems, enterprise platforms, and complex product UX.
               </p>
@@ -45,25 +40,21 @@ export default function CaseStudyGrid() {
           </div>
         </FadeIn>
 
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-6 md:gap-7">
           {caseStudies.map((cs, i) => (
             <FadeIn key={cs.slug} delay={i * 70}>
               <Link
                 href={cs.href ?? `/case-studies/${cs.slug}`}
                 data-cursor="card"
-                className="group glass-card flex flex-col md:flex-row md:items-stretch overflow-hidden transition-all duration-300 hover:shadow-[0_12px_48px_rgba(44,24,16,0.1)] hover:-translate-y-0.5 md:min-h-[200px]"
+                className="group glass-card flex flex-col overflow-hidden rounded-[24px] border border-black/6 bg-white/[0.72] shadow-[0_10px_30px_rgba(44,24,16,0.05),0_2px_8px_rgba(44,24,16,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(44,24,16,0.09),0_8px_18px_rgba(44,24,16,0.06)] md:min-h-[220px] md:flex-row md:items-stretch"
               >
-                {/* Media — 16:9, consistent across projects */}
-                <div
-                  className="relative w-full shrink-0 aspect-video md:w-[min(44%,380px)] md:max-w-[420px]"
-                  style={{ background: "#1A1814" }}
-                >
+                <div className="relative aspect-video w-full shrink-0 overflow-hidden bg-[#1A1814] md:w-[min(45%,390px)] md:max-w-[420px]">
                   <Image
                     src={cs.heroImage}
                     alt={cs.title}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                    sizes="(max-width: 768px) 100vw, 380px"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.035]"
+                    sizes="(max-width: 768px) 100vw, 390px"
                   />
                   {cs.heroVideo && (
                     <video
@@ -79,17 +70,14 @@ export default function CaseStudyGrid() {
                       <source src={cs.heroVideo} type="video/mp4" />
                     </video>
                   )}
-                  {/* Light bottom fade for badges */}
                   <div
-                    className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-black/35 via-transparent to-transparent"
+                    className="pointer-events-none absolute inset-0 z-[2] bg-[linear-gradient(to_top,rgba(0,0,0,0.34),transparent_46%),linear-gradient(to_right,rgba(0,0,0,0.16),transparent_45%)]"
                     aria-hidden
                   />
                   {cs.heroVideo && (
-                    <div
-                      className="pointer-events-none absolute inset-0 z-[3] flex items-center justify-center"
-                    >
+                    <div className="pointer-events-none absolute inset-0 z-[3] flex items-center justify-center">
                       <div
-                        className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 shadow-lg"
+                        className="flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-white/82 shadow-[0_18px_40px_rgba(0,0,0,0.18)] backdrop-blur-md"
                         aria-hidden
                       >
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -98,16 +86,16 @@ export default function CaseStudyGrid() {
                       </div>
                     </div>
                   )}
-                  <span className="absolute right-3 top-3 z-[4] text-[12px] font-medium text-white/85">
+                  <span className="absolute right-4 top-4 z-[4] rounded-full border border-white/18 bg-black/20 px-2.5 py-1 text-[11px] font-semibold tracking-[0.12em] text-white/92 backdrop-blur-sm">
                     {cs.year}
                   </span>
                   {cs.clientLogo && (
-                    <div className="absolute left-3 top-3 z-[4] flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-white/95 shadow-md">
+                    <div className="absolute left-4 top-4 z-[4] flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/45 bg-white/92 shadow-[0_10px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={cs.clientLogo}
                         alt={cs.clientName ?? ""}
-                        className="h-[22px] w-[22px] object-contain"
+                        className="h-6 w-6 object-contain"
                         onError={(e) => {
                           e.currentTarget.parentElement!.style.display = "none";
                         }}
@@ -116,62 +104,44 @@ export default function CaseStudyGrid() {
                   )}
                 </div>
 
-                {/* Editorial column — tags, title, description, CTA */}
-                <div className="flex min-h-[180px] flex-1 flex-col justify-center gap-3 px-5 py-6 md:px-8 md:py-7">
-                  <div className="flex flex-wrap gap-2">
+                <div className="flex min-h-[180px] flex-1 flex-col justify-center px-5 py-6 md:px-8 md:py-8">
+                  <div className="flex flex-wrap items-center gap-2.5">
                     <span
-                      className="rounded-full px-3 py-1 text-[11px] font-bold tracking-widest"
+                      className="rounded-full px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] shadow-sm"
                       style={{
                         background: getCategoryStyle(cs.category).bg,
                         color: getCategoryStyle(cs.category).color,
-                        letterSpacing: "0.1em",
                       }}
                     >
                       {cs.category}
                     </span>
                     {cs.tags?.slice(0, 3).map((tag) => (
-                      <span
-                        key={`${cs.slug}-${tag}`}
-                        className="tag"
-                        style={{ fontSize: "10px", padding: "0.2rem 0.55rem" }}
-                      >
+                      <span key={`${cs.slug}-${tag}`} className="tag text-[10px] px-2.5 py-1">
                         {tag}
                       </span>
                     ))}
                   </div>
 
                   {cs.clientName && (
-                    <p
-                      className="text-[11px] font-semibold uppercase tracking-wider text-[#8A8480]"
-                      style={{ letterSpacing: "0.08em" }}
-                    >
+                    <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#8A8480]">
                       {cs.clientName}
                     </p>
                   )}
 
-                  <h3
-                    className="font-display text-[clamp(1.25rem,2.5vw,1.5rem)] font-semibold leading-snug text-[#1A1814] tracking-tight"
-                  >
+                  <h3 className="mt-3 font-display text-[clamp(1.3rem,2.5vw,1.65rem)] font-semibold leading-[1.18] tracking-tight text-[#1A1814]">
                     {cs.title}
                   </h3>
 
                   <p
-                    className="line-clamp-2 text-[15px] leading-relaxed text-[#5C5852]"
-                    style={{ lineHeight: 1.65, letterSpacing: "0.01em" }}
+                    className="mt-3 line-clamp-2 max-w-2xl text-[15px] leading-[1.72] text-[#5C5852]"
+                    style={{ letterSpacing: "0.01em" }}
                   >
                     {cs.description}
                   </p>
 
-                  <span
-                    className="mt-1 inline-flex items-center gap-1 text-[13px] font-semibold transition-colors group-hover:text-[var(--color-accent-espresso)]"
-                    style={{
-                      fontFamily: "var(--font-body)",
-                      color: "#1A1814",
-                      letterSpacing: "0.02em",
-                    }}
-                  >
+                  <span className="mt-5 inline-flex items-center gap-2 text-[13px] font-semibold tracking-[0.02em] text-[#1A1814] transition-colors group-hover:text-[var(--color-accent-espresso)]">
                     View case study
-                    <span aria-hidden className="transition-transform group-hover:translate-x-0.5">
+                    <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
                       →
                     </span>
                   </span>
