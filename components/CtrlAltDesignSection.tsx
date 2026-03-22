@@ -5,10 +5,10 @@ import VideoCard from "./VideoCard";
 import VideoModal from "./VideoModal";
 
 const LAB_CATEGORY_COLORS: Record<string, { bg: string; color: string }> = {
-  "AI UX":         { bg: "#2A5FA8", color: "#FFFFFF" },
-  "FINTECH":       { bg: "#6B3FA8", color: "#FFFFFF" },
-  "FORM DESIGN":   { bg: "#A85F20", color: "#FFFFFF" },
-  "DASHBOARD":     { bg: "#206B4A", color: "#FFFFFF" },
+  "AI UX": { bg: "#2A5FA8", color: "#FFFFFF" },
+  "FINTECH": { bg: "#6B3FA8", color: "#FFFFFF" },
+  "FORM DESIGN": { bg: "#A85F20", color: "#FFFFFF" },
+  "DASHBOARD": { bg: "#206B4A", color: "#FFFFFF" },
 };
 
 interface LabVideo {
@@ -19,6 +19,46 @@ interface LabVideo {
   embed: string;
   gradient: string;
   thumbnailSrc: string;
+}
+
+interface SectionShellProps {
+  id: string;
+  className?: string;
+  innerClassName?: string;
+  children: React.ReactNode;
+}
+
+function SectionShell({ id, className = "", innerClassName = "", children }: SectionShellProps) {
+  return (
+    <section id={id} className={`px-6 py-20 ${className}`.trim()}>
+      <div className={`mx-auto max-w-7xl ${innerClassName}`.trim()}>{children}</div>
+    </section>
+  );
+}
+
+interface SectionHeaderProps {
+  label: string;
+  title: string;
+  description?: string;
+}
+
+function SectionHeader({ label, title, description }: SectionHeaderProps) {
+  return (
+    <div className="mb-6">
+      <p className="section-label mb-3">{label}</p>
+      <h2
+        className="font-display font-extrabold leading-none tracking-tight text-[#1A1814]"
+        style={{ fontSize: "clamp(28px, 4vw, 52px)" }}
+      >
+        {title}
+      </h2>
+      {description && (
+        <p className="mt-3 max-w-md text-[16px] leading-[1.6] text-[#8A8480]">
+          {description}
+        </p>
+      )}
+    </div>
+  );
 }
 
 const videos: LabVideo[] = [
@@ -64,54 +104,41 @@ export default function CtrlAltDesignSection() {
   const [activeVideo, setActiveVideo] = useState<LabVideo | null>(null);
 
   return (
-    <section id="design-lab" className="bg-[#F8F5F0] py-20 px-6">
-      <div className="max-w-7xl mx-auto">
+    <SectionShell id="design-lab" className="bg-[#F8F5F0]">
+      <SectionHeader
+        label="— Design Lab"
+        title="CTRL_ALT_DESIGN"
+        description="Rapid investigations into complex interaction patterns, system dashboards, and AI-assisted workflows."
+      />
 
-        {/* Header */}
-        <div className="mb-6">
-          <p className="section-label mb-3">— Design Lab</p>
-          <h2
-            className="font-display font-extrabold text-[#1A1814] tracking-tight leading-none"
-            style={{ fontSize: "clamp(28px, 4vw, 52px)" }}
-          >
-            CTRL_ALT_DESIGN
-          </h2>
-          <p className="mt-3 max-w-md" style={{ fontSize: "16px", color: "#8A8480", lineHeight: "1.6" }}>
-            Rapid investigations into complex interaction patterns, system dashboards, and AI-assisted workflows.
-          </p>
-        </div>
+      <div className="mb-10 h-px w-full bg-black/8" />
 
-        <div className="divider mb-10" />
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {videos.map((video) => {
+          const catStyle = LAB_CATEGORY_COLORS[video.category] ?? { bg: "#1A1814", color: "#FFFFFF" };
 
-        {/* Grid — 1 col mobile, 2 col tablet, 3 col desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {videos.map((video) => {
-            const catStyle = LAB_CATEGORY_COLORS[video.category] ?? { bg: "#1A1814", color: "#FFFFFF" };
-            return (
-              <div key={video.title} className="relative">
-                {/* Category badge over the card thumbnail */}
-                <span
-                  className="absolute top-3 left-3 z-10 text-[11px] font-bold tracking-widest px-3 py-1 rounded-full pointer-events-none"
-                  style={{ background: catStyle.bg, color: catStyle.color, letterSpacing: "0.1em" }}
-                >
-                  {video.category}
-                </span>
-                <VideoCard
-                  title={video.title}
-                  subtitle={video.subtitle}
-                  tags={video.tags}
-                  gradient={video.gradient}
-                  embedUrl={video.embed}
-                  thumbnailSrc={video.thumbnailSrc}
-                  onClick={() => setActiveVideo(video)}
-                />
-              </div>
-            );
-          })}
-        </div>
+          return (
+            <div key={video.title} className="relative">
+              <span
+                className="pointer-events-none absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[11px] font-bold tracking-widest"
+                style={{ background: catStyle.bg, color: catStyle.color, letterSpacing: "0.1em" }}
+              >
+                {video.category}
+              </span>
+              <VideoCard
+                title={video.title}
+                subtitle={video.subtitle}
+                tags={video.tags}
+                gradient={video.gradient}
+                embedUrl={video.embed}
+                thumbnailSrc={video.thumbnailSrc}
+                onClick={() => setActiveVideo(video)}
+              />
+            </div>
+          );
+        })}
       </div>
 
-      {/* Modal */}
       {activeVideo && (
         <VideoModal
           isOpen={true}
@@ -122,6 +149,6 @@ export default function CtrlAltDesignSection() {
           tags={activeVideo.tags}
         />
       )}
-    </section>
+    </SectionShell>
   );
 }
