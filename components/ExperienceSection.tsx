@@ -87,30 +87,71 @@ interface ExperienceSectionProps {
   onResumeClick?: () => void;
 }
 
+interface SectionShellProps {
+  id: string;
+  children: React.ReactNode;
+}
+
+function SectionShell({ id, children }: SectionShellProps) {
+  return (
+    <section id={id} className="px-6 py-20">
+      <div className="mx-auto max-w-7xl">{children}</div>
+    </section>
+  );
+}
+
+interface SectionHeaderProps {
+  label: string;
+  title: string;
+  description?: string;
+  action?: React.ReactNode;
+}
+
+function SectionHeader({ label, title, description, action }: SectionHeaderProps) {
+  return (
+    <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p className="section-label mb-3">{label}</p>
+        <h2
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(32px, 5vw, 48px)",
+            fontWeight: 400,
+            color: "#1A1814",
+            lineHeight: 1.1,
+          }}
+        >
+          {title}
+        </h2>
+        {description && (
+          <p
+            className="mt-3 max-w-xl"
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "16px",
+              color: "#8A8480",
+              lineHeight: 1.6,
+            }}
+          >
+            {description}
+          </p>
+        )}
+      </div>
+      {action}
+    </div>
+  );
+}
+
 export default function ExperienceSection({ onResumeClick }: ExperienceSectionProps) {
   const [expanded, setExpanded] = useState<number | null>(0);
 
   return (
-    <section id="experience" className="py-20 px-6">
-      <div className="max-w-7xl mx-auto">
-
-        {/* Header */}
-        <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
-          <div>
-            <p className="section-label mb-3">— Track Record</p>
-            <h2
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(32px, 5vw, 48px)",
-                fontWeight: 400,
-                color: "#1A1814",
-                lineHeight: 1.1,
-              }}
-            >
-              Experience
-            </h2>
-          </div>
-          {onResumeClick && (
+    <SectionShell id="experience">
+      <SectionHeader
+        label="— Track Record"
+        title="Experience"
+        action={
+          onResumeClick ? (
             <button
               onClick={onResumeClick}
               style={{
@@ -129,11 +170,11 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                 alignItems: "center",
                 gap: "8px",
               }}
-              onMouseEnter={e => {
+              onMouseEnter={(e) => {
                 e.currentTarget.style.background = "#3A3430";
                 e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.25)";
               }}
-              onMouseLeave={e => {
+              onMouseLeave={(e) => {
                 e.currentTarget.style.background = "#1A1814";
                 e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
               }}
@@ -143,78 +184,74 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                 <path d="M7 2v7M4 7l3 3 3-3M2 11h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
-          )}
-        </div>
+          ) : null
+        }
+      />
 
-        {/* Expandable role cards */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-          {roles.map((role, i) => (
-            <ExperienceCard
-              key={role.title + role.company}
-              {...role}
-              isOpen={expanded === i}
-              onToggle={() => setExpanded(expanded === i ? null : i)}
-            />
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        {roles.map((role, i) => (
+          <ExperienceCard
+            key={role.title + role.company}
+            {...role}
+            isOpen={expanded === i}
+            onToggle={() => setExpanded(expanded === i ? null : i)}
+          />
+        ))}
+      </div>
+
+      <div style={{ marginTop: "72px" }}>
+        <h2
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(28px, 4vw, 40px)",
+            fontWeight: 400,
+            color: "#1A1814",
+            lineHeight: 1.1,
+            marginBottom: "40px",
+          }}
+        >
+          Education
+        </h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+          {education.map((edu) => (
+            <div
+              key={edu.name}
+              className="grid grid-cols-1 gap-8 sm:grid-cols-[180px_1fr]"
+            >
+              <div style={{ paddingTop: "2px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                <LogoContainer src={edu.logo} alt={edu.name} bg={edu.logoBg} size={48} />
+                <span
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "13px",
+                    color: "#8A8480",
+                    fontWeight: 500,
+                  }}
+                >
+                  {edu.period}
+                </span>
+              </div>
+              <div>
+                <h3
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "20px",
+                    fontWeight: 600,
+                    color: "#1A1814",
+                    lineHeight: 1.2,
+                    marginBottom: "4px",
+                  }}
+                >
+                  {edu.name}
+                </h3>
+                <span style={{ fontFamily: "var(--font-body)", fontSize: "15px", color: "#8A8480" }}>
+                  {edu.degree}
+                </span>
+              </div>
+            </div>
           ))}
         </div>
-
-        {/* Education */}
-        <div style={{ marginTop: "72px" }}>
-          <h2
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(28px, 4vw, 40px)",
-              fontWeight: 400,
-              color: "#1A1814",
-              lineHeight: 1.1,
-              marginBottom: "40px",
-            }}
-          >
-            Education
-          </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-            {education.map(edu => (
-              <div
-                key={edu.name}
-                className="grid grid-cols-1 sm:grid-cols-[180px_1fr]"
-                style={{ gap: "32px" }}
-              >
-                <div style={{ paddingTop: "2px", display: "flex", flexDirection: "column", gap: "8px" }}>
-                  <LogoContainer src={edu.logo} alt={edu.name} bg={edu.logoBg} size={48} />
-                  <span
-                    style={{
-                      fontFamily: "var(--font-body)",
-                      fontSize: "13px",
-                      color: "#8A8480",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {edu.period}
-                  </span>
-                </div>
-                <div>
-                  <h3
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "20px",
-                      fontWeight: 600,
-                      color: "#1A1814",
-                      lineHeight: 1.2,
-                      marginBottom: "4px",
-                    }}
-                  >
-                    {edu.name}
-                  </h3>
-                  <span style={{ fontFamily: "var(--font-body)", fontSize: "15px", color: "#8A8480" }}>
-                    {edu.degree}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
       </div>
-    </section>
+    </SectionShell>
   );
 }
