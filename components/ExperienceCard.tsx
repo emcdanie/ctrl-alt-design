@@ -9,7 +9,7 @@ function BoldLead({ text }: { text: string }) {
     <>
       {parts.map((part, i) =>
         part.startsWith("**") && part.endsWith("**") ? (
-          <strong key={i} style={{ fontWeight: 700, color: "#1A1814" }}>
+          <strong key={i} className="font-bold text-[#1A1814]">
             {part.slice(2, -2)}
           </strong>
         ) : (
@@ -49,102 +49,42 @@ export default function ExperienceCard({
 }: ExperienceCardProps) {
   return (
     <div
-      style={{
-        borderRadius: "16px",
-        border: "1px solid rgba(26,24,20,0.10)",
-        background: isOpen ? "#FFFFFF" : "#F8F7F4",
-        boxShadow: isOpen ? "0 4px 24px rgba(0,0,0,0.08)" : "0 1px 4px rgba(0,0,0,0.04)",
-        overflow: "hidden",
-        transition: "background 200ms ease, box-shadow 200ms ease",
-      }}
-      onMouseEnter={e => {
-        if (!isOpen) {
-          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 16px rgba(0,0,0,0.08)";
-          (e.currentTarget as HTMLDivElement).style.background = "#FAFAF8";
-        }
-      }}
-      onMouseLeave={e => {
-        if (!isOpen) {
-          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
-          (e.currentTarget as HTMLDivElement).style.background = "#F8F7F4";
-        }
-      }}
+      className={`overflow-hidden rounded-[22px] border transition-all duration-300 ${
+        isOpen
+          ? "border-black/8 bg-white/78 shadow-[0_16px_40px_rgba(44,24,16,0.08),0_4px_12px_rgba(44,24,16,0.05)]"
+          : "border-black/6 bg-white/54 shadow-[0_8px_24px_rgba(44,24,16,0.04),0_1px_4px_rgba(44,24,16,0.03)] hover:-translate-y-0.5 hover:bg-white/70 hover:shadow-[0_14px_34px_rgba(44,24,16,0.07),0_4px_10px_rgba(44,24,16,0.04)]"
+      }`}
     >
-      {/* Header — always visible */}
       <button
         onClick={onToggle}
-        style={{
-          width: "100%",
-          padding: "20px 24px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "16px",
-          cursor: "pointer",
-          background: "none",
-          border: "none",
-          textAlign: "left",
-        }}
+        className="flex w-full items-center justify-between gap-4 bg-transparent px-5 py-5 text-left md:px-6 md:py-6"
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "16px", minWidth: 0 }}>
+        <div className="flex min-w-0 items-center gap-4">
           <LogoContainer src={logoSrc} alt={company} bg={logoBg} size={44} />
 
-          <div style={{ minWidth: 0 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-              <span
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "16px",
-                  fontWeight: 600,
-                  color: "#1A1814",
-                  lineHeight: 1.3,
-                }}
-              >
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-display text-[16px] font-semibold leading-[1.3] text-[#1A1814] md:text-[17px]">
                 {title}
               </span>
               {isCurrent && (
-                <span
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "10px",
-                    fontWeight: 700,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "#FFFFFF",
-                    background: "#1A1A1A",
-                    borderRadius: "999px",
-                    padding: "2px 8px",
-                  }}
-                >
+                <span className="rounded-full bg-[#1A1814] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-white">
                   NOW
                 </span>
               )}
             </div>
-            <div
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "14px",
-                color: "#8A8480",
-                marginTop: "2px",
-              }}
-            >
+            <div className="mt-1 text-[14px] leading-relaxed text-[#8A8480]">
               {company} · {period}
             </div>
           </div>
         </div>
 
-        {/* Chevron */}
         <svg
           width="18"
           height="18"
           viewBox="0 0 18 18"
           fill="none"
-          style={{
-            flexShrink: 0,
-            transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-            transition: "transform 250ms ease",
-            color: "#8A8480",
-          }}
+          className={`shrink-0 text-[#8A8480] transition-transform duration-300 ${isOpen ? "rotate-180" : "rotate-0"}`}
           aria-hidden="true"
         >
           <path
@@ -157,23 +97,12 @@ export default function ExperienceCard({
         </svg>
       </button>
 
-      {/* Expanded content */}
       {isOpen && (
-        <div style={{ padding: "0 24px 28px", borderTop: "1px solid rgba(26,24,20,0.06)" }}>
-          <ul style={{ display: "flex", flexDirection: "column", gap: "12px", paddingTop: "20px" }}>
+        <div className="border-t border-black/6 px-5 pb-6 pt-0 md:px-6 md:pb-7">
+          <ul className="flex flex-col gap-3 pt-5">
             {highlights.map((h, i) => (
-              <li
-                key={i}
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "15px",
-                  color: "#4A4640",
-                  lineHeight: 1.75,
-                  display: "flex",
-                  gap: "10px",
-                }}
-              >
-                <span style={{ color: "#CCCCCC", flexShrink: 0, marginTop: "1px" }}>—</span>
+              <li key={i} className="flex gap-3 text-[15px] leading-[1.75] text-[#4A4640]">
+                <span className="mt-[1px] shrink-0 text-[#B8B1AA]">—</span>
                 <span>
                   <BoldLead text={h} />
                 </span>
@@ -184,22 +113,7 @@ export default function ExperienceCard({
           {caseStudySlug && (
             <Link
               href={`/${caseStudySlug}`}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                marginTop: "20px",
-                fontFamily: "var(--font-body)",
-                fontSize: "13px",
-                fontWeight: 600,
-                color: "#1A1814",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-                opacity: 0.6,
-                transition: "opacity 150ms ease",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
-              onMouseLeave={e => (e.currentTarget.style.opacity = "0.6")}
+              className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#1A1814] underline decoration-black/25 underline-offset-4 transition-all duration-200 hover:decoration-black/60 hover:opacity-100"
             >
               {caseStudyLabel}
             </Link>

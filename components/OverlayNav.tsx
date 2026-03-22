@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 const menuItems = [
@@ -15,21 +15,25 @@ export default function OverlayNav() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [triggerHovered, setTriggerHovered] = useState(false);
 
-  // ESC to close
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Lock scroll
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   const handleNavClick = (href: string) => {
     setOpen(false);
+
     if (href.startsWith("#")) {
       setTimeout(() => {
         const el = document.querySelector(href);
@@ -40,270 +44,138 @@ export default function OverlayNav() {
 
   return (
     <>
-      {/* Fixed bar */}
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 9995,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "24px 32px",
-          pointerEvents: "none",
-        }}
-      >
-        {/* E Monogram — always visible */}
-        <Link
-          href="/"
-          style={{ pointerEvents: "auto" }}
-          onClick={() => setOpen(false)}
-        >
-          <div
-            style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "10px",
-              background: "#1A1A1A",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transition: "opacity 150ms ease",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = "0.7")}
-            onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-[9995] px-4 pt-4 sm:px-6 sm:pt-5">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between rounded-[24px] border border-[#1A1814]/10 bg-[#F6F1E8]/72 px-3 py-3 shadow-[0_18px_48px_rgba(26,24,20,0.08)] backdrop-blur-xl sm:px-4">
+          <Link
+            href="/"
+            className="pointer-events-auto"
+            onClick={() => setOpen(false)}
           >
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <text
-                x="3" y="14"
-                fontFamily="'Clash Display', system-ui, sans-serif"
-                fontWeight="700"
-                fontSize="16"
-                fill="white"
-              >E</text>
-            </svg>
-          </div>
-        </Link>
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#1A1814]/10 bg-[#1A1814] text-white shadow-[0_10px_24px_rgba(26,24,20,0.18)] transition-all duration-200 hover:scale-[0.98] hover:opacity-85">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <text
+                  x="3"
+                  y="14"
+                  fontFamily="'Clash Display', system-ui, sans-serif"
+                  fontWeight="700"
+                  fontSize="16"
+                  fill="white"
+                >
+                  E
+                </text>
+              </svg>
+            </div>
+          </Link>
 
-        {/* Trigger — + / hamburger / × */}
-        <button
-          data-cursor="nav"
-          onClick={() => setOpen(o => !o)}
-          onMouseEnter={() => setTriggerHovered(true)}
-          onMouseLeave={() => setTriggerHovered(false)}
-          style={{
-            pointerEvents: "auto",
-            background: "none",
-            border: "none",
-            padding: "8px",
-            cursor: "none",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "40px",
-            height: "40px",
-            position: "relative",
-          }}
-          aria-label={open ? "Close menu" : "Open menu"}
-        >
-          {/* Line 1 */}
-          <span style={{
-            display: "block",
-            width: triggerHovered && !open ? "24px" : "20px",
-            height: "2px",
-            background: "#1A1A1A",
-            borderRadius: "1px",
-            position: "absolute",
-            transition: "all 200ms ease",
-            transform: open
-              ? "rotate(45deg) translate(0, 0)"
-              : triggerHovered
-              ? "translateY(-4px)"
-              : "translateY(-4px)",
-          }} />
-          {/* Line 2 — middle, only visible on hamburger */}
-          <span style={{
-            display: "block",
-            width: "24px",
-            height: "2px",
-            background: "#1A1A1A",
-            borderRadius: "1px",
-            position: "absolute",
-            transition: "all 180ms ease",
-            opacity: open ? 0 : triggerHovered ? 1 : 0,
-          }} />
-          {/* Line 3 */}
-          <span style={{
-            display: "block",
-            width: triggerHovered && !open ? "24px" : "20px",
-            height: "2px",
-            background: "#1A1A1A",
-            borderRadius: "1px",
-            position: "absolute",
-            transition: "all 200ms ease",
-            transform: open
-              ? "rotate(-45deg) translate(0, 0)"
-              : triggerHovered
-              ? "translateY(4px)"
-              : "translateY(4px)",
-          }} />
-        </button>
+          <button
+            data-cursor="nav"
+            onClick={() => setOpen((o) => !o)}
+            onMouseEnter={() => setTriggerHovered(true)}
+            onMouseLeave={() => setTriggerHovered(false)}
+            className="pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[#1A1814]/10 bg-white/45 text-[#1A1814] shadow-[0_10px_30px_rgba(26,24,20,0.08)] transition-all duration-200 hover:bg-white/60"
+            style={{ cursor: "none" }}
+            aria-label={open ? "Close menu" : "Open menu"}
+          >
+            <span
+              className="absolute block h-[2px] rounded-full bg-current transition-all duration-200 ease-out"
+              style={{
+                width: triggerHovered && !open ? "24px" : "20px",
+                transform: open ? "rotate(45deg)" : "translateY(-4px)",
+              }}
+            />
+            <span
+              className="absolute block h-[2px] w-6 rounded-full bg-current transition-all duration-200 ease-out"
+              style={{
+                opacity: open ? 0 : triggerHovered ? 1 : 0,
+              }}
+            />
+            <span
+              className="absolute block h-[2px] rounded-full bg-current transition-all duration-200 ease-out"
+              style={{
+                width: triggerHovered && !open ? "24px" : "20px",
+                transform: open ? "rotate(-45deg)" : "translateY(4px)",
+              }}
+            />
+          </button>
+        </div>
       </div>
 
-      {/* Full-screen overlay */}
       <div
+        className="fixed inset-0 z-[9990] overflow-hidden bg-[#F6F1E8]/98 text-[#1A1814] transition-[clip-path] duration-300 ease-[cubic-bezier(0.76,0,0.24,1)]"
         style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 9990,
-          background: "#FFFFFF",
           clipPath: open ? "inset(0% 0 0% 0)" : "inset(100% 0 0% 0)",
-          transition: "clip-path 280ms cubic-bezier(0.76, 0, 0.24, 1)",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: "80px",
-          overflow: "hidden",
         }}
       >
-        {/* Ghost watermark */}
-        <div style={{
-          position: "absolute",
-          right: "-40px",
-          top: "50%",
-          transform: "translateY(-50%)",
-          fontFamily: "var(--font-display)",
-          fontSize: "clamp(120px, 18vw, 240px)",
-          fontWeight: 700,
-          color: "#F0EFEB",
-          userSelect: "none",
-          pointerEvents: "none",
-          lineHeight: 1,
-          letterSpacing: "-0.04em",
-        }}>
-          EM
-        </div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.8),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(215,197,166,0.22),transparent_34%)]" />
+        <div className="absolute left-6 right-6 top-6 h-px bg-[#1A1814]/8 sm:left-8 sm:right-8" />
 
-        {/* Menu items */}
-        <nav style={{ position: "relative", zIndex: 1 }}>
-          {menuItems.map((item) => {
-            const isHovered = hovered === item.num;
-            const anyHovered = hovered !== null;
-            const dimmed = anyHovered && !isHovered;
-
-            return (
-              <div
-                key={item.num}
-                style={{
-                  display: "flex",
-                  alignItems: "baseline",
-                  gap: "0",
-                  marginBottom: "4px",
-                  lineHeight: 1.05,
-                }}
-                onMouseEnter={() => setHovered(item.num)}
-                onMouseLeave={() => setHovered(null)}
-              >
-                {/* Number */}
-                <span style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "11px",
-                  color: "#8A8A8A",
-                  marginRight: "40px",
-                  minWidth: "60px",
-                  transition: "color 120ms ease",
-                  userSelect: "none",
-                }}>
-                  ( _{item.num} )
-                </span>
-
-                {/* Link */}
-                {item.href.startsWith("#") ? (
-                  <button
-                    onClick={() => handleNavClick(item.href)}
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "clamp(52px, 8vw, 96px)",
-                      fontWeight: 400,
-                      color: dimmed ? "#CCCCCC" : "#1A1A1A",
-                      background: "none",
-                      border: "none",
-                      padding: 0,
-                      cursor: "none",
-                      lineHeight: 1.05,
-                      transition: "color 120ms ease",
-                      letterSpacing: "-0.01em",
-                      textAlign: "left",
-                    }}
-                  >
-                    {item.label}
-                  </button>
-                ) : (
-                  <Link
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "clamp(52px, 8vw, 96px)",
-                      fontWeight: 400,
-                      color: dimmed ? "#CCCCCC" : "#1A1A1A",
-                      textDecoration: "none",
-                      lineHeight: 1.05,
-                      transition: "color 120ms ease",
-                      letterSpacing: "-0.01em",
-                      display: "block",
-                    }}
-                  >
-                    {item.label}
-                  </Link>
-                )}
-              </div>
-            );
-          })}
-        </nav>
-
-        {/* Bottom contact */}
-        <div style={{
-          position: "absolute",
-          bottom: "80px",
-          left: "80px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "8px",
-        }}>
-          <a
-            href="mailto:elletamc@gmail.com"
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "14px",
-              color: "#8A8A8A",
-              textDecoration: "none",
-              transition: "color 150ms ease",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.color = "#1A1A1A")}
-            onMouseLeave={e => (e.currentTarget.style.color = "#8A8A8A")}
+        <div className="relative flex h-full flex-col justify-between px-6 pb-8 pt-28 sm:px-8 sm:pb-10 sm:pt-32 lg:px-16 lg:pb-14 lg:pt-36">
+          <div
+            className="pointer-events-none absolute right-[-16px] top-1/2 -translate-y-1/2 select-none font-[family:var(--font-display)] text-[clamp(120px,18vw,240px)] font-bold leading-none tracking-[-0.04em] text-[#E9E1D3]"
+            aria-hidden="true"
           >
-            elletamc@gmail.com
-          </a>
-          <a
-            href="https://www.linkedin.com/in/elleta-mcdaniel"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "12px",
-              color: "#8A8A8A",
-              textDecoration: "none",
-              transition: "color 150ms ease",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.color = "#1A1A1A")}
-            onMouseLeave={e => (e.currentTarget.style.color = "#8A8A8A")}
-          >
-            LinkedIn
-          </a>
+            EM
+          </div>
+
+          <nav className="relative z-10 max-w-5xl">
+            {menuItems.map((item) => {
+              const isHovered = hovered === item.num;
+              const anyHovered = hovered !== null;
+              const dimmed = anyHovered && !isHovered;
+
+              const sharedClasses =
+                "font-[family:var(--font-display)] text-[clamp(42px,8vw,96px)] font-normal leading-[1.02] tracking-[-0.02em] transition-colors duration-150";
+              const colorClass = dimmed ? "text-[#9E9588]" : "text-[#1A1814]";
+
+              return (
+                <div
+                  key={item.num}
+                  className="group flex items-start gap-4 border-b border-[#1A1814]/8 py-4 sm:gap-6 sm:py-5 lg:gap-10"
+                  onMouseEnter={() => setHovered(item.num)}
+                  onMouseLeave={() => setHovered(null)}
+                >
+                  <span className="mt-2 min-w-14 font-[family:var(--font-body)] text-[11px] uppercase tracking-[0.24em] text-[#8B8276] sm:min-w-20">
+                    (_{item.num})
+                  </span>
+
+                  {item.href.startsWith("#") ? (
+                    <button
+                      onClick={() => handleNavClick(item.href)}
+                      className={`${sharedClasses} ${colorClass} bg-transparent p-0 text-left hover:text-[#5E554A]`}
+                      style={{ cursor: "none" }}
+                    >
+                      {item.label}
+                    </button>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      className={`${sharedClasses} ${colorClass} block hover:text-[#5E554A]`}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
+
+          <div className="relative z-10 mt-12 flex flex-col gap-3 sm:mt-16">
+            <a
+              href="mailto:elletamc@gmail.com"
+              className="w-fit font-[family:var(--font-body)] text-sm text-[#7C7367] transition-colors duration-150 hover:text-[#1A1814]"
+            >
+              elletamc@gmail.com
+            </a>
+            <a
+              href="https://www.linkedin.com/in/elleta-mcdaniel"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-fit font-[family:var(--font-body)] text-xs uppercase tracking-[0.18em] text-[#7C7367] transition-colors duration-150 hover:text-[#1A1814]"
+            >
+              LinkedIn
+            </a>
+          </div>
         </div>
       </div>
     </>

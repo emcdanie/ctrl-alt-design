@@ -14,11 +14,11 @@ interface CaseStudyLayoutProps {
  */
 export default function CaseStudyLayout({ children }: CaseStudyLayoutProps) {
   return (
-    <main style={{ background: "#EDE8DF", minHeight: "100vh" }}>
+    <main className="page-shell min-h-screen text-[var(--color-ink-soft)]">
       <CustomCursor />
       <OverlayNav />
       <BackToWorkButton />
-      {children}
+      <div className="relative">{children}</div>
     </main>
   );
 }

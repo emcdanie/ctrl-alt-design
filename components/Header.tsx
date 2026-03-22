@@ -29,40 +29,40 @@ export default function Header({ onResumeClick }: HeaderProps) {
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[#EDE8DF]/90 backdrop-blur-md border-b border-[#1A1814]/8"
-          : ""
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
-        {/* Logo */}
+    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 sm:pt-5">
+      <div
+        className={`mx-auto flex h-16 w-full max-w-7xl items-center justify-between rounded-[24px] border px-4 shadow-[0_18px_44px_rgba(26,24,20,0.06)] backdrop-blur-xl transition-all duration-300 sm:px-5 ${
+          scrolled
+            ? "border-[#1A1814]/10 bg-[#F6F1E8]/88"
+            : "border-[#1A1814]/8 bg-[#F6F1E8]/72"
+        }`}
+      >
         <a
           href="#"
-          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-          className="text-[15px] font-semibold text-[#1A1814] tracking-tight hover:opacity-70 transition-opacity"
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className="text-[15px] font-semibold tracking-[-0.02em] text-[#1A1814] transition-opacity hover:opacity-70"
         >
           Elleta McDaniel
         </a>
 
-        {/* Nav */}
-        <nav className="hidden md:flex items-center gap-7">
+        <nav className="hidden items-center gap-7 md:flex">
           {navLinks.map((link) => (
             <button
               key={link.href}
               onClick={() => scrollTo(link.href)}
-              className="text-[15px] text-[#4A4640] hover:text-[#1A1814] transition-colors cursor-pointer bg-transparent border-none p-0"
+              className="border-none bg-transparent p-0 text-[14px] tracking-[-0.01em] text-[#5D544A] transition-colors hover:text-[#1A1814]"
             >
               {link.label}
             </button>
           ))}
         </nav>
 
-        {/* Resume CTA */}
         <button
           onClick={onResumeClick}
-          className="bg-[#1A1814] text-[#EDE8DF] text-[14px] font-medium px-4 py-1.5 rounded-full hover:opacity-80 transition-opacity cursor-pointer"
+          className="rounded-full border border-[#1A1814]/10 bg-[#1A1814] px-4 py-2 text-[13px] font-medium text-[#F6F1E8] shadow-[0_10px_24px_rgba(26,24,20,0.16)] transition-all duration-200 hover:-translate-y-px hover:opacity-90"
         >
           Resume
         </button>
