@@ -5,269 +5,181 @@ import Image from "next/image";
 import caseStudies from "@/data/caseStudies";
 import FadeIn from "@/components/FadeIn";
 
-// Tag pill colours (below thumbnail)
 const CATEGORY_COLORS: Record<string, { bg: string; color: string }> = {
   "DESIGN SYSTEMS": { bg: "#2A5FA8", color: "#FFFFFF" },
-  "DATA VIZ":       { bg: "#6B3FA8", color: "#FFFFFF" },
-  "UX STRATEGY":    { bg: "#A85F20", color: "#FFFFFF" },
-  "PRODUCT UX":     { bg: "#206B4A", color: "#FFFFFF" },
+  "DATA VIZ": { bg: "#6B3FA8", color: "#FFFFFF" },
+  "UX STRATEGY": { bg: "#A85F20", color: "#FFFFFF" },
+  "PRODUCT UX": { bg: "#206B4A", color: "#FFFFFF" },
 };
 
 function getCategoryStyle(category: string) {
   return CATEGORY_COLORS[category] ?? { bg: "#1A1814", color: "#FFFFFF" };
 }
 
-// Designed-cover colour themes — gradient from transparent → rich dark tint
-// layered over the thumbnail image/video to create branded covers
-const COVER_THEMES: Record<string, { gradient: string; accent: string }> = {
-  "DESIGN SYSTEMS": {
-    gradient: "linear-gradient(to top, rgba(10,22,40,0.96) 0%, rgba(10,22,40,0.55) 45%, transparent 100%)",
-    accent: "#2A5FA8",
-  },
-  "DATA VIZ": {
-    gradient: "linear-gradient(to top, rgba(30,10,40,0.96) 0%, rgba(30,10,40,0.55) 45%, transparent 100%)",
-    accent: "#6B3FA8",
-  },
-  "UX STRATEGY": {
-    gradient: "linear-gradient(to top, rgba(40,20,10,0.96) 0%, rgba(40,20,10,0.55) 45%, transparent 100%)",
-    accent: "#A85F20",
-  },
-  "PRODUCT UX": {
-    gradient: "linear-gradient(to top, rgba(10,30,20,0.96) 0%, rgba(10,30,20,0.55) 45%, transparent 100%)",
-    accent: "#206B4A",
-  },
-};
-
-function getCoverTheme(category: string) {
-  return COVER_THEMES[category] ?? {
-    gradient: "linear-gradient(to top, rgba(26,24,20,0.96) 0%, rgba(26,24,20,0.55) 45%, transparent 100%)",
-    accent: "#1A1814",
-  };
-}
-
 export default function CaseStudyGrid() {
   return (
     <section id="work" className="py-20 px-6">
-      <div className="max-w-7xl mx-auto">
-
-        {/* Header */}
+      <div className="max-w-5xl mx-auto">
         <FadeIn>
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
             <div>
               <p className="section-label mb-3">— Selected Work</p>
-              <h2 className="font-display font-extrabold text-[#1A1814] leading-tight" style={{ fontSize: "clamp(32px, 5vw, 48px)" }}>
+              <h2
+                className="font-display font-extrabold text-[#1A1814] leading-tight"
+                style={{ fontSize: "clamp(32px, 5vw, 48px)" }}
+              >
                 Case Studies
               </h2>
-              <p className="mt-2 max-w-sm" style={{ fontSize: "16px", color: "#8A8480", lineHeight: "1.6" }}>
+              <p
+                className="mt-2 max-w-md"
+                style={{
+                  fontSize: "17px",
+                  color: "#6B6560",
+                  lineHeight: 1.65,
+                  letterSpacing: "0.01em",
+                }}
+              >
                 Long-form project work across design systems, enterprise platforms, and complex product UX.
               </p>
             </div>
           </div>
         </FadeIn>
 
-        {/* Grid — 1 col mobile, 2 col tablet, 3 col desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-start">
-          {caseStudies.map((cs, i) => {
-            const coverTheme = getCoverTheme(cs.category);
-            return (
-              <FadeIn key={cs.slug} delay={i * 60}>
-                <Link
-                  href={cs.href ?? `/case-studies/${cs.slug}`}
-                  data-cursor="card"
-                  className="group rounded-2xl overflow-hidden block bg-white/60"
-                  style={{
-                    border: "1px solid rgba(26,24,20,0.07)",
-                    transition: "box-shadow 280ms ease, transform 280ms ease",
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.13)";
-                    e.currentTarget.style.transform = "translateY(-4px)";
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.boxShadow = "none";
-                    e.currentTarget.style.transform = "translateY(0)";
-                  }}
+        <div className="flex flex-col gap-5">
+          {caseStudies.map((cs, i) => (
+            <FadeIn key={cs.slug} delay={i * 70}>
+              <Link
+                href={cs.href ?? `/case-studies/${cs.slug}`}
+                data-cursor="card"
+                className="group glass-card flex flex-col md:flex-row md:items-stretch overflow-hidden transition-all duration-300 hover:shadow-[0_12px_48px_rgba(44,24,16,0.1)] hover:-translate-y-0.5 md:min-h-[200px]"
+              >
+                {/* Media — 16:9, consistent across projects */}
+                <div
+                  className="relative w-full shrink-0 aspect-video md:w-[min(44%,380px)] md:max-w-[420px]"
+                  style={{ background: "#1A1814" }}
                 >
-                  {/* ── Thumbnail — 16:9 designed cover ── */}
-                  <div
-                    style={{
-                      position: "relative",
-                      width: "100%",
-                      aspectRatio: "16 / 9",
-                      overflow: "hidden",
-                      background: "#1A1814",
-                    }}
-                  >
-                    {/* Base image */}
-                    <Image
-                      src={cs.heroImage}
-                      alt={cs.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                    />
-
-                    {/* Video layer */}
-                    {cs.heroVideo && (
-                      <video
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        onError={e => { e.currentTarget.style.display = "none"; }}
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                          zIndex: 1,
-                        }}
-                      >
-                        <source src={cs.heroVideo} type="video/mp4" />
-                      </video>
-                    )}
-
-                    {/* ── Designed cover: colour-themed gradient ── */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        background: coverTheme.gradient,
-                        zIndex: 2,
-                        transition: "opacity 280ms ease",
+                  <Image
+                    src={cs.heroImage}
+                    alt={cs.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    sizes="(max-width: 768px) 100vw, 380px"
+                  />
+                  {cs.heroVideo && (
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
                       }}
-                    />
-
-                    {/* ── Cover text: title + subtitle ── */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        padding: "16px 18px 18px",
-                        zIndex: 3,
-                      }}
+                      className="absolute inset-0 z-[1] h-full w-full object-cover"
                     >
-                      {/* Category accent line */}
+                      <source src={cs.heroVideo} type="video/mp4" />
+                    </video>
+                  )}
+                  {/* Light bottom fade for badges */}
+                  <div
+                    className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-black/35 via-transparent to-transparent"
+                    aria-hidden
+                  />
+                  {cs.heroVideo && (
+                    <div
+                      className="pointer-events-none absolute inset-0 z-[3] flex items-center justify-center"
+                    >
                       <div
-                        style={{
-                          width: "24px",
-                          height: "2px",
-                          background: coverTheme.accent,
-                          borderRadius: "2px",
-                          marginBottom: "8px",
-                          opacity: 0.9,
+                        className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 shadow-lg"
+                        aria-hidden
+                      >
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M5 3.5l9 4.5-9 4.5V3.5z" fill="#1A1814" />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                  <span className="absolute right-3 top-3 z-[4] text-[12px] font-medium text-white/85">
+                    {cs.year}
+                  </span>
+                  {cs.clientLogo && (
+                    <div className="absolute left-3 top-3 z-[4] flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-white/95 shadow-md">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={cs.clientLogo}
+                        alt={cs.clientName ?? ""}
+                        className="h-[22px] w-[22px] object-contain"
+                        onError={(e) => {
+                          e.currentTarget.parentElement!.style.display = "none";
                         }}
                       />
-                      <h3
-                        style={{
-                          fontFamily: "var(--font-display)",
-                          fontSize: "clamp(15px, 2vw, 19px)",
-                          fontWeight: 700,
-                          color: "#FFFFFF",
-                          lineHeight: 1.2,
-                          marginBottom: "4px",
-                          letterSpacing: "-0.01em",
-                        }}
-                      >
-                        {cs.title}
-                      </h3>
-                      <p
-                        style={{
-                          fontFamily: "var(--font-body)",
-                          fontSize: "11px",
-                          color: "rgba(255,255,255,0.65)",
-                          lineHeight: 1.4,
-                          margin: 0,
-                          display: "-webkit-box",
-                          WebkitLineClamp: 1,
-                          WebkitBoxOrient: "vertical",
-                          overflow: "hidden",
-                        }}
-                      >
-                        {cs.description}
-                      </p>
                     </div>
+                  )}
+                </div>
 
-                    {/* Play icon for video cards */}
-                    {cs.heroVideo && (
-                      <div
-                        className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                        style={{ zIndex: 4 }}
-                      >
-                        <div
-                          style={{
-                            width: "48px",
-                            height: "48px",
-                            borderRadius: "999px",
-                            background: "rgba(255,255,255,0.88)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            boxShadow: "0 4px 16px rgba(0,0,0,0.22)",
-                          }}
-                        >
-                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                            <path d="M5 3.5l9 4.5-9 4.5V3.5z" fill="#1A1814" />
-                          </svg>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Year badge */}
+                {/* Editorial column — tags, title, description, CTA */}
+                <div className="flex min-h-[180px] flex-1 flex-col justify-center gap-3 px-5 py-6 md:px-8 md:py-7">
+                  <div className="flex flex-wrap gap-2">
                     <span
-                      className="absolute top-3 right-3 text-[12px] font-medium text-white/60"
-                      style={{ zIndex: 5 }}
-                    >
-                      {cs.year}
-                    </span>
-                  </div>
-
-                  {/* ── Card content: tags → description ── */}
-                  <div className="p-5 flex flex-col gap-2">
-                    <div className="flex flex-wrap gap-2">
-                      <span
-                        className="text-[11px] font-bold px-3 py-1 rounded-full"
-                        style={{
-                          background: getCategoryStyle(cs.category).bg,
-                          color: getCategoryStyle(cs.category).color,
-                          letterSpacing: "0.1em",
-                        }}
-                      >
-                        {cs.category}
-                      </span>
-                      {cs.tags?.slice(0, 2).map(tag => (
-                        <span
-                          key={`${cs.slug}-${tag}`}
-                          className="tag"
-                          style={{ fontSize: "10px", padding: "0.2rem 0.55rem" }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    <p
-                      className="line-clamp-2"
+                      className="rounded-full px-3 py-1 text-[11px] font-bold tracking-widest"
                       style={{
-                        fontFamily: "var(--font-body)",
-                        fontSize: "14px",
-                        color: "#666666",
-                        lineHeight: 1.6,
-                        marginTop: "2px",
+                        background: getCategoryStyle(cs.category).bg,
+                        color: getCategoryStyle(cs.category).color,
+                        letterSpacing: "0.1em",
                       }}
                     >
-                      {cs.description}
-                    </p>
+                      {cs.category}
+                    </span>
+                    {cs.tags?.slice(0, 3).map((tag) => (
+                      <span
+                        key={`${cs.slug}-${tag}`}
+                        className="tag"
+                        style={{ fontSize: "10px", padding: "0.2rem 0.55rem" }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
-                </Link>
-              </FadeIn>
-            );
-          })}
-        </div>
 
+                  {cs.clientName && (
+                    <p
+                      className="text-[11px] font-semibold uppercase tracking-wider text-[#8A8480]"
+                      style={{ letterSpacing: "0.08em" }}
+                    >
+                      {cs.clientName}
+                    </p>
+                  )}
+
+                  <h3
+                    className="font-display text-[clamp(1.25rem,2.5vw,1.5rem)] font-semibold leading-snug text-[#1A1814] tracking-tight"
+                  >
+                    {cs.title}
+                  </h3>
+
+                  <p
+                    className="line-clamp-2 text-[15px] leading-relaxed text-[#5C5852]"
+                    style={{ lineHeight: 1.65, letterSpacing: "0.01em" }}
+                  >
+                    {cs.description}
+                  </p>
+
+                  <span
+                    className="mt-1 inline-flex items-center gap-1 text-[13px] font-semibold transition-colors group-hover:text-[var(--color-accent-espresso)]"
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      color: "#1A1814",
+                      letterSpacing: "0.02em",
+                    }}
+                  >
+                    View case study
+                    <span aria-hidden className="transition-transform group-hover:translate-x-0.5">
+                      →
+                    </span>
+                  </span>
+                </div>
+              </Link>
+            </FadeIn>
+          ))}
+        </div>
       </div>
     </section>
   );
