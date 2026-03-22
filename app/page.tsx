@@ -19,7 +19,7 @@ export default function Home() {
   const [resumeOpen, setResumeOpen] = useState(false);
 
   return (
-    <main className="bg-[#EDE8DF] text-[#1A1A1A] min-h-screen overflow-x-hidden">
+    <main className="bg-[var(--color-page)] text-[#1A1A1A] min-h-screen overflow-x-hidden">
       <CustomCursor />
       <OverlayNav />
 
