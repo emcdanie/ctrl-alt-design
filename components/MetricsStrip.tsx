@@ -14,7 +14,7 @@ const metrics: MetricItem[] = [
     stat: "3+",
     label: "YEARS EXPERIENCE",
     hover: [
-      { text: "***REMOVED*** — UX/UI Designer", href: "/case-studies/***REMOVED***" },
+      { text: "***REMOVED*** — UX/UI Designer", href: "/case-studies/design-system-transformation" },
       { text: "Brad Frost Web — Product Designer", href: "/case-studies/brad-frost" },
       { text: "***REMOVED*** — Dashboard Prototype", href: "/case-studies/un-operational-dashboard" },
     ],
@@ -24,7 +24,7 @@ const metrics: MetricItem[] = [
     label: "DESIGN SYSTEMS BUILT",
     hover: [
       { text: "***REMOVED*** Design System", href: "/case-studies/design-system-transformation" },
-      { text: "Brad Frost Atomic System", href: "/case-study/brad-frost" },
+      { text: "Brad Frost Atomic System", href: "/case-studies/brad-frost" },
     ],
   },
   {
@@ -33,7 +33,7 @@ const metrics: MetricItem[] = [
     hover: [
       { text: "***REMOVED*** travel platform", href: "/case-studies/design-system-transformation" },
       { text: "***REMOVED*** operational dashboard", href: "/case-studies/un-operational-dashboard" },
-      { text: "Guardian concept", href: "/case-study/guardian" },
+      { text: "Guardian concept", href: "/case-studies/guardian" },
     ],
   },
   {

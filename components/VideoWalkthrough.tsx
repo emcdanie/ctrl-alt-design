@@ -16,7 +16,7 @@ export default function VideoWalkthrough() {
 
         {/* Looping video — clicking opens the Guardian case study */}
         <Link
-          href="/case-study/guardian"
+          href="/case-studies/guardian"
           className="group relative block w-full aspect-video rounded-2xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.12)] mb-8"
           style={{ background: GRADIENT }}
           aria-label="View Guardian case study"
@@ -53,7 +53,7 @@ export default function VideoWalkthrough() {
             ))}
           </div>
           <Link
-            href="/case-study/guardian"
+            href="/case-studies/guardian"
             style={{
               display: "inline-block",
               fontFamily: "var(--font-body)",
