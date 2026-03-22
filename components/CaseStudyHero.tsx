@@ -36,43 +36,43 @@ export default function CaseStudyHero({
   liveUrl,
 }: CaseStudyHeroProps) {
   return (
-    <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-10 px-6 pb-16 pt-24 md:grid-cols-2 md:gap-16 md:px-8 md:pb-20 md:pt-28">
+    <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-10 px-6 pb-16 pt-28 md:grid-cols-2 md:gap-16 md:px-8 md:pb-24 md:pt-32">
       {/* ── Left: text ── */}
       <div className="max-w-[580px]">
-        <p className="section-label mb-5">{eyebrow}</p>
+        <p className="section-label mb-6">{eyebrow}</p>
 
         <h1 className="mb-6 font-[var(--font-display)] text-[clamp(40px,5.5vw,72px)] font-bold leading-[1.02] tracking-[-0.03em] text-[var(--color-ink)]">
           {title}
         </h1>
 
-        <p className="mb-9 max-w-[560px] text-[clamp(16px,1.5vw,20px)] leading-[1.7] text-[var(--color-muted)]">
+        <p className="mb-10 max-w-[560px] text-[clamp(16px,1.5vw,19px)] leading-[1.75] text-[var(--color-muted)]">
           {intro}
         </p>
 
-        <dl className="mb-7 space-y-3.5 border-b border-[var(--color-border-soft)] pb-7">
+        <dl className="mb-8 space-y-4 border-b border-[var(--color-border-soft)] pb-8">
           {metadata.map(({ label, value }) => (
             <div
               key={label}
-              className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:gap-4"
+              className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-5"
             >
-              <dt className="min-w-[96px] text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
+              <dt className="min-w-[100px] text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--color-ink-muted)] opacity-70">
                 {label}
               </dt>
-              <dd className="m-0 max-w-[420px] text-sm leading-[1.65] text-[var(--color-ink)]">
+              <dd className="m-0 max-w-[440px] text-[13.5px] leading-[1.7] text-[var(--color-ink)]">
                 {value}
               </dd>
             </div>
           ))}
         </dl>
 
-        <div className={`flex flex-wrap gap-2 ${liveUrl ? "mb-5" : ""}`}>
+        <div className={`flex flex-wrap gap-2.5 ${liveUrl ? "mb-6" : ""}`}>
           {tags.map((tag) => {
             const c = tagColor(tag);
 
             return (
               <span
                 key={tag}
-                className="inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-medium leading-[1.5] tracking-[0.02em] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]"
+                className="inline-flex items-center rounded-full border px-3.5 py-1.5 text-[11px] font-semibold leading-[1.5] tracking-[0.04em] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]"
                 style={{
                   background: c.bg,
                   color: c.color,

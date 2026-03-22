@@ -625,7 +625,7 @@ const caseStudies: CaseStudy[] = [
   // ─────────────────────────────────────────────────────────────────
   {
     slug: "brad-frost",
-    href: "/case-study/brad-frost",
+    href: "/case-studies/brad-frost",
     title: "Code First",
     category: "DESIGN SYSTEMS",
     year: "2024–2025",

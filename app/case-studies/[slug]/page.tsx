@@ -6,6 +6,7 @@ import caseStudies from "@/data/caseStudies";
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseStudyHero from "@/components/CaseStudyHero";
 import ArtifactPlaceholder from "@/components/ArtifactPlaceholder";
+import ArtifactGallery from "@/components/ArtifactGallery";
 
 export async function generateStaticParams() {
   return caseStudies.map((cs) => ({ slug: cs.slug }));
@@ -14,7 +15,7 @@ export async function generateStaticParams() {
 function RichPara({ text }: { text: string }) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
   return (
-    <p style={{ fontFamily: "var(--font-body)", fontSize: "16px", color: "#2C2C2C", lineHeight: 1.75 }}>
+    <p style={{ fontFamily: "var(--font-body)", fontSize: "16px", color: "#2C2C2C", lineHeight: 1.8, marginBottom: "24px" }}>
       {parts.map((part, i) =>
         part.startsWith("**") && part.endsWith("**") ? (
           <strong key={i} style={{ fontWeight: 600, color: "#1A1A1A" }}>{part.slice(2, -2)}</strong>
@@ -67,53 +68,47 @@ export default async function CaseStudyPage({
       </div>
 
       {/* ── Content ── */}
-      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "64px 24px 80px" }}>
+      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "72px 24px 96px" }}>
 
         {/* Supporting images */}
         {cs.images.length > 0 && (
-          <div style={{ marginBottom: "64px" }}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {cs.images.map((src, i) => (
-                <div key={i} className="relative aspect-[4/3] rounded-xl overflow-hidden">
-                  <Image
-                    src={src}
-                    alt={`${cs.title} — image ${i + 1}`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, 350px"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+          <ArtifactGallery
+            items={cs.images.map((src, i) => ({
+              src,
+              alt: `${cs.title} — image ${i + 1}`,
+              aspectRatio: "4/3",
+            }))}
+            columns={2}
+            className="mb-16"
+          />
         )}
 
         {/* Narrative or structured content */}
         {cs.narrative ? (
           <div>
-            <section style={{ marginBottom: "72px" }}>
-              <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "12px" }}>OVERVIEW</p>
-              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(24px, 3.5vw, 36px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.15, marginBottom: "20px" }}>
+            <section style={{ marginBottom: "80px" }}>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "#8A8A8A", marginBottom: "14px" }}>OVERVIEW</p>
+              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(26px, 3.5vw, 38px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.12, marginBottom: "24px" }}>
                 {cs.overview.headline}
               </h2>
               <RichPara text={cs.overview.body} />
             </section>
 
             {cs.narrative.map((section, idx) => (
-              <section key={idx} style={{ marginBottom: "72px" }}>
+              <section key={idx} style={{ marginBottom: "80px" }}>
                 {section.label && (
-                  <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "12px" }}>
+                  <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "#8A8A8A", marginBottom: "14px" }}>
                     {section.label}
                   </p>
                 )}
-                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.2, marginBottom: "20px" }}>
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(24px, 3.2vw, 34px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.15, marginBottom: "24px" }}>
                   {section.heading}
                 </h2>
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
                   {section.paragraphs.map((para, pIdx) => {
                     const isPullQuote = para.startsWith('"') || para.startsWith('\u201c');
                     return isPullQuote ? (
-                      <blockquote key={pIdx} style={{ fontFamily: "var(--font-display)", fontSize: "clamp(18px, 2.2vw, 22px)", fontStyle: "italic", fontWeight: 400, color: "#1A1A1A", borderLeft: "3px solid #1A1814", paddingLeft: "24px", paddingTop: "12px", paddingBottom: "12px", background: "#F0EDE8", borderRadius: "0 6px 6px 0", margin: "8px 0", lineHeight: 1.5 }}>
+                      <blockquote key={pIdx} style={{ fontFamily: "var(--font-display)", fontSize: "clamp(19px, 2.4vw, 24px)", fontStyle: "italic", fontWeight: 400, color: "#2C2A28", borderLeft: "3px solid #3A3430", paddingLeft: "28px", paddingTop: "20px", paddingBottom: "20px", paddingRight: "8px", background: "#F5F2EE", borderRadius: "0 6px 6px 0", margin: "24px 0", lineHeight: 1.55 }}>
                         {para}
                       </blockquote>
                     ) : (
@@ -124,8 +119,8 @@ export default async function CaseStudyPage({
               </section>
             ))}
 
-            <div style={{ marginBottom: "72px" }}>
-              <span style={{ display: "inline-flex", alignItems: "center", padding: "8px 20px", borderRadius: "999px", background: "#1A1814", color: "#EDE8DF", fontFamily: "var(--font-body)", fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+            <div style={{ marginBottom: "80px" }}>
+              <span style={{ display: "inline-flex", alignItems: "center", padding: "10px 22px", borderRadius: "999px", background: "#1A1814", color: "#EDE8DF", fontFamily: "var(--font-body)", fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" }}>
                 {cs.outcomes.completionTag}
               </span>
             </div>
@@ -133,23 +128,23 @@ export default async function CaseStudyPage({
 
         ) : (
           <div>
-            <section style={{ marginBottom: "56px", paddingBottom: "56px", borderBottom: "1px solid rgba(26,24,20,0.08)" }}>
-              <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "12px" }}>OVERVIEW</p>
-              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(24px, 3.5vw, 36px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.15, marginBottom: "20px" }}>
+            <section style={{ marginBottom: "64px", paddingBottom: "64px", borderBottom: "1px solid rgba(26,24,20,0.08)" }}>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "#8A8A8A", marginBottom: "14px" }}>OVERVIEW</p>
+              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(26px, 3.5vw, 38px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.12, marginBottom: "24px" }}>
                 {cs.overview.headline}
               </h2>
               <RichPara text={cs.overview.body} />
             </section>
 
-            <section style={{ marginBottom: "56px", paddingBottom: "56px", borderBottom: "1px solid rgba(26,24,20,0.08)" }}>
-              <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "12px" }}>THE PROBLEM</p>
-              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.2, marginBottom: "20px" }}>
+            <section style={{ marginBottom: "64px", paddingBottom: "64px", borderBottom: "1px solid rgba(26,24,20,0.08)" }}>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "#8A8A8A", marginBottom: "14px" }}>THE PROBLEM</p>
+              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(24px, 3.2vw, 34px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.15, marginBottom: "24px" }}>
                 {cs.problem.title}
               </h2>
               <RichPara text={cs.problem.body} />
             </section>
 
-            <div style={{ marginBottom: "56px" }}>
+            <div style={{ marginBottom: "64px" }}>
               <ArtifactPlaceholder
                 title="Problem Framing Artifact"
                 description="Add an audit screenshot or annotated snapshot that documents the core problem context."
@@ -157,23 +152,23 @@ export default async function CaseStudyPage({
               />
             </div>
 
-            <section style={{ marginBottom: "56px", paddingBottom: "56px", borderBottom: "1px solid rgba(26,24,20,0.08)" }}>
-              <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "16px" }}>PROCESS</p>
-              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.2, marginBottom: "28px" }}>
+            <section style={{ marginBottom: "64px", paddingBottom: "64px", borderBottom: "1px solid rgba(26,24,20,0.08)" }}>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "#8A8A8A", marginBottom: "14px" }}>PROCESS</p>
+              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(24px, 3.2vw, 34px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.15, marginBottom: "32px" }}>
                 {cs.process.title}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {cs.process.steps.map((step) => (
-                  <div key={step.number} style={{ background: "rgba(255,255,255,0.5)", borderRadius: "12px", padding: "20px", border: "1px solid rgba(26,24,20,0.07)" }}>
-                    <span style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", display: "block", marginBottom: "8px" }}>{step.number}</span>
-                    <h3 style={{ fontFamily: "var(--font-display)", fontSize: "15px", fontWeight: 600, color: "#1A1A1A", marginBottom: "6px" }}>{step.title}</h3>
-                    <p style={{ fontFamily: "var(--font-body)", fontSize: "14px", color: "#4A4640", lineHeight: 1.6 }}>{step.description}</p>
+                  <div key={step.number} style={{ background: "rgba(255,255,255,0.55)", borderRadius: "14px", padding: "24px", border: "1px solid rgba(26,24,20,0.07)" }}>
+                    <span style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "#8A8A8A", display: "block", marginBottom: "10px" }}>{step.number}</span>
+                    <h3 style={{ fontFamily: "var(--font-display)", fontSize: "16px", fontWeight: 600, color: "#1A1A1A", marginBottom: "8px", lineHeight: 1.3 }}>{step.title}</h3>
+                    <p style={{ fontFamily: "var(--font-body)", fontSize: "14px", color: "#4A4640", lineHeight: 1.65, margin: 0 }}>{step.description}</p>
                   </div>
                 ))}
               </div>
             </section>
 
-            <div style={{ marginBottom: "56px" }}>
+            <div style={{ marginBottom: "64px" }}>
               <ArtifactPlaceholder
                 title="Key Deliverable Artifact"
                 description="Add a flow diagram, component overview, or final output that captures the implementation direction."
@@ -181,14 +176,14 @@ export default async function CaseStudyPage({
               />
             </div>
 
-            <section style={{ marginBottom: "56px" }}>
-              <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "12px" }}>OUTCOMES</p>
-              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.2, marginBottom: "20px" }}>
+            <section style={{ marginBottom: "64px" }}>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "#8A8A8A", marginBottom: "14px" }}>OUTCOMES</p>
+              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(24px, 3.2vw, 34px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.15, marginBottom: "24px" }}>
                 {cs.outcomes.title}
               </h2>
               <RichPara text={cs.outcomes.body} />
-              <div style={{ marginTop: "32px" }}>
-                <span style={{ display: "inline-flex", alignItems: "center", padding: "8px 20px", borderRadius: "999px", background: "#1A1814", color: "#EDE8DF", fontFamily: "var(--font-body)", fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+              <div style={{ marginTop: "36px" }}>
+                <span style={{ display: "inline-flex", alignItems: "center", padding: "10px 22px", borderRadius: "999px", background: "#1A1814", color: "#EDE8DF", fontFamily: "var(--font-body)", fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" }}>
                   {cs.outcomes.completionTag}
                 </span>
               </div>

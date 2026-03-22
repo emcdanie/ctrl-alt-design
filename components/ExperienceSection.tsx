@@ -12,7 +12,7 @@ const roles = [
     isCurrent: true,
     logoSrc: "/images/logos/bradfrostwebjpeg.jpeg",
     logoBg: "#1A1A1A",
-    caseStudySlug: "case-study/brad-frost",
+    caseStudySlug: "case-studies/brad-frost",
     caseStudyLabel: "Code First — View case study →",
     highlights: [
       "**Built a production-ready Figma component library** aligned with Brad Frost's Atomic Design methodology — atoms, molecules, organisms, and templates across a real client design system.",
@@ -112,27 +112,11 @@ function SectionHeader({ label, title, description, action }: SectionHeaderProps
     <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
       <div>
         <p className="section-label mb-3">{label}</p>
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(32px, 5vw, 48px)",
-            fontWeight: 400,
-            color: "#1A1814",
-            lineHeight: 1.1,
-          }}
-        >
+        <h2 className="heading-section">
           {title}
         </h2>
         {description && (
-          <p
-            className="mt-3 max-w-xl"
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "16px",
-              color: "#8A8480",
-              lineHeight: 1.6,
-            }}
-          >
+          <p className="body-base mt-3 max-w-xl" style={{ color: "var(--color-muted)" }}>
             {description}
           </p>
         )}
@@ -200,16 +184,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
       </div>
 
       <div style={{ marginTop: "72px" }}>
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(28px, 4vw, 40px)",
-            fontWeight: 400,
-            color: "#1A1814",
-            lineHeight: 1.1,
-            marginBottom: "40px",
-          }}
-        >
+        <h2 className="heading-subsection" style={{ marginBottom: "40px" }}>
           Education
         </h2>
         <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>

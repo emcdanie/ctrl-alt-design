@@ -5,11 +5,11 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
     <p style={{
       fontFamily: "var(--font-body)",
       fontSize: "11px",
-      fontWeight: 500,
+      fontWeight: 600,
       textTransform: "uppercase" as const,
-      letterSpacing: "0.12em",
+      letterSpacing: "0.14em",
       color: "#8A8A8A",
-      marginBottom: "12px",
+      marginBottom: "14px",
     }}>
       {children}
     </p>
@@ -20,11 +20,11 @@ export function H2({ children }: { children: React.ReactNode }) {
   return (
     <h2 style={{
       fontFamily: "var(--font-display)",
-      fontSize: "clamp(28px, 4vw, 40px)",
+      fontSize: "clamp(26px, 3.5vw, 38px)",
       fontWeight: 400,
       color: "#1A1A1A",
-      lineHeight: 1.1,
-      marginBottom: "20px",
+      lineHeight: 1.12,
+      marginBottom: "24px",
       marginTop: "0",
     }}>
       {children}
@@ -39,8 +39,8 @@ export function Body({ children }: { children: React.ReactNode }) {
       fontSize: "16px",
       fontWeight: 400,
       color: "#2C2C2C",
-      lineHeight: 1.75,
-      marginBottom: "20px",
+      lineHeight: 1.8,
+      marginBottom: "24px",
     }}>
       {children}
     </p>
@@ -51,16 +51,18 @@ export function PullQuote({ children }: { children: React.ReactNode }) {
   return (
     <blockquote style={{
       fontFamily: "var(--font-display)",
-      fontSize: "clamp(20px, 2.5vw, 26px)",
+      fontSize: "clamp(19px, 2.4vw, 24px)",
       fontStyle: "italic",
-      color: "#2C2C2C",
-      borderLeft: "3px solid #1A1A1A",
-      paddingLeft: "24px",
-      paddingTop: "16px",
-      paddingBottom: "16px",
-      background: "#F9F8F5",
-      borderRadius: "4px",
-      margin: "40px 0",
+      color: "#2C2A28",
+      borderLeft: "3px solid #3A3430",
+      paddingLeft: "28px",
+      paddingTop: "20px",
+      paddingBottom: "20px",
+      paddingRight: "8px",
+      background: "#F5F2EE",
+      borderRadius: "0 6px 6px 0",
+      margin: "48px 0",
+      lineHeight: 1.55,
     }}>
       {children}
     </blockquote>
@@ -73,7 +75,7 @@ export function Section({ eyebrow, heading, children }: {
   children: React.ReactNode;
 }) {
   return (
-    <section style={{ marginBottom: "80px" }}>
+    <section style={{ marginBottom: "88px" }}>
       <Eyebrow>{eyebrow}</Eyebrow>
       <H2>{heading}</H2>
       {children}
