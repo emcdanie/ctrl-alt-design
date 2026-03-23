@@ -53,6 +53,7 @@ export interface CaseStudy {
   narrative?: NarrativeSection[];
   clientLogo?: string;
   clientName?: string;
+  demoLinks?: { label: string; href: string }[];
 }
 
 const caseStudies: CaseStudy[] = [
@@ -126,6 +127,10 @@ const caseStudies: CaseStudy[] = [
     tags: ["Figma", "Design Tokens", "Atomic Design", "Governance", "***REMOVED***"],
     clientLogo: "/images/logos/bizaway_logo.jpeg",
     clientName: "***REMOVED***",
+    demoLinks: [
+      { label: "ctrl+travel prototype", href: "/demos/ctrl-travel.html" },
+      { label: "ctrl+travel v2", href: "/demos/ctrl-travel-v2.html" },
+    ],
     description:
       "Rebuilding Design System Thinking in a Scaling SaaS Product",
     narrative: [
@@ -349,6 +354,9 @@ const caseStudies: CaseStudy[] = [
     tags: ["Figma", "Data Visualisation", "Enterprise UX", "***REMOVED*** ICTS"],
     clientLogo: "/images/logos/united_nations_office_at_geneva_logo.jpeg",
     clientName: "United Nations",
+    demoLinks: [
+      { label: "Grand Prix Dashboard prototype", href: "/demos/grandprix-dashboard.html" },
+    ],
     description:
       "A Unified ICT Platform Concept for a Complex International Organization",
     narrative: [
@@ -487,6 +495,10 @@ const caseStudies: CaseStudy[] = [
     tags: ["Figma", "Interaction Design", "Cognitive UX", "***REMOVED***"],
     clientLogo: "/images/logos/bizaway_logo.jpeg",
     clientName: "***REMOVED***",
+    demoLinks: [
+      { label: "***REMOVED*** search prototype", href: "/demos/***REMOVED***-search.html" },
+      { label: "***REMOVED*** filter demo", href: "/demos/***REMOVED***-demo.html" },
+    ],
     description:
       "Designing Structured Filtering for Complex Product Discovery",
     narrative: [

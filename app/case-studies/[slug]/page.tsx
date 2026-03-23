@@ -119,6 +119,25 @@ export default async function CaseStudyPage({
               </section>
             ))}
 
+            {cs.demoLinks && cs.demoLinks.length > 0 && (
+              <div style={{ marginBottom: "48px" }}>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "#8A8A8A", marginBottom: "16px" }}>LIVE DEMOS</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+                  {cs.demoLinks.map((demo) => (
+                    <a
+                      key={demo.href}
+                      href={demo.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "10px 20px", borderRadius: "999px", border: "1px solid rgba(26,24,20,0.18)", background: "#FAFAF8", color: "#1A1814", fontFamily: "var(--font-body)", fontSize: "13px", fontWeight: 500, textDecoration: "none", transition: "background 0.15s" }}
+                    >
+                      <span style={{ fontSize: "14px" }}>↗</span> {demo.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div style={{ marginBottom: "80px" }}>
               <span style={{ display: "inline-flex", alignItems: "center", padding: "10px 22px", borderRadius: "999px", background: "#1A1814", color: "#EDE8DF", fontFamily: "var(--font-body)", fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" }}>
                 {cs.outcomes.completionTag}
@@ -182,6 +201,24 @@ export default async function CaseStudyPage({
                 {cs.outcomes.title}
               </h2>
               <RichPara text={cs.outcomes.body} />
+              {cs.demoLinks && cs.demoLinks.length > 0 && (
+                <div style={{ marginTop: "36px", marginBottom: "32px" }}>
+                  <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "#8A8A8A", marginBottom: "16px" }}>LIVE DEMOS</p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+                    {cs.demoLinks.map((demo) => (
+                      <a
+                        key={demo.href}
+                        href={demo.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "10px 20px", borderRadius: "999px", border: "1px solid rgba(26,24,20,0.18)", background: "#FAFAF8", color: "#1A1814", fontFamily: "var(--font-body)", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
+                      >
+                        <span style={{ fontSize: "14px" }}>↗</span> {demo.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
               <div style={{ marginTop: "36px" }}>
                 <span style={{ display: "inline-flex", alignItems: "center", padding: "10px 22px", borderRadius: "999px", background: "#1A1814", color: "#EDE8DF", fontFamily: "var(--font-body)", fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" }}>
                   {cs.outcomes.completionTag}

@@ -7,6 +7,7 @@ import Hero from "@/components/Hero";
 import Carousel from "@/components/Carousel";
 import MetricsStrip from "@/components/MetricsStrip";
 import CaseStudyGrid from "@/components/CaseStudyGrid";
+import ProcessSection from "@/components/ProcessSection";
 import VideoWalkthrough from "@/components/VideoWalkthrough";
 import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
 import AboutSection from "@/components/AboutSection";
@@ -30,6 +31,9 @@ export default function Home() {
 
       {/* 2 — Case Studies */}
       <CaseStudyGrid />
+
+      {/* 2b — Process (anchors footer #process link) */}
+      <ProcessSection />
 
       {/* 3 — Guardian Highlight */}
       <VideoWalkthrough />

@@ -9,15 +9,6 @@ interface ProcessStep {
   artifactCaption: string;
   caseStudySlug: string;
   caseStudyLabel: string;
-}
-
-interface ProcessStep {
-  number: string;
-  title: string;
-  description: string;
-  artifactCaption: string;
-  caseStudySlug: string;
-  caseStudyLabel: string;
   color: string;
   hoverColor: string;
   accentColor: string;
@@ -104,8 +95,12 @@ export default function ProcessSection() {
           {steps.map((step) => (
             <div
               key={step.number}
-              className="rounded-2xl min-h-[220px] relative overflow-hidden group"
-              style={{ background: step.color }}
+              className="rounded-2xl min-h-[220px] relative overflow-hidden group border border-white/60 shadow-[0_8px_24px_rgba(44,24,16,0.05),0_2px_6px_rgba(44,24,16,0.03),inset_0_1px_0_rgba(255,255,255,0.85)]"
+              style={{
+                background: step.color,
+                backdropFilter: "blur(18px)",
+                WebkitBackdropFilter: "blur(18px)",
+              }}
             >
               {/* Default state */}
               <div className="absolute inset-0 p-5 flex flex-col justify-between transition-opacity duration-300 opacity-100 group-hover:opacity-0">

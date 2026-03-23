@@ -40,17 +40,11 @@ function SectionHeader({ label, title, description }: SectionHeaderProps) {
     <div className="mb-12 flex flex-col justify-between gap-4 sm:flex-row sm:items-end md:mb-14">
       <div>
         <p className="section-label mb-3">{label}</p>
-        <h2
-          className="font-display font-extrabold leading-tight text-[#1A1814]"
-          style={{ fontSize: "clamp(32px, 5vw, 48px)" }}
-        >
+        <h2 className="heading-section">
           {title}
         </h2>
         {description && (
-          <p
-            className="mt-3 max-w-xl text-[16px] leading-[1.72] text-[#6B6560] md:text-[17px]"
-            style={{ letterSpacing: "0.01em" }}
-          >
+          <p className="body-lg mt-3 max-w-xl" style={{ color: "var(--color-muted)" }}>
             {description}
           </p>
         )}
@@ -76,7 +70,7 @@ export default function CaseStudyGrid() {
             <Link
               href={cs.href ?? `/case-studies/${cs.slug}`}
               data-cursor="card"
-              className="group glass-card flex flex-col overflow-hidden rounded-[24px] border border-black/6 bg-white/[0.72] shadow-[0_10px_30px_rgba(44,24,16,0.05),0_2px_8px_rgba(44,24,16,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(44,24,16,0.09),0_8px_18px_rgba(44,24,16,0.06)] md:min-h-[220px] md:flex-row md:items-stretch"
+              className="group glass-card flex flex-col overflow-hidden rounded-[24px] border border-white/60 bg-gradient-to-b from-white/82 to-white/68 shadow-[0_10px_30px_rgba(44,24,16,0.05),0_2px_8px_rgba(44,24,16,0.04),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(44,24,16,0.09),0_8px_18px_rgba(44,24,16,0.06)] md:min-h-[220px] md:flex-row md:items-stretch"
             >
               <div className="relative aspect-video w-full shrink-0 overflow-hidden bg-[#1A1814] md:w-[min(45%,390px)] md:max-w-[420px]">
                 <Image

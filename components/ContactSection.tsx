@@ -85,7 +85,7 @@ export default function ContactSection() {
             <p className="section-label mb-4" style={{ color: "#5A5450" }}>
               — Get in touch
             </p>
-            <h2 className="font-display font-extrabold text-[#EDE8DF] leading-tight mb-8" style={{ fontSize: "clamp(32px, 5vw, 48px)" }}>
+            <h2 className="heading-section mb-8" style={{ color: "#EDE8DF" }}>
               Let&apos;s work together.
             </h2>
 
