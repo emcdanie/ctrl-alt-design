@@ -49,10 +49,10 @@ export default function ExperienceCard({
 }: ExperienceCardProps) {
   return (
     <div
-      className={`overflow-hidden rounded-[22px] border transition-all duration-300 ${
+      className={`overflow-hidden rounded-[22px] border [backdrop-filter:blur(18px)] [-webkit-backdrop-filter:blur(18px)] transition-all duration-300 ${
         isOpen
-          ? "border-black/8 bg-white/78 shadow-[0_16px_40px_rgba(44,24,16,0.08),0_4px_12px_rgba(44,24,16,0.05)]"
-          : "border-black/6 bg-white/54 shadow-[0_8px_24px_rgba(44,24,16,0.04),0_1px_4px_rgba(44,24,16,0.03)] hover:-translate-y-0.5 hover:bg-white/70 hover:shadow-[0_14px_34px_rgba(44,24,16,0.07),0_4px_10px_rgba(44,24,16,0.04)]"
+          ? "border-white/60 bg-gradient-to-b from-white/82 to-white/70 shadow-[0_16px_40px_rgba(44,24,16,0.08),0_4px_12px_rgba(44,24,16,0.05),inset_0_1px_0_rgba(255,255,255,0.9)]"
+          : "border-white/50 bg-gradient-to-b from-white/72 to-white/58 shadow-[0_8px_24px_rgba(44,24,16,0.04),0_1px_4px_rgba(44,24,16,0.03),inset_0_1px_0_rgba(255,255,255,0.8)] hover:-translate-y-0.5 hover:from-white/80 hover:to-white/68 hover:shadow-[0_14px_34px_rgba(44,24,16,0.07),0_4px_10px_rgba(44,24,16,0.04)]"
       }`}
     >
       <button

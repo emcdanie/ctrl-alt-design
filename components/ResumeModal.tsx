@@ -102,13 +102,14 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             </h2>
           </div>
           <div className="flex items-center gap-3">
-            <a
-              href="/cv/Elleta_McDaniel_Product_Designer_CV.pdf"
-              download
-              className="bg-[#1A1814] text-[#EDE8DF] text-[13px] font-medium px-4 py-2 rounded-full hover:opacity-80 transition-opacity"
+            {/* PDF download — enabled once /public/cv/Elleta_McDaniel_Product_Designer_CV.pdf is added */}
+            <span
+              className="bg-[#1A1814]/40 text-[#EDE8DF]/50 text-[13px] font-medium px-4 py-2 rounded-full cursor-not-allowed select-none"
+              title="PDF coming soon"
+              aria-disabled="true"
             >
               Download PDF
-            </a>
+            </span>
             <button
               onClick={onClose}
               className="w-8 h-8 flex items-center justify-center rounded-full border border-[#1A1814]/12 hover:bg-[#1A1814]/8 transition-colors cursor-pointer text-[#4A4640] text-[16px]"

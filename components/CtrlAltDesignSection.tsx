@@ -3,6 +3,8 @@
 import { useState } from "react";
 import VideoCard from "./VideoCard";
 import VideoModal from "./VideoModal";
+import SectionShell from "@/components/ui/SectionShell";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 const LAB_CATEGORY_COLORS: Record<string, { bg: string; color: string }> = {
   "AI UX": { bg: "#2A5FA8", color: "#FFFFFF" },
@@ -19,46 +21,6 @@ interface LabVideo {
   embed: string;
   gradient: string;
   thumbnailSrc: string;
-}
-
-interface SectionShellProps {
-  id: string;
-  className?: string;
-  innerClassName?: string;
-  children: React.ReactNode;
-}
-
-function SectionShell({ id, className = "", innerClassName = "", children }: SectionShellProps) {
-  return (
-    <section id={id} className={`px-6 py-20 ${className}`.trim()}>
-      <div className={`mx-auto max-w-7xl ${innerClassName}`.trim()}>{children}</div>
-    </section>
-  );
-}
-
-interface SectionHeaderProps {
-  label: string;
-  title: string;
-  description?: string;
-}
-
-function SectionHeader({ label, title, description }: SectionHeaderProps) {
-  return (
-    <div className="mb-6">
-      <p className="section-label mb-3">{label}</p>
-      <h2
-        className="font-display font-extrabold leading-none tracking-tight text-[#1A1814]"
-        style={{ fontSize: "clamp(28px, 4vw, 52px)" }}
-      >
-        {title}
-      </h2>
-      {description && (
-        <p className="mt-3 max-w-md text-[16px] leading-[1.6] text-[#8A8480]">
-          {description}
-        </p>
-      )}
-    </div>
-  );
 }
 
 const videos: LabVideo[] = [
@@ -109,6 +71,7 @@ export default function CtrlAltDesignSection() {
         label="— Design Lab"
         title="CTRL_ALT_DESIGN"
         description="Rapid investigations into complex interaction patterns, system dashboards, and AI-assisted workflows."
+        className="mb-6"
       />
 
       <div className="mb-10 h-px w-full bg-black/8" />

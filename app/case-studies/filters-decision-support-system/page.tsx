@@ -250,6 +250,38 @@ export default function FiltersDecisionSupportPage() {
             differently to something the system knew how to do — and new flows could inherit rather
             than reinvent.
           </Body>
+          <div style={{ marginTop: "40px", marginBottom: "32px" }}>
+            <p style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "11px",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.14em",
+              color: "#8A8A8A",
+              marginBottom: "16px",
+            }}>
+              LIVE DEMOS
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+              <a
+                href="/demos/bizaway-search.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "10px 20px", borderRadius: "999px", border: "1px solid rgba(26,24,20,0.18)", background: "#FAFAF8", color: "#1A1814", fontFamily: "var(--font-body)", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
+              >
+                <span style={{ fontSize: "14px" }}>↗</span> BizAway search prototype
+              </a>
+              <a
+                href="/demos/bizaway-demo.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "10px 20px", borderRadius: "999px", border: "1px solid rgba(26,24,20,0.18)", background: "#FAFAF8", color: "#1A1814", fontFamily: "var(--font-body)", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
+              >
+                <span style={{ fontSize: "14px" }}>↗</span> BizAway filter demo
+              </a>
+            </div>
+          </div>
+
           <div style={{ marginTop: "32px" }}>
             <span style={{
               display: "inline-flex",

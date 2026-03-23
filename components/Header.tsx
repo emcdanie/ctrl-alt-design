@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface HeaderProps {
   onResumeClick: () => void;
@@ -16,9 +16,26 @@ const navLinks = [
 
 export default function Header({ onResumeClick }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      setScrolled(currentY > 20);
+
+      if (currentY < 80) {
+        // Always show near the top
+        setVisible(true);
+      } else if (currentY > lastScrollY.current + 6) {
+        // Scrolling down — hide
+        setVisible(false);
+      } else if (currentY < lastScrollY.current - 4) {
+        // Scrolling up — reveal
+        setVisible(true);
+      }
+      lastScrollY.current = currentY;
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -29,7 +46,11 @@ export default function Header({ onResumeClick }: HeaderProps) {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 sm:pt-5">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 sm:pt-5 transition-transform duration-300 ease-in-out ${
+        visible ? "translate-y-0" : "-translate-y-[calc(100%+24px)]"
+      }`}
+    >
       <div
         className={`mx-auto flex h-16 w-full max-w-7xl items-center justify-between rounded-[24px] border px-4 shadow-[0_18px_44px_rgba(26,24,20,0.06)] backdrop-blur-xl transition-all duration-300 sm:px-5 ${
           scrolled

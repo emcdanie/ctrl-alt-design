@@ -39,37 +39,29 @@ export default function AboutSection() {
               border: "3px solid rgba(26,24,20,0.08)",
             }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
+              {/* TODO: replace /images/profile.jpg with final photo */}
               <img
-                src="/images/profile.jpg"
+                src="/images/thumbnails/Me.jpeg"
                 alt="Elleta"
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                onError={e => { (e.currentTarget.parentElement as HTMLElement).style.background = "#C8C4BC"; e.currentTarget.style.display = "none"; }}
+                onError={e => { (e.currentTarget.parentElement as HTMLElement).style.background = "#C8C4CC"; e.currentTarget.style.display = "none"; }}
               />
             </div>
 
             <p className="section-label mb-3">— About</p>
 
-            <h2
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(32px, 4vw, 48px)",
-                fontWeight: 700,
-                color: "#1A1814",
-                lineHeight: 1.1,
-                marginBottom: "24px",
-              }}
-            >
+            <h2 className="heading-section" style={{ marginBottom: "24px" }}>
               Hey, I'm Elleta
             </h2>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "520px" }}>
-              <p style={{ fontFamily: "var(--font-body)", fontSize: "17px", color: "#4A4640", lineHeight: 1.75 }}>
+              <p className="body-lg">
                 I'm a product designer who works at the intersection of systems thinking and interaction design. I care about building things that are coherent, scalable, and genuinely useful — not just polished.
               </p>
-              <p style={{ fontFamily: "var(--font-body)", fontSize: "17px", color: "#4A4640", lineHeight: 1.75 }}>
+              <p className="body-lg">
                 Most of my recent work has been in B2B SaaS — design systems, complex data interfaces, and multi-role platforms where the user journey is rarely linear and the stakes are high.
               </p>
-              <p style={{ fontFamily: "var(--font-body)", fontSize: "17px", color: "#4A4640", lineHeight: 1.75 }}>
+              <p className="body-lg">
                 I'm at my best when I'm working on hard problems with people who care about getting them right.
               </p>
             </div>
@@ -112,16 +104,7 @@ export default function AboutSection() {
 
           {/* ── Right column ── */}
           <div>
-            <h3
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(24px, 3vw, 32px)",
-                fontWeight: 700,
-                color: "#1A1814",
-                lineHeight: 1.1,
-                marginBottom: "24px",
-              }}
-            >
+            <h3 className="heading-subsection" style={{ marginBottom: "24px" }}>
               Working with me
             </h3>
 
@@ -150,23 +133,10 @@ export default function AboutSection() {
                     el.style.transform = "translateY(0)";
                   }}
                 >
-                  <h4 style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "16px",
-                    fontWeight: 600,
-                    color: "#1A1814",
-                    marginBottom: "6px",
-                    lineHeight: 1.3,
-                  }}>
+                  <h4 className="heading-item" style={{ marginBottom: "6px" }}>
                     {card.title}
                   </h4>
-                  <p style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "14px",
-                    color: "#6A6460",
-                    lineHeight: 1.65,
-                    margin: 0,
-                  }}>
+                  <p className="body-base" style={{ margin: 0 }}>
                     {card.description}
                   </p>
                 </div>

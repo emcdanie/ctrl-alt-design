@@ -94,7 +94,7 @@ export default function CustomCursor() {
       document.removeEventListener("mouseenter", onEnter);
       document.removeEventListener("click", onClick);
     };
-  }, [visible]);
+  }, []);
 
   // Size/style based on state
   const bubbleSize = state === "media" || state === "card" ? 80
