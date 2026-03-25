@@ -109,20 +109,33 @@ export default function AboutSection() {
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "6px",
+                gap: "8px",
                 marginTop: "12px",
                 marginLeft: "8px",
                 fontFamily: "var(--font-body)",
                 fontSize: "14px",
-                fontWeight: 500,
-                color: "var(--color-muted)",
+                fontWeight: 600,
+                color: "#1A1814",
                 textDecoration: "none",
-                transition: "color 150ms ease",
+                border: "1px solid rgba(26,24,20,0.2)",
+                borderRadius: "999px",
+                padding: "10px 20px",
+                transition: "background 150ms ease, border-color 150ms ease, color 150ms ease",
               }}
-              onMouseEnter={e => (e.currentTarget.style.color = "#1A1814")}
-              onMouseLeave={e => (e.currentTarget.style.color = "var(--color-muted)")}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = "#1A1814";
+                e.currentTarget.style.color = "#EDE8DF";
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.color = "#1A1814";
+              }}
             >
-              Learn more about me →
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              Explore my full profile →
             </Link>
           </div>
 
