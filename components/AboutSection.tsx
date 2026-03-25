@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 const collaborationCards = [
   {
     title: "I push back respectfully",
@@ -52,18 +54,18 @@ export default function AboutSection() {
             <p className="section-label mb-3">— About</p>
 
             <h2 className="heading-section" style={{ marginBottom: "24px" }}>
-              Hey, I'm Elleta
+              Hey, I&apos;m Elleta
             </h2>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "520px" }}>
               <p className="body-lg">
-                I'm a product designer who works at the intersection of systems thinking and interaction design. I care about building things that are coherent, scalable, and genuinely useful — not just polished.
+                I&apos;m a product designer who works at the intersection of systems thinking and interaction design. I care about building things that are coherent, scalable, and genuinely useful — not just polished.
               </p>
               <p className="body-lg">
                 Most of my recent work has been in B2B SaaS — design systems, complex data interfaces, and multi-role platforms where the user journey is rarely linear and the stakes are high.
               </p>
               <p className="body-lg">
-                I'm at my best when I'm working on hard problems with people who care about getting them right.
+                I&apos;m at my best when I&apos;m working on hard problems with people who care about getting them right.
               </p>
             </div>
 
@@ -101,6 +103,27 @@ export default function AboutSection() {
               </svg>
               Connect on LinkedIn
             </a>
+
+            <Link
+              href="/about"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                marginTop: "12px",
+                marginLeft: "8px",
+                fontFamily: "var(--font-body)",
+                fontSize: "14px",
+                fontWeight: 500,
+                color: "var(--color-muted)",
+                textDecoration: "none",
+                transition: "color 150ms ease",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = "#1A1814")}
+              onMouseLeave={e => (e.currentTarget.style.color = "var(--color-muted)")}
+            >
+              Learn more about me →
+            </Link>
           </div>
 
           {/* ── Right column ── */}
