@@ -1,21 +1,24 @@
 "use client";
 
-// Real work screenshots, photos, and a looping video — no text labels
+// Real work screenshots, photos, and looping videos — no text labels
 const slides: { img?: string; video?: string }[] = [
   { img: "/images/thumbnails/Screenshot 2026-03-17 at 21.45.53.png" },
   { img: "/images/thumbnails/IMG_3144.jpeg" },
+  { video: "/videos/DesignSystem.mov" },
   { img: "/images/thumbnails/Screenshot 2026-03-17 at 21.46.04.png" },
   { img: "/images/thumbnails/FINVIZ.png" },
   { img: "/images/thumbnails/IMG_3153.jpeg" },
+  { video: "/videos/hackathon-showreel.mp4" },
   { img: "/images/thumbnails/Screenshot 2026-03-17 at 21.46.12.png" },
   { img: "/images/thumbnails/AIPoweredSearch.png" },
   { img: "/images/thumbnails/IMG_3170.jpeg" },
+  { video: "/videos/Prism.mov" },
   { img: "/images/thumbnails/Screenshot 2026-03-17 at 21.46.17.png" },
   { img: "/images/thumbnails/FormularOne.png" },
   { img: "/images/thumbnails/IMG_3182.jpeg" },
+  { video: "/videos/eddie.mov" },
   { img: "/images/thumbnails/Screenshot 2026-03-17 at 21.46.26.png" },
   { img: "/images/thumbnails/HealthForm.png" },
-  { video: "/videos/hackathon-showreel.mp4" },
 ];
 
 const allSlides = [...slides, ...slides];
@@ -56,6 +59,10 @@ export default function Carousel() {
                 muted
                 playsInline
                 className="absolute inset-0 w-full h-full object-cover"
+                onError={(e) => {
+                  // Hide video if format not supported (e.g. .mov in Chrome)
+                  e.currentTarget.style.display = "none";
+                }}
               />
             ) : (
               // eslint-disable-next-line @next/next/no-img-element

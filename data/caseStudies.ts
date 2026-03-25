@@ -68,7 +68,7 @@ const caseStudies: CaseStudy[] = [
     scope: "Design Systems, Token Architecture, Component Library, Governance",
     timeline: "8 months",
     liveUrl: "",
-    heroImage: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1400&h=800&fit=crop&q=80",
+    heroImage: "/images/thumbnails/AIPoweredSearch.png",
     heroVideo: "/videos/DesignSystem.mov",
     metrics: {
       role: "Lead Product Designer — Design Systems",
@@ -81,10 +81,7 @@ const caseStudies: CaseStudy[] = [
         "Rebuilding design system thinking in a scaling SaaS product — from a graveyard of almost-the-same components to a shared foundation that actually reduced work.",
       body: "Many digital products start with good intentions: a few components, a shared style guide, a design file that everyone agrees to follow. But as a product grows, something subtle begins to happen. This was the situation at BizAway — a complex B2B SaaS platform with multiple booking flows and internal tooling evolving in parallel. I was the sole designer responsible for this work from beginning to end: conducting the audit, defining the architecture, authoring governance documentation, and working directly with engineering to ensure design decisions translated into reusable implementation.",
     },
-    images: [
-      "https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&h=600&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=800&h=600&fit=crop&q=80",
-    ],
+    images: [],
     problem: {
       title: "From Visual Problem to Structural One",
       body: "At first glance, the issues looked mostly visual: inconsistent spacing, slightly different button styles, repeated components that didn't quite match. But as the audit got underway, the scale became clear. The component library had grown into a graveyard of almost-the-same things — patterns solved multiple times over, with no shared record of why one approach had been chosen over another.",
@@ -123,7 +120,6 @@ const caseStudies: CaseStudy[] = [
       body: "Duplicated components consolidated into a smaller set of flexible, well-defined building blocks. Interaction patterns for filtering, sorting, and form behaviour defined so users encounter predictable experiences across flows. The UI shifted from being whatever the last sprint produced to feeling like a coherent product language — and the system gained credibility every time an engineer reached for an existing pattern and found it already solved.",
       completionTag: "PROJECT COMPLETE · 2026",
     },
-    fullWidthImage: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=1400&h=700&fit=crop&q=80",
     tags: ["Figma", "Design Tokens", "Atomic Design", "Governance", "BizAway"],
     clientLogo: "/images/logos/bizaway_logo.jpeg",
     clientName: "BizAway",
@@ -295,7 +291,7 @@ const caseStudies: CaseStudy[] = [
     scope: "Information Architecture, Role-Based UX, Enterprise Platform Design",
     timeline: "3 months",
     liveUrl: "",
-    heroImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1400&h=800&fit=crop&q=80",
+    heroImage: "/images/thumbnails/FINVIZ.png",
     heroVideo: "/videos/Prism.mov",
     metrics: {
       role: "Product Designer — Contract",
@@ -308,10 +304,7 @@ const caseStudies: CaseStudy[] = [
         "A unified ICT platform concept for a complex international organisation — built around visibility, dependency awareness, and role-based clarity.",
       body: "Large organisations running complex ICT infrastructure face a particular kind of invisible problem. The tools exist. The data exists. The teams are capable. But the information is scattered across monitoring platforms, ticketing systems, and spreadsheets in ways that make it genuinely difficult to answer basic operational questions reliably. The challenge wasn't a lack of data — it was that the data lived in silos, was inconsistently defined across teams, and couldn't be brought together without significant manual effort.",
     },
-    images: [
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=600&fit=crop&q=80",
-    ],
+    images: [],
     problem: {
       title: "Operationally Capable, Informationally Opaque",
       body: "At the surface level, the problem looked like a dashboard problem. But the deeper issue was structural. Services, infrastructure assets, and operational workflows existed in separate systems with no consistent data model connecting them. Ownership of infrastructure assets was unclear, slowing incident response. Reporting was inconsistent across teams, reducing trust in the numbers. Without visibility into dependencies between assets and services, change impact analysis required significant manual effort.",
@@ -350,7 +343,6 @@ const caseStudies: CaseStudy[] = [
       body: "The prototype functioned as a vision artifact: a concrete, interactive expression of what a unified operational platform could look like, and why the underlying architecture mattered. Stakeholders who had been working in parallel — solving the same problems with different tools and different definitions — had a common reference point for the first time. The most valuable outcome wasn't any individual screen. It was the shared understanding the prototype created.",
       completionTag: "CONTRACT COMPLETE · 2025",
     },
-    fullWidthImage: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1400&h=700&fit=crop&q=80",
     tags: ["Figma", "Data Visualisation", "Enterprise UX", "UNOG ICTS"],
     clientLogo: "/images/logos/united_nations_office_at_geneva_logo.jpeg",
     clientName: "United Nations",
@@ -436,7 +428,7 @@ const caseStudies: CaseStudy[] = [
     scope: "Interaction Design, Design Systems, Cognitive UX",
     timeline: "Embedded / ongoing",
     liveUrl: "",
-    heroImage: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=1400&h=800&fit=crop&q=80",
+    heroImage: "/images/thumbnails/HealthForm.png",
     heroVideo: undefined,
     metrics: {
       role: "Lead Product Designer",
@@ -449,10 +441,7 @@ const caseStudies: CaseStudy[] = [
         "Rethinking how filtering interfaces shape user cognition — and why fixing them requires system thinking, not just visual cleanup.",
       body: "Most products treat filters as a feature. A set of checkboxes, a dropdown, maybe a few chips along the top of a results list. What they rarely are, by design, is a decision-support system — a structured way to help users narrow a large problem space toward something meaningful. This case study explores the intersection of filtering interface design, design system thinking, and cognitive load. It draws on a complex SaaS platform context where multiple booking flows and internal tooling were evolving in parallel, and where filtering had accumulated into something fragmented and inconsistent across the product.",
     },
-    images: [
-      "https://images.unsplash.com/photo-1536148935331-408321065b18?w=800&h=600&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&h=600&fit=crop&q=80",
-    ],
+    images: [],
     problem: {
       title: "Capability Without Clarity Is Just a Different Kind of Friction",
       body: "At first glance, the filtering interfaces across the product looked inconsistent but manageable. Filter chips in one flow looked different from filter chips in another. Sort controls weren't positioned consistently. Some filters preserved their active state clearly; others gave no visible signal that they were applied at all. The instinct was to clean it up visually and standardise the components. But a more important question kept surfacing: if we fix how the filters look, will they actually become easier to use?",
@@ -491,13 +480,12 @@ const caseStudies: CaseStudy[] = [
       body: "Duplicated filter components consolidated into a smaller set of flexible, well-defined building blocks. Interaction patterns for multi-select filtering, range selection, sort integration, and empty states defined so that users encounter predictable behaviour across flows. The most important outcome was structural: a reusable filtering interaction pattern with a consistent contract across the product.",
       completionTag: "PROJECT COMPLETE · 2025",
     },
-    fullWidthImage: "https://images.unsplash.com/photo-1579403124614-197f69d8187b?w=1400&h=700&fit=crop&q=80",
     tags: ["Figma", "Interaction Design", "Cognitive UX", "BizAway"],
     clientLogo: "/images/logos/bizaway_logo.jpeg",
     clientName: "BizAway",
     demoLinks: [
       { label: "BizAway search prototype", href: "/demos/bizaway-search.html" },
-      { label: "BizAway filter demo", href: "/demos/bizaway-demo.html" },
+      { label: "BizAway filter demo", href: "/demos/bizaway-filter-demo.html" },
     ],
     description:
       "Designing Structured Filtering for Complex Product Discovery",
@@ -643,7 +631,7 @@ const caseStudies: CaseStudy[] = [
     year: "2024–2025",
     scope: "Component Architecture, Token Alignment, Figma–Storybook Integration",
     timeline: "Oct 2024 – Jan 2025",
-    heroImage: "https://images.unsplash.com/photo-1555066931-4365d14431b9?w=1400&h=800&fit=crop&q=80",
+    heroImage: "/images/thumbnails/FormularOne.png",
     heroVideo: "/videos/eddie.mov",
     metrics: {
       role: "Design System Collaborator",

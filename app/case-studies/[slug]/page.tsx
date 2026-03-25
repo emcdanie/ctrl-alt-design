@@ -5,7 +5,6 @@ import { getCaseStudy, getAdjacentStudies } from "@/data/caseStudies";
 import caseStudies from "@/data/caseStudies";
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseStudyHero from "@/components/CaseStudyHero";
-import ArtifactPlaceholder from "@/components/ArtifactPlaceholder";
 import ArtifactGallery from "@/components/ArtifactGallery";
 
 export async function generateStaticParams() {
@@ -129,7 +128,7 @@ export default async function CaseStudyPage({
                       href={demo.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "10px 20px", borderRadius: "999px", border: "1px solid rgba(26,24,20,0.18)", background: "#FAFAF8", color: "#1A1814", fontFamily: "var(--font-body)", fontSize: "13px", fontWeight: 500, textDecoration: "none", transition: "background 0.15s" }}
+                      className="demo-link"
                     >
                       <span style={{ fontSize: "14px" }}>↗</span> {demo.label}
                     </a>
@@ -163,14 +162,6 @@ export default async function CaseStudyPage({
               <RichPara text={cs.problem.body} />
             </section>
 
-            <div style={{ marginBottom: "64px" }}>
-              <ArtifactPlaceholder
-                title="Problem Framing Artifact"
-                description="Add an audit screenshot or annotated snapshot that documents the core problem context."
-                aspectRatio="16/9"
-              />
-            </div>
-
             <section style={{ marginBottom: "64px", paddingBottom: "64px", borderBottom: "1px solid rgba(26,24,20,0.08)" }}>
               <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "#8A8A8A", marginBottom: "14px" }}>PROCESS</p>
               <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(24px, 3.2vw, 34px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.15, marginBottom: "32px" }}>
@@ -186,14 +177,6 @@ export default async function CaseStudyPage({
                 ))}
               </div>
             </section>
-
-            <div style={{ marginBottom: "64px" }}>
-              <ArtifactPlaceholder
-                title="Key Deliverable Artifact"
-                description="Add a flow diagram, component overview, or final output that captures the implementation direction."
-                aspectRatio="4/3"
-              />
-            </div>
 
             <section style={{ marginBottom: "64px" }}>
               <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "#8A8A8A", marginBottom: "14px" }}>OUTCOMES</p>
@@ -211,7 +194,7 @@ export default async function CaseStudyPage({
                         href={demo.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "10px 20px", borderRadius: "999px", border: "1px solid rgba(26,24,20,0.18)", background: "#FAFAF8", color: "#1A1814", fontFamily: "var(--font-body)", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
+                        className="demo-link"
                       >
                         <span style={{ fontSize: "14px" }}>↗</span> {demo.label}
                       </a>

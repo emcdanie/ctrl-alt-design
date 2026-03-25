@@ -1,0 +1,10 @@
+{
+  "name": "bizaway-filters-prototype",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BizAway Filter Demo — Bottom Sheet + Filter Chips",
+  "scripts": {
+    "dev": "npx live-server --port=3002 --no-browser",
+    "open": "open index.html"
+  }
+}

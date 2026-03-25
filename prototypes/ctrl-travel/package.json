@@ -1,0 +1,10 @@
+{
+  "name": "ctrl-travel-prototype",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ctrl+travel — Business Travel Dashboard Prototype",
+  "scripts": {
+    "dev": "npx live-server --port=3001 --no-browser",
+    "open": "open index.html"
+  }
+}

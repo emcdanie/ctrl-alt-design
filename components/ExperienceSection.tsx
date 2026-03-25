@@ -94,7 +94,7 @@ interface SectionShellProps {
 
 function SectionShell({ id, children }: SectionShellProps) {
   return (
-    <section id={id} className="px-6 py-20">
+    <section id={id} className="px-6 py-20 md:py-24">
       <div className="mx-auto max-w-7xl">{children}</div>
     </section>
   );

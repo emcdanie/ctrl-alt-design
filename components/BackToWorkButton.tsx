@@ -1,29 +1,35 @@
+"use client";
+
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 
 export default function BackToWorkButton() {
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y > 80 && y > lastScrollY.current) {
+        setHidden(true);
+      } else {
+        setHidden(false);
+      }
+      lastScrollY.current = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <Link
       href="/#work"
-      className="hover:opacity-100 transition-opacity duration-150"
+      className="fixed left-5 z-[50] inline-flex items-center gap-2 rounded-full bg-[#1A1814] px-4 py-2.5 text-[13px] font-semibold tracking-[0.02em] text-[#EDE8DF] shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition-all duration-300 hover:opacity-100 sm:left-6"
       style={{
-        position: "fixed",
-        top: "24px",
-        left: "24px",
-        zIndex: 50,
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "8px",
+        top: "80px",
         fontFamily: "var(--font-body)",
-        fontSize: "13px",
-        fontWeight: 600,
-        color: "#EDE8DF",
-        textDecoration: "none",
-        background: "#1A1814",
-        borderRadius: "999px",
-        padding: "10px 18px",
-        letterSpacing: "0.02em",
-        boxShadow: "0 4px 16px rgba(0,0,0,0.18)",
-        opacity: 0.88,
+        opacity: 0.9,
+        transform: hidden ? "translateY(-140px)" : "translateY(0)",
       }}
     >
       ← Back to Work

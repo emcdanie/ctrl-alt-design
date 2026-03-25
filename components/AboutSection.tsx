@@ -21,10 +21,11 @@ const collaborationCards = [
 
 export default function AboutSection() {
   return (
-    <section id="about" className="py-20 px-6">
+    <section id="about" className="py-20 md:py-24 px-6">
       <div className="max-w-7xl mx-auto">
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+        <div className="glass-card p-8 md:p-12 lg:p-14">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
 
           {/* ── Left column ── */}
           <div>
@@ -112,24 +113,20 @@ export default function AboutSection() {
               {collaborationCards.map((card) => (
                 <div
                   key={card.title}
+                  className="card-elevated"
                   style={{
                     padding: "20px 24px",
-                    borderRadius: "14px",
-                    border: "1px solid rgba(26,24,20,0.08)",
-                    background: "#F8F7F4",
                     cursor: "default",
-                    transition: "background 200ms ease, box-shadow 200ms ease, transform 200ms ease",
+                    transition: "box-shadow 200ms ease, transform 200ms ease",
                   }}
                   onMouseEnter={e => {
                     const el = e.currentTarget as HTMLDivElement;
-                    el.style.background = "#FFFFFF";
-                    el.style.boxShadow = "0 4px 20px rgba(0,0,0,0.08)";
+                    el.style.boxShadow = "0 8px 28px rgba(44,24,16,0.09), 0 2px 8px rgba(44,24,16,0.05)";
                     el.style.transform = "translateY(-2px)";
                   }}
                   onMouseLeave={e => {
                     const el = e.currentTarget as HTMLDivElement;
-                    el.style.background = "#F8F7F4";
-                    el.style.boxShadow = "none";
+                    el.style.boxShadow = "";
                     el.style.transform = "translateY(0)";
                   }}
                 >
@@ -145,6 +142,7 @@ export default function AboutSection() {
           </div>
 
         </div>
+        </div>{/* /glass-card */}
       </div>
     </section>
   );

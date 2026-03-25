@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tier="starter">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Grand Prix Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+/* ════════════════════════════════════════════
+   TOKENS — Apple TV × F1 Design System
+   Vitaly principle: insights first, match expertise level
+   ════════════════════════════════════════════ */
+:root {
+  /* F1 brand */
+  --f1-red: #E10600;
+  --f1-red-glow: rgba(225,6,0,0.25);
+  --f1-yellow: #FFD700;
+  --f1-silver: #C0C0C0;
+
+  /* Apple TV dark (default) */
+  --bg-primary: #000000;
+  --bg-secondary: #1C1C1E;
+  --bg-card: #2C2C2E;
+  --bg-card-hover: #3A3A3C;
+  --bg-glass: rgba(44,44,46,0.8);
+  --bg-glass-border: rgba(255,255,255,0.1);
+  --bg-overlay: rgba(0,0,0,0.6);
+
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255,255,255,0.6);
+  --text-tertiary: rgba(255,255,255,0.35);
+  --text-inverse: #000;
+
+  --border: rgba(255,255,255,0.08);
+  --border-active: rgba(255,255,255,0.2);
+
+  --accent: #E10600;
+  --accent-subtle: rgba(225,6,0,0.15);
+  --accent-glow: rgba(225,6,0,0.3);
+
+  --green: #32D74B;
+  --green-s: rgba(50,215,75,0.15);
+  --amber: #FF9F0A;
+  --amber-s: rgba(255,159,10,0.15);
+  --blue: #0A84FF;
+  --blue-s: rgba(10,132,255,0.15);
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-r: 100px;
+
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-hero: 0 16px 64px rgba(0,0,0,0.6);
+  --shadow-glow: 0 0 40px var(--f1-red-glow);
+  --blur: blur(24px);
+}
+
+/* ── Light mode overrides ── */
+[data-theme="light"] {
+  --bg-primary: #F2F2F7;
+  --bg-secondary: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F2F2F7;
+  --bg-glass: rgba(255,255,255,0.85);
+  --bg-glass-border: rgba(0,0,0,0.06);
+  --bg-overlay: rgba(242,242,247,0.85);
+
+  --text-primary: #000000;
+  --text-secondary: rgba(0,0,0,0.55);
+  --text-tertiary: rgba(0,0,0,0.3);
+  --text-inverse: #fff;
+
+  --border: rgba(0,0,0,0.06);
+  --border-active: rgba(0,0,0,0.15);
+
+  --accent-subtle: rgba(225,6,0,0.08);
+  --green-s: rgba(50,215,75,0.1);
+  --amber-s: rgba(255,159,10,0.1);
+  --blue-s: rgba(10,132,255,0.1);
+
+  --shadow-card: 0 2px 16px rgba(0,0,0,0.08);
+  --shadow-hero: 0 8px 40px rgba(0,0,0,0.1);
+  --shadow-glow: 0 0 24px rgba(225,6,0,0.12);
+}
+
+/* ════════════════════════════════════════════
+   BASE
+   ════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;}
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition: background 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+}
+button { font-family: inherit; cursor: pointer; }
+img { display: block; }
+
+/* ════════════════════════════════════════════
+   CHROME NAV
+   ════════════════════════════════════════════ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 60px;
+  background: var(--bg-glass);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border-bottom: 1px solid var(--bg-glass-border);
+  display: flex; align-items: center;
+  padding: 0 32px; gap: 0;
+}
+.nav-logo {
+  font-size: 20px; font-weight: 900; letter-spacing: -1px;
+  color: var(--text-primary);
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-logo-flag { font-size: 16px; }
+.nav-logo-f1 { color: var(--f1-red); }
+.nav-links {
+  display: flex; gap: 2px; margin-left: 32px;
+}
+.nav-link {
+  padding: 6px 14px; border-radius: var(--radius-sm);
+  background: transparent; border: none;
+  color: var(--text-secondary); font-size: 14px; font-weight: 500;
+  transition: all 0.15s; cursor: pointer;
+}
+.nav-link:hover { color: var(--text-primary); background: var(--border); }
+.nav-link.active { color: var(--text-primary); background: var(--bg-card); }
+.nav-right {
+  margin-left: auto; display: flex; align-items: center; gap: 10px;
+}
+/* Tier toggle */
+.tier-toggle {
+  display: flex; align-items: center;
+  background: var(--bg-card); border-radius: var(--radius-r);
+  padding: 3px; border: 1px solid var(--border);
+}
+.tier-btn {
+  padding: 5px 14px; border-radius: var(--radius-r);
+  border: none; background: transparent;
+  font-size: 12px; font-weight: 600; color: var(--text-secondary);
+  transition: all 0.2s; cursor: pointer;
+}
+.tier-btn.active {
+  background: var(--accent); color: #fff;
+  box-shadow: 0 2px 8px var(--accent-glow);
+}
+/* Theme toggle */
+.theme-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--bg-card);
+  color: var(--text-secondary); font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.theme-btn:hover { border-color: var(--border-active); color: var(--text-primary); }
+/* Season selector */
+.season-select {
+  background: var(--bg-card); border: 1px solid var(--border);
+  color: var(--text-primary); border-radius: var(--radius-sm);
+  padding: 6px 10px; font-size: 13px; font-family: inherit;
+  outline: none; cursor: pointer;
+}
+
+/* ════════════════════════════════════════════
+   MAIN LAYOUT
+   ════════════════════════════════════════════ */
+.app-body { padding-top: 60px; }
+
+/* ════════════════════════════════════════════
+   HERO — "Top Shelf" (Apple TV inspired)
+   ════════════════════════════════════════════ */
+.hero {
+  position: relative; overflow: hidden;
+  background: var(--bg-secondary);
+  min-height: 340px;
+  display: flex; align-items: flex-end;
+  padding: 0 32px 32px;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 40%, #2a0800 100%);
+  transition: background 0.3s;
+}
+[data-theme="light"] .hero-bg {
+  background: linear-gradient(135deg, #fff1f0 0%, #ffe8e8 60%, #ffd5d5 100%);
+}
+.hero-track-lines {
+  position: absolute; inset: 0; overflow: hidden; opacity: 0.06;
+}
+.hero-track-lines::before {
+  content: ''; position: absolute;
+  top: 50%; left: -100px; right: -100px; height: 1px;
+  background: var(--f1-red);
+  box-shadow: 0 -40px 0 rgba(225,6,0,0.5), 0 40px 0 rgba(225,6,0,0.5),
+              0 -80px 0 rgba(225,6,0,0.3), 0 80px 0 rgba(225,6,0,0.3);
+}
+.hero-accent {
+  position: absolute; top: 0; right: 0;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(225,6,0,0.04));
+}
+[data-theme="light"] .hero-accent {
+  background: linear-gradient(90deg, transparent, rgba(225,6,0,0.03));
+}
+.hero-content { position: relative; z-index: 2; width: 100%; }
+.hero-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--f1-red);
+  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+}
+.hero-eyebrow::before {
+  content: ''; width: 16px; height: 2px; background: var(--f1-red);
+  border-radius: 1px;
+}
+.live-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+  animation: livepulse 2s infinite;
+}
+@keyframes livepulse {
+  0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(50,215,75,0.4);}
+  50%{opacity:0.8;box-shadow:0 0 0 6px rgba(50,215,75,0);}
+}
+.hero-title {
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 900; letter-spacing: -1.5px;
+  line-height: 1; margin-bottom: 4px;
+  color: var(--text-primary);
+}
+.hero-title span { color: var(--f1-red); }
+.hero-subtitle {
+  font-size: 15px; color: var(--text-secondary); font-weight: 400;
+  margin-bottom: 24px;
+}
+.hero-kpis {
+  display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-end;
+}
+.hero-kpi { display: flex; flex-direction: column; gap: 2px; }
+.hero-kpi-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-tertiary);
+}
+.hero-kpi-value {
+  font-size: 28px; font-weight: 800; letter-spacing: -1px;
+  color: var(--text-primary); line-height: 1;
+}
+.hero-kpi-value.accent { color: var(--f1-red); }
+.hero-kpi-delta {
+  font-size: 11px; font-weight: 600;
+  color: var(--text-secondary);
+}
+.hero-kpi-delta.up { color: var(--green); }
+.hero-kpi-delta.down { color: var(--f1-red); }
+.hero-sep { width: 1px; height: 48px; background: var(--border); align-self: center; }
+/* Hero right: race card */
+.hero-race-card {
+  position: absolute; right: 32px; top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-glass);
+  backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--bg-glass-border);
+  border-radius: var(--radius-xl); padding: 20px 24px;
+  min-width: 220px; z-index: 3;
+  box-shadow: var(--shadow-card);
+}
+.race-card-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--f1-red); margin-bottom: 8px;
+}
+.race-card-name {
+  font-size: 18px; font-weight: 800; letter-spacing: -0.5px;
+  margin-bottom: 2px;
+}
+.race-card-circuit {
+  font-size: 12px; color: var(--text-secondary); margin-bottom: 16px;
+}
+.race-card-podium { display: flex; flex-direction: column; gap: 6px; }
+.podium-row {
+  display: flex; align-items: center; gap: 8px;
+}
+.podium-pos {
+  width: 20px; height: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 800; flex-shrink: 0;
+}
+.pos-1 { background: var(--f1-yellow); color: #000; }
+.pos-2 { background: var(--f1-silver); color: #000; }
+.pos-3 { background: #CD7F32; color: #fff; }
+.podium-name { font-size: 13px; font-weight: 600; flex: 1; }
+.podium-time { font-size: 11px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+
+/* ════════════════════════════════════════════
+   INSIGHT BANNER (Vitaly: insights not data)
+   ════════════════════════════════════════════ */
+.insight-banner {
+  background: var(--accent-subtle);
+  border-bottom: 1px solid rgba(225,6,0,0.15);
+  padding: 10px 32px;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 13px;
+}
+.insight-icon { font-size: 14px; }
+.insight-text { color: var(--text-primary); font-weight: 500; }
+.insight-text strong { color: var(--f1-red); }
+.insight-actions { margin-left: auto; display: flex; gap: 8px; }
+.insight-btn {
+  padding: 4px 12px; border-radius: var(--radius-r);
+  border: 1px solid var(--accent); background: transparent;
+  color: var(--accent); font-size: 11px; font-weight: 700;
+  transition: all 0.15s;
+}
+.insight-btn:hover { background: var(--accent); color: #fff; }
+.insight-btn.primary { background: var(--accent); color: #fff; }
+
+/* ════════════════════════════════════════════
+   SECTION + GRID
+   ════════════════════════════════════════════ */
+.section { padding: 28px 32px; }
+.section + .section { padding-top: 0; }
+.section-header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+.section-title {
+  font-size: 17px; font-weight: 700; letter-spacing: -0.3px;
+}
+.section-pill {
+  background: var(--bg-card); border: 1px solid var(--border);
+  color: var(--text-secondary); font-size: 11px; font-weight: 600;
+  padding: 3px 10px; border-radius: var(--radius-r);
+}
+.section-action {
+  margin-left: auto; background: transparent; border: 1px solid var(--border);
+  color: var(--text-secondary); font-size: 12px; font-weight: 600;
+  padding: 5px 14px; border-radius: var(--radius-r); transition: all 0.15s;
+}
+.section-action:hover { border-color: var(--border-active); color: var(--text-primary); }
+
+/* ════════════════════════════════════════════
+   DRIVER CARDS
+   ════════════════════════════════════════════ */
+.driver-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.driver-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.driver-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-active);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+.driver-card.leader {
+  border-color: rgba(225,6,0,0.3);
+  box-shadow: 0 0 0 1px rgba(225,6,0,0.2), var(--shadow-card);
+}
+.driver-card-bar {
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.driver-pos {
+  font-size: 11px; font-weight: 800; color: var(--text-tertiary);
+  letter-spacing: 0.05em; margin-bottom: 8px;
+}
+.driver-number {
+  position: absolute; top: 14px; right: 14px;
+  font-size: 28px; font-weight: 900; letter-spacing: -1px;
+  opacity: 0.08; line-height: 1;
+}
+.driver-name {
+  font-size: 15px; font-weight: 700; letter-spacing: -0.3px;
+  margin-bottom: 1px;
+}
+.driver-team {
+  font-size: 11px; color: var(--text-secondary); margin-bottom: 12px;
+}
+.driver-points {
+  font-size: 32px; font-weight: 900; letter-spacing: -1.5px;
+  line-height: 1; margin-bottom: 2px;
+}
+.driver-points-label {
+  font-size: 10px; color: var(--text-tertiary); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.driver-delta {
+  margin-top: 8px; display: flex; align-items: center; gap: 6px;
+}
+.driver-delta-val {
+  font-size: 12px; font-weight: 600; padding: 2px 8px;
+  border-radius: var(--radius-r);
+}
+.delta-gain { background: var(--green-s); color: var(--green); }
+.delta-loss { background: var(--accent-subtle); color: var(--f1-red); }
+.delta-same { background: var(--border); color: var(--text-secondary); }
+.driver-wins { font-size: 11px; color: var(--text-tertiary); }
+
+/* ════════════════════════════════════════════
+   CONSTRUCTOR TABLE (Pro tier)
+   ════════════════════════════════════════════ */
+.constructor-table {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.ct-row {
+  display: grid;
+  grid-template-columns: 40px 1fr auto auto auto auto;
+  gap: 12px; padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  align-items: center; cursor: pointer;
+  transition: background 0.1s;
+}
+.ct-row:last-child { border-bottom: none; }
+.ct-row:hover { background: var(--bg-card-hover); }
+.ct-row.header {
+  font-size: 10px; font-weight: 700; color: var(--text-tertiary);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  cursor: default; background: transparent;
+}
+.ct-row.header:hover { background: transparent; }
+.ct-pos { font-size: 14px; font-weight: 800; color: var(--text-secondary); }
+.ct-team { display: flex; align-items: center; gap: 10px; }
+.ct-team-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.ct-team-name { font-size: 14px; font-weight: 600; }
+.ct-stat { font-size: 13px; font-weight: 500; text-align: right; }
+.ct-stat.points { font-weight: 800; font-size: 15px; }
+.ct-bar-cell { }
+.ct-bar-wrap { width: 80px; height: 4px; background: var(--border); border-radius: 2px; }
+.ct-bar { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+
+/* ════════════════════════════════════════════
+   LAP TIME CHART (Pro tier)
+   ════════════════════════════════════════════ */
+.chart-area {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 20px;
+}
+.chart-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.chart-title { font-size: 14px; font-weight: 700; }
+.chart-legend { display: flex; gap: 16px; margin-left: auto; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-secondary); }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+.chart-canvas-wrap {
+  position: relative; height: 160px;
+  display: flex; align-items: flex-end; gap: 3px;
+}
+.chart-bar-group {
+  flex: 1; display: flex; gap: 2px; align-items: flex-end; cursor: pointer;
+}
+.chart-bar {
+  flex: 1; border-radius: 3px 3px 0 0; transition: opacity 0.15s;
+  position: relative; min-height: 4px;
+}
+.chart-bar:hover { opacity: 0.85; }
+.chart-x-labels {
+  display: flex; gap: 3px; margin-top: 6px;
+}
+.chart-x-label {
+  flex: 1; font-size: 9px; color: var(--text-tertiary);
+  text-align: center;
+}
+
+/* ════════════════════════════════════════════
+   FILTER PRESETS (Pro tier — Vitaly principle)
+   ════════════════════════════════════════════ */
+.filter-row {
+  display: flex; gap: 8px; align-items: center;
+  margin-bottom: 16px; flex-wrap: wrap;
+}
+.filter-preset {
+  padding: 6px 14px; border-radius: var(--radius-r);
+  border: 1px solid var(--border); background: var(--bg-card);
+  color: var(--text-secondary); font-size: 12px; font-weight: 600;
+  transition: all 0.15s;
+}
+.filter-preset:hover { border-color: var(--border-active); color: var(--text-primary); }
+.filter-preset.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.filter-sep { width: 1px; height: 20px; background: var(--border); }
+.filter-select {
+  background: var(--bg-card); border: 1px solid var(--border);
+  color: var(--text-primary); border-radius: var(--radius-sm);
+  padding: 6px 10px; font-size: 12px; font-family: inherit; outline: none;
+}
+
+/* ════════════════════════════════════════════
+   TIER GATE (Pro upsell)
+   ════════════════════════════════════════════ */
+.pro-gate {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 32px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.pro-gate::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--accent-subtle) 0%, transparent 60%);
+  pointer-events: none;
+}
+.pro-gate-icon { font-size: 32px; margin-bottom: 12px; }
+.pro-gate-title { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+.pro-gate-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; }
+.pro-gate-features {
+  display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.pro-feature {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--text-secondary);
+}
+.pro-feature-icon { color: var(--green); font-size: 14px; }
+.pro-gate-btn {
+  background: var(--f1-red); color: #fff; border: none;
+  padding: 12px 32px; border-radius: var(--radius-r);
+  font-size: 14px; font-weight: 700; letter-spacing: 0.02em;
+  box-shadow: 0 4px 16px var(--accent-glow);
+  transition: all 0.2s;
+}
+.pro-gate-btn:hover { background: #c00500; transform: translateY(-1px); box-shadow: 0 6px 24px var(--accent-glow); }
+
+/* ════════════════════════════════════════════
+   ANNOTATION SYSTEM
+   ════════════════════════════════════════════ */
+.ann-pin {
+  position: absolute; width: 22px; height: 22px; border-radius: 50%;
+  background: #fff; border: 2px solid var(--f1-red);
+  color: var(--f1-red); font-size: 10px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 50;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  transition: all 0.15s; font-family: inherit;
+}
+.ann-pin:hover,.ann-pin.active {
+  background: var(--f1-red); color: #fff; transform: scale(1.15);
+}
+[data-theme="light"] .ann-pin { background: var(--f1-red); color: #fff; }
+[data-theme="light"] .ann-pin:hover,[data-theme="light"] .ann-pin.active {
+  background: #c00500;
+}
+.ann-panel {
+  background: var(--bg-glass); backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border-top: 1px solid var(--bg-glass-border);
+  padding: 14px 32px; display: none;
+}
+.ann-panel.show { display: block; }
+.ann-inner { display: flex; gap: 12px; max-width: 800px; align-items: flex-start; }
+.ann-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--f1-red); color: #fff;
+  font-size: 11px; font-weight: 800; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+}
+.ann-text { flex: 1; }
+.ann-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.ann-body { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+.ann-close {
+  background: none; border: none; color: var(--text-tertiary);
+  font-size: 16px; padding: 2px 6px; border-radius: 4px;
+  flex-shrink: 0;
+}
+.ann-close:hover { color: var(--text-primary); background: var(--border); }
+.speaking-badge {
+  display: none; align-items: center; gap: 6px; margin-left: 12px;
+  background: var(--f1-red); color: #fff; padding: 3px 10px;
+  border-radius: var(--radius-r); font-size: 11px; font-weight: 600;
+}
+.speaking-badge.show { display: flex; }
+.pulse { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: p 1s infinite; }
+@keyframes p { 0%,100%{opacity:1}50%{opacity:0.3;} }
+
+/* ════════════════════════════════════════════
+   GLOBAL BAR
+   ════════════════════════════════════════════ */
+.global-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
+  background: var(--bg-glass); backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border-top: 1px solid var(--bg-glass-border);
+  padding: 8px 32px; display: flex; align-items: center; gap: 10px;
+  font-size: 12px; color: var(--text-secondary);
+}
+.global-bar-btn {
+  padding: 5px 14px; border-radius: var(--radius-r);
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text-secondary); font-size: 11px; font-weight: 600;
+  transition: all 0.15s;
+}
+.global-bar-btn:hover { color: var(--text-primary); border-color: var(--border-active); }
+.global-bar-btn.on { background: var(--f1-red); border-color: var(--f1-red); color: #fff; }
+
+/* ════════════════════════════════════════════
+   PRO-ONLY SECTIONS
+   ════════════════════════════════════════════ */
+.pro-only { display: none; }
+[data-tier="pro"] .pro-only { display: block; }
+[data-tier="pro"] .starter-gate { display: none; }
+.starter-gate {}
+
+/* GRID UTILITY */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+@media(max-width:900px) { .grid-2,.grid-3 { grid-template-columns:1fr; } }
+
+.page-bottom { height: 60px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <span class="nav-logo-flag">🏁</span>
+    <span>Grand<span class="nav-logo-f1">Prix</span></span>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active">Season</button>
+    <button class="nav-link">Race</button>
+    <button class="nav-link">Compare</button>
+    <button class="nav-link">History</button>
+  </div>
+  <div class="nav-right">
+    <select class="season-select" id="seasonSel">
+      <option>2024 Season</option>
+      <option>2023 Season</option>
+      <option>2022 Season</option>
+    </select>
+    <div class="tier-toggle">
+      <button class="tier-btn active" id="btnStarter" onclick="setTier('starter')">Starter</button>
+      <button class="tier-btn" id="btnPro" onclick="setTier('pro')">Pro ✦</button>
+    </div>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+  </div>
+</nav>
+
+<div class="app-body">
+
+  <!-- HERO: Top Shelf -->
+  <section class="hero" id="heroSection" style="position:relative">
+    <div class="hero-bg"></div>
+    <div class="hero-track-lines"></div>
+    <div class="hero-accent"></div>
+
+    <!-- Ann pin 1 -->
+    <div class="ann-pin annotation" id="ann1" data-ann="insights" style="top:16px;left:16px"
+         onclick="triggerAnn('insights');event.stopPropagation()">1</div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="live-dot"></span>
+        2024 FIA Formula One World Championship
+      </div>
+      <h1 class="hero-title">Max <span>Verstappen</span></h1>
+      <p class="hero-subtitle">Leads the championship by 47 points with 6 races remaining</p>
+      <div class="hero-kpis">
+        <div class="hero-kpi">
+          <span class="hero-kpi-label">Points Lead</span>
+          <span class="hero-kpi-value accent">+47</span>
+          <span class="hero-kpi-delta">vs Hamilton</span>
+        </div>
+        <div class="hero-sep"></div>
+        <div class="hero-kpi">
+          <span class="hero-kpi-label">Wins</span>
+          <span class="hero-kpi-value">9</span>
+          <span class="hero-kpi-delta up">↑ 3 from 2023</span>
+        </div>
+        <div class="hero-sep"></div>
+        <div class="hero-kpi">
+          <span class="hero-kpi-label">Pole Positions</span>
+          <span class="hero-kpi-value">11</span>
+          <span class="hero-kpi-delta">Season record</span>
+        </div>
+        <div class="hero-sep"></div>
+        <div class="hero-kpi">
+          <span class="hero-kpi-label">Fastest Laps</span>
+          <span class="hero-kpi-value">6</span>
+          <span class="hero-kpi-delta up">↑ tied lead</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Race result card -->
+    <div class="hero-race-card">
+      <div class="race-card-eyebrow">Latest Result</div>
+      <div class="race-card-name">Singapore GP</div>
+      <div class="race-card-circuit">Marina Bay Circuit · R17</div>
+      <div class="race-card-podium">
+        <div class="podium-row">
+          <div class="podium-pos pos-1">1</div>
+          <span class="podium-name">Norris</span>
+          <span class="podium-time">1:34:12.315</span>
+        </div>
+        <div class="podium-row">
+          <div class="podium-pos pos-2">2</div>
+          <span class="podium-name">Piastri</span>
+          <span class="podium-time">+2.894s</span>
+        </div>
+        <div class="podium-row">
+          <div class="podium-pos pos-3">3</div>
+          <span class="podium-name">Verstappen</span>
+          <span class="podium-time">+4.506s</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIGHT BANNER (Vitaly: lead with insight not data) -->
+  <div class="insight-banner">
+    <span class="insight-icon">💡</span>
+    <span class="insight-text">
+      <strong>Key insight:</strong> McLaren have closed the gap by 58 points in the last 4 races. If this trend continues, the championship is mathematically open with 3 rounds to go.
+    </span>
+    <div class="insight-actions">
+      <button class="insight-btn" onclick="triggerAnn('insights')">Why this matters</button>
+      <button class="insight-btn primary" onclick="setTier('pro')">Analyse trend →</button>
+    </div>
+  </div>
+
+  <!-- DRIVER STANDINGS -->
+  <section class="section">
+    <div class="section-header" style="position:relative">
+      <span class="section-title">Drivers' Championship</span>
+      <span class="section-pill">Top 10</span>
+      <button class="section-action">View all 20 →</button>
+      <div class="ann-pin annotation" id="ann2" data-ann="expertise"
+           style="position:static;margin-left:8px"
+           onclick="triggerAnn('expertise');event.stopPropagation()">2</div>
+    </div>
+
+    <!-- Starter: top 5 cards -->
+    <div class="driver-grid" id="driverGrid"></div>
+  </section>
+
+  <!-- PRO TIER: Filter presets + constructor table + lap chart -->
+  <div class="pro-only">
+    <section class="section" style="padding-top:0">
+      <div class="section-header" style="position:relative">
+        <span class="section-title">Constructors' Championship</span>
+        <div class="ann-pin annotation" id="ann3" data-ann="filters"
+             style="position:static;margin-left:8px"
+             onclick="triggerAnn('filters');event.stopPropagation()">3</div>
+      </div>
+      <!-- Filter presets -->
+      <div class="filter-row" id="filterRow">
+        <button class="filter-preset active" onclick="togglePreset(this)">All constructors</button>
+        <button class="filter-preset" onclick="togglePreset(this)">Top 3</button>
+        <button class="filter-preset" onclick="togglePreset(this)">Power units</button>
+        <button class="filter-preset" onclick="togglePreset(this)">Customer teams</button>
+        <div class="filter-sep"></div>
+        <select class="filter-select">
+          <option>All circuits</option>
+          <option>Street circuits</option>
+          <option>High-downforce</option>
+          <option>Low-downforce</option>
+        </select>
+        <select class="filter-select">
+          <option>Full season</option>
+          <option>Last 5 races</option>
+          <option>Last 3 races</option>
+        </select>
+      </div>
+      <div class="constructor-table" id="constructorTable"></div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="grid-2">
+        <div>
+          <div class="section-header" style="position:relative;margin-bottom:12px">
+            <span class="section-title">Lap Time Trend</span>
+            <span style="font-size:12px;color:var(--text-secondary);font-weight:400">Last 5 races</span>
+            <div class="ann-pin annotation" id="ann4" data-ann="vitaly-insight"
+                 style="position:static;margin-left:8px"
+                 onclick="triggerAnn('vitaly-insight');event.stopPropagation()">4</div>
+          </div>
+          <div class="chart-area" id="lapChart"></div>
+        </div>
+        <div>
+          <div class="section-header" style="margin-bottom:12px">
+            <span class="section-title">Points Momentum</span>
+            <span style="font-size:12px;color:var(--text-secondary);font-weight:400">Rolling 5-race avg</span>
+          </div>
+          <div class="chart-area" id="momentumChart"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- STARTER: Pro upsell gate -->
+  <div class="starter-gate">
+    <section class="section" style="padding-top:0">
+      <div class="pro-gate">
+        <div class="pro-gate-icon">🏎️</div>
+        <div class="pro-gate-title">Unlock Pro Analytics</div>
+        <div class="pro-gate-desc">
+          Constructor standings, lap time trends, sector analysis, driver comparison tools,<br>
+          and Finviz-style filter presets. All in one screen.
+        </div>
+        <div class="pro-gate-features">
+          <div class="pro-feature"><span class="pro-feature-icon">✓</span>Constructor table</div>
+          <div class="pro-feature"><span class="pro-feature-icon">✓</span>Lap time charts</div>
+          <div class="pro-feature"><span class="pro-feature-icon">✓</span>Filter presets</div>
+          <div class="pro-feature"><span class="pro-feature-icon">✓</span>Driver comparison</div>
+          <div class="pro-feature"><span class="pro-feature-icon">✓</span>Sector analysis</div>
+          <div class="pro-feature"><span class="pro-feature-icon">✓</span>Export & share</div>
+        </div>
+        <button class="pro-gate-btn" onclick="setTier('pro')">Upgrade to Pro →</button>
+      </div>
+    </section>
+  </div>
+
+</div><!-- /app-body -->
+
+<!-- ANNOTATION PANEL -->
+<div class="ann-panel" id="annPanel">
+  <div class="ann-inner">
+    <div class="ann-num" id="annNum">1</div>
+    <div class="ann-text">
+      <div class="ann-title" id="annTitle"></div>
+      <div class="ann-body" id="annBody"></div>
+    </div>
+    <span class="speaking-badge" id="speakBadge"><span class="pulse"></span>Narrating</span>
+    <button class="ann-close" onclick="closeAnn()">✕</button>
+  </div>
+</div>
+
+<!-- GLOBAL BAR -->
+<div class="global-bar">
+  <span style="font-size:11px">🏁 Portfolio demo — Grand Prix Dashboard (design twin)</span>
+  <button class="global-bar-btn on" id="annToggle" onclick="toggleAnnotations()">📌 Annotations</button>
+  <button class="global-bar-btn" onclick="stopSpeak()">■ Stop</button>
+  <span style="margin-left:auto;font-size:11px;color:var(--text-tertiary)">
+    Vitaly Friedman principles applied · Before/After case study
+  </span>
+</div>
+
+<div class="page-bottom"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════
+const TEAM_COLORS = {
+  'Red Bull':    '#3671C6', 'McLaren': '#FF8000', 'Ferrari': '#E8002D',
+  'Mercedes':    '#27F4D2', 'Aston Martin': '#358C75', 'Alpine': '#FF87BC',
+  'Williams':    '#64C4FF', 'RB':    '#6692FF',
+  'Haas':        '#B6BABD', 'Sauber': '#52E252',
+};
+
+const DRIVERS = [
+  {pos:1,name:'Max Verstappen',team:'Red Bull',num:1,pts:393,wins:9,poles:11,delta:'+47',trend:'same'},
+  {pos:2,name:'Lando Norris',team:'McLaren',num:4,pts:331,wins:3,poles:5,delta:'+22 last 4',trend:'gain'},
+  {pos:3,name:'Charles Leclerc',team:'Ferrari',num:16,pts:307,wins:3,poles:3,delta:'+12 last 5',trend:'gain'},
+  {pos:4,name:'Oscar Piastri',team:'McLaren',num:81,pts:268,wins:2,poles:2,delta:'–8 vs L3',trend:'loss'},
+  {pos:5,name:'Carlos Sainz',team:'Ferrari',num:55,pts:259,wins:1,poles:2,delta:'stable',trend:'same'},
+  {pos:6,name:'Lewis Hamilton',team:'Mercedes',num:44,pts:232,wins:0,poles:1,delta:'–15 last 5',trend:'loss'},
+  {pos:7,name:'George Russell',team:'Mercedes',num:63,pts:192,wins:1,poles:0,delta:'+8 last 3',trend:'gain'},
+  {pos:8,name:'Sergio Pérez',team:'Red Bull',num:11,pts:151,wins:0,poles:0,delta:'–30 last 5',trend:'loss'},
+  {pos:9,name:'Fernando Alonso',team:'Aston Martin',num:14,pts:62,wins:0,poles:0,delta:'stable',trend:'same'},
+  {pos:10,name:'Lance Stroll',team:'Aston Martin',num:18,pts:24,wins:0,poles:0,delta:'stable',trend:'same'},
+];
+
+const CONSTRUCTORS = [
+  {pos:1,name:'McLaren',pts:599,wins:5,podiums:14,bar:100},
+  {pos:2,name:'Ferrari',pts:566,wins:4,podiums:12,bar:95},
+  {pos:3,name:'Red Bull',pts:544,wins:9,podiums:13,bar:91},
+  {pos:4,name:'Mercedes',pts:424,wins:1,podiums:9,bar:71},
+  {pos:5,name:'Aston Martin',pts:86,wins:0,podiums:1,bar:14},
+  {pos:6,name:'Alpine',pts:48,wins:0,podiums:0,bar:8},
+];
+
+const LAP_DATA = {
+  labels: ['R13 Belgium','R14 Hungary','R15 Netherlands','R16 Italy','R17 Singapore'],
+  ver: [73.2, 74.1, 70.8, 82.4, 96.2],
+  nor: [73.8, 73.6, 71.2, 82.1, 95.9],
+  lec: [74.0, 74.3, 71.5, 82.8, 96.4],
+};
+
+const MOMENTUM = {
+  labels: ['R13','R14','R15','R16','R17'],
+  ver: [25,18,25,12,15],
+  nor: [15,25,20,25,25],
+  lec: [18,10,15,18,12],
+};
+
+const ANNOTATIONS_DATA = {
+  insights: {n:'1',title:'Insights lead, data follows',
+    body:'Vitaly\'s core dashboard principle: show the conclusion first, let the data prove it. The hero says "Verstappen leads by 47 points" — not a raw number. The insight banner quantifies the threat. The user gets the story before they ever look at a chart.'},
+  expertise: {n:'2',title:'Match the expertise level',
+    body:'Vitaly: "Design for interface expertise levels — low, medium, high." Starter mode is for the casual fan: big numbers, clear winner, one insight. Pro mode unlocks constructor tables, filter presets, and lap time analysis for the engaged enthusiast. Same data, different density.'},
+  filters: {n:'3',title:'Filter presets over open-ended dropdowns',
+    body:'Rather than 6 separate dropdowns that require the user to know what they want, presets chain multi-dimensional filters with one click — "Top 3", "Street circuits", "Last 5 races". Vitaly: "Support extensive filter search with filter presets."'},
+  'vitaly-insight': {n:'4',title:'One message per chart',
+    body:'Each chart is sized and labelled to communicate exactly one insight: this one shows McLaren\'s lap time improvement over 5 races. Vitaly: "Always communicate one message per chart. Finding insights in a chart can be faster than in a table." The label tells you what to look for before you read the bars.'},
+};
+
+// ══════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════
+let showAnnotations = true;
+let activeAnn = null;
+let speaking = false;
+let currentTier = 'starter';
+let currentTheme = 'dark';
+
+// ══════════════════════════════════════════════════
+// RENDER DRIVERS
+// ══════════════════════════════════════════════════
+function renderDrivers() {
+  const grid = document.getElementById('driverGrid');
+  const displayCount = currentTier === 'starter' ? 5 : 10;
+  const drivers = DRIVERS.slice(0, displayCount);
+
+  grid.innerHTML = '';
+  drivers.forEach(d => {
+    const teamColor = TEAM_COLORS[d.team] || '#999';
+    const deltaClass = d.trend === 'gain' ? 'delta-gain' : d.trend === 'loss' ? 'delta-loss' : 'delta-same';
+    const card = document.createElement('div');
+    card.className = 'driver-card' + (d.pos === 1 ? ' leader' : '');
+    card.innerHTML = `
+      <div class="driver-card-bar" style="background:${teamColor}"></div>
+      <div class="driver-pos">P${d.pos}</div>
+      <div class="driver-number">${d.num}</div>
+      <div class="driver-name">${d.name}</div>
+      <div class="driver-team" style="color:${teamColor}">${d.team}</div>
+      <div class="driver-points">${d.pts}</div>
+      <div class="driver-points-label">Points</div>
+      <div class="driver-delta">
+        <span class="driver-delta-val ${deltaClass}">${d.delta}</span>
+        <span class="driver-wins">${d.wins}W · ${d.poles}P</span>
+      </div>
+    `;
+    card.style.borderTopColor = teamColor + '44';
+    grid.appendChild(card);
+  });
+}
+
+// ══════════════════════════════════════════════════
+// RENDER CONSTRUCTORS
+// ══════════════════════════════════════════════════
+function renderConstructors() {
+  const el = document.getElementById('constructorTable');
+  if (!el) return;
+  const maxPts = CONSTRUCTORS[0].pts;
+  let html = `
+    <div class="ct-row header">
+      <div>Pos</div><div>Constructor</div>
+      <div style="text-align:right">Points</div>
+      <div style="text-align:right">Wins</div>
+      <div style="text-align:right">Podiums</div>
+      <div>Share</div>
+    </div>
+  `;
+  CONSTRUCTORS.forEach(c => {
+    const color = TEAM_COLORS[c.name] || '#999';
+    const barW = Math.round(c.pts / maxPts * 100);
+    html += `
+      <div class="ct-row">
+        <div class="ct-pos">${c.pos}</div>
+        <div class="ct-team">
+          <div class="ct-team-dot" style="background:${color}"></div>
+          <span class="ct-team-name">${c.name}</span>
+        </div>
+        <div class="ct-stat points">${c.pts}</div>
+        <div class="ct-stat">${c.wins}</div>
+        <div class="ct-stat">${c.podiums}</div>
+        <div class="ct-bar-cell">
+          <div class="ct-bar-wrap">
+            <div class="ct-bar" style="width:${barW}%;background:${color}"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  el.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════
+// RENDER CHARTS
+// ══════════════════════════════════════════════════
+function renderLapChart() {
+  const el = document.getElementById('lapChart');
+  if (!el) return;
+  const maxVal = Math.max(...LAP_DATA.ver, ...LAP_DATA.nor, ...LAP_DATA.lec);
+  const minVal = Math.min(...LAP_DATA.ver, ...LAP_DATA.nor, ...LAP_DATA.lec);
+  const range = maxVal - minVal;
+
+  const barHtml = LAP_DATA.labels.map((label, i) => {
+    const vH = ((LAP_DATA.ver[i] - minVal) / range * 130 + 20).toFixed(0);
+    const nH = ((LAP_DATA.nor[i] - minVal) / range * 130 + 20).toFixed(0);
+    const lH = ((LAP_DATA.lec[i] - minVal) / range * 130 + 20).toFixed(0);
+    return `
+      <div class="chart-bar-group">
+        <div class="chart-bar" style="height:${vH}px;background:${TEAM_COLORS['Red Bull']}" title="VER ${LAP_DATA.ver[i]}s"></div>
+        <div class="chart-bar" style="height:${nH}px;background:${TEAM_COLORS['McLaren']}" title="NOR ${LAP_DATA.nor[i]}s"></div>
+        <div class="chart-bar" style="height:${lH}px;background:${TEAM_COLORS['Ferrari']}" title="LEC ${LAP_DATA.lec[i]}s"></div>
+      </div>
+    `;
+  }).join('');
+
+  const labelHtml = LAP_DATA.labels.map(l => `<div class="chart-x-label">${l.split(' ')[1]}</div>`).join('');
+
+  el.innerHTML = `
+    <div class="chart-header">
+      <span class="chart-title">Fastest Lap (avg, seconds)</span>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:${TEAM_COLORS['Red Bull']}"></div>Verstappen</div>
+        <div class="legend-item"><div class="legend-dot" style="background:${TEAM_COLORS['McLaren']}"></div>Norris</div>
+        <div class="legend-item"><div class="legend-dot" style="background:${TEAM_COLORS['Ferrari']}"></div>Leclerc</div>
+      </div>
+    </div>
+    <div class="chart-canvas-wrap">${barHtml}</div>
+    <div class="chart-x-labels">${labelHtml}</div>
+    <p style="font-size:11px;color:var(--text-tertiary);margin-top:8px;font-style:italic">↑ McLaren lap times improving each race — championship trend to watch</p>
+  `;
+}
+
+function renderMomentumChart() {
+  const el = document.getElementById('momentumChart');
+  if (!el) return;
+  const maxVal = 25;
+
+  const barHtml = MOMENTUM.labels.map((label, i) => {
+    const vH = Math.round(MOMENTUM.ver[i] / maxVal * 130 + 4);
+    const nH = Math.round(MOMENTUM.nor[i] / maxVal * 130 + 4);
+    const lH = Math.round(MOMENTUM.lec[i] / maxVal * 130 + 4);
+    return `
+      <div class="chart-bar-group">
+        <div class="chart-bar" style="height:${vH}px;background:${TEAM_COLORS['Red Bull']}" title="VER +${MOMENTUM.ver[i]}pts"></div>
+        <div class="chart-bar" style="height:${nH}px;background:${TEAM_COLORS['McLaren']}" title="NOR +${MOMENTUM.nor[i]}pts"></div>
+        <div class="chart-bar" style="height:${lH}px;background:${TEAM_COLORS['Ferrari']}" title="LEC +${MOMENTUM.lec[i]}pts"></div>
+      </div>
+    `;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="chart-header">
+      <span class="chart-title">Points per Race (last 5)</span>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:${TEAM_COLORS['Red Bull']}"></div>VER</div>
+        <div class="legend-item"><div class="legend-dot" style="background:${TEAM_COLORS['McLaren']}"></div>NOR</div>
+        <div class="legend-item"><div class="legend-dot" style="background:${TEAM_COLORS['Ferrari']}"></div>LEC</div>
+      </div>
+    </div>
+    <div class="chart-canvas-wrap">${barHtml}</div>
+    <div class="chart-x-labels">${MOMENTUM.labels.map(l=>`<div class="chart-x-label">${l}</div>`).join('')}</div>
+    <p style="font-size:11px;color:var(--text-tertiary);margin-top:8px;font-style:italic">↑ Norris averaging 22pts/race — outscoring Verstappen over last 5</p>
+  `;
+}
+
+// ══════════════════════════════════════════════════
+// TIER + THEME
+// ══════════════════════════════════════════════════
+function setTier(t) {
+  currentTier = t;
+  document.documentElement.dataset.tier = t;
+  document.getElementById('btnStarter').classList.toggle('active', t === 'starter');
+  document.getElementById('btnPro').classList.toggle('active', t === 'pro');
+  renderDrivers();
+  if (t === 'pro') {
+    setTimeout(() => { renderConstructors(); renderLapChart(); renderMomentumChart(); }, 50);
+    if (showAnnotations) setTimeout(() => triggerAnn('expertise'), 800);
+  }
+}
+
+function toggleTheme() {
+  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = currentTheme;
+  document.getElementById('themeBtn').textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+}
+
+// ══════════════════════════════════════════════════
+// FILTER PRESETS
+// ══════════════════════════════════════════════════
+function togglePreset(btn) {
+  document.querySelectorAll('.filter-preset').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ══════════════════════════════════════════════════
+// ANNOTATIONS
+// ══════════════════════════════════════════════════
+function triggerAnn(key) {
+  if (!showAnnotations) return;
+  const d = ANNOTATIONS_DATA[key];
+  if (!d) return;
+  activeAnn = key;
+  document.getElementById('annNum').textContent = d.n;
+  document.getElementById('annTitle').textContent = d.title;
+  document.getElementById('annBody').textContent = d.body;
+  document.getElementById('annPanel').classList.add('show');
+  document.querySelectorAll('.ann-pin').forEach(p => p.classList.toggle('active', p.dataset.ann === key));
+  speak(d.title + '. ' + d.body);
+}
+
+function closeAnn() {
+  document.getElementById('annPanel').classList.remove('show');
+  document.querySelectorAll('.ann-pin').forEach(p => p.classList.remove('active'));
+  stopSpeak(); activeAnn = null;
+}
+
+function toggleAnnotations() {
+  showAnnotations = !showAnnotations;
+  const btn = document.getElementById('annToggle');
+  btn.classList.toggle('on', showAnnotations);
+  btn.textContent = showAnnotations ? '📌 Annotations' : '📌 Off';
+  document.querySelectorAll('.ann-pin').forEach(p => p.style.display = showAnnotations ? 'flex' : 'none');
+  if (!showAnnotations) closeAnn();
+}
+
+// ══════════════════════════════════════════════════
+// SPEECH
+// ══════════════════════════════════════════════════
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  stopSpeak();
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = 0.95;
+  u.onstart = () => { speaking = true; document.getElementById('speakBadge').classList.add('show'); };
+  u.onend = () => { speaking = false; document.getElementById('speakBadge').classList.remove('show'); };
+  speechSynthesis.speak(u);
+}
+function stopSpeak() {
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  speaking = false;
+  document.getElementById('speakBadge').classList.remove('show');
+}
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  renderDrivers();
+  setTimeout(() => { if (showAnnotations) triggerAnn('insights'); }, 1200);
+});
+</script>
+</body>
+</html>

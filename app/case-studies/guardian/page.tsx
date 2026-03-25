@@ -1,7 +1,6 @@
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseStudyHero from "@/components/CaseStudyHero";
 import { Body, PullQuote, Section } from "@/components/CaseStudyTypography";
-import ArtifactPlaceholder from "@/components/ArtifactPlaceholder";
 
 export default function GuardianPage() {
   return (
@@ -33,13 +32,6 @@ export default function GuardianPage() {
             The question the project set out to answer was not "how do we document better?" It was: what if the design system could be present at the moment decisions are actually made? This became Guardian — an AI-assisted concept designed to detect drift, surface contextual guidance, and help teams make confident system decisions without leaving their workflow.
           </Body>
         </Section>
-
-        <ArtifactPlaceholder
-          title="Overview Artifact"
-          description="Add a supporting screenshot that grounds the project overview in a concrete visual."
-          aspectRatio="16/9"
-          className="my-10"
-        />
 
         <Section eyebrow="THE PROBLEM" heading="Spotting the Gap">
           <Body>
@@ -101,13 +93,6 @@ export default function GuardianPage() {
           </Body>
         </Section>
 
-        <ArtifactPlaceholder
-          title="Interaction Artifact"
-          description="Add a screenshot of the interaction flow or console state to document behavior."
-          aspectRatio="16/9"
-          className="my-10"
-        />
-
         <Section eyebrow="PROTOTYPE" heading="Prototype and Feasibility">
           <Body>
             To explore technical feasibility in parallel, the development team built a working prototype using AI-driven analysis, a bot interface connected to system data, and a lightweight monitoring layer. This demonstrated that the concept could integrate with existing Figma workflows rather than requiring designers to manage a separate tool.
@@ -152,14 +137,6 @@ export default function GuardianPage() {
             "The best governance is invisible. It works because the right choice was always easier than the wrong one."
           </PullQuote>
         </Section>
-
-        <div style={{ background: "#F5F4F1", borderLeft: "3px solid #CCCCCC", padding: "20px 24px", borderRadius: "4px", fontFamily: "var(--font-body)", fontSize: "13px", color: "#666666", lineHeight: 1.6, marginTop: "64px" }}>
-          <strong style={{ color: "#2C2C2C" }}>Visual assets to add:</strong>
-          {" "}(1) Guardian Loop circular diagram — Observe, Interpret, Communicate, Learn.
-          {" "}(2) FigPal state map — idle, alert, thinking, success.
-          {" "}(3) Design ↔ Code console annotated screenshot.
-          {" "}(4) System Health Dashboard F1-style signals overview.
-        </div>
 
       </div>
     </CaseStudyLayout>

@@ -1,6 +1,5 @@
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseStudyHero from "@/components/CaseStudyHero";
-import ArtifactPlaceholder from "@/components/ArtifactPlaceholder";
 import { Body, PullQuote, Section } from "@/components/CaseStudyTypography";
 import Link from "next/link";
 import { getCaseStudy, getAdjacentStudies } from "@/data/caseStudies";
@@ -111,67 +110,103 @@ export default function FiltersDecisionSupportPage() {
         </Section>
 
         {/* ── Interactive Demo ── */}
-        <section style={{ marginBottom: "80px" }}>
-          <p style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "11px",
-            fontWeight: 500,
-            textTransform: "uppercase",
-            letterSpacing: "0.12em",
-            color: "#8A8A8A",
-            marginBottom: "12px",
-          }}>
-            INTERACTIVE DEMO
-          </p>
-          <h2 style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(28px, 4vw, 40px)",
-            fontWeight: 400,
-            color: "#1A1A1A",
-            lineHeight: 1.1,
-            marginBottom: "20px",
-          }}>
-            Explore the Filter System
-          </h2>
-          <p style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "16px",
-            color: "#4A4640",
-            lineHeight: 1.7,
-            marginBottom: "24px",
-          }}>
+        <Section eyebrow="INTERACTIVE DEMO" heading="Explore the Filter System">
+          <Body>
             An annotated, interactive prototype showing the bottom-sheet filter pattern for flight
             search — demonstrating how progressive disclosure, active state clarity, and high-signal
             filter prioritisation work together.
-          </p>
+          </Body>
+
+          {/* Prototype preview card */}
           <div style={{
+            background: "linear-gradient(135deg, #0A1628 0%, #132040 60%, #0A1628 100%)",
             borderRadius: "16px",
-            overflow: "hidden",
-            border: "1px solid rgba(26,24,20,0.1)",
-            background: "#F8F7F4",
+            border: "1px solid rgba(255,255,255,0.08)",
+            padding: "56px 32px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "24px",
+            marginBottom: "12px",
           }}>
-            <iframe
-              src="/demos/bizaway-filter-demo.html"
+            {/* Icon */}
+            <div style={{
+              width: "48px",
+              height: "48px",
+              borderRadius: "12px",
+              background: "rgba(255,255,255,0.08)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                <rect x="3" y="3" width="16" height="16" rx="3" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" />
+                <line x1="3" y1="8" x2="19" y2="8" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
+                <line x1="7" y1="12" x2="15" y2="12" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" strokeLinecap="round" />
+                <line x1="7" y1="15.5" x2="13" y2="15.5" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </div>
+
+            {/* Labels */}
+            <div style={{ textAlign: "center" }}>
+              <p style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "11px",
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.14em",
+                color: "rgba(255,255,255,0.38)",
+                marginBottom: "8px",
+              }}>
+                Interactive Prototype
+              </p>
+              <p style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "18px",
+                fontWeight: 600,
+                color: "#EDE8DF",
+                lineHeight: 1.25,
+                marginBottom: "6px",
+              }}>
+                BizAway Filter System
+              </p>
+              <p style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "13px",
+                color: "rgba(255,255,255,0.42)",
+                lineHeight: 1.5,
+              }}>
+                Annotated flow — click the pins to hear design decision narration
+              </p>
+            </div>
+
+            {/* CTA */}
+            <a
+              href="/demos/bizaway-filter-demo.html"
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
-                width: "100%",
-                height: "700px",
-                border: "none",
-                display: "block",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                background: "#EDE8DF",
+                color: "#1A1814",
+                fontFamily: "var(--font-body)",
+                fontSize: "13px",
+                fontWeight: 600,
+                padding: "12px 28px",
+                borderRadius: "999px",
+                textDecoration: "none",
+                transition: "opacity 150ms ease",
               }}
-              title="BizAway Filter Demo — Interactive Prototype"
-              loading="lazy"
-            />
+              onMouseEnter={e => (e.currentTarget.style.opacity = "0.85")}
+              onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+            >
+              Open interactive prototype ↗
+            </a>
           </div>
-          <p style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "13px",
-            color: "#8A8480",
-            lineHeight: 1.6,
-            marginTop: "12px",
-          }}>
-            Click the annotation pins to hear narrated explanations of each design decision.
-          </p>
-        </section>
+        </Section>
 
         <Section eyebrow="DESIGNING FOR COGNITION" heading="Reducing Cognitive Load Through Hierarchy">
           <Body>
@@ -189,13 +224,6 @@ export default function FiltersDecisionSupportPage() {
             the filter panel before they can narrow the problem.
           </Body>
         </Section>
-
-        <ArtifactPlaceholder
-          title="Filter Architecture Diagram"
-          description="Add a diagram showing the three-level filter architecture: atomic components, interaction patterns, and composition rules."
-          aspectRatio="16/9"
-          className="my-10"
-        />
 
         <Section eyebrow="SYSTEM ARCHITECTURE" heading="Three Levels of the Filtering System">
           <Body>
@@ -267,17 +295,17 @@ export default function FiltersDecisionSupportPage() {
                 href="/demos/bizaway-search.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "10px 20px", borderRadius: "999px", border: "1px solid rgba(26,24,20,0.18)", background: "#FAFAF8", color: "#1A1814", fontFamily: "var(--font-body)", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
+                className="demo-link"
               >
-                <span style={{ fontSize: "14px" }}>↗</span> BizAway search prototype
+                <span aria-hidden>↗</span> BizAway search prototype
               </a>
               <a
-                href="/demos/bizaway-demo.html"
+                href="/demos/bizaway-filter-demo.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "10px 20px", borderRadius: "999px", border: "1px solid rgba(26,24,20,0.18)", background: "#FAFAF8", color: "#1A1814", fontFamily: "var(--font-body)", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
+                className="demo-link"
               >
-                <span style={{ fontSize: "14px" }}>↗</span> BizAway filter demo
+                <span aria-hidden>↗</span> BizAway filter demo
               </a>
             </div>
           </div>

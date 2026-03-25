@@ -46,48 +46,35 @@ const cards = [
 
 export default function LearningSection() {
   return (
-    <section id="learning" className="py-20 px-6">
+    <section id="learning" className="py-20 md:py-24 px-6">
       <div className="max-w-7xl mx-auto">
 
         <FadeIn>
-          <p className="section-label mb-3">— Outside the Work</p>
-          <h2
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(32px, 5vw, 48px)",
-              fontWeight: 400,
-              color: "#1A1814",
-              lineHeight: 1.1,
-              marginBottom: "40px",
-            }}
-          >
-            Learning & Inspiration
-          </h2>
+          <div className="mb-12">
+            <p className="section-label mb-3">— Outside the Work</p>
+            <h2 className="heading-section">Learning &amp; Inspiration</h2>
+          </div>
         </FadeIn>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {cards.map((card, i) => (
             <FadeIn key={card.title} delay={i * 80}>
               <div
+                className="card-elevated"
                 style={{
                   padding: "24px",
-                  borderRadius: "16px",
-                  border: "1px solid rgba(26,24,20,0.08)",
-                  background: "#F8F7F4",
                   height: "100%",
-                  transition: "background 220ms ease, box-shadow 220ms ease, transform 220ms ease",
+                  transition: "box-shadow 220ms ease, transform 220ms ease",
                   cursor: "default",
                 }}
                 onMouseEnter={e => {
                   const el = e.currentTarget as HTMLDivElement;
-                  el.style.background = "#FFFFFF";
-                  el.style.boxShadow = "0 8px 28px rgba(0,0,0,0.09)";
+                  el.style.boxShadow = "0 10px 32px rgba(44,24,16,0.09), 0 3px 10px rgba(44,24,16,0.05)";
                   el.style.transform = "translateY(-3px)";
                 }}
                 onMouseLeave={e => {
                   const el = e.currentTarget as HTMLDivElement;
-                  el.style.background = "#F8F7F4";
-                  el.style.boxShadow = "none";
+                  el.style.boxShadow = "";
                   el.style.transform = "translateY(0)";
                 }}
               >
@@ -109,29 +96,10 @@ export default function LearningSection() {
                 </div>
 
                 {/* Title */}
-                <h3
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "18px",
-                    fontWeight: 600,
-                    color: "#1A1814",
-                    lineHeight: 1.25,
-                    marginBottom: "10px",
-                  }}
-                >
-                  {card.title}
-                </h3>
+                <h3 className="heading-item mb-2.5">{card.title}</h3>
 
                 {/* Description */}
-                <p
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "15px",
-                    color: "#6A6460",
-                    lineHeight: 1.7,
-                    margin: 0,
-                  }}
-                >
+                <p className="body-base m-0" style={{ color: "var(--color-muted)" }}>
                   {card.description}
                 </p>
               </div>

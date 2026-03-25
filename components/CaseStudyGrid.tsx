@@ -24,7 +24,7 @@ interface SectionShellProps {
 function SectionShell({ id, children }: SectionShellProps) {
   return (
     <section id={id} className="px-6 py-20 md:py-24">
-      <div className="mx-auto max-w-5xl">{children}</div>
+      <div className="mx-auto max-w-7xl">{children}</div>
     </section>
   );
 }
@@ -40,9 +40,7 @@ function SectionHeader({ label, title, description }: SectionHeaderProps) {
     <div className="mb-12 flex flex-col justify-between gap-4 sm:flex-row sm:items-end md:mb-14">
       <div>
         <p className="section-label mb-3">{label}</p>
-        <h2 className="heading-section">
-          {title}
-        </h2>
+        <h2 className="heading-section">{title}</h2>
         {description && (
           <p className="body-lg mt-3 max-w-xl" style={{ color: "var(--color-muted)" }}>
             {description}
@@ -64,21 +62,23 @@ export default function CaseStudyGrid() {
         />
       </FadeIn>
 
-      <div className="flex flex-col gap-6 md:gap-7">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6">
         {caseStudies.map((cs, i) => (
-          <FadeIn key={cs.slug} delay={i * 70}>
+          <FadeIn key={cs.slug} delay={i * 60} className="flex flex-col">
             <Link
               href={cs.href ?? `/case-studies/${cs.slug}`}
               data-cursor="card"
-              className="group glass-card flex flex-col overflow-hidden rounded-[24px] border border-white/60 bg-gradient-to-b from-white/82 to-white/68 shadow-[0_10px_30px_rgba(44,24,16,0.05),0_2px_8px_rgba(44,24,16,0.04),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(44,24,16,0.09),0_8px_18px_rgba(44,24,16,0.06)] md:min-h-[220px] md:flex-row md:items-stretch"
+              className="group card-elevated flex h-full flex-col overflow-hidden rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(44,24,16,0.1),0_6px_16px_rgba(44,24,16,0.07)]"
             >
-              <div className="relative aspect-video w-full shrink-0 overflow-hidden bg-[#1A1814] md:w-[min(45%,390px)] md:max-w-[420px]">
+              {/* Thumbnail */}
+              <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-[#1A1814]">
                 <Image
                   src={cs.heroImage}
                   alt={cs.title}
                   fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.035]"
-                  sizes="(max-width: 768px) 100vw, 390px"
+                  loading="lazy"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 480px"
                 />
                 {cs.heroVideo && (
                   <video
@@ -95,31 +95,19 @@ export default function CaseStudyGrid() {
                   </video>
                 )}
                 <div
-                  className="pointer-events-none absolute inset-0 z-[2] bg-[linear-gradient(to_top,rgba(0,0,0,0.34),transparent_46%),linear-gradient(to_right,rgba(0,0,0,0.16),transparent_45%)]"
+                  className="pointer-events-none absolute inset-0 z-[2] bg-[linear-gradient(to_top,rgba(0,0,0,0.28),transparent_52%)]"
                   aria-hidden
                 />
-                {cs.heroVideo && (
-                  <div className="pointer-events-none absolute inset-0 z-[3] flex items-center justify-center">
-                    <div
-                      className="flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-white/82 shadow-[0_18px_40px_rgba(0,0,0,0.18)] backdrop-blur-md"
-                      aria-hidden
-                    >
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M5 3.5l9 4.5-9 4.5V3.5z" fill="#1A1814" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-                <span className="absolute right-4 top-4 z-[4] rounded-full border border-white/18 bg-black/20 px-2.5 py-1 text-[11px] font-semibold tracking-[0.12em] text-white/92 backdrop-blur-sm">
+                <span className="absolute right-3 top-3 z-[4] rounded-full border border-white/18 bg-black/22 px-2 py-0.5 text-[10px] font-semibold tracking-[0.1em] text-white/90 backdrop-blur-sm">
                   {cs.year}
                 </span>
                 {cs.clientLogo && (
-                  <div className="absolute left-4 top-4 z-[4] flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/45 bg-white/92 shadow-[0_10px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm">
+                  <div className="absolute left-3 top-3 z-[4] flex h-8 w-8 items-center justify-center overflow-hidden rounded-xl border border-white/45 bg-white/90 shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={cs.clientLogo}
                       alt={cs.clientName ?? ""}
-                      className="h-6 w-6 object-contain"
+                      className="h-5 w-5 object-contain"
                       onError={(e) => {
                         e.currentTarget.parentElement!.style.display = "none";
                       }}
@@ -128,10 +116,11 @@ export default function CaseStudyGrid() {
                 )}
               </div>
 
-              <div className="flex min-h-[180px] flex-1 flex-col justify-center px-5 py-6 md:px-8 md:py-8">
-                <div className="flex flex-wrap items-center gap-2.5">
+              {/* Content */}
+              <div className="flex flex-1 flex-col px-5 py-5">
+                <div className="flex flex-wrap items-center gap-2">
                   <span
-                    className="rounded-full px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] shadow-sm"
+                    className="rounded-full px-3 py-1 text-[10px] font-bold tracking-[0.12em]"
                     style={{
                       background: getCategoryStyle(cs.category).bg,
                       color: getCategoryStyle(cs.category).color,
@@ -139,31 +128,28 @@ export default function CaseStudyGrid() {
                   >
                     {cs.category}
                   </span>
-                  {cs.tags?.slice(0, 3).map((tag) => (
-                    <span key={`${cs.slug}-${tag}`} className="tag px-2.5 py-1 text-[10px]">
+                  {cs.tags?.slice(0, 2).map((tag) => (
+                    <span key={`${cs.slug}-${tag}`} className="tag px-2.5 py-0.5 text-[10px]">
                       {tag}
                     </span>
                   ))}
                 </div>
 
                 {cs.clientName && (
-                  <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#8A8480]">
+                  <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#8A8480]">
                     {cs.clientName}
                   </p>
                 )}
 
-                <h3 className="mt-3 font-display text-[clamp(1.3rem,2.5vw,1.65rem)] font-semibold leading-[1.18] tracking-tight text-[#1A1814]">
+                <h3 className="mt-2.5 font-display text-[clamp(1.1rem,2vw,1.35rem)] font-semibold leading-[1.22] tracking-tight text-[#1A1814]">
                   {cs.title}
                 </h3>
 
-                <p
-                  className="mt-3 line-clamp-2 max-w-2xl text-[15px] leading-[1.72] text-[#5C5852]"
-                  style={{ letterSpacing: "0.01em" }}
-                >
+                <p className="mt-2 line-clamp-2 text-[13px] leading-[1.65] text-[#6A6560]">
                   {cs.description}
                 </p>
 
-                <span className="mt-5 inline-flex items-center gap-2 text-[13px] font-semibold tracking-[0.02em] text-[#1A1814] transition-colors group-hover:text-[var(--color-accent-espresso)]">
+                <span className="mt-auto pt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold tracking-[0.02em] text-[#1A1814] transition-colors group-hover:text-[var(--color-accent-espresso)]">
                   View case study
                   <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
                     →

@@ -21,17 +21,9 @@ export default function SectionHeader({
     <div className={`flex flex-col justify-between gap-4 sm:flex-row sm:items-end ${className}`.trim()}>
       <div className={contentClassName}>
         {label ? <p className="section-label mb-3">{label}</p> : null}
-        <h2
-          className="font-display leading-tight text-[#1A1814]"
-          style={{ fontSize: "clamp(32px, 5vw, 48px)" }}
-        >
-          {title}
-        </h2>
+        <h2 className="heading-section">{title}</h2>
         {description ? (
-          <p
-            className="mt-3 max-w-xl text-[16px] leading-[1.72] text-[#6B6560] md:text-[17px]"
-            style={{ letterSpacing: "0.01em" }}
-          >
+          <p className="body-lg mt-3 max-w-xl" style={{ color: "var(--color-muted)" }}>
             {description}
           </p>
         ) : null}

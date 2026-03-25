@@ -1,0 +1,44 @@
+{
+  "folders": [
+    {
+      "name": "🏠 portfolio-site",
+      "path": "."
+    },
+    {
+      "name": "✈️ ctrl-travel",
+      "path": "prototypes/ctrl-travel"
+    },
+    {
+      "name": "🔍 bizaway-filters",
+      "path": "prototypes/bizaway-filters"
+    },
+    {
+      "name": "🎫 bizaway-search",
+      "path": "prototypes/bizaway-search"
+    },
+    {
+      "name": "🏎️ grandprix-dashboard",
+      "path": "prototypes/grandprix-dashboard"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.DS_Store": true,
+      "**/node_modules": true,
+      "**/.next": true
+    },
+    "editor.formatOnSave": true,
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/.next": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "bradlc.vscode-tailwindcss",
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "ritwickdey.liveserver"
+    ]
+  }
+}
