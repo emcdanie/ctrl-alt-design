@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Chivo_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import DevTools from "@/components/DevTools";
 import "./globals.css";
 
 const chivoMono = Chivo_Mono({
@@ -34,6 +35,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${chivoMono.variable} ${plusJakarta.variable} antialiased`}>
+        <DevTools />
         {children}
       </body>
     </html>

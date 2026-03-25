@@ -73,6 +73,7 @@ const education = [
     degree: "UX/UI Design Bootcamp",
     logo: "/images/logos/Ironhack.png",
     logoBg: "#1A1A1A",
+    description: "Intensive 9-month bootcamp covering end-to-end UX/UI design — user research, information architecture, interaction design, prototyping, and usability testing.",
   },
   {
     period: "2005 — 2009",
@@ -80,6 +81,7 @@ const education = [
     degree: "BSc in Design, GPA: 3.9/4.0",
     logo: "/images/logos/ASU-logo.png",
     logoBg: "#8C1D40",
+    description: "Foundation in design principles, visual communication, typography, and creative problem-solving across digital and physical media.",
   },
 ];
 
@@ -184,45 +186,34 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
       </div>
 
       <div style={{ marginTop: "72px" }}>
-        <h2 className="heading-subsection" style={{ marginBottom: "40px" }}>
-          Education
-        </h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+        <SectionHeader
+          label="— Education"
+          title="Education"
+        />
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
           {education.map((edu) => (
             <div
               key={edu.name}
-              className="grid grid-cols-1 gap-8 sm:grid-cols-[180px_1fr]"
+              className="overflow-hidden rounded-[22px] border border-white/50 bg-gradient-to-b from-white/72 to-white/58 shadow-[0_8px_24px_rgba(44,24,16,0.04),0_1px_4px_rgba(44,24,16,0.03),inset_0_1px_0_rgba(255,255,255,0.8)] [backdrop-filter:blur(18px)] [-webkit-backdrop-filter:blur(18px)]"
             >
-              <div style={{ paddingTop: "2px", display: "flex", flexDirection: "column", gap: "8px" }}>
-                <LogoContainer src={edu.logo} alt={edu.name} bg={edu.logoBg} size={48} />
-                <span
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "13px",
-                    color: "#8A8480",
-                    fontWeight: 500,
-                  }}
-                >
-                  {edu.period}
-                </span>
+              <div className="flex w-full items-center gap-4 px-5 py-5 md:px-6 md:py-6">
+                <LogoContainer src={edu.logo} alt={edu.name} bg={edu.logoBg} size={44} />
+                <div className="min-w-0 flex-1">
+                  <span className="font-display text-[16px] font-semibold leading-[1.3] text-[#1A1814] md:text-[17px]">
+                    {edu.name}
+                  </span>
+                  <div className="mt-1 text-[14px] leading-relaxed text-[#8A8480]">
+                    {edu.degree} · {edu.period}
+                  </div>
+                </div>
               </div>
-              <div>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "20px",
-                    fontWeight: 600,
-                    color: "#1A1814",
-                    lineHeight: 1.2,
-                    marginBottom: "4px",
-                  }}
-                >
-                  {edu.name}
-                </h3>
-                <span style={{ fontFamily: "var(--font-body)", fontSize: "15px", color: "#8A8480" }}>
-                  {edu.degree}
-                </span>
-              </div>
+              {edu.description && (
+                <div className="border-t border-black/6 px-5 pb-5 pt-4 md:px-6 md:pb-6">
+                  <p className="text-[15px] leading-[1.75] text-[#4A4640]">
+                    {edu.description}
+                  </p>
+                </div>
+              )}
             </div>
           ))}
         </div>

@@ -1,5 +1,4 @@
 import CaseStudyLayout from "@/components/CaseStudyLayout";
-import CaseStudyHero from "@/components/CaseStudyHero";
 import { Body, PullQuote, Section } from "@/components/CaseStudyTypography";
 import PrototypeEmbed from "@/components/PrototypeEmbed";
 import Link from "next/link";
@@ -22,265 +21,331 @@ export default function FiltersDecisionSupportPage() {
 
   return (
     <CaseStudyLayout>
-      <CaseStudyHero
-        eyebrow={`${cs.category} · ${cs.year}`}
-        title={cs.title}
-        intro={cs.description}
-        metadata={metadata}
-        tags={cs.tags}
-        media={{ type: "image", src: cs.heroImage, alt: cs.title }}
-      />
+      {/* ── Hero ── */}
+      <div className="mx-auto max-w-[1200px] px-6 pb-10 pt-28 md:px-8 md:pb-12 md:pt-36">
+        <div className="max-w-[620px]">
+          <p className="section-label mb-6">{cs.category} · {cs.year}</p>
 
-      {/* Divider */}
+          <h1 className="mb-6 font-[var(--font-display)] text-[clamp(40px,5.5vw,72px)] font-bold leading-[1.02] tracking-[-0.03em] text-[var(--color-ink)]">
+            {cs.title}
+          </h1>
+
+          <p className="mb-10 text-[clamp(16px,1.5vw,19px)] leading-[1.75] text-[var(--color-muted)]">
+            Designing a decision-support system for complex B2B travel booking — where search, filtering, and results operate as one integrated flow rather than three separate features.
+          </p>
+
+          <dl className="mb-8 space-y-4 border-b border-[var(--color-border-soft)] pb-8">
+            {metadata.map(({ label, value }) => (
+              <div
+                key={label}
+                className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-5"
+              >
+                <dt className="min-w-[100px] text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--color-ink-muted)] opacity-70">
+                  {label}
+                </dt>
+                <dd className="m-0 max-w-[440px] text-[13.5px] leading-[1.7] text-[var(--color-ink)]">
+                  {value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          <div className="flex flex-wrap gap-2.5">
+            {cs.tags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-flex items-center rounded-full border px-3.5 py-1.5 text-[11px] font-semibold leading-[1.5] tracking-[0.04em] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]"
+                style={{
+                  background: "rgba(26,24,20,0.04)",
+                  color: "#4A4640",
+                  borderColor: "rgba(44, 24, 16, 0.08)",
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Divider ── */}
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
         <div style={{ borderTop: "1px solid rgba(26,24,20,0.1)" }} />
       </div>
 
-      {/* Content */}
-      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "64px 24px 80px" }}>
-
-        <Section eyebrow="OVERVIEW" heading="Rethinking Search & Filtering as Decision Support">
+      {/* ── Short introduction ── */}
+      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "48px 24px 0" }}>
+        <Section eyebrow="INTRODUCTION" heading="The Problem Wasn&apos;t the Controls">
           <Body>
-            Most products treat search and filtering as separate features. A text input here,
-            some checkboxes there, maybe a few chips along the top of a results list. What they
-            rarely are, by design, is a decision-support system — a structured way to help users
-            move from a vague intent to a confident choice.
+            When users struggle with a filtering interface, the instinct is to fix the controls — redesign
+            the dropdowns, restyle the chips, reposition the search bar. But on a B2B travel platform
+            managing flights, hotels, rail, and car rentals across multiple booking verticals, the
+            controls were not the real problem. They technically worked.
           </Body>
           <Body>
-            This case study explores the intersection of search UX, filtering architecture,
-            and cognitive load within a complex B2B travel platform. Multiple booking flows
-            and internal tooling were evolving in parallel, and the way users found and
-            compared options had accumulated into something fragmented and inconsistent.
+            The real problem was conceptual. Search, filters, and results had been designed as three
+            separate features — built at different times, by different teams, with different assumptions
+            about user intent. But users experienced them as a single decision flow: start with intent,
+            narrow the options, compare trade-offs, choose. The interface did not reflect that experience.
           </Body>
         </Section>
+      </div>
 
-        <Section eyebrow="CONTEXT" heading="A Platform That Grew Faster Than Its Patterns">
+      {/* ── Prototype — primary artifact, near the top ── */}
+      <div style={{ padding: "48px 24px 0" }}>
+        <div style={{ maxWidth: "760px", margin: "0 auto", marginBottom: "24px" }}>
+          <p className="section-label" style={{ marginBottom: "12px" }}>TRY THE PROTOTYPE</p>
+          <h2
+            className="heading-subsection"
+            style={{ marginBottom: "12px" }}
+          >
+            Explore the Decision System
+          </h2>
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "15px",
+              color: "var(--color-muted)",
+              lineHeight: 1.7,
+              maxWidth: "600px",
+            }}
+          >
+            This interactive prototype explores a different model of travel search — one where search,
+            filtering, and results operate as a single decision system. Experiment with filters,
+            compare options, and observe how the interface communicates trade-offs between price,
+            duration, and travel policy constraints.
+          </p>
+        </div>
+        <PrototypeEmbed
+          src="/demos/ctrl-travel-v2.html"
+          title="ctrl+travel — Search & Filtering System"
+          height="700px"
+        />
+      </div>
+
+      {/* ── Deep narrative — back to narrow column ── */}
+      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "64px 24px 80px" }}>
+
+        <Section eyebrow="CONTEXT" heading="A Platform That Outgrew Its Patterns">
           <Body>
-            BizAway is a B2B travel management platform used by companies to book and manage
-            business travel. When I joined, the product had scaled quickly — flights, car rentals,
-            hotels, trains — but each vertical had developed its own approach to search, filtering,
-            and results presentation.
+            BizAway is a B2B travel management platform used by companies across Europe to book and
+            manage business travel. When I joined, the product had scaled quickly — flights, car
+            rentals, hotels, trains — but each vertical had developed its own approach to search,
+            filtering, and results presentation. There was no shared vocabulary for how a user
+            should move from intent to decision.
           </Body>
           <Body>
             Users needed to explore many options quickly, understand pricing constraints, see company
-            policy restrictions, and compare travel combinations. The business goals were clear: help
-            users find what they need faster, reduce support overhead from confusion, and create
-            patterns that could scale as the product grew. What became clear quickly was that the
-            visible interface problems were symptoms of a deeper structural issue.
+            policy restrictions, and compare travel combinations — often across verticals in a single
+            booking session. The fragmentation was not just a visual problem. It was a cognitive one.
+            Every time a user moved between verticals, they had to relearn how to find what they needed.
           </Body>
         </Section>
 
-        <Section eyebrow="ROLE" heading="My Role">
+        <Section eyebrow="THE DECISION PROBLEM" heading="Capability Without Clarity">
           <Body>
-            I led the investigation and redesign of the search and filtering system. This included
-            auditing existing patterns across product flows, mapping inconsistencies and their
-            downstream effects, defining a system-level architecture, and working directly with
-            engineering to ensure the redesigned patterns could be implemented and reused reliably.
-          </Body>
-          <Body>
-            This was not a project with a dedicated design systems team. It required building the case
-            for the work while doing it — and making that case to both design and engineering leadership
-            in terms that connected to real product outcomes, not just aesthetic improvements.
-          </Body>
-        </Section>
-
-        <Section eyebrow="THE PROBLEM" heading="Capability Without Clarity Is Just a Different Kind of Friction">
-          <Body>
-            At first glance, the interfaces across the product looked inconsistent but manageable.
-            Filter chips in one flow looked different from another. Sort controls weren&apos;t
-            positioned consistently. Search inputs behaved differently across verticals. Some
-            filters preserved their active state clearly; others gave no visible signal at all.
-          </Body>
-          <Body>
-            The instinct was to clean it up visually and standardise the components. But a more
-            important question kept surfacing: if we fix how things look, will they actually
-            become easier to use?
+            Consider a user who wants to find a reasonably priced flight arriving before noon.
+            A typical filter panel for this task might expose simultaneously: price range, outbound
+            departure time, return departure time, number of stops, airline, layover duration,
+            baggage allowance, refundability, and booking class.
           </Body>
           <PullQuote>
-            &ldquo;Consider a user who wants to find a reasonably priced flight arriving before noon. The
-            filter panel exposes simultaneously: price range, outbound departure time, return departure
-            time, number of stops, airline, layover duration, baggage allowance, refundability, and
-            booking class. The interface has more capability than it has clarity — and capability
-            without clarity is just a different kind of friction.&rdquo;
+            &ldquo;The interface had more capability than it had clarity — and capability without
+            clarity is just a different kind of friction.&rdquo;
           </PullQuote>
           <Body>
-            The deeper issue wasn&apos;t visual inconsistency. It was that no shared mental model
-            existed for what search and filtering should do as a system — which meant every flow
-            had developed its own answer to the same questions. Filters behaved inconsistently,
-            search states were unclear, results cards lacked hierarchy, and booking constraints
-            appeared too late in the flow.
+            The problem was not that the controls were broken. The problem was that they had been
+            designed as isolated data-exposure mechanisms rather than as parts of a decision flow.
+            There was no progressive structure to the exploration. No prioritisation of what mattered
+            first. No feedback loop between what the user had done and what remained possible.
+            Filtering was a feature. It needed to become a system.
           </Body>
         </Section>
 
-        <Section eyebrow="SYSTEM THINKING" heading="Three Levels of the Search & Filtering System">
+        <Section eyebrow="SEARCH AS THE ENTRY POINT" heading="Starting With Intent, Not Parameters">
           <Body>
-            The redesigned system was designed at three levels. At the atomic level: individual
-            components — search inputs, filter chips, toggles, range sliders, results cards — each
-            with a clear contract for how they represent their states. At the interaction pattern
-            level: how search and filtering behave together — when results update, how active
-            states are surfaced, how constraints are communicated, what happens when results are empty.
-            At the composition level: rules governing how these components relate to each other across
-            different booking verticals.
+            In most travel interfaces, the search bar and the filter panel are visually and functionally
+            separate. The user types a destination, hits search, and then switches cognitive modes
+            to operate a completely different set of controls. The redesign treats search as the
+            opening act of the same decision flow that filters continue.
           </Body>
           <Body>
-            One of the more important decisions was treating search and filtering not as bespoke
-            solutions for each screen, but as a reusable interaction pattern with a consistent
-            contract across the product. Whether a user was searching flights, filtering car rentals,
-            or comparing hotel options, the core behaviours would feel the same. Many of these
-            patterns later informed the broader design system thinking for the product.
+            The prototype explores a natural-language search input that parses user intent into
+            structured parameters. A query like &ldquo;business class London Monday refundable&rdquo;
+            becomes visible, editable filter chips — making the system&apos;s interpretation transparent
+            and correctable. The user stays in one mental model throughout: expressing intent,
+            seeing interpretation, refining constraints, evaluating options.
           </Body>
         </Section>
 
-      </div>
-
-      {/* ── Embedded Prototype — breaks out of narrow column ── */}
-      <div style={{ padding: "0 24px 64px" }}>
-        <Section eyebrow="INTERACTIVE PROTOTYPE" heading="Explore the Search & Filtering System">
-          <PrototypeEmbed
-            src="/demos/ctrl-travel-v2.html"
-            title="ctrl+travel — Search & Filtering System"
-            description="This interactive prototype explores how search, filters, and results can work as a unified decision-support system rather than isolated interface elements. Try adjusting filters, sorting results, and exploring different booking options to see how the system responds."
-            height="700px"
-          />
-        </Section>
-      </div>
-
-      {/* Back to narrow column */}
-      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "0 24px 80px" }}>
-
-        <Section eyebrow="KEY IDEAS EXPLORED" heading="What the Prototype Demonstrates">
+        <Section eyebrow="FACETED FILTERING" heading="Multiple Constraints, Considered Together">
           <Body>
-            <strong>Progressive filter disclosure.</strong> Rather than presenting every filter
-            at equal weight, the system surfaces high-signal filters first — the criteria that
-            resolve the most uncertainty for the most users. Price and departure time appear
-            prominently; niche filters are accessible but not competing for attention.
+            Faceted filtering — the ability to narrow results along multiple independent dimensions
+            simultaneously — is well-established in e-commerce but underused in complex enterprise
+            products. The challenge is not implementing it. The challenge is deciding which facets
+            matter, in what order, and how they interact.
           </Body>
           <Body>
-            <strong>Results card hierarchy.</strong> Each result card is structured so the most
-            decision-relevant information — price, duration, policy compliance — is scannable
-            without expanding. Secondary details are available but don&apos;t compete with
-            the primary comparison task.
-          </Body>
-          <Body>
-            <strong>Constraint surfacing.</strong> Company policy restrictions and booking
-            constraints appear in context alongside results, not as surprise blockers at
-            checkout. Users can see what&apos;s compliant before they commit.
-          </Body>
-          <Body>
-            <strong>Unified search + filter flow.</strong> Search and filtering are treated as
-            a continuous narrowing operation rather than separate interface concerns. The user
-            moves from intent to options to choice through a single coherent flow.
+            For travel booking, the most decision-relevant facets are price, departure time,
+            number of stops, airline, and class. But there is a second layer that enterprise
+            travel adds: policy compliance. A flight might be the cheapest option and still be
+            wrong if it exceeds the company&apos;s travel policy. The faceted model here layers
+            business constraints alongside personal preference — treating policy not as a blocker
+            that appears at checkout but as a visible dimension of every result.
           </Body>
         </Section>
 
-        <Section eyebrow="IF I DESIGNED THIS TODAY" heading="Where This Goes Next">
+        <Section eyebrow="VISIBLE FILTER STATE" heading="Always Knowing Where You Are">
           <Body>
-            The system thinking behind this work — reusable patterns, progressive disclosure,
-            structured constraint messaging — still holds. But the input model assumed users
-            already knew which parameters mattered.
+            One of the most common failures in filtering interfaces is invisible state. The user
+            applies three filters, sees 12 results, and cannot quickly answer: which filters are
+            active? How many results existed before? What happens if I remove one? This uncertainty
+            makes exploration feel risky rather than fluid.
           </Body>
           <Body>
-            If I were designing this today, I&apos;d introduce an AI-assisted search layer where
-            users could describe their intent in natural language — &ldquo;find the fastest flight
-            to Berlin under &euro;400 that complies with my company policy&rdquo; — and the system
-            would translate that into structured filters, surface constraints proactively, and learn
-            from the patterns of experienced travel managers to suggest smarter defaults.
-          </Body>
-          <Body>
-            The filtering system would still do the heavy lifting underneath. But the entry
-            point would shift from &ldquo;understand these controls&rdquo; to &ldquo;tell me what
-            you need.&rdquo; That&apos;s the gap between a good filtering system and a genuine
-            decision-support tool.
+            The redesign makes filter state continuously visible through several mechanisms: active
+            filters change visual state immediately, a persistent result count updates in real time,
+            preset filter combinations (Direct, Within Policy, Cheapest, Business) provide common
+            starting points, and individual filter values can be cleared independently or all at once.
+            The goal is to make the user feel safe experimenting — because the cost of reversing
+            any decision is visibly low.
           </Body>
         </Section>
 
-        <Section eyebrow="PROCESS" heading="How It Came Together">
+        <Section eyebrow="PROGRESSIVE REFINEMENT" heading="From Broad to Specific, Not All at Once">
           <Body>
-            <strong>Pattern Audit.</strong> A focused audit of search and filtering interfaces across
-            the key flows — mapping filter chips, sort controls, search inputs, active state patterns,
-            and empty states to surface where the same user need was being solved differently.
+            Progressive filtering means that users begin with a broad view and narrow gradually,
+            rather than being asked to specify all criteria upfront. This aligns with how people
+            actually make travel decisions: they start with a rough sense of what they need and
+            refine as they see what is available.
           </Body>
           <Body>
-            <strong>Shared Mental Model.</strong> Defining what search and filtering should do across
-            the product before redesigning any component — search and filtering as progressive
-            narrowing, not data exposure.
-          </Body>
-          <Body>
-            <strong>Three-Level Architecture.</strong> Designing the system at atomic, interaction
-            pattern, and composition levels rather than component by component.
-          </Body>
-          <Body>
-            <strong>Governance &amp; Documentation.</strong> Documenting the user need each pattern
-            addresses, the contexts it&apos;s appropriate in, and the criteria for deciding when a
-            new component is warranted versus extending an existing one.
+            The prototype supports this through layered entry points. The AI search input accepts
+            vague intent. Preset filter buttons offer common constraint packages with a single click.
+            Individual faceted filters allow granular control. And the compare function lets users
+            hold two or three options side by side once they have narrowed sufficiently. Each layer
+            is available, but none is required — the user decides how deep to go based on the
+            complexity of their decision.
           </Body>
         </Section>
 
-        <Section eyebrow="OUTCOMES" heading="A Shared Language, Not Just Better Components">
+        <Section eyebrow="REVERSIBLE EXPLORATION" heading="Making It Safe to Experiment">
           <Body>
-            Duplicated components consolidated into a smaller set of flexible, well-defined
-            building blocks. Interaction patterns for search, multi-select filtering, range
-            selection, sort integration, and empty states defined so that users encounter
-            predictable behaviour across flows.
+            A well-designed filtering system should feel like a conversation, not a commitment.
+            Every constraint the user applies should be easy to see, easy to modify, and easy to
+            undo. This is what Vitaly Friedman describes as reversible exploration — the principle
+            that users engage more confidently with complex systems when they know they can always
+            step back.
           </Body>
           <Body>
-            The most important outcome was structural: a reusable search and filtering interaction
-            pattern with a consistent contract across the product. These flows went from something
-            every vertical handled differently to something the system knew how to do — and new
-            flows could inherit rather than reinvent.
+            In the prototype, this manifests as instant feedback on every interaction. Toggling a
+            filter immediately updates the result count and the visible results. Clearing all filters
+            resets to the full set. The compare function allows adding and removing flights without
+            losing the broader search context. There is no dead-end state where the user has to
+            start over. The system remembers where they were and makes it easy to adjust course.
           </Body>
-          <div style={{ marginTop: "40px", marginBottom: "32px" }}>
-            <p style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "11px",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "0.14em",
-              color: "#8A8A8A",
-              marginBottom: "16px",
-            }}>
-              ADDITIONAL DEMOS
-            </p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
-              <a
-                href="/demos/bizaway-search.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="demo-link"
-              >
-                <span aria-hidden>↗</span> BizAway search prototype
-              </a>
-              <a
-                href="/demos/bizaway-filter-demo.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="demo-link"
-              >
-                <span aria-hidden>↗</span> BizAway filter demo
-              </a>
-            </div>
+        </Section>
+
+        <Section eyebrow="WHAT THE PROTOTYPE DEMONSTRATES" heading="Patterns in Practice">
+          <Body>
+            <strong>Search and filtering as one flow.</strong> The AI search input, filter strip,
+            preset buttons, and sort controls are not separate features — they are different entry
+            points into the same narrowing operation. The user can start with any of them and
+            the system responds coherently.
+          </Body>
+          <Body>
+            <strong>Policy as a visible dimension.</strong> Travel policy compliance appears on every
+            result card — green for within policy, amber for near limit. This turns an institutional
+            constraint into a scannable attribute, not a surprise rejection at checkout.
+          </Body>
+          <Body>
+            <strong>Structured comparison.</strong> The compare function generates an AI-assisted
+            side-by-side analysis with pros, cons, and a recommendation. This supports the final
+            stage of the decision: not just finding options, but choosing between them with confidence.
+          </Body>
+          <Body>
+            <strong>Progressive booking.</strong> Selecting a flight opens a booking panel with
+            pre-filled traveller details, a seat map with preference memory, and a price breakdown —
+            reducing the transition from decision to action.
+          </Body>
+        </Section>
+
+        <Section eyebrow="REFLECTION" heading="What I Would Do Next">
+          <Body>
+            The system thinking behind this work — progressive disclosure, faceted filtering,
+            visible state, reversible exploration — still holds. The patterns are sound. But the
+            input model still assumes users know which parameters matter. The search input accepts
+            natural language, but the underlying model is still translating intent into the
+            system&apos;s vocabulary rather than the user&apos;s.
+          </Body>
+          <Body>
+            If I were extending this today, I would invest in two areas. First, adaptive defaults:
+            learning from booking patterns to pre-populate search with likely parameters, so the
+            system starts closer to the answer for repeat travellers. Second, constraint negotiation:
+            when no results match all criteria, rather than showing an empty state, surfacing which
+            constraint could be relaxed to unlock the most options — and letting the user make
+            that trade-off explicitly.
+          </Body>
+          <Body>
+            The goal is not a smarter search bar. It is a system that understands the shape of the
+            decision and meets the user where they are within it — whether that is a vague intent,
+            a specific requirement, or a comparison between two close options. That is the gap between
+            a good filtering interface and a genuine decision-support system.
+          </Body>
+        </Section>
+
+        {/* ── Additional demos ── */}
+        <div style={{ marginTop: "40px", marginBottom: "32px" }}>
+          <p style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "11px",
+            fontWeight: 600,
+            textTransform: "uppercase",
+            letterSpacing: "0.14em",
+            color: "#8A8A8A",
+            marginBottom: "16px",
+          }}>
+            ADDITIONAL DEMOS
+          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+            <a
+              href="/demos/bizaway-search.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="demo-link"
+            >
+              <span aria-hidden>↗</span> BizAway search prototype
+            </a>
+            <a
+              href="/demos/bizaway-filter-demo.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="demo-link"
+            >
+              <span aria-hidden>↗</span> BizAway filter demo
+            </a>
           </div>
+        </div>
 
-          <div style={{ marginTop: "32px" }}>
-            <span style={{
-              display: "inline-flex",
-              alignItems: "center",
-              padding: "8px 20px",
-              borderRadius: "999px",
-              background: "#1A1814",
-              color: "#EDE8DF",
-              fontFamily: "var(--font-body)",
-              fontSize: "12px",
-              fontWeight: 600,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-            }}>
-              PROJECT COMPLETE · 2025
-            </span>
-          </div>
-        </Section>
+        <div style={{ marginTop: "32px", marginBottom: "48px" }}>
+          <span style={{
+            display: "inline-flex",
+            alignItems: "center",
+            padding: "8px 20px",
+            borderRadius: "999px",
+            background: "#1A1814",
+            color: "#EDE8DF",
+            fontFamily: "var(--font-body)",
+            fontSize: "12px",
+            fontWeight: 600,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+          }}>
+            PROJECT COMPLETE · 2025
+          </span>
+        </div>
 
-        {/* Prev / Next */}
+        {/* ── Prev / Next ── */}
         <div style={{ borderTop: "1px solid rgba(26,24,20,0.1)", paddingTop: "48px", marginBottom: "64px" }}>
           <div className="flex items-stretch justify-between gap-4">
             {prev ? (
@@ -300,7 +365,7 @@ export default function FiltersDecisionSupportPage() {
           </div>
         </div>
 
-        {/* CTA */}
+        {/* ── CTA ── */}
         <div
           style={{ background: "#1A1814", borderRadius: "24px", padding: "56px 48px", display: "flex", flexDirection: "column", gap: "32px" }}
           className="md:flex-row md:items-center md:justify-between"
