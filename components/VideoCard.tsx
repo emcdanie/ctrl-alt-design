@@ -26,7 +26,7 @@ export default function VideoCard({
 
   return (
     <div
-      className="group flex cursor-pointer flex-col overflow-hidden rounded-[24px] border border-black/6 bg-white/[0.68] shadow-[0_12px_30px_rgba(44,24,16,0.05),0_2px_8px_rgba(44,24,16,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_48px_rgba(44,24,16,0.1),0_8px_18px_rgba(44,24,16,0.06)]"
+      className="group card-elevated flex cursor-pointer flex-col overflow-hidden rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(44,24,16,0.1),0_6px_16px_rgba(44,24,16,0.07)]"
       onClick={onClick}
     >
       <div className="relative aspect-video w-full overflow-hidden" style={{ background: gradient }}>

@@ -1,7 +1,6 @@
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseStudyHero from "@/components/CaseStudyHero";
 import { Body, PullQuote, Section } from "@/components/CaseStudyTypography";
-import ArtifactPlaceholder from "@/components/ArtifactPlaceholder";
 
 export default function BradFrostPage() {
   return (
@@ -33,13 +32,6 @@ export default function BradFrostPage() {
             The result was a period of some of the most technically specific design system work I've done: reverse-engineering token relationships, rebuilding Figma components to match Storybook stories, and using Claude's Model Context Protocol to surface system structure that would otherwise require hours of manual investigation.
           </Body>
         </Section>
-
-        <ArtifactPlaceholder
-          title="Figma/Storybook Alignment Artifact"
-          description="Add a screenshot showing Figma components aligned with their Storybook counterparts."
-          aspectRatio="16/9"
-          className="my-10"
-        />
 
         <Section eyebrow="CONTEXT" heading="Starting From Code">
           <Body>
@@ -92,13 +84,6 @@ export default function BradFrostPage() {
             The limits were also instructive. MCP is powerful for surfacing structure, but it doesn't replace understanding. Queries that required design judgement — "is this the right token for this context?" — still needed a human answer. The tooling accelerated investigation; it didn't replace thinking.
           </Body>
         </Section>
-
-        <ArtifactPlaceholder
-          title="MCP Workflow Artifact"
-          description="Add a screenshot of the MCP-assisted investigation flow for token and structure analysis."
-          aspectRatio="16/9"
-          className="my-10"
-        />
 
         <PullQuote>
           "The best use of AI in design system work isn't generating components — it's accelerating the investigation that good system decisions depend on."
@@ -153,14 +138,6 @@ export default function BradFrostPage() {
             Working with Brad's system was the most rigorous design system experience I've had precisely because there was no greenfield freedom. Every decision was in conversation with something that already existed and had been thought through. That constraint is, I think, the most realistic version of design system work at scale — and the one worth getting good at.
           </Body>
         </Section>
-
-        <div style={{ background: "#F5F4F1", borderLeft: "3px solid #CCCCCC", padding: "20px 24px", borderRadius: "4px", fontFamily: "var(--font-body)", fontSize: "13px", color: "#666666", lineHeight: 1.6, marginTop: "64px" }}>
-          <strong style={{ color: "#2C2C2C" }}>Visual assets to add:</strong>
-          {" "}(1) Figma component library screenshot — aligned variant/prop structure.
-          {" "}(2) Storybook component side-by-side with Figma counterpart.
-          {" "}(3) Token layer diagram — primitive → semantic → component.
-          {" "}(4) MCP workflow screenshot — terminal + design output.
-        </div>
 
       </div>
     </CaseStudyLayout>

@@ -74,18 +74,16 @@ const steps: ProcessStep[] = [
 
 export default function ProcessSection() {
   return (
-    <section id="process" className="py-20 px-6">
+    <section id="process" className="py-20 md:py-24 px-6">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
           <div>
             <p className="section-label mb-3">— My Approach</p>
-            <h2 className="font-display font-extrabold text-[#1A1814] leading-tight" style={{ fontSize: "clamp(32px, 5vw, 48px)" }}>
-              My Process
-            </h2>
+            <h2 className="heading-section">My Process</h2>
           </div>
-          <p className="text-[16px] text-[#8A8480] max-w-xs sm:text-right leading-relaxed">
+          <p className="body-lg max-w-xs sm:text-right" style={{ color: "var(--color-muted)" }}>
             A structured approach that brings order to ambiguity — from first question to final handoff.
           </p>
         </div>

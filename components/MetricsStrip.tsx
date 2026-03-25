@@ -136,13 +136,8 @@ export default function MetricsStrip() {
   return (
     <section style={{ padding: "48px 24px" }}>
       <div
-        style={{
-          maxWidth: "960px",
-          margin: "0 auto",
-          display: "flex",
-          gap: "8px",
-        }}
-        className="metrics-strip"
+        className="metrics-strip mx-auto max-w-7xl"
+        style={{ display: "flex", gap: "8px" }}
       >
         {metrics.map((item) => (
           <MetricCard key={item.stat} item={item} />

@@ -6,8 +6,9 @@ const GRADIENT = "linear-gradient(135deg, #0A0A1C 0%, #1A1A3A 50%, #080814 100%)
 
 export default function VideoWalkthrough() {
   return (
-    <section className="bg-[#F8F5F0] py-20 px-6">
-      <div className="max-w-5xl mx-auto">
+    <section className="bg-[#F8F5F0] py-20 md:py-24 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="max-w-5xl mx-auto">
 
         {/* Italic headline */}
         <h2 className="font-display font-bold italic text-[#1A1814] leading-snug text-center mb-10 max-w-2xl mx-auto" style={{ fontSize: "clamp(32px, 4vw, 42px)" }}>
@@ -73,6 +74,7 @@ export default function VideoWalkthrough() {
           </Link>
         </div>
 
+        </div>
       </div>
     </section>
   );
