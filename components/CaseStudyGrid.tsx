@@ -16,18 +16,188 @@ function getCategoryStyle(category: string) {
   return CATEGORY_COLORS[category] ?? { bg: "#1A1814", color: "#FFFFFF" };
 }
 
-interface SectionShellProps {
-  id: string;
-  children: React.ReactNode;
+/* ─── Bento card sizes ─────────────────────────────────────────── */
+type CardSize = "featured" | "medium" | "wide";
+
+/** Determines card layout based on position in the grid */
+function getCardSize(index: number, total: number): CardSize {
+  if (index === 0) return "featured";
+  if (index === total - 1 && total > 3) return "wide";
+  return "medium";
 }
 
-function SectionShell({ id, children }: SectionShellProps) {
+const ASPECT: Record<CardSize, string> = {
+  featured: "aspect-[16/8]",
+  medium: "aspect-[16/10]",
+  wide: "aspect-[21/8]",
+};
+
+/* ─── Bento Card ───────────────────────────────────────────────── */
+
+interface BentoCardProps {
+  cs: (typeof caseStudies)[number];
+  size: CardSize;
+  delay: number;
+}
+
+function BentoCard({ cs, size, delay }: BentoCardProps) {
+  const isFeatured = size === "featured";
+  const isWide = size === "wide";
+
   return (
-    <section id={id} className="px-6 py-20 md:py-24">
-      <div className="mx-auto max-w-7xl">{children}</div>
-    </section>
+    <FadeIn
+      delay={delay}
+      className={
+        isFeatured
+          ? "col-span-1 sm:col-span-2"
+          : isWide
+            ? "col-span-1 sm:col-span-2"
+            : "col-span-1"
+      }
+    >
+      <Link
+        href={cs.href ?? `/case-studies/${cs.slug}`}
+        data-cursor="card"
+        className="bento-card group relative flex flex-col overflow-hidden"
+      >
+        {/* ── Image area ── */}
+        <div className={`relative w-full shrink-0 overflow-hidden ${ASPECT[size]} bg-[#1A1814]`}>
+          <Image
+            src={cs.heroImage}
+            alt={cs.title}
+            fill
+            loading={isFeatured ? "eager" : "lazy"}
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+            sizes={
+              isFeatured
+                ? "(max-width: 768px) 100vw, 1200px"
+                : isWide
+                  ? "(max-width: 768px) 100vw, 1200px"
+                  : "(max-width: 640px) 100vw, 600px"
+            }
+          />
+          {cs.heroVideo && (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              onError={(e) => { e.currentTarget.style.display = "none"; }}
+              className="absolute inset-0 z-[1] h-full w-full object-cover"
+            >
+              <source src={cs.heroVideo} type="video/mp4" />
+            </video>
+          )}
+
+          {/* Gradient overlay */}
+          <div
+            className="pointer-events-none absolute inset-0 z-[2]"
+            style={{
+              background: isFeatured
+                ? "linear-gradient(to top, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.12) 40%, transparent 70%)"
+                : "linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 55%)",
+            }}
+            aria-hidden
+          />
+
+          {/* Year badge */}
+          <span className="absolute right-4 top-4 z-[4] rounded-full border border-white/18 bg-black/25 px-2.5 py-1 text-[10px] font-semibold tracking-[0.1em] text-white/90 backdrop-blur-sm">
+            {cs.year}
+          </span>
+
+          {/* Client logo */}
+          {cs.clientLogo && (
+            <div className="absolute left-4 top-4 z-[4] flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl border border-white/45 bg-white/90 shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={cs.clientLogo}
+                alt={cs.clientName ?? ""}
+                className="h-5 w-5 object-contain"
+                onError={(e) => { e.currentTarget.parentElement!.style.display = "none"; }}
+              />
+            </div>
+          )}
+
+          {/* ── Overlay content (featured cards show title on image) ── */}
+          {isFeatured && (
+            <div className="absolute bottom-0 left-0 right-0 z-[3] p-6 sm:p-8">
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <span
+                  className="rounded-full px-3 py-1 text-[10px] font-bold tracking-[0.12em]"
+                  style={{
+                    background: getCategoryStyle(cs.category).bg,
+                    color: getCategoryStyle(cs.category).color,
+                  }}
+                >
+                  {cs.category}
+                </span>
+                {cs.tags?.slice(0, 2).map((tag) => (
+                  <span key={`${cs.slug}-${tag}`} className="rounded-full border border-white/20 bg-white/10 px-2.5 py-0.5 text-[10px] font-medium text-white/85 backdrop-blur-sm">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              {cs.clientName && (
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-white/60 mb-1.5">
+                  {cs.clientName}
+                </p>
+              )}
+              <h3
+                className="font-[family-name:var(--font-display)] font-bold text-white leading-[1.1] tracking-tight"
+                style={{ fontSize: "clamp(1.5rem, 3vw, 2.2rem)" }}
+              >
+                {cs.title}
+              </h3>
+              <p className="mt-2 text-[14px] leading-[1.6] text-white/75 max-w-[560px] line-clamp-2">
+                {cs.description}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* ── Content area (non-featured cards) ── */}
+        {!isFeatured && (
+          <div className="flex flex-1 flex-col p-5 sm:p-6">
+            <div className="flex flex-wrap items-center gap-2 mb-2.5">
+              <span
+                className="rounded-full px-3 py-1 text-[10px] font-bold tracking-[0.12em]"
+                style={{
+                  background: getCategoryStyle(cs.category).bg,
+                  color: getCategoryStyle(cs.category).color,
+                }}
+              >
+                {cs.category}
+              </span>
+              {cs.tags?.slice(0, 2).map((tag) => (
+                <span key={`${cs.slug}-${tag}`} className="tag px-2.5 py-0.5 text-[10px]">
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            {cs.clientName && (
+              <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#8A8480] mb-1">
+                {cs.clientName}
+              </p>
+            )}
+
+            <h3 className="heading-card">
+              {cs.title}
+            </h3>
+
+            <p className="body-sm mt-2 line-clamp-2" style={{ color: "var(--color-muted)" }}>
+              {cs.description}
+            </p>
+          </div>
+        )}
+      </Link>
+    </FadeIn>
   );
 }
+
+/* ─── Grid ─────────────────────────────────────────────────────── */
+
+export { SectionHeader };
 
 interface SectionHeaderProps {
   label: string;
@@ -53,113 +223,27 @@ function SectionHeader({ label, title, description }: SectionHeaderProps) {
 
 export default function CaseStudyGrid() {
   return (
-    <SectionShell id="work">
-      <FadeIn>
-        <SectionHeader
-          label="— Selected Work"
-          title="Case Studies"
-          description="Long-form project work across design systems, enterprise platforms, and complex product UX."
-        />
-      </FadeIn>
+    <section id="work" className="px-6 py-20 md:py-24">
+      <div className="mx-auto max-w-7xl">
+        <FadeIn>
+          <SectionHeader
+            label="— Selected Work"
+            title="Case Studies"
+            description="Long-form project work across design systems, enterprise platforms, and complex product UX."
+          />
+        </FadeIn>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6">
-        {caseStudies.map((cs, i) => (
-          <FadeIn key={cs.slug} delay={i * 60} className="flex flex-col">
-            <Link
-              href={cs.href ?? `/case-studies/${cs.slug}`}
-              data-cursor="card"
-              className="group card-elevated flex h-full flex-col overflow-hidden rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(44,24,16,0.1),0_6px_16px_rgba(44,24,16,0.07)]"
-            >
-              {/* Thumbnail */}
-              <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-[#1A1814]">
-                <Image
-                  src={cs.heroImage}
-                  alt={cs.title}
-                  fill
-                  loading="lazy"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 480px"
-                />
-                {cs.heroVideo && (
-                  <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                    className="absolute inset-0 z-[1] h-full w-full object-cover"
-                  >
-                    <source src={cs.heroVideo} type="video/mp4" />
-                  </video>
-                )}
-                <div
-                  className="pointer-events-none absolute inset-0 z-[2] bg-[linear-gradient(to_top,rgba(0,0,0,0.28),transparent_52%)]"
-                  aria-hidden
-                />
-                <span className="absolute right-3 top-3 z-[4] rounded-full border border-white/18 bg-black/22 px-2 py-0.5 text-[10px] font-semibold tracking-[0.1em] text-white/90 backdrop-blur-sm">
-                  {cs.year}
-                </span>
-                {cs.clientLogo && (
-                  <div className="absolute left-3 top-3 z-[4] flex h-8 w-8 items-center justify-center overflow-hidden rounded-xl border border-white/45 bg-white/90 shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={cs.clientLogo}
-                      alt={cs.clientName ?? ""}
-                      className="h-5 w-5 object-contain"
-                      onError={(e) => {
-                        e.currentTarget.parentElement!.style.display = "none";
-                      }}
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* Content */}
-              <div className="flex flex-1 flex-col px-5 py-5">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span
-                    className="rounded-full px-3 py-1 text-[10px] font-bold tracking-[0.12em]"
-                    style={{
-                      background: getCategoryStyle(cs.category).bg,
-                      color: getCategoryStyle(cs.category).color,
-                    }}
-                  >
-                    {cs.category}
-                  </span>
-                  {cs.tags?.slice(0, 2).map((tag) => (
-                    <span key={`${cs.slug}-${tag}`} className="tag px-2.5 py-0.5 text-[10px]">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {cs.clientName && (
-                  <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#8A8480]">
-                    {cs.clientName}
-                  </p>
-                )}
-
-                <h3 className="heading-card mt-2.5">
-                  {cs.title}
-                </h3>
-
-                <p className="body-sm mt-2 line-clamp-2" style={{ color: "var(--color-muted)" }}>
-                  {cs.description}
-                </p>
-
-                <span className="mt-auto pt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold tracking-[0.02em] text-[var(--color-ink)] transition-colors group-hover:text-[var(--color-accent-espresso)]">
-                  View case study
-                  <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
-                </span>
-              </div>
-            </Link>
-          </FadeIn>
-        ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
+          {caseStudies.map((cs, i) => (
+            <BentoCard
+              key={cs.slug}
+              cs={cs}
+              size={getCardSize(i, caseStudies.length)}
+              delay={i * 60}
+            />
+          ))}
+        </div>
       </div>
-    </SectionShell>
+    </section>
   );
 }
