@@ -422,10 +422,10 @@ const caseStudies: CaseStudy[] = [
   // ─────────────────────────────────────────────────────────────────
   {
     slug: "filters-decision-support-system",
-    title: "Filters as a Decision-Support System",
+    title: "Search & Filtering System for Complex Travel Booking",
     category: "UX STRATEGY",
     year: "2024–2025",
-    scope: "Interaction Design, Design Systems, Cognitive UX",
+    scope: "Search UX, filtering systems, results architecture, constraint messaging",
     timeline: "Embedded / ongoing",
     liveUrl: "",
     heroImage: "/images/thumbnails/HealthForm.png",
@@ -480,15 +480,16 @@ const caseStudies: CaseStudy[] = [
       body: "Duplicated filter components consolidated into a smaller set of flexible, well-defined building blocks. Interaction patterns for multi-select filtering, range selection, sort integration, and empty states defined so that users encounter predictable behaviour across flows. The most important outcome was structural: a reusable filtering interaction pattern with a consistent contract across the product.",
       completionTag: "PROJECT COMPLETE · 2025",
     },
-    tags: ["Figma", "Interaction Design", "Cognitive UX", "BizAway"],
+    tags: ["Figma", "Interaction Design", "Cognitive UX", "Search UX", "BizAway"],
     clientLogo: "/images/logos/bizaway_logo.jpeg",
     clientName: "BizAway",
     demoLinks: [
       { label: "BizAway search prototype", href: "/demos/bizaway-search.html" },
       { label: "BizAway filter demo", href: "/demos/bizaway-filter-demo.html" },
+      { label: "ctrl+travel v2", href: "/demos/ctrl-travel-v2.html" },
     ],
     description:
-      "Designing Structured Filtering for Complex Product Discovery",
+      "Designing decision support for a multi-vertical B2B travel platform.",
     narrative: [
       {
         label: "CONTEXT",

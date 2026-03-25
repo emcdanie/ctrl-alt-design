@@ -39,8 +39,8 @@ export function Body({ children }: { children: React.ReactNode }) {
       fontSize: "16px",
       fontWeight: 400,
       color: "#2C2C2C",
-      lineHeight: 1.8,
-      marginBottom: "24px",
+      lineHeight: 1.6,
+      marginBottom: "18px",
     }}>
       {children}
     </p>

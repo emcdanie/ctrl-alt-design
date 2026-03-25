@@ -1,22 +1,9 @@
 "use client";
 
 import FadeIn from "@/components/FadeIn";
+import VinylPlayer from "@/components/VinylPlayer";
 
 const cards = [
-  {
-    title: "Vinyl & Music",
-    description:
-      "I collect vinyl and often design while listening to instrumental or ambient music. Creating the right atmosphere helps me focus deeply when solving complex interface problems.",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        {/* Vinyl record */}
-        <circle cx="14" cy="14" r="13" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="14" cy="14" r="7" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="14" cy="14" r="2.5" fill="currentColor" />
-        <line x1="14" y1="7" x2="14" y2="1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
-    ),
-  },
   {
     title: "Podcasts",
     description:
@@ -57,25 +44,19 @@ export default function LearningSection() {
         </FadeIn>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          {/* Vinyl player replaces the old static music card */}
+          <FadeIn delay={0}>
+            <VinylPlayer />
+          </FadeIn>
+
           {cards.map((card, i) => (
-            <FadeIn key={card.title} delay={i * 80}>
+            <FadeIn key={card.title} delay={(i + 1) * 80}>
               <div
-                className="card-elevated"
+                className="card-elevated card-interactive"
                 style={{
                   padding: "24px",
                   height: "100%",
-                  transition: "box-shadow 220ms ease, transform 220ms ease",
                   cursor: "default",
-                }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget as HTMLDivElement;
-                  el.style.boxShadow = "0 10px 32px rgba(44,24,16,0.09), 0 3px 10px rgba(44,24,16,0.05)";
-                  el.style.transform = "translateY(-3px)";
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget as HTMLDivElement;
-                  el.style.boxShadow = "";
-                  el.style.transform = "translateY(0)";
                 }}
               >
                 {/* Icon */}

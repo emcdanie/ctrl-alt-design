@@ -1,6 +1,7 @@
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseStudyHero from "@/components/CaseStudyHero";
 import { Body, PullQuote, Section } from "@/components/CaseStudyTypography";
+import PrototypeEmbed from "@/components/PrototypeEmbed";
 import Link from "next/link";
 import { getCaseStudy, getAdjacentStudies } from "@/data/caseStudies";
 import { notFound } from "next/navigation";
@@ -38,42 +39,43 @@ export default function FiltersDecisionSupportPage() {
       {/* Content */}
       <div style={{ maxWidth: "760px", margin: "0 auto", padding: "64px 24px 80px" }}>
 
-        <Section eyebrow="OVERVIEW" heading="Rethinking Filters as a Decision-Support System">
+        <Section eyebrow="OVERVIEW" heading="Rethinking Search & Filtering as Decision Support">
           <Body>
-            Most products treat filters as a feature. A set of checkboxes, a dropdown, maybe a few chips
-            along the top of a results list. What they rarely are, by design, is a decision-support
-            system — a structured way to help users narrow a large problem space toward something meaningful.
+            Most products treat search and filtering as separate features. A text input here,
+            some checkboxes there, maybe a few chips along the top of a results list. What they
+            rarely are, by design, is a decision-support system — a structured way to help users
+            move from a vague intent to a confident choice.
           </Body>
           <Body>
-            This case study explores the intersection of filtering interface design, design system
-            thinking, and cognitive load. It draws on a complex SaaS platform context where multiple
-            booking flows and internal tooling were evolving in parallel, and where filtering had
-            accumulated into something fragmented and inconsistent across the product.
+            This case study explores the intersection of search UX, filtering architecture,
+            and cognitive load within a complex B2B travel platform. Multiple booking flows
+            and internal tooling were evolving in parallel, and the way users found and
+            compared options had accumulated into something fragmented and inconsistent.
           </Body>
         </Section>
 
-        <Section eyebrow="CONTEXT" heading="Project Context">
+        <Section eyebrow="CONTEXT" heading="A Platform That Grew Faster Than Its Patterns">
           <Body>
-            That distinction matters more than it might appear. When filtering is designed as a feature,
-            the goal is to surface controls — to give users access to the parameters available. When
-            filtering is designed as a decision-support system, the goal is to help users move from
-            uncertainty to choice with as little friction as possible. These are meaningfully different
-            design objectives.
+            BizAway is a B2B travel management platform used by companies to book and manage
+            business travel. When I joined, the product had scaled quickly — flights, car rentals,
+            hotels, trains — but each vertical had developed its own approach to search, filtering,
+            and results presentation.
           </Body>
           <Body>
-            The business goals were straightforward: help users find what they need faster, reduce
-            support overhead from user confusion, and create a filtering pattern that could scale as
-            the product grew. What became clear, quickly, was that the visible interface problems were
-            symptoms of a deeper structural issue.
+            Users needed to explore many options quickly, understand pricing constraints, see company
+            policy restrictions, and compare travel combinations. The business goals were clear: help
+            users find what they need faster, reduce support overhead from confusion, and create
+            patterns that could scale as the product grew. What became clear quickly was that the
+            visible interface problems were symptoms of a deeper structural issue.
           </Body>
         </Section>
 
         <Section eyebrow="ROLE" heading="My Role">
           <Body>
-            I led the investigation and redesign of the filtering system. This included auditing
-            existing filter patterns across product flows, mapping inconsistencies and their downstream
-            effects, defining a system-level pattern architecture, and working directly with engineering
-            to ensure the redesigned patterns could be implemented and reused reliably.
+            I led the investigation and redesign of the search and filtering system. This included
+            auditing existing patterns across product flows, mapping inconsistencies and their
+            downstream effects, defining a system-level architecture, and working directly with
+            engineering to ensure the redesigned patterns could be implemented and reused reliably.
           </Body>
           <Body>
             This was not a project with a dedicated design systems team. It required building the case
@@ -84,14 +86,14 @@ export default function FiltersDecisionSupportPage() {
 
         <Section eyebrow="THE PROBLEM" heading="Capability Without Clarity Is Just a Different Kind of Friction">
           <Body>
-            At first glance, the filtering interfaces across the product looked inconsistent but
-            manageable. Filter chips in one flow looked different from filter chips in another. Sort
-            controls weren&apos;t positioned consistently. Some filters preserved their active state
-            clearly; others gave no visible signal that they were applied at all.
+            At first glance, the interfaces across the product looked inconsistent but manageable.
+            Filter chips in one flow looked different from another. Sort controls weren&apos;t
+            positioned consistently. Search inputs behaved differently across verticals. Some
+            filters preserved their active state clearly; others gave no visible signal at all.
           </Body>
           <Body>
             The instinct was to clean it up visually and standardise the components. But a more
-            important question kept surfacing: if we fix how the filters look, will they actually
+            important question kept surfacing: if we fix how things look, will they actually
             become easier to use?
           </Body>
           <PullQuote>
@@ -103,180 +105,129 @@ export default function FiltersDecisionSupportPage() {
           </PullQuote>
           <Body>
             The deeper issue wasn&apos;t visual inconsistency. It was that no shared mental model
-            existed for what filtering should do — which meant every flow had developed its own
-            answer to the same question. Without that shared model, fixing the surface wouldn&apos;t
-            fix the experience.
+            existed for what search and filtering should do as a system — which meant every flow
+            had developed its own answer to the same questions. Filters behaved inconsistently,
+            search states were unclear, results cards lacked hierarchy, and booking constraints
+            appeared too late in the flow.
           </Body>
         </Section>
 
-        {/* ── Interactive Demo ── */}
-        <Section eyebrow="INTERACTIVE DEMO" heading="Explore the Filter System">
+        <Section eyebrow="SYSTEM THINKING" heading="Three Levels of the Search & Filtering System">
           <Body>
-            An annotated, interactive prototype showing the bottom-sheet filter pattern for flight
-            search — demonstrating how progressive disclosure, active state clarity, and high-signal
-            filter prioritisation work together.
-          </Body>
-
-          {/* Prototype preview card */}
-          <div style={{
-            background: "linear-gradient(135deg, #0A1628 0%, #132040 60%, #0A1628 100%)",
-            borderRadius: "16px",
-            border: "1px solid rgba(255,255,255,0.08)",
-            padding: "56px 32px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "24px",
-            marginBottom: "12px",
-          }}>
-            {/* Icon */}
-            <div style={{
-              width: "48px",
-              height: "48px",
-              borderRadius: "12px",
-              background: "rgba(255,255,255,0.08)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-                <rect x="3" y="3" width="16" height="16" rx="3" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" />
-                <line x1="3" y1="8" x2="19" y2="8" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
-                <line x1="7" y1="12" x2="15" y2="12" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" strokeLinecap="round" />
-                <line x1="7" y1="15.5" x2="13" y2="15.5" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            </div>
-
-            {/* Labels */}
-            <div style={{ textAlign: "center" }}>
-              <p style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "11px",
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.14em",
-                color: "rgba(255,255,255,0.38)",
-                marginBottom: "8px",
-              }}>
-                Interactive Prototype
-              </p>
-              <p style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "18px",
-                fontWeight: 600,
-                color: "#EDE8DF",
-                lineHeight: 1.25,
-                marginBottom: "6px",
-              }}>
-                BizAway Filter System
-              </p>
-              <p style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "13px",
-                color: "rgba(255,255,255,0.42)",
-                lineHeight: 1.5,
-              }}>
-                Annotated flow — click the pins to hear design decision narration
-              </p>
-            </div>
-
-            {/* CTA */}
-            <a
-              href="/demos/bizaway-filter-demo.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                background: "#EDE8DF",
-                color: "#1A1814",
-                fontFamily: "var(--font-body)",
-                fontSize: "13px",
-                fontWeight: 600,
-                padding: "12px 28px",
-                borderRadius: "999px",
-                textDecoration: "none",
-                transition: "opacity 150ms ease",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.opacity = "0.85")}
-              onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
-            >
-              Open interactive prototype ↗
-            </a>
-          </div>
-        </Section>
-
-        <Section eyebrow="DESIGNING FOR COGNITION" heading="Reducing Cognitive Load Through Hierarchy">
-          <Body>
-            Before rethinking how filters look, it&apos;s worth being precise about what they&apos;re
-            for. Filtering is fundamentally a narrowing operation: it takes a problem space too large
-            to evaluate and makes it smaller. The design question isn&apos;t only which controls to
-            surface, but how to help users apply them in the order that resolves uncertainty fastest.
+            The redesigned system was designed at three levels. At the atomic level: individual
+            components — search inputs, filter chips, toggles, range sliders, results cards — each
+            with a clear contract for how they represent their states. At the interaction pattern
+            level: how search and filtering behave together — when results update, how active
+            states are surfaced, how constraints are communicated, what happens when results are empty.
+            At the composition level: rules governing how these components relate to each other across
+            different booking verticals.
           </Body>
           <Body>
-            One pattern that appears consistently across well-designed filtering systems is the
-            deliberate prioritisation of a small number of high-signal filters upfront — the criteria
-            that resolve the most uncertainty for the most users most of the time. In travel products,
-            that tends to be price and departure time. Presenting all filters at equal visual weight,
-            with no grouping and no indication of which are most relevant, forces users to understand
-            the filter panel before they can narrow the problem.
+            One of the more important decisions was treating search and filtering not as bespoke
+            solutions for each screen, but as a reusable interaction pattern with a consistent
+            contract across the product. Whether a user was searching flights, filtering car rentals,
+            or comparing hotel options, the core behaviours would feel the same. Many of these
+            patterns later informed the broader design system thinking for the product.
           </Body>
         </Section>
 
-        <Section eyebrow="SYSTEM ARCHITECTURE" heading="Three Levels of the Filtering System">
+      </div>
+
+      {/* ── Embedded Prototype — breaks out of narrow column ── */}
+      <div style={{ padding: "0 24px 64px" }}>
+        <Section eyebrow="INTERACTIVE PROTOTYPE" heading="Explore the Search & Filtering System">
+          <PrototypeEmbed
+            src="/demos/ctrl-travel-v2.html"
+            title="ctrl+travel — Search & Filtering System"
+            description="This interactive prototype explores how search, filters, and results can work as a unified decision-support system rather than isolated interface elements. Try adjusting filters, sorting results, and exploring different booking options to see how the system responds."
+            height="700px"
+          />
+        </Section>
+      </div>
+
+      {/* Back to narrow column */}
+      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "0 24px 80px" }}>
+
+        <Section eyebrow="KEY IDEAS EXPLORED" heading="What the Prototype Demonstrates">
           <Body>
-            The redesigned system was designed at three levels. At the atomic level: individual filter
-            components — chips, toggles, range sliders, multi-select panels — each with a clear
-            contract for how they represent unset, active, and partially-active states. At the
-            interaction pattern level: how filtering behaves — when results update, how active states
-            are surfaced, how filters are cleared, what happens when results are empty. At the
-            composition level: rules governing how filtering components relate to results, to each
-            other, and to sort controls across different contexts.
+            <strong>Progressive filter disclosure.</strong> Rather than presenting every filter
+            at equal weight, the system surfaces high-signal filters first — the criteria that
+            resolve the most uncertainty for the most users. Price and departure time appear
+            prominently; niche filters are accessible but not competing for attention.
           </Body>
           <Body>
-            One of the more important system design decisions was treating filtering not as a bespoke
-            solution for each screen or dataset, but as a reusable interaction pattern with a
-            consistent contract across the product. Whether a user was filtering a list of bookings,
-            a set of search results, or a data table in the internal tooling, the core behaviours
-            would feel the same.
+            <strong>Results card hierarchy.</strong> Each result card is structured so the most
+            decision-relevant information — price, duration, policy compliance — is scannable
+            without expanding. Secondary details are available but don&apos;t compete with
+            the primary comparison task.
+          </Body>
+          <Body>
+            <strong>Constraint surfacing.</strong> Company policy restrictions and booking
+            constraints appear in context alongside results, not as surprise blockers at
+            checkout. Users can see what&apos;s compliant before they commit.
+          </Body>
+          <Body>
+            <strong>Unified search + filter flow.</strong> Search and filtering are treated as
+            a continuous narrowing operation rather than separate interface concerns. The user
+            moves from intent to options to choice through a single coherent flow.
+          </Body>
+        </Section>
+
+        <Section eyebrow="IF I DESIGNED THIS TODAY" heading="Where This Goes Next">
+          <Body>
+            The system thinking behind this work — reusable patterns, progressive disclosure,
+            structured constraint messaging — still holds. But the input model assumed users
+            already knew which parameters mattered.
+          </Body>
+          <Body>
+            If I were designing this today, I&apos;d introduce an AI-assisted search layer where
+            users could describe their intent in natural language — &ldquo;find the fastest flight
+            to Berlin under &euro;400 that complies with my company policy&rdquo; — and the system
+            would translate that into structured filters, surface constraints proactively, and learn
+            from the patterns of experienced travel managers to suggest smarter defaults.
+          </Body>
+          <Body>
+            The filtering system would still do the heavy lifting underneath. But the entry
+            point would shift from &ldquo;understand these controls&rdquo; to &ldquo;tell me what
+            you need.&rdquo; That&apos;s the gap between a good filtering system and a genuine
+            decision-support tool.
           </Body>
         </Section>
 
         <Section eyebrow="PROCESS" heading="How It Came Together">
           <Body>
-            <strong>Pattern Audit.</strong> A focused audit of filtering interfaces across the key
-            flows — mapping filter chips, sort controls, active state patterns, and empty states to
-            surface where the same user need was being solved differently.
+            <strong>Pattern Audit.</strong> A focused audit of search and filtering interfaces across
+            the key flows — mapping filter chips, sort controls, search inputs, active state patterns,
+            and empty states to surface where the same user need was being solved differently.
           </Body>
           <Body>
-            <strong>Shared Mental Model.</strong> Defining what filtering should do across the product
-            before redesigning any component — filtering as progressive narrowing, not data exposure.
+            <strong>Shared Mental Model.</strong> Defining what search and filtering should do across
+            the product before redesigning any component — search and filtering as progressive
+            narrowing, not data exposure.
           </Body>
           <Body>
-            <strong>Three-Level Architecture.</strong> Designing the filtering system at atomic,
-            interaction pattern, and composition levels rather than component by component.
+            <strong>Three-Level Architecture.</strong> Designing the system at atomic, interaction
+            pattern, and composition levels rather than component by component.
           </Body>
           <Body>
             <strong>Governance &amp; Documentation.</strong> Documenting the user need each pattern
             addresses, the contexts it&apos;s appropriate in, and the criteria for deciding when a
-            new filter type is warranted versus extending an existing one.
+            new component is warranted versus extending an existing one.
           </Body>
         </Section>
 
         <Section eyebrow="OUTCOMES" heading="A Shared Language, Not Just Better Components">
           <Body>
-            Duplicated filter components consolidated into a smaller set of flexible, well-defined
-            building blocks. Interaction patterns for multi-select filtering, range selection, sort
-            integration, and empty states defined so that users encounter predictable behaviour across
-            flows.
+            Duplicated components consolidated into a smaller set of flexible, well-defined
+            building blocks. Interaction patterns for search, multi-select filtering, range
+            selection, sort integration, and empty states defined so that users encounter
+            predictable behaviour across flows.
           </Body>
           <Body>
-            The most important outcome was structural: a reusable filtering interaction pattern with
-            a consistent contract across the product. Filtering went from something every flow handled
-            differently to something the system knew how to do — and new flows could inherit rather
-            than reinvent.
+            The most important outcome was structural: a reusable search and filtering interaction
+            pattern with a consistent contract across the product. These flows went from something
+            every vertical handled differently to something the system knew how to do — and new
+            flows could inherit rather than reinvent.
           </Body>
           <div style={{ marginTop: "40px", marginBottom: "32px" }}>
             <p style={{
@@ -288,7 +239,7 @@ export default function FiltersDecisionSupportPage() {
               color: "#8A8A8A",
               marginBottom: "16px",
             }}>
-              LIVE DEMOS
+              ADDITIONAL DEMOS
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
               <a
