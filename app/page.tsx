@@ -15,6 +15,7 @@ import ExperienceSection from "@/components/ExperienceSection";
 import LearningSection from "@/components/LearningSection";
 import ContactSection from "@/components/ContactSection";
 import ResumeModal from "@/components/ResumeModal";
+import WorkSidebar from "@/components/WorkSidebar";
 
 export default function Home() {
   const [resumeOpen, setResumeOpen] = useState(false);
@@ -23,6 +24,7 @@ export default function Home() {
     <main className="bg-[var(--color-page)] text-[#1A1A1A] min-h-screen overflow-x-hidden">
       <CustomCursor />
       <OverlayNav />
+      <WorkSidebar />
 
       {/* 1 — Hero */}
       <Hero />
