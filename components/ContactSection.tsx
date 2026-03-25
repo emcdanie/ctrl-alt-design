@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { social } from "@/lib/social";
 
 interface FormState {
   name: string;
@@ -22,7 +23,7 @@ const footerNav = {
     { label: "Archive", href: "#" },
   ],
   Contact: [
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/elleta-mcdaniel" },
+    { label: "LinkedIn", href: social.linkedin },
   ],
 };
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { social } from "@/lib/social";
 
 interface ResumeModalProps {
   open: boolean;
@@ -140,7 +141,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
               <span>·</span>
               <span>+34 633287939</span>
               <span>·</span>
-              <a href="https://www.linkedin.com/in/elleta-mcdaniel" className="hover:text-[#1A1814] transition-colors">linkedin.com/in/elleta-mcdaniel</a>
+              <a href={social.linkedin} className="hover:text-[#1A1814] transition-colors">linkedin.com/in/elleta-mcdaniel</a>
             </div>
           </div>
 

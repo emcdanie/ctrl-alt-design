@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import { social } from "@/lib/social";
 
 const menuItems = [
   { num: "01", label: "Work", href: "#work" },
@@ -191,7 +192,7 @@ export default function OverlayNav() {
               elletamc@gmail.com
             </a>
             <a
-              href="https://www.linkedin.com/in/elleta-mcdaniel"
+              href={social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className="w-fit font-[family:var(--font-body)] text-xs uppercase tracking-[0.18em] text-[#7C7367] transition-colors duration-150 hover:text-[#1A1814]"
