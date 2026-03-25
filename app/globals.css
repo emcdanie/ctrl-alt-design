@@ -422,3 +422,53 @@ button:focus-visible {
   transition: max-height 0.35s ease, opacity 0.25s ease;
   overflow: hidden;
 }
+
+/* ─── Loading bubbles ──────────────────────────────────────────── */
+@keyframes loadingBubble {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ─── Reduced Motion ───────────────────────────────────────────── */
+/* Respects OS-level "Reduce motion" preference.                    */
+/* Removes non-essential animation; keeps instant state changes.    */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Keep carousel visible but stop scrolling */
+  .carousel-track {
+    animation: none;
+  }
+
+  /* Disable hover lifts */
+  .card-hover:hover,
+  .card-interactive:hover {
+    transform: none;
+  }
+}
+
+/* Screen reader only — used by LoadingBubbles */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

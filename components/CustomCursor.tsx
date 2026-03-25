@@ -15,6 +15,8 @@ export default function CustomCursor() {
   useEffect(() => {
     // Hide on touch devices
     if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
+    // Skip rAF loop if user prefers reduced motion (cursor still tracks, just no lerp trail)
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let mouseX = 0, mouseY = 0;
     let bubbleX = 0, bubbleY = 0;
@@ -69,11 +71,12 @@ export default function CustomCursor() {
       }, 150);
     };
 
-    // rAF lerp loop
+    // rAF lerp loop — snap directly when reduced motion is on
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
     const loop = () => {
-      bubbleX = lerp(bubbleX, mouseX, 0.12);
-      bubbleY = lerp(bubbleY, mouseY, 0.12);
+      const t = reducedMotion ? 1 : 0.12;
+      bubbleX = lerp(bubbleX, mouseX, t);
+      bubbleY = lerp(bubbleY, mouseY, t);
       if (bubble) {
         bubble.style.left = bubbleX + "px";
         bubble.style.top = bubbleY + "px";
