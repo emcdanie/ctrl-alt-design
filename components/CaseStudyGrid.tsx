@@ -141,15 +141,15 @@ export default function CaseStudyGrid() {
                   </p>
                 )}
 
-                <h3 className="mt-2.5 font-display text-[clamp(1.1rem,2vw,1.35rem)] font-semibold leading-[1.22] tracking-tight text-[#1A1814]">
+                <h3 className="heading-card mt-2.5">
                   {cs.title}
                 </h3>
 
-                <p className="mt-2 line-clamp-2 text-[13px] leading-[1.65] text-[#6A6560]">
+                <p className="body-sm mt-2 line-clamp-2" style={{ color: "var(--color-muted)" }}>
                   {cs.description}
                 </p>
 
-                <span className="mt-auto pt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold tracking-[0.02em] text-[#1A1814] transition-colors group-hover:text-[var(--color-accent-espresso)]">
+                <span className="mt-auto pt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold tracking-[0.02em] text-[var(--color-ink)] transition-colors group-hover:text-[var(--color-accent-espresso)]">
                   View case study
                   <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
                     →
