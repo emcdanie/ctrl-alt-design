@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 
 const NAV_ITEMS = [
   { id: "work", label: "Case Studies", icon: "◆" },
@@ -13,91 +13,73 @@ const NAV_ITEMS = [
 ];
 
 /**
- * Persistent left sidebar for the dashboard area.
- * Inspired by Carmen's portfolio nav — clean, always present,
- * with active state tracking.
- * Only visible on lg+ screens (1024px).
+ * Sidebar navigation — lives inside the dashboard view (flex child, not fixed).
+ * Tracks active section by observing scroll position of .dashboard-panel.
+ * Nav clicks scroll only the dashboard-panel, not the snap-shell.
+ * Visible on lg+ screens only (CSS handles display).
  */
 export default function WorkSidebar() {
-  const [active, setActive] = useState("");
-  const [visible, setVisible] = useState(false);
+  const [active, setActive] = useState("work");
+  const panelRef = useRef<Element | null>(null);
 
+  /* ── Resolve the scroll container once ── */
   useEffect(() => {
-    const handleScroll = () => {
-      // Show sidebar once we're past the hero landing
-      const dashboardZone = document.querySelector(".dashboard-zone");
-      if (dashboardZone) {
-        const rect = dashboardZone.getBoundingClientRect();
-        setVisible(rect.top < window.innerHeight * 0.5);
-      }
-
-      // Determine active section
-      let current = "";
-      for (const item of NAV_ITEMS) {
-        const el = document.getElementById(item.id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 200) current = item.id;
-        }
-      }
-      setActive(current);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    panelRef.current = document.querySelector(".dashboard-panel");
   }, []);
 
+  /* ── Active section tracking ── */
+  const handleScroll = useCallback(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const panelRect = panel.getBoundingClientRect();
+    // Threshold: 1/3 from the top of the panel
+    const threshold = panelRect.top + panelRect.height * 0.33;
+
+    let current = NAV_ITEMS[0].id;
+    for (const item of NAV_ITEMS) {
+      const el = document.getElementById(item.id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= threshold) current = item.id;
+      }
+    }
+    setActive(current);
+  }, []);
+
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+    panel.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => panel.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  /* ── Nav click → scroll the panel, not the snap-shell ── */
+  const handleNavClick = (e: React.MouseEvent, sectionId: string) => {
+    e.preventDefault();
+    const panel = panelRef.current;
+    const el = document.getElementById(sectionId);
+    if (!panel || !el) return;
+
+    // Calculate offset of element relative to the panel's scroll position
+    const panelTop = panel.getBoundingClientRect().top;
+    const elTop = el.getBoundingClientRect().top;
+    const scrollOffset = panel.scrollTop + (elTop - panelTop);
+
+    panel.scrollTo({ top: scrollOffset, behavior: "smooth" });
+  };
+
   return (
-    <nav
-      aria-label="Section navigation"
-      className="hidden lg:block"
-      style={{
-        position: "fixed",
-        left: "0",
-        top: "0",
-        bottom: "0",
-        width: "192px",
-        zIndex: 40,
-        opacity: visible ? 1 : 0,
-        pointerEvents: visible ? "auto" : "none",
-        transform: visible ? "translateX(0)" : "translateX(-20px)",
-        transition: "opacity 450ms ease, transform 450ms ease",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {/* Brand mark */}
-      <div
-        style={{
-          padding: "28px 24px 20px",
-          borderBottom: "1px solid var(--color-border-soft)",
-        }}
-      >
-        <div
-          style={{
-            width: "36px",
-            height: "36px",
-            borderRadius: "10px",
-            background: "var(--color-ink)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "var(--color-page)",
-            fontFamily: "var(--font-display)",
-            fontWeight: 700,
-            fontSize: "16px",
-          }}
-        >
-          E
-        </div>
+    <aside className="dashboard-sidebar" aria-label="Section navigation">
+      {/* Brand — name only, no logo (header already has it) */}
+      <div className="sidebar-brand">
         <p
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "13px",
+            fontSize: "14px",
             fontWeight: 600,
             color: "var(--color-ink)",
-            marginTop: "10px",
             lineHeight: 1.2,
           }}
         >
@@ -108,7 +90,7 @@ export default function WorkSidebar() {
             fontFamily: "var(--font-body)",
             fontSize: "11px",
             color: "var(--color-muted)",
-            marginTop: "2px",
+            marginTop: "3px",
           }}
         >
           Product Design &amp; Strategy
@@ -116,21 +98,14 @@ export default function WorkSidebar() {
       </div>
 
       {/* Nav links */}
-      <div
-        style={{
-          padding: "16px 12px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "2px",
-          flex: 1,
-        }}
-      >
+      <nav className="sidebar-nav">
         {NAV_ITEMS.map((item) => {
           const isActive = active === item.id;
           return (
             <a
               key={item.id}
               href={`#${item.id}`}
+              onClick={(e) => handleNavClick(e, item.id)}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -142,19 +117,15 @@ export default function WorkSidebar() {
                 fontWeight: isActive ? 600 : 400,
                 color: isActive ? "var(--color-ink)" : "var(--color-muted)",
                 textDecoration: "none",
-                background: isActive
-                  ? "rgba(26,24,20,0.06)"
-                  : "transparent",
+                background: isActive ? "rgba(26,24,20,0.06)" : "transparent",
                 transition: "all 180ms ease",
                 letterSpacing: "0.01em",
               }}
               onMouseEnter={(e) => {
-                if (!isActive)
-                  e.currentTarget.style.background = "rgba(26,24,20,0.03)";
+                if (!isActive) e.currentTarget.style.background = "rgba(26,24,20,0.03)";
               }}
               onMouseLeave={(e) => {
-                if (!isActive)
-                  e.currentTarget.style.background = "transparent";
+                if (!isActive) e.currentTarget.style.background = "transparent";
               }}
             >
               <span
@@ -172,15 +143,10 @@ export default function WorkSidebar() {
             </a>
           );
         })}
-      </div>
+      </nav>
 
-      {/* Footer — build status widget (like Carmen's) */}
-      <div
-        style={{
-          padding: "16px 16px 24px",
-          borderTop: "1px solid var(--color-border-soft)",
-        }}
-      >
+      {/* Terminal widget */}
+      <div className="sidebar-footer">
         <div
           style={{
             background: "var(--color-ink)",
@@ -210,14 +176,10 @@ export default function WorkSidebar() {
             </span>
           </div>
           <div style={{ opacity: 0.6 }}>~/portfolio $</div>
-          <div>
-            <span style={{ color: "#4ade80" }}>v15</span> — deployed
-          </div>
-          <div style={{ opacity: 0.5 }}>
-            improving case studies
-          </div>
+          <div><span style={{ color: "#4ade80" }}>v15</span> — deployed</div>
+          <div style={{ opacity: 0.5 }}>improving case studies</div>
         </div>
       </div>
-    </nav>
+    </aside>
   );
 }
