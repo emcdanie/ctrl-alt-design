@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import caseStudies from "@/data/caseStudies";
+import caseStudies from "@/lib/content";
 import FadeIn from "@/components/FadeIn";
 
 const CATEGORY_COLORS: Record<string, { bg: string; color: string }> = {
@@ -20,7 +20,7 @@ function getCategoryStyle(category: string) {
 type CardSize = "standard";
 
 const ASPECT: Record<CardSize, string> = {
-  standard: "aspect-[16/10]",
+  standard: "aspect-[16/11]",
 };
 
 /* ─── Bento Card ───────────────────────────────────────────────── */
@@ -37,16 +37,17 @@ function CompactCard({ cs, delay }: CardProps) {
         href={cs.href ?? `/case-studies/${cs.slug}`}
         data-cursor="card"
         className="bento-card group relative flex flex-col overflow-hidden"
+        style={{ maxWidth: "420px" }}
       >
-        {/* ── Image area ── */}
+        {/* ── Image area — fixed 16:10 ratio ── */}
         <div className={`relative w-full shrink-0 overflow-hidden ${ASPECT.standard} bg-[#1A1814]`}>
           <Image
             src={cs.heroImage}
             alt={cs.title}
             fill
             loading="lazy"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 420px"
           />
           {cs.heroVideo && (
             <video
@@ -60,66 +61,34 @@ function CompactCard({ cs, delay }: CardProps) {
               <source src={cs.heroVideo} type="video/mp4" />
             </video>
           )}
-
-          {/* Gradient overlay */}
-          <div
-            className="pointer-events-none absolute inset-0 z-2"
-            style={{
-              background: "linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 55%)",
-            }}
-            aria-hidden
-          />
-
-          {/* Year badge */}
-          <span className="absolute right-3 top-3 z-4 rounded-full border border-white/18 bg-black/25 px-2 py-0.5 text-[9px] font-semibold tracking-widest text-white/90 backdrop-blur-sm">
-            {cs.year}
-          </span>
-
-          {/* Client logo */}
-          {cs.clientLogo && (
-            <div className="absolute left-3 top-3 z-4 flex h-7 w-7 items-center justify-center overflow-hidden rounded-lg border border-white/45 bg-white/90 shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={cs.clientLogo}
-                alt={cs.clientName ?? ""}
-                className="h-4 w-4 object-contain"
-                onError={(e) => { e.currentTarget.parentElement!.style.display = "none"; }}
-              />
-            </div>
-          )}
         </div>
 
         {/* ── Content area ── */}
-        <div className="flex flex-1 flex-col p-4 sm:p-5">
-          <div className="flex flex-wrap items-center gap-1.5 mb-2">
-            <span
-              className="rounded-full px-2.5 py-0.5 text-[9px] font-bold tracking-[0.12em]"
-              style={{
-                background: getCategoryStyle(cs.category).bg,
-                color: getCategoryStyle(cs.category).color,
-              }}
-            >
-              {cs.category}
-            </span>
-          </div>
+        <div style={{ padding: "16px 20px 20px" }}>
+          <span
+            className="inline-block rounded-full px-2.5 py-0.5 text-[9px] font-bold tracking-[0.1em]"
+            style={{
+              background: getCategoryStyle(cs.category).bg,
+              color: getCategoryStyle(cs.category).color,
+              marginBottom: "8px",
+            }}
+          >
+            {cs.category}
+          </span>
 
-          {cs.clientName && (
-            <p className="text-[9px] font-semibold uppercase tracking-widest text-[#8A8480] mb-0.5">
-              {cs.clientName}
-            </p>
-          )}
-
-          <h3 className="heading-card text-[16px]">
+          <h3
+            className="heading-card"
+            style={{ fontSize: "16px", marginBottom: "8px" }}
+          >
             {cs.title}
           </h3>
 
-          <p className="body-sm mt-1.5 line-clamp-2 text-[13px]" style={{ color: "var(--color-muted)" }}>
+          <p
+            className="body-sm line-clamp-2"
+            style={{ fontSize: "13px", color: "var(--color-muted)", margin: 0 }}
+          >
             {cs.description}
           </p>
-
-          <span className="mt-auto pt-4 text-[12px] font-medium text-[var(--color-ink)] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            Peek inside →
-          </span>
         </div>
       </Link>
     </FadeIn>
@@ -164,7 +133,7 @@ export default function CaseStudyGrid() {
           />
         </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {caseStudies.map((cs, i) => (
             <CompactCard
               key={cs.slug}

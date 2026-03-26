@@ -2,27 +2,24 @@
 
 import Image from "next/image";
 
-// Real work screenshots, photos, and looping videos — no text labels
-const slides: { img?: string; video?: string }[] = [
-  { img: "/images/thumbnails/TRAVEL.png" },
-  { img: "/images/thumbnails/IMG_3144.jpeg" },
-  { video: "/videos/design-system.mp4" },
-  { img: "/images/thumbnails/imag1.png" },
-  { img: "/images/thumbnails/FINVIZ.png" },
-  { img: "/images/thumbnails/IMG_3153.jpeg" },
-  { video: "/videos/hackathon-showreel.mp4" },
-  { img: "/images/thumbnails/image2.png" },
-  { img: "/images/thumbnails/AIPoweredSearch.png" },
-  { img: "/images/thumbnails/IMG_3170.jpeg" },
-  { video: "/videos/prism.mp4" },
-  { img: "/images/thumbnails/imGE3.png" },
-  { img: "/images/thumbnails/FormularOne.png" },
-  { img: "/images/thumbnails/IMG_3182.jpeg" },
-  { video: "/videos/eddie.mp4" },
-  { img: "/images/thumbnails/HealthForm.png" },
+// Images from /public/images/carosel/ — fixed intentional order
+const carouselImages = [
+  "/images/carosel/TRAVEL.png",
+  "/images/carosel/imag1.png",
+  "/images/carosel/FINVIZ.png",
+  "/images/carosel/IMG_3144.jpeg",
+  "/images/carosel/BradFrostCommandCenter.png",
+  "/images/carosel/image2.png",
+  "/images/carosel/CTRL_ATL_TRAVEL.jpeg",
+  "/images/carosel/IMG_3153.jpeg",
+  "/images/carosel/imGE3.png",
+  "/images/carosel/IMG_3170.jpeg",
+  "/images/carosel/Me.jpeg",
+  "/images/carosel/IMG_3182.jpeg",
 ];
 
-const allSlides = [...slides, ...slides];
+// Doubled for seamless loop
+const allImages = [...carouselImages, ...carouselImages];
 
 const patternA = {
   borderTopLeftRadius: "0px",
@@ -40,56 +37,41 @@ const patternB = {
 
 export default function Carousel() {
   return (
-    <section className="w-full py-6 relative overflow-hidden">
+    <div className="w-full relative overflow-hidden" style={{ flexShrink: 0 }}>
       <div className="carousel-track gap-[8px]">
-        {allSlides.map((slide, i) => (
+        {allImages.map((src, i) => (
           <div
             key={i}
-            className="flex-shrink-0 relative overflow-hidden bg-[#2A2420]"
+            className="flex-shrink-0 relative overflow-hidden"
             style={{
               width: "168px",
               height: "470px",
+              background: "#E8E3DA",
               ...(i % 2 === 0 ? patternA : patternB),
             }}
           >
-            {slide.video ? (
-              <video
-                src={slide.video}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover"
-                onError={(e) => {
-                  // Hide video if format not supported (e.g. .mov in Chrome)
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            ) : (
-              <Image
-                src={slide.img!}
-                alt=""
-                fill
-                sizes="168px"
-                quality={75}
-                loading="lazy"
-                className="object-cover"
-              />
-            )}
+            <Image
+              src={src}
+              alt=""
+              fill
+              sizes="168px"
+              quality={75}
+              loading="lazy"
+              className="object-cover"
+            />
           </div>
         ))}
       </div>
 
-      {/* Left fade */}
+      {/* Edge fades — seamless with page background */}
       <div
         className="absolute inset-y-0 left-0 w-32 pointer-events-none z-10"
-        style={{ background: "linear-gradient(to right, #EDE8DF 0%, transparent 100%)" }}
+        style={{ background: "linear-gradient(to right, var(--color-page) 0%, transparent 100%)" }}
       />
-      {/* Right fade */}
       <div
         className="absolute inset-y-0 right-0 w-32 pointer-events-none z-10"
-        style={{ background: "linear-gradient(to left, #EDE8DF 0%, transparent 100%)" }}
+        style={{ background: "linear-gradient(to left, var(--color-page) 0%, transparent 100%)" }}
       />
-    </section>
+    </div>
   );
 }

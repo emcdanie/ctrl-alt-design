@@ -75,7 +75,7 @@ export function Section({ eyebrow, heading, children }: {
   children: React.ReactNode;
 }) {
   return (
-    <section style={{ marginBottom: "88px" }}>
+    <section className="cs-section">
       <Eyebrow>{eyebrow}</Eyebrow>
       <H2>{heading}</H2>
       {children}

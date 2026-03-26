@@ -1,8 +1,8 @@
 import CaseStudyLayout from "@/components/CaseStudyLayout";
+import CaseStudyShell from "@/components/CaseStudyShell";
 import { Body, PullQuote, Section } from "@/components/CaseStudyTypography";
 import PrototypeEmbed from "@/components/PrototypeEmbed";
-import Link from "next/link";
-import { getCaseStudy, getAdjacentStudies } from "@/data/caseStudies";
+import { getCaseStudy, getAdjacentStudies } from "@/lib/content";
 import { notFound } from "next/navigation";
 
 export default function FiltersDecisionSupportPage() {
@@ -21,60 +21,19 @@ export default function FiltersDecisionSupportPage() {
 
   return (
     <CaseStudyLayout>
-      {/* ── Hero ── */}
-      <div className="mx-auto max-w-[1200px] px-6 pb-10 pt-28 md:px-8 md:pb-12 md:pt-36">
-        <div className="max-w-[620px]">
-          <p className="section-label mb-6">{cs.category} · {cs.year}</p>
+      <CaseStudyShell
+        eyebrow={`${cs.category} · ${cs.year}`}
+        title={cs.title}
+        summary="Designing a decision-support system for complex B2B travel booking — where search, filtering, and results operate as one integrated flow rather than three separate features."
+        metadata={metadata}
+        tags={cs.tags}
+        media={{ type: "image", src: cs.heroImage }}
+        demoLinks={cs.demoLinks}
+        liveUrl={cs.liveUrl || undefined}
+        prev={prev}
+        next={next}
+      >
 
-          <h1 className="mb-6 font-[var(--font-display)] text-[clamp(40px,5.5vw,72px)] font-bold leading-[1.02] tracking-[-0.03em] text-[var(--color-ink)]">
-            {cs.title}
-          </h1>
-
-          <p className="mb-10 text-[clamp(16px,1.5vw,19px)] leading-[1.75] text-[var(--color-muted)]">
-            Designing a decision-support system for complex B2B travel booking — where search, filtering, and results operate as one integrated flow rather than three separate features.
-          </p>
-
-          <dl className="mb-8 space-y-4 border-b border-[var(--color-border-soft)] pb-8">
-            {metadata.map(({ label, value }) => (
-              <div
-                key={label}
-                className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-5"
-              >
-                <dt className="min-w-[100px] text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--color-ink-muted)] opacity-70">
-                  {label}
-                </dt>
-                <dd className="m-0 max-w-[440px] text-[13.5px] leading-[1.7] text-[var(--color-ink)]">
-                  {value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-
-          <div className="flex flex-wrap gap-2.5">
-            {cs.tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center rounded-full border px-3.5 py-1.5 text-[11px] font-semibold leading-[1.5] tracking-[0.04em] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]"
-                style={{
-                  background: "rgba(26,24,20,0.04)",
-                  color: "#4A4640",
-                  borderColor: "rgba(44, 24, 16, 0.08)",
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Divider ── */}
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
-        <div style={{ borderTop: "1px solid rgba(26,24,20,0.1)" }} />
-      </div>
-
-      {/* ── Short introduction ── */}
-      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "48px 24px 0" }}>
         <Section eyebrow="INTRODUCTION" heading="The Problem Wasn&apos;t the Controls">
           <Body>
             When users struggle with a filtering interface, the instinct is to fix the controls — redesign
@@ -89,15 +48,19 @@ export default function FiltersDecisionSupportPage() {
             narrow the options, compare trade-offs, choose. The interface did not reflect that experience.
           </Body>
         </Section>
-      </div>
 
-      {/* ── Prototype — primary artifact, near the top ── */}
-      <div style={{ padding: "48px 24px 0" }}>
-        <div style={{ maxWidth: "760px", margin: "0 auto", marginBottom: "24px" }}>
+        {/* ── Prototype — primary artifact ── */}
+        <section style={{ marginBottom: "72px" }}>
           <p className="section-label" style={{ marginBottom: "12px" }}>TRY THE PROTOTYPE</p>
           <h2
-            className="heading-subsection"
-            style={{ marginBottom: "12px" }}
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(22px, 3vw, 32px)",
+              fontWeight: 400,
+              color: "#1A1A1A",
+              lineHeight: 1.2,
+              marginBottom: "12px",
+            }}
           >
             Explore the Decision System
           </h2>
@@ -108,6 +71,7 @@ export default function FiltersDecisionSupportPage() {
               color: "var(--color-muted)",
               lineHeight: 1.7,
               maxWidth: "600px",
+              marginBottom: "24px",
             }}
           >
             This interactive prototype explores a different model of travel search — one where search,
@@ -115,16 +79,12 @@ export default function FiltersDecisionSupportPage() {
             compare options, and observe how the interface communicates trade-offs between price,
             duration, and travel policy constraints.
           </p>
-        </div>
-        <PrototypeEmbed
-          src="/demos/ctrl-travel-v2.html"
-          title="ctrl+travel — Search & Filtering System"
-          height="700px"
-        />
-      </div>
-
-      {/* ── Deep narrative — back to narrow column ── */}
-      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "64px 24px 80px" }}>
+          <PrototypeEmbed
+            src="/demos/ctrl-travel-v2.html"
+            title="ctrl+travel — Search & Filtering System"
+            height="700px"
+          />
+        </section>
 
         <Section eyebrow="CONTEXT" heading="A Platform That Outgrew Its Patterns">
           <Body>
@@ -294,97 +254,7 @@ export default function FiltersDecisionSupportPage() {
           </Body>
         </Section>
 
-        {/* ── Additional demos ── */}
-        <div style={{ marginTop: "40px", marginBottom: "32px" }}>
-          <p style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "11px",
-            fontWeight: 600,
-            textTransform: "uppercase",
-            letterSpacing: "0.14em",
-            color: "#8A8A8A",
-            marginBottom: "16px",
-          }}>
-            ADDITIONAL DEMOS
-          </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
-            <a
-              href="/demos/bizaway-search.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="demo-link"
-            >
-              <span aria-hidden>↗</span> BizAway search prototype
-            </a>
-            <a
-              href="/demos/bizaway-filter-demo.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="demo-link"
-            >
-              <span aria-hidden>↗</span> BizAway filter demo
-            </a>
-          </div>
-        </div>
-
-        <div style={{ marginTop: "32px", marginBottom: "48px" }}>
-          <span style={{
-            display: "inline-flex",
-            alignItems: "center",
-            padding: "8px 20px",
-            borderRadius: "999px",
-            background: "#1A1814",
-            color: "#EDE8DF",
-            fontFamily: "var(--font-body)",
-            fontSize: "12px",
-            fontWeight: 600,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-          }}>
-            PROJECT COMPLETE · 2025
-          </span>
-        </div>
-
-        {/* ── Prev / Next ── */}
-        <div style={{ borderTop: "1px solid rgba(26,24,20,0.1)", paddingTop: "48px", marginBottom: "64px" }}>
-          <div className="flex items-stretch justify-between gap-4">
-            {prev ? (
-              <Link href={`/case-studies/${prev.slug}`} className="group flex flex-col gap-1.5 max-w-[45%]">
-                <span className="section-label">← Previous</span>
-                <span style={{ fontFamily: "var(--font-display)", fontSize: "15px", fontWeight: 600, color: "#1A1814", lineHeight: 1.3 }}>{prev.title}</span>
-                <span style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "#8A8480" }}>{prev.category}</span>
-              </Link>
-            ) : <div />}
-            {next ? (
-              <Link href={`/case-studies/${next.slug}`} className="group flex flex-col items-end gap-1.5 max-w-[45%]">
-                <span className="section-label">Next →</span>
-                <span style={{ fontFamily: "var(--font-display)", fontSize: "15px", fontWeight: 600, color: "#1A1814", lineHeight: 1.3, textAlign: "right" }}>{next.title}</span>
-                <span style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "#8A8480" }}>{next.category}</span>
-              </Link>
-            ) : <div />}
-          </div>
-        </div>
-
-        {/* ── CTA ── */}
-        <div
-          style={{ background: "#1A1814", borderRadius: "24px", padding: "56px 48px", display: "flex", flexDirection: "column", gap: "32px" }}
-          className="md:flex-row md:items-center md:justify-between"
-        >
-          <div>
-            <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "rgba(255,255,255,0.4)", marginBottom: "10px" }}>Have a project in mind?</p>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.15, textTransform: "uppercase" }}>
-              Open to full-time roles &<br />select freelance projects.
-            </h2>
-          </div>
-          <Link
-            href="/#contact"
-            style={{ flexShrink: 0, background: "#EDE8DF", color: "#1A1814", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: "13px", padding: "12px 24px", borderRadius: "999px", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
-          >
-            Get in touch ↗
-          </Link>
-        </div>
-
-      </div>
+      </CaseStudyShell>
     </CaseStudyLayout>
   );
 }

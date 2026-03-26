@@ -40,6 +40,9 @@
   --space-section: 80px;
   --space-section-lg: 96px;
 
+  /* Header offset — all sticky/fixed elements below the nav use this */
+  --header-height: 70px;
+
   --animate-scroll-left: scroll-left 35s linear infinite;
   --animate-fade-in-up: fadeInUp 0.6s ease-out forwards;
 }
@@ -371,12 +374,12 @@ li {
 /* ─── Scroll anchor offset ──────────────────────────────────────── */
 /* Prevents fixed header from covering anchor targets */
 section[id] {
-  scroll-margin-top: 80px;
+  scroll-margin-top: var(--header-height);
 }
 
 /* Case study pages — offset content below the fixed nav */
 .case-study-content {
-  padding-top: 64px;
+  padding-top: var(--header-height);
 }
 
 /* ─── Focus states ──────────────────────────────────────────────── */
@@ -547,13 +550,98 @@ button:focus-visible {
   }
 }
 
-/* ─── Dashboard zone layout ──────────────────────────────────── */
-/* On large screens, dashboard content shifts right to make room
-   for the fixed WorkSidebar on the left. */
+/* ─── Snap shell — two-view layout ────────────────────────────── */
+/* View 1: Landing (hero + carousel) fills the viewport.
+   View 2: Dashboard (sidebar + scrollable content panel).
+   Body does not scroll — only the snap shell and the dashboard
+   panel scroll. Nav bar (OverlayNav) stays on top always. */
+
+.snap-shell {
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  background: var(--color-page);
+  color: #1A1A1A;
+}
+
+/* View 1 — Landing */
+.view-landing {
+  height: 100vh;
+  height: 100dvh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--header-height);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* View 2 — Dashboard (sidebar + content) */
+.view-dashboard {
+  height: 100vh;
+  height: 100dvh;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  display: flex;
+  overflow: hidden;
+  padding-top: var(--header-height);
+}
+
+/* ─── Sidebar (inside dashboard view) ─────────────────────────── */
+.dashboard-sidebar {
+  display: none;                   /* hidden on mobile */
+  flex-direction: column;
+  width: 220px;
+  flex-shrink: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(246, 241, 232, 0.95) 0%,
+    rgba(246, 241, 232, 0.88) 100%
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-right: 1px solid var(--color-border-soft);
+  overflow-y: auto;
+}
+
 @media (min-width: 1024px) {
-  .dashboard-content {
-    padding-left: 200px;
+  .dashboard-sidebar {
+    display: flex;
   }
+}
+
+.sidebar-brand {
+  padding: 28px 20px 20px;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.sidebar-nav {
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.sidebar-footer {
+  padding: 16px 14px 22px;
+  border-top: 1px solid var(--color-border-soft);
+}
+
+/* ─── Dashboard content panel (scrolls inside) ────────────────── */
+.dashboard-panel {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;     /* prevents scroll leaking to snap shell */
+  scroll-behavior: smooth;
+  min-width: 0;
+}
+
+/* Legacy class — no longer needs padding offset */
+.dashboard-content {
 }
 
 /* Screen reader only — used by LoadingBubbles */
@@ -567,4 +655,343 @@ button:focus-visible {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* ─── Case Study Shell — Two-column editorial split ───────────── */
+/*  Desktop: sticky left project panel + scrolling visual narrative */
+/*  Mobile:  single column, hero → meta → content                  */
+
+.cs-shell {
+  display: flex;
+  flex-direction: column;
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 20px;
+  min-height: 100vh;
+}
+
+/* ── Left panel (desktop only) ─────────────────────────────────── */
+
+.cs-shell__left {
+  display: none;
+}
+
+.cs-shell__sticky {
+  position: sticky;
+  top: 88px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-bottom: 40px;
+}
+
+/* Back button */
+.cs-shell__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+  transition: color 0.15s ease;
+}
+
+.cs-shell__back:hover {
+  color: var(--color-ink);
+}
+
+/* Eyebrow */
+.cs-shell__eyebrow {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-ink-muted);
+  margin-bottom: 10px;
+}
+
+/* Title */
+.cs-shell__title {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.8vw, 34px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--color-ink);
+  margin: 0 0 12px;
+}
+
+/* Summary */
+.cs-shell__summary {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--color-muted);
+  margin: 0 0 16px;
+}
+
+/* Divider */
+.cs-shell__divider {
+  height: 1px;
+  background: var(--color-border-soft);
+  margin-bottom: 14px;
+}
+
+/* Metadata */
+.cs-shell__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.cs-shell__meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.cs-shell__meta-row dt {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-ink-muted);
+  flex-shrink: 0;
+}
+
+.cs-shell__meta-row dd {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+  text-align: right;
+  margin: 0;
+}
+
+/* Tags */
+.cs-shell__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 16px;
+}
+
+.cs-shell__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  border: 1px solid rgba(44, 24, 16, 0.08);
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* Links section */
+.cs-shell__links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.cs-shell__links .demo-link {
+  font-size: 12px;
+  padding: 8px 16px;
+}
+
+/* CTA (desktop sidebar) */
+.cs-shell__cta {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.cs-shell__cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: var(--color-page);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: opacity 0.15s ease;
+}
+
+.cs-shell__cta-btn:hover {
+  opacity: 0.85;
+}
+
+/* ── Right column — visual narrative ─────────────────────────── */
+
+.cs-shell__right {
+  flex: 1;
+  min-width: 0;
+  padding-top: 72px;
+}
+
+/* Mobile back */
+.cs-shell__mobile-back {
+  display: block;
+  margin-bottom: 16px;
+}
+
+/* Hero media — controlled, not oversized */
+.cs-shell__hero {
+  margin-bottom: 40px;
+}
+
+.cs-shell__hero-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #110f12;
+  box-shadow:
+    0 12px 40px rgba(44, 24, 16, 0.1),
+    0 4px 14px rgba(44, 24, 16, 0.06);
+}
+
+.cs-shell__hero-sheen {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 16%);
+}
+
+.cs-shell__hero-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cs-shell__hero-vignette {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to bottom, rgba(12, 10, 14, 0.03) 50%, rgba(12, 10, 14, 0.22) 100%);
+}
+
+.cs-shell__hero-vignette-light {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to bottom, rgba(12, 10, 14, 0.02) 55%, rgba(12, 10, 14, 0.14) 100%);
+}
+
+/* Mobile header — shown below hero on small screens */
+.cs-shell__mobile-header {
+  display: block;
+  margin-bottom: 40px;
+}
+
+/* Content — NO max-width cap so visuals fill the column */
+.cs-shell__content {
+  /* images and media fill the right column naturally */
+}
+
+/* Section spacing inside case study pages */
+.cs-section {
+  margin-bottom: 56px;
+}
+
+/* Navigation */
+.cs-shell__nav {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: var(--space-md);
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-md);
+}
+
+.cs-shell__nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 45%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cs-shell__nav-link--next {
+  align-items: flex-end;
+}
+
+/* Bottom CTA */
+.cs-shell__bottom-cta {
+  padding-bottom: 80px;
+}
+
+/* ── Desktop layout (≥1080px) ──────────────────────────────────── */
+
+@media (min-width: 1080px) {
+  .cs-shell {
+    flex-direction: row;
+    gap: 64px;
+    padding: 0 40px;
+  }
+
+  .cs-shell__left {
+    display: block;
+    width: 320px;
+    flex-shrink: 0;
+    padding-top: 88px;
+  }
+
+  .cs-shell__right {
+    flex: 1;
+    min-width: 0;
+    padding-top: 88px;
+  }
+
+  /* Hide mobile-only elements */
+  .cs-shell__mobile-back {
+    display: none;
+  }
+
+  .cs-shell__mobile-header {
+    display: none;
+  }
+
+  /* Hero slightly larger radius on desktop */
+  .cs-shell__hero-frame {
+    border-radius: 20px;
+  }
+}
+
+/* ── Large desktop (≥1400px) ────────────────────────────────────── */
+@media (min-width: 1400px) {
+  .cs-shell {
+    gap: 80px;
+    padding: 0 56px;
+  }
+
+  .cs-shell__left {
+    width: 340px;
+  }
 }

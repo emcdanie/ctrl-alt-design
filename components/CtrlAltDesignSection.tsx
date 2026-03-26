@@ -81,7 +81,7 @@ const prototypes: LabPrototype[] = [
     tags: ["Search UX", "Filtering", "Prototype"],
     href: "/demos/ctrl-travel-v2.html",
     gradient: "linear-gradient(135deg, #0A1628 0%, #132040 60%, #0A1628 100%)",
-    thumbnailSrc: "/images/thumbnails/AIPoweredSearch.png",
+    thumbnailSrc: "/images/thumbnails/TRAVEL.png",
   },
   {
     title: "F1 Grand Prix Analytics Dashboard",
@@ -99,13 +99,11 @@ const prototypes: LabPrototype[] = [
     tags: ["Design Systems", "AI UX", "Dashboard"],
     href: "/demos/brad-frost-command-center.html",
     gradient: "linear-gradient(135deg, #1A0A2E 0%, #2D1650 50%, #1A0A2E 100%)",
-    thumbnailSrc: null,
+    thumbnailSrc: "/images/thumbnails/BradFrostCommandCenter.png",
   },
 ];
 
 function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
-  const catStyle = LAB_CATEGORY_COLORS[prototype.category] ?? { bg: "#1A1814", color: "#FFFFFF" };
-
   return (
     <a
       href={prototype.href}
@@ -114,81 +112,43 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
       className="group card-elevated flex cursor-pointer flex-col overflow-hidden rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(44,24,16,0.1),0_6px_16px_rgba(44,24,16,0.07)]"
       style={{ textDecoration: "none" }}
     >
-      {/* Category badge */}
-      <div className="relative">
-        <span
-          className="pointer-events-none absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[11px] font-bold tracking-widest"
-          style={{ background: catStyle.bg, color: catStyle.color, letterSpacing: "0.1em" }}
-        >
-          {prototype.category}
-        </span>
-      </div>
-
-      {/* Thumbnail area */}
-      <div className="relative aspect-video w-full overflow-hidden" style={{ background: prototype.gradient }}>
+      {/* Thumbnail */}
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-[20px]" style={{ background: prototype.gradient }}>
         {prototype.thumbnailSrc && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={prototype.thumbnailSrc}
             alt={prototype.title}
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
           />
         )}
 
-        {!prototype.thumbnailSrc && (
-          <div
-            className="absolute inset-0 opacity-[0.15]"
-            style={{
-              backgroundImage:
-                "url(data:image/svg+xml,%3Csvg viewBox=%270 0 200 200%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.85%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27/%3E%3C/svg%3E)",
-              backgroundSize: "160px",
-            }}
-          />
-        )}
-
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.28),transparent_42%),linear-gradient(to_bottom,rgba(255,255,255,0.06),transparent_28%)]" />
-
-        {/* Interactive icon instead of play button */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/40 bg-white/82 shadow-[0_18px_42px_rgba(0,0,0,0.2)] backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <rect x="3" y="3" width="14" height="14" rx="2" stroke="#1A1814" strokeWidth="1.5" />
-              <path d="M7 10h6M10 7v6" stroke="#1A1814" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </div>
+        {/* Hover overlay with CTA */}
+        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/20">
+          <span
+            className="rounded-full border border-white/50 bg-white/90 px-5 py-2.5 text-[13px] font-semibold text-[#1A1814] opacity-0 shadow-[0_8px_24px_rgba(0,0,0,0.15)] backdrop-blur-sm transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2"
+            style={{ fontFamily: "var(--font-body)" }}
+          >
+            Try Demo →
+          </span>
         </div>
       </div>
 
       {/* Content */}
       <div className="flex flex-1 flex-col p-5 md:p-6">
-        <div className="mb-3 flex items-center gap-2">
-          <p className="section-label m-0">INTERACTIVE DEMO</p>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              padding: "2px 8px",
-              borderRadius: "999px",
-              background: "rgba(13,107,74,0.1)",
-              border: "1px solid rgba(13,107,74,0.2)",
-              fontFamily: "var(--font-body)",
-              fontSize: "10px",
-              fontWeight: 700,
-              color: "#0D6B4A",
-              letterSpacing: "0.06em",
-              textTransform: "uppercase",
-            }}
-          >
-            Try it
-          </span>
-        </div>
-        <h3 className="font-display mb-2 text-[20px] font-bold leading-snug text-[#1A1814]">
+        <h3
+          className="mb-2 text-[18px] font-bold leading-snug text-[#1A1814]"
+          style={{ fontFamily: "var(--font-display)", maxWidth: "320px" }}
+        >
           {prototype.title}
         </h3>
-        <p className="mb-4 flex-1 text-[15px] leading-[1.65] text-[#8A8480]">
+        <p
+          className="mb-4 flex-1 text-[14px] leading-[1.65]"
+          style={{ color: "var(--color-muted)", maxWidth: "380px" }}
+        >
           {prototype.subtitle}
         </p>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {prototype.tags.map((tag) => (
             <span key={tag} className="tag">
               {tag}
@@ -242,14 +202,14 @@ export default function CtrlAltDesignSection() {
       </div>
 
       {/* Interactive prototypes */}
-      <div style={{ marginTop: "40px" }}>
-        <p
-          className="section-label"
-          style={{ marginBottom: "16px" }}
-        >
-          — Interactive Prototypes
-        </p>
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+      <div style={{ marginTop: "56px" }}>
+        <SectionHeader
+          label="— Interactive Work"
+          title="Interactive product experiments"
+          description="Real prototypes exploring complex interaction patterns, system logic, and workflow design."
+          className="mb-10"
+        />
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {prototypes.map((prototype) => (
             <PrototypeCard key={prototype.title} prototype={prototype} />
           ))}

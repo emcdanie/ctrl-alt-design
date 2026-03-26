@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import CustomCursor from "@/components/CustomCursor";
 import OverlayNav from "@/components/OverlayNav";
 import Hero from "@/components/Hero";
@@ -19,59 +19,52 @@ import WorkSidebar from "@/components/WorkSidebar";
 
 export default function Home() {
   const [resumeOpen, setResumeOpen] = useState(false);
+  const shellRef = useRef<HTMLDivElement>(null);
+
+  /** Scroll the snap shell to the dashboard view */
+  const enterDashboard = useCallback(() => {
+    const dash = shellRef.current?.querySelector<HTMLElement>(".view-dashboard");
+    dash?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   return (
-    <main className="bg-[var(--color-page)] text-[#1A1A1A] min-h-screen overflow-x-hidden">
+    <div ref={shellRef} className="snap-shell">
       <CustomCursor />
       <OverlayNav />
 
       {/* ═══════════════════════════════════════════════════════════════
-          PART 1 — Editorial Landing (full viewport)
-          Big typography, staggered entrance, editorial feel.
+          VIEW 1 — Landing  (hero + carousel, fills viewport)
+          Normal site landing. Name, tagline, CTA, carousel.
           ═══════════════════════════════════════════════════════════════ */}
-      <Hero />
+      <section className="view-landing">
+        <Hero onEnterDashboard={enterDashboard} />
+        <Carousel />
+      </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          PART 2 — Dashboard (scrolled into via "View my work")
-          Carousel bridges the two worlds, then dashboard content begins.
-          WorkSidebar appears once you enter this zone.
+          VIEW 2 — Dashboard  (sidebar + scrollable content)
+          Triggered by scroll or CTA click. Sidebar appears.
+          Content scrolls inside the panel. Nav bar stays.
           ═══════════════════════════════════════════════════════════════ */}
-      <div className="dashboard-zone">
-        <Carousel />
-        <MetricsStrip />
-
-        {/* Sidebar nav — appears when dashboard zone is in view */}
+      <section className="view-dashboard">
+        {/* Sidebar — only visible in this view */}
         <WorkSidebar />
 
-        {/* Dashboard content — offset for sidebar on large screens */}
-        <div className="dashboard-content">
-          {/* Case Studies */}
+        {/* Scrollable content panel */}
+        <div className="dashboard-panel">
           <CaseStudyGrid />
-
-          {/* Process */}
+          <MetricsStrip />
           <ProcessSection />
-
-          {/* Guardian Highlight */}
           <VideoWalkthrough />
-
-          {/* CTRL_ALT_DESIGN Experiments */}
           <CtrlAltDesignSection />
-
-          {/* About */}
           <AboutSection />
-
-          {/* Experience */}
           <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
-
-          {/* Learning & Inspiration */}
           <LearningSection />
-
-          {/* Contact */}
           <ContactSection />
         </div>
-      </div>
+      </section>
 
       <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
-    </main>
+    </div>
   );
 }

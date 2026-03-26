@@ -68,7 +68,7 @@ const caseStudies: CaseStudy[] = [
     scope: "Design Systems, Token Architecture, Component Library, Governance",
     timeline: "8 months",
     liveUrl: "",
-    heroImage: "/images/thumbnails/AIPoweredSearch.png",
+    heroImage: "/images/thumbnails/TRAVEL.png",
     heroVideo: "/videos/design-system.mp4",
     metrics: {
       role: "Lead Product Designer — Design Systems",
@@ -291,7 +291,7 @@ const caseStudies: CaseStudy[] = [
     scope: "Information Architecture, Role-Based UX, Enterprise Platform Design",
     timeline: "3 months",
     liveUrl: "",
-    heroImage: "/images/thumbnails/FINVIZ.png",
+    heroImage: "/images/thumbnails/FormularOne.png",
     heroVideo: "/videos/prism.mp4",
     metrics: {
       role: "Product Designer — Contract",
@@ -428,7 +428,7 @@ const caseStudies: CaseStudy[] = [
     scope: "Search UX, filtering systems, results architecture, constraint messaging",
     timeline: "Embedded / ongoing",
     liveUrl: "",
-    heroImage: "/images/thumbnails/HealthForm.png",
+    heroImage: "/images/thumbnails/FINVIZ.png",
     heroVideo: undefined,
     metrics: {
       role: "Lead Product Designer",
@@ -632,7 +632,7 @@ const caseStudies: CaseStudy[] = [
     year: "2024–2025",
     scope: "Component Architecture, Token Alignment, Figma–Storybook Integration",
     timeline: "Oct 2024 – Jan 2025",
-    heroImage: "/images/thumbnails/FormularOne.png",
+    heroImage: "/images/thumbnails/BradFrostCommandCenter.png",
     heroVideo: "/videos/eddie.mp4",
     metrics: {
       role: "Design System Collaborator",
