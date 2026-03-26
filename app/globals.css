@@ -513,6 +513,25 @@ button:focus-visible {
   }
 }
 
+/* ─── Hero landing animations ─────────────────────────────────── */
+@keyframes gentleBounce {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(6px);
+  }
+}
+
+/* ─── Dashboard zone layout ──────────────────────────────────── */
+/* On large screens, dashboard content shifts right to make room
+   for the fixed WorkSidebar on the left. */
+@media (min-width: 1024px) {
+  .dashboard-content {
+    padding-left: 200px;
+  }
+}
+
 /* Screen reader only — used by LoadingBubbles */
 .sr-only {
   position: absolute;
