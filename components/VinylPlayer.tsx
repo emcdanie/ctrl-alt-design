@@ -5,66 +5,69 @@ import { useState, useRef, useEffect, useCallback } from "react";
 interface Track {
   title: string;
   artist: string;
-  src: string;
+  /** Apple Music embed URL — get it from: song page → ··· → Share → Copy Embed Code → grab the src URL */
+  appleMusicEmbed?: string;
+  /** Direct link to the song on Apple Music (fallback if no embed) */
+  appleMusicUrl?: string;
 }
 
 const tracks: Track[] = [
-  { title: "6pm In Madrid", artist: "Atlas Hour", src: "/audio/6pm-in-madrid.mp3" },
-  { title: "Wash Away", artist: "Far Orange", src: "/audio/wash-away.mp3" },
-  { title: "8am In Juneau", artist: "Atlas Hour", src: "/audio/8am-in-juneau.mp3" },
+  {
+    title: "6pm In Madrid",
+    artist: "Atlas Hour",
+    // To add Apple Music: open music.apple.com, find the song,
+    // click ··· → Share Song → Copy Link, paste as appleMusicUrl below.
+    // For embedded playback: ··· → Share Song → Copy Embed Code,
+    // grab the src="https://embed.music.apple.com/..." URL and paste as appleMusicEmbed.
+    appleMusicUrl: "",
+    appleMusicEmbed: "",
+  },
+  {
+    title: "Wash Away",
+    artist: "Far Orange",
+    appleMusicUrl: "",
+    appleMusicEmbed: "",
+  },
+  {
+    title: "8am In Juneau",
+    artist: "Atlas Hour",
+    appleMusicUrl: "",
+    appleMusicEmbed: "",
+  },
 ];
 
 export default function VinylPlayer() {
   const [playing, setPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
-  const [audioError, setAudioError] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [showEmbed, setShowEmbed] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const track = tracks[currentTrack];
-
-  // Create and manage audio element
-  useEffect(() => {
-    const audio = new Audio(track.src);
-    audioRef.current = audio;
-
-    const onError = () => setAudioError(true);
-    const onEnded = () => setCurrentTrack((prev) => (prev + 1) % tracks.length);
-
-    audio.addEventListener("error", onError);
-    audio.addEventListener("ended", onEnded);
-
-    // Reset error state for new track
-    setAudioError(false); // eslint-disable-line react-hooks/set-state-in-effect
-
-    if (playing) {
-      audio.play().catch(() => setAudioError(true));
-    }
-
-    return () => {
-      audio.pause();
-      audio.removeEventListener("error", onError);
-      audio.removeEventListener("ended", onEnded);
-      audio.src = "";
-    };
-  }, [currentTrack, track.src]); // eslint-disable-line react-hooks/exhaustive-deps
+  const hasEmbed = !!track.appleMusicEmbed;
+  const hasLink = !!track.appleMusicUrl;
 
   const togglePlay = useCallback(() => {
-    if (!audioRef.current) return;
-    if (playing) {
-      audioRef.current.pause();
-      setPlaying(false);
+    if (hasEmbed) {
+      setShowEmbed(true);
+      setPlaying((p) => !p);
+    } else if (hasLink) {
+      window.open(track.appleMusicUrl, "_blank", "noopener,noreferrer");
     } else {
-      audioRef.current.play().catch(() => setAudioError(true));
-      setPlaying(true);
+      // No audio source — just toggle the visual spin
+      setPlaying((p) => !p);
     }
-  }, [playing]);
+  }, [hasEmbed, hasLink, track.appleMusicUrl]);
 
   const nextTrack = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
+    setPlaying(false);
+    setShowEmbed(false);
     setCurrentTrack((prev) => (prev + 1) % tracks.length);
   }, []);
+
+  // Reset embed when track changes
+  useEffect(() => {
+    setShowEmbed(false);
+  }, [currentTrack]);
 
   return (
     <div
@@ -155,22 +158,51 @@ export default function VinylPlayer() {
         </p>
       </div>
 
-      {/* Audio error state */}
-      {audioError && (
-        <p
+      {/* Apple Music embed (hidden player) */}
+      {showEmbed && hasEmbed && (
+        <iframe
+          ref={iframeRef}
+          allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
+          src={track.appleMusicEmbed}
+          sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
+          style={{
+            width: "100%",
+            maxWidth: "260px",
+            height: "52px",
+            borderRadius: "10px",
+            border: "none",
+            overflow: "hidden",
+          }}
+        />
+      )}
+
+      {/* Apple Music link */}
+      {hasLink && !showEmbed && (
+        <a
+          href={track.appleMusicUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             fontFamily: "var(--font-body)",
-            fontSize: "11px",
+            fontSize: "10px",
             color: "var(--color-muted)",
-            textAlign: "center",
-            margin: 0,
-            padding: "4px 8px",
-            background: "rgba(0,0,0,0.04)",
+            textDecoration: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: "4px",
+            padding: "4px 10px",
             borderRadius: "6px",
+            background: "rgba(0,0,0,0.04)",
+            transition: "color 0.15s",
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#1A1814")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--color-muted)")}
         >
-          Audio coming soon
-        </p>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 00-1.877-.726 10.496 10.496 0 00-1.564-.15c-.073-.006-.144-.01-.217-.014-.939-.04-1.877-.06-2.816-.06H8.9c-.94 0-1.878.02-2.816.06-.073.004-.144.008-.217.014-.552.033-1.063.085-1.564.15a5.022 5.022 0 00-1.877.727C1.308 1.744.563 2.744.246 4.054a9.23 9.23 0 00-.24 2.19c-.033.68-.05 1.36-.05 2.04v7.432c0 .68.017 1.36.05 2.04.02.73.085 1.46.24 2.19.317 1.31 1.062 2.31 2.18 3.043a5.022 5.022 0 001.877.726c.501.065 1.012.117 1.564.15.073.006.144.01.217.014.939.04 1.877.06 2.816.06h6.2c.94 0 1.878-.02 2.816-.06.073-.004.144-.008.217-.014.552-.033 1.063-.085 1.564-.15a5.022 5.022 0 001.877-.727c1.118-.732 1.863-1.732 2.18-3.042.155-.73.22-1.46.24-2.19.033-.68.05-1.36.05-2.04V8.164c0-.68-.017-1.36-.05-2.04zM16.95 17.08c0 .18-.1.34-.25.42l-.01.01c-.12.06-.27.08-.42.05-1.17-.22-2.35-.09-3.22.12-.89.22-1.55.52-1.55.52-.14.06-.3.04-.42-.04a.488.488 0 01-.22-.41v-6.42c0-.16.08-.32.21-.41.09-.06.2-.09.3-.09.04 0 .07 0 .11.02.87.22 1.75.14 2.48-.03.93-.21 1.61-.54 1.61-.54.14-.07.31-.05.44.04.13.1.21.25.21.42v6.32h-.01z"/>
+          </svg>
+          Listen on Apple Music
+        </a>
       )}
 
       {/* Next track */}

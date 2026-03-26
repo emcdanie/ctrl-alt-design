@@ -16,65 +16,37 @@ function getCategoryStyle(category: string) {
   return CATEGORY_COLORS[category] ?? { bg: "#1A1814", color: "#FFFFFF" };
 }
 
-/* ─── Bento card sizes ─────────────────────────────────────────── */
-type CardSize = "featured" | "medium" | "wide";
-
-/** Determines card layout based on position in the grid */
-function getCardSize(index: number, total: number): CardSize {
-  if (index === 0) return "featured";
-  if (index === total - 1 && total > 3) return "wide";
-  return "medium";
-}
+/* ─── Card sizes — uniform compact grid ───────────────────────── */
+type CardSize = "standard";
 
 const ASPECT: Record<CardSize, string> = {
-  featured: "aspect-[16/8]",
-  medium: "aspect-[16/10]",
-  wide: "aspect-[21/8]",
+  standard: "aspect-[16/10]",
 };
 
 /* ─── Bento Card ───────────────────────────────────────────────── */
 
-interface BentoCardProps {
+interface CardProps {
   cs: (typeof caseStudies)[number];
-  size: CardSize;
   delay: number;
 }
 
-function BentoCard({ cs, size, delay }: BentoCardProps) {
-  const isFeatured = size === "featured";
-  const isWide = size === "wide";
-
+function CompactCard({ cs, delay }: CardProps) {
   return (
-    <FadeIn
-      delay={delay}
-      className={
-        isFeatured
-          ? "col-span-1 sm:col-span-2"
-          : isWide
-            ? "col-span-1 sm:col-span-2"
-            : "col-span-1"
-      }
-    >
+    <FadeIn delay={delay} className="col-span-1">
       <Link
         href={cs.href ?? `/case-studies/${cs.slug}`}
         data-cursor="card"
         className="bento-card group relative flex flex-col overflow-hidden"
       >
         {/* ── Image area ── */}
-        <div className={`relative w-full shrink-0 overflow-hidden ${ASPECT[size]} bg-[#1A1814]`}>
+        <div className={`relative w-full shrink-0 overflow-hidden ${ASPECT.standard} bg-[#1A1814]`}>
           <Image
             src={cs.heroImage}
             alt={cs.title}
             fill
-            loading={isFeatured ? "eager" : "lazy"}
+            loading="lazy"
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-            sizes={
-              isFeatured
-                ? "(max-width: 768px) 100vw, 1200px"
-                : isWide
-                  ? "(max-width: 768px) 100vw, 1200px"
-                  : "(max-width: 640px) 100vw, 600px"
-            }
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
           />
           {cs.heroVideo && (
             <video
@@ -83,7 +55,7 @@ function BentoCard({ cs, size, delay }: BentoCardProps) {
               muted
               playsInline
               onError={(e) => { e.currentTarget.style.display = "none"; }}
-              className="absolute inset-0 z-[1] h-full w-full object-cover"
+              className="absolute inset-0 z-1 h-full w-full object-cover"
             >
               <source src={cs.heroVideo} type="video/mp4" />
             </video>
@@ -91,105 +63,64 @@ function BentoCard({ cs, size, delay }: BentoCardProps) {
 
           {/* Gradient overlay */}
           <div
-            className="pointer-events-none absolute inset-0 z-[2]"
+            className="pointer-events-none absolute inset-0 z-2"
             style={{
-              background: isFeatured
-                ? "linear-gradient(to top, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.12) 40%, transparent 70%)"
-                : "linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 55%)",
+              background: "linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 55%)",
             }}
             aria-hidden
           />
 
           {/* Year badge */}
-          <span className="absolute right-4 top-4 z-[4] rounded-full border border-white/18 bg-black/25 px-2.5 py-1 text-[10px] font-semibold tracking-[0.1em] text-white/90 backdrop-blur-sm">
+          <span className="absolute right-3 top-3 z-4 rounded-full border border-white/18 bg-black/25 px-2 py-0.5 text-[9px] font-semibold tracking-widest text-white/90 backdrop-blur-sm">
             {cs.year}
           </span>
 
           {/* Client logo */}
           {cs.clientLogo && (
-            <div className="absolute left-4 top-4 z-[4] flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl border border-white/45 bg-white/90 shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
+            <div className="absolute left-3 top-3 z-4 flex h-7 w-7 items-center justify-center overflow-hidden rounded-lg border border-white/45 bg-white/90 shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={cs.clientLogo}
                 alt={cs.clientName ?? ""}
-                className="h-5 w-5 object-contain"
+                className="h-4 w-4 object-contain"
                 onError={(e) => { e.currentTarget.parentElement!.style.display = "none"; }}
               />
             </div>
           )}
-
-          {/* ── Overlay content (featured cards show title on image) ── */}
-          {isFeatured && (
-            <div className="absolute bottom-0 left-0 right-0 z-[3] p-6 sm:p-8">
-              <div className="flex flex-wrap items-center gap-2 mb-3">
-                <span
-                  className="rounded-full px-3 py-1 text-[10px] font-bold tracking-[0.12em]"
-                  style={{
-                    background: getCategoryStyle(cs.category).bg,
-                    color: getCategoryStyle(cs.category).color,
-                  }}
-                >
-                  {cs.category}
-                </span>
-                {cs.tags?.slice(0, 2).map((tag) => (
-                  <span key={`${cs.slug}-${tag}`} className="rounded-full border border-white/20 bg-white/10 px-2.5 py-0.5 text-[10px] font-medium text-white/85 backdrop-blur-sm">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              {cs.clientName && (
-                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-white/60 mb-1.5">
-                  {cs.clientName}
-                </p>
-              )}
-              <h3
-                className="font-[family-name:var(--font-display)] font-bold text-white leading-[1.1] tracking-tight"
-                style={{ fontSize: "clamp(1.5rem, 3vw, 2.2rem)" }}
-              >
-                {cs.title}
-              </h3>
-              <p className="mt-2 text-[14px] leading-[1.6] text-white/75 max-w-[560px] line-clamp-2">
-                {cs.description}
-              </p>
-            </div>
-          )}
         </div>
 
-        {/* ── Content area (non-featured cards) ── */}
-        {!isFeatured && (
-          <div className="flex flex-1 flex-col p-5 sm:p-6">
-            <div className="flex flex-wrap items-center gap-2 mb-2.5">
-              <span
-                className="rounded-full px-3 py-1 text-[10px] font-bold tracking-[0.12em]"
-                style={{
-                  background: getCategoryStyle(cs.category).bg,
-                  color: getCategoryStyle(cs.category).color,
-                }}
-              >
-                {cs.category}
-              </span>
-              {cs.tags?.slice(0, 2).map((tag) => (
-                <span key={`${cs.slug}-${tag}`} className="tag px-2.5 py-0.5 text-[10px]">
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            {cs.clientName && (
-              <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#8A8480] mb-1">
-                {cs.clientName}
-              </p>
-            )}
-
-            <h3 className="heading-card">
-              {cs.title}
-            </h3>
-
-            <p className="body-sm mt-2 line-clamp-2" style={{ color: "var(--color-muted)" }}>
-              {cs.description}
-            </p>
+        {/* ── Content area ── */}
+        <div className="flex flex-1 flex-col p-4 sm:p-5">
+          <div className="flex flex-wrap items-center gap-1.5 mb-2">
+            <span
+              className="rounded-full px-2.5 py-0.5 text-[9px] font-bold tracking-[0.12em]"
+              style={{
+                background: getCategoryStyle(cs.category).bg,
+                color: getCategoryStyle(cs.category).color,
+              }}
+            >
+              {cs.category}
+            </span>
           </div>
-        )}
+
+          {cs.clientName && (
+            <p className="text-[9px] font-semibold uppercase tracking-widest text-[#8A8480] mb-0.5">
+              {cs.clientName}
+            </p>
+          )}
+
+          <h3 className="heading-card text-[16px]">
+            {cs.title}
+          </h3>
+
+          <p className="body-sm mt-1.5 line-clamp-2 text-[13px]" style={{ color: "var(--color-muted)" }}>
+            {cs.description}
+          </p>
+
+          <span className="mt-auto pt-4 text-[12px] font-medium text-[var(--color-ink)] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            Peek inside →
+          </span>
+        </div>
       </Link>
     </FadeIn>
   );
@@ -233,12 +164,11 @@ export default function CaseStudyGrid() {
           />
         </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {caseStudies.map((cs, i) => (
-            <BentoCard
+            <CompactCard
               key={cs.slug}
               cs={cs}
-              size={getCardSize(i, caseStudies.length)}
               delay={i * 60}
             />
           ))}
