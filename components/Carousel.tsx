@@ -6,7 +6,7 @@ import Image from "next/image";
 const slides: { img?: string; video?: string }[] = [
   { img: "/images/thumbnails/TRAVEL.png" },
   { img: "/images/thumbnails/IMG_3144.jpeg" },
-  { video: "/videos/DesignSystem.mov" },
+  { video: "/videos/design-system.mp4" },
   { img: "/images/thumbnails/imag1.png" },
   { img: "/images/thumbnails/FINVIZ.png" },
   { img: "/images/thumbnails/IMG_3153.jpeg" },
@@ -14,11 +14,11 @@ const slides: { img?: string; video?: string }[] = [
   { img: "/images/thumbnails/image2.png" },
   { img: "/images/thumbnails/AIPoweredSearch.png" },
   { img: "/images/thumbnails/IMG_3170.jpeg" },
-  { video: "/videos/Prism.mov" },
+  { video: "/videos/prism.mp4" },
   { img: "/images/thumbnails/imGE3.png" },
   { img: "/images/thumbnails/FormularOne.png" },
   { img: "/images/thumbnails/IMG_3182.jpeg" },
-  { video: "/videos/eddie.mov" },
+  { video: "/videos/eddie.mp4" },
   { img: "/images/thumbnails/HealthForm.png" },
 ];
 

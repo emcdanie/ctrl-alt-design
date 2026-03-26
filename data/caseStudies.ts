@@ -69,7 +69,7 @@ const caseStudies: CaseStudy[] = [
     timeline: "8 months",
     liveUrl: "",
     heroImage: "/images/thumbnails/AIPoweredSearch.png",
-    heroVideo: "/videos/DesignSystem.mov",
+    heroVideo: "/videos/design-system.mp4",
     metrics: {
       role: "Lead Product Designer — Design Systems",
       team: "Cross-functional (Engineering, Product)",
@@ -292,7 +292,7 @@ const caseStudies: CaseStudy[] = [
     timeline: "3 months",
     liveUrl: "",
     heroImage: "/images/thumbnails/FINVIZ.png",
-    heroVideo: "/videos/Prism.mov",
+    heroVideo: "/videos/prism.mp4",
     metrics: {
       role: "Product Designer — Contract",
       team: "UNOG ICTS stakeholders",
@@ -633,7 +633,7 @@ const caseStudies: CaseStudy[] = [
     scope: "Component Architecture, Token Alignment, Figma–Storybook Integration",
     timeline: "Oct 2024 – Jan 2025",
     heroImage: "/images/thumbnails/FormularOne.png",
-    heroVideo: "/videos/eddie.mov",
+    heroVideo: "/videos/eddie.mp4",
     metrics: {
       role: "Design System Collaborator",
       team: "Brad Frost Web Maker Program",
