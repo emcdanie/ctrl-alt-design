@@ -84,6 +84,15 @@ const prototypes: LabPrototype[] = [
     thumbnailSrc: "/images/thumbnails/AIPoweredSearch.png",
   },
   {
+    title: "F1 Grand Prix Analytics Dashboard",
+    subtitle: "High-density operational dashboard with tiered analytics, data visualisation, and insight-driven annotations.",
+    category: "INTERACTIVE",
+    tags: ["Dashboard UX", "Data Viz", "Prototype"],
+    href: "/demos/grandprix-dashboard.html",
+    gradient: "linear-gradient(135deg, #0D1B10 0%, #1A3820 50%, #0A1410 100%)",
+    thumbnailSrc: "/images/thumbnails/FormularOne.png",
+  },
+  {
     title: "Brad Frost Command Center",
     subtitle: "Design system investigation dashboard — exploring AI-assisted component analysis and governance workflows.",
     category: "INTERACTIVE",

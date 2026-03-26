@@ -341,22 +341,25 @@ li {
 
 /* Light glass — subtle content panels, secondary surfaces */
 .card-default {
-  background: rgba(255, 255, 255, 0.32);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.28) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: 16px;
-  box-shadow: 0 1px 4px rgba(44, 24, 16, 0.03), 0 4px 16px rgba(44, 24, 16, 0.04);
+  box-shadow: 0 1px 4px rgba(44, 24, 16, 0.03), 0 4px 16px rgba(44, 24, 16, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 /* Glass card — case study cards, content panels, featured surfaces */
 .card-elevated {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0.48) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-top: 1px solid rgba(255, 255, 255, 0.75);
   border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 2px rgba(44, 24, 16, 0.04), 0 8px 24px rgba(44, 24, 16, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 /* Dark utility surface — CTAs, key controls */
@@ -368,7 +371,12 @@ li {
 /* ─── Scroll anchor offset ──────────────────────────────────────── */
 /* Prevents fixed header from covering anchor targets */
 section[id] {
-  scroll-margin-top: 72px;
+  scroll-margin-top: 80px;
+}
+
+/* Case study pages — offset content below the fixed nav */
+.case-study-content {
+  padding-top: 64px;
 }
 
 /* ─── Focus states ──────────────────────────────────────────────── */
@@ -412,14 +420,20 @@ button:focus-visible {
 
 /* ─── Bento cards ──────────────────────────────────────────────── */
 .bento-card {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(255, 255, 255, 0.52) 100%
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 24px;
   box-shadow:
-    0 2px 8px rgba(44, 24, 16, 0.04),
-    0 8px 32px rgba(44, 24, 16, 0.06);
+    0 1px 2px rgba(44, 24, 16, 0.04),
+    0 8px 32px rgba(44, 24, 16, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
   transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1);
   cursor: none;
@@ -431,7 +445,8 @@ button:focus-visible {
   transform: translateY(-4px);
   box-shadow:
     0 8px 24px rgba(44, 24, 16, 0.08),
-    0 24px 56px rgba(44, 24, 16, 0.1);
+    0 24px 56px rgba(44, 24, 16, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 /* ─── Carousel ──────────────────────────────────────────────────── */
