@@ -523,6 +523,15 @@ button:focus-visible {
   }
 }
 
+@keyframes vinyl-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* ─── Dashboard zone layout ──────────────────────────────────── */
 /* On large screens, dashboard content shifts right to make room
    for the fixed WorkSidebar on the left. */

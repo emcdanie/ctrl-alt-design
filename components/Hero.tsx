@@ -173,40 +173,26 @@ export default function Hero() {
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: "8px",
+              gap: "10px",
               fontFamily: "var(--font-body)",
-              fontSize: "14px",
+              fontSize: "15px",
               fontWeight: 500,
               borderRadius: "999px",
-              padding: "14px 32px",
+              padding: "16px 36px",
               textDecoration: "none",
               transition: "opacity 200ms ease, transform 200ms ease",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.opacity = "0.85";
-              e.currentTarget.style.transform = "translateY(-1px)";
+              e.currentTarget.style.transform = "translateY(-2px)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.opacity = "1";
               e.currentTarget.style.transform = "translateY(0)";
             }}
           >
-            View my work
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              style={{ marginTop: "1px" }}
-            >
-              <path
-                d="M8 3v10M4 9l4 4 4-4"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            Come see what I&apos;ve been building
+            <span style={{ fontSize: "18px", lineHeight: 1 }}>→</span>
           </a>
         </div>
       </div>
