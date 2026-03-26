@@ -24,36 +24,52 @@ export default function Home() {
     <main className="bg-[var(--color-page)] text-[#1A1A1A] min-h-screen overflow-x-hidden">
       <CustomCursor />
       <OverlayNav />
-      <WorkSidebar />
 
-      {/* 1 — Hero */}
+      {/* ═══════════════════════════════════════════════════════════════
+          PART 1 — Editorial Landing (full viewport)
+          Big typography, staggered entrance, editorial feel.
+          ═══════════════════════════════════════════════════════════════ */}
       <Hero />
-      <Carousel />
-      <MetricsStrip />
 
-      {/* 2 — Case Studies */}
-      <CaseStudyGrid />
+      {/* ═══════════════════════════════════════════════════════════════
+          PART 2 — Dashboard (scrolled into via "View my work")
+          Carousel bridges the two worlds, then dashboard content begins.
+          WorkSidebar appears once you enter this zone.
+          ═══════════════════════════════════════════════════════════════ */}
+      <div className="dashboard-zone">
+        <Carousel />
+        <MetricsStrip />
 
-      {/* 2b — Process (anchors footer #process link) */}
-      <ProcessSection />
+        {/* Sidebar nav — appears when dashboard zone is in view */}
+        <WorkSidebar />
 
-      {/* 3 — Guardian Highlight */}
-      <VideoWalkthrough />
+        {/* Dashboard content — offset for sidebar on large screens */}
+        <div className="dashboard-content">
+          {/* Case Studies */}
+          <CaseStudyGrid />
 
-      {/* 4 — CTRL_ALT_DESIGN Experiments */}
-      <CtrlAltDesignSection />
+          {/* Process */}
+          <ProcessSection />
 
-      {/* 5 — About */}
-      <AboutSection />
+          {/* Guardian Highlight */}
+          <VideoWalkthrough />
 
-      {/* 6 — Experience */}
-      <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
+          {/* CTRL_ALT_DESIGN Experiments */}
+          <CtrlAltDesignSection />
 
-      {/* 7 — Learning & Inspiration */}
-      <LearningSection />
+          {/* About */}
+          <AboutSection />
 
-      {/* 8 — Contact */}
-      <ContactSection />
+          {/* Experience */}
+          <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
+
+          {/* Learning & Inspiration */}
+          <LearningSection />
+
+          {/* Contact */}
+          <ContactSection />
+        </div>
+      </div>
 
       <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
     </main>
