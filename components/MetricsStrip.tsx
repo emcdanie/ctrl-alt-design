@@ -63,11 +63,11 @@ function MetricCard({ item }: { item: MetricItem }) {
         textAlign: "center",
       }}
     >
-      {/* Large stat */}
+      {/* Stat */}
       <div
         style={{
           fontFamily: "var(--font-display)",
-          fontSize: "52px",
+          fontSize: "36px",
           fontWeight: 700,
           color: "#1A1A1A",
           lineHeight: 1,
@@ -79,7 +79,7 @@ function MetricCard({ item }: { item: MetricItem }) {
       {/* Label */}
       <div
         className="eyebrow"
-        style={{ marginTop: "8px", marginBottom: expanded ? "16px" : "0" }}
+        style={{ marginTop: "6px", fontSize: "9px", marginBottom: expanded ? "12px" : "0" }}
       >
         {item.label}
       </div>
@@ -134,7 +134,7 @@ function MetricCard({ item }: { item: MetricItem }) {
 
 export default function MetricsStrip() {
   return (
-    <section style={{ padding: "48px 24px" }}>
+    <section style={{ padding: "32px 24px" }}>
       <div
         className="metrics-strip mx-auto max-w-7xl"
         style={{ display: "flex", gap: "8px" }}

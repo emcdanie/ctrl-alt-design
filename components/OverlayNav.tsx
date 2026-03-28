@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { social } from "@/lib/social";
 
@@ -15,8 +15,6 @@ export default function OverlayNav() {
   const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
   const [triggerHovered, setTriggerHovered] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -34,21 +32,7 @@ export default function OverlayNav() {
     };
   }, [open]);
 
-  /* Hide nav on scroll down, show on scroll up */
-  useEffect(() => {
-    const onScroll = () => {
-      if (open) return; // don't hide while menu is open
-      const y = window.scrollY;
-      if (y > 80 && y > lastScrollY.current) {
-        setHidden(true);
-      } else {
-        setHidden(false);
-      }
-      lastScrollY.current = y;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [open]);
+  /* Nav stays visible at all times — no hide-on-scroll */
 
   const handleNavClick = (href: string) => {
     setOpen(false);
@@ -64,8 +48,7 @@ export default function OverlayNav() {
   return (
     <>
       <div
-        className="pointer-events-none fixed inset-x-0 top-0 z-[9995] transition-transform duration-300 ease-in-out"
-        style={{ transform: hidden ? "translateY(-100%)" : "translateY(0)" }}
+        className="pointer-events-none fixed inset-x-0 top-0 z-[9995]"
       >
         <div className="flex w-full items-center justify-between border-b border-white/60 bg-[#F6F1E8]/72 px-4 py-3 shadow-[0_18px_48px_rgba(26,24,20,0.08)] backdrop-blur-xl sm:px-6"
           style={{ borderTop: "1px solid rgba(255,255,255,0.7)" }}

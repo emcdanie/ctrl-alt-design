@@ -60,7 +60,6 @@ export interface CaseStudyShellProps {
  *   Single column: back → hero → title/meta → content
  */
 export default function CaseStudyShell({
-  backHref = "/#work",
   eyebrow,
   title,
   summary,
@@ -80,12 +79,6 @@ export default function CaseStudyShell({
           ════════════════════════════════════════════════════════════ */}
       <aside className="cs-shell__left">
         <div className="cs-shell__sticky">
-          {/* Back button */}
-          <Link href={backHref} className="cs-shell__back">
-            <span aria-hidden="true">←</span>
-            <span>Back to work</span>
-          </Link>
-
           {/* Eyebrow */}
           <p className="cs-shell__eyebrow">{eyebrow}</p>
 
@@ -172,14 +165,6 @@ export default function CaseStudyShell({
           RIGHT — Scrolling content column
           ════════════════════════════════════════════════════════════ */}
       <div className="cs-shell__right">
-        {/* Mobile-only back link */}
-        <div className="cs-shell__mobile-back">
-          <Link href={backHref} className="cs-shell__back">
-            <span aria-hidden="true">←</span>
-            <span>Back to work</span>
-          </Link>
-        </div>
-
         {/* Hero media */}
         <div className="cs-shell__hero">
           <div className="cs-shell__hero-frame">

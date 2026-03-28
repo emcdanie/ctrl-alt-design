@@ -189,14 +189,14 @@ export default function PrototypeEmbed({
           </div>
         )}
 
-        {/* Iframe */}
+        {/* Iframe — responsive: uses aspect-ratio on small screens, fixed height on desktop */}
         <iframe
           src={src}
           title={title}
           onLoad={() => setLoaded(true)}
+          className="prototype-iframe"
           style={{
             width: "100%",
-            minHeight: height,
             height: height,
             border: "none",
             display: "block",

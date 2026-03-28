@@ -13,6 +13,7 @@ import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
 import AboutSection from "@/components/AboutSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import LearningSection from "@/components/LearningSection";
+import TestimonialSection from "@/components/TestimonialSection";
 import ContactSection from "@/components/ContactSection";
 import ResumeModal from "@/components/ResumeModal";
 import WorkSidebar from "@/components/WorkSidebar";
@@ -55,6 +56,7 @@ export default function Home() {
           <CaseStudyGrid />
           <MetricsStrip />
           <ProcessSection />
+          <TestimonialSection />
           <VideoWalkthrough />
           <CtrlAltDesignSection />
           <AboutSection />

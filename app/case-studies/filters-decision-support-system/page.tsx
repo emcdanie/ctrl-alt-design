@@ -49,9 +49,9 @@ export default function FiltersDecisionSupportPage() {
           </Body>
         </Section>
 
-        {/* ── Prototype — primary artifact ── */}
+        {/* ── Prototype Journey ── */}
         <section style={{ marginBottom: "72px" }}>
-          <p className="section-label" style={{ marginBottom: "12px" }}>TRY THE PROTOTYPE</p>
+          <p className="section-label" style={{ marginBottom: "12px" }}>PROTOTYPE JOURNEY</p>
           <h2
             style={{
               fontFamily: "var(--font-display)",
@@ -62,7 +62,7 @@ export default function FiltersDecisionSupportPage() {
               marginBottom: "12px",
             }}
           >
-            Explore the Decision System
+            From Exploration to Decision System
           </h2>
           <p
             style={{
@@ -71,14 +71,121 @@ export default function FiltersDecisionSupportPage() {
               color: "var(--color-muted)",
               lineHeight: 1.7,
               maxWidth: "600px",
-              marginBottom: "24px",
+              marginBottom: "32px",
             }}
           >
-            This interactive prototype explores a different model of travel search — one where search,
-            filtering, and results operate as a single decision system. Experiment with filters,
-            compare options, and observe how the interface communicates trade-offs between price,
-            duration, and travel policy constraints.
+            These prototypes trace the evolution of the search and filtering system — from early
+            pattern exploration through to the final integrated decision flow.
           </p>
+
+          {/* Step 1 */}
+          <div style={{ marginBottom: "28px" }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: "10px", marginBottom: "6px" }}>
+              <span
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  color: "var(--color-muted)",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                }}
+              >
+                01 · Early Exploration
+              </span>
+            </div>
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "14px",
+                color: "var(--color-muted)",
+                lineHeight: 1.6,
+                marginBottom: "12px",
+                maxWidth: "520px",
+              }}
+            >
+              Initial search interface patterns — testing how users approach travel queries and
+              understanding baseline interaction models.
+            </p>
+            <a
+              href="/demos/bizaway-search.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="demo-link"
+            >
+              <span style={{ fontSize: "14px" }}>↗</span> BizAway Search Prototype
+            </a>
+          </div>
+
+          {/* Step 2 */}
+          <div style={{ marginBottom: "28px" }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: "10px", marginBottom: "6px" }}>
+              <span
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  color: "var(--color-muted)",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                }}
+              >
+                02 · Filter Interaction Experiments
+              </span>
+            </div>
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "14px",
+                color: "var(--color-muted)",
+                lineHeight: 1.6,
+                marginBottom: "12px",
+                maxWidth: "520px",
+              }}
+            >
+              Exploring faceted filtering mechanics — how constraints combine, how state is
+              communicated, and how users recover from over-filtering.
+            </p>
+            <a
+              href="/demos/bizaway-filter-demo.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="demo-link"
+            >
+              <span style={{ fontSize: "14px" }}>↗</span> BizAway Filter Demo
+            </a>
+          </div>
+
+          {/* Step 3 — Final prototype */}
+          <div style={{ marginBottom: "24px" }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: "10px", marginBottom: "6px" }}>
+              <span
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  color: "var(--color-muted)",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                }}
+              >
+                03 · Final Decision System
+              </span>
+            </div>
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "14px",
+                color: "var(--color-muted)",
+                lineHeight: 1.6,
+                marginBottom: "16px",
+                maxWidth: "520px",
+              }}
+            >
+              The complete integrated prototype — search, filtering, comparison, and booking
+              operating as one unified decision flow with AI-assisted search and policy awareness.
+            </p>
+          </div>
           <PrototypeEmbed
             src="/demos/ctrl-travel-v2.html"
             title="ctrl+travel — Search & Filtering System"
