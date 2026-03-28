@@ -8,7 +8,7 @@ const study: CaseStudy = {
   scope: "Search UX, filtering systems, results architecture, constraint messaging",
   timeline: "Embedded / ongoing",
   liveUrl: "",
-  heroImage: "/images/thumbnails/FINVIZ.png",
+  heroImage: "/images/carosel/CTRL_ATL_TRAVEL.jpeg",
   heroVideo: undefined,
   metrics: {
     role: "Lead Product Designer",

@@ -1313,8 +1313,12 @@ function toggleAnns(){
 }
 
 // ══ SPEECH (Nova's voice) ══
+// Speech is gated: only activates after the user has interacted with the page
+let _userInteracted=false;
+document.addEventListener('click',()=>{_userInteracted=true;},{once:true});
+document.addEventListener('keydown',()=>{_userInteracted=true;},{once:true});
 function speak(text){
-  if(!window.speechSynthesis||expertMode) return;
+  if(!window.speechSynthesis||expertMode||!_userInteracted) return;
   stopSpeak();
   const u=new SpeechSynthesisUtterance(text);
   u.rate=0.92;u.pitch=1.1;
@@ -1348,7 +1352,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderR();addPins();renderBot();
   // Initialise planner with first message
   addPlannerMsg('nova',PLANNER_FLOW[0].msg,PLANNER_FLOW[0].choices);
-  setTimeout(()=>{if(showAnns) tAnn('search');},1500);
+  // Removed: auto-start annotation on load — annotations now require user interaction
   setTimeout(()=>showOb(),900);
 });
 </script>
