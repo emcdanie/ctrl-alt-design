@@ -3,31 +3,21 @@
 import FadeIn from "@/components/FadeIn";
 import VinylPlayer from "@/components/VinylPlayer";
 
-const cards = [
+const podcasts = [
   {
-    title: "Podcasts",
-    description:
-      "I regularly listen to design and product podcasts exploring systems thinking, AI tools, and modern product workflows.",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        {/* Headphones */}
-        <path d="M5 16v-4a9 9 0 0118 0v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <rect x="3" y="15" width="5" height="7" rx="2.5" stroke="currentColor" strokeWidth="1.5" />
-        <rect x="20" y="15" width="5" height="7" rx="2.5" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-    ),
+    title: "Honest UX Talks",
+    by: "Wix Studio",
+    href: "https://podcasts.apple.com/es/podcast/honest-ux-talks-by-wix-studio/id1547832809?l=en-GB",
   },
   {
-    title: "Conferences & Learning",
-    description:
-      "Continuous learning is central to my practice. I regularly attend design workshops and conferences including Smashing Magazine's Smart Interface Design Patterns and Into Design Systems.",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        {/* Open book */}
-        <path d="M14 6C14 6 9 4 4 6v16c5-2 10 0 10 0s5-2 10 0V6c-5-2-10 0-10 0z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        <line x1="14" y1="6" x2="14" y2="22" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-    ),
+    title: "Patterns Podcast",
+    by: "Design Patterns",
+    href: "https://podcasts.apple.com/es/podcast/patterns-podcast/id1491843793?l=en-GB",
+  },
+  {
+    title: "On Purpose",
+    by: "Jay Shetty",
+    href: "https://podcasts.apple.com/es/podcast/on-purpose-with-jay-shetty/id1450994021?l=en-GB",
   },
 ];
 
@@ -43,49 +33,94 @@ export default function LearningSection() {
           </div>
         </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {/* Vinyl player replaces the old static music card */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {/* Vinyl player */}
           <FadeIn delay={0}>
             <VinylPlayer />
           </FadeIn>
 
-          {cards.map((card, i) => (
-            <FadeIn key={card.title} delay={(i + 1) * 80}>
+          {/* Podcasts */}
+          <FadeIn delay={80}>
+            <div
+              className="card-elevated card-interactive"
+              style={{
+                padding: "24px",
+                height: "100%",
+                cursor: "default",
+              }}
+            >
               <div
-                className="card-elevated card-interactive"
                 style={{
-                  padding: "24px",
-                  height: "100%",
-                  cursor: "default",
+                  width: "48px",
+                  height: "48px",
+                  borderRadius: "12px",
+                  background: "rgba(26,24,20,0.06)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: "16px",
+                  color: "#1A1814",
                 }}
               >
-                {/* Icon */}
-                <div
-                  style={{
-                    width: "48px",
-                    height: "48px",
-                    borderRadius: "12px",
-                    background: "rgba(26,24,20,0.06)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: "16px",
-                    color: "#1A1814",
-                  }}
-                >
-                  {card.icon}
-                </div>
-
-                {/* Title */}
-                <h3 className="heading-item mb-2.5">{card.title}</h3>
-
-                {/* Description */}
-                <p className="body-base m-0" style={{ color: "var(--color-muted)" }}>
-                  {card.description}
-                </p>
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                  <path d="M5 16v-4a9 9 0 0118 0v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <rect x="3" y="15" width="5" height="7" rx="2.5" stroke="currentColor" strokeWidth="1.5" />
+                  <rect x="20" y="15" width="5" height="7" rx="2.5" stroke="currentColor" strokeWidth="1.5" />
+                </svg>
               </div>
-            </FadeIn>
-          ))}
+
+              <h3 className="heading-item mb-2.5">Podcasts</h3>
+              <p className="body-base" style={{ color: "var(--color-muted)", marginBottom: "16px" }}>
+                Design thinking, systems, and personal growth — what I listen to between projects.
+              </p>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {podcasts.map((pod) => (
+                  <a
+                    key={pod.title}
+                    href={pod.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: "8px",
+                      padding: "10px 14px",
+                      borderRadius: "10px",
+                      background: "rgba(26,24,20,0.04)",
+                      textDecoration: "none",
+                      transition: "background 150ms",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(26,24,20,0.08)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(26,24,20,0.04)"; }}
+                  >
+                    <div>
+                      <p style={{
+                        fontFamily: "var(--font-display)",
+                        fontSize: "14px",
+                        fontWeight: 600,
+                        color: "var(--color-ink)",
+                        margin: 0,
+                        lineHeight: 1.3,
+                      }}>
+                        {pod.title}
+                      </p>
+                      <p style={{
+                        fontFamily: "var(--font-body)",
+                        fontSize: "11px",
+                        color: "var(--color-muted)",
+                        margin: "2px 0 0",
+                      }}>
+                        {pod.by}
+                      </p>
+                    </div>
+                    <span style={{ fontSize: "12px", color: "var(--color-muted)", flexShrink: 0 }}>↗</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
         </div>
 
       </div>
