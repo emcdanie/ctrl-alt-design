@@ -91,9 +91,24 @@ export default function GuardianPage() {
           </Body>
         </Section>
 
-        <Section eyebrow="PROTOTYPE" heading="Prototype and Feasibility">
+        <Section eyebrow="PROTOTYPE" heading="Prototype: AI UX Audit Tool">
           <Body>
-            To explore technical feasibility in parallel, the development team built a working prototype using AI-driven analysis, a bot interface connected to system data, and a lightweight monitoring layer. This demonstrated that the concept could integrate with existing Figma workflows rather than requiring designers to manage a separate tool.
+            To explore the concept further, I prototyped an interactive UX audit tool that demonstrates how Guardian could work in practice. The tool analyses a page and returns structured feedback across four dimensions: UX heuristics, design system compliance, accessibility, and product insight.
+          </Body>
+          <Body>
+            Each finding explains not just what the issue is, but why it matters — teaching design thinking at the moment of decision, not after the fact. Hovering a finding highlights the affected element in the page preview, connecting abstract feedback to concrete interface decisions.
+          </Body>
+          <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginTop: "24px", marginBottom: "24px", background: "#0F1117", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div style={{ position: "relative", aspectRatio: "16/10", width: "100%", minHeight: "480px" }}>
+              <iframe
+                src="/demos/guardian-audit-tool.html"
+                title="Guardian AI UX Audit Tool — Interactive Prototype"
+                style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none", borderRadius: "16px" }}
+              />
+            </div>
+          </div>
+          <Body>
+            The prototype demonstrates three things the hackathon concept set out to prove: real-time contextual guidance is architecturally feasible, design-to-code comparison can be surfaced meaningfully for designers, and governance doesn&apos;t require enforcement — making decisions visible and intentional is enough to change behaviour.
           </Body>
         </Section>
 
