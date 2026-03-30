@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guardian → Pattern Mentor — From Hackathon to Product</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap');
+
+  :root {
+    --cream: #F5F0E8;
+    --sand: #EBE5DA;
+    --warm-white: #FEFBF7;
+    --text: #1A1814;
+    --text-muted: #7A756C;
+    --accent: #65CCFF;
+    --accent-dark: #2A9FD4;
+    --teal: #0D9488;
+    --indigo: #6366F1;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 32px 40px;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 .accent { color: var(--accent-dark); }
+  .hero h1 .teal { color: var(--teal); }
+
+  .hero-desc {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-muted);
+    max-width: 640px;
+    margin: 0 auto 40px;
+  }
+
+  /* ── Timeline connector ── */
+  .timeline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    max-width: 700px;
+    margin: 0 auto 48px;
+    padding: 0 32px;
+  }
+
+  .timeline-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .timeline-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 3px solid;
+  }
+
+  .timeline-dot.hackathon { border-color: var(--teal); background: rgba(13, 148, 136, 0.15); }
+  .timeline-dot.evolved { border-color: var(--accent); background: rgba(101, 204, 255, 0.15); }
+
+  .timeline-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .timeline-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--teal), var(--accent));
+    margin: 0 -4px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .timeline-line::after {
+    content: '→';
+    position: absolute;
+    right: -14px;
+    top: -9px;
+    font-size: 16px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .timeline-sublabel {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* ── Cards ── */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 960px;
+    margin: 0 auto 64px;
+    padding: 0 32px;
+  }
+
+  @media (max-width: 700px) {
+    .cards { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--warm-white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(26,24,20,0.06), 0 1px 3px rgba(26,24,20,0.04);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(26,24,20,0.1), 0 2px 8px rgba(26,24,20,0.06);
+  }
+
+  .card-preview {
+    position: relative;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+  }
+
+  .card-preview iframe {
+    width: 200%;
+    height: 200%;
+    border: none;
+    transform: scale(0.5);
+    transform-origin: top left;
+    pointer-events: none;
+  }
+
+  .card-preview-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.04) 100%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .card:hover .card-preview-overlay { opacity: 1; }
+
+  .card-cta {
+    background: var(--warm-white);
+    border: 1.5px solid var(--sand);
+    border-radius: 100px;
+    padding: 10px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .card-cta:hover { border-color: var(--accent); color: var(--accent-dark); }
+
+  .card-body {
+    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-bottom: 12px;
+    width: fit-content;
+  }
+
+  .card-badge.hackathon {
+    background: rgba(13, 148, 136, 0.1);
+    color: var(--teal);
+  }
+
+  .card-badge.evolved {
+    background: rgba(101, 204, 255, 0.15);
+    color: var(--accent-dark);
+  }
+
+  .card-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .card-badge.hackathon .dot { background: var(--teal); }
+  .card-badge.evolved .dot { background: var(--accent); }
+
+  .card h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    flex: 1;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .card-tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: var(--sand);
+    color: var(--text-muted);
+  }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    margin-top: 16px;
+    padding: 8px 0;
+    border-top: 1px solid var(--sand);
+    transition: color 0.2s;
+  }
+
+  .card-link:hover { color: var(--accent-dark); }
+
+  /* ── Story section ── */
+  .story {
+    max-width: 640px;
+    margin: 0 auto 80px;
+    padding: 0 32px;
+  }
+
+  .story h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+
+  .story p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .story .highlight {
+    background: rgba(101, 204, 255, 0.12);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--accent-dark);
+    font-weight: 500;
+  }
+
+  /* ── Credit ── */
+  .credit {
+    text-align: center;
+    padding: 32px;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--sand);
+  }
+
+  .credit a {
+    color: var(--accent-dark);
+    text-decoration: none;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">Case Study · Prototype Evolution</div>
+  <h1>From <span class="teal">48-Hour Hackathon</span> to <span class="accent">Standalone Product</span></h1>
+  <p class="hero-desc">
+    Guardian started as a team concept at the Into Design Systems Hackathon.
+    Pattern Mentor is what happened when I kept building — taking the core idea further,
+    on my own, with AI as a creative partner.
+  </p>
+</div>
+
+<div class="timeline">
+  <div class="timeline-node">
+    <div class="timeline-dot hackathon"></div>
+    <div class="timeline-label">Hackathon</div>
+    <div class="timeline-sublabel">48 hours · Team of 8</div>
+  </div>
+  <div class="timeline-line"></div>
+  <div class="timeline-node">
+    <div class="timeline-dot evolved"></div>
+    <div class="timeline-label">Evolved</div>
+    <div class="timeline-sublabel">Solo · AI-assisted</div>
+  </div>
+</div>
+
+<div class="cards">
+
+  <!-- Guardian card -->
+  <div class="card">
+    <div class="card-preview">
+      <iframe src="/demos/guardian-audit-tool.html" loading="lazy" title="Guardian preview"></iframe>
+      <a href="/demos/guardian-audit-tool.html" target="_blank" class="card-preview-overlay">
+        <span class="card-cta">Open Demo →</span>
+      </a>
+    </div>
+    <div class="card-body">
+      <span class="card-badge hackathon"><span class="dot"></span> Hackathon Concept</span>
+      <h2>Guardian — AI UX Audit Tool</h2>
+      <p class="card-desc">
+        Built in 48 hours with a team of 8 at the Into Design Systems Hackathon.
+        A Figma-canvas prototype showing how an AI assistant could scan a design and surface
+        UX issues, system drift, and accessibility concerns — with real-time highlights
+        on the page being audited.
+      </p>
+      <div class="card-meta">
+        <span class="card-tag">Dark UI</span>
+        <span class="card-tag">Figma Canvas</span>
+        <span class="card-tag">7 Findings</span>
+        <span class="card-tag">Apply Fix</span>
+      </div>
+      <a href="/demos/guardian-audit-tool.html" target="_blank" class="card-link">
+        Try the prototype ↗
+      </a>
+    </div>
+  </div>
+
+  <!-- Pattern Mentor card -->
+  <div class="card">
+    <div class="card-preview">
+      <iframe src="/demos/pattern-mentor.html" loading="lazy" title="Pattern Mentor preview"></iframe>
+      <a href="/demos/pattern-mentor.html" target="_blank" class="card-preview-overlay">
+        <span class="card-cta">Open Demo →</span>
+      </a>
+    </div>
+    <div class="card-body">
+      <span class="card-badge evolved"><span class="dot"></span> Evolved Solo</span>
+      <h2>Pattern Mentor — Design Feedback Plugin</h2>
+      <p class="card-desc">
+        What Guardian became when I kept going. A cream-glass plugin concept that cites real
+        design patterns, lets you apply fixes inline and push decisions to documentation.
+        Includes a walkthrough mode, pattern library, and token comparison — built with
+        Claude as a creative partner.
+      </p>
+      <div class="card-meta">
+        <span class="card-tag">Cream Glass UI</span>
+        <span class="card-tag">Pattern Library</span>
+        <span class="card-tag">Walkthrough Mode</span>
+        <span class="card-tag">Token Audit</span>
+      </div>
+      <a href="/demos/pattern-mentor.html" target="_blank" class="card-link">
+        Try the prototype ↗
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<div class="story">
+  <h3>The story between the two</h3>
+  <p>
+    Guardian was born from a real frustration shared by eight designers and developers:
+    design systems break not because people don't care, but because
+    <span class="highlight">feedback arrives too late</span>.
+    We built a concept that intervenes at the moment of decision — not after handoff,
+    not at code review, but while you're still designing.
+  </p>
+  <p>
+    After the hackathon, I couldn't stop thinking about it. The concept was strong but
+    the prototype was rough — built under pressure, focused on demo not depth.
+    So I kept going. I rebuilt the interaction model, added real pattern citations
+    instead of generic warnings, gave it a visual language that matched my own portfolio,
+    and added the features I'd been sketching in my head:
+    <span class="highlight">apply fixes inline</span>,
+    <span class="highlight">push decisions to documentation</span>,
+    and a <span class="highlight">browseable pattern library</span>
+    that teaches while it audits.
+  </p>
+  <p>
+    The result is two prototypes that tell the same story at different stages of maturity.
+    Guardian shows what's possible in 48 hours with the right team and a clear problem.
+    Pattern Mentor shows what happens when you keep going — when you treat a hackathon
+    not as an endpoint but as a starting line.
+  </p>
+</div>
+
+<div class="credit">
+  Concept &amp; prototypes by <a href="https://elleta.design">Elleta McDaniel</a> ·
+  Into Design Systems Hackathon 2026 ·
+  Built with <a href="https://claude.ai">Claude</a>
+</div>
+
+</body>
+</html>

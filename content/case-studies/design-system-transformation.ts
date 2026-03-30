@@ -67,7 +67,6 @@ const study: CaseStudy = {
   demoLinks: [
     { label: "ctrl+travel prototype", href: "/demos/ctrl-travel.html" },
     { label: "ctrl+travel v2", href: "/demos/ctrl-travel-v2.html" },
-    { label: "Guardian audit tool", href: "/demos/guardian-audit-tool.html" },
   ],
   description:
     "Rebuilding Design System Thinking in a Scaling SaaS Product",

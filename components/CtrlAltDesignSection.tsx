@@ -101,6 +101,24 @@ const prototypes: LabPrototype[] = [
     gradient: "linear-gradient(135deg, #1A0A2E 0%, #2D1650 50%, #1A0A2E 100%)",
     thumbnailSrc: "/images/thumbnails/BradFrostCommandCenter.png",
   },
+  {
+    title: "Guardian — AI UX Audit Tool",
+    subtitle: "Hackathon prototype: AI-assisted UX auditing on a Figma-style canvas — heuristic evaluation, drift detection, and accessibility checks with real-time highlights.",
+    category: "INTERACTIVE",
+    tags: ["AI UX", "Hackathon", "Governance"],
+    href: "/demos/guardian-audit-tool.html",
+    gradient: "linear-gradient(135deg, #0F1117 0%, #161822 50%, #0F1117 100%)",
+    thumbnailSrc: "/images/thumbnails/GuardianAuditTool.svg",
+  },
+  {
+    title: "Pattern Mentor — Design Feedback Plugin",
+    subtitle: "Evolved from Guardian: cream-glass plugin with pattern citations, inline fix application, documentation push, and a browseable pattern library.",
+    category: "INTERACTIVE",
+    tags: ["AI UX", "Design Patterns", "Plugin"],
+    href: "/demos/pattern-mentor.html",
+    gradient: "linear-gradient(135deg, #F5F0E8 0%, #E8E3DB 50%, #F5F0E8 100%)",
+    thumbnailSrc: "/images/thumbnails/PatternMentor.svg",
+  },
 ];
 
 function PrototypeCard({ prototype }: { prototype: LabPrototype }) {

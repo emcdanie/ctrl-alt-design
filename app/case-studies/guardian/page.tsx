@@ -91,12 +91,9 @@ export default function GuardianPage() {
           </Body>
         </Section>
 
-        <Section eyebrow="PROTOTYPE" heading="Prototype: AI UX Audit Tool">
+        <Section eyebrow="PROTOTYPE" heading="Hackathon Prototype: Guardian Audit Tool">
           <Body>
-            To explore the concept further, I prototyped an interactive UX audit tool that demonstrates how Guardian could work in practice. The tool analyses a page and returns structured feedback across four dimensions: UX heuristics, design system compliance, accessibility, and product insight.
-          </Body>
-          <Body>
-            Each finding explains not just what the issue is, but why it matters — teaching design thinking at the moment of decision, not after the fact. Hovering a finding highlights the affected element in the page preview, connecting abstract feedback to concrete interface decisions.
+            During the hackathon, I prototyped an interactive UX audit tool that demonstrates how Guardian could work in practice. Built in 48 hours, the tool analyses a page design and returns structured feedback across four dimensions: UX heuristics, design system compliance, accessibility, and product insight. Click the FigPal button (bottom-right) to open the audit panel, then hit &quot;Scan Page&quot; to see it in action.
           </Body>
           <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginTop: "24px", marginBottom: "24px", background: "#0F1117", border: "1px solid rgba(255,255,255,0.06)" }}>
             <div style={{ position: "relative", aspectRatio: "16/10", width: "100%", minHeight: "480px" }}>
@@ -107,8 +104,26 @@ export default function GuardianPage() {
               />
             </div>
           </div>
+        </Section>
+
+        <Section eyebrow="EVOLUTION" heading="What Came After: Pattern Mentor">
           <Body>
-            The prototype demonstrates three things the hackathon concept set out to prove: real-time contextual guidance is architecturally feasible, design-to-code comparison can be surfaced meaningfully for designers, and governance doesn&apos;t require enforcement — making decisions visible and intentional is enough to change behaviour.
+            After the hackathon, I kept building. The Guardian concept proved the idea was sound — but the prototype was rough, built under time pressure, focused on demo not depth. On my own, using Claude as a creative partner, I rebuilt the interaction model from scratch. Pattern Mentor is what Guardian became with more time: a cream-glass plugin concept that cites real design patterns, lets you apply fixes inline, push decisions directly to documentation, and browse a pattern library that teaches while it audits.
+          </Body>
+          <Body>
+            The walkthrough mode (use the arrows at the bottom) shows the full flow: empty state, scan, findings with highlights, pattern library, and token comparison. Each finding now includes an &quot;Apply fix&quot; button and an &quot;Add to docs&quot; button — features I sketched during the hackathon but didn&apos;t have time to build.
+          </Body>
+          <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginTop: "24px", marginBottom: "24px", background: "#F5F0E8", border: "1px solid rgba(0,0,0,0.06)" }}>
+            <div style={{ position: "relative", aspectRatio: "16/10", width: "100%", minHeight: "480px" }}>
+              <iframe
+                src="/demos/pattern-mentor.html"
+                title="Pattern Mentor — Evolved Design Feedback Plugin"
+                style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none", borderRadius: "16px" }}
+              />
+            </div>
+          </div>
+          <Body>
+            Together, the two prototypes tell the same story at different stages of maturity. Guardian shows what&apos;s possible in 48 hours with the right team and a clear problem. Pattern Mentor shows what happens when you keep going — when you treat a hackathon not as an endpoint but as a starting line.
           </Body>
         </Section>
 
