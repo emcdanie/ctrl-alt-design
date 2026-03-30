@@ -1059,11 +1059,11 @@
         title: 'Navigation Density Too High',
         severity: 'warning',
         category: 'UX Pattern',
-        description: 'The navigation bar contains 9 items. Research suggests 5-7 items is optimal for cognitive load.',
+        description: 'The navigation bar contains 9 items. Research suggests 5\u20137 items is optimal for cognitive load. This directly impacts the scaffolding decision\u2009\u2014\u2009task-driven workflows need clear entry points, not walls of options.',
         code: '<!-- Current: 9 items -->\n<nav>\n  <a>Flights</a>\n  <a>Hotels</a>\n  <!-- ... 7 more items ... -->\n</nav>',
-        pattern: 'Design Pattern: Progressive Disclosure',
-        fix: 'Consider grouping items under "Explore" and "Help" dropdowns. Move secondary items to footer.',
-        why: 'Users can process 5-7 primary options without cognitive overload. Beyond that, decision time increases exponentially.',
+        pattern: '\ud83d\udcda Friedman, \u201cDesign Patterns for AI\u201d \u2014 5.1 Scaffolding: Progressive Disclosure',
+        fix: 'Group items under \u201cExplore\u201d and \u201cHelp\u201d dropdowns. Move secondary items to footer. Consider a task-driven workflow that surfaces relevant nav based on the user\u2019s current intent.',
+        why: 'Friedman\u2019s scaffolding framework identifies task-driven workflows as the primary pattern for guiding users step-by-step. Overloaded navigation fights this by demanding upfront decisions before intent is clear.',
         highlight: { top: '0%', left: '0%', width: '100%', height: '48px' }
       },
       {
@@ -1071,11 +1071,11 @@
         title: 'Competing Primary CTAs',
         severity: 'critical',
         category: 'UX Pattern',
-        description: 'Both "Search Now" and "Learn More" buttons use primary styling, creating ambiguous hierarchy.',
+        description: 'Both \u201cSearch Now\u201d and \u201cLearn More\u201d use primary styling, creating ambiguous hierarchy. In task-oriented interfaces, the primary action should map directly to the user\u2019s core task.',
         code: '<button class="btn-primary">Search Now</button>\n<button class="btn-secondary">\n  Learn More\n</button>',
-        pattern: 'Design Pattern: Primary Action Hierarchy',
-        fix: 'Make "Search Now" the primary button (brighter, bolder). Style "Learn More" as secondary.',
-        why: 'Users need clear guidance on the intended next step. Multiple primaries cause hesitation and reduced conversion.',
+        pattern: '\ud83d\udcda Friedman, \u201cDesign Patterns for AI\u201d \u2014 5.1 Task-Oriented Interfaces: Center Stage Layout',
+        fix: 'Make \u201cSearch Now\u201d the sole primary button. Style \u201cLearn More\u201d as secondary (ghost/outline). The center-stage pattern places the core action prominently \u2014 competing primaries break that focus.',
+        why: 'The Task-Oriented Interface framework shows that center-stage layouts succeed when there is one clear primary action. Multiple primaries create decision hesitation and reduce conversion by up to 30%.',
         highlight: { top: '22%', left: '10%', width: '80%', height: '20px' }
       },
       {
@@ -1083,11 +1083,11 @@
         title: 'Button Spacing Token Drift',
         severity: 'warning',
         category: 'System Drift',
-        description: 'Button padding uses 14px, but design system token specifies 16px.',
-        code: '.btn {\n  padding: 14px 16px; /* Expected: 16px */\n}',
-        pattern: 'Design Pattern: Spacing Scale Consistency',
-        fix: 'Update button padding to 16px to match the spacing token scale.',
-        why: 'Consistent spacing builds visual coherence and makes scaling designs easier across breakpoints.',
+        description: 'Button padding uses 14px, but design system token specifies 16px. Detected drift from --spacing-md token.',
+        code: '.btn {\n  padding: 14px 16px; /* Expected: 16px */\n  /* Token: --spacing-md: 16px */\n}',
+        pattern: '\ud83d\udcda Friedman, \u201cDesign Patterns for AI\u201d \u2014 5.2 Interaction Design: Consistent Interaction Surfaces',
+        fix: 'Update button padding to use the --spacing-md token (16px). Consistent spacing across interaction surfaces ensures predictable touch targets and visual coherence.',
+        why: 'Friedman emphasises that new interaction surfaces need consistency to build user trust. Token drift compounds silently \u2014 one 2px deviation becomes ten, and the system loses coherence without anyone noticing.',
         highlight: null
       },
       {
@@ -1095,23 +1095,23 @@
         title: 'Missing Semantic Landmark',
         severity: 'info',
         category: 'Accessibility',
-        description: 'Hero section lacks landmark tags for screen reader navigation.',
-        code: '<!-- Current -->\n<div class="hero">\n\n<!-- Recommended -->\n<section role="banner" aria-label="Hero">',
-        pattern: 'Design Pattern: Semantic Structure',
-        fix: 'Wrap hero in <section> or add role="banner" for assistive tech.',
-        why: 'Screen reader users rely on landmarks to navigate. Without them, they must read linearly.',
+        description: 'Hero section lacks landmark tags for screen reader navigation. This blocks assistive technology from building a navigable page structure.',
+        code: '<!-- Current -->\n<div class="hero">\n\n<!-- Recommended -->\n<section role="banner"\n  aria-label="Search flights and hotels">',
+        pattern: '\ud83d\udcda Friedman, \u201cDesign Patterns for AI\u201d \u2014 5.7 Accessibility: Semantic Structure & Landmarks',
+        fix: 'Wrap hero in <section> with role="banner" and a descriptive aria-label. Every major content region should be a navigable landmark.',
+        why: 'The accessibility patterns framework stresses that screen reader users rely on landmarks as their primary navigation. Without them, users must read linearly through content \u2014 the equivalent of removing your nav bar for sighted users.',
         highlight: { top: '48px', left: '0%', width: '100%', height: '120px' }
       },
       {
-        id: 'form-validation',
-        title: 'Form Missing Inline Validation',
+        id: 'inline-overlay',
+        title: 'Missing Contextual AI Feedback',
         severity: 'warning',
-        category: 'UX Pattern',
-        description: 'No inline validation feedback on form fields during input.',
-        code: '<input type="email" \n  aria-describedby="email-error" />\n<!-- Show error on blur -->',
-        pattern: 'Design Pattern: Real-time Feedback',
-        fix: 'Add inline error states (red border, icon, message below field).',
-        why: 'Users discover errors faster with real-time feedback, reducing frustration and support tickets.',
+        category: 'AI UX Pattern',
+        description: 'Search form provides no inline validation or AI-assisted guidance during input. Users type destinations without feedback on availability, pricing signals, or suggestions.',
+        code: '<input type="text"\n  placeholder="Where to?"\n  aria-describedby="destination-help" />\n<!-- Add: inline overlay with suggestions -->',
+        pattern: '\ud83d\udcda Friedman, \u201cDesign Patterns for AI\u201d \u2014 5.1 Scaffolding: Inline Overlay Pattern',
+        fix: 'Add an inline overlay that provides real-time destination suggestions, price indicators, and availability signals as the user types. This is the inline overlay scaffolding pattern \u2014 AI assistance that appears contextually without leaving the current flow.',
+        why: 'The inline overlay pattern keeps AI assistance within the user\u2019s workflow rather than requiring them to context-switch. Friedman positions this as a key alternative to chatbot widgets for task-focused interactions.',
         highlight: null
       },
       {
@@ -1119,35 +1119,65 @@
         title: 'Contrast Ratio Failure',
         severity: 'critical',
         category: 'Accessibility',
-        description: 'Secondary button text (gray on light bg) fails WCAG AA contrast.',
-        code: '.btn-secondary {\n  color: #999; /* Ratio: 3.8:1 */\n  /* Required: 4.5:1 */\n}',
-        pattern: 'Design Pattern: Color Contrast',
-        fix: 'Use #666 or darker for secondary button text.',
-        why: 'Low contrast makes text unreadable for people with visual impairments affecting 253M+ worldwide.',
+        description: 'Secondary button text (gray on light background) fails WCAG AA contrast requirements. Ratio: 3.8:1, minimum required: 4.5:1.',
+        code: '.btn-secondary {\n  color: #999; /* Ratio: 3.8:1 */\n  /* Required: \u2265 4.5:1 for AA */\n  /* Fix: color: #666; Ratio: 5.7:1 */\n}',
+        pattern: '\ud83d\udcda Friedman, \u201cDesign Patterns for AI\u201d \u2014 5.7 Accessibility: Color Contrast & Perceivability',
+        fix: 'Use #666 or darker for secondary button text. Ensure all interactive elements meet WCAG AA (4.5:1 for text, 3:1 for large text and UI components).',
+        why: 'Accessibility is not optional \u2014 low contrast affects 253M+ people with visual impairments worldwide. The accessibility patterns framework makes contrast a baseline requirement, not an enhancement.',
         highlight: { top: '22%', left: '50%', width: '35%', height: '20px' }
       }
     ];
 
     const patterns = [
       {
-        name: 'Primary Action Hierarchy',
-        desc: 'Clear visual distinction between primary and secondary actions guides users to the most important decision.'
+        name: 'Co-Pilot Pattern (Right Panel)',
+        desc: 'AI assistant embedded in a side panel alongside the primary workspace. The user stays in control of the canvas while the co-pilot observes, suggests, and assists contextually.',
+        source: '5.1 Scaffolding \u2014 Co-pilots'
+      },
+      {
+        name: 'Inline Overlay',
+        desc: 'Contextual AI suggestions that appear directly within the user\u2019s workflow \u2014 tooltips, popovers, or inline cards that don\u2019t require leaving the current task.',
+        source: '5.1 Scaffolding \u2014 Task-Oriented Interfaces'
+      },
+      {
+        name: 'Center Stage Layout',
+        desc: 'Full-width, single-pane layout where AI is the primary experience (e.g. ChatGPT). Open-ended and freeform, but carries an articulation cost. Best for general-purpose creative and query agents.',
+        source: '5.1 Scaffolding \u2014 Center Stage AI'
+      },
+      {
+        name: 'Ambient AI Alerts',
+        desc: 'Non-blocking notifications that surface AI insights without interrupting the user\u2019s flow state. The system observes silently and only speaks when there is a genuine, high-confidence signal.',
+        source: '5.2 Interaction Design \u2014 Ambient Interactions'
+      },
+      {
+        name: 'Meet Users Where They Are',
+        desc: 'The user\u2019s environment is filled with other apps, noise, multi-tasking, and stress. AI products must embed into existing workflows rather than demanding context switches.',
+        source: '4.0 Usability of AI \u2014 Environmental Context'
+      },
+      {
+        name: 'Multi-Tabs Experience',
+        desc: 'Users research across multiple browser tabs, picking what\u2019s relevant and saving it elsewhere. AI tools should support this parallel workflow rather than demanding exclusive focus.',
+        source: '4.0 Usability of AI \u2014 Multi-Tabs'
+      },
+      {
+        name: 'Task-Driven Workflow',
+        desc: 'Step-by-step guided flows that break complex tasks into manageable stages. AI scaffolds the process rather than presenting all options at once. Reduces cognitive load and articulation cost.',
+        source: '5.1 Scaffolding \u2014 Task-Driven Workflows'
       },
       {
         name: 'Progressive Disclosure',
-        desc: 'Hide advanced options by default, reveal on demand. Reduces cognitive load in initial interface.'
+        desc: 'Hide advanced options by default, reveal on demand. In AI interfaces, this means showing simple outputs first with the ability to drill into reasoning, alternatives, and confidence levels.',
+        source: '5.1 Scaffolding \u2014 Progressive Disclosure'
       },
       {
-        name: 'Real-time Feedback',
-        desc: 'Validate user input and provide immediate, inline responses. Users fix errors before submission.'
+        name: 'Actions Over Models',
+        desc: 'Users struggle understanding differences between AI models. Instead of choosing models, allow them to select actions \u2014 the system picks the right model behind the scenes.',
+        source: '4.0 Usability of AI \u2014 Choosing AI Models'
       },
       {
-        name: 'Semantic Structure',
-        desc: 'Use HTML landmarks and ARIA attributes to create logical document outline for all users.'
-      },
-      {
-        name: 'Spacing Scale',
-        desc: 'Use a consistent multiplier (8px base) for all spacing to create visual coherence and predictability.'
+        name: 'Semantic Structure & Landmarks',
+        desc: 'Screen reader users rely on landmarks as their primary navigation method. Every major content region must be a navigable landmark with descriptive labels.',
+        source: '5.7 Accessibility \u2014 Perceivability'
       }
     ];
 
@@ -1216,10 +1246,11 @@
 
     function renderPatterns() {
       const grid = document.getElementById('patternsGrid');
-      grid.innerHTML = patterns.map(p => `
+      grid.innerHTML = `<div style="font-size:10px;color:var(--text-secondary);margin-bottom:8px;font-weight:500;letter-spacing:0.03em;">Patterns referenced from Friedman, <em>Design Patterns for AI Interfaces</em> (2026)</div>` + patterns.map(p => `
         <div class="pattern-item">
           <div class="pattern-name">${p.name}</div>
           <div class="pattern-desc">${p.desc}</div>
+          ${p.source ? `<div style="font-size:9px;color:var(--accent);margin-top:6px;font-weight:500;">\ud83d\udcda ${p.source}</div>` : ''}
         </div>
       `).join('');
     }

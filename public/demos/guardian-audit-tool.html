@@ -929,10 +929,10 @@ const findings = [
   {
     severity: "warning", category: "ux", catLabel: "UX Heuristic",
     title: "Navigation density exceeds cognitive threshold",
-    body: "Primary navigation contains 9 items. Research shows 5–7 items is optimal for horizontal nav — beyond that, scanning time increases and errors rise, especially on mobile.",
-    code: '<span class="key">nav.primary</span> <span class="cmt">// children count</span>\n<span class="key">detected</span>:    <span class="val">9 items</span>\n<span class="key">recommended</span>: <span class="val">5–7 items</span>',
-    suggestion: '<strong>Fix:</strong> Group Reports, Settings, Admin, and Help under a secondary overflow menu. Keep primary nav to 5–6 core items.',
-    why: 'Users scan navigation in under 2 seconds. Past 7 items, selection time rises sharply — Hick's Law in action. On mobile this becomes a critical bottleneck.',
+    body: "Primary navigation contains 9 items. Research shows 5\u20137 items is optimal for horizontal nav. This violates the progressive disclosure principle \u2014 task-driven workflows should surface options based on intent, not dump everything upfront.",
+    code: '<span class="key">nav.primary</span> <span class="cmt">// children count</span>\n<span class="key">detected</span>:    <span class="val">9 items</span>\n<span class="key">recommended</span>: <span class="val">5\u20137 items</span>\n\n<span class="cmt">// Ref: Friedman, AI Scaffolding \u2014 Progressive Disclosure</span>',
+    suggestion: '<strong>Fix:</strong> Group Reports, Settings, Admin, and Help under a secondary overflow menu. Keep primary nav to 5\u20136 core items. Consider a task-driven scaffolding approach.',
+    why: 'Users scan navigation in under 2 seconds. Past 7 items, selection time rises sharply \u2014 Hick\u2019s Law in action. The scaffolding principle says: reveal complexity gradually, not all at once.',
     highlight: "hl-nav",
     fixLabel: "Group into overflow menu",
     docLabel: "Nav density guideline"
@@ -940,10 +940,10 @@ const findings = [
   {
     severity: "error", category: "product", catLabel: "Product",
     title: "Competing primary CTAs create decision hesitation",
-    body: "Two primary-styled buttons appear side by side in the hero. Both use strong visual weight. Users hesitate when two actions compete for attention equally.",
-    code: '<span class="key">button.primary</span>  "Search Flights"  <span class="cmt">// bg: #1A1A1A</span>\n<span class="key">button.primary</span>  "Search Hotels"   <span class="cmt">// bg: #2563EB</span>\n\n<span class="cmt">// Two competing primaries — expected: 1 primary + 1 secondary</span>',
-    suggestion: '<strong>Fix:</strong> Make one unified "Search" CTA as primary. Demote the other to secondary, or use a transport-type toggle (Flights | Hotels | Rail) before a single search action.',
-    why: 'When two buttons compete equally, click-through drops on both. A single clear CTA increases conversion by 18–25% in booking flows.',
+    body: "Two primary-styled buttons appear side by side in the hero. The center-stage layout pattern demands a single clear primary action \u2014 competing primaries break task focus and increase decision time.",
+    code: '<span class="key">button.primary</span>  "Search Flights"  <span class="cmt">// bg: #1A1A1A</span>\n<span class="key">button.primary</span>  "Search Hotels"   <span class="cmt">// bg: #2563EB</span>\n\n<span class="cmt">// Ref: Friedman, Task-Oriented Interfaces \u2014 Center Stage</span>',
+    suggestion: '<strong>Fix:</strong> Make one unified \u201cSearch\u201d CTA as primary. Demote the other to secondary, or use a transport-type toggle (Flights | Hotels | Rail) before a single search action.',
+    why: 'The center-stage layout succeeds when there is one clear primary action. When two buttons compete equally, click-through drops on both. A single clear CTA increases conversion by 18\u201325%.',
     highlight: "hl-ctas",
     fixLabel: "Unify into single CTA",
     docLabel: "CTA hierarchy pattern"
@@ -951,10 +951,10 @@ const findings = [
   {
     severity: "drift", category: "system", catLabel: "System Drift",
     title: "Button padding deviates from spacing token",
-    body: "Hero CTA buttons use 10px vertical / 24px horizontal padding instead of the design system's --spacing-sm (12px) and --spacing-lg (28px) tokens.",
-    code: '<span class="key">Design tokens</span>\n  <span class="key">--spacing-sm</span>  = <span class="val">12px</span>\n  <span class="key">--spacing-lg</span>  = <span class="val">28px</span>\n\n<span class="key">Detected</span>\n  <span class="key">padding</span>       = <span class="val">10px 24px</span>\n  <span class="cmt">// Drift: -2px vertical, -4px horizontal</span>',
+    body: "Hero CTA buttons use 10px vertical / 24px horizontal padding instead of the design system\u2019s --spacing-sm (12px) and --spacing-lg (28px) tokens. This is interaction surface drift.",
+    code: '<span class="key">Design tokens</span>\n  <span class="key">--spacing-sm</span>  = <span class="val">12px</span>\n  <span class="key">--spacing-lg</span>  = <span class="val">28px</span>\n\n<span class="key">Detected</span>\n  <span class="key">padding</span>       = <span class="val">10px 24px</span>\n  <span class="cmt">// Ref: Friedman, Interaction Design \u2014 Consistent Surfaces</span>',
     suggestion: '<strong>Fix:</strong> Replace hard-coded padding with <code>var(--spacing-sm) var(--spacing-lg)</code>. Run a token linter to catch similar drift elsewhere.',
-    why: 'Small token deviations compound silently. When 10 components each drift a few pixels, the visual language fragments and the system loses credibility.',
+    why: 'Consistent interaction surfaces build user trust. Small token deviations compound silently \u2014 when 10 components each drift a few pixels, the visual language fragments.',
     highlight: "hl-btns",
     fixLabel: "Apply spacing tokens",
     docLabel: "Token compliance rule"
@@ -962,10 +962,10 @@ const findings = [
   {
     severity: "info", category: "a11y", catLabel: "Accessibility",
     title: "Hero section lacks semantic landmark",
-    body: "The hero content area is a generic <div> rather than a <section> with an aria-label. Screen readers can't identify this as the primary content region.",
-    code: '<span class="key">Current</span>:  <span class="val">&lt;div class="hero"&gt;</span>\n<span class="key">Expected</span>: <span class="val">&lt;section role="region" aria-label="Search"&gt;</span>',
+    body: "The hero content area is a generic &lt;div&gt; rather than a &lt;section&gt; with an aria-label. Screen readers can\u2019t identify this as the primary content region \u2014 violating the semantic structure pattern.",
+    code: '<span class="key">Current</span>:  <span class="val">&lt;div class="hero"&gt;</span>\n<span class="key">Expected</span>: <span class="val">&lt;section role="region" aria-label="Search"&gt;</span>\n\n<span class="cmt">// Ref: Friedman, Accessibility \u2014 Landmarks &amp; Perceivability</span>',
     suggestion: '<strong>Fix:</strong> Wrap the hero in a <code>&lt;section&gt;</code> with <code>aria-label="Trip search"</code>. This takes 30 seconds and benefits all screen reader users.',
-    why: 'Screen reader users navigate by landmarks. Without them, the page is a single undifferentiated block — like a book without chapter headings.',
+    why: 'Screen reader users navigate by landmarks. Without them, the page is a single undifferentiated block \u2014 like a book without chapter headings.',
     highlight: "hl-hero",
     fixLabel: "Add landmark role",
     docLabel: "Landmark requirements"
@@ -973,18 +973,18 @@ const findings = [
   {
     severity: "warning", category: "ux", catLabel: "UX Heuristic",
     title: "No inline validation on search form",
-    body: "The search form allows submission without validating required fields (destination, dates). Users only discover errors after submitting — a violation of error prevention heuristics.",
-    code: '<span class="key">form.search</span>\n  <span class="key">inline-validation</span>: <span class="val">none</span>\n  <span class="key">required-fields</span>:  <span class="val">3 (destination, depart, return)</span>\n  <span class="key">validation-trigger</span>: <span class="val">on-submit only</span>',
-    suggestion: '<strong>Fix:</strong> Add inline validation on blur for required fields. Show clear, persistent error states before the user hits submit.',
-    why: 'Post-submission errors increase form abandonment by ~18%. In booking flows, this directly impacts conversion and customer frustration.',
+    body: "The search form allows submission without validating required fields. Users only discover errors after submitting. The inline overlay pattern suggests real-time contextual feedback within the user\u2019s workflow.",
+    code: '<span class="key">form.search</span>\n  <span class="key">inline-validation</span>: <span class="val">none</span>\n  <span class="key">required-fields</span>:  <span class="val">3 (destination, depart, return)</span>\n\n<span class="cmt">// Ref: Friedman, Scaffolding \u2014 Inline Overlay Pattern</span>',
+    suggestion: '<strong>Fix:</strong> Add inline validation on blur for required fields. Show clear, persistent error states before the user hits submit. Consider AI-assisted suggestions as the user types.',
+    why: 'Post-submission errors increase form abandonment by ~18%. The inline overlay pattern keeps feedback within the workflow rather than forcing context switches.',
     highlight: "hl-form",
     fixLabel: "Add inline validation",
     docLabel: "Form validation pattern"
   },
   {
     severity: "drift", category: "system", catLabel: "System Drift",
-    title: "Card border-radius doesn't match token",
-    body: "The three dashboard cards use 10px border-radius. The design system specifies --radius-card: 12px. This looks close but breaks visual consistency.",
+    title: "Card border-radius doesn\u2019t match token",
+    body: "The three dashboard cards use 10px border-radius. The design system specifies --radius-card: 12px. This looks close but breaks visual consistency across interaction surfaces.",
     code: '<span class="key">Design token</span>\n  <span class="key">--radius-card</span>  = <span class="val">12px</span>\n\n<span class="key">Detected</span>\n  <span class="key">border-radius</span> = <span class="val">10px</span> <span class="cmt">// 3 card instances</span>',
     suggestion: '<strong>Fix:</strong> Replace hard-coded radius with <code>var(--radius-card)</code>. Consider adding a Stylelint rule to flag hard-coded radii.',
     why: 'Inconsistent radii make the UI feel unpolished and erode trust in the design system as the source of truth.',
@@ -995,8 +995,8 @@ const findings = [
   {
     severity: "error", category: "a11y", catLabel: "Accessibility",
     title: "Secondary button fails WCAG AA contrast",
-    body: "The 'View Policy' button text (#666 on white border) has a contrast ratio of 3.6:1 — below the 4.5:1 WCAG AA minimum for normal text.",
-    code: '<span class="key">Element</span>:    <span class="val">button.secondary "View Policy"</span>\n<span class="key">Foreground</span>: <span class="val">#666666</span>\n<span class="key">Background</span>: <span class="val">#FFFFFF</span>\n<span class="key">Ratio</span>:      <span class="val">3.6:1</span> <span class="cmt">// Min required: 4.5:1</span>',
+    body: "The \u2018View Policy\u2019 button text (#666 on white border) has a contrast ratio of 3.6:1 \u2014 below the 4.5:1 WCAG AA minimum. Accessibility is a baseline requirement, not an enhancement.",
+    code: '<span class="key">Element</span>:    <span class="val">button.secondary "View Policy"</span>\n<span class="key">Foreground</span>: <span class="val">#666666</span>\n<span class="key">Background</span>: <span class="val">#FFFFFF</span>\n<span class="key">Ratio</span>:      <span class="val">3.6:1</span> <span class="cmt">// Min: 4.5:1 (AA)</span>\n\n<span class="cmt">// Ref: Friedman, Accessibility \u2014 Perceivability</span>',
     suggestion: '<strong>Fix:</strong> Darken secondary button text to at least #595959 (7:1) or use the system --color-text-muted token which is already compliant.',
     why: '1 in 12 men and 1 in 200 women have colour vision deficiency. Failing AA contrast makes this button invisible to many users, and creates legal liability.',
     highlight: "hl-contrast",
