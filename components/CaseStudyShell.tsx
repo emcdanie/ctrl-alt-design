@@ -15,7 +15,7 @@ interface DemoLink {
 }
 
 interface ShellMedia {
-  type: "video" | "image";
+  type: "video" | "image" | "embed";
   src: string;
   alt?: string;
 }
@@ -182,6 +182,20 @@ export default function CaseStudyShell({
                 </video>
                 <div className="cs-shell__hero-vignette" />
               </>
+            ) : media.type === "embed" ? (
+              <iframe
+                src={media.src}
+                title={media.alt ?? title}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  border: "none",
+                  borderRadius: "inherit",
+                }}
+              />
             ) : (
               <>
                 <Image

@@ -28,6 +28,10 @@ export interface NarrativeSection {
   label?: string;
   heading: string;
   paragraphs: string[];
+  /** Optional embedded visual (HTML file) shown after this section */
+  embedSrc?: string;
+  embedAlt?: string;
+  embedAspect?: string;
 }
 
 export interface CaseStudy {
@@ -40,6 +44,8 @@ export interface CaseStudy {
   timeline: string;
   liveUrl?: string;
   heroImage: string;
+  /** Optional separate thumbnail for the listing grid (use when heroImage is an HTML embed) */
+  thumbnailImage?: string;
   heroVideo?: string;
   metrics?: CaseStudyMetrics;
   overview: {

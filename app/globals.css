@@ -671,6 +671,23 @@ button:focus-visible {
 .dashboard-content {
 }
 
+/* ─── Mobile: case study embed & section spacing ──────────────── */
+@media (max-width: 768px) {
+  .cs-section {
+    margin-bottom: 48px;
+  }
+
+  .cs-shell__right {
+    padding-top: clamp(48px, 8vh, 80px);
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .cs-shell__hero-frame {
+    border-radius: 12px;
+  }
+}
+
 /* ─── Prototype embed responsive ───────────────────────────────── */
 @media (max-width: 768px) {
   .prototype-iframe {
@@ -878,7 +895,7 @@ button:focus-visible {
 .cs-shell__right {
   flex: 1;
   min-width: 0;
-  padding-top: 72px;
+  padding-top: clamp(80px, 10vh, 120px);
 }
 
 /* Mobile back */
@@ -943,14 +960,27 @@ button:focus-visible {
   margin-bottom: 40px;
 }
 
-/* Content — NO max-width cap so visuals fill the column */
+/* Content — readable column width for text, visuals can break out */
 .cs-shell__content {
-  /* images and media fill the right column naturally */
+  max-width: 720px;
 }
 
 /* Section spacing inside case study pages */
 .cs-section {
-  margin-bottom: 56px;
+  margin-bottom: 80px;
+}
+
+/* Embedded visuals inside case study content */
+.cs-shell__content iframe,
+.cs-shell__content .prototype-iframe {
+  margin-top: 48px;
+  margin-bottom: 72px;
+}
+
+.cs-shell__content figure,
+.cs-shell__content img {
+  margin-top: 40px;
+  margin-bottom: 64px;
 }
 
 /* Navigation */

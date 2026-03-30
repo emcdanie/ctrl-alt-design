@@ -19,7 +19,7 @@ const study: CaseStudy = {
   overview: {
     headline:
       "Rethinking how filtering interfaces shape user cognition — and why fixing them requires system thinking, not just visual cleanup.",
-    body: "Most products treat filters as a feature. A set of checkboxes, a dropdown, maybe a few chips along the top of a results list. What they rarely are, by design, is a decision-support system — a structured way to help users narrow a large problem space toward something meaningful. This case study explores the intersection of filtering interface design, design system thinking, and cognitive load. It draws on a complex SaaS platform context where multiple booking flows and internal tooling were evolving in parallel, and where filtering had accumulated into something fragmented and inconsistent across the product.",
+    body: "Nine filter controls, all at equal visual weight, with no sense of which ones matter for the decision at hand. On a B2B travel platform, filtering had been designed as data exposure, not decision support. This case study explores what happened when we reframed filtering as a cognitive scaffolding problem — and built a system architecture to match.",
   },
   images: [],
   problem: {
@@ -75,10 +75,9 @@ const study: CaseStudy = {
       label: "CONTEXT",
       heading: "Project Context",
       paragraphs: [
-        "Most products treat filters as a feature. A set of checkboxes, a dropdown, maybe a few chips along the top of a results list. Something to hand off once the interaction model is roughly in place.",
-        "What they rarely are, by design, is a decision-support system — a structured way to help users narrow a large problem space toward something meaningful. That distinction matters more than it might appear.",
-        "This case study explores the intersection of filtering interface design, design system thinking, and cognitive load. It draws on a complex SaaS platform context where multiple booking flows and internal tooling were evolving in parallel, and where filtering had accumulated into something fragmented and inconsistent across the product.",
-        "The business goals were straightforward: help users find what they need faster, reduce support overhead from user confusion, and create a filtering pattern that could scale as the product grew. What became clear, quickly, was that the visible interface problems were symptoms of a deeper structural issue.",
+        "A travel manager in Munich needs a flight to London, arriving before noon, refundable, under the company policy cap. She opens the booking platform and sees: price range, outbound departure, return departure, number of stops, airline, layover duration, baggage, refundability, booking class — nine controls, all presented at once, all at equal visual weight, with no indication of which ones matter most for her decision. She is not filtering a dataset. She is trying to make a decision. But the interface doesn't know the difference.",
+        "That gap — between what filtering interfaces expose and what users actually need to decide — was the starting point for this work. On a B2B travel platform managing flights, hotels, rail, and car rentals across multiple booking verticals, filtering had accumulated into something fragmented and inconsistent. Each vertical had its own approach to search, its own filter controls, its own assumptions about user intent.",
+        "The business goals were clear: help users find what they need faster, reduce support overhead from confusion, and create a filtering pattern that could scale. But what became clear quickly was that the visible interface problems were symptoms of a deeper structural issue. Fixing how the filters looked wouldn't fix how they worked — because nobody had defined what filtering should actually do across the product.",
       ],
     },
     {
@@ -98,6 +97,9 @@ const study: CaseStudy = {
         "Consider a user who wants to find a reasonably priced flight arriving before noon — a straightforward goal. The filter panel exposes simultaneously: price range, outbound departure time, return departure time, number of stops, airline, layover duration, baggage allowance, refundability, and booking class. None of these filters are wrong to offer. But presenting all of them at equal visual weight, with no grouping and no indication of which are most relevant, forces the user to understand the filter panel before they can narrow the problem. The interface has more capability than it has clarity — and capability without clarity is just a different kind of friction.",
         "The deeper issue wasn't visual inconsistency. It was that no shared mental model existed for what filtering should do — which meant every flow had developed its own answer to the same question. Without that shared model, fixing the surface wouldn't fix the experience.",
       ],
+      embedSrc: "/demos/case-study-visuals/filters-before.html",
+      embedAlt: "Before: nine filter controls at equal visual weight — capability without clarity",
+      embedAspect: "3/2",
     },
     {
       label: "WHAT FILTERING DOES",
@@ -145,6 +147,9 @@ const study: CaseStudy = {
         "The strategy had four parts: establish core filtering primitives that could work across all flows without modification; define interaction patterns, not just visual styles; reduce the number of valid variations to a set flexible enough to handle real edge cases without requiring new components; and align every design decision with how engineering would actually implement and reuse the system.",
         "Less pixel perfection. More decision clarity. The goal was a filtering system that a designer or engineer could reach into and find exactly what they needed — already made, already documented, already tested.",
       ],
+      embedSrc: "/demos/case-study-visuals/filters-after.html",
+      embedAlt: "After: progressive disclosure — three high-priority filters visible, rest accessible via More Filters",
+      embedAspect: "3/2",
     },
     {
       label: "SYSTEM DESIGN",

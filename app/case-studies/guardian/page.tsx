@@ -21,13 +21,13 @@ export default function GuardianPage() {
 
         <Section eyebrow="OVERVIEW" heading="Project Overview">
           <Body>
-            Design systems are meant to create consistency and speed across products. But as teams grow and products evolve, maintaining alignment becomes increasingly difficult. Components are modified. Tokens are overridden. Patterns are recreated instead of reused. And by the time anyone notices, the cost of reversing the drift is already significant.
+            A designer is working under deadline. She needs a card component with a slightly different corner radius for a new feature. She duplicates the existing card, changes the radius, and ships it. Three sprints later, the product has two card components. Then three. Then a developer asks in Slack: &quot;which card is the canonical one?&quot; Nobody answers, because nobody knows. The design system didn&apos;t break. It just quietly stopped being the source of truth — and nobody found out until a code review caught the divergence six weeks too late.
           </Body>
           <Body>
-            During the Into Design Systems Hackathon (2026), sponsored by Figma, a team of eight designers and developers came together around a problem they had all lived personally: design system interpretation happens in isolation, and the consequences only surface at the moments — handoff, review, production — when change is hardest.
+            During the Into Design Systems Hackathon (2026), sponsored by Figma, eight of us came together around that exact problem — one we had all lived. Design system interpretation happens in isolation. The consequences only surface at handoff, review, or production — the moments when change is hardest and most expensive.
           </Body>
           <Body>
-            The question the project set out to answer was not &quot;how do we document better?&quot; It was: what if the design system could be present at the moment decisions are actually made? This became Guardian — an AI-assisted concept designed to detect drift, surface contextual guidance, and help teams make confident system decisions without leaving their workflow.
+            The question wasn&apos;t &quot;how do we document better?&quot; It was: what if the design system could be present at the moment decisions are actually made — not after? That became Guardian: an AI-assisted concept that detects drift, surfaces contextual guidance, and helps teams make confident system decisions without leaving their workflow.
           </Body>
         </Section>
 

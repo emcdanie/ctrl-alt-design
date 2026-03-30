@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System - Button Component</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background-color: #FAFAF8;
+            color: #2C2C2C;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 240px;
+            background-color: #F5F5F3;
+            border-right: 1px solid #E8E8E6;
+            padding: 32px 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            margin-bottom: 28px;
+        }
+
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #8B8B87;
+            margin-bottom: 12px;
+        }
+
+        .sidebar-item {
+            font-size: 14px;
+            padding: 8px 12px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #5A5A57;
+        }
+
+        .sidebar-item:hover {
+            background-color: #EFEFED;
+            color: #2C2C2C;
+        }
+
+        .sidebar-item.active {
+            background-color: #0D9488;
+            color: #FAFAF8;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 48px;
+            overflow-y: auto;
+        }
+
+        .header {
+            margin-bottom: 48px;
+            border-bottom: 1px solid #E8E8E6;
+            padding-bottom: 32px;
+        }
+
+        .header-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #2C2C2C;
+        }
+
+        .header-description {
+            font-size: 15px;
+            color: #6B6B67;
+        }
+
+        .metadata {
+            display: flex;
+            gap: 32px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .metadata-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .metadata-label {
+            color: #8B8B87;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .metadata-value {
+            color: #2C2C2C;
+            font-weight: 500;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #2C2C2C;
+            border-bottom: 2px solid #0D9488;
+            padding-bottom: 12px;
+            display: inline-block;
+        }
+
+        /* Variants Grid */
+        .variants-container {
+            display: grid;
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        .variant-row {
+            border: 1px solid #E8E8E6;
+            border-radius: 8px;
+            padding: 24px;
+            background-color: #FFFFFF;
+        }
+
+        .variant-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0D9488;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        .variant-sizes {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .size-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .size-label {
+            font-size: 12px;
+            color: #8B8B87;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Buttons */
+        .btn {
+            font-family: inherit;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-md {
+            padding: 10px 16px;
+            font-size: 14px;
+        }
+
+        .btn-lg {
+            padding: 14px 24px;
+            font-size: 16px;
+        }
+
+        /* Primary */
+        .btn-primary {
+            background-color: #0D9488;
+            color: #FAFAF8;
+        }
+
+        .btn-primary:hover {
+            background-color: #0A7A6E;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:active {
+            background-color: #086860;
+        }
+
+        /* Secondary */
+        .btn-secondary {
+            background-color: #E8E8E6;
+            color: #2C2C2C;
+            border: 1px solid #D4D4D0;
+        }
+
+        .btn-secondary:hover {
+            background-color: #D9D9D6;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary:active {
+            background-color: #C5C5C0;
+        }
+
+        /* Ghost */
+        .btn-ghost {
+            background-color: transparent;
+            color: #0D9488;
+            border: 1px solid #0D9488;
+        }
+
+        .btn-ghost:hover {
+            background-color: #F0FFFE;
+            transform: translateY(-2px);
+        }
+
+        .btn-ghost:active {
+            background-color: #E0FFFE;
+        }
+
+        /* Destructive */
+        .btn-destructive {
+            background-color: #EF4444;
+            color: #FAFAF8;
+        }
+
+        .btn-destructive:hover {
+            background-color: #DC2626;
+            transform: translateY(-2px);
+        }
+
+        .btn-destructive:active {
+            background-color: #B91C1C;
+        }
+
+        /* Token Chain */
+        .tokens-section {
+            background-color: #FFFFFF;
+            border: 1px solid #E8E8E6;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+
+        .token-chain {
+            display: grid;
+            gap: 16px;
+        }
+
+        .token-level {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 16px;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #F5F5F3;
+        }
+
+        .token-level:last-child {
+            border-bottom: none;
+        }
+
+        .token-type {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #0D9488;
+            letter-spacing: 0.5px;
+        }
+
+        .token-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .token-name {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2C2C2C;
+        }
+
+        .token-value {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            color: #6B6B67;
+        }
+
+        .token-swatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            border: 1px solid #D4D4D0;
+            flex-shrink: 0;
+        }
+
+        /* Usage Guidance */
+        .usage-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            background-color: #FFFFFF;
+            border: 1px solid #E8E8E6;
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .usage-column {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .usage-heading {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px 16px;
+            border-radius: 4px;
+        }
+
+        .usage-do {
+            background-color: #F0FFFE;
+            color: #0D9488;
+        }
+
+        .usage-dont {
+            background-color: #FEF2F2;
+            color: #DC2626;
+        }
+
+        .usage-item {
+            display: flex;
+            gap: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .usage-icon {
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .usage-text {
+            color: #6B6B67;
+        }
+
+        /* Footer Badge */
+        .concept-badge {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: rgba(13, 148, 136, 0.1);
+            border: 1px solid rgba(13, 148, 136, 0.3);
+            border-radius: 24px;
+            padding: 8px 16px;
+            font-size: 12px;
+            color: #0D9488;
+            font-weight: 600;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FAFAF8;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #D4D4D0;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #B8B8B3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Foundations</div>
+                <div class="sidebar-item">Colors</div>
+                <div class="sidebar-item">Typography</div>
+                <div class="sidebar-item">Spacing</div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Components</div>
+                <div class="sidebar-item active">Button</div>
+                <div class="sidebar-item">Input</div>
+                <div class="sidebar-item">Select</div>
+                <div class="sidebar-item">Chip</div>
+                <div class="sidebar-item">Modal</div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Patterns</div>
+                <div class="sidebar-item">Filtering</div>
+                <div class="sidebar-item">Forms</div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Header -->
+            <div class="header">
+                <h1 class="header-title">Button</h1>
+                <p class="header-description">Primary interactive element for user actions. Supports multiple variants and sizes.</p>
+                <div class="metadata">
+                    <div class="metadata-item">
+                        <span class="metadata-label">Status</span>
+                        <span class="metadata-value">Stable</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Version</span>
+                        <span class="metadata-value">2.1</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Last Updated</span>
+                        <span class="metadata-value">March 2025</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Variants Section -->
+            <div class="section">
+                <h2 class="section-title">Variants</h2>
+                <div class="variants-container">
+                    <!-- Primary -->
+                    <div class="variant-row">
+                        <div class="variant-label">Primary</div>
+                        <div class="variant-sizes">
+                            <div class="size-group">
+                                <span class="size-label">sm</span>
+                                <button class="btn btn-primary btn-sm">Button</button>
+                            </div>
+                            <div class="size-group">
+                                <span class="size-label">md</span>
+                                <button class="btn btn-primary btn-md">Button</button>
+                            </div>
+                            <div class="size-group">
+                                <span class="size-label">lg</span>
+                                <button class="btn btn-primary btn-lg">Button</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Secondary -->
+                    <div class="variant-row">
+                        <div class="variant-label">Secondary</div>
+                        <div class="variant-sizes">
+                            <div class="size-group">
+                                <span class="size-label">sm</span>
+                                <button class="btn btn-secondary btn-sm">Button</button>
+                            </div>
+                            <div class="size-group">
+                                <span class="size-label">md</span>
+                                <button class="btn btn-secondary btn-md">Button</button>
+                            </div>
+                            <div class="size-group">
+                                <span class="size-label">lg</span>
+                                <button class="btn btn-secondary btn-lg">Button</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ghost -->
+                    <div class="variant-row">
+                        <div class="variant-label">Ghost</div>
+                        <div class="variant-sizes">
+                            <div class="size-group">
+                                <span class="size-label">sm</span>
+                                <button class="btn btn-ghost btn-sm">Button</button>
+                            </div>
+                            <div class="size-group">
+                                <span class="size-label">md</span>
+                                <button class="btn btn-ghost btn-md">Button</button>
+                            </div>
+                            <div class="size-group">
+                                <span class="size-label">lg</span>
+                                <button class="btn btn-ghost btn-lg">Button</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Destructive -->
+                    <div class="variant-row">
+                        <div class="variant-label">Destructive</div>
+                        <div class="variant-sizes">
+                            <div class="size-group">
+                                <span class="size-label">sm</span>
+                                <button class="btn btn-destructive btn-sm">Button</button>
+                            </div>
+                            <div class="size-group">
+                                <span class="size-label">md</span>
+                                <button class="btn btn-destructive btn-md">Button</button>
+                            </div>
+                            <div class="size-group">
+                                <span class="size-label">lg</span>
+                                <button class="btn btn-destructive btn-lg">Button</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tokens Section -->
+            <div class="section">
+                <h2 class="section-title">Design Tokens</h2>
+                <div class="tokens-section">
+                    <div class="token-chain">
+                        <div class="token-level">
+                            <div class="token-type">Primitive</div>
+                            <div class="token-content">
+                                <span class="token-name">--color-teal-600</span>
+                                <span class="token-value">#0D9488</span>
+                                <div class="token-swatch" style="background-color: #0D9488;"></div>
+                            </div>
+                        </div>
+                        <div class="token-level">
+                            <div class="token-type">Semantic</div>
+                            <div class="token-content">
+                                <span class="token-name">--color-interactive-primary</span>
+                                <span class="token-value">var(--color-teal-600)</span>
+                                <div class="token-swatch" style="background-color: #0D9488;"></div>
+                            </div>
+                        </div>
+                        <div class="token-level">
+                            <div class="token-type">Component</div>
+                            <div class="token-content">
+                                <span class="token-name">--button-bg-primary</span>
+                                <span class="token-value">var(--color-interactive-primary)</span>
+                                <div class="token-swatch" style="background-color: #0D9488;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Usage Guidance -->
+            <div class="section">
+                <h2 class="section-title">Usage Guidance</h2>
+                <div class="usage-section">
+                    <div class="usage-column">
+                        <div class="usage-heading usage-do">✓ Do</div>
+                        <div class="usage-item">
+                            <span class="usage-icon">•</span>
+                            <span class="usage-text">Use Primary for the main action on a page</span>
+                        </div>
+                        <div class="usage-item">
+                            <span class="usage-icon">•</span>
+                            <span class="usage-text">Use Ghost for secondary navigation or filters</span>
+                        </div>
+                        <div class="usage-item">
+                            <span class="usage-icon">•</span>
+                            <span class="usage-text">Use Destructive for irreversible actions only</span>
+                        </div>
+                        <div class="usage-item">
+                            <span class="usage-icon">•</span>
+                            <span class="usage-text">Match button size to content hierarchy</span>
+                        </div>
+                    </div>
+                    <div class="usage-column">
+                        <div class="usage-heading usage-dont">✗ Don't</div>
+                        <div class="usage-item">
+                            <span class="usage-icon">•</span>
+                            <span class="usage-text">Mix multiple Primary buttons in one section</span>
+                        </div>
+                        <div class="usage-item">
+                            <span class="usage-icon">•</span>
+                            <span class="usage-text">Use arbitrary colors outside the token system</span>
+                        </div>
+                        <div class="usage-item">
+                            <span class="usage-icon">•</span>
+                            <span class="usage-text">Create new variants without documentation</span>
+                        </div>
+                        <div class="usage-item">
+                            <span class="usage-icon">•</span>
+                            <span class="usage-text">Override hover or active states</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Concept Badge -->
+    <div class="concept-badge">Recreated concept — illustrative example</div>
+</body>
+</html>

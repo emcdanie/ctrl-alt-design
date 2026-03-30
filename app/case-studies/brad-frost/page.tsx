@@ -21,13 +21,13 @@ export default function BradFrostPage() {
 
         <Section eyebrow="OVERVIEW" heading="Project Overview">
           <Body>
-            Most design system work starts in Figma. A designer builds a component library, documents the decisions, and then — sometimes — works with engineering to align implementation. The gap between design intent and code reality is treated as a translation problem: something to bridge after the fact.
+            I opened the Figma file and the code side by side. The button in Figma said &apos;Primary, Large.&apos; The button in Storybook said &apos;variant: action, size: lg.&apos; Same component. Different names. Different assumptions. And this was one of the simpler ones. Somewhere in the gap between those two descriptions, a year of quiet drift had accumulated — and nobody had noticed because the system still looked right, even though it no longer said the same thing in both places.
           </Body>
           <Body>
-            This project inverted that entirely. Working as part of Brad Frost&apos;s Maker Program, I joined a project where the code already existed. The challenge wasn&apos;t to design a system and hand it off — it was to understand an existing system deeply enough to contribute meaningfully at the component and token level, bring Figma into alignment with code reality, and use AI tooling to close the loop between the two.
+            This was Brad Frost&apos;s design system. The person who wrote Atomic Design. If alignment could drift here, in a system built on first principles by someone who literally invented the vocabulary — it could drift anywhere. That realisation reframed the entire project for me.
           </Body>
           <Body>
-            The result was a period of some of the most technically specific design system work I&apos;ve done: reverse-engineering token relationships, rebuilding Figma components to match Storybook stories, and using Claude&apos;s Model Context Protocol to surface system structure that would otherwise require hours of manual investigation.
+            Working as part of the Maker Program, the challenge wasn&apos;t to design a system and hand it off. It was to understand an existing, principled system deeply enough to contribute at the component and token level — to close the gap between Figma and code, and to explore whether AI tooling could make that kind of structural investigation fundamentally faster.
           </Body>
         </Section>
 

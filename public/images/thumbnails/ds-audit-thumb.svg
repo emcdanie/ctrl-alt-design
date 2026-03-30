@@ -1,0 +1,200 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 520" fill="none">
+  <rect width="840" height="520" rx="0" fill="#FAFAF8"/>
+
+  <!-- Issue tags row -->
+  <g font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="500" fill="#666">
+    <text x="40" y="44" fill="#EF4444" font-weight="700" font-size="13">&#x2715;</text>
+    <text x="56" y="44">Inconsistencies</text>
+    <text x="170" y="44" fill="#EF4444" font-weight="700" font-size="13">&#x2715;</text>
+    <text x="186" y="44">Quality</text>
+    <text x="250" y="44" fill="#EF4444" font-weight="700" font-size="13">&#x2715;</text>
+    <text x="266" y="44">Scalability</text>
+    <text x="350" y="44" fill="#EF4444" font-weight="700" font-size="13">&#x2715;</text>
+    <text x="366" y="44">Revisions</text>
+    <text x="445" y="44" fill="#EF4444" font-weight="700" font-size="13">&#x2715;</text>
+    <text x="461" y="44">Errors</text>
+    <text x="515" y="44" fill="#EF4444" font-weight="700" font-size="13">&#x2715;</text>
+    <text x="531" y="44">Alignment</text>
+    <text x="610" y="44" fill="#EF4444" font-weight="700" font-size="13">&#x2715;</text>
+    <text x="626" y="44">Mis-use</text>
+    <text x="695" y="44" fill="#EF4444" font-weight="700" font-size="13">&#x2715;</text>
+    <text x="711" y="44">Duplications</text>
+  </g>
+  <line x1="40" y1="58" x2="800" y2="58" stroke="#E8E4DD" stroke-width="1"/>
+
+  <!-- Card 1: Badge -->
+  <g>
+    <rect x="40" y="76" width="148" height="200" rx="8" fill="white" stroke="#E8E4DD"/>
+    <text x="54" y="100" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#1A1A1A">Badge</text>
+    <rect x="108" y="86" width="66" height="18" rx="3" fill="#FEF3C7"/>
+    <text x="114" y="99" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="700" fill="#D97706">IN PROGRESS</text>
+    <!-- Badge specimens -->
+    <rect x="54" y="116" width="40" height="16" rx="3" fill="#D1FAE5"/>
+    <rect x="98" y="116" width="40" height="16" rx="8" fill="#D1FAE5"/>
+    <rect x="142" y="116" width="32" height="16" rx="3" fill="#D1FAE5"/>
+    <rect x="54" y="136" width="40" height="16" rx="3" fill="#DBEAFE"/>
+    <rect x="98" y="136" width="40" height="16" rx="8" fill="#DBEAFE"/>
+    <rect x="142" y="136" width="32" height="16" rx="3" fill="#DBEAFE"/>
+    <rect x="54" y="156" width="40" height="16" rx="3" fill="#E0E7FF"/>
+    <rect x="98" y="156" width="40" height="16" rx="8" fill="#E0E7FF"/>
+    <rect x="142" y="156" width="32" height="16" rx="3" fill="#E0E7FF"/>
+    <rect x="54" y="176" width="40" height="16" rx="3" fill="#FEE2E2"/>
+    <rect x="98" y="176" width="40" height="16" rx="8" fill="#FEE2E2"/>
+    <rect x="142" y="176" width="32" height="16" rx="3" fill="#FEE2E2"/>
+    <rect x="54" y="196" width="40" height="16" rx="3" fill="#F3F4F6"/>
+    <rect x="98" y="196" width="40" height="16" rx="8" fill="#F3F4F6"/>
+    <rect x="142" y="196" width="32" height="16" rx="3" fill="#FEF3C7"/>
+    <!-- Annotation -->
+    <rect x="108" y="232" width="68" height="18" rx="3" fill="#FEF2F2" stroke="#FECACA"/>
+    <text x="116" y="244" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="700" fill="#EF4444">3 border radii</text>
+  </g>
+
+  <!-- Card 2: Chips -->
+  <g>
+    <rect x="200" y="76" width="148" height="200" rx="8" fill="white" stroke="#E8E4DD"/>
+    <text x="214" y="100" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#1A1A1A">Chips</text>
+    <rect x="280" y="86" width="54" height="18" rx="3" fill="#DBEAFE"/>
+    <text x="289" y="99" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="700" fill="#2563EB">REVIEW</text>
+    <!-- Chip rows -->
+    <rect x="214" y="116" width="48" height="18" rx="9" fill="white" stroke="#E5E7EB"/>
+    <rect x="266" y="116" width="48" height="18" rx="9" fill="white" stroke="#E5E7EB"/>
+    <rect x="214" y="138" width="48" height="18" rx="9" fill="#0D9488"/>
+    <rect x="266" y="138" width="48" height="18" rx="9" fill="#0D9488"/>
+    <rect x="214" y="160" width="48" height="18" rx="9" fill="white" stroke="#0D9488"/>
+    <rect x="266" y="160" width="48" height="18" rx="9" fill="white" stroke="#0D9488"/>
+    <rect x="214" y="182" width="36" height="18" rx="9" fill="#FEF3C7" stroke="#FCD34D"/>
+    <rect x="254" y="182" width="36" height="18" rx="9" fill="#DBEAFE" stroke="#93C5FD"/>
+    <rect x="294" y="182" width="36" height="18" rx="9" fill="#D1FAE5" stroke="#6EE7B7"/>
+    <!-- Annotation -->
+    <rect x="214" y="232" width="80" height="18" rx="3" fill="#FEF2F2" stroke="#FECACA"/>
+    <text x="220" y="244" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="700" fill="#EF4444">4 variants, no spec</text>
+  </g>
+
+  <!-- Card 3: Pills -->
+  <g>
+    <rect x="360" y="76" width="148" height="200" rx="8" fill="white" stroke="#E8E4DD"/>
+    <text x="374" y="100" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#1A1A1A">Pills</text>
+    <rect x="440" y="86" width="54" height="18" rx="3" fill="#F3F4F6"/>
+    <text x="453" y="99" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="700" fill="#6B7280">DRAFT</text>
+    <!-- Pill rows -->
+    <rect x="374" y="118" width="52" height="20" rx="10" fill="#1A1A1A"/>
+    <rect x="430" y="118" width="52" height="20" rx="10" fill="#F3F4F6"/>
+    <rect x="374" y="144" width="52" height="20" rx="4" fill="#E0E7FF"/>
+    <rect x="430" y="144" width="52" height="20" rx="4" fill="#F3F4F6"/>
+    <rect x="374" y="170" width="36" height="16" rx="8" fill="#F3F4F6"/>
+    <rect x="414" y="170" width="44" height="20" rx="10" fill="#F3F4F6"/>
+    <rect x="462" y="170" width="36" height="24" rx="12" fill="#F3F4F6"/>
+    <!-- Annotation -->
+    <rect x="374" y="232" width="68" height="18" rx="3" fill="#FEF2F2" stroke="#FECACA"/>
+    <text x="380" y="244" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="700" fill="#EF4444">3 size scales</text>
+  </g>
+
+  <!-- Card 4: Type Selector -->
+  <g>
+    <rect x="520" y="76" width="148" height="200" rx="8" fill="white" stroke="#E8E4DD"/>
+    <text x="534" y="100" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#1A1A1A">Type Selector</text>
+    <!-- Radio rows -->
+    <circle cx="542" cy="124" r="5" fill="none" stroke="#0D9488" stroke-width="2"/>
+    <circle cx="542" cy="124" r="2.5" fill="#0D9488"/>
+    <text x="554" y="128" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#374151">Round-trip</text>
+    <rect x="610" y="118" width="36" height="14" rx="2" fill="#F3F4F6"/>
+    <text x="614" y="128" font-family="Inter, system-ui, sans-serif" font-size="7" fill="#6B7280">One-way</text>
+
+    <circle cx="542" cy="148" r="5" fill="none" stroke="#D1D5DB" stroke-width="2"/>
+    <text x="554" y="152" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#374151">Round-trip</text>
+    <rect x="610" y="142" width="36" height="14" rx="2" fill="#F3F4F6"/>
+
+    <circle cx="542" cy="172" r="5" fill="none" stroke="#0D9488" stroke-width="2"/>
+    <circle cx="542" cy="172" r="2.5" fill="#0D9488"/>
+    <text x="554" y="176" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#374151">Round-trip</text>
+    <rect x="610" y="166" width="36" height="14" rx="2" fill="#F3F4F6"/>
+
+    <circle cx="542" cy="196" r="5" fill="none" stroke="#D1D5DB" stroke-width="2"/>
+    <text x="554" y="200" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#374151">Round-trip</text>
+    <rect x="610" y="190" width="48" height="14" rx="2" fill="#F3F4F6"/>
+
+    <circle cx="542" cy="220" r="5" fill="none" stroke="#0D9488" stroke-width="2"/>
+    <circle cx="542" cy="220" r="2.5" fill="#0D9488"/>
+    <text x="554" y="224" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#374151">Round-trip</text>
+    <rect x="610" y="214" width="36" height="14" rx="2" fill="#F3F4F6"/>
+    <!-- Annotation -->
+    <rect x="574" y="248" width="80" height="18" rx="3" fill="#FEF2F2" stroke="#FECACA"/>
+    <text x="582" y="260" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="700" fill="#EF4444">5 configurations</text>
+  </g>
+
+  <!-- Card 5: Segment Control -->
+  <g>
+    <rect x="680" y="76" width="148" height="200" rx="8" fill="white" stroke="#E8E4DD"/>
+    <text x="694" y="100" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#1A1A1A">Segments</text>
+    <!-- Segment rows -->
+    <rect x="694" y="114" width="120" height="22" rx="6" fill="#F3F4F6"/>
+    <rect x="696" y="116" width="32" height="18" rx="4" fill="white"/>
+    <rect x="694" y="142" width="120" height="22" rx="6" fill="#F3F4F6"/>
+    <rect x="726" y="144" width="32" height="18" rx="4" fill="white"/>
+    <rect x="694" y="170" width="120" height="22" rx="4" fill="#F3F4F6"/>
+    <rect x="696" y="172" width="32" height="18" rx="3" fill="white"/>
+    <rect x="694" y="198" width="120" height="22" rx="6" fill="#F3F4F6"/>
+    <rect x="696" y="200" width="32" height="18" rx="4" fill="white"/>
+    <!-- Annotation -->
+    <rect x="694" y="232" width="58" height="18" rx="3" fill="#FEF2F2" stroke="#FECACA"/>
+    <text x="700" y="244" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="700" fill="#EF4444">4 layouts</text>
+  </g>
+
+  <!-- Bottom row: Form + InputField -->
+  <g>
+    <rect x="40" y="296" width="260" height="200" rx="8" fill="white" stroke="#E8E4DD"/>
+    <text x="54" y="320" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" fill="#7C3AED">&#9670; _old_Users and roles / Edit Form</text>
+    <text x="54" y="342" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#1A1A1A">Edit a user</text>
+    <text x="54" y="356" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#9CA3AF">To edit a user, please fill the required inputs.</text>
+    <!-- Form fields -->
+    <text x="54" y="378" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="600" fill="#9CA3AF">FIRST NAME *</text>
+    <rect x="54" y="382" width="110" height="22" rx="4" fill="white" stroke="#D1D5DB"/>
+    <text x="62" y="396" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#374151">Jane</text>
+    <text x="174" y="378" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="600" fill="#9CA3AF">LAST NAME *</text>
+    <rect x="174" y="382" width="110" height="22" rx="4" fill="white" stroke="#D1D5DB"/>
+    <text x="182" y="396" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#374151">Doe</text>
+    <text x="54" y="418" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="600" fill="#9CA3AF">E-MAIL *</text>
+    <rect x="54" y="422" width="110" height="22" rx="4" fill="white" stroke="#D1D5DB"/>
+    <text x="62" y="436" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#374151">jane@company.com</text>
+    <text x="174" y="418" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="600" fill="#9CA3AF">ROLE</text>
+    <rect x="174" y="422" width="110" height="22" rx="4" fill="white" stroke="#D1D5DB"/>
+    <text x="182" y="436" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#374151">Superadmin</text>
+  </g>
+
+  <g>
+    <rect x="312" y="296" width="260" height="200" rx="8" fill="white" stroke="#E8E4DD"/>
+    <text x="326" y="320" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#1A1A1A">InputField</text>
+    <rect x="460" y="306" width="66" height="18" rx="3" fill="#FEF3C7"/>
+    <text x="466" y="319" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="700" fill="#D97706">IN PROGRESS</text>
+    <!-- Input specimens grid -->
+    <rect x="326" y="336" width="72" height="20" rx="4" fill="white" stroke="#D1D5DB"/>
+    <rect x="404" y="336" width="72" height="20" rx="4" fill="white" stroke="#0D9488"/>
+    <rect x="482" y="336" width="72" height="20" rx="4" fill="#F9FAFB" stroke="#D1D5DB"/>
+    <rect x="326" y="362" width="72" height="20" rx="4" fill="white" stroke="#EF4444"/>
+    <rect x="404" y="362" width="72" height="20" rx="4" fill="white" stroke="#D97706"/>
+    <rect x="482" y="362" width="72" height="20" rx="4" fill="#F9FAFB" stroke="#D1D5DB"/>
+    <rect x="326" y="392" width="72" height="20" rx="8" fill="white" stroke="#D1D5DB"/>
+    <rect x="404" y="392" width="72" height="20" rx="8" fill="white" stroke="#0D9488"/>
+    <rect x="482" y="392" width="72" height="20" rx="8" fill="white" stroke="#EF4444"/>
+    <!-- Annotation -->
+    <rect x="410" y="460" width="96" height="18" rx="3" fill="#FEF2F2" stroke="#FECACA"/>
+    <text x="416" y="472" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="700" fill="#EF4444">2 radii, 6 states</text>
+  </g>
+
+  <g>
+    <rect x="584" y="296" width="244" height="200" rx="8" fill="white" stroke="#E8E4DD"/>
+    <text x="598" y="320" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#1A1A1A">InputCombo</text>
+    <rect x="740" y="306" width="54" height="18" rx="3" fill="#F3F4F6"/>
+    <text x="753" y="319" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="700" fill="#6B7280">DRAFT</text>
+    <!-- Input combos -->
+    <text x="598" y="348" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="600" fill="#9CA3AF">DATE</text>
+    <rect x="598" y="352" width="120" height="22" rx="4" fill="white" stroke="#D1D5DB"/>
+    <text x="598" y="390" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="600" fill="#9CA3AF">DATE</text>
+    <rect x="598" y="394" width="120" height="22" rx="8" fill="white" stroke="#D1D5DB"/>
+    <text x="598" y="432" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="600" fill="#9CA3AF">DATE</text>
+    <rect x="598" y="436" width="120" height="22" rx="4" fill="white" stroke="#EF4444"/>
+    <!-- Annotation -->
+    <rect x="598" y="468" width="50" height="18" rx="3" fill="#FEF2F2" stroke="#FECACA"/>
+    <text x="604" y="480" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="700" fill="#EF4444">No spec</text>
+  </g>
+</svg>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component Audit — Identified Inconsistencies</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #FAFAF8;
+    padding: 48px 40px 40px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-header {
+    margin-bottom: 16px;
+  }
+
+  .hero-header h1 {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 700;
+    color: #1A1A1A;
+    line-height: 1.2;
+  }
+
+  .hero-header p {
+    font-size: 15px;
+    color: #6B6B6B;
+    margin-top: 6px;
+  }
+
+  /* Issue tags */
+  .issue-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #E8E4DD;
+    margin-bottom: 28px;
+  }
+
+  .issue-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+  }
+
+  .issue-tag .x {
+    color: #EF4444;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  /* Component cards — 3 cards, not 5 */
+  .cards-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    flex: 1;
+  }
+
+  @media (max-width: 600px) {
+    .cards-row { grid-template-columns: 1fr; }
+  }
+
+  .comp-card {
+    background: white;
+    border: 1px solid #E8E4DD;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid #F0EDE8;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+
+  .card-status {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .card-status.progress { background: #FEF3C7; color: #D97706; }
+  .card-status.review { background: #DBEAFE; color: #2563EB; }
+  .card-status.draft { background: #F3F4F6; color: #6B7280; }
+
+  .card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Annotation tag */
+  .annotation {
+    position: absolute;
+    font-size: 9px;
+    font-weight: 700;
+    color: #EF4444;
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  /* Badge specimens */
+  .badge-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 10px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .badge.confirmed { background: #D1FAE5; color: #065F46; }
+  .badge.in-progress { background: #DBEAFE; color: #1E40AF; }
+  .badge.complete { background: #E0E7FF; color: #3730A3; }
+  .badge.cancelled { background: #FEE2E2; color: #991B1B; }
+  .badge.voided { background: #F3F4F6; color: #374151; }
+  .badge.expired { background: #FEF3C7; color: #92400E; }
+
+  /* Chip specimens */
+  .chip-rows { display: flex; flex-direction: column; gap: 8px; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .chip {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 14px;
+    border: 1px solid #E5E7EB;
+    background: white;
+    color: #374151;
+  }
+
+  .chip.filled { background: #0D9488; color: white; border-color: #0D9488; }
+  .chip.outline { background: transparent; border-color: #0D9488; color: #0D9488; }
+  .chip.warn { background: #FEF3C7; border-color: #FCD34D; color: #92400E; }
+  .chip.info { background: #DBEAFE; border-color: #93C5FD; color: #1E40AF; }
+  .chip.success { background: #D1FAE5; border-color: #6EE7B7; color: #065F46; }
+
+  /* Segment control */
+  .segment-box {
+    display: flex;
+    background: #F3F4F6;
+    border-radius: 10px;
+    padding: 4px;
+    gap: 3px;
+  }
+
+  .seg {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 7px 12px;
+    border-radius: 7px;
+    color: #6B7280;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .seg.active {
+    background: white;
+    color: #1A1A1A;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .seg-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero-header">
+  <h1>Identified Inconsistencies in Components</h1>
+  <p>Audit findings across the existing component library</p>
+</div>
+
+<div class="issue-tags">
+  <span class="issue-tag"><span class="x">&#10005;</span> Inconsistencies</span>
+  <span class="issue-tag"><span class="x">&#10005;</span> Quality</span>
+  <span class="issue-tag"><span class="x">&#10005;</span> Scalability</span>
+  <span class="issue-tag"><span class="x">&#10005;</span> Revisions</span>
+  <span class="issue-tag"><span class="x">&#10005;</span> Errors</span>
+  <span class="issue-tag"><span class="x">&#10005;</span> Alignment</span>
+  <span class="issue-tag"><span class="x">&#10005;</span> Mis-use</span>
+  <span class="issue-tag"><span class="x">&#10005;</span> Duplications</span>
+</div>
+
+<div class="cards-row">
+
+  <!-- Badge -->
+  <div class="comp-card">
+    <div class="card-head">
+      <span class="card-title">Badge</span>
+      <span class="card-status progress">In Progress</span>
+    </div>
+    <div class="card-body">
+      <div class="badge-grid">
+        <span class="badge confirmed" style="border-radius:4px">Confirmed</span>
+        <span class="badge confirmed" style="border-radius:14px">Confirmed</span>
+        <span class="badge confirmed" style="border-radius:4px;font-size:9px">Confirmed</span>
+
+        <span class="badge in-progress" style="border-radius:4px">In Progress</span>
+        <span class="badge in-progress" style="border-radius:14px">In Progress</span>
+        <span class="badge in-progress" style="border-radius:4px;font-size:9px">In Progress</span>
+
+        <span class="badge complete" style="border-radius:4px">Complete</span>
+        <span class="badge complete" style="border-radius:14px">Complete</span>
+        <span class="badge complete" style="border-radius:4px;font-size:9px">Complete</span>
+
+        <span class="badge cancelled" style="border-radius:4px">Cancelled</span>
+        <span class="badge cancelled" style="border-radius:14px">Cancelled</span>
+        <span class="badge cancelled" style="border-radius:4px;font-size:9px">Cancelled</span>
+
+        <span class="badge voided" style="border-radius:4px">Voided</span>
+        <span class="badge voided" style="border-radius:14px">Voided</span>
+        <span class="badge expired" style="border-radius:4px">Expired</span>
+      </div>
+      <div class="annotation" style="top:12px;right:12px">3 radii</div>
+    </div>
+  </div>
+
+  <!-- Chips -->
+  <div class="comp-card">
+    <div class="card-head">
+      <span class="card-title">Chips</span>
+      <span class="card-status review">Review</span>
+    </div>
+    <div class="card-body">
+      <div class="chip-rows">
+        <div class="chip-row">
+          <span class="chip">Tag text</span>
+          <span class="chip">Tag text</span>
+          <span class="chip">Tag text</span>
+        </div>
+        <div class="chip-row">
+          <span class="chip filled">Tag text</span>
+          <span class="chip filled">Tag text</span>
+          <span class="chip filled">Tag text</span>
+        </div>
+        <div class="chip-row">
+          <span class="chip outline">Tag text</span>
+          <span class="chip outline">Tag text</span>
+          <span class="chip outline">Tag text</span>
+        </div>
+        <div class="chip-row">
+          <span class="chip warn">Tag text</span>
+          <span class="chip info">Tag text</span>
+          <span class="chip success">Tag text</span>
+        </div>
+      </div>
+      <div class="annotation" style="bottom:12px;left:12px">4 variants, no spec</div>
+    </div>
+  </div>
+
+  <!-- Segment Control -->
+  <div class="comp-card">
+    <div class="card-head">
+      <span class="card-title">Segment Control</span>
+      <span class="card-status review">Review</span>
+    </div>
+    <div class="card-body">
+      <div class="segment-box">
+        <div class="seg active"><span class="seg-dot" style="background:#7C3AED"></span>Flights</div>
+        <div class="seg"><span class="seg-dot" style="background:#0D9488"></span>Train</div>
+        <div class="seg"><span class="seg-dot" style="background:#D97706"></span>Stays</div>
+        <div class="seg"><span class="seg-dot" style="background:#2563EB"></span>Car</div>
+      </div>
+      <div class="segment-box" style="margin-top:4px">
+        <div class="seg">Flights</div>
+        <div class="seg active">Train</div>
+        <div class="seg">Stays</div>
+        <div class="seg">Car</div>
+      </div>
+      <div class="segment-box" style="margin-top:4px;border-radius:6px">
+        <div class="seg" style="border-radius:4px">Everything</div>
+        <div class="seg active" style="border-radius:4px"><span class="seg-dot" style="background:#7C3AED"></span>Flights</div>
+        <div class="seg" style="border-radius:4px">Train</div>
+      </div>
+      <div class="segment-box" style="margin-top:4px">
+        <div class="seg active">Everything</div>
+        <div class="seg">Flights</div>
+        <div class="seg">Train</div>
+        <div class="seg" style="background:#FEF3C7;color:#D97706;border-radius:7px">Trades</div>
+      </div>
+      <div class="annotation" style="top:12px;right:12px">4 layouts</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

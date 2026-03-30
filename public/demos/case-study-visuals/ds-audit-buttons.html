@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component Audit: Primary Action Button</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: #FAFAF8;
+            padding: 60px 48px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 56px;
+            border-bottom: 1px solid #E8E8E6;
+            padding-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #6B7280;
+            line-height: 1.5;
+            max-width: 600px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 40px 32px;
+            margin-bottom: 48px;
+        }
+
+        .button-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button-display {
+            width: 100%;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            transition: background 0.2s ease;
+        }
+
+        .button-display:hover {
+            background: #FEFDFB;
+        }
+
+        /* Button variations */
+        .btn {
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        /* Variation 1: Search Flow - Classic */
+        .btn-v1 {
+            background: #0F766E;
+            color: white;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 4px;
+        }
+
+        .btn-v1:hover {
+            background: #0D5E56;
+        }
+
+        /* Variation 2: Booking - Rounded */
+        .btn-v2 {
+            background: #14B8A6;
+            color: white;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 24px;
+            box-shadow: 0 2px 8px rgba(20, 184, 166, 0.15);
+        }
+
+        .btn-v2:hover {
+            background: #0D9488;
+        }
+
+        /* Variation 3: Dashboard - Pill with icon-space */
+        .btn-v3 {
+            background: #0D9488;
+            color: white;
+            padding: 14px 24px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-v3::before {
+            content: "→";
+            font-size: 16px;
+        }
+
+        .btn-v3:hover {
+            background: #0F766E;
+        }
+
+        /* Variation 4: Settings - Minimal */
+        .btn-v4 {
+            background: #115E59;
+            color: white;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 400;
+            border-radius: 6px;
+        }
+
+        .btn-v4:hover {
+            background: #0D4F49;
+        }
+
+        /* Variation 5: Onboarding - Large primary */
+        .btn-v5 {
+            background: #14B8A6;
+            color: white;
+            padding: 16px 36px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2);
+        }
+
+        .btn-v5:hover {
+            background: #0D9488;
+        }
+
+        /* Variation 6: Filter Panel - Compact */
+        .btn-v6 {
+            background: #0F766E;
+            color: white;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 4px;
+        }
+
+        .btn-v6:hover {
+            background: #0D5E56;
+        }
+
+        /* Variation 7: Modal Action - Medium*/
+        .btn-v7 {
+            background: #115E59;
+            color: white;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 8px;
+        }
+
+        .btn-v7:hover {
+            background: #0D4F49;
+        }
+
+        /* Variation 8: Checkout - High contrast */
+        .btn-v8 {
+            background: #0D9488;
+            color: white;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 2px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-v8:hover {
+            background: #0F766E;
+        }
+
+        /* Variation 9: Admin Tools - Squared */
+        .btn-v9 {
+            background: #115E59;
+            color: white;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 0px;
+        }
+
+        .btn-v9:hover {
+            background: #0D4F49;
+        }
+
+        /* Variation 10: Sidebar CTA */
+        .btn-v10 {
+            background: #14B8A6;
+            color: white;
+            padding: 11px 22px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+        }
+
+        .btn-v10:hover {
+            background: #0D9488;
+        }
+
+        /* Variation 11: Header Action */
+        .btn-v11 {
+            background: #0F766E;
+            color: white;
+            padding: 9px 18px;
+            font-size: 14px;
+            font-weight: 400;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(15, 118, 110, 0.1);
+        }
+
+        .btn-v11:hover {
+            background: #0D5E56;
+        }
+
+        /* Variation 12: Form Submit */
+        .btn-v12 {
+            background: #0D9488;
+            color: white;
+            padding: 13px 26px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 16px;
+        }
+
+        .btn-v12:hover {
+            background: #0F766E;
+        }
+
+        /* Variation 13: Card Action */
+        .btn-v13 {
+            background: #115E59;
+            color: white;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-v13:hover {
+            background: #0D4F49;
+        }
+
+        /* Variation 14: Global Action */
+        .btn-v14 {
+            background: #14B8A6;
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 10px;
+        }
+
+        .btn-v14:hover {
+            background: #0D9488;
+        }
+
+        /* Variation 15: Micro interaction */
+        .btn-v15 {
+            background: #0F766E;
+            color: white;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 3px;
+        }
+
+        .btn-v15:hover {
+            background: #0D5E56;
+        }
+
+        /* Variation 16: Secondary prominence */
+        .btn-v16 {
+            background: #0D9488;
+            color: white;
+            padding: 11px 22px;
+            font-size: 15px;
+            font-weight: 400;
+            border-radius: 14px;
+            box-shadow: 0 2px 4px rgba(20, 184, 166, 0.08);
+        }
+
+        .btn-v16:hover {
+            background: #0F766E;
+        }
+
+        /* Variation 17: Legacy button */
+        .btn-v17 {
+            background: #115E59;
+            color: white;
+            padding: 9px 18px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 5px;
+            box-shadow: 0 3px 8px rgba(17, 94, 89, 0.15);
+        }
+
+        .btn-v17:hover {
+            background: #0D4F49;
+        }
+
+        .button-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            text-align: center;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .button-specs {
+            font-size: 11px;
+            color: #9CA3AF;
+            text-align: center;
+            line-height: 1.5;
+            font-family: 'Monaco', 'Courier New', monospace;
+            background: #F3F4F6;
+            padding: 8px 8px;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .button-specs div {
+            margin: 2px 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid #E8E8E6;
+            font-size: 12px;
+            color: #9CA3AF;
+            font-style: italic;
+        }
+
+        .insight-box {
+            background: white;
+            border-left: 4px solid #0D9488;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+            line-height: 1.6;
+        }
+
+        .insight-box p {
+            color: #4B5563;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .insight-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight {
+            color: #0D9488;
+            font-weight: 600;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 32px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Component Audit: Primary Action Button</h1>
+            <p>17 variations found across 8 product areas — same intent, different execution</p>
+        </div>
+
+        <div class="insight-box">
+            <p>When product teams operate independently, small decisions compound. Each button variation made sense in isolation. <span class="highlight">Together, they reveal a structural problem.</span> Below: the same component, reimplemented across a single product.</p>
+        </div>
+
+        <div class="grid">
+            <!-- Button 1 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v1">Search</button>
+                </div>
+                <div class="button-label">Search Flow</div>
+                <div class="button-specs">
+                    <div>r: 4px</div>
+                    <div>size: 14px</div>
+                    <div>pad: 10×20px</div>
+                </div>
+            </div>
+
+            <!-- Button 2 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v2">Book Now</button>
+                </div>
+                <div class="button-label">Booking Confirmation</div>
+                <div class="button-specs">
+                    <div>r: 24px</div>
+                    <div>size: 15px</div>
+                    <div>pad: 12×28px</div>
+                </div>
+            </div>
+
+            <!-- Button 3 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v3">Apply</button>
+                </div>
+                <div class="button-label">Dashboard CTA</div>
+                <div class="button-specs">
+                    <div>r: 20px</div>
+                    <div>size: 14px</div>
+                    <div>pad: 14×24px</div>
+                </div>
+            </div>
+
+            <!-- Button 4 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v4">Save</button>
+                </div>
+                <div class="button-label">Settings Page</div>
+                <div class="button-specs">
+                    <div>r: 6px</div>
+                    <div>size: 13px</div>
+                    <div>pad: 8×16px</div>
+                </div>
+            </div>
+
+            <!-- Button 5 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v5">Get Started</button>
+                </div>
+                <div class="button-label">Onboarding</div>
+                <div class="button-specs">
+                    <div>r: 8px</div>
+                    <div>size: 16px</div>
+                    <div>pad: 16×36px</div>
+                </div>
+            </div>
+
+            <!-- Button 6 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v6">Filter</button>
+                </div>
+                <div class="button-label">Filter Panel</div>
+                <div class="button-specs">
+                    <div>r: 4px</div>
+                    <div>size: 12px</div>
+                    <div>pad: 6×14px</div>
+                </div>
+            </div>
+
+            <!-- Button 7 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v7">Confirm</button>
+                </div>
+                <div class="button-label">Modal Action</div>
+                <div class="button-specs">
+                    <div>r: 8px</div>
+                    <div>size: 15px</div>
+                    <div>pad: 12×24px</div>
+                </div>
+            </div>
+
+            <!-- Button 8 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v8">Complete</button>
+                </div>
+                <div class="button-label">Checkout</div>
+                <div class="button-specs">
+                    <div>r: 2px</div>
+                    <div>size: 16px</div>
+                    <div>pad: 14×28px</div>
+                </div>
+            </div>
+
+            <!-- Button 9 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v9">Execute</button>
+                </div>
+                <div class="button-label">Admin Tools</div>
+                <div class="button-specs">
+                    <div>r: 0px</div>
+                    <div>size: 13px</div>
+                    <div>pad: 10×18px</div>
+                </div>
+            </div>
+
+            <!-- Button 10 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v10">Upgrade</button>
+                </div>
+                <div class="button-label">Sidebar CTA</div>
+                <div class="button-specs">
+                    <div>r: 6px</div>
+                    <div>size: 14px</div>
+                    <div>pad: 11×22px</div>
+                </div>
+            </div>
+
+            <!-- Button 11 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v11">Action</button>
+                </div>
+                <div class="button-label">Header Action</div>
+                <div class="button-specs">
+                    <div>r: 12px</div>
+                    <div>size: 14px</div>
+                    <div>pad: 9×18px</div>
+                </div>
+            </div>
+
+            <!-- Button 12 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v12">Submit</button>
+                </div>
+                <div class="button-label">Form Submit</div>
+                <div class="button-specs">
+                    <div>r: 16px</div>
+                    <div>size: 15px</div>
+                    <div>pad: 13×26px</div>
+                </div>
+            </div>
+
+            <!-- Button 13 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v13">Select</button>
+                </div>
+                <div class="button-label">Card Action</div>
+                <div class="button-specs">
+                    <div>r: 8px</div>
+                    <div>size: 14px</div>
+                    <div>pad: 10×20px</div>
+                </div>
+            </div>
+
+            <!-- Button 14 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v14">Continue</button>
+                </div>
+                <div class="button-label">Global Action</div>
+                <div class="button-specs">
+                    <div>r: 10px</div>
+                    <div>size: 16px</div>
+                    <div>pad: 12×24px</div>
+                </div>
+            </div>
+
+            <!-- Button 15 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v15">Add</button>
+                </div>
+                <div class="button-label">Micro Interaction</div>
+                <div class="button-specs">
+                    <div>r: 3px</div>
+                    <div>size: 13px</div>
+                    <div>pad: 8×16px</div>
+                </div>
+            </div>
+
+            <!-- Button 16 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v16">Proceed</button>
+                </div>
+                <div class="button-label">Secondary Prominence</div>
+                <div class="button-specs">
+                    <div>r: 14px</div>
+                    <div>size: 15px</div>
+                    <div>pad: 11×22px</div>
+                </div>
+            </div>
+
+            <!-- Button 17 -->
+            <div class="button-card">
+                <div class="button-display">
+                    <button class="btn btn-v17">Initiate</button>
+                </div>
+                <div class="button-label">Legacy Implementation</div>
+                <div class="button-specs">
+                    <div>r: 5px</div>
+                    <div>size: 14px</div>
+                    <div>pad: 9×18px</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Recreated concept — illustrative example
+        </div>
+    </div>
+</body>
+</html>

@@ -36,16 +36,20 @@ export default function FiltersDecisionSupportPage() {
 
         <Section eyebrow="INTRODUCTION" heading="The Problem Wasn&apos;t the Controls">
           <Body>
-            When users struggle with a filtering interface, the instinct is to fix the controls — redesign
-            the dropdowns, restyle the chips, reposition the search bar. But on a B2B travel platform
-            managing flights, hotels, rail, and car rentals across multiple booking verticals, the
-            controls were not the real problem. They technically worked.
+            A travel manager in Munich types &quot;London Monday morning refundable&quot; into the search bar
+            and hits enter. She gets 47 results. She starts filtering: price range, departure window,
+            number of stops. Each control works. Each result updates. But ten minutes later she&apos;s
+            still scrolling, still adjusting, still unsure whether the flight she&apos;s looking at is
+            the best option or just the one she happened to land on. The interface gave her capability.
+            What it didn&apos;t give her was a path to a decision.
           </Body>
           <Body>
-            The real problem was conceptual. Search, filters, and results had been designed as three
-            separate features — built at different times, by different teams, with different assumptions
-            about user intent. But users experienced them as a single decision flow: start with intent,
-            narrow the options, compare trade-offs, choose. The interface did not reflect that experience.
+            That was the real problem. On a B2B travel platform managing flights, hotels, rail, and
+            car rentals across multiple booking verticals, search, filters, and results had been
+            designed as three separate features — built at different times, by different teams, with
+            different assumptions about user intent. But users experienced them as a single decision
+            flow: start with intent, narrow the options, compare trade-offs, choose. The interface
+            did not reflect that experience.
           </Body>
         </Section>
 
@@ -229,6 +233,13 @@ export default function FiltersDecisionSupportPage() {
           </Body>
         </Section>
 
+        {/* Before state — the overwhelming filter panel */}
+        <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginBottom: "48px", border: "1px solid rgba(0,0,0,0.06)", background: "#f0ebe3" }}>
+          <div style={{ position: "relative", aspectRatio: "3/2", width: "100%", minHeight: "360px" }}>
+            <iframe src="/demos/case-study-visuals/filters-before.html" title="Before: nine filter controls at equal visual weight" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none", borderRadius: "16px" }} />
+          </div>
+        </div>
+
         <Section eyebrow="SEARCH AS THE ENTRY POINT" heading="Starting With Intent, Not Parameters">
           <Body>
             In most travel interfaces, the search bar and the filter panel are visually and functionally
@@ -295,6 +306,13 @@ export default function FiltersDecisionSupportPage() {
             complexity of their decision.
           </Body>
         </Section>
+
+        {/* After state — the redesigned progressive filtering system */}
+        <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginBottom: "48px", border: "1px solid rgba(0,0,0,0.06)", background: "#f0ebe3" }}>
+          <div style={{ position: "relative", aspectRatio: "3/2", width: "100%", minHeight: "360px" }}>
+            <iframe src="/demos/case-study-visuals/filters-after.html" title="After: progressive disclosure with prioritised filters" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none", borderRadius: "16px" }} />
+          </div>
+        </div>
 
         <Section eyebrow="REVERSIBLE EXPLORATION" heading="Making It Safe to Experiment">
           <Body>

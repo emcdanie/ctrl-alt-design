@@ -19,7 +19,7 @@ const study: CaseStudy = {
   overview: {
     headline:
       "A unified ICT platform concept for a complex international organisation — built around visibility, dependency awareness, and role-based clarity.",
-    body: "Large organisations running complex ICT infrastructure face a particular kind of invisible problem. The tools exist. The data exists. The teams are capable. But the information is scattered across monitoring platforms, ticketing systems, and spreadsheets in ways that make it genuinely difficult to answer basic operational questions reliably. The challenge wasn't a lack of data — it was that the data lived in silos, was inconsistently defined across teams, and couldn't be brought together without significant manual effort.",
+    body: "Forty minutes into a critical incident, the operations engineer is still assembling context — monitoring in one tool, tickets in another, asset ownership in a spreadsheet last updated three months ago. At the United Nations Office at Geneva, the challenge wasn't missing data. It was that operational information lived in silos with no model connecting them. I designed a unified platform prototype that made the case for what becomes possible once that architecture exists.",
   },
   images: [],
   problem: {
@@ -73,9 +73,9 @@ const study: CaseStudy = {
       label: "CONTEXT",
       heading: "Project Context",
       paragraphs: [
-        "Large organisations running complex ICT infrastructure face a particular kind of invisible problem. The tools exist. The data exists. The teams are capable. But the information is scattered across monitoring platforms, ticketing systems, and spreadsheets in ways that make it genuinely difficult to answer basic operational questions reliably.",
-        "At the United Nations Office at Geneva, the ICT department managed a significant infrastructure estate: servers, network assets, services, and the teams responsible for their operation. The existing tooling was siloed. Each team had its own system and its own view of the operational picture — but there was no single place where those views converged.",
-        "The engagement was a contract to design a high-fidelity prototype for a unified operational platform — something that would make the vision concrete enough for senior stakeholders to evaluate, challenge, and ultimately decide whether to build.",
+        "An operations engineer at the United Nations Office at Geneva gets an alert: a critical service is degrading. She opens the monitoring dashboard — but it only shows infrastructure health, not which services depend on the affected asset. She switches to the ticketing system to check recent incidents — different tool, different login, different data model. She opens a spreadsheet to find the asset owner — last updated three months ago. Forty minutes into the incident, she's still assembling context that should have been available in the first ten seconds.",
+        "This wasn't a tooling failure. The tools existed. The data existed. The teams were capable. But the information lived in silos — monitoring platforms, ticketing systems, spreadsheets — with no consistent model connecting them. Answering a basic operational question like 'what depends on this server?' required manual assembly from multiple sources, every single time.",
+        "The engagement was a contract to design a high-fidelity prototype for a unified operational platform — something concrete enough for senior stakeholders to evaluate, challenge, and decide whether to build. Not a dashboard mockup. A working vision of what operational clarity could actually look like.",
       ],
     },
     {

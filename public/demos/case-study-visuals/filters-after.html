@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Booking Filter Redesign - After State</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background-color: #F5F0E8;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .viewport-container {
+            width: 1200px;
+            height: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            padding: 24px 32px;
+            border-bottom: 1px solid #E8E3D8;
+            background-color: white;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2C2C2C;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #7A7A7A;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Left sidebar: Filters */
+        .filters-panel {
+            width: 280px;
+            border-right: 1px solid #E8E3D8;
+            background-color: #FAFAF8;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .filters-header {
+            padding: 20px 20px 16px 20px;
+            border-bottom: 1px solid #E8E3D8;
+            background-color: white;
+        }
+
+        .filters-header h2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2C2C2C;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .active-filters-badge {
+            display: inline-block;
+            background-color: #0D9488;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .filter-section {
+            padding: 20px;
+            border-bottom: 1px solid #E8E3D8;
+            background-color: white;
+        }
+
+        .filter-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #2C2C2C;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        /* Price range filter */
+        .price-range {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .price-input {
+            font-size: 13px;
+            padding: 8px 12px;
+            border: 1px solid #D4CCC0;
+            border-radius: 6px;
+            background-color: #FAFAF8;
+            color: #2C2C2C;
+        }
+
+        .price-input::placeholder {
+            color: #A8A8A8;
+        }
+
+        .price-range-display {
+            font-size: 13px;
+            color: #0D9488;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* Time slots filter */
+        .time-chips {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chip {
+            padding: 8px 12px;
+            border: 1.5px solid #D4CCC0;
+            border-radius: 20px;
+            background-color: #FAFAF8;
+            color: #2C2C2C;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .chip:hover {
+            border-color: #0D9488;
+            background-color: #F0F9F8;
+        }
+
+        .chip.active {
+            border-color: #0D9488;
+            background-color: #0D9488;
+            color: white;
+        }
+
+        /* Stops filter */
+        .stops-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid #D4CCC0;
+            border-radius: 4px;
+            background-color: #FAFAF8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .checkbox-group input[type="checkbox"]:checked + .checkbox {
+            border-color: #0D9488;
+            background-color: #0D9488;
+        }
+
+        .checkbox-group input[type="checkbox"]:checked + .checkbox::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-label {
+            font-size: 13px;
+            color: #2C2C2C;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* More filters button */
+        .more-filters-section {
+            padding: 20px;
+            border-top: 1px solid #E8E3D8;
+            background-color: #FAFAF8;
+            margin-top: auto;
+        }
+
+        .more-filters-btn {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #0D9488;
+            border-radius: 6px;
+            background-color: white;
+            color: #0D9488;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .more-filters-btn:hover {
+            background-color: #F0F9F8;
+        }
+
+        /* Right side: Results */
+        .results-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .results-toolbar {
+            padding: 16px 32px;
+            border-bottom: 1px solid #E8E3D8;
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .results-count {
+            font-size: 13px;
+            color: #7A7A7A;
+        }
+
+        .sort-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sort-control label {
+            font-size: 13px;
+            color: #2C2C2C;
+            font-weight: 500;
+        }
+
+        .sort-select {
+            padding: 8px 12px;
+            border: 1px solid #D4CCC0;
+            border-radius: 6px;
+            background-color: #FAFAF8;
+            color: #2C2C2C;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* Flight results */
+        .results-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .flight-card {
+            border: 1px solid #E8E3D8;
+            border-radius: 8px;
+            padding: 16px;
+            background-color: #FAFAF8;
+            transition: all 0.2s ease;
+        }
+
+        .flight-card:hover {
+            border-color: #D4CCC0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .flight-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .airlines-route {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .airline-logo {
+            width: 32px;
+            height: 32px;
+            background-color: #0D9488;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .route-info h3 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2C2C2C;
+            margin-bottom: 2px;
+        }
+
+        .route-info p {
+            font-size: 12px;
+            color: #7A7A7A;
+        }
+
+        .price-section {
+            text-align: right;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0D9488;
+            margin-bottom: 4px;
+        }
+
+        .price-note {
+            font-size: 11px;
+            color: #A8A8A8;
+        }
+
+        .flight-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #E8E3D8;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: #A8A8A8;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .detail-value {
+            font-size: 13px;
+            font-weight: 500;
+            color: #2C2C2C;
+        }
+
+        /* Footer attribution */
+        .footer-attribution {
+            position: absolute;
+            bottom: 8px;
+            right: 16px;
+            font-size: 10px;
+            color: #A8A8A8;
+            font-style: italic;
+        }
+
+        /* Scrollbar styling */
+        .filters-panel::-webkit-scrollbar,
+        .results-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .filters-panel::-webkit-scrollbar-track,
+        .results-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .filters-panel::-webkit-scrollbar-thumb,
+        .results-list::-webkit-scrollbar-thumb {
+            background: #D4CCC0;
+            border-radius: 3px;
+        }
+
+        .filters-panel::-webkit-scrollbar-thumb:hover,
+        .results-list::-webkit-scrollbar-thumb:hover {
+            background: #B8AFA0;
+        }
+    </style>
+</head>
+<body>
+    <div class="viewport-container">
+        <div class="header">
+            <h1>Discover Flights</h1>
+            <p>New York (JFK) → London (LHR) • Mar 28 - Apr 4</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Left: Filters Panel -->
+            <div class="filters-panel">
+                <div class="filters-header">
+                    <h2>Filter Results</h2>
+                    <span class="active-filters-badge">3 filters applied</span>
+                </div>
+
+                <!-- Price Range Filter -->
+                <div class="filter-section">
+                    <label class="filter-label">Price Range</label>
+                    <div class="price-range">
+                        <input type="text" class="price-input" placeholder="Min" value="$400">
+                        <input type="text" class="price-input" placeholder="Max" value="$1200">
+                        <div class="price-range-display">$400 – $1,200</div>
+                    </div>
+                </div>
+
+                <!-- Departure Time Filter -->
+                <div class="filter-section">
+                    <label class="filter-label">Departure Time</label>
+                    <div class="time-chips">
+                        <div class="chip active">Morning (6am–12pm)</div>
+                        <div class="chip">Afternoon (12pm–6pm)</div>
+                        <div class="chip">Evening (6pm–11pm)</div>
+                    </div>
+                </div>
+
+                <!-- Stops Filter -->
+                <div class="filter-section">
+                    <label class="filter-label">Stops</label>
+                    <div class="stops-options">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="nonstop" checked>
+                            <div class="checkbox"></div>
+                            <label for="nonstop" class="checkbox-label">Nonstop</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="onestop">
+                            <div class="checkbox"></div>
+                            <label for="onestop" class="checkbox-label">1 Stop</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="twostop">
+                            <div class="checkbox"></div>
+                            <label for="twostop" class="checkbox-label">2+ Stops</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- More Filters Button -->
+                <div class="more-filters-section">
+                    <button class="more-filters-btn">+ More Filters</button>
+                </div>
+            </div>
+
+            <!-- Right: Results Panel -->
+            <div class="results-panel">
+                <div class="results-toolbar">
+                    <div class="results-count">Showing 428 flights</div>
+                    <div class="sort-control">
+                        <label for="sort">Sort by:</label>
+                        <select id="sort" class="sort-select">
+                            <option selected>Best Value</option>
+                            <option>Price: Low to High</option>
+                            <option>Price: High to Low</option>
+                            <option>Departure Time</option>
+                            <option>Duration</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="results-list">
+                    <!-- Flight Card 1 -->
+                    <div class="flight-card">
+                        <div class="flight-header">
+                            <div class="airlines-route">
+                                <div class="airline-logo">BA</div>
+                                <div class="route-info">
+                                    <h3>British Airways BA 112</h3>
+                                    <p>Nonstop • 7h 15m flight time</p>
+                                </div>
+                            </div>
+                            <div class="price-section">
+                                <div class="price">$524</div>
+                                <div class="price-note">per person</div>
+                            </div>
+                        </div>
+                        <div class="flight-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Depart</div>
+                                <div class="detail-value">9:30 AM</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Arrive</div>
+                                <div class="detail-value">9:45 PM</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Seat Type</div>
+                                <div class="detail-value">Economy</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flight Card 2 -->
+                    <div class="flight-card">
+                        <div class="flight-header">
+                            <div class="airlines-route">
+                                <div class="airline-logo">UA</div>
+                                <div class="route-info">
+                                    <h3>United Airlines UA 985</h3>
+                                    <p>1 stop in Boston • 9h 45m total</p>
+                                </div>
+                            </div>
+                            <div class="price-section">
+                                <div class="price">$468</div>
+                                <div class="price-note">per person</div>
+                            </div>
+                        </div>
+                        <div class="flight-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Depart</div>
+                                <div class="detail-value">8:00 AM</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Arrive</div>
+                                <div class="detail-value">8:45 PM</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Seat Type</div>
+                                <div class="detail-value">Economy</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flight Card 3 -->
+                    <div class="flight-card">
+                        <div class="flight-header">
+                            <div class="airlines-route">
+                                <div class="airline-logo">VS</div>
+                                <div class="route-info">
+                                    <h3>Virgin Atlantic VS 25</h3>
+                                    <p>Nonstop • 7h 20m flight time</p>
+                                </div>
+                            </div>
+                            <div class="price-section">
+                                <div class="price">$612</div>
+                                <div class="price-note">per person</div>
+                            </div>
+                        </div>
+                        <div class="flight-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Depart</div>
+                                <div class="detail-value">11:15 AM</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Arrive</div>
+                                <div class="detail-value">11:35 PM</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Seat Type</div>
+                                <div class="detail-value">Economy</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flight Card 4 -->
+                    <div class="flight-card">
+                        <div class="flight-header">
+                            <div class="airlines-route">
+                                <div class="airline-logo">LH</div>
+                                <div class="route-info">
+                                    <h3>Lufthansa LH 401</h3>
+                                    <p>1 stop in Frankfurt • 10h 30m total</p>
+                                </div>
+                            </div>
+                            <div class="price-section">
+                                <div class="price">$445</div>
+                                <div class="price-note">per person</div>
+                            </div>
+                        </div>
+                        <div class="flight-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Depart</div>
+                                <div class="detail-value">7:45 AM</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Arrive</div>
+                                <div class="detail-value">6:15 PM</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Seat Type</div>
+                                <div class="detail-value">Economy</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-attribution">
+            Recreated concept — not actual product UI
+        </div>
+    </div>
+</body>
+</html>

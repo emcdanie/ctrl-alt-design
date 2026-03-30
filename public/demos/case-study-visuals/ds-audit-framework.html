@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5-Point Audit Framework</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #FAFAF8;
+    color: #1A1A1A;
+    padding: 40px 32px;
+    min-height: 100vh;
+  }
+
+  .header {
+    margin-bottom: 32px;
+  }
+
+  .header .label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #0D9488;
+    margin-bottom: 6px;
+  }
+
+  .header h1 {
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-weight: 600;
+    color: #1A1A1A;
+    line-height: 1.3;
+  }
+
+  .header p {
+    font-size: 13px;
+    color: #6B6B6B;
+    margin-top: 6px;
+    max-width: 520px;
+    line-height: 1.6;
+  }
+
+  .framework-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 700px) {
+    .framework-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .dimension-card {
+    background: white;
+    border: 1px solid #E8E4DD;
+    border-radius: 12px;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dimension-card:hover {
+    border-color: #0D9488;
+    box-shadow: 0 2px 12px rgba(13, 148, 136, 0.08);
+  }
+
+  .dimension-card .number {
+    font-size: 11px;
+    font-weight: 700;
+    color: #0D9488;
+    letter-spacing: 0.05em;
+  }
+
+  .dimension-card .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #F0FDF9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .dimension-card h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1A1A1A;
+    line-height: 1.3;
+  }
+
+  .dimension-card .question {
+    font-size: 11.5px;
+    color: #6B6B6B;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  /* Score bar */
+  .score-row {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid #F0EDE8;
+  }
+
+  .score-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 6px;
+  }
+
+  .score-bar-track {
+    width: 100%;
+    height: 6px;
+    background: #F0EDE8;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .score-bar-fill.low { background: #EF4444; }
+  .score-bar-fill.mid { background: #F59E0B; }
+  .score-bar-fill.high { background: #0D9488; }
+
+  .score-value {
+    font-size: 11px;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin-top: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .score-value .max { color: #BFBFBF; font-weight: 400; }
+
+  /* Summary strip */
+  .summary {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: #F5F0E8;
+    border-radius: 10px;
+    flex-wrap: wrap;
+  }
+
+  .summary .avg-score {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1A1A1A;
+    line-height: 1;
+  }
+
+  .summary .avg-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #999;
+  }
+
+  .summary .divider {
+    width: 1px;
+    height: 32px;
+    background: #D4C5B2;
+  }
+
+  .summary .verdict {
+    font-size: 13px;
+    color: #6B6B6B;
+    line-height: 1.5;
+    max-width: 400px;
+  }
+
+  .summary .verdict strong {
+    color: #1A1A1A;
+    font-weight: 600;
+  }
+
+  /* Toggle states */
+  .toggle-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .toggle-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid #E8E4DD;
+    background: white;
+    color: #6B6B6B;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .toggle-btn.active {
+    background: #0D9488;
+    color: white;
+    border-color: #0D9488;
+  }
+
+  .toggle-btn:hover:not(.active) {
+    border-color: #0D9488;
+    color: #0D9488;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="label">Audit Framework</div>
+  <h1>Five-Point System Assessment</h1>
+  <p>Each dimension reflects a real cost the product was already paying &mdash; not an abstract ideal.</p>
+</div>
+
+<div class="toggle-row">
+  <button class="toggle-btn active" onclick="showState('before')">Before</button>
+  <button class="toggle-btn" onclick="showState('after')">After</button>
+</div>
+
+<div class="framework-grid" id="grid"></div>
+
+<div class="summary" id="summary"></div>
+
+<script>
+const dimensions = [
+  {
+    num: "01",
+    icon: "&#9673;",
+    name: "Business Alignment",
+    question: "Is the system actively helping the product meet delivery and roadmap goals?",
+    before: 1.5,
+    after: 4.0
+  },
+  {
+    num: "02",
+    icon: "&#9881;",
+    name: "Gap Identification",
+    question: "Where are the missing patterns? Which user needs are being solved ad hoc?",
+    before: 1.0,
+    after: 4.5
+  },
+  {
+    num: "03",
+    icon: "&#9201;",
+    name: "Operational Efficiency",
+    question: "How much time is spent revisiting decisions that should be resolved at the system level?",
+    before: 1.5,
+    after: 3.5
+  },
+  {
+    num: "04",
+    icon: "&#9878;",
+    name: "Cross-Team Consistency",
+    question: "Are different teams building comparable experiences for comparable user needs?",
+    before: 1.0,
+    after: 4.0
+  },
+  {
+    num: "05",
+    icon: "&#9851;",
+    name: "Sustainability",
+    question: "Can the system grow with the product without fragmenting again?",
+    before: 0.5,
+    after: 3.5
+  }
+];
+
+let currentState = "before";
+
+function getLevel(score) {
+  if (score <= 2) return "low";
+  if (score <= 3.5) return "mid";
+  return "high";
+}
+
+function render(state) {
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+
+  let total = 0;
+
+  dimensions.forEach((d, i) => {
+    const score = state === "before" ? d.before : d.after;
+    total += score;
+    const pct = (score / 5) * 100;
+    const level = getLevel(score);
+
+    const card = document.createElement("div");
+    card.className = "dimension-card";
+    card.innerHTML = `
+      <div class="number">${d.num}</div>
+      <div class="icon">${d.icon}</div>
+      <h3>${d.name}</h3>
+      <div class="question">${d.question}</div>
+      <div class="score-row">
+        <div class="score-label">Score</div>
+        <div class="score-bar-track">
+          <div class="score-bar-fill ${level}" style="width: 0%"></div>
+        </div>
+        <div class="score-value">
+          <span>${score.toFixed(1)}</span>
+          <span class="max">/ 5.0</span>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+
+    // Animate bar
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        card.querySelector(".score-bar-fill").style.width = pct + "%";
+      });
+    });
+  });
+
+  const avg = (total / dimensions.length).toFixed(1);
+  const avgLevel = getLevel(parseFloat(avg));
+  const summary = document.getElementById("summary");
+
+  const verdictText = state === "before"
+    ? `<strong>Overall system maturity: Low.</strong> The product lacked shared structure &mdash; inconsistency was the predictable outcome, not a failure of execution.`
+    : `<strong>Overall system maturity: Strong.</strong> A shared foundation that reduces repeated decisions and supports confident scaling.`;
+
+  summary.innerHTML = `
+    <div>
+      <div class="avg-label">Average</div>
+      <div class="avg-score">${avg}</div>
+    </div>
+    <div class="divider"></div>
+    <div class="verdict">${verdictText}</div>
+  `;
+}
+
+function showState(state) {
+  currentState = state;
+  document.querySelectorAll(".toggle-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.textContent.toLowerCase() === state);
+  });
+  render(state);
+}
+
+render("before");
+</script>
+
+</body>
+</html>
