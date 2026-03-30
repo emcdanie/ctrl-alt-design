@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <rect width="800" height="500" fill="#F5F0E8"/>
+
+  <!-- Dot grid -->
+  <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="10" cy="10" r="0.8" fill="#D4CFCA"/>
+  </pattern>
+  <rect width="480" height="500" fill="url(#dots)"/>
+
+  <!-- Design canvas mock -->
+  <rect x="60" y="40" width="360" height="420" rx="12" fill="white" stroke="#E8E3DB" stroke-width="1"/>
+  <text x="72" y="28" font-family="system-ui,sans-serif" font-size="10" fill="#7A756C">Homepage / Desktop</text>
+
+  <!-- Mock nav -->
+  <rect x="72" y="52" width="336" height="32" rx="0" fill="white"/>
+  <text x="82" y="72" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#1A1814">TravelHub</text>
+  <text x="148" y="72" font-family="system-ui,sans-serif" font-size="8" fill="#7A756C">Home  Flights  Hotels  Rail  Car  Reports  Settings</text>
+  <line x1="72" y1="84" x2="408" y2="84" stroke="#E8E3DB" stroke-width="0.5"/>
+
+  <!-- Mock hero -->
+  <rect x="72" y="92" width="336" height="100" rx="6" fill="#F8F9FC"/>
+  <text x="88" y="120" font-family="system-ui,sans-serif" font-size="18" font-weight="800" fill="#1A1814">Book your next trip</text>
+  <text x="88" y="138" font-family="system-ui,sans-serif" font-size="9" fill="#7A756C">Search across flights, hotels, rail, and car rentals</text>
+  <rect x="88" y="152" width="72" height="22" rx="5" fill="#1A1A1A"/>
+  <text x="124" y="166" font-family="system-ui,sans-serif" font-size="8" font-weight="700" fill="white" text-anchor="middle">Search Flights</text>
+  <rect x="166" y="152" width="72" height="22" rx="5" fill="#2563EB"/>
+  <text x="202" y="166" font-family="system-ui,sans-serif" font-size="8" font-weight="700" fill="white" text-anchor="middle">Search Hotels</text>
+
+  <!-- Warning highlight on CTAs -->
+  <rect x="84" y="148" width="160" height="30" rx="4" fill="none" stroke="#E74C3C" stroke-width="2" stroke-dasharray="4 3" opacity="0.7"/>
+  <circle cx="248" cy="148" r="8" fill="#E74C3C"/>
+  <text x="248" y="152" font-family="system-ui,sans-serif" font-size="8" font-weight="800" fill="white" text-anchor="middle">1</text>
+
+  <!-- Info highlight on nav -->
+  <rect x="70" y="50" width="340" height="34" rx="0" fill="none" stroke="#F39C12" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="414" cy="50" r="8" fill="#F39C12"/>
+  <text x="414" y="54" font-family="system-ui,sans-serif" font-size="8" font-weight="800" fill="white" text-anchor="middle">2</text>
+
+  <!-- Mock cards -->
+  <rect x="72" y="204" width="104" height="60" rx="6" fill="white" stroke="#E8E3DB" stroke-width="0.5"/>
+  <rect x="184" y="204" width="104" height="60" rx="6" fill="white" stroke="#E8E3DB" stroke-width="0.5"/>
+  <rect x="296" y="204" width="104" height="60" rx="6" fill="white" stroke="#E8E3DB" stroke-width="0.5"/>
+  <text x="84" y="224" font-family="system-ui,sans-serif" font-size="9" font-weight="700" fill="#1A1814">Recent</text>
+  <text x="196" y="224" font-family="system-ui,sans-serif" font-size="9" font-weight="700" fill="#1A1814">Saved</text>
+  <text x="308" y="224" font-family="system-ui,sans-serif" font-size="9" font-weight="700" fill="#1A1814">Pending</text>
+
+  <!-- Plugin panel -->
+  <rect x="500" y="20" width="280" height="460" rx="16" fill="white" stroke="#E8E3DB" stroke-width="1"/>
+  <!-- Glass effect -->
+  <rect x="500" y="20" width="280" height="460" rx="16" fill="white" fill-opacity="0.85"/>
+
+  <!-- Plugin header -->
+  <rect x="516" y="36" width="28" height="28" rx="8" fill="#65CCFF"/>
+  <text x="530" y="55" font-family="system-ui,sans-serif" font-size="11" font-weight="800" fill="white" text-anchor="middle">PM</text>
+  <text x="552" y="48" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#1A1814">Pattern Mentor</text>
+  <text x="552" y="60" font-family="system-ui,sans-serif" font-size="9" fill="#7A756C">AI Design Feedback</text>
+
+  <!-- Tabs -->
+  <rect x="516" y="78" width="56" height="22" rx="6" fill="#65CCFF"/>
+  <text x="544" y="93" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="white" text-anchor="middle">Audit</text>
+  <text x="600" y="93" font-family="system-ui,sans-serif" font-size="9" fill="#7A756C">Patterns</text>
+  <text x="660" y="93" font-family="system-ui,sans-serif" font-size="9" fill="#7A756C">Tokens</text>
+
+  <!-- Score ring -->
+  <circle cx="570" cy="140" r="28" fill="none" stroke="#E8E3DB" stroke-width="4"/>
+  <circle cx="570" cy="140" r="28" fill="none" stroke="#65CCFF" stroke-width="4" stroke-dasharray="110 66" stroke-linecap="round" transform="rotate(-90 570 140)"/>
+  <text x="570" y="145" font-family="system-ui,sans-serif" font-size="18" font-weight="800" fill="#2A9FD4" text-anchor="middle">62</text>
+  <text x="570" y="156" font-family="system-ui,sans-serif" font-size="8" fill="#7A756C" text-anchor="middle">/100</text>
+
+  <!-- Score pills -->
+  <rect x="620" y="120" width="48" height="18" rx="4" fill="#FEF2F2"/>
+  <text x="644" y="133" font-family="system-ui,sans-serif" font-size="8" font-weight="700" fill="#E74C3C" text-anchor="middle">2 Critical</text>
+  <rect x="620" y="142" width="48" height="18" rx="4" fill="#FFFBEB"/>
+  <text x="644" y="155" font-family="system-ui,sans-serif" font-size="8" font-weight="700" fill="#F39C12" text-anchor="middle">2 Warn</text>
+  <rect x="672" y="120" width="36" height="18" rx="4" fill="#EFF6FF"/>
+  <text x="690" y="133" font-family="system-ui,sans-serif" font-size="8" font-weight="700" fill="#65CCFF" text-anchor="middle">2 Info</text>
+
+  <!-- Finding cards -->
+  <rect x="516" y="178" width="248" height="52" rx="8" fill="white" stroke="#E8E3DB" stroke-width="1"/>
+  <circle cx="528" cy="194" r="4" fill="#E74C3C"/>
+  <text x="538" y="198" font-family="system-ui,sans-serif" font-size="10" font-weight="600" fill="#1A1814">Competing primary CTAs</text>
+  <rect x="694" y="188" width="56" height="14" rx="3" fill="rgba(101,204,255,0.12)"/>
+  <text x="722" y="198" font-family="system-ui,sans-serif" font-size="7" font-weight="700" fill="#2A9FD4" text-anchor="middle">UX PATTERN</text>
+  <text x="538" y="218" font-family="system-ui,sans-serif" font-size="8" fill="#7A756C">Two primary buttons create decision hesitation</text>
+
+  <rect x="516" y="236" width="248" height="52" rx="8" fill="white" stroke="#E8E3DB" stroke-width="1"/>
+  <circle cx="528" cy="252" r="4" fill="#F39C12"/>
+  <text x="538" y="256" font-family="system-ui,sans-serif" font-size="10" font-weight="600" fill="#1A1814">Navigation density high</text>
+  <rect x="688" y="246" width="62" height="14" rx="3" fill="rgba(245,158,11,0.12)"/>
+  <text x="719" y="256" font-family="system-ui,sans-serif" font-size="7" font-weight="700" fill="#F39C12" text-anchor="middle">UX PATTERN</text>
+  <text x="538" y="276" font-family="system-ui,sans-serif" font-size="8" fill="#7A756C">9 items exceeds 5-7 cognitive threshold</text>
+
+  <rect x="516" y="294" width="248" height="52" rx="8" fill="white" stroke="#E8E3DB" stroke-width="1"/>
+  <circle cx="528" cy="310" r="4" fill="#0D9488"/>
+  <text x="538" y="314" font-family="system-ui,sans-serif" font-size="10" font-weight="600" fill="#1A1814">Button spacing token drift</text>
+  <rect x="682" y="304" width="68" height="14" rx="3" fill="rgba(13,148,136,0.1)"/>
+  <text x="716" y="314" font-family="system-ui,sans-serif" font-size="7" font-weight="700" fill="#0D9488" text-anchor="middle">SYSTEM DRIFT</text>
+  <text x="538" y="334" font-family="system-ui,sans-serif" font-size="8" fill="#7A756C">14px detected, 16px expected from token</text>
+
+  <rect x="516" y="352" width="248" height="52" rx="8" fill="white" stroke="#E8E3DB" stroke-width="1"/>
+  <circle cx="528" cy="368" r="4" fill="#65CCFF"/>
+  <text x="538" y="372" font-family="system-ui,sans-serif" font-size="10" font-weight="600" fill="#1A1814">Missing semantic landmark</text>
+  <rect x="680" y="362" width="70" height="14" rx="3" fill="rgba(101,204,255,0.12)"/>
+  <text x="715" y="372" font-family="system-ui,sans-serif" font-size="7" font-weight="700" fill="#2A9FD4" text-anchor="middle">ACCESSIBILITY</text>
+  <text x="538" y="392" font-family="system-ui,sans-serif" font-size="8" fill="#7A756C">Hero section needs section + aria-label</text>
+
+  <!-- Walkthrough indicator -->
+  <rect x="560" y="432" width="160" height="24" rx="12" fill="#E8E3DB"/>
+  <text x="592" y="448" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#7A756C">◄</text>
+  <text x="640" y="448" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#1A1814" text-anchor="middle">Step 2 of 5</text>
+  <text x="688" y="448" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#7A756C">►</text>
+</svg>

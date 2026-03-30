@@ -8,13 +8,14 @@
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
   :root {
-    --bg: #0F1117;
-    --surface: #161822;
-    --surface-2: #1C1F2E;
-    --border: #2A2D3E;
-    --border-light: #353849;
-    --text: #E8E6F0;
-    --text-muted: #8B8DA3;
+    --canvas-bg: #E8E5E0;
+    --surface: #FFFFFF;
+    --panel-bg: #0F1117;
+    --panel-surface: #161822;
+    --panel-surface-2: #1C1F2E;
+    --panel-border: #2A2D3E;
+    --panel-text: #E8E6F0;
+    --panel-muted: #8B8DA3;
     --accent: #0D9488;
     --accent-glow: rgba(13, 148, 136, 0.15);
     --warn: #F59E0B;
@@ -30,495 +31,456 @@
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
+    background: var(--canvas-bg);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
   }
 
-  /* ── Top bar ── */
-  .topbar {
+  /* ── Figma-style toolbar ── */
+  .toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background: #2C2C2C;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 24px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    padding: 0 16px;
+    z-index: 500;
+    border-bottom: 1px solid #3A3A3A;
   }
 
-  .topbar-left {
+  .toolbar-left {
     display: flex;
     align-items: center;
     gap: 12px;
   }
 
-  .guardian-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, var(--accent), #6366F1);
+  .toolbar-logo {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--accent), var(--info));
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 800;
     color: white;
   }
 
-  .topbar-title {
-    font-size: 14px;
+  .toolbar-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #FFF;
+  }
+
+  .toolbar-title span { color: #999; font-weight: 400; margin-left: 4px; }
+
+  .toolbar-center {
+    display: flex;
+    gap: 2px;
+    background: #3A3A3A;
+    border-radius: 6px;
+    padding: 2px;
+  }
+
+  .toolbar-tab {
+    font-size: 11px;
+    font-weight: 500;
+    color: #999;
+    padding: 5px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    transition: all 0.15s;
+  }
+
+  .toolbar-tab.active { background: #555; color: #FFF; }
+  .toolbar-tab:hover:not(.active) { color: #CCC; }
+
+  .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .toolbar-zoom {
+    font-size: 11px;
+    color: #999;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .toolbar-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #E86B4A, #D44A2A);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: -0.01em;
+    color: white;
   }
 
-  .topbar-title span {
-    color: var(--text-muted);
-    font-weight: 400;
-    margin-left: 6px;
+  /* ── Canvas area ── */
+  .canvas {
+    position: fixed;
+    top: 48px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--canvas-bg);
+    background-image: radial-gradient(circle, #D5D0CB 1px, transparent 1px);
+    background-size: 24px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
   }
 
-  .topbar-right {
+  /* ── The "design" on canvas ── */
+  .design-frame {
+    width: 960px;
+    max-width: 90vw;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06);
+    overflow: hidden;
+    position: relative;
+    transform: scale(0.85);
+    transform-origin: center center;
+  }
+
+  /* Frame label (like Figma) */
+  .frame-label {
+    position: absolute;
+    top: -28px;
+    left: 0;
+    font-size: 11px;
+    font-weight: 500;
+    color: #999;
+  }
+
+  /* ── Design content: a travel booking page ── */
+  .design-nav {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    border-bottom: 1px solid #EAEAEA;
+    gap: 24px;
+  }
+
+  .design-nav-brand {
+    font-size: 14px;
+    font-weight: 800;
+    color: #1A1A1A;
+    letter-spacing: -0.02em;
+  }
+
+  .design-nav-links {
+    display: flex;
+    gap: 20px;
+    font-size: 12px;
+    color: #888;
+  }
+
+  .design-nav-links span:first-child { color: #1A1A1A; font-weight: 600; }
+
+  .design-nav-right {
+    margin-left: auto;
     display: flex;
     gap: 8px;
     align-items: center;
   }
 
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--success);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  .status-label {
+  .design-nav-btn {
     font-size: 11px;
-    font-weight: 500;
-    color: var(--text-muted);
-  }
-
-  /* ── Layout ── */
-  .layout {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    min-height: calc(100vh - 57px);
-  }
-
-  @media (max-width: 800px) {
-    .layout { grid-template-columns: 1fr; }
-    .sidebar { display: none; }
-  }
-
-  /* ── Sidebar: page preview ── */
-  .sidebar {
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    padding: 20px;
-    overflow-y: auto;
-  }
-
-  .sidebar-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-  }
-
-  /* Mini page preview */
-  .page-preview {
-    background: white;
-    border-radius: 8px;
-    padding: 16px;
-    color: #1A1A1A;
-    font-size: 11px;
-    position: relative;
-    cursor: pointer;
-  }
-
-  .preview-nav {
-    display: flex;
-    gap: 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #EEE;
-    margin-bottom: 12px;
-    font-size: 9px;
-    font-weight: 600;
-    color: #999;
-  }
-
-  .preview-nav span:first-child { color: #1A1A1A; }
-
-  .preview-hero {
-    background: #F3F4F6;
+    padding: 5px 12px;
     border-radius: 6px;
-    padding: 12px;
-    margin-bottom: 10px;
-  }
-
-  .preview-hero h3 {
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    color: #1A1A1A;
-  }
-
-  .preview-hero p {
-    font-size: 9px;
-    color: #6B7280;
-    line-height: 1.4;
-  }
-
-  .preview-btns {
-    display: flex;
-    gap: 6px;
-    margin-top: 8px;
-  }
-
-  .preview-btn {
-    font-size: 8px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 4px;
-    background: #1A1A1A;
-    color: white;
-  }
-
-  .preview-btn.secondary {
-    background: transparent;
     border: 1px solid #DDD;
+    background: white;
     color: #666;
+    font-weight: 500;
   }
 
-  .preview-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 6px;
-    margin-top: 10px;
+  .design-hero {
+    padding: 48px 40px 40px;
+    background: linear-gradient(180deg, #F8F9FC 0%, #FFFFFF 100%);
   }
 
-  .preview-card {
-    background: #F9FAFB;
-    border: 1px solid #E5E7EB;
-    border-radius: 4px;
-    padding: 8px;
-    font-size: 8px;
-    color: #6B7280;
-  }
-
-  .preview-card .bar {
-    height: 3px;
-    background: #E5E7EB;
-    border-radius: 2px;
-    margin-top: 4px;
-  }
-
-  /* Highlight overlays on preview */
-  .highlight-overlay {
-    position: absolute;
-    border: 2px solid var(--warn);
-    border-radius: 4px;
-    background: rgba(245, 158, 11, 0.08);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .highlight-overlay.active { opacity: 1; }
-
-  .highlight-overlay.error-hl { border-color: var(--error); background: rgba(239, 68, 68, 0.08); }
-  .highlight-overlay.info-hl { border-color: var(--info); background: rgba(99, 102, 241, 0.08); }
-
-  /* ── Selector bar ── */
-  .selector-bar {
-    padding: 16px 20px;
-    background: var(--surface-2);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .selector-input {
-    flex: 1;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    padding: 8px 12px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    color: var(--accent);
-    outline: none;
-  }
-
-  .selector-input:focus { border-color: var(--accent); }
-
-  .run-btn {
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 8px 20px;
-    border-radius: 6px;
-    border: none;
-    background: linear-gradient(135deg, var(--accent), #6366F1);
-    color: white;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-
-  .run-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(13, 148, 136, 0.3);
-  }
-
-  .run-btn:active { transform: translateY(0); }
-
-  .run-btn.running {
-    opacity: 0.7;
-    pointer-events: none;
-  }
-
-  /* ── Main panel ── */
-  .main {
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    max-height: calc(100vh - 57px);
-  }
-
-  /* ── Score header ── */
-  .score-header {
-    display: flex;
-    gap: 12px;
-    padding: 20px;
-    flex-wrap: wrap;
-  }
-
-  .score-card {
-    flex: 1;
-    min-width: 140px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    text-align: center;
-  }
-
-  .score-card .label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-  }
-
-  .score-card .value {
-    font-size: 28px;
+  .design-hero h1 {
+    font-size: 32px;
     font-weight: 800;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .score-card .value.good { color: var(--success); }
-  .score-card .value.warn { color: var(--warn); }
-  .score-card .value.bad { color: var(--error); }
-
-  .score-card .sub {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 2px;
-  }
-
-  /* ── Findings list ── */
-  .findings {
-    padding: 0 20px 60px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .findings-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 4px;
-    padding-top: 8px;
-  }
-
-  .finding {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 18px;
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-    opacity: 0;
-    transform: translateY(8px);
-    animation: fadeUp 0.4s forwards;
-  }
-
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .finding:hover {
-    border-color: var(--border-light);
-    background: var(--surface-2);
-  }
-
-  .finding-head {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
+    color: #1A1A1A;
+    letter-spacing: -0.03em;
     margin-bottom: 8px;
   }
 
-  .severity-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-top: 4px;
-    flex-shrink: 0;
-  }
-
-  .severity-dot.warning { background: var(--warn); box-shadow: 0 0 8px var(--warn-glow); }
-  .severity-dot.error { background: var(--error); box-shadow: 0 0 8px var(--error-glow); }
-  .severity-dot.info { background: var(--info); box-shadow: 0 0 8px var(--info-glow); }
-  .severity-dot.success { background: var(--success); }
-
-  .finding-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.3;
-  }
-
-  .finding-category {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 2px 7px;
-    border-radius: 3px;
-    margin-left: auto;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .finding-category.ux { background: var(--info-glow); color: #818CF8; }
-  .finding-category.system { background: var(--accent-glow); color: #5EEAD4; }
-  .finding-category.a11y { background: var(--warn-glow); color: #FBBF24; }
-  .finding-category.product { background: var(--error-glow); color: #FCA5A5; }
-
-  .finding-body {
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.6;
-    margin-bottom: 10px;
-  }
-
-  .finding-detail {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 12px;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-    overflow-x: auto;
-  }
-
-  .finding-detail .key { color: var(--accent); }
-  .finding-detail .val { color: var(--warn); }
-  .finding-detail .comment { color: #6B7280; font-style: italic; }
-
-  .suggestion {
-    font-size: 12px;
-    color: var(--text);
+  .design-hero p {
+    font-size: 15px;
+    color: #6B7280;
     line-height: 1.5;
-    padding: 10px 12px;
-    background: var(--accent-glow);
-    border-radius: 6px;
-    border-left: 3px solid var(--accent);
+    max-width: 480px;
+    margin-bottom: 24px;
   }
 
-  .suggestion strong {
-    color: var(--accent);
-    font-weight: 600;
-  }
-
-  .why-section {
-    font-size: 11px;
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid var(--border);
-    font-style: italic;
-  }
-
-  /* ── Empty / loading states ── */
-  .empty-state {
+  .design-hero-actions {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 80px 20px;
-    text-align: center;
-    color: var(--text-muted);
+    gap: 10px;
   }
 
-  .empty-state .icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-    opacity: 0.3;
-  }
-
-  .empty-state h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 6px;
-  }
-
-  .empty-state p {
+  .design-cta {
     font-size: 13px;
-    max-width: 320px;
-    line-height: 1.5;
+    font-weight: 700;
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: default;
   }
 
-  /* ── Scanning animation ── */
-  .scanning {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    padding: 60px 20px;
+  .design-cta.primary { background: #1A1A1A; color: white; }
+  .design-cta.primary2 { background: #2563EB; color: white; }
+  .design-cta.secondary { background: white; color: #666; border: 1px solid #DDD; }
+
+  .design-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
+    padding: 0 40px 40px;
   }
 
-  .scanning.active { display: flex; }
+  .design-card {
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 20px;
+  }
 
-  .scan-bar {
-    width: 200px;
+  .design-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin-bottom: 4px;
+  }
+
+  .design-card p {
+    font-size: 12px;
+    color: #9CA3AF;
+    line-height: 1.4;
+  }
+
+  .design-card-bar {
     height: 4px;
-    background: var(--border);
+    background: #F3F4F6;
     border-radius: 2px;
+    margin-top: 12px;
     overflow: hidden;
   }
 
-  .scan-fill {
+  .design-card-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  /* ── Highlight overlays on the design ── */
+  .audit-highlight {
+    position: absolute;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s, border-color 0.3s;
+    z-index: 10;
+  }
+
+  .audit-highlight.active {
+    opacity: 1;
+  }
+
+  .audit-highlight .hl-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 800;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .audit-highlight.warn { border-color: var(--warn); background: rgba(245, 158, 11, 0.06); }
+  .audit-highlight.warn .hl-badge { background: var(--warn); }
+  .audit-highlight.error { border-color: var(--error); background: rgba(239, 68, 68, 0.06); }
+  .audit-highlight.error .hl-badge { background: var(--error); }
+  .audit-highlight.info { border-color: var(--info); background: rgba(99, 102, 241, 0.06); }
+  .audit-highlight.info .hl-badge { background: var(--info); }
+  .audit-highlight.drift { border-color: var(--accent); background: rgba(13, 148, 136, 0.06); }
+  .audit-highlight.drift .hl-badge { background: var(--accent); }
+
+  /* ── FigPal floating button ── */
+  .figpal-fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--info));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 24px rgba(13, 148, 136, 0.35);
+    z-index: 400;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+  }
+
+  .figpal-fab:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 32px rgba(13, 148, 136, 0.45);
+  }
+
+  .figpal-fab.scanning {
+    animation: fabPulse 1.2s infinite;
+  }
+
+  @keyframes fabPulse {
+    0%, 100% { box-shadow: 0 4px 24px rgba(13, 148, 136, 0.35); }
+    50% { box-shadow: 0 4px 40px rgba(245, 158, 11, 0.5); }
+  }
+
+  .figpal-eyes {
+    display: flex;
+    gap: 5px;
+  }
+
+  .figpal-eye {
+    width: 9px;
+    height: 9px;
+    background: white;
+    border-radius: 50%;
+    animation: blink 3.5s infinite;
+  }
+
+  @keyframes blink {
+    0%, 94%, 100% { transform: scaleY(1); }
+    96% { transform: scaleY(0.1); }
+  }
+
+  .figpal-fab.open .figpal-eyes { display: none; }
+  .figpal-fab.open::after {
+    content: '✕';
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  /* ── Audit panel (slides up from FigPal) ── */
+  .audit-panel {
+    position: fixed;
+    bottom: 92px;
+    right: 24px;
+    width: 420px;
+    max-height: calc(100vh - 160px);
+    background: var(--panel-bg);
+    border-radius: 16px;
+    border: 1px solid var(--panel-border);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.15);
+    z-index: 390;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s;
+  }
+
+  .audit-panel.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .panel-header {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--panel-border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .panel-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--accent), var(--info));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .panel-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--panel-text);
+  }
+
+  .panel-subtitle {
+    font-size: 11px;
+    color: var(--panel-muted);
+  }
+
+  .panel-scan-btn {
+    margin-left: auto;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 6px;
+    border: none;
+    background: linear-gradient(135deg, var(--accent), var(--info));
+    color: white;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.15s;
+  }
+
+  .panel-scan-btn:hover { transform: translateY(-1px); }
+  .panel-scan-btn.running { opacity: 0.6; pointer-events: none; }
+
+  /* ── Scanning state ── */
+  .panel-scanning {
+    display: none;
+    padding: 32px 18px;
+    text-align: center;
+  }
+
+  .panel-scanning.active { display: block; }
+
+  .scan-progress {
+    width: 100%;
+    height: 3px;
+    background: #2A2D3E;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .scan-progress-fill {
     height: 100%;
     width: 0;
     background: linear-gradient(90deg, var(--accent), var(--info));
@@ -526,348 +488,708 @@
     transition: width 0.3s;
   }
 
-  .scan-label {
-    font-size: 12px;
-    color: var(--text-muted);
+  .scan-step-label {
+    font-size: 11px;
+    color: var(--panel-muted);
     font-family: 'JetBrains Mono', monospace;
   }
 
-  /* ── FigPal mascot ── */
-  .figpal {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), #6366F1);
+  /* ── Score strip ── */
+  .score-strip {
+    display: none;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--panel-border);
+    gap: 8px;
+  }
+
+  .score-strip.active { display: flex; }
+
+  .score-pill {
+    flex: 1;
+    text-align: center;
+    padding: 8px 4px;
+    background: var(--panel-surface);
+    border-radius: 8px;
+    border: 1px solid var(--panel-border);
+  }
+
+  .score-pill .s-label {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--panel-muted);
+    margin-bottom: 2px;
+  }
+
+  .score-pill .s-value {
+    font-size: 20px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .s-value.good { color: var(--success); }
+  .s-value.warn { color: var(--warn); }
+  .s-value.bad { color: var(--error); }
+  .s-value.info-c { color: var(--info); }
+
+  /* ── Findings list ── */
+  .panel-findings {
+    display: none;
+    overflow-y: auto;
+    flex: 1;
+    padding: 12px;
+    gap: 8px;
+    flex-direction: column;
+  }
+
+  .panel-findings.active { display: flex; }
+
+  .finding-card {
+    background: var(--panel-surface);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .finding-card:hover { border-color: #404560; }
+  .finding-card.expanded { border-color: #505580; }
+
+  .finding-row {
     display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(13, 148, 136, 0.3);
-    transition: transform 0.2s, box-shadow 0.2s;
-    z-index: 200;
+    gap: 10px;
+    padding: 12px 14px;
   }
 
-  .figpal:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 28px rgba(13, 148, 136, 0.4);
-  }
-
-  .figpal-eye {
+  .f-dot {
     width: 8px;
     height: 8px;
-    background: white;
     border-radius: 50%;
-    margin: 0 2px;
-    animation: blink 3s infinite;
+    flex-shrink: 0;
   }
 
-  @keyframes blink {
-    0%, 95%, 100% { transform: scaleY(1); }
-    97% { transform: scaleY(0.1); }
+  .f-dot.warning { background: var(--warn); }
+  .f-dot.error { background: var(--error); }
+  .f-dot.info { background: var(--info); }
+  .f-dot.drift { background: var(--accent); }
+
+  .f-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--panel-text);
+    flex: 1;
   }
 
-  .figpal.alert {
-    animation: figpalPulse 1s infinite;
+  .f-cat {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
   }
 
-  @keyframes figpalPulse {
-    0%, 100% { box-shadow: 0 4px 20px rgba(13, 148, 136, 0.3); }
-    50% { box-shadow: 0 4px 30px rgba(245, 158, 11, 0.5); }
+  .f-cat.ux { background: var(--info-glow); color: #818CF8; }
+  .f-cat.system { background: var(--accent-glow); color: #5EEAD4; }
+  .f-cat.a11y { background: var(--warn-glow); color: #FBBF24; }
+  .f-cat.product { background: var(--error-glow); color: #FCA5A5; }
+
+  .f-chevron {
+    font-size: 10px;
+    color: var(--panel-muted);
+    transition: transform 0.2s;
+  }
+
+  .finding-card.expanded .f-chevron { transform: rotate(90deg); }
+
+  /* Expanded detail */
+  .finding-detail {
+    display: none;
+    padding: 0 14px 14px;
+  }
+
+  .finding-card.expanded .finding-detail { display: block; }
+
+  .f-desc {
+    font-size: 11px;
+    color: var(--panel-muted);
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+
+  .f-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: var(--panel-muted);
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+
+  .f-code .key { color: var(--accent); }
+  .f-code .val { color: var(--warn); }
+  .f-code .cmt { color: #555; font-style: italic; }
+
+  .f-suggestion {
+    font-size: 11px;
+    color: var(--panel-text);
+    line-height: 1.5;
+    padding: 8px 10px;
+    background: var(--accent-glow);
+    border-radius: 6px;
+    border-left: 3px solid var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .f-suggestion strong { color: var(--accent); }
+
+  .f-why {
+    font-size: 10px;
+    color: var(--panel-muted);
+    line-height: 1.5;
+    font-style: italic;
+    padding-top: 8px;
+    border-top: 1px solid var(--panel-border);
+    margin-bottom: 10px;
+  }
+
+  /* Action buttons */
+  .f-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .f-action-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 5px;
+    border: 1px solid var(--panel-border);
+    background: var(--panel-surface-2);
+    color: var(--panel-text);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .f-action-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .f-action-btn.applied {
+    background: var(--accent-glow);
+    border-color: var(--accent);
+    color: var(--accent);
+    pointer-events: none;
+  }
+
+  .f-action-btn.documented {
+    background: var(--info-glow);
+    border-color: var(--info);
+    color: #818CF8;
+    pointer-events: none;
+  }
+
+  /* ── Empty / ready state in panel ── */
+  .panel-ready {
+    padding: 40px 18px;
+    text-align: center;
+  }
+
+  .panel-ready .pr-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+    opacity: 0.3;
+  }
+
+  .panel-ready h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--panel-text);
+    margin-bottom: 6px;
+  }
+
+  .panel-ready p {
+    font-size: 12px;
+    color: var(--panel-muted);
+    line-height: 1.5;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  /* ── Credit bar ── */
+  .credit-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 24px;
+    background: #2C2C2C;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 500;
+    font-size: 10px;
+    color: #888;
+  }
+
+  .credit-bar a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* Toast notification */
+  .toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--panel-bg);
+    color: var(--panel-text);
+    border: 1px solid var(--panel-border);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 600;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    .design-frame { transform: scale(0.6); }
+    .audit-panel { width: 340px; right: 12px; bottom: 80px; }
+    .figpal-fab { right: 12px; bottom: 12px; width: 48px; height: 48px; }
   }
 </style>
 </head>
 <body>
 
-<!-- Top bar -->
-<div class="topbar">
-  <div class="topbar-left">
-    <div class="guardian-icon">G</div>
-    <div class="topbar-title">Guardian <span>AI UX Audit Tool</span></div>
+<!-- Figma-style toolbar -->
+<div class="toolbar">
+  <div class="toolbar-left">
+    <div class="toolbar-logo">G</div>
+    <div class="toolbar-title">Guardian <span>· Booking Homepage</span></div>
   </div>
-  <div class="topbar-right">
-    <div class="status-dot"></div>
-    <span class="status-label">Connected</span>
+  <div class="toolbar-center">
+    <button class="toolbar-tab active">Design</button>
+    <button class="toolbar-tab">Prototype</button>
+    <button class="toolbar-tab">Inspect</button>
   </div>
-</div>
-
-<div class="layout">
-  <!-- Sidebar: page preview -->
-  <div class="sidebar">
-    <div class="sidebar-label">Page Under Audit</div>
-    <div class="page-preview" id="pagePreview">
-      <div class="preview-nav">
-        <span>Home</span><span>Flights</span><span>Hotels</span><span>Rail</span><span>Car</span><span>Reports</span><span>Settings</span><span>Admin</span><span>Help</span>
-      </div>
-      <div class="preview-hero">
-        <h3>Book your next trip</h3>
-        <p>Search across flights, hotels, rail, and car rentals for your team.</p>
-        <div class="preview-btns">
-          <div class="preview-btn">Search Flights</div>
-          <div class="preview-btn">Search Hotels</div>
-          <div class="preview-btn secondary">View Policy</div>
-        </div>
-      </div>
-      <div class="preview-cards">
-        <div class="preview-card">Recent<br><div class="bar"></div></div>
-        <div class="preview-card">Saved<br><div class="bar"></div></div>
-        <div class="preview-card">Pending<br><div class="bar"></div></div>
-      </div>
-
-      <!-- Highlight overlays positioned on preview -->
-      <div class="highlight-overlay" id="hl-nav" style="top:12px;left:12px;right:12px;height:24px"></div>
-      <div class="highlight-overlay error-hl" id="hl-btns" style="top:92px;left:28px;width:170px;height:26px"></div>
-      <div class="highlight-overlay info-hl" id="hl-hero" style="top:48px;left:12px;right:12px;height:78px"></div>
-    </div>
-
-    <div style="margin-top:20px">
-      <div class="sidebar-label">Audit Scope</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
-        <span style="font-size:10px;padding:3px 8px;border-radius:4px;background:var(--info-glow);color:#818CF8;font-weight:600">UX Heuristics</span>
-        <span style="font-size:10px;padding:3px 8px;border-radius:4px;background:var(--accent-glow);color:#5EEAD4;font-weight:600">System Drift</span>
-        <span style="font-size:10px;padding:3px 8px;border-radius:4px;background:var(--warn-glow);color:#FBBF24;font-weight:600">Accessibility</span>
-        <span style="font-size:10px;padding:3px 8px;border-radius:4px;background:var(--error-glow);color:#FCA5A5;font-weight:600">Product</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main panel -->
-  <div class="main" id="mainPanel">
-    <div class="selector-bar">
-      <input class="selector-input" id="selectorInput" value="body > main" placeholder="Select element or enter URL..." />
-      <button class="run-btn" id="runBtn" onclick="runAudit()">Run Audit</button>
-    </div>
-
-    <!-- Empty state -->
-    <div class="empty-state" id="emptyState">
-      <div class="icon">&#9881;</div>
-      <h3>Ready to audit</h3>
-      <p>Select an element or page section, then click Run Audit to analyse UX, system compliance, and accessibility.</p>
-    </div>
-
-    <!-- Scanning state -->
-    <div class="scanning" id="scanState">
-      <div class="scan-bar"><div class="scan-fill" id="scanFill"></div></div>
-      <div class="scan-label" id="scanLabel">Inspecting DOM structure...</div>
-    </div>
-
-    <!-- Results -->
-    <div id="results" style="display:none">
-      <div class="score-header" id="scoreHeader"></div>
-      <div class="findings" id="findingsList"></div>
-    </div>
+  <div class="toolbar-right">
+    <span class="toolbar-zoom">85%</span>
+    <div class="toolbar-avatar">E</div>
   </div>
 </div>
 
-<!-- Credit line -->
-<div style="position:fixed;bottom:0;left:0;right:0;padding:10px 24px;background:var(--surface);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;z-index:150;font-size:11px;color:var(--text-muted)">
-  <span>Guardian — AI UX Audit Tool · Concept by <a href="https://elleta.design" style="color:var(--accent);text-decoration:none;font-weight:600">Elleta McDaniel</a></span>
-  <span style="font-size:10px;opacity:0.6">Into Design Systems Hackathon 2026 · Sponsored by Figma</span>
+<!-- Canvas with design -->
+<div class="canvas">
+  <div class="design-frame" id="designFrame">
+    <span class="frame-label">Homepage / Desktop — 1440px</span>
+
+    <!-- Navigation -->
+    <div class="design-nav" id="designNav">
+      <span class="design-nav-brand">ctrl+travel</span>
+      <div class="design-nav-links">
+        <span>Home</span><span>Flights</span><span>Hotels</span><span>Rail</span><span>Car Rental</span><span>Reports</span><span>Settings</span><span>Admin</span><span>Help</span>
+      </div>
+      <div class="design-nav-right">
+        <span class="design-nav-btn">Notifications</span>
+        <span class="design-nav-btn">Profile</span>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="design-hero" id="designHero">
+      <h1>Book your next trip</h1>
+      <p>Search across flights, hotels, rail, and car rentals. Compare rates, apply company policy, and book instantly for your team.</p>
+      <div class="design-hero-actions" id="designCTAs">
+        <button class="design-cta primary">Search Flights</button>
+        <button class="design-cta primary2">Search Hotels</button>
+        <button class="design-cta secondary">View Policy</button>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="design-cards" id="designCards">
+      <div class="design-card" id="card1">
+        <h3>Recent Bookings</h3>
+        <p>Your last 5 trips and pending confirmations</p>
+        <div class="design-card-bar"><div class="design-card-bar-fill" style="width:65%;background:#3B82F6"></div></div>
+      </div>
+      <div class="design-card" id="card2">
+        <h3>Saved Searches</h3>
+        <p>Quick access to your frequent routes</p>
+        <div class="design-card-bar"><div class="design-card-bar-fill" style="width:40%;background:#8B5CF6"></div></div>
+      </div>
+      <div class="design-card" id="card3">
+        <h3>Pending Approvals</h3>
+        <p>3 requests waiting for manager review</p>
+        <div class="design-card-bar"><div class="design-card-bar-fill" style="width:30%;background:#F59E0B"></div></div>
+      </div>
+    </div>
+
+    <!-- Audit highlight overlays -->
+    <div class="audit-highlight warn" id="hl-nav" style="top:0;left:0;right:0;height:44px">
+      <span class="hl-badge">1</span>
+    </div>
+    <div class="audit-highlight error" id="hl-ctas" style="top:188px;left:40px;width:340px;height:44px">
+      <span class="hl-badge">2</span>
+    </div>
+    <div class="audit-highlight drift" id="hl-btns" style="top:180px;left:32px;width:360px;height:56px">
+      <span class="hl-badge">3</span>
+    </div>
+    <div class="audit-highlight info" id="hl-hero" style="top:44px;left:0;right:0;height:190px">
+      <span class="hl-badge">4</span>
+    </div>
+    <div class="audit-highlight warn" id="hl-form" style="top:84px;left:24px;right:24px;height:100px">
+      <span class="hl-badge">5</span>
+    </div>
+    <div class="audit-highlight drift" id="hl-cards" style="bottom:0;left:24px;right:24px;height:100px">
+      <span class="hl-badge">6</span>
+    </div>
+    <div class="audit-highlight error" id="hl-contrast" style="top:188px;left:288px;width:110px;height:44px">
+      <span class="hl-badge">7</span>
+    </div>
+  </div>
 </div>
 
-<!-- FigPal mascot -->
-<div class="figpal" id="figpal" title="Guardian is watching" style="bottom:56px">
-  <div class="figpal-eye"></div>
-  <div class="figpal-eye"></div>
+<!-- FigPal floating action button -->
+<button class="figpal-fab" id="figpalFab" onclick="togglePanel()">
+  <div class="figpal-eyes">
+    <div class="figpal-eye"></div>
+    <div class="figpal-eye"></div>
+  </div>
+</button>
+
+<!-- Audit panel -->
+<div class="audit-panel" id="auditPanel">
+  <div class="panel-header">
+    <div class="panel-icon">G</div>
+    <div>
+      <div class="panel-title">Guardian</div>
+      <div class="panel-subtitle">AI UX Audit Tool</div>
+    </div>
+    <button class="panel-scan-btn" id="scanBtn" onclick="runScan()">Scan Page</button>
+  </div>
+
+  <!-- Ready state -->
+  <div class="panel-ready" id="readyState">
+    <div class="pr-icon">🔍</div>
+    <h3>Ready to audit</h3>
+    <p>Click "Scan Page" to analyse this design for UX issues, design system drift, and accessibility concerns.</p>
+  </div>
+
+  <!-- Scanning -->
+  <div class="panel-scanning" id="scanState">
+    <div class="scan-progress"><div class="scan-progress-fill" id="scanFill"></div></div>
+    <div class="scan-step-label" id="scanLabel">Inspecting DOM structure...</div>
+  </div>
+
+  <!-- Scores -->
+  <div class="score-strip" id="scoreStrip">
+    <div class="score-pill"><div class="s-label">Score</div><div class="s-value warn" id="sScore">—</div></div>
+    <div class="score-pill"><div class="s-label">Errors</div><div class="s-value bad" id="sErrors">—</div></div>
+    <div class="score-pill"><div class="s-label">Warnings</div><div class="s-value warn" id="sWarns">—</div></div>
+    <div class="score-pill"><div class="s-label">Info</div><div class="s-value info-c" id="sInfo">—</div></div>
+  </div>
+
+  <!-- Findings -->
+  <div class="panel-findings" id="findingsList"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Credit -->
+<div class="credit-bar">
+  <span>Guardian — AI UX Audit Tool · Concept by <a href="https://elleta.design">Elleta McDaniel</a></span>
+  <span>Into Design Systems 2026</span>
 </div>
 
 <script>
 const findings = [
   {
-    severity: "warning",
-    category: "ux",
-    catLabel: "UX Heuristic",
-    title: "Navigation density high",
-    body: "Primary navigation contains 9 items. Usability research shows optimal cognitive load between 5\u20137 items for horizontal nav.",
-    detail: '<span class="key">nav.primary</span> <span class="comment">// 9 children found</span>\n<span class="key">recommended</span>: <span class="val">5\u20137 items</span>\n<span class="key">detected</span>:   <span class="val">9 items</span>',
-    suggestion: '<strong>Suggestion:</strong> Group "Reports", "Settings", "Admin", and "Help" under a secondary menu or overflow pattern.',
-    why: 'Why this matters: Users scan navigation in under 2 seconds. Beyond 7 items, selection time increases and errors rise \u2014 especially on mobile.',
-    highlight: "hl-nav"
+    severity: "warning", category: "ux", catLabel: "UX Heuristic",
+    title: "Navigation density exceeds cognitive threshold",
+    body: "Primary navigation contains 9 items. Research shows 5–7 items is optimal for horizontal nav — beyond that, scanning time increases and errors rise, especially on mobile.",
+    code: '<span class="key">nav.primary</span> <span class="cmt">// children count</span>\n<span class="key">detected</span>:    <span class="val">9 items</span>\n<span class="key">recommended</span>: <span class="val">5–7 items</span>',
+    suggestion: '<strong>Fix:</strong> Group Reports, Settings, Admin, and Help under a secondary overflow menu. Keep primary nav to 5–6 core items.',
+    why: 'Users scan navigation in under 2 seconds. Past 7 items, selection time rises sharply — Hick's Law in action. On mobile this becomes a critical bottleneck.',
+    highlight: "hl-nav",
+    fixLabel: "Group into overflow menu",
+    docLabel: "Nav density guideline"
   },
   {
-    severity: "error",
-    category: "product",
-    catLabel: "Product",
-    title: "CTA conflict \u2014 competing primary actions",
-    body: "Two primary-styled buttons appear side by side in the hero section. This creates decision hesitation and reduces click-through on both.",
-    detail: '<span class="key">button.primary</span>  "Search Flights"\n<span class="key">button.primary</span>  "Search Hotels"\n<span class="comment">// Both use --btn-primary token</span>\n<span class="comment">// Expected: 1 primary + 1 secondary</span>',
-    suggestion: '<strong>Suggestion:</strong> Make one CTA primary ("Search") and demote the other to secondary. Consider a unified search with transport type toggle.',
-    why: 'Why this matters: When two buttons compete for attention, users hesitate. Studies show a single clear CTA increases conversion by 18\u201325%.',
-    highlight: "hl-btns"
+    severity: "error", category: "product", catLabel: "Product",
+    title: "Competing primary CTAs create decision hesitation",
+    body: "Two primary-styled buttons appear side by side in the hero. Both use strong visual weight. Users hesitate when two actions compete for attention equally.",
+    code: '<span class="key">button.primary</span>  "Search Flights"  <span class="cmt">// bg: #1A1A1A</span>\n<span class="key">button.primary</span>  "Search Hotels"   <span class="cmt">// bg: #2563EB</span>\n\n<span class="cmt">// Two competing primaries — expected: 1 primary + 1 secondary</span>',
+    suggestion: '<strong>Fix:</strong> Make one unified "Search" CTA as primary. Demote the other to secondary, or use a transport-type toggle (Flights | Hotels | Rail) before a single search action.',
+    why: 'When two buttons compete equally, click-through drops on both. A single clear CTA increases conversion by 18–25% in booking flows.',
+    highlight: "hl-ctas",
+    fixLabel: "Unify into single CTA",
+    docLabel: "CTA hierarchy pattern"
   },
   {
-    severity: "warning",
-    category: "system",
-    catLabel: "System Drift",
-    title: "Button spacing deviates from design token",
-    body: "The hero CTA buttons use 14px horizontal padding instead of the system-defined spacing token.",
-    detail: '<span class="key">Design token</span>\n  <span class="key">--spacing-md</span> = <span class="val">16px</span>\n\n<span class="key">Detected</span>\n  <span class="key">padding-inline</span> = <span class="val">14px</span>\n\n<span class="comment">// Drift: 2px deviation from system</span>',
-    suggestion: '<strong>Suggestion:</strong> Align button padding with <code>--spacing-md</code> token. This is a common source of silent drift that compounds across components.',
-    why: 'Why this matters: Small token deviations accumulate. When 10 components each drift 2px, the visual language fragments without anyone noticing.',
-    highlight: "hl-btns"
+    severity: "drift", category: "system", catLabel: "System Drift",
+    title: "Button padding deviates from spacing token",
+    body: "Hero CTA buttons use 10px vertical / 24px horizontal padding instead of the design system's --spacing-sm (12px) and --spacing-lg (28px) tokens.",
+    code: '<span class="key">Design tokens</span>\n  <span class="key">--spacing-sm</span>  = <span class="val">12px</span>\n  <span class="key">--spacing-lg</span>  = <span class="val">28px</span>\n\n<span class="key">Detected</span>\n  <span class="key">padding</span>       = <span class="val">10px 24px</span>\n  <span class="cmt">// Drift: -2px vertical, -4px horizontal</span>',
+    suggestion: '<strong>Fix:</strong> Replace hard-coded padding with <code>var(--spacing-sm) var(--spacing-lg)</code>. Run a token linter to catch similar drift elsewhere.',
+    why: 'Small token deviations compound silently. When 10 components each drift a few pixels, the visual language fragments and the system loses credibility.',
+    highlight: "hl-btns",
+    fixLabel: "Apply spacing tokens",
+    docLabel: "Token compliance rule"
   },
   {
-    severity: "info",
-    category: "a11y",
-    catLabel: "Accessibility",
-    title: "Hero section lacks landmark role",
-    body: "The hero content area is a generic <div> rather than a semantic <section> or <main> landmark. Screen readers cannot identify this as the primary content region.",
-    detail: '<span class="key">Current</span>:  <span class="val">&lt;div class="hero"&gt;</span>\n<span class="key">Expected</span>: <span class="val">&lt;section role="region" aria-label="Search"&gt;</span>',
-    suggestion: '<strong>Suggestion:</strong> Wrap the hero in a <code>&lt;section&gt;</code> with an <code>aria-label</code> describing its purpose.',
-    why: 'Why this matters: Screen reader users navigate by landmarks. Without them, the page feels like a single undifferentiated block of content.',
-    highlight: "hl-hero"
+    severity: "info", category: "a11y", catLabel: "Accessibility",
+    title: "Hero section lacks semantic landmark",
+    body: "The hero content area is a generic <div> rather than a <section> with an aria-label. Screen readers can't identify this as the primary content region.",
+    code: '<span class="key">Current</span>:  <span class="val">&lt;div class="hero"&gt;</span>\n<span class="key">Expected</span>: <span class="val">&lt;section role="region" aria-label="Search"&gt;</span>',
+    suggestion: '<strong>Fix:</strong> Wrap the hero in a <code>&lt;section&gt;</code> with <code>aria-label="Trip search"</code>. This takes 30 seconds and benefits all screen reader users.',
+    why: 'Screen reader users navigate by landmarks. Without them, the page is a single undifferentiated block — like a book without chapter headings.',
+    highlight: "hl-hero",
+    fixLabel: "Add landmark role",
+    docLabel: "Landmark requirements"
   },
   {
-    severity: "warning",
-    category: "ux",
-    catLabel: "UX Heuristic",
-    title: "No error prevention on search form",
-    body: "The search form allows submission without validating required fields (destination, dates). Users will only see errors after submission.",
-    detail: '<span class="key">form.search</span>\n  <span class="key">inline-validation</span>: <span class="val">none</span>\n  <span class="key">required-fields</span>:  <span class="val">3 (destination, depart, return)</span>\n  <span class="key">validation-trigger</span>: <span class="val">on-submit only</span>',
-    suggestion: '<strong>Suggestion:</strong> Add inline validation on blur for required fields. Show clear error states before the user hits submit.',
-    why: 'Why this matters: Post-submission errors increase task failure rates by ~18% and create frustration, especially on mobile.',
-    highlight: "hl-hero"
+    severity: "warning", category: "ux", catLabel: "UX Heuristic",
+    title: "No inline validation on search form",
+    body: "The search form allows submission without validating required fields (destination, dates). Users only discover errors after submitting — a violation of error prevention heuristics.",
+    code: '<span class="key">form.search</span>\n  <span class="key">inline-validation</span>: <span class="val">none</span>\n  <span class="key">required-fields</span>:  <span class="val">3 (destination, depart, return)</span>\n  <span class="key">validation-trigger</span>: <span class="val">on-submit only</span>',
+    suggestion: '<strong>Fix:</strong> Add inline validation on blur for required fields. Show clear, persistent error states before the user hits submit.',
+    why: 'Post-submission errors increase form abandonment by ~18%. In booking flows, this directly impacts conversion and customer frustration.',
+    highlight: "hl-form",
+    fixLabel: "Add inline validation",
+    docLabel: "Form validation pattern"
   },
   {
-    severity: "info",
-    category: "system",
-    catLabel: "System Drift",
-    title: "Card component uses inconsistent border radius",
-    body: "The three dashboard cards use 4px border-radius while the design system specifies 8px for card components.",
-    detail: '<span class="key">Design token</span>\n  <span class="key">--radius-card</span> = <span class="val">8px</span>\n\n<span class="key">Detected</span>\n  <span class="key">border-radius</span> = <span class="val">4px</span> <span class="comment">// 3 instances</span>',
-    suggestion: '<strong>Suggestion:</strong> Update card border-radius to reference <code>--radius-card</code> token instead of hard-coded value.',
-    why: 'Why this matters: Inconsistent radii make the interface feel unpolished and erode trust in the design system as a source of truth.',
-    highlight: null
+    severity: "drift", category: "system", catLabel: "System Drift",
+    title: "Card border-radius doesn't match token",
+    body: "The three dashboard cards use 10px border-radius. The design system specifies --radius-card: 12px. This looks close but breaks visual consistency.",
+    code: '<span class="key">Design token</span>\n  <span class="key">--radius-card</span>  = <span class="val">12px</span>\n\n<span class="key">Detected</span>\n  <span class="key">border-radius</span> = <span class="val">10px</span> <span class="cmt">// 3 card instances</span>',
+    suggestion: '<strong>Fix:</strong> Replace hard-coded radius with <code>var(--radius-card)</code>. Consider adding a Stylelint rule to flag hard-coded radii.',
+    why: 'Inconsistent radii make the UI feel unpolished and erode trust in the design system as the source of truth.',
+    highlight: "hl-cards",
+    fixLabel: "Apply radius token",
+    docLabel: "Card component spec"
   },
   {
-    severity: "error",
-    category: "a11y",
-    catLabel: "Accessibility",
-    title: "Colour contrast below WCAG AA threshold",
-    body: "The secondary button text (#999 on white) has a contrast ratio of 2.8:1, well below the WCAG AA minimum of 4.5:1.",
-    detail: '<span class="key">Element</span>: <span class="val">button.secondary</span>\n<span class="key">Foreground</span>: <span class="val">#999999</span>\n<span class="key">Background</span>: <span class="val">#FFFFFF</span>\n<span class="key">Ratio</span>: <span class="val">2.8:1</span> <span class="comment">// Minimum: 4.5:1</span>',
-    suggestion: '<strong>Suggestion:</strong> Darken the secondary button text to at least #767676 (4.5:1 ratio) or use the system muted-text token.',
-    why: 'Why this matters: 1 in 12 men and 1 in 200 women have colour vision deficiency. Low contrast text is invisible to many users.',
-    highlight: "hl-btns"
+    severity: "error", category: "a11y", catLabel: "Accessibility",
+    title: "Secondary button fails WCAG AA contrast",
+    body: "The 'View Policy' button text (#666 on white border) has a contrast ratio of 3.6:1 — below the 4.5:1 WCAG AA minimum for normal text.",
+    code: '<span class="key">Element</span>:    <span class="val">button.secondary "View Policy"</span>\n<span class="key">Foreground</span>: <span class="val">#666666</span>\n<span class="key">Background</span>: <span class="val">#FFFFFF</span>\n<span class="key">Ratio</span>:      <span class="val">3.6:1</span> <span class="cmt">// Min required: 4.5:1</span>',
+    suggestion: '<strong>Fix:</strong> Darken secondary button text to at least #595959 (7:1) or use the system --color-text-muted token which is already compliant.',
+    why: '1 in 12 men and 1 in 200 women have colour vision deficiency. Failing AA contrast makes this button invisible to many users, and creates legal liability.',
+    highlight: "hl-contrast",
+    fixLabel: "Fix contrast ratio",
+    docLabel: "Contrast requirements"
   }
 ];
 
 const scanSteps = [
   "Inspecting DOM structure...",
-  "Analysing component hierarchy...",
+  "Mapping component hierarchy...",
   "Checking design token compliance...",
-  "Running UX heuristic evaluation...",
+  "Running heuristic evaluation...",
   "Testing accessibility signals...",
-  "Evaluating conversion patterns...",
+  "Detecting system drift...",
   "Generating audit report..."
 ];
 
-function runAudit() {
-  const btn = document.getElementById("runBtn");
-  const empty = document.getElementById("emptyState");
+let panelOpen = false;
+let scanned = false;
+
+function togglePanel() {
+  panelOpen = !panelOpen;
+  document.getElementById("auditPanel").classList.toggle("open", panelOpen);
+  document.getElementById("figpalFab").classList.toggle("open", panelOpen);
+}
+
+function runScan() {
+  const btn = document.getElementById("scanBtn");
+  const ready = document.getElementById("readyState");
   const scan = document.getElementById("scanState");
-  const results = document.getElementById("results");
-  const scanFill = document.getElementById("scanFill");
-  const scanLabel = document.getElementById("scanLabel");
-  const figpal = document.getElementById("figpal");
+  const fab = document.getElementById("figpalFab");
 
   btn.classList.add("running");
   btn.textContent = "Scanning...";
-  empty.style.display = "none";
-  results.style.display = "none";
+  ready.style.display = "none";
+  document.getElementById("scoreStrip").classList.remove("active");
+  document.getElementById("findingsList").classList.remove("active");
   scan.classList.add("active");
-  figpal.classList.add("alert");
+  fab.classList.add("scanning");
 
+  // Hide any old highlights
+  document.querySelectorAll(".audit-highlight").forEach(h => h.classList.remove("active"));
+
+  const fill = document.getElementById("scanFill");
+  const label = document.getElementById("scanLabel");
   let step = 0;
+
   const interval = setInterval(() => {
     step++;
-    const pct = Math.min((step / scanSteps.length) * 100, 100);
-    scanFill.style.width = pct + "%";
-    scanLabel.textContent = scanSteps[Math.min(step, scanSteps.length - 1)];
+    fill.style.width = Math.min((step / scanSteps.length) * 100, 100) + "%";
+    label.textContent = scanSteps[Math.min(step, scanSteps.length - 1)];
 
     if (step >= scanSteps.length) {
       clearInterval(interval);
       setTimeout(showResults, 400);
     }
-  }, 500);
+  }, 450);
 }
 
 function showResults() {
   const scan = document.getElementById("scanState");
-  const results = document.getElementById("results");
-  const scoreHeader = document.getElementById("scoreHeader");
-  const findingsList = document.getElementById("findingsList");
-  const btn = document.getElementById("runBtn");
-  const figpal = document.getElementById("figpal");
+  const btn = document.getElementById("scanBtn");
+  const fab = document.getElementById("figpalFab");
+  const strip = document.getElementById("scoreStrip");
+  const list = document.getElementById("findingsList");
 
   scan.classList.remove("active");
-  results.style.display = "block";
   btn.classList.remove("running");
-  btn.textContent = "Re-run";
-  figpal.classList.remove("alert");
+  btn.textContent = "Re-scan";
+  fab.classList.remove("scanning");
 
   // Scores
   const errors = findings.filter(f => f.severity === "error").length;
   const warnings = findings.filter(f => f.severity === "warning").length;
-  const infos = findings.filter(f => f.severity === "info").length;
+  const infos = findings.filter(f => f.severity === "info" || f.severity === "drift").length;
   const score = Math.max(0, 100 - (errors * 15) - (warnings * 8) - (infos * 3));
 
-  scoreHeader.innerHTML = `
-    <div class="score-card">
-      <div class="label">Overall</div>
-      <div class="value ${score >= 70 ? 'warn' : 'bad'}">${score}</div>
-      <div class="sub">/ 100</div>
-    </div>
-    <div class="score-card">
-      <div class="label">Errors</div>
-      <div class="value bad">${errors}</div>
-      <div class="sub">critical</div>
-    </div>
-    <div class="score-card">
-      <div class="label">Warnings</div>
-      <div class="value warn">${warnings}</div>
-      <div class="sub">should fix</div>
-    </div>
-    <div class="score-card">
-      <div class="label">Info</div>
-      <div class="value" style="color:var(--info)">${infos}</div>
-      <div class="sub">suggestions</div>
-    </div>
-  `;
+  document.getElementById("sScore").textContent = score;
+  document.getElementById("sErrors").textContent = errors;
+  document.getElementById("sWarns").textContent = warnings;
+  document.getElementById("sInfo").textContent = infos;
+  strip.classList.add("active");
 
-  // Findings
-  findingsList.innerHTML = '<div class="findings-label">Audit Findings</div>';
+  // Show all highlights on the design
+  document.querySelectorAll(".audit-highlight").forEach(h => h.classList.add("active"));
 
+  // Build findings
+  list.innerHTML = "";
   findings.forEach((f, i) => {
-    const el = document.createElement("div");
-    el.className = "finding";
-    el.style.animationDelay = (i * 0.1) + "s";
-    el.innerHTML = `
-      <div class="finding-head">
-        <div class="severity-dot ${f.severity}"></div>
-        <div class="finding-title">${f.title}</div>
-        <span class="finding-category ${f.category}">${f.catLabel}</span>
+    const card = document.createElement("div");
+    card.className = "finding-card";
+    card.style.opacity = "0";
+    card.style.transform = "translateY(8px)";
+    card.style.transition = "opacity 0.3s, transform 0.3s, border-color 0.2s";
+    card.style.transitionDelay = (i * 0.08) + "s";
+
+    const dotClass = f.severity === "drift" ? "drift" : f.severity;
+    const catClass = f.category === "a11y" ? "a11y" : f.category === "system" ? "system" : f.category === "product" ? "product" : "ux";
+
+    card.innerHTML = `
+      <div class="finding-row">
+        <div class="f-dot ${dotClass}"></div>
+        <div class="f-title">${f.title}</div>
+        <span class="f-cat ${catClass}">${f.catLabel}</span>
+        <span class="f-chevron">›</span>
       </div>
-      <div class="finding-body">${f.body}</div>
-      <div class="finding-detail">${f.detail}</div>
-      <div class="suggestion">${f.suggestion}</div>
-      <div class="why-section">${f.why}</div>
+      <div class="finding-detail">
+        <div class="f-desc">${f.body}</div>
+        <div class="f-code">${f.code}</div>
+        <div class="f-suggestion">${f.suggestion}</div>
+        <div class="f-why">${f.why}</div>
+        <div class="f-actions">
+          <button class="f-action-btn" onclick="applyFix(event, '${f.fixLabel}')">⚡ ${f.fixLabel}</button>
+          <button class="f-action-btn" onclick="addToDoc(event, '${f.docLabel}')">📄 Add to docs</button>
+        </div>
+      </div>
     `;
 
-    // Hover highlights
-    if (f.highlight) {
-      el.addEventListener("mouseenter", () => {
-        document.getElementById(f.highlight).classList.add("active");
+    // Toggle expand
+    card.querySelector(".finding-row").addEventListener("click", () => {
+      const wasExpanded = card.classList.contains("expanded");
+      // Close all
+      list.querySelectorAll(".finding-card").forEach(c => c.classList.remove("expanded"));
+      // Dim all highlights
+      document.querySelectorAll(".audit-highlight").forEach(h => {
+        h.style.opacity = "0.3";
       });
-      el.addEventListener("mouseleave", () => {
-        document.getElementById(f.highlight).classList.remove("active");
-      });
-    }
+      if (!wasExpanded) {
+        card.classList.add("expanded");
+        // Brighten this finding's highlight
+        if (f.highlight) {
+          const hl = document.getElementById(f.highlight);
+          if (hl) hl.style.opacity = "1";
+        }
+      } else {
+        // Restore all highlights
+        document.querySelectorAll(".audit-highlight").forEach(h => {
+          h.style.opacity = "";
+        });
+      }
+    });
 
-    findingsList.appendChild(el);
+    // Hover highlights
+    card.addEventListener("mouseenter", () => {
+      if (!card.classList.contains("expanded") && f.highlight) {
+        document.getElementById(f.highlight).style.opacity = "1";
+        document.getElementById(f.highlight).style.filter = "brightness(1.3)";
+      }
+    });
+    card.addEventListener("mouseleave", () => {
+      if (!card.classList.contains("expanded") && f.highlight) {
+        document.getElementById(f.highlight).style.opacity = "";
+        document.getElementById(f.highlight).style.filter = "";
+      }
+    });
+
+    list.appendChild(card);
+
+    // Animate in
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }, i * 80);
+    });
   });
+
+  list.classList.add("active");
+  scanned = true;
+}
+
+function applyFix(e, label) {
+  e.stopPropagation();
+  const btn = e.currentTarget;
+  btn.classList.add("applied");
+  btn.innerHTML = "✓ Fix applied";
+  showToast("Applied: " + label);
+}
+
+function addToDoc(e, label) {
+  e.stopPropagation();
+  const btn = e.currentTarget;
+  btn.classList.add("documented");
+  btn.innerHTML = "✓ Documented";
+  showToast("Added to design system docs: " + label);
+}
+
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2500);
 }
 </script>
 

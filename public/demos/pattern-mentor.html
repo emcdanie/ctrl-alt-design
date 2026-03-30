@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pattern Mentor — AI-Assisted UX Audit Plugin</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --cream: #F5F0E8;
+      --white: #FEFBF7;
+      --accent: #65CCFF;
+      --accent-dark: #4DB8E8;
+      --critical: #E74C3C;
+      --warning: #F39C12;
+      --info: #65CCFF;
+      --success: #27AE60;
+      --gray-light: #E8E3DB;
+      --gray-mid: #D4CFCA;
+      --gray-dark: #6B6B6B;
+      --text-primary: #2C2C2C;
+      --text-secondary: #696969;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--text-primary);
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* CANVAS AREA */
+    .canvas-area {
+      flex: 1;
+      background: linear-gradient(135deg, var(--cream) 0%, #F9F6F0) 100%;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dot-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        radial-gradient(circle, rgba(107, 107, 107, 0.08) 0.5px, transparent 0.5px);
+      background-size: 20px 20px;
+      pointer-events: none;
+    }
+
+    .canvas-content {
+      position: relative;
+      width: 480px;
+      height: 600px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      font-size: 13px;
+      z-index: 1;
+    }
+
+    .canvas-nav {
+      background: #2C2C2C;
+      color: white;
+      padding: 12px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-items {
+      display: flex;
+      gap: 16px;
+      flex: 1;
+      margin-left: 16px;
+    }
+
+    .nav-item {
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .nav-item:hover {
+      opacity: 1;
+    }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #2C2C2C;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent-dark);
+    }
+
+    .canvas-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 12px;
+      opacity: 0.9;
+      margin-bottom: 16px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: white;
+      color: #667eea;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .canvas-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .card {
+      background: #F9F9F9;
+      border: 1px solid var(--gray-light);
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 11px;
+    }
+
+    .card-image {
+      background: linear-gradient(135deg, #e0e0e0, #f0f0f0);
+      height: 60px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+
+    .card-price {
+      color: var(--text-secondary);
+      font-size: 11px;
+    }
+
+    .canvas-highlight {
+      position: absolute;
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+      background: rgba(101, 204, 255, 0.1);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+    }
+
+    .canvas-highlight.active {
+      opacity: 1;
+    }
+
+    /* PLUGIN PANEL */
+    .plugin-panel {
+      width: 320px;
+      background: rgba(254, 251, 247, 0.7);
+      backdrop-filter: blur(12px);
+      border-left: 1px solid rgba(107, 107, 107, 0.1);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 100;
+    }
+
+    .panel-header {
+      padding: 16px;
+      border-bottom: 1px solid rgba(107, 107, 107, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .logo-text {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .audit-btn {
+      background: var(--accent);
+      color: #2C2C2C;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .audit-btn:hover:not(:disabled) {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+    }
+
+    .audit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .audit-btn.running {
+      background: var(--accent);
+      animation: pulse-btn 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-btn {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 16px;
+      border-bottom: 1px solid rgba(107, 107, 107, 0.08);
+      background: rgba(254, 251, 247, 0.5);
+    }
+
+    .tab {
+      flex: 1;
+      padding: 12px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .tab.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--accent);
+    }
+
+    .tab:hover {
+      color: var(--text-primary);
+    }
+
+    /* CONTENT AREA */
+    .panel-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    .content-view {
+      display: none;
+    }
+
+    .content-view.active {
+      display: block;
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+      opacity: 0.6;
+    }
+
+    .empty-state-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .empty-state-desc {
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    /* SCANNING STATE */
+    .scanning-state {
+      padding: 24px 16px;
+      text-align: center;
+    }
+
+    .scanning-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .scan-progress {
+      width: 100%;
+      height: 4px;
+      background: var(--gray-light);
+      border-radius: 2px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .scan-progress-bar {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: scan-fill 3s ease-out forwards;
+    }
+
+    @keyframes scan-fill {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    .scan-step {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      min-height: 16px;
+    }
+
+    /* RESULTS STATE */
+    .results-container {
+      display: none;
+    }
+
+    .results-container.show {
+      display: block;
+    }
+
+    .score-ring-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      margin-bottom: 20px;
+    }
+
+    .score-ring {
+      position: relative;
+      width: 100px;
+      height: 100px;
+    }
+
+    .score-ring-bg {
+      fill: none;
+      stroke: var(--gray-light);
+      stroke-width: 4;
+    }
+
+    .score-ring-progress {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.5s ease;
+    }
+
+    .score-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .score-number {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .score-label {
+      font-size: 10px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* FINDINGS */
+    .findings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .finding-card {
+      background: white;
+      border: 1px solid var(--gray-light);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .finding-card:hover {
+      border-color: var(--gray-mid);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .finding-header {
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .finding-card.expanded .finding-header {
+      background: rgba(101, 204, 255, 0.03);
+    }
+
+    .finding-header:hover {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .finding-left {
+      flex: 1;
+    }
+
+    .finding-severity {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .finding-severity.critical {
+      background: var(--critical);
+    }
+
+    .finding-severity.warning {
+      background: var(--warning);
+    }
+
+    .finding-severity.info {
+      background: var(--info);
+    }
+
+    .finding-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: inline;
+      margin-bottom: 6px;
+    }
+
+    .finding-meta {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 12px;
+      background: rgba(101, 204, 255, 0.1);
+      color: var(--accent);
+    }
+
+    .finding-expand {
+      color: var(--text-secondary);
+      font-size: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s;
+    }
+
+    .finding-card.expanded .finding-expand {
+      transform: rotate(180deg);
+    }
+
+    .finding-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      border-top: 1px solid var(--gray-light);
+    }
+
+    .finding-card.expanded .finding-details {
+      max-height: 400px;
+    }
+
+    .finding-body {
+      padding: 12px;
+      font-size: 11px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .finding-description {
+      margin-bottom: 12px;
+    }
+
+    .finding-code {
+      background: #F0F0F0;
+      padding: 10px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 9px;
+      margin-bottom: 12px;
+      overflow-x: auto;
+      color: #333;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .finding-pattern {
+      font-size: 10px;
+      color: var(--info);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .finding-fix {
+      background: rgba(39, 174, 96, 0.06);
+      border-left: 3px solid var(--success);
+      padding: 10px;
+      margin-bottom: 12px;
+      border-radius: 3px;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .finding-fix-title {
+      font-weight: 600;
+      color: var(--success);
+      margin-bottom: 4px;
+    }
+
+    .finding-why {
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 11px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .finding-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 8px 10px;
+      background: white;
+      border: 1px solid var(--gray-light);
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .action-btn:hover:not(.confirmed) {
+      background: #FAFAFA;
+      border-color: var(--gray-mid);
+    }
+
+    .action-btn.confirmed {
+      background: var(--success);
+      color: white;
+      border-color: var(--success);
+      pointer-events: none;
+    }
+
+    /* PATTERNS TAB */
+    .patterns-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pattern-item {
+      background: white;
+      border: 1px solid var(--gray-light);
+      border-radius: 6px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pattern-item:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(101, 204, 255, 0.1);
+    }
+
+    .pattern-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .pattern-desc {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* TOKENS TAB */
+    .tokens-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .token-item {
+      background: white;
+      border: 1px solid var(--gray-light);
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 11px;
+    }
+
+    .token-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .token-values {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .token-value {
+      flex: 1;
+    }
+
+    .token-label {
+      font-size: 9px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .token-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      margin-top: 2px;
+    }
+
+    .token-swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      border: 1px solid var(--gray-light);
+    }
+
+    /* BOTTOM AREA */
+    .panel-bottom {
+      border-top: 1px solid rgba(107, 107, 107, 0.08);
+      padding: 12px 16px;
+      font-size: 10px;
+      color: var(--text-secondary);
+      background: rgba(254, 251, 247, 0.5);
+      min-height: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .walkthrough-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .walkthrough-step {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .walkthrough-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .step-btn {
+      background: white;
+      border: 1px solid var(--gray-light);
+      padding: 4px 10px;
+      border-radius: 3px;
+      font-size: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .step-btn:hover:not(:disabled) {
+      background: #FAFAFA;
+      border-color: var(--gray-mid);
+    }
+
+    .step-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .tooltip-text {
+      font-size: 10px;
+      line-height: 1.4;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--success);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      animation: toast-slide 0.3s ease;
+      z-index: 1000;
+    }
+
+    @keyframes toast-slide {
+      from {
+        transform: translateX(100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* SCROLLBAR STYLING */
+    .panel-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .panel-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .panel-content::-webkit-scrollbar-thumb {
+      background: rgba(107, 107, 107, 0.2);
+      border-radius: 3px;
+    }
+
+    .panel-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(107, 107, 107, 0.3);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .finding-card {
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* RESPONSIVE - make panel full width on small screens */
+    @media (max-width: 1024px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .canvas-area {
+        height: 50%;
+      }
+
+      .plugin-panel {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid rgba(107, 107, 107, 0.1);
+      }
+
+      .canvas-content {
+        width: 300px;
+        height: 350px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- CANVAS AREA -->
+    <div class="canvas-area">
+      <div class="dot-grid"></div>
+
+      <div class="canvas-content">
+        <!-- Navigation -->
+        <div class="canvas-nav">
+          <div>TravelHub</div>
+          <div class="nav-items">
+            <div class="nav-item">Flights</div>
+            <div class="nav-item">Hotels</div>
+            <div class="nav-item">Packages</div>
+            <div class="nav-item">Guides</div>
+            <div class="nav-item">Reviews</div>
+            <div class="nav-item">Offers</div>
+            <div class="nav-item">Help</div>
+            <div class="nav-item">About</div>
+            <div class="nav-item">Contact</div>
+          </div>
+          <button class="nav-cta">Sign In</button>
+        </div>
+
+        <!-- Hero -->
+        <div class="canvas-hero">
+          <div class="hero-title">Find Your Next Adventure</div>
+          <div class="hero-subtitle">Explore exclusive deals on flights and hotels worldwide</div>
+          <div class="hero-buttons">
+            <button class="btn-primary">Search Now</button>
+            <button class="btn-secondary">Learn More</button>
+          </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="canvas-cards">
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-title">Tokyo</div>
+            <div class="card-price">From $899</div>
+          </div>
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-title">Paris</div>
+            <div class="card-price">From $599</div>
+          </div>
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-title">Barcelona</div>
+            <div class="card-price">From $449</div>
+          </div>
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-title">New York</div>
+            <div class="card-price">From $299</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Highlights for findings -->
+      <div class="canvas-highlight" id="highlight-nav"></div>
+      <div class="canvas-highlight" id="highlight-buttons"></div>
+      <div class="canvas-highlight" id="highlight-hero"></div>
+      <div class="canvas-highlight" id="highlight-form"></div>
+      <div class="canvas-highlight" id="highlight-secondary"></div>
+    </div>
+
+    <!-- PLUGIN PANEL -->
+    <div class="plugin-panel">
+      <!-- Header -->
+      <div class="panel-header">
+        <div class="panel-logo">
+          <div class="logo-mark">PM</div>
+          <div class="logo-text">Pattern Mentor</div>
+        </div>
+        <button class="audit-btn" id="runAuditBtn">Run Audit</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active" data-tab="audit">Audit</button>
+        <button class="tab" data-tab="patterns">Patterns</button>
+        <button class="tab" data-tab="tokens">Tokens</button>
+      </div>
+
+      <!-- Content Area -->
+      <div class="panel-content">
+        <!-- AUDIT TAB -->
+        <div class="content-view active" id="audit-view">
+          <!-- Empty State -->
+          <div class="empty-state" id="emptyState">
+            <div class="empty-state-icon">✓</div>
+            <div class="empty-state-title">Ready to audit</div>
+            <div class="empty-state-desc">Click "Run Audit" to analyze this design for patterns, accessibility, and consistency.</div>
+          </div>
+
+          <!-- Scanning State -->
+          <div class="scanning-state" id="scanningState" style="display: none;">
+            <div class="scanning-title">Scanning Design</div>
+            <div class="scan-progress">
+              <div class="scan-progress-bar"></div>
+            </div>
+            <div class="scan-step" id="scanStep">Analyzing layout patterns...</div>
+          </div>
+
+          <!-- Results -->
+          <div class="results-container" id="resultsContainer">
+            <div class="score-ring-container">
+              <div class="score-ring">
+                <svg viewBox="0 0 120 120" style="width: 100%; height: 100%;">
+                  <circle cx="60" cy="60" r="50" class="score-ring-bg"></circle>
+                  <circle cx="60" cy="60" r="50" class="score-ring-progress" id="scoreRing"
+                    style="stroke-dasharray: 314; stroke-dashoffset: 314;"></circle>
+                </svg>
+                <div class="score-text">
+                  <div class="score-number" id="scoreNumber">62</div>
+                  <div class="score-label">/ 100</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="findings-list" id="findingsList"></div>
+          </div>
+        </div>
+
+        <!-- PATTERNS TAB -->
+        <div class="content-view" id="patterns-view">
+          <div class="patterns-grid" id="patternsGrid"></div>
+        </div>
+
+        <!-- TOKENS TAB -->
+        <div class="content-view" id="tokens-view">
+          <div class="tokens-list" id="tokensList"></div>
+        </div>
+      </div>
+
+      <!-- Bottom Area -->
+      <div class="panel-bottom">
+        <div class="walkthrough-nav">
+          <div class="walkthrough-step" id="walkthroughStep">Step 1 of 5</div>
+          <div class="walkthrough-buttons">
+            <button class="step-btn" id="prevBtn" disabled>← Prev</button>
+            <button class="step-btn" id="nextBtn">Next →</button>
+          </div>
+        </div>
+        <div class="tooltip-text" id="tooltipText">Click "Run Audit" to start the walkthrough and see the plugin in action.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // STATE MANAGEMENT
+    let currentStep = 1;
+    let auditComplete = false;
+    let currentTab = 'audit';
+    const totalSteps = 5;
+
+    const findings = [
+      {
+        id: 'nav-density',
+        title: 'Navigation Density Too High',
+        severity: 'warning',
+        category: 'UX Pattern',
+        description: 'The navigation bar contains 9 items. Research suggests 5-7 items is optimal for cognitive load.',
+        code: '<!-- Current: 9 items -->\n<nav>\n  <a>Flights</a>\n  <a>Hotels</a>\n  <!-- ... 7 more items ... -->\n</nav>',
+        pattern: 'Design Pattern: Progressive Disclosure',
+        fix: 'Consider grouping items under "Explore" and "Help" dropdowns. Move secondary items to footer.',
+        why: 'Users can process 5-7 primary options without cognitive overload. Beyond that, decision time increases exponentially.',
+        highlight: { top: '0%', left: '0%', width: '100%', height: '48px' }
+      },
+      {
+        id: 'competing-ctas',
+        title: 'Competing Primary CTAs',
+        severity: 'critical',
+        category: 'UX Pattern',
+        description: 'Both "Search Now" and "Learn More" buttons use primary styling, creating ambiguous hierarchy.',
+        code: '<button class="btn-primary">Search Now</button>\n<button class="btn-secondary">\n  Learn More\n</button>',
+        pattern: 'Design Pattern: Primary Action Hierarchy',
+        fix: 'Make "Search Now" the primary button (brighter, bolder). Style "Learn More" as secondary.',
+        why: 'Users need clear guidance on the intended next step. Multiple primaries cause hesitation and reduced conversion.',
+        highlight: { top: '22%', left: '10%', width: '80%', height: '20px' }
+      },
+      {
+        id: 'button-spacing',
+        title: 'Button Spacing Token Drift',
+        severity: 'warning',
+        category: 'System Drift',
+        description: 'Button padding uses 14px, but design system token specifies 16px.',
+        code: '.btn {\n  padding: 14px 16px; /* Expected: 16px */\n}',
+        pattern: 'Design Pattern: Spacing Scale Consistency',
+        fix: 'Update button padding to 16px to match the spacing token scale.',
+        why: 'Consistent spacing builds visual coherence and makes scaling designs easier across breakpoints.',
+        highlight: null
+      },
+      {
+        id: 'landmark-missing',
+        title: 'Missing Semantic Landmark',
+        severity: 'info',
+        category: 'Accessibility',
+        description: 'Hero section lacks landmark tags for screen reader navigation.',
+        code: '<!-- Current -->\n<div class="hero">\n\n<!-- Recommended -->\n<section role="banner" aria-label="Hero">',
+        pattern: 'Design Pattern: Semantic Structure',
+        fix: 'Wrap hero in <section> or add role="banner" for assistive tech.',
+        why: 'Screen reader users rely on landmarks to navigate. Without them, they must read linearly.',
+        highlight: { top: '48px', left: '0%', width: '100%', height: '120px' }
+      },
+      {
+        id: 'form-validation',
+        title: 'Form Missing Inline Validation',
+        severity: 'warning',
+        category: 'UX Pattern',
+        description: 'No inline validation feedback on form fields during input.',
+        code: '<input type="email" \n  aria-describedby="email-error" />\n<!-- Show error on blur -->',
+        pattern: 'Design Pattern: Real-time Feedback',
+        fix: 'Add inline error states (red border, icon, message below field).',
+        why: 'Users discover errors faster with real-time feedback, reducing frustration and support tickets.',
+        highlight: null
+      },
+      {
+        id: 'contrast-fail',
+        title: 'Contrast Ratio Failure',
+        severity: 'critical',
+        category: 'Accessibility',
+        description: 'Secondary button text (gray on light bg) fails WCAG AA contrast.',
+        code: '.btn-secondary {\n  color: #999; /* Ratio: 3.8:1 */\n  /* Required: 4.5:1 */\n}',
+        pattern: 'Design Pattern: Color Contrast',
+        fix: 'Use #666 or darker for secondary button text.',
+        why: 'Low contrast makes text unreadable for people with visual impairments affecting 253M+ worldwide.',
+        highlight: { top: '22%', left: '50%', width: '35%', height: '20px' }
+      }
+    ];
+
+    const patterns = [
+      {
+        name: 'Primary Action Hierarchy',
+        desc: 'Clear visual distinction between primary and secondary actions guides users to the most important decision.'
+      },
+      {
+        name: 'Progressive Disclosure',
+        desc: 'Hide advanced options by default, reveal on demand. Reduces cognitive load in initial interface.'
+      },
+      {
+        name: 'Real-time Feedback',
+        desc: 'Validate user input and provide immediate, inline responses. Users fix errors before submission.'
+      },
+      {
+        name: 'Semantic Structure',
+        desc: 'Use HTML landmarks and ARIA attributes to create logical document outline for all users.'
+      },
+      {
+        name: 'Spacing Scale',
+        desc: 'Use a consistent multiplier (8px base) for all spacing to create visual coherence and predictability.'
+      }
+    ];
+
+    const tokens = [
+      {
+        name: '--spacing-xs',
+        category: 'Spacing',
+        current: '8px',
+        expected: '8px',
+        match: true
+      },
+      {
+        name: '--spacing-sm',
+        category: 'Spacing',
+        current: '12px',
+        expected: '12px',
+        match: true
+      },
+      {
+        name: '--spacing-md',
+        category: 'Spacing',
+        current: '14px',
+        expected: '16px',
+        match: false,
+        color: '#FFB347'
+      },
+      {
+        name: '--color-primary',
+        category: 'Color',
+        current: '#667eea',
+        expected: '#667eea',
+        match: true,
+        color: '#667eea'
+      },
+      {
+        name: '--color-accent',
+        category: 'Color',
+        current: '#65CCFF',
+        expected: '#65CCFF',
+        match: true,
+        color: '#65CCFF'
+      }
+    ];
+
+    // UI UPDATES
+    function initTabs() {
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.content-view').forEach(v => v.classList.remove('active'));
+
+          tab.classList.add('active');
+          currentTab = tab.dataset.tab;
+          document.getElementById(`${currentTab}-view`).classList.add('active');
+
+          // Auto-populate patterns and tokens on first view
+          if (currentTab === 'patterns' && !document.getElementById('patternsGrid').children.length) {
+            renderPatterns();
+          }
+          if (currentTab === 'tokens' && !document.getElementById('tokensList').children.length) {
+            renderTokens();
+          }
+        });
+      });
+    }
+
+    function renderPatterns() {
+      const grid = document.getElementById('patternsGrid');
+      grid.innerHTML = patterns.map(p => `
+        <div class="pattern-item">
+          <div class="pattern-name">${p.name}</div>
+          <div class="pattern-desc">${p.desc}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderTokens() {
+      const list = document.getElementById('tokensList');
+      list.innerHTML = tokens.map(t => `
+        <div class="token-item">
+          <div class="token-name">${t.name}</div>
+          <div class="token-values">
+            <div class="token-value">
+              <div class="token-label">Current</div>
+              <div class="token-val">${t.current}</div>
+            </div>
+            <div class="token-value">
+              <div class="token-label">Expected</div>
+              <div class="token-val">${t.expected}</div>
+            </div>
+            ${t.color ? `<div class="token-swatch" style="background: ${t.color};"></div>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderFindings() {
+      const list = document.getElementById('findingsList');
+      list.innerHTML = findings.map((f, idx) => `
+        <div class="finding-card" data-finding-id="${f.id}">
+          <div class="finding-header">
+            <div class="finding-left">
+              <div style="margin-bottom: 6px;">
+                <span class="finding-severity ${f.severity}"></span>
+                <span class="finding-title">${f.title}</span>
+              </div>
+              <div class="finding-meta">
+                <div class="badge">${f.category}</div>
+              </div>
+            </div>
+            <div class="finding-expand">▼</div>
+          </div>
+          <div class="finding-details">
+            <div class="finding-body">
+              <div class="finding-description">${f.description}</div>
+              <div class="finding-code">${f.code}</div>
+              <div class="finding-pattern">${f.pattern}</div>
+              <div class="finding-fix">
+                <div class="finding-fix-title">Suggested Fix</div>
+                ${f.fix}
+              </div>
+              <div class="finding-why">Why this matters: ${f.why}</div>
+              <div class="finding-actions">
+                <button class="action-btn" onclick="confirmAction(this, '⚡ Fix applied')">⚡ Apply fix</button>
+                <button class="action-btn" onclick="confirmAction(this, '📄 Added to docs')">📄 Add to docs</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Attach click handlers
+      document.querySelectorAll('.finding-header').forEach(header => {
+        header.addEventListener('click', (e) => {
+          if (!e.target.closest('.action-btn')) {
+            const card = header.closest('.finding-card');
+            const findingId = card.dataset.findingId;
+            card.classList.toggle('expanded');
+            updateHighlight(findingId, card.classList.contains('expanded'));
+          }
+        });
+      });
+    }
+
+    function updateHighlight(findingId, show) {
+      document.querySelectorAll('.canvas-highlight').forEach(h => h.classList.remove('active'));
+
+      if (show) {
+        const finding = findings.find(f => f.id === findingId);
+        if (finding && finding.highlight) {
+          const h = finding.highlight;
+          const highlight = document.getElementById(`highlight-${findingId.replace('-', '-')}`);
+          if (!highlight) {
+            const newHighlight = document.createElement('div');
+            newHighlight.className = 'canvas-highlight active';
+            const canvas = document.querySelector('.canvas-content');
+            newHighlight.style.top = h.top;
+            newHighlight.style.left = h.left;
+            newHighlight.style.width = h.width;
+            newHighlight.style.height = h.height;
+            document.querySelector('.canvas-area').appendChild(newHighlight);
+          } else {
+            highlight.classList.add('active');
+          }
+        }
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    function confirmAction(btn, message) {
+      btn.classList.add('confirmed');
+      btn.textContent = message;
+      showToast(message);
+    }
+
+    // AUDIT FLOW
+    document.getElementById('runAuditBtn').addEventListener('click', () => {
+      const btn = document.getElementById('runAuditBtn');
+      const emptyState = document.getElementById('emptyState');
+      const scanningState = document.getElementById('scanningState');
+      const resultsContainer = document.getElementById('resultsContainer');
+
+      btn.disabled = true;
+      btn.classList.add('running');
+      emptyState.style.display = 'none';
+      scanningState.style.display = 'block';
+      resultsContainer.classList.remove('show');
+
+      const steps = [
+        'Analyzing layout patterns...',
+        'Checking color contrast...',
+        'Validating semantic structure...',
+        'Comparing spacing tokens...',
+        'Generating recommendations...'
+      ];
+
+      let step = 0;
+      const interval = setInterval(() => {
+        if (step < steps.length) {
+          document.getElementById('scanStep').textContent = steps[step];
+          step++;
+        } else {
+          clearInterval(interval);
+          completeAudit();
+        }
+      }, 600);
+    });
+
+    function completeAudit() {
+      auditComplete = true;
+      const btn = document.getElementById('runAuditBtn');
+      btn.disabled = false;
+      btn.classList.remove('running');
+
+      document.getElementById('scanningState').style.display = 'none';
+      document.getElementById('resultsContainer').classList.add('show');
+
+      // Animate score ring
+      const circumference = 2 * Math.PI * 50;
+      const scoreRing = document.getElementById('scoreRing');
+      const offset = circumference - (62 / 100) * circumference;
+      scoreRing.style.strokeDashoffset = offset;
+
+      renderFindings();
+      updateWalkthrough();
+    }
+
+    // WALKTHROUGH
+    function updateWalkthrough() {
+      const stepElement = document.getElementById('walkthroughStep');
+      const tooltip = document.getElementById('tooltipText');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+
+      stepElement.textContent = `Step ${currentStep} of ${totalSteps}`;
+      prevBtn.disabled = currentStep === 1;
+      nextBtn.disabled = currentStep === totalSteps;
+
+      const tooltips = [
+        'Click "Run Audit" to start the walkthrough and see the plugin in action.',
+        'The scan is complete! You can see the overall score and a summary of findings below.',
+        'Expand a critical finding to see the details, code example, and suggested fix. The canvas highlights the affected element.',
+        'Visit the Patterns tab to browse the design pattern library and learn best practices.',
+        'Check the Tokens tab to see which design tokens are in sync and which have drifted from the system.'
+      ];
+
+      tooltip.textContent = tooltips[currentStep - 1];
+
+      // Apply step-specific actions
+      if (currentStep === 1) {
+        if (auditComplete) {
+          currentStep = 2;
+          updateWalkthrough();
+        }
+      } else if (currentStep === 3) {
+        // Expand first critical finding
+        const criticalCard = document.querySelector('[data-finding-id="competing-ctas"]');
+        if (criticalCard) {
+          criticalCard.classList.add('expanded');
+          updateHighlight('competing-ctas', true);
+          criticalCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      } else if (currentStep === 4) {
+        // Switch to patterns tab
+        document.querySelector('[data-tab="patterns"]').click();
+      } else if (currentStep === 5) {
+        // Switch to tokens tab
+        document.querySelector('[data-tab="tokens"]').click();
+      }
+    }
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      if (currentStep < totalSteps) {
+        currentStep++;
+        updateWalkthrough();
+      }
+    });
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      if (currentStep > 1) {
+        currentStep--;
+        updateWalkthrough();
+      }
+    });
+
+    // INITIALIZE
+    initTabs();
+
+    // Set up highlights in canvas on load
+    const highlightMap = {
+      'nav-density': '#highlight-nav',
+      'competing-ctas': '#highlight-buttons',
+      'landmark-missing': '#highlight-hero',
+      'form-validation': '#highlight-form',
+      'contrast-fail': '#highlight-secondary'
+    };
+
+    Object.entries(highlightMap).forEach(([findingId, highlightId]) => {
+      const finding = findings.find(f => f.id === findingId);
+      if (finding && finding.highlight) {
+        const h = finding.highlight;
+        const highlight = document.querySelector(highlightId);
+        if (highlight) {
+          highlight.style.top = h.top;
+          highlight.style.left = h.left;
+          highlight.style.width = h.width;
+          highlight.style.height = h.height;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
