@@ -42,7 +42,7 @@ function CompactCard({ cs, delay }: CardProps) {
         {/* ── Image area — fixed 16:10 ratio ── */}
         <div className={`relative w-full shrink-0 overflow-hidden ${ASPECT.standard} bg-[#1A1814]`}>
           <Image
-            src={cs.heroImage}
+            src={cs.thumbnailImage || cs.heroImage}
             alt={cs.title}
             fill
             loading="lazy"

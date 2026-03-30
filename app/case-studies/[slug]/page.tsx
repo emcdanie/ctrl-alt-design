@@ -60,6 +60,55 @@ function MediaBlock({
   );
 }
 
+/** Embed block — interactive HTML visual inside the content column */
+function EmbedBlock({
+  src,
+  alt,
+  aspectRatio = "3/2",
+}: {
+  src: string;
+  alt: string;
+  aspectRatio?: string;
+}) {
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        overflow: "hidden",
+        borderRadius: "16px",
+        marginBottom: "32px",
+        background: "#f0ebe3",
+        border: "1px solid rgba(0,0,0,0.06)",
+      }}
+    >
+      {/* Desktop: aspect-ratio driven. Mobile: min-height fallback */}
+      <div
+        style={{
+          position: "relative",
+          aspectRatio,
+          width: "100%",
+          minHeight: "360px",
+        }}
+      >
+        <iframe
+          src={src}
+          title={alt}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            border: "none",
+            borderRadius: "16px",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export default async function CaseStudyPage({
   params,
 }: {
@@ -81,9 +130,11 @@ export default async function CaseStudyPage({
   ].filter(Boolean) as { label: string; value: string }[];
 
   /* ── Determine hero media ── */
-  const heroMedia: { type: "video" | "image"; src: string } = cs.heroVideo
+  const heroMedia: { type: "video" | "image" | "embed"; src: string } = cs.heroVideo
     ? { type: "video", src: cs.heroVideo }
-    : { type: "image", src: cs.heroImage };
+    : cs.heroImage.endsWith(".html")
+      ? { type: "embed", src: cs.heroImage }
+      : { type: "image", src: cs.heroImage };
 
   return (
     <CaseStudyLayout>
@@ -158,6 +209,15 @@ export default async function CaseStudyPage({
                       );
                     })}
                   </Section>
+
+                  {/* Embedded visual attached to this section */}
+                  {section.embedSrc && (
+                    <EmbedBlock
+                      src={section.embedSrc}
+                      alt={section.embedAlt || `${cs.title} — visual`}
+                      aspectRatio={section.embedAspect || "3/2"}
+                    />
+                  )}
 
                   {showImageAfter && (
                     <MediaBlock
