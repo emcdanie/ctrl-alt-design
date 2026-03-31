@@ -1,0 +1,15 @@
+/* Restore default cursor inside Command Center pages.
+   The main portfolio sets cursor:none globally for its
+   custom DevTools cursor — we opt back in here. */
+.command-center-shell,
+.command-center-shell *,
+.command-center-shell a,
+.command-center-shell button,
+.command-center-shell [role="button"] {
+  cursor: auto;
+}
+
+/* Let the map canvas manage its own cursor */
+.command-center-shell canvas {
+  cursor: grab;
+}
