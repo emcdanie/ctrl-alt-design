@@ -18,7 +18,7 @@ export default function SectionHeader({
   contentClassName = "",
 }: SectionHeaderProps) {
   return (
-    <div className={`flex flex-col justify-between gap-4 sm:flex-row sm:items-end ${className}`.trim()}>
+    <div className={`layout-header flex flex-col justify-between gap-4 sm:flex-row sm:items-end ${className}`.trim()}>
       <div className={contentClassName}>
         {label ? <p className="section-label mb-3">{label}</p> : null}
         <h2 className="heading-section">{title}</h2>

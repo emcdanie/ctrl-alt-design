@@ -23,17 +23,17 @@ const podcasts = [
 
 export default function LearningSection() {
   return (
-    <section id="learning" className="py-20 md:py-24 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section id="learning" className="layout-section">
+      <div className="layout-container">
 
         <FadeIn>
-          <div className="mb-12">
+          <div className="layout-header">
             <p className="section-label mb-3">— Outside the Work</p>
             <h2 className="heading-section">Learning &amp; Inspiration</h2>
           </div>
         </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "var(--grid-gap)" }}>
           {/* Vinyl player */}
           <FadeIn delay={0}>
             <VinylPlayer />

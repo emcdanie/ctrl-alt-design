@@ -71,21 +71,25 @@ export default function ContactSection() {
     }
   };
 
-  const fieldClass = (hasError: boolean) =>
-    `w-full rounded-xl px-4 py-3 text-[16px] transition-[border-color] duration-150 ${
-      hasError ? "border-red-400" : ""
-    }`;
-
   const fieldStyle = (hasError: boolean): React.CSSProperties => ({
-    background: "rgba(255,255,255,0.06)",
-    border: hasError ? "1px solid #f87171" : "1px solid rgba(255,255,255,0.25)",
-    color: "#ffffff",
+    width: "100%",
+    background: "rgba(255,255,255,0.04)",
+    border: hasError
+      ? "1px solid #f87171"
+      : "1px solid rgba(243,238,231,0.25)",
+    borderRadius: "16px",
+    padding: "18px 20px",
+    fontSize: "18px",
+    lineHeight: 1.5,
+    color: "#F3EEE7",
     outline: "none",
+    transition: "border-color 150ms ease, box-shadow 150ms ease",
+    fontFamily: "var(--font-body)",
   });
 
   return (
-    <footer id="contact" className="bg-[#1A1814] text-[#EDE8DF] pt-20 pb-10 px-6">
-      <div className="max-w-7xl mx-auto">
+    <footer id="contact" className="bg-[#1A1814] text-[#EDE8DF]" style={{ paddingTop: "var(--space-7)", paddingBottom: "var(--space-5)" }}>
+      <div className="layout-container">
         {/* Two-column layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
           {/* Left — form */}
@@ -115,7 +119,7 @@ export default function ContactSection() {
                     aria-label="Your name"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className={fieldClass(!!errors.name)}
+                    className="contact-field"
                     style={fieldStyle(!!errors.name)}
                   />
                   {errors.name && (
@@ -131,7 +135,7 @@ export default function ContactSection() {
                     aria-label="Email address"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className={fieldClass(!!errors.email)}
+                    className="contact-field"
                     style={fieldStyle(!!errors.email)}
                   />
                   {errors.email && (
@@ -142,13 +146,12 @@ export default function ContactSection() {
                 {/* Message */}
                 <div>
                   <textarea
-                    rows={4}
                     placeholder="Tell me about your project…"
                     aria-label="Your message"
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className={`${fieldClass(!!errors.message)} resize-none`}
-                    style={fieldStyle(!!errors.message)}
+                    className="contact-field"
+                    style={{ ...fieldStyle(!!errors.message), minHeight: "160px", resize: "none" }}
                   />
                   {errors.message && (
                     <p className="text-[13px] text-red-400 mt-1">{errors.message}</p>
@@ -163,7 +166,14 @@ export default function ContactSection() {
                 <button
                   type="submit"
                   disabled={sending}
-                  className="w-full bg-[#EDE8DF] text-[#1A1814] text-[16px] font-semibold py-3.5 rounded-xl hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="w-full bg-[#F3EEE7] text-[#1A1814] font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                  style={{
+                    fontSize: "18px",
+                    padding: "18px 20px",
+                    borderRadius: "16px",
+                    border: "none",
+                    fontFamily: "var(--font-body)",
+                  }}
                 >
                   {sending ? "Sending…" : "Send message"}
                 </button>

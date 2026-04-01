@@ -193,7 +193,7 @@ export default function CtrlAltDesignSection() {
       <div className="mb-10 h-px w-full bg-black/8" />
 
       {/* Video explorations */}
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <div className="layout-grid-3">
         {videos.map((video) => {
           const catStyle = LAB_CATEGORY_COLORS[video.category] ?? { bg: "#1A1814", color: "#FFFFFF" };
 
@@ -227,7 +227,7 @@ export default function CtrlAltDesignSection() {
           description="Real prototypes exploring complex interaction patterns, system logic, and workflow design."
           className="mb-10"
         />
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="layout-grid-3">
           {prototypes.map((prototype) => (
             <PrototypeCard key={prototype.title} prototype={prototype} />
           ))}
