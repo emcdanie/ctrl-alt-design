@@ -7,11 +7,11 @@ import SectionShell from "@/components/ui/SectionShell";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 const LAB_CATEGORY_COLORS: Record<string, { bg: string; color: string }> = {
-  "AI UX": { bg: "#2A5FA8", color: "#FFFFFF" },
-  "FINTECH": { bg: "#6B3FA8", color: "#FFFFFF" },
-  "FORM DESIGN": { bg: "#A85F20", color: "#FFFFFF" },
-  "DASHBOARD": { bg: "#206B4A", color: "#FFFFFF" },
-  "INTERACTIVE": { bg: "#0D6B4A", color: "#FFFFFF" },
+  "AI UX": { bg: "#1E4A8A", color: "#FFFFFF" },
+  "FINTECH": { bg: "#52308A", color: "#FFFFFF" },
+  "FORM DESIGN": { bg: "#7A4510", color: "#FFFFFF" },
+  "DASHBOARD": { bg: "#185438", color: "#FFFFFF" },
+  "INTERACTIVE": { bg: "#0A5438", color: "#FFFFFF" },
 };
 
 interface LabVideo {
