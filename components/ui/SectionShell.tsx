@@ -12,8 +12,8 @@ export default function SectionShell({
   ...props
 }: SectionShellProps) {
   return (
-    <section className={`px-6 py-20 md:py-24 ${className}`.trim()} {...props}>
-      <div className={`mx-auto max-w-7xl ${containerClassName}`.trim()}>{children}</div>
+    <section className={`layout-section ${className}`.trim()} {...props}>
+      <div className={`layout-container ${containerClassName}`.trim()}>{children}</div>
     </section>
   );
 }

@@ -134,9 +134,9 @@ function MetricCard({ item }: { item: MetricItem }) {
 
 export default function MetricsStrip() {
   return (
-    <section style={{ padding: "32px 24px" }}>
+    <section className="layout-section-tight">
       <div
-        className="metrics-strip mx-auto max-w-7xl"
+        className="layout-container"
         style={{ display: "flex", gap: "8px" }}
       >
         {metrics.map((item) => (

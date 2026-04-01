@@ -107,7 +107,7 @@ interface SectionHeaderProps {
 
 function SectionHeader({ label, title, description }: SectionHeaderProps) {
   return (
-    <div className="mb-12 flex flex-col justify-between gap-4 sm:flex-row sm:items-end md:mb-14">
+    <div className="layout-header flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
       <div>
         <p className="section-label mb-3">{label}</p>
         <h2 className="heading-section">{title}</h2>
@@ -123,8 +123,8 @@ function SectionHeader({ label, title, description }: SectionHeaderProps) {
 
 export default function CaseStudyGrid() {
   return (
-    <section id="work" className="px-6 py-20 md:py-24">
-      <div className="mx-auto max-w-7xl">
+    <section id="work" className="layout-section">
+      <div className="layout-container">
         <FadeIn>
           <SectionHeader
             label="— Selected Work"
@@ -133,7 +133,7 @@ export default function CaseStudyGrid() {
           />
         </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="layout-grid-3">
           {caseStudies.map((cs, i) => (
             <CompactCard
               key={cs.slug}

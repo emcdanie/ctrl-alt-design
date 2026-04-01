@@ -74,11 +74,11 @@ const steps: ProcessStep[] = [
 
 export default function ProcessSection() {
   return (
-    <section id="process" className="py-20 md:py-24 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section id="process" className="layout-section">
+      <div className="layout-container">
 
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+        <div className="layout-header flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <p className="section-label mb-3">— My Approach</p>
             <h2 className="heading-section">My Process</h2>

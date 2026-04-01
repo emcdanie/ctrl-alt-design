@@ -24,8 +24,8 @@ const collaborationCards = [
 
 export default function AboutSection() {
   return (
-    <section id="about" className="py-16 md:py-20 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section id="about" className="layout-section">
+      <div className="layout-container">
 
         <div className="glass-card p-7 md:p-10 lg:p-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
