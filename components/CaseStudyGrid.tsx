@@ -6,10 +6,10 @@ import caseStudies from "@/lib/content";
 import FadeIn from "@/components/FadeIn";
 
 const CATEGORY_COLORS: Record<string, { bg: string; color: string }> = {
-  "DESIGN SYSTEMS": { bg: "#2A5FA8", color: "#FFFFFF" },
-  "DATA VIZ": { bg: "#6B3FA8", color: "#FFFFFF" },
-  "UX STRATEGY": { bg: "#A85F20", color: "#FFFFFF" },
-  "PRODUCT UX": { bg: "#206B4A", color: "#FFFFFF" },
+  "DESIGN SYSTEMS": { bg: "#1E4A8A", color: "#FFFFFF" },
+  "DATA VIZ": { bg: "#52308A", color: "#FFFFFF" },
+  "UX STRATEGY": { bg: "#7A4510", color: "#FFFFFF" },
+  "PRODUCT UX": { bg: "#185438", color: "#FFFFFF" },
 };
 
 function getCategoryStyle(category: string) {

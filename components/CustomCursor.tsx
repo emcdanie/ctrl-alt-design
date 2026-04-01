@@ -38,6 +38,17 @@ export default function CustomCursor() {
       const el = document.elementFromPoint(e.clientX, e.clientY);
       if (!el) return;
 
+      // Detect dark surface for cursor contrast inversion
+      const onDark = !!el.closest("#contact, footer, [data-cursor-dark]");
+      if (dot) {
+        dot.style.background = onDark ? "#EDE8DF" : "#1A1A1A";
+      }
+      if (bubble) {
+        const baseBorder = onDark ? "#EDE8DF" : "#1A1A1A";
+        bubble.dataset.cursorDark = onDark ? "1" : "";
+        bubble.style.borderColor = baseBorder;
+      }
+
       const isCard = !!el.closest("[data-cursor='card']");
       const isMedia = !!el.closest("[data-cursor='media']");
       const isNav = !!el.closest("[data-cursor='nav']");
@@ -108,7 +119,7 @@ export default function CustomCursor() {
 
   const bubbleFill = state === "link" ? "rgba(26,26,26,0.08)" : "transparent";
   const dotOpacity = (state === "link" || state === "media" || state === "card" || state === "nav") ? 0 : 1;
-  const borderStyle = state === "quote" ? "1.5px dashed #1A1A1A" : "1.5px solid #1A1A1A";
+  const borderStyle = state === "quote" ? "1.5px dashed currentColor" : "1.5px solid currentColor";
   const showLabel = (state === "media" || state === "card" || state === "nav") && label;
 
   if (typeof window !== "undefined" && window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
@@ -143,6 +154,7 @@ export default function CustomCursor() {
           borderRadius: "50%",
           border: borderStyle,
           background: bubbleFill,
+          color: "#1A1A1A",
           transform: "translate(-50%, -50%)",
           zIndex: 9998,
           pointerEvents: "none",
@@ -162,7 +174,7 @@ export default function CustomCursor() {
               fontWeight: 500,
               letterSpacing: "0.15em",
               textTransform: "uppercase",
-              color: "#1A1A1A",
+              color: "inherit",
               animation: "fadeInUp 150ms ease forwards",
               userSelect: "none",
             }}
