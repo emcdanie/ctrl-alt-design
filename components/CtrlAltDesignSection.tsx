@@ -116,7 +116,7 @@ const prototypes: LabPrototype[] = [
     category: "INTERACTIVE",
     tags: ["AI UX", "Design Patterns", "Plugin"],
     href: "/demos/pattern-mentor.html",
-    gradient: "linear-gradient(135deg, #F5F0E8 0%, #E8E3DB 50%, #F5F0E8 100%)",
+    gradient: "linear-gradient(135deg, var(--color-semantic-surface) 0%, #E8E3DB 50%, var(--color-semantic-surface) 100%)",
     thumbnailSrc: "/images/thumbnails/PatternMentor.svg",
   },
 ];
@@ -182,7 +182,7 @@ export default function CtrlAltDesignSection() {
   const [activeVideo, setActiveVideo] = useState<LabVideo | null>(null);
 
   return (
-    <SectionShell id="design-lab" className="bg-[#F8F5F0]">
+    <SectionShell id="design-lab" className="bg-[var(--color-semantic-background)]">
       <SectionHeader
         label="— Design Lab"
         title="CTRL_ALT_DESIGN"

@@ -93,7 +93,7 @@ export default function ProcessSection() {
           {steps.map((step) => (
             <div
               key={step.number}
-              className="rounded-2xl min-h-[220px] relative overflow-hidden group border border-white/60 shadow-[0_8px_24px_rgba(44,24,16,0.05),0_2px_6px_rgba(44,24,16,0.03),inset_0_1px_0_rgba(255,255,255,0.85)]"
+              className="rounded-2xl min-h-[220px] relative overflow-hidden group border border-white/60 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-05),0_2px_6px_var(--color-alpha-shadow-warm-03),inset_0_1px_0_rgba(255,255,255,0.85)]"
               style={{
                 background: step.color,
                 backdropFilter: "blur(18px)",

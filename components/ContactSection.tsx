@@ -88,7 +88,7 @@ export default function ContactSection() {
   });
 
   return (
-    <footer id="contact" className="bg-[#1A1814] text-[#EDE8DF]" style={{ paddingTop: "var(--space-7)", paddingBottom: "var(--space-5)" }}>
+    <footer id="contact" className="bg-[#1A1814] text-[var(--color-semantic-text-inverse)]" style={{ paddingTop: "var(--space-7)", paddingBottom: "var(--space-5)" }}>
       <div className="layout-container">
         {/* Two-column layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
@@ -97,7 +97,7 @@ export default function ContactSection() {
             <p className="section-label mb-4" style={{ color: "#9A9590" }}>
               — Get in touch
             </p>
-            <h2 className="heading-section mb-8" style={{ color: "#EDE8DF" }}>
+            <h2 className="heading-section mb-8" style={{ color: "var(--color-semantic-text-inverse)" }}>
               Let&apos;s work together.
             </h2>
 
@@ -184,7 +184,7 @@ export default function ContactSection() {
           {/* Right — info + nav */}
           <div className="flex flex-col justify-between gap-10">
             <div>
-              <h3 className="font-display font-bold text-[22px] text-[#EDE8DF] mb-2">
+              <h3 className="font-display font-bold text-[22px] text-[var(--color-semantic-text-inverse)] mb-2">
                 Elleta McDaniel
               </h3>
               <p className="text-[16px] text-[#A8A4A0] leading-relaxed max-w-sm">
@@ -205,7 +205,7 @@ export default function ContactSection() {
                       <li key={link.label}>
                         <a
                           href={link.href}
-                          className="text-[15px] text-[#A8A4A0] hover:text-[#EDE8DF] transition-colors"
+                          className="text-[15px] text-[#A8A4A0] hover:text-[var(--color-semantic-text-inverse)] transition-colors"
                         >
                           {link.label}
                         </a>

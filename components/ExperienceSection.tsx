@@ -144,7 +144,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                 fontFamily: "var(--font-body)",
                 fontSize: "14px",
                 fontWeight: 600,
-                color: "#EDE8DF",
+                color: "var(--color-semantic-text-inverse)",
                 border: "none",
                 borderRadius: "999px",
                 padding: "12px 24px",
@@ -194,7 +194,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
           {education.map((edu) => (
             <div
               key={edu.name}
-              className="overflow-hidden rounded-[22px] border border-white/50 bg-gradient-to-b from-white/72 to-white/58 shadow-[0_8px_24px_rgba(44,24,16,0.04),0_1px_4px_rgba(44,24,16,0.03),inset_0_1px_0_rgba(255,255,255,0.8)] [backdrop-filter:blur(18px)] [-webkit-backdrop-filter:blur(18px)]"
+              className="overflow-hidden rounded-[22px] border border-white/50 bg-gradient-to-b from-white/72 to-white/58 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-04),0_1px_4px_var(--color-alpha-shadow-warm-03),inset_0_1px_0_rgba(255,255,255,0.8)] [backdrop-filter:blur(18px)] [-webkit-backdrop-filter:blur(18px)]"
             >
               <div className="flex w-full items-center gap-4 px-5 py-5 md:px-6 md:py-6">
                 <LogoContainer src={edu.logo} alt={edu.name} bg={edu.logoBg} size={44} />

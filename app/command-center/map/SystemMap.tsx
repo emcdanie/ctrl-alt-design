@@ -31,9 +31,9 @@ interface MapEdge {
 // DESIGN TOKENS — Eddie palette for canvas drawing
 // ─────────────────────────────────────────────────────────────
 const C = {
-  page:       "#f6f1e8",
-  surface:    "#f0ebe3",
-  cream:      "#f7f3ec",
+  page:       "var(--color-semantic-background)",
+  surface:    "var(--color-semantic-surface)",
+  cream:      "var(--color-semantic-background)",
   gold:       "#b8956a",
   goldLight:  "#c9a87e",
   goldPale:   "rgba(184,149,106,0.12)",
@@ -42,7 +42,7 @@ const C = {
   inkSoft:    "#2c2c2c",
   inkMuted:   "#7a7a7a",
   muted:      "#6f6a63",
-  borderSoft: "rgba(44,24,16,0.08)",
+  borderSoft: "var(--color-alpha-shadow-warm-08)",
   // Ring colors per atomic level
   atom:       "#b8956a",  // gold
   molecule:   "#6b4ea0",  // purple
@@ -324,7 +324,7 @@ function drawMap(
       node.y,
       drawR,
     );
-    fillGrad.addColorStop(0, "rgba(255,255,255,0.9)");
+    fillGrad.addColorStop(0, "var(--color-alpha-glass-90)");
     fillGrad.addColorStop(1, meta.bg.replace("0.08", "0.25"));
     ctx.fillStyle = fillGrad;
     ctx.fill();
@@ -411,14 +411,14 @@ function DetailPanel({
         right: 20,
         width: 320,
         background:
-          "linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.72) 100%)",
+          "linear-gradient(180deg, rgba(255,255,255,0.88) 0%, var(--color-alpha-glass-72) 100%)",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
         border: "1px solid rgba(255,255,255,0.6)",
         borderTop: "1px solid rgba(255,255,255,0.8)",
         borderRadius: 20,
         boxShadow:
-          "0 1px 2px rgba(44,24,16,0.04), 0 12px 40px rgba(44,24,16,0.08), inset 0 1px 0 rgba(255,255,255,0.6)",
+          "0 1px 2px var(--color-alpha-shadow-warm-04), 0 12px 40px var(--color-alpha-shadow-warm-08), inset 0 1px 0 rgba(255,255,255,0.6)",
         padding: "24px",
         zIndex: 10,
         fontFamily: `"Plus Jakarta Sans", system-ui, sans-serif`,
@@ -430,7 +430,7 @@ function DetailPanel({
           position: "absolute",
           top: 14,
           right: 14,
-          background: "rgba(44,24,16,0.06)",
+          background: "var(--color-alpha-shadow-warm-06)",
           border: "none",
           borderRadius: 8,
           width: 28,
@@ -504,7 +504,7 @@ function DetailPanel({
       {/* Path */}
       <div
         style={{
-          background: "rgba(44,24,16,0.04)",
+          background: "var(--color-alpha-shadow-warm-04)",
           borderRadius: 8,
           padding: "8px 12px",
           fontSize: 12,
@@ -769,13 +769,13 @@ export function SystemMap() {
         <div
           style={{
             background:
-              "linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.72) 100%)",
+              "linear-gradient(180deg, rgba(255,255,255,0.88) 0%, var(--color-alpha-glass-72) 100%)",
             backdropFilter: "blur(20px)",
             WebkitBackdropFilter: "blur(20px)",
             border: "1px solid rgba(255,255,255,0.6)",
             borderRadius: 16,
             boxShadow:
-              "0 1px 2px rgba(44,24,16,0.04), 0 8px 24px rgba(44,24,16,0.06)",
+              "0 1px 2px var(--color-alpha-shadow-warm-04), 0 8px 24px var(--color-alpha-shadow-warm-06)",
             padding: "18px 22px",
           }}
         >

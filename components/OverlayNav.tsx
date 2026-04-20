@@ -50,7 +50,7 @@ export default function OverlayNav() {
       <div
         className="pointer-events-none fixed inset-x-0 top-0 z-[9995]"
       >
-        <div className="flex w-full items-center justify-between border-b border-white/60 bg-[#F6F1E8]/72 px-4 py-3 shadow-[0_18px_48px_rgba(26,24,20,0.08)] backdrop-blur-xl sm:px-6"
+        <div className="flex w-full items-center justify-between border-b border-white/60 bg-[var(--color-semantic-background)]/72 px-4 py-3 shadow-[0_18px_48px_rgba(26,24,20,0.08)] backdrop-blur-xl sm:px-6"
           style={{ borderTop: "1px solid rgba(255,255,255,0.7)" }}
         >
           <Link
@@ -108,7 +108,7 @@ export default function OverlayNav() {
       </div>
 
       <div
-        className="fixed inset-0 z-[9990] overflow-hidden bg-[#F6F1E8]/98 text-[#1A1814] transition-[clip-path] duration-300 ease-[cubic-bezier(0.76,0,0.24,1)]"
+        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[#1A1814] transition-[clip-path] duration-300 ease-[cubic-bezier(0.76,0,0.24,1)]"
         style={{
           clipPath: open ? "inset(0% 0 0% 0)" : "inset(100% 0 0% 0)",
         }}

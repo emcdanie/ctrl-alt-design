@@ -113,7 +113,7 @@ export default function CaseStudyShell({
                     style={{
                       background: c.bg,
                       color: c.color,
-                      borderColor: "rgba(44, 24, 16, 0.08)",
+                      borderColor: "var(--color-alpha-shadow-warm-08)",
                     }}
                   >
                     {tag}
@@ -237,7 +237,7 @@ export default function CaseStudyShell({
                     style={{
                       background: c.bg,
                       color: c.color,
-                      borderColor: "rgba(44, 24, 16, 0.08)",
+                      borderColor: "var(--color-alpha-shadow-warm-08)",
                     }}
                   >
                     {tag}
@@ -331,7 +331,7 @@ export default function CaseStudyShell({
               href="/#contact"
               style={{
                 alignSelf: "flex-start",
-                background: "#EDE8DF",
+                background: "var(--color-semantic-text-inverse)",
                 color: "#1A1814",
                 fontFamily: "var(--font-body)",
                 fontWeight: 600,

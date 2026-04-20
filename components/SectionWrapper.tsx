@@ -8,7 +8,7 @@
  * in context. Both are identical in behaviour.
  *
  * Usage:
- *   <SectionWrapper id="work" className="bg-[#F8F5F0]">
+ *   <SectionWrapper id="work" className="bg-[var(--color-semantic-background)]">
  *     <SectionHeader label="— Work" title="Selected Case Studies" />
  *     ...
  *   </SectionWrapper>

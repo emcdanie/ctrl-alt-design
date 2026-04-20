@@ -28,7 +28,7 @@ export function CommandCenterNav() {
           "linear-gradient(180deg, rgba(246,241,232,0.92) 0%, rgba(246,241,232,0.82) 100%)",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(44,24,16,0.06)",
+        borderBottom: "1px solid var(--color-alpha-shadow-warm-06)",
         fontFamily: `var(--font-body), "Plus Jakarta Sans", system-ui, sans-serif`,
       }}
     >
@@ -62,7 +62,7 @@ export function CommandCenterNav() {
             textTransform: "uppercase",
             color: "var(--color-ink-muted, #7a7a7a)",
             fontFamily: `var(--font-chivo-mono), "Chivo Mono", monospace`,
-            background: "rgba(44,24,16,0.04)",
+            background: "var(--color-alpha-shadow-warm-04)",
             padding: "3px 8px",
             borderRadius: 4,
           }}
@@ -97,7 +97,7 @@ export function CommandCenterNav() {
                   ? "1px solid rgba(255,255,255,0.6)"
                   : "1px solid transparent",
                 boxShadow: isActive
-                  ? "0 1px 4px rgba(44,24,16,0.04)"
+                  ? "0 1px 4px var(--color-alpha-shadow-warm-04)"
                   : "none",
                 textDecoration: "none",
                 transition: "all 0.15s ease",

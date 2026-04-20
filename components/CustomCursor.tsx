@@ -41,10 +41,10 @@ export default function CustomCursor() {
       // Detect dark surface for cursor contrast inversion
       const onDark = !!el.closest("#contact, footer, [data-cursor-dark]");
       if (dot) {
-        dot.style.background = onDark ? "#EDE8DF" : "#1A1A1A";
+        dot.style.background = onDark ? "var(--color-semantic-text-inverse)" : "#1A1A1A";
       }
       if (bubble) {
-        const baseBorder = onDark ? "#EDE8DF" : "#1A1A1A";
+        const baseBorder = onDark ? "var(--color-semantic-text-inverse)" : "#1A1A1A";
         bubble.dataset.cursorDark = onDark ? "1" : "";
         bubble.style.borderColor = baseBorder;
       }

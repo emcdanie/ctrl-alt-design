@@ -73,7 +73,7 @@ export default function CaseStudyHero({
                   style={{
                     background: c.bg,
                     color: c.color,
-                    borderColor: "rgba(44, 24, 16, 0.08)",
+                    borderColor: "var(--color-alpha-shadow-warm-08)",
                   }}
                 >
                   {tag}
@@ -87,7 +87,7 @@ export default function CaseStudyHero({
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border-medium)] bg-white/55 px-4 py-2 text-[13px] font-semibold text-[var(--color-accent-espresso)] shadow-[0_8px_24px_rgba(44,24,16,0.05)] backdrop-blur-md transition hover:bg-white/75"
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border-medium)] bg-white/55 px-4 py-2 text-[13px] font-semibold text-[var(--color-accent-espresso)] shadow-[0_8px_24px_var(--color-alpha-shadow-warm-05)] backdrop-blur-md transition hover:bg-white/75"
             >
               <span>Live preview</span>
               <span aria-hidden="true">↗</span>
@@ -98,7 +98,7 @@ export default function CaseStudyHero({
 
       {/* ── Full-width media ── */}
       <div className="mx-auto max-w-[1200px] px-6 pb-16 md:px-8 md:pb-24">
-        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[24px] border border-white/20 bg-[#110f12] shadow-[0_20px_60px_rgba(44,24,16,0.14),0_6px_20px_rgba(44,24,16,0.08)]">
+        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[24px] border border-white/20 bg-[#110f12] shadow-[0_20px_60px_rgba(44,24,16,0.14),0_6px_20px_var(--color-alpha-shadow-warm-08)]">
           <div className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(180deg,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0)_18%)]" />
           {media.type === "video" ? (
             <>

@@ -9,10 +9,10 @@ import { useState } from "react";
 // ─────────────────────────────────────────────────────────────
 const T = {
   // Surfaces — mapped to Eddie
-  bg:            "var(--color-page)",          // #f6f1e8
-  bgDeep:        "var(--color-surface)",       // #f0ebe3
-  bgCard:        "var(--color-glass)",         // rgba(255,255,255,0.68)
-  bgCardHover:   "var(--color-glass-strong)",  // rgba(255,255,255,0.82)
+  bg:            "var(--color-page)",          // var(--color-semantic-background)
+  bgDeep:        "var(--color-surface)",       // var(--color-semantic-surface)
+  bgCard:        "var(--color-glass)",         // var(--color-alpha-glass-68)
+  bgCardHover:   "var(--color-glass-strong)",  // var(--color-alpha-glass-82)
   // Accent — Eddie gold
   accent:        "var(--color-accent-gold)",   // #b8956a
   accentLight:   "#c9a87e",                    // lighter tint for gradients
@@ -27,7 +27,7 @@ const T = {
   inkMuted:      "var(--color-ink-muted)",      // #7a7a7a
   inkFaint:      "var(--color-muted)",          // #6f6a63
   // Borders + shadows — Eddie
-  borderSoft:    "var(--color-border-soft)",    // rgba(44,24,16,0.08)
+  borderSoft:    "var(--color-border-soft)",    // var(--color-alpha-shadow-warm-08)
   borderMed:     "var(--color-border-medium)",  // rgba(44,24,16,0.12)
   shadow:        "var(--shadow-soft)",
   shadowMd:      "var(--shadow-layered)",
@@ -162,16 +162,16 @@ function Card({
       onMouseLeave={() => hover && setOn(false)}
       style={{
         background: on
-          ? "linear-gradient(180deg, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.62) 100%)"
-          : "linear-gradient(180deg, rgba(255,255,255,0.68) 0%, rgba(255,255,255,0.48) 100%)",
+          ? "linear-gradient(180deg, var(--color-alpha-glass-82) 0%, rgba(255,255,255,0.62) 100%)"
+          : "linear-gradient(180deg, var(--color-alpha-glass-68) 0%, var(--color-alpha-glass-48) 100%)",
         backdropFilter: "blur(16px)",
         WebkitBackdropFilter: "blur(16px)",
-        border: `1px solid rgba(255,255,255,0.55)`,
+        border: `1px solid var(--color-alpha-glass-55)`,
         borderTop: `1px solid rgba(255,255,255,0.75)`,
         borderRadius: T.radius,
         boxShadow: on
-          ? "0 1px 2px rgba(44,24,16,0.04), 0 8px 24px rgba(44,24,16,0.06), 0 24px 56px rgba(44,24,16,0.08), inset 0 1px 0 rgba(255,255,255,0.6)"
-          : "0 1px 2px rgba(44,24,16,0.04), 0 8px 24px rgba(44,24,16,0.06), inset 0 1px 0 rgba(255,255,255,0.6)",
+          ? "0 1px 2px var(--color-alpha-shadow-warm-04), 0 8px 24px var(--color-alpha-shadow-warm-06), 0 24px 56px var(--color-alpha-shadow-warm-08), inset 0 1px 0 rgba(255,255,255,0.6)"
+          : "0 1px 2px var(--color-alpha-shadow-warm-04), 0 8px 24px var(--color-alpha-shadow-warm-06), inset 0 1px 0 rgba(255,255,255,0.6)",
         transform: on ? "translateY(-3px)" : "translateY(0)",
         transition: "all 0.24s cubic-bezier(0.16, 1, 0.3, 1)",
         padding: "22px 24px",
@@ -600,7 +600,7 @@ export function CommandCenterDashboard() {
                       style={{
                         background: on
                           ? T.accentGlass
-                          : "rgba(255,255,255,0.55)",
+                          : "var(--color-alpha-glass-55)",
                         border: `1px solid ${on ? T.accentBorder : T.borderSoft}`,
                         color: on ? "#b8956a" : T.inkMuted,
                         padding: "5px 14px",
@@ -901,13 +901,13 @@ export function CommandCenterDashboard() {
                   style={{
                     background: t.done
                       ? "rgba(255,253,247,0.35)"
-                      : "linear-gradient(180deg, rgba(255,255,255,0.68) 0%, rgba(255,255,255,0.48) 100%)",
+                      : "linear-gradient(180deg, var(--color-alpha-glass-68) 0%, var(--color-alpha-glass-48) 100%)",
                     backdropFilter: "blur(12px)",
-                    border: `1px solid ${t.done ? T.accentBorder : "rgba(255,255,255,0.55)"}`,
+                    border: `1px solid ${t.done ? T.accentBorder : "var(--color-alpha-glass-55)"}`,
                     borderRadius: T.radius,
                     boxShadow: t.done
                       ? "none"
-                      : "0 1px 2px rgba(44,24,16,0.04), 0 4px 16px rgba(44,24,16,0.04)",
+                      : "0 1px 2px var(--color-alpha-shadow-warm-04), 0 4px 16px var(--color-alpha-shadow-warm-04)",
                     padding: "16px 18px",
                     cursor: "pointer",
                     display: "flex",

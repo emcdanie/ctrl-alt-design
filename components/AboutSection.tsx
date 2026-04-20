@@ -42,7 +42,7 @@ export default function AboutSection() {
                 flexShrink: 0,
                 background: "#D8D4CC",
                 border: "2.5px solid rgba(26,24,20,0.08)",
-                boxShadow: "0 2px 8px rgba(44,24,16,0.06)",
+                boxShadow: "0 2px 8px var(--color-alpha-shadow-warm-06)",
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -93,7 +93,7 @@ export default function AboutSection() {
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.background = "#1A1814";
-                  e.currentTarget.style.color = "#EDE8DF";
+                  e.currentTarget.style.color = "var(--color-semantic-text-inverse)";
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.background = "transparent";
@@ -124,7 +124,7 @@ export default function AboutSection() {
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.background = "#1A1814";
-                  e.currentTarget.style.color = "#EDE8DF";
+                  e.currentTarget.style.color = "var(--color-semantic-text-inverse)";
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.background = "transparent";
@@ -161,7 +161,7 @@ export default function AboutSection() {
                   }}
                   onMouseEnter={e => {
                     const el = e.currentTarget as HTMLDivElement;
-                    el.style.boxShadow = "0 8px 28px rgba(44,24,16,0.09), 0 2px 8px rgba(44,24,16,0.05)";
+                    el.style.boxShadow = "0 8px 28px rgba(44,24,16,0.09), 0 2px 8px var(--color-alpha-shadow-warm-05)";
                     el.style.transform = "translateY(-2px)";
                   }}
                   onMouseLeave={e => {

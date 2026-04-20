@@ -46,7 +46,7 @@ function MediaBlock({
         overflow: "hidden",
         borderRadius: "16px",
         marginBottom: "32px",
-        background: "#f0ebe3",
+        background: "var(--color-semantic-surface)",
       }}
     >
       <Image
@@ -78,7 +78,7 @@ function EmbedBlock({
         overflow: "hidden",
         borderRadius: "16px",
         marginBottom: "32px",
-        background: "#f0ebe3",
+        background: "var(--color-semantic-surface)",
         border: "1px solid rgba(0,0,0,0.06)",
       }}
     >

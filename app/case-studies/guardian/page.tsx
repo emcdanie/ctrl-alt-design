@@ -113,7 +113,7 @@ export default function GuardianPage() {
           <Body>
             The walkthrough mode (use the arrows at the bottom) shows the full flow: empty state, scan, findings with highlights, pattern library, and token comparison. Each finding now includes an &quot;Apply fix&quot; button and an &quot;Add to docs&quot; button — features I sketched during the hackathon but didn&apos;t have time to build.
           </Body>
-          <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginTop: "24px", marginBottom: "24px", background: "#F5F0E8", border: "1px solid rgba(0,0,0,0.06)" }}>
+          <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginTop: "24px", marginBottom: "24px", background: "var(--color-semantic-surface)", border: "1px solid rgba(0,0,0,0.06)" }}>
             <div style={{ position: "relative", aspectRatio: "16/10", width: "100%", minHeight: "480px" }}>
               <iframe
                 src="/demos/pattern-mentor.html"

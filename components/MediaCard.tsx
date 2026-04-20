@@ -154,7 +154,7 @@ function CardInner({
 
 export default function MediaCard(props: MediaCardProps) {
   const sharedClasses =
-    "group flex cursor-pointer flex-col overflow-hidden rounded-[20px] border border-white/60 bg-gradient-to-b from-white/82 to-white/68 shadow-[0_8px_24px_rgba(44,24,16,0.05),0_2px_6px_rgba(44,24,16,0.04),inset_0_1px_0_rgba(255,255,255,0.9)] [backdrop-filter:blur(18px)] [-webkit-backdrop-filter:blur(18px)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_44px_rgba(44,24,16,0.09),0_6px_16px_rgba(44,24,16,0.06)]";
+    "group flex cursor-pointer flex-col overflow-hidden rounded-[20px] border border-white/60 bg-gradient-to-b from-white/82 to-white/68 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-05),0_2px_6px_var(--color-alpha-shadow-warm-04),inset_0_1px_0_var(--color-alpha-glass-90)] [backdrop-filter:blur(18px)] [-webkit-backdrop-filter:blur(18px)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_44px_rgba(44,24,16,0.09),0_6px_16px_var(--color-alpha-shadow-warm-06)]";
 
   if (props.type === "project") {
     const { href, type: _type, ...rest } = props;

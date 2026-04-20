@@ -105,7 +105,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
           <div className="flex items-center gap-3">
             {/* PDF download — enabled once /public/cv/Elleta_McDaniel_Product_Designer_CV.pdf is added */}
             <span
-              className="bg-[#1A1814]/40 text-[#EDE8DF]/50 text-[13px] font-medium px-4 py-2 rounded-full cursor-not-allowed select-none"
+              className="bg-[#1A1814]/40 text-[var(--color-semantic-text-inverse)]/50 text-[13px] font-medium px-4 py-2 rounded-full cursor-not-allowed select-none"
               title="PDF coming soon"
               aria-disabled="true"
             >

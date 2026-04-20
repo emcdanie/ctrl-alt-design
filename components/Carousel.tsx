@@ -46,7 +46,7 @@ export default function Carousel() {
             style={{
               width: "168px",
               height: "470px",
-              background: "#E8E3DA",
+              background: "var(--color-supporting-linen)",
               ...(i % 2 === 0 ? patternA : patternB),
             }}
           >

@@ -20,7 +20,7 @@ interface HoverLiftProps {
 export default function HoverLift({
   children,
   lift = distance.micro,
-  shadow = "0 12px 32px rgba(44, 24, 16, 0.08)",
+  shadow = "0 12px 32px var(--color-alpha-shadow-warm-08)",
   className,
 }: HoverLiftProps) {
   const reduced = useReducedMotion();

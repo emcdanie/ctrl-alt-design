@@ -6,7 +6,7 @@ const GRADIENT = "linear-gradient(135deg, #0A0A1C 0%, #1A1A3A 50%, #080814 100%)
 
 export default function VideoWalkthrough() {
   return (
-    <section className="bg-[#F8F5F0] layout-section">
+    <section className="bg-[var(--color-semantic-background)] layout-section">
       <div className="layout-container">
         <div className="max-w-5xl mx-auto">
 

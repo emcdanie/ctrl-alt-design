@@ -234,7 +234,7 @@ export default function FiltersDecisionSupportPage() {
         </Section>
 
         {/* Before state — the overwhelming filter panel */}
-        <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginBottom: "48px", border: "1px solid rgba(0,0,0,0.06)", background: "#f0ebe3" }}>
+        <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginBottom: "48px", border: "1px solid rgba(0,0,0,0.06)", background: "var(--color-semantic-surface)" }}>
           <div style={{ position: "relative", aspectRatio: "3/2", width: "100%", minHeight: "360px" }}>
             <iframe src="/demos/case-study-visuals/filters-before.html" title="Before: nine filter controls at equal visual weight" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none", borderRadius: "16px" }} />
           </div>
@@ -308,7 +308,7 @@ export default function FiltersDecisionSupportPage() {
         </Section>
 
         {/* After state — the redesigned progressive filtering system */}
-        <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginBottom: "48px", border: "1px solid rgba(0,0,0,0.06)", background: "#f0ebe3" }}>
+        <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginBottom: "48px", border: "1px solid rgba(0,0,0,0.06)", background: "var(--color-semantic-surface)" }}>
           <div style={{ position: "relative", aspectRatio: "3/2", width: "100%", minHeight: "360px" }}>
             <iframe src="/demos/case-study-visuals/filters-after.html" title="After: progressive disclosure with prioritised filters" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none", borderRadius: "16px" }} />
           </div>

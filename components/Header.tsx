@@ -48,8 +48,8 @@ export default function Header({ onResumeClick }: HeaderProps) {
       <div
         className={`flex w-full items-center justify-between border-b px-5 backdrop-blur-xl transition-all duration-300 sm:px-8 ${
           scrolled
-            ? "border-[#1A1814]/8 bg-[#F6F1E8]/88 py-2.5 shadow-[0_1px_12px_rgba(26,24,20,0.06)]"
-            : "border-[#1A1814]/5 bg-[#F6F1E8]/60 py-3.5 shadow-none"
+            ? "border-[#1A1814]/8 bg-[var(--color-semantic-background)]/88 py-2.5 shadow-[0_1px_12px_rgba(26,24,20,0.06)]"
+            : "border-[#1A1814]/5 bg-[var(--color-semantic-background)]/60 py-3.5 shadow-none"
         }`}
         style={{ borderTop: "1px solid rgba(255,255,255,0.6)" }}
       >
@@ -78,7 +78,7 @@ export default function Header({ onResumeClick }: HeaderProps) {
 
         <button
           onClick={onResumeClick}
-          className="rounded-full border border-[#1A1814]/10 bg-[#1A1814] px-4 py-2 text-[13px] font-medium text-[#F6F1E8] shadow-[0_4px_12px_rgba(26,24,20,0.12)] transition-all duration-200 hover:-translate-y-px hover:opacity-90"
+          className="rounded-full border border-[#1A1814]/10 bg-[#1A1814] px-4 py-2 text-[13px] font-medium text-[var(--color-semantic-background)] shadow-[0_4px_12px_rgba(26,24,20,0.12)] transition-all duration-200 hover:-translate-y-px hover:opacity-90"
         >
           Resume
         </button>
