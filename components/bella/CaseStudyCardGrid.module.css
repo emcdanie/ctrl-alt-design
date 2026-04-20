@@ -1,0 +1,21 @@
+/* CaseStudyCardGrid — 1 col mobile / 2 col tablet / 3 col desktop.
+   Uses BELLA v0.1.1 tokens only. */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6);
+  align-items: stretch;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

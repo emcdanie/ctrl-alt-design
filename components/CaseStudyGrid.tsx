@@ -1,103 +1,29 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
 import caseStudies from "@/lib/content";
 import FadeIn from "@/components/FadeIn";
+import CaseStudyCard, {
+  type CaseStudyCardProps,
+  type CaseStudyTagVariant,
+} from "@/components/bella/CaseStudyCard";
+import CaseStudyCardGrid from "@/components/bella/CaseStudyCardGrid";
 
-const CATEGORY_COLORS: Record<string, { bg: string; color: string }> = {
-  "DESIGN SYSTEMS": { bg: "#1E4A8A", color: "#FFFFFF" },
-  "DATA VIZ": { bg: "#52308A", color: "#FFFFFF" },
-  "UX STRATEGY": { bg: "#7A4510", color: "#FFFFFF" },
-  "PRODUCT UX": { bg: "#185438", color: "#FFFFFF" },
-};
-
-function getCategoryStyle(category: string) {
-  return CATEGORY_COLORS[category] ?? { bg: "#1A1814", color: "#FFFFFF" };
+/** Map the free-text `category` field on CaseStudy data → the 3 BELLA
+ * CaseStudyCard tag variants. TODO(bella-migration): the data model has
+ * 4 categories (DESIGN SYSTEMS / DATA VIZ / UX STRATEGY / PRODUCT UX);
+ * BELLA's card has 3 variants. DATA VIZ and anything unrecognised fall
+ * through to "research". Revisit when BELLA adds a 4th variant or when
+ * CaseStudy.category is promoted to an enum. */
+function categoryToVariant(category: string): CaseStudyTagVariant {
+  const normalized = category.toUpperCase();
+  if (normalized.includes("DESIGN SYSTEM")) return "design-systems";
+  if (normalized.includes("UX STRATEGY") || normalized.includes("PRODUCT UX")) {
+    return "ux-strategy";
+  }
+  return "research";
 }
 
-/* ─── Card sizes — uniform compact grid ───────────────────────── */
-type CardSize = "standard";
-
-const ASPECT: Record<CardSize, string> = {
-  standard: "aspect-[16/11]",
-};
-
-/* ─── Bento Card ───────────────────────────────────────────────── */
-
-interface CardProps {
-  cs: (typeof caseStudies)[number];
-  delay: number;
-}
-
-function CompactCard({ cs, delay }: CardProps) {
-  return (
-    <FadeIn delay={delay} className="col-span-1">
-      <Link
-        href={cs.href ?? `/case-studies/${cs.slug}`}
-        data-cursor="card"
-        className="bento-card group relative flex flex-col overflow-hidden"
-        style={{ maxWidth: "420px" }}
-      >
-        {/* ── Image area — fixed 16:10 ratio ── */}
-        <div className={`relative w-full shrink-0 overflow-hidden ${ASPECT.standard} bg-[#1A1814]`}>
-          <Image
-            src={cs.thumbnailImage || cs.heroImage}
-            alt={cs.title}
-            fill
-            loading="lazy"
-            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 420px"
-          />
-          {cs.heroVideo && (
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              onError={(e) => { e.currentTarget.style.display = "none"; }}
-              className="absolute inset-0 z-1 h-full w-full object-cover"
-            >
-              <source src={cs.heroVideo} type="video/mp4" />
-            </video>
-          )}
-        </div>
-
-        {/* ── Content area ── */}
-        <div style={{ padding: "var(--spacing-4) var(--spacing-5) var(--spacing-5)" }}>
-          <span
-            className="inline-block rounded-full px-2.5 py-0.5 text-[9px] font-bold tracking-[0.1em]"
-            style={{
-              background: getCategoryStyle(cs.category).bg,
-              color: getCategoryStyle(cs.category).color,
-              marginBottom: "var(--spacing-2)",
-            }}
-          >
-            {cs.category}
-          </span>
-
-          <h3
-            className="heading-card"
-            style={{ fontSize: "var(--typography-font-size-base)", marginBottom: "var(--spacing-2)" }}
-          >
-            {cs.title}
-          </h3>
-
-          <p
-            className="body-sm line-clamp-2"
-            style={{ fontSize: "var(--typography-font-size-tag)", color: "var(--color-muted)", margin: 0 }}
-          >
-            {cs.description}
-          </p>
-        </div>
-      </Link>
-    </FadeIn>
-  );
-}
-
-/* ─── Grid ─────────────────────────────────────────────────────── */
-
-export { SectionHeader };
+type CardEntry = CaseStudyCardProps & { key: string };
 
 interface SectionHeaderProps {
   label: string;
@@ -112,7 +38,10 @@ function SectionHeader({ label, title, description }: SectionHeaderProps) {
         <p className="section-label mb-3">{label}</p>
         <h2 className="heading-section">{title}</h2>
         {description && (
-          <p className="body-lg mt-3 max-w-xl" style={{ color: "var(--color-muted)" }}>
+          <p
+            className="body-lg mt-3 max-w-xl"
+            style={{ color: "var(--color-muted)" }}
+          >
             {description}
           </p>
         )}
@@ -122,6 +51,23 @@ function SectionHeader({ label, title, description }: SectionHeaderProps) {
 }
 
 export default function CaseStudyGrid() {
+  // Extract card data into a typed array above the grid — no inline JSX per card.
+  const cards: CardEntry[] = caseStudies.map((cs) => ({
+    key: cs.slug,
+    image: {
+      src: cs.thumbnailImage || cs.heroImage,
+      alt: cs.title,
+      ratio: "16:9",
+    },
+    tag: {
+      label: cs.category,
+      variant: categoryToVariant(cs.category),
+    },
+    title: cs.title,
+    description: cs.description,
+    href: cs.href ?? `/case-studies/${cs.slug}`,
+  }));
+
   return (
     <section id="work" className="layout-section">
       <div className="layout-container">
@@ -133,15 +79,19 @@ export default function CaseStudyGrid() {
           />
         </FadeIn>
 
-        <div className="layout-grid-3">
-          {caseStudies.map((cs, i) => (
-            <CompactCard
-              key={cs.slug}
-              cs={cs}
-              delay={i * 60}
-            />
+        <CaseStudyCardGrid>
+          {cards.map((card, i) => (
+            <FadeIn key={card.key} delay={i * 60}>
+              <CaseStudyCard
+                image={card.image}
+                tag={card.tag}
+                title={card.title}
+                description={card.description}
+                href={card.href}
+              />
+            </FadeIn>
           ))}
-        </div>
+        </CaseStudyCardGrid>
       </div>
     </section>
   );
