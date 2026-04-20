@@ -1,0 +1,99 @@
+=== BELLA Migration Phase 4 — VERIFY ===
+Started: Mon Apr 20 08:32:03 CEST 2026
+Branch:  migration/bella-v0.1
+HEAD:    9acc3ae
+
+--- npm install (lockfile check) ---
+node_modules present — skipping install
+
+--- npm run build ---
+
+> ctrl-alt-design@0.1.0 build
+> next build
+
+▲ Next.js 16.1.7 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1522.6ms
+  Running TypeScript ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/15) ...
+  Generating static pages using 9 workers (3/15) 
+  Generating static pages using 9 workers (7/15) 
+  Generating static pages using 9 workers (11/15) 
+✓ Generating static pages using 9 workers (15/15) in 298.5ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/contact
+├ ● /case-studies/[slug]
+│ ├ /case-studies/brad-frost
+│ ├ /case-studies/design-system-transformation
+│ ├ /case-studies/filters-decision-support-system
+│ └ /case-studies/un-operational-dashboard
+├ ○ /case-studies/brad-frost
+├ ○ /case-studies/filters-decision-support-system
+├ ○ /case-studies/guardian
+├ ○ /case-study/brad-frost
+├ ○ /case-study/guardian
+├ ○ /command-center
+└ ○ /command-center/map
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+--- build exit: 0 ---
+
+--- npm run lint ---
+
+> ctrl-alt-design@0.1.0 lint
+> eslint
+
+
+/Users/Elleta/DEV/ctrl-alt-design/app/case-studies/[slug]/page.tsx
+  6:36  warning  'Eyebrow' is defined but never used  @typescript-eslint/no-unused-vars
+  6:45  warning  'H2' is defined but never used       @typescript-eslint/no-unused-vars
+
+/Users/Elleta/DEV/ctrl-alt-design/components/CustomCursor.tsx
+  111:6  warning  React Hook useEffect has a missing dependency: 'visible'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/Elleta/DEV/ctrl-alt-design/components/MediaCard.tsx
+  160:25  warning  '_type' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  168:26  warning  '_type' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/Elleta/DEV/ctrl-alt-design/components/VideoWalkthrough.tsx
+  15:11  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  15:78  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+/Users/Elleta/DEV/ctrl-alt-design/components/WorkSidebar.tsx
+  54:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/Elleta/DEV/ctrl-alt-design/components/WorkSidebar.tsx:54:5
+  52 |     if (!panel) return;
+  53 |     panel.addEventListener("scroll", handleScroll, { passive: true });
+> 54 |     handleScroll();
+     |     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  55 |     return () => panel.removeEventListener("scroll", handleScroll);
+  56 |   }, [handleScroll]);
+  57 |  react-hooks/set-state-in-effect
+
+✖ 8 problems (3 errors, 5 warnings)
+
+--- lint exit: 1 ---
+
+--- typecheck ---
+SKIPPED: no 'typecheck' script in package.json
+
+=== Ended: Mon Apr 20 08:32:15 CEST 2026 ===
