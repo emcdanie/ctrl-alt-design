@@ -47,7 +47,7 @@ export default function CaseStudySideCard({
         className="glass-card"
         style={{
           padding: "28px",
-          borderRadius: "20px",
+          borderRadius: "var(--radius-2xl)",
           maxWidth: "340px",
         }}
       >

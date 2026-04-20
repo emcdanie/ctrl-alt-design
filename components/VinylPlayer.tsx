@@ -107,7 +107,7 @@ export default function VinylPlayer() {
             width: "100%",
             maxWidth: "280px",
             height: "175px",
-            borderRadius: "12px",
+            borderRadius: "var(--radius-lg)",
             border: "none",
             overflow: "hidden",
             background: "transparent",

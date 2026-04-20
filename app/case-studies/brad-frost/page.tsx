@@ -98,7 +98,7 @@ export default function BradFrostPage() {
           <p style={{ fontFamily: "var(--font-body)", fontSize: "16px", color: "#2C2C2C", lineHeight: 1.7, marginBottom: "var(--spacing-6)" }}>
             To explore how AI tools could interact with a live design system, we connected the Figma component library to an MCP workflow and tested it in real time — alongside Brad Frost and TJ Pitre.
           </p>
-          <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", borderRadius: "16px", overflow: "hidden", background: "#0A0A0A", boxShadow: "0 8px 32px rgba(0,0,0,0.12)" }}>
+          <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", borderRadius: "var(--radius-xl)", overflow: "hidden", background: "#0A0A0A", boxShadow: "0 8px 32px rgba(0,0,0,0.12)" }}>
             <iframe
               src="https://www.youtube.com/embed/w6bHNKU_Tn8?start=2376"
               title="Brad Frost, Elleta McDaniel & TJ Pitre — Connecting Figma Design System to MCP"

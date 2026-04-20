@@ -150,7 +150,7 @@ export default function WorkSidebar() {
         <div
           style={{
             background: "var(--color-ink)",
-            borderRadius: "12px",
+            borderRadius: "var(--radius-lg)",
             padding: "14px",
             color: "var(--color-page)",
             fontFamily: "var(--font-mono, monospace)",

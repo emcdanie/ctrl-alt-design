@@ -53,7 +53,7 @@ export default function LearningSection() {
                 style={{
                   width: "48px",
                   height: "48px",
-                  borderRadius: "12px",
+                  borderRadius: "var(--radius-lg)",
                   background: "rgba(26,24,20,0.06)",
                   display: "flex",
                   alignItems: "center",

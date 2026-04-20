@@ -169,7 +169,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
                   style={{
                     display: "inline-flex",
                     padding: "2px 10px",
-                    borderRadius: "999px",
+                    borderRadius: "var(--radius-full)",
                     background: style.bg,
                     border: `1px solid ${style.color}22`,
                     fontFamily: "var(--font-body)",
@@ -310,7 +310,7 @@ export default function AboutPage() {
                 width: "100%",
                 maxWidth: "280px",
                 aspectRatio: "1",
-                borderRadius: "24px",
+                borderRadius: "var(--radius-3xl)",
                 overflow: "hidden",
                 background: "#D8D4CC",
                 border: "3px solid rgba(26,24,20,0.06)",
@@ -479,7 +479,7 @@ export default function AboutPage() {
             <div
               style={{
                 background: "#1A1814",
-                borderRadius: "24px",
+                borderRadius: "var(--radius-3xl)",
                 padding: "56px var(--spacing-12)",
                 display: "flex",
                 flexDirection: "column",
@@ -497,7 +497,7 @@ export default function AboutPage() {
               </div>
               <Link
                 href="/#contact"
-                style={{ flexShrink: 0, background: "var(--color-semantic-text-inverse)", color: "#1A1814", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: "13px", padding: "var(--spacing-3) var(--spacing-6)", borderRadius: "999px", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
+                style={{ flexShrink: 0, background: "var(--color-semantic-text-inverse)", color: "#1A1814", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: "13px", padding: "var(--spacing-3) var(--spacing-6)", borderRadius: "var(--radius-full)", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
               >
                 Get in touch ↗
               </Link>

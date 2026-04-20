@@ -266,7 +266,7 @@ li {
 .glass-card {
   background: linear-gradient(180deg, var(--color-glass-strong) 0%, var(--color-glass) 100%);
   border: 1px solid var(--color-alpha-glass-72);
-  border-radius: 24px;
+  border-radius: var(--radius-3xl);
   box-shadow: var(--shadow-layered);
   backdrop-filter: blur(var(--bella-blur-lg));
   -webkit-backdrop-filter: blur(var(--bella-blur-lg));
@@ -276,7 +276,7 @@ li {
   display: inline-flex;
   align-items: center;
   padding: 0.35rem 0.8rem;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   border: 1px solid var(--color-tag-border);
   background: var(--color-tag-bg);
   font-family: var(--font-body);
@@ -322,7 +322,7 @@ li {
   border-left: 3px solid #1a1a1a;
   padding: var(--spacing-5) var(--spacing-6);
   background: var(--color-semantic-surface-elevated);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   margin: var(--spacing-10) 0;
 }
 
@@ -443,7 +443,7 @@ li {
   backdrop-filter: blur(var(--bella-blur-sm));
   -webkit-backdrop-filter: blur(var(--bella-blur-sm));
   border: 1px solid var(--color-alpha-glass-55);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   box-shadow: 0 1px 4px var(--color-alpha-shadow-warm-03), 0 4px 16px var(--color-alpha-shadow-warm-04),
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
@@ -455,7 +455,7 @@ li {
   -webkit-backdrop-filter: blur(var(--bella-blur-md));
   border: 1px solid var(--color-alpha-glass-55);
   border-top: 1px solid rgba(255, 255, 255, 0.75);
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   box-shadow: 0 1px 2px var(--color-alpha-shadow-warm-04), 0 8px 24px var(--color-alpha-shadow-warm-06),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
@@ -526,7 +526,7 @@ textarea:focus-visible {
   align-items: center;
   gap: var(--spacing-2);
   padding: 10px var(--spacing-5);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   border: 1px solid rgba(26, 24, 20, 0.14);
   background: var(--color-alpha-glass-72);
   color: #1A1814;
@@ -555,7 +555,7 @@ textarea:focus-visible {
   -webkit-backdrop-filter: blur(var(--bella-blur-md));
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-top: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: 24px;
+  border-radius: var(--radius-3xl);
   box-shadow:
     0 1px 2px var(--color-alpha-shadow-warm-04),
     0 8px 32px var(--color-alpha-shadow-warm-06),
@@ -780,7 +780,7 @@ textarea:focus-visible {
   }
 
   .cs-shell__hero-frame {
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
   }
 }
 
@@ -936,7 +936,7 @@ textarea:focus-visible {
   display: inline-flex;
   align-items: center;
   padding: 3px 10px;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   border: 1px solid var(--color-alpha-shadow-warm-08);
   font-family: var(--font-body);
   font-size: 10px;
@@ -971,7 +971,7 @@ textarea:focus-visible {
   align-items: center;
   gap: 6px;
   padding: 9px var(--spacing-5);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: var(--color-ink);
   color: var(--color-page);
   font-family: var(--font-body);
@@ -1010,7 +1010,7 @@ textarea:focus-visible {
   aspect-ratio: 16 / 9;
   width: 100%;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: #110f12;
   box-shadow:
@@ -1142,7 +1142,7 @@ textarea:focus-visible {
 
   /* Hero slightly larger radius on desktop */
   .cs-shell__hero-frame {
-    border-radius: 20px;
+    border-radius: var(--radius-2xl);
   }
 }
 

@@ -297,7 +297,7 @@ export default function CaseStudyShell({
         {/* Bottom CTA (visible on all sizes within the scrolling column) */}
         <div className="cs-shell__bottom-cta">
           <div className="surface-dark" style={{
-            borderRadius: "24px",
+            borderRadius: "var(--radius-3xl)",
             padding: "var(--spacing-12) var(--spacing-10)",
             display: "flex",
             flexDirection: "column",
@@ -337,7 +337,7 @@ export default function CaseStudyShell({
                 fontWeight: 600,
                 fontSize: "13px",
                 padding: "var(--spacing-3) var(--spacing-6)",
-                borderRadius: "999px",
+                borderRadius: "var(--radius-full)",
                 textDecoration: "none",
                 textTransform: "uppercase",
                 letterSpacing: "0.05em",

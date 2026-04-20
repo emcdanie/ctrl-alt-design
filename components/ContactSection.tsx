@@ -77,7 +77,7 @@ export default function ContactSection() {
     border: hasError
       ? "1px solid #f87171"
       : "1px solid rgba(243,238,231,0.25)",
-    borderRadius: "16px",
+    borderRadius: "var(--radius-xl)",
     padding: "18px var(--spacing-5)",
     fontSize: "18px",
     lineHeight: 1.5,
@@ -170,7 +170,7 @@ export default function ContactSection() {
                   style={{
                     fontSize: "18px",
                     padding: "18px var(--spacing-5)",
-                    borderRadius: "16px",
+                    borderRadius: "var(--radius-xl)",
                     border: "none",
                     fontFamily: "var(--font-body)",
                   }}

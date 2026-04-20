@@ -34,7 +34,7 @@ export default function PersonalSection() {
               key={card.label}
               style={{
                 padding: "var(--spacing-6)",
-                borderRadius: "16px",
+                borderRadius: "var(--radius-xl)",
                 border: "1px solid rgba(26,24,20,0.08)",
                 background: "#F8F7F4",
                 transition: "background 200ms ease, box-shadow 200ms ease, transform 200ms ease",

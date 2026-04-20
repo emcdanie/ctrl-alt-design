@@ -20,7 +20,7 @@ export default function ArtifactPlaceholder({
     return (
       <div
         className={className}
-        style={{ width: "100%", aspectRatio, borderRadius: "12px", overflow: "hidden", position: "relative" }}
+        style={{ width: "100%", aspectRatio, borderRadius: "var(--radius-lg)", overflow: "hidden", position: "relative" }}
       >
         <Image
           src={src}
@@ -39,7 +39,7 @@ export default function ArtifactPlaceholder({
       style={{
         width: "100%",
         aspectRatio,
-        borderRadius: "12px",
+        borderRadius: "var(--radius-lg)",
         border: "2px dashed rgba(26,24,20,0.2)",
         background: "#F5F4F1",
         display: "flex",

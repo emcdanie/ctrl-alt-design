@@ -38,7 +38,7 @@ export default function PrototypeEmbed({
       {/* Embed container */}
       <div
         style={{
-          borderRadius: "16px",
+          borderRadius: "var(--radius-xl)",
           overflow: "hidden",
           border: "1px solid rgba(26,24,20,0.1)",
           boxShadow: "0 4px 24px rgba(0,0,0,0.08)",

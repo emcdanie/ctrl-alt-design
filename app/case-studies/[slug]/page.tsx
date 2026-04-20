@@ -44,7 +44,7 @@ function MediaBlock({
         aspectRatio,
         width: "100%",
         overflow: "hidden",
-        borderRadius: "16px",
+        borderRadius: "var(--radius-xl)",
         marginBottom: "var(--spacing-8)",
         background: "var(--color-semantic-surface)",
       }}
@@ -76,7 +76,7 @@ function EmbedBlock({
         position: "relative",
         width: "100%",
         overflow: "hidden",
-        borderRadius: "16px",
+        borderRadius: "var(--radius-xl)",
         marginBottom: "var(--spacing-8)",
         background: "var(--color-semantic-surface)",
         border: "1px solid rgba(0,0,0,0.06)",
@@ -101,7 +101,7 @@ function EmbedBlock({
             width: "100%",
             height: "100%",
             border: "none",
-            borderRadius: "16px",
+            borderRadius: "var(--radius-xl)",
           }}
         />
       </div>
@@ -237,7 +237,7 @@ export default async function CaseStudyPage({
                   display: "inline-flex",
                   alignItems: "center",
                   padding: "var(--spacing-2) var(--spacing-5)",
-                  borderRadius: "999px",
+                  borderRadius: "var(--radius-full)",
                   fontFamily: "var(--font-body)",
                   fontSize: "11px",
                   fontWeight: 600,
@@ -309,7 +309,7 @@ export default async function CaseStudyPage({
                     display: "inline-flex",
                     alignItems: "center",
                     padding: "var(--spacing-2) var(--spacing-5)",
-                    borderRadius: "999px",
+                    borderRadius: "var(--radius-full)",
                     fontFamily: "var(--font-body)",
                     fontSize: "11px",
                     fontWeight: 600,

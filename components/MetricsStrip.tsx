@@ -58,7 +58,7 @@ function MetricCard({ item }: { item: MetricItem }) {
         minWidth: 0,
         padding: expanded ? "20px" : "20px",
         background: expanded ? "#F5F4F1" : "transparent",
-        borderRadius: "12px",
+        borderRadius: "var(--radius-lg)",
         transition: "background 220ms ease",
         textAlign: "center",
       }}

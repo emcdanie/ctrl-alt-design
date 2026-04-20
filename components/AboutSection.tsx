@@ -87,7 +87,7 @@ export default function AboutSection() {
                   color: "#1A1814",
                   textDecoration: "none",
                   border: "1px solid rgba(26,24,20,0.18)",
-                  borderRadius: "999px",
+                  borderRadius: "var(--radius-full)",
                   padding: "9px 18px",
                   transition: "background 150ms ease, border-color 150ms ease, color 150ms ease",
                 }}
@@ -118,7 +118,7 @@ export default function AboutSection() {
                   color: "#1A1814",
                   textDecoration: "none",
                   border: "1px solid rgba(26,24,20,0.18)",
-                  borderRadius: "999px",
+                  borderRadius: "var(--radius-full)",
                   padding: "9px 18px",
                   transition: "background 150ms ease, border-color 150ms ease, color 150ms ease",
                 }}

@@ -62,7 +62,7 @@ export default function VideoWalkthrough() {
               fontWeight: 500,
               color: "#FFFFFF",
               background: "#1A1A1A",
-              borderRadius: "999px",
+              borderRadius: "var(--radius-full)",
               padding: "14px 28px",
               textDecoration: "none",
               transition: "opacity 200ms ease",

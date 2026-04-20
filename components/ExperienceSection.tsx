@@ -146,7 +146,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                 fontWeight: 600,
                 color: "var(--color-semantic-text-inverse)",
                 border: "none",
-                borderRadius: "999px",
+                borderRadius: "var(--radius-full)",
                 padding: "var(--spacing-3) var(--spacing-6)",
                 background: "#1A1814",
                 cursor: "pointer",
