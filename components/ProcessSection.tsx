@@ -96,8 +96,8 @@ export default function ProcessSection() {
               className="rounded-2xl min-h-[220px] relative overflow-hidden group border border-white/60 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-05),0_2px_6px_var(--color-alpha-shadow-warm-03),inset_0_1px_0_rgba(255,255,255,0.85)]"
               style={{
                 background: step.color,
-                backdropFilter: "blur(18px)",
-                WebkitBackdropFilter: "blur(18px)",
+                backdropFilter: "blur(var(--bella-blur-lg))",
+                WebkitBackdropFilter: "blur(var(--bella-blur-lg))",
               }}
             >
               {/* Default state */}

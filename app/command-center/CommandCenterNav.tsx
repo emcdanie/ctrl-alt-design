@@ -26,8 +26,8 @@ export function CommandCenterNav() {
         height: 52,
         background:
           "linear-gradient(180deg, rgba(246,241,232,0.92) 0%, rgba(246,241,232,0.82) 100%)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
+        backdropFilter: "blur(var(--bella-blur-xl))",
+        WebkitBackdropFilter: "blur(var(--bella-blur-xl))",
         borderBottom: "1px solid var(--color-alpha-shadow-warm-06)",
         fontFamily: `var(--font-body), "Plus Jakarta Sans", system-ui, sans-serif`,
       }}

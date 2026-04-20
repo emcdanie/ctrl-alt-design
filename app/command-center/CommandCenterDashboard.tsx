@@ -163,9 +163,9 @@ function Card({
       style={{
         background: on
           ? "linear-gradient(180deg, var(--color-alpha-glass-82) 0%, rgba(255,255,255,0.62) 100%)"
-          : "linear-gradient(180deg, var(--color-alpha-glass-68) 0%, var(--color-alpha-glass-48) 100%)",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
+          : "var(--color-semantic-surface-glass-elevated)",
+        backdropFilter: "blur(var(--bella-blur-md))",
+        WebkitBackdropFilter: "blur(var(--bella-blur-md))",
         border: `1px solid var(--color-alpha-glass-55)`,
         borderTop: `1px solid rgba(255,255,255,0.75)`,
         borderRadius: T.radius,
@@ -901,7 +901,7 @@ export function CommandCenterDashboard() {
                   style={{
                     background: t.done
                       ? "rgba(255,253,247,0.35)"
-                      : "linear-gradient(180deg, var(--color-alpha-glass-68) 0%, var(--color-alpha-glass-48) 100%)",
+                      : "var(--color-semantic-surface-glass-elevated)",
                     backdropFilter: "blur(12px)",
                     border: `1px solid ${t.done ? T.accentBorder : "var(--color-alpha-glass-55)"}`,
                     borderRadius: T.radius,

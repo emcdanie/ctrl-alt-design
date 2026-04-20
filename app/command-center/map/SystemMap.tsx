@@ -412,8 +412,8 @@ function DetailPanel({
         width: 320,
         background:
           "linear-gradient(180deg, rgba(255,255,255,0.88) 0%, var(--color-alpha-glass-72) 100%)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
+        backdropFilter: "blur(var(--bella-blur-xl))",
+        WebkitBackdropFilter: "blur(var(--bella-blur-xl))",
         border: "1px solid rgba(255,255,255,0.6)",
         borderTop: "1px solid rgba(255,255,255,0.8)",
         borderRadius: 20,
@@ -770,8 +770,8 @@ export function SystemMap() {
           style={{
             background:
               "linear-gradient(180deg, rgba(255,255,255,0.88) 0%, var(--color-alpha-glass-72) 100%)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
+            backdropFilter: "blur(var(--bella-blur-xl))",
+            WebkitBackdropFilter: "blur(var(--bella-blur-xl))",
             border: "1px solid rgba(255,255,255,0.6)",
             borderRadius: 16,
             boxShadow:

@@ -49,7 +49,7 @@ export default function ExperienceCard({
 }: ExperienceCardProps) {
   return (
     <div
-      className={`overflow-hidden rounded-[22px] border [backdrop-filter:blur(18px)] [-webkit-backdrop-filter:blur(18px)] transition-all duration-300 ${
+      className={`overflow-hidden rounded-[22px] border [backdrop-filter:blur(var(--bella-blur-lg))] [-webkit-backdrop-filter:blur(var(--bella-blur-lg))] transition-all duration-300 ${
         isOpen
           ? "border-white/60 bg-gradient-to-b from-white/82 to-white/70 shadow-[0_16px_40px_var(--color-alpha-shadow-warm-08),0_4px_12px_var(--color-alpha-shadow-warm-05),inset_0_1px_0_var(--color-alpha-glass-90)]"
           : "border-white/50 bg-gradient-to-b from-white/72 to-white/58 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-04),0_1px_4px_var(--color-alpha-shadow-warm-03),inset_0_1px_0_rgba(255,255,255,0.8)] hover:-translate-y-0.5 hover:from-white/80 hover:to-white/68 hover:shadow-[0_14px_34px_rgba(44,24,16,0.07),0_4px_10px_var(--color-alpha-shadow-warm-04)]"
