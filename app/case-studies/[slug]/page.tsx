@@ -290,7 +290,7 @@ export default async function CaseStudyPage({
                         margin: 0,
                         color: "var(--color-ink-soft)",
                         lineHeight: 1.6,
-                        fontSize: "13px",
+                        fontSize: "var(--typography-font-size-tag)",
                       }}
                     >
                       {step.description}

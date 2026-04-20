@@ -174,9 +174,9 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
                     border: `1px solid ${style.color}22`,
                     fontFamily: "var(--font-body)",
                     fontSize: "10px",
-                    fontWeight: 700,
+                    fontWeight: "var(--typography-font-weight-bold)",
                     color: style.color,
-                    letterSpacing: "0.08em",
+                    letterSpacing: "var(--typography-letter-spacing-wide)",
                     textTransform: "uppercase",
                   }}
                 >
@@ -245,7 +245,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
                 alignItems: "center",
                 gap: "6px",
                 fontFamily: "var(--font-body)",
-                fontSize: "13px",
+                fontSize: "var(--typography-font-size-tag)",
                 fontWeight: 600,
                 color: "#1A1814",
                 textDecoration: "none",
@@ -441,7 +441,7 @@ export default function AboutPage() {
                         style={{
                           fontFamily: "var(--font-body)",
                           fontSize: "15px",
-                          fontWeight: 500,
+                          fontWeight: "var(--typography-font-weight-medium)",
                           color: "#1A1814",
                         }}
                       >
@@ -488,16 +488,16 @@ export default function AboutPage() {
               className="md:flex-row md:items-center md:justify-between"
             >
               <div>
-                <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "rgba(255,255,255,0.4)", marginBottom: "10px" }}>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: "var(--typography-font-weight-medium)", textTransform: "uppercase", letterSpacing: "0.12em", color: "rgba(255,255,255,0.4)", marginBottom: "10px" }}>
                   Have a project in mind?
                 </p>
-                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.15, textTransform: "uppercase" }}>
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: "var(--typography-font-weight-bold)", color: "#FFFFFF", lineHeight: 1.15, textTransform: "uppercase" }}>
                   Open to full-time roles &<br />select freelance projects.
                 </h2>
               </div>
               <Link
                 href="/#contact"
-                style={{ flexShrink: 0, background: "var(--color-semantic-text-inverse)", color: "#1A1814", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: "13px", padding: "var(--spacing-3) var(--spacing-6)", borderRadius: "var(--radius-full)", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
+                style={{ flexShrink: 0, background: "var(--color-semantic-text-inverse)", color: "#1A1814", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: "var(--typography-font-size-tag)", padding: "var(--spacing-3) var(--spacing-6)", borderRadius: "var(--radius-full)", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
               >
                 Get in touch ↗
               </Link>

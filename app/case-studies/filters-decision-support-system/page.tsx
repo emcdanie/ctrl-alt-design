@@ -60,7 +60,7 @@ export default function FiltersDecisionSupportPage() {
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(22px, 3vw, 32px)",
-              fontWeight: 400,
+              fontWeight: "var(--typography-font-weight-regular)",
               color: "#1A1A1A",
               lineHeight: 1.2,
               marginBottom: "var(--spacing-3)",
@@ -89,9 +89,9 @@ export default function FiltersDecisionSupportPage() {
                 style={{
                   fontFamily: "var(--font-display)",
                   fontSize: "12px",
-                  fontWeight: 700,
+                  fontWeight: "var(--typography-font-weight-bold)",
                   color: "var(--color-muted)",
-                  letterSpacing: "0.08em",
+                  letterSpacing: "var(--typography-letter-spacing-wide)",
                   textTransform: "uppercase",
                 }}
               >
@@ -101,7 +101,7 @@ export default function FiltersDecisionSupportPage() {
             <p
               style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "14px",
+                fontSize: "var(--typography-font-size-sm)",
                 color: "var(--color-muted)",
                 lineHeight: 1.6,
                 marginBottom: "var(--spacing-3)",
@@ -117,7 +117,7 @@ export default function FiltersDecisionSupportPage() {
               rel="noopener noreferrer"
               className="demo-link"
             >
-              <span style={{ fontSize: "14px" }}>↗</span> ***REMOVED*** Search Prototype
+              <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span> ***REMOVED*** Search Prototype
             </a>
           </div>
 
@@ -128,9 +128,9 @@ export default function FiltersDecisionSupportPage() {
                 style={{
                   fontFamily: "var(--font-display)",
                   fontSize: "12px",
-                  fontWeight: 700,
+                  fontWeight: "var(--typography-font-weight-bold)",
                   color: "var(--color-muted)",
-                  letterSpacing: "0.08em",
+                  letterSpacing: "var(--typography-letter-spacing-wide)",
                   textTransform: "uppercase",
                 }}
               >
@@ -140,7 +140,7 @@ export default function FiltersDecisionSupportPage() {
             <p
               style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "14px",
+                fontSize: "var(--typography-font-size-sm)",
                 color: "var(--color-muted)",
                 lineHeight: 1.6,
                 marginBottom: "var(--spacing-3)",
@@ -156,7 +156,7 @@ export default function FiltersDecisionSupportPage() {
               rel="noopener noreferrer"
               className="demo-link"
             >
-              <span style={{ fontSize: "14px" }}>↗</span> ***REMOVED*** Filter Demo
+              <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span> ***REMOVED*** Filter Demo
             </a>
           </div>
 
@@ -167,9 +167,9 @@ export default function FiltersDecisionSupportPage() {
                 style={{
                   fontFamily: "var(--font-display)",
                   fontSize: "12px",
-                  fontWeight: 700,
+                  fontWeight: "var(--typography-font-weight-bold)",
                   color: "var(--color-muted)",
-                  letterSpacing: "0.08em",
+                  letterSpacing: "var(--typography-letter-spacing-wide)",
                   textTransform: "uppercase",
                 }}
               >
@@ -179,7 +179,7 @@ export default function FiltersDecisionSupportPage() {
             <p
               style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "14px",
+                fontSize: "var(--typography-font-size-sm)",
                 color: "var(--color-muted)",
                 lineHeight: 1.6,
                 marginBottom: "var(--spacing-4)",

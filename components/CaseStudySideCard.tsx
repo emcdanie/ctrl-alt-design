@@ -122,7 +122,7 @@ export default function CaseStudySideCard({
                   className="demo-link"
                   style={{ width: "100%", justifyContent: "center" }}
                 >
-                  <span style={{ fontSize: "14px" }}>↗</span> View live prototype
+                  <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span> View live prototype
                 </a>
               )}
               {demoLinks?.map((demo) => (
@@ -134,7 +134,7 @@ export default function CaseStudySideCard({
                   className="demo-link"
                   style={{ width: "100%", justifyContent: "center" }}
                 >
-                  <span style={{ fontSize: "14px" }}>↗</span> {demo.label}
+                  <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span> {demo.label}
                 </a>
               ))}
             </div>

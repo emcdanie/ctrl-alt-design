@@ -106,7 +106,7 @@ export default function ProcessSection() {
                   style={{
                     fontFamily: "var(--font-display)",
                     fontSize: "52px",
-                    fontWeight: 700,
+                    fontWeight: "var(--typography-font-weight-bold)",
                     color: step.accentColor,
                     opacity: 0.25,
                     lineHeight: 1,
@@ -117,7 +117,7 @@ export default function ProcessSection() {
                 <div>
                   <h3 style={{
                     fontFamily: "var(--font-body)",
-                    fontSize: "16px",
+                    fontSize: "var(--typography-font-size-base)",
                     fontWeight: 600,
                     color: "#1A1A1A",
                     marginBottom: "var(--spacing-2)",
@@ -127,7 +127,7 @@ export default function ProcessSection() {
                   </h3>
                   <p style={{
                     fontFamily: "var(--font-body)",
-                    fontSize: "14px",
+                    fontSize: "var(--typography-font-size-sm)",
                     color: "#666666",
                     lineHeight: 1.6,
                   }}>
@@ -141,7 +141,7 @@ export default function ProcessSection() {
                 <div>
                   <p style={{
                     fontFamily: "var(--font-body)",
-                    fontSize: "13px",
+                    fontSize: "var(--typography-font-size-tag)",
                     color: "#2C2C2C",
                     lineHeight: 1.6,
                     marginBottom: "var(--spacing-3)",
@@ -151,7 +151,7 @@ export default function ProcessSection() {
                   <Link
                     href={`/case-studies/${step.caseStudySlug}`}
                     className="font-semibold underline underline-offset-2 hover:opacity-70 transition-opacity"
-                    style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "#1A1A1A" }}
+                    style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", color: "#1A1A1A" }}
                   >
                     {step.caseStudyLabel}
                   </Link>

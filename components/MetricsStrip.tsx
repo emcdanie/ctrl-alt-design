@@ -68,7 +68,7 @@ function MetricCard({ item }: { item: MetricItem }) {
         style={{
           fontFamily: "var(--font-display)",
           fontSize: "36px",
-          fontWeight: 700,
+          fontWeight: "var(--typography-font-weight-bold)",
           color: "#1A1A1A",
           lineHeight: 1,
         }}
@@ -100,7 +100,7 @@ function MetricCard({ item }: { item: MetricItem }) {
                 href={h.href}
                 style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: "13px",
+                  fontSize: "var(--typography-font-size-tag)",
                   color: "#1A1A1A",
                   textDecoration: "underline",
                   textDecorationColor: "transparent",
@@ -117,7 +117,7 @@ function MetricCard({ item }: { item: MetricItem }) {
                 key={i}
                 style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: "13px",
+                  fontSize: "var(--typography-font-size-tag)",
                   color: "#666666",
                   lineHeight: 1.5,
                 }}

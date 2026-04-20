@@ -85,8 +85,8 @@ function SupportingCard({
         <p
           style={{
             fontFamily: "var(--font-body)",
-            fontSize: "14px",
-            fontWeight: 400,
+            fontSize: "var(--typography-font-size-sm)",
+            fontWeight: "var(--typography-font-weight-regular)",
             color: "var(--color-ink-soft)",
             lineHeight: 1.7,
             margin: 0,
@@ -130,7 +130,7 @@ function SupportingCard({
             <p
               style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "13px",
+                fontSize: "var(--typography-font-size-tag)",
                 fontWeight: 600,
                 color: "var(--color-ink)",
                 margin: 0,
@@ -217,11 +217,11 @@ export default function TestimonialSection() {
                   alignItems: "center",
                   justifyContent: "center",
                   flexShrink: 0,
-                  fontSize: "16px",
-                  fontWeight: 700,
+                  fontSize: "var(--typography-font-size-base)",
+                  fontWeight: "var(--typography-font-weight-bold)",
                   color: "#1A1814",
                   fontFamily: "var(--font-display)",
-                  letterSpacing: "-0.02em",
+                  letterSpacing: "var(--typography-letter-spacing-tight)",
                 }}
               >
                 BF
@@ -230,7 +230,7 @@ export default function TestimonialSection() {
                 <p
                   style={{
                     fontFamily: "var(--font-body)",
-                    fontSize: "14px",
+                    fontSize: "var(--typography-font-size-sm)",
                     fontWeight: 600,
                     color: "var(--color-ink)",
                     margin: 0,
@@ -257,7 +257,7 @@ export default function TestimonialSection() {
             <span
               style={{
                 fontFamily: "var(--font-display)",
-                fontSize: "56px",
+                fontSize: "var(--typography-font-size-5xl)",
                 lineHeight: 0.8,
                 color: "var(--color-accent-gold)",
                 opacity: 0.35,
@@ -278,7 +278,7 @@ export default function TestimonialSection() {
                   style={{
                     fontFamily: "var(--font-body)",
                     fontSize: "clamp(18px, 1.8vw, 22px)",
-                    fontWeight: 400,
+                    fontWeight: "var(--typography-font-weight-regular)",
                     color: "var(--color-ink-soft)",
                     lineHeight: 1.75,
                     margin: i === 0 ? 0 : "14px 0 0",
@@ -302,7 +302,7 @@ export default function TestimonialSection() {
                   gap: "6px",
                   fontFamily: "var(--font-body)",
                   fontSize: "12px",
-                  fontWeight: 500,
+                  fontWeight: "var(--typography-font-weight-medium)",
                   color: "var(--color-accent-gold)",
                   textDecoration: "none",
                   transition: "opacity 150ms",
@@ -316,7 +316,7 @@ export default function TestimonialSection() {
                 }}
               >
                 Read full recommendation
-                <span aria-hidden style={{ fontSize: "14px" }}>
+                <span aria-hidden style={{ fontSize: "var(--typography-font-size-sm)" }}>
                   &rarr;
                 </span>
               </a>
@@ -348,7 +348,7 @@ export default function TestimonialSection() {
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "12px",
-                fontWeight: 500,
+                fontWeight: "var(--typography-font-weight-medium)",
                 color: "var(--color-muted)",
                 textDecoration: "none",
                 transition: "color 150ms",

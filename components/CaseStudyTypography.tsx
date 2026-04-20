@@ -21,7 +21,7 @@ export function H2({ children }: { children: React.ReactNode }) {
     <h2 style={{
       fontFamily: "var(--font-display)",
       fontSize: "clamp(26px, 3.5vw, 38px)",
-      fontWeight: 400,
+      fontWeight: "var(--typography-font-weight-regular)",
       color: "#1A1A1A",
       lineHeight: 1.12,
       marginBottom: "var(--spacing-6)",
@@ -36,8 +36,8 @@ export function Body({ children }: { children: React.ReactNode }) {
   return (
     <p style={{
       fontFamily: "var(--font-body)",
-      fontSize: "16px",
-      fontWeight: 400,
+      fontSize: "var(--typography-font-size-base)",
+      fontWeight: "var(--typography-font-weight-regular)",
       color: "#2C2C2C",
       lineHeight: 1.65,
       marginBottom: "var(--spacing-4)",

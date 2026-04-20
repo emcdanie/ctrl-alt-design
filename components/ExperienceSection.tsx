@@ -142,7 +142,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
               onClick={onResumeClick}
               style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "14px",
+                fontSize: "var(--typography-font-size-sm)",
                 fontWeight: 600,
                 color: "var(--color-semantic-text-inverse)",
                 border: "none",

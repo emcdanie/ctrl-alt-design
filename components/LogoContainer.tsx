@@ -45,7 +45,7 @@ export default function LogoContainer({ src, alt, bg = "#E8E4DC", size = 44 }: L
           style={{
             fontFamily: "var(--font-display)",
             fontSize: `${Math.round(size * 0.32)}px`,
-            fontWeight: 700,
+            fontWeight: "var(--typography-font-weight-bold)",
             color: "#1A1A1A",
             lineHeight: 1,
             userSelect: "none",

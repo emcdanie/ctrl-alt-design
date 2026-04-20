@@ -76,7 +76,7 @@ export default function PersonalSection() {
               </p>
               <p style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "13px",
+                fontSize: "var(--typography-font-size-tag)",
                 color: "#8A8480",
               }}>
                 {card.subtext}

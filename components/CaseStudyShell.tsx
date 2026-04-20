@@ -134,7 +134,7 @@ export default function CaseStudyShell({
                   className="demo-link"
                   style={{ width: "100%", justifyContent: "center" }}
                 >
-                  <span style={{ fontSize: "14px" }}>↗</span> Live preview
+                  <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span> Live preview
                 </a>
               )}
               {demoLinks?.map((demo) => (
@@ -146,7 +146,7 @@ export default function CaseStudyShell({
                   className="demo-link"
                   style={{ width: "100%", justifyContent: "center" }}
                 >
-                  <span style={{ fontSize: "14px" }}>↗</span> {demo.label}
+                  <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span> {demo.label}
                 </a>
               ))}
             </div>
@@ -250,12 +250,12 @@ export default function CaseStudyShell({
             <div className="cs-shell__links">
               {liveUrl && (
                 <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="demo-link">
-                  <span style={{ fontSize: "14px" }}>↗</span> Live preview
+                  <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span> Live preview
                 </a>
               )}
               {demoLinks?.map((demo) => (
                 <a key={demo.href} href={demo.href} target="_blank" rel="noopener noreferrer" className="demo-link">
-                  <span style={{ fontSize: "14px" }}>↗</span> {demo.label}
+                  <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span> {demo.label}
                 </a>
               ))}
             </div>
@@ -307,7 +307,7 @@ export default function CaseStudyShell({
               <p style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "11px",
-                fontWeight: 500,
+                fontWeight: "var(--typography-font-weight-medium)",
                 textTransform: "uppercase",
                 letterSpacing: "0.12em",
                 color: "rgba(255,255,255,0.4)",
@@ -318,7 +318,7 @@ export default function CaseStudyShell({
               <h2 style={{
                 fontFamily: "var(--font-display)",
                 fontSize: "clamp(22px, 3vw, 32px)",
-                fontWeight: 700,
+                fontWeight: "var(--typography-font-weight-bold)",
                 color: "#FFFFFF",
                 lineHeight: 1.15,
                 textTransform: "uppercase",
@@ -335,7 +335,7 @@ export default function CaseStudyShell({
                 color: "#1A1814",
                 fontFamily: "var(--font-body)",
                 fontWeight: 600,
-                fontSize: "13px",
+                fontSize: "var(--typography-font-size-tag)",
                 padding: "var(--spacing-3) var(--spacing-6)",
                 borderRadius: "var(--radius-full)",
                 textDecoration: "none",

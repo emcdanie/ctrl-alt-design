@@ -78,14 +78,14 @@ function CompactCard({ cs, delay }: CardProps) {
 
           <h3
             className="heading-card"
-            style={{ fontSize: "16px", marginBottom: "var(--spacing-2)" }}
+            style={{ fontSize: "var(--typography-font-size-base)", marginBottom: "var(--spacing-2)" }}
           >
             {cs.title}
           </h3>
 
           <p
             className="body-sm line-clamp-2"
-            style={{ fontSize: "13px", color: "var(--color-muted)", margin: 0 }}
+            style={{ fontSize: "var(--typography-font-size-tag)", color: "var(--color-muted)", margin: 0 }}
           >
             {cs.description}
           </p>

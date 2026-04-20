@@ -47,8 +47,8 @@ export function CommandCenterNav() {
           style={{
             fontFamily: `var(--font-display), "Clash Display", system-ui, sans-serif`,
             fontSize: 17,
-            fontWeight: 700,
-            letterSpacing: "-0.02em",
+            fontWeight: "var(--typography-font-weight-bold)",
+            letterSpacing: "var(--typography-letter-spacing-tight)",
             color: "var(--color-ink, #1a1a1a)",
           }}
         >
@@ -116,7 +116,7 @@ export function CommandCenterNav() {
         href="/"
         style={{
           fontSize: 12,
-          fontWeight: 500,
+          fontWeight: "var(--typography-font-weight-medium)",
           color: "var(--color-muted, #6f6a63)",
           textDecoration: "none",
           fontFamily: `var(--font-body), "Plus Jakarta Sans", system-ui, sans-serif`,

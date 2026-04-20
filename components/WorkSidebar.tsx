@@ -77,7 +77,7 @@ export default function WorkSidebar() {
         <p
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "14px",
+            fontSize: "var(--typography-font-size-sm)",
             fontWeight: 600,
             color: "var(--color-ink)",
             lineHeight: 1.2,
@@ -113,7 +113,7 @@ export default function WorkSidebar() {
                 padding: "9px 14px",
                 borderRadius: "10px",
                 fontFamily: "var(--font-body)",
-                fontSize: "13px",
+                fontSize: "var(--typography-font-size-tag)",
                 fontWeight: isActive ? 600 : 400,
                 color: isActive ? "var(--color-ink)" : "var(--color-muted)",
                 textDecoration: "none",
@@ -169,7 +169,7 @@ export default function WorkSidebar() {
                 color: "#4ade80",
                 fontWeight: 600,
                 textTransform: "uppercase",
-                letterSpacing: "0.08em",
+                letterSpacing: "var(--typography-letter-spacing-wide)",
               }}
             >
               ● Live

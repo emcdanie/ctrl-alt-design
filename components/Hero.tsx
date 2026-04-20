@@ -65,7 +65,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
         <h1
           style={{
             fontFamily: "var(--font-display)",
-            fontWeight: 700,
+            fontWeight: "var(--typography-font-weight-bold)",
             fontSize: "clamp(52px, 7vw, 120px)",
             letterSpacing: "-0.035em",
             lineHeight: 0.95,
@@ -85,7 +85,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(16px, 2.2vw, 22px)",
-            fontWeight: 400,
+            fontWeight: "var(--typography-font-weight-regular)",
             fontStyle: "italic",
             color: "var(--color-muted)",
             lineHeight: 1.5,
@@ -122,8 +122,8 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
               alignItems: "center",
               gap: "10px",
               fontFamily: "var(--font-body)",
-              fontSize: "14px",
-              fontWeight: 500,
+              fontSize: "var(--typography-font-size-sm)",
+              fontWeight: "var(--typography-font-weight-medium)",
               borderRadius: "var(--radius-full)",
               padding: "14px var(--spacing-8)",
               border: "none",
@@ -134,7 +134,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
             onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
           >
             Come see what I&apos;ve been building
-            <span style={{ fontSize: "16px", lineHeight: 1 }}>→</span>
+            <span style={{ fontSize: "var(--typography-font-size-base)", lineHeight: 1 }}>→</span>
           </button>
 
           {/* Share button */}
@@ -146,8 +146,8 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
                 alignItems: "center",
                 gap: "6px",
                 fontFamily: "var(--font-body)",
-                fontSize: "13px",
-                fontWeight: 500,
+                fontSize: "var(--typography-font-size-tag)",
+                fontWeight: "var(--typography-font-weight-medium)",
                 borderRadius: "var(--radius-full)",
                 padding: "13px var(--spacing-6)",
                 border: "1px solid rgba(26,24,20,0.12)",
@@ -203,7 +203,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
                     border: "none",
                     background: "transparent",
                     fontFamily: "var(--font-body)",
-                    fontSize: "13px",
+                    fontSize: "var(--typography-font-size-tag)",
                     color: "var(--color-ink)",
                     cursor: "pointer",
                     transition: "background 150ms",
@@ -226,7 +226,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
                     padding: "10px 14px",
                     borderRadius: "10px",
                     fontFamily: "var(--font-body)",
-                    fontSize: "13px",
+                    fontSize: "var(--typography-font-size-tag)",
                     color: "var(--color-ink)",
                     textDecoration: "none",
                     transition: "background 150ms",
@@ -245,7 +245,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
                     padding: "10px 14px",
                     borderRadius: "10px",
                     fontFamily: "var(--font-body)",
-                    fontSize: "13px",
+                    fontSize: "var(--typography-font-size-tag)",
                     color: "var(--color-ink)",
                     textDecoration: "none",
                     transition: "background 150ms",

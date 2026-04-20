@@ -98,7 +98,7 @@ export default function LearningSection() {
                     <div>
                       <p style={{
                         fontFamily: "var(--font-display)",
-                        fontSize: "14px",
+                        fontSize: "var(--typography-font-size-sm)",
                         fontWeight: 600,
                         color: "var(--color-ink)",
                         margin: 0,

@@ -58,8 +58,8 @@ export default function VideoWalkthrough() {
             style={{
               display: "inline-block",
               fontFamily: "var(--font-body)",
-              fontSize: "14px",
-              fontWeight: 500,
+              fontSize: "var(--typography-font-size-sm)",
+              fontWeight: "var(--typography-font-weight-medium)",
               color: "#FFFFFF",
               background: "#1A1A1A",
               borderRadius: "var(--radius-full)",

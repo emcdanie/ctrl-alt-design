@@ -171,8 +171,8 @@ export default function CustomCursor() {
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "10px",
-              fontWeight: 500,
-              letterSpacing: "0.15em",
+              fontWeight: "var(--typography-font-weight-medium)",
+              letterSpacing: "var(--typography-letter-spacing-wider)",
               textTransform: "uppercase",
               color: "inherit",
               animation: "fadeInUp 150ms ease forwards",

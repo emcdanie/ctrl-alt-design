@@ -89,7 +89,7 @@ export default function PrototypeEmbed({
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "12px",
-                fontWeight: 500,
+                fontWeight: "var(--typography-font-weight-medium)",
                 color: "rgba(255,255,255,0.45)",
                 marginLeft: "var(--spacing-2)",
               }}

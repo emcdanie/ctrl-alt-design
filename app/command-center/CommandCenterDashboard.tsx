@@ -370,7 +370,7 @@ export function CommandCenterDashboard() {
               style={{
                 fontFamily: T.display,
                 fontSize: "clamp(38px, 6vw, 62px)",
-                fontWeight: 700,
+                fontWeight: "var(--typography-font-weight-bold)",
                 margin: 0,
                 lineHeight: 0.95,
                 letterSpacing: "-0.025em",
@@ -432,7 +432,7 @@ export function CommandCenterDashboard() {
                 fontWeight: 600,
                 color: T.green,
                 fontFamily: T.mono,
-                letterSpacing: "0.08em",
+                letterSpacing: "var(--typography-letter-spacing-wide)",
               }}
             >
               ● THE FORCE IS STRONG TODAY
@@ -455,11 +455,11 @@ export function CommandCenterDashboard() {
               <div
                 style={{
                   fontSize: 42,
-                  fontWeight: 700,
+                  fontWeight: "var(--typography-font-weight-bold)",
                   color: T.accent,
                   lineHeight: 1,
                   fontFamily: T.display,
-                  letterSpacing: "-0.02em",
+                  letterSpacing: "var(--typography-letter-spacing-tight)",
                 }}
               >
                 {m.value}
@@ -545,7 +545,7 @@ export function CommandCenterDashboard() {
                       color: s.text,
                       flex: 1,
                       lineHeight: 1.55,
-                      fontWeight: 500,
+                      fontWeight: "var(--typography-font-weight-medium)",
                     }}
                   >
                     {a.msg}
@@ -555,7 +555,7 @@ export function CommandCenterDashboard() {
                       fontSize: 12,
                       color: T.inkMuted,
                       fontFamily: T.mono,
-                      letterSpacing: "0.08em",
+                      letterSpacing: "var(--typography-letter-spacing-wide)",
                       flexShrink: 0,
                       paddingTop: 2,
                     }}
@@ -731,11 +731,11 @@ export function CommandCenterDashboard() {
               <div
                 style={{
                   fontSize: 54,
-                  fontWeight: 700,
+                  fontWeight: "var(--typography-font-weight-bold)",
                   color: T.purple,
                   lineHeight: 1,
                   fontFamily: T.display,
-                  letterSpacing: "-0.02em",
+                  letterSpacing: "var(--typography-letter-spacing-tight)",
                 }}
               >
                 {totalXP}

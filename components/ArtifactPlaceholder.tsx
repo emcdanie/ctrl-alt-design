@@ -66,7 +66,7 @@ export default function ArtifactPlaceholder({
         <h3
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "20px",
+            fontSize: "var(--typography-font-size-xl)",
             fontWeight: 600,
             color: "#1A1814",
             lineHeight: 1.25,
@@ -78,7 +78,7 @@ export default function ArtifactPlaceholder({
         <p
           style={{
             fontFamily: "var(--font-body)",
-            fontSize: "14px",
+            fontSize: "var(--typography-font-size-sm)",
             color: "#5D5852",
             lineHeight: 1.5,
             margin: 0,

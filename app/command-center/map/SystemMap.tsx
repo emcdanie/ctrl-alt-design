@@ -480,8 +480,8 @@ function DetailPanel({
         style={{
           fontFamily: `"Clash Display", system-ui, sans-serif`,
           fontSize: 22,
-          fontWeight: 700,
-          letterSpacing: "-0.02em",
+          fontWeight: "var(--typography-font-weight-bold)",
+          letterSpacing: "var(--typography-letter-spacing-tight)",
           color: C.ink,
           margin: "0 0 var(--spacing-1)",
           lineHeight: 1.15,
@@ -547,7 +547,7 @@ function DetailPanel({
                     background: `${col}10`,
                     border: `1px solid ${col}25`,
                     color: col,
-                    fontWeight: 500,
+                    fontWeight: "var(--typography-font-weight-medium)",
                   }}
                 >
                   {name}
@@ -587,7 +587,7 @@ function DetailPanel({
                     background: `${col}10`,
                     border: `1px solid ${col}25`,
                     color: col,
-                    fontWeight: 500,
+                    fontWeight: "var(--typography-font-weight-medium)",
                   }}
                 >
                   {name}
@@ -796,8 +796,8 @@ export function SystemMap() {
             style={{
               fontFamily: `"Clash Display", system-ui, sans-serif`,
               fontSize: 22,
-              fontWeight: 700,
-              letterSpacing: "-0.02em",
+              fontWeight: "var(--typography-font-weight-bold)",
+              letterSpacing: "var(--typography-letter-spacing-tight)",
               color: C.ink,
               margin: 0,
               lineHeight: 1.1,
@@ -929,7 +929,7 @@ export function SystemMap() {
           fontSize: 12,
           color: C.muted,
           fontFamily: `"Plus Jakarta Sans", system-ui, sans-serif`,
-          fontWeight: 500,
+          fontWeight: "var(--typography-font-weight-medium)",
           zIndex: 10,
         }}
       >
