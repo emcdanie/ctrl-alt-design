@@ -45,7 +45,7 @@ function MediaBlock({
         width: "100%",
         overflow: "hidden",
         borderRadius: "16px",
-        marginBottom: "32px",
+        marginBottom: "var(--spacing-8)",
         background: "var(--color-semantic-surface)",
       }}
     >
@@ -77,7 +77,7 @@ function EmbedBlock({
         width: "100%",
         overflow: "hidden",
         borderRadius: "16px",
-        marginBottom: "32px",
+        marginBottom: "var(--spacing-8)",
         background: "var(--color-semantic-surface)",
         border: "1px solid rgba(0,0,0,0.06)",
       }}
@@ -156,7 +156,7 @@ export default async function CaseStudyPage({
 
         {/* Supporting images — right after hero, before text */}
         {cs.images.length > 0 && (
-          <div style={{ marginBottom: "48px" }}>
+          <div style={{ marginBottom: "var(--spacing-12)" }}>
             {cs.images.length === 1 ? (
               <MediaBlock
                 src={cs.images[0]}
@@ -166,7 +166,7 @@ export default async function CaseStudyPage({
               <div style={{
                 display: "grid",
                 gridTemplateColumns: cs.images.length >= 3 ? "1fr 1fr" : "1fr 1fr",
-                gap: "12px",
+                gap: "var(--spacing-3)",
               }}>
                 {cs.images.map((src, i) => (
                   <MediaBlock
@@ -230,13 +230,13 @@ export default async function CaseStudyPage({
               );
             })}
 
-            <div style={{ marginBottom: "48px" }}>
+            <div style={{ marginBottom: "var(--spacing-12)" }}>
               <span
                 className="surface-dark"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  padding: "8px 20px",
+                  padding: "var(--spacing-2) var(--spacing-5)",
                   borderRadius: "999px",
                   fontFamily: "var(--font-body)",
                   fontSize: "11px",
@@ -264,17 +264,17 @@ export default async function CaseStudyPage({
               <div style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
-                gap: "12px",
+                gap: "var(--spacing-3)",
               }}>
                 {cs.process.steps.map((step) => (
                   <div
                     key={step.number}
                     className="card-default"
-                    style={{ padding: "20px" }}
+                    style={{ padding: "var(--spacing-5)" }}
                   >
                     <span
                       className="eyebrow"
-                      style={{ display: "block", marginBottom: "8px" }}
+                      style={{ display: "block", marginBottom: "var(--spacing-2)" }}
                     >
                       {step.number}
                     </span>
@@ -302,13 +302,13 @@ export default async function CaseStudyPage({
 
             <Section eyebrow="OUTCOMES" heading={cs.outcomes.title}>
               <RichBody text={cs.outcomes.body} />
-              <div style={{ marginTop: "24px" }}>
+              <div style={{ marginTop: "var(--spacing-6)" }}>
                 <span
                   className="surface-dark"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
-                    padding: "8px 20px",
+                    padding: "var(--spacing-2) var(--spacing-5)",
                     borderRadius: "999px",
                     fontFamily: "var(--font-body)",
                     fontSize: "11px",

@@ -174,7 +174,7 @@ function Card({
           : "0 1px 2px var(--color-alpha-shadow-warm-04), 0 8px 24px var(--color-alpha-shadow-warm-06), inset 0 1px 0 rgba(255,255,255,0.6)",
         transform: on ? "translateY(-3px)" : "translateY(0)",
         transition: "all 0.24s cubic-bezier(0.16, 1, 0.3, 1)",
-        padding: "22px 24px",
+        padding: "22px var(--spacing-6)",
         ...style,
       }}
     >
@@ -227,7 +227,7 @@ function StatusPill({ status }: { status: Project["status"] }) {
         fontSize: 11,
         fontWeight: 600,
         letterSpacing: "0.06em",
-        padding: "4px 12px",
+        padding: "var(--spacing-1) var(--spacing-3)",
         borderRadius: 999,
         background: s.bg,
         color: s.color,
@@ -427,7 +427,7 @@ export function CommandCenterDashboard() {
                 background: T.greenBg,
                 border: `1px solid ${T.greenBorder}`,
                 borderRadius: T.radiusSm,
-                padding: "6px 16px",
+                padding: "6px var(--spacing-4)",
                 fontSize: 11,
                 fontWeight: 600,
                 color: T.green,
@@ -848,7 +848,7 @@ export function CommandCenterDashboard() {
                       style={{
                         fontSize: 11,
                         fontWeight: 600,
-                        padding: "4px 10px",
+                        padding: "var(--spacing-1) 10px",
                         borderRadius: 6,
                         background: b.bg,
                         color: b.color,
@@ -908,7 +908,7 @@ export function CommandCenterDashboard() {
                     boxShadow: t.done
                       ? "none"
                       : "0 1px 2px var(--color-alpha-shadow-warm-04), 0 4px 16px var(--color-alpha-shadow-warm-04)",
-                    padding: "16px 18px",
+                    padding: "var(--spacing-4) 18px",
                     cursor: "pointer",
                     display: "flex",
                     gap: 14,

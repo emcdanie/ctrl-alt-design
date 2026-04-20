@@ -44,7 +44,7 @@ export default function LearningSection() {
             <div
               className="card-elevated card-interactive"
               style={{
-                padding: "24px",
+                padding: "var(--spacing-6)",
                 height: "100%",
                 cursor: "default",
               }}
@@ -58,7 +58,7 @@ export default function LearningSection() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginBottom: "16px",
+                  marginBottom: "var(--spacing-4)",
                   color: "#1A1814",
                 }}
               >
@@ -70,11 +70,11 @@ export default function LearningSection() {
               </div>
 
               <h3 className="heading-item mb-2.5">Podcasts</h3>
-              <p className="body-base" style={{ color: "var(--color-muted)", marginBottom: "16px" }}>
+              <p className="body-base" style={{ color: "var(--color-muted)", marginBottom: "var(--spacing-4)" }}>
                 Design thinking, systems, and personal growth — what I listen to between projects.
               </p>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
                 {podcasts.map((pod) => (
                   <a
                     key={pod.title}
@@ -85,7 +85,7 @@ export default function LearningSection() {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
-                      gap: "8px",
+                      gap: "var(--spacing-2)",
                       padding: "10px 14px",
                       borderRadius: "10px",
                       background: "rgba(26,24,20,0.04)",

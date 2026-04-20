@@ -120,7 +120,7 @@ export default function ProcessSection() {
                     fontSize: "16px",
                     fontWeight: 600,
                     color: "#1A1A1A",
-                    marginBottom: "8px",
+                    marginBottom: "var(--spacing-2)",
                     lineHeight: 1.3,
                   }}>
                     {step.title}
@@ -144,7 +144,7 @@ export default function ProcessSection() {
                     fontSize: "13px",
                     color: "#2C2C2C",
                     lineHeight: 1.6,
-                    marginBottom: "12px",
+                    marginBottom: "var(--spacing-3)",
                   }}>
                     {step.artifactCaption}
                   </p>

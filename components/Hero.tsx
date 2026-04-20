@@ -52,7 +52,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
         <p
           className="eyebrow"
           style={{
-            marginBottom: "20px",
+            marginBottom: "var(--spacing-5)",
             opacity: mounted ? 1 : 0,
             transform: mounted ? "translateY(0)" : "translateY(8px)",
             transition: "opacity 0.4s ease 0.05s, transform 0.4s ease 0.05s",
@@ -69,7 +69,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
             fontSize: "clamp(52px, 7vw, 120px)",
             letterSpacing: "-0.035em",
             lineHeight: 0.95,
-            margin: "0 0 24px 0",
+            margin: "0 0 var(--spacing-6) 0",
             color: "var(--color-ink)",
             whiteSpace: "nowrap",
             opacity: mounted ? 1 : 0,
@@ -109,7 +109,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: "12px",
+            gap: "var(--spacing-3)",
             flexWrap: "wrap",
             position: "relative",
           }}
@@ -125,7 +125,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
               fontSize: "14px",
               fontWeight: 500,
               borderRadius: "999px",
-              padding: "14px 32px",
+              padding: "14px var(--spacing-8)",
               border: "none",
               textDecoration: "none",
               transition: "opacity 200ms ease, transform 200ms ease",
@@ -149,7 +149,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
                 fontSize: "13px",
                 fontWeight: 500,
                 borderRadius: "999px",
-                padding: "13px 24px",
+                padding: "13px var(--spacing-6)",
                 border: "1px solid rgba(26,24,20,0.12)",
                 background: "rgba(255,255,255,0.6)",
                 backdropFilter: "blur(8px)",
@@ -172,14 +172,14 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
               <div
                 style={{
                   position: "absolute",
-                  top: "calc(100% + 8px)",
+                  top: "calc(100% + var(--spacing-2))",
                   left: "50%",
                   transform: "translateX(-50%)",
                   background: "rgba(255,255,255,0.92)",
                   backdropFilter: "blur(16px)",
                   border: "1px solid rgba(26,24,20,0.1)",
                   borderRadius: "14px",
-                  padding: "8px",
+                  padding: "var(--spacing-2)",
                   boxShadow: "0 8px 32px rgba(26,24,20,0.12)",
                   display: "flex",
                   flexDirection: "column",
@@ -197,7 +197,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: "8px",
+                    gap: "var(--spacing-2)",
                     padding: "10px 14px",
                     borderRadius: "10px",
                     border: "none",
@@ -222,7 +222,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: "8px",
+                    gap: "var(--spacing-2)",
                     padding: "10px 14px",
                     borderRadius: "10px",
                     fontFamily: "var(--font-body)",
@@ -241,7 +241,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: "8px",
+                    gap: "var(--spacing-2)",
                     padding: "10px 14px",
                     borderRadius: "10px",
                     fontFamily: "var(--font-body)",

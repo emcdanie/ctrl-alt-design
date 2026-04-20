@@ -22,7 +22,7 @@ export function CommandCenterNav() {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "0 24px",
+        padding: "0 var(--spacing-6)",
         height: 52,
         background:
           "linear-gradient(180deg, rgba(246,241,232,0.92) 0%, rgba(246,241,232,0.82) 100%)",
@@ -63,7 +63,7 @@ export function CommandCenterNav() {
             color: "var(--color-ink-muted, #7a7a7a)",
             fontFamily: `var(--font-chivo-mono), "Chivo Mono", monospace`,
             background: "var(--color-alpha-shadow-warm-04)",
-            padding: "3px 8px",
+            padding: "3px var(--spacing-2)",
             borderRadius: 4,
           }}
         >
@@ -83,7 +83,7 @@ export function CommandCenterNav() {
                 display: "flex",
                 alignItems: "center",
                 gap: 6,
-                padding: "6px 16px",
+                padding: "6px var(--spacing-4)",
                 borderRadius: 8,
                 fontSize: 13,
                 fontWeight: isActive ? 600 : 500,

@@ -27,7 +27,7 @@ export default function PrototypeEmbed({
             fontSize: "15px",
             color: "#6f6a63",
             lineHeight: 1.6,
-            marginBottom: "20px",
+            marginBottom: "var(--spacing-5)",
             maxWidth: "680px",
           }}
         >
@@ -52,12 +52,12 @@ export default function PrototypeEmbed({
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "10px 16px",
+            padding: "10px var(--spacing-4)",
             background: "rgba(26,24,20,0.95)",
             borderBottom: "1px solid rgba(255,255,255,0.06)",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-2)" }}>
             {/* Window dots */}
             <div style={{ display: "flex", gap: "6px" }}>
               <span
@@ -91,7 +91,7 @@ export default function PrototypeEmbed({
                 fontSize: "12px",
                 fontWeight: 500,
                 color: "rgba(255,255,255,0.45)",
-                marginLeft: "8px",
+                marginLeft: "var(--spacing-2)",
               }}
             >
               {title}
@@ -109,8 +109,8 @@ export default function PrototypeEmbed({
               textDecoration: "none",
               display: "inline-flex",
               alignItems: "center",
-              gap: "4px",
-              padding: "4px 10px",
+              gap: "var(--spacing-1)",
+              padding: "var(--spacing-1) 10px",
               borderRadius: "6px",
               transition: "color 0.15s, background 0.15s",
             }}
@@ -147,7 +147,7 @@ export default function PrototypeEmbed({
           <div
             style={{
               position: "absolute",
-              top: "40px",
+              top: "var(--spacing-10)",
               left: 0,
               right: 0,
               bottom: 0,
@@ -163,7 +163,7 @@ export default function PrototypeEmbed({
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: "12px",
+                gap: "var(--spacing-3)",
               }}
             >
               <div

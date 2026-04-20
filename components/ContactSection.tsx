@@ -78,7 +78,7 @@ export default function ContactSection() {
       ? "1px solid #f87171"
       : "1px solid rgba(243,238,231,0.25)",
     borderRadius: "16px",
-    padding: "18px 20px",
+    padding: "18px var(--spacing-5)",
     fontSize: "18px",
     lineHeight: 1.5,
     color: "#F3EEE7",
@@ -169,7 +169,7 @@ export default function ContactSection() {
                   className="w-full bg-[#F3EEE7] text-[#1A1814] font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   style={{
                     fontSize: "18px",
-                    padding: "18px 20px",
+                    padding: "18px var(--spacing-5)",
                     borderRadius: "16px",
                     border: "none",
                     fontFamily: "var(--font-body)",

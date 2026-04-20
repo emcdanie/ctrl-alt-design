@@ -298,10 +298,10 @@ export default function CaseStudyShell({
         <div className="cs-shell__bottom-cta">
           <div className="surface-dark" style={{
             borderRadius: "24px",
-            padding: "48px 40px",
+            padding: "var(--spacing-12) var(--spacing-10)",
             display: "flex",
             flexDirection: "column",
-            gap: "20px",
+            gap: "var(--spacing-5)",
           }}>
             <div>
               <p style={{
@@ -336,7 +336,7 @@ export default function CaseStudyShell({
                 fontFamily: "var(--font-body)",
                 fontWeight: 600,
                 fontSize: "13px",
-                padding: "12px 24px",
+                padding: "var(--spacing-3) var(--spacing-6)",
                 borderRadius: "999px",
                 textDecoration: "none",
                 textTransform: "uppercase",

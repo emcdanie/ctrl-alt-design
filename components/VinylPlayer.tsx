@@ -13,12 +13,12 @@ export default function VinylPlayer() {
     <div
       className="card-elevated card-interactive"
       style={{
-        padding: "24px",
+        padding: "var(--spacing-6)",
         height: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: "16px",
+        gap: "var(--spacing-4)",
       }}
     >
       {/* Record */}

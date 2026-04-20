@@ -24,7 +24,7 @@ export function H2({ children }: { children: React.ReactNode }) {
       fontWeight: 400,
       color: "#1A1A1A",
       lineHeight: 1.12,
-      marginBottom: "24px",
+      marginBottom: "var(--spacing-6)",
       marginTop: "0",
     }}>
       {children}
@@ -40,7 +40,7 @@ export function Body({ children }: { children: React.ReactNode }) {
       fontWeight: 400,
       color: "#2C2C2C",
       lineHeight: 1.65,
-      marginBottom: "16px",
+      marginBottom: "var(--spacing-4)",
     }}>
       {children}
     </p>
@@ -56,12 +56,12 @@ export function PullQuote({ children }: { children: React.ReactNode }) {
       color: "#2C2A28",
       borderLeft: "3px solid #3A3430",
       paddingLeft: "28px",
-      paddingTop: "20px",
-      paddingBottom: "20px",
-      paddingRight: "8px",
+      paddingTop: "var(--spacing-5)",
+      paddingBottom: "var(--spacing-5)",
+      paddingRight: "var(--spacing-2)",
       background: "#F5F2EE",
       borderRadius: "0 6px 6px 0",
-      margin: "48px 0",
+      margin: "var(--spacing-12) 0",
       lineHeight: 1.55,
     }}>
       {children}

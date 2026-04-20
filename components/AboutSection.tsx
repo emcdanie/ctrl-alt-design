@@ -33,7 +33,7 @@ export default function AboutSection() {
           {/* ── Left column ── */}
           <div>
             {/* Profile photo + eyebrow row */}
-            <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "20px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "var(--spacing-5)" }}>
               <div style={{
                 width: "72px",
                 height: "72px",
@@ -55,11 +55,11 @@ export default function AboutSection() {
               <p className="section-label" style={{ margin: 0 }}>— About</p>
             </div>
 
-            <h2 className="heading-section" style={{ marginBottom: "16px" }}>
+            <h2 className="heading-section" style={{ marginBottom: "var(--spacing-4)" }}>
               Hey, I&apos;m Elleta
             </h2>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "520px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)", maxWidth: "520px" }}>
               <p className="body-lg" style={{ margin: 0 }}>
                 I&apos;m a product designer who works at the intersection of systems thinking and interaction design. I care about building things that are coherent, scalable, and genuinely useful — not just polished.
               </p>
@@ -72,7 +72,7 @@ export default function AboutSection() {
             </div>
 
             {/* CTA row */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "24px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "var(--spacing-6)" }}>
               <a
                 href={social.linkedin}
                 target="_blank"
@@ -80,7 +80,7 @@ export default function AboutSection() {
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: "8px",
+                  gap: "var(--spacing-2)",
                   fontFamily: "var(--font-body)",
                   fontSize: "13px",
                   fontWeight: 600,
@@ -111,7 +111,7 @@ export default function AboutSection() {
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: "8px",
+                  gap: "var(--spacing-2)",
                   fontFamily: "var(--font-body)",
                   fontSize: "13px",
                   fontWeight: 600,
@@ -142,7 +142,7 @@ export default function AboutSection() {
 
           {/* ── Right column ── */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-3)", marginBottom: "var(--spacing-5)" }}>
               <div style={{ width: "3px", height: "24px", borderRadius: "2px", background: "rgba(26,24,20,0.15)" }} />
               <h3 className="heading-subsection" style={{ margin: 0 }}>
                 Working with me
@@ -170,7 +170,7 @@ export default function AboutSection() {
                     el.style.transform = "translateY(0)";
                   }}
                 >
-                  <h4 className="heading-item" style={{ marginBottom: "4px" }}>
+                  <h4 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>
                     {card.title}
                   </h4>
                   <p className="body-base" style={{ margin: 0 }}>

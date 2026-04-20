@@ -147,14 +147,14 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                 color: "var(--color-semantic-text-inverse)",
                 border: "none",
                 borderRadius: "999px",
-                padding: "12px 24px",
+                padding: "var(--spacing-3) var(--spacing-6)",
                 background: "#1A1814",
                 cursor: "pointer",
                 transition: "background 150ms ease, box-shadow 150ms ease",
                 boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "8px",
+                gap: "var(--spacing-2)",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = "#3A3430";
@@ -174,7 +174,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
         }
       />
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
         {roles.map((role, i) => (
           <ExperienceCard
             key={role.title + role.company}
@@ -190,7 +190,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
           label="— Education"
           title="Education"
         />
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
           {education.map((edu) => (
             <div
               key={edu.name}

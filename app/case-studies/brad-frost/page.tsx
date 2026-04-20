@@ -88,14 +88,14 @@ export default function BradFrostPage() {
         </PullQuote>
 
         {/* Live Demo Video */}
-        <section style={{ marginBottom: "72px", marginTop: "64px" }}>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "12px" }}>
+        <section style={{ marginBottom: "72px", marginTop: "var(--spacing-16)" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "var(--spacing-3)" }}>
             Live Demo
           </p>
-          <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.2, marginBottom: "16px" }}>
+          <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 400, color: "#1A1A1A", lineHeight: 1.2, marginBottom: "var(--spacing-4)" }}>
             Connecting the System to AI in Real Time
           </h2>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "16px", color: "#2C2C2C", lineHeight: 1.7, marginBottom: "24px" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "16px", color: "#2C2C2C", lineHeight: 1.7, marginBottom: "var(--spacing-6)" }}>
             To explore how AI tools could interact with a live design system, we connected the Figma component library to an MCP workflow and tested it in real time — alongside Brad Frost and TJ Pitre.
           </p>
           <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", borderRadius: "16px", overflow: "hidden", background: "#0A0A0A", boxShadow: "0 8px 32px rgba(0,0,0,0.12)" }}>
@@ -107,7 +107,7 @@ export default function BradFrostPage() {
               style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
             />
           </div>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "#8A8A8A", marginTop: "12px", lineHeight: 1.5 }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "#8A8A8A", marginTop: "var(--spacing-3)", lineHeight: 1.5 }}>
             Recorded session with Brad Frost, TJ Pitre, and Elleta McDaniel — starts at the MCP integration demo (39:36).
           </p>
         </section>

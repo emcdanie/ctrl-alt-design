@@ -33,7 +33,7 @@ export default function PersonalSection() {
             <div
               key={card.label}
               style={{
-                padding: "24px",
+                padding: "var(--spacing-6)",
                 borderRadius: "16px",
                 border: "1px solid rgba(26,24,20,0.08)",
                 background: "#F8F7F4",
@@ -52,7 +52,7 @@ export default function PersonalSection() {
                 el.style.transform = "translateY(0)";
               }}
             >
-              <div style={{ fontSize: "28px", marginBottom: "12px", lineHeight: 1 }}>{card.emoji}</div>
+              <div style={{ fontSize: "28px", marginBottom: "var(--spacing-3)", lineHeight: 1 }}>{card.emoji}</div>
               <p style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "11px",
@@ -70,7 +70,7 @@ export default function PersonalSection() {
                 fontWeight: 600,
                 color: "#1A1814",
                 lineHeight: 1.3,
-                marginBottom: "4px",
+                marginBottom: "var(--spacing-1)",
               }}>
                 {card.value}
               </p>

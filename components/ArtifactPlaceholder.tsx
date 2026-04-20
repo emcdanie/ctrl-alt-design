@@ -46,7 +46,7 @@ export default function ArtifactPlaceholder({
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-        padding: "24px",
+        padding: "var(--spacing-6)",
       }}
     >
       <div style={{ maxWidth: "520px" }}>
@@ -70,7 +70,7 @@ export default function ArtifactPlaceholder({
             fontWeight: 600,
             color: "#1A1814",
             lineHeight: 1.25,
-            marginBottom: "8px",
+            marginBottom: "var(--spacing-2)",
           }}
         >
           {title}

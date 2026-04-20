@@ -55,7 +55,7 @@ export default function FiltersDecisionSupportPage() {
 
         {/* ── Prototype Journey ── */}
         <section style={{ marginBottom: "72px" }}>
-          <p className="section-label" style={{ marginBottom: "12px" }}>PROTOTYPE JOURNEY</p>
+          <p className="section-label" style={{ marginBottom: "var(--spacing-3)" }}>PROTOTYPE JOURNEY</p>
           <h2
             style={{
               fontFamily: "var(--font-display)",
@@ -63,7 +63,7 @@ export default function FiltersDecisionSupportPage() {
               fontWeight: 400,
               color: "#1A1A1A",
               lineHeight: 1.2,
-              marginBottom: "12px",
+              marginBottom: "var(--spacing-3)",
             }}
           >
             From Exploration to Decision System
@@ -75,7 +75,7 @@ export default function FiltersDecisionSupportPage() {
               color: "var(--color-muted)",
               lineHeight: 1.7,
               maxWidth: "600px",
-              marginBottom: "32px",
+              marginBottom: "var(--spacing-8)",
             }}
           >
             These prototypes trace the evolution of the search and filtering system — from early
@@ -104,7 +104,7 @@ export default function FiltersDecisionSupportPage() {
                 fontSize: "14px",
                 color: "var(--color-muted)",
                 lineHeight: 1.6,
-                marginBottom: "12px",
+                marginBottom: "var(--spacing-3)",
                 maxWidth: "520px",
               }}
             >
@@ -143,7 +143,7 @@ export default function FiltersDecisionSupportPage() {
                 fontSize: "14px",
                 color: "var(--color-muted)",
                 lineHeight: 1.6,
-                marginBottom: "12px",
+                marginBottom: "var(--spacing-3)",
                 maxWidth: "520px",
               }}
             >
@@ -161,7 +161,7 @@ export default function FiltersDecisionSupportPage() {
           </div>
 
           {/* Step 3 — Final prototype */}
-          <div style={{ marginBottom: "24px" }}>
+          <div style={{ marginBottom: "var(--spacing-6)" }}>
             <div style={{ display: "flex", alignItems: "baseline", gap: "10px", marginBottom: "6px" }}>
               <span
                 style={{
@@ -182,7 +182,7 @@ export default function FiltersDecisionSupportPage() {
                 fontSize: "14px",
                 color: "var(--color-muted)",
                 lineHeight: 1.6,
-                marginBottom: "16px",
+                marginBottom: "var(--spacing-4)",
                 maxWidth: "520px",
               }}
             >
@@ -234,7 +234,7 @@ export default function FiltersDecisionSupportPage() {
         </Section>
 
         {/* Before state — the overwhelming filter panel */}
-        <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginBottom: "48px", border: "1px solid rgba(0,0,0,0.06)", background: "var(--color-semantic-surface)" }}>
+        <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginBottom: "var(--spacing-12)", border: "1px solid rgba(0,0,0,0.06)", background: "var(--color-semantic-surface)" }}>
           <div style={{ position: "relative", aspectRatio: "3/2", width: "100%", minHeight: "360px" }}>
             <iframe src="/demos/case-study-visuals/filters-before.html" title="Before: nine filter controls at equal visual weight" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none", borderRadius: "16px" }} />
           </div>
@@ -308,7 +308,7 @@ export default function FiltersDecisionSupportPage() {
         </Section>
 
         {/* After state — the redesigned progressive filtering system */}
-        <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginBottom: "48px", border: "1px solid rgba(0,0,0,0.06)", background: "var(--color-semantic-surface)" }}>
+        <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginBottom: "var(--spacing-12)", border: "1px solid rgba(0,0,0,0.06)", background: "var(--color-semantic-surface)" }}>
           <div style={{ position: "relative", aspectRatio: "3/2", width: "100%", minHeight: "360px" }}>
             <iframe src="/demos/case-study-visuals/filters-after.html" title="After: progressive disclosure with prioritised filters" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none", borderRadius: "16px" }} />
           </div>

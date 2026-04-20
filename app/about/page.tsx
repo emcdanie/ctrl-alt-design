@@ -142,9 +142,9 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
         }}
       />
 
-      <div style={{ flex: 1, padding: "24px" }}>
+      <div style={{ flex: 1, padding: "var(--spacing-6)" }}>
         {/* Header */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "var(--spacing-3)" }}>
           <div style={{ display: "flex", gap: "14px", flex: 1 }}>
             {/* Type icon */}
             <div
@@ -164,7 +164,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
             </div>
 
             <div style={{ flex: 1 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-2)", marginBottom: "6px" }}>
                 <span
                   style={{
                     display: "inline-flex",
@@ -186,7 +186,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
                   {entry.year}
                 </span>
               </div>
-              <h4 className="heading-item" style={{ marginBottom: "4px" }}>{entry.title}</h4>
+              <h4 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>{entry.title}</h4>
               <p className="body-sm" style={{ margin: 0 }}>{entry.instructor}</p>
             </div>
           </div>
@@ -199,7 +199,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
             fill="none"
             style={{
               flexShrink: 0,
-              marginTop: "4px",
+              marginTop: "var(--spacing-1)",
               transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
               transition: "transform 0.25s ease",
             }}
@@ -217,19 +217,19 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
           marginTop: expanded ? "16px" : "0px",
         }}
       >
-        <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)", paddingTop: "16px" }}>
+        <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)", paddingTop: "var(--spacing-4)" }}>
           {/* Topics */}
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#8A8A8A", marginBottom: "8px" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#8A8A8A", marginBottom: "var(--spacing-2)" }}>
             Topics covered
           </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "16px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "var(--spacing-4)" }}>
             {entry.topics.map((topic) => (
               <span key={topic} className="tag">{topic}</span>
             ))}
           </div>
 
           {/* Reflection */}
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#8A8A8A", marginBottom: "8px" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#8A8A8A", marginBottom: "var(--spacing-2)" }}>
             What I took away
           </p>
           <p className="body-base" style={{ margin: 0, marginBottom: entry.relatedWork ? "12px" : "0px" }}>
@@ -273,7 +273,7 @@ export default function AboutPage() {
 
       <div className="relative">
         {/* Hero / Intro */}
-        <section style={{ padding: "120px 24px 64px" }}>
+        <section style={{ padding: "120px var(--spacing-6) var(--spacing-16)" }}>
           <div className="page-container">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-16 items-start">
               <div>
@@ -334,10 +334,10 @@ export default function AboutPage() {
         </div>
 
         {/* Working With Me */}
-        <section style={{ padding: "64px 24px" }}>
+        <section style={{ padding: "var(--spacing-16) var(--spacing-6)" }}>
           <div className="page-container">
             <p className="section-label mb-3">— Working With Me</p>
-            <h2 className="heading-subsection" style={{ marginBottom: "24px" }}>
+            <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-6)" }}>
               How I collaborate
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -345,7 +345,7 @@ export default function AboutPage() {
                 <div
                   key={card.title}
                   className="card-elevated card-interactive"
-                  style={{ padding: "24px", cursor: "default" }}
+                  style={{ padding: "var(--spacing-6)", cursor: "default" }}
                 >
                   <h4 className="heading-item" style={{ marginBottom: "6px" }}>
                     {card.title}
@@ -365,17 +365,17 @@ export default function AboutPage() {
         </div>
 
         {/* Learning & Experiments */}
-        <section style={{ padding: "64px 24px" }}>
+        <section style={{ padding: "var(--spacing-16) var(--spacing-6)" }}>
           <div className="page-container">
             <p className="section-label mb-3">— Learning &amp; Experiments</p>
-            <h2 className="heading-subsection" style={{ marginBottom: "8px" }}>
+            <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
               Continuous learning
             </h2>
             <p className="body-base" style={{ marginBottom: "28px", maxWidth: "560px", color: "var(--color-muted)" }}>
               Workshops, courses, and conferences that have shaped how I think about design systems,
               interaction patterns, and complex interfaces.
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
               {learningEntries.map((entry) => (
                 <LearningCard key={entry.title} entry={entry} />
               ))}
@@ -389,7 +389,7 @@ export default function AboutPage() {
         </div>
 
         {/* Timeline */}
-        <section style={{ padding: "64px 24px" }}>
+        <section style={{ padding: "var(--spacing-16) var(--spacing-6)" }}>
           <div className="page-container">
             <p className="section-label mb-3">— Timeline</p>
             <h2 className="heading-subsection" style={{ marginBottom: "28px" }}>
@@ -401,21 +401,21 @@ export default function AboutPage() {
                 style={{
                   position: "absolute",
                   left: "7px",
-                  top: "8px",
-                  bottom: "8px",
+                  top: "var(--spacing-2)",
+                  bottom: "var(--spacing-2)",
                   width: "2px",
                   background: "rgba(26,24,20,0.1)",
                   borderRadius: "1px",
                 }}
               />
-              <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-6)" }}>
                 {timelineEvents.map((event, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "16px", position: "relative" }}>
+                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "var(--spacing-4)", position: "relative" }}>
                     {/* Dot */}
                     <div
                       style={{
                         position: "absolute",
-                        left: "-24px",
+                        left: "-var(--spacing-6)",
                         top: "6px",
                         width: "10px",
                         height: "10px",
@@ -461,10 +461,10 @@ export default function AboutPage() {
         </div>
 
         {/* Currently Listening */}
-        <section style={{ padding: "64px 24px 80px" }}>
+        <section style={{ padding: "var(--spacing-16) var(--spacing-6) var(--spacing-20)" }}>
           <div className="page-container">
             <p className="section-label mb-3">— Currently Listening</p>
-            <h2 className="heading-subsection" style={{ marginBottom: "24px" }}>
+            <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-6)" }}>
               Design soundtrack
             </h2>
             <div style={{ maxWidth: "320px" }}>
@@ -474,16 +474,16 @@ export default function AboutPage() {
         </section>
 
         {/* CTA */}
-        <section style={{ padding: "0 24px 80px" }}>
+        <section style={{ padding: "0 var(--spacing-6) var(--spacing-20)" }}>
           <div className="page-container">
             <div
               style={{
                 background: "#1A1814",
                 borderRadius: "24px",
-                padding: "56px 48px",
+                padding: "56px var(--spacing-12)",
                 display: "flex",
                 flexDirection: "column",
-                gap: "32px",
+                gap: "var(--spacing-8)",
               }}
               className="md:flex-row md:items-center md:justify-between"
             >
@@ -497,7 +497,7 @@ export default function AboutPage() {
               </div>
               <Link
                 href="/#contact"
-                style={{ flexShrink: 0, background: "var(--color-semantic-text-inverse)", color: "#1A1814", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: "13px", padding: "12px 24px", borderRadius: "999px", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
+                style={{ flexShrink: 0, background: "var(--color-semantic-text-inverse)", color: "#1A1814", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: "13px", padding: "var(--spacing-3) var(--spacing-6)", borderRadius: "999px", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
               >
                 Get in touch ↗
               </Link>

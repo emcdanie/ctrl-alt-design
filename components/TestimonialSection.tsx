@@ -60,10 +60,10 @@ function SupportingCard({
       <div
         className="card-elevated"
         style={{
-          padding: "28px 24px",
+          padding: "28px var(--spacing-6)",
           display: "flex",
           flexDirection: "column",
-          gap: "16px",
+          gap: "var(--spacing-4)",
           height: "100%",
         }}
       >
@@ -103,7 +103,7 @@ function SupportingCard({
             alignItems: "center",
             gap: "10px",
             marginTop: "auto",
-            paddingTop: "12px",
+            paddingTop: "var(--spacing-3)",
             borderTop: "1px solid var(--color-border-soft)",
           }}
         >
@@ -177,9 +177,9 @@ export default function TestimonialSection() {
           <div
             className="glass-card"
             style={{
-              padding: "clamp(32px, 4vw, 48px)",
+              padding: "clamp(var(--spacing-8), 4vw, var(--spacing-12))",
               maxWidth: "720px",
-              margin: "0 auto 48px auto",
+              margin: "0 auto var(--spacing-12) auto",
               position: "relative",
             }}
           >
@@ -188,7 +188,7 @@ export default function TestimonialSection() {
               style={{
                 position: "absolute",
                 top: 0,
-                left: "clamp(32px, 4vw, 48px)",
+                left: "clamp(var(--spacing-8), 4vw, var(--spacing-12))",
                 width: "48px",
                 height: "3px",
                 background:
@@ -262,7 +262,7 @@ export default function TestimonialSection() {
                 color: "var(--color-accent-gold)",
                 opacity: 0.35,
                 display: "block",
-                marginBottom: "4px",
+                marginBottom: "var(--spacing-1)",
                 userSelect: "none",
               }}
               aria-hidden

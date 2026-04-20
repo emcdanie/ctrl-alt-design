@@ -92,7 +92,7 @@ function MetricCard({ item }: { item: MetricItem }) {
           transition: "max-height 220ms ease",
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "4px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "var(--spacing-1)" }}>
           {item.hover.map((h, i) =>
             h.href ? (
               <Link
@@ -137,7 +137,7 @@ export default function MetricsStrip() {
     <section className="layout-section-tight">
       <div
         className="layout-container"
-        style={{ display: "flex", gap: "8px" }}
+        style={{ display: "flex", gap: "var(--spacing-2)" }}
       >
         {metrics.map((item) => (
           <MetricCard key={item.stat} item={item} />

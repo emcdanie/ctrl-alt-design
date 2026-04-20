@@ -52,7 +52,7 @@ export default function CaseStudySideCard({
         }}
       >
         {/* Category */}
-        <p className="eyebrow" style={{ marginBottom: "12px" }}>
+        <p className="eyebrow" style={{ marginBottom: "var(--spacing-3)" }}>
           {category}
         </p>
 
@@ -61,22 +61,22 @@ export default function CaseStudySideCard({
           className="heading-subsection"
           style={{
             fontSize: "clamp(20px, 2.5vw, 26px)",
-            marginBottom: "12px",
+            marginBottom: "var(--spacing-3)",
           }}
         >
           {title}
         </h2>
 
         {/* Description */}
-        <p className="body-sm" style={{ marginBottom: "20px", lineHeight: 1.65 }}>
+        <p className="body-sm" style={{ marginBottom: "var(--spacing-5)", lineHeight: 1.65 }}>
           {description}
         </p>
 
         {/* Divider */}
-        <div style={{ height: "1px", background: "var(--color-border-soft)", marginBottom: "16px" }} />
+        <div style={{ height: "1px", background: "var(--color-border-soft)", marginBottom: "var(--spacing-4)" }} />
 
         {/* Metadata */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "var(--spacing-5)" }}>
           {metadata.map((item) => (
             <div key={item.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
               <span
@@ -100,9 +100,9 @@ export default function CaseStudySideCard({
 
         {/* Tags */}
         {tags.length > 0 && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "var(--spacing-5)" }}>
             {tags.map((tag) => (
-              <span key={tag} className="tag" style={{ fontSize: "10px", padding: "4px 10px" }}>
+              <span key={tag} className="tag" style={{ fontSize: "10px", padding: "var(--spacing-1) 10px" }}>
                 {tag}
               </span>
             ))}
@@ -112,8 +112,8 @@ export default function CaseStudySideCard({
         {/* Demo links */}
         {((demoLinks && demoLinks.length > 0) || liveUrl) && (
           <>
-            <div style={{ height: "1px", background: "var(--color-border-soft)", marginBottom: "16px" }} />
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <div style={{ height: "1px", background: "var(--color-border-soft)", marginBottom: "var(--spacing-4)" }} />
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
               {liveUrl && (
                 <a
                   href={liveUrl}

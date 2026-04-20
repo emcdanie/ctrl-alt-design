@@ -95,7 +95,7 @@ export default function GuardianPage() {
           <Body>
             During the hackathon, I prototyped an interactive UX audit tool that demonstrates how Guardian could work in practice. Built in 48 hours, the tool analyses a page design and returns structured feedback across four dimensions: UX heuristics, design system compliance, accessibility, and product insight. Click the FigPal button (bottom-right) to open the audit panel, then hit &quot;Scan Page&quot; to see it in action.
           </Body>
-          <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginTop: "24px", marginBottom: "24px", background: "#0F1117", border: "1px solid rgba(255,255,255,0.06)" }}>
+          <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginTop: "var(--spacing-6)", marginBottom: "var(--spacing-6)", background: "#0F1117", border: "1px solid rgba(255,255,255,0.06)" }}>
             <div style={{ position: "relative", aspectRatio: "16/10", width: "100%", minHeight: "480px" }}>
               <iframe
                 src="/demos/guardian-audit-tool.html"
@@ -113,7 +113,7 @@ export default function GuardianPage() {
           <Body>
             The walkthrough mode (use the arrows at the bottom) shows the full flow: empty state, scan, findings with highlights, pattern library, and token comparison. Each finding now includes an &quot;Apply fix&quot; button and an &quot;Add to docs&quot; button — features I sketched during the hackathon but didn&apos;t have time to build.
           </Body>
-          <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginTop: "24px", marginBottom: "24px", background: "var(--color-semantic-surface)", border: "1px solid rgba(0,0,0,0.06)" }}>
+          <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "16px", marginTop: "var(--spacing-6)", marginBottom: "var(--spacing-6)", background: "var(--color-semantic-surface)", border: "1px solid rgba(0,0,0,0.06)" }}>
             <div style={{ position: "relative", aspectRatio: "16/10", width: "100%", minHeight: "480px" }}>
               <iframe
                 src="/demos/pattern-mentor.html"

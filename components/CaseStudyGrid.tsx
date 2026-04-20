@@ -64,13 +64,13 @@ function CompactCard({ cs, delay }: CardProps) {
         </div>
 
         {/* ── Content area ── */}
-        <div style={{ padding: "16px 20px 20px" }}>
+        <div style={{ padding: "var(--spacing-4) var(--spacing-5) var(--spacing-5)" }}>
           <span
             className="inline-block rounded-full px-2.5 py-0.5 text-[9px] font-bold tracking-[0.1em]"
             style={{
               background: getCategoryStyle(cs.category).bg,
               color: getCategoryStyle(cs.category).color,
-              marginBottom: "8px",
+              marginBottom: "var(--spacing-2)",
             }}
           >
             {cs.category}
@@ -78,7 +78,7 @@ function CompactCard({ cs, delay }: CardProps) {
 
           <h3
             className="heading-card"
-            style={{ fontSize: "16px", marginBottom: "8px" }}
+            style={{ fontSize: "16px", marginBottom: "var(--spacing-2)" }}
           >
             {cs.title}
           </h3>

@@ -8,7 +8,7 @@ export default function BackToWorkButton() {
       href="/#work"
       className="fixed left-5 z-[40] inline-flex items-center gap-2 rounded-full bg-[#1A1814] px-4 py-2.5 text-[13px] font-semibold tracking-[0.02em] text-[var(--color-semantic-text-inverse)] shadow-[0_4px_16px_rgba(0,0,0,0.18)] hover:opacity-100 sm:left-6"
       style={{
-        top: "calc(var(--header-height) + 24px)",
+        top: "calc(var(--header-height) + var(--spacing-6))",
         fontFamily: "var(--font-body)",
         opacity: 0.9,
       }}
