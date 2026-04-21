@@ -610,13 +610,14 @@ textarea:focus-visible {
   height: 470px;
 }
 
-/* Mobile: shrink carousel cards so the strip doesn't claim 58% of
- * a 375×812 viewport and squeeze the Hero into a 270px slot.
- * 280px / 812px = 34% — leaves the Hero comfortably above. */
+/* Mobile: shrink carousel cards further than 4715913 (was 120×280px).
+ * Even at 280px (34% of an 812px viewport) the strip dominated the
+ * landing screenshot and the Hero felt squeezed. 220px is 27% — the
+ * carousel reads as a footer band, not a co-equal element. */
 @media (max-width: 768px) {
   .carousel-card {
-    width: 120px;
-    height: 280px;
+    width: 110px;
+    height: 220px;
   }
 }
 
@@ -748,6 +749,23 @@ textarea:focus-visible {
   display: flex;
   overflow: hidden;
   padding-top: var(--header-height);
+}
+
+/* Mobile: relax view-landing from a fixed 100dvh "share-with-Carousel"
+ * box to a flowing min-height container. Hero (flex:1 inline) still
+ * stretches to fill the available space when content is short, but the
+ * box is no longer locked to the viewport — if the wrapped Hero name
+ * + tagline + CTA + Carousel exceed 100dvh on a small phone, the page
+ * scrolls naturally instead of clipping the Hero or pushing the
+ * Carousel up into the Hero's visual zone. overflow: visible lets the
+ * Carousel sit below the fold instead of being forced into a shared
+ * 812px box. */
+@media (max-width: 768px) {
+  .view-landing {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
 }
 
 /* ─── Sidebar (inside dashboard view) ─────────────────────────── */
