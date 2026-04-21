@@ -51,8 +51,14 @@ export default function WorkSidebar() {
     const panel = panelRef.current;
     if (!panel) return;
     panel.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => panel.removeEventListener("scroll", handleScroll);
+    // Defer the initial sync to the next frame so the setActive() call
+    // doesn't run synchronously inside the effect body (cascading render).
+    // Picks up any pre-scrolled position (e.g. browser back/forward).
+    const rafId = requestAnimationFrame(handleScroll);
+    return () => {
+      cancelAnimationFrame(rafId);
+      panel.removeEventListener("scroll", handleScroll);
+    };
   }, [handleScroll]);
 
   /* ── Nav click → scroll the panel, not the snap-shell ── */
