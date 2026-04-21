@@ -42,10 +42,8 @@ export default function Carousel() {
         {allImages.map((src, i) => (
           <div
             key={i}
-            className="flex-shrink-0 relative overflow-hidden"
+            className="carousel-card flex-shrink-0 relative overflow-hidden"
             style={{
-              width: "168px",
-              height: "470px",
               background: "var(--color-supporting-linen)",
               ...(i % 2 === 0 ? patternA : patternB),
             }}
@@ -54,7 +52,7 @@ export default function Carousel() {
               src={src}
               alt=""
               fill
-              sizes="168px"
+              sizes="(max-width: 768px) 120px, 168px"
               quality={75}
               loading="lazy"
               className="object-cover"

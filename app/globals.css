@@ -605,6 +605,21 @@ textarea:focus-visible {
   animation-play-state: paused;
 }
 
+.carousel-card {
+  width: 168px;
+  height: 470px;
+}
+
+/* Mobile: shrink carousel cards so the strip doesn't claim 58% of
+ * a 375×812 viewport and squeeze the Hero into a 270px slot.
+ * 280px / 812px = 34% — leaves the Hero comfortably above. */
+@media (max-width: 768px) {
+  .carousel-card {
+    width: 120px;
+    height: 280px;
+  }
+}
+
 /* ─── Page container ───────────────────────────────────────────── */
 .page-container {
   max-width: 1200px;
@@ -729,6 +744,17 @@ textarea:focus-visible {
   display: flex;
   overflow: hidden;
   padding-top: var(--header-height);
+}
+
+/* Mobile: relax the snap-shell. Mandatory y-snap on a 375×812 viewport
+ * locks users into views that may be shorter than the viewport (Hero
+ * + smaller carousel) or that need to scroll internally (dashboard
+ * panel). Switching to "y proximity" lets natural scroll work without
+ * fighting the snap. */
+@media (max-width: 768px) {
+  .snap-shell {
+    scroll-snap-type: y proximity;
+  }
 }
 
 /* ─── Sidebar (inside dashboard view) ─────────────────────────── */
