@@ -81,31 +81,31 @@ export default function ContactSection() {
     padding: "18px var(--spacing-5)",
     fontSize: "var(--typography-font-size-lg)",
     lineHeight: 1.5,
-    color: "#F3EEE7",
+    color: "var(--ink-on-dark-strong)",
     outline: "none",
     transition: "border-color 150ms ease, box-shadow 150ms ease",
     fontFamily: "var(--font-body)",
   });
 
   return (
-    <footer id="contact" className="bg-[#1A1814] text-[var(--color-semantic-text-inverse)]" style={{ paddingTop: "var(--space-7)", paddingBottom: "var(--space-5)" }}>
+    <footer id="contact" className="bg-[#1A1814]" style={{ paddingTop: "var(--space-7)", paddingBottom: "var(--space-5)", color: "var(--ink-on-dark-body)" }}>
       <div className="layout-container">
         {/* Two-column layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
           {/* Left — form */}
           <div>
-            <p className="section-label mb-4" style={{ color: "#9A9590" }}>
+            <p className="section-label mb-4" style={{ color: "var(--ink-on-dark-muted)" }}>
               — Get in touch
             </p>
-            <h2 className="heading-section mb-8" style={{ color: "var(--color-semantic-text-inverse)" }}>
+            <h2 className="heading-section mb-8" style={{ color: "var(--ink-on-dark-strong)" }}>
               Let&apos;s work together.
             </h2>
 
             {submitted ? (
               <div className="rounded-2xl border border-green-500/30 bg-green-500/10 p-6 text-center">
                 <div className="text-2xl mb-2">✓</div>
-                <p className="text-[14px] text-green-300 font-medium">Message sent</p>
-                <p className="text-[13px] text-[#A8A4A0] mt-1">
+                <p className="text-[14px] font-medium" style={{ color: "var(--ink-on-dark-strong)" }}>Message sent</p>
+                <p className="text-[13px] mt-1" style={{ color: "var(--ink-on-dark-body)" }}>
                   Thanks for reaching out — I&apos;ll get back to you soon.
                 </p>
               </div>
@@ -166,13 +166,15 @@ export default function ContactSection() {
                 <button
                   type="submit"
                   disabled={sending}
-                  className="w-full bg-[#F3EEE7] text-[#1A1814] font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="w-full font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   style={{
                     fontSize: "var(--typography-font-size-lg)",
                     padding: "18px var(--spacing-5)",
                     borderRadius: "var(--radius-xl)",
                     border: "none",
                     fontFamily: "var(--font-body)",
+                    background: "var(--ink-on-dark-strong)",
+                    color: "#1A1814",
                   }}
                 >
                   {sending ? "Sending…" : "Send message"}
@@ -184,10 +186,16 @@ export default function ContactSection() {
           {/* Right — info + nav */}
           <div className="flex flex-col justify-between gap-10">
             <div>
-              <h3 className="font-display font-bold text-[22px] text-[var(--color-semantic-text-inverse)] mb-2">
+              <h3
+                className="font-display font-bold text-[22px] mb-2"
+                style={{ color: "var(--ink-on-dark-strong)" }}
+              >
                 Elleta McDaniel
               </h3>
-              <p className="text-[16px] text-[#A8A4A0] leading-relaxed max-w-sm">
+              <p
+                className="text-[16px] leading-relaxed max-w-sm"
+                style={{ color: "var(--ink-on-dark-body)" }}
+              >
                 Product Designer specialising in Design Systems and Complex Platforms.
                 Open to freelance, consulting, and full-time roles.
               </p>
@@ -197,7 +205,10 @@ export default function ContactSection() {
             <div className="grid grid-cols-2 gap-8">
               {Object.entries(footerNav).map(([section, links]) => (
                 <div key={section}>
-                  <p className="text-[13px] font-medium uppercase tracking-widest text-[#B0AAA5] mb-3">
+                  <p
+                    className="text-[13px] font-medium uppercase tracking-widest mb-3"
+                    style={{ color: "var(--ink-on-dark-muted)" }}
+                  >
                     {section}
                   </p>
                   <ul className="space-y-2">
@@ -205,7 +216,8 @@ export default function ContactSection() {
                       <li key={link.label}>
                         <a
                           href={link.href}
-                          className="text-[15px] text-[#A8A4A0] hover:text-[var(--color-semantic-text-inverse)] transition-colors"
+                          className="text-[15px] transition-colors footer-nav-link"
+                          style={{ color: "var(--ink-on-dark-body)" }}
                         >
                           {link.label}
                         </a>
@@ -221,10 +233,10 @@ export default function ContactSection() {
         {/* Bottom bar */}
         <div className="divider mb-6" style={{ backgroundColor: "rgba(250,250,248,0.08)" }} />
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-          <p className="text-[13px] text-[#B0AAA5]">
+          <p className="text-[13px]" style={{ color: "var(--ink-on-dark-muted)" }}>
             © {new Date().getFullYear()} Elleta McDaniel. All rights reserved.
           </p>
-          <p className="text-[13px] text-[#B0AAA5]">
+          <p className="text-[13px]" style={{ color: "var(--ink-on-dark-muted)" }}>
             Designed with intention. Built with care.
           </p>
         </div>

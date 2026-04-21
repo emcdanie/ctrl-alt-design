@@ -500,8 +500,8 @@ footer :focus-visible {
 /* Contact form fields — stable focus, no flicker, no radius change */
 .contact-field:focus {
   outline: none;
-  border-color: #F3EEE7 !important;
-  box-shadow: 0 0 0 2px rgba(243, 238, 231, 0.25);
+  border-color: var(--ink-on-dark-strong) !important;
+  box-shadow: 0 0 0 2px rgba(247, 244, 239, 0.28);
 }
 
 .contact-field:focus-visible {
@@ -509,7 +509,14 @@ footer :focus-visible {
 }
 
 .contact-field::placeholder {
-  color: rgba(243, 238, 231, 0.65);
+  /* Rule 1 (BELLA v0.1): placeholders use --ink-on-dark-muted on dark surfaces */
+  color: var(--ink-on-dark-muted);
+  opacity: 1; /* Firefox lowers placeholder opacity by default; reset for AAA */
+}
+
+/* Footer nav links: --ink-on-dark-body resting, --ink-on-dark-strong on hover */
+.footer-nav-link:hover {
+  color: var(--ink-on-dark-strong);
 }
 
 /* Generic form focus fallback for non-contact forms */
