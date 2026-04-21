@@ -1,21 +1,10 @@
-/* CaseStudyCardGrid — 1 col mobile / 2 col tablet / 3 col desktop.
-   Uses BELLA v0.1.1 tokens only. */
+/* CaseStudyCardGrid — responsive auto-fill. Per BELLA v0.1 Rule 5,
+ * trailing rows fill left-aligned (no orphan card centered or stretched).
+ * Uses --card-min from BELLA tokens (default 280px). */
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min, 280px), 1fr));
   gap: var(--spacing-6);
   align-items: stretch;
-}
-
-@media (min-width: 640px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }

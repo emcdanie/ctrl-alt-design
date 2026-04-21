@@ -120,22 +120,13 @@
 }
 
 .layout-grid-3 {
+  /* BELLA v0.1 Rule 5: auto-fill so trailing rows fill left-aligned.
+   * Class name kept for backwards compat — behaviour is now responsive
+   * not strictly 3-column. Override --card-min per-grid as needed. */
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min, 280px), 1fr));
   gap: var(--grid-gap);
-  align-items: start;
-}
-
-@media (min-width: 640px) {
-  .layout-grid-3 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .layout-grid-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  align-items: stretch;
 }
 
 .layout-header {
