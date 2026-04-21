@@ -11,10 +11,17 @@ export default function CustomCursor() {
   const [state, setState] = useState<CursorState>("default");
   const [label, setLabel] = useState("");
   const [visible, setVisible] = useState(false);
+  // Touch-detection runs on the client only. Defaults to false so the
+  // first client render matches the SSR output (cursor divs present).
+  // After the mount effect runs, isTouch flips to true on touch devices
+  // and the divs unmount cleanly — no hydration mismatch.
+  const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
-    // Hide on touch devices
-    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
+    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
+      setIsTouch(true);
+      return;
+    }
     // Skip rAF loop if user prefers reduced motion (cursor still tracks, just no lerp trail)
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -122,9 +129,7 @@ export default function CustomCursor() {
   const borderStyle = state === "quote" ? "1.5px dashed currentColor" : "1.5px solid currentColor";
   const showLabel = (state === "media" || state === "card" || state === "nav") && label;
 
-  if (typeof window !== "undefined" && window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
-    return null;
-  }
+  if (isTouch) return null;
 
   return (
     <>
