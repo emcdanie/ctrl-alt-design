@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // ─────────────────────────────────────────────────────────────
 // DESIGN TOKENS — Eddie design system, merged with Command Center needs
@@ -297,6 +297,23 @@ function Bar({ value, status }: { value: number; status: Project["status"] }) {
 export function CommandCenterDashboard() {
   const [tasks, setTasks] = useState<Quest[]>(DATA.quests);
   const [activeHouse, setActiveHouse] = useState("All");
+  // "Last Raven Received" date — computed on the client only to avoid the
+  // SSR/CSR hydration divergence that toLocaleDateString causes when the
+  // server's Node runtime and the client browser disagree on locale or
+  // timezone (most commonly: server in UTC, client in Europe/Madrid;
+  // dates near midnight render as different days). Initialised to null,
+  // populated in useEffect, displayed as a stable placeholder until then.
+  const [lastRavenDate, setLastRavenDate] = useState<string | null>(null);
+  useEffect(() => {
+    setLastRavenDate(
+      new Date().toLocaleDateString("en-GB", {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+    );
+  }, []);
 
   const toggle = (id: number) =>
     setTasks(tasks.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));
@@ -414,12 +431,12 @@ export function CommandCenterDashboard() {
                 fontWeight: 600,
               }}
             >
-              {new Date().toLocaleDateString("en-GB", {
-                weekday: "short",
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
+              <span
+                suppressHydrationWarning
+                style={{ display: "inline-block", minWidth: "12ch" }}
+              >
+                {lastRavenDate ?? "—"}
+              </span>
             </div>
             <div
               style={{

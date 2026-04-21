@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { social } from "@/lib/social";
 
 interface FormState {
@@ -33,6 +33,13 @@ export default function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState(false);
+  // Footer copyright year — gated to client-only to remove the (very rare)
+  // SSR/CSR year-boundary hydration risk. Same pattern as the
+  // CommandCenterDashboard "Last Raven" date.
+  const [year, setYear] = useState<number | null>(null);
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
@@ -234,7 +241,11 @@ export default function ContactSection() {
         <div className="divider mb-6" style={{ backgroundColor: "rgba(250,250,248,0.08)" }} />
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
           <p className="text-[13px]" style={{ color: "var(--ink-on-dark-muted)" }}>
-            © {new Date().getFullYear()} Elleta McDaniel. All rights reserved.
+            ©{" "}
+            <span suppressHydrationWarning style={{ display: "inline-block", minWidth: "4ch" }}>
+              {year ?? "—"}
+            </span>{" "}
+            Elleta McDaniel. All rights reserved.
           </p>
           <p className="text-[13px]" style={{ color: "var(--ink-on-dark-muted)" }}>
             Designed with intention. Built with care.
