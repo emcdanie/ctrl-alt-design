@@ -10,10 +10,24 @@ export default function VideoWalkthrough() {
       <div className="layout-container">
         <div className="max-w-5xl mx-auto">
 
-        {/* Italic headline */}
-        <h2 className="font-display font-bold italic text-[#1A1814] leading-snug text-center mb-10 max-w-2xl mx-auto" style={{ fontSize: "clamp(32px, 4vw, 42px)" }}>
-          "Designing clarity for complex digital platforms and scaling teams."
-        </h2>
+        {/* Pull-quote — wrapped in a proper container per BELLA v0.1 Rule 2/8.
+            Note: this string also appears as the Hero tagline; flagged in the
+            Phase 1 report as a redundancy candidate. Defaulting to containing
+            (per task spec) rather than removing — easy revert if Elleta wants
+            to drop it instead. */}
+        <figure
+          className="card-default mb-10 mx-auto max-w-2xl"
+          style={{
+            padding: "var(--spacing-8) var(--spacing-6)",
+          }}
+        >
+          <blockquote
+            className="font-display font-bold italic text-[#1A1814] leading-snug text-center"
+            style={{ fontSize: "clamp(28px, 3.6vw, 38px)", margin: 0 }}
+          >
+            &ldquo;Designing clarity for complex digital platforms and scaling teams.&rdquo;
+          </blockquote>
+        </figure>
 
         {/* Looping video — clicking opens the Guardian case study */}
         <Link
