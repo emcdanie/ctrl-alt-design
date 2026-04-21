@@ -84,15 +84,6 @@ const prototypes: LabPrototype[] = [
     thumbnailSrc: "/images/thumbnails/TRAVEL.png",
   },
   {
-    title: "F1 Grand Prix Analytics Dashboard",
-    subtitle: "High-density operational dashboard with tiered analytics, data visualisation, and insight-driven annotations.",
-    category: "INTERACTIVE",
-    tags: ["Dashboard UX", "Data Viz", "Prototype"],
-    href: "/demos/grandprix-dashboard.html",
-    gradient: "linear-gradient(135deg, #0D1B10 0%, #1A3820 50%, #0A1410 100%)",
-    thumbnailSrc: "/images/thumbnails/FormularOne.png",
-  },
-  {
     title: "Brad Frost Command Center",
     subtitle: "Design system investigation dashboard — exploring AI-assisted component analysis and governance workflows.",
     category: "INTERACTIVE",
@@ -127,7 +118,7 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
       href={prototype.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group card-elevated flex cursor-pointer flex-col overflow-hidden rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(44,24,16,0.1),0_6px_16px_rgba(44,24,16,0.07)]"
+      className="group card-elevated flex h-full cursor-pointer flex-col overflow-hidden rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(44,24,16,0.1),0_6px_16px_rgba(44,24,16,0.07)]"
       style={{ textDecoration: "none" }}
     >
       {/* Thumbnail */}
@@ -192,13 +183,15 @@ export default function CtrlAltDesignSection() {
 
       <div className="mb-10 h-px w-full bg-black/8" />
 
-      {/* Video explorations */}
-      <div className="layout-grid-3">
+      {/* Video explorations — fixed 2-col on tablet+ (data is exactly 4 items
+          → 2×2 grid, no orphan). Stacks to single col below 768px.
+          Equal heights via items-stretch (BELLA Rule 2). */}
+      <div className="grid grid-cols-1 items-stretch md:grid-cols-2" style={{ gap: "var(--grid-gap)" }}>
         {videos.map((video) => {
           const catStyle = LAB_CATEGORY_COLORS[video.category] ?? { bg: "#1A1814", color: "#FFFFFF" };
 
           return (
-            <div key={video.title} className="relative">
+            <div key={video.title} className="relative h-full">
               <span
                 className="pointer-events-none absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[11px] font-bold tracking-widest"
                 style={{ background: catStyle.bg, color: catStyle.color, letterSpacing: "0.1em" }}
@@ -219,7 +212,9 @@ export default function CtrlAltDesignSection() {
         })}
       </div>
 
-      {/* Interactive prototypes */}
+      {/* Interactive prototypes — same 2-col pattern. Data trimmed to exactly
+          4 items (was 5 — F1 Grand Prix Analytics removed; that project is
+          already represented in the Videos grid above). */}
       <div style={{ marginTop: "56px" }}>
         <SectionHeader
           label="— Interactive Work"
@@ -227,7 +222,7 @@ export default function CtrlAltDesignSection() {
           description="Real prototypes exploring complex interaction patterns, system logic, and workflow design."
           className="mb-10"
         />
-        <div className="layout-grid-3">
+        <div className="grid grid-cols-1 items-stretch md:grid-cols-2" style={{ gap: "var(--grid-gap)" }}>
           {prototypes.map((prototype) => (
             <PrototypeCard key={prototype.title} prototype={prototype} />
           ))}
