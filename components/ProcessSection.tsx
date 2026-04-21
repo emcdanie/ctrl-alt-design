@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 
 interface ProcessStep {
@@ -9,8 +10,6 @@ interface ProcessStep {
   artifactCaption: string;
   caseStudySlug: string;
   caseStudyLabel: string;
-  color: string;
-  hoverColor: string;
   accentColor: string;
 }
 
@@ -18,65 +17,74 @@ const steps: ProcessStep[] = [
   {
     number: "01",
     title: "Discovery & Research",
-    description: "Deep-dive into user needs, business goals, and technical constraints. Workshops, interviews, and competitive audits.",
-    artifactCaption: "Mapped system dependencies across infrastructure domains during the UN ***REMOVED*** project, revealing hidden operational relationships that informed the dashboard architecture.",
+    description:
+      "Deep-dive into user needs, business goals, and technical constraints. Workshops, interviews, and competitive audits.",
+    artifactCaption:
+      "Mapped system dependencies across infrastructure domains during the UN ***REMOVED*** project, revealing hidden operational relationships that informed the dashboard architecture.",
     caseStudySlug: "un-operational-dashboard",
     caseStudyLabel: "Designing Operational Clarity →",
-    color: "#E8F2FA",
-    hoverColor: "#D4E8F5",
     accentColor: "#3A7DB5",
   },
   {
     number: "02",
     title: "Structure & Systems",
-    description: "Information architecture, user flows, and content hierarchies. Making sense of complexity before touching pixels.",
-    artifactCaption: "Designed a hierarchical filtering architecture to simplify configuration workflows in a complex SaaS interface.",
+    description:
+      "Information architecture, user flows, and content hierarchies. Making sense of complexity before touching pixels.",
+    artifactCaption:
+      "Designed a hierarchical filtering architecture to simplify configuration workflows in a complex SaaS interface.",
     caseStudySlug: "filters-decision-support-system",
     caseStudyLabel: "Filters Are a Decision-Support System →",
-    color: "#FDF3E3",
-    hoverColor: "#FAE8CC",
     accentColor: "#C07A2A",
   },
   {
     number: "03",
     title: "Design Systems",
-    description: "Token-based component libraries, design language definition, and scalable patterns built to last.",
-    artifactCaption: "Built token-based component architecture and design documentation to align design and engineering across a scaling SaaS platform.",
+    description:
+      "Token-based component libraries, design language definition, and scalable patterns built to last.",
+    artifactCaption:
+      "Built token-based component architecture and design documentation to align design and engineering across a scaling SaaS platform.",
     caseStudySlug: "design-system-transformation",
     caseStudyLabel: "From Drift to Foundation →",
-    color: "#F0EDF8",
-    hoverColor: "#E3DDF3",
     accentColor: "#6B5CA5",
   },
   {
     number: "04",
     title: "Prototyping & Validation",
-    description: "Interactive prototypes tested with real users. Iterating fast based on observed behaviour, not assumptions.",
-    artifactCaption: "Interactive prototype used to validate operational workflows with stakeholders before engineering implementation began.",
+    description:
+      "Interactive prototypes tested with real users. Iterating fast based on observed behaviour, not assumptions.",
+    artifactCaption:
+      "Interactive prototype used to validate operational workflows with stakeholders before engineering implementation began.",
     caseStudySlug: "un-operational-dashboard",
     caseStudyLabel: "Designing Operational Clarity →",
-    color: "#EBF5EC",
-    hoverColor: "#D9EDD9",
     accentColor: "#3A8A42",
   },
   {
     number: "05",
     title: "Delivery & Documentation",
-    description: "Handoff-ready specs, developer notes, design documentation, and ongoing support through build.",
-    artifactCaption: "Governance documentation and implementation guidance created to support development and reduce UI drift over time.",
+    description:
+      "Handoff-ready specs, developer notes, design documentation, and ongoing support through build.",
+    artifactCaption:
+      "Governance documentation and implementation guidance created to support development and reduce UI drift over time.",
     caseStudySlug: "design-system-transformation",
     caseStudyLabel: "From Drift to Foundation →",
-    color: "#FAF0EC",
-    hoverColor: "#F5E3DB",
     accentColor: "#B55A3A",
   },
 ];
 
+const HEADER_ID = (step: string) => `process-step-${step}-header`;
+const REGION_ID = (step: string) => `process-step-${step}-panel`;
+
 export default function ProcessSection() {
+  // One item open at a time; first item open by default so the section
+  // renders with content, not just collapsed headers.
+  const [openNumber, setOpenNumber] = useState<string | null>(steps[0].number);
+
+  const toggle = (number: string) =>
+    setOpenNumber((current) => (current === number ? null : number));
+
   return (
     <section id="process" className="layout-section">
       <div className="layout-container">
-
         {/* Header */}
         <div className="layout-header flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
@@ -88,81 +96,85 @@ export default function ProcessSection() {
           </p>
         </div>
 
-        {/* Cards grid — Rule 2 (stretch + height:100%) + Rule 3 (no truncation) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 items-stretch">
-          {steps.map((step) => (
-            <div
-              key={step.number}
-              className="rounded-2xl overflow-hidden border border-white/60 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-05),0_2px_6px_var(--color-alpha-shadow-warm-03),inset_0_1px_0_rgba(255,255,255,0.85)]"
-              style={{
-                background: step.color,
-                backdropFilter: "blur(var(--bella-blur-lg))",
-                WebkitBackdropFilter: "blur(var(--bella-blur-lg))",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                padding: "var(--spacing-5)",
-              }}
-            >
-              {/* Step number — accent watermark */}
+        {/* Accordion — one open at a time, first open by default. */}
+        <div className="process-accordion" role="list">
+          {steps.map((step) => {
+            const isOpen = openNumber === step.number;
+            const headerId = HEADER_ID(step.number);
+            const regionId = REGION_ID(step.number);
+
+            return (
               <div
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "52px",
-                  fontWeight: "var(--typography-font-weight-bold)",
-                  color: step.accentColor,
-                  opacity: 0.25,
-                  lineHeight: 1,
-                  marginBottom: "var(--spacing-4)",
-                }}
+                key={step.number}
+                role="listitem"
+                className="process-accordion-item"
               >
-                {step.number}
-              </div>
-
-              {/* Body grows to fill — full content always visible (Rule 3) */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)", flex: 1 }}>
-                <h3 style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "var(--typography-font-size-base)",
-                  fontWeight: 600,
-                  color: "#1A1A1A",
-                  lineHeight: 1.3,
-                  margin: 0,
-                }}>
-                  {step.title}
+                <h3 className="process-accordion-heading">
+                  <button
+                    type="button"
+                    id={headerId}
+                    aria-expanded={isOpen}
+                    aria-controls={regionId}
+                    onClick={() => toggle(step.number)}
+                    className="process-accordion-trigger"
+                  >
+                    <span
+                      className="process-accordion-number"
+                      style={{ color: step.accentColor }}
+                      aria-hidden="true"
+                    >
+                      {step.number}
+                    </span>
+                    <span className="process-accordion-title">{step.title}</span>
+                    <span
+                      className="process-accordion-chevron"
+                      data-open={isOpen}
+                      aria-hidden="true"
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
+                        <path
+                          d="M4 6l4 4 4-4"
+                          stroke="currentColor"
+                          strokeWidth="1.75"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </button>
                 </h3>
-                <p style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "var(--typography-font-size-sm)",
-                  color: "#525252",
-                  lineHeight: 1.6,
-                  margin: 0,
-                }}>
-                  {step.description}
-                </p>
-                <p style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "var(--typography-font-size-tag)",
-                  color: "#2C2C2C",
-                  lineHeight: 1.6,
-                  margin: 0,
-                }}>
-                  {step.artifactCaption}
-                </p>
+
+                <section
+                  id={regionId}
+                  role="region"
+                  aria-labelledby={headerId}
+                  className="process-accordion-panel"
+                  data-open={isOpen}
+                >
+                  <div className="process-accordion-panel-inner">
+                    <p className="process-accordion-description">
+                      {step.description}
+                    </p>
+                    <p className="process-accordion-artifact">
+                      {step.artifactCaption}
+                    </p>
+                    <Link
+                      href={`/case-studies/${step.caseStudySlug}`}
+                      className="process-accordion-link"
+                    >
+                      {step.caseStudyLabel}
+                    </Link>
+                  </div>
+                </section>
               </div>
-
-              {/* Link pinned to card foot */}
-              <Link
-                href={`/case-studies/${step.caseStudySlug}`}
-                className="mt-4 font-semibold underline underline-offset-2 hover:opacity-70 transition-opacity"
-                style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", color: "#1A1A1A" }}
-              >
-                {step.caseStudyLabel}
-              </Link>
-            </div>
-          ))}
+            );
+          })}
         </div>
-
       </div>
     </section>
   );

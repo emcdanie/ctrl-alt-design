@@ -585,6 +585,147 @@ textarea:focus-visible {
   animation-play-state: paused;
 }
 
+/* ─── Process section accordion ───────────────────────────────── */
+/* Behaviour: one open at a time, first item open by default. Animated
+ * expand via grid-template-rows: 0fr → 1fr so the body grows to its
+ * natural content height without a hardcoded max-height estimate.
+ * Reduced-motion preference disables the transition. Focus ring uses
+ * --ring-focus-* tokens per BELLA Rule 6. */
+.process-accordion {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.process-accordion-item {
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.process-accordion-heading {
+  margin: 0;
+}
+
+.process-accordion-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  width: 100%;
+  padding: var(--spacing-5) 0;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+.process-accordion-trigger:hover {
+  color: var(--color-ink);
+}
+
+.process-accordion-trigger:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+  border-radius: var(--radius-sm);
+}
+
+.process-accordion-number {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: var(--typography-font-weight-bold);
+  line-height: 1;
+  min-width: 2.5ch;
+}
+
+.process-accordion-title {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: var(--typography-font-weight-bold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-ink);
+}
+
+.process-accordion-chevron {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-ink-muted);
+  transition: transform 180ms ease-out;
+}
+
+.process-accordion-chevron[data-open="true"] {
+  transform: rotate(180deg);
+}
+
+.process-accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 180ms ease-out;
+}
+
+.process-accordion-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.process-accordion-panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.process-accordion-panel[data-open="true"] .process-accordion-panel-inner {
+  padding-bottom: var(--spacing-5);
+}
+
+.process-accordion-description {
+  margin: 0 0 var(--spacing-3);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-ink-soft);
+  max-width: 62ch;
+}
+
+.process-accordion-artifact {
+  margin: 0 0 var(--spacing-4);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-muted);
+  max-width: 62ch;
+}
+
+.process-accordion-link {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 150ms ease;
+}
+
+.process-accordion-link:hover {
+  opacity: 0.7;
+}
+
+.process-accordion-link:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .process-accordion-panel,
+  .process-accordion-chevron {
+    transition: none;
+  }
+}
+
 .carousel-card {
   width: 168px;
   height: 470px;
