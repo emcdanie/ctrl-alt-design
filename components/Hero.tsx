@@ -61,7 +61,11 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
           Product Designer — Design Systems &amp; AI
         </p>
 
-        {/* Name — single responsive headline */}
+        {/* Name — single responsive headline.
+            white-space defaults to normal so "Elleta McDaniel" can wrap to
+            two lines below ~600px viewport (52px × ~430px content vs ~343px
+            mobile container = horizontal overflow if forced to single line).
+            Per task spec, hero font-size is unchanged. */}
         <h1
           style={{
             fontFamily: "var(--font-display)",
@@ -71,7 +75,6 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
             lineHeight: 0.95,
             margin: "0 0 var(--spacing-6) 0",
             color: "var(--color-ink)",
-            whiteSpace: "nowrap",
             opacity: mounted ? 1 : 0,
             transform: mounted ? "translateY(0)" : "translateY(20px)",
             transition: "opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s",
