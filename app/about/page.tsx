@@ -411,11 +411,17 @@ export default function AboutPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-6)" }}>
                 {timelineEvents.map((event, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "var(--spacing-4)", position: "relative" }}>
-                    {/* Dot */}
+                    {/* Dot — positioned over the vertical line set by the
+                        parent's paddingLeft: 28px; offset back by the parent
+                        gap so the dot sits centered on the line. The previous
+                        `left: "-var(--spacing-6)"` was an unparseable string
+                        ("-" prefix on var() is invalid CSS) and rendered the
+                        dot at left:0 instead of -24px, drifting it across
+                        the timeline. */}
                     <div
                       style={{
                         position: "absolute",
-                        left: "-var(--spacing-6)",
+                        left: "calc(0px - var(--spacing-6))",
                         top: "6px",
                         width: "10px",
                         height: "10px",
