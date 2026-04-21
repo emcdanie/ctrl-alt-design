@@ -33,19 +33,21 @@ export default function LearningSection() {
           </div>
         </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "var(--grid-gap)" }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 items-stretch" style={{ gap: "var(--grid-gap)" }}>
           {/* Vinyl player */}
-          <FadeIn delay={0}>
+          <FadeIn delay={0} className="h-full">
             <VinylPlayer />
           </FadeIn>
 
           {/* Podcasts */}
-          <FadeIn delay={80}>
+          <FadeIn delay={80} className="h-full">
             <div
               className="card-elevated card-interactive"
               style={{
                 padding: "var(--spacing-6)",
                 height: "100%",
+                display: "flex",
+                flexDirection: "column",
                 cursor: "default",
               }}
             >
@@ -74,7 +76,8 @@ export default function LearningSection() {
                 Design thinking, systems, and personal growth — what I listen to between projects.
               </p>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
+              {/* Body grows to fill — Rule 2 (.body { flex: 1 }) */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)", flex: 1 }}>
                 {podcasts.map((pod) => (
                   <a
                     key={pod.title}

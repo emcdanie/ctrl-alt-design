@@ -88,76 +88,77 @@ export default function ProcessSection() {
           </p>
         </div>
 
-        {/* Cards grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+        {/* Cards grid — Rule 2 (stretch + height:100%) + Rule 3 (no truncation) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 items-stretch">
           {steps.map((step) => (
             <div
               key={step.number}
-              className="rounded-2xl min-h-[220px] relative overflow-hidden group border border-white/60 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-05),0_2px_6px_var(--color-alpha-shadow-warm-03),inset_0_1px_0_rgba(255,255,255,0.85)]"
+              className="rounded-2xl overflow-hidden border border-white/60 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-05),0_2px_6px_var(--color-alpha-shadow-warm-03),inset_0_1px_0_rgba(255,255,255,0.85)]"
               style={{
                 background: step.color,
                 backdropFilter: "blur(var(--bella-blur-lg))",
                 WebkitBackdropFilter: "blur(var(--bella-blur-lg))",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                padding: "var(--spacing-5)",
               }}
             >
-              {/* Default state */}
-              <div className="absolute inset-0 p-5 flex flex-col justify-between transition-opacity duration-300 opacity-100 group-hover:opacity-0">
-                <div
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "52px",
-                    fontWeight: "var(--typography-font-weight-bold)",
-                    color: step.accentColor,
-                    opacity: 0.25,
-                    lineHeight: 1,
-                  }}
-                >
-                  {step.number}
-                </div>
-                <div>
-                  <h3 style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "var(--typography-font-size-base)",
-                    fontWeight: 600,
-                    color: "#1A1A1A",
-                    marginBottom: "var(--spacing-2)",
-                    lineHeight: 1.3,
-                  }}>
-                    {step.title}
-                  </h3>
-                  <p style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "var(--typography-font-size-sm)",
-                    color: "#666666",
-                    lineHeight: 1.6,
-                  }}>
-                    {step.description}
-                  </p>
-                </div>
+              {/* Step number — accent watermark */}
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "52px",
+                  fontWeight: "var(--typography-font-weight-bold)",
+                  color: step.accentColor,
+                  opacity: 0.25,
+                  lineHeight: 1,
+                  marginBottom: "var(--spacing-4)",
+                }}
+              >
+                {step.number}
               </div>
 
-              {/* Hover state */}
-              <div className="absolute inset-0 p-5 flex flex-col justify-end transition-opacity duration-300 opacity-0 group-hover:opacity-100" style={{ background: step.hoverColor }}>
-                <div>
-                  <p style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "var(--typography-font-size-tag)",
-                    color: "#2C2C2C",
-                    lineHeight: 1.6,
-                    marginBottom: "var(--spacing-3)",
-                  }}>
-                    {step.artifactCaption}
-                  </p>
-                  <Link
-                    href={`/case-studies/${step.caseStudySlug}`}
-                    className="font-semibold underline underline-offset-2 hover:opacity-70 transition-opacity"
-                    style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", color: "#1A1A1A" }}
-                  >
-                    {step.caseStudyLabel}
-                  </Link>
-                </div>
+              {/* Body grows to fill — full content always visible (Rule 3) */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)", flex: 1 }}>
+                <h3 style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "var(--typography-font-size-base)",
+                  fontWeight: 600,
+                  color: "#1A1A1A",
+                  lineHeight: 1.3,
+                  margin: 0,
+                }}>
+                  {step.title}
+                </h3>
+                <p style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "var(--typography-font-size-sm)",
+                  color: "#525252",
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}>
+                  {step.description}
+                </p>
+                <p style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "var(--typography-font-size-tag)",
+                  color: "#2C2C2C",
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}>
+                  {step.artifactCaption}
+                </p>
               </div>
 
+              {/* Link pinned to card foot */}
+              <Link
+                href={`/case-studies/${step.caseStudySlug}`}
+                className="mt-4 font-semibold underline underline-offset-2 hover:opacity-70 transition-opacity"
+                style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", color: "#1A1A1A" }}
+              >
+                {step.caseStudyLabel}
+              </Link>
             </div>
           ))}
         </div>
