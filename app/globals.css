@@ -467,12 +467,33 @@ li {
 }
 
 /* ─── Scroll anchor offset ──────────────────────────────────────── */
-/* Prevents fixed header from covering anchor targets */
-section[id] {
-  scroll-margin-top: var(--header-height);
+/* BELLA v0.1 Rule 4: --header-height is defined in @theme above (70px).
+ * scroll-padding-top on the document scroll container (html) is what
+ * actually moves the in-viewport landing position of anchor jumps.
+ * scroll-margin-top on the targets themselves is the per-element fallback
+ * (older browsers + nested scroll contexts honor it). Both are required.
+ * The +var(--spacing-4) (16px) gives breathing room so anchored headings
+ * don't kiss the underside of the fixed nav. */
+html {
+  scroll-padding-top: calc(var(--header-height) + var(--spacing-4));
 }
 
-/* Case study pages — offset content below the fixed nav */
+section[id],
+[id] > h1,
+[id] > h2 {
+  scroll-margin-top: calc(var(--header-height) + var(--spacing-4));
+}
+
+/* Case study pages — scroll padding so anchor jumps clear the fixed nav.
+ * .cs-shell is the actual wrapper used by CaseStudyShell. The wrapper's
+ * resting top padding is already set by .cs-shell { padding: var(--space-8) ... }
+ * (clears the 70px nav comfortably); we only need scroll-padding-top here.
+ * .case-study-content is kept for any consumer that wires it up. */
+.cs-shell,
+.case-study-content {
+  scroll-padding-top: calc(var(--header-height) + var(--spacing-4));
+}
+
 .case-study-content {
   padding-top: var(--header-height);
 }
