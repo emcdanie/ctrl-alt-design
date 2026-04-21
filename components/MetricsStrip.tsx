@@ -1,159 +1,91 @@
-"use client";
-
-import { useState } from "react";
-import Link from "next/link";
+/**
+ * MetricsStrip — at-a-glance facts strip for the About page.
+ *
+ * Originally a hover-to-reveal 4-card strip on the landing dashboard;
+ * relocated to About and simplified to always-visible detail lines
+ * (no hover, no expand/collapse — every card renders the same way,
+ * every time).
+ *
+ * Layout per BELLA v0.1 Rule 2: items-stretch grid + h-full + flex-col
+ * with the detail line as the flex-1 body. Body text is 16px per Rule 7.
+ */
 
 interface MetricItem {
   stat: string;
   label: string;
-  hover: { text: string; href?: string }[];
+  detail: string;
 }
 
 const metrics: MetricItem[] = [
-  {
-    stat: "3+",
-    label: "YEARS EXPERIENCE",
-    hover: [
-      { text: "***REMOVED*** — UX/UI Designer", href: "/case-studies/design-system-transformation" },
-      { text: "Brad Frost Web — Product Designer", href: "/case-studies/brad-frost" },
-      { text: "***REMOVED*** — Dashboard Prototype", href: "/case-studies/un-operational-dashboard" },
-    ],
-  },
-  {
-    stat: "2",
-    label: "DESIGN SYSTEMS BUILT",
-    hover: [
-      { text: "***REMOVED*** Design System", href: "/case-studies/design-system-transformation" },
-      { text: "Brad Frost Atomic System", href: "/case-studies/brad-frost" },
-    ],
-  },
-  {
-    stat: "B2B",
-    label: "PRIMARY DOMAIN",
-    hover: [
-      { text: "***REMOVED*** travel platform", href: "/case-studies/design-system-transformation" },
-      { text: "***REMOVED*** operational dashboard", href: "/case-studies/un-operational-dashboard" },
-      { text: "Guardian concept", href: "/case-studies/guardian" },
-    ],
-  },
-  {
-    stat: "BCN",
-    label: "BASED IN",
-    hover: [
-      { text: "Open to full-time remote roles", href: undefined },
-      { text: "Select freelance projects", href: "#contact" },
-    ],
-  },
+  { stat: "3+", label: "YEARS EXPERIENCE",     detail: "Freelance + in-house" },
+  { stat: "2",  label: "DESIGN SYSTEMS BUILT", detail: "***REMOVED*** Design System / Brad Frost Atomic System" },
+  { stat: "B2B", label: "PRIMARY DOMAIN",      detail: "Travel, finance, govtech" },
+  { stat: "BCN", label: "BASED IN",            detail: "Canet de Mar, Spain" },
 ];
 
 function MetricCard({ item }: { item: MetricItem }) {
-  const [expanded, setExpanded] = useState(false);
-
   return (
     <div
-      onMouseEnter={() => setExpanded(true)}
-      onMouseLeave={() => setExpanded(false)}
+      className="card-default"
       style={{
-        flex: 1,
-        minWidth: 0,
-        padding: expanded ? "20px" : "20px",
-        background: expanded ? "#F5F4F1" : "transparent",
-        borderRadius: "var(--radius-lg)",
-        transition: "background 220ms ease",
-        textAlign: "center",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        padding: "var(--spacing-6)",
+        textAlign: "left",
       }}
     >
       {/* Stat */}
       <div
         style={{
           fontFamily: "var(--font-display)",
-          fontSize: "36px",
+          fontSize: "clamp(36px, 4vw, 48px)",
           fontWeight: "var(--typography-font-weight-bold)",
-          color: "#1A1A1A",
+          color: "var(--color-ink)",
           lineHeight: 1,
+          marginBottom: "var(--spacing-2)",
         }}
       >
         {item.stat}
       </div>
 
-      {/* Label */}
+      {/* Eyebrow label */}
       <div
         className="eyebrow"
-        style={{ marginTop: "6px", fontSize: "9px", marginBottom: expanded ? "12px" : "0" }}
+        style={{ marginBottom: "var(--spacing-3)" }}
       >
         {item.label}
       </div>
 
-      {/* Hover content */}
-      <div
+      {/* Detail — always visible. flex:1 so cards share height via Rule 2. */}
+      <p
         style={{
-          maxHeight: expanded ? "200px" : "0",
-          overflow: "hidden",
-          transition: "max-height 220ms ease",
+          flex: 1,
+          margin: 0,
+          fontFamily: "var(--font-body)",
+          fontSize: "var(--typography-font-size-base)",
+          lineHeight: "var(--typography-line-height-normal)",
+          color: "var(--color-ink-soft)",
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "var(--spacing-1)" }}>
-          {item.hover.map((h, i) =>
-            h.href ? (
-              <Link
-                key={i}
-                href={h.href}
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "var(--typography-font-size-tag)",
-                  color: "#1A1A1A",
-                  textDecoration: "underline",
-                  textDecorationColor: "transparent",
-                  transition: "text-decoration-color 150ms ease",
-                  lineHeight: 1.5,
-                }}
-                onMouseEnter={e => (e.currentTarget.style.textDecorationColor = "#1A1A1A")}
-                onMouseLeave={e => (e.currentTarget.style.textDecorationColor = "transparent")}
-              >
-                {h.text}
-              </Link>
-            ) : (
-              <span
-                key={i}
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "var(--typography-font-size-tag)",
-                  color: "#666666",
-                  lineHeight: 1.5,
-                }}
-              >
-                {h.text}
-              </span>
-            )
-          )}
-        </div>
-      </div>
+        {item.detail}
+      </p>
     </div>
   );
 }
 
 export default function MetricsStrip() {
   return (
-    <section className="layout-section-tight">
-      <div
-        className="layout-container"
-        style={{ display: "flex", gap: "var(--spacing-2)" }}
-      >
-        {metrics.map((item) => (
-          <MetricCard key={item.stat} item={item} />
-        ))}
-      </div>
-
-      <style>{`
-        @media (max-width: 640px) {
-          .metrics-strip {
-            flex-wrap: wrap;
-          }
-          .metrics-strip > * {
-            flex: 1 1 calc(50% - 4px);
-          }
-        }
-      `}</style>
-    </section>
+    <div
+      className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-4"
+      role="list"
+      aria-label="At-a-glance facts"
+    >
+      {metrics.map((item) => (
+        <div key={item.stat} role="listitem" className="h-full">
+          <MetricCard item={item} />
+        </div>
+      ))}
+    </div>
   );
 }

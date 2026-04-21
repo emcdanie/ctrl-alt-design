@@ -4,7 +4,6 @@ import { useState, useRef, useCallback } from "react";
 import OverlayNav from "@/components/OverlayNav";
 import Hero from "@/components/Hero";
 import Carousel from "@/components/Carousel";
-import MetricsStrip from "@/components/MetricsStrip";
 import CaseStudyGrid from "@/components/CaseStudyGrid";
 import ProcessSection from "@/components/ProcessSection";
 import VideoWalkthrough from "@/components/VideoWalkthrough";
@@ -52,7 +51,6 @@ export default function Home() {
         {/* Scrollable content panel */}
         <div className="dashboard-panel">
           <CaseStudyGrid />
-          <MetricsStrip />
           <ProcessSection />
           <TestimonialSection />
           <VideoWalkthrough />

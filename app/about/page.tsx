@@ -4,6 +4,7 @@ import { useState } from "react";
 import OverlayNav from "@/components/OverlayNav";
 import BackToWorkButton from "@/components/BackToWorkButton";
 import VinylPlayer from "@/components/VinylPlayer";
+import MetricsStrip from "@/components/MetricsStrip";
 import Link from "next/link";
 
 /* ── Data ─────────────────────────────────────────────────────── */
@@ -323,6 +324,18 @@ export default function AboutPage() {
                 />
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Divider */}
+        <div className="page-container">
+          <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
+        </div>
+
+        {/* At-a-glance facts — relocated from landing */}
+        <section style={{ padding: "var(--spacing-12) var(--spacing-6)" }}>
+          <div className="page-container">
+            <MetricsStrip />
           </div>
         </section>
 
