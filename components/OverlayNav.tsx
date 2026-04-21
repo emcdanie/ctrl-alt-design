@@ -75,12 +75,10 @@ export default function OverlayNav() {
           </Link>
 
           <button
-            data-cursor="nav"
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
             onMouseLeave={() => setTriggerHovered(false)}
             className="pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[#1A1814]/10 bg-white/45 text-[#1A1814] shadow-[0_10px_30px_rgba(26,24,20,0.08)] transition-all duration-200 hover:bg-white/60"
-            style={{ cursor: "none" }}
             aria-label={open ? "Close menu" : "Open menu"}
           >
             <span
@@ -149,7 +147,6 @@ export default function OverlayNav() {
                     <button
                       onClick={() => handleNavClick(item.href)}
                       className={`${sharedClasses} ${colorClass} bg-transparent p-0 text-left hover:text-[#5E554A]`}
-                      style={{ cursor: "none" }}
                     >
                       {item.label}
                     </button>

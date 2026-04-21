@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import CustomCursor from "@/components/CustomCursor";
 import OverlayNav from "@/components/OverlayNav";
 import BackToWorkButton from "@/components/BackToWorkButton";
 import VinylPlayer from "@/components/VinylPlayer";
@@ -267,7 +266,6 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
 export default function AboutPage() {
   return (
     <main className="page-shell min-h-screen text-[var(--color-ink-soft)]">
-      <CustomCursor />
       <OverlayNav />
       <BackToWorkButton />
 

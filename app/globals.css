@@ -165,7 +165,6 @@
 
 html {
   scroll-behavior: smooth;
-  cursor: none;
   background-color: var(--color-page);
 }
 
@@ -181,23 +180,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  cursor: none;
-}
-
-@media (hover: none) and (pointer: coarse) {
-  html,
-  body,
-  a,
-  button,
-  [role="button"] {
-    cursor: auto;
-  }
-}
-
-a,
-button,
-[role="button"] {
-  cursor: none;
 }
 
 h1,
@@ -282,7 +264,6 @@ li {
 
 .card-hover {
   transition: transform 0.28s ease, box-shadow 0.28s ease;
-  cursor: none;
 }
 
 .divider {
@@ -581,7 +562,6 @@ textarea:focus-visible {
     inset 0 1px 0 rgba(255, 255, 255, 0.7);
   transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: none;
   text-decoration: none;
   color: inherit;
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import CustomCursor from "@/components/CustomCursor";
 import OverlayNav from "@/components/OverlayNav";
 import Hero from "@/components/Hero";
 import Carousel from "@/components/Carousel";
@@ -30,7 +29,6 @@ export default function Home() {
 
   return (
     <div ref={shellRef} className="snap-shell">
-      <CustomCursor />
       <OverlayNav />
 
       {/* ═══════════════════════════════════════════════════════════════
