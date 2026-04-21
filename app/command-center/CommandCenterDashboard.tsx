@@ -569,10 +569,14 @@ export function CommandCenterDashboard() {
         </div>
 
         {/* ── MAIN GRID ── */}
+        {/* Was "1fr 360px" — overflows at <410px viewport (the 360px right
+            column + min content of 1fr left column exceeds the screen).
+            Switched to auto-fit minmax so it collapses to a single column
+            below ~580px and stacks the side panel under projects on mobile. */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 360px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
             gap: 24,
             marginBottom: 32,
           }}
