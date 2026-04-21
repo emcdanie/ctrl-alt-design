@@ -718,16 +718,21 @@ textarea:focus-visible {
   height: 100dvh;
   overflow-y: auto;
   overflow-x: hidden;
-  scroll-snap-type: y mandatory;
   background: var(--color-page);
   color: #1A1A1A;
+  /* scroll-snap-type intentionally omitted. Was "y mandatory" (relaxed
+   * to "y proximity" at mobile in 4715913). Both broke programmatic
+   * scroll in browser/extension full-page screenshot tools, which call
+   * scrollTo on the scroll container — snap intercepts and pulls them
+   * back to the snap point. The snap-between-views feel was a
+   * nice-to-have; ordinary scroll is load-bearing for capture tools,
+   * keyboard scroll, and assistive tech. */
 }
 
 /* View 1 — Landing */
 .view-landing {
   height: 100vh;
   height: 100dvh;
-  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   padding-top: var(--header-height);
@@ -739,22 +744,10 @@ textarea:focus-visible {
 .view-dashboard {
   height: 100vh;
   height: 100dvh;
-  scroll-snap-align: start;
   flex-shrink: 0;
   display: flex;
   overflow: hidden;
   padding-top: var(--header-height);
-}
-
-/* Mobile: relax the snap-shell. Mandatory y-snap on a 375×812 viewport
- * locks users into views that may be shorter than the viewport (Hero
- * + smaller carousel) or that need to scroll internally (dashboard
- * panel). Switching to "y proximity" lets natural scroll work without
- * fighting the snap. */
-@media (max-width: 768px) {
-  .snap-shell {
-    scroll-snap-type: y proximity;
-  }
 }
 
 /* ─── Sidebar (inside dashboard view) ─────────────────────────── */
