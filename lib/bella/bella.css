@@ -1,13 +1,15 @@
 /* BELLA — generated from /tokens/{primitive,semantic.{light,dark},component}.json
  * Light mode is the default. Dark mode activates via [data-theme="dark"] on <html> or <body>.
  * Do not edit by hand. Edit the source JSON and run `python3 tokens/build.py`.
+ * [redesign/chip-purple] accent recolored amber #C4956A -> periwinkle #A79CE2
+ *   and warm-brown shadow base #2C1810 -> cool #1C1A2E. Sync to token JSON later.
  */
 
 :root {
   /* ---- Primitives ---- */
   --color-brand-ink: #0F1117;
   --color-brand-parchment: #F7F4EF;
-  --color-brand-amber: #C4956A;
+  --color-brand-amber: #A79CE2;
   --color-brand-slate: #1A1D27;
   --color-supporting-steel: #6495C5;
   --color-supporting-dusk: #7B6E8F;
@@ -21,8 +23,8 @@
   --color-neutral-600: #525252;
   --color-neutral-700: #333333;
   --color-neutral-900: #111111;
-  --color-alpha-amber-15: #C4956A26;
-  --color-alpha-amber-30: #C4956A4D;
+  --color-alpha-amber-15: #A79CE226;
+  --color-alpha-amber-30: #A79CE24D;
   --color-alpha-steel-15: #6495C526;
   --color-alpha-steel-30: #6495C54D;
   --color-alpha-ink-6: #0F111710;
@@ -34,11 +36,11 @@
   --color-alpha-glass-72: #FFFFFFB8;
   --color-alpha-glass-82: #FFFFFFD1;
   --color-alpha-glass-90: #FFFFFFE6;
-  --color-alpha-shadow-warm-03: #2C181008;
-  --color-alpha-shadow-warm-04: #2C18100A;
-  --color-alpha-shadow-warm-05: #2C18100D;
-  --color-alpha-shadow-warm-06: #2C18100F;
-  --color-alpha-shadow-warm-08: #2C181014;
+  --color-alpha-shadow-warm-03: #1C1A2E08;
+  --color-alpha-shadow-warm-04: #1C1A2E0A;
+  --color-alpha-shadow-warm-05: #1C1A2E0D;
+  --color-alpha-shadow-warm-06: #1C1A2E0F;
+  --color-alpha-shadow-warm-08: #1C1A2E14;
   --color-alpha-slate-60: #1A1D2799;
   --color-alpha-slate-48: #1A1D277A;
   --color-alpha-slate-32: #1A1D2752;
@@ -105,10 +107,10 @@
   --shadow-md: 0 4px 12px rgba(15,17,23,0.08);
   --shadow-lg: 0 12px 32px rgba(15,17,23,0.12);
   --shadow-hover: 0 8px 24px rgba(15,17,23,0.10);
-  --shadow-soft: 0 1px 2px #2C18100A, 0 10px 30px #2C18100F, 0 24px 60px #2C18100A;
-  --shadow-layered: 0 1px 2px #2C18100D, 0 12px 40px #2C181014, 0 28px 80px #2C18100F, inset 0 1px 0 #FFFFFFE6;
-  --shadow-card-default: 0 1px 4px #2C181008, 0 4px 16px #2C18100A, inset 0 1px 0 #FFFFFF8C;
-  --shadow-card-elevated: 0 1px 2px #2C18100A, 0 8px 24px #2C18100F, inset 0 1px 0 #FFFFFFAD;
+  --shadow-soft: 0 1px 2px #1C1A2E0A, 0 10px 30px #1C1A2E0F, 0 24px 60px #1C1A2E0A;
+  --shadow-layered: 0 1px 2px #1C1A2E0D, 0 12px 40px #1C1A2E14, 0 28px 80px #1C1A2E0F, inset 0 1px 0 #FFFFFFE6;
+  --shadow-card-default: 0 1px 4px #1C1A2E08, 0 4px 16px #1C1A2E0A, inset 0 1px 0 #FFFFFF8C;
+  --shadow-card-elevated: 0 1px 2px #1C1A2E0A, 0 8px 24px #1C1A2E0F, inset 0 1px 0 #FFFFFFAD;
 
   /* ---- Semantic (light) ---- */
   --color-semantic-background: #F7F4EF;
@@ -126,9 +128,9 @@
   --color-semantic-text-muted: #999999;
   --color-semantic-text-inverse: #F7F4EF;
   --color-semantic-text-accent: #111111;
-  --color-semantic-accent: #C4956A;
-  --color-semantic-accent-subtle: #C4956A26;
-  --color-semantic-accent-border: #C4956A4D;
+  --color-semantic-accent: #A79CE2;
+  --color-semantic-accent-subtle: #A79CE226;
+  --color-semantic-accent-border: #A79CE24D;
   --color-semantic-border: #E8E4DC;
   --color-semantic-border-subtle: #0F111710;
   --color-semantic-border-strong: #333333;
@@ -138,15 +140,15 @@
   --color-semantic-info: #6495C5;
   --color-semantic-info-subtle: #6495C526;
   --color-semantic-info-border: #6495C54D;
-  --shadow-floating: 0 1px 2px #2C18100A, 0 10px 30px #2C18100F, 0 24px 60px #2C18100A;
-  --shadow-raised: 0 1px 2px #2C18100D, 0 12px 40px #2C181014, 0 28px 80px #2C18100F, inset 0 1px 0 #FFFFFFE6;
+  --shadow-floating: 0 1px 2px #1C1A2E0A, 0 10px 30px #1C1A2E0F, 0 24px 60px #1C1A2E0A;
+  --shadow-raised: 0 1px 2px #1C1A2E0D, 0 12px 40px #1C1A2E14, 0 28px 80px #1C1A2E0F, inset 0 1px 0 #FFFFFFE6;
   --bella-blur-surface: 18px;
 
   /* ---- Component ---- */
-  --component-button-primary-background: #C4956A;
-  --component-button-primary-background-hover: #B68457;
+  --component-button-primary-background: #A79CE2;
+  --component-button-primary-background-hover: #8E82D6;
   --component-button-primary-foreground: #111111;
-  --component-button-primary-border: #C4956A;
+  --component-button-primary-border: #A79CE2;
   --component-button-primary-border-radius: 8px;
   --component-button-primary-padding-y: 12px;
   --component-button-primary-padding-x: 20px;
@@ -156,9 +158,9 @@
   --component-button-primary-letter-spacing: 0.08em;
   --component-button-primary-min-height: 44px;
   --component-button-secondary-background: transparent;
-  --component-button-secondary-background-hover: #C4956A26;
+  --component-button-secondary-background-hover: #A79CE226;
   --component-button-secondary-foreground: #111111;
-  --component-button-secondary-border: #C4956A;
+  --component-button-secondary-border: #A79CE2;
   --component-button-secondary-border-radius: 8px;
   --component-button-secondary-padding-y: 12px;
   --component-button-secondary-padding-x: 20px;
@@ -171,7 +173,7 @@
   --component-button-ghost-min-height: 44px;
   --component-card-default-background: linear-gradient(180deg, #FFFFFF7A 0%, #FFFFFF47 100%);
   --component-card-default-blur: 14px;
-  --component-card-default-shadow: 0 1px 4px #2C181008, 0 4px 16px #2C18100A, inset 0 1px 0 #FFFFFF8C;
+  --component-card-default-shadow: 0 1px 4px #1C1A2E08, 0 4px 16px #1C1A2E0A, inset 0 1px 0 #FFFFFF8C;
   --component-card-default-border-top: #FFFFFFB8;
   --component-card-default-border: #FFFFFF8C;
   --component-card-default-border-width: 1px;
@@ -183,7 +185,7 @@
   --component-card-default-transition: all 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
   --component-card-elevated-background: linear-gradient(180deg, #FFFFFFAD 0%, #FFFFFF7A 100%);
   --component-card-elevated-blur: 16px;
-  --component-card-elevated-shadow: 0 1px 2px #2C18100A, 0 8px 24px #2C18100F, inset 0 1px 0 #FFFFFFAD;
+  --component-card-elevated-shadow: 0 1px 2px #1C1A2E0A, 0 8px 24px #1C1A2E0F, inset 0 1px 0 #FFFFFFAD;
   --component-card-elevated-border-top: #FFFFFFB8;
   --component-card-elevated-border: #FFFFFF8C;
   --component-card-elevated-border-width: 1px;
@@ -192,7 +194,7 @@
   --component-card-elevated-foreground: #111111;
   --component-card-glass-background: linear-gradient(180deg, #FFFFFFD1 0%, #FFFFFFAD 100%);
   --component-card-glass-blur: 18px;
-  --component-card-glass-shadow: 0 1px 2px #2C18100D, 0 12px 40px #2C181014, 0 28px 80px #2C18100F, inset 0 1px 0 #FFFFFFE6;
+  --component-card-glass-shadow: 0 1px 2px #1C1A2E0D, 0 12px 40px #1C1A2E14, 0 28px 80px #1C1A2E0F, inset 0 1px 0 #FFFFFFE6;
   --component-card-glass-border-top: #FFFFFFB8;
   --component-card-glass-border: #FFFFFF8C;
   --component-card-glass-border-width: 1px;
@@ -208,9 +210,9 @@
   --component-card-inverse-border: #F7F4EF10;
   --component-card-inverse-border-radius: 12px;
   --component-card-inverse-padding: 20px;
-  --component-tag-accent-background: #C4956A26;
+  --component-tag-accent-background: #A79CE226;
   --component-tag-accent-foreground: #0F1117;
-  --component-tag-accent-border: #C4956A4D;
+  --component-tag-accent-border: #A79CE24D;
   --component-tag-accent-border-width: 1px;
   --component-tag-accent-border-radius: 999px;
   --component-tag-accent-padding-y: 4px;
@@ -244,7 +246,7 @@
   --component-input-default-foreground: #111111;
   --component-input-default-placeholder: #999999;
   --component-input-default-border: #E8E4DC;
-  --component-input-default-border-focus: #C4956A;
+  --component-input-default-border-focus: #A79CE2;
   --component-input-default-border-width: 1px;
   --component-input-default-border-radius: 8px;
   --component-input-default-padding-y: 12px;
@@ -262,7 +264,7 @@
   --component-nav-link-default-letter-spacing: 0.08em;
   --component-nav-link-default-min-height: 44px;
   --component-nav-link-active-foreground: #111111;
-  --component-nav-link-active-border-bottom: 2px solid #C4956A;
+  --component-nav-link-active-border-bottom: 2px solid #A79CE2;
   --component-nav-link-active-min-height: 44px;
   --component-section-default-padding-y: 64px;
   --component-section-default-padding-x: 24px;
@@ -294,20 +296,20 @@
   --color-semantic-surface-glass: #1A1D2799;
   --color-semantic-surface-glass-elevated: #1A1D277A;
   --color-semantic-surface-glass-light: #1A1D2752;
-  --color-semantic-surface-glass-amber: #C4956A26;
+  --color-semantic-surface-glass-amber: #A79CE226;
   --color-semantic-text-primary: #F7F4EF;
   --color-semantic-text-secondary: #B8B4AC;
   --color-semantic-text-muted: #7A7770;
   --color-semantic-text-inverse: #111111;
-  --color-semantic-text-accent: #C4956A;
-  --color-semantic-accent: #C4956A;
-  --color-semantic-accent-subtle: #C4956A26;
-  --color-semantic-accent-border: #C4956A4D;
+  --color-semantic-text-accent: #A79CE2;
+  --color-semantic-accent: #A79CE2;
+  --color-semantic-accent-subtle: #A79CE226;
+  --color-semantic-accent-border: #A79CE24D;
   --color-semantic-border: #F7F4EF10;
   --color-semantic-border-subtle: #2A2D37;
   --color-semantic-border-strong: #F7F4EF;
   --color-semantic-link: #F7F4EF;
-  --color-semantic-link-hover: #C4956A;
+  --color-semantic-link-hover: #A79CE2;
   --color-semantic-success: #4A7C6F;
   --color-semantic-info: #6495C5;
   --color-semantic-info-subtle: #6495C526;

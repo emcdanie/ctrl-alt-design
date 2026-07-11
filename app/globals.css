@@ -12,23 +12,25 @@
   --color-ink-muted: #3d3832;
   --color-surface: #f0ebe3;
   --color-white-pure: #fafaf8;
-  --color-accent-espresso: #2c1810;
-  --color-accent-gold: #b8956a;
+  --color-accent-espresso: #3B2E7A;
+  --color-accent-gold: #A79CE2;
 
-  --color-border-soft: rgba(44, 24, 16, 0.08);
-  --color-border-medium: rgba(44, 24, 16, 0.12);
+  --color-border-soft: rgba(28, 26, 46, 0.08);
+  --color-border-medium: rgba(28, 26, 46, 0.12);
   --color-glass: rgba(255, 255, 255, 0.68);
   --color-glass-strong: rgba(255, 255, 255, 0.82);
   --color-tag-bg: rgba(255, 255, 255, 0.72);
-  --color-tag-border: rgba(44, 24, 16, 0.1);
+  --color-tag-border: rgba(28, 26, 46, 0.1);
   --color-muted: #3d3832;
 
-  --shadow-soft: 0 1px 2px rgba(44, 24, 16, 0.04), 0 10px 30px rgba(44, 24, 16, 0.06),
-    0 24px 60px rgba(44, 24, 16, 0.04);
-  --shadow-layered: 0 1px 2px rgba(44, 24, 16, 0.05), 0 12px 40px rgba(44, 24, 16, 0.08),
-    0 28px 80px rgba(44, 24, 16, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --shadow-soft: 0 1px 2px rgba(28, 26, 46, 0.04), 0 10px 30px rgba(28, 26, 46, 0.06),
+    0 24px 60px rgba(28, 26, 46, 0.04);
+  --shadow-layered: 0 1px 2px rgba(28, 26, 46, 0.05), 0 12px 40px rgba(28, 26, 46, 0.08),
+    0 28px 80px rgba(28, 26, 46, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
-  --font-display: "Clash Display", system-ui, sans-serif;
+  /* Display font trial (Jul 2026) — AI-Realist-style Roman serif caps.
+     Revert: --font-display: "Clash Display", system-ui, sans-serif; */
+  --font-display: var(--font-fraunces), "Fraunces", "Iowan Old Style", Palatino, Georgia, serif;
   --font-body: var(--font-plus-jakarta), "Plus Jakarta Sans", system-ui, sans-serif;
 
   /* ── Layout system spacing scale ───────────────────────────────── */
@@ -80,7 +82,7 @@
   --oklch-surface: oklch(93% 0.015 80);
   --oklch-text-primary: oklch(15% 0.005 260);
   --oklch-text-secondary: oklch(48% 0.012 65);
-  --oklch-accent: oklch(68% 0.1 70);
+  --oklch-accent: oklch(70% 0.11 285);
   --oklch-border: oklch(88% 0.01 80);
 }
 
@@ -202,7 +204,7 @@ li {
 }
 
 ::selection {
-  background: rgba(184, 149, 106, 0.22);
+  background: rgba(167, 156, 226, 0.28);
   color: var(--color-ink);
 }
 
@@ -473,7 +475,7 @@ section[id],
 /* ─── Focus states ──────────────────────────────────────────────── */
 
 :focus-visible {
-  outline: 2px solid rgba(44, 24, 16, 0.45);
+  outline: 2px solid rgba(28, 26, 46, 0.45);
   outline-offset: 3px;
 }
 
@@ -541,7 +543,7 @@ textarea:focus-visible {
 .demo-link:hover {
   background: rgba(255, 255, 255, 0.92);
   border-color: rgba(26, 24, 20, 0.22);
-  box-shadow: 0 4px 14px rgba(44, 24, 16, 0.07);
+  box-shadow: 0 4px 14px rgba(28, 26, 46, 0.07);
 }
 
 /* ─── Bento cards ──────────────────────────────────────────────── */
@@ -570,7 +572,7 @@ textarea:focus-visible {
   transform: translateY(-4px);
   box-shadow:
     0 8px 24px var(--color-alpha-shadow-warm-08),
-    0 24px 56px rgba(44, 24, 16, 0.1),
+    0 24px 56px rgba(28, 26, 46, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
@@ -1191,7 +1193,7 @@ textarea:focus-visible {
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: #110f12;
   box-shadow:
-    0 12px 40px rgba(44, 24, 16, 0.1),
+    0 12px 40px rgba(28, 26, 46, 0.1),
     0 4px 14px var(--color-alpha-shadow-warm-06);
 }
 
