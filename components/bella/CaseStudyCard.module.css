@@ -68,7 +68,6 @@
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
-  min-height: var(--spacing-touch-target);
   padding: var(--spacing-1) var(--spacing-3);
   border-radius: var(--radius-full);
   border-width: 1px;

@@ -185,7 +185,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
         ))}
       </div>
 
-      <div style={{ marginTop: "72px" }}>
+      <div style={{ marginTop: "var(--spacing-16)" }}>
         <SectionHeader
           label="— Education"
           title="Education"

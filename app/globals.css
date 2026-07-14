@@ -104,14 +104,15 @@
   padding-right: var(--container-padding);
 }
 
+/* Section rhythm — one scale (4-based --spacing-*), one value per tier */
 .layout-section {
-  padding-top: var(--space-7);
-  padding-bottom: var(--space-7);
+  padding-top: var(--spacing-20);
+  padding-bottom: var(--spacing-20);
 }
 
 .layout-section-tight {
-  padding-top: var(--space-6);
-  padding-bottom: var(--space-6);
+  padding-top: var(--spacing-16);
+  padding-bottom: var(--spacing-16);
 }
 
 .layout-grid {
@@ -132,7 +133,7 @@
 }
 
 .layout-header {
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--spacing-12);
 }
 
 /* ─── Keyframes ─────────────────────────────────────────────────── */
@@ -784,8 +785,8 @@ textarea:focus-visible {
 }
 
 .card-interactive:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  transform: var(--motion-transform-hover-lift);
+  box-shadow: var(--shadow-card-elevated);
 }
 
 /* Vinyl spin */
@@ -1265,6 +1266,10 @@ textarea:focus-visible {
   max-width: 720px;
 }
 
+.cs-shell__content p {
+  max-width: 66ch;
+}
+
 /* Section spacing inside case study pages */
 .cs-section {
   margin-bottom: var(--spacing-20);
@@ -1274,7 +1279,7 @@ textarea:focus-visible {
 .cs-shell__content iframe,
 .cs-shell__content .prototype-iframe {
   margin-top: var(--spacing-12);
-  margin-bottom: 72px;
+  margin-bottom: var(--spacing-16);
 }
 
 .cs-shell__content figure,

@@ -95,7 +95,7 @@ export default function ContactSection() {
   });
 
   return (
-    <footer id="contact" className="bg-[#1A1814]" style={{ paddingTop: "var(--space-7)", paddingBottom: "var(--space-5)", color: "var(--ink-on-dark-body)" }}>
+    <footer id="contact" className="bg-[#1A1814]" style={{ paddingTop: "var(--spacing-20)", paddingBottom: "var(--spacing-12)", color: "var(--ink-on-dark-body)" }}>
       <div className="layout-container">
         {/* Two-column layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
