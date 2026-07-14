@@ -22,6 +22,19 @@ const roles = [
     ],
   },
   {
+    title: "Design Systems Specialist",
+    company: "Mango · Contract",
+    period: "Apr 2026 — Jul 2026",
+    logoSrc: "/images/logos/mango.png",
+    logoBg: "#111111",
+    highlights: [
+      "**Owned cross-platform component governance** across Web, iOS, and Android — defining, governing, and releasing reusable components across multiple shared Figma libraries, documented in Zeroheight.",
+      "**Established AI-assisted design-system workflows** with Claude, Figma MCP, and the Desktop Bridge — enabling automated audits, machine-readable component patterns, and scalable documentation.",
+      "**Led design-to-code parity initiatives** — bridging Figma and production codebases so the system stays true across design and build.",
+      "**Ran accessibility and dark-mode audits** across the system, and defined metrics for adoption, coverage, efficiency, and quality.",
+    ],
+  },
+  {
     title: "UX/UI Designer — Product & Design Systems",
     company: "***REMOVED***",
     period: "Jul 2024 — Feb 2026",
