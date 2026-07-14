@@ -132,7 +132,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             <p className="text-[13px] text-[#4A4640] font-medium mb-2">
               Product Designer — Design Systems, Data Platforms &amp; Complex UX
             </p>
-            <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[13px] text-[#8A8480]">
+            <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[13px] text-[#6B665D]">
               <span>Barcelona, Spain</span>
               <span>·</span>
               <span>Open to Hybrid/Remote</span>
@@ -178,7 +178,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             <div className="space-y-4">
               {education.map((ed) => (
                 <div key={ed.institution} className="grid grid-cols-[120px_1fr] gap-4">
-                  <span className="text-[13px] text-[#8A8480] font-medium pt-0.5">{ed.period}</span>
+                  <span className="text-[13px] text-[#6B665D] font-medium pt-0.5">{ed.period}</span>
                   <div>
                     <p className="text-[13px] font-semibold text-[#1A1814]">{ed.institution}</p>
                     <p className="text-[13px] text-[#4A4640]">{ed.degree}</p>
@@ -196,7 +196,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             <div className="space-y-6">
               {roles.map((role) => (
                 <div key={role.title + role.company} className="grid grid-cols-[120px_1fr] gap-4">
-                  <span className="text-[13px] text-[#8A8480] font-medium pt-0.5 leading-snug">{role.period}</span>
+                  <span className="text-[13px] text-[#6B665D] font-medium pt-0.5 leading-snug">{role.period}</span>
                   <div>
                     <p className="text-[13px] font-semibold text-[#1A1814] leading-snug">
                       {role.title}{" "}
@@ -205,7 +205,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
                     <ul className="mt-2 space-y-1">
                       {role.highlights.map((h) => (
                         <li key={h} className="text-[13px] text-[#4A4640] leading-relaxed flex gap-2">
-                          <span className="text-[#8A8480] flex-shrink-0">•</span>
+                          <span className="text-[#6B665D] flex-shrink-0">•</span>
                           <span>{h}</span>
                         </li>
                       ))}

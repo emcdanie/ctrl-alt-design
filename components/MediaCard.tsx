@@ -133,7 +133,7 @@ function CardInner({
           {title}
         </h3>
         {subtitle && (
-          <p className="mb-3 flex-1 text-[14px] leading-[1.65] text-[#8A8480]">{subtitle}</p>
+          <p className="mb-3 flex-1 text-[14px] leading-[1.65] text-[#6B665D]">{subtitle}</p>
         )}
         {tags && tags.length > 0 && (
           <div className="mt-auto flex flex-wrap gap-1.5 pt-2">

@@ -129,6 +129,9 @@
   --color-semantic-text-inverse: #F7F4EF;
   --color-semantic-text-accent: #111111;
   --color-semantic-accent: #A79CE2;
+  /* [redesign/chip-purple] iris — periwinkle that passes text contrast (5.68:1 on cream).
+     #A79CE2 is a FILL color only (2.25:1 as text); use accent-ink for accent TEXT. */
+  --color-accent-ink: #5B4BD1;
   --color-semantic-accent-subtle: #A79CE226;
   --color-semantic-accent-border: #A79CE24D;
   --color-semantic-border: #E8E4DC;
@@ -303,6 +306,8 @@
   --color-semantic-text-inverse: #111111;
   --color-semantic-text-accent: #A79CE2;
   --color-semantic-accent: #A79CE2;
+  /* [redesign/chip-purple] iris accent as text on dark ink */
+  --color-accent-ink: #B4ADE8;
   --color-semantic-accent-subtle: #A79CE226;
   --color-semantic-accent-border: #A79CE24D;
   --color-semantic-border: #F7F4EF10;

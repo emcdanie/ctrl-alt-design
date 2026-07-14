@@ -249,8 +249,17 @@ li {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--color-ink-muted);
+  /* iris accent as TEXT — #A79CE2 stays fill-only (2.25:1) */
+  color: var(--color-accent-ink);
   line-height: 1.35;
+}
+
+/* Inline text links in case-study prose — iris accent, ≥4.5:1 on cream */
+.cs-section a,
+.cs-shell__content a {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* Soft glass card — portfolio shell */
