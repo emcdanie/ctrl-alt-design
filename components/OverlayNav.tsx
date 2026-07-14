@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { social } from "@/lib/social";
 
@@ -15,6 +15,14 @@ export default function OverlayNav() {
   const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
   const [triggerHovered, setTriggerHovered] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  /* On open, move focus to the first menu item */
+  useEffect(() => {
+    if (open) {
+      menuRef.current?.querySelector<HTMLElement>("nav button, nav a[href]")?.focus();
+    }
+  }, [open]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -80,6 +88,8 @@ export default function OverlayNav() {
             onMouseLeave={() => setTriggerHovered(false)}
             className="pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[#1A1814]/10 bg-white/45 text-[#1A1814] shadow-[0_10px_30px_rgba(26,24,20,0.08)] transition-all duration-200 hover:bg-white/60"
             aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="overlay-menu"
           >
             <span
               className="absolute block h-[2px] rounded-full bg-current transition-all duration-200 ease-out"
@@ -106,6 +116,9 @@ export default function OverlayNav() {
       </div>
 
       <div
+        ref={menuRef}
+        id="overlay-menu"
+        inert={!open}
         className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[#1A1814] transition-[clip-path] duration-300 ease-[cubic-bezier(0.76,0,0.24,1)]"
         style={{
           clipPath: open ? "inset(0% 0 0% 0)" : "inset(100% 0 0% 0)",

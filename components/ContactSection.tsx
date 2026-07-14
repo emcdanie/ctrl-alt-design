@@ -120,53 +120,62 @@ export default function ContactSection() {
               <form onSubmit={handleSubmit} noValidate className="space-y-4">
                 {/* Name */}
                 <div>
+                  <label htmlFor="contact-name" className="sr-only">Your name</label>
                   <input
+                    id="contact-name"
                     type="text"
                     placeholder="Your name"
-                    aria-label="Your name"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     className="contact-field"
                     style={fieldStyle(!!errors.name)}
+                    aria-invalid={!!errors.name}
+                    aria-describedby={errors.name ? "contact-name-error" : undefined}
                   />
                   {errors.name && (
-                    <p className="text-[13px] text-red-400 mt-1">{errors.name}</p>
+                    <p id="contact-name-error" role="alert" className="text-[13px] text-red-400 mt-1">{errors.name}</p>
                   )}
                 </div>
 
                 {/* Email */}
                 <div>
+                  <label htmlFor="contact-email" className="sr-only">Email address</label>
                   <input
+                    id="contact-email"
                     type="email"
                     placeholder="your@email.com"
-                    aria-label="Email address"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     className="contact-field"
                     style={fieldStyle(!!errors.email)}
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? "contact-email-error" : undefined}
                   />
                   {errors.email && (
-                    <p className="text-[13px] text-red-400 mt-1">{errors.email}</p>
+                    <p id="contact-email-error" role="alert" className="text-[13px] text-red-400 mt-1">{errors.email}</p>
                   )}
                 </div>
 
                 {/* Message */}
                 <div>
+                  <label htmlFor="contact-message" className="sr-only">Your message</label>
                   <textarea
+                    id="contact-message"
                     placeholder="Tell me about your project…"
-                    aria-label="Your message"
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
                     className="contact-field"
                     style={{ ...fieldStyle(!!errors.message), minHeight: "160px", resize: "none" }}
+                    aria-invalid={!!errors.message}
+                    aria-describedby={errors.message ? "contact-message-error" : undefined}
                   />
                   {errors.message && (
-                    <p className="text-[13px] text-red-400 mt-1">{errors.message}</p>
+                    <p id="contact-message-error" role="alert" className="text-[13px] text-red-400 mt-1">{errors.message}</p>
                   )}
                 </div>
 
                 {sendError && (
-                  <p className="text-[13px] text-red-400">
+                  <p role="alert" className="text-[13px] text-red-400">
                     Something went wrong — please try emailing me directly at elletamc@gmail.com
                   </p>
                 )}
