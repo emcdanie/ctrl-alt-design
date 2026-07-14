@@ -27,6 +27,7 @@ export default function Home() {
   }, []);
 
   return (
+    <main id="main-content">
     <div ref={shellRef} className="snap-shell">
       <OverlayNav />
 
@@ -64,5 +65,6 @@ export default function Home() {
 
       <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
     </div>
+    </main>
   );
 }

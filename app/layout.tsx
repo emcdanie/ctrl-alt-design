@@ -43,6 +43,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${chivoMono.variable} ${fraunces.variable} ${plusJakarta.variable} antialiased`}>
+        <a href="#main-content" className="skip-link">Skip to content</a>
         <DevTools />
         {children}
       </body>
