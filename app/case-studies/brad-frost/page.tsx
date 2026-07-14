@@ -89,7 +89,7 @@ export default function BradFrostPage() {
 
         {/* Live Demo Video */}
         <section style={{ marginBottom: "72px", marginTop: "var(--spacing-16)" }}>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: "var(--typography-font-weight-medium)", textTransform: "uppercase", letterSpacing: "0.12em", color: "#8A8A8A", marginBottom: "var(--spacing-3)" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: "var(--typography-font-weight-medium)", textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--color-accent-ink)", marginBottom: "var(--spacing-3)" }}>
             Live Demo
           </p>
           <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: "var(--typography-font-weight-regular)", color: "#1A1A1A", lineHeight: 1.2, marginBottom: "var(--spacing-4)" }}>
@@ -107,7 +107,7 @@ export default function BradFrostPage() {
               style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
             />
           </div>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", color: "#8A8A8A", marginTop: "var(--spacing-3)", lineHeight: 1.5 }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", color: "#6B665D", marginTop: "var(--spacing-3)", lineHeight: 1.5 }}>
             Recorded session with Brad Frost, TJ Pitre, and Elleta McDaniel — starts at the MCP integration demo (39:36).
           </p>
         </section>

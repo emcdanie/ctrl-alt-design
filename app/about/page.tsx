@@ -219,7 +219,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
       >
         <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)", paddingTop: "var(--spacing-4)" }}>
           {/* Topics */}
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#8A8A8A", marginBottom: "var(--spacing-2)" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6B665D", marginBottom: "var(--spacing-2)" }}>
             Topics covered
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "var(--spacing-4)" }}>
@@ -229,7 +229,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
           </div>
 
           {/* Reflection */}
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#8A8A8A", marginBottom: "var(--spacing-2)" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6B665D", marginBottom: "var(--spacing-2)" }}>
             What I took away
           </p>
           <p className="body-base" style={{ margin: 0, marginBottom: entry.relatedWork ? "12px" : "0px" }}>

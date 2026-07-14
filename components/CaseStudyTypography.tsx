@@ -8,7 +8,7 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
       fontWeight: 600,
       textTransform: "uppercase" as const,
       letterSpacing: "0.14em",
-      color: "#8A8A8A",
+      color: "var(--color-accent-ink)",
       marginBottom: "14px",
     }}>
       {children}

@@ -59,7 +59,7 @@ export default function PersonalSection() {
                 fontWeight: 600,
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",
-                color: "#8A8480",
+                color: "#6B665D",
                 marginBottom: "6px",
               }}>
                 {card.label}
@@ -77,7 +77,7 @@ export default function PersonalSection() {
               <p style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "var(--typography-font-size-tag)",
-                color: "#8A8480",
+                color: "#6B665D",
               }}>
                 {card.subtext}
               </p>

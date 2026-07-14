@@ -1063,7 +1063,7 @@ textarea:focus-visible {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--color-ink-muted);
+  color: var(--color-accent-ink);
   margin-bottom: 10px;
 }
 

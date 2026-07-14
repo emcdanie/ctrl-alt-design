@@ -202,7 +202,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                   <span className="font-display text-[16px] font-semibold leading-[1.3] text-[#1A1814] md:text-[17px]">
                     {edu.name}
                   </span>
-                  <div className="mt-1 text-[14px] leading-relaxed text-[#8A8480]">
+                  <div className="mt-1 text-[14px] leading-relaxed text-[#6B665D]">
                     {edu.degree} · {edu.period}
                   </div>
                 </div>

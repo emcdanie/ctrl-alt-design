@@ -73,7 +73,7 @@ export default function ExperienceCard({
                 </span>
               )}
             </div>
-            <div className="mt-1 text-[14px] leading-relaxed text-[#8A8480]">
+            <div className="mt-1 text-[14px] leading-relaxed text-[#6B665D]">
               {company} · {period}
             </div>
           </div>
