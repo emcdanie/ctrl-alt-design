@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface VideoModalProps {
   isOpen: boolean;
@@ -19,10 +19,39 @@ export default function VideoModal({
   description,
   tags,
 }: VideoModalProps) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+
+  /* Focus management — capture opener, focus the dialog, restore on close */
+  useEffect(() => {
+    if (isOpen) {
+      openerRef.current = document.activeElement as HTMLElement | null;
+      closeBtnRef.current?.focus();
+    } else {
+      openerRef.current?.focus();
+      openerRef.current = null;
+    }
+  }, [isOpen]);
+
   useEffect(() => {
     if (!isOpen) return;
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") { onClose(); return; }
+      if (e.key !== "Tab" || !panelRef.current) return;
+      const focusables = panelRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, select, textarea, iframe, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener("keydown", handleKey);
     document.body.style.overflow = "hidden";
@@ -44,11 +73,16 @@ export default function VideoModal({
       onClick={onClose}
     >
       <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="video-modal-title"
         className="relative w-full max-w-[900px]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
         <button
+          ref={closeBtnRef}
           onClick={onClose}
           className="absolute -top-9 right-0 flex items-center gap-1.5 text-white/50 hover:text-white transition-colors text-[13px] font-medium tracking-wide cursor-pointer"
         >
@@ -70,6 +104,7 @@ export default function VideoModal({
         >
           <iframe
             src={src}
+            title={title}
             frameBorder="0"
             allowFullScreen
             allow="fullscreen"
@@ -85,7 +120,7 @@ export default function VideoModal({
 
         {/* Info */}
         <div className="mt-6">
-          <h3 className="font-display font-bold text-white text-[1.2rem] mb-2 leading-snug">
+          <h3 id="video-modal-title" className="font-display font-bold text-white text-[1.2rem] mb-2 leading-snug">
             {title}
           </h3>
           <p className="text-white/55 text-[14px] leading-relaxed mb-4">

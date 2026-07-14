@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { social } from "@/lib/social";
 
 interface ResumeModalProps {
@@ -73,13 +73,44 @@ const roles = [
 ];
 
 export default function ResumeModal({ open, onClose }: ResumeModalProps) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
+  /* Focus management — capture opener, focus the dialog, restore on close */
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    if (open) {
+      openerRef.current = document.activeElement as HTMLElement | null;
+      closeBtnRef.current?.focus();
+    } else {
+      openerRef.current?.focus();
+      openerRef.current = null;
+    }
+  }, [open]);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { onClose(); return; }
+      if (e.key !== "Tab" || !panelRef.current) return;
+      const focusables = panelRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
     if (open) window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [open, onClose]);
@@ -92,13 +123,19 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
       <div className="absolute inset-0 bg-[#1A1814]/70 modal-backdrop" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative bg-[#FAFAF8] rounded-3xl w-full max-w-3xl max-h-[92vh] flex flex-col shadow-2xl">
+      <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="resume-modal-title"
+        className="relative bg-[#FAFAF8] rounded-3xl w-full max-w-3xl max-h-[92vh] flex flex-col shadow-2xl"
+      >
 
         {/* Header */}
         <div className="bg-[#FAFAF8] border-b border-[#1A1814]/8 px-8 py-5 flex items-center justify-between rounded-t-3xl flex-shrink-0">
           <div>
             <p className="section-label mb-1">Curriculum Vitae</p>
-            <h2 className="font-display font-bold text-[18px] text-[#1A1814] leading-tight">
+            <h2 id="resume-modal-title" className="font-display font-bold text-[18px] text-[#1A1814] leading-tight">
               Elleta McDaniel
             </h2>
           </div>
@@ -112,6 +149,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
               Download PDF
             </span>
             <button
+              ref={closeBtnRef}
               onClick={onClose}
               className="w-8 h-8 flex items-center justify-center rounded-full border border-[#1A1814]/12 hover:bg-[#1A1814]/8 transition-colors cursor-pointer text-[#4A4640] text-[16px]"
               aria-label="Close"
@@ -126,9 +164,10 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
 
           {/* Name + contact */}
           <div>
-            <h1 className="font-display font-bold text-[22px] text-[#1A1814] leading-snug mb-0.5">
+            {/* h2 (not h1) — the page h1 stays unique; dialog title is the header h2 */}
+            <h2 className="font-display font-bold text-[22px] text-[#1A1814] leading-snug mb-0.5">
               Elleta McDaniel
-            </h1>
+            </h2>
             <p className="text-[13px] text-[#4A4640] font-medium mb-2">
               Product Designer — Design Systems, Data Platforms &amp; Complex UX
             </p>
