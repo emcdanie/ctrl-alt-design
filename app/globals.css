@@ -115,6 +115,19 @@
   padding-bottom: var(--spacing-16);
 }
 
+/* Tighter mobile rhythm — desktop values unchanged */
+@media (max-width: 640px) {
+  .layout-section {
+    padding-top: var(--spacing-16);
+    padding-bottom: var(--spacing-16);
+  }
+
+  .layout-section-tight {
+    padding-top: var(--spacing-12);
+    padding-bottom: var(--spacing-12);
+  }
+}
+
 .layout-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
