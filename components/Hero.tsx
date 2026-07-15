@@ -1,28 +1,68 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { useReducedMotion } from "@/components/motion/useReducedMotion";
 
 /**
- * Compact editorial hero — fits above the carousel in the landing view.
- * CTA triggers the snap transition to the dashboard.
+ * Photo-led landing hero. Text column left (eyebrow, oversized Fraunces
+ * name with a thin iris underline on the surname, tagline, CTAs); on the
+ * right, the natural About portrait masked with the organic 70px corner
+ * language over a solid periwinkle offset plate. Load order staggers
+ * eyebrow, name, photo settle, then tagline and CTAs. The portrait gets
+ * a gentle scroll-driven drift and scale inside the snap-shell scroll
+ * container; both the stagger and the drift collapse to a static
+ * composition under prefers-reduced-motion.
  */
 export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => void }) {
   const [mounted, setMounted] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const reduced = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const photoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 20);
     return () => clearTimeout(t);
   }, []);
 
+  /* Soft parallax — the sticker drifts and eases up in scale as the
+     snap shell scrolls toward the dashboard. rAF-throttled, passive,
+     and skipped entirely under prefers-reduced-motion. */
+  useEffect(() => {
+    if (reduced) return;
+    const shell = sectionRef.current?.closest(".snap-shell");
+    const photo = photoRef.current;
+    if (!shell || !photo) return;
+
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const y = (shell as HTMLElement).scrollTop;
+        const drift = Math.min(y * 0.08, 64);
+        const scale = 1 + Math.min(y / 6000, 0.03);
+        photo.style.transform = `translateY(${drift}px) scale(${scale})`;
+      });
+    };
+    shell.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      shell.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [reduced]);
+
+  const settled = mounted || reduced;
+
   return (
     <section
+      ref={sectionRef}
       className="hero-landing"
       style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         justifyContent: "center",
         padding: "0 var(--space-md)",
         position: "relative",
@@ -31,7 +71,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
         minHeight: 0,
       }}
     >
-      {/* Subtle radial glow — periwinkle, offset left with the headline */}
+      {/* Subtle radial glow — periwinkle, offset with the headline */}
       <div
         style={{
           position: "absolute",
@@ -47,222 +87,260 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
         }}
       />
 
-      <div style={{ maxWidth: "1100px", width: "100%", textAlign: "left", position: "relative", zIndex: 1 }}>
-        {/* Eyebrow */}
-        <p
-          className="eyebrow"
-          style={{
-            marginBottom: "var(--spacing-5)",
-            opacity: mounted ? 1 : 0,
-            transform: mounted ? "translateY(0)" : "translateY(8px)",
-            transition: "opacity 0.4s ease 0.05s, transform 0.4s ease 0.05s",
-          }}
-        >
-          Product Designer — Design Systems &amp; AI
-        </p>
-
-        {/* Name — oversized two-line headline, deliberately asymmetric.
-            The surname line indents and carries the periwinkle marker
-            (fill-only accent; text on top stays ink). Copy unchanged. */}
-        <h1
-          style={{
-            fontFamily: "var(--font-display)",
-            fontWeight: "var(--typography-font-weight-bold)",
-            fontSize: "clamp(48px, 6.8vw, 98px)",
-            letterSpacing: "-0.035em",
-            lineHeight: 0.96,
-            margin: "0 0 var(--spacing-6) 0",
-            color: "var(--color-ink)",
-            opacity: mounted ? 1 : 0,
-            transform: mounted ? "translateY(0)" : "translateY(20px)",
-            transition: "opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s",
-          }}
-        >
-          Elleta
-          <br />
-          <span style={{ display: "inline-block", marginLeft: "clamp(0px, 6vw, 110px)" }}>
-            <span className="marker-highlight">McDaniel</span>
-          </span>
-        </h1>
-
-        {/* Tagline — shares the surname line's left edge */}
-        <p
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(16px, 2.2vw, 22px)",
-            fontWeight: "var(--typography-font-weight-regular)",
-            fontStyle: "italic",
-            color: "var(--color-muted)",
-            lineHeight: 1.5,
-            maxWidth: "520px",
-            margin: "0 0 28px clamp(0px, 6vw, 110px)",
-            letterSpacing: "-0.01em",
-            opacity: mounted ? 1 : 0,
-            transform: mounted ? "translateY(0)" : "translateY(10px)",
-            transition: "opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s",
-          }}
-        >
-          Designing clarity for complex digital platforms and scaling teams.
-        </p>
-
-        {/* CTA row */}
-        <div
-          style={{
-            opacity: mounted ? 1 : 0,
-            transform: mounted ? "translateY(0)" : "translateY(10px)",
-            transition: "opacity 0.5s ease 0.35s, transform 0.5s ease 0.35s",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-start",
-            marginLeft: "clamp(0px, 6vw, 110px)",
-            gap: "var(--spacing-3)",
-            flexWrap: "wrap",
-            position: "relative",
-          }}
-        >
-          <button
-            onClick={() => onEnterDashboard?.()}
-            className="surface-dark"
+      <div
+        style={{
+          maxWidth: "1200px",
+          width: "100%",
+          margin: "0 auto",
+          position: "relative",
+          zIndex: 1,
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          gap: "var(--spacing-6)",
+        }}
+      >
+        {/* ── Text column ── */}
+        <div className="hero-text-col">
+          {/* Eyebrow */}
+          <p
+            className="eyebrow"
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "10px",
-              fontFamily: "var(--font-body)",
-              fontSize: "var(--typography-font-size-sm)",
-              fontWeight: "var(--typography-font-weight-medium)",
-              borderRadius: "var(--radius-full)",
-              padding: "14px var(--spacing-8)",
-              border: "none",
-              textDecoration: "none",
-              transition: "opacity 200ms ease, transform 200ms ease",
+              marginBottom: "var(--spacing-5)",
+              opacity: settled ? 1 : 0,
+              transform: settled ? "translateY(0)" : "translateY(8px)",
+              transition: "opacity 0.4s ease 0.05s, transform 0.4s ease 0.05s",
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.85"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
           >
-            Come see what I&apos;ve been building
-            <span style={{ fontSize: "var(--typography-font-size-base)", lineHeight: 1 }}>→</span>
-          </button>
+            Product Designer — Design Systems &amp; AI
+          </p>
 
-          {/* Share button */}
-          <div style={{ position: "relative" }}>
+          {/* Name — surname carries a thin iris underline, drawn on load */}
+          <h1
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: "var(--typography-font-weight-bold)",
+              fontSize: "clamp(52px, 8.2vw, 128px)",
+              letterSpacing: "-0.035em",
+              lineHeight: 0.96,
+              margin: "0 0 var(--spacing-6) 0",
+              color: "var(--color-ink)",
+              position: "relative",
+              zIndex: 2,
+              whiteSpace: "nowrap",
+              opacity: settled ? 1 : 0,
+              transform: settled ? "translateY(0)" : "translateY(20px)",
+              transition: "opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s",
+            }}
+          >
+            Elleta
+            <br />
+            <span className="marker-underline">McDaniel</span>
+          </h1>
+
+          {/* Tagline */}
+          <p
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(16px, 2.2vw, 22px)",
+              fontWeight: "var(--typography-font-weight-regular)",
+              fontStyle: "italic",
+              color: "var(--color-muted)",
+              lineHeight: 1.5,
+              maxWidth: "480px",
+              margin: "0 0 28px",
+              letterSpacing: "-0.01em",
+              opacity: settled ? 1 : 0,
+              transform: settled ? "translateY(0)" : "translateY(10px)",
+              transition: "opacity 0.5s ease 0.45s, transform 0.5s ease 0.45s",
+            }}
+          >
+            Designing clarity for complex digital platforms and scaling teams.
+          </p>
+
+          {/* CTA row */}
+          <div
+            style={{
+              opacity: settled ? 1 : 0,
+              transform: settled ? "translateY(0)" : "translateY(10px)",
+              transition: "opacity 0.5s ease 0.55s, transform 0.5s ease 0.55s",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              gap: "var(--spacing-3)",
+              flexWrap: "wrap",
+              position: "relative",
+            }}
+          >
             <button
-              onClick={() => setShareOpen((o) => !o)}
+              onClick={() => onEnterDashboard?.()}
+              className="surface-dark"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "6px",
+                gap: "10px",
                 fontFamily: "var(--font-body)",
-                fontSize: "var(--typography-font-size-tag)",
+                fontSize: "var(--typography-font-size-sm)",
                 fontWeight: "var(--typography-font-weight-medium)",
                 borderRadius: "var(--radius-full)",
-                padding: "13px var(--spacing-6)",
-                border: "1px solid rgba(26,24,20,0.12)",
-                background: "rgba(255,255,255,0.6)",
-                backdropFilter: "blur(var(--bella-blur-xs))",
-                color: "var(--color-ink)",
-                cursor: "pointer",
-                transition: "all 200ms ease",
+                padding: "14px var(--spacing-8)",
+                border: "none",
+                textDecoration: "none",
+                transition: "opacity 200ms ease, transform 200ms ease",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.85)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.6)"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.85"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
             >
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                <path d="M4 8V13C4 13.5523 4.44772 14 5 14H11C11.5523 14 12 13.5523 12 13V8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-                <path d="M8 2V10M5.5 4.5L8 2L10.5 4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Share Portfolio
+              Come see what I&apos;ve been building
+              <span style={{ fontSize: "var(--typography-font-size-base)", lineHeight: 1 }}>→</span>
             </button>
 
-            {/* Share panel */}
-            {shareOpen && (
-              <div
+            {/* Share button */}
+            <div style={{ position: "relative" }}>
+              <button
+                onClick={() => setShareOpen((o) => !o)}
                 style={{
-                  position: "absolute",
-                  top: "calc(100% + var(--spacing-2))",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  background: "rgba(255,255,255,0.92)",
-                  backdropFilter: "blur(var(--bella-blur-md))",
-                  border: "1px solid rgba(26,24,20,0.1)",
-                  borderRadius: "14px",
-                  padding: "var(--spacing-2)",
-                  boxShadow: "0 8px 32px rgba(26,24,20,0.12)",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "2px",
-                  minWidth: "180px",
-                  zIndex: 20,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontFamily: "var(--font-body)",
+                  fontSize: "var(--typography-font-size-tag)",
+                  fontWeight: "var(--typography-font-weight-medium)",
+                  borderRadius: "var(--radius-full)",
+                  padding: "13px var(--spacing-6)",
+                  border: "1px solid rgba(26,24,20,0.12)",
+                  background: "rgba(255,255,255,0.6)",
+                  backdropFilter: "blur(var(--bella-blur-xs))",
+                  color: "var(--color-ink)",
+                  cursor: "pointer",
+                  transition: "all 200ms ease",
                 }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.85)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.6)"; }}
               >
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(window.location.href);
-                    setCopied(true);
-                    setTimeout(() => setCopied(false), 2000);
-                  }}
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 8V13C4 13.5523 4.44772 14 5 14H11C11.5523 14 12 13.5523 12 13V8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+                  <path d="M8 2V10M5.5 4.5L8 2L10.5 4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Share Portfolio
+              </button>
+
+              {/* Share panel */}
+              {shareOpen && (
+                <div
                   style={{
+                    position: "absolute",
+                    top: "calc(100% + var(--spacing-2))",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "rgba(255,255,255,0.92)",
+                    backdropFilter: "blur(var(--bella-blur-md))",
+                    border: "1px solid rgba(26,24,20,0.1)",
+                    borderRadius: "14px",
+                    padding: "var(--spacing-2)",
+                    boxShadow: "0 8px 32px rgba(26,24,20,0.12)",
                     display: "flex",
-                    alignItems: "center",
-                    gap: "var(--spacing-2)",
-                    padding: "10px 14px",
-                    borderRadius: "10px",
-                    border: "none",
-                    background: "transparent",
-                    fontFamily: "var(--font-body)",
-                    fontSize: "var(--typography-font-size-tag)",
-                    color: "var(--color-ink)",
-                    cursor: "pointer",
-                    transition: "background 150ms",
-                    textAlign: "left",
-                    width: "100%",
+                    flexDirection: "column",
+                    gap: "2px",
+                    minWidth: "180px",
+                    zIndex: 20,
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(26,24,20,0.05)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
                 >
-                  {copied ? "Copied!" : "Copy Link"}
-                </button>
-                <a
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "var(--spacing-2)",
-                    padding: "10px 14px",
-                    borderRadius: "10px",
-                    fontFamily: "var(--font-body)",
-                    fontSize: "var(--typography-font-size-tag)",
-                    color: "var(--color-ink)",
-                    textDecoration: "none",
-                    transition: "background 150ms",
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(26,24,20,0.05)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
-                >
-                  Share on LinkedIn
-                </a>
-                <a
-                  href={`mailto:?subject=Check out this portfolio&body=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}`}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "var(--spacing-2)",
-                    padding: "10px 14px",
-                    borderRadius: "10px",
-                    fontFamily: "var(--font-body)",
-                    fontSize: "var(--typography-font-size-tag)",
-                    color: "var(--color-ink)",
-                    textDecoration: "none",
-                    transition: "background 150ms",
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(26,24,20,0.05)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
-                >
-                  Share via Email
-                </a>
-              </div>
-            )}
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href);
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 2000);
+                    }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "var(--spacing-2)",
+                      padding: "10px 14px",
+                      borderRadius: "10px",
+                      border: "none",
+                      background: "transparent",
+                      fontFamily: "var(--font-body)",
+                      fontSize: "var(--typography-font-size-tag)",
+                      color: "var(--color-ink)",
+                      cursor: "pointer",
+                      transition: "background 150ms",
+                      textAlign: "left",
+                      width: "100%",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(26,24,20,0.05)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                  >
+                    {copied ? "Copied!" : "Copy Link"}
+                  </button>
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "var(--spacing-2)",
+                      padding: "10px 14px",
+                      borderRadius: "10px",
+                      fontFamily: "var(--font-body)",
+                      fontSize: "var(--typography-font-size-tag)",
+                      color: "var(--color-ink)",
+                      textDecoration: "none",
+                      transition: "background 150ms",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(26,24,20,0.05)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                  >
+                    Share on LinkedIn
+                  </a>
+                  <a
+                    href={`mailto:?subject=Check out this portfolio&body=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}`}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "var(--spacing-2)",
+                      padding: "10px 14px",
+                      borderRadius: "10px",
+                      fontFamily: "var(--font-body)",
+                      fontSize: "var(--typography-font-size-tag)",
+                      color: "var(--color-ink)",
+                      textDecoration: "none",
+                      transition: "background 150ms",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(26,24,20,0.05)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                  >
+                    Share via Email
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Portrait — natural photo over the periwinkle offset plate ── */}
+        <div ref={photoRef} className="hero-photo-wrap">
+          <div
+            style={{
+              position: "relative",
+              opacity: settled ? 1 : 0,
+              transform: settled ? "translateY(0)" : "translateY(24px)",
+              transition: "opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s",
+            }}
+          >
+            <div className="hero-plate" aria-hidden="true" />
+            <div className="hero-photo" style={{ aspectRatio: "4 / 5" }}>
+              <Image
+                src="/images/thumbnails/Me.jpeg"
+                alt="Elleta McDaniel with her dog"
+                fill
+                priority
+                sizes="(max-width: 768px) 82vw, 460px"
+                style={{ objectFit: "cover" }}
+              />
+              <div className="hero-grain" aria-hidden="true" />
+            </div>
           </div>
         </div>
       </div>
