@@ -23,7 +23,7 @@ const steps: ProcessStep[] = [
       "Mapped system dependencies across infrastructure domains during the UN ***REMOVED*** project, revealing hidden operational relationships that informed the dashboard architecture.",
     caseStudySlug: "un-operational-dashboard",
     caseStudyLabel: "Designing Operational Clarity →",
-    accentColor: "#3A7DB5",
+    accentColor: "var(--color-accent-ink)",
   },
   {
     number: "02",
@@ -34,7 +34,7 @@ const steps: ProcessStep[] = [
       "Designed a hierarchical filtering architecture to simplify configuration workflows in a complex SaaS interface.",
     caseStudySlug: "filters-decision-support-system",
     caseStudyLabel: "Filters Are a Decision-Support System →",
-    accentColor: "#C07A2A",
+    accentColor: "var(--color-accent-ink)",
   },
   {
     number: "03",
@@ -45,7 +45,7 @@ const steps: ProcessStep[] = [
       "Built token-based component architecture and design documentation to align design and engineering across a scaling SaaS platform.",
     caseStudySlug: "design-system-transformation",
     caseStudyLabel: "From Drift to Foundation →",
-    accentColor: "#6B5CA5",
+    accentColor: "var(--color-accent-ink)",
   },
   {
     number: "04",
@@ -56,7 +56,7 @@ const steps: ProcessStep[] = [
       "Interactive prototype used to validate operational workflows with stakeholders before engineering implementation began.",
     caseStudySlug: "un-operational-dashboard",
     caseStudyLabel: "Designing Operational Clarity →",
-    accentColor: "#3A8A42",
+    accentColor: "var(--color-accent-ink)",
   },
   {
     number: "05",
@@ -67,7 +67,7 @@ const steps: ProcessStep[] = [
       "Governance documentation and implementation guidance created to support development and reduce UI drift over time.",
     caseStudySlug: "design-system-transformation",
     caseStudyLabel: "From Drift to Foundation →",
-    accentColor: "#B55A3A",
+    accentColor: "var(--color-accent-ink)",
   },
 ];
 

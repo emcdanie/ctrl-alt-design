@@ -3,11 +3,12 @@
 export function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p style={{
-      fontFamily: "var(--font-body)",
+      /* mono eyebrows — same treatment as the home sections */
+      fontFamily: "var(--font-chivo-mono), var(--typography-font-family-mono)",
       fontSize: "11px",
-      fontWeight: 600,
+      fontWeight: 500,
       textTransform: "uppercase" as const,
-      letterSpacing: "0.14em",
+      letterSpacing: "var(--typography-letter-spacing-wider)",
       color: "var(--color-accent-ink)",
       marginBottom: "14px",
     }}>
@@ -53,14 +54,15 @@ export function PullQuote({ children }: { children: React.ReactNode }) {
       fontFamily: "var(--font-display)",
       fontSize: "clamp(19px, 2.4vw, 24px)",
       fontStyle: "italic",
-      color: "#2C2A28",
-      borderLeft: "3px solid #3A3430",
+      color: "var(--color-ink-soft)",
+      /* periwinkle rule — fill-only accent use */
+      borderLeft: "3px solid var(--color-semantic-accent)",
       paddingLeft: "28px",
       paddingTop: "var(--spacing-5)",
       paddingBottom: "var(--spacing-5)",
       paddingRight: "var(--spacing-2)",
-      background: "#F5F2EE",
-      borderRadius: "0 6px 6px 0",
+      background: "var(--color-semantic-surface-elevated)",
+      borderRadius: "0 var(--radius-md) var(--radius-md) 0",
       margin: "var(--spacing-12) 0",
       lineHeight: 1.55,
     }}>

@@ -6,12 +6,14 @@ import VideoModal from "./VideoModal";
 import SectionShell from "@/components/ui/SectionShell";
 import SectionHeader from "@/components/ui/SectionHeader";
 
+/* One chip treatment for every lab category — the five-hue system read as
+ * templated. Ink chip, parchment text (18.6:1), periwinkle accent border. */
 const LAB_CATEGORY_COLORS: Record<string, { bg: string; color: string }> = {
-  "AI UX": { bg: "#1E4A8A", color: "#FFFFFF" },
-  "FINTECH": { bg: "#52308A", color: "#FFFFFF" },
-  "FORM DESIGN": { bg: "#7A4510", color: "#FFFFFF" },
-  "DASHBOARD": { bg: "#185438", color: "#FFFFFF" },
-  "INTERACTIVE": { bg: "#0A5438", color: "#FFFFFF" },
+  "AI UX": { bg: "var(--color-brand-ink)", color: "var(--ink-on-dark-strong)" },
+  "FINTECH": { bg: "var(--color-brand-ink)", color: "var(--ink-on-dark-strong)" },
+  "FORM DESIGN": { bg: "var(--color-brand-ink)", color: "var(--ink-on-dark-strong)" },
+  "DASHBOARD": { bg: "var(--color-brand-ink)", color: "var(--ink-on-dark-strong)" },
+  "INTERACTIVE": { bg: "var(--color-brand-ink)", color: "var(--ink-on-dark-strong)" },
 };
 
 interface LabVideo {
@@ -118,7 +120,7 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
       href={prototype.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group card-elevated flex h-full cursor-pointer flex-col overflow-hidden rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(44,24,16,0.1),0_6px_16px_rgba(44,24,16,0.07)]"
+      className="group card-elevated flex h-full cursor-pointer flex-col overflow-hidden rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-hover)]"
       style={{ textDecoration: "none" }}
     >
       {/* Thumbnail */}
@@ -188,7 +190,7 @@ export default function CtrlAltDesignSection() {
           Equal heights via items-stretch (BELLA Rule 2). */}
       <div className="grid grid-cols-1 items-stretch md:grid-cols-2" style={{ gap: "var(--grid-gap)" }}>
         {videos.map((video) => {
-          const catStyle = LAB_CATEGORY_COLORS[video.category] ?? { bg: "#1A1814", color: "#FFFFFF" };
+          const catStyle = LAB_CATEGORY_COLORS[video.category] ?? { bg: "var(--color-brand-ink)", color: "var(--ink-on-dark-strong)" };
 
           return (
             <div key={video.title} className="relative h-full">

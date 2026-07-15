@@ -211,8 +211,7 @@ export default function TestimonialSection() {
                   width: "48px",
                   height: "48px",
                   borderRadius: "50%",
-                  background:
-                    "linear-gradient(135deg, var(--color-accent-gold) 0%, #8a6e4a 100%)",
+                  background: "var(--color-semantic-accent)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -303,7 +302,8 @@ export default function TestimonialSection() {
                   fontFamily: "var(--font-body)",
                   fontSize: "12px",
                   fontWeight: "var(--typography-font-weight-medium)",
-                  color: "var(--color-accent-gold)",
+                  /* iris accent as TEXT — periwinkle stays fill-only */
+                  color: "var(--color-accent-ink)",
                   textDecoration: "none",
                   transition: "opacity 150ms",
                   letterSpacing: "0.02em",

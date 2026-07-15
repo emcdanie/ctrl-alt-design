@@ -124,12 +124,12 @@ export default function OverlayNav() {
           clipPath: open ? "inset(0% 0 0% 0)" : "inset(100% 0 0% 0)",
         }}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.8),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(215,197,166,0.22),transparent_34%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.8),transparent_36%),radial-gradient(circle_at_bottom_right,var(--color-semantic-accent-subtle),transparent_34%)]" />
         <div className="absolute left-6 right-6 top-6 h-px bg-[#1A1814]/8 sm:left-8 sm:right-8" />
 
         <div className="relative flex h-full flex-col justify-between px-6 pb-8 pt-28 sm:px-8 sm:pb-10 sm:pt-32 lg:px-16 lg:pb-14 lg:pt-36">
           <div
-            className="pointer-events-none absolute right-[-16px] top-1/2 -translate-y-1/2 select-none font-[family:var(--font-display)] text-[clamp(120px,18vw,240px)] font-bold leading-none tracking-[-0.04em] text-[#E9E1D3]"
+            className="pointer-events-none absolute right-[-16px] top-1/2 -translate-y-1/2 select-none font-[family:var(--font-display)] text-[clamp(120px,18vw,240px)] font-bold leading-none tracking-[-0.04em] text-[color:var(--color-alpha-amber-30)]"
             aria-hidden="true"
           >
             EM

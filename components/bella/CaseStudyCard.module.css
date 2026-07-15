@@ -9,7 +9,7 @@
   -webkit-backdrop-filter: blur(var(--bella-blur-sm));
   border: 1px solid var(--color-semantic-border-glass-edge);
   border-top: 1px solid var(--color-semantic-border-glass-top);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-card-default);
   overflow: hidden;
   transition: transform var(--motion-duration-normal) var(--motion-easing-emphasis),
