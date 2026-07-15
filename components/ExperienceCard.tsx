@@ -49,7 +49,7 @@ export default function ExperienceCard({
 }: ExperienceCardProps) {
   return (
     <div
-      className={`overflow-hidden rounded-[22px] border [backdrop-filter:blur(var(--bella-blur-lg))] [-webkit-backdrop-filter:blur(var(--bella-blur-lg))] transition-all duration-300 ${
+      className={`overflow-hidden rounded-[var(--radius-2xl)] border [backdrop-filter:blur(var(--bella-blur-lg))] [-webkit-backdrop-filter:blur(var(--bella-blur-lg))] transition-all duration-300 ${
         isOpen
           ? "border-white/60 bg-gradient-to-b from-white/82 to-white/70 shadow-[0_16px_40px_var(--color-alpha-shadow-warm-08),0_4px_12px_var(--color-alpha-shadow-warm-05),inset_0_1px_0_var(--color-alpha-glass-90)]"
           : "border-white/50 bg-gradient-to-b from-white/72 to-white/58 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-04),0_1px_4px_var(--color-alpha-shadow-warm-03),inset_0_1px_0_rgba(255,255,255,0.8)] hover:-translate-y-0.5 hover:from-white/80 hover:to-white/68 hover:shadow-[0_14px_34px_var(--color-alpha-shadow-warm-08),0_4px_10px_var(--color-alpha-shadow-warm-04)]"
@@ -57,7 +57,7 @@ export default function ExperienceCard({
     >
       <button
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-4 bg-transparent px-5 py-5 text-left md:px-6 md:py-6"
+        className="flex w-full items-center justify-between gap-4 bg-transparent p-6 text-left"
       >
         <div className="flex min-w-0 items-center gap-4">
           <LogoContainer src={logoSrc} alt={company} bg={logoBg} size={48} />
@@ -98,7 +98,7 @@ export default function ExperienceCard({
       </button>
 
       {isOpen && (
-        <div className="border-t border-black/6 px-5 pb-6 pt-0 md:px-6 md:pb-7">
+        <div className="border-t border-black/6 px-6 pb-6 pt-0">
           <ul className="flex flex-col gap-3 pt-5">
             {highlights.map((h, i) => (
               <li key={i} className="flex gap-3 text-[15px] leading-[1.75] text-[#4A4640]">

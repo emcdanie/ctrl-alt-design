@@ -98,7 +98,7 @@ export default function ContactSection() {
     <footer id="contact" className="bg-[#1A1814]" style={{ paddingTop: "var(--spacing-20)", paddingBottom: "var(--spacing-12)", color: "var(--ink-on-dark-body)" }}>
       <div className="layout-container">
         {/* Two-column layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--grid-gap)] mb-16">
           {/* Left — form */}
           <div>
             <p className="section-label mb-4" style={{ color: "var(--ink-on-dark-muted)" }}>
@@ -218,7 +218,7 @@ export default function ContactSection() {
             </div>
 
             {/* Footer nav */}
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-2 gap-[var(--grid-gap)]">
               {Object.entries(footerNav).map(([section, links]) => (
                 <div key={section}>
                   <p

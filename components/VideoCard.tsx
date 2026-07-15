@@ -26,7 +26,7 @@ export default function VideoCard({
 
   return (
     <div
-      className="group card-elevated flex h-full cursor-pointer flex-col overflow-hidden rounded-[20px] transition-all duration-300 hover:[transform:var(--motion-transform-hover-lift)] hover:shadow-[var(--shadow-card-elevated)]"
+      className="group card-elevated flex h-full cursor-pointer flex-col overflow-hidden rounded-[var(--radius-2xl)] transition-all duration-300 hover:[transform:var(--motion-transform-hover-lift)] hover:shadow-[var(--shadow-card-elevated)]"
       onClick={onClick}
     >
       <div className="relative aspect-video w-full overflow-hidden" style={{ background: gradient }}>
@@ -73,7 +73,7 @@ export default function VideoCard({
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col p-5 md:p-6">
+      <div className="flex flex-1 flex-col p-6">
         <p className="section-label mb-3">EXPLORATION</p>
         <h3 className="font-display mb-2 text-[20px] font-bold leading-snug text-[#1A1814]">
           {title}

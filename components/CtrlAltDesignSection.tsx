@@ -120,11 +120,11 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
       href={prototype.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group card-elevated flex h-full cursor-pointer flex-col overflow-hidden rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-hover)]"
+      className="group card-elevated flex h-full cursor-pointer flex-col overflow-hidden rounded-[var(--radius-2xl)] transition-all duration-300 hover:-translate-y-1"
       style={{ textDecoration: "none" }}
     >
       {/* Thumbnail */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-[20px]" style={{ background: prototype.gradient }}>
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-[var(--radius-2xl)]" style={{ background: prototype.gradient }}>
         {prototype.thumbnailSrc && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -146,7 +146,7 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col p-5 md:p-6">
+      <div className="flex flex-1 flex-col p-6">
         <h3
           className="mb-2 text-[18px] font-bold leading-snug text-[#1A1814]"
           style={{ fontFamily: "var(--font-display)", maxWidth: "320px" }}

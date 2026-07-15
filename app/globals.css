@@ -302,7 +302,8 @@ li {
 .glass-card {
   background: linear-gradient(180deg, var(--color-glass-strong) 0%, var(--color-glass) 100%);
   border: 1px solid var(--color-alpha-glass-72);
-  border-radius: var(--radius-3xl);
+  /* DESIGN.md: one card radius everywhere */
+  border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-layered);
   backdrop-filter: blur(var(--bella-blur-lg));
   -webkit-backdrop-filter: blur(var(--bella-blur-lg));
@@ -654,7 +655,8 @@ li {
   backdrop-filter: blur(var(--bella-blur-sm));
   -webkit-backdrop-filter: blur(var(--bella-blur-sm));
   border: 1px solid var(--color-alpha-glass-55);
-  border-radius: var(--radius-xl);
+  /* DESIGN.md: one card radius everywhere */
+  border-radius: var(--radius-2xl);
   box-shadow: 0 1px 4px var(--color-alpha-shadow-warm-03), 0 4px 16px var(--color-alpha-shadow-warm-04),
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
@@ -794,7 +796,8 @@ textarea:focus-visible {
   -webkit-backdrop-filter: blur(var(--bella-blur-md));
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-top: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: var(--radius-3xl);
+  /* DESIGN.md: one card radius everywhere */
+  border-radius: var(--radius-2xl);
   box-shadow:
     0 1px 2px var(--color-alpha-shadow-warm-04),
     0 8px 32px var(--color-alpha-shadow-warm-06),
@@ -1196,7 +1199,8 @@ textarea:focus-visible {
   }
 
   .cs-shell__hero-frame {
-    border-radius: var(--radius-lg);
+    /* DESIGN.md: one card radius everywhere */
+    border-radius: var(--radius-2xl);
   }
 }
 
@@ -1426,7 +1430,8 @@ textarea:focus-visible {
   aspect-ratio: 16 / 9;
   width: 100%;
   overflow: hidden;
-  border-radius: var(--radius-xl);
+  /* DESIGN.md: one card radius everywhere */
+  border-radius: var(--radius-2xl);
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: #110f12;
   box-shadow:
@@ -1560,7 +1565,7 @@ textarea:focus-visible {
     display: none;
   }
 
-  /* Hero slightly larger radius on desktop */
+  /* Same radius as every other card frame (DESIGN.md) */
   .cs-shell__hero-frame {
     border-radius: var(--radius-2xl);
   }

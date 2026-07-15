@@ -10,7 +10,8 @@ export default function VideoWalkthrough() {
       <div className="layout-container">
         {/* Signature color block — the one place the site fully owns
             periwinkle. Everything inside reads in ink (7.9:1 on #A79CE2). */}
-        <div className="feature-panel p-6 sm:p-10 lg:p-14">
+        {/* Panel padding tier: --spacing-8 (DESIGN.md) */}
+        <div className="feature-panel p-[var(--spacing-8)]">
           <div className="max-w-5xl mx-auto">
 
         {/* Panel header — text leads, video follows */}

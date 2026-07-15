@@ -27,8 +27,8 @@ export default function AboutSection() {
     <section id="about" className="layout-section">
       <div className="layout-container">
 
-        <div className="glass-card p-7 md:p-10 lg:p-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
+        <div className="glass-card p-[var(--spacing-8)]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[var(--grid-gap)]">
 
           {/* ── Left column ── */}
           <div>
@@ -173,19 +173,15 @@ export default function AboutSection() {
                   key={card.title}
                   className="card-elevated"
                   style={{
-                    padding: "18px 22px",
+                    padding: "var(--spacing-6)",
                     cursor: "default",
-                    transition: "box-shadow 200ms ease, transform 200ms ease",
+                    transition: "transform 200ms ease",
                   }}
                   onMouseEnter={e => {
-                    const el = e.currentTarget as HTMLDivElement;
-                    el.style.boxShadow = "var(--shadow-hover)";
-                    el.style.transform = "translateY(-2px)";
+                    (e.currentTarget as HTMLDivElement).style.transform = "var(--motion-transform-hover-lift)";
                   }}
                   onMouseLeave={e => {
-                    const el = e.currentTarget as HTMLDivElement;
-                    el.style.boxShadow = "";
-                    el.style.transform = "translateY(0)";
+                    (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
                   }}
                 >
                   <h4 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>

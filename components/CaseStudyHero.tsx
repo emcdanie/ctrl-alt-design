@@ -98,7 +98,7 @@ export default function CaseStudyHero({
 
       {/* ── Full-width media ── */}
       <div className="mx-auto max-w-[1200px] px-6 pb-16 md:px-8 md:pb-24">
-        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[24px] border border-white/20 bg-[#110f12] shadow-[var(--shadow-lg)]">
+        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[var(--radius-2xl)] border border-white/20 bg-[#110f12] shadow-[var(--shadow-lg)]">
           <div className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(180deg,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0)_18%)]" />
           {media.type === "video" ? (
             <>

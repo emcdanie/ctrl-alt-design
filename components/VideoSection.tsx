@@ -60,7 +60,7 @@ export default function VideoSection({
       )}
 
       {/* Responsive 16:9 container */}
-      <div className="relative w-full overflow-hidden rounded-[20px] border border-black/[0.08] bg-[#0d0d0d] shadow-[0_18px_48px_rgba(0,0,0,0.12)]" style={{ aspectRatio: "16/9" }}>
+      <div className="relative w-full overflow-hidden rounded-[var(--radius-2xl)] border border-black/[0.08] bg-[#0d0d0d] shadow-[0_18px_48px_rgba(0,0,0,0.12)]" style={{ aspectRatio: "16/9" }}>
         <iframe
           src={embedUrl}
           title={title}

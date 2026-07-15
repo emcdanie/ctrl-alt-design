@@ -64,7 +64,7 @@ function SupportingCard({
       <div
         className="card-elevated"
         style={{
-          padding: "28px var(--spacing-6)",
+          padding: "var(--spacing-6)",
           display: "flex",
           flexDirection: "column",
           gap: "var(--spacing-4)",

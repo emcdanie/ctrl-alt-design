@@ -128,7 +128,7 @@ function CardInner({
       </div>
 
       {/* Text area */}
-      <div className="flex flex-1 flex-col p-5">
+      <div className="flex flex-1 flex-col p-6">
         <h3 className="mb-1.5 font-[var(--font-display)] text-[17px] font-bold leading-snug text-[#1A1814]">
           {title}
         </h3>
@@ -154,7 +154,7 @@ function CardInner({
 
 export default function MediaCard(props: MediaCardProps) {
   const sharedClasses =
-    "group flex cursor-pointer flex-col overflow-hidden rounded-[20px] border border-white/60 bg-gradient-to-b from-white/82 to-white/68 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-05),0_2px_6px_var(--color-alpha-shadow-warm-04),inset_0_1px_0_var(--color-alpha-glass-90)] [backdrop-filter:blur(var(--bella-blur-lg))] [-webkit-backdrop-filter:blur(var(--bella-blur-lg))] transition-all duration-300 hover:[transform:var(--motion-transform-hover-lift)] hover:shadow-[var(--shadow-card-elevated)]";
+    "group flex cursor-pointer flex-col overflow-hidden rounded-[var(--radius-2xl)] border border-white/60 bg-gradient-to-b from-white/82 to-white/68 shadow-[var(--shadow-card-default)] [backdrop-filter:blur(var(--bella-blur-lg))] [-webkit-backdrop-filter:blur(var(--bella-blur-lg))] transition-all duration-300 hover:[transform:var(--motion-transform-hover-lift)] hover:shadow-[var(--shadow-card-elevated)]";
 
   if (props.type === "project") {
     const { href, type: _type, ...rest } = props;
