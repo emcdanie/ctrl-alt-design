@@ -8,12 +8,34 @@ export default function VideoWalkthrough() {
   return (
     <section className="bg-[var(--color-semantic-background)] layout-section">
       <div className="layout-container">
-        <div className="max-w-5xl mx-auto">
+        {/* Signature color block — the one place the site fully owns
+            periwinkle. Everything inside reads in ink (7.9:1 on #A79CE2). */}
+        <div className="feature-panel p-6 sm:p-10 lg:p-14">
+          <div className="max-w-5xl mx-auto">
+
+        {/* Panel header — text leads, video follows */}
+        <div className="max-w-2xl mb-8">
+          <p className="section-label mb-3">FEATURED PROJECT</p>
+          <h3
+            className="font-bold text-[clamp(1.75rem,3vw,2.5rem)] mb-3"
+            style={{ fontFamily: "var(--font-display)", lineHeight: 1.08, letterSpacing: "-0.02em" }}
+          >
+            Guardian — AI-Powered Design System Governance
+          </h3>
+          <p className="text-[16px] leading-relaxed mb-5" style={{ maxWidth: "56ch" }}>
+            A hackathon concept created during the Into Design Systems hackathon exploring how AI could help detect design drift, support accessibility, and maintain consistency between design systems and implementation.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {["Design Systems", "Hackathon", "AI UX", "Governance"].map((tag) => (
+              <span key={tag} className="tag">{tag}</span>
+            ))}
+          </div>
+        </div>
 
         {/* Looping video — clicking opens the Guardian case study */}
         <Link
           href="/case-studies/guardian"
-          className="group relative block w-full aspect-video rounded-2xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.12)] mb-8"
+          className="group relative block w-full aspect-video rounded-2xl overflow-hidden shadow-[var(--shadow-lg)] mb-8"
           style={{ background: GRADIENT }}
           aria-label="View Guardian case study"
         >
@@ -34,41 +56,27 @@ export default function VideoWalkthrough() {
           </div>
         </Link>
 
-        {/* Video info */}
-        <div className="max-w-2xl">
-          <p className="section-label mb-3">FEATURED PROJECT</p>
-          <h3 className="font-display font-medium text-[1.4rem] text-[#1A1814] mb-3 leading-snug">
-            Guardian — AI-Powered Design System Governance
-          </h3>
-          <p className="text-[15px] text-[#4A4640] leading-relaxed mb-5">
-            A hackathon concept created during the Into Design Systems hackathon exploring how AI could help detect design drift, support accessibility, and maintain consistency between design systems and implementation.
-          </p>
-          <div className="flex flex-wrap gap-2 mb-5">
-            {["Design Systems", "Hackathon", "AI UX", "Governance"].map((tag) => (
-              <span key={tag} className="tag">{tag}</span>
-            ))}
-          </div>
-          <Link
-            href="/case-studies/guardian"
-            style={{
-              display: "inline-block",
-              fontFamily: "var(--font-body)",
-              fontSize: "var(--typography-font-size-sm)",
-              fontWeight: "var(--typography-font-weight-medium)",
-              color: "#FFFFFF",
-              background: "#1A1A1A",
-              borderRadius: "var(--radius-full)",
-              padding: "14px 28px",
-              textDecoration: "none",
-              transition: "opacity 200ms ease",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = "0.8")}
-            onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
-          >
-            View Full Case Study →
-          </Link>
-        </div>
+        <Link
+          href="/case-studies/guardian"
+          style={{
+            display: "inline-block",
+            fontFamily: "var(--font-body)",
+            fontSize: "var(--typography-font-size-sm)",
+            fontWeight: "var(--typography-font-weight-medium)",
+            color: "var(--ink-on-dark-strong)",
+            background: "var(--color-brand-ink)",
+            borderRadius: "var(--radius-full)",
+            padding: "14px 28px",
+            textDecoration: "none",
+            transition: "opacity 200ms ease, transform 200ms ease",
+          }}
+          onMouseEnter={e => { e.currentTarget.style.opacity = "0.88"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+          onMouseLeave={e => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
+        >
+          View Full Case Study →
+        </Link>
 
+          </div>
         </div>
       </div>
     </section>

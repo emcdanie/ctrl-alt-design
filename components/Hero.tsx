@@ -31,23 +31,23 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
         minHeight: 0,
       }}
     >
-      {/* Subtle radial glow */}
+      {/* Subtle radial glow — periwinkle, offset left with the headline */}
       <div
         style={{
           position: "absolute",
           top: "-30%",
-          left: "50%",
+          left: "18%",
           transform: "translateX(-50%)",
           width: "700px",
           height: "700px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(184,149,106,0.08) 0%, transparent 70%)",
+          background: "radial-gradient(circle, var(--color-semantic-accent-subtle) 0%, transparent 70%)",
           pointerEvents: "none",
           zIndex: 0,
         }}
       />
 
-      <div style={{ maxWidth: "1100px", width: "100%", textAlign: "center", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: "1100px", width: "100%", textAlign: "left", position: "relative", zIndex: 1 }}>
         {/* Eyebrow */}
         <p
           className="eyebrow"
@@ -61,18 +61,16 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
           Product Designer — Design Systems &amp; AI
         </p>
 
-        {/* Name — single responsive headline.
-            white-space defaults to normal so "Elleta McDaniel" can wrap to
-            two lines below ~600px viewport (52px × ~430px content vs ~343px
-            mobile container = horizontal overflow if forced to single line).
-            Per task spec, hero font-size is unchanged. */}
+        {/* Name — oversized two-line headline, deliberately asymmetric.
+            The surname line indents and carries the periwinkle marker
+            (fill-only accent; text on top stays ink). Copy unchanged. */}
         <h1
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: "var(--typography-font-weight-bold)",
-            fontSize: "clamp(52px, 7vw, 120px)",
+            fontSize: "clamp(48px, 6.8vw, 98px)",
             letterSpacing: "-0.035em",
-            lineHeight: 0.95,
+            lineHeight: 0.96,
             margin: "0 0 var(--spacing-6) 0",
             color: "var(--color-ink)",
             opacity: mounted ? 1 : 0,
@@ -80,10 +78,14 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
             transition: "opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s",
           }}
         >
-          Elleta McDaniel
+          Elleta
+          <br />
+          <span style={{ display: "inline-block", marginLeft: "clamp(0px, 6vw, 110px)" }}>
+            <span className="marker-highlight">McDaniel</span>
+          </span>
         </h1>
 
-        {/* Tagline */}
+        {/* Tagline — shares the surname line's left edge */}
         <p
           style={{
             fontFamily: "var(--font-display)",
@@ -93,7 +95,7 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
             color: "var(--color-muted)",
             lineHeight: 1.5,
             maxWidth: "520px",
-            margin: "0 auto 28px",
+            margin: "0 0 28px clamp(0px, 6vw, 110px)",
             letterSpacing: "-0.01em",
             opacity: mounted ? 1 : 0,
             transform: mounted ? "translateY(0)" : "translateY(10px)",
@@ -111,7 +113,8 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
             transition: "opacity 0.5s ease 0.35s, transform 0.5s ease 0.35s",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "flex-start",
+            marginLeft: "clamp(0px, 6vw, 110px)",
             gap: "var(--spacing-3)",
             flexWrap: "wrap",
             position: "relative",

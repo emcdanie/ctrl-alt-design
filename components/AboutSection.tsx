@@ -32,27 +32,45 @@ export default function AboutSection() {
 
           {/* ── Left column ── */}
           <div>
-            {/* Profile photo + eyebrow row */}
-            <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "var(--spacing-5)" }}>
+            <p className="section-label" style={{ marginBottom: "var(--spacing-5)" }}>— About</p>
+
+            {/* ── PHOTO SLOT ────────────────────────────────────────
+                Warm portrait moment. Swap /images/thumbnails/Me.jpeg for
+                a proper portrait crop when ready — the frame stays.
+                Organic opposing corners echo the carousel card language;
+                periwinkle backing plate peeks out behind the frame. */}
+            <div style={{ position: "relative", maxWidth: "340px", marginBottom: "var(--spacing-6)" }}>
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  inset: "var(--spacing-3) calc(-1 * var(--spacing-3)) calc(-1 * var(--spacing-3)) var(--spacing-3)",
+                  background: "var(--color-semantic-accent-subtle)",
+                  borderTopLeftRadius: "70px",
+                  borderTopRightRadius: "0px",
+                  borderBottomRightRadius: "70px",
+                  borderBottomLeftRadius: "0px",
+                }}
+              />
               <div style={{
-                width: "72px",
-                height: "72px",
-                borderRadius: "50%",
+                position: "relative",
+                aspectRatio: "4 / 5",
                 overflow: "hidden",
-                flexShrink: 0,
-                background: "#D8D4CC",
-                border: "2.5px solid rgba(26,24,20,0.08)",
-                boxShadow: "0 2px 8px var(--color-alpha-shadow-warm-06)",
+                background: "var(--color-supporting-linen)",
+                borderTopLeftRadius: "0px",
+                borderTopRightRadius: "70px",
+                borderBottomRightRadius: "0px",
+                borderBottomLeftRadius: "70px",
+                boxShadow: "var(--shadow-md)",
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/thumbnails/Me.jpeg"
                   alt="Elleta"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  onError={e => { (e.currentTarget.parentElement as HTMLElement).style.background = "#C8C4CC"; e.currentTarget.style.display = "none"; }}
+                  onError={e => { (e.currentTarget.parentElement as HTMLElement).style.background = "var(--color-supporting-linen)"; e.currentTarget.style.display = "none"; }}
                 />
               </div>
-              <p className="section-label" style={{ margin: 0 }}>— About</p>
             </div>
 
             <h2 className="heading-section" style={{ marginBottom: "var(--spacing-4)" }}>
@@ -161,7 +179,7 @@ export default function AboutSection() {
                   }}
                   onMouseEnter={e => {
                     const el = e.currentTarget as HTMLDivElement;
-                    el.style.boxShadow = "0 8px 28px rgba(44,24,16,0.09), 0 2px 8px var(--color-alpha-shadow-warm-05)";
+                    el.style.boxShadow = "var(--shadow-hover)";
                     el.style.transform = "translateY(-2px)";
                   }}
                   onMouseLeave={e => {

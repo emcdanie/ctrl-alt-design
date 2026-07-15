@@ -92,6 +92,19 @@ export default function CaseStudyGrid() {
             </FadeIn>
           ))}
         </CaseStudyCardGrid>
+
+        {/* Stat moment — one confident statement, no invented metrics.
+            Figure is true framing; support line reuses process copy. */}
+        <FadeIn>
+          <div className="stat-moment flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <p className="stat-moment__figure">
+              Design systems built <span className="stat-moment__accent">from zero.</span>
+            </p>
+            <p className="stat-moment__support">
+              Token-based component libraries, design language definition, and scalable patterns built to last.
+            </p>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );
