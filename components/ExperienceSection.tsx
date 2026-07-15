@@ -11,7 +11,6 @@ const roles = [
     period: "Oct 2025 — Present",
     isCurrent: true,
     logoSrc: "/images/logos/bradfrostwebjpeg.jpeg",
-    logoBg: "#1A1A1A",
     caseStudySlug: "case-studies/brad-frost",
     caseStudyLabel: "Code First — View case study →",
     highlights: [
@@ -26,7 +25,6 @@ const roles = [
     company: "Mango · Contract",
     period: "Apr 2026 — Jul 2026",
     logoSrc: "/images/logos/mango.png",
-    logoBg: "#111111",
     highlights: [
       "**Owned cross-platform component governance** across Web, iOS, and Android — defining, governing, and releasing reusable components across multiple shared Figma libraries, documented in Zeroheight.",
       "**Established AI-assisted design-system workflows** with Claude, Figma MCP, and the Desktop Bridge — enabling automated audits, machine-readable component patterns, and scalable documentation.",
@@ -39,7 +37,6 @@ const roles = [
     company: "***REMOVED***",
     period: "Jul 2024 — Feb 2026",
     logoSrc: "/images/logos/bizaway_logo.jpeg",
-    logoBg: "#F0F4FF",
     caseStudySlug: "case-studies/design-system-transformation",
     caseStudyLabel: "From Drift to Foundation →",
     highlights: [
@@ -54,7 +51,6 @@ const roles = [
     company: "United Nations Office at Geneva (***REMOVED*** ICTS)",
     period: "Oct 2025 — Dec 2025",
     logoSrc: "/images/logos/united_nations_office_at_geneva_logo.jpeg",
-    logoBg: "#E8F0FA",
     caseStudySlug: "case-studies/un-operational-dashboard",
     caseStudyLabel: "Designing Operational Clarity →",
     highlights: [
@@ -69,7 +65,6 @@ const roles = [
     company: "VML",
     period: "Feb 2023 — Feb 2024",
     logoSrc: "/images/logos/vml.png",
-    logoBg: "#FFF0F0",
     highlights: [
       "**Designed across multiple industry verticals** — mobile-native apps, digital products, and client-facing platforms from wireframes through production-ready high-fidelity prototypes.",
       "**Grounded decisions in research** — UX benchmarking, usability evaluations, and user interviews to challenge assumptions before committing to a design direction.",
@@ -85,7 +80,6 @@ const education = [
     name: "Ironhack",
     degree: "UX/UI Design Bootcamp",
     logo: "/images/logos/Ironhack.png",
-    logoBg: "#1A1A1A",
     description: "Intensive 9-month bootcamp covering end-to-end UX/UI design — user research, information architecture, interaction design, prototyping, and usability testing.",
   },
   {
@@ -93,7 +87,6 @@ const education = [
     name: "Arizona State University",
     degree: "BSc in Design, GPA: 3.9/4.0",
     logo: "/images/logos/ASU-logo.png",
-    logoBg: "#8C1D40",
     description: "Foundation in design principles, visual communication, typography, and creative problem-solving across digital and physical media.",
   },
 ];
@@ -210,7 +203,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
               className="overflow-hidden rounded-[22px] border border-white/50 bg-gradient-to-b from-white/72 to-white/58 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-04),0_1px_4px_var(--color-alpha-shadow-warm-03),inset_0_1px_0_rgba(255,255,255,0.8)] [backdrop-filter:blur(var(--bella-blur-lg))] [-webkit-backdrop-filter:blur(var(--bella-blur-lg))]"
             >
               <div className="flex w-full items-center gap-4 px-5 py-5 md:px-6 md:py-6">
-                <LogoContainer src={edu.logo} alt={edu.name} bg={edu.logoBg} size={44} />
+                <LogoContainer src={edu.logo} alt={edu.name} size={48} />
                 <div className="min-w-0 flex-1">
                   <span className="font-display text-[16px] font-semibold leading-[1.3] text-[#1A1814] md:text-[17px]">
                     {edu.name}

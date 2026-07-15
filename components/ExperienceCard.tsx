@@ -60,7 +60,7 @@ export default function ExperienceCard({
         className="flex w-full items-center justify-between gap-4 bg-transparent px-5 py-5 text-left md:px-6 md:py-6"
       >
         <div className="flex min-w-0 items-center gap-4">
-          <LogoContainer src={logoSrc} alt={company} bg={logoBg} size={44} />
+          <LogoContainer src={logoSrc} alt={company} bg={logoBg} size={48} />
 
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
