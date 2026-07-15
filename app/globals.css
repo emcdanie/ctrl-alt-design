@@ -87,13 +87,16 @@ body {
   --typography-font-family-body: var(--font-body);
 }
 
-/* ─── Fluid typography scale ───────────────────────────────────── */
+/* ─── Fluid typography scale — DESIGN.md §5 ─────────────────────
+   Ramp: 13/14/16/18/20/24/32/40/56. One fluid pair per step, endpoints
+   on the ramp, defined ONCE here. No other clamp() in components. */
 :root {
-  --font-hero: clamp(2.8rem, 5vw, 4.5rem);
-  --font-section-title: clamp(1.8rem, 2.5vw, 2.5rem);
-  --font-card-title: clamp(1.2rem, 1.4vw, 1.5rem);
-  --font-body-size: clamp(1rem, 1.1vw, 1.125rem);
-  --font-small: clamp(0.85rem, 0.9vw, 0.95rem);
+  --font-hero: clamp(40px, 5vw, 56px);
+  --font-section-title: clamp(32px, 2.5vw, 40px);
+  --font-subsection: clamp(24px, 2.2vw, 32px);
+  --font-card-title: clamp(20px, 1.4vw, 24px);
+  --font-body-size: clamp(16px, 1.1vw, 18px);
+  --font-small: 14px;
 }
 
 /* ─── OKLCH color system ───────────────────────────────────────── */
@@ -206,7 +209,7 @@ html {
 
 body {
   font-family: var(--font-body);
-  font-size: 17px;
+  font-size: var(--typography-font-size-base);
   line-height: 1.65;
   letter-spacing: 0.01em;
   background:
@@ -281,7 +284,7 @@ li {
   /* Mono eyebrows per the shipped font stack (Chivo Mono is loaded in
      layout.tsx; BELLA mono primitive is the fallback list) */
   font-family: var(--font-chivo-mono), var(--typography-font-family-mono);
-  font-size: clamp(0.65rem, 0.75vw, 0.75rem);
+  font-size: var(--typography-font-size-tag);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--typography-letter-spacing-wider);
@@ -317,7 +320,7 @@ li {
   border: 1px solid var(--color-tag-border);
   background: var(--color-tag-bg);
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: var(--typography-font-size-tag);
   font-weight: var(--typography-font-weight-medium);
   color: var(--color-ink-soft);
   white-space: nowrap;
@@ -352,7 +355,7 @@ li {
 
 .pull-quote {
   font-family: var(--font-display);
-  font-size: clamp(22px, 2.5vw, 28px);
+  font-size: var(--font-card-title);
   font-style: italic;
   color: var(--color-ink-soft);
   border-left: 3px solid var(--color-semantic-accent);
@@ -516,7 +519,7 @@ li {
 
 .stat-moment__figure {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-size: var(--font-hero);
   font-weight: var(--typography-font-weight-bold);
   letter-spacing: -0.03em;
   line-height: 1.04;
@@ -566,7 +569,7 @@ li {
 /* H3 — sub-section headers (Education, Working with me…) */
 .heading-subsection {
   font-family: var(--font-display);
-  font-size: clamp(1.375rem, 2.2vw, 2rem);
+  font-size: var(--font-subsection);
   font-weight: var(--typography-font-weight-bold);
   letter-spacing: -0.015em;
   line-height: 1.15;
@@ -613,7 +616,7 @@ li {
 
 .body-sm {
   font-family: var(--font-body);
-  font-size: clamp(0.8rem, 0.85vw, 0.875rem);
+  font-size: var(--font-small);
   line-height: var(--typography-line-height-normal);
   letter-spacing: 0.01em;
   color: var(--color-muted);
@@ -640,7 +643,7 @@ li {
 /* Case study title — larger, editorial */
 .heading-case-study {
   font-family: var(--font-display);
-  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  font-size: var(--font-hero);
   font-weight: var(--typography-font-weight-bold);
   letter-spacing: -0.025em;
   line-height: 1.02;
@@ -874,7 +877,7 @@ textarea:focus-visible {
 .process-accordion-number {
   flex-shrink: 0;
   font-family: var(--font-display);
-  font-size: clamp(24px, 3vw, 32px);
+  font-size: var(--font-subsection);
   font-weight: var(--typography-font-weight-bold);
   line-height: 1;
   min-width: 2.5ch;
@@ -883,7 +886,7 @@ textarea:focus-visible {
 .process-accordion-title {
   flex: 1;
   font-family: var(--font-display);
-  font-size: clamp(20px, 2.2vw, 26px);
+  font-size: var(--font-card-title);
   font-weight: var(--typography-font-weight-bold);
   line-height: var(--typography-line-height-snug);
   color: var(--color-ink);
@@ -1260,7 +1263,7 @@ textarea:focus-visible {
   align-items: center;
   gap: 6px;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: var(--typography-font-size-tag);
   font-weight: var(--typography-font-weight-medium);
   color: var(--color-muted);
   text-decoration: none;
@@ -1275,7 +1278,7 @@ textarea:focus-visible {
 /* Eyebrow — mono, same treatment as home sections */
 .cs-shell__eyebrow {
   font-family: var(--font-chivo-mono), var(--typography-font-family-mono);
-  font-size: 10px;
+  font-size: var(--typography-font-size-tag);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--typography-letter-spacing-wider);
@@ -1286,7 +1289,7 @@ textarea:focus-visible {
 /* Title */
 .cs-shell__title {
   font-family: var(--font-display);
-  font-size: clamp(24px, 2.8vw, 34px);
+  font-size: var(--font-subsection);
   font-weight: var(--typography-font-weight-bold);
   line-height: 1.08;
   letter-spacing: -0.025em;
@@ -1327,7 +1330,7 @@ textarea:focus-visible {
 
 .cs-shell__meta-row dt {
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: var(--typography-font-size-tag);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -1337,7 +1340,7 @@ textarea:focus-visible {
 
 .cs-shell__meta-row dd {
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: var(--typography-font-size-tag);
   line-height: 1.5;
   color: var(--color-ink-soft);
   text-align: right;
@@ -1359,7 +1362,7 @@ textarea:focus-visible {
   border-radius: var(--radius-full);
   border: 1px solid var(--color-alpha-shadow-warm-08);
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: var(--typography-font-size-tag);
   font-weight: 600;
   letter-spacing: 0.04em;
   line-height: 1.4;
@@ -1375,7 +1378,7 @@ textarea:focus-visible {
 }
 
 .cs-shell__links .demo-link {
-  font-size: 12px;
+  font-size: var(--typography-font-size-tag);
   padding: var(--spacing-2) var(--spacing-4);
 }
 
@@ -1395,7 +1398,7 @@ textarea:focus-visible {
   background: var(--color-ink);
   color: var(--color-page);
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: var(--typography-font-size-tag);
   font-weight: 600;
   text-decoration: none;
   letter-spacing: 0.04em;

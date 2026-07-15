@@ -41,6 +41,28 @@ Token sources: `lib/bella/bella.css` (BELLA primitives/semantic/component) and
 6. Never write a raw px/hex where a token exists. A genuinely new value gets a
    named token here first.
 
+## §5. Type ramp (canonical)
+
+Sizes: **13 / 14 / 16 / 18 / 20 / 24 / 32 / 40 / 56** px. Body text never
+below 16px. No other sizes.
+
+- Display = Fraunces (`--font-display`), body = Plus Jakarta Sans
+  (`--font-body`), eyebrows/labels/meta = mono (`--font-chivo-mono` chain).
+- BELLA size tokens map 1:1 to the ramp: `tag` 13, `sm` 14, `base` 16,
+  `lg` 18, `xl` 20, `2xl` 24, `3xl` 32, `4xl` 40, `5xl` 56.
+- No ad-hoc `clamp()` with per-section vw factors. At most ONE fluid pair
+  per step, endpoints on the ramp, defined once as a token in
+  `app/globals.css`:
+
+| Token | Pair |
+| --- | --- |
+| `--font-hero` | `clamp(40px, 5vw, 56px)` |
+| `--font-section-title` | `clamp(32px, 2.5vw, 40px)` |
+| `--font-subsection` | `clamp(24px, 2.2vw, 32px)` |
+| `--font-card-title` | `clamp(20px, 1.4vw, 24px)` |
+| `--font-body-size` | `clamp(16px, 1.1vw, 18px)` |
+| `--font-small` | `14px` (meta, fixed) |
+
 ## Recorded exceptions
 
 - `.feature-panel` (section-scale color block): `--radius-3xl`.

@@ -125,7 +125,8 @@ export default function WorkSidebar() {
                   : "3px solid transparent",
                 borderRadius: "0 10px 10px 0",
                 fontFamily: "var(--font-body)",
-                fontSize: "15px",
+                /* §5 ramp: 15 is off-ramp, base step keeps the a11y bump */
+                fontSize: "var(--typography-font-size-base)",
                 fontWeight: isActive ? 600 : 400,
                 color: isActive ? "var(--color-ink)" : "var(--color-ink-soft)",
                 textDecoration: "none",

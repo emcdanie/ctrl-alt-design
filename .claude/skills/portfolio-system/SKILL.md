@@ -18,7 +18,8 @@ truth for every frame on elleta.design. This skill is the enforcement summary.
 - Section rhythm: `.layout-section` = `--spacing-20` (80px) desktop, `--spacing-16` (64px) ≤640px.
 - Grid gap: `var(--grid-gap)` = `--spacing-8` (32px), everywhere.
 - Touch targets ≥ 44px (`--spacing-touch-target`).
-- Featured panels (`.feature-panel`, `.glass-card`) are the recorded exception: `--radius-3xl`.
+- Featured panels (`.feature-panel`) are the recorded exception: `--radius-3xl`.
+- Type ramp (§5): 13/14/16/18/20/24/32/40/56 px only; body ≥16px; Fraunces display, Jakarta body, mono eyebrows/meta. No ad-hoc clamp() — use the fluid tokens defined in globals (`--font-hero`, `--font-section-title`, `--font-subsection`, `--font-card-title`, `--font-body-size`).
 
 ## Working rules
 
