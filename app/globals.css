@@ -1137,14 +1137,9 @@ textarea:focus-visible {
   flex-direction: column;
   width: 220px;
   flex-shrink: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(246, 241, 232, 0.95) 0%,
-    rgba(246, 241, 232, 0.88) 100%
-  );
-  backdrop-filter: blur(var(--bella-blur-md));
-  -webkit-backdrop-filter: blur(var(--bella-blur-md));
-  border-right: 1px solid var(--color-border-soft);
+  /* solid surface + medium border so the rail reads as a distinct panel */
+  background: var(--color-semantic-surface);
+  border-right: 1px solid var(--color-border-medium);
   overflow-y: auto;
 }
 
@@ -1168,8 +1163,10 @@ textarea:focus-visible {
 }
 
 .sidebar-footer {
-  padding: var(--spacing-4) 14px 22px;
+  /* horizontal padding matches .sidebar-brand so the rail edges align */
+  padding: var(--spacing-4) var(--spacing-5) 22px;
   border-top: 1px solid var(--color-border-soft);
+  margin-top: auto;
 }
 
 /* ─── Dashboard content panel (scrolls inside) ────────────────── */

@@ -3,13 +3,13 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 
 const NAV_ITEMS = [
-  { id: "work", label: "Case Studies", icon: "◆" },
-  { id: "process", label: "Process", icon: "◇" },
-  { id: "design-lab", label: "Ctrl Alt Design", icon: "⬡" },
-  { id: "about", label: "About", icon: "○" },
-  { id: "experience", label: "Experience", icon: "◎" },
-  { id: "learning", label: "Learning", icon: "△" },
-  { id: "contact", label: "Contact", icon: "✉" },
+  { id: "work", label: "Case Studies" },
+  { id: "process", label: "Process" },
+  { id: "design-lab", label: "Ctrl Alt Design" },
+  { id: "about", label: "About" },
+  { id: "experience", label: "Experience" },
+  { id: "learning", label: "Learning" },
+  { id: "contact", label: "Contact" },
 ];
 
 /**
@@ -112,19 +112,25 @@ export default function WorkSidebar() {
               key={item.id}
               href={`#${item.id}`}
               onClick={(e) => handleNavClick(e, item.id)}
+              aria-current={isActive ? "true" : undefined}
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: "10px",
-                padding: "9px 14px",
-                borderRadius: "10px",
+                minHeight: "var(--spacing-touch-target)",
+                padding: "0 14px 0 11px",
+                /* reserved accent slot — iris bar on active, no layout shift */
+                borderLeft: isActive
+                  ? "3px solid var(--color-accent-ink)"
+                  : "3px solid transparent",
+                borderRadius: "0 10px 10px 0",
                 fontFamily: "var(--font-body)",
-                fontSize: "var(--typography-font-size-tag)",
+                fontSize: "15px",
                 fontWeight: isActive ? 600 : 400,
-                color: isActive ? "var(--color-ink)" : "var(--color-muted)",
+                color: isActive ? "var(--color-ink)" : "var(--color-ink-soft)",
                 textDecoration: "none",
                 background: isActive ? "rgba(26,24,20,0.06)" : "transparent",
-                transition: "all 180ms ease",
+                transition: "background 180ms ease, color 180ms ease",
                 letterSpacing: "0.01em",
               }}
               onMouseEnter={(e) => {
@@ -134,17 +140,21 @@ export default function WorkSidebar() {
                 if (!isActive) e.currentTarget.style.background = "transparent";
               }}
             >
+              {/* one consistent marker: outline dot, fills iris on active */}
               <span
+                aria-hidden="true"
                 style={{
-                  fontSize: "10px",
-                  opacity: isActive ? 1 : 0.4,
-                  transition: "opacity 180ms ease",
-                  width: "14px",
-                  textAlign: "center",
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  flexShrink: 0,
+                  background: isActive ? "var(--color-accent-ink)" : "transparent",
+                  border: isActive
+                    ? "1.5px solid var(--color-accent-ink)"
+                    : "1.5px solid var(--color-ink-soft)",
+                  transition: "background 180ms ease, border-color 180ms ease",
                 }}
-              >
-                {item.icon}
-              </span>
+              />
               {item.label}
             </a>
           );
