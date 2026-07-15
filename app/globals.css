@@ -99,6 +99,24 @@ body {
   --font-small: 14px;
 }
 
+/* ─── Case-cover + atom tokens (DESIGN.md: recorded additions) ────
+   Cover plates for the label-style case cards and the atom hero
+   nucleus. Text pairs are AAA on their plates (verified in DESIGN.md). */
+:root {
+  --color-cover-graphite: #221F2C;
+  --color-cover-graphite-ink: #EDE9F4;
+  --color-cover-graphite-kicker: #C9C2E6;
+  --color-cover-peri-hi: #C6BEEF;
+  --color-cover-peri-lo: #B2A8E6;
+  --color-cover-peri-ink: #231D3A;
+  --color-cover-sage-hi: #D2DCC7;
+  --color-cover-sage-lo: #C1CEB1;
+  --color-cover-sage-ink: #242C18;
+  --cover-min-height: 250px;
+  --panel-min-height: 172px;
+  --nucleus-size: 120px;
+}
+
 /* ─── OKLCH color system ───────────────────────────────────────── */
 :root {
   --oklch-bg: oklch(95.5% 0.015 80);
@@ -363,127 +381,6 @@ li {
   background: var(--color-semantic-surface-elevated);
   border-radius: var(--radius-sm);
   margin: var(--spacing-10) 0;
-}
-
-/* ─── Marker underline — thin iris rule beneath one key word ─────
-   Iris as a fill plate under ink text. Draws in on load; the global
-   reduced-motion rule collapses the animation to an instant reveal. */
-.marker-underline {
-  position: relative;
-  display: inline-block;
-  z-index: 0;
-  white-space: nowrap;
-}
-
-.marker-underline::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  bottom: -0.02em;
-  left: 0.02em;
-  right: 0.04em;
-  height: 0.09em;
-  background: var(--color-accent-ink);
-  border-radius: var(--radius-full);
-  transform-origin: left center;
-  animation: marker-in var(--motion-duration-slow) var(--motion-easing-standard) 450ms both;
-}
-
-@keyframes marker-in {
-  from {
-    transform: scaleX(0);
-  }
-
-  to {
-    transform: scaleX(1);
-  }
-}
-
-/* ─── Photo-led hero ──────────────────────────────────────────────
-   Natural portrait with the About section's organic corner language:
-   photo masked with opposing 70px corners, a solid periwinkle plate
-   offset behind it (the colour moment), a whisper of periwinkle grade
-   plus kraft grain so it reads designed without repainting the photo. */
-.hero-text-col {
-  flex: 0 0 auto;
-  width: min(600px, 52vw);
-  min-width: 0;
-  position: relative;
-  z-index: 2;
-}
-
-.hero-photo-wrap {
-  flex: 1 1 440px;
-  min-width: 260px;
-  max-width: 520px;
-  position: relative;
-  z-index: 1;
-  will-change: transform;
-}
-
-@media (max-width: 900px) {
-  .hero-text-col {
-    width: 100%;
-  }
-
-  .hero-photo-wrap {
-    flex: 0 1 400px;
-    margin-top: var(--spacing-2);
-  }
-
-  /* Stacked hero is taller than the viewport — align to the top so the
-     eyebrow never slides under the fixed nav (view-landing flows and
-     scrolls at this width). */
-  .hero-landing {
-    justify-content: flex-start !important;
-    padding-top: var(--spacing-8) !important;
-    padding-bottom: var(--spacing-10) !important;
-  }
-}
-
-/* Offset periwinkle plate — mirrored organic corners, shifted down-right */
-.hero-plate {
-  position: absolute;
-  inset: var(--spacing-4) calc(-1 * var(--spacing-4)) calc(-1 * var(--spacing-4)) var(--spacing-4);
-  background: var(--color-semantic-accent);
-  border-top-left-radius: 70px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 70px;
-  border-bottom-left-radius: 0;
-}
-
-.hero-photo {
-  position: relative;
-  overflow: hidden;
-  background: var(--color-supporting-linen);
-  border-top-left-radius: 0;
-  border-top-right-radius: 70px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 70px;
-  box-shadow: var(--shadow-md);
-}
-
-/* Whisper of periwinkle grade — tints, never repaints */
-.hero-photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--color-semantic-accent);
-  opacity: 0.1;
-  mix-blend-mode: color;
-  pointer-events: none;
-}
-
-/* Kraft grain — same fractal-noise data-URI idiom as VideoCard and the
-   command center. */
-.hero-photo .hero-grain {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.08;
-  mix-blend-mode: multiply;
-  pointer-events: none;
 }
 
 /* ─── Feature panel — the owned-color moment ─────────────────────

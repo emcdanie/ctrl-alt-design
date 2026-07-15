@@ -1,0 +1,296 @@
+/* Atom-map hero (from _proto/_atom.html), conformed to DESIGN.md:
+ * §5 ramp type, BELLA color/spacing/motion tokens, panel + node frames
+ * on the card tiers. Selection is never colour-only (dot + border +
+ * aria-checked); float animation exists only under no-preference. */
+
+.hero {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: var(--spacing-10) var(--container-padding);
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: var(--grid-gap);
+  align-items: center;
+}
+
+.name {
+  font-family: var(--typography-font-family-display);
+  font-weight: var(--typography-font-weight-bold);
+  font-size: var(--font-hero);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  margin: 0 0 var(--spacing-3);
+}
+
+.sub {
+  font-family: var(--typography-font-family-display);
+  font-style: italic;
+  font-size: var(--typography-font-size-lg);
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--spacing-6);
+  max-width: 34ch;
+  line-height: 1.4;
+}
+
+/* ── Detail panel ── */
+
+.panel {
+  background: var(--color-semantic-surface-elevated);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-6);
+  min-height: var(--panel-min-height);
+  box-shadow: var(--shadow-card-default);
+}
+
+.panelKicker {
+  font-family: var(--font-chivo-mono), var(--typography-font-family-mono);
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: var(--typography-letter-spacing-wider);
+  text-transform: uppercase;
+  color: var(--color-accent-ink);
+  font-weight: var(--typography-font-weight-medium);
+  margin: 0 0 var(--spacing-2);
+}
+
+.panelTitle {
+  font-family: var(--typography-font-family-display);
+  font-weight: var(--typography-font-weight-bold);
+  font-size: var(--font-card-title);
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin: 0 0 var(--spacing-2);
+}
+
+.panelBody {
+  font-size: var(--typography-font-size-base);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-ink-soft);
+  margin: 0;
+}
+
+.seen {
+  margin-top: var(--spacing-4);
+  font-family: var(--font-chivo-mono), var(--typography-font-family-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-semantic-text-secondary);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1) var(--spacing-3);
+  align-items: baseline;
+}
+
+.seen a {
+  /* iris as TEXT — periwinkle stays fill-only */
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: var(--typography-font-weight-bold);
+}
+
+.seen a:focus-visible {
+  outline: var(--ring-focus-width) solid var(--color-accent-ink);
+  outline-offset: var(--ring-focus-offset);
+  border-radius: var(--radius-sm);
+}
+
+.ctaRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+  margin-top: var(--spacing-6);
+}
+
+/* ── Atom map ── */
+
+.atom {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 530px;
+  margin: 0 auto;
+}
+
+.atom svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ring {
+  fill: none;
+  stroke: var(--color-brand-ink);
+  stroke-opacity: 0.09;
+  stroke-width: 0.4;
+}
+
+.connector {
+  stroke: var(--color-accent-ink);
+  stroke-width: 0.7;
+  stroke-opacity: 0.5;
+  stroke-dasharray: 2 2;
+}
+
+.node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border: 1.5px solid var(--color-semantic-border);
+  background: var(--color-semantic-surface-elevated);
+  color: var(--color-ink);
+  font-family: var(--typography-font-family-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-bold);
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+  min-height: var(--spacing-touch-target);
+  display: inline-flex;
+  align-items: center;
+  transition: transform var(--motion-duration-fast) var(--motion-easing-standard),
+    background var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard),
+    box-shadow var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.node:hover {
+  border-color: var(--color-semantic-accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .node:hover {
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+}
+
+.node:focus-visible {
+  outline: var(--ring-focus-width) solid var(--color-accent-ink);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.node[aria-checked="true"] {
+  /* periwinkle FILL, ink text (7.6:1); dot + border keep it not colour-only */
+  background: var(--color-semantic-accent);
+  color: var(--color-brand-ink);
+  border-color: var(--color-accent-ink);
+  box-shadow: 0 0 0 3px var(--color-semantic-accent-subtle), var(--shadow-md);
+}
+
+.node[aria-checked="true"]::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-ink);
+  margin-right: var(--spacing-2);
+  flex: none;
+}
+
+.nucleus {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--nucleus-size);
+  height: var(--nucleus-size);
+  border-radius: var(--radius-full);
+  background: var(--color-cover-graphite);
+  color: var(--color-cover-graphite-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--typography-font-family-display);
+  font-weight: var(--typography-font-weight-bold);
+  font-size: var(--typography-font-size-lg);
+  line-height: 1.1;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid transparent;
+  padding: var(--spacing-3);
+}
+
+.nucleus:focus-visible {
+  outline: var(--ring-focus-width) solid var(--color-accent-ink);
+  outline-offset: 3px;
+}
+
+.nucleus[aria-checked="true"] {
+  border-color: var(--color-semantic-accent);
+  box-shadow: 0 0 0 4px var(--color-semantic-accent-border), var(--shadow-lg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .float {
+    animation: float 6.5s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      margin-top: 0;
+    }
+
+    50% {
+      margin-top: -6px;
+    }
+  }
+}
+
+/* ── Narrow: single column; below 560px the orbit degrades into a
+      wrapped pill list so labels never overlap ── */
+
+@media (max-width: 880px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: var(--grid-gap);
+  }
+
+  .atom {
+    max-width: 420px;
+  }
+}
+
+@media (max-width: 560px) {
+  .atom {
+    aspect-ratio: auto;
+    max-width: none;
+  }
+
+  .atom svg {
+    display: none;
+  }
+
+  .nodeGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .node {
+    position: static;
+    transform: none;
+  }
+
+  .node:hover {
+    transform: none;
+  }
+
+  .nucleus {
+    position: static;
+    transform: none;
+    order: -1;
+    margin: 0 auto var(--spacing-3);
+  }
+
+  .float {
+    animation: none;
+  }
+}

@@ -4,24 +4,77 @@ import caseStudies from "@/lib/content";
 import FadeIn from "@/components/FadeIn";
 import CaseStudyCard, {
   type CaseStudyCardProps,
-  type CaseStudyTagVariant,
+  type CaseStudyCoverVariant,
 } from "@/components/bella/CaseStudyCard";
 import CaseStudyCardGrid from "@/components/bella/CaseStudyCardGrid";
 
-/** Map the free-text `category` field on CaseStudy data → the 3 BELLA
- * CaseStudyCard tag variants. TODO(bella-migration): the data model has
- * 4 categories (DESIGN SYSTEMS / DATA VIZ / UX STRATEGY / PRODUCT UX);
- * BELLA's card has 3 variants. DATA VIZ and anything unrecognised fall
- * through to "research". Revisit when BELLA adds a 4th variant or when
- * CaseStudy.category is promoted to an enum. */
-function categoryToVariant(category: string): CaseStudyTagVariant {
-  const normalized = category.toUpperCase();
-  if (normalized.includes("DESIGN SYSTEM")) return "design-systems";
-  if (normalized.includes("UX STRATEGY") || normalized.includes("PRODUCT UX")) {
-    return "ux-strategy";
-  }
-  return "research";
-}
+/* Label-cover treatment per case (from _proto/_cards2.html): variant
+ * cycles graphite / peri / sage; ingredients are honest one-liners from
+ * each case's own content; swatches are that project's token palette
+ * (BELLA + recorded cover tokens — no raw values outside the token set). */
+const COVER_META: Record<
+  string,
+  { variant: CaseStudyCoverVariant; ingredients: string[]; swatches: string[] }
+> = {
+  "brad-frost": {
+    variant: "graphite",
+    ingredients: [
+      "Figma → code parity",
+      "Token chain: primitive → semantic",
+      "Component governance",
+    ],
+    swatches: [
+      "var(--color-semantic-accent)",
+      "var(--color-cover-graphite-ink)",
+      "var(--color-accent-ink)",
+      "var(--color-semantic-text-secondary)",
+    ],
+  },
+  "design-system-transformation": {
+    variant: "peri",
+    ingredients: [
+      "First design system, from zero",
+      "Tokens wired to production",
+      "5+ booking verticals",
+    ],
+    swatches: [
+      "var(--color-cover-graphite)",
+      "var(--color-semantic-accent)",
+      "var(--color-surface)",
+      "var(--color-accent-ink)",
+    ],
+  },
+  "filters-decision-support-system": {
+    variant: "sage",
+    ingredients: [
+      "Decision-support filtering",
+      "Unified multi-vertical search",
+      "Sort and compare patterns",
+    ],
+    swatches: [
+      "var(--color-cover-graphite)",
+      "var(--color-supporting-steel)",
+      "var(--color-cover-sage-hi)",
+      "var(--color-accent-ink)",
+    ],
+  },
+  "un-operational-dashboard": {
+    variant: "graphite",
+    ingredients: [
+      "6+ operational domains, one interface",
+      "Role-based analytics views",
+      "8-week contract delivery",
+    ],
+    swatches: [
+      "var(--color-supporting-steel)",
+      "var(--color-supporting-sage)",
+      "var(--color-cover-graphite-ink)",
+      "var(--color-semantic-accent)",
+    ],
+  },
+};
+
+const VARIANT_CYCLE: CaseStudyCoverVariant[] = ["graphite", "peri", "sage"];
 
 type CardEntry = CaseStudyCardProps & { key: string };
 
@@ -51,22 +104,27 @@ function SectionHeader({ label, title, description }: SectionHeaderProps) {
 }
 
 export default function CaseStudyGrid() {
-  // Extract card data into a typed array above the grid — no inline JSX per card.
-  const cards: CardEntry[] = caseStudies.map((cs) => ({
-    key: cs.slug,
-    image: {
-      src: cs.thumbnailImage || cs.heroImage,
-      alt: cs.title,
-      ratio: "16:9",
-    },
-    tag: {
-      label: cs.category,
-      variant: categoryToVariant(cs.category),
-    },
-    title: cs.title,
-    description: cs.description,
-    href: cs.href ?? `/case-studies/${cs.slug}`,
-  }));
+  // Existing titles, tags (as the kicker), and hrefs are kept — only the
+  // visual treatment changed to the label covers.
+  const cards: CardEntry[] = caseStudies.map((cs, i) => {
+    const meta = COVER_META[cs.slug];
+    return {
+      key: cs.slug,
+      cover: {
+        variant: meta?.variant ?? VARIANT_CYCLE[i % VARIANT_CYCLE.length],
+        kicker: `${cs.category} · ${cs.year}`,
+        ingredients: meta?.ingredients ?? cs.tags.slice(0, 3),
+        swatches: meta?.swatches ?? [
+          "var(--color-semantic-accent)",
+          "var(--color-accent-ink)",
+          "var(--color-surface)",
+        ],
+      },
+      title: cs.title,
+      description: cs.description,
+      href: cs.href ?? `/case-studies/${cs.slug}`,
+    };
+  });
 
   return (
     <section id="work" className="layout-section">
@@ -83,8 +141,7 @@ export default function CaseStudyGrid() {
           {cards.map((card, i) => (
             <FadeIn key={card.key} delay={i * 60}>
               <CaseStudyCard
-                image={card.image}
-                tag={card.tag}
+                cover={card.cover}
                 title={card.title}
                 description={card.description}
                 href={card.href}

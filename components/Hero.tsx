@@ -1,177 +1,189 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { useReducedMotion } from "@/components/motion/useReducedMotion";
+import { useCallback, useRef, useState } from "react";
+import styles from "./Hero.module.css";
+
+interface AtomNode {
+  title: string;
+  kicker: string;
+  blurb: string;
+  seen: { label: string; href: string }[];
+  /** orbital position, % of the atom square (nucleus is 50/50) */
+  x?: number;
+  y?: number;
+}
+
+/* Nucleus is radio 0; the 8 skill nodes orbit on two rings.
+ * Blurbs and mapping from _proto/_atom.html; "Seen in:" points at the
+ * real case studies (or the section where that work lives). */
+const CORE: AtomNode = {
+  title: "Design Systems",
+  kicker: "Core",
+  blurb:
+    "I build design systems, and the tools that keep them from drifting. Choose an area to see the work behind it.",
+  seen: [],
+};
+
+const NODES: AtomNode[] = [
+  {
+    title: "Design Tokens",
+    x: 50,
+    y: 24,
+    kicker: "Foundation",
+    blurb: "Primitive to semantic to component. The layer that keeps a system honest.",
+    seen: [
+      { label: "From Drift to Foundation", href: "/case-studies/design-system-transformation" },
+      { label: "Mango", href: "#experience" },
+    ],
+  },
+  {
+    title: "AI Workflows",
+    x: 79,
+    y: 21,
+    kicker: "Frontier",
+    blurb: "Agents that read and audit a system. Machine-readable design, human in control.",
+    seen: [
+      { label: "CHIP", href: "#design-lab" },
+      { label: "Guardian", href: "/case-studies/guardian" },
+    ],
+  },
+  {
+    title: "Governance",
+    x: 76,
+    y: 50,
+    kicker: "Foundation",
+    blurb: "The rules that stop a system drifting. Contribution models, versioning, extend vs build.",
+    seen: [
+      { label: "From Drift to Foundation", href: "/case-studies/design-system-transformation" },
+      { label: "Code First", href: "/case-studies/brad-frost" },
+    ],
+  },
+  {
+    title: "Figma ⇄ Code",
+    x: 79,
+    y: 79,
+    kicker: "Frontier",
+    blurb: "Design and code kept in parity, wired through Figma MCP and the Desktop Bridge.",
+    seen: [
+      { label: "Code First", href: "/case-studies/brad-frost" },
+      { label: "Mango", href: "#experience" },
+    ],
+  },
+  {
+    title: "Component Libraries",
+    x: 50,
+    y: 76,
+    kicker: "Foundation",
+    blurb: "Reusable parts, documented and owned, so teams stop rebuilding the same button.",
+    seen: [
+      { label: "Code First", href: "/case-studies/brad-frost" },
+      { label: "From Drift to Foundation", href: "/case-studies/design-system-transformation" },
+    ],
+  },
+  {
+    title: "Accessibility",
+    x: 21,
+    y: 79,
+    kicker: "Frontier",
+    blurb: "WCAG as a system default, not a per-screen fix. Contrast, focus, target size.",
+    seen: [
+      { label: "Operational Clarity", href: "/case-studies/un-operational-dashboard" },
+      { label: "Mango", href: "#experience" },
+    ],
+  },
+  {
+    title: "Atomic Design",
+    x: 24,
+    y: 50,
+    kicker: "Foundation",
+    blurb: "Atoms to templates. The model I build systems on, learned in the open from Brad Frost.",
+    seen: [{ label: "Code First", href: "/case-studies/brad-frost" }],
+  },
+  {
+    title: "Learning in Public",
+    x: 21,
+    y: 21,
+    kicker: "Frontier",
+    blurb: "Most of what I know I picked up in the open. Then I route it back into the system.",
+    seen: [{ label: "CHIP", href: "#design-lab" }],
+  },
+];
+
+const RADIOS: AtomNode[] = [CORE, ...NODES];
 
 /**
- * Photo-led landing hero. Text column left (eyebrow, oversized Fraunces
- * name with a thin iris underline on the surname, tagline, CTAs); on the
- * right, the natural About portrait masked with the organic 70px corner
- * language over a solid periwinkle offset plate. Load order staggers
- * eyebrow, name, photo settle, then tagline and CTAs. The portrait gets
- * a gentle scroll-driven drift and scale inside the snap-shell scroll
- * container; both the stagger and the drift collapse to a static
- * composition under prefers-reduced-motion.
+ * Atom-map hero (from _proto/_atom.html). A radiogroup: the nucleus plus
+ * 8 orbiting skill nodes with roving tabindex, arrow-key/Home/End
+ * navigation, and an aria-live detail panel — no hover-only tooltips.
+ * The float animation only runs under prefers-reduced-motion:
+ * no-preference (CSS), and below 560px the orbit becomes a wrapped list.
  */
 export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => void }) {
-  const [mounted, setMounted] = useState(false);
-  const [shareOpen, setShareOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const reduced = useReducedMotion();
-  const sectionRef = useRef<HTMLElement>(null);
-  const photoRef = useRef<HTMLDivElement>(null);
+  const [selected, setSelected] = useState(0);
+  const refs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 20);
-    return () => clearTimeout(t);
+  const select = useCallback((i: number, focus = true) => {
+    setSelected(i);
+    if (focus) refs.current[i]?.focus();
   }, []);
 
-  /* Soft parallax — the sticker drifts and eases up in scale as the
-     snap shell scrolls toward the dashboard. rAF-throttled, passive,
-     and skipped entirely under prefers-reduced-motion. */
-  useEffect(() => {
-    if (reduced) return;
-    const shell = sectionRef.current?.closest(".snap-shell");
-    const photo = photoRef.current;
-    if (!shell || !photo) return;
+  const onKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      let next: number | null = null;
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (selected + 1) % RADIOS.length;
+      else if (e.key === "ArrowLeft" || e.key === "ArrowUp")
+        next = (selected - 1 + RADIOS.length) % RADIOS.length;
+      else if (e.key === "Home") next = 0;
+      else if (e.key === "End") next = RADIOS.length - 1;
+      if (next !== null) {
+        e.preventDefault();
+        select(next);
+      }
+    },
+    [selected, select]
+  );
 
-    let raf = 0;
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        const y = (shell as HTMLElement).scrollTop;
-        const drift = Math.min(y * 0.08, 64);
-        const scale = 1 + Math.min(y / 6000, 0.03);
-        photo.style.transform = `translateY(${drift}px) scale(${scale})`;
-      });
-    };
-    shell.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      shell.removeEventListener("scroll", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, [reduced]);
-
-  const settled = mounted || reduced;
+  const active = RADIOS[selected];
+  const activeNode = selected > 0 ? NODES[selected - 1] : null;
 
   return (
     <section
-      ref={sectionRef}
       className="hero-landing"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        padding: "0 var(--space-md)",
-        position: "relative",
-        overflow: "hidden",
-        flex: 1,
-        minHeight: 0,
-      }}
+      style={{ display: "flex", alignItems: "center", flex: 1, minHeight: 0 }}
     >
-      {/* Subtle radial glow — periwinkle, offset with the headline */}
-      <div
-        style={{
-          position: "absolute",
-          top: "-30%",
-          left: "18%",
-          transform: "translateX(-50%)",
-          width: "700px",
-          height: "700px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, var(--color-semantic-accent-subtle) 0%, transparent 70%)",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      />
-
-      <div
-        style={{
-          maxWidth: "1200px",
-          width: "100%",
-          margin: "0 auto",
-          position: "relative",
-          zIndex: 1,
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          gap: "var(--spacing-6)",
-        }}
-      >
-        {/* ── Text column ── */}
-        <div className="hero-text-col">
-          {/* Eyebrow */}
-          <p
-            className="eyebrow"
-            style={{
-              marginBottom: "var(--spacing-5)",
-              opacity: settled ? 1 : 0,
-              transform: settled ? "translateY(0)" : "translateY(8px)",
-              transition: "opacity 0.4s ease 0.05s, transform 0.4s ease 0.05s",
-            }}
-          >
-            Product Designer — Design Systems &amp; AI
+      <div className={styles.hero}>
+        {/* ── Text + detail panel ── */}
+        <div>
+          <p className="eyebrow" style={{ marginBottom: "var(--spacing-4)" }}>
+            Design Systems · AI · Barcelona
+          </p>
+          <h1 className={styles.name}>Elleta McDaniel</h1>
+          <p className={styles.sub}>
+            I build design systems, and the tools that keep them from drifting.
           </p>
 
-          {/* Name — surname carries a thin iris underline, drawn on load */}
-          <h1
-            style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: "var(--typography-font-weight-bold)",
-              fontSize: "clamp(52px, 8.2vw, 128px)",
-              letterSpacing: "-0.035em",
-              lineHeight: 0.96,
-              margin: "0 0 var(--spacing-6) 0",
-              color: "var(--color-ink)",
-              position: "relative",
-              zIndex: 2,
-              whiteSpace: "nowrap",
-              opacity: settled ? 1 : 0,
-              transform: settled ? "translateY(0)" : "translateY(20px)",
-              transition: "opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s",
-            }}
-          >
-            Elleta
-            <br />
-            <span className="marker-underline">McDaniel</span>
-          </h1>
-
-          {/* Tagline */}
-          <p
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(16px, 2.2vw, 22px)",
-              fontWeight: "var(--typography-font-weight-regular)",
-              fontStyle: "italic",
-              color: "var(--color-muted)",
-              lineHeight: 1.5,
-              maxWidth: "480px",
-              margin: "0 0 28px",
-              letterSpacing: "-0.01em",
-              opacity: settled ? 1 : 0,
-              transform: settled ? "translateY(0)" : "translateY(10px)",
-              transition: "opacity 0.5s ease 0.45s, transform 0.5s ease 0.45s",
-            }}
-          >
-            Designing clarity for complex digital platforms and scaling teams.
+          <p className="sr-only" id="atom-hint">
+            Areas of work. Select one with the arrow keys or by clicking to see the work behind it.
           </p>
 
-          {/* CTA row */}
-          <div
-            style={{
-              opacity: settled ? 1 : 0,
-              transform: settled ? "translateY(0)" : "translateY(10px)",
-              transition: "opacity 0.5s ease 0.55s, transform 0.5s ease 0.55s",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              gap: "var(--spacing-3)",
-              flexWrap: "wrap",
-              position: "relative",
-            }}
-          >
+          <div className={styles.panel} aria-live="polite">
+            <p className={styles.panelKicker}>{active.kicker}</p>
+            <h2 className={styles.panelTitle}>{active.title}</h2>
+            <p className={styles.panelBody}>{active.blurb}</p>
+            {active.seen.length > 0 && (
+              <div className={styles.seen}>
+                <span>Seen in:</span>
+                {active.seen.map((s) => (
+                  <a key={s.label} href={s.href}>
+                    {s.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* CTA row — kept from the previous hero (path into the dashboard) */}
+          <div className={styles.ctaRow}>
             <button
               onClick={() => onEnterDashboard?.()}
               className="surface-dark"
@@ -185,162 +197,75 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
                 borderRadius: "var(--radius-full)",
                 padding: "14px var(--spacing-8)",
                 border: "none",
-                textDecoration: "none",
-                transition: "opacity 200ms ease, transform 200ms ease",
+                cursor: "pointer",
+                minHeight: "var(--spacing-touch-target)",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.85"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
             >
               Come see what I&apos;ve been building
-              <span style={{ fontSize: "var(--typography-font-size-base)", lineHeight: 1 }}>→</span>
+              <span style={{ fontSize: "var(--typography-font-size-base)", lineHeight: 1 }} aria-hidden="true">
+                →
+              </span>
             </button>
-
-            {/* Share button */}
-            <div style={{ position: "relative" }}>
-              <button
-                onClick={() => setShareOpen((o) => !o)}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  fontFamily: "var(--font-body)",
-                  fontSize: "var(--typography-font-size-tag)",
-                  fontWeight: "var(--typography-font-weight-medium)",
-                  borderRadius: "var(--radius-full)",
-                  padding: "13px var(--spacing-6)",
-                  border: "1px solid rgba(26,24,20,0.12)",
-                  background: "rgba(255,255,255,0.6)",
-                  backdropFilter: "blur(var(--bella-blur-xs))",
-                  color: "var(--color-ink)",
-                  cursor: "pointer",
-                  transition: "all 200ms ease",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.85)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.6)"; }}
-              >
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                  <path d="M4 8V13C4 13.5523 4.44772 14 5 14H11C11.5523 14 12 13.5523 12 13V8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-                  <path d="M8 2V10M5.5 4.5L8 2L10.5 4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                Share Portfolio
-              </button>
-
-              {/* Share panel */}
-              {shareOpen && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "calc(100% + var(--spacing-2))",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    background: "rgba(255,255,255,0.92)",
-                    backdropFilter: "blur(var(--bella-blur-md))",
-                    border: "1px solid rgba(26,24,20,0.1)",
-                    borderRadius: "14px",
-                    padding: "var(--spacing-2)",
-                    boxShadow: "0 8px 32px rgba(26,24,20,0.12)",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "2px",
-                    minWidth: "180px",
-                    zIndex: 20,
-                  }}
-                >
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(window.location.href);
-                      setCopied(true);
-                      setTimeout(() => setCopied(false), 2000);
-                    }}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "var(--spacing-2)",
-                      padding: "10px 14px",
-                      borderRadius: "10px",
-                      border: "none",
-                      background: "transparent",
-                      fontFamily: "var(--font-body)",
-                      fontSize: "var(--typography-font-size-tag)",
-                      color: "var(--color-ink)",
-                      cursor: "pointer",
-                      transition: "background 150ms",
-                      textAlign: "left",
-                      width: "100%",
-                    }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(26,24,20,0.05)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
-                  >
-                    {copied ? "Copied!" : "Copy Link"}
-                  </button>
-                  <a
-                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "var(--spacing-2)",
-                      padding: "10px 14px",
-                      borderRadius: "10px",
-                      fontFamily: "var(--font-body)",
-                      fontSize: "var(--typography-font-size-tag)",
-                      color: "var(--color-ink)",
-                      textDecoration: "none",
-                      transition: "background 150ms",
-                    }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(26,24,20,0.05)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
-                  >
-                    Share on LinkedIn
-                  </a>
-                  <a
-                    href={`mailto:?subject=Check out this portfolio&body=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}`}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "var(--spacing-2)",
-                      padding: "10px 14px",
-                      borderRadius: "10px",
-                      fontFamily: "var(--font-body)",
-                      fontSize: "var(--typography-font-size-tag)",
-                      color: "var(--color-ink)",
-                      textDecoration: "none",
-                      transition: "background 150ms",
-                    }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(26,24,20,0.05)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
-                  >
-                    Share via Email
-                  </a>
-                </div>
-              )}
-            </div>
           </div>
         </div>
 
-        {/* ── Portrait — natural photo over the periwinkle offset plate ── */}
-        <div ref={photoRef} className="hero-photo-wrap">
-          <div
-            style={{
-              position: "relative",
-              opacity: settled ? 1 : 0,
-              transform: settled ? "translateY(0)" : "translateY(24px)",
-              transition: "opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s",
-            }}
-          >
-            <div className="hero-plate" aria-hidden="true" />
-            <div className="hero-photo" style={{ aspectRatio: "4 / 5" }}>
-              <Image
-                src="/images/thumbnails/Me.jpeg"
-                alt="Elleta McDaniel with her dog"
-                fill
-                priority
-                sizes="(max-width: 768px) 82vw, 460px"
-                style={{ objectFit: "cover" }}
+        {/* ── Atom map ── */}
+        <div className={styles.atom}>
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <circle className={styles.ring} cx="50" cy="50" r="26" />
+            <circle className={styles.ring} cx="50" cy="50" r="40" />
+            {activeNode && (
+              <line
+                className={styles.connector}
+                x1="50"
+                y1="50"
+                x2={activeNode.x}
+                y2={activeNode.y}
               />
-              <div className="hero-grain" aria-hidden="true" />
-            </div>
+            )}
+          </svg>
+
+          <div
+            role="radiogroup"
+            aria-labelledby="atom-hint"
+            className={styles.nodeGroup}
+            onKeyDown={onKeyDown}
+          >
+            <button
+              ref={(el) => {
+                refs.current[0] = el;
+              }}
+              type="button"
+              role="radio"
+              aria-checked={selected === 0}
+              aria-current={selected === 0 ? "true" : undefined}
+              tabIndex={selected === 0 ? 0 : -1}
+              className={styles.nucleus}
+              onClick={() => select(0)}
+            >
+              Design
+              <br />
+              Systems
+            </button>
+
+            {NODES.map((n, i) => (
+              <button
+                key={n.title}
+                ref={(el) => {
+                  refs.current[i + 1] = el;
+                }}
+                type="button"
+                role="radio"
+                aria-checked={selected === i + 1}
+                aria-current={selected === i + 1 ? "true" : undefined}
+                tabIndex={selected === i + 1 ? 0 : -1}
+                className={`${styles.node} ${styles.float}`}
+                style={{ left: `${n.x}%`, top: `${n.y}%`, animationDelay: `${i * 0.4}s` }}
+                onClick={() => select(i + 1)}
+              >
+                {n.title}
+              </button>
+            ))}
           </div>
         </div>
       </div>

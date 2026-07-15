@@ -63,6 +63,24 @@ below 16px. No other sizes.
 | `--font-body-size` | `clamp(16px, 1.1vw, 18px)` |
 | `--font-small` | `14px` (meta, fixed) |
 
+## Recorded token additions (case covers + atom hero)
+
+From the vetted `_proto` prototypes (2026-07-15). Cover plates for the
+label-style case cards; graphite doubles as the atom-hero nucleus.
+
+| Token | Value | Text pair (contrast) |
+| --- | --- | --- |
+| `--color-cover-graphite` | `#221F2C` | ink `#EDE9F4` 13.5:1, kicker `#C9C2E6` 9.5:1 |
+| `--color-cover-peri-hi/-lo` | `#C6BEEF` / `#B2A8E6` | ink `#231D3A` 9.2 / 7.4:1 |
+| `--color-cover-sage-hi/-lo` | `#D2DCC7` / `#C1CEB1` | ink `#242C18` 10.2 / 8.8:1 |
+| `--cover-min-height` | `250px` | label cover plate |
+| `--panel-min-height` | `172px` | atom hero detail panel (prevents reflow on select) |
+| `--nucleus-size` | `120px` | atom hero nucleus |
+
+Selected atom node fill is `--color-semantic-accent` (periwinkle, fill
+only) with ink text (7.6:1); selection is never colour-only (leading dot
+plus border plus `aria-checked`).
+
 ## Recorded exceptions
 
 - `.feature-panel` (section-scale color block): `--radius-3xl`.
