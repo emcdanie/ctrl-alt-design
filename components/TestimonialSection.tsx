@@ -1,9 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import FadeIn from "@/components/FadeIn";
 
-/* ── Featured excerpt (shorter, scannable) ──────────────────────── */
+/* ── Featured quote — two strongest sentences shown by default, the
+      full recommendation behind an in-place disclosure ────────────── */
 const featured = {
+  excerpt:
+    "Straight up: Elleta is awesome. Any team would be lucky to have Elleta join their crew.",
   paragraphs: [
     "Straight up: Elleta is awesome. When I met her at a conference, she immediately expressed her desire to dive into substantive design systems work, which stuck with me.",
     "We\u2019ve thrown everything and the kitchen sink at her, and she\u2019s surprised and delighted us with her ability to make things happen while also being thoughtful and thorough. She sweats the details.",
@@ -56,7 +60,7 @@ function SupportingCard({
   delay: number;
 }) {
   return (
-    <FadeIn delay={delay}>
+    <FadeIn delay={delay} distance={4}>
       <div
         className="card-elevated"
         style={{
@@ -67,14 +71,14 @@ function SupportingCard({
           height: "100%",
         }}
       >
-        {/* Quote mark */}
+        {/* Quote mark — soft periwinkle tint */}
         <span
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "28px",
             lineHeight: 1,
-            color: "var(--color-accent-gold)",
-            opacity: 0.6,
+            color: "var(--color-semantic-accent)",
+            opacity: 0.4,
             userSelect: "none",
           }}
           aria-hidden
@@ -159,11 +163,13 @@ function SupportingCard({
 
 /* ── Section ────────────────────────────────────────────────────── */
 export default function TestimonialSection() {
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <section className="layout-section">
       <div className="layout-container">
         {/* ── Header ─────────────────────────────────────────────── */}
-        <FadeIn>
+        <FadeIn distance={4}>
           <div className="layout-header">
             <p className="section-label" style={{ marginBottom: "10px" }}>
               &mdash; Social Proof
@@ -173,26 +179,26 @@ export default function TestimonialSection() {
         </FadeIn>
 
         {/* ── Featured — Brad Frost ──────────────────────────────── */}
-        <FadeIn delay={60}>
+        <FadeIn delay={60} distance={4}>
           <div
             className="glass-card"
             style={{
-              padding: "clamp(var(--spacing-8), 4vw, var(--spacing-12))",
+              padding: "var(--spacing-8)",
               maxWidth: "720px",
-              margin: "0 auto var(--spacing-12) auto",
+              margin: "0 auto var(--spacing-8) auto",
               position: "relative",
             }}
           >
-            {/* Decorative top accent */}
+            {/* Decorative top accent — periwinkle tint, not full strength */}
             <div
               style={{
                 position: "absolute",
                 top: 0,
-                left: "clamp(var(--spacing-8), 4vw, var(--spacing-12))",
+                left: "var(--spacing-8)",
                 width: "48px",
                 height: "3px",
                 background:
-                  "linear-gradient(90deg, var(--color-accent-gold), transparent)",
+                  "linear-gradient(90deg, var(--color-semantic-accent-border), transparent)",
                 borderRadius: "0 0 2px 2px",
               }}
             />
@@ -203,7 +209,7 @@ export default function TestimonialSection() {
                 display: "flex",
                 alignItems: "center",
                 gap: "14px",
-                marginBottom: "28px",
+                marginBottom: "var(--spacing-5)",
               }}
             >
               <div
@@ -211,14 +217,16 @@ export default function TestimonialSection() {
                   width: "48px",
                   height: "48px",
                   borderRadius: "50%",
-                  background: "var(--color-semantic-accent)",
+                  /* soft periwinkle tint; ink initials stay AAA on it */
+                  background: "var(--color-semantic-accent-subtle)",
+                  border: "1px solid var(--color-semantic-accent-border)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   flexShrink: 0,
                   fontSize: "var(--typography-font-size-base)",
                   fontWeight: "var(--typography-font-weight-bold)",
-                  color: "#1A1814",
+                  color: "var(--color-ink)",
                   fontFamily: "var(--font-display)",
                   letterSpacing: "var(--typography-letter-spacing-tight)",
                 }}
@@ -252,14 +260,14 @@ export default function TestimonialSection() {
               </div>
             </div>
 
-            {/* Large quote mark */}
+            {/* Quote mark — soft periwinkle tint */}
             <span
               style={{
                 fontFamily: "var(--font-display)",
-                fontSize: "var(--typography-font-size-5xl)",
+                fontSize: "var(--typography-font-size-4xl)",
                 lineHeight: 0.8,
-                color: "var(--color-accent-gold)",
-                opacity: 0.35,
+                color: "var(--color-semantic-accent)",
+                opacity: 0.25,
                 display: "block",
                 marginBottom: "var(--spacing-1)",
                 userSelect: "none",
@@ -269,18 +277,19 @@ export default function TestimonialSection() {
               &ldquo;
             </span>
 
-            {/* Excerpt paragraphs — editorial body font, not display */}
+            {/* Excerpt — two sentences by default; the full recommendation
+                expands in place so no content leaves the page */}
             <blockquote style={{ margin: 0 }}>
-              {featured.paragraphs.map((para, i) => (
+              {(expanded ? featured.paragraphs : [featured.excerpt]).map((para, i) => (
                 <p
                   key={i}
                   style={{
                     fontFamily: "var(--font-body)",
-                    fontSize: "clamp(18px, 1.8vw, 22px)",
+                    fontSize: "18px",
                     fontWeight: "var(--typography-font-weight-regular)",
                     color: "var(--color-ink-soft)",
-                    lineHeight: 1.75,
-                    margin: i === 0 ? 0 : "14px 0 0",
+                    lineHeight: 1.65,
+                    margin: i === 0 ? 0 : "12px 0 0",
                     maxWidth: "640px",
                   }}
                 >
@@ -289,24 +298,30 @@ export default function TestimonialSection() {
               ))}
             </blockquote>
 
-            {/* Read more link */}
-            <div style={{ marginTop: "28px" }}>
-              <a
-                href={featured.linkedIn}
-                target="_blank"
-                rel="noopener noreferrer"
+            {/* Disclosure — full quote stays on the page */}
+            <div style={{ marginTop: "var(--spacing-5)" }}>
+              <button
+                type="button"
+                aria-expanded={expanded}
+                onClick={() => setExpanded((e) => !e)}
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "6px",
+                  padding: 0,
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
                   fontFamily: "var(--font-body)",
-                  fontSize: "12px",
+                  fontSize: "var(--typography-font-size-tag)",
                   fontWeight: "var(--typography-font-weight-medium)",
                   /* iris accent as TEXT — periwinkle stays fill-only */
                   color: "var(--color-accent-ink)",
-                  textDecoration: "none",
+                  textDecoration: "underline",
+                  textUnderlineOffset: "3px",
                   transition: "opacity 150ms",
                   letterSpacing: "0.02em",
+                  minHeight: "var(--spacing-touch-target)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.opacity = "0.7";
@@ -315,11 +330,11 @@ export default function TestimonialSection() {
                   e.currentTarget.style.opacity = "1";
                 }}
               >
-                Read full recommendation
+                {expanded ? "Show less" : "Read full recommendation"}
                 <span aria-hidden style={{ fontSize: "var(--typography-font-size-sm)" }}>
-                  &rarr;
+                  {expanded ? "↑" : "↓"}
                 </span>
-              </a>
+              </button>
             </div>
           </div>
         </FadeIn>
@@ -339,7 +354,7 @@ export default function TestimonialSection() {
         </div>
 
         {/* View all link */}
-        <FadeIn delay={340}>
+        <FadeIn delay={340} distance={4}>
           <div style={{ marginTop: "28px" }}>
             <a
               href={featured.linkedIn}
