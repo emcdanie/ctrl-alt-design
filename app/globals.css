@@ -67,6 +67,26 @@
   --animate-fade-in-up: fadeInUp 0.6s ease-out forwards;
 }
 
+/* ─── BELLA token bridge ─────────────────────────────────────────
+   bella.css ships Georgia as its typography primitives (generated file,
+   not hand-edited). Components styled against BELLA tokens were rendering
+   a second serif next to Fraunces. Bridge the primitives to the app fonts
+   so every BELLA-styled surface uses the same stack. */
+/* next/font exposes --font-fraunces / --font-plus-jakarta / --font-chivo-mono
+ * on <body> (layout.tsx className). The @theme copies of --font-display /
+ * --font-body live on :root, where those references are undefined — so both
+ * computed to invalid and every heading fell back to system sans. Custom
+ * properties resolve at the element they're DECLARED on, not where they're
+ * used, so every var that chains to a next/font variable must be declared at
+ * body level. The BELLA typography primitives bridge here for the same
+ * reason (they'd otherwise compute against :root's invalid --font-display). */
+body {
+  --font-display: var(--font-fraunces, "Fraunces"), "Iowan Old Style", Palatino, Georgia, serif;
+  --font-body: var(--font-plus-jakarta, "Plus Jakarta Sans"), system-ui, sans-serif;
+  --typography-font-family-display: var(--font-display);
+  --typography-font-family-body: var(--font-body);
+}
+
 /* ─── Fluid typography scale ───────────────────────────────────── */
 :root {
   --font-hero: clamp(2.8rem, 5vw, 4.5rem);
@@ -258,11 +278,13 @@ li {
 
 .eyebrow,
 .section-label {
-  font-family: var(--font-body);
+  /* Mono eyebrows per the shipped font stack (Chivo Mono is loaded in
+     layout.tsx; BELLA mono primitive is the fallback list) */
+  font-family: var(--font-chivo-mono), var(--typography-font-family-mono);
   font-size: clamp(0.65rem, 0.75vw, 0.75rem);
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--typography-letter-spacing-wider);
   /* iris accent as TEXT — #A79CE2 stays fill-only (2.25:1) */
   color: var(--color-accent-ink);
   line-height: 1.35;
@@ -331,12 +353,103 @@ li {
   font-family: var(--font-display);
   font-size: clamp(22px, 2.5vw, 28px);
   font-style: italic;
-  color: #2c2c2c;
-  border-left: 3px solid #1a1a1a;
+  color: var(--color-ink-soft);
+  border-left: 3px solid var(--color-semantic-accent);
   padding: var(--spacing-5) var(--spacing-6);
   background: var(--color-semantic-surface-elevated);
   border-radius: var(--radius-sm);
   margin: var(--spacing-10) 0;
+}
+
+/* ─── Marker highlight — periwinkle swash behind one key word ────
+   Fill-only use of --color-semantic-accent (#A79CE2); text on top stays
+   ink. Draws in on load; the global reduced-motion rule collapses the
+   animation to an instant reveal. */
+.marker-highlight {
+  position: relative;
+  display: inline-block;
+  z-index: 0;
+  white-space: nowrap;
+}
+
+.marker-highlight::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 12%;
+  bottom: 2%;
+  left: -0.08em;
+  right: -0.14em;
+  background: var(--color-semantic-accent);
+  border-radius: var(--radius-md) var(--radius-3xl) var(--radius-sm) var(--radius-2xl);
+  transform: rotate(-1.2deg);
+  transform-origin: left center;
+  animation: marker-in var(--motion-duration-slow) var(--motion-easing-standard) 450ms both;
+}
+
+@keyframes marker-in {
+  from {
+    transform: scaleX(0) rotate(-1.2deg);
+  }
+
+  to {
+    transform: scaleX(1) rotate(-1.2deg);
+  }
+}
+
+/* ─── Feature panel — the owned-color moment ─────────────────────
+   Full periwinkle color block (Anthropic-panel feel). Everything inside
+   reads in ink: #111 on #A79CE2 is 7.9:1, so body text passes 7:1. */
+.feature-panel {
+  background: var(--color-semantic-accent);
+  border-radius: var(--radius-3xl);
+  box-shadow: var(--shadow-soft);
+  color: var(--color-brand-ink);
+  overflow: hidden;
+}
+
+.feature-panel .eyebrow,
+.feature-panel .section-label,
+.feature-panel h3,
+.feature-panel p {
+  color: var(--color-brand-ink);
+}
+
+.feature-panel .tag {
+  background: var(--color-alpha-glass-48);
+  border-color: var(--color-alpha-ink-6);
+  color: var(--color-brand-ink);
+}
+
+/* ─── Stat moment — one confident statement, Workday-style ───────── */
+.stat-moment {
+  border-top: 1px solid var(--color-semantic-accent-border);
+  padding-top: var(--spacing-16);
+  margin-top: var(--spacing-20);
+}
+
+.stat-moment__figure {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-weight: var(--typography-font-weight-bold);
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  color: var(--color-ink);
+  max-width: 18ch;
+  margin: 0;
+}
+
+.stat-moment__accent {
+  color: var(--color-accent-ink);
+}
+
+.stat-moment__support {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-muted);
+  max-width: 44ch;
+  margin: 0;
 }
 
 /* ─── Type scale ─────────────────────────────────────────────────
@@ -768,8 +881,11 @@ textarea:focus-visible {
 }
 
 .carousel-card {
+  /* 470px crowded the landing view once the hero headline went to two
+   * oversized lines — 380px keeps the strip present but lets the Hero
+   * own the viewport. */
   width: 168px;
-  height: 470px;
+  height: 380px;
 }
 
 /* Mobile: shrink carousel cards further than 4715913 (was 120×280px).
@@ -1070,13 +1186,13 @@ textarea:focus-visible {
   color: var(--color-ink);
 }
 
-/* Eyebrow */
+/* Eyebrow — mono, same treatment as home sections */
 .cs-shell__eyebrow {
-  font-family: var(--font-body);
+  font-family: var(--font-chivo-mono), var(--typography-font-family-mono);
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--typography-letter-spacing-wider);
   color: var(--color-accent-ink);
   margin-bottom: 10px;
 }
