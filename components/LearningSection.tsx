@@ -111,14 +111,14 @@ export default function LearningSection() {
                       </p>
                       <p style={{
                         fontFamily: "var(--font-body)",
-                        fontSize: "11px",
+                        fontSize: "var(--typography-font-size-tag)",
                         color: "var(--color-muted)",
                         margin: "2px 0 0",
                       }}>
                         {pod.by}
                       </p>
                     </div>
-                    <span style={{ fontSize: "12px", color: "var(--color-muted)", flexShrink: 0 }}>↗</span>
+                    <span style={{ fontSize: "var(--typography-font-size-tag)", color: "var(--color-muted)", flexShrink: 0 }}>↗</span>
                   </a>
                 ))}
               </div>

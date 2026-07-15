@@ -67,7 +67,7 @@ export default function LogoContainer({
         <span
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: `${Math.round(size * 0.32)}px`,
+            fontSize: "var(--typography-font-size-base)",
             fontWeight: "var(--typography-font-weight-bold)",
             color: "var(--color-ink)",
             lineHeight: 1,

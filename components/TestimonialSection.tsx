@@ -121,7 +121,7 @@ function SupportingCard({
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
-              fontSize: "11px",
+              fontSize: "var(--typography-font-size-tag)",
               fontWeight: 600,
               color: "var(--color-ink-muted)",
               fontFamily: "var(--font-body)",
@@ -146,7 +146,7 @@ function SupportingCard({
             <p
               style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "11px",
+                fontSize: "var(--typography-font-size-tag)",
                 color: "var(--color-muted)",
                 margin: "1px 0 0",
                 lineHeight: 1.4,
@@ -249,7 +249,7 @@ export default function TestimonialSection() {
                 <p
                   style={{
                     fontFamily: "var(--font-body)",
-                    fontSize: "12px",
+                    fontSize: "var(--typography-font-size-tag)",
                     color: "var(--color-muted)",
                     margin: "2px 0 0",
                     lineHeight: 1.4,
@@ -362,7 +362,7 @@ export default function TestimonialSection() {
               rel="noopener noreferrer"
               style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "12px",
+                fontSize: "var(--typography-font-size-tag)",
                 fontWeight: "var(--typography-font-weight-medium)",
                 color: "var(--color-muted)",
                 textDecoration: "none",

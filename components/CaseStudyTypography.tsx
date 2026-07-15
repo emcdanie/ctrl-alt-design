@@ -5,7 +5,7 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
     <p style={{
       /* mono eyebrows — same treatment as the home sections */
       fontFamily: "var(--font-chivo-mono), var(--typography-font-family-mono)",
-      fontSize: "11px",
+      fontSize: "var(--typography-font-size-tag)",
       fontWeight: 500,
       textTransform: "uppercase" as const,
       letterSpacing: "var(--typography-letter-spacing-wider)",
@@ -21,9 +21,9 @@ export function H2({ children }: { children: React.ReactNode }) {
   return (
     <h2 style={{
       fontFamily: "var(--font-display)",
-      fontSize: "clamp(26px, 3.5vw, 38px)",
+      fontSize: "var(--font-subsection)",
       fontWeight: "var(--typography-font-weight-regular)",
-      color: "#1A1A1A",
+      color: "var(--color-ink)",
       lineHeight: 1.12,
       marginBottom: "var(--spacing-6)",
       marginTop: "0",
@@ -39,7 +39,7 @@ export function Body({ children }: { children: React.ReactNode }) {
       fontFamily: "var(--font-body)",
       fontSize: "var(--typography-font-size-base)",
       fontWeight: "var(--typography-font-weight-regular)",
-      color: "#2C2C2C",
+      color: "var(--color-ink-soft)",
       lineHeight: 1.65,
       marginBottom: "var(--spacing-4)",
     }}>
@@ -52,7 +52,7 @@ export function PullQuote({ children }: { children: React.ReactNode }) {
   return (
     <blockquote style={{
       fontFamily: "var(--font-display)",
-      fontSize: "clamp(19px, 2.4vw, 24px)",
+      fontSize: "var(--font-card-title)",
       fontStyle: "italic",
       color: "var(--color-ink-soft)",
       /* periwinkle rule — fill-only accent use */

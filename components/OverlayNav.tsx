@@ -142,7 +142,7 @@ export default function OverlayNav() {
               const dimmed = anyHovered && !isHovered;
 
               const sharedClasses =
-                "font-[family:var(--font-display)] text-[clamp(42px,8vw,96px)] font-normal leading-[1.02] tracking-[-0.02em] transition-colors duration-150";
+                "font-[family:var(--font-display)] text-[length:var(--font-hero)] font-normal leading-[1.02] tracking-[-0.02em] transition-colors duration-150";
               const colorClass = dimmed ? "text-[#847B6E]" : "text-[#1A1814]";
 
               return (
@@ -152,7 +152,7 @@ export default function OverlayNav() {
                   onMouseEnter={() => setHovered(item.num)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  <span className="mt-2 min-w-14 font-[family:var(--font-body)] text-[11px] uppercase tracking-[0.24em] text-[#6B665D] sm:min-w-20">
+                  <span className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[#6B665D] sm:min-w-20">
                     (_{item.num})
                   </span>
 
@@ -188,7 +188,7 @@ export default function OverlayNav() {
               href={social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-fit font-[family:var(--font-body)] text-xs uppercase tracking-[0.18em] text-[#6B665D] transition-colors duration-150 hover:text-[#1A1814]"
+              className="w-fit font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.18em] text-[#6B665D] transition-colors duration-150 hover:text-[#1A1814]"
             >
               LinkedIn
             </a>

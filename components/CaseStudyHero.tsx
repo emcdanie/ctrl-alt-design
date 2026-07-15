@@ -53,7 +53,7 @@ export default function CaseStudyHero({
                 key={label}
                 className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-5"
               >
-                <dt className="min-w-[100px] text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--color-ink-muted)] opacity-70">
+                <dt className="min-w-[100px] text-[length:var(--typography-font-size-tag)] font-semibold uppercase tracking-[0.14em] text-[var(--color-ink-muted)] opacity-70">
                   {label}
                 </dt>
                 <dd className="m-0 max-w-[440px] text-[13.5px] leading-[1.7] text-[var(--color-ink)]">
@@ -69,7 +69,7 @@ export default function CaseStudyHero({
               return (
                 <span
                   key={tag}
-                  className="inline-flex items-center rounded-full border px-3.5 py-1.5 text-[11px] font-semibold leading-[1.5] tracking-[0.04em] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]"
+                  className="inline-flex items-center rounded-full border px-3.5 py-1.5 text-[length:var(--typography-font-size-tag)] font-semibold leading-[1.5] tracking-[0.04em] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]"
                   style={{
                     background: c.bg,
                     color: c.color,

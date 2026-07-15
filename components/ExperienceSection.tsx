@@ -215,7 +215,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
               </div>
               {edu.description && (
                 <div className="border-t border-black/6 px-5 pb-5 pt-4 md:px-6 md:pb-6">
-                  <p className="text-[15px] leading-[1.75] text-[#4A4640]">
+                  <p className="text-[length:var(--typography-font-size-base)] leading-[1.75] text-[#4A4640]">
                     {edu.description}
                   </p>
                 </div>

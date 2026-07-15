@@ -88,7 +88,7 @@ export default function PrototypeEmbed({
             <span
               style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "12px",
+                fontSize: "var(--typography-font-size-tag)",
                 fontWeight: "var(--typography-font-weight-medium)",
                 color: "rgba(255,255,255,0.45)",
                 marginLeft: "var(--spacing-2)",
@@ -179,7 +179,7 @@ export default function PrototypeEmbed({
               <span
                 style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: "12px",
+                  fontSize: "var(--typography-font-size-tag)",
                   color: "rgba(255,255,255,0.3)",
                 }}
               >

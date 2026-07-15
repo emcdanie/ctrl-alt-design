@@ -78,7 +78,7 @@ export default function VideoCard({
         <h3 className="font-display mb-2 text-[20px] font-bold leading-snug text-[#1A1814]">
           {title}
         </h3>
-        <p className="mb-4 flex-1 text-[15px] leading-[1.72] text-[#6B665D]">
+        <p className="mb-4 flex-1 text-[length:var(--typography-font-size-base)] leading-[1.72] text-[#6B665D]">
           {subtitle}
         </p>
         <div className="flex flex-wrap gap-2">

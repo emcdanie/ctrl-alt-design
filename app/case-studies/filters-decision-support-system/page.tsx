@@ -59,9 +59,9 @@ export default function FiltersDecisionSupportPage() {
           <h2
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(22px, 3vw, 32px)",
+              fontSize: "var(--font-subsection)",
               fontWeight: "var(--typography-font-weight-regular)",
-              color: "#1A1A1A",
+              color: "var(--color-ink)",
               lineHeight: 1.2,
               marginBottom: "var(--spacing-3)",
             }}
@@ -71,7 +71,7 @@ export default function FiltersDecisionSupportPage() {
           <p
             style={{
               fontFamily: "var(--font-body)",
-              fontSize: "15px",
+              fontSize: "var(--typography-font-size-base)",
               color: "var(--color-muted)",
               lineHeight: 1.7,
               maxWidth: "600px",
@@ -88,7 +88,7 @@ export default function FiltersDecisionSupportPage() {
               <span
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: "12px",
+                  fontSize: "var(--typography-font-size-tag)",
                   fontWeight: "var(--typography-font-weight-bold)",
                   color: "var(--color-muted)",
                   letterSpacing: "var(--typography-letter-spacing-wide)",
@@ -127,7 +127,7 @@ export default function FiltersDecisionSupportPage() {
               <span
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: "12px",
+                  fontSize: "var(--typography-font-size-tag)",
                   fontWeight: "var(--typography-font-weight-bold)",
                   color: "var(--color-muted)",
                   letterSpacing: "var(--typography-letter-spacing-wide)",
@@ -166,7 +166,7 @@ export default function FiltersDecisionSupportPage() {
               <span
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: "12px",
+                  fontSize: "var(--typography-font-size-tag)",
                   fontWeight: "var(--typography-font-weight-bold)",
                   color: "var(--color-muted)",
                   letterSpacing: "var(--typography-letter-spacing-wide)",

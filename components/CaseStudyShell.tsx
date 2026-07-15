@@ -297,8 +297,8 @@ export default function CaseStudyShell({
         {/* Bottom CTA (visible on all sizes within the scrolling column) */}
         <div className="cs-shell__bottom-cta">
           <div className="surface-dark" style={{
-            borderRadius: "var(--radius-3xl)",
-            padding: "var(--spacing-12) var(--spacing-10)",
+            borderRadius: "var(--radius-2xl)",
+            padding: "var(--spacing-8)",
             display: "flex",
             flexDirection: "column",
             gap: "var(--spacing-5)",
@@ -306,20 +306,20 @@ export default function CaseStudyShell({
             <div>
               <p style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "11px",
+                fontSize: "var(--typography-font-size-tag)",
                 fontWeight: "var(--typography-font-weight-medium)",
                 textTransform: "uppercase",
                 letterSpacing: "0.12em",
-                color: "rgba(255,255,255,0.4)",
+                color: "var(--ink-on-dark-muted)",
                 marginBottom: "10px",
               }}>
                 Have a project in mind?
               </p>
               <h2 style={{
                 fontFamily: "var(--font-display)",
-                fontSize: "clamp(22px, 3vw, 32px)",
+                fontSize: "var(--font-subsection)",
                 fontWeight: "var(--typography-font-weight-bold)",
-                color: "#FFFFFF",
+                color: "var(--ink-on-dark-strong)",
                 lineHeight: 1.15,
                 textTransform: "uppercase",
               }}>
@@ -332,7 +332,7 @@ export default function CaseStudyShell({
               style={{
                 alignSelf: "flex-start",
                 background: "var(--color-semantic-text-inverse)",
-                color: "#1A1814",
+                color: "var(--color-ink)",
                 fontFamily: "var(--font-body)",
                 fontWeight: 600,
                 fontSize: "var(--typography-font-size-tag)",

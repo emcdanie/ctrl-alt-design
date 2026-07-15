@@ -195,7 +195,7 @@ export default function CtrlAltDesignSection() {
           return (
             <div key={video.title} className="relative h-full">
               <span
-                className="pointer-events-none absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[11px] font-bold tracking-widest"
+                className="pointer-events-none absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[length:var(--typography-font-size-tag)] font-bold tracking-widest"
                 style={{ background: catStyle.bg, color: catStyle.color, letterSpacing: "0.1em" }}
               >
                 {video.category}

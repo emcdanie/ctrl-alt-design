@@ -232,7 +232,7 @@ export default function ContactSection() {
                       <li key={link.label}>
                         <a
                           href={link.href}
-                          className="text-[15px] transition-colors footer-nav-link"
+                          className="text-[length:var(--typography-font-size-base)] transition-colors footer-nav-link"
                           style={{ color: "var(--ink-on-dark-body)" }}
                         >
                           {link.label}

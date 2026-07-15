@@ -83,7 +83,7 @@ export default function Carousel() {
         type="button"
         onClick={() => setPaused((p) => !p)}
         aria-pressed={paused}
-        className="absolute bottom-3 right-3 z-20 rounded-full px-4 text-[12px] font-medium cursor-pointer"
+        className="absolute bottom-3 right-3 z-20 rounded-full px-4 text-[length:var(--typography-font-size-tag)] font-medium cursor-pointer"
         style={{
           background: "var(--color-ink)",
           color: "var(--color-page)",

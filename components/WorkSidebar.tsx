@@ -94,7 +94,7 @@ export default function WorkSidebar() {
         <p
           style={{
             fontFamily: "var(--font-body)",
-            fontSize: "11px",
+            fontSize: "var(--typography-font-size-tag)",
             color: "var(--color-muted)",
             marginTop: "3px",
           }}
@@ -171,7 +171,7 @@ export default function WorkSidebar() {
             padding: "14px",
             color: "var(--color-page)",
             fontFamily: "var(--font-mono, monospace)",
-            fontSize: "11px",
+            fontSize: "var(--typography-font-size-tag)",
             lineHeight: 1.6,
           }}
         >
@@ -182,7 +182,7 @@ export default function WorkSidebar() {
             <span
               style={{
                 marginLeft: "auto",
-                fontSize: "9px",
+                fontSize: "var(--typography-font-size-tag)",
                 color: "#4ade80",
                 fontWeight: 600,
                 textTransform: "uppercase",

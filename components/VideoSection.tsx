@@ -39,7 +39,7 @@ export default function VideoSection({
       {(label || heading || description) && (
         <div className="mb-7">
           {label && (
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-ink-muted,#8A8A8A)]">
+            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
               {label}
             </p>
           )}
