@@ -99,6 +99,22 @@ const study: CaseStudy = {
     { kind: "pullQuote", text: "\"The best use of AI in design system work isn't generating components, it's accelerating the investigation that good system decisions depend on.\"" },
     {
       kind: "section",
+      eyebrow: "Evidence",
+      heading: "The Same Discipline, on This Site",
+      children: [
+        { kind: "paragraph", text: "The portfolio you are reading runs on the same code-first discipline: a token layer, one component per job, and a governance gate that fails the build on drift. The inspector below is live, it reads the driving tokens straight from this site's running stylesheet." },
+        {
+          kind: "embed",
+          src: "/design-system/inspector",
+          title: "Token inspector, live from this site's design system",
+          frame: "light",
+          aspect: "16/9",
+          minHeight: 460,
+        },
+      ],
+    },
+    {
+      kind: "section",
       eyebrow: "LIVE DEMO",
       heading: "Connecting the System to AI in Real Time",
       children: [

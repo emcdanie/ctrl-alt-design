@@ -734,11 +734,11 @@ li {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-ink-muted);
-  box-shadow: -1px 0 0 0 var(--color-border-medium);
 }
 
-.seg-control button:first-child {
-  box-shadow: none;
+/* hairline divider between segments (markup is ul > li > button) */
+.seg-control li + li button {
+  box-shadow: -1px 0 0 0 var(--color-border-medium);
 }
 
 .seg-control button[aria-current="true"] {
@@ -1838,5 +1838,335 @@ textarea:focus-visible {
 
   .cs-shell__left {
     width: 340px;
+  }
+}
+
+/* ─── §8 /design-system: specimens + token inspector ──────────────
+   The page reads every value live from computed styles; this block is
+   presentation only. All colours resolve from semantic tokens. */
+
+.ds-page__intro {
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  max-width: 62ch;
+  margin: var(--spacing-8) 0 0;
+}
+
+.ds-section {
+  margin-top: var(--spacing-16);
+}
+
+.ds-section__title {
+  font-family: var(--font-body);
+  font-size: var(--font-subsection);
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 0 0 var(--spacing-4);
+}
+
+.ds-section__kicker {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: var(--spacing-6) 0 var(--spacing-3);
+}
+
+.ds-section__note {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  max-width: 62ch;
+  margin: 0 0 var(--spacing-6);
+}
+
+.ds-swatches {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--spacing-4);
+}
+
+.ds-swatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.ds-swatch__plate {
+  display: block;
+  height: 64px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-medium);
+}
+
+.ds-swatch__name {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+}
+
+.ds-swatch__value {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-ink-muted);
+  overflow-wrap: anywhere;
+}
+
+.ds-type {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.ds-type__sample {
+  display: block;
+  color: var(--color-ink);
+  line-height: 1.15;
+}
+
+.ds-type__meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-ink-muted);
+  margin-top: var(--spacing-1);
+}
+
+.ds-specimen-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-6);
+}
+
+.ds-specimen__body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-xl);
+  background: var(--color-card);
+  min-height: 120px;
+}
+
+.ds-bubble-specimen {
+  display: block;
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle at 36% 30%, var(--hub-hi), var(--hub-lo));
+  box-shadow:
+    13px 22px 44px rgba(0, 0, 0, 0.26),
+    inset 7px 9px 18px rgba(255, 255, 255, 0.5),
+    inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+}
+
+.ds-scale {
+  list-style: none;
+  margin: 0;
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-xl);
+  background: var(--color-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.ds-scale__row {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.ds-scale__bar {
+  display: block;
+  height: 12px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-ink);
+  justify-self: start;
+}
+
+.ds-scale__box {
+  display: block;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--color-accent-ink);
+  justify-self: start;
+}
+
+.ds-gate {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  max-width: 72ch;
+}
+
+.ds-gate__row dt {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+}
+
+.ds-gate__row dd {
+  margin: var(--spacing-1) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+/* ── Token inspector ── */
+
+.tok-inspector {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(260px, 1.2fr);
+  gap: var(--spacing-8);
+  align-items: start;
+  padding: var(--spacing-8);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-2xl);
+  background: var(--color-card);
+}
+
+.tok-inspector__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-8);
+  padding-top: var(--spacing-6);
+}
+
+/* keycap specimen, built from the same tokens the readout names */
+.tok-inspector__key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 34px;
+  min-height: var(--spacing-touch-target);
+  border-radius: var(--btn-key-radius);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--key-face-hi);
+  background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
+  box-shadow:
+    2px 5px 0 var(--key-fill-edge),
+    6px 9px 14px color-mix(in srgb, var(--key-fill-lo) 32%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  outline: 2px dashed transparent;
+  outline-offset: 6px;
+  transition: outline-color 0.15s;
+}
+
+.tok-inspector__key[data-zone] {
+  outline-color: var(--color-accent-ink);
+}
+
+.tok-inspector__zones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-2);
+}
+
+.tok-inspector__zone {
+  cursor: pointer;
+  min-height: 32px;
+  padding: 4px var(--spacing-3);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-full);
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.tok-inspector__zone[aria-pressed="true"] {
+  background: var(--color-semantic-accent-subtle);
+  border-color: var(--color-semantic-accent-border);
+  color: var(--color-accent-ink);
+}
+
+.tok-inspector__zone:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.tok-inspector__drives {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--spacing-4);
+  min-height: 3.2em;
+}
+
+.tok-inspector__tokens {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.tok-inspector__row dt {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+}
+
+.tok-inspector__row dd {
+  margin: 2px 0 0;
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-2);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+  overflow-wrap: anywhere;
+}
+
+.tok-inspector__chip {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-medium);
+  align-self: center;
+}
+
+@media (max-width: 720px) {
+  .tok-inspector {
+    grid-template-columns: 1fr;
+    padding: var(--spacing-6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tok-inspector__key {
+    transition: none;
   }
 }
