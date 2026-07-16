@@ -190,14 +190,9 @@ export default function CtrlAltDesignSection() {
           Equal heights via items-stretch (BELLA Rule 2). */}
       <div className="grid grid-cols-1 items-stretch md:grid-cols-2" style={{ gap: "var(--grid-gap)" }}>
         {videos.map((video) => {
-          const catStyle = LAB_CATEGORY_COLORS[video.category] ?? { bg: "var(--color-brand-ink)", color: "var(--ink-on-dark-strong)" };
-
           return (
             <div key={video.title} className="relative h-full">
-              <span
-                className="pointer-events-none absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[length:var(--typography-font-size-tag)] font-bold tracking-widest"
-                style={{ background: catStyle.bg, color: catStyle.color, letterSpacing: "0.1em" }}
-              >
+              <span className="tag pointer-events-none absolute left-3 top-3 z-10">
                 {video.category}
               </span>
               <VideoCard

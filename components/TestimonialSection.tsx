@@ -40,7 +40,7 @@ const supporting = [
     quote:
       "Her ability to translate messy stakeholder requirements into clear, navigable prototypes was exceptional.",
     name: "ICTS Stakeholder",
-    role: "United Nations Office at Geneva",
+    role: "A UN agency, Geneva",
     initials: "IS",
   },
 ];

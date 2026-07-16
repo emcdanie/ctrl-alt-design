@@ -8,18 +8,17 @@ const study: CaseStudy = {
   scope: "Information Architecture, Role-Based UX, Enterprise Platform Design",
   timeline: "3 months",
   liveUrl: "",
-  heroImage: "/images/thumbnails/FormularOne.png",
-  heroVideo: "/videos/***REMOVED***.mp4",
+  heroImage: "",
   metrics: {
     role: "Product Designer — Contract",
-    team: "***REMOVED*** ICTS stakeholders",
+    team: "ICT division stakeholders",
     timeline: "3 months",
     scope: "Information architecture, dashboard design, interactive prototype",
   },
   overview: {
     headline:
       "A unified ICT platform concept for a complex international organisation — built around visibility, dependency awareness, and role-based clarity.",
-    body: "Forty minutes into a critical incident, the operations engineer is still assembling context — monitoring in one tool, tickets in another, asset ownership in a spreadsheet last updated three months ago. At the United Nations Office at Geneva, the challenge wasn't missing data. It was that operational information lived in silos with no model connecting them. I designed a unified platform prototype that made the case for what becomes possible once that architecture exists.",
+    body: "Forty minutes into a critical incident, the operations engineer is still assembling context — monitoring in one tool, tickets in another, asset ownership in a spreadsheet last updated three months ago. At a UN agency in Geneva, the challenge wasn't missing data. It was that operational information lived in silos with no model connecting them. I designed a unified platform prototype that made the case for what becomes possible once that architecture exists.",
   },
   images: [],
   problem: {
@@ -60,9 +59,8 @@ const study: CaseStudy = {
     body: "The prototype functioned as a vision artifact: a concrete, interactive expression of what a unified operational platform could look like, and why the underlying architecture mattered. Stakeholders who had been working in parallel — solving the same problems with different tools and different definitions — had a common reference point for the first time. The most valuable outcome wasn't any individual screen. It was the shared understanding the prototype created.",
     completionTag: "CONTRACT COMPLETE · 2025",
   },
-  tags: ["Figma", "Data Visualisation", "Enterprise UX", "***REMOVED*** ICTS"],
-  clientLogo: "/images/logos/united_nations_office_at_geneva_logo.jpeg",
-  clientName: "United Nations",
+  tags: ["Figma", "Data Visualisation", "Enterprise UX", "Public Sector"],
+  clientName: "A UN agency",
   demoLinks: [
     { label: "Grand Prix Dashboard prototype", href: "/demos/grandprix-dashboard.html" },
   ],
@@ -73,7 +71,7 @@ const study: CaseStudy = {
       label: "CONTEXT",
       heading: "Project Context",
       paragraphs: [
-        "An operations engineer at the United Nations Office at Geneva gets an alert: a critical service is degrading. She opens the monitoring dashboard — but it only shows infrastructure health, not which services depend on the affected asset. She switches to the ticketing system to check recent incidents — different tool, different login, different data model. She opens a spreadsheet to find the asset owner — last updated three months ago. Forty minutes into the incident, she's still assembling context that should have been available in the first ten seconds.",
+        "An operations engineer at a UN agency in Geneva gets an alert: a critical service is degrading. She opens the monitoring dashboard — but it only shows infrastructure health, not which services depend on the affected asset. She switches to the ticketing system to check recent incidents — different tool, different login, different data model. She opens a spreadsheet to find the asset owner — last updated three months ago. Forty minutes into the incident, she's still assembling context that should have been available in the first ten seconds.",
         "This wasn't a tooling failure. The tools existed. The data existed. The teams were capable. But the information lived in silos — monitoring platforms, ticketing systems, spreadsheets — with no consistent model connecting them. Answering a basic operational question like 'what depends on this server?' required manual assembly from multiple sources, every single time.",
         "The engagement was a contract to design a high-fidelity prototype for a unified operational platform — something concrete enough for senior stakeholders to evaluate, challenge, and decide whether to build. Not a dashboard mockup. A working vision of what operational clarity could actually look like.",
       ],
@@ -83,7 +81,7 @@ const study: CaseStudy = {
       heading: "My Role",
       paragraphs: [
         "I was responsible for the full design process: stakeholder discovery, information architecture, interaction design, and the delivery of a high-fidelity, interactive prototype in Figma.",
-        "Working directly with the ICTS team, I translated operational workflows and technical constraints into a platform design that non-technical stakeholders could navigate and evaluate. The goal was not to design a system in the abstract — it was to make the value of the architectural decisions legible through the design itself.",
+        "Working directly with the ICT division, I translated operational workflows and technical constraints into a platform design that non-technical stakeholders could navigate and evaluate. The goal was not to design a system in the abstract — it was to make the value of the architectural decisions legible through the design itself.",
       ],
     },
     {
@@ -116,6 +114,8 @@ const study: CaseStudy = {
     {
       label: "DESIGN",
       heading: "Interactive Prototype",
+      embedSrc: "/demos/grandprix-dashboard.html",
+      embedAlt: "Recreated, abstracted dashboard prototype — structure and interaction patterns only, no real data or screens",
       paragraphs: [
         "The deliverable was a high-fidelity, interactive prototype built in Figma. The brief called for something that stakeholders could actually navigate — not a static deck of screens, but a working prototype that would let them follow real operational paths and encounter the decisions the design had made on their behalf.",
         "That constraint shaped how the design was built. Rather than optimising for visual polish, I prioritised navigability and the integrity of the information architecture. Every screen needed to answer the question: what would a user do next, and does the platform make that obvious?",

@@ -60,12 +60,11 @@ const study: CaseStudy = {
     body: "Duplicated filter components consolidated into a smaller set of flexible, well-defined building blocks. Interaction patterns for multi-select filtering, range selection, sort integration, and empty states defined so that users encounter predictable behaviour across flows. The most important outcome was structural: a reusable filtering interaction pattern with a consistent contract across the product.",
     completionTag: "PROJECT COMPLETE · 2025",
   },
-  tags: ["Figma", "Interaction Design", "Cognitive UX", "Search UX", "***REMOVED***"],
-  clientLogo: "/images/logos/bizaway_logo.jpeg",
-  clientName: "***REMOVED***",
+  tags: ["Figma", "Interaction Design", "Cognitive UX", "Search UX", "B2B Travel"],
+  clientName: "B2B Travel",
   demoLinks: [
-    { label: "***REMOVED*** search prototype", href: "/demos/***REMOVED***-search.html" },
-    { label: "***REMOVED*** filter demo", href: "/demos/***REMOVED***-filter-demo.html" },
+    { label: "Search prototype (recreated)", href: "/demos/travel-search.html" },
+    { label: "Filter demo (recreated)", href: "/demos/travel-filter-demo.html" },
     { label: "ctrl+travel v2", href: "/demos/ctrl-travel-v2.html" },
   ],
   description:
@@ -225,8 +224,8 @@ const study: CaseStudy = {
       heading: "From Exploration to Decision System",
       children: [
         { kind: "paragraph", text: "These prototypes trace the evolution of the search and filtering system — from early pattern exploration through to the final integrated decision flow." },
-        { kind: "demoStep", index: "01 · Early Exploration", description: "Initial search interface patterns — testing how users approach travel queries and understanding baseline interaction models.", href: "/demos/***REMOVED***-search.html", linkLabel: "***REMOVED*** Search Prototype" },
-        { kind: "demoStep", index: "02 · Filter Interaction Experiments", description: "Exploring faceted filtering mechanics — how constraints combine, how state is communicated, and how users recover from over-filtering.", href: "/demos/***REMOVED***-filter-demo.html", linkLabel: "***REMOVED*** Filter Demo" },
+        { kind: "demoStep", index: "01 · Early Exploration", description: "Initial search interface patterns — testing how users approach travel queries and understanding baseline interaction models.", href: "/demos/travel-search.html", linkLabel: "Search Prototype (recreated)" },
+        { kind: "demoStep", index: "02 · Filter Interaction Experiments", description: "Exploring faceted filtering mechanics — how constraints combine, how state is communicated, and how users recover from over-filtering.", href: "/demos/travel-filter-demo.html", linkLabel: "Filter Demo (recreated)" },
         { kind: "demoStep", index: "03 · Final Decision System", description: "The complete integrated prototype — search, filtering, comparison, and booking operating as one unified decision flow with AI-assisted search and policy awareness." },
         { kind: "prototype", src: "/demos/ctrl-travel-v2.html", title: "ctrl+travel — Search & Filtering System", height: "700px" },
       ],
@@ -236,7 +235,7 @@ const study: CaseStudy = {
       eyebrow: "CONTEXT",
       heading: "A Platform That Outgrew Its Patterns",
       children: [
-        { kind: "paragraph", text: "***REMOVED*** is a B2B travel management platform used by companies across Europe to book and manage business travel. When I joined, the product had scaled quickly — flights, car rentals, hotels, trains — but each vertical had developed its own approach to search, filtering, and results presentation. There was no shared vocabulary for how a user should move from intent to decision." },
+        { kind: "paragraph", text: "The product is a B2B travel management platform used by companies across Europe to book and manage business travel. When I joined, it had scaled quickly — flights, car rentals, hotels, trains — but each vertical had developed its own approach to search, filtering, and results presentation. There was no shared vocabulary for how a user should move from intent to decision." },
         { kind: "paragraph", text: "Users needed to explore many options quickly, understand pricing constraints, see company policy restrictions, and compare travel combinations — often across verticals in a single booking session. The fragmentation was not just a visual problem. It was a cognitive one. Every time a user moved between verticals, they had to relearn how to find what they needed." },
       ],
     },

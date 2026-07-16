@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { tagColor } from "@/lib/tagColor";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
 
 /* ── Types ─────────────────────────────────────────────────────── */
@@ -110,17 +109,8 @@ export default function CaseStudyShell({
           {tags.length > 0 && (
             <div className="cs-shell__tags">
               {tags.map((tag) => {
-                const c = tagColor(tag);
                 return (
-                  <span
-                    key={tag}
-                    className="cs-shell__tag"
-                    style={{
-                      background: c.bg,
-                      color: c.color,
-                      borderColor: "var(--color-alpha-shadow-warm-08)",
-                    }}
-                  >
+                  <span key={tag} className="cs-shell__tag">
                     {tag}
                   </span>
                 );
@@ -159,7 +149,7 @@ export default function CaseStudyShell({
 
           {/* CTA */}
           <div className="cs-shell__cta">
-            <Link href="/#contact" className="cs-shell__cta-btn">
+            <Link href="/contact" className="btn-key btn-key--primary">
               Get in touch <span aria-hidden="true">↗</span>
             </Link>
           </div>
@@ -210,17 +200,8 @@ export default function CaseStudyShell({
           {tags.length > 0 && (
             <div className="cs-shell__tags">
               {tags.map((tag) => {
-                const c = tagColor(tag);
                 return (
-                  <span
-                    key={tag}
-                    className="cs-shell__tag"
-                    style={{
-                      background: c.bg,
-                      color: c.color,
-                      borderColor: "var(--color-alpha-shadow-warm-08)",
-                    }}
-                  >
+                  <span key={tag} className="cs-shell__tag">
                     {tag}
                   </span>
                 );
@@ -309,7 +290,7 @@ export default function CaseStudyShell({
               </h2>
             </div>
             <Link
-              href="/#contact"
+              href="/contact"
               style={{
                 alignSelf: "flex-start",
                 background: "var(--color-semantic-text-inverse)",

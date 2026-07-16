@@ -49,9 +49,8 @@ const roles = [
   },
   {
     title: "Product Designer — Data Dashboard (Contract)",
-    company: "United Nations Office at Geneva (***REMOVED*** ICTS)",
+    company: "A UN agency — Geneva (contract)",
     period: "Oct 2025 — Dec 2025",
-    logoSrc: "/images/logos/united_nations_office_at_geneva_logo.jpeg",
     caseStudySlug: "case-studies/un-operational-dashboard",
     caseStudyLabel: "Designing Operational Clarity →",
     highlights: [

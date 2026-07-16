@@ -78,8 +78,8 @@
     14px 24px 48px rgba(0, 0, 0, 0.26),
     inset 7px 9px 18px rgba(255, 255, 255, 0.5),
     inset -9px -13px 28px rgba(0, 0, 0, 0.16),
-    0 0 0 5px var(--color-brand-amber),
-    0 0 0 12px color-mix(in srgb, var(--color-brand-amber) 40%, transparent);
+    0 0 0 5px var(--peri),
+    0 0 0 12px color-mix(in srgb, var(--peri) 40%, transparent);
 }
 
 .bub.sel {

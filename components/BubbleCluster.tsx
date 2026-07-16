@@ -107,7 +107,7 @@ export default function BubbleCluster({
     const cx = r.left + r.width / 2;
     const cy = r.top + r.height / 2;
     const glow = i === HUB_I ? "var(--hub-bright)" : BUBBLES[i].lo;
-    const cols = [glow, "var(--color-brand-amber)", "var(--color-card)"];
+    const cols = [glow, "var(--peri)", "var(--color-card)"];
     for (let k = 0; k < 14; k++) {
       const p = document.createElement("span");
       p.className = styles.particle;

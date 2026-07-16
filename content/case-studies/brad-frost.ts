@@ -9,7 +9,6 @@ const study: CaseStudy = {
   scope: "Component Architecture, Token Alignment, Figma–Storybook Integration",
   timeline: "Oct 2024 – Jan 2025",
   heroImage: "/images/thumbnails/BradFrostCommandCenter.png",
-  heroVideo: "/videos/eddie.mp4",
   metrics: {
     role: "Design System Collaborator",
     team: "Brad Frost Web Maker Program",

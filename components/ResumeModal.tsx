@@ -65,7 +65,7 @@ const roles = [
   {
     period: "Oct 2025 — Dec 2025",
     title: "Product Designer — Data Dashboard Prototype (Contract)",
-    company: "United Nations Office at Geneva (***REMOVED*** ICTS)",
+    company: "A UN agency — Geneva (contract)",
     highlights: [
       "Designed a high-fidelity dashboard prototype supporting operational transparency across multiple UN teams — translating complex organisational workflows into clear data visualisations and interactive analytics interfaces.",
       "Conducted stakeholder interviews and requirements gathering across technical and non-technical users to define information architecture and layout structure.",

@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import OverlayNav from "@/components/OverlayNav";
+import PageHeader from "@/components/PageHeader";
 import ProcessSection from "@/components/ProcessSection";
 import ExperienceSection from "@/components/ExperienceSection";
-import LearningSection from "@/components/LearningSection";
 import TestimonialSection from "@/components/TestimonialSection";
-import VideoWalkthrough from "@/components/VideoWalkthrough";
 import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
 import ResumeModal from "@/components/ResumeModal";
 import BackToWorkButton from "@/components/BackToWorkButton";
@@ -96,9 +95,9 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
   const [expanded, setExpanded] = useState(false);
 
   const typeColors: Record<string, { bg: string; color: string }> = {
-    workshop: { bg: "rgba(42,95,168,0.1)", color: "#2A5FA8" },
-    course: { bg: "rgba(107,63,168,0.1)", color: "#6B3FA8" },
-    conference: { bg: "rgba(13,107,74,0.1)", color: "#0D6B4A" },
+    workshop: { bg: "var(--color-supporting-linen)", color: "var(--ink-on-paper)" },
+    course: { bg: "var(--color-supporting-linen)", color: "var(--ink-on-paper)" },
+    conference: { bg: "var(--color-supporting-linen)", color: "var(--ink-on-paper)" },
   };
 
   const style = typeColors[entry.type] ?? typeColors.workshop;
@@ -261,17 +260,11 @@ export default function AboutPage() {
 
       <div className="relative">
         {/* Hero / Intro */}
-        <section style={{ padding: "120px var(--spacing-6) var(--spacing-16)" }}>
+        <section className="layout-section" style={{ paddingTop: "calc(var(--header-height) + var(--spacing-16))" }}>
           <div className="page-container">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-16 items-start">
               <div>
-                <p className="section-label mb-3">— About</p>
-                <h1
-                  className="heading-section"
-                  style={{ marginBottom: "28px", maxWidth: "640px" }}
-                >
-                  Hey, I&apos;m Elleta
-                </h1>
+                <PageHeader eyebrow="— About" title="Hey, I'm Elleta" />
                 <div style={{ display: "flex", flexDirection: "column", gap: "14px", maxWidth: "600px" }}>
                   <p className="body-lg">
                     I&apos;m a product designer who works at the intersection of systems thinking
@@ -322,7 +315,7 @@ export default function AboutPage() {
         </div>
 
         {/* At-a-glance facts — relocated from landing */}
-        <section style={{ padding: "var(--spacing-12) var(--spacing-6)" }}>
+        <section className="layout-section-tight">
           <div className="page-container">
             <MetricsStrip />
           </div>
@@ -334,7 +327,7 @@ export default function AboutPage() {
         </div>
 
         {/* Working With Me */}
-        <section style={{ padding: "var(--spacing-16) var(--spacing-6)" }}>
+        <section className="layout-section">
           <div className="page-container">
             <p className="section-label mb-3">— Working With Me</p>
             <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-6)" }}>
@@ -364,8 +357,8 @@ export default function AboutPage() {
           <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
         </div>
 
-        {/* Learning & Experiments */}
-        <section style={{ padding: "var(--spacing-16) var(--spacing-6)" }}>
+        {/* Learning & Experiments — THE learning section (#learning) */}
+        <section id="learning" className="layout-section">
           <div className="page-container">
             <p className="section-label mb-3">— Learning &amp; Experiments</p>
             <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
@@ -388,86 +381,13 @@ export default function AboutPage() {
           <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
         </div>
 
-        {/* Timeline */}
-        <section style={{ padding: "var(--spacing-16) var(--spacing-6)" }}>
-          <div className="page-container">
-            <p className="section-label mb-3">— Timeline</p>
-            <h2 className="heading-subsection" style={{ marginBottom: "28px" }}>
-              Learning journey
-            </h2>
-            <div style={{ position: "relative", paddingLeft: "28px" }}>
-              {/* Vertical line */}
-              <div
-                style={{
-                  position: "absolute",
-                  left: "7px",
-                  top: "var(--spacing-2)",
-                  bottom: "var(--spacing-2)",
-                  width: "2px",
-                  background: "rgba(26,24,20,0.1)",
-                  borderRadius: "1px",
-                }}
-              />
-              <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-6)" }}>
-                {timelineEvents.map((event, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "var(--spacing-4)", position: "relative" }}>
-                    {/* Dot — positioned over the vertical line set by the
-                        parent's paddingLeft: 28px; offset back by the parent
-                        gap so the dot sits centered on the line. The previous
-                        `left: "-var(--spacing-6)"` was an unparseable string
-                        ("-" prefix on var() is invalid CSS) and rendered the
-                        dot at left:0 instead of -24px, drifting it across
-                        the timeline. */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: "calc(0px - var(--spacing-6))",
-                        top: "6px",
-                        width: "10px",
-                        height: "10px",
-                        borderRadius: "50%",
-                        background: i === 0 ? "var(--color-ink)" : "var(--color-border-medium)",
-                        border: "2px solid var(--color-page)",
-                      }}
-                    />
-                    <div>
-                      <span
-                        style={{
-                          fontFamily: "var(--font-body)",
-                          fontSize: "var(--typography-font-size-tag)",
-                          fontWeight: 600,
-                          color: "var(--color-muted)",
-                          display: "block",
-                          marginBottom: "2px",
-                        }}
-                      >
-                        {event.year}
-                      </span>
-                      <span
-                        style={{
-                          fontFamily: "var(--font-body)",
-                          fontSize: "var(--typography-font-size-base)",
-                          fontWeight: "var(--typography-font-weight-medium)",
-                          color: "var(--color-ink)",
-                        }}
-                      >
-                        {event.label}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Divider */}
         <div className="page-container">
           <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
         </div>
 
         {/* Currently Listening */}
-        <section style={{ padding: "var(--spacing-16) var(--spacing-6) var(--spacing-20)" }}>
+        <section className="layout-section">
           <div className="page-container">
             <p className="section-label mb-3">— Currently Listening</p>
             <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-6)" }}>
@@ -483,13 +403,11 @@ export default function AboutPage() {
         <ProcessSection />
         <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
         <CtrlAltDesignSection />
-        <LearningSection />
         <TestimonialSection />
-        <VideoWalkthrough />
         <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
 
         {/* CTA */}
-        <section style={{ padding: "0 var(--spacing-6) var(--spacing-20)" }}>
+        <section className="layout-section-tight">
           <div className="page-container">
             <div
               style={{
@@ -510,10 +428,7 @@ export default function AboutPage() {
                   Open to full-time roles &<br />select freelance projects.
                 </h2>
               </div>
-              <Link
-                href="/#contact"
-                style={{ flexShrink: 0, background: "var(--color-semantic-background)", color: "var(--color-semantic-text-primary)", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: "var(--typography-font-size-tag)", padding: "var(--spacing-3) var(--spacing-6)", borderRadius: "var(--radius-full)", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
-              >
+              <Link href="/contact" className="btn-key" style={{ flexShrink: 0 }}>
                 Get in touch ↗
               </Link>
             </div>

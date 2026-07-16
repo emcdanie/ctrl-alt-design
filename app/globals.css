@@ -149,6 +149,7 @@ body {
    flip with [data-theme]. */
 :root {
   --hero-iris-bright: #7A6BE8;
+  --peri: #A79CE2; /* fixed periwinkle (proto --peri) — replaces "amber"-named uses */
   --case-code-first-hi: #F6BBD6;
   --case-code-first-lo: #F0A0C8;
   --case-code-first-deep: #B23A70;
@@ -520,21 +521,21 @@ li {
   -webkit-backdrop-filter: blur(var(--bella-blur-lg));
 }
 
+/* THE tag — one neutral treatment everywhere (spec: Geist, ink on
+   linen). Fixed-context chip: linen face + fixed ink in both themes. */
 .tag {
   display: inline-flex;
   align-items: center;
   padding: 0.35rem 0.8rem;
   border-radius: var(--radius-full);
-  border: 1px solid var(--color-tag-border);
-  background: var(--color-tag-bg);
+  background: var(--color-supporting-linen);
   font-family: var(--font-body);
   font-size: var(--typography-font-size-tag);
   font-weight: var(--typography-font-weight-medium);
-  color: var(--color-ink-soft);
+  color: var(--ink-on-paper);
   white-space: nowrap;
   line-height: var(--typography-line-height-normal);
   letter-spacing: 0.02em;
-  box-shadow: inset 0 1px 0 var(--color-semantic-border-glass-top);
 }
 
 .card-hover {
@@ -1418,15 +1419,14 @@ textarea:focus-visible {
 .cs-shell__tag {
   display: inline-flex;
   align-items: center;
-  padding: 3px 10px;
+  padding: 0.35rem 0.8rem;
   border-radius: var(--radius-full);
-  border: 1px solid var(--color-alpha-shadow-warm-08);
+  background: var(--color-supporting-linen);
   font-family: var(--font-body);
   font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  line-height: 1.4;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--ink-on-paper);
+  white-space: nowrap;
 }
 
 /* Links section */
@@ -1449,25 +1449,7 @@ textarea:focus-visible {
   border-top: 1px solid var(--color-border-soft);
 }
 
-.cs-shell__cta-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 9px var(--spacing-5);
-  border-radius: var(--radius-full);
-  background: var(--color-ink);
-  color: var(--color-page);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  text-decoration: none;
-  letter-spacing: 0.04em;
-  transition: opacity 0.15s ease;
-}
 
-.cs-shell__cta-btn:hover {
-  opacity: 0.85;
-}
 
 /* ── Right column — visual narrative ─────────────────────────── */
 

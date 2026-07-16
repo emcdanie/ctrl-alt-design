@@ -57,7 +57,6 @@ const study: CaseStudy = {
       children: [
         { kind: "paragraph", text: "A designer is working under deadline. She needs a card component with a slightly different corner radius for a new feature. She duplicates the existing card, changes the radius, and ships it. Three sprints later, the product has two card components. Then three. Then a developer asks in Slack: \"which card is the canonical one?\" Nobody answers, because nobody knows. The design system didn't break. It just quietly stopped being the source of truth — and nobody found out until a code review caught the divergence six weeks too late." },
         { kind: "paragraph", text: "During the Into Design Systems Hackathon (2026), sponsored by Figma, eight of us came together around that exact problem — one we had all lived. Design system interpretation happens in isolation. The consequences only surface at handoff, review, or production — the moments when change is hardest and most expensive." },
-        { kind: "video", src: "/videos/hackathon-showreel.mp4", title: "Guardian hackathon showreel" },
         { kind: "paragraph", text: "The question wasn't \"how do we document better?\" It was: what if the design system could be present at the moment decisions are actually made — not after? That became Guardian: an AI-assisted concept that detects drift, surfaces contextual guidance, and helps teams make confident system decisions without leaving their workflow." },
       ],
     },
