@@ -16,8 +16,10 @@ interface DemoLink {
 }
 
 interface ShellMedia {
-  type: "video" | "image" | "embed";
-  src: string;
+  /** "sphere" renders the case's glossy brand sphere as the hero object
+   *  (visual-language move #2) — no src needed */
+  type: "video" | "image" | "embed" | "sphere";
+  src?: string;
   alt?: string;
 }
 
@@ -46,6 +48,9 @@ export interface CaseStudyShellProps {
   next?: { slug: string; title: string; category: string } | null;
   /** Case slug — resolves the case colours for the hero poster */
   slug?: string;
+  /** "display": Unique display headline in the case colour
+   *  (visual-language move #1). Default keeps the classic Geist title. */
+  titleTreatment?: "classic" | "display";
   /** Scrolling content (sections, pull quotes, images…) */
   children: React.ReactNode;
 }
@@ -74,6 +79,7 @@ export default function CaseStudyShell({
   prev,
   next,
   slug,
+  titleTreatment = "classic",
   children,
 }: CaseStudyShellProps) {
   const caseItem = slug ? findWorkItemBySlug(slug) : undefined;
@@ -105,7 +111,12 @@ export default function CaseStudyShell({
           <p className="cs-shell__eyebrow">{eyebrow}</p>
 
           {/* Title */}
-          <h1 className="cs-shell__title">{title}</h1>
+          <h1
+            className={`cs-shell__title${titleTreatment === "display" ? " cs-shell__title--display" : ""}`}
+            style={titleTreatment === "display" && caseItem ? { color: caseItem.text } : undefined}
+          >
+            {title}
+          </h1>
 
           {/* Summary */}
           <p className="cs-shell__summary">{summary}</p>
@@ -192,6 +203,26 @@ export default function CaseStudyShell({
         </Link>
 
         {/* Hero media */}
+        {media.type === "sphere" ? (
+          <div className="cs-shell__hero cs-shell__hero--sphere">
+            {/* connector nodding back to the map this sphere came from */}
+            <svg className="cs-shell__sphere-link" aria-hidden="true" viewBox="0 0 400 12" preserveAspectRatio="none">
+              <circle cx="6" cy="6" r="4" fill="var(--hero-iris-bright)" />
+              <line x1="10" y1="6" x2="400" y2="6" stroke="var(--hero-link)" strokeWidth="1.5" />
+            </svg>
+            <span
+              className="cs-shell__sphere"
+              aria-hidden="true"
+              style={
+                caseItem
+                  ? ({ "--bub-hi": caseItem.hi, "--bub-lo": caseItem.lo } as React.CSSProperties)
+                  : undefined
+              }
+            >
+              {caseItem?.bubbleLabel.split("|").join(" ")}
+            </span>
+          </div>
+        ) : (
         <div className="cs-shell__hero">
           <div className="cs-shell__hero-frame">
             <div className="cs-shell__hero-sheen" />
@@ -205,13 +236,13 @@ export default function CaseStudyShell({
                   playsInline
                   className="cs-shell__hero-media"
                 >
-                  <source src={media.src} type="video/mp4" />
+                  <source src={media.src!} type="video/mp4" />
                 </video>
                 <div className="cs-shell__hero-vignette" />
               </>
             ) : media.type === "embed" ? (
               <iframe
-                src={media.src}
+                src={media.src!}
                 title={media.alt ?? title}
                 style={{
                   position: "absolute",
@@ -226,7 +257,7 @@ export default function CaseStudyShell({
             ) : (
               <>
                 <Image
-                  src={media.src}
+                  src={media.src!}
                   alt={media.alt ?? title}
                   fill
                   className="cs-shell__hero-media"
@@ -238,6 +269,7 @@ export default function CaseStudyShell({
             )}
           </div>
         </div>
+        )}
 
         {/* Mobile header — title, meta, tags (below hero on small screens) */}
         <div className="cs-shell__mobile-header">

@@ -114,6 +114,7 @@ body {
 :root {
   --font-hero-unique: clamp(80px, 12.5vw, 184px);
   --font-case-title: clamp(40px, 4vw, 64px);
+  --font-case-display: clamp(40px, 5vw, 96px);
   --font-hero: clamp(40px, 5vw, 56px);
   --font-section-title: clamp(32px, 2.5vw, 40px);
   --font-subsection: clamp(24px, 2.2vw, 32px);
@@ -1247,6 +1248,91 @@ textarea:focus-visible {
   text-transform: uppercase;
   color: var(--hero-bub-ink);
   opacity: 0.55;
+}
+
+/* Visual-language move #1 — Unique display headline in the case colour */
+.cs-shell__title.cs-shell__title--display {
+  font-family: var(--font-hero-display);
+  font-weight: 700;
+  font-size: var(--font-case-display);
+  line-height: 0.9;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+/* Visual-language move #2 — the case sphere as the hero object.
+   Editorial: offset right, generous air, connector running back toward
+   the map (upper-left, where it came from). */
+.cs-shell__hero--sphere {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 380px;
+  padding: var(--spacing-8) var(--spacing-10) var(--spacing-8) 0;
+}
+
+.cs-shell__sphere-link {
+  position: absolute;
+  left: 0;
+  right: calc(var(--spacing-10) + 260px);
+  top: 50%;
+  height: 12px;
+  transform: translateY(-50%);
+  overflow: visible;
+}
+
+.cs-shell__sphere {
+  /* the BubbleCluster bubble, literally: same gradient face, same
+     upper-left gloss, same down-right shadow */
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 300px;
+  border-radius: var(--radius-full);
+  padding: var(--spacing-6);
+  text-align: center;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--typography-font-size-2xl);
+  line-height: 1.15;
+  color: var(--hero-bub-ink);
+  background: radial-gradient(circle at 36% 30%, var(--bub-hi, var(--cover-warm-hi)), var(--bub-lo, var(--cover-warm-lo)));
+  box-shadow:
+    13px 22px 44px rgba(0, 0, 0, 0.26),
+    inset 7px 9px 18px rgba(255, 255, 255, 0.5),
+    inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+}
+
+.cs-shell__sphere::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  left: 22%;
+  width: 22%;
+  height: 18%;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 72%);
+}
+
+@media (max-width: 640px) {
+  .cs-shell__hero--sphere {
+    justify-content: center;
+    padding: var(--spacing-6) 0;
+    min-height: 300px;
+  }
+
+  .cs-shell__sphere {
+    width: 220px;
+    height: 220px;
+    font-size: var(--typography-font-size-xl);
+  }
+
+  .cs-shell__sphere-link {
+    display: none;
+  }
 }
 
 .cs-shell__eyebrow {

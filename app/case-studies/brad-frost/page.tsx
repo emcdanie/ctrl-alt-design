@@ -17,7 +17,8 @@ export default function BradFrostPage() {
           { label: "Organisation", value: "Brad Frost Web — Maker Program" },
         ]}
         tags={["Design Systems", "Atomic Design", "Code-First", "AI Tooling"]}
-        media={{ type: "video", src: "/videos/eddie.mp4" }}
+        media={{ type: "sphere" }}
+        titleTreatment="display"
       >
 
         <Section eyebrow="OVERVIEW" heading="Project Overview">

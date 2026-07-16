@@ -109,6 +109,7 @@ other sizes.
 | --- | --- |
 | `--font-hero-unique` | `clamp(80px, 12.5vw, 184px)` (Unique hero headline only — recorded display-step exception, from `_proto/_hero.html`) |
 | `--font-case-title` | `clamp(40px, 4vw, 64px)` (case-study page titles — outranks section headings) |
+| `--font-case-display` | `clamp(40px, 5vw, 96px)` (Unique display case headline — visual-language move #1) |
 | `--font-hero` | `clamp(40px, 5vw, 56px)` |
 | `--font-section-title` | `clamp(32px, 2.5vw, 40px)` |
 | `--font-subsection` | `clamp(24px, 2.2vw, 32px)` |
