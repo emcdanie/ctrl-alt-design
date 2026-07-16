@@ -5,10 +5,6 @@ import Link from "next/link";
 import { social } from "@/lib/social";
 import ThemeSwitch from "@/components/ThemeSwitch";
 
-/* Dark mode is token-complete but sections aren't conformed yet (Phase 5).
- * Until then the switch stays hidden and every visitor gets pinned light.
- * Enable locally with NEXT_PUBLIC_THEME_SWITCH=1 (inlined at build time). */
-const SHOW_THEME_SWITCH = process.env.NEXT_PUBLIC_THEME_SWITCH === "1";
 
 const menuItems = [
   { num: "01", label: "Work", href: "/work" },
@@ -81,7 +77,7 @@ export default function OverlayNav() {
           </Link>
 
           <div className="flex items-center gap-4">
-          {SHOW_THEME_SWITCH && <ThemeSwitch />}
+          <ThemeSwitch />
           <button
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
