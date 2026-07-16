@@ -41,6 +41,25 @@ Token sources: `lib/bella/bella.css` (BELLA primitives/semantic/component) and
 6. Never write a raw px/hex where a token exists. A genuinely new value gets a
    named token here first.
 
+## Engineering conventions (anti-drift guardrails)
+
+1. **One implementation per job.** When redesigning, migrate the LIVE
+   route/component and DELETE the old copy in the same commit — never
+   leave old + new both rendering. Before finishing any structural
+   change, grep for duplicate/orphan components and routes
+   (zero-import components, parallel route trees).
+2. **One of each:** one dashboard home, one top nav (no sidebars), one
+   card component, one case-study route tree (`app/case-studies/*`),
+   one style source per concern. Content sources: `lib/workLibrary.ts`
+   (hero/library metadata) + `lib/content.ts` (case prose) — nothing else.
+3. **Layout:** centered 1240px container, token spacing (`--space-*` /
+   `--spacing-*`), body ≥16px, NO arbitrary `text-[Npx]`, NO hardcoded
+   hex in components (fixed-context surfaces use their recorded tokens).
+4. **Token cascade trap:** Tailwind `@theme` emits inside `@layer theme`;
+   BELLA's `:root` is unlayered and WINS. App-level token overrides must
+   be declared in the unlayered `:root` block in `globals.css`, never
+   only in `@theme` (see `--header-height` incident, 2026-07-16).
+
 ## Global theming contract (site-wide, NOT hero-scoped)
 
 Mirrors `portfolio-conformance-spec.md` (Design Projects). Enforced
