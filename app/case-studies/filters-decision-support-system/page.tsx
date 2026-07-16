@@ -22,6 +22,7 @@ export default function FiltersDecisionSupportPage() {
   return (
     <CaseStudyLayout>
       <CaseStudyShell
+        slug={"filters-decision-support-system"}
         eyebrow={`${cs.category} · ${cs.year}`}
         title={cs.title}
         summary="Designing a decision-support system for complex B2B travel booking — where search, filtering, and results operate as one integrated flow rather than three separate features."

@@ -139,6 +139,7 @@ export default async function CaseStudyPage({
   return (
     <CaseStudyLayout>
       <CaseStudyShell
+        slug={slug}
         eyebrow={`${cs.category} · ${cs.year}`}
         title={cs.title}
         summary={cs.description}

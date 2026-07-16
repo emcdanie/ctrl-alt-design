@@ -6,6 +6,7 @@ export default function BradFrostPage() {
   return (
     <CaseStudyLayout>
       <CaseStudyShell
+        slug={"brad-frost"}
         eyebrow="Design System Collaboration · 2024–2025"
         title="Code First"
         summary="What building Brad Frost's component system in reverse taught me about design — and why working code-first changes everything you pay attention to."

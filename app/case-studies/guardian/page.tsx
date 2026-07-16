@@ -6,6 +6,7 @@ export default function GuardianPage() {
   return (
     <CaseStudyLayout>
       <CaseStudyShell
+        slug={"guardian"}
         eyebrow="Hackathon Concept · 2026"
         title="From Isolation to Interpretation"
         summary="Designing a Context-Aware Design System Guardian — an AI-assisted concept that detects drift, surfaces contextual guidance, and helps teams make confident system decisions without leaving their workflow."

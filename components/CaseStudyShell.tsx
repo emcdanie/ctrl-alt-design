@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { tagColor } from "@/lib/tagColor";
+import { findWorkItemBySlug } from "@/lib/workLibrary";
 
 /* ── Types ─────────────────────────────────────────────────────── */
 
@@ -43,6 +44,8 @@ export interface CaseStudyShellProps {
   prev?: { slug: string; title: string; category: string } | null;
   /** Next case study (for nav) */
   next?: { slug: string; title: string; category: string } | null;
+  /** Case slug — resolves the case colours for the hero poster */
+  slug?: string;
   /** Scrolling content (sections, pull quotes, images…) */
   children: React.ReactNode;
 }
@@ -70,8 +73,23 @@ export default function CaseStudyShell({
   liveUrl,
   prev,
   next,
+  slug,
   children,
 }: CaseStudyShellProps) {
+  const caseItem = slug ? findWorkItemBySlug(slug) : undefined;
+  const poster = (
+    <div
+      className="cs-shell__hero-poster"
+      aria-hidden="true"
+      style={
+        caseItem
+          ? { background: `linear-gradient(160deg, ${caseItem.hi}, ${caseItem.lo})` }
+          : undefined
+      }
+    >
+      <span>{title}</span>
+    </div>
+  );
   return (
     <div className="cs-shell">
       {/* ════════════════════════════════════════════════════════════
@@ -79,6 +97,10 @@ export default function CaseStudyShell({
           ════════════════════════════════════════════════════════════ */}
       <aside className="cs-shell__left">
         <div className="cs-shell__sticky">
+          <Link href="/work" className="cs-shell__backlink">
+            <span aria-hidden="true">←</span> Back to Work
+          </Link>
+
           {/* Eyebrow */}
           <p className="cs-shell__eyebrow">{eyebrow}</p>
 
@@ -165,12 +187,17 @@ export default function CaseStudyShell({
           RIGHT — Scrolling content column
           ════════════════════════════════════════════════════════════ */}
       <div className="cs-shell__right">
+        <Link href="/work" className="cs-shell__backlink cs-shell__backlink--mobile">
+          <span aria-hidden="true">←</span> Back to Work
+        </Link>
+
         {/* Hero media */}
         <div className="cs-shell__hero">
           <div className="cs-shell__hero-frame">
             <div className="cs-shell__hero-sheen" />
             {media.type === "video" ? (
               <>
+                {poster}
                 <video
                   autoPlay
                   muted

@@ -169,6 +169,11 @@ export const WORK_ITEMS: WorkItem[] = [
   },
 ];
 
+/** Case tokens for a case-study slug (hero poster, accents). */
+export function findWorkItemBySlug(slug: string): WorkItem | undefined {
+  return WORK_ITEMS.find((i) => i.href.endsWith(`/case-studies/${slug}`));
+}
+
 /** The hub is not a work row — it belongs to the bubble cluster only. */
 export const HUB_ITEM: Omit<WorkItem, "type" | "year" | "yearStart" | "role" | "impact" | "skills"> = {
   id: "hub",

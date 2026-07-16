@@ -113,6 +113,7 @@ body {
    on the ramp, defined ONCE here. No other clamp() in components. */
 :root {
   --font-hero-unique: clamp(80px, 12.5vw, 184px);
+  --font-case-title: clamp(40px, 4vw, 64px);
   --font-hero: clamp(40px, 5vw, 56px);
   --font-section-title: clamp(32px, 2.5vw, 40px);
   --font-subsection: clamp(24px, 2.2vw, 32px);
@@ -1198,6 +1199,56 @@ textarea:focus-visible {
 
 
 /* Eyebrow — mono, same treatment as home sections */
+.cs-shell__backlink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-height: var(--spacing-touch-target);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-ink-muted);
+  margin-bottom: var(--spacing-4);
+}
+
+.cs-shell__backlink:hover,
+.cs-shell__backlink:focus-visible {
+  color: var(--color-accent-ink);
+}
+
+/* the right-column copy only shows when the left panel is hidden */
+.cs-shell__backlink--mobile {
+  margin-bottom: var(--spacing-2);
+}
+
+@media (min-width: 1080px) {
+  .cs-shell__backlink--mobile {
+    display: none;
+  }
+}
+
+.cs-shell__hero-poster {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--spacing-6);
+  background: linear-gradient(160deg, var(--cover-warm-hi), var(--cover-warm-lo));
+}
+
+.cs-shell__hero-poster span {
+  font-family: var(--font-hero-display);
+  font-weight: 700;
+  font-size: var(--font-subsection);
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: var(--hero-bub-ink);
+  opacity: 0.55;
+}
+
 .cs-shell__eyebrow {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
@@ -1211,7 +1262,8 @@ textarea:focus-visible {
 /* Title */
 .cs-shell__title {
   font-family: var(--font-display);
-  font-size: var(--font-subsection);
+  /* page title — clearly outranks in-page section headings */
+  font-size: var(--font-case-title);
   font-weight: var(--typography-font-weight-bold);
   line-height: 1.08;
   letter-spacing: -0.025em;
