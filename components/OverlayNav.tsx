@@ -6,11 +6,15 @@ import { social } from "@/lib/social";
 import ThemeSwitch from "@/components/ThemeSwitch";
 
 
+/* Primary IA — visible in the desktop header (NN/g: hidden desktop nav
+ * halves discoverability); the same list collapses into the hamburger
+ * on mobile. */
 const menuItems = [
   { num: "01", label: "Work", href: "/work" },
-  { num: "02", label: "Guardian", href: "/case-studies/guardian" },
-  { num: "03", label: "Experience", href: "#experience" },
-  { num: "04", label: "Get in Touch", href: "#contact" },
+  { num: "02", label: "Case Studies", href: "/#work" },
+  { num: "03", label: "Point of View", href: "/point-of-view" },
+  { num: "04", label: "About", href: "/about" },
+  { num: "05", label: "Contact", href: "/#contact" },
 ];
 
 export default function OverlayNav() {
@@ -76,13 +80,26 @@ export default function OverlayNav() {
             <span className="key key-iris">Design</span>
           </Link>
 
+          {/* Desktop primary nav — hidden below lg, where the hamburger takes over */}
+          <nav aria-label="Primary" className="pointer-events-auto hidden lg:flex items-center gap-1">
+            {menuItems.map((item) => (
+              <Link
+                key={item.num}
+                href={item.href}
+                className="flex min-h-[var(--spacing-touch-target)] items-center rounded-[var(--radius-md)] px-3 font-[family:var(--font-mono)] text-[length:var(--typography-font-size-tag)] font-medium uppercase tracking-[0.1em] text-[color:var(--color-ink-soft)] transition-colors hover:text-[color:var(--color-accent-ink)]"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
           <div className="flex items-center gap-4">
           <ThemeSwitch />
           <button
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
             onMouseLeave={() => setTriggerHovered(false)}
-            className="pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--color-border-medium)] bg-[color:var(--color-glass)] text-[color:var(--color-ink)] shadow-[0_10px_30px_rgba(26,24,20,0.08)] transition-all duration-200 hover:bg-[color:var(--color-glass-strong)]"
+            className="lg:hidden pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--color-border-medium)] bg-[color:var(--color-glass)] text-[color:var(--color-ink)] shadow-[0_10px_30px_rgba(26,24,20,0.08)] transition-all duration-200 hover:bg-[color:var(--color-glass-strong)]"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="overlay-menu"
@@ -175,6 +192,12 @@ export default function OverlayNav() {
           </nav>
 
           <div className="relative z-10 mt-12 flex flex-col gap-3 sm:mt-16">
+            <div className="flex items-center gap-3">
+              <ThemeSwitch />
+              <span className="font-[family:var(--font-mono)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.12em] text-[color:var(--color-ink-muted)]">
+                Theme
+              </span>
+            </div>
             <a
               href="mailto:elletamc@gmail.com"
               className="w-fit font-[family:var(--font-body)] text-sm text-[color:var(--color-ink-muted)] transition-colors duration-150 hover:text-[color:var(--color-ink)]"

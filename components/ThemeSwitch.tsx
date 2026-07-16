@@ -12,10 +12,16 @@ import styles from "./ThemeSwitch.module.css";
 export default function ThemeSwitch() {
   const [dark, setDark] = useState(false);
 
-  // layout.tsx pins data-theme="light" before paint; mirror it here so
-  // aria-checked and the DOM attribute can never disagree.
+  // layout.tsx pins data-theme="light" before paint; mirror the DOM
+  // attribute (and watch it) so aria-checked can never disagree — the
+  // switch renders in both the header and the mobile menu, and both
+  // instances must stay in sync.
   useEffect(() => {
-    setDark(document.documentElement.dataset.theme === "dark");
+    const sync = () => setDark(document.documentElement.dataset.theme === "dark");
+    sync();
+    const mo = new MutationObserver(sync);
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => mo.disconnect();
   }, []);
 
   const toggle = () => {
