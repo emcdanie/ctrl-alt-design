@@ -174,6 +174,10 @@ body {
   --case-clarity-text: var(--case-clarity-deep);
   --case-design-lab-text: var(--case-design-lab-deep);
   --case-writing-text: var(--case-writing-deep);
+  --case-filters-text: var(--case-filters-deep);
+  --case-filters-hi: #AFC9E8;
+  --case-filters-lo: #8FB4DC;
+  --case-filters-deep: #2A5A8E;
   --hub-hi: #CFC7F6;
   --hub-lo: #A99BEC;
   --hub-bright: #6C5CE0;
@@ -245,6 +249,7 @@ body {
   --case-clarity-text: var(--case-clarity-hi);
   --case-design-lab-text: var(--case-design-lab-hi);
   --case-writing-text: var(--case-writing-hi);
+  --case-filters-text: var(--case-filters-hi);
   --hero-panel-bg: #F4EFE6;
   --hero-panel-shadow: rgba(0, 0, 0, 0.44);
   --hero-link: rgba(244, 239, 230, 0.2);

@@ -169,9 +169,25 @@ export const WORK_ITEMS: WorkItem[] = [
   },
 ];
 
-/** Case tokens for a case-study slug (hero poster, accents). */
-export function findWorkItemBySlug(slug: string): WorkItem | undefined {
-  return WORK_ITEMS.find((i) => i.href.endsWith(`/case-studies/${slug}`));
+/** Case identities that live outside the 6-bubble hero cluster (they
+ * still get the colour + sphere thread on their case pages). */
+const EXTRA_CASES: Record<string, Pick<WorkItem, "hi" | "lo" | "deep" | "text" | "bubbleLabel">> = {
+  "filters-decision-support-system": {
+    hi: "var(--case-filters-hi)",
+    lo: "var(--case-filters-lo)",
+    deep: "var(--case-filters-deep)",
+    text: "var(--case-filters-text)",
+    bubbleLabel: "Travel|Booking",
+  },
+};
+
+/** Case tokens for a case-study slug (sphere, accents). */
+export function findWorkItemBySlug(
+  slug: string
+): Pick<WorkItem, "hi" | "lo" | "deep" | "text" | "bubbleLabel"> | undefined {
+  return (
+    WORK_ITEMS.find((i) => i.href.endsWith(`/case-studies/${slug}`)) ?? EXTRA_CASES[slug]
+  );
 }
 
 /** The hub is not a work row — it belongs to the bubble cluster only. */
