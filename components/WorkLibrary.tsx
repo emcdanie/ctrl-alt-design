@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import BubbleCluster from "./BubbleCluster";
+import CaseCard from "./CaseCard";
 import { SKILLS, WORK_ITEMS, slugify, type WorkItem } from "@/lib/workLibrary";
 import styles from "./WorkLibrary.module.css";
 
@@ -25,6 +26,8 @@ type SortKey = keyof typeof SORTS;
 function sortItems(items: WorkItem[], sort: SortKey): WorkItem[] {
   const { key, dir } = SORTS[sort];
   return [...items].sort((a, b) => {
+    // the current-focus piece leads the default view
+    if (sort === "year-desc" && !!a.featured !== !!b.featured) return a.featured ? -1 : 1;
     const av = a[key as keyof WorkItem] as string | number;
     const bv = b[key as keyof WorkItem] as string | number;
     if (av === bv) return a.title.localeCompare(b.title);
@@ -113,7 +116,6 @@ export default function WorkLibrary() {
             aria-pressed={caseFilter === i.id}
             onClick={() => setParam("case", caseFilter === i.id ? null : i.id)}
           >
-            <span className={styles.chipDot} style={{ background: i.lo }} aria-hidden="true" />
             {i.title}
           </button>
         ))}
@@ -229,6 +231,7 @@ function TableView({
                 <Link href={i.href} className={styles.rowTitle} style={{ color: i.text }}>
                   {i.title}
                 </Link>
+                {i.featured && <span className={styles.focusTag}>Current focus</span>}
               </th>
               <td>{i.type}</td>
               <td>
@@ -323,14 +326,10 @@ function TimelineView({ items }: { items: WorkItem[] }) {
         onKeyDown={onKeyDown}
       >
         {items.map((i) => (
-          <li key={i.id} className={styles.tlCard} style={{ ["--cc" as string]: i.lo, ["--ct" as string]: i.text }}>
+          <li key={i.id} className={styles.tlCard}>
             <div className={styles.cardInner}>
-              <p className={styles.tlYear}>{i.year}</p>
-              <p className={styles.tlTitle}>
-                <Link href={i.href}>{i.title}</Link>
-              </p>
-              <p className={styles.tlType}>{i.type}</p>
-              <p className={styles.tlImpact}>{i.impact}</p>
+              <p className={styles.tlYear} style={{ color: i.text }}>{i.year}</p>
+              <CaseCard item={i} />
             </div>
           </li>
         ))}

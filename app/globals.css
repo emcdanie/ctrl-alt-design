@@ -177,6 +177,11 @@ body {
   --hero-panel-meta: #4A4652;
   --hero-panel-close: #9A948B;
 
+  /* Case-card cover placeholder — muted warm, never bright (IA spec) */
+  --cover-warm-hi: #E9E2D2;
+  --cover-warm-lo: #D9CDB9;
+  --cover-warm-ink: #4A4030;
+
   /* Fixed-context "paper" tokens — surfaces that stay light in BOTH
      modes (reveal card, resume modal). Never flip these. */
   --surface-paper: #FAFAF8;

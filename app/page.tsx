@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
 import Hero from "@/components/Hero";
+import CaseCard from "@/components/CaseCard";
 import { WORK_ITEMS } from "@/lib/workLibrary";
 
 /* ONE dashboard home (IA consolidation, 2026-07-16): the bubble board,
@@ -36,23 +37,16 @@ export default function Home() {
               </h2>
             </header>
 
-            {/* Interim featured block — becomes the image-led CaseCard in the
-                one-card consolidation step */}
             <div
               style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "var(--spacing-4)",
-                maxWidth: "65ch",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 480px))",
+                gap: "var(--grid-gap)",
+                alignItems: "start",
               }}
             >
-              <p className="body-base" style={{ fontSize: "var(--font-body-size)" }}>
-                {featured.impact}. {featured.ingredients.join(". ")}.
-              </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--spacing-3)" }}>
-                <Link href={featured.href} className="btn-key btn-key--primary">
-                  See the Design Lab <span aria-hidden="true">→</span>
-                </Link>
+              <CaseCard item={featured} />
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--spacing-3)", alignSelf: "end" }}>
                 <Link href="/work" className="btn-key">
                   Browse the library <span aria-hidden="true">→</span>
                 </Link>

@@ -62,13 +62,6 @@
   font-size: var(--typography-font-size-tag);
 }
 
-.chipDot {
-  width: 10px;
-  height: 10px;
-  border-radius: var(--radius-full);
-  flex-shrink: 0;
-}
-
 .count {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
@@ -154,6 +147,20 @@
   text-decoration: underline;
 }
 
+.focusTag {
+  display: inline-block;
+  margin-left: var(--spacing-2);
+  font-family: var(--font-mono);
+  font-size: 11px; /* matches the hub-sub recorded exception */
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-ink);
+  border: 1px solid var(--color-semantic-accent-border);
+  border-radius: var(--radius-full);
+  padding: 2px var(--spacing-2);
+  white-space: nowrap;
+}
+
 .skillList {
   display: flex;
   flex-wrap: wrap;
@@ -215,13 +222,7 @@
 
 .tlCard {
   scroll-snap-align: center;
-  flex: 0 0 300px;
-  border-radius: var(--radius-2xl);
-  border: 1px solid var(--color-semantic-border-subtle);
-  border-top: 4px solid var(--cc);
-  background: var(--color-card);
-  padding: var(--spacing-6);
-  box-shadow: var(--shadow-card-default);
+  flex: 0 0 320px;
 }
 
 .cardInner {

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { social } from "@/lib/social";
 import ThemeSwitch from "@/components/ThemeSwitch";
 
@@ -18,6 +19,12 @@ const menuItems = [
 
 export default function OverlayNav() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  /* Work owns the library and every case page */
+  const isCurrent = (href: string) =>
+    href === "/work"
+      ? pathname.startsWith("/work") || pathname.startsWith("/case-studies")
+      : pathname === href || pathname.startsWith(href + "/");
   const [hovered, setHovered] = useState<string | null>(null);
   const [triggerHovered, setTriggerHovered] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -85,7 +92,12 @@ export default function OverlayNav() {
               <Link
                 key={item.num}
                 href={item.href}
-                className="flex min-h-[var(--spacing-touch-target)] items-center rounded-[var(--radius-md)] px-3 font-[family:var(--font-mono)] text-[length:var(--typography-font-size-tag)] font-medium uppercase tracking-[0.1em] text-[color:var(--color-ink-soft)] transition-colors hover:text-[color:var(--color-accent-ink)]"
+                aria-current={isCurrent(item.href) ? "page" : undefined}
+                className={`flex min-h-[var(--spacing-touch-target)] items-center rounded-[var(--radius-md)] px-3 font-[family:var(--font-mono)] text-[length:var(--typography-font-size-tag)] font-medium uppercase tracking-[0.1em] transition-colors hover:text-[color:var(--color-accent-ink)] ${
+                  isCurrent(item.href)
+                    ? "text-[color:var(--color-accent-ink)] underline underline-offset-8 decoration-2"
+                    : "text-[color:var(--color-ink-soft)]"
+                }`}
               >
                 {item.label}
               </Link>
@@ -180,6 +192,7 @@ export default function OverlayNav() {
                     <Link
                       href={item.href}
                       onClick={() => setOpen(false)}
+                      aria-current={isCurrent(item.href) ? "page" : undefined}
                       className={`${sharedClasses} ${colorClass} block hover:text-[color:var(--color-ink-soft)]`}
                     >
                       {item.label}
