@@ -1,13 +1,17 @@
-# docs/fixes - recurring-problem fixes
+# docs/fixes — hard-won fixes (never break this twice)
 
-When something breaks more than once, the fix gets a file here and a
-reference in CLAUDE.md. One problem per file: symptom, why, fix, where
-it recurred.
+Roxanne's `slide-in-service.md` pattern. When something breaks more than once, research it, fix it, and
+record the fix HERE as its own file. `CLAUDE.md` §10 points here. These are load-bearing rules, not notes —
+each one exists because it already cost time once.
 
-| File | Problem |
-| --- | --- |
-| [turbopack-stale-css.md](turbopack-stale-css.md) | Dev server serves stale CSS after globals edits |
-| [cascade-layer-token-trap.md](cascade-layer-token-trap.md) | @theme tokens lose to BELLA's unlayered :root |
-| [git-mv-hides-content-from-scans.md](git-mv-hides-content-from-scans.md) | Renames hide file content from diff-based scans |
-| [grep-c-exit-code-breaks-chains.md](grep-c-exit-code-breaks-chains.md) | grep -c exit codes break && chains / gates |
-| [dangling-selector-merge.md](dangling-selector-merge.md) | Dangling selector merges into the next CSS rule |
+Rule: before "fixing" a recurring symptom, check whether there's already a file here for it. If there is,
+apply the known fix. If there isn't and you just solved something painful, add one.
+
+Current fixes:
+- `cascade-trap.md` — theme token overrides not applying (BELLA `:root` beats `@theme`).
+- `one-render-path.md` — "changes never go global" (duplicate/parallel implementations).
+- `dark-mode-every-surface.md` — dark mode broken on some surfaces (hardcoded values).
+- `focus-outline-dangling-selector.md` — a stray 2px outline / "weird line" around a whole shell.
+- `turbopack-stale-css.md` — dev server serves stale CSS after globals edits (wipe `.next`).
+- `git-mv-hides-content-from-scans.md` — renames hide file content from diff-based scans.
+- `grep-c-exit-code-breaks-chains.md` — grep -c exit codes break && chains / gates.
