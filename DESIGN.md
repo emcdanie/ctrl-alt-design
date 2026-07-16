@@ -103,6 +103,7 @@ From `_proto/_hero.html` `.toggle`. One button style, two variants, both in
 | --- | --- | --- | --- |
 | Neutral | `.btn-key` | `--key-face-hi` → `--key-face-lo` | `--shadow-key-resting` (`2px 5px 0 --key-edge` + soft cast + inset top highlight) |
 | Primary | `.btn-key--primary` | `--key-c` (accent default; set a case colour to re-key) | `color-mix(in srgb, var(--key-c) 64%, black)` |
+| Secondary (card CTA) | `.pr` in `BubbleCluster.module.css` | iris `--color-accent-ink`, ALWAYS — never per-case (case colour stays in kicker/trace/glow) | `color-mix(in srgb, accent 60%, black)` |
 
 - Radius `--btn-key-radius` (12px). Labels Geist Mono, `tag` size, 600,
   uppercase — NEVER Unique (locked type rule).

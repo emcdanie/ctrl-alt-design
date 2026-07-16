@@ -207,20 +207,40 @@
   text-indent: -16px;
 }
 
+/* Card CTA — ONE consistent secondary keycap, iris on every card. The
+ * case colour lives in the kicker/trace/glow, never in this button. */
 .pr {
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
+  cursor: pointer;
   font-family: var(--font-body);
   font-weight: 600;
   font-size: var(--typography-font-size-sm);
-  color: var(--ct);
+  color: var(--key-face-hi);
   text-decoration: none;
-  border: 1.5px solid var(--ct);
-  border-radius: var(--radius-full);
-  padding: 10px 20px;
-  margin-top: 4px;
+  border: none;
+  border-radius: var(--btn-key-radius);
+  padding: 11px 20px;
+  margin-top: 6px;
   min-height: var(--spacing-touch-target);
+  background: linear-gradient(
+    color-mix(in srgb, var(--color-accent-ink) 82%, white),
+    var(--color-accent-ink)
+  );
+  box-shadow:
+    2px 5px 0 color-mix(in srgb, var(--color-accent-ink) 60%, black),
+    6px 10px 18px color-mix(in srgb, var(--color-accent-ink) 38%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.pr:active {
+  transform: translateY(3px);
+  box-shadow:
+    1px 2px 0 color-mix(in srgb, var(--color-accent-ink) 60%, black),
+    3px 5px 10px color-mix(in srgb, var(--color-accent-ink) 32%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .pclose {
