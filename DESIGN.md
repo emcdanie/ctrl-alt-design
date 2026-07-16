@@ -22,8 +22,8 @@ Token sources: `lib/bella/bella.css` (BELLA primitives/semantic/component) and
 | Card shadow, raised/hover | one tier | `--shadow-card-elevated` |
 | Featured/marketing panel | section-scale color block, NOT a card | radius `--radius-3xl` (24px), padding `--spacing-8` (32px), shadow `--shadow-soft` (recorded exception: `.feature-panel` only) |
 | Panel-scale glass wrappers | `.glass-card` (About, featured testimonial) | radius `--radius-2xl` like cards; padding `--spacing-8` (panel tier) |
-| Container | max width + side padding | `--container-width` (1200px) + `--container-padding` (32px) via `.layout-container` |
-| Section vertical padding | desktop | `--spacing-20` (80px) via `.layout-section` |
+| Container | max width + side padding | `--container-width` (1240px, spec §1) + `--container-padding` (32px) via `.layout-container` / `.page-container` |
+| Section vertical padding | desktop | `--space-section` (96px, spec §1) via `.layout-section` |
 | Section vertical padding | ≤640px | `--spacing-16` (64px) |
 | Grid gap | everywhere | `--grid-gap` = `--spacing-8` (32px) |
 | Touch targets | interactive elements | ≥ `--spacing-touch-target` (44px) |
