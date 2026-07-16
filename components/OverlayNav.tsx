@@ -63,23 +63,15 @@ export default function OverlayNav() {
         >
           <Link
             href="/"
-            className="pointer-events-auto"
+            className="kbd-logo pointer-events-auto"
+            aria-label="ctrl alt design — home"
             onClick={() => setOpen(false)}
           >
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#1A1814]/10 bg-[#1A1814] text-white shadow-[0_10px_24px_rgba(26,24,20,0.18)] transition-all duration-200 hover:scale-[0.98] hover:opacity-85">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                <text
-                  x="3"
-                  y="14"
-                  fontFamily="'Clash Display', system-ui, sans-serif"
-                  fontWeight="700"
-                  fontSize="16"
-                  fill="white"
-                >
-                  E
-                </text>
-              </svg>
-            </div>
+            <span className="key">Ctrl</span>
+            <span className="plus" aria-hidden="true">+</span>
+            <span className="key">Alt</span>
+            <span className="plus" aria-hidden="true">+</span>
+            <span className="key key-iris">Design</span>
           </Link>
 
           <button

@@ -4,7 +4,7 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p style={{
       /* mono eyebrows — same treatment as the home sections */
-      fontFamily: "var(--font-chivo-mono), var(--typography-font-family-mono)",
+      fontFamily: "var(--font-mono)",
       fontSize: "var(--typography-font-size-tag)",
       fontWeight: 500,
       textTransform: "uppercase" as const,

@@ -50,3 +50,14 @@ _private/
 
 # vetted local prototypes (visual source of truth, not shipped)
 _proto/
+
+# local working material — never commit
+_review/
+_to_delete/
+*.m4a
+prototypes/chip-dashboard/
+prototypes/chip-workspace/
+prototypes/finviz-3/
+prototypes/finviz-kpi-tree/
+prototypes/linkedin-archive/
+prototypes/linkedin-preview/

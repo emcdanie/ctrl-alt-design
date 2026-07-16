@@ -69,7 +69,7 @@
 }
 
 .kicker {
-  font-family: var(--font-chivo-mono), var(--typography-font-family-mono);
+  font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   letter-spacing: var(--typography-letter-spacing-wider);
   text-transform: uppercase;
@@ -88,7 +88,7 @@
 }
 
 .ingredients {
-  font-family: var(--font-chivo-mono), var(--typography-font-family-mono);
+  font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   line-height: 1.9;
   margin: 0;
@@ -162,7 +162,7 @@
 }
 
 .brand {
-  font-family: var(--font-chivo-mono), var(--typography-font-family-mono);
+  font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   letter-spacing: var(--typography-letter-spacing-wide);
   color: var(--color-muted);

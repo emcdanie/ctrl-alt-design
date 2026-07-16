@@ -32,9 +32,9 @@ const T = {
   shadow:        "var(--shadow-soft)",
   shadowMd:      "var(--shadow-layered)",
   // Typography — Eddie fonts
-  display:       "var(--font-display)",         // Clash Display
+  display:       "var(--font-display)",
   body:          "var(--font-body)",            // Plus Jakarta Sans
-  mono:          "var(--font-chivo-mono), 'Chivo Mono', monospace",
+  mono:          "var(--font-mono)",
   // Radius — Eddie editorial feel
   radius:        "20px",
   radiusSm:      "10px",

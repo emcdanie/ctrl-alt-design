@@ -43,11 +43,15 @@ Token sources: `lib/bella/bella.css` (BELLA primitives/semantic/component) and
 
 ## §5. Type ramp (canonical)
 
-Sizes: **13 / 14 / 16 / 18 / 20 / 24 / 32 / 40 / 56** px. Body text never
-below 16px. No other sizes.
+Sizes: **13 / 14 / 16 / 18 / 20 / 24 / 32 / 40 / 56** px, plus the hero
+display step (see `--font-hero-unique`). Body text never below 16px. No
+other sizes.
 
-- Display = Fraunces (`--font-display`), body = Plus Jakarta Sans
-  (`--font-body`), eyebrows/labels/meta = mono (`--font-chivo-mono` chain).
+- Faces (redesign/lush): the large hero headline — and ONLY it — is Unique
+  (`--font-hero-display`; fails legibility at label sizes, never use it for
+  labels, card titles, or body). Display headings and all body/labels/card
+  titles = Geist (`--font-display` / `--font-body`). Eyebrows/meta = Geist
+  Mono (`--font-mono` chain).
 - BELLA size tokens map 1:1 to the ramp: `tag` 13, `sm` 14, `base` 16,
   `lg` 18, `xl` 20, `2xl` 24, `3xl` 32, `4xl` 40, `5xl` 56.
 - No ad-hoc `clamp()` with per-section vw factors. At most ONE fluid pair
@@ -56,6 +60,7 @@ below 16px. No other sizes.
 
 | Token | Pair |
 | --- | --- |
+| `--font-hero-unique` | `clamp(80px, 12.5vw, 184px)` (Unique hero headline only — recorded display-step exception, from `_proto/_hero.html`) |
 | `--font-hero` | `clamp(40px, 5vw, 56px)` |
 | `--font-section-title` | `clamp(32px, 2.5vw, 40px)` |
 | `--font-subsection` | `clamp(24px, 2.2vw, 32px)` |
@@ -81,6 +86,14 @@ Selected atom node fill is `--color-semantic-accent` (periwinkle, fill
 only) with ink text (7.6:1); selection is never colour-only (leading dot
 plus border plus `aria-checked`).
 
+## Recorded token additions (bubble hero + keycap logo, 2026-07-16)
+
+From the vetted `_proto/_hero.html`. Per-case bubble gradients
+(`--case-*-hi/-lo`), a deep readable accent per case (`--case-*-deep`,
+AA+ on the white reveal card), the iris hub (`--hub-*`), fixed-context
+reveal-card tokens (`--hero-panel-*` — the card is always light), and
+the keycap logo plates (`--key-*`). Declared in `app/globals.css`.
+
 ## Recorded exceptions
 
 - `.feature-panel` (section-scale color block): `--radius-3xl`.
@@ -92,3 +105,9 @@ plus border plus `aria-checked`).
   JSON is next rebuilt).
 - `.cs-shell` case-study shell manages its own two-column padding (uses
   spacing tokens; documented in `app/globals.css`).
+- `.kbd-logo` header lockup: Unique at 28px key caps (20px ≤640px). The
+  logo is a brand mark, not running text — the only sanctioned use of
+  Unique besides the hero headline.
+- Hero bubble geometry (sizes 126–196px, cluster positions) is recorded
+  data in `components/Hero.tsx`, from `_proto/_hero.html` — not ramp/spacing
+  values.

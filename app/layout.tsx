@@ -1,26 +1,29 @@
 import type { Metadata } from "next";
-import { Chivo_Mono, Fraunces, Plus_Jakarta_Sans } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import DevTools from "@/components/DevTools";
 import "./globals.css";
 
-const chivoMono = Chivo_Mono({
-  variable: "--font-chivo-mono",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
 });
 
-// redesign/chip-purple — CHIP editorial serif. Fraunces (opsz) replaces the
-// Cormorant trial as --font-display (see globals.css). Iowan/Palatino fallback.
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
 });
 
-const plusJakarta = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+// redesign/lush — Unique is reserved for the large hero headline ONLY
+// (fails legibility at label sizes). Everything else is Geist / Geist Mono.
+// Licensed webfonts, free for commercial use; files unmodified.
+const unique = localFont({
+  src: [
+    { path: "./fonts/unique/Unique-Regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/unique/Unique-Bold.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-unique",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -29,20 +32,22 @@ export const metadata: Metadata = {
     "Product Designer specialising in Design Systems & Complex Platforms. Designing scalable systems, intuitive workflows, and structured design languages.",
 };
 
+// Dark tokens are wired but sections still hardcode light backgrounds, so
+// light is PINNED until Phase 5 conformance. To re-enable OS-follow, swap in:
+// try{var m=matchMedia("(prefers-color-scheme: dark)");var a=function(){document.documentElement.dataset.theme=m.matches?"dark":"light"};a();m.addEventListener("change",a)}catch(e){}
+const themeInit = `document.documentElement.dataset.theme="light"`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
-        <link
-          rel="stylesheet"
-          href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap"
-        />
+        <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>
-      <body className={`${chivoMono.variable} ${fraunces.variable} ${plusJakarta.variable} antialiased`}>
+      <body className={`${geist.variable} ${geistMono.variable} ${unique.variable} antialiased`}>
         <a href="#main-content" className="skip-link">Skip to content</a>
         <DevTools />
         {children}

@@ -45,7 +45,7 @@ export function CommandCenterNav() {
       >
         <span
           style={{
-            fontFamily: `var(--font-display), "Clash Display", system-ui, sans-serif`,
+            fontFamily: `var(--font-display)`,
             fontSize: 17,
             fontWeight: "var(--typography-font-weight-bold)",
             letterSpacing: "var(--typography-letter-spacing-tight)",
@@ -61,7 +61,7 @@ export function CommandCenterNav() {
             letterSpacing: "0.1em",
             textTransform: "uppercase",
             color: "var(--color-ink-muted, #7a7a7a)",
-            fontFamily: `var(--font-chivo-mono), "Chivo Mono", monospace`,
+            fontFamily: `var(--font-mono)`,
             background: "var(--color-alpha-shadow-warm-04)",
             padding: "3px var(--spacing-2)",
             borderRadius: 4,

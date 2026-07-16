@@ -1,188 +1,316 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import styles from "./Hero.module.css";
 
-interface AtomNode {
-  title: string;
+interface Bubble {
+  /** bubble label (JSX so labels can line-break like the proto) */
+  label: React.ReactNode;
+  /** reveal-card kicker */
   kicker: string;
-  blurb: string;
-  seen: { label: string; href: string }[];
-  /** orbital position, % of the atom square (nucleus is 50/50) */
-  x?: number;
-  y?: number;
+  /** reveal-card title */
+  title: string;
+  ingredients: string[];
+  href: string;
+  cta?: string;
+  /** bubble gradient (recorded hero tokens) */
+  hi: string;
+  lo: string;
+  /** bright case colour — drives the card glow (--cc) */
+  glow: string;
+  /** deep case colour — readable accent text on the light card (--ct) */
+  deep: string;
+  /** desktop geometry, from _proto/_hero.html */
+  size: number;
+  top: string;
+  left: string;
 }
 
-/* Nucleus is radio 0; the 8 skill nodes orbit on two rings.
- * Blurbs and mapping from _proto/_atom.html; "Seen in:" points at the
- * real case studies (or the section where that work lives). */
-const CORE: AtomNode = {
-  title: "Design Systems",
-  kicker: "Core",
-  blurb:
-    "I build design systems, and the tools that keep them from drifting. Choose an area to see the work behind it.",
-  seen: [],
-};
-
-const NODES: AtomNode[] = [
+/* Six case bubbles. Colours are the recorded --case-* tokens; geometry is
+ * the vetted _proto cluster. */
+const CASES: Bubble[] = [
   {
-    title: "Design Tokens",
-    x: 50,
-    y: 24,
-    kicker: "Foundation",
-    blurb: "Primitive to semantic to component. The layer that keeps a system honest.",
-    seen: [
-      { label: "From Drift to Foundation", href: "/case-studies/design-system-transformation" },
-      { label: "Mango", href: "#experience" },
-    ],
+    label: "Code First",
+    kicker: "Design Systems · 2024–25",
+    title: "Code First",
+    ingredients: ["Figma → code parity", "Primitive → semantic tokens", "Component governance"],
+    href: "/case-studies/brad-frost",
+    hi: "var(--case-code-first-hi)",
+    lo: "var(--case-code-first-lo)",
+    glow: "var(--case-code-first-lo)",
+    deep: "var(--case-code-first-deep)",
+    size: 150,
+    top: "0%",
+    left: "12%",
   },
   {
-    title: "AI Workflows",
-    x: 79,
-    y: 21,
-    kicker: "Frontier",
-    blurb: "Agents that read and audit a system. Machine-readable design, human in control.",
-    seen: [
-      { label: "CHIP", href: "#design-lab" },
-      { label: "Guardian", href: "/case-studies/guardian" },
-    ],
+    label: (
+      <>
+        Drift to
+        <br />
+        Foundation
+      </>
+    ),
+    kicker: "Complex SaaS · 2024–26",
+    title: "From Drift to Foundation",
+    ingredients: ["First design system, from zero", "Tokens wired to production", "5+ booking verticals"],
+    href: "/case-studies/design-system-transformation",
+    hi: "var(--case-drift-hi)",
+    lo: "var(--case-drift-lo)",
+    glow: "var(--case-drift-lo)",
+    deep: "var(--case-drift-deep)",
+    size: 154,
+    top: "2%",
+    left: "58%",
   },
   {
-    title: "Governance",
-    x: 76,
-    y: 50,
-    kicker: "Foundation",
-    blurb: "The rules that stop a system drifting. Contribution models, versioning, extend vs build.",
-    seen: [
-      { label: "From Drift to Foundation", href: "/case-studies/design-system-transformation" },
-      { label: "Code First", href: "/case-studies/brad-frost" },
-    ],
+    label: "Guardian",
+    kicker: "AI UX · 2026",
+    title: "Guardian",
+    ingredients: ["Drift detection at decision-time", "Contextual guidance", "Human-in-control governance"],
+    href: "/case-studies/guardian",
+    hi: "var(--case-guardian-hi)",
+    lo: "var(--case-guardian-lo)",
+    glow: "var(--case-guardian-lo)",
+    deep: "var(--case-guardian-deep)",
+    size: 140,
+    top: "42%",
+    left: "-3%",
   },
   {
-    title: "Figma ⇄ Code",
-    x: 79,
-    y: 79,
-    kicker: "Frontier",
-    blurb: "Design and code kept in parity, wired through Figma MCP and the Desktop Bridge.",
-    seen: [
-      { label: "Code First", href: "/case-studies/brad-frost" },
-      { label: "Mango", href: "#experience" },
-    ],
+    label: (
+      <>
+        Operational
+        <br />
+        Clarity
+      </>
+    ),
+    kicker: "Data Dashboard · 2025",
+    title: "Operational Clarity",
+    ingredients: ["6+ operational domains, one interface", "Role-based analytics", "8-week contract"],
+    href: "/case-studies/un-operational-dashboard",
+    hi: "var(--case-clarity-hi)",
+    lo: "var(--case-clarity-lo)",
+    glow: "var(--case-clarity-lo)",
+    deep: "var(--case-clarity-deep)",
+    size: 142,
+    top: "76%",
+    left: "16%",
   },
   {
-    title: "Component Libraries",
-    x: 50,
-    y: 76,
-    kicker: "Foundation",
-    blurb: "Reusable parts, documented and owned, so teams stop rebuilding the same button.",
-    seen: [
-      { label: "Code First", href: "/case-studies/brad-frost" },
-      { label: "From Drift to Foundation", href: "/case-studies/design-system-transformation" },
-    ],
+    label: "Design Lab",
+    kicker: "Personal OS · 2026",
+    title: "Design Lab",
+    ingredients: ["CHIP: my own operating system", "AI-assisted workflows", "Building in public"],
+    href: "/#design-lab",
+    hi: "var(--case-design-lab-hi)",
+    lo: "var(--case-design-lab-lo)",
+    glow: "var(--case-design-lab-lo)",
+    deep: "var(--case-design-lab-deep)",
+    size: 132,
+    top: "66%",
+    left: "72%",
   },
   {
-    title: "Accessibility",
-    x: 21,
-    y: 79,
-    kicker: "Frontier",
-    blurb: "WCAG as a system default, not a per-screen fix. Contrast, focus, target size.",
-    seen: [
-      { label: "Operational Clarity", href: "/case-studies/un-operational-dashboard" },
-      { label: "Mango", href: "#experience" },
-    ],
-  },
-  {
-    title: "Atomic Design",
-    x: 24,
-    y: 50,
-    kicker: "Foundation",
-    blurb: "Atoms to templates. The model I build systems on, learned in the open from Brad Frost.",
-    seen: [{ label: "Code First", href: "/case-studies/brad-frost" }],
-  },
-  {
-    title: "Learning in Public",
-    x: 21,
-    y: 21,
-    kicker: "Frontier",
-    blurb: "Most of what I know I picked up in the open. Then I route it back into the system.",
-    seen: [{ label: "CHIP", href: "#design-lab" }],
+    label: "Writing",
+    kicker: "Notes · 2026",
+    title: "Writing",
+    ingredients: ["Design systems in practice", "Learning in public", "Talks and workshops"],
+    href: "/#learning",
+    hi: "var(--case-writing-hi)",
+    lo: "var(--case-writing-lo)",
+    glow: "var(--case-writing-lo)",
+    deep: "var(--case-writing-deep)",
+    size: 126,
+    top: "20%",
+    left: "84%",
   },
 ];
 
-const RADIOS: AtomNode[] = [CORE, ...NODES];
+const HUB: Bubble = {
+  label: "Design Systems",
+  kicker: "Point of view",
+  title: "How I think about design systems",
+  ingredients: [
+    "Systems are agreements, not component libraries.",
+    "Governance is what stops the drift.",
+    "I read code, so design and engineering stay honest.",
+  ],
+  href: "/point-of-view",
+  cta: "Read my full take",
+  hi: "var(--hub-hi)",
+  lo: "var(--hub-lo)",
+  glow: "var(--hub-bright)",
+  deep: "var(--hub-deep)",
+  size: 196,
+  top: "34%",
+  left: "33%",
+};
+
+/* index 6 = hub; hub connects to all, plus cross-links for the hive */
+const BUBBLES = [...CASES, HUB];
+const HUB_I = 6;
+const CONNS: [number, number][] = [
+  [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5],
+  [0, 1], [0, 2], [1, 5], [2, 3], [3, 4], [4, 5],
+];
 
 /**
- * Atom-map hero (from _proto/_atom.html). A radiogroup: the nucleus plus
- * 8 orbiting skill nodes with roving tabindex, arrow-key/Home/End
- * navigation, and an aria-live detail panel — no hover-only tooltips.
- * The float animation only runs under prefers-reduced-motion:
- * no-preference (CSS), and below 560px the orbit becomes a wrapped list.
+ * Bubble-cluster hero (from _proto/_hero.html). Six glossy case bubbles
+ * around the "Design Systems / my take" hub. Every bubble is a real
+ * <button> (aria-expanded) that opens the reveal card — a light card with
+ * a breathing glow in the case colour, popover on desktop, bottom sheet
+ * on mobile — whose CTA links to the case route (hub → point of view).
+ * Connectors light iris for the selection. SVG + particle pop are
+ * aria-hidden; reduced motion drops pop/transforms and freezes the glow.
  */
 export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => void }) {
-  const [selected, setSelected] = useState(0);
-  const refs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [selected, setSelected] = useState<number | null>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const bubRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [lines, setLines] = useState<{ x1: number; y1: number; x2: number; y2: number }[]>([]);
 
-  const select = useCallback((i: number, focus = true) => {
-    setSelected(i);
-    if (focus) refs.current[i]?.focus();
+  const drawLinks = useCallback(() => {
+    const stage = stageRef.current;
+    if (!stage || window.innerWidth < 860) return;
+    const sr = stage.getBoundingClientRect();
+    const centers = bubRefs.current.map((b) => {
+      if (!b) return null;
+      const r = b.getBoundingClientRect();
+      return { x: r.left - sr.left + r.width / 2, y: r.top - sr.top + r.height / 2 };
+    });
+    setLines(
+      CONNS.map(([a, b]) => {
+        const ca = centers[a];
+        const cb = centers[b];
+        return ca && cb
+          ? { x1: ca.x, y1: ca.y, x2: cb.x, y2: cb.y }
+          : { x1: 0, y1: 0, x2: 0, y2: 0 };
+      })
+    );
   }, []);
 
-  const onKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      let next: number | null = null;
-      if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (selected + 1) % RADIOS.length;
-      else if (e.key === "ArrowLeft" || e.key === "ArrowUp")
-        next = (selected - 1 + RADIOS.length) % RADIOS.length;
-      else if (e.key === "Home") next = 0;
-      else if (e.key === "End") next = RADIOS.length - 1;
-      if (next !== null) {
-        e.preventDefault();
-        select(next);
-      }
+  const placePanel = useCallback((i: number) => {
+    const el = bubRefs.current[i];
+    const panel = panelRef.current;
+    if (!el || !panel || window.innerWidth < 860) return;
+    const r = el.getBoundingClientRect();
+    const pw = 360;
+    const ph = panel.offsetHeight || 280;
+    const gap = 16;
+    // left-side bubbles: card to the RIGHT (clear of the hero text); else left
+    let left = r.left + r.width / 2 < window.innerWidth * 0.62 ? r.right + gap : r.left - pw - gap;
+    if (left + pw > window.innerWidth - 16) left = r.left - pw - gap;
+    if (left < 16) left = Math.min(r.right + gap, window.innerWidth - pw - 16);
+    let top = r.top + r.height / 2 - ph / 2;
+    top = Math.max(16, Math.min(top, window.innerHeight - ph - 16));
+    panel.style.left = `${left}px`;
+    panel.style.top = `${top}px`;
+  }, []);
+
+  /** aria-hidden particle pop, skipped under prefers-reduced-motion */
+  const pop = useCallback((i: number) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = bubRefs.current[i];
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    const cols = [BUBBLES[i].glow, "var(--color-brand-amber)", "var(--color-card)"];
+    for (let k = 0; k < 14; k++) {
+      const p = document.createElement("span");
+      p.className = styles.particle;
+      p.setAttribute("aria-hidden", "true");
+      const s = 6 + Math.random() * 14;
+      p.style.left = `${cx}px`;
+      p.style.top = `${cy}px`;
+      p.style.width = `${s}px`;
+      p.style.height = `${s}px`;
+      p.style.background = cols[k % 3];
+      p.style.setProperty("--dx", `${Math.random() * 140 - 70}px`);
+      p.style.setProperty("--rise", `${100 + Math.random() * 160}px`);
+      p.style.animationDelay = `${Math.random() * 0.12}s`;
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 1250);
+    }
+  }, []);
+
+  const select = useCallback(
+    (i: number) => {
+      setSelected(i);
+      pop(i);
+      requestAnimationFrame(() => {
+        placePanel(i);
+        requestAnimationFrame(() => placePanel(i));
+      });
     },
-    [selected, select]
+    [placePanel, pop]
   );
 
-  const active = RADIOS[selected];
-  const activeNode = selected > 0 ? NODES[selected - 1] : null;
+  const close = useCallback((refocus = false) => {
+    setSelected((prev) => {
+      if (refocus && prev !== null) bubRefs.current[prev]?.focus();
+      return null;
+    });
+  }, []);
+
+  useEffect(() => {
+    drawLinks();
+    document.fonts?.ready.then(drawLinks);
+    const t = setTimeout(drawLinks, 300);
+    const onResize = () => {
+      drawLinks();
+      setSelected((s) => {
+        if (s !== null) placePanel(s);
+        return s;
+      });
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [drawLinks, placePanel]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close(true);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [close]);
+
+  const active = selected !== null ? BUBBLES[selected] : null;
+
+  const bubbleStyle = (b: Bubble, i: number): React.CSSProperties => ({
+    width: b.size,
+    height: b.size,
+    top: b.top,
+    left: b.left,
+    ["--bub-hi" as string]: b.hi,
+    ["--bub-lo" as string]: b.lo,
+    zIndex: i === HUB_I ? 3 : 2,
+  });
 
   return (
-    <section
-      className="hero-landing"
-      style={{ display: "flex", alignItems: "center", flex: 1, minHeight: 0 }}
-    >
+    <section className="hero-landing" style={{ display: "flex", alignItems: "center", flex: 1, minHeight: 0 }}>
       <div className={styles.hero}>
-        {/* ── Text + detail panel ── */}
+        {/* ── Headline ── */}
         <div>
-          <p className="eyebrow" style={{ marginBottom: "var(--spacing-4)" }}>
-            Design Systems · AI · Barcelona
-          </p>
-          <h1 className={styles.name}>Elleta McDaniel</h1>
-          <p className={styles.sub}>
-            I build design systems, and the tools that keep them from drifting.
-          </p>
-
-          <p className="sr-only" id="atom-hint">
-            Areas of work. Select one with the arrow keys or by clicking to see the work behind it.
+          <p className={styles.kicker}>Elleta McDaniel — Barcelona</p>
+          <h1 className={styles.headline}>
+            Pick a<br />
+            <span className={styles.o}>piece.</span>
+          </h1>
+          <p className={styles.intro}>
+            I design <b>AI-augmented design systems</b> — tokens, components, and the governance
+            that keeps them from drifting. I read code and work with engineers directly.
           </p>
 
-          <div className={styles.panel} aria-live="polite">
-            <p className={styles.panelKicker}>{active.kicker}</p>
-            <h2 className={styles.panelTitle}>{active.title}</h2>
-            <p className={styles.panelBody}>{active.blurb}</p>
-            {active.seen.length > 0 && (
-              <div className={styles.seen}>
-                <span>Seen in:</span>
-                {active.seen.map((s) => (
-                  <a key={s.label} href={s.href}>
-                    {s.label}
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* CTA row — kept from the previous hero (path into the dashboard) */}
+          {/* CTA kept from the previous hero — the path into the dashboard */}
           <div className={styles.ctaRow}>
             <button
               onClick={() => onEnterDashboard?.()}
@@ -209,65 +337,84 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
           </div>
         </div>
 
-        {/* ── Atom map ── */}
-        <div className={styles.atom}>
-          <svg viewBox="0 0 100 100" aria-hidden="true">
-            <circle className={styles.ring} cx="50" cy="50" r="26" />
-            <circle className={styles.ring} cx="50" cy="50" r="40" />
-            {activeNode && (
+        {/* ── Bubble cluster ── */}
+        <div className={styles.stage} ref={stageRef}>
+          <svg className={styles.links} ref={svgRef} aria-hidden="true">
+            {lines.map((l, i) => (
               <line
-                className={styles.connector}
-                x1="50"
-                y1="50"
-                x2={activeNode.x}
-                y2={activeNode.y}
+                key={i}
+                {...l}
+                className={
+                  selected !== null && (CONNS[i][0] === selected || CONNS[i][1] === selected)
+                    ? styles.on
+                    : undefined
+                }
               />
-            )}
+            ))}
           </svg>
 
-          <div
-            role="radiogroup"
-            aria-labelledby="atom-hint"
-            className={styles.nodeGroup}
-            onKeyDown={onKeyDown}
+          <button
+            ref={(el) => {
+              bubRefs.current[HUB_I] = el;
+            }}
+            type="button"
+            className={`${styles.bub} ${styles.hub} ${selected === HUB_I ? styles.sel : ""}`}
+            style={bubbleStyle(HUB, HUB_I)}
+            aria-expanded={selected === HUB_I}
+            onClick={() => select(HUB_I)}
           >
+            Design Systems
+            <span className={styles.sub}>My take</span>
+          </button>
+
+          {CASES.map((b, i) => (
             <button
+              key={b.title}
               ref={(el) => {
-                refs.current[0] = el;
+                bubRefs.current[i] = el;
               }}
               type="button"
-              role="radio"
-              aria-checked={selected === 0}
-              aria-current={selected === 0 ? "true" : undefined}
-              tabIndex={selected === 0 ? 0 : -1}
-              className={styles.nucleus}
-              onClick={() => select(0)}
+              className={`${styles.bub} ${selected === i ? styles.sel : ""}`}
+              style={bubbleStyle(b, i)}
+              aria-expanded={selected === i}
+              onClick={() => select(i)}
             >
-              Design
-              <br />
-              Systems
+              {b.label}
             </button>
-
-            {NODES.map((n, i) => (
-              <button
-                key={n.title}
-                ref={(el) => {
-                  refs.current[i + 1] = el;
-                }}
-                type="button"
-                role="radio"
-                aria-checked={selected === i + 1}
-                aria-current={selected === i + 1 ? "true" : undefined}
-                tabIndex={selected === i + 1 ? 0 : -1}
-                className={`${styles.node} ${styles.float}`}
-                style={{ left: `${n.x}%`, top: `${n.y}%`, animationDelay: `${i * 0.4}s` }}
-                onClick={() => select(i + 1)}
-              >
-                {n.title}
-              </button>
-            ))}
-          </div>
+          ))}
         </div>
+      </div>
+
+      {/* ── Reveal card ── */}
+      <div
+        ref={panelRef}
+        role="dialog"
+        aria-label={active ? active.title : "Case preview"}
+        className={`${styles.panel} ${active ? styles.show : ""}`}
+        style={
+          active
+            ? ({ "--cc": active.glow, "--ct": active.deep } as React.CSSProperties)
+            : undefined
+        }
+        inert={!active}
+      >
+        {active && (
+          <>
+            <button className={styles.pclose} aria-label="Close" onClick={() => close(true)}>
+              ✕
+            </button>
+            <p className={styles.pk}>{active.kicker}</p>
+            <p className={styles.pt}>{active.title}</p>
+            <p className={styles.pi}>
+              {active.ingredients.map((x) => (
+                <span key={x}>◦ {x}</span>
+              ))}
+            </p>
+            <Link className={styles.pr} href={active.href} onClick={() => close()}>
+              {active.cta ?? "Read case"} <span aria-hidden="true">&nbsp;→</span>
+            </Link>
+          </>
+        )}
       </div>
     </section>
   );

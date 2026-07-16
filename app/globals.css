@@ -3,16 +3,16 @@
 
 /* ─── Design tokens ─────────────────────────────────────────────── */
 @theme {
-  /* Page + surfaces — warm cream editorial base */
-  --color-cream: #f7f3ec;
-  --color-page: #f6f1e8;
+  /* Page + surfaces — lush ground (light default; navy dark via [data-theme]) */
+  --color-cream: #faf9f5;
+  --color-page: #F5F4EF;
   --color-card: #ffffff;
-  --color-ink: #1a1a1a;
-  --color-ink-soft: #2c2c2c;
-  --color-ink-muted: #3d3832;
-  --color-surface: #f0ebe3;
+  --color-ink: #1A1720;
+  --color-ink-soft: #2E2937;
+  --color-ink-muted: #4A4652;
+  --color-surface: #EDECE4;
   --color-white-pure: #fafaf8;
-  --color-accent-espresso: #3B2E7A;
+  --color-accent-espresso: #5B4BD1;
   --color-accent-gold: #A79CE2;
 
   --color-border-soft: rgba(28, 26, 46, 0.08);
@@ -21,17 +21,19 @@
   --color-glass-strong: rgba(255, 255, 255, 0.82);
   --color-tag-bg: rgba(255, 255, 255, 0.72);
   --color-tag-border: rgba(28, 26, 46, 0.1);
-  --color-muted: #3d3832;
+  --color-muted: #4A4652;
 
   --shadow-soft: 0 1px 2px rgba(28, 26, 46, 0.04), 0 10px 30px rgba(28, 26, 46, 0.06),
     0 24px 60px rgba(28, 26, 46, 0.04);
   --shadow-layered: 0 1px 2px rgba(28, 26, 46, 0.05), 0 12px 40px rgba(28, 26, 46, 0.08),
     0 28px 80px rgba(28, 26, 46, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
-  /* Display font trial (Jul 2026) — AI-Realist-style Roman serif caps.
-     Revert: --font-display: "Clash Display", system-ui, sans-serif; */
-  --font-display: var(--font-fraunces), "Fraunces", "Iowan Old Style", Palatino, Georgia, serif;
-  --font-body: var(--font-plus-jakarta), "Plus Jakarta Sans", system-ui, sans-serif;
+  /* redesign/lush — Geist everywhere except the hero headline (Unique).
+     --font-hero-display is the ONLY place Unique may be used. */
+  --font-display: var(--font-geist), "Geist", system-ui, sans-serif;
+  --font-body: var(--font-geist), "Geist", system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, monospace;
+  --font-hero-display: var(--font-unique), "Unique", "Arial Narrow", sans-serif;
 
   /* ── Layout system spacing scale ───────────────────────────────── */
   --space-1: 8px;
@@ -68,12 +70,11 @@
 }
 
 /* ─── BELLA token bridge ─────────────────────────────────────────
-   bella.css ships Georgia as its typography primitives (generated file,
-   not hand-edited). Components styled against BELLA tokens were rendering
-   a second serif next to Fraunces. Bridge the primitives to the app fonts
-   so every BELLA-styled surface uses the same stack. */
-/* next/font exposes --font-fraunces / --font-plus-jakarta / --font-chivo-mono
- * on <body> (layout.tsx className). The @theme copies of --font-display /
+   bella.css ships Georgia/JetBrains as its typography primitives (generated
+   file, not hand-edited). Bridge the primitives to the app fonts so every
+   BELLA-styled surface uses the same stack. */
+/* next/font exposes --font-geist / --font-geist-mono / --font-unique on
+ * <body> (layout.tsx className). The @theme copies of --font-display /
  * --font-body live on :root, where those references are undefined — so both
  * computed to invalid and every heading fell back to system sans. Custom
  * properties resolve at the element they're DECLARED on, not where they're
@@ -81,16 +82,20 @@
  * body level. The BELLA typography primitives bridge here for the same
  * reason (they'd otherwise compute against :root's invalid --font-display). */
 body {
-  --font-display: var(--font-fraunces, "Fraunces"), "Iowan Old Style", Palatino, Georgia, serif;
-  --font-body: var(--font-plus-jakarta, "Plus Jakarta Sans"), system-ui, sans-serif;
+  --font-display: var(--font-geist, "Geist"), system-ui, sans-serif;
+  --font-body: var(--font-geist, "Geist"), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono, "Geist Mono"), ui-monospace, monospace;
+  --font-hero-display: var(--font-unique, "Unique"), "Arial Narrow", sans-serif;
   --typography-font-family-display: var(--font-display);
   --typography-font-family-body: var(--font-body);
+  --typography-font-family-mono: var(--font-mono);
 }
 
 /* ─── Fluid typography scale — DESIGN.md §5 ─────────────────────
    Ramp: 13/14/16/18/20/24/32/40/56. One fluid pair per step, endpoints
    on the ramp, defined ONCE here. No other clamp() in components. */
 :root {
+  --font-hero-unique: clamp(80px, 12.5vw, 184px);
   --font-hero: clamp(40px, 5vw, 56px);
   --font-section-title: clamp(32px, 2.5vw, 40px);
   --font-subsection: clamp(24px, 2.2vw, 32px);
@@ -117,21 +122,117 @@ body {
   --nucleus-size: 120px;
 }
 
-/* ─── OKLCH color system ───────────────────────────────────────── */
+/* ─── Bubble-hero + keycap-logo tokens (DESIGN.md: recorded additions) ──
+   From the vetted _proto/_hero.html (2026-07-16). Per-case bubble
+   gradients (hi/lo), a deep readable accent per case (AA+ on the white
+   reveal card), the iris hub, and the keycap logo plates. The reveal
+   card is ALWAYS a light card — its ink is fixed-context, it does not
+   flip with [data-theme]. */
 :root {
-  --oklch-bg: oklch(95.5% 0.015 80);
-  --oklch-surface: oklch(93% 0.015 80);
-  --oklch-text-primary: oklch(15% 0.005 260);
-  --oklch-text-secondary: oklch(48% 0.012 65);
-  --oklch-accent: oklch(70% 0.11 285);
-  --oklch-border: oklch(88% 0.01 80);
+  --hero-iris-bright: #7A6BE8;
+  --case-code-first-hi: #F6BBD6;
+  --case-code-first-lo: #F0A0C8;
+  --case-code-first-deep: #B23A70;
+  --case-drift-hi: #D6AFEE;
+  --case-drift-lo: #C58AE6;
+  --case-drift-deep: #6A40AC;
+  --case-guardian-hi: #AEBCF5;
+  --case-guardian-lo: #8FA2F0;
+  --case-guardian-deep: #3B4FAC;
+  --case-clarity-hi: #A6D8BC;
+  --case-clarity-lo: #7FC79E;
+  --case-clarity-deep: #256B4C;
+  --case-design-lab-hi: #F7C08C;
+  --case-design-lab-lo: #F2A25C;
+  --case-design-lab-deep: #9E4C1A;
+  --case-writing-hi: #F5A79C;
+  --case-writing-lo: #F0796B;
+  --case-writing-deep: #B23C30;
+  --hub-hi: #CFC7F6;
+  --hub-lo: #A99BEC;
+  --hub-bright: #6C5CE0;
+  --hub-deep: #5647C4;
+  --hero-bub-ink: #141019;
+  --hero-panel-bg: #FFFFFF;
+  --hero-panel-ink: #1A1720;
+  --hero-panel-meta: #4A4652;
+  --hero-panel-shadow: rgba(26, 23, 32, 0.18);
+  --hero-link: rgba(26, 23, 32, 0.16);
+  --key-face-hi: #FFFFFF;
+  --key-face-lo: #ECEAE3;
+  --key-edge: #D7D3CA;
+  --key-iris-hi: #8E7EEC;
+  --key-iris-lo: #6C5CE0;
+  --key-iris-edge: #4A3FB0;
+  --key-plus: #B4AFA6;
 }
 
-/* Apply OKLCH where supported, keep hex fallbacks via @theme */
-@supports (color: oklch(0% 0 0)) {
-  body {
-    background-color: var(--oklch-bg);
-    color: var(--oklch-text-primary);
+[data-theme="dark"] {
+  --hero-panel-bg: #F4EFE6;
+  --hero-panel-shadow: rgba(0, 0, 0, 0.44);
+  --hero-link: rgba(244, 239, 230, 0.2);
+  --key-plus: rgba(244, 239, 230, 0.5);
+}
+
+/* ─── Keycap logo lockup (header) — from _proto/_hero.html ──────────
+   CTRL + ALT + DESIGN as keyboard keys; DESIGN is the iris key.
+   Unique at 28px — recorded §5 exception: the logo is a brand lockup,
+   not running text (see DESIGN.md). */
+.kbd-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.kbd-logo .key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 16px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-hero-display);
+  text-transform: uppercase;
+  font-size: 28px;
+  letter-spacing: 0.02em;
+  color: var(--hero-panel-ink);
+  line-height: 1;
+  background: linear-gradient(var(--key-face-hi), var(--key-face-lo));
+  box-shadow:
+    0 5px 0 var(--key-edge),
+    0 9px 16px rgba(25, 23, 32, 0.16),
+    inset 0 1px 0 var(--key-face-hi);
+}
+
+.kbd-logo .key-iris {
+  color: var(--color-card);
+  background: linear-gradient(var(--key-iris-hi), var(--key-iris-lo));
+  box-shadow:
+    0 5px 0 var(--key-iris-edge),
+    0 9px 18px color-mix(in srgb, var(--color-accent-ink) 36%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.kbd-logo .plus {
+  font-family: var(--font-hero-display);
+  font-size: 22px;
+  color: var(--key-plus);
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .kbd-logo {
+    gap: 6px;
+  }
+
+  .kbd-logo .key {
+    font-size: 20px;
+    padding: 8px 11px;
+  }
+
+  .kbd-logo .plus {
+    font-size: 16px;
   }
 }
 
@@ -222,7 +323,7 @@ body {
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--color-page);
+  background-color: var(--color-semantic-background);
 }
 
 body {
@@ -231,12 +332,22 @@ body {
   line-height: 1.65;
   letter-spacing: 0.01em;
   background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.65), transparent 36%),
-    linear-gradient(180deg, #f8f4ec 0%, var(--color-page) 24%, #f4efe6 100%);
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.55), transparent 36%),
+    var(--color-semantic-background);
   color: var(--color-ink-soft);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+}
+
+/* Navy dark mode — surfaces flip via BELLA [data-theme="dark"]; the
+   app-level ink aliases flip here (single place, no per-component hex). */
+[data-theme="dark"] body {
+  --color-ink: #F4EFE6;
+  --color-ink-soft: #E6E1D6;
+  --color-ink-muted: #B9B4C7;
+  --color-muted: #B9B4C7;
+  background: var(--color-semantic-background);
 }
 
 h1,
@@ -301,7 +412,7 @@ li {
 .section-label {
   /* Mono eyebrows per the shipped font stack (Chivo Mono is loaded in
      layout.tsx; BELLA mono primitive is the fallback list) */
-  font-family: var(--font-chivo-mono), var(--typography-font-family-mono);
+  font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 500;
   text-transform: uppercase;
@@ -1174,7 +1285,7 @@ textarea:focus-visible {
 
 /* Eyebrow — mono, same treatment as home sections */
 .cs-shell__eyebrow {
-  font-family: var(--font-chivo-mono), var(--typography-font-family-mono);
+  font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 500;
   text-transform: uppercase;

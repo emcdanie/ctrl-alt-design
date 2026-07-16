@@ -230,7 +230,7 @@ function drawMap(
     ctx.save();
     ctx.fillStyle = meta.color;
     ctx.globalAlpha = 0.3;
-    ctx.font = `600 ${14 / camera.zoom}px "Clash Display", system-ui, sans-serif`;
+    ctx.font = `600 ${14 / camera.zoom}px system-ui, sans-serif`;
     ctx.textAlign = "center";
     ctx.fillText(meta.label.toUpperCase(), CENTER_X, -r - 30 / camera.zoom);
     ctx.globalAlpha = 1;
@@ -460,7 +460,7 @@ function DetailPanel({
           fontWeight: 600,
           letterSpacing: "0.06em",
           color: meta.color,
-          fontFamily: `var(--font-chivo-mono), "Chivo Mono", monospace`,
+          fontFamily: `var(--font-mono)`,
           marginBottom: 12,
         }}
       >
@@ -478,7 +478,7 @@ function DetailPanel({
       {/* Name */}
       <h3
         style={{
-          fontFamily: `"Clash Display", system-ui, sans-serif`,
+          fontFamily: `system-ui, sans-serif`,
           fontSize: 22,
           fontWeight: "var(--typography-font-weight-bold)",
           letterSpacing: "var(--typography-letter-spacing-tight)",
@@ -508,7 +508,7 @@ function DetailPanel({
           borderRadius: 8,
           padding: "var(--spacing-2) var(--spacing-3)",
           fontSize: 12,
-          fontFamily: `var(--font-chivo-mono), "Chivo Mono", monospace`,
+          fontFamily: `var(--font-mono)`,
           color: C.inkMuted,
           marginBottom: 18,
           wordBreak: "break-all",
@@ -528,7 +528,7 @@ function DetailPanel({
               textTransform: "uppercase",
               color: C.inkMuted,
               marginBottom: 8,
-              fontFamily: `var(--font-chivo-mono), "Chivo Mono", monospace`,
+              fontFamily: `var(--font-mono)`,
             }}
           >
             Composed from
@@ -568,7 +568,7 @@ function DetailPanel({
               textTransform: "uppercase",
               color: C.inkMuted,
               marginBottom: 8,
-              fontFamily: `var(--font-chivo-mono), "Chivo Mono", monospace`,
+              fontFamily: `var(--font-mono)`,
             }}
           >
             Composes into
@@ -786,7 +786,7 @@ export function SystemMap() {
               letterSpacing: "0.12em",
               textTransform: "uppercase",
               color: C.inkMuted,
-              fontFamily: `var(--font-chivo-mono), "Chivo Mono", monospace`,
+              fontFamily: `var(--font-mono)`,
               marginBottom: 6,
             }}
           >
@@ -794,7 +794,7 @@ export function SystemMap() {
           </div>
           <h2
             style={{
-              fontFamily: `"Clash Display", system-ui, sans-serif`,
+              fontFamily: `system-ui, sans-serif`,
               fontSize: 22,
               fontWeight: "var(--typography-font-weight-bold)",
               letterSpacing: "var(--typography-letter-spacing-tight)",

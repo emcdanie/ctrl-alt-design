@@ -3,6 +3,9 @@
  * Do not edit by hand. Edit the source JSON and run `python3 tokens/build.py`.
  * [redesign/chip-purple] accent recolored amber #C4956A -> periwinkle #A79CE2
  *   and warm-brown shadow base #2C1810 -> cool #1C1A2E. Sync to token JSON later.
+ * [redesign/lush] ground #F5F4EF / ink #1A1720; single iris accent
+ *   #5B4BD1 (light) / #A79CE2 (dark); dark mode recolored ink -> navy #1B1B40
+ *   with text #F4EFE6. Sync to token JSON later.
  */
 
 :root {
@@ -113,8 +116,8 @@
   --shadow-card-elevated: 0 1px 2px #1C1A2E0A, 0 8px 24px #1C1A2E0F, inset 0 1px 0 #FFFFFFAD;
 
   /* ---- Semantic (light) ---- */
-  --color-semantic-background: #F7F4EF;
-  --color-semantic-background-inverse: #0F1117;
+  --color-semantic-background: #F5F4EF;
+  --color-semantic-background-inverse: #1A1720;
   --color-semantic-surface: #F0EDE8;
   --color-semantic-surface-elevated: #FBFAF7;
   --color-semantic-surface-inverse: #1A1D27;
@@ -123,22 +126,22 @@
   --color-semantic-surface-glass-light: linear-gradient(180deg, #FFFFFF7A 0%, #FFFFFF47 100%);
   --color-semantic-border-glass-top: #FFFFFFB8;
   --color-semantic-border-glass-edge: #FFFFFF8C;
-  --color-semantic-text-primary: #111111;
-  --color-semantic-text-secondary: #525252;
-  --color-semantic-text-muted: #999999;
-  --color-semantic-text-inverse: #F7F4EF;
-  --color-semantic-text-accent: #111111;
-  --color-semantic-accent: #A79CE2;
-  /* [redesign/chip-purple] iris — periwinkle that passes text contrast (5.68:1 on cream).
-     #A79CE2 is a FILL color only (2.25:1 as text); use accent-ink for accent TEXT. */
+  --color-semantic-text-primary: #1A1720;
+  --color-semantic-text-secondary: #4A4652;
+  --color-semantic-text-muted: #757085;
+  --color-semantic-text-inverse: #F5F4EF;
+  --color-semantic-text-accent: #5B4BD1;
+  /* [redesign/lush] single UI accent — iris #5B4BD1 in light mode (AA as
+     text on ground, 5.6:1; white text on it 6.1:1), #A79CE2 in dark. */
+  --color-semantic-accent: #5B4BD1;
   --color-accent-ink: #5B4BD1;
-  --color-semantic-accent-subtle: #A79CE226;
-  --color-semantic-accent-border: #A79CE24D;
-  --color-semantic-border: #E8E4DC;
-  --color-semantic-border-subtle: #0F111710;
-  --color-semantic-border-strong: #333333;
-  --color-semantic-link: #111111;
-  --color-semantic-link-hover: #111111;
+  --color-semantic-accent-subtle: #5B4BD11F;
+  --color-semantic-accent-border: #5B4BD14D;
+  --color-semantic-border: #E6E4DC;
+  --color-semantic-border-subtle: #1A172010;
+  --color-semantic-border-strong: #33303B;
+  --color-semantic-link: #1A1720;
+  --color-semantic-link-hover: #5B4BD1;
   --color-semantic-success: #4A7C6F;
   --color-semantic-info: #6495C5;
   --color-semantic-info-subtle: #6495C526;
@@ -148,10 +151,10 @@
   --bella-blur-surface: 18px;
 
   /* ---- Component ---- */
-  --component-button-primary-background: #A79CE2;
-  --component-button-primary-background-hover: #8E82D6;
-  --component-button-primary-foreground: #111111;
-  --component-button-primary-border: #A79CE2;
+  --component-button-primary-background: #5B4BD1;
+  --component-button-primary-background-hover: #4C3EB8;
+  --component-button-primary-foreground: #F5F4EF;
+  --component-button-primary-border: #5B4BD1;
   --component-button-primary-border-radius: 8px;
   --component-button-primary-padding-y: 12px;
   --component-button-primary-padding-x: 20px;
@@ -161,9 +164,9 @@
   --component-button-primary-letter-spacing: 0.08em;
   --component-button-primary-min-height: 44px;
   --component-button-secondary-background: transparent;
-  --component-button-secondary-background-hover: #A79CE226;
-  --component-button-secondary-foreground: #111111;
-  --component-button-secondary-border: #A79CE2;
+  --component-button-secondary-background-hover: #5B4BD11F;
+  --component-button-secondary-foreground: #1A1720;
+  --component-button-secondary-border: #5B4BD1;
   --component-button-secondary-border-radius: 8px;
   --component-button-secondary-padding-y: 12px;
   --component-button-secondary-padding-x: 20px;
@@ -267,7 +270,7 @@
   --component-nav-link-default-letter-spacing: 0.08em;
   --component-nav-link-default-min-height: 44px;
   --component-nav-link-active-foreground: #111111;
-  --component-nav-link-active-border-bottom: 2px solid #A79CE2;
+  --component-nav-link-active-border-bottom: 2px solid #5B4BD1;
   --component-nav-link-active-min-height: 44px;
   --component-section-default-padding-y: 64px;
   --component-section-default-padding-x: 24px;
@@ -290,35 +293,49 @@
 }
 
 [data-theme="dark"] {
-  /* ---- Semantic (dark) overrides ---- */
-  --color-semantic-background: #0F1117;
-  --color-semantic-background-inverse: #F7F4EF;
-  --color-semantic-surface: #1A1D27;
-  --color-semantic-surface-elevated: #242833;
-  --color-semantic-surface-inverse: #F0EDE8;
-  --color-semantic-surface-glass: #1A1D2799;
-  --color-semantic-surface-glass-elevated: #1A1D277A;
-  --color-semantic-surface-glass-light: #1A1D2752;
+  /* ---- Semantic (dark) overrides — [redesign/lush] navy ---- */
+  --color-semantic-background: #1B1B40;
+  --color-semantic-background-inverse: #F4EFE6;
+  --color-semantic-surface: #232350;
+  --color-semantic-surface-elevated: #2B2B5C;
+  --color-semantic-surface-inverse: #F0EDE4;
+  --color-semantic-surface-glass: #23235099;
+  --color-semantic-surface-glass-elevated: #2323507A;
+  --color-semantic-surface-glass-light: #23235052;
   --color-semantic-surface-glass-amber: #A79CE226;
-  --color-semantic-text-primary: #F7F4EF;
-  --color-semantic-text-secondary: #B8B4AC;
-  --color-semantic-text-muted: #7A7770;
-  --color-semantic-text-inverse: #111111;
+  --color-semantic-border-glass-top: #F4EFE624;
+  --color-semantic-border-glass-edge: #F4EFE61A;
+  --color-semantic-text-primary: #F4EFE6;
+  --color-semantic-text-secondary: #C4BFD4;
+  --color-semantic-text-muted: #8F8AA8;
+  --color-semantic-text-inverse: #1A1720;
   --color-semantic-text-accent: #A79CE2;
+  /* [redesign/lush] iris accent flips to periwinkle on navy */
   --color-semantic-accent: #A79CE2;
-  /* [redesign/chip-purple] iris accent as text on dark ink */
   --color-accent-ink: #B4ADE8;
   --color-semantic-accent-subtle: #A79CE226;
   --color-semantic-accent-border: #A79CE24D;
-  --color-semantic-border: #F7F4EF10;
-  --color-semantic-border-subtle: #2A2D37;
-  --color-semantic-border-strong: #F7F4EF;
-  --color-semantic-link: #F7F4EF;
+  --color-semantic-border: #F4EFE610;
+  --color-semantic-border-subtle: #32325F;
+  --color-semantic-border-strong: #F4EFE6;
+  --color-semantic-link: #F4EFE6;
   --color-semantic-link-hover: #A79CE2;
   --color-semantic-success: #4A7C6F;
   --color-semantic-info: #6495C5;
   --color-semantic-info-subtle: #6495C526;
   --color-semantic-info-border: #6495C54D;
+
+  /* ---- Component (dark) overrides — accent surfaces flip with the mode ---- */
+  --component-button-primary-background: #A79CE2;
+  --component-button-primary-background-hover: #B9B0E9;
+  --component-button-primary-foreground: #1B1B40;
+  --component-button-primary-border: #A79CE2;
+  --component-button-secondary-background-hover: #A79CE226;
+  --component-button-secondary-foreground: #F4EFE6;
+  --component-button-secondary-border: #A79CE2;
+  --component-button-ghost-background-hover: #232350;
+  --component-button-ghost-foreground: #F4EFE6;
+  --component-nav-link-active-border-bottom: 2px solid #A79CE2;
 }
 
 /* Glass utility classes — surface + blur + shadow + borders, bundled. */
