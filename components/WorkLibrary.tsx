@@ -20,7 +20,7 @@ import styles from "./WorkLibrary.module.css";
  * table view, the select mirrors it on map/timeline where there are no
  * headers). Table is the accessible default. */
 
-const VIEWS = ["table", "map", "timeline"] as const;
+const VIEWS = ["table", "map", "timeline", "skills"] as const;
 type View = (typeof VIEWS)[number];
 
 const SORTS = {
@@ -139,7 +139,7 @@ export default function WorkLibrary() {
           value={view}
           onChange={(v) => setParams({ view: v === "table" ? null : v })}
         />
-        {view !== "table" && (
+        {(view === "map" || view === "timeline") && (
           <Select
             label="Sort"
             value={sort}
@@ -271,6 +271,14 @@ export default function WorkLibrary() {
       </div>
 
       {view === "table" && <TableView items={filtered} sort={sort} setParams={setParams} />}
+      {view === "skills" && (
+        <MatrixView
+          caseFilters={caseFilters}
+          skillFilters={skillFilters}
+          toggleCase={(id) => toggleList("case", id, caseFilters)}
+          toggleSkill={(sl) => toggleList("skill", sl, skillFilters)}
+        />
+      )}
       {view === "map" && (
         <div className={styles.mapWrap}>
           <BubbleCluster highlightIds={hasFilters ? filtered.map((i) => i.id) : null} />
@@ -383,6 +391,104 @@ function TableView({
       </ul>
 
       {items.length === 0 && <p className={styles.empty}>No pieces match these filters.</p>}
+    </div>
+  );
+}
+
+/* ── Skills x projects matrix (§8): a real table driven from the same
+ * skills arrays as everything else. Marked cell = case tint + dot +
+ * sr-only text (never colour-only). Row/column headers are buttons that
+ * toggle the SAME URL filters as the chips; active filters emphasise
+ * matching cells and dim the rest. ── */
+
+function MatrixView({
+  caseFilters,
+  skillFilters,
+  toggleCase,
+  toggleSkill,
+}: {
+  caseFilters: string[];
+  skillFilters: string[];
+  toggleCase: (id: string) => void;
+  toggleSkill: (slug: string) => void;
+}) {
+  const hasFilters = caseFilters.length > 0 || skillFilters.length > 0;
+  const emphasised = (item: WorkItem, skillSlug: string) =>
+    !hasFilters ||
+    ((caseFilters.length === 0 || caseFilters.includes(item.id)) &&
+      (skillFilters.length === 0 || skillFilters.includes(skillSlug)));
+
+  return (
+    <div className={styles.tableWrap}>
+      <table className={`${styles.table} ${styles.matrix}`}>
+        <caption className="sr-only">
+          Skills by case study. A dot marks a skill used in that case. Row and column
+          headers are buttons that toggle the matching filter.
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">
+              <span className="sr-only">Skill</span>
+            </th>
+            {WORK_ITEMS.map((i) => (
+              <th key={i.id} scope="col">
+                <button
+                  type="button"
+                  className={styles.mxHead}
+                  aria-pressed={caseFilters.includes(i.id)}
+                  onClick={() => toggleCase(i.id)}
+                >
+                  {i.title}
+                </button>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {SKILLS.map((skill) => {
+            const slug = slugify(skill);
+            return (
+              <tr key={skill}>
+                <th scope="row">
+                  <button
+                    type="button"
+                    className={styles.mxHead}
+                    aria-pressed={skillFilters.includes(slug)}
+                    onClick={() => toggleSkill(slug)}
+                  >
+                    {skill}
+                  </button>
+                </th>
+                {WORK_ITEMS.map((i) => {
+                  const marked = i.skills.includes(skill);
+                  return (
+                    <td
+                      key={i.id}
+                      className={`${styles.mxCell} ${marked ? styles.mxOn : ""} ${
+                        emphasised(i, slug) ? "" : styles.mxDim
+                      }`}
+                      style={
+                        marked
+                          ? ({ "--case-tint-hi": i.hi, "--case-tint-text": i.text } as React.CSSProperties)
+                          : undefined
+                      }
+                    >
+                      {marked && (
+                        <>
+                          <span aria-hidden="true" className={styles.mxDot} />
+                          <span className="sr-only">
+                            {skill} used in {i.title}
+                          </span>
+                        </>
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }

@@ -255,6 +255,12 @@
     display: none;
   }
 
+  /* the matrix is real 2-axis data: it stays a table and scrolls in its
+     own container instead of stacking */
+  .table.matrix {
+    display: table;
+  }
+
   .stackList {
     display: flex;
     flex-direction: column;
@@ -465,4 +471,80 @@
   padding: var(--spacing-4) var(--spacing-5);
   background: var(--color-page);
   border-top: 1px solid var(--color-semantic-border-subtle);
+}
+
+
+/* ── Skills x projects matrix (§8) ── */
+
+.matrix th,
+.matrix td {
+  vertical-align: middle;
+}
+
+.matrix thead th {
+  white-space: normal;
+  min-width: 96px;
+}
+
+.mxHead {
+  all: unset;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  min-height: var(--spacing-touch-target);
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+
+.mxHead:hover {
+  color: var(--color-accent-ink);
+}
+
+.mxHead[aria-pressed="true"] {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.mxHead:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.mxCell {
+  text-align: center;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+/* marked cell: case tint + dot, never colour-only (sr-only text in TSX) */
+.mxCell.mxOn {
+  background: color-mix(in srgb, var(--case-tint-hi) 36%, var(--color-card));
+}
+
+:global([data-theme="dark"]) .mxCell.mxOn {
+  background: color-mix(in srgb, var(--case-tint-hi) 18%, var(--color-card));
+}
+
+.mxDot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--case-tint-text);
+}
+
+.mxDim {
+  opacity: 0.3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mxHead,
+  .mxCell {
+    transition: none;
+  }
 }
