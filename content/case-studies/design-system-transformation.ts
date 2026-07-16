@@ -27,35 +27,6 @@ const study: CaseStudy = {
     title: "From Visual Problem to Structural One",
     body: "At first glance, the issues looked mostly visual: inconsistent spacing, slightly different button styles, repeated components that didn't quite match. But as the audit got underway, the scale became clear. The component library had grown into a graveyard of almost-the-same things, patterns solved multiple times over, with no shared record of why one approach had been chosen over another.",
   },
-  process: {
-    title: "How It Came Together",
-    steps: [
-      {
-        number: "01",
-        title: "Component Audit",
-        description:
-          "Ran a practical audit across key flows and the existing component library, mapping duplicated UI decisions to make the structural problem visible and undeniable.",
-      },
-      {
-        number: "02",
-        title: "Token Architecture",
-        description:
-          "Introduced design tokens as the lowest layer of the system, named, semantic values that propagate visual decisions consistently across every component without manual updates.",
-      },
-      {
-        number: "03",
-        title: "Tiered System Structure",
-        description:
-          "Restructured the system into clear tiers: Foundations, Components, Documentation, and a System Hub as the central reference point.",
-      },
-      {
-        number: "04",
-        title: "Governance & Rollout",
-        description:
-          "Introduced lightweight governance with component status conventions and a clear contribution workflow. Rolled out gradually, letting active features pull the system into use.",
-      },
-    ],
-  },
   outcomes: {
     title: "A Foundation, Not a Cleanup",
     body: "Duplicated components consolidated into a smaller set of flexible, well-defined building blocks. Interaction patterns for filtering, sorting, and form behaviour defined so users encounter predictable experiences across flows. The UI shifted from being whatever the last sprint produced to feeling like a coherent product language, and the system gained credibility every time an engineer reached for an existing pattern and found it already solved.",
@@ -69,6 +40,77 @@ const study: CaseStudy = {
   ],
   description:
     "Rebuilding Design System Thinking in a Scaling SaaS Product",
+
+  /* ── Decision-led template (the model case).
+   * TODO(elleta): case-from-drift-to-foundation.md was not in the repo
+   * when this was reshaped; every string below is your EXISTING authored
+   * prose redistributed into the new shape. Replace with the md content
+   * when you drop it. ── */
+  blocks: [
+    {
+      kind: "meta",
+      role: "Lead Product Designer, Design Systems",
+      team: "Cross-functional (Engineering, Product)",
+      scope: ["Component audit", "Token architecture", "Component library", "Governance"],
+      timeline: "8 months",
+    },
+    {
+      kind: "summary",
+      context:
+        "Seventeen buttons that did roughly the same thing, built at different times by different people. A B2B travel platform used across Europe, flights, hotels, rail, car rentals, all evolving in parallel, had outgrown the decisions that were supposed to hold it together.",
+      approach:
+        "The decision: stop redesigning screens and move upstream. Make the drift undeniable with an audit, put semantic tokens under everything so visual decisions propagate instead of fragmenting, and govern with component status rather than enforcement.",
+      outcome:
+        "**A shared language for how the product should look, behave, and grow.** Duplicated components consolidated into flexible building blocks; the UI shifted from whatever the last sprint produced to a coherent product language.",
+    },
+    {
+      kind: "decision",
+      index: "01",
+      title: "Make the drift undeniable before proposing anything",
+      why: "Nobody set out to fragment the system; it accumulated one sprint at a time. The audit mapped duplicated UI decisions across search, results, booking, and forms, and reframed the conversation from 'our UI looks inconsistent' to 'our current structure creates measurable overhead, here is the evidence.' **One undocumented decision had created three downstream inconsistencies.**",
+      evidence: {
+        kind: "embed",
+        src: "/demos/case-study-visuals/ds-audit-buttons.html",
+        title: "Recreated component audit: 17 button variations across the product",
+        aspect: "16/10",
+        minHeight: 420,
+        frame: "light",
+      },
+    },
+    {
+      kind: "decision",
+      index: "02",
+      title: "Put tokens under everything so decisions propagate",
+      why: "Instead of a button storing a hard-coded hex value, it references a semantic token that is defined once and propagates everywhere. Foundations, components, documentation, and a system hub, each tier with a clear purpose, so a change made at the bottom of the cascade lands consistently at the top. The interactive recreation below shows the cascade and the design-code parity it makes checkable.",
+      evidence: {
+        kind: "embed",
+        src: "/demos/token-parity.html",
+        title: "Interactive recreation: token cascade and design-code parity",
+        aspect: "16/10",
+        minHeight: 480,
+        frame: "light",
+      },
+    },
+    {
+      kind: "decision",
+      index: "03",
+      title: "Govern with status, not enforcement",
+      why: "The hardest problem is not building the system, it is preventing it from fragmenting again. A low-friction proposal path, component status conventions (stable, in review, experimental, deprecated), and a gradual rollout that let active features pull the system into use. When an engineer reached for an existing pattern and found it already solved, the system gained credibility.",
+      evidence: {
+        kind: "embed",
+        src: "/demos/case-study-visuals/ds-after-system.html",
+        title: "Recreated system documentation: token chain and component variants",
+        aspect: "3/2",
+        minHeight: 420,
+        frame: "light",
+      },
+    },
+    {
+      kind: "lessons",
+      text: "Inconsistency is rarely the root problem, it is a symptom of missing structure and undocumented decisions. Doing this as a solo designer reinforced something about advocacy: **the audit framework was not just a research method, it was a communication tool.** Framing the problem in terms of business alignment and delivery cost made a different kind of conversation possible about the value of the work.",
+    },
+  ],
+  /* retired narrative kept below until the md lands; blocks render instead
   narrative: [
     {
       label: "CONTEXT",
@@ -196,6 +238,7 @@ const study: CaseStudy = {
       ],
     },
   ],
+  */
 };
 
 export default study;

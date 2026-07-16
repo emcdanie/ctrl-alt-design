@@ -24,26 +24,6 @@ const study: CaseStudy = {
     title: "Starting From Code",
     body: "Most design system work starts in Figma. This project inverted that entirely. Every decision had to be justified against an existing, principled structure rather than invented from first principles, which turned out to be enormously useful.",
   },
-  process: {
-    title: "Component Archaeology",
-    steps: [
-      {
-        number: "01",
-        title: "System Investigation",
-        description: "Reading Storybook stories, tracing prop structures, and mapping how existing components composed.",
-      },
-      {
-        number: "02",
-        title: "Figma Alignment",
-        description: "Rebuilding Figma components to match code counterparts, matching variant names to prop names, ensuring token consistency.",
-      },
-      {
-        number: "03",
-        title: "AI-Assisted Investigation",
-        description: "Using Claude via MCP to surface token relationships and accelerate structural investigation.",
-      },
-    ],
-  },
   outcomes: {
     title: "Aligned, Documented, Maintainable",
     body: "Figma and Storybook components aligned across the system. Token layer documented with explicit primitive → semantic → component chain. MCP workflow established for ongoing system investigation.",
@@ -153,5 +133,21 @@ const study: CaseStudy = {
     },
   ],
 };
+
+/* ── TODO(elleta): decision-led template scaffold. Fill in YOUR words,
+ * then move this into the study object as `blocks: [...]` (see
+ * design-system-transformation.ts for the model). Nothing here renders
+ * while commented.
+ *
+ * { kind: "meta", role: "...", team: "...", scope: ["..."], timeline: "..." },
+ * { kind: "summary",
+ *   context: "TODO(elleta): the situation and the tension",
+ *   approach: "TODO(elleta): LEAD WITH THE DECISION",
+ *   outcome: "TODO(elleta): what changed, honest, no invented metrics" },
+ * { kind: "decision", index: "01", title: "TODO(elleta)", why: "TODO(elleta)",
+ *   evidence: { kind: "embed", src: "/demos/<recreation>.html", title: "...", frame: "light" } },
+ * { kind: "decision", index: "02", ... },
+ * { kind: "lessons", text: "TODO(elleta): one paragraph" },
+ * ── */
 
 export default study;

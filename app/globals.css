@@ -934,6 +934,66 @@ section[id],
   scroll-padding-top: calc(var(--header-height) + var(--spacing-4));
 }
 
+/* ─── Decision-led case blocks ──────────────────────────────────── */
+
+/* facts block; hidden >=1080 where the sticky sidebar shows the same */
+.cs-meta-block {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--spacing-4);
+  margin: 0 0 var(--spacing-10);
+  padding: var(--spacing-5);
+  border: 1px solid var(--color-semantic-border-subtle);
+  border-radius: var(--radius-2xl);
+  background: var(--color-card);
+}
+
+@media (min-width: 1080px) {
+  .cs-meta-block {
+    display: none;
+  }
+}
+
+.cs-meta-block dt {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin-bottom: var(--spacing-1);
+}
+
+.cs-meta-block dd {
+  margin: 0;
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-ink);
+  line-height: 1.5;
+}
+
+.cs-summary-block {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--grid-gap);
+  margin: 0 0 var(--spacing-16);
+}
+
+.cs-summary-block .eyebrow {
+  display: block;
+  margin-bottom: var(--spacing-2);
+}
+
+.cs-decision-block {
+  margin: 0 0 var(--spacing-16);
+  padding-left: var(--spacing-5);
+  border-left: 3px solid var(--color-semantic-accent-border);
+}
+
+.cs-decision-block .eyebrow {
+  display: block;
+  margin-bottom: var(--spacing-2);
+}
+
 /* ─── Focus states ──────────────────────────────────────────────── */
 
 :focus-visible {

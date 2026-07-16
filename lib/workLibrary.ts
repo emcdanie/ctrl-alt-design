@@ -41,8 +41,10 @@ export interface WorkItem {
   role: string;
   impact: string;
   skills: Skill[];
-  /** current-focus piece — featured on the dashboard + first in the library */
+  /** current-focus piece, featured on the dashboard */
   featured?: boolean;
+  /** explicit library order; lower ranks first in the default sort */
+  rank?: number;
   /** recorded case-colour tokens */
   hi: string;
   lo: string;
@@ -72,6 +74,7 @@ export const WORK_ITEMS: WorkItem[] = [
   },
   {
     id: "drift",
+    rank: 1,
     title: "From Drift to Foundation",
     bubbleLabel: "Drift to|Foundation",
     kicker: "Complex SaaS · 2024-26",

@@ -11,12 +11,6 @@
 
 // ── Type definitions ────────────────────────────────────────────
 
-export interface ProcessStep {
-  number: string;
-  title: string;
-  description: string;
-}
-
 export interface CaseStudyMetrics {
   role: string;
   team?: string;
@@ -58,7 +52,19 @@ export type CaseBlock =
       linkLabel?: string;
     }
   | { kind: "prototype"; src: string; title: string; height?: string }
-  | { kind: "section"; eyebrow: string; heading: string; children: CaseBlock[] };
+  | { kind: "section"; eyebrow: string; heading: string; children: CaseBlock[] }
+  /* decision-led template (Arthur-Kamsky / Justine structure) */
+  | { kind: "meta"; role: string; team: string; scope: string[]; timeline: string }
+  | { kind: "summary"; context: string; approach: string; outcome: string }
+  | {
+      kind: "decision";
+      index: string;
+      title: string;
+      why: string;
+      /** interactive recreation, never a client screenshot */
+      evidence?: CaseBlock;
+    }
+  | { kind: "lessons"; text: string };
 
 export interface CaseStudy {
   slug: string;
@@ -74,20 +80,16 @@ export interface CaseStudy {
   thumbnailImage?: string;
   heroVideo?: string;
   metrics?: CaseStudyMetrics;
-  overview: {
+  overview?: {
     headline: string;
     body: string;
   };
   images: string[];
-  problem: {
+  problem?: {
     title: string;
     body: string;
   };
-  process: {
-    title: string;
-    steps: ProcessStep[];
-  };
-  outcomes: {
+  outcomes?: {
     title: string;
     body: string;
     completionTag: string;

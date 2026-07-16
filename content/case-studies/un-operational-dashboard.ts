@@ -25,35 +25,6 @@ const study: CaseStudy = {
     title: "Operationally Capable, Informationally Opaque",
     body: "At the surface level, the problem looked like a dashboard problem. But the deeper issue was structural. Services, infrastructure assets, and operational workflows existed in separate systems with no consistent data model connecting them. Ownership of infrastructure assets was unclear, slowing incident response. Reporting was inconsistent across teams, reducing trust in the numbers. Without visibility into dependencies between assets and services, change impact analysis required significant manual effort.",
   },
-  process: {
-    title: "How It Came Together",
-    steps: [
-      {
-        number: "01",
-        title: "Cross-Functional Discovery",
-        description:
-          "Conducted stakeholder conversations across infrastructure, service delivery, operations leadership, and finance, looking for the connective tissue where the same pain appeared under different labels across teams.",
-      },
-      {
-        number: "02",
-        title: "System Entity Mapping",
-        description:
-          "Mapped core entities, services, infrastructure assets, incidents, SLAs, consumption data, and the relationships between them. Understanding which relationships mattered most for operational decisions was a prerequisite for designing anything useful.",
-      },
-      {
-        number: "03",
-        title: "Role-Based IA & Progressive Disclosure",
-        description:
-          "Structured the platform around four connected layers: a global operational dashboard, role-based dashboards, a service and asset explorer, and reporting views, designed to feel like one product, not a collection of dashboards.",
-      },
-      {
-        number: "04",
-        title: "Interactive Prototype",
-        description:
-          "Built a high-fidelity interactive prototype so stakeholders could follow real paths, from a service health alert through to the specific asset context behind it, surfacing questions that wouldn't emerge from a presentation.",
-      },
-    ],
-  },
   outcomes: {
     title: "A Shared Reference Point",
     body: "The prototype functioned as a vision artifact: a concrete, interactive expression of what a unified operational platform could look like, and why the underlying architecture mattered. Stakeholders who had been working in parallel, solving the same problems with different tools and different definitions, had a common reference point for the first time. The most valuable outcome wasn't any individual screen. It was the shared understanding the prototype created.",
@@ -133,5 +104,21 @@ const study: CaseStudy = {
     },
   ],
 };
+
+/* ── TODO(elleta): decision-led template scaffold. Fill in YOUR words,
+ * then move this into the study object as `blocks: [...]` (see
+ * design-system-transformation.ts for the model). Nothing here renders
+ * while commented.
+ *
+ * { kind: "meta", role: "...", team: "...", scope: ["..."], timeline: "..." },
+ * { kind: "summary",
+ *   context: "TODO(elleta): the situation and the tension",
+ *   approach: "TODO(elleta): LEAD WITH THE DECISION",
+ *   outcome: "TODO(elleta): what changed, honest, no invented metrics" },
+ * { kind: "decision", index: "01", title: "TODO(elleta)", why: "TODO(elleta)",
+ *   evidence: { kind: "embed", src: "/demos/<recreation>.html", title: "...", frame: "light" } },
+ * { kind: "decision", index: "02", ... },
+ * { kind: "lessons", text: "TODO(elleta): one paragraph" },
+ * ── */
 
 export default study;

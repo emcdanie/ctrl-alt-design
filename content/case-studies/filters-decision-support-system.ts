@@ -26,35 +26,6 @@ const study: CaseStudy = {
     title: "Capability Without Clarity Is Just a Different Kind of Friction",
     body: "At first glance, the filtering interfaces across the product looked inconsistent but manageable. Filter chips in one flow looked different from filter chips in another. Sort controls weren't positioned consistently. Some filters preserved their active state clearly; others gave no visible signal that they were applied at all. The instinct was to clean it up visually and standardise the components. But a more important question kept surfacing: if we fix how the filters look, will they actually become easier to use?",
   },
-  process: {
-    title: "How It Came Together",
-    steps: [
-      {
-        number: "01",
-        title: "Pattern Audit",
-        description:
-          "Ran a focused audit of filtering interfaces across the key flows, mapping filter chips, sort controls, active state patterns, and empty states to surface where the same user need was being solved differently.",
-      },
-      {
-        number: "02",
-        title: "Shared Mental Model",
-        description:
-          "Defined what filtering should do across the product before redesigning any component, filtering as progressive narrowing, not data exposure.",
-      },
-      {
-        number: "03",
-        title: "Three-Level Architecture",
-        description:
-          "Designed the filtering system at three levels: atomic components, interaction patterns, and composition rules governing how filtering relates to results, empty states, and loading.",
-      },
-      {
-        number: "04",
-        title: "Governance & Documentation",
-        description:
-          "Documented the user need each pattern addresses, the contexts it's appropriate in, and the criteria for deciding when a new filter type is warranted versus extending an existing one.",
-      },
-    ],
-  },
   outcomes: {
     title: "A Shared Language, Not Just Better Components",
     body: "Duplicated filter components consolidated into a smaller set of flexible, well-defined building blocks. Interaction patterns for multi-select filtering, range selection, sort integration, and empty states defined so that users encounter predictable behaviour across flows. The most important outcome was structural: a reusable filtering interaction pattern with a consistent contract across the product.",

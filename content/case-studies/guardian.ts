@@ -24,14 +24,6 @@ const study: CaseStudy = {
     title: "Spotting the Gap",
     body: "Design system interpretation happens in isolation; the consequences only surface at handoff, review, or production, when change is hardest and most expensive.",
   },
-  process: {
-    title: "From Problem to Prototype",
-    steps: [
-      { number: "01", title: "Problem definition", description: "FigJam research + How Might We convergence across designers, developers, and system owners." },
-      { number: "02", title: "Interaction concept", description: "FigPal as a quiet, context-aware entry point; a bottom-docked reconciliation console." },
-      { number: "03", title: "Prototype", description: "A working audit-tool demo in 48 hours; Pattern Mentor as the independent follow-up." },
-    ],
-  },
   outcomes: {
     title: "Outcomes",
     body: "A coherent, believable demo: non-blocking drift signals, design-to-code comparison surfaced for designers, and governance through visibility rather than enforcement.",
@@ -175,5 +167,21 @@ const study: CaseStudy = {
     },
   ],
 };
+
+/* ── TODO(elleta): decision-led template scaffold. Fill in YOUR words,
+ * then move this into the study object as `blocks: [...]` (see
+ * design-system-transformation.ts for the model). Nothing here renders
+ * while commented.
+ *
+ * { kind: "meta", role: "...", team: "...", scope: ["..."], timeline: "..." },
+ * { kind: "summary",
+ *   context: "TODO(elleta): the situation and the tension",
+ *   approach: "TODO(elleta): LEAD WITH THE DECISION",
+ *   outcome: "TODO(elleta): what changed, honest, no invented metrics" },
+ * { kind: "decision", index: "01", title: "TODO(elleta)", why: "TODO(elleta)",
+ *   evidence: { kind: "embed", src: "/demos/<recreation>.html", title: "...", frame: "light" } },
+ * { kind: "decision", index: "02", ... },
+ * { kind: "lessons", text: "TODO(elleta): one paragraph" },
+ * ── */
 
 export default study;

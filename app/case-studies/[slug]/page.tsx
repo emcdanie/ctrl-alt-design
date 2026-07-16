@@ -253,6 +253,41 @@ function Block({ block, title }: { block: CaseBlock; title: string }) {
       );
     case "prototype":
       return <PrototypeEmbed src={block.src} title={block.title} height={block.height ?? "700px"} />;
+    case "meta":
+      return (
+        <dl className="cs-meta-block">
+          <div><dt>Role</dt><dd>{block.role}</dd></div>
+          <div><dt>Team</dt><dd>{block.team}</dd></div>
+          <div><dt>Scope</dt><dd>{block.scope.join(" · ")}</dd></div>
+          <div><dt>Timeline</dt><dd>{block.timeline}</dd></div>
+        </dl>
+      );
+    case "summary":
+      return (
+        <div className="cs-summary-block">
+          {[["Context", block.context], ["Approach", block.approach], ["Outcome", block.outcome]].map(([label, text]) => (
+            <div key={label}>
+              <p className="eyebrow">{label}</p>
+              <RichBody text={text} />
+            </div>
+          ))}
+        </div>
+      );
+    case "decision":
+      return (
+        <div className="cs-decision-block">
+          <p className="eyebrow">Decision {block.index}</p>
+          <H2>{block.title}</H2>
+          <RichBody text={block.why} />
+          {block.evidence && <Block block={block.evidence} title={title} />}
+        </div>
+      );
+    case "lessons":
+      return (
+        <Section eyebrow="LESSONS" heading="What this changed">
+          <RichBody text={block.text} />
+        </Section>
+      );
     case "section":
       return (
         <Section eyebrow={block.eyebrow} heading={block.heading}>
@@ -339,9 +374,11 @@ export default async function CaseStudyPage({
         {cs.narrative ? (
           <>
             {/* Brief overview, short text, not a wall */}
-            <Section eyebrow="OVERVIEW" heading={cs.overview.headline}>
-              <RichBody text={cs.overview.body} />
-            </Section>
+            {cs.overview && (
+              <Section eyebrow="OVERVIEW" heading={cs.overview.headline}>
+                <RichBody text={cs.overview.body} />
+              </Section>
+            )}
 
             {cs.narrative.map((section, idx) => {
               // Interleave: after every 3rd section, show full-width image if available
@@ -399,84 +436,11 @@ export default async function CaseStudyPage({
                   textTransform: "uppercase",
                 }}
               >
-                {cs.outcomes.completionTag}
+                {cs.outcomes?.completionTag}
               </span>
             </div>
           </>
-        ) : (
-          /* ── Structured mode ── */
-          <>
-            <Section eyebrow="OVERVIEW" heading={cs.overview.headline}>
-              <RichBody text={cs.overview.body} />
-            </Section>
-
-            <Section eyebrow="THE PROBLEM" heading={cs.problem.title}>
-              <RichBody text={cs.problem.body} />
-            </Section>
-
-            <Section eyebrow="PROCESS" heading={cs.process.title}>
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "var(--spacing-3)",
-              }}>
-                {cs.process.steps.map((step) => (
-                  <div
-                    key={step.number}
-                    className="card-default"
-                    style={{ padding: "var(--spacing-5)" }}
-                  >
-                    <span
-                      className="eyebrow"
-                      style={{ display: "block", marginBottom: "var(--spacing-2)" }}
-                    >
-                      {step.number}
-                    </span>
-                    <h3
-                      className="heading-item"
-                      style={{ marginBottom: "6px", fontSize: "var(--typography-font-size-base)" }}
-                    >
-                      {step.title}
-                    </h3>
-                    <p
-                      className="body-sm"
-                      style={{
-                        margin: 0,
-                        color: "var(--color-ink-soft)",
-                        lineHeight: 1.6,
-                        fontSize: "var(--typography-font-size-tag)",
-                      }}
-                    >
-                      {step.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </Section>
-
-            <Section eyebrow="OUTCOMES" heading={cs.outcomes.title}>
-              <RichBody text={cs.outcomes.body} />
-              <div style={{ marginTop: "var(--spacing-6)" }}>
-                <span
-                  className="surface-dark"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    padding: "var(--spacing-2) var(--spacing-5)",
-                    borderRadius: "var(--radius-full)",
-                    fontFamily: "var(--font-body)",
-                    fontSize: "var(--typography-font-size-tag)",
-                    fontWeight: 600,
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {cs.outcomes.completionTag}
-                </span>
-              </div>
-            </Section>
-          </>
-        )}
+        ) : null}
 
         {/* Full-width closing image */}
         {cs.fullWidthImage && !cs.narrative && (

@@ -36,7 +36,12 @@ const SKILLS_VISIBLE = 6;
 function sortItems(items: WorkItem[], sort: SortKey): WorkItem[] {
   const { key, dir } = SORTS[sort];
   return [...items].sort((a, b) => {
-    if (sort === "year-desc" && !!a.featured !== !!b.featured) return a.featured ? -1 : 1;
+    if (sort === "year-desc") {
+      const ra = a.rank ?? 99;
+      const rb = b.rank ?? 99;
+      if (ra !== rb) return ra - rb;
+      if (!!a.featured !== !!b.featured) return a.featured ? -1 : 1;
+    }
     const av = a[key as keyof WorkItem] as string | number;
     const bv = b[key as keyof WorkItem] as string | number;
     if (av === bv) return a.title.localeCompare(b.title);
