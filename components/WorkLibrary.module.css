@@ -381,6 +381,28 @@
   margin-bottom: var(--spacing-3);
 }
 
+/* disclosure, not a filter: its own look, same weight as a chip */
+.trayTriggerBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  cursor: pointer;
+  min-height: var(--spacing-touch-target);
+  padding: 4px var(--spacing-5);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-medium);
+  background: var(--color-card);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--color-ink);
+}
+
+.trayTriggerBtn:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
 @media (max-width: 767px) {
   .desktopOnly {
     display: none;

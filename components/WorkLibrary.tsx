@@ -148,7 +148,7 @@ export default function WorkLibrary() {
       <div className={styles.trayTrigger}>
         <button
           type="button"
-          className="filter-chip"
+          className={styles.trayTriggerBtn}
           aria-expanded={trayOpen}
           onClick={() => setTrayOpen(true)}
         >
