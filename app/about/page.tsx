@@ -2,6 +2,13 @@
 
 import { useState } from "react";
 import OverlayNav from "@/components/OverlayNav";
+import ProcessSection from "@/components/ProcessSection";
+import ExperienceSection from "@/components/ExperienceSection";
+import LearningSection from "@/components/LearningSection";
+import TestimonialSection from "@/components/TestimonialSection";
+import VideoWalkthrough from "@/components/VideoWalkthrough";
+import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
+import ResumeModal from "@/components/ResumeModal";
 import BackToWorkButton from "@/components/BackToWorkButton";
 import VinylPlayer from "@/components/VinylPlayer";
 import MetricsStrip from "@/components/MetricsStrip";
@@ -265,6 +272,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
 /* ── Page ─────────────────────────────────────────────────────── */
 
 export default function AboutPage() {
+  const [resumeOpen, setResumeOpen] = useState(false);
   return (
     <main className="page-shell min-h-screen text-[var(--color-ink-soft)]">
       <OverlayNav />
@@ -489,6 +497,15 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
+
+        {/* ── Absorbed from the old home stack (IA consolidation) ── */}
+        <ProcessSection />
+        <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
+        <CtrlAltDesignSection />
+        <LearningSection />
+        <TestimonialSection />
+        <VideoWalkthrough />
+        <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
 
         {/* CTA */}
         <section style={{ padding: "0 var(--spacing-6) var(--spacing-20)" }}>

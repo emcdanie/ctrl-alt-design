@@ -17,9 +17,9 @@ interface FormErrors {
 
 const footerNav = {
   Work: [
-    { label: "Case Studies", href: "#work" },
-    { label: "Design Lab", href: "#design-lab" },
-    { label: "Process", href: "#process" },
+    { label: "Case Studies", href: "/work" },
+    { label: "Design Lab", href: "/about#design-lab" },
+    { label: "Process", href: "/about#process" },
     { label: "Archive", href: "#" },
   ],
   Contact: [
