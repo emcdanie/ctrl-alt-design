@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback } from "react";
-import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
 import Hero from "@/components/Hero";
 import CaseCard from "@/components/CaseCard";
@@ -37,20 +36,8 @@ export default function Home() {
               </h2>
             </header>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 480px))",
-                gap: "var(--grid-gap)",
-                alignItems: "start",
-              }}
-            >
+            <div style={{ maxWidth: "480px" }}>
               <CaseCard item={featured} />
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--spacing-3)", alignSelf: "end" }}>
-                <Link href="/work" className="btn-key">
-                  Browse the library <span aria-hidden="true">→</span>
-                </Link>
-              </div>
             </div>
           </div>
         </section>

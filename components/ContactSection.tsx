@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { social } from "@/lib/social";
+import { Button } from "@/components/ui/Button";
 
 interface FormState {
   name: string;
@@ -179,13 +180,14 @@ export default function ContactSection() {
                     Something went wrong, please try emailing me directly at elletamc@gmail.com
                   </p>
                 )}
-                <button
+                <Button
                   type="submit"
+                  variant="primary"
                   disabled={sending}
-                  className="btn-key w-full disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="w-full disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {sending ? "Sending…" : "Send message"}
-                </button>
+                </Button>
               </form>
             )}
           </div>

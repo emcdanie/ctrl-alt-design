@@ -3,6 +3,7 @@
 import { useState } from "react";
 import LogoContainer from "@/components/LogoContainer";
 import ExperienceCard from "@/components/ExperienceCard";
+import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 
 const roles = [
@@ -144,10 +145,10 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
         title="Experience"
         action={
           onResumeClick ? (
-            <button onClick={onResumeClick} className="btn-key btn-key--primary">
+            <Button onClick={onResumeClick} variant="primary">
               Download Resume
               <Icon name="Download" size="sm" />
-            </button>
+            </Button>
           ) : null
         }
       />

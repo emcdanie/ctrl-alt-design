@@ -1,16 +1,24 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import BubbleCluster from "./BubbleCluster";
 import CaseCard from "./CaseCard";
+import { Button } from "@/components/ui/Button";
+import { SegmentedControl } from "@/components/ui/SegmentedControl";
+import { FilterChip } from "@/components/ui/FilterChip";
+import { Select } from "@/components/ui/Select";
+import { Tag } from "@/components/ui/Tag";
+import { StatusPill } from "@/components/ui/StatusPill";
 import { SKILLS, WORK_ITEMS, slugify, type WorkItem } from "@/lib/workLibrary";
 import styles from "./WorkLibrary.module.css";
 
-/* Mirrors the CHIP Research Library: one collection, three view modes
- * (Map / Table / Timeline), filter chips (case + skill), a sort control,
- * everything reflected in the URL. Table is the accessible default. */
+/* The library: one collection, three views (segmented control), flat
+ * multi-select filter chips with an applied row above the results, and
+ * ONE sort source of truth (the URL param; column headers set it in the
+ * table view, the select mirrors it on map/timeline where there are no
+ * headers). Table is the accessible default. */
 
 const VIEWS = ["table", "map", "timeline"] as const;
 type View = (typeof VIEWS)[number];
@@ -23,10 +31,11 @@ const SORTS = {
 } as const;
 type SortKey = keyof typeof SORTS;
 
+const SKILLS_VISIBLE = 6;
+
 function sortItems(items: WorkItem[], sort: SortKey): WorkItem[] {
   const { key, dir } = SORTS[sort];
   return [...items].sort((a, b) => {
-    // the current-focus piece leads the default view
     if (sort === "year-desc" && !!a.featured !== !!b.featured) return a.featured ? -1 : 1;
     const av = a[key as keyof WorkItem] as string | number;
     const bv = b[key as keyof WorkItem] as string | number;
@@ -35,26 +44,30 @@ function sortItems(items: WorkItem[], sort: SortKey): WorkItem[] {
   });
 }
 
+const parseList = (v: string | null) => (v ? v.split(",").filter(Boolean) : []);
+
 export default function WorkLibrary() {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
+  const [skillsExpanded, setSkillsExpanded] = useState(false);
 
   const view: View = (VIEWS as readonly string[]).includes(params.get("view") ?? "")
     ? (params.get("view") as View)
     : "table";
-  const caseFilter = params.get("case");
-  const skillFilter = params.get("skill");
+  const caseFilters = parseList(params.get("case"));
+  const skillFilters = parseList(params.get("skill"));
   const sort: SortKey = params.get("sort") && params.get("sort")! in SORTS
     ? (params.get("sort") as SortKey)
     : "year-desc";
 
-  const setParam = useCallback(
-    (key: string, value: string | null) => {
+  const setParams = useCallback(
+    (updates: Record<string, string | null>) => {
       const next = new URLSearchParams(params.toString());
-      if (value === null) next.delete(key);
-      else next.set(key, value);
-      // defaults stay out of the URL
+      for (const [k, v] of Object.entries(updates)) {
+        if (v === null || v === "") next.delete(k);
+        else next.set(k, v);
+      }
       if (next.get("view") === "table") next.delete("view");
       if (next.get("sort") === "year-desc") next.delete("sort");
       const qs = next.toString();
@@ -63,98 +76,115 @@ export default function WorkLibrary() {
     [params, pathname, router]
   );
 
+  const toggleList = useCallback(
+    (key: "case" | "skill", val: string, current: string[]) => {
+      const next = current.includes(val) ? current.filter((v) => v !== val) : [...current, val];
+      setParams({ [key]: next.join(",") });
+    },
+    [setParams]
+  );
+
   const filtered = useMemo(() => {
     let items = WORK_ITEMS;
-    if (caseFilter) items = items.filter((i) => i.id === caseFilter);
-    if (skillFilter) items = items.filter((i) => i.skills.some((s) => slugify(s) === skillFilter));
+    if (caseFilters.length) items = items.filter((i) => caseFilters.includes(i.id));
+    if (skillFilters.length)
+      items = items.filter((i) => i.skills.some((s) => skillFilters.includes(slugify(s))));
     return sortItems(items, sort);
-  }, [caseFilter, skillFilter, sort]);
+  }, [caseFilters, skillFilters, sort]);
 
-  const hasFilters = Boolean(caseFilter || skillFilter);
+  const hasFilters = caseFilters.length > 0 || skillFilters.length > 0;
+  const appliedChips = [
+    ...caseFilters.map((id) => ({
+      key: `case:${id}`,
+      label: WORK_ITEMS.find((i) => i.id === id)?.title ?? id,
+      remove: () => toggleList("case", id, caseFilters),
+    })),
+    ...skillFilters.map((sl) => ({
+      key: `skill:${sl}`,
+      label: SKILLS.find((s) => slugify(s) === sl) ?? sl,
+      remove: () => toggleList("skill", sl, skillFilters),
+    })),
+  ];
+
+  const visibleSkills = skillsExpanded ? SKILLS : SKILLS.slice(0, SKILLS_VISIBLE);
 
   return (
     <div>
-      {/* ── View switch ── */}
+      {/* ── View switch + sort (select only where no headers exist) ── */}
       <div className={styles.controls}>
-        <div className={styles.viewGroup} role="group" aria-label="View mode">
-          {VIEWS.map((v) => (
-            <button
-              key={v}
-              type="button"
-              className="btn-key"
-              aria-pressed={view === v}
-              onClick={() => setParam("view", v === "table" ? null : v)}
-            >
-              {v}
-            </button>
-          ))}
-        </div>
-
-        <label className={styles.sortControl}>
-          <span>Sort</span>
-          <select
+        <SegmentedControl
+          label="View mode"
+          options={VIEWS.map((v) => ({ value: v, label: v }))}
+          value={view}
+          onChange={(v) => setParams({ view: v === "table" ? null : v })}
+        />
+        {view !== "table" && (
+          <Select
+            label="Sort"
             value={sort}
-            onChange={(e) => setParam("sort", e.target.value === "year-desc" ? null : e.target.value)}
-          >
-            {Object.entries(SORTS).map(([k, s]) => (
-              <option key={k} value={k}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-        </label>
+            onChange={(v) => setParams({ sort: v === "year-desc" ? null : v })}
+            options={Object.entries(SORTS).map(([k, s]) => ({ value: k, label: s.label }))}
+          />
+        )}
       </div>
 
-      {/* ── Filter chips ── */}
+      {/* ── Filters: flat chips; skills behind progressive disclosure ── */}
       <div className={styles.filterRow} role="group" aria-label="Filter by case study">
         <span className={styles.filterLabel}>Case</span>
         {WORK_ITEMS.map((i) => (
-          <button
+          <FilterChip
             key={i.id}
-            type="button"
-            className={`btn-key ${styles.chip}`}
-            aria-pressed={caseFilter === i.id}
-            onClick={() => setParam("case", caseFilter === i.id ? null : i.id)}
+            pressed={caseFilters.includes(i.id)}
+            onClick={() => toggleList("case", i.id, caseFilters)}
           >
             {i.title}
-          </button>
+          </FilterChip>
         ))}
       </div>
       <div className={styles.filterRow} role="group" aria-label="Filter by skill">
         <span className={styles.filterLabel}>Skill</span>
-        {SKILLS.map((s) => (
-          <button
+        {visibleSkills.map((s) => (
+          <FilterChip
             key={s}
-            type="button"
-            className={`btn-key ${styles.chip}`}
-            aria-pressed={skillFilter === slugify(s)}
-            onClick={() => setParam("skill", skillFilter === slugify(s) ? null : slugify(s))}
+            pressed={skillFilters.includes(slugify(s))}
+            onClick={() => toggleList("skill", slugify(s), skillFilters)}
           >
             {s}
+          </FilterChip>
+        ))}
+        <button
+          type="button"
+          className={styles.moreToggle}
+          aria-expanded={skillsExpanded}
+          onClick={() => setSkillsExpanded((e) => !e)}
+        >
+          {skillsExpanded ? "Show fewer" : `+ ${SKILLS.length - SKILLS_VISIBLE} more`}
+        </button>
+      </div>
+
+      {/* ── Applied filters above the results + live count ── */}
+      <div className={styles.appliedRow}>
+        <p className={styles.count} role="status">
+          {filtered.length} of {WORK_ITEMS.length} pieces
+        </p>
+        {appliedChips.map((c) => (
+          <button key={c.key} type="button" className={styles.appliedChip} onClick={c.remove}>
+            {c.label} <span aria-hidden="true">✕</span>
+            <span className="sr-only">Remove filter</span>
           </button>
         ))}
         {hasFilters && (
           <button
             type="button"
-            className={`btn-key ${styles.chip}`}
-            onClick={() => {
-              const next = new URLSearchParams(params.toString());
-              next.delete("case");
-              next.delete("skill");
-              const qs = next.toString();
-              router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
-            }}
+            className={styles.clearAll}
+            onClick={() => setParams({ case: null, skill: null })}
           >
-            Clear filters ✕
+            Clear all
           </button>
         )}
       </div>
 
-      <p className={styles.count} role="status">
-        {filtered.length} of {WORK_ITEMS.length} pieces
-      </p>
-
-      {view === "table" && <TableView items={filtered} sort={sort} setParam={setParam} />}
+      {view === "table" && <TableView items={filtered} sort={sort} setParams={setParams} />}
       {view === "map" && (
         <div className={styles.mapWrap}>
           <BubbleCluster highlightIds={hasFilters ? filtered.map((i) => i.id) : null} />
@@ -165,16 +195,17 @@ export default function WorkLibrary() {
   );
 }
 
-/* ── Table — the accessible default ── */
+/* ── Table: the accessible default. Column headers are the sort input
+ * in this view (aria-sort buttons writing the same URL param). ── */
 
 function TableView({
   items,
   sort,
-  setParam,
+  setParams,
 }: {
   items: WorkItem[];
   sort: SortKey;
-  setParam: (k: string, v: string | null) => void;
+  setParams: (u: Record<string, string | null>) => void;
 }) {
   const sortable: { col: string; asc: SortKey; desc?: SortKey }[] = [
     { col: "Title", asc: "title-asc" },
@@ -191,9 +222,9 @@ function TableView({
   };
 
   const toggle = (col: (typeof sortable)[number]) => {
-    if (col.desc && sort === col.asc) return setParam("sort", col.desc);
-    if (col.desc && sort === col.desc) return setParam("sort", col.asc);
-    setParam("sort", col.asc === "year-desc" ? null : col.asc);
+    if (col.desc && sort === col.asc) return setParams({ sort: col.desc });
+    if (col.desc && sort === col.desc) return setParams({ sort: col.asc });
+    setParams({ sort: col.asc === "year-desc" ? null : col.asc });
   };
 
   return (
@@ -231,38 +262,50 @@ function TableView({
                 <Link href={i.href} className={styles.rowTitle} style={{ color: i.text }}>
                   {i.title}
                 </Link>
-                {i.featured && <span className={styles.focusTag}>Current focus</span>}
+                {i.featured && <StatusPill>Current focus</StatusPill>}
               </th>
               <td>{i.type}</td>
               <td>
                 <span className={styles.skillList}>
                   {i.skills.map((s) => (
-                    <span key={s} className={styles.skillTag}>
-                      {s}
-                    </span>
+                    <Tag key={s}>{s}</Tag>
                   ))}
                 </span>
               </td>
               <td className={styles.nowrap}>{i.year}</td>
               <td>{i.role}</td>
-              <td>{i.impact}</td>
+              <td className={styles.impactCell}>{i.impact}</td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Mobile companion: stacked cards (table hides <768px) */}
+      <ul className={styles.stackList}>
+        {items.map((i) => (
+          <li key={i.id} className={styles.stackCard}>
+            <Link href={i.href} className={styles.rowTitle} style={{ color: i.text }}>
+              {i.title}
+            </Link>
+            {i.featured && <StatusPill>Current focus</StatusPill>}
+            <p className={styles.stackMeta}>
+              {i.type} · {i.year} · {i.role}
+            </p>
+            <p className={styles.stackImpact}>{i.impact}</p>
+          </li>
+        ))}
+      </ul>
+
       {items.length === 0 && <p className={styles.empty}>No pieces match these filters.</p>}
     </div>
   );
 }
 
-/* ── Timeline — horizontal scroll-snap + light parallax; flattens to a
- * vertical list under prefers-reduced-motion (CSS), where the parallax
- * never runs (JS gate). Arrow keys move between cards. ── */
+/* ── Timeline (CaseCards on the rail; reduced-motion flattens) ── */
 
 function TimelineView({ items }: { items: WorkItem[] }) {
   const trackRef = useRef<HTMLUListElement>(null);
 
-  // Light parallax: card content drifts a few px against the scroll.
   useEffect(() => {
     const track = trackRef.current;
     if (!track || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -306,17 +349,16 @@ function TimelineView({ items }: { items: WorkItem[] }) {
 
   return (
     <div>
-      {/* visible affordance: arrows + hint */}
       <div className={styles.tlAffordance}>
-        <button type="button" className="btn-key" onClick={() => nudge(-1)} aria-label="Scroll timeline backwards">
+        <Button onClick={() => nudge(-1)} ariaLabel="Scroll timeline backwards">
           ←
-        </button>
+        </Button>
         <span className={styles.tlHint} aria-hidden="true">
           drag, scroll, or use arrow keys
         </span>
-        <button type="button" className="btn-key" onClick={() => nudge(1)} aria-label="Scroll timeline forwards">
+        <Button onClick={() => nudge(1)} ariaLabel="Scroll timeline forwards">
           →
-        </button>
+        </Button>
       </div>
 
       <ul

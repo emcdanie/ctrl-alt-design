@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 import BubbleCluster from "./BubbleCluster";
+import { Button } from "@/components/ui/Button";
 import { POSITIONING } from "@/lib/copy";
 import styles from "./Hero.module.css";
 
@@ -11,6 +12,9 @@ import styles from "./Hero.module.css";
  * Cluster behaviour + a11y live in BubbleCluster (also the /work Map view).
  */
 export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => void }) {
+  // §7: max one primary per view. While the reveal card (peek) is open it
+  // owns the primary, so the hero CTA demotes to secondary.
+  const [peekOpen, setPeekOpen] = useState(false);
   return (
     <section className="hero-landing" style={{ display: "flex", alignItems: "center", flex: 1, minHeight: 0 }}>
       <div className={styles.hero}>
@@ -26,22 +30,20 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
             that keeps them from drifting. I read code and work with engineers directly.
           </p>
 
-          {/* CTA row, dashboard path + the labeled route into the library.
-              The bubble cluster is the library's Map teaser, never the
-              only path in. */}
-          <div className={styles.ctaRow} style={{ display: "flex", flexWrap: "wrap", gap: "var(--spacing-3)" }}>
-            <button onClick={() => onEnterDashboard?.()} className="btn-key btn-key--primary">
-              Come see what I&apos;ve been building
-              <span aria-hidden="true">→</span>
-            </button>
-            <Link href="/work" className="btn-key">
+          {/* ONE primary: the library. The old dashboard CTA is a quiet
+              text link (the board itself already shows the work). */}
+          <div className={styles.ctaRow} style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--spacing-4)" }}>
+            <Button href="/work" variant={peekOpen ? "secondary" : "primary"}>
               Browse the library
               <span aria-hidden="true">→</span>
-            </Link>
+            </Button>
+            <button type="button" className={styles.quietLink} onClick={() => onEnterDashboard?.()}>
+              Current focus ↓
+            </button>
           </div>
         </div>
 
-        <BubbleCluster />
+        <BubbleCluster onOpenChange={setPeekOpen} />
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
+import { Button } from "@/components/ui/Button";
 
 /* ── Types ─────────────────────────────────────────────────────── */
 
@@ -149,9 +150,9 @@ export default function CaseStudyShell({
 
           {/* CTA */}
           <div className="cs-shell__cta">
-            <Link href="/contact" className="btn-key btn-key--primary">
+            <Button href="/contact" variant="primary">
               Get in touch <span aria-hidden="true">↗</span>
-            </Link>
+            </Button>
           </div>
         </div>
       </aside>
@@ -164,12 +165,10 @@ export default function CaseStudyShell({
           <span aria-hidden="true">←</span> Back to Work
         </Link>
 
-        {/* Hero, the case sphere (visual-language move #2), always */}
+        {/* Hero: the case sphere. No connector here: on a standalone page
+            it terminates in empty space and reads as a stray line (the
+            connected-system motif belongs where there are real nodes). */}
         <div className="cs-shell__hero cs-shell__hero--sphere">
-          <svg className="cs-shell__sphere-link" aria-hidden="true" viewBox="0 0 400 12" preserveAspectRatio="none">
-            <circle cx="6" cy="6" r="4" fill="var(--hero-iris-bright)" />
-            <line x1="10" y1="6" x2="400" y2="6" stroke="var(--hero-link)" strokeWidth="1.5" />
-          </svg>
           <span
             className="cs-shell__sphere"
             aria-hidden="true"

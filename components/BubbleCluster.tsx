@@ -50,9 +50,12 @@ function BubbleLabel({ label }: { label: string }) {
  */
 export default function BubbleCluster({
   highlightIds = null,
+  onOpenChange,
 }: {
   /** when set (library Map view filters), bubbles not listed render dimmed */
   highlightIds?: string[] | null;
+  /** peek open/close (the open peek owns the view's primary action) */
+  onOpenChange?: (open: boolean) => void;
 }) {
   const [selected, setSelected] = useState<number | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -129,13 +132,17 @@ export default function BubbleCluster({
   const select = useCallback(
     (i: number) => {
       setSelected(i);
+      onOpenChange?.(true);
       pop(i);
       requestAnimationFrame(() => {
         placePanel(i);
-        requestAnimationFrame(() => placePanel(i));
+        requestAnimationFrame(() => {
+          placePanel(i);
+          panelRef.current?.focus();
+        });
       });
     },
-    [placePanel, pop]
+    [placePanel, pop, onOpenChange]
   );
 
   const close = useCallback((refocus = false) => {
@@ -143,7 +150,8 @@ export default function BubbleCluster({
       if (refocus && prev !== null) bubRefs.current[prev]?.focus();
       return null;
     });
-  }, []);
+    onOpenChange?.(false);
+  }, [onOpenChange]);
 
   useEffect(() => {
     drawLinks();
@@ -167,9 +175,22 @@ export default function BubbleCluster({
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close(true);
     };
+    const onPointerDown = (e: PointerEvent) => {
+      const t = e.target as HTMLElement;
+      if (panelRef.current?.contains(t)) return;
+      if (t.closest("[data-bubble]")) return;
+      setSelected((prev) => {
+        if (prev !== null) onOpenChange?.(false);
+        return null;
+      });
+    };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [close]);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [close, onOpenChange]);
 
   const active = selected !== null ? BUBBLES[selected] : null;
   const activeGlow = selected === HUB_I ? "var(--hub-bright)" : active?.lo;
@@ -211,6 +232,7 @@ export default function BubbleCluster({
             bubRefs.current[HUB_I] = el;
           }}
           type="button"
+          data-bubble
           className={`${styles.bub} ${styles.hub} ${selected === HUB_I ? styles.sel : ""}`}
           style={bubbleStyle(HUB_I)}
           aria-expanded={selected === HUB_I}
@@ -227,6 +249,7 @@ export default function BubbleCluster({
               bubRefs.current[i] = el;
             }}
             type="button"
+            data-bubble
             className={`${styles.bub} ${selected === i ? styles.sel : ""} ${
               highlightIds && !highlightIds.includes(b.id) ? styles.dim : ""
             }`}
@@ -245,6 +268,7 @@ export default function BubbleCluster({
       {/* ── Reveal card ── */}
       <div
         ref={panelRef}
+        tabIndex={-1}
         role="dialog"
         aria-label={active ? active.title : "Case preview"}
         className={`${styles.panel} ${active ? styles.show : ""}`}

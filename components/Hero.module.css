@@ -62,6 +62,30 @@
   margin-top: var(--spacing-8);
 }
 
+.quietLink {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  min-height: var(--spacing-touch-target);
+  padding: 0 var(--spacing-2);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--color-ink-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.quietLink:hover,
+.quietLink:focus-visible {
+  color: var(--color-accent-ink);
+}
+
+.quietLink:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
 
 @media (max-width: 860px) {
   .hero {

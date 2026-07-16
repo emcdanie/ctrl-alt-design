@@ -10,8 +10,9 @@
     "audit:layout": "node scripts/audit-layout.mjs",
     "audit:contrast": "node scripts/contrast-check.mjs",
     "audit:structure": "node scripts/audit-structure.mjs",
-    "gate": "npm run audit:structure && npm run audit:copy && npm run audit:contrast",
-    "audit:copy": "node scripts/audit-copy.mjs"
+    "gate": "npm run audit:structure && npm run audit:copy && npm run audit:controls && npm run audit:contrast",
+    "audit:copy": "node scripts/audit-copy.mjs",
+    "audit:controls": "node scripts/audit-controls.mjs"
   },
   "dependencies": {
     "iconoir-react": "^7.11.1",

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import OverlayNav from "@/components/OverlayNav";
 import PageHeader from "@/components/PageHeader";
+import { Button } from "@/components/ui/Button";
 import ProcessSection from "@/components/ProcessSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import TestimonialSection from "@/components/TestimonialSection";
@@ -204,7 +205,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
           marginTop: expanded ? "16px" : "0px",
         }}
       >
-        <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)", paddingTop: "var(--spacing-4)" }}>
+        <div style={{ borderTop: "1px solid var(--color-border-soft)", paddingTop: "var(--spacing-4)" }}>
           {/* Topics */}
           <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6B665D", marginBottom: "var(--spacing-2)" }}>
             Topics covered
@@ -311,7 +312,7 @@ export default function AboutPage() {
 
         {/* Divider */}
         <div className="page-container">
-          <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
+          <div style={{ borderTop: "1px solid var(--color-border-soft)" }} />
         </div>
 
         {/* At-a-glance facts, relocated from landing */}
@@ -323,7 +324,7 @@ export default function AboutPage() {
 
         {/* Divider */}
         <div className="page-container">
-          <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
+          <div style={{ borderTop: "1px solid var(--color-border-soft)" }} />
         </div>
 
         {/* Working With Me */}
@@ -354,7 +355,7 @@ export default function AboutPage() {
 
         {/* Divider */}
         <div className="page-container">
-          <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
+          <div style={{ borderTop: "1px solid var(--color-border-soft)" }} />
         </div>
 
         {/* Learning & Experiments, THE learning section (#learning) */}
@@ -378,12 +379,12 @@ export default function AboutPage() {
 
         {/* Divider */}
         <div className="page-container">
-          <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
+          <div style={{ borderTop: "1px solid var(--color-border-soft)" }} />
         </div>
 
         {/* Divider */}
         <div className="page-container">
-          <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
+          <div style={{ borderTop: "1px solid var(--color-border-soft)" }} />
         </div>
 
         {/* Currently Listening */}
@@ -428,9 +429,9 @@ export default function AboutPage() {
                   Open to full-time roles &<br />select freelance projects.
                 </h2>
               </div>
-              <Link href="/contact" className="btn-key" style={{ flexShrink: 0 }}>
+              <Button href="/contact" className="shrink-0">
                 Get in touch ↗
-              </Link>
+              </Button>
             </div>
           </div>
         </section>
