@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import BubbleCluster from "./BubbleCluster";
 import styles from "./Hero.module.css";
 
@@ -24,12 +25,18 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
             that keeps them from drifting. I read code and work with engineers directly.
           </p>
 
-          {/* CTA kept from the previous hero — the path into the dashboard */}
-          <div className={styles.ctaRow}>
+          {/* CTA row — dashboard path + the labeled route into the library.
+              The bubble cluster is the library's Map teaser, never the
+              only path in. */}
+          <div className={styles.ctaRow} style={{ display: "flex", flexWrap: "wrap", gap: "var(--spacing-3)" }}>
             <button onClick={() => onEnterDashboard?.()} className="btn-key btn-key--primary">
               Come see what I&apos;ve been building
               <span aria-hidden="true">→</span>
             </button>
+            <Link href="/work" className="btn-key">
+              Browse the library
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
 
