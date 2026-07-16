@@ -51,7 +51,7 @@ export default function VideoWalkthrough() {
           </video>
           {/* Hover overlay */}
           <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-all duration-300" style={{ zIndex: 2 }}>
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 bg-white/90 text-[#1A1814] font-semibold text-sm px-5 py-3 rounded-full shadow-lg" style={{ fontFamily: "var(--font-body)" }}>
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 bg-[color:var(--color-glass-strong)] text-[color:var(--color-ink)] font-semibold text-sm px-5 py-3 rounded-full shadow-lg" style={{ fontFamily: "var(--font-body)" }}>
               View Case Study →
             </div>
           </div>

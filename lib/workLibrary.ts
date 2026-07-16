@@ -45,6 +45,8 @@ export interface WorkItem {
   hi: string;
   lo: string;
   deep: string;
+  /** readable case accent for TEXT on themed surfaces (flips in dark) */
+  text: string;
 }
 
 export const WORK_ITEMS: WorkItem[] = [
@@ -64,6 +66,7 @@ export const WORK_ITEMS: WorkItem[] = [
     hi: "var(--case-code-first-hi)",
     lo: "var(--case-code-first-lo)",
     deep: "var(--case-code-first-deep)",
+    text: "var(--case-code-first-text)",
   },
   {
     id: "drift",
@@ -87,6 +90,7 @@ export const WORK_ITEMS: WorkItem[] = [
     hi: "var(--case-drift-hi)",
     lo: "var(--case-drift-lo)",
     deep: "var(--case-drift-deep)",
+    text: "var(--case-drift-text)",
   },
   {
     id: "guardian",
@@ -104,6 +108,7 @@ export const WORK_ITEMS: WorkItem[] = [
     hi: "var(--case-guardian-hi)",
     lo: "var(--case-guardian-lo)",
     deep: "var(--case-guardian-deep)",
+    text: "var(--case-guardian-text)",
   },
   {
     id: "clarity",
@@ -121,6 +126,7 @@ export const WORK_ITEMS: WorkItem[] = [
     hi: "var(--case-clarity-hi)",
     lo: "var(--case-clarity-lo)",
     deep: "var(--case-clarity-deep)",
+    text: "var(--case-clarity-text)",
   },
   {
     id: "design-lab",
@@ -138,6 +144,7 @@ export const WORK_ITEMS: WorkItem[] = [
     hi: "var(--case-design-lab-hi)",
     lo: "var(--case-design-lab-lo)",
     deep: "var(--case-design-lab-deep)",
+    text: "var(--case-design-lab-text)",
   },
   {
     id: "writing",
@@ -155,6 +162,7 @@ export const WORK_ITEMS: WorkItem[] = [
     hi: "var(--case-writing-hi)",
     lo: "var(--case-writing-lo)",
     deep: "var(--case-writing-deep)",
+    text: "var(--case-writing-text)",
   },
 ];
 
@@ -174,4 +182,5 @@ export const HUB_ITEM: Omit<WorkItem, "type" | "year" | "yearStart" | "role" | "
   hi: "var(--hub-hi)",
   lo: "var(--hub-lo)",
   deep: "var(--hub-deep)",
+  text: "var(--hub-deep)",
 };

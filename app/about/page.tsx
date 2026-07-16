@@ -247,7 +247,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
                 fontFamily: "var(--font-body)",
                 fontSize: "var(--typography-font-size-tag)",
                 fontWeight: 600,
-                color: "#1A1814",
+                color: "var(--color-ink)",
                 textDecoration: "none",
               }}
               onClick={(e) => e.stopPropagation()}
@@ -311,7 +311,7 @@ export default function AboutPage() {
                 aspectRatio: "1",
                 borderRadius: "var(--radius-3xl)",
                 overflow: "hidden",
-                background: "#D8D4CC",
+                background: "var(--color-surface)",
                 border: "3px solid rgba(26,24,20,0.06)",
                 justifySelf: "end",
               }}>
@@ -320,7 +320,7 @@ export default function AboutPage() {
                   src="/images/thumbnails/Me.jpeg"
                   alt="Elleta"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  onError={e => { (e.currentTarget.parentElement as HTMLElement).style.background = "#C8C4CC"; e.currentTarget.style.display = "none"; }}
+                  onError={e => { (e.currentTarget.parentElement as HTMLElement).style.background = "var(--color-surface)"; e.currentTarget.style.display = "none"; }}
                 />
               </div>
             </div>
@@ -437,7 +437,7 @@ export default function AboutPage() {
                         width: "10px",
                         height: "10px",
                         borderRadius: "50%",
-                        background: i === 0 ? "#1A1814" : "rgba(26,24,20,0.15)",
+                        background: i === 0 ? "var(--color-ink)" : "var(--color-border-medium)",
                         border: "2px solid var(--color-page)",
                       }}
                     />
@@ -459,7 +459,7 @@ export default function AboutPage() {
                           fontFamily: "var(--font-body)",
                           fontSize: "15px",
                           fontWeight: "var(--typography-font-weight-medium)",
-                          color: "#1A1814",
+                          color: "var(--color-ink)",
                         }}
                       >
                         {event.label}
@@ -495,7 +495,7 @@ export default function AboutPage() {
           <div className="page-container">
             <div
               style={{
-                background: "#1A1814",
+                background: "var(--color-semantic-background-inverse)",
                 borderRadius: "var(--radius-3xl)",
                 padding: "56px var(--spacing-12)",
                 display: "flex",
@@ -505,16 +505,16 @@ export default function AboutPage() {
               className="md:flex-row md:items-center md:justify-between"
             >
               <div>
-                <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: "var(--typography-font-weight-medium)", textTransform: "uppercase", letterSpacing: "0.12em", color: "rgba(255,255,255,0.4)", marginBottom: "10px" }}>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: "var(--typography-font-weight-medium)", textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--color-semantic-text-inverse)", opacity: 0.65, marginBottom: "10px" }}>
                   Have a project in mind?
                 </p>
-                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: "var(--typography-font-weight-bold)", color: "#FFFFFF", lineHeight: 1.15, textTransform: "uppercase" }}>
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: "var(--typography-font-weight-bold)", color: "var(--color-semantic-text-inverse)", lineHeight: 1.15, textTransform: "uppercase" }}>
                   Open to full-time roles &<br />select freelance projects.
                 </h2>
               </div>
               <Link
                 href="/#contact"
-                style={{ flexShrink: 0, background: "var(--color-semantic-text-inverse)", color: "#1A1814", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: "var(--typography-font-size-tag)", padding: "var(--spacing-3) var(--spacing-6)", borderRadius: "var(--radius-full)", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
+                style={{ flexShrink: 0, background: "var(--color-semantic-background)", color: "var(--color-semantic-text-primary)", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: "var(--typography-font-size-tag)", padding: "var(--spacing-3) var(--spacing-6)", borderRadius: "var(--radius-full)", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
               >
                 Get in touch ↗
               </Link>

@@ -61,7 +61,7 @@ export default function LearningSection() {
                   alignItems: "center",
                   justifyContent: "center",
                   marginBottom: "var(--spacing-4)",
-                  color: "#1A1814",
+                  color: "var(--color-ink)",
                 }}
               >
                 <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">

@@ -120,7 +120,7 @@ function CardInner({
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-white/80 shadow-[0_12px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
               <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
-                <path d="M5 3.5l10 5.5-10 5.5V3.5z" fill="#1A1814" />
+                <path d="M5 3.5l10 5.5-10 5.5V3.5z" fill="var(--ink-on-paper)" />
               </svg>
             </div>
           </div>
@@ -129,11 +129,11 @@ function CardInner({
 
       {/* Text area */}
       <div className="flex flex-1 flex-col p-6">
-        <h3 className="mb-1.5 font-[var(--font-display)] text-[17px] font-bold leading-snug text-[#1A1814]">
+        <h3 className="mb-1.5 font-[var(--font-display)] text-[17px] font-bold leading-snug text-[color:var(--color-ink)]">
           {title}
         </h3>
         {subtitle && (
-          <p className="mb-3 flex-1 text-[14px] leading-[1.65] text-[#6B665D]">{subtitle}</p>
+          <p className="mb-3 flex-1 text-[14px] leading-[1.65] text-[color:var(--color-ink-muted)]">{subtitle}</p>
         )}
         {tags && tags.length > 0 && (
           <div className="mt-auto flex flex-wrap gap-1.5 pt-2">
@@ -154,7 +154,7 @@ function CardInner({
 
 export default function MediaCard(props: MediaCardProps) {
   const sharedClasses =
-    "group flex cursor-pointer flex-col overflow-hidden rounded-[var(--radius-2xl)] border border-white/60 bg-gradient-to-b from-white/82 to-white/68 shadow-[var(--shadow-card-default)] [backdrop-filter:blur(var(--bella-blur-lg))] [-webkit-backdrop-filter:blur(var(--bella-blur-lg))] transition-all duration-300 hover:[transform:var(--motion-transform-hover-lift)] hover:shadow-[var(--shadow-card-elevated)]";
+    "group flex cursor-pointer flex-col overflow-hidden rounded-[var(--radius-2xl)] border border-[color:var(--color-semantic-border-glass-edge)] bg-gradient-to-b from-white/82 to-white/68 shadow-[var(--shadow-card-default)] [backdrop-filter:blur(var(--bella-blur-lg))] [-webkit-backdrop-filter:blur(var(--bella-blur-lg))] transition-all duration-300 hover:[transform:var(--motion-transform-hover-lift)] hover:shadow-[var(--shadow-card-elevated)]";
 
   if (props.type === "project") {
     const { href, type: _type, ...rest } = props;

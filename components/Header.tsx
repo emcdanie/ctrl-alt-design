@@ -48,8 +48,8 @@ export default function Header({ onResumeClick }: HeaderProps) {
       <div
         className={`flex w-full items-center justify-between border-b px-5 backdrop-blur-xl transition-all duration-300 sm:px-8 ${
           scrolled
-            ? "border-[#1A1814]/8 bg-[var(--color-semantic-background)]/88 py-2.5 shadow-[0_1px_12px_rgba(26,24,20,0.06)]"
-            : "border-[#1A1814]/5 bg-[var(--color-semantic-background)]/60 py-3.5 shadow-none"
+            ? "border-[color:var(--color-border-soft)] bg-[var(--color-semantic-background)]/88 py-2.5 shadow-[0_1px_12px_rgba(26,24,20,0.06)]"
+            : "border-[color:var(--color-border-soft)] bg-[var(--color-semantic-background)]/60 py-3.5 shadow-none"
         }`}
         style={{ borderTop: "1px solid rgba(255,255,255,0.6)" }}
       >
@@ -59,7 +59,7 @@ export default function Header({ onResumeClick }: HeaderProps) {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="text-[15px] font-semibold tracking-[-0.02em] text-[#1A1814] transition-opacity hover:opacity-70"
+          className="text-[15px] font-semibold tracking-[-0.02em] text-[color:var(--color-ink)] transition-opacity hover:opacity-70"
         >
           Elleta McDaniel
         </a>
@@ -69,7 +69,7 @@ export default function Header({ onResumeClick }: HeaderProps) {
             <button
               key={link.href}
               onClick={() => scrollTo(link.href)}
-              className="border-none bg-transparent p-0 text-[13px] tracking-[-0.01em] text-[#5D544A]/80 transition-colors hover:text-[#1A1814]"
+              className="border-none bg-transparent p-0 text-[13px] tracking-[-0.01em] text-[color:var(--color-ink-muted)] transition-colors hover:text-[color:var(--color-ink)]"
             >
               {link.label}
             </button>
@@ -78,7 +78,7 @@ export default function Header({ onResumeClick }: HeaderProps) {
 
         <button
           onClick={onResumeClick}
-          className="rounded-full border border-[#1A1814]/10 bg-[#1A1814] px-4 py-2 text-[13px] font-medium text-[var(--color-semantic-background)] shadow-[0_4px_12px_rgba(26,24,20,0.12)] transition-all duration-200 hover:-translate-y-px hover:opacity-90"
+          className="rounded-full border border-[color:var(--color-border-medium)] bg-[color:var(--color-semantic-background-inverse)] px-4 py-2 text-[13px] font-medium text-[color:var(--color-semantic-text-inverse)] shadow-[0_4px_12px_rgba(26,24,20,0.12)] transition-all duration-200 hover:-translate-y-px hover:opacity-90"
         >
           Resume
         </button>

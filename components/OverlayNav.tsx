@@ -64,8 +64,8 @@ export default function OverlayNav() {
       <div
         className="pointer-events-none fixed inset-x-0 top-0 z-[9995]"
       >
-        <div className="flex w-full items-center justify-between border-b border-white/60 bg-[var(--color-semantic-background)]/72 px-4 py-3 shadow-[0_18px_48px_rgba(26,24,20,0.08)] backdrop-blur-xl sm:px-6"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.7)" }}
+        <div className="flex w-full items-center justify-between border-b border-[color:var(--color-semantic-border-glass-edge)] bg-[var(--color-semantic-background)]/72 px-4 py-3 shadow-[0_18px_48px_rgba(26,24,20,0.08)] backdrop-blur-xl sm:px-6"
+          style={{ borderTop: "1px solid var(--color-semantic-border-glass-top)" }}
         >
           <Link
             href="/"
@@ -86,7 +86,7 @@ export default function OverlayNav() {
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
             onMouseLeave={() => setTriggerHovered(false)}
-            className="pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[#1A1814]/10 bg-white/45 text-[#1A1814] shadow-[0_10px_30px_rgba(26,24,20,0.08)] transition-all duration-200 hover:bg-white/60"
+            className="pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--color-border-medium)] bg-[color:var(--color-glass)] text-[color:var(--color-ink)] shadow-[0_10px_30px_rgba(26,24,20,0.08)] transition-all duration-200 hover:bg-[color:var(--color-glass-strong)]"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="overlay-menu"
@@ -120,13 +120,13 @@ export default function OverlayNav() {
         ref={menuRef}
         id="overlay-menu"
         inert={!open}
-        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[#1A1814] transition-[clip-path] duration-300 ease-[cubic-bezier(0.76,0,0.24,1)]"
+        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[color:var(--color-ink)] transition-[clip-path] duration-300 ease-[cubic-bezier(0.76,0,0.24,1)]"
         style={{
           clipPath: open ? "inset(0% 0 0% 0)" : "inset(100% 0 0% 0)",
         }}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.8),transparent_36%),radial-gradient(circle_at_bottom_right,var(--color-semantic-accent-subtle),transparent_34%)]" />
-        <div className="absolute left-6 right-6 top-6 h-px bg-[#1A1814]/8 sm:left-8 sm:right-8" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,var(--color-glass-strong),transparent_36%),radial-gradient(circle_at_bottom_right,var(--color-semantic-accent-subtle),transparent_34%)]" />
+        <div className="absolute left-6 right-6 top-6 h-px bg-[color:var(--color-border-soft)] sm:left-8 sm:right-8" />
 
         <div className="relative flex h-full flex-col justify-between px-6 pb-8 pt-28 sm:px-8 sm:pb-10 sm:pt-32 lg:px-16 lg:pb-14 lg:pt-36">
           <div
@@ -144,23 +144,23 @@ export default function OverlayNav() {
 
               const sharedClasses =
                 "font-[family:var(--font-display)] text-[length:var(--font-hero)] font-normal leading-[1.02] tracking-[-0.02em] transition-colors duration-150";
-              const colorClass = dimmed ? "text-[#847B6E]" : "text-[#1A1814]";
+              const colorClass = dimmed ? "text-[color:var(--color-ink-muted)]" : "text-[color:var(--color-ink)]";
 
               return (
                 <div
                   key={item.num}
-                  className="group flex items-start gap-4 border-b border-[#1A1814]/8 py-4 sm:gap-6 sm:py-5 lg:gap-10"
+                  className="group flex items-start gap-4 border-b border-[color:var(--color-border-soft)] py-4 sm:gap-6 sm:py-5 lg:gap-10"
                   onMouseEnter={() => setHovered(item.num)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  <span className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[#6B665D] sm:min-w-20">
+                  <span className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] sm:min-w-20">
                     (_{item.num})
                   </span>
 
                   {item.href.startsWith("#") ? (
                     <button
                       onClick={() => handleNavClick(item.href)}
-                      className={`${sharedClasses} ${colorClass} bg-transparent p-0 text-left hover:text-[#5E554A]`}
+                      className={`${sharedClasses} ${colorClass} bg-transparent p-0 text-left hover:text-[color:var(--color-ink-soft)]`}
                     >
                       {item.label}
                     </button>
@@ -168,7 +168,7 @@ export default function OverlayNav() {
                     <Link
                       href={item.href}
                       onClick={() => setOpen(false)}
-                      className={`${sharedClasses} ${colorClass} block hover:text-[#5E554A]`}
+                      className={`${sharedClasses} ${colorClass} block hover:text-[color:var(--color-ink-soft)]`}
                     >
                       {item.label}
                     </Link>
@@ -181,7 +181,7 @@ export default function OverlayNav() {
           <div className="relative z-10 mt-12 flex flex-col gap-3 sm:mt-16">
             <a
               href="mailto:elletamc@gmail.com"
-              className="w-fit font-[family:var(--font-body)] text-sm text-[#6B665D] transition-colors duration-150 hover:text-[#1A1814]"
+              className="w-fit font-[family:var(--font-body)] text-sm text-[color:var(--color-ink-muted)] transition-colors duration-150 hover:text-[color:var(--color-ink)]"
             >
               elletamc@gmail.com
             </a>
@@ -189,7 +189,7 @@ export default function OverlayNav() {
               href={social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-fit font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.18em] text-[#6B665D] transition-colors duration-150 hover:text-[#1A1814]"
+              className="w-fit font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.18em] text-[color:var(--color-ink-muted)] transition-colors duration-150 hover:text-[color:var(--color-ink)]"
             >
               LinkedIn
             </a>

@@ -174,15 +174,15 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
           {education.map((edu) => (
             <div
               key={edu.name}
-              className="overflow-hidden rounded-[var(--radius-2xl)] border border-white/50 bg-gradient-to-b from-white/72 to-white/58 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-04),0_1px_4px_var(--color-alpha-shadow-warm-03),inset_0_1px_0_rgba(255,255,255,0.8)] [backdrop-filter:blur(var(--bella-blur-lg))] [-webkit-backdrop-filter:blur(var(--bella-blur-lg))]"
+              className="overflow-hidden rounded-[var(--radius-2xl)] border border-[color:var(--color-semantic-border-glass-edge)] bg-gradient-to-b from-white/72 to-white/58 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-04),0_1px_4px_var(--color-alpha-shadow-warm-03),inset_0_1px_0_rgba(255,255,255,0.8)] [backdrop-filter:blur(var(--bella-blur-lg))] [-webkit-backdrop-filter:blur(var(--bella-blur-lg))]"
             >
               <div className="flex w-full items-center gap-4 px-5 py-5 md:px-6 md:py-6">
                 <LogoContainer src={edu.logo} alt={edu.name} size={48} />
                 <div className="min-w-0 flex-1">
-                  <span className="font-display text-[16px] font-semibold leading-[1.3] text-[#1A1814] md:text-[17px]">
+                  <span className="font-display text-[16px] font-semibold leading-[1.3] text-[color:var(--color-ink)] md:text-[17px]">
                     {edu.name}
                   </span>
-                  <div className="mt-1 text-[14px] leading-relaxed text-[#6B665D]">
+                  <div className="mt-1 text-[14px] leading-relaxed text-[color:var(--color-ink-muted)]">
                     {edu.degree} · {edu.period}
                   </div>
                 </div>

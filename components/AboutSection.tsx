@@ -102,7 +102,7 @@ export default function AboutSection() {
                   fontFamily: "var(--font-body)",
                   fontSize: "var(--typography-font-size-tag)",
                   fontWeight: 600,
-                  color: "#1A1814",
+                  color: "var(--color-ink)",
                   textDecoration: "none",
                   border: "1px solid rgba(26,24,20,0.18)",
                   borderRadius: "var(--radius-full)",
@@ -110,12 +110,12 @@ export default function AboutSection() {
                   transition: "background 150ms ease, border-color 150ms ease, color 150ms ease",
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.background = "#1A1814";
+                  e.currentTarget.style.background = "var(--color-semantic-background-inverse)";
                   e.currentTarget.style.color = "var(--color-semantic-text-inverse)";
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.background = "transparent";
-                  e.currentTarget.style.color = "#1A1814";
+                  e.currentTarget.style.color = "var(--color-ink)";
                 }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -133,7 +133,7 @@ export default function AboutSection() {
                   fontFamily: "var(--font-body)",
                   fontSize: "var(--typography-font-size-tag)",
                   fontWeight: 600,
-                  color: "#1A1814",
+                  color: "var(--color-ink)",
                   textDecoration: "none",
                   border: "1px solid rgba(26,24,20,0.18)",
                   borderRadius: "var(--radius-full)",
@@ -141,12 +141,12 @@ export default function AboutSection() {
                   transition: "background 150ms ease, border-color 150ms ease, color 150ms ease",
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.background = "#1A1814";
+                  e.currentTarget.style.background = "var(--color-semantic-background-inverse)";
                   e.currentTarget.style.color = "var(--color-semantic-text-inverse)";
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.background = "transparent";
-                  e.currentTarget.style.color = "#1A1814";
+                  e.currentTarget.style.color = "var(--color-ink)";
                 }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

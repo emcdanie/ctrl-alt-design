@@ -68,7 +68,7 @@ export default function ArtifactPlaceholder({
             fontFamily: "var(--font-display)",
             fontSize: "var(--typography-font-size-xl)",
             fontWeight: 600,
-            color: "#1A1814",
+            color: "var(--color-ink)",
             lineHeight: 1.25,
             marginBottom: "var(--spacing-2)",
           }}

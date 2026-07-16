@@ -226,7 +226,7 @@ function TableView({
           {items.map((i) => (
             <tr key={i.id}>
               <th scope="row">
-                <Link href={i.href} className={styles.rowTitle} style={{ color: i.deep }}>
+                <Link href={i.href} className={styles.rowTitle} style={{ color: i.text }}>
                   {i.title}
                 </Link>
               </th>
@@ -323,7 +323,7 @@ function TimelineView({ items }: { items: WorkItem[] }) {
         onKeyDown={onKeyDown}
       >
         {items.map((i) => (
-          <li key={i.id} className={styles.tlCard} style={{ ["--cc" as string]: i.lo, ["--ct" as string]: i.deep }}>
+          <li key={i.id} className={styles.tlCard} style={{ ["--cc" as string]: i.lo, ["--ct" as string]: i.text }}>
             <div className={styles.cardInner}>
               <p className={styles.tlYear}>{i.year}</p>
               <p className={styles.tlTitle}>

@@ -68,7 +68,7 @@ export default function PersonalSection() {
                 fontFamily: "var(--font-display)",
                 fontSize: "17px",
                 fontWeight: 600,
-                color: "#1A1814",
+                color: "var(--color-ink)",
                 lineHeight: 1.3,
                 marginBottom: "var(--spacing-1)",
               }}>

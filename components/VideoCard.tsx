@@ -67,7 +67,7 @@ export default function VideoCard({
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/40 bg-white/82 shadow-[0_18px_42px_rgba(0,0,0,0.2)] backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M5 3.5l10 5.5-10 5.5V3.5z" fill="#1A1814" />
+              <path d="M5 3.5l10 5.5-10 5.5V3.5z" fill="var(--ink-on-paper)" />
             </svg>
           </div>
         </div>
@@ -75,10 +75,10 @@ export default function VideoCard({
 
       <div className="flex flex-1 flex-col p-6">
         <p className="section-label mb-3">EXPLORATION</p>
-        <h3 className="font-display mb-2 text-[20px] font-bold leading-snug text-[#1A1814]">
+        <h3 className="font-display mb-2 text-[20px] font-bold leading-snug text-[color:var(--color-ink)]">
           {title}
         </h3>
-        <p className="mb-4 flex-1 text-[length:var(--typography-font-size-base)] leading-[1.72] text-[#6B665D]">
+        <p className="mb-4 flex-1 text-[length:var(--typography-font-size-base)] leading-[1.72] text-[color:var(--color-ink-muted)]">
           {subtitle}
         </p>
         <div className="flex flex-wrap gap-2">

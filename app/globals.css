@@ -148,6 +148,12 @@ body {
   --case-writing-hi: #F5A79C;
   --case-writing-lo: #F0796B;
   --case-writing-deep: #B23C30;
+  --case-code-first-text: var(--case-code-first-deep);
+  --case-drift-text: var(--case-drift-deep);
+  --case-guardian-text: var(--case-guardian-deep);
+  --case-clarity-text: var(--case-clarity-deep);
+  --case-design-lab-text: var(--case-design-lab-deep);
+  --case-writing-text: var(--case-writing-deep);
   --hub-hi: #CFC7F6;
   --hub-lo: #A99BEC;
   --hub-bright: #6C5CE0;
@@ -157,6 +163,17 @@ body {
   --hero-panel-ink: #1A1720;
   --hero-panel-meta: #4A4652;
   --hero-panel-close: #9A948B;
+
+  /* Fixed-context "paper" tokens — surfaces that stay light in BOTH
+     modes (reveal card, resume modal). Never flip these. */
+  --surface-paper: #FAFAF8;
+  --ink-on-paper: #1A1720;
+  --ink-on-paper-soft: #4A4652;
+  --ink-on-paper-muted: #6B665D;
+  --ink-on-paper-border: rgba(26, 23, 32, 0.1);
+  --modal-backdrop: rgba(26, 23, 32, 0.7);
+  /* page-top glow — flips to near-none on navy */
+  --page-glow: rgba(255, 255, 255, 0.55);
   --hero-panel-shadow: rgba(26, 23, 32, 0.22);
   --hero-link: rgba(26, 23, 32, 0.16);
   --key-face-hi: #FFFFFF;
@@ -189,6 +206,14 @@ body {
 }
 
 [data-theme="dark"] {
+  /* case accents as TEXT flip to the bright variant on navy (deep is
+     calibrated for light cards only) */
+  --case-code-first-text: var(--case-code-first-hi);
+  --case-drift-text: var(--case-drift-hi);
+  --case-guardian-text: var(--case-guardian-hi);
+  --case-clarity-text: var(--case-clarity-hi);
+  --case-design-lab-text: var(--case-design-lab-hi);
+  --case-writing-text: var(--case-writing-hi);
   --hero-panel-bg: #F4EFE6;
   --hero-panel-shadow: rgba(0, 0, 0, 0.44);
   --hero-link: rgba(244, 239, 230, 0.2);
@@ -197,6 +222,8 @@ body {
   --switch-track-lo: #20204A;
   --switch-icon-sun: rgba(244, 239, 230, 0.32);
   --switch-icon-moon: #CFC7F6;
+  --modal-backdrop: rgba(0, 0, 0, 0.6);
+  --page-glow: rgba(255, 255, 255, 0.04);
 }
 
 /* ─── Keycap logo lockup (header) — from _proto/_hero.html ──────────
@@ -357,7 +384,7 @@ body {
   line-height: 1.65;
   letter-spacing: 0.01em;
   background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.55), transparent 36%),
+    radial-gradient(circle at top, var(--page-glow), transparent 36%),
     var(--color-semantic-background);
   color: var(--color-ink-soft);
   -webkit-font-smoothing: antialiased;
@@ -365,13 +392,27 @@ body {
   overflow-x: hidden;
 }
 
-/* Navy dark mode — surfaces flip via BELLA [data-theme="dark"]; the
-   app-level ink aliases flip here (single place, no per-component hex). */
+/* Navy dark mode — surfaces flip via BELLA [data-theme="dark"]; every
+   app-level surface/ink/border alias flips here (single place, no
+   per-component hex). Components must consume THESE tokens, never raw
+   grounds/inks — see DESIGN.md "Global theming contract". */
 [data-theme="dark"] body {
   --color-ink: #F4EFE6;
   --color-ink-soft: #E6E1D6;
   --color-ink-muted: #B9B4C7;
   --color-muted: #B9B4C7;
+  --color-page: #1B1B40;
+  --color-cream: #232350;
+  --color-card: #232350;
+  --color-surface: #2B2B5C;
+  --color-white-pure: #2B2B5C;
+  --color-glass: rgba(35, 35, 80, 0.68);
+  --color-glass-strong: rgba(35, 35, 80, 0.82);
+  --color-tag-bg: rgba(244, 239, 230, 0.08);
+  --color-tag-border: rgba(244, 239, 230, 0.16);
+  --color-border-soft: rgba(244, 239, 230, 0.1);
+  --color-border-medium: rgba(244, 239, 230, 0.16);
+  --color-accent-espresso: #A79CE2;
   background: var(--color-semantic-background);
 }
 
@@ -430,7 +471,7 @@ li {
 }
 
 .surface-subtle {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.22) 100%);
+  background: var(--color-semantic-surface-glass-light);
 }
 
 .eyebrow,
@@ -480,7 +521,7 @@ li {
   white-space: nowrap;
   line-height: var(--typography-line-height-normal);
   letter-spacing: 0.02em;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  box-shadow: inset 0 1px 0 var(--color-semantic-border-glass-top);
 }
 
 .card-hover {
@@ -694,7 +735,7 @@ li {
   /* DESIGN.md: one card radius everywhere */
   border-radius: var(--radius-2xl);
   box-shadow: 0 1px 4px var(--color-alpha-shadow-warm-03), 0 4px 16px var(--color-alpha-shadow-warm-04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    inset 0 1px 0 var(--color-semantic-border-glass-top);
 }
 
 /* Glass card — case study cards, content panels, featured surfaces */
@@ -703,16 +744,17 @@ li {
   backdrop-filter: blur(var(--bella-blur-md));
   -webkit-backdrop-filter: blur(var(--bella-blur-md));
   border: 1px solid var(--color-alpha-glass-55);
-  border-top: 1px solid rgba(255, 255, 255, 0.75);
+  border-top: 1px solid var(--color-semantic-border-glass-top);
   border-radius: var(--radius-2xl);
   box-shadow: 0 1px 2px var(--color-alpha-shadow-warm-04), 0 8px 24px var(--color-alpha-shadow-warm-06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    inset 0 1px 0 var(--color-semantic-border-glass-top);
 }
 
 /* Dark utility surface — CTAs, key controls */
 .surface-dark {
+  /* fixed-context charcoal chip — same in both modes */
   background: #1A1814;
-  color: var(--color-semantic-background);
+  color: var(--ink-on-dark-strong);
 }
 
 /* ─── Keycap Button — the site-wide button style ─────────────────
@@ -836,7 +878,7 @@ section[id],
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid #1A1814;
+  outline: 2px solid var(--color-semantic-border-strong);
   outline-offset: 3px;
 }
 
@@ -884,9 +926,9 @@ textarea:focus-visible {
   gap: var(--spacing-2);
   padding: 10px var(--spacing-5);
   border-radius: var(--radius-full);
-  border: 1px solid rgba(26, 24, 20, 0.14);
-  background: var(--color-alpha-glass-72);
-  color: #1A1814;
+  border: 1px solid var(--color-border-medium);
+  background: var(--color-glass);
+  color: var(--color-ink);
   font-family: var(--font-body);
   font-size: var(--typography-font-size-tag);
   font-weight: var(--typography-font-weight-medium);
@@ -896,28 +938,24 @@ textarea:focus-visible {
 }
 
 .demo-link:hover {
-  background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(26, 24, 20, 0.22);
+  background: var(--color-glass-strong);
+  border-color: var(--color-border-medium);
   box-shadow: 0 4px 14px rgba(28, 26, 46, 0.07);
 }
 
 /* ─── Bento cards ──────────────────────────────────────────────── */
 .bento-card {
-  background: linear-gradient(
-    180deg,
-    var(--color-alpha-glass-72) 0%,
-    rgba(255, 255, 255, 0.52) 100%
-  );
+  background: var(--color-semantic-surface-glass);
   backdrop-filter: blur(var(--bella-blur-md));
   -webkit-backdrop-filter: blur(var(--bella-blur-md));
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-top: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--color-semantic-border-glass-edge);
+  border-top: 1px solid var(--color-semantic-border-glass-top);
   /* DESIGN.md: one card radius everywhere */
   border-radius: var(--radius-2xl);
   box-shadow:
     0 1px 2px var(--color-alpha-shadow-warm-04),
     0 8px 32px var(--color-alpha-shadow-warm-06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    inset 0 1px 0 var(--color-semantic-border-glass-top);
   transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
@@ -929,7 +967,7 @@ textarea:focus-visible {
   box-shadow:
     0 8px 24px var(--color-alpha-shadow-warm-08),
     0 24px 56px rgba(28, 26, 46, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    inset 0 1px 0 var(--color-semantic-border-glass-top);
 }
 
 /* ─── Carousel ──────────────────────────────────────────────────── */
@@ -1202,7 +1240,7 @@ textarea:focus-visible {
   overflow-y: auto;
   overflow-x: hidden;
   background: var(--color-page);
-  color: #1A1A1A;
+  color: var(--color-ink);
   /* scroll-snap-type intentionally omitted. Was "y mandatory" (relaxed
    * to "y proximity" at mobile in 4715913). Both broke programmatic
    * scroll in browser/extension full-page screenshot tools, which call
