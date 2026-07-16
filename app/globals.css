@@ -706,15 +706,19 @@ li {
 
 /* ─── §7 Control taxonomy — flat controls (keycap = actions only) ──── */
 
+/* §8: ONE connected control. Segments touch; hairline dividers between
+   inactive neighbours, no gaps, active segment reads as a filled section
+   of the same object. */
 .seg-control {
   display: inline-flex;
   list-style: none;
   margin: 0;
-  padding: 3px;
-  gap: 2px;
+  padding: 0;
+  gap: 0;
   border: 1px solid var(--color-border-medium);
   border-radius: var(--radius-lg);
   background: var(--color-glass);
+  overflow: hidden;
 }
 
 .seg-control button {
@@ -723,13 +727,18 @@ li {
   cursor: pointer;
   min-height: 38px;
   padding: 0 var(--spacing-4);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-ink-muted);
+  box-shadow: -1px 0 0 0 var(--color-border-medium);
+}
+
+.seg-control button:first-child {
+  box-shadow: none;
 }
 
 .seg-control button[aria-current="true"] {
@@ -740,7 +749,7 @@ li {
 
 .seg-control button:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  outline-offset: -3px;
 }
 
 .filter-chip {
@@ -934,6 +943,89 @@ section[id],
   scroll-padding-top: calc(var(--header-height) + var(--spacing-4));
 }
 
+/* ─── §8 BubbleHeading — the one-per-page title device ──────────── */
+
+.bubble-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-6);
+}
+
+.bubble-heading__orb {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(280px, 34vw, 420px);
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  padding: var(--spacing-8);
+  background: radial-gradient(circle at 36% 30%, var(--bub-hi), var(--bub-lo));
+  box-shadow:
+    13px 22px 44px rgba(0, 0, 0, 0.26),
+    inset 7px 9px 18px rgba(255, 255, 255, 0.5),
+    inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+}
+
+.bubble-heading__orb::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  left: 22%;
+  width: 22%;
+  height: 18%;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 72%);
+}
+
+.bubble-heading__title {
+  font-family: var(--font-hero-display);
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 56px);
+  line-height: 0.95;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--hero-bub-ink);
+  margin: 0;
+}
+
+.bubble-heading__link {
+  width: 12px;
+  height: 64px;
+  margin-left: clamp(140px, 17vw, 210px); /* under the orb's centre */
+}
+
+.bubble-heading__link line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: bubble-heading-draw 0.5s ease-out 0.1s forwards;
+}
+
+@keyframes bubble-heading-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble-heading__link line {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .bubble-heading__orb {
+    width: min(280px, 86vw);
+  }
+
+  .bubble-heading__link {
+    margin-left: min(134px, 41vw);
+  }
+}
+
 /* ─── Decision-led case blocks ──────────────────────────────────── */
 
 /* facts block; hidden >=1080 where the sticky sidebar shows the same */
@@ -986,7 +1078,11 @@ section[id],
 .cs-decision-block {
   margin: 0 0 var(--spacing-16);
   padding-left: var(--spacing-5);
-  border-left: 3px solid var(--color-semantic-accent-border);
+  border-left: 3px solid var(--case-marker, var(--color-semantic-accent-border));
+}
+
+.cs-decision-block .eyebrow {
+  color: var(--case-marker-text, var(--color-accent-ink));
 }
 
 .cs-decision-block .eyebrow {
@@ -1437,70 +1533,27 @@ textarea:focus-visible {
   text-transform: uppercase;
 }
 
-/* Visual-language move #2 — the case sphere as the hero object.
-   Editorial: offset right, generous air, connector running back toward
-   the map (upper-left, where it came from). */
-.cs-shell__hero--sphere {
-  position: relative;
+/* §8: the case title device wrapper */
+.cs-shell__hero--bubble {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  min-height: 380px;
-  padding: var(--spacing-8) var(--spacing-10) var(--spacing-8) 0;
+  justify-content: flex-start;
+  padding: var(--spacing-4) 0 0;
 }
 
 
-.cs-shell__sphere {
-  /* the BubbleCluster bubble, literally: same gradient face, same
-     upper-left gloss, same down-right shadow */
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 300px;
-  height: 300px;
-  border-radius: var(--radius-full);
-  padding: var(--spacing-6);
-  text-align: center;
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: var(--typography-font-size-2xl);
-  line-height: 1.15;
-  color: var(--hero-bub-ink);
-  background: radial-gradient(circle at 36% 30%, var(--bub-hi, var(--cover-warm-hi)), var(--bub-lo, var(--cover-warm-lo)));
-  box-shadow:
-    13px 22px 44px rgba(0, 0, 0, 0.26),
-    inset 7px 9px 18px rgba(255, 255, 255, 0.5),
-    inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+
+
+
+/* §8 colour-as-identity: tags ON a case's own page wear its tint.
+   Shared tags everywhere else stay neutral linen. */
+.cs-shell__tag.cs-shell__tag--identity {
+  background: color-mix(in srgb, var(--case-tint-hi, var(--color-supporting-linen)) 36%, var(--color-card));
+  color: var(--case-tint-text, var(--ink-on-paper));
 }
 
-.cs-shell__sphere::after {
-  content: "";
-  position: absolute;
-  top: 15%;
-  left: 22%;
-  width: 22%;
-  height: 18%;
-  border-radius: var(--radius-full);
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 72%);
-}
-
-@media (max-width: 640px) {
-  .cs-shell__hero--sphere {
-    justify-content: center;
-    padding: var(--spacing-6) 0;
-    min-height: 300px;
-  }
-
-  .cs-shell__sphere {
-    width: 220px;
-    height: 220px;
-    font-size: var(--typography-font-size-xl);
-  }
-
-  .cs-shell__sphere-link {
-    display: none;
-  }
+/* dark: keep the tint plate near-navy so the light case text clears AA */
+[data-theme="dark"] .cs-shell__tag.cs-shell__tag--identity {
+  background: color-mix(in srgb, var(--case-tint-hi, var(--color-supporting-linen)) 18%, var(--color-card));
 }
 
 .cs-shell__eyebrow {

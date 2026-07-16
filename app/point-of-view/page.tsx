@@ -32,7 +32,7 @@ export default function PointOfViewPage() {
       <OverlayNav />
       <section className="layout-section" style={{ paddingTop: "calc(var(--header-height) + var(--spacing-16))" }}>
         <div className="layout-container" style={{ maxWidth: "760px" }}>
-          <PageHeader eyebrow="Point of view" title="How I think about design systems" />
+          <PageHeader eyebrow="Point of view" title="How I think about design systems" variant="bubble" />
 
           {THESES.map((t) => (
             <article key={t.title} style={{ marginBottom: "var(--spacing-8)" }}>

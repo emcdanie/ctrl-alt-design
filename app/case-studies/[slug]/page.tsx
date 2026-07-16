@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getCaseStudy, getAdjacentStudies, getAllSlugs, type CaseBlock } from "@/lib/content";
+import { findWorkItemBySlug } from "@/lib/workLibrary";
 import PrototypeEmbed from "@/components/PrototypeEmbed";
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseStudyShell from "@/components/CaseStudyShell";
@@ -111,7 +112,7 @@ function EmbedBlock({
 }
 
 /* ── Block renderer — the ONE render path for case bodies ── */
-function Block({ block, title }: { block: CaseBlock; title: string }) {
+function Block({ block, title, marker, markerText }: { block: CaseBlock; title: string; marker?: string; markerText?: string }) {
   switch (block.kind) {
     case "paragraph":
       return <RichBody text={block.text} />;
@@ -275,11 +276,18 @@ function Block({ block, title }: { block: CaseBlock; title: string }) {
       );
     case "decision":
       return (
-        <div className="cs-decision-block">
+        <div
+          className="cs-decision-block"
+          style={
+            marker
+              ? ({ "--case-marker": marker, "--case-marker-text": markerText } as React.CSSProperties)
+              : undefined
+          }
+        >
           <p className="eyebrow">Decision {block.index}</p>
           <H2>{block.title}</H2>
           <RichBody text={block.why} />
-          {block.evidence && <Block block={block.evidence} title={title} />}
+          {block.evidence && <Block block={block.evidence} title={title} marker={marker} markerText={markerText} />}
         </div>
       );
     case "lessons":
@@ -309,6 +317,7 @@ export default async function CaseStudyPage({
   if (!cs) notFound();
 
   const { prev, next } = getAdjacentStudies(slug);
+  const caseItem = findWorkItemBySlug(slug);
 
   /* ── Build metadata rows (data override wins) ── */
   const metadata = cs.metadata ?? [
@@ -338,7 +347,13 @@ export default async function CaseStudyPage({
         {cs.blocks ? (
           <>
             {cs.blocks.map((block, i) => (
-              <Block key={i} block={block} title={cs.title} />
+              <Block
+                key={i}
+                block={block}
+                title={cs.title}
+                marker={caseItem ? `color-mix(in srgb, ${caseItem.hi} 70%, transparent)` : undefined}
+                markerText={caseItem?.text}
+              />
             ))}
           </>
         ) : (

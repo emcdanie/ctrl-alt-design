@@ -277,7 +277,7 @@ export default function AboutPage() {
           <div className="page-container">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-16 items-start">
               <div>
-                <PageHeader eyebrow="About" title="Hey, I'm Elleta" />
+                <PageHeader eyebrow="About" title="Hey, I'm Elleta" variant="bubble" />
                 <div style={{ display: "flex", flexDirection: "column", gap: "14px", maxWidth: "600px" }}>
                   <p className="body-lg">
                     I design AI-enabled design systems for complex, multi-role B2B and enterprise

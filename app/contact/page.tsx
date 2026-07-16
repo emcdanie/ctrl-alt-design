@@ -18,7 +18,7 @@ export default function ContactPage() {
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end", paddingTop: "var(--header-height)" }}>
         <section className="layout-section" style={{ paddingBottom: "var(--spacing-8)" }}>
           <div className="layout-container">
-            <PageHeader eyebrow="Get in touch" title="Contact" />
+            <PageHeader eyebrow="Get in touch" title="Contact" variant="bubble" />
           </div>
         </section>
         <TestimonialSection />

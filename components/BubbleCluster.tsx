@@ -5,16 +5,21 @@ import Link from "next/link";
 import { WORK_ITEMS, HUB_ITEM } from "@/lib/workLibrary";
 import styles from "./BubbleCluster.module.css";
 
-/* Cluster geometry + label sizes, from _proto/_hero.html — proto-exact
- * recorded data (label px are recorded §5 exceptions, see DESIGN.md) */
-const GEOMETRY: Record<string, { size: number; top: string; left: string; fontSize: number }> = {
-  "code-first": { size: 150, top: "0%", left: "12%", fontSize: 19 },
-  drift: { size: 154, top: "2%", left: "58%", fontSize: 19 },
-  guardian: { size: 124, top: "42%", left: "-3%", fontSize: 18 },
-  clarity: { size: 142, top: "76%", left: "16%", fontSize: 18 },
-  "design-lab": { size: 156, top: "64%", left: "70%", fontSize: 19 },
-  writing: { size: 126, top: "20%", left: "84%", fontSize: 18 },
-  hub: { size: 196, top: "34%", left: "33%", fontSize: 22 },
+/* Cluster geometry + label sizes — the proto percentages resolved to px
+ * in a fixed 620x640 DESIGN SPACE (proto stage width 568, shifted so the
+ * leftmost bubble sits at x=0). The whole space scales uniformly to the
+ * measured stage width, so no bubble is ever cut at any viewport (§8
+ * containment). Label px are recorded §5 exceptions, see DESIGN.md. */
+const DESIGN_W = 620;
+const DESIGN_H = 640;
+const GEOMETRY: Record<string, { size: number; top: number; left: number; fontSize: number }> = {
+  "code-first": { size: 150, top: 0, left: 85, fontSize: 19 },
+  drift: { size: 154, top: 13, left: 346, fontSize: 19 },
+  guardian: { size: 124, top: 269, left: 0, fontSize: 18 },
+  clarity: { size: 142, top: 486, left: 108, fontSize: 18 },
+  "design-lab": { size: 156, top: 410, left: 415, fontSize: 19 },
+  writing: { size: 126, top: 128, left: 494, fontSize: 18 },
+  hub: { size: 196, top: 218, left: 205, fontSize: 22 },
 };
 
 const BUBBLES = [...WORK_ITEMS, HUB_ITEM];
@@ -24,6 +29,19 @@ const CONNS: [number, number][] = [
   [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5],
   [0, 1], [0, 2], [1, 5], [2, 3], [3, 4], [4, 5],
 ];
+
+/* connector endpoints are bubble centres in design space — deterministic,
+ * no DOM measurement, and they scale with the space */
+const LINES = CONNS.map(([a, b]) => {
+  const ga = GEOMETRY[BUBBLES[a].id];
+  const gb = GEOMETRY[BUBBLES[b].id];
+  return {
+    x1: ga.left + ga.size / 2,
+    y1: ga.top + ga.size / 2,
+    x2: gb.left + gb.size / 2,
+    y2: gb.top + gb.size / 2,
+  };
+});
 
 function BubbleLabel({ label }: { label: string }) {
   const parts = label.split("|");
@@ -61,27 +79,8 @@ export default function BubbleCluster({
   const stageRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const bubRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const [lines, setLines] = useState<{ x1: number; y1: number; x2: number; y2: number }[]>([]);
-
-  const drawLinks = useCallback(() => {
-    const stage = stageRef.current;
-    if (!stage || window.innerWidth < 860) return;
-    const sr = stage.getBoundingClientRect();
-    const centers = bubRefs.current.map((b) => {
-      if (!b) return null;
-      const r = b.getBoundingClientRect();
-      return { x: r.left - sr.left + r.width / 2, y: r.top - sr.top + r.height / 2 };
-    });
-    setLines(
-      CONNS.map(([a, b]) => {
-        const ca = centers[a];
-        const cb = centers[b];
-        return ca && cb
-          ? { x1: ca.x, y1: ca.y, x2: cb.x, y2: cb.y }
-          : { x1: 0, y1: 0, x2: 0, y2: 0 };
-      })
-    );
-  }, []);
+  /* §8 containment: uniform scale = stage width / design width, never >1 */
+  const [scale, setScale] = useState(1);
 
   const placePanel = useCallback((i: number) => {
     const el = bubRefs.current[i];
@@ -154,11 +153,13 @@ export default function BubbleCluster({
   }, [onOpenChange]);
 
   useEffect(() => {
-    drawLinks();
-    document.fonts?.ready.then(drawLinks);
-    const t = setTimeout(drawLinks, 300);
+    const stage = stageRef.current;
+    if (!stage) return;
+    const ro = new ResizeObserver(([entry]) => {
+      setScale(Math.min(1, entry.contentRect.width / DESIGN_W));
+    });
+    ro.observe(stage);
     const onResize = () => {
-      drawLinks();
       setSelected((s) => {
         if (s !== null) placePanel(s);
         return s;
@@ -166,10 +167,10 @@ export default function BubbleCluster({
     };
     window.addEventListener("resize", onResize);
     return () => {
-      clearTimeout(t);
+      ro.disconnect();
       window.removeEventListener("resize", onResize);
     };
-  }, [drawLinks, placePanel]);
+  }, [placePanel]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -212,20 +213,25 @@ export default function BubbleCluster({
 
   return (
     <>
-      <div className={styles.stage} ref={stageRef}>
-        <svg className={styles.links} aria-hidden="true">
-          {lines.map((l, i) => (
-            <line
-              key={i}
-              {...l}
-              className={
-                selected !== null && (CONNS[i][0] === selected || CONNS[i][1] === selected)
-                  ? styles.on
-                  : undefined
-              }
-            />
-          ))}
-        </svg>
+      <div
+        className={styles.stage}
+        ref={stageRef}
+        style={{ ["--cluster-scale" as string]: scale }}
+      >
+        <div className={styles.space}>
+          <svg className={styles.links} viewBox={`0 0 ${DESIGN_W} ${DESIGN_H}`} aria-hidden="true">
+            {LINES.map((l, i) => (
+              <line
+                key={i}
+                {...l}
+                className={
+                  selected !== null && (CONNS[i][0] === selected || CONNS[i][1] === selected)
+                    ? styles.on
+                    : undefined
+                }
+              />
+            ))}
+          </svg>
 
         <button
           ref={(el) => {
@@ -263,6 +269,7 @@ export default function BubbleCluster({
             </span>
           </button>
         ))}
+        </div>
       </div>
 
       {/* ── Reveal card ── */}

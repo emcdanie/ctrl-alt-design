@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
 import { Button } from "@/components/ui/Button";
+import BubbleHeading from "@/components/ui/BubbleHeading";
 
 /* ── Types ─────────────────────────────────────────────────────── */
 
@@ -82,13 +83,7 @@ export default function CaseStudyShell({
           <p className="cs-shell__eyebrow">{eyebrow}</p>
 
           {/* Title */}
-          {/* Visual-language move #1: display headline, case colour */}
-          <h1
-            className="cs-shell__title cs-shell__title--display"
-            style={caseItem ? { color: caseItem.text } : undefined}
-          >
-            {title}
-          </h1>
+          {/* title lives in the BubbleHeading (right column, §8) */}
 
           {/* Summary */}
           <p className="cs-shell__summary">{summary}</p>
@@ -111,7 +106,15 @@ export default function CaseStudyShell({
             <div className="cs-shell__tags">
               {tags.map((tag) => {
                 return (
-                  <span key={tag} className="cs-shell__tag">
+                  <span
+                    key={tag}
+                    className="cs-shell__tag cs-shell__tag--identity"
+                    style={
+                      caseItem
+                        ? ({ "--case-tint-text": caseItem.text, "--case-tint-hi": caseItem.hi } as React.CSSProperties)
+                        : undefined
+                    }
+                  >
                     {tag}
                   </span>
                 );
@@ -165,27 +168,15 @@ export default function CaseStudyShell({
           <span aria-hidden="true">←</span> Back to Work
         </Link>
 
-        {/* Hero: the case sphere. No connector here: on a standalone page
-            it terminates in empty space and reads as a stray line (the
-            connected-system motif belongs where there are real nodes). */}
-        <div className="cs-shell__hero cs-shell__hero--sphere">
-          <span
-            className="cs-shell__sphere"
-            aria-hidden="true"
-            style={
-              caseItem
-                ? ({ "--bub-hi": caseItem.hi, "--bub-lo": caseItem.lo } as React.CSSProperties)
-                : undefined
-            }
-          >
-            {caseItem?.bubbleLabel.split("|").join(" ")}
-          </span>
+        {/* §8: THE title device — the case title inside its identity bubble,
+            connector feeding the content below */}
+        <div className="cs-shell__hero cs-shell__hero--bubble">
+          <BubbleHeading title={title} hi={caseItem?.hi} lo={caseItem?.lo} />
         </div>
 
         {/* Mobile header, title, meta, tags (below hero on small screens) */}
         <div className="cs-shell__mobile-header">
           <p className="cs-shell__eyebrow">{eyebrow}</p>
-          <h1 className="cs-shell__title">{title}</h1>
           <p className="cs-shell__summary">{summary}</p>
           <div className="cs-shell__divider" />
           <dl className="cs-shell__meta">
@@ -200,7 +191,15 @@ export default function CaseStudyShell({
             <div className="cs-shell__tags">
               {tags.map((tag) => {
                 return (
-                  <span key={tag} className="cs-shell__tag">
+                  <span
+                    key={tag}
+                    className="cs-shell__tag cs-shell__tag--identity"
+                    style={
+                      caseItem
+                        ? ({ "--case-tint-text": caseItem.text, "--case-tint-hi": caseItem.hi } as React.CSSProperties)
+                        : undefined
+                    }
+                  >
                     {tag}
                   </span>
                 );

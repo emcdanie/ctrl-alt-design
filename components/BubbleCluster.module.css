@@ -8,7 +8,22 @@
 
 .stage {
   position: relative;
+  /* grid/flex parents: never let the 620px design box widen the track */
+  width: 100%;
+  min-width: 0;
+  /* §8 containment: the 620x640 design space scales to the measured
+     stage width, so every bubble stays inside at any viewport */
+  height: calc(var(--cluster-scale, 1) * 640px);
+}
+
+.space {
+  position: relative;
+  width: 620px;
   height: 640px;
+  transform: scale(var(--cluster-scale, 1));
+  transform-origin: top left;
+  /* centre the scaled box in the stage (0 when the space exactly fits) */
+  margin-left: calc((100% - (620px * var(--cluster-scale, 1))) / 2);
 }
 
 .links {
@@ -321,11 +336,18 @@
 @media (max-width: 860px) {
   .stage {
     height: auto;
+    order: 1;
+  }
+
+  .space {
+    width: auto;
+    height: auto;
+    transform: none;
+    margin-left: 0;
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-4);
     justify-content: center;
-    order: 1;
   }
 
   .bub {
