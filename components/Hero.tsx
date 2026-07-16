@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import BubbleCluster from "./BubbleCluster";
 import { Button } from "@/components/ui/Button";
 import { POSITIONING } from "@/lib/copy";
@@ -11,7 +12,7 @@ import styles from "./Hero.module.css";
  * (the only Unique surface) next to the glossy case-bubble cluster.
  * Cluster behaviour + a11y live in BubbleCluster (also the /work Map view).
  */
-export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => void }) {
+export default function Hero() {
   // §7: max one primary per view. While the reveal card (peek) is open it
   // owns the primary, so the hero CTA demotes to secondary.
   const [peekOpen, setPeekOpen] = useState(false);
@@ -30,16 +31,16 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
             that keeps them from drifting. I read code and work with engineers directly.
           </p>
 
-          {/* ONE primary: the library. The old dashboard CTA is a quiet
-              text link (the board itself already shows the work). */}
+          {/* Two doors, no forced path: explore (the library) or the
+              four-minute quick version. ONE primary per view. */}
           <div className={styles.ctaRow} style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--spacing-4)" }}>
             <Button href="/work" variant={peekOpen ? "secondary" : "primary"}>
               Browse the library
               <span aria-hidden="true">→</span>
             </Button>
-            <button type="button" className={styles.quietLink} onClick={() => onEnterDashboard?.()}>
-              Current focus ↓
-            </button>
+            <Link href="/quick" className={styles.quietLink}>
+              Short on time? The quick version →
+            </Link>
           </div>
         </div>
 

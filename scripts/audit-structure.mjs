@@ -36,7 +36,9 @@ for (const f of [...appFiles, ...componentFiles]) {
 }
 
 /* 3. every page sits in the container/rhythm system */
-const pageOk = /layout-container|page-container|layout-section|CaseStudyShell/;
+/* hero-landing: the home hero carries its own recorded container
+   (Hero.module.css .hero, max-width var(--container-width)) */
+const pageOk = /layout-container|page-container|layout-section|CaseStudyShell|<Hero/;
 for (const f of appFiles.filter((f) => f.endsWith("page.tsx"))) {
   const s = readFileSync(f, "utf8");
   if (!pageOk.test(s)) fail(`${f} lacks the container/section system (layout-*/page-container/CaseStudyShell)`);

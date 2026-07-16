@@ -31,7 +31,7 @@ const supporting = [
   },
   {
     quote:
-      "She approaches design system work with the right mix of rigour and pragmatism \u2014 always grounded in real engineering constraints.",
+      "She approaches design system work with the right mix of rigour and pragmatism, always grounded in real engineering constraints.",
     name: "Engineering Lead",
     role: "A B2B travel platform",
     initials: "EL",

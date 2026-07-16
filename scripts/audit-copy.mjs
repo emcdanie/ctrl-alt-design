@@ -27,6 +27,15 @@ for (const f of [...walk("app"), ...walk("components"), ...walk("content/case-st
     if (isComment(l)) return;
     if (/—|–/.test(l)) fail(`${f}:${i + 1} em/en dash in copy`);
     if (/AI-augmented|AI-assisted/.test(l)) fail(`${f}:${i + 1} banned positioning variant`);
+    /* dash escapes render as real dashes even from string literals */
+    if (/\\u201[34]/.test(l)) fail(`${f}:${i + 1} em/en dash hidden as a \\u escape`);
+    /* JSX text does NOT process \uXXXX — it renders literally (the
+       colophon bug). Escapes inside quoted strings are fine, so strip
+       string spans first, then flag what remains. */
+    const noStrings = l.replace(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`/g, "");
+    if (/\\u[0-9a-fA-F]{4}/.test(noStrings)) {
+      fail(`${f}:${i + 1} literal \\u escape in JSX text — it renders verbatim; type the real character`);
+    }
   });
 }
 console.log(fails === 0 ? "copy gate: PASS" : `copy gate: ${fails} failure(s)`);

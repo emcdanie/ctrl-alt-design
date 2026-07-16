@@ -306,77 +306,12 @@
 
 /* ── Timeline ── */
 
-.tlAffordance {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-3);
-  margin-bottom: var(--spacing-4);
-}
-
-.tlHint {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  letter-spacing: 0.08em;
-  color: var(--color-ink-muted);
-}
-
-.tlTrack {
-  list-style: none;
-  margin: 0;
-  padding: var(--spacing-2) var(--spacing-1) var(--spacing-6);
-  display: flex;
-  gap: var(--grid-gap);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  /* edge fade as a second affordance that content continues */
-  mask: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
-}
-
-.tlCard {
-  scroll-snap-align: center;
-  flex: 0 0 320px;
-}
-
-.cardInner {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-}
-
-.tlYear {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  color: var(--ct);
-  margin: 0;
-}
-
 
 
 
 /* Reduced motion: the timeline flattens to a vertical list; no snap, no
  * horizontal scroll, no parallax (JS is also gated). */
 @media (prefers-reduced-motion: reduce) {
-  .tlTrack {
-    flex-direction: column;
-    overflow-x: visible;
-    scroll-snap-type: none;
-    mask: none;
-  }
-
-  .tlCard {
-    flex-basis: auto;
-  }
-
-  .cardInner {
-    transform: none !important;
-  }
-
-  .tlAffordance {
-    display: none;
-  }
 }
 
 /* ── Mobile filter tray (Vitaly pattern: full-page, accordions,
@@ -547,4 +482,16 @@
   .mxCell {
     transition: none;
   }
+}
+
+/* ── Cards view: CaseCard grid ── */
+
+.cardsGrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--grid-gap, var(--spacing-6));
+  align-items: stretch;
 }

@@ -17,10 +17,10 @@ import styles from "./WorkLibrary.module.css";
 /* The library: one collection, three views (segmented control), flat
  * multi-select filter chips with an applied row above the results, and
  * ONE sort source of truth (the URL param; column headers set it in the
- * table view, the select mirrors it on map/timeline where there are no
+ * table view, the select mirrors it on map/cards where there are no
  * headers). Table is the accessible default. */
 
-const VIEWS = ["table", "map", "timeline", "skills"] as const;
+const VIEWS = ["table", "map", "cards", "skills"] as const;
 type View = (typeof VIEWS)[number];
 
 const SORTS = {
@@ -139,7 +139,7 @@ export default function WorkLibrary() {
           value={view}
           onChange={(v) => setParams({ view: v === "table" ? null : v })}
         />
-        {(view === "map" || view === "timeline") && (
+        {(view === "map" || view === "cards") && (
           <Select
             label="Sort"
             value={sort}
@@ -284,7 +284,7 @@ export default function WorkLibrary() {
           <BubbleCluster highlightIds={hasFilters ? filtered.map((i) => i.id) : null} />
         </div>
       )}
-      {view === "timeline" && <TimelineView items={filtered} />}
+      {view === "cards" && <CardsView items={filtered} />}
     </div>
   );
 }
@@ -401,7 +401,7 @@ function TableView({
  * toggle the SAME URL filters as the chips; active filters emphasise
  * matching cells and dim the rest. ── */
 
-function MatrixView({
+export function MatrixView({
   caseFilters,
   skillFilters,
   toggleCase,
@@ -493,78 +493,16 @@ function MatrixView({
   );
 }
 
-/* ── Timeline (CaseCards on the rail; reduced-motion flattens) ── */
+/* ── Cards (visual browse): the ONE CaseCard in a responsive grid over
+ * the same filtered list. ── */
 
-function TimelineView({ items }: { items: WorkItem[] }) {
-  const trackRef = useRef<HTMLUListElement>(null);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const mid = track.scrollLeft + track.clientWidth / 2;
-        track.querySelectorAll<HTMLElement>(`.${styles.cardInner}`).forEach((el) => {
-          const li = el.parentElement!;
-          const center = li.offsetLeft + li.offsetWidth / 2;
-          el.style.transform = `translateX(${(mid - center) * 0.05}px)`;
-        });
-      });
-    };
-    onScroll();
-    track.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(raf);
-      track.removeEventListener("scroll", onScroll);
-    };
-  }, [items]);
-
-  const onKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-    const track = trackRef.current;
-    if (!track) return;
-    const links = [...track.querySelectorAll<HTMLAnchorElement>("a")];
-    const current = links.indexOf(document.activeElement as HTMLAnchorElement);
-    const next = e.key === "ArrowRight" ? current + 1 : current - 1;
-    if (next >= 0 && next < links.length) {
-      e.preventDefault();
-      links[next].focus();
-      links[next].closest("li")?.scrollIntoView({ inline: "center", block: "nearest", behavior: "auto" });
-    }
-  };
-
-  const nudge = (dir: 1 | -1) => {
-    trackRef.current?.scrollBy({ left: dir * 320, behavior: "smooth" });
-  };
-
+function CardsView({ items }: { items: WorkItem[] }) {
   return (
     <div>
-      <div className={styles.tlAffordance}>
-        <Button onClick={() => nudge(-1)} ariaLabel="Scroll timeline backwards">
-          ←
-        </Button>
-        <span className={styles.tlHint} aria-hidden="true">
-          drag, scroll, or use arrow keys
-        </span>
-        <Button onClick={() => nudge(1)} ariaLabel="Scroll timeline forwards">
-          →
-        </Button>
-      </div>
-
-      <ul
-        ref={trackRef}
-        className={styles.tlTrack}
-        aria-label="Timeline of work, chronological"
-        onKeyDown={onKeyDown}
-      >
+      <ul className={styles.cardsGrid} aria-label="Work as cards">
         {items.map((i) => (
-          <li key={i.id} className={styles.tlCard}>
-            <div className={styles.cardInner}>
-              <p className={styles.tlYear} style={{ color: i.text }}>{i.year}</p>
-              <CaseCard item={i} />
-            </div>
+          <li key={i.id}>
+            <CaseCard item={i} />
           </li>
         ))}
       </ul>
