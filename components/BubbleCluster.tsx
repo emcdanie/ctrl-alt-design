@@ -5,15 +5,16 @@ import Link from "next/link";
 import { WORK_ITEMS, HUB_ITEM } from "@/lib/workLibrary";
 import styles from "./BubbleCluster.module.css";
 
-/* Cluster geometry, from _proto/_hero.html (recorded data, not ramp values) */
-const GEOMETRY: Record<string, { size: number; top: string; left: string }> = {
-  "code-first": { size: 150, top: "0%", left: "12%" },
-  drift: { size: 154, top: "2%", left: "58%" },
-  guardian: { size: 140, top: "42%", left: "-3%" },
-  clarity: { size: 142, top: "76%", left: "16%" },
-  "design-lab": { size: 132, top: "66%", left: "72%" },
-  writing: { size: 126, top: "20%", left: "84%" },
-  hub: { size: 196, top: "34%", left: "33%" },
+/* Cluster geometry + label sizes, from _proto/_hero.html — proto-exact
+ * recorded data (label px are recorded §5 exceptions, see DESIGN.md) */
+const GEOMETRY: Record<string, { size: number; top: string; left: string; fontSize: number }> = {
+  "code-first": { size: 150, top: "0%", left: "12%", fontSize: 19 },
+  drift: { size: 154, top: "2%", left: "58%", fontSize: 19 },
+  guardian: { size: 140, top: "42%", left: "-3%", fontSize: 19 },
+  clarity: { size: 142, top: "76%", left: "16%", fontSize: 18 },
+  "design-lab": { size: 132, top: "66%", left: "72%", fontSize: 18 },
+  writing: { size: 126, top: "20%", left: "84%", fontSize: 18 },
+  hub: { size: 196, top: "34%", left: "33%", fontSize: 22 },
 };
 
 const BUBBLES = [...WORK_ITEMS, HUB_ITEM];
@@ -181,6 +182,7 @@ export default function BubbleCluster({
       height: g.size,
       top: g.top,
       left: g.left,
+      fontSize: g.fontSize,
       ["--bub-hi" as string]: b.hi,
       ["--bub-lo" as string]: b.lo,
       zIndex: i === HUB_I ? 3 : 2,

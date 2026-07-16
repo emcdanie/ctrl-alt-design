@@ -14,7 +14,7 @@
 
 .kicker {
   font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
+  font-size: 13.5px; /* proto-exact (recorded exception) */
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -39,7 +39,7 @@
 
 .intro {
   font-family: var(--font-body);
-  font-size: var(--font-body-size);
+  font-size: 17px; /* proto-exact (recorded exception) */
   line-height: 1.55;
   color: var(--color-ink);
   max-width: 40ch;

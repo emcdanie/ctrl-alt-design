@@ -43,7 +43,6 @@
   color: var(--hero-bub-ink);
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: var(--typography-font-size-lg);
   letter-spacing: 0;
   line-height: 1.15;
   text-align: center;
@@ -95,7 +94,6 @@
 /* Central hub — the engine, iris, larger */
 .hub {
   flex-direction: column;
-  font-size: var(--typography-font-size-xl);
   background: radial-gradient(circle at 36% 30%, var(--hub-hi), var(--hub-lo));
 }
 
@@ -103,7 +101,7 @@
   display: block;
   font-family: var(--font-mono);
   font-weight: 600;
-  font-size: var(--typography-font-size-tag);
+  font-size: 11px; /* proto-exact (recorded exception) */
   letter-spacing: 0.14em;
   text-transform: uppercase;
   opacity: 0.95;
@@ -177,7 +175,7 @@
 
 .pk {
   font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
+  font-size: 12px; /* proto-exact (recorded exception) */
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;

@@ -126,5 +126,9 @@ From `_proto/_hero.html` `.toggle`. One button style, two variants, both in
   logo is a brand mark, not running text — the only sanctioned use of
   Unique besides the hero headline.
 - Hero bubble geometry (sizes 126–196px, cluster positions) is recorded
-  data in `components/Hero.tsx`, from `_proto/_hero.html` — not ramp/spacing
-  values.
+  data in `components/BubbleCluster.tsx`, from `_proto/_hero.html` — not
+  ramp/spacing values.
+- Proto-exact hero type (2026-07-16 correction — the proto wins over the
+  ramp here, do NOT re-conform): bubble labels 19/18px + hub 22px, hub
+  sub + switch meta 11px, hero kicker 13.5px, hero intro 17px, reveal-card
+  kicker 12px. Scope: hero cluster + reveal card + header chrome only.
