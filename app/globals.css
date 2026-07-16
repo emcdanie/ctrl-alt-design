@@ -91,6 +91,19 @@ body {
   --typography-font-family-mono: var(--font-mono);
 }
 
+/* Real fixed-header height. Declared UNLAYERED so it beats BELLA's
+   :root 64px default (unlayered later import wins over @theme, which
+   Tailwind emits inside @layer theme). Keycap header measures 76px. */
+:root {
+  --header-height: 76px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --header-height: 64px;
+  }
+}
+
 /* ─── Fluid typography scale — DESIGN.md §5 ─────────────────────
    Ramp: 13/14/16/18/20/24/32/40/56. One fluid pair per step, endpoints
    on the ramp, defined ONCE here. No other clamp() in components. */
@@ -1403,7 +1416,7 @@ textarea:focus-visible {
 
 .cs-shell__sticky {
   position: sticky;
-  top: calc(var(--header-height) + 16px);
+  top: calc(var(--header-height) + var(--spacing-8));
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -1703,13 +1716,14 @@ textarea:focus-visible {
     display: block;
     width: 320px;
     flex-shrink: 0;
-    padding-top: 88px;
+    /* proto's 104px top-breathing feel — clears the fixed header */
+    padding-top: calc(var(--header-height) + var(--spacing-8));
   }
 
   .cs-shell__right {
     flex: 1;
     min-width: 0;
-    padding-top: 88px;
+    padding-top: calc(var(--header-height) + var(--spacing-8));
   }
 
   /* Hide mobile-only elements */
