@@ -166,6 +166,13 @@ body {
   --key-iris-edge: #4A3FB0;
   --key-plus: #B4AFA6;
 
+  /* Theme switch (sun/moon keycap-thumb slider, from _proto/_hero.html) */
+  --switch-track-hi: #E7E4DB;
+  --switch-track-lo: #D8D4CA;
+  --switch-thumb-edge: #C9C5BC;
+  --switch-icon-sun: #8F8A7F;
+  --switch-icon-moon: #7C776F;
+
   /* Keycap Button tokens — the site-wide button style (from _proto/_hero.html
      .toggle). Down-right plate + soft cast shadow + inset top highlight;
      :active sinks the key (translateY(3px)) onto a reduced plate. */
@@ -185,6 +192,10 @@ body {
   --hero-panel-shadow: rgba(0, 0, 0, 0.44);
   --hero-link: rgba(244, 239, 230, 0.2);
   --key-plus: rgba(244, 239, 230, 0.5);
+  --switch-track-hi: #2B2B5C;
+  --switch-track-lo: #20204A;
+  --switch-icon-sun: rgba(244, 239, 230, 0.32);
+  --switch-icon-moon: #CFC7F6;
 }
 
 /* ─── Keycap logo lockup (header) — from _proto/_hero.html ──────────

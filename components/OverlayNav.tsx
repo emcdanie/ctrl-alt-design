@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { social } from "@/lib/social";
+import ThemeSwitch from "@/components/ThemeSwitch";
 
 const menuItems = [
   { num: "01", label: "Work", href: "/work" },
@@ -74,6 +75,8 @@ export default function OverlayNav() {
             <span className="key key-iris">Design</span>
           </Link>
 
+          <div className="flex items-center gap-4">
+          <ThemeSwitch />
           <button
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
@@ -104,6 +107,7 @@ export default function OverlayNav() {
               }}
             />
           </button>
+          </div>
         </div>
       </div>
 
