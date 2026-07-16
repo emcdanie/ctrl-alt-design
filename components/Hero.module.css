@@ -208,7 +208,8 @@
   }
 }
 
-/* Dark: colour washes out on navy, so the glow is stronger. */
+/* Dark: a soft edge halo in the case colour — tight radii, negative
+   spread, no bloom (proto 2026-07-16). */
 :global([data-theme="dark"]) .panel.show {
   animation-name: cardglowDark;
 }
@@ -218,15 +219,13 @@
   100% {
     box-shadow:
       0 24px 54px var(--hero-panel-shadow),
-      0 0 36px -4px var(--cc),
-      0 0 90px 6px color-mix(in srgb, var(--cc) 45%, transparent);
+      0 0 16px -6px color-mix(in srgb, var(--cc) 50%, transparent);
   }
 
   50% {
     box-shadow:
-      0 26px 62px var(--hero-panel-shadow),
-      0 0 74px 6px var(--cc),
-      0 0 160px 22px color-mix(in srgb, var(--cc) 62%, transparent);
+      0 24px 54px var(--hero-panel-shadow),
+      0 0 28px -5px color-mix(in srgb, var(--cc) 65%, transparent);
   }
 }
 
@@ -382,11 +381,18 @@
     transform: none;
   }
 
-  .panel.show,
-  :global([data-theme="dark"]) .panel.show {
+  .panel.show {
     animation: none;
     box-shadow:
       0 24px 54px var(--hero-panel-shadow),
       0 0 80px 10px color-mix(in srgb, var(--cc) 55%, transparent);
+  }
+
+  /* dark static halo — same tight edge treatment, frozen */
+  :global([data-theme="dark"]) .panel.show {
+    animation: none;
+    box-shadow:
+      0 24px 54px var(--hero-panel-shadow),
+      0 0 22px -4px color-mix(in srgb, var(--cc) 55%, transparent);
   }
 }
