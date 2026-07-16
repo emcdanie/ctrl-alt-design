@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guardian — AI UX Audit Tool</title>
+<title>Guardian, AI UX Audit Tool</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -802,7 +802,7 @@
 <!-- Canvas with design -->
 <div class="canvas">
   <div class="design-frame" id="designFrame">
-    <span class="frame-label">Homepage / Desktop — 1440px</span>
+    <span class="frame-label">Homepage / Desktop, 1440px</span>
 
     <!-- Navigation -->
     <div class="design-nav" id="designNav">
@@ -905,10 +905,10 @@
 
   <!-- Scores -->
   <div class="score-strip" id="scoreStrip">
-    <div class="score-pill"><div class="s-label">Score</div><div class="s-value warn" id="sScore">—</div></div>
-    <div class="score-pill"><div class="s-label">Errors</div><div class="s-value bad" id="sErrors">—</div></div>
-    <div class="score-pill"><div class="s-label">Warnings</div><div class="s-value warn" id="sWarns">—</div></div>
-    <div class="score-pill"><div class="s-label">Info</div><div class="s-value info-c" id="sInfo">—</div></div>
+    <div class="score-pill"><div class="s-label">Score</div><div class="s-value warn" id="sScore">, </div></div>
+    <div class="score-pill"><div class="s-label">Errors</div><div class="s-value bad" id="sErrors">, </div></div>
+    <div class="score-pill"><div class="s-label">Warnings</div><div class="s-value warn" id="sWarns">, </div></div>
+    <div class="score-pill"><div class="s-label">Info</div><div class="s-value info-c" id="sInfo">, </div></div>
   </div>
 
   <!-- Findings -->
@@ -920,7 +920,7 @@
 
 <!-- Credit -->
 <div class="credit-bar">
-  <span>Guardian — AI UX Audit Tool · Concept by <a href="https://elleta.design">Elleta McDaniel</a></span>
+  <span>Guardian, AI UX Audit Tool · Concept by <a href="https://elleta.design">Elleta McDaniel</a></span>
   <span>Into Design Systems 2026</span>
 </div>
 
@@ -975,7 +975,7 @@ const findings = [
     title: "No inline validation on search form",
     body: "The search form allows submission without validating required fields. Users only discover errors after submitting. The inline overlay pattern suggests real-time contextual feedback within the user\u2019s workflow.",
     code: '<span class="key">form.search</span>\n  <span class="key">inline-validation</span>: <span class="val">none</span>\n  <span class="key">required-fields</span>:  <span class="val">3 (destination, depart, return)</span>\n\n<span class="cmt">// Ref: Friedman, Scaffolding \u2014 Inline Overlay Pattern</span>',
-    suggestion: '<strong>Fix:</strong> Add inline validation on blur for required fields. Show clear, persistent error states before the user hits submit. Consider AI-assisted suggestions as the user types.',
+    suggestion: '<strong>Fix:</strong> Add inline validation on blur for required fields. Show clear, persistent error states before the user hits submit. Consider AI-enabled suggestions as the user types.',
     why: 'Post-submission errors increase form abandonment by ~18%. The inline overlay pattern keeps feedback within the workflow rather than forcing context switches.',
     highlight: "hl-form",
     fixLabel: "Add inline validation",

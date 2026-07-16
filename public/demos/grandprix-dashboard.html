@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 /* ════════════════════════════════════════════
-   TOKENS — Apple TV × F1 Design System
+   TOKENS, Apple TV × F1 Design System
    Vitaly principle: insights first, match expertise level
    ════════════════════════════════════════════ */
 :root {
@@ -175,7 +175,7 @@ img { display: block; }
 .app-body { padding-top: 60px; }
 
 /* ════════════════════════════════════════════
-   HERO — "Top Shelf" (Apple TV inspired)
+   HERO, "Top Shelf" (Apple TV inspired)
    ════════════════════════════════════════════ */
 .hero {
   position: relative; overflow: hidden;
@@ -476,7 +476,7 @@ img { display: block; }
 }
 
 /* ════════════════════════════════════════════
-   FILTER PRESETS (Pro tier — Vitaly principle)
+   FILTER PRESETS (Pro tier, Vitaly principle)
    ════════════════════════════════════════════ */
 .filter-row {
   display: flex; gap: 8px; align-items: center;
@@ -838,7 +838,7 @@ img { display: block; }
 
 <!-- GLOBAL BAR -->
 <div class="global-bar">
-  <span style="font-size:11px">🏁 Portfolio demo — Grand Prix Dashboard (design twin)</span>
+  <span style="font-size:11px">🏁 Portfolio demo, Grand Prix Dashboard (design twin)</span>
   <button class="global-bar-btn on" id="annToggle" onclick="toggleAnnotations()">📌 Annotations</button>
   <button class="global-bar-btn" onclick="stopSpeak()">■ Stop</button>
   <span style="margin-left:auto;font-size:11px;color:var(--text-tertiary)">
@@ -863,11 +863,11 @@ const DRIVERS = [
   {pos:1,name:'Max Verstappen',team:'Red Bull',num:1,pts:393,wins:9,poles:11,delta:'+47',trend:'same'},
   {pos:2,name:'Lando Norris',team:'McLaren',num:4,pts:331,wins:3,poles:5,delta:'+22 last 4',trend:'gain'},
   {pos:3,name:'Charles Leclerc',team:'Ferrari',num:16,pts:307,wins:3,poles:3,delta:'+12 last 5',trend:'gain'},
-  {pos:4,name:'Oscar Piastri',team:'McLaren',num:81,pts:268,wins:2,poles:2,delta:'–8 vs L3',trend:'loss'},
+  {pos:4,name:'Oscar Piastri',team:'McLaren',num:81,pts:268,wins:2,poles:2,delta:'-8 vs L3',trend:'loss'},
   {pos:5,name:'Carlos Sainz',team:'Ferrari',num:55,pts:259,wins:1,poles:2,delta:'stable',trend:'same'},
-  {pos:6,name:'Lewis Hamilton',team:'Mercedes',num:44,pts:232,wins:0,poles:1,delta:'–15 last 5',trend:'loss'},
+  {pos:6,name:'Lewis Hamilton',team:'Mercedes',num:44,pts:232,wins:0,poles:1,delta:'-15 last 5',trend:'loss'},
   {pos:7,name:'George Russell',team:'Mercedes',num:63,pts:192,wins:1,poles:0,delta:'+8 last 3',trend:'gain'},
-  {pos:8,name:'Sergio Pérez',team:'Red Bull',num:11,pts:151,wins:0,poles:0,delta:'–30 last 5',trend:'loss'},
+  {pos:8,name:'Sergio Pérez',team:'Red Bull',num:11,pts:151,wins:0,poles:0,delta:'-30 last 5',trend:'loss'},
   {pos:9,name:'Fernando Alonso',team:'Aston Martin',num:14,pts:62,wins:0,poles:0,delta:'stable',trend:'same'},
   {pos:10,name:'Lance Stroll',team:'Aston Martin',num:18,pts:24,wins:0,poles:0,delta:'stable',trend:'same'},
 ];
@@ -897,11 +897,11 @@ const MOMENTUM = {
 
 const ANNOTATIONS_DATA = {
   insights: {n:'1',title:'Insights lead, data follows',
-    body:'Vitaly\'s core dashboard principle: show the conclusion first, let the data prove it. The hero says "Verstappen leads by 47 points" — not a raw number. The insight banner quantifies the threat. The user gets the story before they ever look at a chart.'},
+    body:'Vitaly\'s core dashboard principle: show the conclusion first, let the data prove it. The hero says "Verstappen leads by 47 points", not a raw number. The insight banner quantifies the threat. The user gets the story before they ever look at a chart.'},
   expertise: {n:'2',title:'Match the expertise level',
-    body:'Vitaly: "Design for interface expertise levels — low, medium, high." Starter mode is for the casual fan: big numbers, clear winner, one insight. Pro mode unlocks constructor tables, filter presets, and lap time analysis for the engaged enthusiast. Same data, different density.'},
+    body:'Vitaly: "Design for interface expertise levels, low, medium, high." Starter mode is for the casual fan: big numbers, clear winner, one insight. Pro mode unlocks constructor tables, filter presets, and lap time analysis for the engaged enthusiast. Same data, different density.'},
   filters: {n:'3',title:'Filter presets over open-ended dropdowns',
-    body:'Rather than 6 separate dropdowns that require the user to know what they want, presets chain multi-dimensional filters with one click — "Top 3", "Street circuits", "Last 5 races". Vitaly: "Support extensive filter search with filter presets."'},
+    body:'Rather than 6 separate dropdowns that require the user to know what they want, presets chain multi-dimensional filters with one click, "Top 3", "Street circuits", "Last 5 races". Vitaly: "Support extensive filter search with filter presets."'},
   'vitaly-insight': {n:'4',title:'One message per chart',
     body:'Each chart is sized and labelled to communicate exactly one insight: this one shows McLaren\'s lap time improvement over 5 races. Vitaly: "Always communicate one message per chart. Finding insights in a chart can be faster than in a table." The label tells you what to look for before you read the bars.'},
 };
@@ -1023,7 +1023,7 @@ function renderLapChart() {
     </div>
     <div class="chart-canvas-wrap">${barHtml}</div>
     <div class="chart-x-labels">${labelHtml}</div>
-    <p style="font-size:11px;color:var(--text-tertiary);margin-top:8px;font-style:italic">↑ McLaren lap times improving each race — championship trend to watch</p>
+    <p style="font-size:11px;color:var(--text-tertiary);margin-top:8px;font-style:italic">↑ McLaren lap times improving each race, championship trend to watch</p>
   `;
 }
 
@@ -1056,7 +1056,7 @@ function renderMomentumChart() {
     </div>
     <div class="chart-canvas-wrap">${barHtml}</div>
     <div class="chart-x-labels">${MOMENTUM.labels.map(l=>`<div class="chart-x-label">${l}</div>`).join('')}</div>
-    <p style="font-size:11px;color:var(--text-tertiary);margin-top:8px;font-style:italic">↑ Norris averaging 22pts/race — outscoring Verstappen over last 5</p>
+    <p style="font-size:11px;color:var(--text-tertiary);margin-top:8px;font-style:italic">↑ Norris averaging 22pts/race, outscoring Verstappen over last 5</p>
   `;
 }
 

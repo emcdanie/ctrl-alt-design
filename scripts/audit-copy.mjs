@@ -8,7 +8,7 @@ const walk = (dir) => {
   for (const e of readdirSync(dir)) {
     const p = join(dir, e);
     if (statSync(p).isDirectory()) out.push(...walk(p));
-    else if (/\.(tsx?|md)$/.test(p) && !p.endsWith(".d.ts")) out.push(p);
+    else if (/\.(tsx?|md|html)$/.test(p) && !p.endsWith(".d.ts")) out.push(p);
   }
   return out;
 };
@@ -20,7 +20,7 @@ const isComment = (l) => /^\s*(\/\/|\*|\/\*)/.test(l);
 /* VinylPlayer is frozen: the pre-commit hook false-positives its Apple
  * Music album id, so the file cannot be committed (see claude-progress). */
 const EXEMPT = ["components/VinylPlayer.tsx"];
-for (const f of [...walk("app"), ...walk("components"), ...walk("content/case-studies"), ...walk("lib")]) {
+for (const f of [...walk("app"), ...walk("components"), ...walk("content/case-studies"), ...walk("lib"), ...walk("public/demos")]) {
   if (EXEMPT.some((e) => f.endsWith(e))) continue;
   const lines = readFileSync(f, "utf8").split("\n");
   lines.forEach((l, i) => {

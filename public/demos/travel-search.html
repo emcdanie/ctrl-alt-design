@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Travel Search — AI Booking Flow (recreated)</title>
+<title>Travel Search, AI Booking Flow (recreated)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
@@ -434,8 +434,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <select class="fv-select" id="fs-time" onchange="applyFilters()">
     <option value="">Depart: Any time</option>
     <option value="early">Early (before 9am)</option>
-    <option value="morning">Morning (9–12)</option>
-    <option value="afternoon">Afternoon (12–6)</option>
+    <option value="morning">Morning (9-12)</option>
+    <option value="afternoon">Afternoon (12-6)</option>
     <option value="evening">Evening (after 6)</option>
   </select>
   <select class="fv-select" id="fs-class" onchange="applyFilters()">
@@ -469,8 +469,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
       <span class="sort-label">Sort by</span>
       <select class="sort-select" id="sortSelect" onchange="renderResults()">
-        <option value="price-asc">Price (low–high)</option>
-        <option value="price-desc">Price (high–low)</option>
+        <option value="price-asc">Price (low-high)</option>
+        <option value="price-desc">Price (high-low)</option>
         <option value="dur-asc">Duration</option>
         <option value="dep-asc">Departure (early first)</option>
         <option value="dep-desc">Departure (late first)</option>
@@ -507,7 +507,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <!-- Global bar -->
 <div class="global-bar">
-  <span>✦ Portfolio demo — fictional data</span>
+  <span>✦ Portfolio demo, fictional data</span>
   <button id="annToggleBtn" class="on" onclick="toggleAnnotations()">📌 Annotations on</button>
   <button onclick="clearAllFilters()">✕ Clear filters</button>
   <span id="speakingBadge" style="display:none" class="speaking-indicator"><span class="dot-pulse"></span> Narrating…</span>
@@ -542,10 +542,10 @@ const ALL_FLIGHTS=[
 ];
 
 const ANNOTATIONS={
-  'ai-search':{n:'1',title:'AI-Powered Natural Language Search',body:'The search bar parses natural language queries — it extracts origin, destination, class, price constraints, and time preferences using intent recognition. Matched tokens are displayed as parsed chips, making the system\'s understanding transparent to the user.'},
-  'finviz-filters':{n:'2',title:'Finviz-Style Filter Strip',body:'Inspired by Finviz stock screener — each dimension has its own dropdown, and presets chain multiple filters with one click. The live result count updates immediately so users can feel the impact of each filter without committing.'},
-  'policy-badge':{n:'3',title:'Travel Policy Indicators',body:'Green = within corporate travel policy. Amber = near the policy limit. Red = over budget. These inline indicators reduce approval friction for managed travel — in testing, they cut the "needs manager review" loop by around 60%.'},
-  'booking-panel':{n:'4',title:'Inline Booking Panel',body:'The booking panel slides in without a page navigation — keeping flight context visible on the left while the user selects seats and enters traveller details. This reduces cognitive load and drop-off compared to a full page redirect.'},
+  'ai-search':{n:'1',title:'AI-Powered Natural Language Search',body:'The search bar parses natural language queries, it extracts origin, destination, class, price constraints, and time preferences using intent recognition. Matched tokens are displayed as parsed chips, making the system\'s understanding transparent to the user.'},
+  'finviz-filters':{n:'2',title:'Finviz-Style Filter Strip',body:'Inspired by Finviz stock screener, each dimension has its own dropdown, and presets chain multiple filters with one click. The live result count updates immediately so users can feel the impact of each filter without committing.'},
+  'policy-badge':{n:'3',title:'Travel Policy Indicators',body:'Green = within corporate travel policy. Amber = near the policy limit. Red = over budget. These inline indicators reduce approval friction for managed travel, in testing, they cut the "needs manager review" loop by around 60%.'},
+  'booking-panel':{n:'4',title:'Inline Booking Panel',body:'The booking panel slides in without a page navigation, keeping flight context visible on the left while the user selects seats and enters traveller details. This reduces cognitive load and drop-off compared to a full page redirect.'},
   'seat-map':{n:'5',title:'Seat Selection',body:'A simplified seat map shows available vs. taken seats. The user\'s previous seat preference is remembered and pre-selected. This personalisation feature reduced seat re-selection interactions by 35% in testing.'},
 };
 
@@ -933,7 +933,7 @@ function renderBookingPanel(f){
       </div>
       <div class="form-row">
         <label>Trip purpose</label>
-        <input class="form-input" value="Client meeting — Paris"/>
+        <input class="form-input" value="Client meeting, Paris"/>
       </div>
     </div>
   `;
@@ -990,7 +990,7 @@ function renderBookingFooter(f){
       <div class="price-row total"><span>Total</span><span>€${total}</span></div>
     </div>
     <button class="book-btn" onclick="submitBooking()">
-      ${selectedSeat?`Submit for approval — €${total}`:`Select a seat to continue`}
+      ${selectedSeat?`Submit for approval, €${total}`:`Select a seat to continue`}
     </button>
   `;
   document.getElementById('bookingFooter').querySelector('.book-btn').disabled=!selectedSeat;
@@ -1010,7 +1010,7 @@ function submitBooking(){
       <div style="font-size:48px;margin-bottom:16px">✅</div>
       <h3 style="font-size:18px;margin-bottom:8px">Submitted for approval</h3>
       <p style="font-family:var(--font2);color:var(--text2);font-size:13px;line-height:1.6;margin-bottom:20px">
-        ${f.airline} flight ${f.dep}–${f.arr}<br>
+        ${f.airline} flight ${f.dep}-${f.arr}<br>
         Seat ${selectedSeat} · €${f.price+tax} total<br>
         Your manager will be notified by email.
       </p>
