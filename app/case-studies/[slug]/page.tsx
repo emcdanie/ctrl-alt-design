@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { getCaseStudy, getAdjacentStudies, getAllSlugs } from "@/lib/content";
+import { getCaseStudy, getAdjacentStudies, getAllSlugs, type CaseBlock } from "@/lib/content";
+import PrototypeEmbed from "@/components/PrototypeEmbed";
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseStudyShell from "@/components/CaseStudyShell";
 import { Body, PullQuote, Section, Eyebrow, H2 } from "@/components/CaseStudyTypography";
@@ -109,6 +110,140 @@ function EmbedBlock({
   );
 }
 
+/* ── Block renderer — the ONE render path for case bodies ── */
+function Block({ block, title }: { block: CaseBlock; title: string }) {
+  switch (block.kind) {
+    case "paragraph":
+      return <RichBody text={block.text} />;
+    case "pullQuote":
+      return <PullQuote>{block.text}</PullQuote>;
+    case "embed": {
+      const dark = block.frame === "dark";
+      return (
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            overflow: "hidden",
+            borderRadius: "var(--radius-2xl)",
+            marginTop: "var(--spacing-6)",
+            marginBottom: "var(--spacing-6)",
+            background: dark ? "var(--color-brand-ink)" : "var(--color-semantic-surface)",
+            border: dark
+              ? "1px solid var(--color-alpha-parchment-6)"
+              : "1px solid var(--color-semantic-border-subtle)",
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              aspectRatio: block.aspect ?? "16/10",
+              width: "100%",
+              minHeight: `${block.minHeight ?? 480}px`,
+            }}
+          >
+            <iframe
+              src={block.src}
+              title={block.title}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                border: "none",
+                borderRadius: "var(--radius-2xl)",
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+    case "youtube":
+      return (
+        <div style={{ marginTop: "var(--spacing-6)", marginBottom: "var(--spacing-6)" }}>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              aspectRatio: "16 / 9",
+              borderRadius: "var(--radius-2xl)",
+              overflow: "hidden",
+              background: "var(--color-brand-ink)",
+              boxShadow: "var(--shadow-lg)",
+            }}
+          >
+            <iframe
+              src={block.src}
+              title={block.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
+            />
+          </div>
+          {block.caption && (
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "var(--typography-font-size-tag)",
+                color: "var(--color-semantic-text-secondary)",
+                marginTop: "var(--spacing-3)",
+                lineHeight: 1.5,
+              }}
+            >
+              {block.caption}
+            </p>
+          )}
+        </div>
+      );
+    case "demoStep":
+      return (
+        <div style={{ marginBottom: "28px" }}>
+          <p
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "var(--typography-font-size-tag)",
+              fontWeight: "var(--typography-font-weight-bold)",
+              color: "var(--color-muted)",
+              letterSpacing: "var(--typography-letter-spacing-wide)",
+              textTransform: "uppercase",
+              marginBottom: "6px",
+            }}
+          >
+            {block.index}
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "var(--typography-font-size-sm)",
+              color: "var(--color-muted)",
+              lineHeight: 1.6,
+              marginBottom: "var(--spacing-3)",
+              maxWidth: "520px",
+            }}
+          >
+            {block.description}
+          </p>
+          {block.href && (
+            <a href={block.href} target="_blank" rel="noopener noreferrer" className="demo-link">
+              <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span> {block.linkLabel}
+            </a>
+          )}
+        </div>
+      );
+    case "prototype":
+      return <PrototypeEmbed src={block.src} title={block.title} height={block.height ?? "700px"} />;
+    case "section":
+      return (
+        <Section eyebrow={block.eyebrow} heading={block.heading}>
+          {block.children.map((child, i) => (
+            <Block key={i} block={child} title={title} />
+          ))}
+        </Section>
+      );
+  }
+}
+
 export default async function CaseStudyPage({
   params,
 }: {
@@ -120,8 +255,8 @@ export default async function CaseStudyPage({
 
   const { prev, next } = getAdjacentStudies(slug);
 
-  /* ── Build metadata rows ── */
-  const metadata = [
+  /* ── Build metadata rows (data override wins) ── */
+  const metadata = cs.metadata ?? [
     { label: "Year", value: cs.year },
     cs.metrics?.role ? { label: "Role", value: cs.metrics.role } : null,
     cs.metrics?.team ? { label: "Team", value: cs.metrics.team } : null,
@@ -129,32 +264,39 @@ export default async function CaseStudyPage({
     { label: "Scope", value: cs.scope },
   ].filter(Boolean) as { label: string; value: string }[];
 
+
   /* ── Determine hero media ── */
-  const heroMedia: { type: "video" | "image" | "embed"; src: string } = cs.heroVideo
+  const heroMedia: { type: "video" | "image" | "embed" | "sphere"; src?: string } = cs.heroMedia ?? (cs.heroVideo
     ? { type: "video", src: cs.heroVideo }
     : cs.heroImage.endsWith(".html")
       ? { type: "embed", src: cs.heroImage }
-      : { type: "image", src: cs.heroImage };
+      : { type: "image", src: cs.heroImage });
 
   return (
     <CaseStudyLayout>
       <CaseStudyShell
         slug={slug}
-        eyebrow={`${cs.category} · ${cs.year}`}
+        eyebrow={cs.eyebrow ?? `${cs.category} · ${cs.year}`}
         title={cs.title}
-        summary={cs.description}
+        summary={cs.summary ?? cs.description}
         metadata={metadata}
         tags={cs.tags}
         media={heroMedia}
+        titleTreatment={heroMedia.type === "sphere" ? "display" : "classic"}
         demoLinks={cs.demoLinks}
         liveUrl={cs.liveUrl || undefined}
         prev={prev}
         next={next}
       >
-        {/* ────────────────────────────────────────────────────────
-            VISUAL NARRATIVE — images lead, text supports
-            ──────────────────────────────────────────────────────── */}
-
+        {/* ── Blocks mode — the one render path ── */}
+        {cs.blocks ? (
+          <>
+            {cs.blocks.map((block, i) => (
+              <Block key={i} block={block} title={cs.title} />
+            ))}
+          </>
+        ) : (
+        <>
         {/* Supporting images — right after hero, before text */}
         {cs.images.length > 0 && (
           <div style={{ marginBottom: "var(--spacing-12)" }}>
@@ -332,6 +474,8 @@ export default async function CaseStudyPage({
             alt={`${cs.title} — final view`}
             aspectRatio="2/1"
           />
+        )}
+        </>
         )}
       </CaseStudyShell>
     </CaseStudyLayout>

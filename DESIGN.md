@@ -52,6 +52,10 @@ Token sources: `lib/bella/bella.css` (BELLA primitives/semantic/component) and
    card component, one case-study route tree (`app/case-studies/*`),
    one style source per concern. Content sources: `lib/workLibrary.ts`
    (hero/library metadata) + `lib/content.ts` (case prose) — nothing else.
+   **One case-study render path:** every case renders through
+   `app/case-studies/[slug]` + CaseStudyShell from its
+   `content/case-studies/*.ts` data (ordered `blocks`). NEVER add a
+   per-case route file — extend the block schema instead.
 3. **Layout:** centered 1240px container, token spacing (`--space-*` /
    `--spacing-*`), body ≥16px, NO arbitrary `text-[Npx]`, NO hardcoded
    hex in components (fixed-context surfaces use their recorded tokens).
