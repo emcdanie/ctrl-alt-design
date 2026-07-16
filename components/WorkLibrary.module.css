@@ -1,0 +1,296 @@
+/* Work library — Map / Table / Timeline. Frames per DESIGN.md: one card
+ * radius, token spacing, §5 ramp type only. */
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-4);
+}
+
+.viewGroup {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.sortControl {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.sortControl select {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-ink);
+  background: var(--color-card);
+  border: 1px solid var(--color-semantic-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-2) var(--spacing-3);
+  min-height: var(--spacing-touch-target);
+}
+
+.filterRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-3);
+}
+
+.filterLabel {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  min-width: 48px;
+}
+
+/* chips are small keycaps */
+.chip {
+  padding: 6px 12px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-size: var(--typography-font-size-tag);
+}
+
+.chipDot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: 0.08em;
+  color: var(--color-ink-muted);
+  margin: var(--spacing-3) 0 var(--spacing-5);
+}
+
+.empty {
+  font-size: var(--font-body-size);
+  color: var(--color-ink-muted);
+  padding: var(--spacing-8) 0;
+}
+
+/* ── Table ── */
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-semantic-border-subtle);
+  border-radius: var(--radius-2xl);
+  background: var(--color-card);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-ink-soft);
+}
+
+.table th,
+.table td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--spacing-4) var(--spacing-5);
+  border-bottom: 1px solid var(--color-semantic-border-subtle);
+}
+
+.table thead th {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+}
+
+.table tbody tr:last-child th,
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background: var(--color-semantic-accent-subtle);
+}
+
+.thSort {
+  all: unset;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  min-height: var(--spacing-touch-target);
+  display: inline-flex;
+  align-items: center;
+}
+
+.thSort:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.rowTitle {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--typography-font-size-base);
+  text-decoration: none;
+}
+
+.rowTitle:hover,
+.rowTitle:focus-visible {
+  text-decoration: underline;
+}
+
+.skillList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+  max-width: 260px;
+}
+
+.skillTag {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-ink-muted);
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  padding: 2px var(--spacing-2);
+  white-space: nowrap;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+/* ── Map ── */
+
+.mapWrap {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--spacing-8) 0 var(--spacing-16);
+}
+
+/* ── Timeline ── */
+
+.tlAffordance {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-4);
+}
+
+.tlHint {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: 0.08em;
+  color: var(--color-ink-muted);
+}
+
+.tlTrack {
+  list-style: none;
+  margin: 0;
+  padding: var(--spacing-2) var(--spacing-1) var(--spacing-6);
+  display: flex;
+  gap: var(--grid-gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  /* edge fade as a second affordance that content continues */
+  mask: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+}
+
+.tlCard {
+  scroll-snap-align: center;
+  flex: 0 0 300px;
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--color-semantic-border-subtle);
+  border-top: 4px solid var(--cc);
+  background: var(--color-card);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-card-default);
+}
+
+.cardInner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.tlYear {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--ct);
+  margin: 0;
+}
+
+.tlTitle {
+  margin: 0;
+  font-size: var(--font-card-title);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.tlTitle a {
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.tlTitle a:hover,
+.tlTitle a:focus-visible {
+  text-decoration: underline;
+}
+
+.tlType {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+.tlImpact {
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+  margin: 0;
+}
+
+/* Reduced motion: the timeline flattens to a vertical list; no snap, no
+ * horizontal scroll, no parallax (JS is also gated). */
+@media (prefers-reduced-motion: reduce) {
+  .tlTrack {
+    flex-direction: column;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    mask: none;
+  }
+
+  .tlCard {
+    flex-basis: auto;
+  }
+
+  .cardInner {
+    transform: none !important;
+  }
+
+  .tlAffordance {
+    display: none;
+  }
+}

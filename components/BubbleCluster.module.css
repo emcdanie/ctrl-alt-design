@@ -1,0 +1,347 @@
+/* Bubble cluster + reveal card — from _proto/_hero.html (2026-07-16).
+ * Glossy case bubbles + iris hub, connectors that light iris for the
+ * selection, and the reveal card: a light card with a breathing glow in
+ * the case colour (--cc); popover desktop / bottom sheet mobile. All
+ * colour comes from the recorded hero tokens in globals.css. */
+
+/* ── Stage ── */
+
+.stage {
+  position: relative;
+  height: 640px;
+}
+
+.links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.links line {
+  stroke: var(--hero-link);
+  stroke-width: 1.5;
+  transition: stroke 0.2s, stroke-width 0.2s;
+}
+
+.links line.on,
+.on {
+  stroke: var(--hero-iris-bright);
+  stroke-width: 2.5;
+}
+
+/* Labels use the READABLE sans — Unique is reserved for the headline. */
+.bub {
+  position: absolute;
+  z-index: 2;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  color: var(--hero-bub-ink);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--typography-font-size-lg);
+  letter-spacing: 0;
+  line-height: 1.15;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-3);
+  background: radial-gradient(circle at 36% 30%, var(--bub-hi), var(--bub-lo));
+  box-shadow:
+    0 20px 46px rgba(0, 0, 0, 0.22),
+    inset 0 8px 18px rgba(255, 255, 255, 0.55),
+    inset 0 -14px 28px rgba(0, 0, 0, 0.14);
+  transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.18s;
+}
+
+.bub::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  left: 22%;
+  width: 22%;
+  height: 18%;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 72%);
+}
+
+.bub:hover,
+.bub:focus-visible,
+.bub.sel {
+  outline: none;
+  transform: scale(1.05);
+  box-shadow:
+    0 22px 50px rgba(0, 0, 0, 0.24),
+    inset 0 8px 18px rgba(255, 255, 255, 0.55),
+    inset 0 -14px 28px rgba(0, 0, 0, 0.14),
+    0 0 0 5px var(--color-brand-amber),
+    0 0 0 12px color-mix(in srgb, var(--color-brand-amber) 40%, transparent);
+}
+
+.bub.sel {
+  box-shadow:
+    0 22px 50px rgba(0, 0, 0, 0.28),
+    inset 0 8px 18px rgba(255, 255, 255, 0.55),
+    inset 0 -14px 28px rgba(0, 0, 0, 0.14),
+    0 0 0 5px var(--hero-iris-bright),
+    0 0 0 13px color-mix(in srgb, var(--hero-iris-bright) 34%, transparent);
+}
+
+/* Central hub — the engine, iris, larger */
+.hub {
+  flex-direction: column;
+  font-size: var(--typography-font-size-xl);
+  background: radial-gradient(circle at 36% 30%, var(--hub-hi), var(--hub-lo));
+}
+
+.hub .sub {
+  display: block;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.95;
+  margin-top: 5px;
+}
+
+/* ── Reveal card — light card + breathing glow in the case colour ── */
+
+.panel {
+  position: fixed;
+  z-index: 20;
+  width: 360px;
+  border-radius: var(--radius-3xl);
+  background: var(--hero-panel-bg);
+  padding: var(--spacing-6) 26px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  opacity: 0;
+  transform: scale(0.96);
+  pointer-events: none;
+  transition: opacity 0.22s, transform 0.22s;
+  box-shadow: 0 24px 54px var(--hero-panel-shadow);
+}
+
+.panel.show {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+  animation: cardglow 3.6s ease-in-out infinite;
+}
+
+/* The card emits a soft breathing light in the case colour. */
+@keyframes cardglow {
+  0%,
+  100% {
+    box-shadow:
+      0 24px 54px var(--hero-panel-shadow),
+      0 0 30px -6px var(--cc),
+      0 0 70px 2px color-mix(in srgb, var(--cc) 28%, transparent);
+  }
+
+  50% {
+    box-shadow:
+      0 26px 60px var(--hero-panel-shadow),
+      0 0 54px 2px var(--cc),
+      0 0 120px 14px color-mix(in srgb, var(--cc) 42%, transparent);
+  }
+}
+
+/* Dark: a soft edge halo in the case colour — tight radii, negative
+   spread, no bloom (proto 2026-07-16). */
+:global([data-theme="dark"]) .panel.show {
+  animation-name: cardglowDark;
+}
+
+@keyframes cardglowDark {
+  0%,
+  100% {
+    box-shadow:
+      0 24px 54px var(--hero-panel-shadow),
+      0 0 16px -6px color-mix(in srgb, var(--cc) 50%, transparent);
+  }
+
+  50% {
+    box-shadow:
+      0 24px 54px var(--hero-panel-shadow),
+      0 0 28px -5px color-mix(in srgb, var(--cc) 65%, transparent);
+  }
+}
+
+.pk {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ct);
+  margin: 0;
+}
+
+.pt {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--typography-font-size-2xl);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--hero-panel-ink);
+  margin: 2px 0 4px;
+}
+
+.pi {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  line-height: 1.75;
+  color: var(--hero-panel-meta);
+  margin: 0;
+}
+
+.pi span {
+  display: block;
+  padding-left: 16px;
+  text-indent: -16px;
+}
+
+.pr {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--typography-font-size-sm);
+  color: var(--ct);
+  text-decoration: none;
+  border: 1.5px solid var(--ct);
+  border-radius: var(--radius-full);
+  padding: 10px 20px;
+  margin-top: 4px;
+  min-height: var(--spacing-touch-target);
+}
+
+.pclose {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-touch-target);
+  height: var(--spacing-touch-target);
+  background: none;
+  border: none;
+  color: var(--hero-panel-meta);
+  font-size: var(--typography-font-size-lg);
+  cursor: pointer;
+  line-height: 1;
+  z-index: 2;
+  border-radius: var(--radius-full);
+}
+
+.pclose:focus-visible,
+.pr:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ct);
+  outline-offset: var(--ring-focus-offset);
+}
+
+/* ── Particle pop (aria-hidden, killed under reduced motion) ── */
+
+.particle {
+  position: fixed;
+  border-radius: var(--radius-full);
+  pointer-events: none;
+  z-index: 30;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  animation: floatup 1.05s ease-out forwards;
+}
+
+@keyframes floatup {
+  0% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx)), calc(-50% - var(--rise))) scale(0.25);
+  }
+}
+
+/* ── Mobile: wrapped bubbles + bottom-sheet card ── */
+
+@media (max-width: 860px) {
+  .stage {
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+    justify-content: center;
+    order: 1;
+  }
+
+  .bub {
+    position: static;
+  }
+
+  .hub {
+    order: -1;
+  }
+
+  .links {
+    display: none;
+  }
+
+  .panel {
+    left: 14px !important;
+    right: 14px !important;
+    top: auto !important;
+    bottom: 14px !important;
+    width: auto !important;
+  }
+}
+
+/* ── Reduced motion: no pop, no transforms, static glow ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .bub,
+  .panel {
+    transition: none;
+  }
+
+  .bub:hover,
+  .bub:focus-visible,
+  .bub.sel {
+    transform: none;
+  }
+
+  .panel.show {
+    animation: none;
+    box-shadow:
+      0 24px 54px var(--hero-panel-shadow),
+      0 0 80px 10px color-mix(in srgb, var(--cc) 55%, transparent);
+  }
+
+  /* dark static halo — same tight edge treatment, frozen */
+  :global([data-theme="dark"]) .panel.show {
+    animation: none;
+    box-shadow:
+      0 24px 54px var(--hero-panel-shadow),
+      0 0 22px -4px color-mix(in srgb, var(--cc) 55%, transparent);
+  }
+}
+
+/* Library Map view: filtered-out bubbles dim (hub never dims) */
+.dim {
+  opacity: 0.35;
+}
+
+.dim:hover,
+.dim:focus-visible {
+  opacity: 1;
+}

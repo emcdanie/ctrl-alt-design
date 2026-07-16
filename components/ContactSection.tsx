@@ -182,16 +182,7 @@ export default function ContactSection() {
                 <button
                   type="submit"
                   disabled={sending}
-                  className="w-full font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-                  style={{
-                    fontSize: "var(--typography-font-size-lg)",
-                    padding: "18px var(--spacing-5)",
-                    borderRadius: "var(--radius-xl)",
-                    border: "none",
-                    fontFamily: "var(--font-body)",
-                    background: "var(--ink-on-dark-strong)",
-                    color: "#1A1814",
-                  }}
+                  className="btn-key w-full disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {sending ? "Sending…" : "Send message"}
                 </button>

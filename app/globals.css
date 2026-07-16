@@ -165,6 +165,19 @@ body {
   --key-iris-lo: #6C5CE0;
   --key-iris-edge: #4A3FB0;
   --key-plus: #B4AFA6;
+
+  /* Keycap Button tokens — the site-wide button style (from _proto/_hero.html
+     .toggle). Down-right plate + soft cast shadow + inset top highlight;
+     :active sinks the key (translateY(3px)) onto a reduced plate. */
+  --btn-key-radius: var(--radius-lg);
+  --shadow-key-resting:
+    2px 5px 0 var(--key-edge),
+    6px 9px 14px rgba(25, 23, 32, 0.18),
+    inset 0 1px 0 var(--key-face-hi);
+  --shadow-key-pressed:
+    1px 2px 0 var(--key-edge),
+    3px 5px 10px rgba(25, 23, 32, 0.16),
+    inset 0 1px 0 var(--key-face-hi);
 }
 
 [data-theme="dark"] {
@@ -688,6 +701,86 @@ li {
 .surface-dark {
   background: #1A1814;
   color: var(--color-semantic-background);
+}
+
+/* ─── Keycap Button — the site-wide button style ─────────────────
+   Neutral = light key; primary = coloured key (--key-c sets the face:
+   accent by default, or a case colour). Labels stay Geist Mono at tag
+   size — NEVER Unique (locked type rule). Values are the --btn-key /
+   --shadow-key tokens; press = translateY(3px) onto the reduced plate. */
+.btn-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  cursor: pointer;
+  border: none;
+  border-radius: var(--btn-key-radius);
+  padding: 11px 18px;
+  min-height: var(--spacing-touch-target);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--hero-panel-ink);
+  background: linear-gradient(var(--key-face-hi), var(--key-face-lo));
+  box-shadow: var(--shadow-key-resting);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-key:active {
+  transform: translateY(3px);
+  box-shadow: var(--shadow-key-pressed);
+}
+
+.btn-key:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.btn-key--primary {
+  --key-c: var(--color-accent-ink);
+  color: var(--key-face-hi);
+  background: linear-gradient(
+    color-mix(in srgb, var(--key-c) 82%, white),
+    var(--key-c)
+  );
+  box-shadow:
+    2px 5px 0 color-mix(in srgb, var(--key-c) 64%, black),
+    6px 9px 14px color-mix(in srgb, var(--key-c) 32%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.btn-key--primary:active {
+  transform: translateY(3px);
+  box-shadow:
+    1px 2px 0 color-mix(in srgb, var(--key-c) 64%, black),
+    3px 5px 10px color-mix(in srgb, var(--key-c) 28%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Pressed-in state for toggles (selected view tab, active filter chip) */
+.btn-key[aria-pressed="true"],
+.btn-key[aria-selected="true"] {
+  transform: translateY(3px);
+  box-shadow: var(--shadow-key-pressed);
+}
+
+.btn-key--primary[aria-pressed="true"],
+.btn-key--primary[aria-selected="true"] {
+  transform: translateY(3px);
+  box-shadow:
+    1px 2px 0 color-mix(in srgb, var(--key-c) 64%, black),
+    3px 5px 10px color-mix(in srgb, var(--key-c) 28%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-key {
+    transition: none;
+  }
 }
 
 /* ─── Scroll anchor offset ──────────────────────────────────────── */

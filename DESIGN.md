@@ -94,6 +94,23 @@ AA+ on the white reveal card), the iris hub (`--hub-*`), fixed-context
 reveal-card tokens (`--hero-panel-*` — the card is always light), and
 the keycap logo plates (`--key-*`). Declared in `app/globals.css`.
 
+## Buttons — the keycap Button (site-wide)
+
+From `_proto/_hero.html` `.toggle`. One button style, two variants, both in
+`app/globals.css`:
+
+| Variant | Class | Face | Plate |
+| --- | --- | --- | --- |
+| Neutral | `.btn-key` | `--key-face-hi` → `--key-face-lo` | `--shadow-key-resting` (`2px 5px 0 --key-edge` + soft cast + inset top highlight) |
+| Primary | `.btn-key--primary` | `--key-c` (accent default; set a case colour to re-key) | `color-mix(in srgb, var(--key-c) 64%, black)` |
+
+- Radius `--btn-key-radius` (12px). Labels Geist Mono, `tag` size, 600,
+  uppercase — NEVER Unique (locked type rule).
+- Press: `translateY(3px)` onto `--shadow-key-pressed` (reduced plate).
+  `aria-pressed="true"` / `aria-selected="true"` hold the pressed-in state
+  (view tabs, filter chips).
+- Min-height `--spacing-touch-target`; focus ring `--ring-focus-*`.
+
 ## Recorded exceptions
 
 - `.feature-panel` (section-scale color block): `--radius-3xl`.

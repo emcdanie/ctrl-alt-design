@@ -144,33 +144,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
         title="Experience"
         action={
           onResumeClick ? (
-            <button
-              onClick={onResumeClick}
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "var(--typography-font-size-sm)",
-                fontWeight: 600,
-                color: "var(--color-semantic-text-inverse)",
-                border: "none",
-                borderRadius: "var(--radius-full)",
-                padding: "var(--spacing-3) var(--spacing-6)",
-                background: "#1A1814",
-                cursor: "pointer",
-                transition: "background 150ms ease, box-shadow 150ms ease",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "var(--spacing-2)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#3A3430";
-                e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.25)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "#1A1814";
-                e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
-              }}
-            >
+            <button onClick={onResumeClick} className="btn-key btn-key--primary">
               Download Resume
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <path d="M7 2v7M4 7l3 3 3-3M2 11h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
