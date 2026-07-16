@@ -149,7 +149,7 @@ body {
    flip with [data-theme]. */
 :root {
   --hero-iris-bright: #7A6BE8;
-  --peri: #A79CE2; /* fixed periwinkle (proto --peri) — replaces "amber"-named uses */
+  --peri: #A79CE2; /* fixed periwinkle (proto --peri) */
   --case-code-first-hi: #F6BBD6;
   --case-code-first-lo: #F0A0C8;
   --case-code-first-deep: #B23A70;
@@ -1232,24 +1232,6 @@ textarea:focus-visible {
   }
 }
 
-.cs-shell__hero-poster {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: flex-end;
-  padding: var(--spacing-6);
-  background: linear-gradient(160deg, var(--cover-warm-hi), var(--cover-warm-lo));
-}
-
-.cs-shell__hero-poster span {
-  font-family: var(--font-hero-display);
-  font-weight: 700;
-  font-size: var(--font-subsection);
-  line-height: 0.9;
-  text-transform: uppercase;
-  color: var(--hero-bub-ink);
-  opacity: 0.55;
-}
 
 /* Visual-language move #1 — Unique display headline in the case colour */
 .cs-shell__title.cs-shell__title--display {

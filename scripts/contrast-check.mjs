@@ -57,6 +57,10 @@ for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies
   });
   let bad = 0;
   for (const f of fails) {
+    if (f.uniqueTooSmall) {
+      bad++;
+      console.log(`  FAIL display-font-below-24 [${f.tag}] "${f.t}" at ${f.fs}`);
+    }
     const c = parse(f.c);
     if ((c[3] ?? 1) === 0) continue;
     const l1 = lum(c);

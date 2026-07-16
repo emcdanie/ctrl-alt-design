@@ -59,7 +59,12 @@ Token sources: `lib/bella/bella.css` (BELLA primitives/semantic/component) and
 3. **Layout:** centered 1240px container, token spacing (`--space-*` /
    `--spacing-*`), body ≥16px, NO arbitrary `text-[Npx]`, NO hardcoded
    hex in components (fixed-context surfaces use their recorded tokens).
-4. **Token cascade trap:** Tailwind `@theme` emits inside `@layer theme`;
+4. **Gates (un-regressable):** `npm run gate` = `audit:structure`
+   (no per-case route dirs, zero amber, every page on the container/
+   section system, no arbitrary px type) + `audit:contrast` (forced-dark
+   AA on every route incl. worst gradient stop, display font never below
+   24px outside the keycap logo). Run before every commit.
+5. **Token cascade trap:** Tailwind `@theme` emits inside `@layer theme`;
    BELLA's `:root` is unlayered and WINS. App-level token overrides must
    be declared in the unlayered `:root` block in `globals.css`, never
    only in `@theme` (see `--header-height` incident, 2026-07-16).

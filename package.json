@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "audit:layout": "node scripts/audit-layout.mjs",
-    "audit:contrast": "node scripts/contrast-check.mjs"
+    "audit:contrast": "node scripts/contrast-check.mjs",
+    "audit:structure": "node scripts/audit-structure.mjs",
+    "gate": "npm run audit:structure && npm run audit:contrast"
   },
   "dependencies": {
     "iconoir-react": "^7.11.1",
