@@ -24,7 +24,10 @@
 
 .headline {
   font-family: var(--font-hero-display);
-  font-weight: 400;
+  /* Unique's single heavy cut: the proto maps it 400-700, the build
+     splits Regular/Bold — 700 selects the Bold cut that matches the
+     proto's chunky weight. */
+  font-weight: 700;
   font-size: var(--font-hero-unique);
   line-height: 0.8;
   letter-spacing: 0.005em;
