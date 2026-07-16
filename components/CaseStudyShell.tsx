@@ -168,7 +168,7 @@ export default function CaseStudyShell({
           <span aria-hidden="true">←</span> Back to Work
         </Link>
 
-        {/* §8: THE title device — the case title inside its identity bubble,
+        {/* §8: THE title device, the case title inside its identity bubble,
             connector feeding the content below */}
         <div className="cs-shell__hero cs-shell__hero--bubble">
           <BubbleHeading title={title} hi={caseItem?.hi} lo={caseItem?.lo} />

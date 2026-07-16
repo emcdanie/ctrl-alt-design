@@ -52,7 +52,7 @@ const TYPE_SPECIMENS = [
 ];
 
 const GATE = [
-  { name: "audit:structure", line: "One route tree per case, the 1240 container everywhere, no arbitrary pixel classes, no amber." },
+  { name: "audit:structure", line: "One route tree per case, the 1240 container everywhere, no arbitrary pixel classes, nothing off palette." },
   { name: "audit:contrast", line: "WCAG AA on every text node, both themes, worst gradient stop included. Unique below 24px fails outside the keycap logo." },
   { name: "audit:copy", line: "No em or en dashes, and one positioning term only." },
   { name: "audit:controls", line: "Keycaps are actions only, max one primary per view, filters and view switches carry their ARIA state." },

@@ -68,3 +68,38 @@ is flat:
 
 `audit:controls` fails on: keycap used as filter/toggle/sort, more than one
 primary per view, or a filter/toggle without `aria-pressed`/`aria-current`.
+
+
+## 8. Visual language v2 (bubble titles, identity colour, containment, matrix)
+
+**Bubble heading (the title device).** Exactly ONE `BubbleHeading` per page: the h1
+inside a glossy bubble in the page identity colour, with a thin connector line to the
+first content. Case pages get it from `CaseStudyShell` (case colour); About / Point of
+View / Contact from `PageHeader variant="bubble"` (iris/peri); /work stays flat.
+Subheadings never get bubbles. One h1 per page, and it lives in the bubble.
+
+**Colour as identity.** A case colour appears ONLY on that case's surfaces: its bubble,
+its page tags (`.cs-shell__tag--identity`, tint mix 36% light / 18% dark, AA both
+themes), and its decision-block rule + kicker. Shared UI (nav, buttons, chips, shared
+tags) stays neutral. There is no skill colour map.
+
+**Constellation containment.** `BubbleCluster` renders a fixed 620x640 design space
+scaled uniformly to the measured stage width (never above 1). Connector coordinates are
+computed from geometry, not the DOM. No bubble is ever cut at 1440 / 1024 / 768 / 390,
+and the page body never scrolls horizontally.
+
+**SegmentedControl.** One connected object: no gaps between segments, hairline dividers
+between neighbours, the active segment a filled section of the same control.
+
+**/design-system.** The specimens page reads every token value at runtime from computed
+styles (re-reads on theme flip) so it cannot drift from the stylesheet. `TokenInspector`
+is the clickable proof; its chromeless twin (`/design-system/inspector`) is embedded as
+Code First case evidence. Entry point is the footer colophon, never a 5th nav item.
+
+**Skills x projects matrix.** `view=skills` in the library: a real table driven from
+`lib/workLibrary.ts` skills arrays. Marked cell = case tint + dot + sr-only text (never
+colour-only). Row/column headers are buttons toggling the same URL filters as the chips;
+active filters emphasise matching cells and dim the rest. Below 768 it stays a table and
+scrolls in its own container.
+
+`audit:controls` and `audit:contrast` include `/work?view=skills` and `/design-system`.

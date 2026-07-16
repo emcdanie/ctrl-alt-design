@@ -8,7 +8,7 @@ function lum([r,g,b]) {
 }
 const parse = (s) => s.match(/[\d.]+/g)?.slice(0,4).map(Number) ?? [0,0,0,1];
 
-for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies/design-system-transformation", "http://localhost:3000/work", "http://localhost:3000/point-of-view", "http://localhost:3000/about", "http://localhost:3000/contact", "http://localhost:3000/case-studies/guardian", "http://localhost:3000/case-studies/brad-frost", "http://localhost:3000/case-studies/un-operational-dashboard", "http://localhost:3000/case-studies/filters-decision-support-system"]) {
+for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies/design-system-transformation", "http://localhost:3000/work", "http://localhost:3000/point-of-view", "http://localhost:3000/about", "http://localhost:3000/contact", "http://localhost:3000/case-studies/guardian", "http://localhost:3000/case-studies/brad-frost", "http://localhost:3000/case-studies/un-operational-dashboard", "http://localhost:3000/case-studies/filters-decision-support-system", "http://localhost:3000/work?view=skills", "http://localhost:3000/design-system"]) {
   await page.goto(url, { waitUntil: "domcontentloaded" });
   await page.evaluate(() => { document.documentElement.dataset.theme = "dark"; });
   await page.waitForTimeout(1500);

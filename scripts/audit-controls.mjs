@@ -4,7 +4,7 @@ import { chromium } from "playwright";
 const routes = ["/", "/work", "/work?view=map", "/work?view=timeline", "/about", "/contact",
   "/point-of-view", "/case-studies/brad-frost", "/case-studies/guardian",
   "/case-studies/design-system-transformation", "/case-studies/un-operational-dashboard",
-  "/case-studies/filters-decision-support-system"];
+  "/case-studies/filters-decision-support-system", "/work?view=skills", "/design-system"];
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });

@@ -12,6 +12,7 @@ export default function InspectorEmbedPage() {
   return (
     <main
       id="main-content"
+      className="layout-container"
       style={{
         minHeight: "100dvh",
         display: "grid",
