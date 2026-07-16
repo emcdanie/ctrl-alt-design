@@ -253,7 +253,7 @@ export default function BubbleCluster({
         inert={!active}
       >
         {active && (
-          <>
+          <div className={styles.pin}>
             <button className={styles.pclose} aria-label="Close" onClick={() => close(true)}>
               ✕
             </button>
@@ -267,7 +267,7 @@ export default function BubbleCluster({
             <Link className={styles.pr} href={active.href} onClick={() => close()}>
               {active.cta ?? "Read case"} <span aria-hidden="true">&nbsp;→</span>
             </Link>
-          </>
+          </div>
         )}
       </div>
     </>
