@@ -52,9 +52,9 @@
   padding: var(--spacing-3);
   background: radial-gradient(circle at 36% 30%, var(--bub-hi), var(--bub-lo));
   box-shadow:
-    0 20px 46px rgba(0, 0, 0, 0.22),
-    inset 0 8px 18px rgba(255, 255, 255, 0.55),
-    inset 0 -14px 28px rgba(0, 0, 0, 0.14);
+    13px 22px 44px rgba(0, 0, 0, 0.26),
+    inset 7px 9px 18px rgba(255, 255, 255, 0.5),
+    inset -9px -13px 28px rgba(0, 0, 0, 0.16);
   transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.18s;
 }
 
@@ -75,18 +75,18 @@
   outline: none;
   transform: scale(1.05);
   box-shadow:
-    0 22px 50px rgba(0, 0, 0, 0.24),
-    inset 0 8px 18px rgba(255, 255, 255, 0.55),
-    inset 0 -14px 28px rgba(0, 0, 0, 0.14),
+    14px 24px 48px rgba(0, 0, 0, 0.26),
+    inset 7px 9px 18px rgba(255, 255, 255, 0.5),
+    inset -9px -13px 28px rgba(0, 0, 0, 0.16),
     0 0 0 5px var(--color-brand-amber),
     0 0 0 12px color-mix(in srgb, var(--color-brand-amber) 40%, transparent);
 }
 
 .bub.sel {
   box-shadow:
-    0 22px 50px rgba(0, 0, 0, 0.28),
-    inset 0 8px 18px rgba(255, 255, 255, 0.55),
-    inset 0 -14px 28px rgba(0, 0, 0, 0.14),
+    14px 24px 48px rgba(0, 0, 0, 0.3),
+    inset 7px 9px 18px rgba(255, 255, 255, 0.5),
+    inset -9px -13px 28px rgba(0, 0, 0, 0.16),
     0 0 0 5px var(--hero-iris-bright),
     0 0 0 13px color-mix(in srgb, var(--hero-iris-bright) 34%, transparent);
 }
@@ -270,9 +270,11 @@
 }
 
 .pclose {
+  /* proto anchors the glyph at 14/16; the 44px box is centred on it so
+     the touch target survives */
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: calc(14px + 9px - var(--spacing-touch-target) / 2);
+  right: calc(16px + 9px - var(--spacing-touch-target) / 2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -280,8 +282,8 @@
   height: var(--spacing-touch-target);
   background: none;
   border: none;
-  color: var(--hero-panel-meta);
-  font-size: var(--typography-font-size-lg);
+  color: var(--hero-panel-close);
+  font-size: 18px; /* proto-exact */
   cursor: pointer;
   line-height: 1;
   z-index: 2;
