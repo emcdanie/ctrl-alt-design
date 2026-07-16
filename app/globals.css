@@ -56,7 +56,7 @@
   --space-section-lg: 96px;
 
   /* Layout */
-  --container-width: 1200px;
+  --container-width: 1240px;
   --container-padding: 32px;
   --grid-gap: 32px;
   --card-padding: 24px;
@@ -65,7 +65,6 @@
   /* Header offset — all sticky/fixed elements below the nav use this */
   --header-height: 70px;
 
-  --animate-scroll-left: scroll-left 35s linear infinite;
   --animate-fade-in-up: fadeInUp 0.6s ease-out forwards;
 }
 
@@ -91,11 +90,16 @@ body {
   --typography-font-family-mono: var(--font-mono);
 }
 
-/* Real fixed-header height. Declared UNLAYERED so it beats BELLA's
-   :root 64px default (unlayered later import wins over @theme, which
-   Tailwind emits inside @layer theme). Keycap header measures 76px. */
+/* ─── APP TOKEN AUTHORITY (unlayered — MUST stay unlayered) ─────────
+   Cascade rule: unlayered author styles beat every @layer, and later
+   source order beats bella.css's unlayered :root. Tailwind's @theme
+   emits inside @layer theme, so any token that must override a BELLA
+   :root default HAS to live here, not (only) in @theme. Importing bella
+   into a low layer instead would let preflight (border:0) beat bella's
+   component borders — do not "fix" it that way.
+   Every app token that overrides a BELLA default goes in this block. */
 :root {
-  --header-height: 76px;
+  --header-height: 76px; /* keycap header, measured (BELLA default: 64) */
 }
 
 @media (max-width: 640px) {
@@ -320,8 +324,8 @@ body {
 
 /* Section rhythm — one scale (4-based --spacing-*), one value per tier */
 .layout-section {
-  padding-top: var(--spacing-20);
-  padding-bottom: var(--spacing-20);
+  padding-top: var(--space-section);
+  padding-bottom: var(--space-section);
 }
 
 .layout-section-tight {
@@ -363,16 +367,6 @@ body {
   margin-bottom: var(--spacing-12);
 }
 
-/* ─── Keyframes ─────────────────────────────────────────────────── */
-@keyframes scroll-left {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-}
 
 @keyframes fadeInUp {
   from {
@@ -482,17 +476,8 @@ li {
   background-color: var(--color-page);
 }
 
-.text-muted {
-  color: var(--color-muted);
-}
 
-.border-soft {
-  border-color: var(--color-border-soft);
-}
 
-.surface-subtle {
-  background: var(--color-semantic-surface-glass-light);
-}
 
 .eyebrow,
 .section-label {
@@ -568,17 +553,6 @@ li {
   -webkit-backdrop-filter: blur(var(--bella-blur-sm));
 }
 
-.pull-quote {
-  font-family: var(--font-display);
-  font-size: var(--font-card-title);
-  font-style: italic;
-  color: var(--color-ink-soft);
-  border-left: 3px solid var(--color-semantic-accent);
-  padding: var(--spacing-5) var(--spacing-6);
-  background: var(--color-semantic-surface-elevated);
-  border-radius: var(--radius-sm);
-  margin: var(--spacing-10) 0;
-}
 
 /* ─── Feature panel — the owned-color moment ─────────────────────
    Full periwinkle color block (Anthropic-panel feel). Everything inside
@@ -604,51 +578,15 @@ li {
   color: var(--color-brand-ink);
 }
 
-/* ─── Stat moment — one confident statement, Workday-style ───────── */
-.stat-moment {
-  border-top: 1px solid var(--color-semantic-accent-border);
-  padding-top: var(--spacing-16);
-  margin-top: var(--spacing-20);
-}
 
-.stat-moment__figure {
-  font-family: var(--font-display);
-  font-size: var(--font-hero);
-  font-weight: var(--typography-font-weight-bold);
-  letter-spacing: -0.03em;
-  line-height: 1.04;
-  color: var(--color-ink);
-  max-width: 18ch;
-  margin: 0;
-}
 
-.stat-moment__accent {
-  color: var(--color-accent-ink);
-}
 
-.stat-moment__support {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: var(--typography-line-height-normal);
-  color: var(--color-muted);
-  max-width: 44ch;
-  margin: 0;
-}
 
 /* ─── Type scale ─────────────────────────────────────────────────
    Modular scale (×1.25 ratio). Use these classes instead of
    ad-hoc inline font-size / font-weight declarations.
 ────────────────────────────────────────────────────────────────── */
 
-/* H1 — page / hero title */
-.heading-display {
-  font-family: var(--font-display);
-  font-size: var(--font-hero);
-  font-weight: var(--typography-font-weight-bold);
-  letter-spacing: -0.025em;
-  line-height: 0.95;
-  color: var(--color-ink);
-}
 
 /* H2 — section titles (Case Studies, Experience, About…) */
 .heading-section {
@@ -670,15 +608,6 @@ li {
   color: var(--color-ink);
 }
 
-/* H4 — card / case-study titles */
-.heading-card {
-  font-family: var(--font-display);
-  font-size: var(--font-card-title);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.18;
-  color: var(--color-ink);
-}
 
 /* H5 — inline item labels (collaboration cards, role titles…) */
 .heading-item {
@@ -725,24 +654,7 @@ li {
   color: var(--color-ink-muted);
 }
 
-/* Long-form reading — case studies, articles */
-.body-reading {
-  font-family: var(--font-body);
-  font-size: var(--font-body-size);
-  line-height: 1.85;
-  letter-spacing: 0.01em;
-  color: var(--color-ink-soft);
-}
 
-/* Case study title — larger, editorial */
-.heading-case-study {
-  font-family: var(--font-display);
-  font-size: var(--font-hero);
-  font-weight: var(--typography-font-weight-bold);
-  letter-spacing: -0.025em;
-  line-height: 1.02;
-  color: var(--color-ink);
-}
 
 /* ─── Surface system ────────────────────────────────────────────── */
 
@@ -881,13 +793,7 @@ section[id],
  * (clears the 70px nav comfortably); we only need scroll-padding-top here.
  * .case-study-content is kept for any consumer that wires it up. */
 .cs-shell,
-.case-study-content {
-  scroll-padding-top: calc(var(--header-height) + var(--spacing-4));
-}
 
-.case-study-content {
-  padding-top: var(--header-height);
-}
 
 /* ─── Focus states ──────────────────────────────────────────────── */
 
@@ -963,43 +869,9 @@ textarea:focus-visible {
   box-shadow: 0 4px 14px rgba(28, 26, 46, 0.07);
 }
 
-/* ─── Bento cards ──────────────────────────────────────────────── */
-.bento-card {
-  background: var(--color-semantic-surface-glass);
-  backdrop-filter: blur(var(--bella-blur-md));
-  -webkit-backdrop-filter: blur(var(--bella-blur-md));
-  border: 1px solid var(--color-semantic-border-glass-edge);
-  border-top: 1px solid var(--color-semantic-border-glass-top);
-  /* DESIGN.md: one card radius everywhere */
-  border-radius: var(--radius-2xl);
-  box-shadow:
-    0 1px 2px var(--color-alpha-shadow-warm-04),
-    0 8px 32px var(--color-alpha-shadow-warm-06),
-    inset 0 1px 0 var(--color-semantic-border-glass-top);
-  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1);
-  text-decoration: none;
-  color: inherit;
-}
 
-.bento-card:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 8px 24px var(--color-alpha-shadow-warm-08),
-    0 24px 56px rgba(28, 26, 46, 0.1),
-    inset 0 1px 0 var(--color-semantic-border-glass-top);
-}
 
-/* ─── Carousel ──────────────────────────────────────────────────── */
-.carousel-track {
-  display: flex;
-  width: max-content;
-  animation: scroll-left 35s linear infinite;
-}
 
-.carousel-track:hover {
-  animation-play-state: paused;
-}
 
 /* ─── Process section accordion ───────────────────────────────── */
 /* Behaviour: one open at a time, first item open by default. Animated
@@ -1142,13 +1014,6 @@ textarea:focus-visible {
   }
 }
 
-.carousel-card {
-  /* 470px crowded the landing view once the hero headline went to two
-   * oversized lines — 380px keeps the strip present but lets the Hero
-   * own the viewport. */
-  width: 168px;
-  height: 380px;
-}
 
 /* Mobile: shrink carousel cards further than 4715913 (was 120×280px).
  * Even at 280px (34% of an 812px viewport) the strip dominated the
@@ -1163,7 +1028,7 @@ textarea:focus-visible {
 
 /* ─── Page container ───────────────────────────────────────────── */
 .page-container {
-  max-width: 1200px;
+  max-width: var(--container-width);
   padding-left: var(--spacing-8);
   padding-right: var(--spacing-8);
   margin-left: auto;
@@ -1249,47 +1114,8 @@ textarea:focus-visible {
 }
 
 /* ─── Snap shell — two-view layout ────────────────────────────── */
-/* View 1: Landing (hero + carousel) fills the viewport.
-   View 2: Dashboard (sidebar + scrollable content panel).
-   Body does not scroll — only the snap shell and the dashboard
-   panel scroll. Nav bar (OverlayNav) stays on top always. */
 
-.snap-shell {
-  height: 100vh;
-  height: 100dvh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: var(--color-page);
-  color: var(--color-ink);
-  /* scroll-snap-type intentionally omitted. Was "y mandatory" (relaxed
-   * to "y proximity" at mobile in 4715913). Both broke programmatic
-   * scroll in browser/extension full-page screenshot tools, which call
-   * scrollTo on the scroll container — snap intercepts and pulls them
-   * back to the snap point. The snap-between-views feel was a
-   * nice-to-have; ordinary scroll is load-bearing for capture tools,
-   * keyboard scroll, and assistive tech. */
-}
 
-/* View 1 — Landing */
-.view-landing {
-  height: 100vh;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  padding-top: var(--header-height);
-  flex-shrink: 0;
-  overflow: hidden;
-}
-
-/* View 2 — Dashboard (sidebar + content) */
-.view-dashboard {
-  height: 100vh;
-  height: 100dvh;
-  flex-shrink: 0;
-  display: flex;
-  overflow: hidden;
-  padding-top: var(--header-height);
-}
 
 /* Mobile: relax view-landing from a fixed 100dvh "share-with-Carousel"
  * box to a flowing min-height container. Hero (flex:1 inline) still
@@ -1308,17 +1134,6 @@ textarea:focus-visible {
   }
 }
 
-/* ─── Sidebar (inside dashboard view) ─────────────────────────── */
-.dashboard-sidebar {
-  display: none;                   /* hidden on mobile */
-  flex-direction: column;
-  width: 220px;
-  flex-shrink: 0;
-  /* solid surface + medium border so the rail reads as a distinct panel */
-  background: var(--color-semantic-surface);
-  border-right: 1px solid var(--color-border-medium);
-  overflow-y: auto;
-}
 
 @media (min-width: 1024px) {
   .dashboard-sidebar {
@@ -1326,39 +1141,10 @@ textarea:focus-visible {
   }
 }
 
-.sidebar-brand {
-  padding: 28px var(--spacing-5) var(--spacing-5);
-  border-bottom: 1px solid var(--color-border-soft);
-}
 
-.sidebar-nav {
-  padding: var(--spacing-4) var(--spacing-3);
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
-}
 
-.sidebar-footer {
-  /* horizontal padding matches .sidebar-brand so the rail edges align */
-  padding: var(--spacing-4) var(--spacing-5) 22px;
-  border-top: 1px solid var(--color-border-soft);
-  margin-top: auto;
-}
 
-/* ─── Dashboard content panel (scrolls inside) ────────────────── */
-.dashboard-panel {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  overscroll-behavior: contain;     /* prevents scroll leaking to snap shell */
-  scroll-behavior: smooth;
-  min-width: 0;
-}
 
-/* Legacy class — no longer needs padding offset */
-.dashboard-content {
-}
 
 /* ─── Mobile: case study embed & section spacing ──────────────── */
 @media (max-width: 768px) {
@@ -1428,23 +1214,7 @@ textarea:focus-visible {
   padding-bottom: var(--spacing-10);
 }
 
-/* Back button */
-.cs-shell__back {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: var(--typography-font-weight-medium);
-  color: var(--color-muted);
-  text-decoration: none;
-  margin-bottom: var(--spacing-6);
-  transition: color 0.15s ease;
-}
 
-.cs-shell__back:hover {
-  color: var(--color-ink);
-}
 
 /* Eyebrow — mono, same treatment as home sections */
 .cs-shell__eyebrow {
@@ -1588,11 +1358,6 @@ textarea:focus-visible {
   padding-top: clamp(var(--spacing-20), 10vh, 120px);
 }
 
-/* Mobile back */
-.cs-shell__mobile-back {
-  display: block;
-  margin-bottom: var(--spacing-4);
-}
 
 /* Hero media — controlled, not oversized */
 .cs-shell__hero {

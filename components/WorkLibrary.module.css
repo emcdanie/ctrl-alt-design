@@ -240,38 +240,8 @@
   margin: 0;
 }
 
-.tlTitle {
-  margin: 0;
-  font-size: var(--font-card-title);
-  font-weight: 700;
-  line-height: 1.15;
-}
 
-.tlTitle a {
-  color: var(--color-ink);
-  text-decoration: none;
-}
 
-.tlTitle a:hover,
-.tlTitle a:focus-visible {
-  text-decoration: underline;
-}
-
-.tlType {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-ink-muted);
-  margin: 0;
-}
-
-.tlImpact {
-  font-size: var(--typography-font-size-sm);
-  line-height: 1.55;
-  color: var(--color-ink-soft);
-  margin: 0;
-}
 
 /* Reduced motion: the timeline flattens to a vertical list; no snap, no
  * horizontal scroll, no parallax (JS is also gated). */

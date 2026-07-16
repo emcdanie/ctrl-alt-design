@@ -6,10 +6,23 @@ system, three case-data sources coexist, and a 1754-line globals.css carries
 rules for components that no longer exist — so "fixes" land in one copy of a
 job while visitors see the other.
 
-Measured against `docs/portfolio-conformance-spec.md` and the IA brief
-(2026-07-16 messages). **`docs/portfolio-ia-spec.md` does not exist in the repo**
-— referenced but never added; the IA contract below is reconstructed from the
-briefs. The conformance spec on disk also has no §0/§1 numbering yet.
+Measured against `docs/portfolio-conformance-spec.md` (§0 no-duplicates,
+§1 spacing) and `docs/portfolio-ia-spec.md` — both now in the repo.
+
+## Reconciliation (post Steps 0–3, 2026-07-16)
+
+| Spec | Status |
+| --- | --- |
+| §0 one home / one nav / one card / one case tree / no dead routes | DONE — commits `2fd7e80`…`4cb403d`; orphan grep clean |
+| §1 container 1240 centred | DONE — `--container-width: 1240px`, `.page-container` + hero on the token |
+| §1 section rhythm `--space-section` 96 | DONE — `.layout-section` on the token |
+| §1 body ≥16 / no arbitrary px | DONE (earlier type pass); recorded proto exceptions stand |
+| §2 image-led card, no colour blocks/dots | DONE — `CaseCard` + warm cover tokens |
+| IA: routes, 4-item nav, aria-current, logo-home, featured CHIP | DONE |
+| Cascade trap | FIXED via the unlayered APP TOKEN AUTHORITY block in `globals.css` (layering bella instead would let preflight strip its borders — documented in the block comment) |
+| Style sprawl | globals.css 1754 → ~1524 lines; 30 dead blocks removed (snap-shell/view-*/dashboard-*/sidebar-*/carousel/bento/stat-moment/old headings); dup selectors resolved |
+
+Below is the original audit as found, kept for the record.
 
 ## (a) Route → render map (BEFORE)
 

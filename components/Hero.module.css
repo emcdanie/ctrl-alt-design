@@ -2,7 +2,7 @@
  * styles in BubbleCluster.module.css). From _proto/_hero.html. */
 
 .hero {
-  max-width: 1240px;
+  max-width: var(--container-width);
   margin: 0 auto;
   /* proto: 104px top under its own meta strip; here the fixed header
      (--header-height) already offsets the view, so the grid centers in
