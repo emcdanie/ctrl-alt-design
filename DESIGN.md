@@ -41,6 +41,31 @@ Token sources: `lib/bella/bella.css` (BELLA primitives/semantic/component) and
 6. Never write a raw px/hex where a token exists. A genuinely new value gets a
    named token here first.
 
+## Global theming contract (site-wide, NOT hero-scoped)
+
+Mirrors `portfolio-conformance-spec.md` (Design Projects). Enforced
+2026-07-16 on `redesign/lush`; the forced-dark contrast gate is the
+acceptance test.
+
+1. **Every surface derives from tokens.** Background, text, and border
+   come from the semantic theme tokens that resolve via
+   `[data-theme="dark"]` on `<html>` — the app aliases
+   (`--color-page/-card/-surface/-ink*/-border*/-glass*`) all flip in
+   ONE place (`app/globals.css` dark body block) plus BELLA's
+   `[data-theme="dark"]`. No hardcoded grounds/inks in components, ever.
+2. **Fixed-context surfaces are the only exception**, and each must use
+   a recorded non-flipping token: reveal card + resume modal paper
+   (`--surface-paper` / `--ink-on-paper-*` / `--hero-panel-*`), charcoal
+   footer/chips (`.surface-dark` + `--ink-on-dark-*`), keycap faces
+   (`--key-*`), bubble plates (`--case-*-hi/lo`), terminal-widget dots,
+   vinyl artwork.
+3. **Case accents as TEXT flip**: use `--case-*-text` (deep on light,
+   bright on navy). `--case-*-deep` is only for the always-light card.
+4. **Acceptance**: force `data-theme="dark"` → every text node ≥ AA on
+   its own surface, across home (all sections incl. contact/footer),
+   /work (all three views), every case-study page, /about,
+   /point-of-view. `npm run audit:contrast` automates the sweep.
+
 ## §5. Type ramp (canonical)
 
 Sizes: **13 / 14 / 16 / 18 / 20 / 24 / 32 / 40 / 56** px, plus the hero
@@ -54,6 +79,9 @@ other sizes.
   Mono (`--font-mono` chain).
 - BELLA size tokens map 1:1 to the ramp: `tag` 13, `sm` 14, `base` 16,
   `lg` 18, `xl` 20, `2xl` 24, `3xl` 32, `4xl` 40, `5xl` 56.
+- No arbitrary `text-[Npx]` / inline px font sizes in components — ramp
+  tokens only (`--typography-font-size-*` / the fluid pairs below).
+  Body copy (multi-sentence paragraphs) never below `base` 16.
 - No ad-hoc `clamp()` with per-section vw factors. At most ONE fluid pair
   per step, endpoints on the ramp, defined once as a token in
   `app/globals.css`:

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "audit:layout": "node scripts/audit-layout.mjs"
+    "audit:layout": "node scripts/audit-layout.mjs",
+    "audit:contrast": "node scripts/contrast-check.mjs"
   },
   "dependencies": {
     "next": "16.1.7",
