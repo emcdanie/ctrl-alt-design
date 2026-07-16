@@ -1,4 +1,0 @@
-/* Map canvas manages its own cursor (pan/grab feel). */
-.command-center-shell canvas {
-  cursor: grab;
-}
