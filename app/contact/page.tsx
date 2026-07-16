@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import OverlayNav from "@/components/OverlayNav";
+import PageHeader from "@/components/PageHeader";
 import ContactSection from "@/components/ContactSection";
 
 export const metadata: Metadata = {
@@ -14,6 +15,11 @@ export default function ContactPage() {
     <main id="main-content" style={{ minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
       <OverlayNav />
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end", paddingTop: "var(--header-height)" }}>
+        <section className="layout-section" style={{ paddingBottom: "var(--spacing-8)" }}>
+          <div className="layout-container">
+            <PageHeader eyebrow="— Get in touch" title="Contact" />
+          </div>
+        </section>
         <ContactSection />
       </div>
     </main>

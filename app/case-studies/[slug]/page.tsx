@@ -159,6 +159,26 @@ function Block({ block, title }: { block: CaseBlock; title: string }) {
         </div>
       );
     }
+    case "video":
+      return (
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            aspectRatio: "16 / 9",
+            borderRadius: "var(--radius-2xl)",
+            overflow: "hidden",
+            background: "var(--color-brand-ink)",
+            boxShadow: "var(--shadow-lg)",
+            marginTop: "var(--spacing-6)",
+            marginBottom: "var(--spacing-6)",
+          }}
+        >
+          <video autoPlay muted loop playsInline title={block.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}>
+            <source src={block.src} type="video/mp4" />
+          </video>
+        </div>
+      );
     case "youtube":
       return (
         <div style={{ marginTop: "var(--spacing-6)", marginBottom: "var(--spacing-6)" }}>
@@ -265,13 +285,6 @@ export default async function CaseStudyPage({
   ].filter(Boolean) as { label: string; value: string }[];
 
 
-  /* ── Determine hero media ── */
-  const heroMedia: { type: "video" | "image" | "embed" | "sphere"; src?: string } = cs.heroMedia ?? (cs.heroVideo
-    ? { type: "video", src: cs.heroVideo }
-    : cs.heroImage.endsWith(".html")
-      ? { type: "embed", src: cs.heroImage }
-      : { type: "image", src: cs.heroImage });
-
   return (
     <CaseStudyLayout>
       <CaseStudyShell
@@ -281,8 +294,6 @@ export default async function CaseStudyPage({
         summary={cs.summary ?? cs.description}
         metadata={metadata}
         tags={cs.tags}
-        media={heroMedia}
-        titleTreatment={heroMedia.type === "sphere" ? "display" : "classic"}
         demoLinks={cs.demoLinks}
         liveUrl={cs.liveUrl || undefined}
         prev={prev}

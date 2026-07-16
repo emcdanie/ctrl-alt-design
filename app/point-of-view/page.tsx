@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import OverlayNav from "@/components/OverlayNav";
+import PageHeader from "@/components/PageHeader";
 
 export const metadata: Metadata = {
   title: "Point of view — Elleta McDaniel",
@@ -31,12 +32,7 @@ export default function PointOfViewPage() {
       <OverlayNav />
       <section className="layout-section" style={{ paddingTop: "calc(var(--header-height) + var(--spacing-16))" }}>
         <div className="layout-container" style={{ maxWidth: "760px" }}>
-          <p className="eyebrow" style={{ marginBottom: "var(--spacing-4)" }}>
-            Point of view
-          </p>
-          <h1 style={{ fontSize: "var(--font-hero)", lineHeight: 1.05, marginBottom: "var(--spacing-8)" }}>
-            How I think about design systems
-          </h1>
+          <PageHeader eyebrow="— Point of view" title="How I think about design systems" />
 
           {THESES.map((t) => (
             <article key={t.title} style={{ marginBottom: "var(--spacing-8)" }}>

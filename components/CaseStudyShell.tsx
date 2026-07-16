@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { tagColor } from "@/lib/tagColor";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
@@ -15,14 +14,6 @@ interface DemoLink {
   href: string;
 }
 
-interface ShellMedia {
-  /** "sphere" renders the case's glossy brand sphere as the hero object
-   *  (visual-language move #2) — no src needed */
-  type: "video" | "image" | "embed" | "sphere";
-  src?: string;
-  alt?: string;
-}
-
 export interface CaseStudyShellProps {
   /** Back link destination — defaults to /#work */
   backHref?: string;
@@ -36,8 +27,6 @@ export interface CaseStudyShellProps {
   metadata: MetaRow[];
   /** Tag pills */
   tags: string[];
-  /** Hero media — shown at top of scrolling column */
-  media: ShellMedia;
   /** Optional demo / prototype links */
   demoLinks?: DemoLink[];
   /** Optional live URL */
@@ -46,11 +35,8 @@ export interface CaseStudyShellProps {
   prev?: { slug: string; title: string; category: string } | null;
   /** Next case study (for nav) */
   next?: { slug: string; title: string; category: string } | null;
-  /** Case slug — resolves the case colours for the hero poster */
-  slug?: string;
-  /** "display": Unique display headline in the case colour
-   *  (visual-language move #1). Default keeps the classic Geist title. */
-  titleTreatment?: "classic" | "display";
+  /** Case slug — resolves the case colours for the sphere + headline */
+  slug: string;
   /** Scrolling content (sections, pull quotes, images…) */
   children: React.ReactNode;
 }
@@ -73,29 +59,14 @@ export default function CaseStudyShell({
   summary,
   metadata,
   tags,
-  media,
   demoLinks,
   liveUrl,
   prev,
   next,
   slug,
-  titleTreatment = "classic",
   children,
 }: CaseStudyShellProps) {
-  const caseItem = slug ? findWorkItemBySlug(slug) : undefined;
-  const poster = (
-    <div
-      className="cs-shell__hero-poster"
-      aria-hidden="true"
-      style={
-        caseItem
-          ? { background: `linear-gradient(160deg, ${caseItem.hi}, ${caseItem.lo})` }
-          : undefined
-      }
-    >
-      <span>{title}</span>
-    </div>
-  );
+  const caseItem = findWorkItemBySlug(slug);
   return (
     <div className="cs-shell">
       {/* ════════════════════════════════════════════════════════════
@@ -111,9 +82,10 @@ export default function CaseStudyShell({
           <p className="cs-shell__eyebrow">{eyebrow}</p>
 
           {/* Title */}
+          {/* Visual-language move #1: display headline, case colour */}
           <h1
-            className={`cs-shell__title${titleTreatment === "display" ? " cs-shell__title--display" : ""}`}
-            style={titleTreatment === "display" && caseItem ? { color: caseItem.text } : undefined}
+            className="cs-shell__title cs-shell__title--display"
+            style={caseItem ? { color: caseItem.text } : undefined}
           >
             {title}
           </h1>
@@ -202,74 +174,24 @@ export default function CaseStudyShell({
           <span aria-hidden="true">←</span> Back to Work
         </Link>
 
-        {/* Hero media */}
-        {media.type === "sphere" ? (
-          <div className="cs-shell__hero cs-shell__hero--sphere">
-            {/* connector nodding back to the map this sphere came from */}
-            <svg className="cs-shell__sphere-link" aria-hidden="true" viewBox="0 0 400 12" preserveAspectRatio="none">
-              <circle cx="6" cy="6" r="4" fill="var(--hero-iris-bright)" />
-              <line x1="10" y1="6" x2="400" y2="6" stroke="var(--hero-link)" strokeWidth="1.5" />
-            </svg>
-            <span
-              className="cs-shell__sphere"
-              aria-hidden="true"
-              style={
-                caseItem
-                  ? ({ "--bub-hi": caseItem.hi, "--bub-lo": caseItem.lo } as React.CSSProperties)
-                  : undefined
-              }
-            >
-              {caseItem?.bubbleLabel.split("|").join(" ")}
-            </span>
-          </div>
-        ) : (
-        <div className="cs-shell__hero">
-          <div className="cs-shell__hero-frame">
-            <div className="cs-shell__hero-sheen" />
-            {media.type === "video" ? (
-              <>
-                {poster}
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="cs-shell__hero-media"
-                >
-                  <source src={media.src!} type="video/mp4" />
-                </video>
-                <div className="cs-shell__hero-vignette" />
-              </>
-            ) : media.type === "embed" ? (
-              <iframe
-                src={media.src!}
-                title={media.alt ?? title}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  border: "none",
-                  borderRadius: "inherit",
-                }}
-              />
-            ) : (
-              <>
-                <Image
-                  src={media.src!}
-                  alt={media.alt ?? title}
-                  fill
-                  className="cs-shell__hero-media"
-                  priority
-                  sizes="(max-width: 1080px) 100vw, 860px"
-                />
-                <div className="cs-shell__hero-vignette-light" />
-              </>
-            )}
-          </div>
+        {/* Hero — the case sphere (visual-language move #2), always */}
+        <div className="cs-shell__hero cs-shell__hero--sphere">
+          <svg className="cs-shell__sphere-link" aria-hidden="true" viewBox="0 0 400 12" preserveAspectRatio="none">
+            <circle cx="6" cy="6" r="4" fill="var(--hero-iris-bright)" />
+            <line x1="10" y1="6" x2="400" y2="6" stroke="var(--hero-link)" strokeWidth="1.5" />
+          </svg>
+          <span
+            className="cs-shell__sphere"
+            aria-hidden="true"
+            style={
+              caseItem
+                ? ({ "--bub-hi": caseItem.hi, "--bub-lo": caseItem.lo } as React.CSSProperties)
+                : undefined
+            }
+          >
+            {caseItem?.bubbleLabel.split("|").join(" ")}
+          </span>
         </div>
-        )}
 
         {/* Mobile header — title, meta, tags (below hero on small screens) */}
         <div className="cs-shell__mobile-header">

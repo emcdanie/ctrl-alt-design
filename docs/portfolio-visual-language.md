@@ -61,6 +61,7 @@ fills a whole card or button — it lives in the headline, kicker, sphere,
 trace, glow.
 
 ## Status
-Proof page: `/case-studies/brad-frost` (Code First) — display headline +
-sphere hero + connector. Rollout to the remaining case pages and section
-opens happens after review of the proof.
+Rolled out (16 Jul 2026): the display headline + sphere hero + connector
+are the CaseStudyShell DEFAULT (no per-page props — the template drives
+every case). Top-level pages open with the shared PageHeader (Unique
+display): /work, /point-of-view, /contact.

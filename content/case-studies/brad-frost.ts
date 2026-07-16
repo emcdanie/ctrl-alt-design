@@ -65,7 +65,6 @@ const study: CaseStudy = {
     { label: "Scope", value: "Component Architecture · Token Alignment · Figma–Storybook Integration · MCP" },
     { label: "Organisation", value: "Brad Frost Web — Maker Program" },
   ],
-  heroMedia: { type: "sphere" },
   blocks: [
     {
       kind: "section",

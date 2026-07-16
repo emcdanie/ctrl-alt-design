@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import OverlayNav from "@/components/OverlayNav";
+import PageHeader from "@/components/PageHeader";
 import WorkLibrary from "@/components/WorkLibrary";
 
 export const metadata: Metadata = {
@@ -18,12 +19,7 @@ export default function WorkPage() {
         style={{ paddingTop: "calc(var(--header-height) + var(--spacing-16))" }}
       >
         <div className="layout-container">
-          <header className="layout-header">
-            <p className="eyebrow" style={{ marginBottom: "var(--spacing-4)" }}>
-              — The library
-            </p>
-            <h1 style={{ fontSize: "var(--font-section-title)", lineHeight: 1.05 }}>Work</h1>
-          </header>
+          <PageHeader eyebrow="— The library" title="Work" />
           {/* useSearchParams requires a Suspense boundary */}
           <Suspense fallback={null}>
             <WorkLibrary />

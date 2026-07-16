@@ -49,6 +49,7 @@ export type CaseBlock =
       frame?: "dark" | "light";
     }
   | { kind: "youtube"; src: string; title: string; caption?: string }
+  | { kind: "video"; src: string; title: string; caption?: string }
   | {
       kind: "demoStep";
       index: string;
@@ -102,8 +103,6 @@ export interface CaseStudy {
   eyebrow?: string;
   summary?: string;
   metadata?: { label: string; value: string }[];
-  /** Hero media override; defaults to heroVideo/heroImage detection */
-  heroMedia?: { type: "video" | "image" | "embed" | "sphere"; src?: string };
   clientLogo?: string;
   clientName?: string;
   demoLinks?: { label: string; href: string }[];
