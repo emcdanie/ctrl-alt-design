@@ -250,13 +250,10 @@
   padding: 11px 20px;
   margin-top: 6px;
   min-height: var(--spacing-touch-target);
-  background: linear-gradient(
-    color-mix(in srgb, var(--color-accent-ink) 82%, white),
-    var(--color-accent-ink)
-  );
+  background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
   box-shadow:
-    2px 5px 0 color-mix(in srgb, var(--color-accent-ink) 60%, black),
-    6px 10px 18px color-mix(in srgb, var(--color-accent-ink) 38%, transparent),
+    2px 5px 0 var(--key-fill-edge),
+    6px 10px 18px color-mix(in srgb, var(--key-fill-lo) 38%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
   transition: transform 0.1s, box-shadow 0.1s;
 }
@@ -264,8 +261,8 @@
 .pr:active {
   transform: translateY(3px);
   box-shadow:
-    1px 2px 0 color-mix(in srgb, var(--color-accent-ink) 60%, black),
-    3px 5px 10px color-mix(in srgb, var(--color-accent-ink) 32%, transparent),
+    1px 2px 0 var(--key-fill-edge),
+    3px 5px 10px color-mix(in srgb, var(--key-fill-lo) 32%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 

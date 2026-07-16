@@ -204,6 +204,12 @@ body {
   --key-iris-hi: #8E7EEC;
   --key-iris-lo: #6C5CE0;
   --key-iris-edge: #4A3FB0;
+  /* Filled-keycap face — FIXED in both themes. White labels need ≥4.5:1
+     on every gradient stop: #6C5CE0 4.9:1, #5B4BD1 6.1:1 (the lighter
+     #8E7EEC is 3.3:1 — never under a white label). */
+  --key-fill-hi: #6C5CE0;
+  --key-fill-lo: #5B4BD1;
+  --key-fill-edge: #4A3FB0;
   --key-plus: #B4AFA6;
 
   /* Theme switch (sun/moon keycap-thumb slider, from _proto/_hero.html) */
@@ -281,7 +287,7 @@ body {
 }
 
 .kbd-logo .key-iris {
-  color: var(--color-card);
+  color: var(--key-face-hi); /* fixed white — the face is fixed too */
   background: linear-gradient(var(--key-iris-hi), var(--key-iris-lo));
   box-shadow:
     2px 5px 0 var(--key-iris-edge),
@@ -727,23 +733,19 @@ li {
 }
 
 .btn-key--primary {
-  --key-c: var(--color-accent-ink);
   color: var(--key-face-hi);
-  background: linear-gradient(
-    color-mix(in srgb, var(--key-c) 82%, white),
-    var(--key-c)
-  );
+  background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
   box-shadow:
-    2px 5px 0 color-mix(in srgb, var(--key-c) 64%, black),
-    6px 9px 14px color-mix(in srgb, var(--key-c) 32%, transparent),
+    2px 5px 0 var(--key-fill-edge),
+    6px 9px 14px color-mix(in srgb, var(--key-fill-lo) 32%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .btn-key--primary:active {
   transform: translateY(3px);
   box-shadow:
-    1px 2px 0 color-mix(in srgb, var(--key-c) 64%, black),
-    3px 5px 10px color-mix(in srgb, var(--key-c) 28%, transparent),
+    1px 2px 0 var(--key-fill-edge),
+    3px 5px 10px color-mix(in srgb, var(--key-fill-lo) 28%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
@@ -758,8 +760,8 @@ li {
 .btn-key--primary[aria-selected="true"] {
   transform: translateY(3px);
   box-shadow:
-    1px 2px 0 color-mix(in srgb, var(--key-c) 64%, black),
-    3px 5px 10px color-mix(in srgb, var(--key-c) 28%, transparent),
+    1px 2px 0 var(--key-fill-edge),
+    3px 5px 10px color-mix(in srgb, var(--key-fill-lo) 28%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
