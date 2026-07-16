@@ -24,7 +24,7 @@ export default function PrototypeEmbed({
         <p
           style={{
             fontFamily: "var(--font-body)",
-            fontSize: "15px",
+            fontSize: "var(--typography-font-size-base)",
             color: "#6f6a63",
             lineHeight: 1.6,
             marginBottom: "var(--spacing-5)",
@@ -103,7 +103,7 @@ export default function PrototypeEmbed({
             rel="noopener noreferrer"
             style={{
               fontFamily: "var(--font-body)",
-              fontSize: "11px",
+              fontSize: "var(--typography-font-size-tag)",
               fontWeight: 600,
               color: "rgba(255,255,255,0.4)",
               textDecoration: "none",

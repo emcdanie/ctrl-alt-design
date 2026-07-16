@@ -146,14 +146,14 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
         <div className="bg-[color:var(--surface-paper)] border-b border-[color:var(--ink-on-paper-border)] px-8 py-5 flex items-center justify-between rounded-t-3xl flex-shrink-0">
           <div>
             <p className="section-label mb-1">Curriculum Vitae</p>
-            <h2 id="resume-modal-title" className="font-display font-bold text-[18px] text-[color:var(--ink-on-paper)] leading-tight">
+            <h2 id="resume-modal-title" className="font-display font-bold text-[length:var(--typography-font-size-lg)] text-[color:var(--ink-on-paper)] leading-tight">
               Elleta McDaniel
             </h2>
           </div>
           <div className="flex items-center gap-3">
             {/* PDF download — enabled once /public/cv/Elleta_McDaniel_Product_Designer_CV.pdf is added */}
             <span
-              className="bg-[color:var(--ink-on-paper-border)] text-[var(--color-semantic-text-inverse)]/50 text-[13px] font-medium px-4 py-2 rounded-full cursor-not-allowed select-none"
+              className="bg-[color:var(--ink-on-paper-border)] text-[var(--color-semantic-text-inverse)]/50 text-[length:var(--typography-font-size-tag)] font-medium px-4 py-2 rounded-full cursor-not-allowed select-none"
               title="PDF coming soon"
               aria-disabled="true"
             >
@@ -162,7 +162,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             <button
               ref={closeBtnRef}
               onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center rounded-full border border-[color:var(--ink-on-paper-border)] hover:bg-[color:var(--ink-on-paper-border)] transition-colors cursor-pointer text-[color:var(--ink-on-paper-soft)] text-[16px]"
+              className="w-8 h-8 flex items-center justify-center rounded-full border border-[color:var(--ink-on-paper-border)] hover:bg-[color:var(--ink-on-paper-border)] transition-colors cursor-pointer text-[color:var(--ink-on-paper-soft)] text-[length:var(--typography-font-size-base)]"
               aria-label="Close"
             >
               ✕
@@ -176,13 +176,13 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
           {/* Name + contact */}
           <div>
             {/* h2 (not h1) — the page h1 stays unique; dialog title is the header h2 */}
-            <h2 className="font-display font-bold text-[22px] text-[color:var(--ink-on-paper)] leading-snug mb-0.5">
+            <h2 className="font-display font-bold text-[length:var(--typography-font-size-2xl)] text-[color:var(--ink-on-paper)] leading-snug mb-0.5">
               Elleta McDaniel
             </h2>
-            <p className="text-[13px] text-[color:var(--ink-on-paper-soft)] font-medium mb-2">
+            <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)] font-medium mb-2">
               Product Designer — Design Systems, Data Platforms &amp; Complex UX
             </p>
-            <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[13px] text-[color:var(--ink-on-paper-muted)]">
+            <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)]">
               <span>Barcelona, Spain</span>
               <span>·</span>
               <span>Open to Hybrid/Remote</span>
@@ -200,7 +200,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
           {/* Profile */}
           <div>
             <p className="section-label mb-3">Profile</p>
-            <p className="text-[13px] text-[color:var(--ink-on-paper-soft)] leading-relaxed">
+            <p className="text-[length:var(--typography-font-size-base)] text-[color:var(--ink-on-paper-soft)] leading-relaxed">
               Product designer with a focus on design systems, platform architecture, and complex multi-role interfaces.
               I work at the intersection of system-level thinking and engineering collaboration, building scalable component
               libraries, defining interaction patterns, and creating governance frameworks that reduce repeated
@@ -215,7 +215,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
           {/* Skills */}
           <div>
             <p className="section-label mb-3">Skills</p>
-            <p className="text-[13px] text-[color:var(--ink-on-paper-soft)] leading-relaxed">
+            <p className="text-[length:var(--typography-font-size-base)] text-[color:var(--ink-on-paper-soft)] leading-relaxed">
               {skills.join(" · ")}
             </p>
           </div>
@@ -228,10 +228,10 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             <div className="space-y-4">
               {education.map((ed) => (
                 <div key={ed.institution} className="grid grid-cols-[120px_1fr] gap-4">
-                  <span className="text-[13px] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{ed.period}</span>
+                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{ed.period}</span>
                   <div>
-                    <p className="text-[13px] font-semibold text-[color:var(--ink-on-paper)]">{ed.institution}</p>
-                    <p className="text-[13px] text-[color:var(--ink-on-paper-soft)]">{ed.degree}</p>
+                    <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)]">{ed.institution}</p>
+                    <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)]">{ed.degree}</p>
                   </div>
                 </div>
               ))}
@@ -246,15 +246,15 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             <div className="space-y-6">
               {roles.map((role) => (
                 <div key={role.title + role.company} className="grid grid-cols-[120px_1fr] gap-4">
-                  <span className="text-[13px] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5 leading-snug">{role.period}</span>
+                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5 leading-snug">{role.period}</span>
                   <div>
-                    <p className="text-[13px] font-semibold text-[color:var(--ink-on-paper)] leading-snug">
+                    <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)] leading-snug">
                       {role.title}{" "}
                       <span className="font-normal text-[color:var(--ink-on-paper-soft)]">@ {role.company}</span>
                     </p>
                     <ul className="mt-2 space-y-1">
                       {role.highlights.map((h) => (
-                        <li key={h} className="text-[13px] text-[color:var(--ink-on-paper-soft)] leading-relaxed flex gap-2">
+                        <li key={h} className="text-[length:var(--typography-font-size-base)] text-[color:var(--ink-on-paper-soft)] leading-relaxed flex gap-2">
                           <span className="text-[color:var(--ink-on-paper-muted)] flex-shrink-0">•</span>
                           <span>{h}</span>
                         </li>

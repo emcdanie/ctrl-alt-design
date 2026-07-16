@@ -182,7 +182,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
                 >
                   {entry.type}
                 </span>
-                <span style={{ fontFamily: "var(--font-body)", fontSize: "12px", color: "var(--color-muted)" }}>
+                <span style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", color: "var(--color-muted)" }}>
                   {entry.year}
                 </span>
               </div>
@@ -219,7 +219,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
       >
         <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)", paddingTop: "var(--spacing-4)" }}>
           {/* Topics */}
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6B665D", marginBottom: "var(--spacing-2)" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6B665D", marginBottom: "var(--spacing-2)" }}>
             Topics covered
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "var(--spacing-4)" }}>
@@ -229,7 +229,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
           </div>
 
           {/* Reflection */}
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6B665D", marginBottom: "var(--spacing-2)" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6B665D", marginBottom: "var(--spacing-2)" }}>
             What I took away
           </p>
           <p className="body-base" style={{ margin: 0, marginBottom: entry.relatedWork ? "12px" : "0px" }}>
@@ -445,7 +445,7 @@ export default function AboutPage() {
                       <span
                         style={{
                           fontFamily: "var(--font-body)",
-                          fontSize: "12px",
+                          fontSize: "var(--typography-font-size-tag)",
                           fontWeight: 600,
                           color: "var(--color-muted)",
                           display: "block",
@@ -457,7 +457,7 @@ export default function AboutPage() {
                       <span
                         style={{
                           fontFamily: "var(--font-body)",
-                          fontSize: "15px",
+                          fontSize: "var(--typography-font-size-base)",
                           fontWeight: "var(--typography-font-weight-medium)",
                           color: "var(--color-ink)",
                         }}
@@ -505,7 +505,7 @@ export default function AboutPage() {
               className="md:flex-row md:items-center md:justify-between"
             >
               <div>
-                <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: "var(--typography-font-weight-medium)", textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--color-semantic-text-inverse)", opacity: 0.65, marginBottom: "10px" }}>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: "var(--typography-font-weight-medium)", textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--color-semantic-text-inverse)", opacity: 0.65, marginBottom: "10px" }}>
                   Have a project in mind?
                 </p>
                 <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: "var(--typography-font-weight-bold)", color: "var(--color-semantic-text-inverse)", lineHeight: 1.15, textTransform: "uppercase" }}>

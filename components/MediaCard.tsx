@@ -108,7 +108,7 @@ function CardInner({
         {/* Category badge */}
         {catStyle && category && (
           <span
-            className="absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[11px] font-bold tracking-widest"
+            className="absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[length:var(--typography-font-size-tag)] font-bold tracking-widest"
             style={{ background: catStyle.bg, color: catStyle.color }}
           >
             {category}
@@ -129,18 +129,18 @@ function CardInner({
 
       {/* Text area */}
       <div className="flex flex-1 flex-col p-6">
-        <h3 className="mb-1.5 font-[var(--font-display)] text-[17px] font-bold leading-snug text-[color:var(--color-ink)]">
+        <h3 className="mb-1.5 font-[var(--font-display)] text-[length:var(--typography-font-size-lg)] font-bold leading-snug text-[color:var(--color-ink)]">
           {title}
         </h3>
         {subtitle && (
-          <p className="mb-3 flex-1 text-[14px] leading-[1.65] text-[color:var(--color-ink-muted)]">{subtitle}</p>
+          <p className="mb-3 flex-1 text-[length:var(--typography-font-size-sm)] leading-[1.65] text-[color:var(--color-ink-muted)]">{subtitle}</p>
         )}
         {tags && tags.length > 0 && (
           <div className="mt-auto flex flex-wrap gap-1.5 pt-2">
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-black/[0.08] bg-white/60 px-2.5 py-1 text-[11px] font-medium text-[#5D5852]"
+                className="rounded-full border border-black/[0.08] bg-white/60 px-2.5 py-1 text-[length:var(--typography-font-size-tag)] font-medium text-[#5D5852]"
               >
                 {tag}
               </span>

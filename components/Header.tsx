@@ -59,7 +59,7 @@ export default function Header({ onResumeClick }: HeaderProps) {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="text-[15px] font-semibold tracking-[-0.02em] text-[color:var(--color-ink)] transition-opacity hover:opacity-70"
+          className="text-[length:var(--typography-font-size-base)] font-semibold tracking-[-0.02em] text-[color:var(--color-ink)] transition-opacity hover:opacity-70"
         >
           Elleta McDaniel
         </a>
@@ -69,7 +69,7 @@ export default function Header({ onResumeClick }: HeaderProps) {
             <button
               key={link.href}
               onClick={() => scrollTo(link.href)}
-              className="border-none bg-transparent p-0 text-[13px] tracking-[-0.01em] text-[color:var(--color-ink-muted)] transition-colors hover:text-[color:var(--color-ink)]"
+              className="border-none bg-transparent p-0 text-[length:var(--typography-font-size-tag)] tracking-[-0.01em] text-[color:var(--color-ink-muted)] transition-colors hover:text-[color:var(--color-ink)]"
             >
               {link.label}
             </button>
@@ -78,7 +78,7 @@ export default function Header({ onResumeClick }: HeaderProps) {
 
         <button
           onClick={onResumeClick}
-          className="rounded-full border border-[color:var(--color-border-medium)] bg-[color:var(--color-semantic-background-inverse)] px-4 py-2 text-[13px] font-medium text-[color:var(--color-semantic-text-inverse)] shadow-[0_4px_12px_rgba(26,24,20,0.12)] transition-all duration-200 hover:-translate-y-px hover:opacity-90"
+          className="rounded-full border border-[color:var(--color-border-medium)] bg-[color:var(--color-semantic-background-inverse)] px-4 py-2 text-[length:var(--typography-font-size-tag)] font-medium text-[color:var(--color-semantic-text-inverse)] shadow-[0_4px_12px_rgba(26,24,20,0.12)] transition-all duration-200 hover:-translate-y-px hover:opacity-90"
         >
           Resume
         </button>

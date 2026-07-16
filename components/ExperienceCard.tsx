@@ -64,7 +64,7 @@ export default function ExperienceCard({
 
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="font-display text-[16px] font-semibold leading-[1.3] text-[color:var(--color-ink)] md:text-[17px]">
+              <span className="font-display text-[length:var(--typography-font-size-base)] font-semibold leading-[1.3] text-[color:var(--color-ink)] md:text-[length:var(--typography-font-size-lg)]">
                 {title}
               </span>
               {isCurrent && (
@@ -73,7 +73,7 @@ export default function ExperienceCard({
                 </span>
               )}
             </div>
-            <div className="mt-1 text-[14px] leading-relaxed text-[color:var(--color-ink-muted)]">
+            <div className="mt-1 text-[length:var(--typography-font-size-sm)] leading-relaxed text-[color:var(--color-ink-muted)]">
               {company} · {period}
             </div>
           </div>
@@ -113,7 +113,7 @@ export default function ExperienceCard({
           {caseStudySlug && (
             <Link
               href={`/${caseStudySlug}`}
-              className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[color:var(--color-ink)] underline decoration-black/25 underline-offset-4 transition-all duration-200 hover:decoration-black/60 hover:opacity-100"
+              className="mt-5 inline-flex items-center gap-1.5 text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--color-ink)] underline decoration-black/25 underline-offset-4 transition-all duration-200 hover:decoration-black/60 hover:opacity-100"
             >
               {caseStudyLabel}
             </Link>

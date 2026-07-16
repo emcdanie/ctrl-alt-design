@@ -137,7 +137,7 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
         {/* Hover overlay with CTA */}
         <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/20">
           <span
-            className="rounded-full border border-[color:var(--color-semantic-border-glass-edge)] bg-[color:var(--color-glass-strong)] px-5 py-2.5 text-[13px] font-semibold text-[color:var(--color-ink)] opacity-0 shadow-[0_8px_24px_rgba(0,0,0,0.15)] backdrop-blur-sm transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2"
+            className="rounded-full border border-[color:var(--color-semantic-border-glass-edge)] bg-[color:var(--color-glass-strong)] px-5 py-2.5 text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--color-ink)] opacity-0 shadow-[0_8px_24px_rgba(0,0,0,0.15)] backdrop-blur-sm transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2"
             style={{ fontFamily: "var(--font-body)" }}
           >
             Try Demo →
@@ -148,13 +148,13 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
       {/* Content */}
       <div className="flex flex-1 flex-col p-6">
         <h3
-          className="mb-2 text-[18px] font-bold leading-snug text-[color:var(--color-ink)]"
+          className="mb-2 text-[length:var(--typography-font-size-lg)] font-bold leading-snug text-[color:var(--color-ink)]"
           style={{ fontFamily: "var(--font-display)", maxWidth: "320px" }}
         >
           {prototype.title}
         </h3>
         <p
-          className="mb-4 flex-1 text-[14px] leading-[1.65]"
+          className="mb-4 flex-1 text-[length:var(--typography-font-size-sm)] leading-[1.65]"
           style={{ color: "var(--color-muted)", maxWidth: "380px" }}
         >
           {prototype.subtitle}

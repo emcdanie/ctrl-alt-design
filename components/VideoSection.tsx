@@ -39,7 +39,7 @@ export default function VideoSection({
       {(label || heading || description) && (
         <div className="mb-7">
           {label && (
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
+            <p className="mb-3 text-[length:var(--typography-font-size-tag)] font-semibold uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
               {label}
             </p>
           )}
@@ -52,7 +52,7 @@ export default function VideoSection({
             </h2>
           )}
           {description && (
-            <p className="mt-3 text-[15px] leading-[1.75] text-[var(--color-muted,#5D5852)]">
+            <p className="mt-3 text-[length:var(--typography-font-size-base)] leading-[1.75] text-[var(--color-muted,#5D5852)]">
               {description}
             </p>
           )}

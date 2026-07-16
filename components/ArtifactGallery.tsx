@@ -51,7 +51,7 @@ export default function ArtifactGallery({
   return (
     <div className={`w-full ${className}`.trim()}>
       {label && (
-        <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
+        <p className="mb-5 text-[length:var(--typography-font-size-tag)] font-semibold uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
           {label}
         </p>
       )}
@@ -78,7 +78,7 @@ export default function ArtifactGallery({
                 />
               </div>
               {item.caption && (
-                <figcaption className="mt-2.5 text-[13px] leading-[1.65] text-[var(--color-muted,#8A8480)]">
+                <figcaption className="mt-2.5 text-[length:var(--typography-font-size-tag)] leading-[1.65] text-[var(--color-muted,#8A8480)]">
                   {item.caption}
                 </figcaption>
               )}

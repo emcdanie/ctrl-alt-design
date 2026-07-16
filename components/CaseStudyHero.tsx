@@ -87,7 +87,7 @@ export default function CaseStudyHero({
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border-medium)] bg-white/55 px-4 py-2 text-[13px] font-semibold text-[var(--color-accent-espresso)] shadow-[0_8px_24px_var(--color-alpha-shadow-warm-05)] backdrop-blur-md transition hover:bg-white/75"
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border-medium)] bg-white/55 px-4 py-2 text-[length:var(--typography-font-size-tag)] font-semibold text-[var(--color-accent-espresso)] shadow-[0_8px_24px_var(--color-alpha-shadow-warm-05)] backdrop-blur-md transition hover:bg-white/75"
             >
               <span>Live preview</span>
               <span aria-hidden="true">↗</span>

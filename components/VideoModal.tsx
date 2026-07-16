@@ -84,7 +84,7 @@ export default function VideoModal({
         <button
           ref={closeBtnRef}
           onClick={onClose}
-          className="absolute -top-9 right-0 flex items-center gap-1.5 text-white/50 hover:text-white transition-colors text-[13px] font-medium tracking-wide cursor-pointer"
+          className="absolute -top-9 right-0 flex items-center gap-1.5 text-white/50 hover:text-white transition-colors text-[length:var(--typography-font-size-tag)] font-medium tracking-wide cursor-pointer"
         >
           Close
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -120,17 +120,17 @@ export default function VideoModal({
 
         {/* Info */}
         <div className="mt-6">
-          <h3 id="video-modal-title" className="font-display font-bold text-white text-[1.2rem] mb-2 leading-snug">
+          <h3 id="video-modal-title" className="font-display font-bold text-white text-[length:var(--font-card-title)] mb-2 leading-snug">
             {title}
           </h3>
-          <p className="text-white/55 text-[14px] leading-relaxed mb-4">
+          <p className="text-white/55 text-[length:var(--typography-font-size-base)] leading-relaxed mb-4">
             {description}
           </p>
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="text-[13px] text-white/50 border border-white/15 px-2.5 py-1 rounded-full"
+                className="text-[length:var(--typography-font-size-tag)] text-white/50 border border-white/15 px-2.5 py-1 rounded-full"
               >
                 {tag}
               </span>

@@ -75,7 +75,7 @@ export default function VideoCard({
 
       <div className="flex flex-1 flex-col p-6">
         <p className="section-label mb-3">EXPLORATION</p>
-        <h3 className="font-display mb-2 text-[20px] font-bold leading-snug text-[color:var(--color-ink)]">
+        <h3 className="font-display mb-2 text-[length:var(--typography-font-size-xl)] font-bold leading-snug text-[color:var(--color-ink)]">
           {title}
         </h3>
         <p className="mb-4 flex-1 text-[length:var(--typography-font-size-base)] leading-[1.72] text-[color:var(--color-ink-muted)]">

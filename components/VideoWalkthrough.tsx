@@ -23,7 +23,7 @@ export default function VideoWalkthrough() {
           >
             Guardian — AI-Powered Design System Governance
           </h3>
-          <p className="text-[16px] leading-relaxed mb-5" style={{ maxWidth: "56ch" }}>
+          <p className="text-[length:var(--typography-font-size-base)] leading-relaxed mb-5" style={{ maxWidth: "56ch" }}>
             A hackathon concept created during the Into Design Systems hackathon exploring how AI could help detect design drift, support accessibility, and maintain consistency between design systems and implementation.
           </p>
           <div className="flex flex-wrap gap-2">

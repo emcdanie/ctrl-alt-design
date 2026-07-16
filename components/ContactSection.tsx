@@ -111,8 +111,8 @@ export default function ContactSection() {
             {submitted ? (
               <div className="rounded-2xl border border-green-500/30 bg-green-500/10 p-6 text-center">
                 <div className="text-2xl mb-2">✓</div>
-                <p className="text-[14px] font-medium" style={{ color: "var(--ink-on-dark-strong)" }}>Message sent</p>
-                <p className="text-[13px] mt-1" style={{ color: "var(--ink-on-dark-body)" }}>
+                <p className="text-[length:var(--typography-font-size-sm)] font-medium" style={{ color: "var(--ink-on-dark-strong)" }}>Message sent</p>
+                <p className="text-[length:var(--typography-font-size-base)] mt-1" style={{ color: "var(--ink-on-dark-body)" }}>
                   Thanks for reaching out — I&apos;ll get back to you soon.
                 </p>
               </div>
@@ -133,7 +133,7 @@ export default function ContactSection() {
                     aria-describedby={errors.name ? "contact-name-error" : undefined}
                   />
                   {errors.name && (
-                    <p id="contact-name-error" role="alert" className="text-[13px] text-red-400 mt-1">{errors.name}</p>
+                    <p id="contact-name-error" role="alert" className="text-[length:var(--typography-font-size-tag)] text-red-400 mt-1">{errors.name}</p>
                   )}
                 </div>
 
@@ -152,7 +152,7 @@ export default function ContactSection() {
                     aria-describedby={errors.email ? "contact-email-error" : undefined}
                   />
                   {errors.email && (
-                    <p id="contact-email-error" role="alert" className="text-[13px] text-red-400 mt-1">{errors.email}</p>
+                    <p id="contact-email-error" role="alert" className="text-[length:var(--typography-font-size-tag)] text-red-400 mt-1">{errors.email}</p>
                   )}
                 </div>
 
@@ -170,12 +170,12 @@ export default function ContactSection() {
                     aria-describedby={errors.message ? "contact-message-error" : undefined}
                   />
                   {errors.message && (
-                    <p id="contact-message-error" role="alert" className="text-[13px] text-red-400 mt-1">{errors.message}</p>
+                    <p id="contact-message-error" role="alert" className="text-[length:var(--typography-font-size-tag)] text-red-400 mt-1">{errors.message}</p>
                   )}
                 </div>
 
                 {sendError && (
-                  <p role="alert" className="text-[13px] text-red-400">
+                  <p role="alert" className="text-[length:var(--typography-font-size-tag)] text-red-400">
                     Something went wrong — please try emailing me directly at elletamc@gmail.com
                   </p>
                 )}
@@ -194,13 +194,13 @@ export default function ContactSection() {
           <div className="flex flex-col justify-between gap-10">
             <div>
               <h3
-                className="font-display font-bold text-[22px] mb-2"
+                className="font-display font-bold text-[length:var(--typography-font-size-2xl)] mb-2"
                 style={{ color: "var(--ink-on-dark-strong)" }}
               >
                 Elleta McDaniel
               </h3>
               <p
-                className="text-[16px] leading-relaxed max-w-sm"
+                className="text-[length:var(--typography-font-size-base)] leading-relaxed max-w-sm"
                 style={{ color: "var(--ink-on-dark-body)" }}
               >
                 Product Designer specialising in Design Systems and Complex Platforms.
@@ -213,7 +213,7 @@ export default function ContactSection() {
               {Object.entries(footerNav).map(([section, links]) => (
                 <div key={section}>
                   <p
-                    className="text-[13px] font-medium uppercase tracking-widest mb-3"
+                    className="text-[length:var(--typography-font-size-tag)] font-medium uppercase tracking-widest mb-3"
                     style={{ color: "var(--ink-on-dark-muted)" }}
                   >
                     {section}
@@ -240,14 +240,14 @@ export default function ContactSection() {
         {/* Bottom bar */}
         <div className="divider mb-6" style={{ backgroundColor: "rgba(250,250,248,0.08)" }} />
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-          <p className="text-[13px]" style={{ color: "var(--ink-on-dark-muted)" }}>
+          <p className="text-[length:var(--typography-font-size-tag)]" style={{ color: "var(--ink-on-dark-muted)" }}>
             ©{" "}
             <span suppressHydrationWarning style={{ display: "inline-block", minWidth: "4ch" }}>
               {year ?? "—"}
             </span>{" "}
             Elleta McDaniel. All rights reserved.
           </p>
-          <p className="text-[13px]" style={{ color: "var(--ink-on-dark-muted)" }}>
+          <p className="text-[length:var(--typography-font-size-tag)]" style={{ color: "var(--ink-on-dark-muted)" }}>
             Designed with intention. Built with care.
           </p>
         </div>

@@ -179,10 +179,10 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
               <div className="flex w-full items-center gap-4 px-5 py-5 md:px-6 md:py-6">
                 <LogoContainer src={edu.logo} alt={edu.name} size={48} />
                 <div className="min-w-0 flex-1">
-                  <span className="font-display text-[16px] font-semibold leading-[1.3] text-[color:var(--color-ink)] md:text-[17px]">
+                  <span className="font-display text-[length:var(--typography-font-size-base)] font-semibold leading-[1.3] text-[color:var(--color-ink)] md:text-[length:var(--typography-font-size-lg)]">
                     {edu.name}
                   </span>
-                  <div className="mt-1 text-[14px] leading-relaxed text-[color:var(--color-ink-muted)]">
+                  <div className="mt-1 text-[length:var(--typography-font-size-sm)] leading-relaxed text-[color:var(--color-ink-muted)]">
                     {edu.degree} · {edu.period}
                   </div>
                 </div>

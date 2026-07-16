@@ -53,7 +53,7 @@ export default function ArtifactPlaceholder({
         <p
           style={{
             fontFamily: "var(--font-body)",
-            fontSize: "11px",
+            fontSize: "var(--typography-font-size-tag)",
             fontWeight: 600,
             textTransform: "uppercase",
             letterSpacing: "0.12em",

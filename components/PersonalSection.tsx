@@ -55,7 +55,7 @@ export default function PersonalSection() {
               <div style={{ fontSize: "28px", marginBottom: "var(--spacing-3)", lineHeight: 1 }}>{card.emoji}</div>
               <p style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "11px",
+                fontSize: "var(--typography-font-size-tag)",
                 fontWeight: 600,
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",

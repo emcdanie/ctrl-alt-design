@@ -239,7 +239,7 @@ export default async function CaseStudyPage({
                   padding: "var(--spacing-2) var(--spacing-5)",
                   borderRadius: "var(--radius-full)",
                   fontFamily: "var(--font-body)",
-                  fontSize: "11px",
+                  fontSize: "var(--typography-font-size-tag)",
                   fontWeight: 600,
                   letterSpacing: "0.1em",
                   textTransform: "uppercase",
@@ -280,7 +280,7 @@ export default async function CaseStudyPage({
                     </span>
                     <h3
                       className="heading-item"
-                      style={{ marginBottom: "6px", fontSize: "15px" }}
+                      style={{ marginBottom: "6px", fontSize: "var(--typography-font-size-base)" }}
                     >
                       {step.title}
                     </h3>
@@ -311,7 +311,7 @@ export default async function CaseStudyPage({
                     padding: "var(--spacing-2) var(--spacing-5)",
                     borderRadius: "var(--radius-full)",
                     fontFamily: "var(--font-body)",
-                    fontSize: "11px",
+                    fontSize: "var(--typography-font-size-tag)",
                     fontWeight: 600,
                     letterSpacing: "0.1em",
                     textTransform: "uppercase",
