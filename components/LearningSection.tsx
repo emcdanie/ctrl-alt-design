@@ -2,6 +2,7 @@
 
 import FadeIn from "@/components/FadeIn";
 import VinylPlayer from "@/components/VinylPlayer";
+import { Icon } from "@/components/ui/Icon";
 
 const podcasts = [
   {
@@ -64,11 +65,7 @@ export default function LearningSection() {
                   color: "var(--color-ink)",
                 }}
               >
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-                  <path d="M5 16v-4a9 9 0 0118 0v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                  <rect x="3" y="15" width="5" height="7" rx="2.5" stroke="currentColor" strokeWidth="1.5" />
-                  <rect x="20" y="15" width="5" height="7" rx="2.5" stroke="currentColor" strokeWidth="1.5" />
-                </svg>
+                <Icon name="Headset" size="lg" />
               </div>
 
               <h3 className="heading-item mb-2.5">Podcasts</h3>

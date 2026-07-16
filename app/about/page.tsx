@@ -13,6 +13,7 @@ import BackToWorkButton from "@/components/BackToWorkButton";
 import VinylPlayer from "@/components/VinylPlayer";
 import MetricsStrip from "@/components/MetricsStrip";
 import Link from "next/link";
+import { Icon } from "@/components/ui/Icon";
 
 /* ── Data ─────────────────────────────────────────────────────── */
 
@@ -86,24 +87,9 @@ const timelineEvents = [
 /* ── Components ──────────────────────────────────────────────── */
 
 function TypeIcon({ type }: { type: string }) {
-  const iconProps = { width: 18, height: 18, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.5, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
-
-  if (type === "workshop") return (
-    <svg {...iconProps} aria-hidden="true">
-      <path d="M12 19l7-7 3 3-7 7-3-3z" /><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" /><path d="M2 2l7.586 7.586" />
-    </svg>
-  );
-  if (type === "conference") return (
-    <svg {...iconProps} aria-hidden="true">
-      <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z" /><path d="M19 10v2a7 7 0 01-14 0v-2" /><line x1="12" y1="19" x2="12" y2="23" /><line x1="8" y1="23" x2="16" y2="23" />
-    </svg>
-  );
-  // course
-  return (
-    <svg {...iconProps} aria-hidden="true">
-      <path d="M4 19.5A2.5 2.5 0 016.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
-    </svg>
-  );
+  if (type === "workshop") return <Icon name="EditPencil" size="md" />;
+  if (type === "conference") return <Icon name="Microphone" size="md" />;
+  return <Icon name="Book" size="md" />;
 }
 
 function LearningCard({ entry }: { entry: LearningEntry }) {
@@ -199,20 +185,15 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
           </div>
 
           {/* Expand icon */}
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
+          <Icon
+            name="NavArrowDown"
+            size="sm"
             style={{
-              flexShrink: 0,
               marginTop: "var(--spacing-1)",
               transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
               transition: "transform 0.25s ease",
             }}
-          >
-            <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          />
         </div>
 
       {/* Expandable content */}

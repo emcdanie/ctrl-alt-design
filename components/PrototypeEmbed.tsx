@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Icon } from "@/components/ui/Icon";
 
 interface PrototypeEmbedProps {
   src: string;
@@ -124,21 +125,7 @@ export default function PrototypeEmbed({
             }}
           >
             Open in new tab
-            <svg
-              width="10"
-              height="10"
-              viewBox="0 0 10 10"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path
-                d="M3 1h6v6M9 1L1 9"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <Icon name="OpenNewWindow" size="sm" />
           </a>
         </div>
 

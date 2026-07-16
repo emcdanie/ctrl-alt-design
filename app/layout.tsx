@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import DevTools from "@/components/DevTools";
+import IconProvider from "@/components/ui/IconProvider";
 import "./globals.css";
 
 const geist = Geist({
@@ -50,7 +51,7 @@ export default function RootLayout({
       <body className={`${geist.variable} ${geistMono.variable} ${unique.variable} antialiased`}>
         <a href="#main-content" className="skip-link">Skip to content</a>
         <DevTools />
-        {children}
+        <IconProvider>{children}</IconProvider>
       </body>
     </html>
   );

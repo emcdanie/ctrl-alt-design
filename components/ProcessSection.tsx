@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Icon } from "@/components/ui/Icon";
 
 interface ProcessStep {
   number: string;
@@ -131,20 +132,7 @@ export default function ProcessSection() {
                       data-open={isOpen}
                       aria-hidden="true"
                     >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                      >
-                        <path
-                          d="M4 6l4 4 4-4"
-                          stroke="currentColor"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      <Icon name="NavArrowDown" size="sm" />
                     </span>
                   </button>
                 </h3>

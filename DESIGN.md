@@ -159,6 +159,22 @@ From `_proto/_hero.html` `.toggle`. One button style, two variants, both in
   (view tabs, filter chips).
 - Min-height `--spacing-touch-target`; focus ring `--ring-focus-*`.
 
+## Icons — the Iconoir layer (site-wide)
+
+Iconoir (MIT, `iconoir-react`) is BELLA's icon set. `components/ui/Icon.tsx`
+is the ONLY way to render one:
+
+- Size from `--icon-sm/md/lg` (16/20/24), stroke from `--icon-stroke` (1.5)
+  — BELLA tokens in `bella.css`. Size/stroke ride on `style` (SVG
+  presentation attributes don't resolve `var()`).
+- ALWAYS `currentColor` — icons inherit their text's themed colour, so
+  dark mode recolours them for free. No hardcoded icon fills, ever.
+- Decorative by default (`aria-hidden`); pass `label` for meaningful
+  icons (`role="img"` + `aria-label`). `focusable="false"`.
+- `IconoirProvider` (app layout) carries the same defaults as a backstop.
+- Not icons, not converted: BubbleCluster's connector SVG (diagram),
+  VinylPlayer artwork (fixed-context illustration).
+
 ## Recorded exceptions
 
 - `.feature-panel` (section-scale color block): `--radius-3xl`.

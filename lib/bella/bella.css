@@ -289,6 +289,11 @@
   --ring-focus-width:   2px;
   --ring-focus-offset:  2px;
   --card-min:           280px;     /* responsive card grid floor */
+  /* ---- [icon layer 2026-07-16] Iconoir defaults; sync to JSON later ---- */
+  --icon-sm:            16px;
+  --icon-md:            20px;
+  --icon-lg:            24px;
+  --icon-stroke:        1.5;
   --header-height:      64px;      /* default; consumers should override per-app */
 }
 

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import LogoContainer from "@/components/LogoContainer";
+import { Icon } from "@/components/ui/Icon";
 
 function BoldLead({ text }: { text: string }) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -79,22 +80,11 @@ export default function ExperienceCard({
           </div>
         </div>
 
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 18 18"
-          fill="none"
-          className={`shrink-0 text-[#8A8480] transition-transform duration-300 ${isOpen ? "rotate-180" : "rotate-0"}`}
-          aria-hidden="true"
-        >
-          <path
-            d="M4.5 7l4.5 4.5L13.5 7"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <Icon
+          name="NavArrowDown"
+          size="md"
+          className={`shrink-0 text-[color:var(--color-ink-muted)] transition-transform duration-300 ${isOpen ? "rotate-180" : "rotate-0"}`}
+        />
       </button>
 
       {isOpen && (

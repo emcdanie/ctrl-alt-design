@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Icon } from "@/components/ui/Icon";
 
 interface VideoCardProps {
   title: string;
@@ -66,9 +67,7 @@ export default function VideoCard({
 
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/40 bg-white/82 shadow-[0_18px_42px_rgba(0,0,0,0.2)] backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M5 3.5l10 5.5-10 5.5V3.5z" fill="var(--ink-on-paper)" />
-            </svg>
+            <Icon name="Play" size="md" style={{ color: "var(--ink-on-paper)" }} />
           </div>
         </div>
       </div>

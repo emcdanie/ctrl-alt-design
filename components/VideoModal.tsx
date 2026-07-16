@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { Icon } from "@/components/ui/Icon";
 
 interface VideoModalProps {
   isOpen: boolean;
@@ -87,14 +88,7 @@ export default function VideoModal({
           className="absolute -top-9 right-0 flex items-center gap-1.5 text-white/50 hover:text-white transition-colors text-[length:var(--typography-font-size-tag)] font-medium tracking-wide cursor-pointer"
         >
           Close
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path
-              d="M1 1l12 12M13 1L1 13"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
+          <Icon name="Xmark" size="sm" />
         </button>
 
         {/* Video — standard 16:9 */}
