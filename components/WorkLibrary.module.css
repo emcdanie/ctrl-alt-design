@@ -372,3 +372,75 @@
     display: none;
   }
 }
+
+/* ── Mobile filter tray (Vitaly pattern: full-page, accordions,
+ * sticky Apply with the live count) ── */
+
+.trayTrigger {
+  display: none;
+  margin-bottom: var(--spacing-3);
+}
+
+@media (max-width: 767px) {
+  .desktopOnly {
+    display: none;
+  }
+
+  .trayTrigger {
+    display: block;
+  }
+}
+
+.tray {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--color-page);
+  padding: var(--spacing-5) var(--spacing-5) 96px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.trayHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--spacing-touch-target);
+}
+
+.trayGroup summary {
+  cursor: pointer;
+  min-height: var(--spacing-touch-target);
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.trayGroup summary:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.trayChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) 0;
+}
+
+.trayApply {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--spacing-4) var(--spacing-5);
+  background: var(--color-page);
+  border-top: 1px solid var(--color-semantic-border-subtle);
+}

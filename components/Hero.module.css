@@ -2,6 +2,8 @@
  * styles in BubbleCluster.module.css). From _proto/_hero.html. */
 
 .hero {
+  /* decorative bubble overhang must never create horizontal scroll */
+  overflow-x: clip;
   max-width: var(--container-width);
   margin: 0 auto;
   /* proto: 104px top under its own meta strip; here the fixed header

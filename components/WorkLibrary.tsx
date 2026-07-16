@@ -51,6 +51,22 @@ export default function WorkLibrary() {
   const pathname = usePathname();
   const params = useSearchParams();
   const [skillsExpanded, setSkillsExpanded] = useState(false);
+  const [trayOpen, setTrayOpen] = useState(false);
+  const trayRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!trayOpen) return;
+    trayRef.current?.focus();
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setTrayOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [trayOpen]);
 
   const view: View = (VIEWS as readonly string[]).includes(params.get("view") ?? "")
     ? (params.get("view") as View)
@@ -128,8 +144,73 @@ export default function WorkLibrary() {
         )}
       </div>
 
+      {/* Mobile: one Filter button opens the tray (never 15 wrapped chips) */}
+      <div className={styles.trayTrigger}>
+        <button
+          type="button"
+          className="filter-chip"
+          aria-expanded={trayOpen}
+          onClick={() => setTrayOpen(true)}
+        >
+          Filter{appliedChips.length > 0 ? ` (${appliedChips.length})` : ""}
+        </button>
+      </div>
+
+      {trayOpen && (
+        <div
+          ref={trayRef}
+          tabIndex={-1}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Filters"
+          className={styles.tray}
+        >
+          <div className={styles.trayHeader}>
+            <p className={styles.count} role="status">
+              {filtered.length} of {WORK_ITEMS.length} pieces
+            </p>
+            <button type="button" className={styles.clearAll} onClick={() => setParams({ case: null, skill: null })}>
+              Clear all
+            </button>
+          </div>
+          <details open className={styles.trayGroup}>
+            <summary>Case</summary>
+            <div className={styles.trayChips}>
+              {WORK_ITEMS.map((i) => (
+                <FilterChip
+                  key={i.id}
+                  pressed={caseFilters.includes(i.id)}
+                  onClick={() => toggleList("case", i.id, caseFilters)}
+                >
+                  {i.title}
+                </FilterChip>
+              ))}
+            </div>
+          </details>
+          <details className={styles.trayGroup}>
+            <summary>Skill</summary>
+            <div className={styles.trayChips}>
+              {SKILLS.map((sk) => (
+                <FilterChip
+                  key={sk}
+                  pressed={skillFilters.includes(slugify(sk))}
+                  onClick={() => toggleList("skill", slugify(sk), skillFilters)}
+                >
+                  {sk}
+                </FilterChip>
+              ))}
+            </div>
+          </details>
+          <div className={styles.trayApply}>
+            <Button variant="primary" onClick={() => setTrayOpen(false)} className="w-full">
+              Show {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* ── Filters: flat chips; skills behind progressive disclosure ── */}
-      <div className={styles.filterRow} role="group" aria-label="Filter by case study">
+      <div className={`${styles.filterRow} ${styles.desktopOnly}`} role="group" aria-label="Filter by case study">
         <span className={styles.filterLabel}>Case</span>
         {WORK_ITEMS.map((i) => (
           <FilterChip
@@ -141,7 +222,7 @@ export default function WorkLibrary() {
           </FilterChip>
         ))}
       </div>
-      <div className={styles.filterRow} role="group" aria-label="Filter by skill">
+      <div className={`${styles.filterRow} ${styles.desktopOnly}`} role="group" aria-label="Filter by skill">
         <span className={styles.filterLabel}>Skill</span>
         {visibleSkills.map((s) => (
           <FilterChip

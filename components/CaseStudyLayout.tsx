@@ -13,7 +13,7 @@ interface CaseStudyLayoutProps {
  */
 export default function CaseStudyLayout({ children }: CaseStudyLayoutProps) {
   return (
-    <main className="page-shell min-h-screen text-[var(--color-ink-soft)]">
+    <main id="main-content" className="page-shell min-h-screen text-[var(--color-ink-soft)]">
       <OverlayNav />
       <div className="relative">{children}</div>
     </main>
