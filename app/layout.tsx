@@ -28,7 +28,7 @@ const unique = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Elleta McDaniel — Product Designer",
+  title: "Elleta McDaniel, Product Designer",
   description:
     "Product Designer specialising in Design Systems & Complex Platforms. Designing scalable systems, intuitive workflows, and structured design languages.",
 };

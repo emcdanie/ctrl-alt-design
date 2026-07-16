@@ -76,7 +76,7 @@ export default function OverlayNav() {
           <Link
             href="/"
             className="kbd-logo pointer-events-auto"
-            aria-label="ctrl alt design — home"
+            aria-label="ctrl alt design, home"
             onClick={() => setOpen(false)}
           >
             <span className="key">Ctrl</span>
@@ -86,7 +86,7 @@ export default function OverlayNav() {
             <span className="key key-iris">Design</span>
           </Link>
 
-          {/* Desktop primary nav — hidden below lg, where the hamburger takes over */}
+          {/* Desktop primary nav, hidden below lg, where the hamburger takes over */}
           <nav aria-label="Primary" className="pointer-events-auto hidden lg:flex items-center gap-1">
             {menuItems.map((item) => (
               <Link

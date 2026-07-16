@@ -57,7 +57,7 @@ function MetricCard({ item }: { item: MetricItem }) {
         {item.label}
       </div>
 
-      {/* Detail — always visible. flex:1 so cards share height via Rule 2. */}
+      {/* Detail, always visible. flex:1 so cards share height via Rule 2. */}
       <p
         style={{
           flex: 1,

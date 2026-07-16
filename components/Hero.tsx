@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import BubbleCluster from "./BubbleCluster";
+import { POSITIONING } from "@/lib/copy";
 import styles from "./Hero.module.css";
 
 /**
@@ -15,17 +16,17 @@ export default function Hero({ onEnterDashboard }: { onEnterDashboard?: () => vo
       <div className={styles.hero}>
         {/* ── Headline ── */}
         <div>
-          <p className={styles.kicker}>Elleta McDaniel — Barcelona</p>
+          <p className={styles.kicker}>Elleta McDaniel, Barcelona</p>
           <h1 className={styles.headline}>
             Pick a<br />
             <span className={styles.o}>piece.</span>
           </h1>
           <p className={styles.intro}>
-            I design <b>AI-augmented design systems</b> — tokens, components, and the governance
+            I design <b>{POSITIONING}</b>. Tokens, components, and the governance
             that keeps them from drifting. I read code and work with engineers directly.
           </p>
 
-          {/* CTA row — dashboard path + the labeled route into the library.
+          {/* CTA row, dashboard path + the labeled route into the library.
               The bubble cluster is the library's Map teaser, never the
               only path in. */}
           <div className={styles.ctaRow} style={{ display: "flex", flexWrap: "wrap", gap: "var(--spacing-3)" }}>

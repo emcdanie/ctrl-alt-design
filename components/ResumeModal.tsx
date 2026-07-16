@@ -17,12 +17,12 @@ const skills = [
 
 const education = [
   {
-    period: "2022 — 2023",
+    period: "2022, 2023",
     institution: "Ironhack",
     degree: "UX/UI Design",
   },
   {
-    period: "2005 — 2009",
+    period: "2005, 2009",
     institution: "Arizona State University",
     degree: "Bachelors of Science in Design, GPA: 3.9/4.0",
   },
@@ -30,8 +30,8 @@ const education = [
 
 const roles = [
   {
-    period: "Oct 2025 — Current",
-    title: "Product Designer — Design Systems",
+    period: "Oct 2025, Current",
+    title: "Product Designer, Design Systems",
     company: "Brad Frost Web (Maker Program)",
     highlights: [
       "Building a scalable Figma component library aligned with Brad Frost's Atomic Design methodology, contributing to a production-ready design system used across client web interfaces.",
@@ -41,39 +41,39 @@ const roles = [
     ],
   },
   {
-    period: "Apr 2026 — Jul 2026",
+    period: "Apr 2026, Jul 2026",
     title: "Design Systems Specialist",
     company: "Mango (Contract)",
     highlights: [
-      "Owned cross-platform component governance across Web, iOS, and Android — defining, governing, and releasing reusable components across multiple shared Figma libraries, documented in Zeroheight.",
-      "Established AI-assisted design-system workflows with Claude, Figma MCP, and the Desktop Bridge — enabling automated audits, machine-readable component patterns, and scalable documentation.",
-      "Led design-to-code parity initiatives — bridging Figma and production codebases so the system stays true across design and build.",
+      "Owned cross-platform component governance across Web, iOS, and Android, defining, governing, and releasing reusable components across multiple shared Figma libraries, documented in Zeroheight.",
+      "Established AI-enabled design-system workflows with Claude, Figma MCP, and the Desktop Bridge, enabling automated audits, machine-readable component patterns, and scalable documentation.",
+      "Led design-to-code parity initiatives, bridging Figma and production codebases so the system stays true across design and build.",
       "Ran accessibility and dark-mode audits across the system, and defined metrics for adoption, coverage, efficiency, and quality.",
     ],
   },
   {
-    period: "July 2024 — Feb 2026",
-    title: "UX/UI Designer — Product & Design Systems",
+    period: "July 2024, Feb 2026",
+    title: "UX/UI Designer, Product & Design Systems",
     company: "***REMOVED***",
     highlights: [
-      "Led the UX transformation of a complex B2B SaaS travel platform — redesigning the booking foundation across flights, car rentals, finance, admin, and multi-role dashboards.",
+      "Led the UX transformation of a complex B2B SaaS travel platform, redesigning the booking foundation across flights, car rentals, finance, admin, and multi-role dashboards.",
       "Built and implemented the company's first scalable design system from scratch: token architecture, reusable component library, and theme support, with tokens integrated directly into production code.",
-      "Re-architected end-to-end booking verticals including search, filtering, sorting, seat selection, and post-booking management — designing consistent interaction patterns across API and edge-case constraints.",
+      "Re-architected end-to-end booking verticals including search, filtering, sorting, seat selection, and post-booking management, designing consistent interaction patterns across API and edge-case constraints.",
       "Delivered high-fidelity prototypes for executive and investor presentations, contributing to funding that accelerated product development and team expansion.",
     ],
   },
   {
-    period: "Oct 2025 — Dec 2025",
-    title: "Product Designer — Data Dashboard Prototype (Contract)",
-    company: "A UN agency — Geneva (contract)",
+    period: "Oct 2025, Dec 2025",
+    title: "Product Designer, Data Dashboard Prototype (Contract)",
+    company: "A UN agency, Geneva (contract)",
     highlights: [
-      "Designed a high-fidelity dashboard prototype supporting operational transparency across multiple UN teams — translating complex organisational workflows into clear data visualisations and interactive analytics interfaces.",
+      "Designed a high-fidelity dashboard prototype supporting operational transparency across multiple UN teams, translating complex organisational workflows into clear data visualisations and interactive analytics interfaces.",
       "Conducted stakeholder interviews and requirements gathering across technical and non-technical users to define information architecture and layout structure.",
       "Created modular UI components and scalable layout patterns suited to a high-stakes, multi-role enterprise environment with strict accessibility and usability requirements.",
     ],
   },
   {
-    period: "Feb 2023 — Feb 2024",
+    period: "Feb 2023, Feb 2024",
     title: "UX/UI Designer",
     company: "VML",
     highlights: [
@@ -151,7 +151,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             </h2>
           </div>
           <div className="flex items-center gap-3">
-            {/* PDF download — enabled once /public/cv/Elleta_McDaniel_Product_Designer_CV.pdf is added */}
+            {/* PDF download, enabled once /public/cv/Elleta_McDaniel_Product_Designer_CV.pdf is added */}
             <span
               className="bg-[color:var(--ink-on-paper-border)] text-[var(--color-semantic-text-inverse)]/50 text-[length:var(--typography-font-size-tag)] font-medium px-4 py-2 rounded-full cursor-not-allowed select-none"
               title="PDF coming soon"
@@ -175,12 +175,12 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
 
           {/* Name + contact */}
           <div>
-            {/* h2 (not h1) — the page h1 stays unique; dialog title is the header h2 */}
+            {/* h2 (not h1), the page h1 stays unique; dialog title is the header h2 */}
             <h2 className="font-display font-bold text-[length:var(--typography-font-size-2xl)] text-[color:var(--ink-on-paper)] leading-snug mb-0.5">
               Elleta McDaniel
             </h2>
             <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)] font-medium mb-2">
-              Product Designer — Design Systems, Data Platforms &amp; Complex UX
+              Product Designer, Design Systems, Data Platforms &amp; Complex UX
             </p>
             <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)]">
               <span>Barcelona, Spain</span>

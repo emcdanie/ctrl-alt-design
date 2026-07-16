@@ -91,7 +91,7 @@ export default function VideoModal({
           <Icon name="Xmark" size="sm" />
         </button>
 
-        {/* Video — standard 16:9 */}
+        {/* Video, standard 16:9 */}
         <div
           className="relative w-full rounded-2xl overflow-hidden bg-black"
           style={{ paddingTop: "56.25%", height: 0 }}

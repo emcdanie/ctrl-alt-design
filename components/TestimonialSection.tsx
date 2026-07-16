@@ -71,7 +71,7 @@ function SupportingCard({
           height: "100%",
         }}
       >
-        {/* Quote mark — soft periwinkle tint */}
+        {/* Quote mark, soft periwinkle tint */}
         <span
           style={{
             fontFamily: "var(--font-display)",
@@ -178,7 +178,7 @@ export default function TestimonialSection() {
           </div>
         </FadeIn>
 
-        {/* ── Featured — Brad Frost ──────────────────────────────── */}
+        {/* ── Featured, Brad Frost ──────────────────────────────── */}
         <FadeIn delay={60} distance={4}>
           <div
             className="glass-card"
@@ -189,7 +189,7 @@ export default function TestimonialSection() {
               position: "relative",
             }}
           >
-            {/* Decorative top accent — periwinkle tint, not full strength */}
+            {/* Decorative top accent, periwinkle tint, not full strength */}
             <div
               style={{
                 position: "absolute",
@@ -260,7 +260,7 @@ export default function TestimonialSection() {
               </div>
             </div>
 
-            {/* Quote mark — soft periwinkle tint */}
+            {/* Quote mark, soft periwinkle tint */}
             <span
               style={{
                 fontFamily: "var(--font-display)",
@@ -277,7 +277,7 @@ export default function TestimonialSection() {
               &ldquo;
             </span>
 
-            {/* Excerpt — two sentences by default; the full recommendation
+            {/* Excerpt, two sentences by default; the full recommendation
                 expands in place so no content leaves the page */}
             <blockquote style={{ margin: 0 }}>
               {(expanded ? featured.paragraphs : [featured.excerpt]).map((para, i) => (
@@ -298,7 +298,7 @@ export default function TestimonialSection() {
               ))}
             </blockquote>
 
-            {/* Disclosure — full quote stays on the page */}
+            {/* Disclosure, full quote stays on the page */}
             <div style={{ marginTop: "var(--spacing-5)" }}>
               <button
                 type="button"
@@ -339,7 +339,7 @@ export default function TestimonialSection() {
           </div>
         </FadeIn>
 
-        {/* ── Supporting cards — 3-column grid ────────────────────── */}
+        {/* ── Supporting cards, 3-column grid ────────────────────── */}
         <div className="layout-grid-3">
           {supporting.map((t, i) => (
             <SupportingCard

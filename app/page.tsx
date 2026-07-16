@@ -30,7 +30,7 @@ export default function Home() {
           <div className="layout-container">
             <header className="layout-header">
               <p className="eyebrow" style={{ marginBottom: "var(--spacing-4)" }}>
-                — Current focus
+               Current focus
               </p>
               <h2 style={{ fontSize: "var(--font-section-title)", lineHeight: 1.05 }}>
                 {featured.title}

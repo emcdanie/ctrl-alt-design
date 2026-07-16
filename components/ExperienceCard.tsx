@@ -92,7 +92,7 @@ export default function ExperienceCard({
           <ul className="flex flex-col gap-3 pt-5">
             {highlights.map((h, i) => (
               <li key={i} className="flex gap-3 text-[length:var(--typography-font-size-base)] leading-[1.75] text-[#4A4640]">
-                <span className="mt-[1px] shrink-0 text-[#B8B1AA]">—</span>
+                <span className="mt-[1px] shrink-0 text-[#B8B1AA]">, </span>
                 <span>
                   <BoldLead text={h} />
                 </span>

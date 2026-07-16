@@ -176,7 +176,7 @@ export default function PrototypeEmbed({
           </div>
         )}
 
-        {/* Iframe — responsive: uses aspect-ratio on small screens, fixed height on desktop */}
+        {/* Iframe, responsive: uses aspect-ratio on small screens, fixed height on desktop */}
         <iframe
           src={src}
           title={title}

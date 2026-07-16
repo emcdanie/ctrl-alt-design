@@ -18,8 +18,8 @@ type View = (typeof VIEWS)[number];
 const SORTS = {
   "year-desc": { label: "Year, newest first", key: "yearStart", dir: -1 },
   "year-asc": { label: "Year, oldest first", key: "yearStart", dir: 1 },
-  "title-asc": { label: "Title A–Z", key: "title", dir: 1 },
-  "type-asc": { label: "Type A–Z", key: "type", dir: 1 },
+  "title-asc": { label: "Title A-Z", key: "title", dir: 1 },
+  "type-asc": { label: "Type A-Z", key: "type", dir: 1 },
 } as const;
 type SortKey = keyof typeof SORTS;
 

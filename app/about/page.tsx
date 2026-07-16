@@ -19,11 +19,11 @@ import { Icon } from "@/components/ui/Icon";
 const collaborationCards = [
   {
     title: "I push back respectfully",
-    description: "If I think a brief is solving the wrong problem, I'll say so — with evidence, not just instinct. I'd rather surface a challenge early than deliver the wrong thing on time.",
+    description: "If I think a brief is solving the wrong problem, I'll say so, with evidence, not just instinct. I'd rather surface a challenge early than deliver the wrong thing on time.",
   },
   {
     title: "I get obsessed with solving complex problems",
-    description: "Ambiguity doesn't slow me down — it focuses me. I thrive in systems with competing constraints, unclear requirements, and high stakes.",
+    description: "Ambiguity doesn't slow me down, it focuses me. I thrive in systems with competing constraints, unclear requirements, and high stakes.",
   },
   {
     title: "I ask for early feedback",
@@ -31,7 +31,7 @@ const collaborationCards = [
   },
   {
     title: "I advocate for both users and the business",
-    description: "Good design solves for both. I don't treat business goals as a compromise — I treat them as part of the design problem.",
+    description: "Good design solves for both. I don't treat business goals as a compromise, I treat them as part of the design problem.",
   },
 ];
 
@@ -71,15 +71,15 @@ const learningEntries: LearningEntry[] = [
     type: "course",
     year: "2024",
     topics: ["Complex tables and data grids", "Search UX patterns", "Accordion and disclosure patterns", "Form design at scale"],
-    reflection: "The deep-dive into table and data grid patterns was particularly relevant — I was designing admin dashboards at ***REMOVED*** at the time, and being able to apply these patterns immediately made the learning stick.",
+    reflection: "The deep-dive into table and data grid patterns was particularly relevant, I was designing admin dashboards at ***REMOVED*** at the time, and being able to apply these patterns immediately made the learning stick.",
   },
 ];
 
 const timelineEvents = [
-  { year: "2025", label: "Smart Interface Design Patterns — Smashing Magazine" },
-  { year: "2025", label: "Brad Frost Maker Program — Design Systems" },
+  { year: "2025", label: "Smart Interface Design Patterns, Smashing Magazine" },
+  { year: "2025", label: "Brad Frost Maker Program, Design Systems" },
   { year: "2024", label: "Into Design Systems Conference" },
-  { year: "2024", label: "Advanced Interface Design Patterns — Smashing Magazine" },
+  { year: "2024", label: "Advanced Interface Design Patterns, Smashing Magazine" },
   { year: "2023", label: "Ironhack UX/UI Design Bootcamp" },
 ];
 
@@ -264,15 +264,15 @@ export default function AboutPage() {
           <div className="page-container">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-16 items-start">
               <div>
-                <PageHeader eyebrow="— About" title="Hey, I'm Elleta" />
+                <PageHeader eyebrow="About" title="Hey, I'm Elleta" />
                 <div style={{ display: "flex", flexDirection: "column", gap: "14px", maxWidth: "600px" }}>
                   <p className="body-lg">
                     I&apos;m a product designer who works at the intersection of systems thinking
                     and interaction design. I care about building things that are coherent, scalable,
-                    and genuinely useful — not just polished.
+                    and genuinely useful, not just polished.
                   </p>
                   <p className="body-lg">
-                    Most of my recent work has been in B2B SaaS — design systems, complex data interfaces,
+                    Most of my recent work has been in B2B SaaS, design systems, complex data interfaces,
                     and multi-role platforms where the user journey is rarely linear and the stakes are high.
                     I&apos;m drawn to the kind of problems where understanding the system matters more than
                     making the screen look good.
@@ -280,7 +280,7 @@ export default function AboutPage() {
                   <p className="body-lg">
                     I&apos;m at my best when I&apos;m working on hard problems with people who care about
                     getting them right. I think the best design work happens when you can hold the tension
-                    between user needs, business constraints, and technical reality — and find the solution
+                    between user needs, business constraints, and technical reality, and find the solution
                     that respects all three.
                   </p>
                 </div>
@@ -314,7 +314,7 @@ export default function AboutPage() {
           <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
         </div>
 
-        {/* At-a-glance facts — relocated from landing */}
+        {/* At-a-glance facts, relocated from landing */}
         <section className="layout-section-tight">
           <div className="page-container">
             <MetricsStrip />
@@ -329,7 +329,7 @@ export default function AboutPage() {
         {/* Working With Me */}
         <section className="layout-section">
           <div className="page-container">
-            <p className="section-label mb-3">— Working With Me</p>
+            <p className="section-label mb-3">Working With Me</p>
             <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-6)" }}>
               How I collaborate
             </h2>
@@ -357,10 +357,10 @@ export default function AboutPage() {
           <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
         </div>
 
-        {/* Learning & Experiments — THE learning section (#learning) */}
+        {/* Learning & Experiments, THE learning section (#learning) */}
         <section id="learning" className="layout-section">
           <div className="page-container">
-            <p className="section-label mb-3">— Learning &amp; Experiments</p>
+            <p className="section-label mb-3">Learning &amp; Experiments</p>
             <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
               Continuous learning
             </h2>
@@ -389,7 +389,7 @@ export default function AboutPage() {
         {/* Currently Listening */}
         <section className="layout-section">
           <div className="page-container">
-            <p className="section-label mb-3">— Currently Listening</p>
+            <p className="section-label mb-3">Currently Listening</p>
             <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-6)" }}>
               Design soundtrack
             </h2>

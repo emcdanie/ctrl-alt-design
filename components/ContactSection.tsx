@@ -99,10 +99,10 @@ export default function ContactSection() {
       <div className="layout-container">
         {/* Two-column layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--grid-gap)] mb-16">
-          {/* Left — form */}
+          {/* Left, form */}
           <div>
             <p className="section-label mb-4" style={{ color: "var(--ink-on-dark-muted)" }}>
-              — Get in touch
+             Get in touch
             </p>
             <h2 className="heading-section mb-8" style={{ color: "var(--ink-on-dark-strong)" }}>
               Let&apos;s work together.
@@ -113,7 +113,7 @@ export default function ContactSection() {
                 <div className="text-2xl mb-2">✓</div>
                 <p className="text-[length:var(--typography-font-size-sm)] font-medium" style={{ color: "var(--ink-on-dark-strong)" }}>Message sent</p>
                 <p className="text-[length:var(--typography-font-size-base)] mt-1" style={{ color: "var(--ink-on-dark-body)" }}>
-                  Thanks for reaching out — I&apos;ll get back to you soon.
+                  Thanks for reaching out, I&apos;ll get back to you soon.
                 </p>
               </div>
             ) : (
@@ -176,7 +176,7 @@ export default function ContactSection() {
 
                 {sendError && (
                   <p role="alert" className="text-[length:var(--typography-font-size-tag)] text-red-400">
-                    Something went wrong — please try emailing me directly at elletamc@gmail.com
+                    Something went wrong, please try emailing me directly at elletamc@gmail.com
                   </p>
                 )}
                 <button
@@ -190,7 +190,7 @@ export default function ContactSection() {
             )}
           </div>
 
-          {/* Right — info + nav */}
+          {/* Right, info + nav */}
           <div className="flex flex-col justify-between gap-10">
             <div>
               <h3
@@ -243,7 +243,7 @@ export default function ContactSection() {
           <p className="text-[length:var(--typography-font-size-tag)]" style={{ color: "var(--ink-on-dark-muted)" }}>
             ©{" "}
             <span suppressHydrationWarning style={{ display: "inline-block", minWidth: "4ch" }}>
-              {year ?? "—"}
+              {year ?? ", "}
             </span>{" "}
             Elleta McDaniel. All rights reserved.
           </p>

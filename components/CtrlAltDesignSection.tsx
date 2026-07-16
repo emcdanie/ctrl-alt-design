@@ -39,7 +39,7 @@ interface LabPrototype {
 const videos: LabVideo[] = [
   {
     title: "AI-Powered EUR-LEX UX + Multimedia Center",
-    subtitle: "Exploring AI-assisted legal search and multimedia navigation patterns for complex regulatory systems.",
+    subtitle: "Exploring AI-enabled legal search and multimedia navigation patterns for complex regulatory systems.",
     category: "AI UX",
     tags: ["AI UX", "Legal Tech", "Search Design"],
     embed: "https://www.loom.com/embed/685fc54dcb104d51baa15dcec8727da2",
@@ -65,7 +65,7 @@ const videos: LabVideo[] = [
     thumbnailSrc: "/images/thumbnails/HealthForm.png",
   },
   {
-    title: "Operational Dashboard — F1 Singapore Grand Prix",
+    title: "Operational Dashboard, F1 Singapore Grand Prix",
     subtitle: "Designing a high-density operational dashboard inspired by Formula 1 race telemetry and control room systems.",
     category: "DASHBOARD",
     tags: ["Dashboard UX", "Data Visualisation", "Operational Design"],
@@ -87,7 +87,7 @@ const prototypes: LabPrototype[] = [
   },
   {
     title: "Brad Frost Command Center",
-    subtitle: "Design system investigation dashboard — exploring AI-assisted component analysis and governance workflows.",
+    subtitle: "Design system investigation dashboard, exploring AI-enabled component analysis and governance workflows.",
     category: "INTERACTIVE",
     tags: ["Design Systems", "AI UX", "Dashboard"],
     href: "/demos/brad-frost-command-center.html",
@@ -95,8 +95,8 @@ const prototypes: LabPrototype[] = [
     thumbnailSrc: "/images/thumbnails/BradFrostCommandCenter.png",
   },
   {
-    title: "Guardian — AI UX Audit Tool",
-    subtitle: "Hackathon prototype: AI-assisted UX auditing on a Figma-style canvas — heuristic evaluation, drift detection, and accessibility checks with real-time highlights.",
+    title: "Guardian, AI UX Audit Tool",
+    subtitle: "Hackathon prototype: AI-enabled UX auditing on a Figma-style canvas, heuristic evaluation, drift detection, and accessibility checks with real-time highlights.",
     category: "INTERACTIVE",
     tags: ["AI UX", "Hackathon", "Governance"],
     href: "/demos/guardian-audit-tool.html",
@@ -104,7 +104,7 @@ const prototypes: LabPrototype[] = [
     thumbnailSrc: "/images/thumbnails/GuardianAuditTool.svg",
   },
   {
-    title: "Pattern Mentor — Design Feedback Plugin",
+    title: "Pattern Mentor, Design Feedback Plugin",
     subtitle: "Evolved from Guardian: cream-glass plugin with pattern citations, inline fix application, documentation push, and a browseable pattern library.",
     category: "INTERACTIVE",
     tags: ["AI UX", "Design Patterns", "Plugin"],
@@ -177,15 +177,15 @@ export default function CtrlAltDesignSection() {
   return (
     <SectionShell id="design-lab" className="bg-[var(--color-semantic-background)]">
       <SectionHeader
-        label="— Design Lab"
+        label="Design Lab"
         title="CTRL_ALT_DESIGN"
-        description="Rapid investigations into complex interaction patterns, system dashboards, and AI-assisted workflows."
+        description="Rapid investigations into complex interaction patterns, system dashboards, and AI-enabled workflows."
         className="mb-6"
       />
 
       <div className="mb-10 h-px w-full bg-black/8" />
 
-      {/* Video explorations — fixed 2-col on tablet+ (data is exactly 4 items
+      {/* Video explorations, fixed 2-col on tablet+ (data is exactly 4 items
           → 2×2 grid, no orphan). Stacks to single col below 768px.
           Equal heights via items-stretch (BELLA Rule 2). */}
       <div className="grid grid-cols-1 items-stretch md:grid-cols-2" style={{ gap: "var(--grid-gap)" }}>
@@ -209,12 +209,12 @@ export default function CtrlAltDesignSection() {
         })}
       </div>
 
-      {/* Interactive prototypes — same 2-col pattern. Data trimmed to exactly
-          4 items (was 5 — F1 Grand Prix Analytics removed; that project is
+      {/* Interactive prototypes, same 2-col pattern. Data trimmed to exactly
+          4 items (was 5, F1 Grand Prix Analytics removed; that project is
           already represented in the Videos grid above). */}
       <div style={{ marginTop: "56px" }}>
         <SectionHeader
-          label="— Interactive Work"
+          label="Interactive Work"
           title="Interactive product experiments"
           description="Real prototypes exploring complex interaction patterns, system logic, and workflow design."
           className="mb-10"

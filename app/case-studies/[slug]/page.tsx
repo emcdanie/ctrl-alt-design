@@ -299,7 +299,7 @@ export default async function CaseStudyPage({
         prev={prev}
         next={next}
       >
-        {/* ── Blocks mode — the one render path ── */}
+        {/* ── Blocks mode, the one render path ── */}
         {cs.blocks ? (
           <>
             {cs.blocks.map((block, i) => (
@@ -308,13 +308,13 @@ export default async function CaseStudyPage({
           </>
         ) : (
         <>
-        {/* Supporting images — right after hero, before text */}
+        {/* Supporting images, right after hero, before text */}
         {cs.images.length > 0 && (
           <div style={{ marginBottom: "var(--spacing-12)" }}>
             {cs.images.length === 1 ? (
               <MediaBlock
                 src={cs.images[0]}
-                alt={`${cs.title} — detail`}
+                alt={`${cs.title}, detail`}
               />
             ) : (
               <div style={{
@@ -326,7 +326,7 @@ export default async function CaseStudyPage({
                   <MediaBlock
                     key={i}
                     src={src}
-                    alt={`${cs.title} — image ${i + 1}`}
+                    alt={`${cs.title}, image ${i + 1}`}
                     aspectRatio="4/3"
                   />
                 ))}
@@ -338,7 +338,7 @@ export default async function CaseStudyPage({
         {/* ── Narrative mode (detailed sections) ── */}
         {cs.narrative ? (
           <>
-            {/* Brief overview — short text, not a wall */}
+            {/* Brief overview, short text, not a wall */}
             <Section eyebrow="OVERVIEW" heading={cs.overview.headline}>
               <RichBody text={cs.overview.body} />
             </Section>
@@ -368,7 +368,7 @@ export default async function CaseStudyPage({
                   {section.embedSrc && (
                     <EmbedBlock
                       src={section.embedSrc}
-                      alt={section.embedAlt || `${cs.title} — visual`}
+                      alt={section.embedAlt || `${cs.title}, visual`}
                       aspectRatio={section.embedAspect || "3/2"}
                     />
                   )}
@@ -376,7 +376,7 @@ export default async function CaseStudyPage({
                   {showImageAfter && (
                     <MediaBlock
                       src={cs.fullWidthImage!}
-                      alt={`${cs.title} — system view`}
+                      alt={`${cs.title}, system view`}
                       aspectRatio="2/1"
                     />
                   )}
@@ -482,7 +482,7 @@ export default async function CaseStudyPage({
         {cs.fullWidthImage && !cs.narrative && (
           <MediaBlock
             src={cs.fullWidthImage}
-            alt={`${cs.title} — final view`}
+            alt={`${cs.title}, final view`}
             aspectRatio="2/1"
           />
         )}

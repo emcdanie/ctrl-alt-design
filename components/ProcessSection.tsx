@@ -89,15 +89,15 @@ export default function ProcessSection() {
         {/* Header */}
         <div className="layout-header flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <p className="section-label mb-3">— My Approach</p>
+            <p className="section-label mb-3">My Approach</p>
             <h2 className="heading-section">My Process</h2>
           </div>
           <p className="body-lg max-w-xs sm:text-right" style={{ color: "var(--color-muted)" }}>
-            A structured approach that brings order to ambiguity — from first question to final handoff.
+            A structured approach that brings order to ambiguity, from first question to final handoff.
           </p>
         </div>
 
-        {/* Accordion — one open at a time, first open by default. */}
+        {/* Accordion, one open at a time, first open by default. */}
         <div className="process-accordion" role="list">
           {steps.map((step) => {
             const isOpen = openNumber === step.number;

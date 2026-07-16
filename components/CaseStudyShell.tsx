@@ -69,7 +69,7 @@ export default function CaseStudyShell({
   return (
     <div className="cs-shell">
       {/* ════════════════════════════════════════════════════════════
-          LEFT — Sticky sidebar panel (desktop only via CSS)
+          LEFT, Sticky sidebar panel (desktop only via CSS)
           ════════════════════════════════════════════════════════════ */}
       <aside className="cs-shell__left">
         <div className="cs-shell__sticky">
@@ -157,14 +157,14 @@ export default function CaseStudyShell({
       </aside>
 
       {/* ════════════════════════════════════════════════════════════
-          RIGHT — Scrolling content column
+          RIGHT, Scrolling content column
           ════════════════════════════════════════════════════════════ */}
       <div className="cs-shell__right">
         <Link href="/work" className="cs-shell__backlink cs-shell__backlink--mobile">
           <span aria-hidden="true">←</span> Back to Work
         </Link>
 
-        {/* Hero — the case sphere (visual-language move #2), always */}
+        {/* Hero, the case sphere (visual-language move #2), always */}
         <div className="cs-shell__hero cs-shell__hero--sphere">
           <svg className="cs-shell__sphere-link" aria-hidden="true" viewBox="0 0 400 12" preserveAspectRatio="none">
             <circle cx="6" cy="6" r="4" fill="var(--hero-iris-bright)" />
@@ -183,7 +183,7 @@ export default function CaseStudyShell({
           </span>
         </div>
 
-        {/* Mobile header — title, meta, tags (below hero on small screens) */}
+        {/* Mobile header, title, meta, tags (below hero on small screens) */}
         <div className="cs-shell__mobile-header">
           <p className="cs-shell__eyebrow">{eyebrow}</p>
           <h1 className="cs-shell__title">{title}</h1>
