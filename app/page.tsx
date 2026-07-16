@@ -1,70 +1,66 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useCallback } from "react";
+import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
 import Hero from "@/components/Hero";
-import CaseStudyGrid from "@/components/CaseStudyGrid";
-import ProcessSection from "@/components/ProcessSection";
-import VideoWalkthrough from "@/components/VideoWalkthrough";
-import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
-import AboutSection from "@/components/AboutSection";
-import ExperienceSection from "@/components/ExperienceSection";
-import LearningSection from "@/components/LearningSection";
-import TestimonialSection from "@/components/TestimonialSection";
-import ContactSection from "@/components/ContactSection";
-import ResumeModal from "@/components/ResumeModal";
-import WorkSidebar from "@/components/WorkSidebar";
+import { WORK_ITEMS } from "@/lib/workLibrary";
 
+/* ONE dashboard home (IA consolidation, 2026-07-16): the bubble board,
+ * the current-focus piece, and the labeled path into the library.
+ * Everything else lives on its own route — /work, /about, /point-of-view,
+ * /contact, /case-studies/*. */
 export default function Home() {
-  const [resumeOpen, setResumeOpen] = useState(false);
-  const shellRef = useRef<HTMLDivElement>(null);
+  const featured = WORK_ITEMS.find((i) => i.featured);
 
-  /** Scroll the snap shell to the dashboard view */
-  const enterDashboard = useCallback(() => {
-    const dash = shellRef.current?.querySelector<HTMLElement>(".view-dashboard");
-    dash?.scrollIntoView({ behavior: "smooth" });
+  const scrollToFeatured = useCallback(() => {
+    document.getElementById("featured")?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
   return (
     <main id="main-content">
-    <div ref={shellRef} className="snap-shell">
       <OverlayNav />
 
-      {/* ═══════════════════════════════════════════════════════════════
-          VIEW 1 — Landing  (hero + carousel, fills viewport)
-          Normal site landing. Name, tagline, CTA, carousel.
-          ═══════════════════════════════════════════════════════════════ */}
-      {/* Carousel retired from the landing view — photo-led hero owns it.
-          components/Carousel.tsx is kept but unused. */}
-      <section className="view-landing">
-        <Hero onEnterDashboard={enterDashboard} />
-      </section>
+      <Hero onEnterDashboard={scrollToFeatured} />
 
-      {/* ═══════════════════════════════════════════════════════════════
-          VIEW 2 — Dashboard  (sidebar + scrollable content)
-          Triggered by scroll or CTA click. Sidebar appears.
-          Content scrolls inside the panel. Nav bar stays.
-          ═══════════════════════════════════════════════════════════════ */}
-      <section className="view-dashboard">
-        {/* Sidebar — only visible in this view */}
-        <WorkSidebar />
+      {/* ── Current focus ── */}
+      {featured && (
+        <section id="featured" className="layout-section">
+          <div className="layout-container">
+            <header className="layout-header">
+              <p className="eyebrow" style={{ marginBottom: "var(--spacing-4)" }}>
+                — Current focus
+              </p>
+              <h2 style={{ fontSize: "var(--font-section-title)", lineHeight: 1.05 }}>
+                {featured.title}
+              </h2>
+            </header>
 
-        {/* Scrollable content panel */}
-        <div className="dashboard-panel">
-          <CaseStudyGrid />
-          <ProcessSection />
-          <TestimonialSection />
-          <VideoWalkthrough />
-          <CtrlAltDesignSection />
-          <AboutSection />
-          <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
-          <LearningSection />
-          <ContactSection />
-        </div>
-      </section>
-
-      <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
-    </div>
+            {/* Interim featured block — becomes the image-led CaseCard in the
+                one-card consolidation step */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "var(--spacing-4)",
+                maxWidth: "65ch",
+              }}
+            >
+              <p className="body-base" style={{ fontSize: "var(--font-body-size)" }}>
+                {featured.impact}. {featured.ingredients.join(". ")}.
+              </p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--spacing-3)" }}>
+                <Link href={featured.href} className="btn-key btn-key--primary">
+                  See the Design Lab <span aria-hidden="true">→</span>
+                </Link>
+                <Link href="/work" className="btn-key">
+                  Browse the library <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   );
 }

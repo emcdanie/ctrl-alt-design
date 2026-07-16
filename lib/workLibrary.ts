@@ -41,6 +41,8 @@ export interface WorkItem {
   role: string;
   impact: string;
   skills: Skill[];
+  /** current-focus piece — featured on the dashboard + first in the library */
+  featured?: boolean;
   /** recorded case-colour tokens */
   hi: string;
   lo: string;
@@ -131,10 +133,11 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "design-lab",
     title: "Design Lab",
+    featured: true,
     bubbleLabel: "Design Lab",
     kicker: "Personal OS · 2026",
     ingredients: ["CHIP: my own operating system", "AI-assisted workflows", "Building in public"],
-    href: "/#design-lab",
+    href: "/about#design-lab",
     type: "Personal OS",
     year: "2026",
     yearStart: 2026,
@@ -152,7 +155,7 @@ export const WORK_ITEMS: WorkItem[] = [
     bubbleLabel: "Writing",
     kicker: "Notes · 2026",
     ingredients: ["Design systems in practice", "Learning in public", "Talks and workshops"],
-    href: "/#learning",
+    href: "/about#learning",
     type: "Notes",
     year: "2026",
     yearStart: 2026,

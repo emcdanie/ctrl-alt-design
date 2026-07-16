@@ -10,9 +10,9 @@ import styles from "./BubbleCluster.module.css";
 const GEOMETRY: Record<string, { size: number; top: string; left: string; fontSize: number }> = {
   "code-first": { size: 150, top: "0%", left: "12%", fontSize: 19 },
   drift: { size: 154, top: "2%", left: "58%", fontSize: 19 },
-  guardian: { size: 140, top: "42%", left: "-3%", fontSize: 19 },
+  guardian: { size: 124, top: "42%", left: "-3%", fontSize: 18 },
   clarity: { size: 142, top: "76%", left: "16%", fontSize: 18 },
-  "design-lab": { size: 132, top: "66%", left: "72%", fontSize: 18 },
+  "design-lab": { size: 156, top: "64%", left: "70%", fontSize: 19 },
   writing: { size: 126, top: "20%", left: "84%", fontSize: 18 },
   hub: { size: 196, top: "34%", left: "33%", fontSize: 22 },
 };
@@ -234,7 +234,10 @@ export default function BubbleCluster({
             aria-expanded={selected === i}
             onClick={() => select(i)}
           >
-            <BubbleLabel label={b.bubbleLabel} />
+            <span style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <BubbleLabel label={b.bubbleLabel} />
+              {b.featured && <span className={styles.sub}>Current focus</span>}
+            </span>
           </button>
         ))}
       </div>

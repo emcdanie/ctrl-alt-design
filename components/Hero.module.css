@@ -7,8 +7,8 @@
   /* proto: 104px top under its own meta strip; here the fixed header
      (--header-height) already offsets the view, so the grid centers in
      the remaining viewport like the proto's min-height:100vh center */
-  padding: var(--spacing-8) var(--container-padding) var(--spacing-16);
-  min-height: calc(100dvh - var(--header-height));
+  padding: calc(var(--header-height) + var(--spacing-8)) var(--container-padding) var(--spacing-16);
+  min-height: 100dvh;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-10);
