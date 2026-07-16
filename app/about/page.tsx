@@ -5,7 +5,6 @@ import OverlayNav from "@/components/OverlayNav";
 import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/Button";
 import ExperienceSection from "@/components/ExperienceSection";
-import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
 import ResumeModal from "@/components/ResumeModal";
 import MetricsStrip from "@/components/MetricsStrip";
 import Link from "next/link";
@@ -89,14 +88,6 @@ const learningEntries: LearningEntry[] = [
   },
 ];
 
-const timelineEvents = [
-  { year: "2025", label: "Smart Interface Design Patterns, Smashing Magazine" },
-  { year: "2025", label: "Brad Frost Maker Program, Design Systems" },
-  { year: "2024", label: "Into Design Systems Conference" },
-  { year: "2024", label: "Advanced Interface Design Patterns, Smashing Magazine" },
-  { year: "2023", label: "Ironhack UX/UI Design Bootcamp" },
-];
-
 /* ── Components ──────────────────────────────────────────────── */
 
 function TypeIcon({ type }: { type: string }) {
@@ -108,13 +99,12 @@ function TypeIcon({ type }: { type: string }) {
 function LearningCard({ entry }: { entry: LearningEntry }) {
   const [expanded, setExpanded] = useState(false);
 
-  const typeColors: Record<string, { bg: string; color: string }> = {
-    workshop: { bg: "var(--color-supporting-linen)", color: "var(--ink-on-paper)" },
-    course: { bg: "var(--color-supporting-linen)", color: "var(--ink-on-paper)" },
-    conference: { bg: "var(--color-supporting-linen)", color: "var(--ink-on-paper)" },
+  /* One treatment for every entry type: the site accent (About colour
+     pass). Iris text on the accent-subtle plate, AA both themes. */
+  const style = {
+    bg: "var(--color-semantic-accent-subtle)",
+    color: "var(--color-accent-ink)",
   };
-
-  const style = typeColors[entry.type] ?? typeColors.workshop;
 
   return (
     <div
@@ -177,7 +167,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
                     padding: "2px 10px",
                     borderRadius: "var(--radius-full)",
                     background: style.bg,
-                    border: `1px solid ${style.color}22`,
+                    border: "1px solid var(--color-semantic-accent-border)",
                     fontFamily: "var(--font-body)",
                     fontSize: "10px",
                     fontWeight: "var(--typography-font-weight-bold)",
@@ -220,7 +210,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
       >
         <div style={{ borderTop: "1px solid var(--color-border-soft)", paddingTop: "var(--spacing-4)" }}>
           {/* Topics */}
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6B665D", marginBottom: "var(--spacing-2)" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-ink-muted)", marginBottom: "var(--spacing-2)" }}>
             Topics covered
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "var(--spacing-4)" }}>
@@ -230,7 +220,7 @@ function LearningCard({ entry }: { entry: LearningEntry }) {
           </div>
 
           {/* Reflection */}
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6B665D", marginBottom: "var(--spacing-2)" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-ink-muted)", marginBottom: "var(--spacing-2)" }}>
             What I took away
           </p>
           <p className="body-base" style={{ margin: 0, marginBottom: entry.relatedWork ? "12px" : "0px" }}>
@@ -278,18 +268,16 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-16 items-start">
               <div>
                 <PageHeader eyebrow="About" title="Hey, I'm Elleta" variant="bubble" />
-                <div style={{ display: "flex", flexDirection: "column", gap: "14px", maxWidth: "600px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)", maxWidth: "600px" }}>
                   <p className="body-lg">
-                    I design AI-enabled design systems for complex, multi-role B2B and enterprise
-                    products. Tokens, components, and the governance that keeps them from drifting.
-                    I read code, trace how components actually behave in production, and work with
-                    engineers directly, so the system stays true on both sides of handoff.
-                  </p>
-                  <p className="body-lg">
-                    Most of my work lives where the user journey is rarely linear and the stakes are
-                    high: booking platforms, operational dashboards, data-heavy tools. I&apos;m at my
-                    best on hard problems with people who care about getting them right, holding the
-                    tension between user needs, business constraints, and technical reality.
+                    I design{" "}
+                    <strong style={{ fontWeight: 600, color: "var(--color-accent-ink)" }}>
+                      AI-enabled design systems
+                    </strong>{" "}
+                    for complex, multi-role B2B and enterprise products. Tokens, components, and
+                    the governance that keeps them from drifting. I read code, trace how components
+                    actually behave in production, and work with engineers directly, so the system
+                    stays true on both sides of handoff.
                   </p>
                 </div>
               </div>
@@ -302,7 +290,7 @@ export default function AboutPage() {
                 borderRadius: "var(--radius-3xl)",
                 overflow: "hidden",
                 background: "var(--color-surface)",
-                border: "3px solid rgba(26,24,20,0.06)",
+                border: "3px solid var(--color-border-medium)",
                 justifySelf: "end",
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -314,6 +302,18 @@ export default function AboutPage() {
                 />
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* The problem space */}
+        <section className="layout-section-tight">
+          <div className="page-container">
+            <p className="section-label mb-3">The problem space</p>
+            <p className="body-lg" style={{ maxWidth: "600px" }}>
+              Most of my work lives where the user journey is rarely linear and the stakes are
+              high: booking platforms, operational dashboards, data-heavy tools, holding the
+              tension between user needs, business constraints, and technical reality.
+            </p>
           </div>
         </section>
 
@@ -365,10 +365,10 @@ export default function AboutPage() {
           <div style={{ borderTop: "1px solid var(--color-border-soft)" }} />
         </div>
 
-        {/* Learning & Experiments, THE learning section (#learning) */}
+        {/* THE one learning section (#learning) */}
         <section id="learning" className="layout-section">
           <div className="page-container">
-            <p className="section-label mb-3">Learning &amp; Experiments</p>
+            <p className="section-label mb-3">Learning</p>
             <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
               Continuous learning
             </h2>
@@ -389,19 +389,16 @@ export default function AboutPage() {
           <div style={{ borderTop: "1px solid var(--color-border-soft)" }} />
         </div>
 
-        {/* Divider */}
-        <div className="page-container">
-          <div style={{ borderTop: "1px solid var(--color-border-soft)" }} />
-        </div>
-
-        {/* ── Absorbed from the old home stack (IA consolidation) ── */}
         <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
-        <CtrlAltDesignSection />
         <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
 
-        {/* CTA */}
+        {/* Close + CTA */}
         <section className="layout-section-tight">
           <div className="page-container">
+            <p className="body-lg" style={{ maxWidth: "600px", marginBottom: "var(--spacing-8)" }}>
+              I&apos;m at my best on hard problems with people who care about getting
+              them right.
+            </p>
             <div
               style={{
                 background: "var(--color-semantic-background-inverse)",

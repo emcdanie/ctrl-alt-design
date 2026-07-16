@@ -52,5 +52,41 @@ for (const f of [...appFiles, ...componentFiles]) {
   if (m) fail(`arbitrary type size ${m[0]} in ${f} — use the ramp tokens`);
 }
 
+/* 5. one type system — no literal font-family in app/components; every
+ * fontFamily/font-family must resolve through var(--font-*). Exemptions:
+ * globals.css + layout.tsx define the tokens; VinylPlayer is frozen. */
+const FONT_EXEMPT = ["app/globals.css", "app/layout.tsx", "VinylPlayer.tsx"];
+for (const f of [...appFiles, ...componentFiles]) {
+  if (FONT_EXEMPT.some((e) => f.includes(e))) continue;
+  const s = readFileSync(f, "utf8");
+  /* TSX: quoted string values (variables holding token strings pass) */
+  for (const m of s.matchAll(/fontFamily\s*:\s*["']([^"']+)["']/g)) {
+    if (!m[1].startsWith("var(--font-")) {
+      fail(`literal font-family "${m[1]}" in ${f} — use the var(--font-*) tokens`);
+    }
+  }
+  /* CSS: declaration values */
+  for (const m of s.matchAll(/font-family\s*:\s*([^;}]+)/g)) {
+    const v = m[1].trim();
+    if (!v.startsWith("var(--font-") && v !== "inherit") {
+      fail(`literal font-family "${v}" in ${f} — use the var(--font-*) tokens`);
+    }
+  }
+}
+
+/* 6. Unique stays a display face — its tokens only appear in the
+ * sanctioned hero/logo/display files. (Runtime <24px use is caught by
+ * audit:contrast; this stops the drift at the source.) */
+const UNIQUE_OK = ["app/globals.css", "app/layout.tsx", "components/Hero.module.css",
+  "components/PageHeader.tsx", "components/CaseCard.module.css",
+  "components/DesignSystemSpecimens.tsx"];
+for (const f of [...appFiles, ...componentFiles]) {
+  if (UNIQUE_OK.some((e) => f.includes(e))) continue;
+  const s = readFileSync(f, "utf8");
+  if (/--font-hero-display|--font-unique/.test(s)) {
+    fail(`Unique font token in ${f} — Unique is the bubble-heading/hero/logo face only (sanctioned files: ${UNIQUE_OK.join(", ")})`);
+  }
+}
+
 console.log(fails === 0 ? "structure gate: PASS" : `structure gate: ${fails} failure(s)`);
 process.exit(fails === 0 ? 0 : 1);

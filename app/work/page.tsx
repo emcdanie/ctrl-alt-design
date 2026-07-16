@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import OverlayNav from "@/components/OverlayNav";
 import PageHeader from "@/components/PageHeader";
 import WorkLibrary from "@/components/WorkLibrary";
+import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
 
 export const metadata: Metadata = {
   title: "Work, Elleta McDaniel",
@@ -26,6 +27,10 @@ export default function WorkPage() {
           </Suspense>
         </div>
       </section>
+      {/* The Lab (rehomed from About; About is a bio, not a gallery).
+          The design-lab case page ships once its decision blocks are
+          authored (see content/case-studies/design-lab.ts). */}
+      <CtrlAltDesignSection />
     </main>
   );
 }

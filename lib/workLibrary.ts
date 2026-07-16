@@ -140,7 +140,7 @@ export const WORK_ITEMS: WorkItem[] = [
     bubbleLabel: "Design Lab",
     kicker: "Personal OS · 2026",
     ingredients: ["CHIP: my own operating system", "AI-enabled workflows", "Building in public"],
-    href: "/about#design-lab",
+    href: "/work#design-lab",
     type: "Personal OS",
     year: "2026",
     yearStart: 2026,

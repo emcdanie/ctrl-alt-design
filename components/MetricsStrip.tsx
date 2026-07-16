@@ -33,15 +33,19 @@ function MetricCard({ item }: { item: MetricItem }) {
         flexDirection: "column",
         padding: "var(--spacing-6)",
         textAlign: "left",
+        /* About accent pass: quiet periwinkle tint, iris stat. Site
+           accent only, never case colours (About is not a case). */
+        background: "var(--color-semantic-accent-subtle)",
+        border: "1px solid var(--color-semantic-accent-border)",
       }}
     >
       {/* Stat */}
       <div
         style={{
           fontFamily: "var(--font-display)",
-          fontSize: "clamp(36px, 4vw, 48px)",
+          fontSize: "var(--font-section-title)",
           fontWeight: "var(--typography-font-weight-bold)",
-          color: "var(--color-ink)",
+          color: "var(--color-accent-ink)",
           lineHeight: 1,
           marginBottom: "var(--spacing-2)",
         }}
