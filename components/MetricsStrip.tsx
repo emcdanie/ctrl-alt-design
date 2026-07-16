@@ -17,8 +17,8 @@ interface MetricItem {
 }
 
 const metrics: MetricItem[] = [
-  { stat: "3+", label: "YEARS EXPERIENCE",     detail: "Freelance + in-house" },
-  { stat: "2",  label: "DESIGN SYSTEMS BUILT", detail: "***REMOVED*** Design System / Brad Frost Atomic System" },
+  { stat: "E2E", label: "END TO END",           detail: "Tokens to governance to shipped code" },
+  { stat: "2",  label: "DESIGN SYSTEMS BUILT", detail: "A B2B travel platform / Brad Frost Atomic System" },
   { stat: "B2B", label: "PRIMARY DOMAIN",      detail: "Travel, finance, govtech" },
   { stat: "BCN", label: "BASED IN",            detail: "Canet de Mar, Spain" },
 ];

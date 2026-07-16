@@ -54,7 +54,7 @@ const roles = [
   {
     period: "July 2024, Feb 2026",
     title: "UX/UI Designer, Product & Design Systems",
-    company: "***REMOVED***",
+    company: "A B2B travel management platform",
     highlights: [
       "Led the UX transformation of a complex B2B SaaS travel platform, redesigning the booking foundation across flights, car rentals, finance, admin, and multi-role dashboards.",
       "Built and implemented the company's first scalable design system from scratch: token architecture, reusable component library, and theme support, with tokens integrated directly into production code.",

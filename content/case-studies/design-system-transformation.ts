@@ -20,7 +20,7 @@ const study: CaseStudy = {
   overview: {
     headline:
       "Rebuilding design system thinking in a scaling SaaS product, from a graveyard of almost-the-same components to a shared foundation that actually reduced work.",
-    body: "Seventeen buttons. Four filter chips doing the same job differently. A component library that had become a graveyard of almost-the-same things. At ***REMOVED***, a B2B travel platform scaling across multiple booking verticals, the product had outgrown the decisions that were supposed to hold it together. As sole designer, I led the audit, defined the architecture, authored governance, and worked directly with engineering to rebuild the system from foundations up.",
+    body: "Seventeen buttons. Four filter chips doing the same job differently. A component library that had become a graveyard of almost-the-same things. At a B2B travel platform scaling across multiple booking verticals, the product had outgrown the decisions that were supposed to hold it together. As sole designer, I led the audit, defined the architecture, authored governance, and worked directly with engineering to rebuild the system from foundations up.",
   },
   images: [],
   problem: {
@@ -61,9 +61,8 @@ const study: CaseStudy = {
     body: "Duplicated components consolidated into a smaller set of flexible, well-defined building blocks. Interaction patterns for filtering, sorting, and form behaviour defined so users encounter predictable experiences across flows. The UI shifted from being whatever the last sprint produced to feeling like a coherent product language, and the system gained credibility every time an engineer reached for an existing pattern and found it already solved.",
     completionTag: "PROJECT COMPLETE · 2026",
   },
-  tags: ["Figma", "Design Tokens", "Atomic Design", "Governance", "***REMOVED***"],
-  clientLogo: "/images/logos/bizaway_logo.jpeg",
-  clientName: "***REMOVED***",
+  tags: ["Figma", "Design Tokens", "Atomic Design", "Governance", "B2B Travel"],
+  clientName: "B2B Travel",
   demoLinks: [
     { label: "ctrl+travel prototype", href: "/demos/ctrl-travel.html" },
     { label: "ctrl+travel v2", href: "/demos/ctrl-travel-v2.html" },

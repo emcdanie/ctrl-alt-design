@@ -26,14 +26,14 @@ const supporting = [
     quote:
       "Elleta consistently brings clarity to complex product problems and builds systems that scale.",
     name: "Product Manager",
-    role: "***REMOVED***",
+    role: "A B2B travel platform",
     initials: "PM",
   },
   {
     quote:
       "She approaches design system work with the right mix of rigour and pragmatism \u2014 always grounded in real engineering constraints.",
     name: "Engineering Lead",
-    role: "***REMOVED***",
+    role: "A B2B travel platform",
     initials: "EL",
   },
   {

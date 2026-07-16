@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import OverlayNav from "@/components/OverlayNav";
 import PageHeader from "@/components/PageHeader";
 import ContactSection from "@/components/ContactSection";
+import TestimonialSection from "@/components/TestimonialSection";
 
 export const metadata: Metadata = {
   title: "Contact, Elleta McDaniel",
@@ -20,6 +21,7 @@ export default function ContactPage() {
             <PageHeader eyebrow="Get in touch" title="Contact" />
           </div>
         </section>
+        <TestimonialSection />
         <ContactSection />
       </div>
     </main>

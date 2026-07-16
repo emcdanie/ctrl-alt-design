@@ -36,9 +36,8 @@ const roles = [
   },
   {
     title: "UX/UI Designer, Product & Design Systems",
-    company: "***REMOVED***",
+    company: "A B2B travel management platform",
     period: "Jul 2024, Feb 2026",
-    logoSrc: "/images/logos/bizaway_logo.jpeg",
     caseStudySlug: "case-studies/design-system-transformation",
     caseStudyLabel: "From Drift to Foundation →",
     highlights: [

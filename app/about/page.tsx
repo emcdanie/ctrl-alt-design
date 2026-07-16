@@ -4,13 +4,9 @@ import { useState } from "react";
 import OverlayNav from "@/components/OverlayNav";
 import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/Button";
-import ProcessSection from "@/components/ProcessSection";
 import ExperienceSection from "@/components/ExperienceSection";
-import TestimonialSection from "@/components/TestimonialSection";
 import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
 import ResumeModal from "@/components/ResumeModal";
-import BackToWorkButton from "@/components/BackToWorkButton";
-import VinylPlayer from "@/components/VinylPlayer";
 import MetricsStrip from "@/components/MetricsStrip";
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
@@ -49,21 +45,38 @@ interface LearningEntry {
 
 const learningEntries: LearningEntry[] = [
   {
+    title: "Brad Frost Web Maker Program",
+    instructor: "Brad Frost",
+    type: "course",
+    year: "2024-2025",
+    topics: ["Atomic Design", "Design Systems", "AI Enablement", "Code-First"],
+    reflection: "Contributing to Brad Frost's own component system, code first. Atomic Design learned from the person who wrote it, and the first real proof for me that AI tooling can accelerate system investigation without replacing design judgement.",
+    relatedWork: { label: "Code First case study", href: "/case-studies/brad-frost" },
+  },
+  {
+    title: "Design Systems Course",
+    instructor: "Samantha Gordeshko, Smashing Magazine",
+    type: "course",
+    year: "2025",
+    topics: ["Design Systems", "Governance", "Contribution Models"],
+    reflection: "A structured pass through design system practice beyond my own habits: governance models, contribution flows, and how other teams keep systems alive after the launch excitement fades.",
+  },
+  {
     title: "Smart Interface Design Patterns",
     instructor: "Vitaly Friedman / Smashing Magazine",
     type: "workshop",
     year: "2025",
     topics: ["Complex filtering patterns", "Progressive disclosure", "Cognitive load in UI", "Enterprise navigation"],
-    reflection: "This workshop fundamentally shaped how I think about filtering as a decision-support system rather than a data-exposure mechanism. The pattern vocabulary I developed here directly influenced the ***REMOVED*** search and filtering redesign.",
+    reflection: "This workshop fundamentally shaped how I think about filtering as a decision-support system rather than a data-exposure mechanism. The pattern vocabulary I developed here directly influenced the search and filtering redesign on a B2B travel platform.",
     relatedWork: { label: "Search & Filtering Case Study", href: "/case-studies/filters-decision-support-system" },
   },
   {
     title: "Into Design Systems",
     instructor: "Into Design Systems Conference",
     type: "conference",
-    year: "2024",
+    year: "2025 & 2026",
     topics: ["Design token architecture", "Multi-brand systems", "Component governance", "Design-engineering handoff"],
-    reflection: "Attending IDS reinforced my conviction that design systems are fundamentally about shared language and governance, not component libraries. The talks on token architecture directly informed how I structured the ***REMOVED*** design system.",
+    reflection: "Attending IDS reinforced my conviction that design systems are fundamentally about shared language and governance, not component libraries. The talks on token architecture directly informed how I structured the design system on a B2B travel platform.",
     relatedWork: { label: "Design System Case Study", href: "/case-studies/design-system-transformation" },
   },
   {
@@ -72,7 +85,7 @@ const learningEntries: LearningEntry[] = [
     type: "course",
     year: "2024",
     topics: ["Complex tables and data grids", "Search UX patterns", "Accordion and disclosure patterns", "Form design at scale"],
-    reflection: "The deep-dive into table and data grid patterns was particularly relevant, I was designing admin dashboards at ***REMOVED*** at the time, and being able to apply these patterns immediately made the learning stick.",
+    reflection: "The deep-dive into table and data grid patterns was particularly relevant, I was designing admin dashboards on a B2B travel platform at the time, and being able to apply these patterns immediately made the learning stick.",
   },
 ];
 
@@ -257,7 +270,6 @@ export default function AboutPage() {
   return (
     <main className="page-shell min-h-screen text-[var(--color-ink-soft)]">
       <OverlayNav />
-      <BackToWorkButton />
 
       <div className="relative">
         {/* Hero / Intro */}
@@ -268,21 +280,16 @@ export default function AboutPage() {
                 <PageHeader eyebrow="About" title="Hey, I'm Elleta" />
                 <div style={{ display: "flex", flexDirection: "column", gap: "14px", maxWidth: "600px" }}>
                   <p className="body-lg">
-                    I&apos;m a product designer who works at the intersection of systems thinking
-                    and interaction design. I care about building things that are coherent, scalable,
-                    and genuinely useful, not just polished.
+                    I design AI-enabled design systems for complex, multi-role B2B and enterprise
+                    products. Tokens, components, and the governance that keeps them from drifting.
+                    I read code, trace how components actually behave in production, and work with
+                    engineers directly, so the system stays true on both sides of handoff.
                   </p>
                   <p className="body-lg">
-                    Most of my recent work has been in B2B SaaS, design systems, complex data interfaces,
-                    and multi-role platforms where the user journey is rarely linear and the stakes are high.
-                    I&apos;m drawn to the kind of problems where understanding the system matters more than
-                    making the screen look good.
-                  </p>
-                  <p className="body-lg">
-                    I&apos;m at my best when I&apos;m working on hard problems with people who care about
-                    getting them right. I think the best design work happens when you can hold the tension
-                    between user needs, business constraints, and technical reality, and find the solution
-                    that respects all three.
+                    Most of my work lives where the user journey is rarely linear and the stakes are
+                    high: booking platforms, operational dashboards, data-heavy tools. I&apos;m at my
+                    best on hard problems with people who care about getting them right, holding the
+                    tension between user needs, business constraints, and technical reality.
                   </p>
                 </div>
               </div>
@@ -387,24 +394,9 @@ export default function AboutPage() {
           <div style={{ borderTop: "1px solid var(--color-border-soft)" }} />
         </div>
 
-        {/* Currently Listening */}
-        <section className="layout-section">
-          <div className="page-container">
-            <p className="section-label mb-3">Currently Listening</p>
-            <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-6)" }}>
-              Design soundtrack
-            </h2>
-            <div style={{ maxWidth: "320px" }}>
-              <VinylPlayer />
-            </div>
-          </div>
-        </section>
-
         {/* ── Absorbed from the old home stack (IA consolidation) ── */}
-        <ProcessSection />
         <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
         <CtrlAltDesignSection />
-        <TestimonialSection />
         <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
 
         {/* CTA */}
