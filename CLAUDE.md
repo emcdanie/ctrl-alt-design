@@ -31,6 +31,11 @@ override the constitution.
 - Cascade trap: BELLA's unlayered `:root` beats `@theme`. Keep app theme tokens in an unlayered
   `:root` that loads AFTER imports so they win.
 
+## 1b. IA (nav)
+- Primary nav (Elleta, 2026-07-17, supersedes the four-item cap): **Work · System · Skills ·
+  About · Contact**. /design-system is a first-class page (the system inspecting itself);
+  the footer "See the system" colophon link stays.
+
 ## 2. Layout
 - One centered container, **max-width 1240px**, consistent horizontal padding, every page. Never full-bleed text.
 - Vertical rhythm from the scale (`--space-section` = 96px desktop). No inline/ad-hoc paddings.

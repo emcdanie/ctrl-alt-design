@@ -12,9 +12,10 @@ import ThemeSwitch from "@/components/ThemeSwitch";
  * on mobile. */
 const menuItems = [
   { num: "01", label: "Work", href: "/work" },
-  { num: "02", label: "Skills", href: "/skills" },
-  { num: "03", label: "About", href: "/about" },
-  { num: "04", label: "Contact", href: "/contact" },
+  { num: "02", label: "System", href: "/design-system" },
+  { num: "03", label: "Skills", href: "/skills" },
+  { num: "04", label: "About", href: "/about" },
+  { num: "05", label: "Contact", href: "/contact" },
 ];
 
 export default function OverlayNav() {

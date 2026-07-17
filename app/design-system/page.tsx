@@ -9,8 +9,9 @@ export const metadata: Metadata = {
     "The design system behind elleta.design: tokens, type, controls, and the governance gate, with every value read live from the running stylesheet.",
 };
 
-/* §8: the specimens page. Reached from the footer colophon, deliberately
-   not a 5th nav item (IA spec caps the nav at four). */
+/* The System page (phase 1, 2026-07-17): in the primary nav (Elleta's
+   decision supersedes the four-item cap; IA spec updated). The page is
+   the system inspecting itself, live values only. */
 export default function DesignSystemPage() {
   return (
     <main id="main-content">
@@ -20,7 +21,7 @@ export default function DesignSystemPage() {
         style={{ paddingTop: "calc(var(--header-height) + var(--spacing-16))" }}
       >
         <div className="layout-container">
-          <PageHeader eyebrow="The colophon, expanded" title="Design system" />
+          <PageHeader eyebrow="BELLA, the system behind the site" title="Design system" />
           <DesignSystemSpecimens />
         </div>
       </section>

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import { Button } from "@/components/ui/Button";
 import TokenInspector from "@/components/TokenInspector";
+import { Select } from "@/components/ui/Select";
 
 /**
  * §8 /design-system: the site inspecting itself. Every value on this
@@ -57,6 +58,9 @@ const GATE = [
   { name: "audit:copy", line: "No em or en dashes, and one positioning term only." },
   { name: "audit:controls", line: "Keycaps are actions only, max one primary per view, filters and view switches carry their ARIA state." },
   { name: "audit:nda", line: "A whole-tree content grep against a private banned-terms list. Renamed files cannot hide from it." },
+  { name: "audit:fonts", line: "Exactly two faces. Unique renders only through the display Heading primitive, the home hero, and the keycap lockup." },
+  { name: "audit:tokens", line: "No colour literals and no raw spacing in app or components. Waivers are inline, reasoned, and counted." },
+  { name: "audit:reuse", line: "Zero-import components fail. One implementation, no dead copy left rendering." },
 ];
 
 const ALL_TOKENS = [
@@ -70,6 +74,7 @@ export default function DesignSystemSpecimens() {
   const [values, setValues] = useState<Record<string, string>>({});
   const [view, setView] = useState("table");
   const [chipOn, setChipOn] = useState(true);
+  const [sortSpec, setSortSpec] = useState("year");
 
   const read = useCallback(() => {
     const cs = getComputedStyle(document.documentElement);
@@ -87,10 +92,18 @@ export default function DesignSystemSpecimens() {
 
   return (
     <div className="ds-page">
+      {/* ── Overview ── */}
       <p className="ds-page__intro">
-        This site is its own small design system, and this page is it inspecting itself.
-        Every value below is read live from computed styles, not copied into the page,
-        so it cannot drift from the stylesheet. Flip the theme and watch the values follow.
+        BELLA is the design system behind this site, small on purpose: a token layer every
+        surface resolves from, one control taxonomy with one job per control, and two
+        typefaces with locked roles. This page is the system inspecting itself. Every value
+        below is read live from computed styles, not copied into the page, so it cannot
+        drift from the stylesheet. Flip the theme and watch the values follow.
+      </p>
+      <p className="ds-page__intro">
+        It is also how I work with AI: the tokens rein the agent in, an agent can only
+        build with what the system exposes, and the gate keeps it honest. Eight audits run
+        before anything ships. Green or it does not merge.
       </p>
 
       {/* ── Colour ── */}
@@ -148,6 +161,7 @@ export default function DesignSystemSpecimens() {
         <div className="ds-specimen-row">
           <div className="ds-specimen">
             <p className="ds-section__kicker">Button</p>
+            <p className="ds-type__meta">True actions only; max one primary per view.</p>
             <div className="ds-specimen__body">
               <Button variant="primary">Primary</Button>
               <Button variant="secondary">Secondary</Button>
@@ -155,6 +169,7 @@ export default function DesignSystemSpecimens() {
           </div>
           <div className="ds-specimen">
             <p className="ds-section__kicker">SegmentedControl</p>
+            <p className="ds-type__meta">Mutually exclusive views; single select, aria-current.</p>
             <div className="ds-specimen__body">
               <SegmentedControl
                 label="Specimen views"
@@ -170,6 +185,7 @@ export default function DesignSystemSpecimens() {
           </div>
           <div className="ds-specimen">
             <p className="ds-section__kicker">FilterChip</p>
+            <p className="ds-type__meta">Multi-select filters; outline, aria-pressed, hover.</p>
             <div className="ds-specimen__body">
               <button type="button" className="filter-chip" aria-pressed={chipOn} onClick={() => setChipOn(!chipOn)}>
                 Design Tokens
@@ -181,9 +197,25 @@ export default function DesignSystemSpecimens() {
           </div>
           <div className="ds-specimen">
             <p className="ds-section__kicker">Tag and StatusPill</p>
+            <p className="ds-type__meta">Tag: flat metadata wash, never clickable. StatusPill: quiet status.</p>
             <div className="ds-specimen__body">
               <span className="tag">Non-interactive metadata</span>
               <span className="status-pill">Current focus</span>
+            </div>
+          </div>
+          <div className="ds-specimen">
+            <p className="ds-section__kicker">Select</p>
+            <p className="ds-type__meta">Dropdowns like sort; native, styled, never a keycap.</p>
+            <div className="ds-specimen__body">
+              <Select
+                label="Sort specimen"
+                value={sortSpec}
+                onChange={setSortSpec}
+                options={[
+                  { value: "year", label: "Year, newest first" },
+                  { value: "title", label: "Title A-Z" },
+                ]}
+              />
             </div>
           </div>
           <div className="ds-specimen">
@@ -237,11 +269,50 @@ export default function DesignSystemSpecimens() {
         <TokenInspector />
       </section>
 
+      {/* ── Rules of the system ── */}
+      <section className="ds-section" aria-labelledby="ds-rules">
+        <h2 id="ds-rules" className="ds-section__title">Rules of the system</h2>
+        <ol className="ds-rules">
+          <li>Tokens only; a raw value fails the gate.</li>
+          <li>No pure white and no pure black.</li>
+          <li>Body text never below 16px.</li>
+          <li>Two typefaces; Unique is display only.</li>
+          <li>Saturated iris means interactive, and only that.</li>
+          <li>One primary action per view.</li>
+          <li>One light source, upper left.</li>
+        </ol>
+      </section>
+
+      {/* ── Current status ── */}
+      <section className="ds-section" aria-labelledby="ds-status">
+        <h2 id="ds-status" className="ds-section__title">Current status</h2>
+        <div className="ds-status">
+          <div>
+            <p className="ds-section__kicker">Available now</p>
+            <ul className="ds-status__list">
+              <li>The token layer, both themes</li>
+              <li>The control taxonomy, live on every page</li>
+              <li>The gate, eight audits and a pre-commit hook</li>
+              <li>The dark-mode contract, AA on every route</li>
+            </ul>
+          </div>
+          <div>
+            <p className="ds-section__kicker">Coming next</p>
+            <ul className="ds-status__list">
+              <li>The Figma leg</li>
+              <li>A Storybook workshop</li>
+              <li>Agent-queryable BELLA Brain</li>
+              <li>npx bella init distribution</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* ── The gate ── */}
       <section className="ds-section" aria-labelledby="ds-gate">
         <h2 id="ds-gate" className="ds-section__title">The gate</h2>
         <p className="ds-section__note">
-          Five audits run before anything ships. Green or it does not merge.
+          Eight audits run before anything ships. Green or it does not merge.
         </p>
         <dl className="ds-gate">
           {GATE.map((g) => (

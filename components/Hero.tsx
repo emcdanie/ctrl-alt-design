@@ -42,6 +42,13 @@ export default function Hero() {
               Short on time? The quick version →
             </Link>
           </div>
+          {/* ONE pointer to the system (phase 1): a line, not a section */}
+          <p className={styles.systemLine}>
+            Built on its own design system.{" "}
+            <Link href="/design-system" className={styles.quietLink}>
+              Inspect it live →
+            </Link>
+          </p>
         </div>
 
         <BubbleCluster onOpenChange={setPeekOpen} />
