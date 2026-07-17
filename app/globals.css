@@ -159,6 +159,10 @@ body {
   --font-case-display: clamp(40px, 5vw, 96px);
   --font-hero: clamp(40px, 5vw, 56px);
   --font-section-title: clamp(32px, 2.5vw, 40px);
+  /* Display-section step (type-presence pass 2026-07-17): condensed
+     Unique needs more size than Geist did in the same slot. Endpoints
+     on the ramp (32/56); page tier stays larger at every width. */
+  --font-section-display: clamp(32px, 3.5vw, 56px);
   --font-subsection: clamp(24px, 2.2vw, 32px);
   --font-card-title: clamp(20px, 1.4vw, 24px);
   --font-body-size: clamp(16px, 1.1vw, 18px);
@@ -715,7 +719,7 @@ li {
 }
 
 .display-heading--section {
-  font-size: var(--font-section-title);
+  font-size: var(--font-section-display);
 }
 
 .display-heading--case {

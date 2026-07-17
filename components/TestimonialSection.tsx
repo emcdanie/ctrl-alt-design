@@ -68,11 +68,12 @@ function QuoteCard({
           <blockquote
             style={{
               fontFamily: "var(--font-body)",
-              fontSize: "var(--typography-font-size-base)",
+              fontSize: "var(--typography-font-size-lg)",
               color: "var(--color-ink-soft)",
-              lineHeight: 1.65,
+              lineHeight: 1.6,
               margin: 0,
               flex: 1,
+              maxWidth: "45ch",
             }}
           >
             {quote}

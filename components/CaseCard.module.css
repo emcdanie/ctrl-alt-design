@@ -101,7 +101,8 @@
 }
 
 .impact {
-  font-size: var(--typography-font-size-sm);
+  /* card body text: 16px minimum (type-presence pass) */
+  font-size: var(--typography-font-size-base);
   line-height: 1.55;
   color: var(--color-ink-soft);
 }
