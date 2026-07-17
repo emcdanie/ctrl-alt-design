@@ -102,8 +102,8 @@ other sizes.
 
 - Faces (revised 2026-07-17, supersedes the hero-only lock): exactly TWO
   typefaces. Unique 700 = ALL display headings (home hero headline, page
-  titles, section headers, bubble titles, case display headlines, keycap
-  lockup), all-caps, rendered through the ONE `ui/Heading` primitive
+  titles, section headers, case display headlines, keycap lockup),
+  all-caps, rendered through the ONE `ui/Heading` primitive
   (`.display-heading` tiers hero / page / section / case, accent span in
   iris). Unique never below 24px (keycap lockup excepted) and never in
   body, UI, card titles, eyebrows, meta, nav, buttons, or chips. Geist =

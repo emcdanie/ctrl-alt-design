@@ -21,7 +21,7 @@ export default function ContactPage() {
         style={{ paddingTop: "calc(var(--header-height) + var(--spacing-8))" }}
       >
         <div className="layout-container">
-          <PageHeader eyebrow="Get in touch" title="Contact" variant="bubble" />
+          <PageHeader eyebrow="Get in touch" title="Contact" />
         </div>
       </section>
       <TestimonialSection />

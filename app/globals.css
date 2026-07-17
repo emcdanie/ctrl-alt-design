@@ -73,9 +73,10 @@
 
 /* v3: every semantic heading defaults to the Unique display face. Class-level
    font-family still wins. TYPE LOCK: exactly two faces. Unique renders
-   ONLY in the hero/bubble display surfaces (.bubble-heading__title, the
-   home hero headline, the .kbd-logo brand lockup); every heading, label,
-   and eyebrow is Geist. No mono family exists. */
+   only through the display Heading primitive (.display-heading), the
+   home hero headline, and the .kbd-logo brand lockup; labels, body, and
+   eyebrows are Geist. No mono family exists. Bubble page headers are
+   PARKED (last live at e25eefc; may return in the expression pass). */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
 }
@@ -1054,89 +1055,11 @@ section[id],
   scroll-padding-top: calc(var(--header-height) + var(--spacing-4));
 }
 
-/* ─── §8 BubbleHeading — the one-per-page title device ──────────── */
-
-.bubble-heading {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: var(--spacing-6);
-}
-
-.bubble-heading__orb {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* smaller device — the bubble anchors the page, it doesn't dominate it */
-  width: clamp(210px, 24vw, 320px);
-  aspect-ratio: 1;
-  border-radius: var(--radius-full);
-  padding: var(--spacing-6);
-  background: radial-gradient(circle at 36% 30%, var(--bub-hi), var(--bub-lo));
-  box-shadow:
-    13px 22px 44px rgba(0, 0, 0, 0.26),
-    inset 7px 9px 18px rgba(255, 255, 255, 0.5),
-    inset -9px -13px 28px rgba(0, 0, 0, 0.16);
-}
-
-.bubble-heading__orb::after {
-  content: "";
-  position: absolute;
-  top: 15%;
-  left: 22%;
-  width: 22%;
-  height: 18%;
-  border-radius: var(--radius-full);
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 72%);
-}
-
-.bubble-heading__title {
-  font-family: var(--font-hero-display);
-  font-weight: 700;
-  /* Unique is ultra-condensed: a long one-line title reads as vertical
-     strokes. ALWAYS horizontal, wrapped to 2-3 balanced lines and sized
-     up to fill the orb. Never rotate, never writing-mode. */
-  font-size: clamp(26px, 3.4vw, 46px);
-  line-height: 1.06;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
-  text-align: center;
-  text-wrap: balance;
-  max-width: 3.6em;
-  color: var(--hero-bub-ink);
-  margin: 0;
-}
-
-.bubble-heading__link {
-  width: 12px;
-  height: 96px; /* longer — the connector reaches down into the content */
-  margin-left: clamp(105px, 12vw, 160px); /* under the smaller orb's centre */
-}
-
-.bubble-heading__link line {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: bubble-heading-draw 0.5s ease-out 0.1s forwards;
-}
-
-@keyframes bubble-heading-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bubble-heading__link line {
-    animation: none;
-    stroke-dashoffset: 0;
-  }
-}
 
 /* Portrait bubble (About): the glossy orb recipe holding a photo.
-   Same one-light-source treatment as .bubble-heading__orb (upper-left
-   gloss, down-right shadow) plus an iris outline ring so the photo
-   reads as a deliberate device, not a cropped square. */
+   One-light-source treatment (upper-left gloss, down-right shadow,
+   --shadow-orb family) plus an iris outline ring so the photo reads
+   as a deliberate device, not a cropped square. */
 .photo-bubble {
   position: relative;
   width: clamp(180px, 18vw, 240px);
@@ -1170,16 +1093,6 @@ section[id],
   border-radius: var(--radius-full);
   background: radial-gradient(circle, rgba(255, 255, 255, 0.55), transparent 72%);
   pointer-events: none;
-}
-
-@media (max-width: 640px) {
-  .bubble-heading__orb {
-    width: min(220px, 74vw);
-  }
-
-  .bubble-heading__link {
-    margin-left: min(110px, 37vw);
-  }
 }
 
 /* ─── Decision-led case blocks ──────────────────────────────────── */
@@ -1639,12 +1552,6 @@ textarea:focus-visible {
 
 
 /* §8: the case title device wrapper */
-.cs-shell__hero--bubble {
-  display: flex;
-  justify-content: flex-start;
-  padding: var(--spacing-4) 0 0;
-}
-
 
 
 

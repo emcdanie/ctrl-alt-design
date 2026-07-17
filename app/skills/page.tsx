@@ -24,7 +24,7 @@ export default function SkillsPage() {
         style={{ paddingTop: "calc(var(--header-height) + var(--spacing-16))" }}
       >
         <div className="layout-container">
-          <PageHeader eyebrow="Skill overlap, mapped to the work" title="Skills" variant="bubble" />
+          <PageHeader eyebrow="Skill overlap, mapped to the work" title="Skills" />
           <MatrixView
             caseFilters={caseFilters}
             skillFilters={skillFilters}

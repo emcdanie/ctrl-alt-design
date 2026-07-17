@@ -79,14 +79,12 @@ for (const f of [...appFiles, ...componentFiles]) {
 /* 6. Unique stays a display face — its tokens only appear in the
  * sanctioned hero/logo/display files. (Runtime <24px use is caught by
  * audit:contrast; this stops the drift at the source.) */
-const UNIQUE_OK = ["app/globals.css", "app/layout.tsx", "components/Hero.module.css",
-  "components/PageHeader.tsx", "components/CaseCard.module.css",
-  "components/DesignSystemSpecimens.tsx"];
+const UNIQUE_OK = ["app/globals.css", "app/layout.tsx", "components/Hero.module.css"];
 for (const f of [...appFiles, ...componentFiles]) {
   if (UNIQUE_OK.some((e) => f.includes(e))) continue;
   const s = readFileSync(f, "utf8");
   if (/--font-hero-display|--font-unique/.test(s)) {
-    fail(`Unique font token in ${f} — Unique is the bubble-heading/hero/logo face only (sanctioned files: ${UNIQUE_OK.join(", ")})`);
+    fail(`Unique font token in ${f} — Unique renders only via the Heading primitive classes, home hero, or keycap logo (sanctioned files: ${UNIQUE_OK.join(", ")})`);
   }
 }
 

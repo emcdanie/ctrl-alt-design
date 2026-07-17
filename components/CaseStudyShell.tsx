@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
 import { Button } from "@/components/ui/Button";
-import BubbleHeading from "@/components/ui/BubbleHeading";
+import Heading from "@/components/ui/Heading";
 import GlassBanner from "@/components/ui/GlassBanner";
 
 /* ── Types ─────────────────────────────────────────────────────── */
@@ -84,7 +84,7 @@ export default function CaseStudyShell({
           <p className="cs-shell__eyebrow">{eyebrow}</p>
 
           {/* Title */}
-          {/* title lives in the BubbleHeading (right column, §8) */}
+          {/* title lives in the flat case Heading (right column) */}
 
           {/* Summary */}
           <p className="cs-shell__summary">{summary}</p>
@@ -169,10 +169,12 @@ export default function CaseStudyShell({
           <span aria-hidden="true">←</span> Back to Work
         </Link>
 
-        {/* §8: THE title device, the case title inside its identity bubble,
-            connector feeding the content below */}
-        <div className="cs-shell__hero cs-shell__hero--bubble">
-          <BubbleHeading title={title} hi={caseItem?.hi} lo={caseItem?.lo} />
+        {/* Flat case title (flat-headers pass): Heading case tier in the
+            case identity colour; bubbles are parked. */}
+        <div className="cs-shell__hero">
+          <Heading tier="case" as="h1" style={caseItem ? { color: caseItem.text } : undefined}>
+            {title}
+          </Heading>
         </div>
 
         {/* Mobile header, title, meta, tags (below hero on small screens) */}
