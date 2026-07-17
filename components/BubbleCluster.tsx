@@ -225,17 +225,27 @@ export default function BubbleCluster({
       >
         <div className={styles.space}>
           <svg className={styles.links} viewBox={`0 0 ${DESIGN_W} ${DESIGN_H}`} aria-hidden="true">
-            {LINES.map((l, i) => (
-              <line
-                key={i}
-                {...l}
-                className={
-                  selected !== null && (CONNS[i][0] === selected || CONNS[i][1] === selected)
-                    ? styles.on
-                    : undefined
-                }
-              />
-            ))}
+            {LINES.map((l, i) => {
+              const on =
+                selected !== null && (CONNS[i][0] === selected || CONNS[i][1] === selected);
+              /* a connector dims with its endpoints: full-strength
+                 hairlines through 35%-opacity discs read as lines ON
+                 TOP of the bubbles (docs/fixes/map-connector-dim.md) */
+              const dimmed =
+                highlightIds &&
+                (!highlightIds.includes(BUBBLES[CONNS[i][0]].id) ||
+                  !highlightIds.includes(BUBBLES[CONNS[i][1]].id));
+              return (
+                <line
+                  key={i}
+                  {...l}
+                  className={
+                    [on ? styles.on : "", dimmed ? styles.dimLine : ""].filter(Boolean).join(" ") ||
+                    undefined
+                  }
+                />
+              );
+            })}
           </svg>
 
         <button

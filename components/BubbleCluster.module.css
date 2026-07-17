@@ -42,6 +42,10 @@
   transition: stroke 0.2s, stroke-width 0.2s;
 }
 
+.links line.dimLine {
+  opacity: 0.18;
+}
+
 .links line.on,
 .on {
   stroke: var(--hero-iris-bright);
