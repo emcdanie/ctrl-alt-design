@@ -18,16 +18,6 @@ export interface CaseStudyMetrics {
   scope: string;
 }
 
-export interface NarrativeSection {
-  label?: string;
-  heading: string;
-  paragraphs: string[];
-  /** Optional embedded visual (HTML file) shown after this section */
-  embedSrc?: string;
-  embedAlt?: string;
-  embedAspect?: string;
-}
-
 /* ── Content blocks — the ONE case-study render path ──────────────
  * An ordered sequence that can represent everything the (former)
  * hand-built pages rendered. Sections nest non-section blocks. */
@@ -107,7 +97,6 @@ export interface CaseStudy {
   fullWidthImage?: string;
   tags: string[];
   description: string;
-  narrative?: NarrativeSection[];
   /** Ordered content blocks — when present, they ARE the page body
    *  (narrative/structured modes are ignored). */
   blocks?: CaseBlock[];
