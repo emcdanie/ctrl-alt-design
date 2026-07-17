@@ -8,17 +8,20 @@ export const metadata: Metadata = {
   description: "Get in touch, open to full-time roles and select freelance projects.",
 };
 
-/* Contact: short and single-purpose. Header, ways to reach her, CTA;
-   testimonials live on About. Tight rhythm, no dead first fold. */
+/* Contact rebuild (2026-07-17): ONE display heading on the page, then
+   the panel, then the footer bar. Short and single-purpose. */
 export default function ContactPage() {
   return (
     <main id="main-content">
       <OverlayNav />
       <section
-        style={{ paddingTop: "calc(var(--header-height) + var(--spacing-8))", paddingBottom: "var(--spacing-4)" }}
+        style={{
+          paddingTop: "calc(var(--header-height) + var(--spacing-8))",
+          paddingBottom: "var(--spacing-6)",
+        }}
       >
         <div className="layout-container">
-          <PageHeader eyebrow="Get in touch" title="Contact" />
+          <PageHeader eyebrow="Contact" title="Let&apos;s work together." />
         </div>
       </section>
       <ContactSection />
