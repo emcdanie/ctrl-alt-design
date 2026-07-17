@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import BubbleCluster from "./BubbleCluster";
 import CaseCard from "./CaseCard";
+import FindYourFit from "@/components/FindYourFit";
 import { Button } from "@/components/ui/Button";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import { FilterChip } from "@/components/ui/FilterChip";
@@ -150,6 +151,7 @@ export default function WorkLibrary() {
         <p className={styles.count} role="status">
           {caseItems.length} case studies, {labCount} lab
         </p>
+        <FindYourFit />
         <div className={styles.curatedGrid}>
           {featured && (
             <div className={styles.featuredSlot}>
