@@ -60,15 +60,28 @@ export default function ContactSection() {
     setYear(new Date().getFullYear());
   }, []);
 
+  const fieldError = (key: keyof FormState, value: string): string | undefined => {
+    if (key === "name" && !value.trim()) return "Name is required";
+    if (key === "email") {
+      if (!value.trim()) return "Email is required";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "Please enter a valid email address";
+    }
+    if (key === "message" && !value.trim()) return "Message is required";
+    return undefined;
+  };
+
+  /* validate on blur, not only on submit: each field reports (or clears)
+     its own error the moment the visitor leaves it */
+  const handleBlur = (key: keyof FormState) => {
+    setErrors((prev) => ({ ...prev, [key]: fieldError(key, form[key]) }));
+  };
+
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
-    if (!form.name.trim()) newErrors.name = "Name is required";
-    if (!form.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      newErrors.email = "Please enter a valid email address";
+    for (const key of ["name", "email", "message"] as const) {
+      const err = fieldError(key, form[key]);
+      if (err) newErrors[key] = err;
     }
-    if (!form.message.trim()) newErrors.message = "Message is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -218,6 +231,7 @@ export default function ContactSection() {
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    onBlur={() => handleBlur("name")}
                     className="contact-field"
                     style={fieldStyle(!!errors.name)}
                     aria-invalid={!!errors.name}
@@ -247,6 +261,7 @@ export default function ContactSection() {
                     placeholder="name@studio.com"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    onBlur={() => handleBlur("email")}
                     className="contact-field"
                     style={fieldStyle(!!errors.email)}
                     aria-invalid={!!errors.email}
@@ -274,6 +289,7 @@ export default function ContactSection() {
                     required
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    onBlur={() => handleBlur("message")}
                     className="contact-field"
                     style={{ ...fieldStyle(!!errors.message), minHeight: "160px", resize: "vertical" }}
                     aria-invalid={!!errors.message}

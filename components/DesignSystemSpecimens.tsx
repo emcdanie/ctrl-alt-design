@@ -205,8 +205,8 @@ export default function DesignSystemSpecimens() {
               <SegmentedControl
                 label="Specimen views"
                 options={[
-                  { value: "table", label: "Table" },
-                  { value: "map", label: "Map" },
+                  { value: "table", label: "Table", icon: "Table" },
+                  { value: "map", label: "Map", icon: "Map" },
                 ]}
                 value={view}
                 onChange={setView}

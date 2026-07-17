@@ -1,40 +1,77 @@
 /* Work library — Map / Table / Timeline. Frames per DESIGN.md: one card
  * radius, token spacing, §5 ramp type only. */
 
-.controls {
+/* ── ONE toolbar row (rebuild 2026-07-18): search left, switcher right ── */
+.toolbar {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: var(--spacing-4);
+  gap: var(--spacing-6);
   flex-wrap: wrap;
-  margin-bottom: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
 }
 
-.viewGroup {
+.toolbarSearch {
+  flex: 1 1 420px;
+  min-width: 0;
   display: flex;
-  gap: var(--spacing-2);
+  flex-direction: column;
+  gap: var(--spacing-3);
 }
 
-.sortControl {
-  display: inline-flex;
+.toolbarSwitcher {
+  flex: 0 0 auto;
+}
+
+.searchRow {
+  display: flex;
   align-items: center;
-  gap: var(--spacing-2);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
 }
 
-.sortControl select {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  color: var(--color-ink);
-  background: var(--color-card);
-  border: 1px solid var(--color-semantic-border-subtle);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-2) var(--spacing-3);
+.searchInput {
+  flex: 1 1 260px;
+  min-width: 0;
+  max-width: 640px;
   min-height: var(--spacing-touch-target);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2) var(--spacing-4);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.5;
+  color: var(--color-ink);
+}
+
+.searchInput::placeholder {
+  color: var(--color-muted);
+}
+
+.searchInput:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.quickPicks {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+}
+
+.fitResults {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-8);
+}
+
+.sortRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-3);
 }
 
 .filterRow {
@@ -96,7 +133,7 @@
   align-items: center;
   gap: var(--spacing-2);
   cursor: pointer;
-  min-height: 32px;
+  min-height: var(--spacing-touch-target);
   padding: var(--spacing-1) var(--spacing-3);
   border: none;
   border-radius: var(--radius-full);
@@ -200,6 +237,8 @@
   font-weight: 600;
   font-size: var(--typography-font-size-base);
   text-decoration: none;
+  /* 44px house rule, inline hit-area growth (no layout shift in the row) */
+  padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
 }
 
 .rowTitle:hover,
@@ -511,26 +550,6 @@
 
 .featuredSlot {
   grid-column: 1 / -1;
-}
-
-.exploreLine {
-  margin: var(--spacing-8) 0 0;
-}
-
-.exploreLink {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--spacing-touch-target);
-  padding: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  font-weight: 600;
-  color: var(--color-accent-ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
 @media (max-width: 640px) {

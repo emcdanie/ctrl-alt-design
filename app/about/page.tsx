@@ -184,6 +184,7 @@ function LearningEntryCard({ entry }: { entry: LearningEntry }) {
             style={{
               display: "inline-flex",
               alignItems: "center",
+              minHeight: "var(--spacing-touch-target)",
               gap: "var(--spacing-2)",
               fontFamily: "var(--font-body)",
               fontSize: "var(--typography-font-size-tag)",
@@ -191,7 +192,6 @@ function LearningEntryCard({ entry }: { entry: LearningEntry }) {
               color: "var(--color-accent-ink)",
               textDecoration: "underline",
               textUnderlineOffset: "3px",
-              minHeight: "var(--spacing-touch-target)",
             }}
           >
             → {entry.relatedWork.label}

@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
-import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
 import { Tag } from "@/components/ui/Tag";
 import Heading from "@/components/ui/Heading";
 import CtaBanner from "@/components/ui/CtaBanner";
@@ -158,12 +156,9 @@ export default function CaseStudyShell({
             </div>
           )}
 
-          {/* CTA */}
-          <div className="cs-shell__cta">
-            <Button href="/contact" variant="primary">
-              Get in touch <Icon name="ArrowRight" size="sm" />
-            </Button>
-          </div>
+          {/* Template rule (Pass B 2026-07-18): ONE contact action per
+              case page. The sidebar is information; the closing
+              CtaBanner is the ask. No button here. */}
         </div>
       </aside>
 

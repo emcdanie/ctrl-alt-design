@@ -299,6 +299,9 @@ body {
      .toggle). Down-right plate + soft cast shadow + inset top highlight;
      :active sinks the key (translateY(3px)) onto a reduced plate. */
   --btn-key-radius: var(--radius-lg);
+  /* secondary keycaps must clear their ground in both themes (Pass B):
+     ONE token-level border, no per-instance overrides */
+  --btn-key-border: var(--key-edge);
   --shadow-key-resting:
     2px 5px 0 var(--key-edge),
     6px 9px 14px rgba(25, 23, 32, 0.18),
@@ -401,7 +404,9 @@ body {
 
 .kbd-logo .key-iris {
   color: var(--key-face-hi); /* fixed white — the face is fixed too */
-  background: linear-gradient(var(--key-iris-hi), var(--key-iris-lo));
+  /* fill tokens, not iris-hi: white labels need >=4.5 on every stop
+     (#6C5CE0 4.9, #5B4BD1 6.1; the lighter #8E7EEC was 3.3) */
+  background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
   box-shadow:
     2px 5px 0 var(--key-iris-edge),
     6px 10px 18px color-mix(in srgb, var(--color-accent-ink) 36%, transparent),
@@ -532,8 +537,10 @@ body {
 [data-theme="dark"] body {
   --color-ink: #F4EFE6;
   --color-ink-soft: #E6E1D6;
-  --color-ink-muted: #B9B4C7;
-  --color-muted: #B9B4C7;
+  /* AAA bump (Pass B 2026-07-18): 7.5:1 on the elevated surface
+     #2B2B5C, 8.4 on card, 9.4 on page (was #B9B4C7, 6.5 on surface) */
+  --color-ink-muted: #C6C2D4;
+  --color-muted: #C6C2D4;
   --color-page: #1B1B40;
   --color-cream: #232350;
   --color-card: #232350;
@@ -587,6 +594,9 @@ li {
   position: fixed;
   left: var(--space-2);
   top: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
   padding: var(--space-1) var(--space-2);
   background: var(--color-ink);
   color: var(--color-page);
@@ -858,21 +868,27 @@ li {
   display: inline-flex;
   list-style: none;
   margin: 0;
-  padding: 0;
+  /* concentric radii (pixel pass 2026-07-18): the selected fill's
+     radius = container radius minus this inset, so the curves share a
+     centre instead of the fill following the container clip */
+  --seg-inset: 3px;
+  padding: var(--seg-inset);
   gap: 0;
   border: 1px solid var(--color-border-medium);
   border-radius: var(--radius-lg);
   background: var(--color-glass);
-  overflow: hidden;
 }
 
 .seg-control button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
   border: none;
   background: transparent;
   cursor: pointer;
   min-height: 38px;
   padding: 0 var(--spacing-4);
-  border-radius: 0;
+  border-radius: calc(var(--radius-lg) - var(--seg-inset));
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 600;
@@ -884,6 +900,12 @@ li {
 /* hairline divider between segments (markup is ul > li > button) */
 .seg-control li + li button {
   box-shadow: -1px 0 0 0 var(--color-border-medium);
+}
+
+/* no divider against the selected fill: the seam dies on the trailing
+   side too (the selected button's own ring already replaces its side) */
+.seg-control li:has(button[aria-current="true"]) + li button {
+  box-shadow: none;
 }
 
 .seg-control button[aria-current="true"] {
@@ -1013,7 +1035,9 @@ li {
   justify-content: center;
   gap: var(--spacing-2);
   cursor: pointer;
-  border: none;
+  /* visible border + the raised plate: the cap never blends into its
+     ground (token-level, both themes) */
+  border: 1px solid var(--btn-key-border);
   border-radius: var(--btn-key-radius);
   padding: 11px 18px;
   min-height: var(--spacing-touch-target);
@@ -1049,6 +1073,7 @@ li {
 
 .btn-key--primary {
   color: var(--key-face-hi);
+  border-color: var(--key-fill-edge);
   background: var(--gloss-key), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
   box-shadow:
     2px 5px 0 var(--key-fill-edge),
@@ -1216,7 +1241,15 @@ button:focus-visible {
   opacity: 1; /* Firefox lowers placeholder opacity by default; reset for AAA */
 }
 
-/* Footer nav links: muted resting, full ink on hover (theme-aware) */
+/* Footer nav links: muted resting, full ink on hover (theme-aware).
+   44px house rule: inline links keep their line box but grow the hit
+   area via block padding (inline elements paint/hit padding without
+   moving lines), centred on the touch target with lh. */
+.footer-nav-link,
+.touch-inline {
+  padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
+}
+
 .footer-nav-link:hover {
   color: var(--color-ink);
 }
@@ -1739,12 +1772,6 @@ textarea:focus-visible {
   padding: var(--spacing-2) var(--spacing-4);
 }
 
-/* CTA (desktop sidebar) */
-.cs-shell__cta {
-  margin-top: var(--spacing-2);
-  padding-top: var(--spacing-4);
-  border-top: 1px solid var(--color-border-soft);
-}
 
 
 
@@ -1998,6 +2025,8 @@ textarea:focus-visible {
   color: var(--color-accent-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
+  /* 44px house rule, inline hit-area growth */
+  padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
 }
 
 .ds-opening {

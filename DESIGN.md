@@ -274,3 +274,17 @@ keycap face carries the specular sheen from the one upper-left light
 (`--gloss-key` family): sheen brightens on hover, shifts down on press,
 never animates on its own, and stays translucent so the per-stop
 contrast check judges the real fill stops.
+
+## One contact action per case page (Pass B, 2026-07-18)
+
+Template rule: a case page carries exactly ONE contact action, the
+closing CtaBanner. The sidebar is information (meta, tags, demo links),
+never the ask; it has no button. The same rule generalises: no route
+duplicates its primary ask in two surfaces.
+
+## Form submit placement (Pass B, 2026-07-18)
+
+Single-column forms left-align the submit button with the fields (NN/g
+single-column guidance, settled as the site rule); full-width below
+768px. The contact form is the reference implementation. Forms validate
+on blur per field, and again on submit.

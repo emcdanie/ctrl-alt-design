@@ -73,6 +73,9 @@
   border: none;
   background: transparent;
   cursor: pointer;
+  /* inline-flex so min-height actually applies to the anchor */
+  display: inline-flex;
+  align-items: center;
   min-height: var(--spacing-touch-target);
   padding: 0 var(--spacing-2);
   font-family: var(--font-body);

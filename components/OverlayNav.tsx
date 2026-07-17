@@ -145,9 +145,16 @@ export default function OverlayNav() {
         ref={menuRef}
         id="overlay-menu"
         inert={!open}
-        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[color:var(--color-ink)] transition-[clip-path] duration-300 ease-[cubic-bezier(0.76,0,0.24,1)]"
+        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[color:var(--color-ink)] ease-[cubic-bezier(0.76,0,0.24,1)]"
         style={{
           clipPath: open ? "inset(0% 0 0% 0)" : "inset(100% 0 0% 0)",
+          /* belt-and-braces with the inert guard: closed-menu content can
+             never paint or catch focus. visibility flips instantly on
+             open, and waits for the 300ms clip animation on close. */
+          visibility: open ? "visible" : "hidden",
+          transitionProperty: "clip-path, visibility",
+          transitionDuration: "300ms, 0s",
+          transitionDelay: open ? "0s, 0s" : "0s, 300ms",
         }}
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,var(--color-glass-strong),transparent_36%),radial-gradient(circle_at_bottom_right,var(--color-semantic-accent-subtle),transparent_34%)]" />
@@ -217,7 +224,8 @@ export default function OverlayNav() {
               href={social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-fit font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.18em] text-[color:var(--color-ink-muted)] transition-colors duration-150 hover:text-[color:var(--color-ink)]"
+              className="inline-flex w-fit items-center font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.18em] text-[color:var(--color-ink-muted)] transition-colors duration-150 hover:text-[color:var(--color-ink)]"
+              style={{ minHeight: "var(--spacing-touch-target)" }}
             >
               LinkedIn
             </a>

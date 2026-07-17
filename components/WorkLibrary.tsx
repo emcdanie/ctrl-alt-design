@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import BubbleCluster from "./BubbleCluster";
 import CaseCard from "./CaseCard";
 import FindYourFit from "@/components/FindYourFit";
@@ -14,17 +14,18 @@ import { Tag } from "@/components/ui/Tag";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { SKILLS, WORK_ITEMS, slugify, type WorkItem } from "@/lib/workLibrary";
 import styles from "./WorkLibrary.module.css";
-import { WorkFilterBar } from "@/components/WorkFilters";
+import { WorkFilterBar, useWorkFilters } from "@/components/WorkFilters";
 import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
 
-/* The library: one collection, three views (segmented control), flat
- * multi-select filter chips with an applied row above the results, and
- * ONE sort source of truth (the URL param; column headers set it in the
- * table view, the select mirrors it on map/cards where there are no
- * headers). Map is the default and reset state; the skills matrix
- * lives on its own /skills page (IA lock 2026-07-17). */
+/* The library (toolbar rebuild 2026-07-18): ONE toolbar row above
+ * everything — find-your-fit search on the left, view switcher on the
+ * right, both always visible. Cards is the default view and IS the
+ * curated composition (featured CHIP, ranked case grid, Explorations);
+ * Map and Table carry the filter rows (dense) and sort. The former
+ * ?explore hidden state is retired; the view lives in the URL (`view`
+ * param, back/forward safe, defaults keep clean URLs). */
 
-const VIEWS = ["map", "table"] as const;
+const VIEWS = ["cards", "map", "table"] as const;
 type View = (typeof VIEWS)[number];
 
 const SORTS = {
@@ -51,12 +52,10 @@ function sortItems(items: WorkItem[], sort: SortKey): WorkItem[] {
   });
 }
 
-const parseList = (v: string | null) => (v ? v.split(",").filter(Boolean) : []);
-
 export default function WorkLibrary() {
-  const router = useRouter();
-  const pathname = usePathname();
   const params = useSearchParams();
+  const { caseFilters, skillFilters, typeFilters, toggleList, clearAll, setFilterParams } =
+    useWorkFilters();
   const [trayOpen, setTrayOpen] = useState(false);
   const trayRef = useRef<HTMLDivElement>(null);
 
@@ -74,39 +73,12 @@ export default function WorkLibrary() {
     };
   }, [trayOpen]);
 
-  const explore = params.get("explore") !== null;
   const view: View = (VIEWS as readonly string[]).includes(params.get("view") ?? "")
     ? (params.get("view") as View)
-    : "map";
-  const caseFilters = parseList(params.get("case"));
-  const skillFilters = parseList(params.get("skill"));
-  const typeFilters = parseList(params.get("type"));
+    : "cards";
   const sort: SortKey = params.get("sort") && params.get("sort")! in SORTS
     ? (params.get("sort") as SortKey)
     : "year-desc";
-
-  const setParams = useCallback(
-    (updates: Record<string, string | null>) => {
-      const next = new URLSearchParams(params.toString());
-      for (const [k, v] of Object.entries(updates)) {
-        if (v === null || v === "") next.delete(k);
-        else next.set(k, v);
-      }
-      if (next.get("view") === "map") next.delete("view");
-      if (next.get("sort") === "year-desc") next.delete("sort");
-      const qs = next.toString();
-      router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
-    },
-    [params, pathname, router]
-  );
-
-  const toggleList = useCallback(
-    (key: "case" | "skill" | "type", val: string, current: string[]) => {
-      const next = current.includes(val) ? current.filter((v) => v !== val) : [...current, val];
-      setParams({ [key]: next.join(",") });
-    },
-    [setParams]
-  );
 
   const filtered = useMemo(() => {
     let items = WORK_ITEMS;
@@ -118,188 +90,163 @@ export default function WorkLibrary() {
   }, [caseFilters, skillFilters, typeFilters, sort]);
 
   const hasFilters = caseFilters.length > 0 || skillFilters.length > 0 || typeFilters.length > 0;
-  const appliedChips = [
-    ...caseFilters.map((id) => ({
-      key: `case:${id}`,
-      label: WORK_ITEMS.find((i) => i.id === id)?.title ?? id,
-      remove: () => toggleList("case", id, caseFilters),
-    })),
-    ...skillFilters.map((sl) => ({
-      key: `skill:${sl}`,
-      label: SKILLS.find((s) => slugify(s) === sl) ?? sl,
-      remove: () => toggleList("skill", sl, skillFilters),
-    })),
-    ...typeFilters.map((m) => ({
-      key: `type:${m}`,
-      label: m,
-      remove: () => toggleList("type", m, typeFilters),
-    })),
-  ];
+  const appliedCount = caseFilters.length + skillFilters.length + typeFilters.length;
 
   const caseItems = WORK_ITEMS.filter((i) => i.medium === "case study");
   const featured = caseItems.find((i) => i.featured);
   const rankedRest = caseItems.filter((i) => !i.featured);
   const labCount = WORK_ITEMS.filter((i) => i.medium === "prototype").length;
 
-  /* ── Curated default (IA hybrid, 2026-07-17): zero machinery.
-     Featured CHIP, ranked case grid (order = content data), then the
-     Explorations section. The library machinery lives behind ONE
-     explore control (?explore + existing params, reload-safe). ── */
-  if (!explore) {
-    return (
-      <div>
-        <p className={styles.count} role="status">
-          {caseItems.length} case studies, {labCount} lab
-        </p>
-        <FindYourFit />
-        <div className={styles.curatedGrid}>
-          {featured && (
-            <div className={styles.featuredSlot}>
-              <CaseCard item={featured} coverSrc="/case/chip/chip-evidence-0-bridge-hero.png" />
-            </div>
-          )}
-          {rankedRest.map((i) => (
-            <CaseCard key={i.id} item={i} />
-          ))}
-        </div>
-        <p className={styles.exploreLine}>
-          <button
-            type="button"
-            className={styles.exploreLink}
-            onClick={() => setParams({ explore: "1" })}
-          >
-            Explore the full library: map, table, filters →
-          </button>
-        </p>
-        <CtrlAltDesignSection />
-      </div>
-    );
-  }
-
   return (
     <div>
-      <p className={styles.exploreLine}>
-        <button
-          type="button"
-          className={styles.exploreLink}
-          onClick={() => setParams({ explore: null, view: null, case: null, skill: null, type: null, sort: null })}
-        >
-          ← Back to the curated view
-        </button>
-      </p>
-      {/* ── View switch + sort (select only where no headers exist) ── */}
-      <div className={styles.controls}>
-        <SegmentedControl
-          label="View mode"
-          options={VIEWS.map((v) => ({ value: v, label: v }))}
-          value={view}
-          onChange={(v) => setParams({ view: v === "map" ? null : v })}
-        />
-        {view === "map" && (
-          <Select
-            label="Sort"
-            value={sort}
-            onChange={(v) => setParams({ sort: v === "year-desc" ? null : v })}
-            options={Object.entries(SORTS).map(([k, s]) => ({ value: k, label: s.label }))}
+      {/* ── ONE toolbar: search left (find-your-fit), switcher right ── */}
+      <FindYourFit
+        switcher={
+          <SegmentedControl
+            label="View mode"
+            options={[
+              { value: "cards", label: "cards", icon: "ViewGrid" },
+              { value: "map", label: "map", icon: "Map" },
+              { value: "table", label: "table", icon: "Table" },
+            ]}
+            value={view}
+            onChange={(v) => setFilterParams({ view: v === "cards" ? null : v }, { push: true })}
           />
-        )}
-      </div>
+        }
+      />
 
-      {/* Mobile: one Filter button opens the tray (never 15 wrapped chips) */}
-      <div className={styles.trayTrigger}>
-        <button
-          type="button"
-          className={styles.trayTriggerBtn}
-          aria-expanded={trayOpen}
-          onClick={() => setTrayOpen(true)}
-        >
-          Filter{appliedChips.length > 0 ? ` (${appliedChips.length})` : ""}
-        </button>
-      </div>
-
-      {trayOpen && (
-        <div
-          ref={trayRef}
-          tabIndex={-1}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Filters"
-          className={styles.tray}
-        >
-          <div className={styles.trayHeader}>
-            <p className={styles.count} role="status">
-              {filtered.length} of {WORK_ITEMS.length} pieces
-            </p>
-            <button type="button" className={styles.clearAll} onClick={() => setParams({ case: null, skill: null, type: null })}>
-              Clear all
-            </button>
+      {/* ── Cards: the curated composition, zero machinery ── */}
+      {view === "cards" && (
+        <div>
+          <p className={styles.count} role="status">
+            {caseItems.length} case studies, {labCount} lab
+          </p>
+          <div className={styles.curatedGrid}>
+            {featured && (
+              <div className={styles.featuredSlot}>
+                <CaseCard item={featured} coverSrc="/case/chip/chip-evidence-0-bridge-hero.png" />
+              </div>
+            )}
+            {rankedRest.map((i) => (
+              <CaseCard key={i.id} item={i} />
+            ))}
           </div>
-          <details open className={styles.trayGroup}>
-            <summary>Case</summary>
-            <div className={styles.trayChips}>
-              {WORK_ITEMS.map((i) => (
-                <FilterChip
-                  key={i.id}
-                  pressed={caseFilters.includes(i.id)}
-                  onClick={() => toggleList("case", i.id, caseFilters)}
-                >
-                  {i.title}
-                </FilterChip>
-              ))}
-            </div>
-          </details>
-          <details className={styles.trayGroup}>
-            <summary>Type</summary>
-            <div className={styles.trayChips}>
-              {[...new Set(WORK_ITEMS.map((i) => i.medium))].map((m) => (
-                <FilterChip
-                  key={m}
-                  pressed={typeFilters.includes(slugify(m))}
-                  onClick={() => toggleList("type", slugify(m), typeFilters)}
-                >
-                  {m}
-                </FilterChip>
-              ))}
-            </div>
-          </details>
-          <details className={styles.trayGroup}>
-            <summary>Skill</summary>
-            <div className={styles.trayChips}>
-              {SKILLS.map((sk) => (
-                <FilterChip
-                  key={sk}
-                  pressed={skillFilters.includes(slugify(sk))}
-                  onClick={() => toggleList("skill", slugify(sk), skillFilters)}
-                >
-                  {sk}
-                </FilterChip>
-              ))}
-            </div>
-          </details>
-          <div className={styles.trayApply}>
-            <Button variant="primary" onClick={() => setTrayOpen(false)} className="w-full">
-              Show {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
-            </Button>
-          </div>
+          <CtrlAltDesignSection />
         </div>
       )}
 
-      {/* ── ONE shared filter bar (WorkFilters): chips + applied + count ── */}
-      <WorkFilterBar
-        caseFilters={caseFilters}
-        skillFilters={skillFilters}
-        typeFilters={typeFilters}
-        toggleList={toggleList}
-        clearAll={() => setParams({ case: null, skill: null, type: null })}
-        matchCount={filtered.length}
-        desktopOnly
-        dense
-      />
+      {/* ── Map / Table: filters (dense) + sort ride with the views ── */}
+      {view !== "cards" && (
+        <div>
+          {/* Mobile: one Filter button opens the tray (never 15 wrapped chips) */}
+          <div className={styles.trayTrigger}>
+            <button
+              type="button"
+              className={styles.trayTriggerBtn}
+              aria-expanded={trayOpen}
+              onClick={() => setTrayOpen(true)}
+            >
+              Filter{appliedCount > 0 ? ` (${appliedCount})` : ""}
+            </button>
+          </div>
 
-      {view === "table" && <TableView items={filtered} sort={sort} setParams={setParams} />}
-      {view === "map" && (
-        <div className={styles.mapWrap}>
-          <BubbleCluster highlightIds={hasFilters ? filtered.map((i) => i.id) : null} />
+          {trayOpen && (
+            <div
+              ref={trayRef}
+              tabIndex={-1}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Filters"
+              className={styles.tray}
+            >
+              <div className={styles.trayHeader}>
+                <p className={styles.count} role="status">
+                  {filtered.length} of {WORK_ITEMS.length} pieces
+                </p>
+                <button type="button" className={styles.clearAll} onClick={clearAll}>
+                  Clear all
+                </button>
+              </div>
+              <details open className={styles.trayGroup}>
+                <summary>Case</summary>
+                <div className={styles.trayChips}>
+                  {WORK_ITEMS.map((i) => (
+                    <FilterChip
+                      key={i.id}
+                      pressed={caseFilters.includes(i.id)}
+                      onClick={() => toggleList("case", i.id, caseFilters)}
+                    >
+                      {i.title}
+                    </FilterChip>
+                  ))}
+                </div>
+              </details>
+              <details className={styles.trayGroup}>
+                <summary>Type</summary>
+                <div className={styles.trayChips}>
+                  {[...new Set(WORK_ITEMS.map((i) => i.medium))].map((m) => (
+                    <FilterChip
+                      key={m}
+                      pressed={typeFilters.includes(slugify(m))}
+                      onClick={() => toggleList("type", slugify(m), typeFilters)}
+                    >
+                      {m}
+                    </FilterChip>
+                  ))}
+                </div>
+              </details>
+              <details className={styles.trayGroup}>
+                <summary>Skill</summary>
+                <div className={styles.trayChips}>
+                  {SKILLS.map((sk) => (
+                    <FilterChip
+                      key={sk}
+                      pressed={skillFilters.includes(slugify(sk))}
+                      onClick={() => toggleList("skill", slugify(sk), skillFilters)}
+                    >
+                      {sk}
+                    </FilterChip>
+                  ))}
+                </div>
+              </details>
+              <div className={styles.trayApply}>
+                <Button variant="primary" onClick={() => setTrayOpen(false)} className="w-full">
+                  Show {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* ── ONE shared filter bar (WorkFilters): chips + applied + count ── */}
+          <WorkFilterBar
+            caseFilters={caseFilters}
+            skillFilters={skillFilters}
+            typeFilters={typeFilters}
+            toggleList={toggleList}
+            clearAll={clearAll}
+            matchCount={filtered.length}
+            desktopOnly
+            dense
+          />
+
+          {/* sort stays with the filters (headers sort in the table view) */}
+          {view === "map" && (
+            <div className={styles.sortRow}>
+              <Select
+                label="Sort"
+                value={sort}
+                onChange={(v) => setFilterParams({ sort: v === "year-desc" ? null : v })}
+                options={Object.entries(SORTS).map(([k, s]) => ({ value: k, label: s.label }))}
+              />
+            </div>
+          )}
+
+          {view === "table" && <TableView items={filtered} sort={sort} setParams={setFilterParams} />}
+          {view === "map" && (
+            <div className={styles.mapWrap}>
+              <BubbleCluster highlightIds={hasFilters ? filtered.map((i) => i.id) : null} />
+            </div>
+          )}
         </div>
       )}
     </div>

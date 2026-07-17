@@ -26,16 +26,20 @@ export function useWorkFilters() {
   const typeFilters = parseList(params.get("type"));
 
   const setFilterParams = useCallback(
-    (updates: Record<string, string | null>) => {
+    (updates: Record<string, string | null>, opts?: { push?: boolean }) => {
       const next = new URLSearchParams(params.toString());
       for (const [k, v] of Object.entries(updates)) {
         if (v === null || v === "") next.delete(k);
         else next.set(k, v);
       }
-      if (next.get("view") === "map") next.delete("view");
+      if (next.get("view") === "cards") next.delete("view");
       if (next.get("sort") === "year-desc") next.delete("sort");
       const qs = next.toString();
-      router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+      const url = qs ? `${pathname}?${qs}` : pathname;
+      /* view changes PUSH (back/forward traverses views); filter and
+         sort tweaks replace (no history spam while narrowing) */
+      if (opts?.push) router.push(url, { scroll: false });
+      else router.replace(url, { scroll: false });
     },
     [params, pathname, router]
   );

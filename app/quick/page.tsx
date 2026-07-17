@@ -86,7 +86,7 @@ export default function QuickPage() {
             <TokenInspector />
             <p className="body-base" style={{ marginTop: "var(--spacing-3)", color: "var(--color-ink-muted)" }}>
               Live values from this site&apos;s own token layer.{" "}
-              <Link href="/design-system" style={{ color: "var(--color-accent-ink)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+              <Link href="/design-system" className="touch-inline" style={{ color: "var(--color-accent-ink)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
                 The full system
               </Link>
               .
