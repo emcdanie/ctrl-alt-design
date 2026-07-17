@@ -48,50 +48,53 @@ function QuoteCard({
   return (
     <FadeIn delay={delay} distance={4} className="h-full">
       <Card className="h-full" innerClassName="flex flex-col gap-[var(--spacing-3)]">
-        {/* small quote glyph, soft periwinkle tint */}
-        <span
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "var(--font-subsection)",
-            lineHeight: 1,
-            color: "var(--color-semantic-accent)",
-            opacity: 0.35,
-            userSelect: "none",
-          }}
-          aria-hidden
-        >
-          &ldquo;
-        </span>
+        <figure style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)", flex: 1, margin: 0 }}>
+          {/* quote glyph: Unique display at >=24px, soft peri tint.
+              Recorded audit:fonts exception (the ONE decorative Unique). */}
+          <span
+            style={{
+              fontFamily: "var(--font-hero-display)",
+              fontSize: "var(--font-subsection)",
+              lineHeight: 1,
+              color: "var(--color-accent-peri)",
+              opacity: 0.35,
+              userSelect: "none",
+            }}
+            aria-hidden
+          >
+            &ldquo;
+          </span>
 
-        <blockquote
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--typography-font-size-base)",
-            color: "var(--color-ink-soft)",
-            lineHeight: 1.65,
-            margin: 0,
-            flex: 1,
-          }}
-        >
-          {quote}
-        </blockquote>
+          <blockquote
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "var(--typography-font-size-base)",
+              color: "var(--color-ink-soft)",
+              lineHeight: 1.65,
+              margin: 0,
+              flex: 1,
+            }}
+          >
+            {quote}
+          </blockquote>
 
-        {/* attribution: one quiet line */}
-        <p
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--typography-font-size-tag)",
-            margin: 0,
-            paddingTop: "var(--spacing-3)",
-            borderTop: "1px solid var(--color-border-soft)",
-            color: "var(--color-muted)",
-            lineHeight: 1.4,
-          }}
-        >
-          <span style={{ fontWeight: 600, color: "var(--color-ink)" }}>{name}</span>
-          {", "}
-          {role}
-        </p>
+          {/* attribution: one quiet line */}
+          <figcaption
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "var(--typography-font-size-tag)",
+              margin: 0,
+              paddingTop: "var(--spacing-3)",
+              borderTop: "1px solid var(--color-border-soft)",
+              color: "var(--color-muted)",
+              lineHeight: 1.4,
+            }}
+          >
+            <span style={{ fontWeight: 600, color: "var(--color-ink)" }}>{name}</span>
+            {", "}
+            {role}
+          </figcaption>
+        </figure>
       </Card>
     </FadeIn>
   );
@@ -127,7 +130,7 @@ export default function TestimonialSection() {
                 fontFamily: "var(--font-body)",
                 fontSize: "var(--typography-font-size-tag)",
                 fontWeight: "var(--typography-font-weight-medium)",
-                color: "var(--color-muted)",
+                color: "var(--color-accent-ink)",
                 textDecoration: "underline",
                 textUnderlineOffset: "3px",
                 letterSpacing: "0.02em",
