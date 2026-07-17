@@ -7,6 +7,7 @@ import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseStudyShell from "@/components/CaseStudyShell";
 import { Body, PullQuote, Section, Eyebrow, H2 } from "@/components/CaseStudyTypography";
 import { BoldText } from "@/lib/richtext";
+import ChipReadinessMap from "@/components/ChipReadinessMap";
 
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -273,6 +274,40 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
           {block.evidence && <Block block={block.evidence} title={title} marker={marker} markerText={markerText} />}
         </div>
       );
+    case "figure":
+      return (
+        <figure style={{ margin: "var(--spacing-6) 0" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={block.src}
+            alt={block.alt}
+            width={block.width}
+            height={block.height}
+            loading="lazy"
+            style={{
+              width: "100%",
+              height: "auto",
+              borderRadius: "var(--radius-xl)",
+              border: "1px solid var(--color-border-soft)",
+            }}
+          />
+          {block.caption && (
+            <figcaption
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "var(--typography-font-size-sm)",
+                color: "var(--color-muted)",
+                marginTop: "var(--spacing-2)",
+                lineHeight: 1.5,
+              }}
+            >
+              {block.caption}
+            </figcaption>
+          )}
+        </figure>
+      );
+    case "readinessMap":
+      return <ChipReadinessMap rows={block.rows} />;
     case "lessons":
       return (
         <Section eyebrow="LESSONS" heading="What this changed">

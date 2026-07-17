@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Single-line contour drawing: a grid of inspection cells with a hand resting on an approve switch">
+  <!-- CHIP cover motif (shared imagery language): ONE continuous contour
+       line, muted-warm ink on parchment. A 3x4 inspection grid drawn as
+       a single serpentine stroke that exits into a resting hand whose
+       finger sits on an approve switch. Do not add fills. -->
+  <rect width="800" height="500" fill="#F4EFE6"/>
+  <path
+    fill="none"
+    stroke="#4A4030"
+    stroke-width="4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="M96 96
+       h132 v66 h-132 v66 h132 v66 h-132 v66 h132
+       m0 -264 h132 v66 h-132
+       m132 0 v66 h-132
+       m132 0 v66 h-132
+       m132 -198 h132 v66 h-132
+       m132 0 v66 h-132
+       m132 0 v66 h-132
+       m132 -66 c34 6 62 18 78 40
+       c10 14 8 30 -4 38
+       c-10 7 -24 4 -30 -8
+       c-8 -16 -6 -34 6 -46
+       c14 -14 36 -16 52 -6
+       c20 12 30 34 28 56
+       c-2 26 -20 46 -44 54
+       c-16 5 -34 4 -48 -4
+       c-12 -7 -20 -18 -22 -32
+       m88 -18
+       c26 -4 50 4 64 22
+       c10 13 12 30 4 42
+       c-8 12 -24 16 -36 8
+       c-10 -7 -12 -20 -6 -30
+       c8 -12 24 -14 36 -8
+       c18 10 26 30 22 50"/>
+  <!-- the approve switch under the fingertip: part of the same visual
+       line weight, drawn as an open pill + thumb -->
+  <path
+    fill="none"
+    stroke="#4A4030"
+    stroke-width="4"
+    stroke-linecap="round"
+    d="M560 384 h96 a24 24 0 0 1 0 48 h-96 a24 24 0 0 1 0 -48 z
+       M632 408 a16 16 0 1 1 0.1 0 z"/>
+</svg>

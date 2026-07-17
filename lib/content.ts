@@ -63,7 +63,18 @@ export type CaseBlock =
       /** interactive recreation, never a client screenshot */
       evidence?: CaseBlock;
     }
-  | { kind: "lessons"; text: string };
+  | { kind: "lessons"; text: string }
+  /* photographic/still evidence attached to a decision (never a gallery) */
+  | { kind: "figure"; src: string; alt: string; caption?: string; width: number; height: number }
+  /* CHIP: the interactive AI-readiness inspection map (illustrative data) */
+  | {
+      kind: "readinessMap";
+      rows: {
+        id: string;
+        label: string;
+        cells: { station: string; status: "red" | "warn" | "green"; note: string }[];
+      }[];
+    };
 
 export interface CaseStudy {
   slug: string;

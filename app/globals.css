@@ -221,6 +221,11 @@ body {
   --case-design-lab-text: var(--case-design-lab-deep);
   --case-writing-text: var(--case-writing-deep);
   --case-filters-text: var(--case-filters-deep);
+  /* CHIP (2026): teal identity, AA as text on light (deep) and navy (hi) */
+  --case-chip-hi: #9ED9D2;
+  --case-chip-lo: #79C6BC;
+  --case-chip-deep: #1D6A61;
+  --case-chip-text: var(--case-chip-deep);
   --case-filters-hi: #AFC9E8;
   --case-filters-lo: #8FB4DC;
   --case-filters-deep: #2A5A8E;
@@ -304,6 +309,7 @@ body {
   --case-design-lab-text: var(--case-design-lab-hi);
   --case-writing-text: var(--case-writing-hi);
   --case-filters-text: var(--case-filters-hi);
+  --case-chip-text: var(--case-chip-hi);
   --hero-panel-bg: #F4EFE6;
   --hero-panel-shadow: rgba(0, 0, 0, 0.44);
   --hero-link: rgba(244, 239, 230, 0.2);
