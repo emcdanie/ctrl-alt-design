@@ -13,6 +13,7 @@ import { Tag } from "@/components/ui/Tag";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { SKILLS, WORK_ITEMS, slugify, type WorkItem } from "@/lib/workLibrary";
 import styles from "./WorkLibrary.module.css";
+import { WorkFilterBar } from "@/components/WorkFilters";
 
 /* The library: one collection, three views (segmented control), flat
  * multi-select filter chips with an applied row above the results, and
@@ -31,8 +32,6 @@ const SORTS = {
   "type-asc": { label: "Type A-Z", key: "type", dir: 1 },
 } as const;
 type SortKey = keyof typeof SORTS;
-
-const SKILLS_VISIBLE = 6;
 
 function sortItems(items: WorkItem[], sort: SortKey): WorkItem[] {
   const { key, dir } = SORTS[sort];
@@ -56,7 +55,6 @@ export default function WorkLibrary() {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
-  const [skillsExpanded, setSkillsExpanded] = useState(false);
   const [trayOpen, setTrayOpen] = useState(false);
   const trayRef = useRef<HTMLDivElement>(null);
 
@@ -127,8 +125,6 @@ export default function WorkLibrary() {
       remove: () => toggleList("skill", sl, skillFilters),
     })),
   ];
-
-  const visibleSkills = skillsExpanded ? SKILLS : SKILLS.slice(0, SKILLS_VISIBLE);
 
   return (
     <div>
@@ -215,61 +211,15 @@ export default function WorkLibrary() {
         </div>
       )}
 
-      {/* ── Filters: flat chips; skills behind progressive disclosure ── */}
-      <div className={`${styles.filterRow} ${styles.desktopOnly}`} role="group" aria-label="Filter by case study">
-        <span className={styles.filterLabel}>Case</span>
-        {WORK_ITEMS.map((i) => (
-          <FilterChip
-            key={i.id}
-            pressed={caseFilters.includes(i.id)}
-            onClick={() => toggleList("case", i.id, caseFilters)}
-          >
-            {i.title}
-          </FilterChip>
-        ))}
-      </div>
-      <div className={`${styles.filterRow} ${styles.desktopOnly}`} role="group" aria-label="Filter by skill">
-        <span className={styles.filterLabel}>Skill</span>
-        {visibleSkills.map((s) => (
-          <FilterChip
-            key={s}
-            pressed={skillFilters.includes(slugify(s))}
-            onClick={() => toggleList("skill", slugify(s), skillFilters)}
-          >
-            {s}
-          </FilterChip>
-        ))}
-        <button
-          type="button"
-          className={styles.moreToggle}
-          aria-expanded={skillsExpanded}
-          onClick={() => setSkillsExpanded((e) => !e)}
-        >
-          {skillsExpanded ? "Show fewer" : `+ ${SKILLS.length - SKILLS_VISIBLE} more`}
-        </button>
-      </div>
-
-      {/* ── Applied filters above the results + live count ── */}
-      <div className={styles.appliedRow}>
-        <p className={styles.count} role="status">
-          {filtered.length} of {WORK_ITEMS.length} pieces
-        </p>
-        {appliedChips.map((c) => (
-          <button key={c.key} type="button" className={styles.appliedChip} onClick={c.remove}>
-            {c.label} <span aria-hidden="true">✕</span>
-            <span className="sr-only">Remove filter</span>
-          </button>
-        ))}
-        {hasFilters && (
-          <button
-            type="button"
-            className={styles.clearAll}
-            onClick={() => setParams({ case: null, skill: null })}
-          >
-            Clear all
-          </button>
-        )}
-      </div>
+      {/* ── ONE shared filter bar (WorkFilters): chips + applied + count ── */}
+      <WorkFilterBar
+        caseFilters={caseFilters}
+        skillFilters={skillFilters}
+        toggleList={toggleList}
+        clearAll={() => setParams({ case: null, skill: null })}
+        matchCount={filtered.length}
+        desktopOnly
+      />
 
       {view === "table" && <TableView items={filtered} sort={sort} setParams={setParams} />}
       {view === "map" && (

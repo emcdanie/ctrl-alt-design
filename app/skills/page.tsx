@@ -1,21 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense } from "react";
 import OverlayNav from "@/components/OverlayNav";
 import PageHeader from "@/components/PageHeader";
 import { MatrixView } from "@/components/WorkLibrary";
+import { WorkFilterBar, useWorkFilters } from "@/components/WorkFilters";
 
-/* IA lock 2026-07-17: the Work "skills" view promoted to its own page
-   (nav: Work · Skills · About · Contact). Same MatrixView component,
-   moved not rebuilt; cell colours are the case identity tokens paired
-   with dots + labels, never colour alone. */
+/* /skills (skills-filters pass 2026-07-17): the same URL-synced filter
+   bar as /work above the overlap matrix. Chips and matrix cells read
+   and write the same comma params, back/forward safe. Active-filter
+   overlap colouring is the matrix's existing emphasis (case identity
+   tints + dots), no new colour system. */
+function SkillsBody() {
+  const { caseFilters, skillFilters, toggleList, clearAll, matchCount } = useWorkFilters();
+  return (
+    <>
+      <WorkFilterBar
+        caseFilters={caseFilters}
+        skillFilters={skillFilters}
+        toggleList={toggleList}
+        clearAll={clearAll}
+        matchCount={matchCount}
+      />
+      <MatrixView
+        caseFilters={caseFilters}
+        skillFilters={skillFilters}
+        toggleCase={(id) => toggleList("case", id, caseFilters)}
+        toggleSkill={(slug) => toggleList("skill", slug, skillFilters)}
+      />
+    </>
+  );
+}
+
 export default function SkillsPage() {
-  const [caseFilters, setCaseFilters] = useState<string[]>([]);
-  const [skillFilters, setSkillFilters] = useState<string[]>([]);
-
-  const toggle = (list: string[], set: (v: string[]) => void, value: string) =>
-    set(list.includes(value) ? list.filter((v) => v !== value) : [...list, value]);
-
   return (
     <main id="main-content">
       <OverlayNav />
@@ -25,12 +42,10 @@ export default function SkillsPage() {
       >
         <div className="layout-container">
           <PageHeader eyebrow="Skill overlap, mapped to the work" title="Skills" />
-          <MatrixView
-            caseFilters={caseFilters}
-            skillFilters={skillFilters}
-            toggleCase={(id) => toggle(caseFilters, setCaseFilters, id)}
-            toggleSkill={(slug) => toggle(skillFilters, setSkillFilters, slug)}
-          />
+          {/* useSearchParams requires a Suspense boundary */}
+          <Suspense fallback={null}>
+            <SkillsBody />
+          </Suspense>
         </div>
       </section>
     </main>
