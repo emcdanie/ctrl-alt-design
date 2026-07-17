@@ -11,6 +11,7 @@ import Card from "@/components/ui/Card";
 import DisclosureCard from "@/components/ui/DisclosureCard";
 import SectionHeader from "@/components/ui/SectionHeader";
 import GlassBanner from "@/components/ui/GlassBanner";
+import TestimonialSection from "@/components/TestimonialSection";
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
 
@@ -350,6 +351,9 @@ export default function AboutPage() {
 
         <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
         <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
+
+        {/* Social proof: the page ends with third-party words, then the ask */}
+        <TestimonialSection />
 
         {/* Close + CTA */}
         <section className="layout-section-tight">
