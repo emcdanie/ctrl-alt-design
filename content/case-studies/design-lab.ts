@@ -29,7 +29,6 @@ const study: CaseStudy = {
  * design-system-transformation.ts for the model). Nothing here renders
  * while commented.
  *
- * { kind: "meta", role: "...", team: "...", scope: ["..."], timeline: "..." },
  * { kind: "summary",
  *   context: "TODO(elleta): the situation and the tension",
  *   approach: "TODO(elleta): LEAD WITH THE DECISION",

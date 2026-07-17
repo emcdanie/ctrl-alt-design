@@ -90,7 +90,7 @@
 @media (max-width: 860px) {
   .hero {
     grid-template-columns: 1fr;
-    padding: 88px 22px 150px;
+    padding: 88px 22px 150px /* token-waiver: proto-exact mobile hero geometry (recorded) */;
     gap: var(--spacing-6);
     min-height: 0;
   }

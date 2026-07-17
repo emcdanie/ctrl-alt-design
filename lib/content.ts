@@ -54,7 +54,6 @@ export type CaseBlock =
   | { kind: "prototype"; src: string; title: string; height?: string }
   | { kind: "section"; eyebrow: string; heading: string; children: CaseBlock[] }
   /* decision-led template (Arthur-Kamsky / Justine structure) */
-  | { kind: "meta"; role: string; team: string; scope: string[]; timeline: string }
   | { kind: "summary"; context: string; approach: string; outcome: string }
   | {
       kind: "decision";

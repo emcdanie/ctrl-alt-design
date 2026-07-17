@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import localFont from "next/font/local";
 import DevTools from "@/components/DevTools";
 import IconProvider from "@/components/ui/IconProvider";
@@ -10,13 +10,8 @@ const geist = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 // redesign/lush — Unique is reserved for the large hero headline ONLY
-// (fails legibility at label sizes). Everything else is Geist / Geist Mono.
+// (fails legibility at label sizes). Everything else is Geist.
 // Licensed webfonts, free for commercial use; files unmodified.
 const unique = localFont({
   src: [
@@ -48,7 +43,7 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>
-      <body className={`${geist.variable} ${geistMono.variable} ${unique.variable} antialiased`}>
+      <body className={`${geist.variable} ${unique.variable} antialiased`}>
         <a href="#main-content" className="skip-link">Skip to content</a>
         <DevTools />
         <IconProvider>{children}</IconProvider>

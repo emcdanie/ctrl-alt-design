@@ -3,6 +3,9 @@
 import { useState } from "react";
 import LogoContainer from "@/components/LogoContainer";
 import ExperienceCard from "@/components/ExperienceCard";
+import Card from "@/components/ui/Card";
+import SectionHeader from "@/components/ui/SectionHeader";
+import SectionShell from "@/components/ui/SectionShell";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 
@@ -95,45 +98,6 @@ interface ExperienceSectionProps {
   onResumeClick?: () => void;
 }
 
-interface SectionShellProps {
-  id: string;
-  children: React.ReactNode;
-}
-
-function SectionShell({ id, children }: SectionShellProps) {
-  return (
-    <section id={id} className="layout-section">
-      <div className="layout-container">{children}</div>
-    </section>
-  );
-}
-
-interface SectionHeaderProps {
-  label: string;
-  title: string;
-  description?: string;
-  action?: React.ReactNode;
-}
-
-function SectionHeader({ label, title, description, action }: SectionHeaderProps) {
-  return (
-    <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
-      <div>
-        <p className="section-label mb-3">{label}</p>
-        <h2 className="heading-section">
-          {title}
-        </h2>
-        {description && (
-          <p className="body-base mt-3 max-w-xl" style={{ color: "var(--color-muted)" }}>
-            {description}
-          </p>
-        )}
-      </div>
-      {action}
-    </div>
-  );
-}
-
 export default function ExperienceSection({ onResumeClick }: ExperienceSectionProps) {
   const [expanded, setExpanded] = useState<number | null>(0);
 
@@ -142,7 +106,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
       <SectionHeader
         label="Track Record"
         title="Experience"
-        action={
+        actions={
           onResumeClick ? (
             <Button onClick={onResumeClick} variant="primary">
               Download Resume
@@ -170,14 +134,11 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
         />
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
           {education.map((edu) => (
-            <div
-              key={edu.name}
-              className="overflow-hidden rounded-[var(--radius-2xl)] border border-[color:var(--color-semantic-border-glass-edge)] bg-gradient-to-b from-white/72 to-white/58 shadow-[0_8px_24px_var(--color-alpha-shadow-warm-04),0_1px_4px_var(--color-alpha-shadow-warm-03),inset_0_1px_0_rgba(255,255,255,0.8)] [backdrop-filter:blur(var(--bella-blur-lg))] [-webkit-backdrop-filter:blur(var(--bella-blur-lg))]"
-            >
-              <div className="flex w-full items-center gap-4 px-5 py-5 md:px-6 md:py-6">
+            <Card key={edu.name} innerClassName="!p-0 overflow-hidden">
+              <div className="flex w-full items-center gap-4 p-6">
                 <LogoContainer src={edu.logo} alt={edu.name} size={48} />
                 <div className="min-w-0 flex-1">
-                  <span className="font-display text-[length:var(--typography-font-size-base)] font-semibold leading-[1.3] text-[color:var(--color-ink)] md:text-[length:var(--typography-font-size-lg)]">
+                  <span className="font-body text-[length:var(--typography-font-size-base)] font-semibold leading-[1.3] text-[color:var(--color-ink)] md:text-[length:var(--typography-font-size-lg)]">
                     {edu.name}
                   </span>
                   <div className="mt-1 text-[length:var(--typography-font-size-sm)] leading-relaxed text-[color:var(--color-ink-muted)]">
@@ -186,13 +147,13 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                 </div>
               </div>
               {edu.description && (
-                <div className="border-t border-black/6 px-5 pb-5 pt-4 md:px-6 md:pb-6">
+                <div className="border-t border-[color:var(--color-border-soft)] px-6 pb-6 pt-4">
                   <p className="text-[length:var(--typography-font-size-base)] leading-[1.75] text-[color:var(--color-ink-soft)]">
                     {edu.description}
                   </p>
                 </div>
               )}
-            </div>
+            </Card>
           ))}
         </div>
       </div>

@@ -23,9 +23,9 @@ export default function BubbleHeading({
       >
         <h1 className="bubble-heading__title">{title}</h1>
       </span>
-      <svg className="bubble-heading__link" viewBox="0 0 12 64" aria-hidden="true">
-        <line x1="6" y1="0" x2="6" y2="54" stroke="var(--hero-link)" strokeWidth="1.5" pathLength="1" />
-        <circle cx="6" cy="58" r="4" fill="var(--hero-iris-bright)" />
+      <svg className="bubble-heading__link" viewBox="0 0 12 96" aria-hidden="true">
+        <line x1="6" y1="0" x2="6" y2="86" stroke="var(--hero-link)" strokeWidth="1.5" pathLength="1" />
+        <circle cx="6" cy="90" r="4" fill="var(--hero-iris-bright)" />
       </svg>
     </div>
   );

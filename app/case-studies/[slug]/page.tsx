@@ -6,6 +6,7 @@ import PrototypeEmbed from "@/components/PrototypeEmbed";
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseStudyShell from "@/components/CaseStudyShell";
 import { Body, PullQuote, Section, Eyebrow, H2 } from "@/components/CaseStudyTypography";
+import { BoldText } from "@/lib/richtext";
 
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -13,18 +14,9 @@ export async function generateStaticParams() {
 
 /** Renders inline **bold** markers inside a paragraph */
 function RichBody({ text }: { text: string }) {
-  const parts = text.split(/(\*\*[^*]+\*\*)/g);
   return (
     <Body>
-      {parts.map((part, i) =>
-        part.startsWith("**") && part.endsWith("**") ? (
-          <strong key={i} style={{ fontWeight: 600, color: "var(--color-ink)" }}>
-            {part.slice(2, -2)}
-          </strong>
-        ) : (
-          <span key={i}>{part}</span>
-        )
-      )}
+      <BoldText text={text} strongStyle={{ fontWeight: 600, color: "var(--color-ink)" }} />
     </Body>
   );
 }
@@ -81,7 +73,7 @@ function EmbedBlock({
         borderRadius: "var(--radius-xl)",
         marginBottom: "var(--spacing-8)",
         background: "var(--color-semantic-surface)",
-        border: "1px solid rgba(0,0,0,0.06)",
+        border: "1px solid var(--color-border-soft)",
       }}
     >
       {/* Desktop: aspect-ratio driven. Mobile: min-height fallback */}
@@ -219,16 +211,16 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
       );
     case "demoStep":
       return (
-        <div style={{ marginBottom: "28px" }}>
+        <div style={{ marginBottom: "var(--spacing-6)" }}>
           <p
             style={{
-              fontFamily: "var(--font-display)",
+              fontFamily: "var(--font-mono)",
               fontSize: "var(--typography-font-size-tag)",
               fontWeight: "var(--typography-font-weight-bold)",
               color: "var(--color-muted)",
               letterSpacing: "var(--typography-letter-spacing-wide)",
               textTransform: "uppercase",
-              marginBottom: "6px",
+              marginBottom: "var(--spacing-2)",
             }}
           >
             {block.index}
@@ -254,15 +246,6 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
       );
     case "prototype":
       return <PrototypeEmbed src={block.src} title={block.title} height={block.height ?? "700px"} />;
-    case "meta":
-      return (
-        <dl className="cs-meta-block">
-          <div><dt>Role</dt><dd>{block.role}</dd></div>
-          <div><dt>Team</dt><dd>{block.team}</dd></div>
-          <div><dt>Scope</dt><dd>{block.scope.join(" · ")}</dd></div>
-          <div><dt>Timeline</dt><dd>{block.timeline}</dd></div>
-        </dl>
-      );
     case "summary":
       return (
         <div className="cs-summary-block">

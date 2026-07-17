@@ -10,7 +10,7 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
       textTransform: "uppercase" as const,
       letterSpacing: "var(--typography-letter-spacing-wider)",
       color: "var(--color-accent-ink)",
-      marginBottom: "14px",
+      marginBottom: "var(--spacing-4)",
     }}>
       {children}
     </p>
@@ -57,7 +57,7 @@ export function PullQuote({ children }: { children: React.ReactNode }) {
       color: "var(--color-ink-soft)",
       /* periwinkle rule — fill-only accent use */
       borderLeft: "3px solid var(--color-semantic-accent)",
-      paddingLeft: "28px",
+      paddingLeft: "var(--spacing-6)",
       paddingTop: "var(--spacing-5)",
       paddingBottom: "var(--spacing-5)",
       paddingRight: "var(--spacing-2)",

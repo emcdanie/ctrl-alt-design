@@ -18,9 +18,10 @@ import styles from "./WorkLibrary.module.css";
  * multi-select filter chips with an applied row above the results, and
  * ONE sort source of truth (the URL param; column headers set it in the
  * table view, the select mirrors it on map/cards where there are no
- * headers). Table is the accessible default. */
+ * headers). Map is the default and reset state; the skills matrix
+ * lives on its own /skills page (IA lock 2026-07-17). */
 
-const VIEWS = ["table", "map", "cards", "skills"] as const;
+const VIEWS = ["map", "table", "cards"] as const;
 type View = (typeof VIEWS)[number];
 
 const SORTS = {
@@ -75,7 +76,7 @@ export default function WorkLibrary() {
 
   const view: View = (VIEWS as readonly string[]).includes(params.get("view") ?? "")
     ? (params.get("view") as View)
-    : "table";
+    : "map";
   const caseFilters = parseList(params.get("case"));
   const skillFilters = parseList(params.get("skill"));
   const sort: SortKey = params.get("sort") && params.get("sort")! in SORTS
@@ -89,7 +90,7 @@ export default function WorkLibrary() {
         if (v === null || v === "") next.delete(k);
         else next.set(k, v);
       }
-      if (next.get("view") === "table") next.delete("view");
+      if (next.get("view") === "map") next.delete("view");
       if (next.get("sort") === "year-desc") next.delete("sort");
       const qs = next.toString();
       router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
@@ -137,7 +138,7 @@ export default function WorkLibrary() {
           label="View mode"
           options={VIEWS.map((v) => ({ value: v, label: v }))}
           value={view}
-          onChange={(v) => setParams({ view: v === "table" ? null : v })}
+          onChange={(v) => setParams({ view: v === "map" ? null : v })}
         />
         {(view === "map" || view === "cards") && (
           <Select
@@ -271,14 +272,6 @@ export default function WorkLibrary() {
       </div>
 
       {view === "table" && <TableView items={filtered} sort={sort} setParams={setParams} />}
-      {view === "skills" && (
-        <MatrixView
-          caseFilters={caseFilters}
-          skillFilters={skillFilters}
-          toggleCase={(id) => toggleList("case", id, caseFilters)}
-          toggleSkill={(sl) => toggleList("skill", sl, skillFilters)}
-        />
-      )}
       {view === "map" && (
         <div className={styles.mapWrap}>
           <BubbleCluster highlightIds={hasFilters ? filtered.map((i) => i.id) : null} />

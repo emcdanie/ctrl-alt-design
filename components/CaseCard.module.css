@@ -51,7 +51,7 @@
   display: flex;
   align-items: flex-end;
   padding: var(--spacing-4) var(--spacing-5);
-  font-family: var(--font-hero-display);
+  font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--font-subsection);
   line-height: 0.9;

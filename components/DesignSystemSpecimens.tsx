@@ -46,9 +46,9 @@ const SPACING = ["--spacing-2", "--spacing-3", "--spacing-4", "--spacing-6", "--
 const RADII = ["--radius-md", "--radius-lg", "--radius-xl", "--radius-2xl", "--radius-full"];
 
 const TYPE_SPECIMENS = [
-  { token: "--font-section-title", family: "var(--font-hero-display)", weight: 700, transform: "uppercase" as const, sample: "Unique 700, display only" },
+  { token: "--font-section-title", family: "var(--font-display)", weight: 700, transform: "uppercase" as const, sample: "Geist 700, section titles" },
   { token: "--font-subsection", family: "var(--font-body)", weight: 600, transform: "none" as const, sample: "Geist carries body and headings" },
-  { token: "--typography-font-size-tag", family: "var(--font-mono)", weight: 600, transform: "uppercase" as const, sample: "Geist Mono runs eyebrows and meta" },
+  { token: "--typography-font-size-tag", family: "var(--font-mono)", weight: 600, transform: "uppercase" as const, sample: "Geist caps and tracking run eyebrows" },
 ];
 
 const GATE = [

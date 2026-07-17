@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { social } from "@/lib/social";
 import { Button } from "@/components/ui/Button";
+import SectionHeader from "@/components/ui/SectionHeader";
+import GlassBanner from "@/components/ui/GlassBanner";
 
 interface FormState {
   name: string;
@@ -83,44 +85,47 @@ export default function ContactSection() {
 
   const fieldStyle = (hasError: boolean): React.CSSProperties => ({
     width: "100%",
-    background: "rgba(255,255,255,0.04)",
+    background: "var(--color-card)",
     border: hasError
-      ? "1px solid #f87171"
-      : "1px solid rgba(243,238,231,0.25)",
+      ? "1px solid var(--case-writing-text)"
+      : "1px solid var(--color-border-medium)",
     borderRadius: "var(--radius-xl)",
-    padding: "18px var(--spacing-5)",
-    fontSize: "var(--typography-font-size-lg)",
+    padding: "var(--spacing-4) var(--spacing-5)",
+    fontSize: "var(--typography-font-size-base)",
     lineHeight: 1.5,
-    color: "var(--ink-on-dark-strong)",
+    color: "var(--color-ink)",
     outline: "none",
     transition: "border-color 150ms ease, box-shadow 150ms ease",
     fontFamily: "var(--font-body)",
   });
 
   return (
-    <footer id="contact" className="bg-[#1A1814]" style={{ paddingTop: "var(--spacing-20)", paddingBottom: "var(--spacing-12)", color: "var(--ink-on-dark-body)" }}>
+    <footer
+      id="contact"
+      style={{
+        paddingTop: "var(--spacing-8)",
+        paddingBottom: "var(--spacing-12)",
+        /* anchor jumps must not slide the heading under the sticky nav */
+        scrollMarginTop: "calc(var(--header-height) + var(--spacing-4))",
+      }}
+    >
       <div className="layout-container">
-        {/* Two-column layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--grid-gap)] mb-16">
+        {/* Two-column layout on the shared glass CTA surface */}
+        <GlassBanner className="mb-16 grid grid-cols-1 gap-[var(--grid-gap)] md:grid-cols-2">
           {/* Left, form */}
           <div>
-            <p className="section-label mb-4" style={{ color: "var(--ink-on-dark-muted)" }}>
-             Get in touch
-            </p>
-            <h2 className="heading-section mb-8" style={{ color: "var(--ink-on-dark-strong)" }}>
-              Let&apos;s work together.
-            </h2>
+            <SectionHeader label="Get in touch" title={<>Let&apos;s work together.</>} />
 
             {submitted ? (
-              <div className="rounded-2xl border border-green-500/30 bg-green-500/10 p-6 text-center">
-                <div className="text-2xl mb-2">✓</div>
-                <p className="text-[length:var(--typography-font-size-sm)] font-medium" style={{ color: "var(--ink-on-dark-strong)" }}>Message sent</p>
-                <p className="text-[length:var(--typography-font-size-base)] mt-1" style={{ color: "var(--ink-on-dark-body)" }}>
+              <div className="rounded-2xl border p-6 text-center" style={{ borderColor: "var(--case-clarity-text)", background: "color-mix(in srgb, var(--case-clarity-hi) 18%, transparent)" }}>
+                <div className="text-2xl mb-2" style={{ color: "var(--case-clarity-text)" }}>✓</div>
+                <p className="text-[length:var(--typography-font-size-sm)] font-medium" style={{ color: "var(--color-ink)" }}>Message sent</p>
+                <p className="text-[length:var(--typography-font-size-base)] mt-1" style={{ color: "var(--color-ink-soft)" }}>
                   Thanks for reaching out, I&apos;ll get back to you soon.
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} noValidate className="space-y-4">
+              <form onSubmit={handleSubmit} noValidate className="space-y-5">
                 {/* Name */}
                 <div>
                   <label htmlFor="contact-name" className="sr-only">Your name</label>
@@ -136,7 +141,7 @@ export default function ContactSection() {
                     aria-describedby={errors.name ? "contact-name-error" : undefined}
                   />
                   {errors.name && (
-                    <p id="contact-name-error" role="alert" className="text-[length:var(--typography-font-size-tag)] text-red-400 mt-1">{errors.name}</p>
+                    <p id="contact-name-error" role="alert" className="text-[length:var(--typography-font-size-tag)] mt-1" style={{ color: "var(--case-writing-text)" }}>{errors.name}</p>
                   )}
                 </div>
 
@@ -155,7 +160,7 @@ export default function ContactSection() {
                     aria-describedby={errors.email ? "contact-email-error" : undefined}
                   />
                   {errors.email && (
-                    <p id="contact-email-error" role="alert" className="text-[length:var(--typography-font-size-tag)] text-red-400 mt-1">{errors.email}</p>
+                    <p id="contact-email-error" role="alert" className="text-[length:var(--typography-font-size-tag)] mt-1" style={{ color: "var(--case-writing-text)" }}>{errors.email}</p>
                   )}
                 </div>
 
@@ -168,17 +173,17 @@ export default function ContactSection() {
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
                     className="contact-field"
-                    style={{ ...fieldStyle(!!errors.message), minHeight: "160px", resize: "none" }}
+                    style={{ ...fieldStyle(!!errors.message), minHeight: "160px", resize: "vertical" }}
                     aria-invalid={!!errors.message}
                     aria-describedby={errors.message ? "contact-message-error" : undefined}
                   />
                   {errors.message && (
-                    <p id="contact-message-error" role="alert" className="text-[length:var(--typography-font-size-tag)] text-red-400 mt-1">{errors.message}</p>
+                    <p id="contact-message-error" role="alert" className="text-[length:var(--typography-font-size-tag)] mt-1" style={{ color: "var(--case-writing-text)" }}>{errors.message}</p>
                   )}
                 </div>
 
                 {sendError && (
-                  <p role="alert" className="text-[length:var(--typography-font-size-tag)] text-red-400">
+                  <p role="alert" className="text-[length:var(--typography-font-size-tag)]" style={{ color: "var(--case-writing-text)" }}>
                     Something went wrong, please try emailing me directly at elletamc@gmail.com
                   </p>
                 )}
@@ -199,13 +204,13 @@ export default function ContactSection() {
             <div>
               <h3
                 className="font-display font-bold text-[length:var(--typography-font-size-2xl)] mb-2"
-                style={{ color: "var(--ink-on-dark-strong)" }}
+                style={{ color: "var(--color-ink)" }}
               >
                 Elleta McDaniel
               </h3>
               <p
                 className="text-[length:var(--typography-font-size-base)] leading-relaxed max-w-sm"
-                style={{ color: "var(--ink-on-dark-body)" }}
+                style={{ color: "var(--color-ink-soft)" }}
               >
                 Product Designer specialising in Design Systems and Complex Platforms.
                 Open to freelance, consulting, and full-time roles.
@@ -218,7 +223,7 @@ export default function ContactSection() {
                 <div key={section}>
                   <p
                     className="text-[length:var(--typography-font-size-tag)] font-medium uppercase tracking-widest mb-3"
-                    style={{ color: "var(--ink-on-dark-muted)" }}
+                    style={{ color: "var(--color-ink-muted)" }}
                   >
                     {section}
                   </p>
@@ -228,7 +233,7 @@ export default function ContactSection() {
                         <a
                           href={link.href}
                           className="text-[length:var(--typography-font-size-base)] transition-colors footer-nav-link"
-                          style={{ color: "var(--ink-on-dark-body)" }}
+                          style={{ color: "var(--color-ink-soft)" }}
                         >
                           {link.label}
                         </a>
@@ -239,19 +244,19 @@ export default function ContactSection() {
               ))}
             </div>
           </div>
-        </div>
+        </GlassBanner>
 
         {/* Bottom bar */}
-        <div className="divider mb-6" style={{ backgroundColor: "rgba(250,250,248,0.08)" }} />
+        <div className="divider mb-6" style={{ backgroundColor: "var(--color-border-soft)" }} />
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-          <p className="text-[length:var(--typography-font-size-tag)]" style={{ color: "var(--ink-on-dark-muted)" }}>
+          <p className="text-[length:var(--typography-font-size-tag)]" style={{ color: "var(--color-muted)" }}>
             ©{" "}
             <span suppressHydrationWarning style={{ display: "inline-block", minWidth: "4ch" }}>
               {year ?? ", "}
             </span>{" "}
             Elleta McDaniel. All rights reserved.
           </p>
-          <p className="text-[length:var(--typography-font-size-tag)]" style={{ color: "var(--ink-on-dark-muted)" }}>
+          <p className="text-[length:var(--typography-font-size-tag)]" style={{ color: "var(--color-muted)" }}>
             This site is its own small design system. I built and ship it in Next.js: tokens, components, and a governance gate that won’t let it drift. The proof is the thing you’re looking at.{" "}
             <Link href="/design-system" className="footer-nav-link" style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>
               See the system

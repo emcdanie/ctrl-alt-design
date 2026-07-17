@@ -28,13 +28,6 @@
   --shadow-layered: 0 1px 2px rgba(28, 26, 46, 0.05), 0 12px 40px rgba(28, 26, 46, 0.08),
     0 28px 80px rgba(28, 26, 46, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
-  /* redesign/lush — Geist everywhere except the hero headline (Unique).
-     --font-hero-display is the ONLY place Unique may be used. */
-  --font-display: var(--font-geist), "Geist", system-ui, sans-serif;
-  --font-body: var(--font-geist), "Geist", system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, monospace;
-  --font-hero-display: var(--font-unique), "Unique", "Arial Narrow", sans-serif;
-
   /* ── Layout system spacing scale ───────────────────────────────── */
   --space-1: 8px;
   --space-2: 16px;
@@ -62,28 +55,49 @@
   --card-padding: 24px;
   --card-radius: 20px;
 
-  /* Header offset — all sticky/fixed elements below the nav use this */
-  --header-height: 70px;
-
   --animate-fade-in-up: fadeInUp 0.6s ease-out forwards;
 }
 
+/* Font utilities (redesign/lush v3). Unique is the display face for all
+   headings; Geist carries body and label/eyebrow
+   face. `inline` so the font-* utilities emit var(--font-*) resolved at
+   the element. The real stacks are declared ONCE, on body below, because
+   the next/font variables only exist there. Nothing font-related lives
+   in @theme, so there is no dead :root copy to edit by mistake. */
+@theme inline {
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+  --font-hero-display: var(--font-hero-display);
+}
+
+/* v3: every semantic heading defaults to the Unique display face. Class-level
+   font-family still wins. TYPE LOCK: exactly two faces. Unique renders
+   ONLY in the hero/bubble display surfaces (.bubble-heading__title, the
+   home hero headline, the .kbd-logo brand lockup); every heading, label,
+   and eyebrow is Geist. No mono family exists. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
 /* ─── BELLA token bridge ─────────────────────────────────────────
-   bella.css ships Georgia/JetBrains as its typography primitives (generated
+   bella.css ships serif/mono-era typography primitives (generated
    file, not hand-edited). Bridge the primitives to the app fonts so every
    BELLA-styled surface uses the same stack. */
 /* next/font exposes --font-geist / --font-geist-mono / --font-unique on
- * <body> (layout.tsx className). The @theme copies of --font-display /
- * --font-body live on :root, where those references are undefined — so both
- * computed to invalid and every heading fell back to system sans. Custom
- * properties resolve at the element they're DECLARED on, not where they're
- * used, so every var that chains to a next/font variable must be declared at
- * body level. The BELLA typography primitives bridge here for the same
- * reason (they'd otherwise compute against :root's invalid --font-display). */
+ * <body> (layout.tsx className). Custom properties resolve at the element
+ * they're DECLARED on, not where they're used, so every var that chains to
+ * a next/font variable must be declared at body level. This block is the
+ * ONE place the font stacks are defined; the @theme inline block above only
+ * maps the font-* utilities onto these vars and emits no :root copies.
+ * The BELLA typography primitives bridge here for the same reason (they'd
+ * otherwise compute against :root, where the app fonts are undefined). */
 body {
   --font-display: var(--font-geist, "Geist"), system-ui, sans-serif;
   --font-body: var(--font-geist, "Geist"), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono, "Geist Mono"), ui-monospace, monospace;
+  /* retired mono: token repointed to Geist so legacy consumers keep
+     rendering; the eyebrow look is caps + tracking, not a third face */
+  --font-mono: var(--font-geist, "Geist"), system-ui, sans-serif;
   --font-hero-display: var(--font-unique, "Unique"), "Arial Narrow", sans-serif;
   --typography-font-family-display: var(--font-display);
   --typography-font-family-body: var(--font-body);
@@ -99,7 +113,26 @@ body {
    component borders — do not "fix" it that way.
    Every app token that overrides a BELLA default goes in this block. */
 :root {
+  /* Header offset. All sticky/fixed elements below the nav use this.
+     Defined ONLY here (unlayered authority), not in @theme. */
   --header-height: 76px; /* keycap header, measured (BELLA default: 64) */
+  /* Eyebrow/label tracking: caps + spacing carry the old mono look */
+  --tracking-eyebrow: var(--typography-letter-spacing-wider);
+  /* 3D language elevation tokens (token lock 2026-07-17): the orb,
+     keycap switch, and nav-bar depth values, moved verbatim out of the
+     component layer. Do not flatten; the depth IS the system. */
+  --shadow-orb: 13px 22px 44px rgba(0, 0, 0, 0.26), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+  --shadow-orb-raised: 14px 24px 48px rgba(0, 0, 0, 0.26), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+  --shadow-orb-selected: 14px 24px 48px rgba(0, 0, 0, 0.3), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+  --gloss-orb: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 72%);
+  --edge-glass-hi: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  --edge-glass-hi-strong: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  --gloss-press: inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  --shadow-switch-track: inset 0 2px 5px rgba(25, 23, 32, 0.22);
+  --shadow-switch-track-dark: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+  --shadow-switch-knob: 3px 5px 8px rgba(25, 23, 32, 0.24);
+  --shadow-switch-knob-dark: 3px 5px 8px rgba(0, 0, 0, 0.4);
+  --shadow-nav-bar: 0 18px 48px rgba(26, 24, 20, 0.08);
 }
 
 @media (max-width: 640px) {
@@ -185,8 +218,16 @@ body {
   --hero-bub-ink: #141019;
   --hero-panel-bg: #FFFFFF;
   --hero-panel-ink: #1A1720;
+  --hero-panel-ink-soft: #2E2937;
   --hero-panel-meta: #4A4652;
   --hero-panel-close: #9A948B;
+  /* panel-ground companions: the reveal-card panel is ALWAYS light
+     (white, cream in dark), so surfaces/borders inside it must not
+     flip with the theme (see Card.module.css panel scope) */
+  --hero-panel-surface: #EDECE4;
+  --hero-panel-border-soft: rgba(28, 26, 46, 0.08);
+  --hero-panel-border-medium: rgba(28, 26, 46, 0.12);
+  --hero-panel-accent-ink: #5B4BD1; /* iris as TEXT on the light panel */
 
   /* Case-card cover placeholder — muted warm, never bright (IA spec) */
   --cover-warm-hi: #E9E2D2;
@@ -260,6 +301,38 @@ body {
   --switch-icon-moon: #CFC7F6;
   --modal-backdrop: rgba(0, 0, 0, 0.6);
   --page-glow: rgba(255, 255, 255, 0.04);
+}
+
+/* ─── GlassBanner surface (DESIGN.md: recorded surface) ─────────────
+   Apple-style frosted gradient panel for end-of-page CTAs. Brand hues
+   only: iris/periwinkle (--hub-*) + mint (--case-clarity-*) + gold
+   periwinkle, low opacity over a light glass base. Dark keeps the same
+   tints over a translucent navy ground: glassy, never a flat block.
+   Text inside uses the NORMAL semantic inks (theme-aware). */
+:root {
+  --banner-radius: 30px;
+  --banner-blur: var(--bella-blur-lg);
+  --banner-border: rgba(255, 255, 255, 0.6);
+  --banner-shadow: var(--shadow-soft);
+  --banner-ground: var(--color-glass-strong);
+  --banner-gradient:
+    radial-gradient(120% 140% at 12% 0%, color-mix(in srgb, var(--hub-hi) 52%, transparent), transparent 55%),
+    radial-gradient(110% 120% at 88% 8%, color-mix(in srgb, var(--case-clarity-hi) 38%, transparent), transparent 52%),
+    radial-gradient(140% 150% at 55% 100%, color-mix(in srgb, var(--color-accent-gold) 28%, transparent), transparent 58%);
+}
+
+/* Dark overrides live on BODY, not html: var() inside a custom property
+   substitutes where the property is DECLARED, and --color-card's dark
+   value is declared on [data-theme="dark"] body. Declaring these on
+   html would resolve --color-card to the light #fff (the font-token
+   lesson, same trap). */
+[data-theme="dark"] body {
+  --banner-border: rgba(207, 199, 246, 0.22);
+  --banner-ground: color-mix(in srgb, var(--color-card) 82%, transparent);
+  --banner-gradient:
+    radial-gradient(120% 140% at 12% 0%, color-mix(in srgb, var(--hub-bright) 28%, transparent), transparent 55%),
+    radial-gradient(110% 120% at 88% 8%, color-mix(in srgb, var(--case-clarity-lo) 20%, transparent), transparent 52%),
+    radial-gradient(140% 150% at 55% 100%, color-mix(in srgb, var(--color-accent-gold) 16%, transparent), transparent 58%);
 }
 
 /* ─── Keycap logo lockup (header) — from _proto/_hero.html ──────────
@@ -448,7 +521,9 @@ h1,
 h2 {
   font-family: var(--font-display);
   color: var(--color-ink);
-  letter-spacing: -0.03em;
+  /* v3: headings render Unique (condensed). Negative tracking makes its
+     glyphs COLLIDE; Unique display sizes always track >= 0. */
+  letter-spacing: 0.01em;
 }
 
 h3,
@@ -495,13 +570,13 @@ li {
 
 .eyebrow,
 .section-label {
-  /* Mono eyebrows per the shipped font stack (Chivo Mono is loaded in
-     layout.tsx; BELLA mono primitive is the fallback list) */
+  /* Eyebrows are Geist, uppercase, tracked (--tracking-eyebrow).
+     No mono face exists; --font-mono is a legacy alias for Geist. */
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: var(--typography-letter-spacing-wider);
+  letter-spacing: var(--tracking-eyebrow);
   /* iris accent as TEXT — #A79CE2 stays fill-only (2.25:1) */
   color: var(--color-accent-ink);
   line-height: 1.35;
@@ -602,13 +677,16 @@ li {
 ────────────────────────────────────────────────────────────────── */
 
 
-/* H2 — section titles (Case Studies, Experience, About…) */
+/* H2 — section titles (Case Studies, Experience, About…). ONE section
+   intro treatment (SectionHeader): matches the /work page title device
+   (mono iris eyebrow + Unique 700 uppercase), at section scale. */
 .heading-section {
   font-family: var(--font-display);
   font-size: var(--font-section-title);
-  font-weight: var(--typography-font-weight-bold);
-  letter-spacing: var(--typography-letter-spacing-tight);
-  line-height: 1.08;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  line-height: 0.95;
   color: var(--color-ink);
 }
 
@@ -617,7 +695,7 @@ li {
   font-family: var(--font-display);
   font-size: var(--font-subsection);
   font-weight: var(--typography-font-weight-bold);
-  letter-spacing: -0.015em;
+  letter-spacing: 0.01em; /* Unique never gets negative tracking */
   line-height: 1.15;
   color: var(--color-ink);
 }
@@ -625,7 +703,9 @@ li {
 
 /* H5 — inline item labels (collaboration cards, role titles…) */
 .heading-item {
-  font-family: var(--font-display);
+  /* item/card titles are below the 20px Unique floor: they stay Geist
+     (Unique is display-only and illegible at label sizes) */
+  font-family: var(--font-body);
   font-size: var(--font-small);
   font-weight: 600;
   letter-spacing: -0.005em;
@@ -846,7 +926,7 @@ li {
 
 /* ─── Keycap Button — the site-wide button style ─────────────────
    Neutral = light key; primary = coloured key (--key-c sets the face:
-   accent by default, or a case colour). Labels stay Geist Mono at tag
+   accent by default, or a case colour). Labels stay Geist caps at tag
    size — NEVER Unique (locked type rule). Values are the --btn-key /
    --shadow-key tokens; press = translateY(3px) onto the reduced plate. */
 .btn-key {
@@ -921,7 +1001,8 @@ li {
 }
 
 /* ─── Scroll anchor offset ──────────────────────────────────────── */
-/* BELLA v0.1 Rule 4: --header-height is defined in @theme above (70px).
+/* BELLA v0.1 Rule 4: --header-height is defined in the unlayered :root
+ * authority block above (76px desktop, 64px at 640px and below).
  * scroll-padding-top on the document scroll container (html) is what
  * actually moves the in-viewport landing position of anchor jumps.
  * scroll-margin-top on the targets themselves is the per-element fallback
@@ -957,10 +1038,11 @@ section[id],
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(280px, 34vw, 420px);
+  /* smaller device — the bubble anchors the page, it doesn't dominate it */
+  width: clamp(210px, 24vw, 320px);
   aspect-ratio: 1;
   border-radius: var(--radius-full);
-  padding: var(--spacing-8);
+  padding: var(--spacing-6);
   background: radial-gradient(circle at 36% 30%, var(--bub-hi), var(--bub-lo));
   box-shadow:
     13px 22px 44px rgba(0, 0, 0, 0.26),
@@ -982,19 +1064,24 @@ section[id],
 .bubble-heading__title {
   font-family: var(--font-hero-display);
   font-weight: 700;
-  font-size: clamp(28px, 4vw, 56px);
-  line-height: 0.95;
+  /* Unique is ultra-condensed: a long one-line title reads as vertical
+     strokes. ALWAYS horizontal, wrapped to 2-3 balanced lines and sized
+     up to fill the orb. Never rotate, never writing-mode. */
+  font-size: clamp(26px, 3.4vw, 46px);
+  line-height: 1.06;
   letter-spacing: 0.005em;
   text-transform: uppercase;
   text-align: center;
+  text-wrap: balance;
+  max-width: 3.6em;
   color: var(--hero-bub-ink);
   margin: 0;
 }
 
 .bubble-heading__link {
   width: 12px;
-  height: 64px;
-  margin-left: clamp(140px, 17vw, 210px); /* under the orb's centre */
+  height: 96px; /* longer — the connector reaches down into the content */
+  margin-left: clamp(105px, 12vw, 160px); /* under the smaller orb's centre */
 }
 
 .bubble-heading__link line {
@@ -1016,52 +1103,56 @@ section[id],
   }
 }
 
+/* Portrait bubble (About): the glossy orb recipe holding a photo.
+   Same one-light-source treatment as .bubble-heading__orb (upper-left
+   gloss, down-right shadow) plus an iris outline ring so the photo
+   reads as a deliberate device, not a cropped square. */
+.photo-bubble {
+  position: relative;
+  width: clamp(180px, 18vw, 240px);
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  padding: var(--spacing-2);
+  background: radial-gradient(circle at 36% 30%, var(--hub-hi), var(--hub-lo));
+  box-shadow:
+    13px 22px 44px rgba(0, 0, 0, 0.26),
+    inset 7px 9px 18px rgba(255, 255, 255, 0.5),
+    inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+  outline: 2px solid var(--color-semantic-accent-border);
+  outline-offset: 6px;
+}
+
+.photo-bubble img {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+/* gloss highlight sits ABOVE the photo, same spot as the orb's */
+.photo-bubble::after {
+  content: "";
+  position: absolute;
+  top: 12%;
+  left: 20%;
+  width: 24%;
+  height: 20%;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.55), transparent 72%);
+  pointer-events: none;
+}
+
 @media (max-width: 640px) {
   .bubble-heading__orb {
-    width: min(280px, 86vw);
+    width: min(220px, 74vw);
   }
 
   .bubble-heading__link {
-    margin-left: min(134px, 41vw);
+    margin-left: min(110px, 37vw);
   }
 }
 
 /* ─── Decision-led case blocks ──────────────────────────────────── */
-
-/* facts block; hidden >=1080 where the sticky sidebar shows the same */
-.cs-meta-block {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: var(--spacing-4);
-  margin: 0 0 var(--spacing-10);
-  padding: var(--spacing-5);
-  border: 1px solid var(--color-semantic-border-subtle);
-  border-radius: var(--radius-2xl);
-  background: var(--color-card);
-}
-
-@media (min-width: 1080px) {
-  .cs-meta-block {
-    display: none;
-  }
-}
-
-.cs-meta-block dt {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-  margin-bottom: var(--spacing-1);
-}
-
-.cs-meta-block dd {
-  margin: 0;
-  font-size: var(--typography-font-size-sm);
-  color: var(--color-ink);
-  line-height: 1.5;
-}
 
 .cs-summary-block {
   display: grid;
@@ -1103,18 +1194,13 @@ button:focus-visible {
   outline-offset: 3px;
 }
 
-/* Focus on dark backgrounds — high-contrast light outline */
-.bg-\[\#1A1814\] :focus-visible,
-footer :focus-visible {
-  outline: 2px solid rgba(237, 232, 223, 0.7);
-  outline-offset: 3px;
-}
-
-/* Contact form fields — stable focus, no flicker, no radius change */
+/* Contact form fields — stable focus, no flicker, no radius change.
+   Fields sit on the light GlassBanner (light theme) / navy tint (dark);
+   the semantic tokens flip with the theme. */
 .contact-field:focus {
   outline: none;
-  border-color: var(--ink-on-dark-strong) !important;
-  box-shadow: 0 0 0 2px rgba(247, 244, 239, 0.28);
+  border-color: var(--color-accent-ink) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent-ink) 25%, transparent);
 }
 
 .contact-field:focus-visible {
@@ -1122,14 +1208,13 @@ footer :focus-visible {
 }
 
 .contact-field::placeholder {
-  /* Rule 1 (BELLA v0.1): placeholders use --ink-on-dark-muted on dark surfaces */
-  color: var(--ink-on-dark-muted);
+  color: var(--color-ink-muted);
   opacity: 1; /* Firefox lowers placeholder opacity by default; reset for AAA */
 }
 
-/* Footer nav links: --ink-on-dark-body resting, --ink-on-dark-strong on hover */
+/* Footer nav links: muted resting, full ink on hover (theme-aware) */
 .footer-nav-link:hover {
-  color: var(--ink-on-dark-strong);
+  color: var(--color-ink);
 }
 
 /* Generic form focus fallback for non-contact forms */
@@ -1523,9 +1608,9 @@ textarea:focus-visible {
 }
 
 
-/* Visual-language move #1 — Unique display headline in the case colour */
+/* Case display headline in the case colour (Geist; Unique is bubble-only) */
 .cs-shell__title.cs-shell__title--display {
-  font-family: var(--font-hero-display);
+  font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--font-case-display);
   line-height: 0.9;
@@ -1573,7 +1658,7 @@ textarea:focus-visible {
   font-size: var(--font-case-title);
   font-weight: var(--typography-font-weight-bold);
   line-height: 1.08;
-  letter-spacing: -0.025em;
+  letter-spacing: 0.01em; /* Unique never gets negative tracking */
   color: var(--color-ink);
   margin: 0 0 var(--spacing-3);
 }

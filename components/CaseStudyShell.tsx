@@ -2,6 +2,7 @@ import Link from "next/link";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
 import { Button } from "@/components/ui/Button";
 import BubbleHeading from "@/components/ui/BubbleHeading";
+import GlassBanner from "@/components/ui/GlassBanner";
 
 /* ── Types ─────────────────────────────────────────────────────── */
 
@@ -256,9 +257,7 @@ export default function CaseStudyShell({
 
         {/* Bottom CTA (visible on all sizes within the scrolling column) */}
         <div className="cs-shell__bottom-cta">
-          <div className="surface-dark" style={{
-            borderRadius: "var(--radius-2xl)",
-            padding: "var(--spacing-8)",
+          <GlassBanner style={{
             display: "flex",
             flexDirection: "column",
             gap: "var(--spacing-5)",
@@ -270,8 +269,8 @@ export default function CaseStudyShell({
                 fontWeight: "var(--typography-font-weight-medium)",
                 textTransform: "uppercase",
                 letterSpacing: "0.12em",
-                color: "var(--ink-on-dark-muted)",
-                marginBottom: "10px",
+                color: "var(--color-ink-muted)",
+                marginBottom: "var(--spacing-2)",
               }}>
                 Have a project in mind?
               </p>
@@ -279,7 +278,7 @@ export default function CaseStudyShell({
                 fontFamily: "var(--font-display)",
                 fontSize: "var(--font-subsection)",
                 fontWeight: "var(--typography-font-weight-bold)",
-                color: "var(--ink-on-dark-strong)",
+                color: "var(--color-ink)",
                 lineHeight: 1.15,
                 textTransform: "uppercase",
               }}>
@@ -287,25 +286,10 @@ export default function CaseStudyShell({
                 select freelance projects.
               </h2>
             </div>
-            <Link
-              href="/contact"
-              style={{
-                alignSelf: "flex-start",
-                background: "var(--color-semantic-text-inverse)",
-                color: "var(--color-ink)",
-                fontFamily: "var(--font-body)",
-                fontWeight: 600,
-                fontSize: "var(--typography-font-size-tag)",
-                padding: "var(--spacing-3) var(--spacing-6)",
-                borderRadius: "var(--radius-full)",
-                textDecoration: "none",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
+            <Button href="/contact" className="self-start">
               Get in touch ↗
-            </Link>
-          </div>
+            </Button>
+          </GlassBanner>
         </div>
       </div>
     </div>

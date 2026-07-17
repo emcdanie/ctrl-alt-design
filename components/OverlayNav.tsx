@@ -12,7 +12,7 @@ import ThemeSwitch from "@/components/ThemeSwitch";
  * on mobile. */
 const menuItems = [
   { num: "01", label: "Work", href: "/work" },
-  { num: "02", label: "Point of View", href: "/point-of-view" },
+  { num: "02", label: "Skills", href: "/skills" },
   { num: "03", label: "About", href: "/about" },
   { num: "04", label: "Contact", href: "/contact" },
 ];
@@ -70,7 +70,7 @@ export default function OverlayNav() {
       <div
         className="pointer-events-none fixed inset-x-0 top-0 z-[9995]"
       >
-        <div className="flex w-full items-center justify-between border-b border-[color:var(--color-semantic-border-glass-edge)] bg-[var(--color-semantic-background)]/72 px-4 py-3 shadow-[0_18px_48px_rgba(26,24,20,0.08)] backdrop-blur-xl sm:px-6"
+        <div className="flex w-full items-center justify-between border-b border-[color:var(--color-semantic-border-glass-edge)] bg-[var(--color-semantic-background)]/72 px-4 py-3 shadow-[var(--shadow-nav-bar)] backdrop-blur-xl sm:px-6"
           style={{ borderTop: "1px solid var(--color-semantic-border-glass-top)" }}
         >
           <Link
@@ -110,7 +110,7 @@ export default function OverlayNav() {
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
             onMouseLeave={() => setTriggerHovered(false)}
-            className="lg:hidden pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--color-border-medium)] bg-[color:var(--color-glass)] text-[color:var(--color-ink)] shadow-[0_10px_30px_rgba(26,24,20,0.08)] transition-all duration-200 hover:bg-[color:var(--color-glass-strong)]"
+            className="lg:hidden pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--color-border-medium)] bg-[color:var(--color-glass)] text-[color:var(--color-ink)] shadow-[var(--shadow-soft)] transition-all duration-200 hover:bg-[color:var(--color-glass-strong)]"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="overlay-menu"

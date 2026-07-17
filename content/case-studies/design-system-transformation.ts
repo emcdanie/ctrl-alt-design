@@ -48,13 +48,6 @@ const study: CaseStudy = {
    * when you drop it. ── */
   blocks: [
     {
-      kind: "meta",
-      role: "Lead Product Designer, Design Systems",
-      team: "Cross-functional (Engineering, Product)",
-      scope: ["Component audit", "Token architecture", "Component library", "Governance"],
-      timeline: "8 months",
-    },
-    {
       kind: "summary",
       context:
         "Seventeen buttons that did roughly the same thing, built at different times by different people. A B2B travel platform used across Europe, flights, hotels, rail, car rentals, all evolving in parallel, had outgrown the decisions that were supposed to hold it together.",

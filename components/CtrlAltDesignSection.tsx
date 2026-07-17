@@ -43,7 +43,7 @@ const videos: LabVideo[] = [
     category: "AI UX",
     tags: ["AI UX", "Legal Tech", "Search Design"],
     embed: "https://www.loom.com/embed/685fc54dcb104d51baa15dcec8727da2",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #1A3A5C 50%, #0D2040 100%)",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #1A3A5C 50%, #0D2040 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/AIPoweredSearch.png",
   },
   {
@@ -52,7 +52,7 @@ const videos: LabVideo[] = [
     category: "FINTECH",
     tags: ["FinTech", "Filtering Systems", "Data UX"],
     embed: "https://www.loom.com/embed/0dbf0dc67b644224b8abf533f73106fb",
-    gradient: "linear-gradient(135deg, #1C0A0A 0%, #3D1010 50%, #140808 100%)",
+    gradient: "linear-gradient(135deg, #1C0A0A 0%, #3D1010 50%, #140808 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/FINVIZ.png",
   },
   {
@@ -61,7 +61,7 @@ const videos: LabVideo[] = [
     category: "FORM DESIGN",
     tags: ["Form Design", "Accessibility", "Insurance"],
     embed: "https://www.loom.com/embed/1a13cb50b6ac4282952f85efa11f9d7e",
-    gradient: "linear-gradient(135deg, #1A0A2E 0%, #3A1860 50%, #120820 100%)",
+    gradient: "linear-gradient(135deg, #1A0A2E 0%, #3A1860 50%, #120820 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/HealthForm.png",
   },
   {
@@ -70,7 +70,7 @@ const videos: LabVideo[] = [
     category: "DASHBOARD",
     tags: ["Dashboard UX", "Data Visualisation", "Operational Design"],
     embed: "https://www.loom.com/embed/f93c664f6668417c81dbb774a2a7a4a3",
-    gradient: "linear-gradient(135deg, #0D1B10 0%, #1A3820 50%, #0A1410 100%)",
+    gradient: "linear-gradient(135deg, #0D1B10 0%, #1A3820 50%, #0A1410 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/FormularOne.png",
   },
 ];
@@ -82,7 +82,7 @@ const prototypes: LabPrototype[] = [
     category: "INTERACTIVE",
     tags: ["Search UX", "Filtering", "Prototype"],
     href: "/demos/ctrl-travel-v2.html",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #132040 60%, #0A1628 100%)",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #132040 60%, #0A1628 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/TRAVEL.png",
   },
   {
@@ -91,7 +91,7 @@ const prototypes: LabPrototype[] = [
     category: "INTERACTIVE",
     tags: ["Design Systems", "AI UX", "Dashboard"],
     href: "/demos/brad-frost-command-center.html",
-    gradient: "linear-gradient(135deg, #1A0A2E 0%, #2D1650 50%, #1A0A2E 100%)",
+    gradient: "linear-gradient(135deg, #1A0A2E 0%, #2D1650 50%, #1A0A2E 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/BradFrostCommandCenter.png",
   },
   {
@@ -100,7 +100,7 @@ const prototypes: LabPrototype[] = [
     category: "INTERACTIVE",
     tags: ["AI UX", "Hackathon", "Governance"],
     href: "/demos/guardian-audit-tool.html",
-    gradient: "linear-gradient(135deg, #0F1117 0%, #161822 50%, #0F1117 100%)",
+    gradient: "linear-gradient(135deg, #0F1117 0%, #161822 50%, #0F1117 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/GuardianAuditTool.svg",
   },
   {
@@ -109,7 +109,7 @@ const prototypes: LabPrototype[] = [
     category: "INTERACTIVE",
     tags: ["AI UX", "Design Patterns", "Plugin"],
     href: "/demos/pattern-mentor.html",
-    gradient: "linear-gradient(135deg, var(--color-semantic-surface) 0%, #E8E3DB 50%, var(--color-semantic-surface) 100%)",
+    gradient: "linear-gradient(135deg, var(--color-semantic-surface) 0%, #E8E3DB 50%, var(--color-semantic-surface) 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/PatternMentor.svg",
   },
 ];
@@ -137,7 +137,7 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
         {/* Hover overlay with CTA */}
         <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/20">
           <span
-            className="rounded-full border border-[color:var(--color-semantic-border-glass-edge)] bg-[color:var(--color-glass-strong)] px-5 py-2.5 text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--color-ink)] opacity-0 shadow-[0_8px_24px_rgba(0,0,0,0.15)] backdrop-blur-sm transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2"
+            className="rounded-full border border-[color:var(--color-semantic-border-glass-edge)] bg-[color:var(--color-glass-strong)] px-5 py-2.5 text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--color-ink)] opacity-0 shadow-[var(--shadow-soft)] backdrop-blur-sm transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2"
             style={{ fontFamily: "var(--font-body)" }}
           >
             Try Demo →
@@ -149,7 +149,7 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
       <div className="flex flex-1 flex-col p-6">
         <h3
           className="mb-2 text-[length:var(--typography-font-size-lg)] font-bold leading-snug text-[color:var(--color-ink)]"
-          style={{ fontFamily: "var(--font-display)", maxWidth: "320px" }}
+          style={{ fontFamily: "var(--font-body)", maxWidth: "320px" }}
         >
           {prototype.title}
         </h3>
@@ -212,7 +212,7 @@ export default function CtrlAltDesignSection() {
       {/* Interactive prototypes, same 2-col pattern. Data trimmed to exactly
           4 items (was 5, F1 Grand Prix Analytics removed; that project is
           already represented in the Videos grid above). */}
-      <div style={{ marginTop: "56px" }}>
+      <div style={{ marginTop: "var(--spacing-12)" }}>
         <SectionHeader
           label="Interactive Work"
           title="Interactive product experiments"

@@ -6,7 +6,7 @@
   cursor: pointer;
   border: none;
   background: none;
-  padding: 5px 0; /* lifts the hit area to the 44px touch target */
+  padding: 5px 0 /* token-waiver: measured 44px touch-target math (recorded) */; /* lifts the hit area to the 44px touch target */
   display: inline-flex;
   align-items: center;
 }
@@ -17,7 +17,7 @@
   height: 34px;
   border-radius: var(--radius-full);
   background: linear-gradient(var(--switch-track-hi), var(--switch-track-lo));
-  box-shadow: inset 0 2px 5px rgba(25, 23, 32, 0.22);
+  box-shadow: var(--shadow-switch-track);
   transition: background 0.3s;
 }
 
@@ -48,7 +48,7 @@
   background: linear-gradient(var(--key-face-hi), var(--key-face-lo));
   box-shadow:
     2px 3px 0 var(--switch-thumb-edge),
-    3px 5px 8px rgba(25, 23, 32, 0.24),
+    var(--shadow-switch-knob),
     inset 0 1px 0 var(--key-face-hi);
   transition: left 0.24s cubic-bezier(0.3, 0.7, 0.3, 1), background 0.3s, box-shadow 0.3s;
 }
@@ -59,7 +59,7 @@
 }
 
 :global([data-theme="dark"]) .track {
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-switch-track-dark);
 }
 
 :global([data-theme="dark"]) .thumb {
@@ -67,8 +67,8 @@
   background: linear-gradient(var(--key-iris-hi), var(--key-iris-lo));
   box-shadow:
     2px 3px 0 var(--key-iris-edge),
-    3px 5px 8px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    var(--shadow-switch-knob-dark),
+    var(--edge-glass-hi-strong);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -20,6 +20,9 @@
 - [ ] Standing gates: tokens-only, 1240 container, Unique 700 display only (>=24px rule; bubble titles
       >=28px), one primary per view, AI-enabled only, no em/en dashes (incl. public/demos), no amber,
       NDA grep clean, one implementation (orphan grep), tsc, routes 200 light+dark.
+- [ ] Skills matrix: real table w/ scoped headers, active = tint + dot + sr text (not colour-only),
+      driven from workLibrary, row/column header clicks toggle the existing filters, AA both themes,
+      reachable as the SKILLS view (no new nav item).
 - [ ] Conformance spec gains §8 (bubble-heading + colour-as-identity + containment rules).
 - [ ] Proof screenshots: one case page, /about, /point-of-view (bubble-heading + connector visible),
       home (constellation contained), desktop + 390px, light + dark.

@@ -26,7 +26,7 @@ export default function PrototypeEmbed({
           style={{
             fontFamily: "var(--font-body)",
             fontSize: "var(--typography-font-size-base)",
-            color: "#6f6a63",
+            color: "var(--color-muted)",
             lineHeight: 1.6,
             marginBottom: "var(--spacing-5)",
             maxWidth: "680px",
@@ -41,9 +41,9 @@ export default function PrototypeEmbed({
         style={{
           borderRadius: "var(--radius-xl)",
           overflow: "hidden",
-          border: "1px solid rgba(26,24,20,0.1)",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
-          background: "#0A0E1A",
+          border: "1px solid var(--color-border-medium)",
+          boxShadow: "var(--shadow-soft)",
+          background: "var(--color-brand-ink)",
           position: "relative",
         }}
       >
@@ -53,20 +53,20 @@ export default function PrototypeEmbed({
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "10px var(--spacing-4)",
-            background: "rgba(26,24,20,0.95)",
-            borderBottom: "1px solid rgba(255,255,255,0.06)",
+            padding: "var(--spacing-2) var(--spacing-4)",
+            background: "color-mix(in srgb, var(--color-brand-ink) 95%, transparent)",
+            borderBottom: "1px solid var(--color-alpha-parchment-6)",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-2)" }}>
             {/* Window dots */}
-            <div style={{ display: "flex", gap: "6px" }}>
+            <div style={{ display: "flex", gap: "var(--spacing-2)" }}>
               <span
                 style={{
                   width: "10px",
                   height: "10px",
                   borderRadius: "50%",
-                  background: "rgba(255,255,255,0.12)",
+                  background: "color-mix(in srgb, white 12%, transparent)",
                 }}
               />
               <span
@@ -74,7 +74,7 @@ export default function PrototypeEmbed({
                   width: "10px",
                   height: "10px",
                   borderRadius: "50%",
-                  background: "rgba(255,255,255,0.12)",
+                  background: "color-mix(in srgb, white 12%, transparent)",
                 }}
               />
               <span
@@ -82,7 +82,7 @@ export default function PrototypeEmbed({
                   width: "10px",
                   height: "10px",
                   borderRadius: "50%",
-                  background: "rgba(255,255,255,0.12)",
+                  background: "color-mix(in srgb, white 12%, transparent)",
                 }}
               />
             </div>
@@ -91,7 +91,7 @@ export default function PrototypeEmbed({
                 fontFamily: "var(--font-body)",
                 fontSize: "var(--typography-font-size-tag)",
                 fontWeight: "var(--typography-font-weight-medium)",
-                color: "rgba(255,255,255,0.45)",
+                color: "color-mix(in srgb, white 45%, transparent)",
                 marginLeft: "var(--spacing-2)",
               }}
             >
@@ -106,21 +106,21 @@ export default function PrototypeEmbed({
               fontFamily: "var(--font-body)",
               fontSize: "var(--typography-font-size-tag)",
               fontWeight: 600,
-              color: "rgba(255,255,255,0.4)",
+              color: "color-mix(in srgb, white 40%, transparent)",
               textDecoration: "none",
               display: "inline-flex",
               alignItems: "center",
               gap: "var(--spacing-1)",
-              padding: "var(--spacing-1) 10px",
+              padding: "var(--spacing-1) var(--spacing-2)",
               borderRadius: "6px",
               transition: "color 0.15s, background 0.15s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = "rgba(255,255,255,0.8)";
-              e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+              e.currentTarget.style.color = "color-mix(in srgb, white 80%, transparent)";
+              e.currentTarget.style.background = "color-mix(in srgb, white 8%, transparent)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = "rgba(255,255,255,0.4)";
+              e.currentTarget.style.color = "color-mix(in srgb, white 40%, transparent)";
               e.currentTarget.style.background = "transparent";
             }}
           >
@@ -141,7 +141,7 @@ export default function PrototypeEmbed({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              background: "#0A0E1A",
+              background: "var(--color-brand-ink)",
               zIndex: 2,
             }}
           >
@@ -157,8 +157,8 @@ export default function PrototypeEmbed({
                 style={{
                   width: "32px",
                   height: "32px",
-                  border: "2px solid rgba(255,255,255,0.1)",
-                  borderTopColor: "rgba(255,255,255,0.5)",
+                  border: "2px solid color-mix(in srgb, white 10%, transparent)",
+                  borderTopColor: "color-mix(in srgb, white 50%, transparent)",
                   borderRadius: "50%",
                   animation: "vinyl-spin 0.8s linear infinite",
                 }}
@@ -167,7 +167,7 @@ export default function PrototypeEmbed({
                 style={{
                   fontFamily: "var(--font-body)",
                   fontSize: "var(--typography-font-size-tag)",
-                  color: "rgba(255,255,255,0.3)",
+                  color: "color-mix(in srgb, white 30%, transparent)",
                 }}
               >
                 Loading prototype…

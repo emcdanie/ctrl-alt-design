@@ -24,7 +24,7 @@ export default function PageHeader({
       ) : (
         <h1
           style={{
-            fontFamily: "var(--font-hero-display)",
+            fontFamily: "var(--font-display)",
             fontWeight: 700,
             fontSize: "var(--font-case-display)",
             lineHeight: 0.9,

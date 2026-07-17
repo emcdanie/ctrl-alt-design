@@ -6,9 +6,17 @@ function lum([r,g,b]) {
   const f = (c) => { c/=255; return c<=0.03928 ? c/12.92 : ((c+0.055)/1.055)**2.4; };
   return 0.2126*f(r)+0.7152*f(g)+0.0722*f(b);
 }
-const parse = (s) => s.match(/[\d.]+/g)?.slice(0,4).map(Number) ?? [0,0,0,1];
+const parse = (s) => {
+  // color-mix() computes to color(srgb r g b / a) with 0-1 channels
+  if (s.startsWith("color(srgb")) {
+    const m = s.match(/[\d.]+/g)?.map(Number) ?? [0, 0, 0, 1];
+    return [m[0] * 255, m[1] * 255, m[2] * 255, m[3] ?? 1];
+  }
+  return s.match(/[\d.]+/g)?.slice(0,4).map(Number) ?? [0,0,0,1];
+};
+let totalBad = 0;
 
-for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies/design-system-transformation", "http://localhost:3000/work", "http://localhost:3000/point-of-view", "http://localhost:3000/about", "http://localhost:3000/contact", "http://localhost:3000/case-studies/guardian", "http://localhost:3000/case-studies/brad-frost", "http://localhost:3000/case-studies/un-operational-dashboard", "http://localhost:3000/case-studies/filters-decision-support-system", "http://localhost:3000/work?view=skills", "http://localhost:3000/design-system", "http://localhost:3000/quick"]) {
+for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies/design-system-transformation", "http://localhost:3000/work", "http://localhost:3000/about", "http://localhost:3000/contact", "http://localhost:3000/case-studies/guardian", "http://localhost:3000/case-studies/brad-frost", "http://localhost:3000/case-studies/un-operational-dashboard", "http://localhost:3000/case-studies/filters-decision-support-system", "http://localhost:3000/skills", "http://localhost:3000/design-system", "http://localhost:3000/quick"]) {
   await page.goto(url, { waitUntil: "domcontentloaded" });
   await page.evaluate(() => { document.documentElement.dataset.theme = "dark"; });
   await page.waitForTimeout(1500);
@@ -51,7 +59,13 @@ for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies
       if (!r.width || !r.height) continue;
       const cs = getComputedStyle(el);
       if (parseFloat(cs.fontSize) < 10) continue;
-      out.push({ t: (el.textContent||"").trim().slice(0,32), c: cs.color, bg: bgOf(el), fs: cs.fontSize, tag: el.tagName });
+      // Unique is display-only: below 20px it is illegible. The keycap
+      // logo lockup is the one recorded exception (brand device).
+      const uniqueTooSmall =
+        /unique/i.test(cs.fontFamily || "") &&
+        parseFloat(cs.fontSize) < 20 &&
+        !el.closest(".kbd-logo");
+      out.push({ t: (el.textContent||"").trim().slice(0,32), c: cs.color, bg: bgOf(el), fs: cs.fontSize, tag: el.tagName, uniqueTooSmall });
     }
     return out;
   });
@@ -59,7 +73,7 @@ for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies
   for (const f of fails) {
     if (f.uniqueTooSmall) {
       bad++;
-      console.log(`  FAIL display-font-below-24 [${f.tag}] "${f.t}" at ${f.fs}`);
+      console.log(`  FAIL display-font-below-20 [${f.tag}] "${f.t}" at ${f.fs}`);
     }
     const c = parse(f.c);
     if ((c[3] ?? 1) === 0) continue;
@@ -83,5 +97,10 @@ for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies
     }
   }
   console.log(`${url} -> ${bad} contrast fails / ${fails.length} nodes`);
+  totalBad += bad;
 }
 await browser.close();
+if (totalBad > 0) {
+  console.log(`contrast gate: ${totalBad} failure(s)`);
+  process.exit(1);
+}

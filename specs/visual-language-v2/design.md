@@ -63,6 +63,16 @@ Decision-block left-rule + kicker switch from generic iris to the case identity 
 No underlined body text anywhere (links in prose keep underline; body emphasis uses weight). Sections stay
 short (content already shaped); one interactive proof per case preferred (Code First gets TokenInspector).
 
+## 8. Skills x projects matrix (4th library view)
+- "SKILLS" joins Table/Map/Timeline in the segmented control (view=skills in the URL).
+- Real <table>: rows = all 9 skills (<=10 cap satisfied), columns = the 6 cases; th scope on both axes.
+- Active cell = case-colour tint fill + a visible dot mark + sr-only text (never colour-only, WCAG 1.4.1).
+- Driven entirely from lib/workLibrary.ts skills arrays (no hand grid).
+- Interaction: clicking a skill row header toggles that skill filter; clicking a case column header
+  toggles that case filter (same URL params as the chips); active filters emphasise matching cells and
+  dim the rest. Row hover highlight. Reduced-motion: no transitions.
+- AA on every active cell (case-*-text on the tint), both themes.
+
 ## Tokens/components touched
 BubbleCluster (scale wrapper), CaseStudyShell (BubbleHeading), PageHeader (variant), SegmentedControl CSS,
 tags CSS (case-page variant), new: BubbleHeading, TokenInspector, /design-system routes. No new colours;

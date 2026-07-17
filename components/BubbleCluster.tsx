@@ -90,12 +90,17 @@ export default function BubbleCluster({
     const pw = 360;
     const ph = panel.offsetHeight || 280;
     const gap = 16;
-    // left-side bubbles: card to the RIGHT (clear of the hero text); else left
-    let left = r.left + r.width / 2 < window.innerWidth * 0.62 ? r.right + gap : r.left - pw - gap;
-    if (left + pw > window.innerWidth - 16) left = r.left - pw - gap;
-    if (left < 16) left = Math.min(r.right + gap, window.innerWidth - pw - 16);
+    const margin = 16;
+    const navSafe = 88; // clear the fixed header so the card never hides behind it
+    // Consistent direction: the card ALWAYS opens to the right of the bubble.
+    // For bubbles near the right edge, clamp to the viewport instead of
+    // flipping sides, so every card reads the same way.
+    let left = r.right + gap;
+    const maxLeft = window.innerWidth - pw - margin;
+    if (left > maxLeft) left = maxLeft;
+    if (left < margin) left = margin;
     let top = r.top + r.height / 2 - ph / 2;
-    top = Math.max(16, Math.min(top, window.innerHeight - ph - 16));
+    top = Math.max(navSafe, Math.min(top, window.innerHeight - ph - margin));
     panel.style.left = `${left}px`;
     panel.style.top = `${top}px`;
   }, []);
@@ -180,10 +185,10 @@ export default function BubbleCluster({
       const t = e.target as HTMLElement;
       if (panelRef.current?.contains(t)) return;
       if (t.closest("[data-bubble]")) return;
-      setSelected((prev) => {
-        if (prev !== null) onOpenChange?.(false);
-        return null;
-      });
+      // Route through close(): it updates local state and fires onOpenChange
+      // OUTSIDE the state updater, so the parent (Hero) is never updated while
+      // BubbleCluster is rendering — kills the setState-in-render warning.
+      close();
     };
     document.addEventListener("keydown", onKey);
     document.addEventListener("pointerdown", onPointerDown);
@@ -191,7 +196,7 @@ export default function BubbleCluster({
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("pointerdown", onPointerDown);
     };
-  }, [close, onOpenChange]);
+  }, [close]);
 
   const active = selected !== null ? BUBBLES[selected] : null;
   const activeGlow = selected === HUB_I ? "var(--hub-bright)" : active?.lo;

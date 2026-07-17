@@ -7,6 +7,8 @@ interface SectionHeaderProps {
   actions?: ReactNode;
   className?: string;
   contentClassName?: string;
+  /** fixed-dark grounds (the contact footer): swap to on-dark inks */
+  inverse?: boolean;
 }
 
 export default function SectionHeader({
@@ -16,14 +18,30 @@ export default function SectionHeader({
   actions,
   className = "",
   contentClassName = "",
+  inverse = false,
 }: SectionHeaderProps) {
   return (
     <div className={`layout-header flex flex-col justify-between gap-4 sm:flex-row sm:items-end ${className}`.trim()}>
       <div className={contentClassName}>
-        {label ? <p className="section-label mb-3">{label}</p> : null}
-        <h2 className="heading-section">{title}</h2>
+        {label ? (
+          <p
+            className="section-label mb-3"
+            style={inverse ? { color: "var(--ink-on-dark-muted)" } : undefined}
+          >
+            {label}
+          </p>
+        ) : null}
+        <h2
+          className="heading-section"
+          style={inverse ? { color: "var(--ink-on-dark-strong)" } : undefined}
+        >
+          {title}
+        </h2>
         {description ? (
-          <p className="body-lg mt-3 max-w-xl" style={{ color: "var(--color-muted)" }}>
+          <p
+            className="body-lg mt-3 max-w-xl"
+            style={{ color: inverse ? "var(--ink-on-dark-body)" : "var(--color-muted)" }}
+          >
             {description}
           </p>
         ) : null}

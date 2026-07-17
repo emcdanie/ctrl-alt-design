@@ -100,11 +100,21 @@ Sizes: **13 / 14 / 16 / 18 / 20 / 24 / 32 / 40 / 56** px, plus the hero
 display step (see `--font-hero-unique`). Body text never below 16px. No
 other sizes.
 
-- Faces (redesign/lush): the large hero headline — and ONLY it — is Unique
-  (`--font-hero-display`; fails legibility at label sizes, never use it for
-  labels, card titles, or body). Display headings and all body/labels/card
-  titles = Geist (`--font-display` / `--font-body`). Eyebrows/meta = Geist
-  Mono (`--font-mono` chain).
+- Faces (TYPE LOCK 2026-07-17): exactly TWO typefaces. Unique renders
+  ONLY in the hero/bubble display surfaces: `.bubble-heading__title`, the
+  home hero headline, and the `.kbd-logo` brand lockup. Everything else,
+  every heading, label, eyebrow, and body run, is Geist (`--font-display`
+  and `--font-body` both resolve to Geist). Geist Mono is retired; the
+  `--font-mono` token is a legacy alias that resolves to Geist, and the
+  eyebrow look is carried by caps + `--tracking-eyebrow`, not a third
+  face. Enforced by `audit:fonts`.
+- Unique floor: 20px. Any Unique below 20px fails the gate
+  (`audit:contrast`, `display-font-below-20`); the keycap logo lockup is
+  the recorded exception. Titles below the floor (card/item titles) stay
+  Geist semibold (`.heading-item`).
+- Section intros: ONE pattern, the shared `ui/SectionHeader` (Geist caps
+  iris eyebrow + `.heading-section`, Geist 700 uppercase at
+  `--font-section-title`). No ad-hoc section titles.
 - BELLA size tokens map 1:1 to the ramp: `tag` 13, `sm` 14, `base` 16,
   `lg` 18, `xl` 20, `2xl` 24, `3xl` 32, `4xl` 40, `5xl` 56.
 - No arbitrary `text-[Npx]` / inline px font sizes in components — ramp
@@ -151,6 +161,35 @@ From the vetted `_proto/_hero.html`. Per-case bubble gradients
 AA+ on the white reveal card), the iris hub (`--hub-*`), fixed-context
 reveal-card tokens (`--hero-panel-*` — the card is always light), and
 the keycap logo plates (`--key-*`). Declared in `app/globals.css`.
+
+GlassBanner surface (recorded surface, 2026-07-17): ONE end-of-page CTA
+treatment, `ui/GlassBanner`, replacing every dark background-inverse
+slab (About CTA, case-study bottom CTA, the contact form panel). A
+frosted gradient over a light glass base: brand hues only (iris and
+periwinkle `--hub-*`, mint `--case-clarity-*`, gold periwinkle
+`--color-accent-gold`) at low opacity. Dark keeps the same tints over a
+translucent navy ground; it never reverts to a flat dark block. Driven
+by the `--banner-*` tokens in `globals.css` (radius 30px, `--banner-blur`,
+`--banner-border`, `--banner-shadow`, `--banner-ground`,
+`--banner-gradient`, light + `[data-theme="dark"]` sets). Content uses
+the normal semantic inks, so text flips with the theme (AA both). The
+CTA inside a banner is ALWAYS the keycap `Button`, never a custom pill.
+Static surface, no motion.
+
+Card ground rule (dark-mode fix 2026-07-17): the default `ui/Card` panel
+is THEME-AWARE, it backgrounds off `--color-card` and uses the normal
+semantic inks, so cards flip to navy with light text in dark. The fixed
+always-light `--hero-panel-*` treatment is the `variant="peek"` opt-in,
+reserved for elements that float light on navy: the bubble-cluster open
+peek (which consumes the same tokens directly).
+
+Card motion rule (motion audit 2026-07-17): the shared `ui/Card` is CALM
+AT REST. Resting state = static 1px accent-tinted border (accent at ~22%
+mix), soft shadow, glass inner. The conic colour trace (light) and
+identity halo (dark) run ONLY on hover / focus-within. The bubble-cluster
+open peek is the single element allowed to animate at rest. Reduced
+motion never traces; hover shows a static solid accent ring. Goal: at
+most one animated element on screen at a time.
 
 ## Buttons — the keycap Button (site-wide)
 

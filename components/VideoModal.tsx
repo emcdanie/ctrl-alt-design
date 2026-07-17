@@ -70,7 +70,7 @@ export default function VideoModal({
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-10"
-      style={{ background: "rgba(10, 9, 8, 0.92)" }}
+      style={{ background: "var(--modal-backdrop)" }}
       onClick={onClose}
     >
       <div

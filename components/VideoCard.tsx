@@ -63,10 +63,13 @@ export default function VideoCard({
           />
         )}
 
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.28),transparent_42%),linear-gradient(to_bottom,rgba(255,255,255,0.06),transparent_28%)]" />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "linear-gradient(to top, color-mix(in srgb, black 28%, transparent), transparent 42%), linear-gradient(to bottom, color-mix(in srgb, white 6%, transparent), transparent 28%)" }}
+        />
 
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/40 bg-white/82 shadow-[0_18px_42px_rgba(0,0,0,0.2)] backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[color:var(--color-alpha-glass-48)] bg-[color:var(--color-alpha-glass-82)] shadow-[var(--shadow-card-elevated)] backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
             <Icon name="Play" size="md" style={{ color: "var(--ink-on-paper)" }} />
           </div>
         </div>
@@ -74,7 +77,7 @@ export default function VideoCard({
 
       <div className="flex flex-1 flex-col p-6">
         <p className="section-label mb-3">EXPLORATION</p>
-        <h3 className="font-display mb-2 text-[length:var(--typography-font-size-xl)] font-bold leading-snug text-[color:var(--color-ink)]">
+        <h3 className="font-body mb-2 text-[length:var(--typography-font-size-xl)] font-bold leading-snug text-[color:var(--color-ink)]">
           {title}
         </h3>
         <p className="mb-4 flex-1 text-[length:var(--typography-font-size-base)] leading-[1.72] text-[color:var(--color-ink-muted)]">

@@ -9,21 +9,23 @@ export const metadata: Metadata = {
   description: "Get in touch, open to full-time roles and select freelance projects.",
 };
 
-/* Contact is its own route (IA consolidation); ContactSection keeps its
- * form + footer treatment. */
+/* Contact: compact bubble hero, social proof strip, then the form.
+   No 100dvh flex-end push: the first screen holds the bubble and the
+   start of the proof/form instead of a half-empty fold. */
 export default function ContactPage() {
   return (
-    <main id="main-content" style={{ minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
+    <main id="main-content">
       <OverlayNav />
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end", paddingTop: "var(--header-height)" }}>
-        <section className="layout-section" style={{ paddingBottom: "var(--spacing-8)" }}>
-          <div className="layout-container">
-            <PageHeader eyebrow="Get in touch" title="Contact" variant="bubble" />
-          </div>
-        </section>
-        <TestimonialSection />
-        <ContactSection />
-      </div>
+      <section
+        className="layout-section-tight"
+        style={{ paddingTop: "calc(var(--header-height) + var(--spacing-8))" }}
+      >
+        <div className="layout-container">
+          <PageHeader eyebrow="Get in touch" title="Contact" variant="bubble" />
+        </div>
+      </section>
+      <TestimonialSection />
+      <ContactSection />
     </main>
   );
 }
