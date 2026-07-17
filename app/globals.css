@@ -142,6 +142,8 @@ body {
   --shadow-switch-knob: 3px 5px 8px rgba(25, 23, 32, 0.24);
   --shadow-switch-knob-dark: 3px 5px 8px rgba(0, 0, 0, 0.4);
   --shadow-nav-bar: 0 18px 48px rgba(26, 24, 20, 0.08);
+  /* media scrim (one card system): text over cover media stays AA */
+  --scrim-media: linear-gradient(to top, color-mix(in srgb, black 46%, transparent), color-mix(in srgb, black 10%, transparent) 42%, transparent 68%);
 }
 
 @media (max-width: 640px) {

@@ -2,52 +2,13 @@
  * tier, token spacing). Cover placeholder is the muted warm pair; case
  * colour lives ONLY in the kicker text. */
 
-.card {
-  display: flex;
-  flex-direction: column;
-  border-radius: var(--radius-2xl);
-  border: 1px solid var(--color-semantic-border-subtle);
-  background: var(--color-card);
-  box-shadow: var(--shadow-card-default);
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  transition: transform var(--motion-duration-normal) var(--motion-easing-standard),
-    box-shadow var(--motion-duration-normal) var(--motion-easing-standard);
-}
-
-.card:hover,
-.card:focus-visible {
-  transform: var(--motion-transform-hover-lift);
-  box-shadow: var(--shadow-card-elevated);
-}
-
-.card:hover .title,
-.card:focus-visible .title {
+.caseCard:hover .title,
+.caseCard:focus-visible .title {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
-.card:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: var(--ring-focus-offset);
-}
-
 /* ── Cover slot ── */
-
-.cover {
-  display: block;
-  aspect-ratio: 16 / 10;
-  background: linear-gradient(160deg, var(--cover-warm-hi), var(--cover-warm-lo));
-  position: relative;
-}
-
-.coverImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
 
 /* placeholder art: quiet oversized display type, clipped — reads as a
  * branded plate, not a colour block */
@@ -56,6 +17,9 @@
   inset: 0;
   display: flex;
   align-items: flex-end;
+  /* the warm plate is a FIXED-context surface (recorded cover tokens);
+     it must not inherit the theme-flipping media surface behind it */
+  background: linear-gradient(160deg, var(--cover-warm-hi), var(--cover-warm-lo));
   padding: var(--spacing-4) var(--spacing-5);
   font-family: var(--font-display);
   font-weight: 700;
@@ -69,13 +33,6 @@
 }
 
 /* ── Body ── */
-
-.body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  padding: var(--spacing-6);
-}
 
 .kicker {
   display: flex;
@@ -130,13 +87,3 @@
   white-space: nowrap;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .card {
-    transition: none;
-  }
-
-  .card:hover,
-  .card:focus-visible {
-    transform: none;
-  }
-}

@@ -114,9 +114,72 @@
   --color-accent-ink: var(--hero-panel-accent-ink);
 }
 
+/* Interactive cards: single anchor/button, unmistakably clickable */
+.interactive {
+  display: block;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.interactive:hover,
+.interactive:focus-visible {
+  transform: var(--motion-transform-hover-lift, translateY(-2px));
+  box-shadow: 13px 26px 54px var(--hero-panel-shadow), var(--shadow-card-elevated);
+}
+
+.interactive:focus-visible {
+  outline: var(--ring-focus-width, 2px) solid var(--ring-focus-color, var(--color-semantic-border-strong));
+  outline-offset: var(--ring-focus-offset, 3px);
+}
+
+/* Image variant: full-bleed media above the padded body */
+.innerFlush {
+  padding: 0;
+  overflow: hidden;
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.media > :global(img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--scrim-media);
+}
+
+.body {
+  padding: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
 /* Reduced motion: no trace ever; hover/focus shows a static solid
    accent ring, dark hover a static halo */
 @media (prefers-reduced-motion: reduce) {
+  .interactive,
+  .interactive:hover,
+  .interactive:focus-visible {
+    transition: none;
+    transform: none;
+  }
+
   .card:hover::before,
   .card:focus-within::before {
     animation: none;

@@ -5,6 +5,7 @@ import VideoCard from "./VideoCard";
 import VideoModal from "./VideoModal";
 import SectionShell from "@/components/ui/SectionShell";
 import SectionHeader from "@/components/ui/SectionHeader";
+import Card from "@/components/ui/Card";
 
 /* One chip treatment for every lab category — the five-hue system read as
  * templated. Ink chip, parchment text (18.6:1), periwinkle accent border. */
@@ -116,58 +117,39 @@ const prototypes: LabPrototype[] = [
 
 function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
   return (
-    <a
+    <Card
       href={prototype.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group card-elevated flex h-full cursor-pointer flex-col overflow-hidden rounded-[var(--radius-2xl)] transition-all duration-300 hover:-translate-y-1"
-      style={{ textDecoration: "none" }}
+      className="h-full"
+      media={
+        <span style={{ display: "block", position: "absolute", inset: 0, background: prototype.gradient }}>
+          {prototype.thumbnailSrc && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={prototype.thumbnailSrc} alt="" loading="lazy" />
+          )}
+        </span>
+      }
     >
-      {/* Thumbnail */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-[var(--radius-2xl)]" style={{ background: prototype.gradient }}>
-        {prototype.thumbnailSrc && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={prototype.thumbnailSrc}
-            alt={prototype.title}
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-          />
-        )}
-
-        {/* Hover overlay with CTA */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/20">
-          <span
-            className="rounded-full border border-[color:var(--color-semantic-border-glass-edge)] bg-[color:var(--color-glass-strong)] px-5 py-2.5 text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--color-ink)] opacity-0 shadow-[var(--shadow-soft)] backdrop-blur-sm transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2"
-            style={{ fontFamily: "var(--font-body)" }}
-          >
-            Try Demo →
+      <h3
+        className="text-[length:var(--typography-font-size-lg)] font-bold leading-snug text-[color:var(--color-ink)]"
+        style={{ fontFamily: "var(--font-body)" }}
+      >
+        {prototype.title}
+      </h3>
+      <p
+        className="flex-1 text-[length:var(--typography-font-size-sm)] leading-[1.65]"
+        style={{ color: "var(--color-muted)", margin: 0 }}
+      >
+        {prototype.subtitle}
+      </p>
+      <span className="flex flex-wrap items-center gap-2">
+        <span className="tag">Try demo →</span>
+        {prototype.tags.slice(0, 3).map((tag) => (
+          <span key={tag} className="tag">
+            {tag}
           </span>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="flex flex-1 flex-col p-6">
-        <h3
-          className="mb-2 text-[length:var(--typography-font-size-lg)] font-bold leading-snug text-[color:var(--color-ink)]"
-          style={{ fontFamily: "var(--font-body)", maxWidth: "320px" }}
-        >
-          {prototype.title}
-        </h3>
-        <p
-          className="mb-4 flex-1 text-[length:var(--typography-font-size-sm)] leading-[1.65]"
-          style={{ color: "var(--color-muted)", maxWidth: "380px" }}
-        >
-          {prototype.subtitle}
-        </p>
-        <div className="flex flex-wrap items-center gap-2">
-          {prototype.tags.map((tag) => (
-            <span key={tag} className="tag">
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    </a>
+        ))}
+      </span>
+    </Card>
   );
 }
 
@@ -200,7 +182,6 @@ export default function CtrlAltDesignSection() {
                 subtitle={video.subtitle}
                 tags={video.tags}
                 gradient={video.gradient}
-                embedUrl={video.embed}
                 thumbnailSrc={video.thumbnailSrc}
                 onClick={() => setActiveVideo(video)}
               />

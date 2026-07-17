@@ -47,6 +47,8 @@ export interface WorkItem {
   featured?: boolean;
   /** explicit library order; lower ranks first in the default sort */
   rank?: number;
+  /** honest cover image (real work product); warm placeholder otherwise */
+  cover?: string;
   /** recorded case-colour tokens */
   hi: string;
   lo: string;
@@ -59,6 +61,7 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "chip",
     medium: "case study",
+    cover: "/case/chip/chip-evidence-0-bridge-hero.png",
     rank: 0,
     featured: true,
     title: "CHIP",
@@ -80,6 +83,7 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "code-first",
     medium: "case study",
+    cover: "/images/thumbnails/BradFrostCommandCenter.png",
     title: "Code First",
     bubbleLabel: "Code First",
     kicker: "Design Systems · 2024-25",
@@ -99,6 +103,7 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "drift",
     medium: "case study",
+    cover: "/images/thumbnails/ds-audit-thumb.svg",
     rank: 1,
     title: "From Drift to Foundation",
     bubbleLabel: "Drift to|Foundation",
@@ -125,6 +130,7 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "guardian",
     medium: "case study",
+    cover: "/images/thumbnails/GuardianAuditTool.svg",
     title: "Guardian",
     bubbleLabel: "Guardian",
     kicker: "AI UX · 2026",
