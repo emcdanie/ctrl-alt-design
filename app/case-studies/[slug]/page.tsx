@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { getCaseStudy, getAdjacentStudies, getAllSlugs, type CaseBlock } from "@/lib/content";
+import { getCaseStudy, getAllSlugs, type CaseBlock } from "@/lib/content";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
 import PrototypeEmbed from "@/components/PrototypeEmbed";
 import CaseStudyLayout from "@/components/CaseStudyLayout";
@@ -131,8 +131,11 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
         >
           <p className="eyebrow">Decision {block.index}</p>
           <H2>{block.title}</H2>
-          <RichBody text={block.why} />
+          {block.why && <RichBody text={block.why} />}
           {block.evidence && <Block block={block.evidence} title={title} marker={marker} markerText={markerText} />}
+          {block.children?.map((child, i) => (
+            <Block key={i} block={child} title={title} marker={marker} markerText={markerText} />
+          ))}
         </div>
       );
     case "figure":
@@ -179,6 +182,23 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
           )}
         </figure>
       );
+    case "disclosure":
+      return (
+        <p
+          role="note"
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "var(--typography-font-size-sm)",
+            lineHeight: 1.6,
+            color: "var(--color-ink-soft)",
+            borderLeft: "3px solid var(--color-border-medium)",
+            paddingLeft: "var(--spacing-4)",
+            margin: "0 0 var(--spacing-8)",
+          }}
+        >
+          {block.text}
+        </p>
+      );
     case "readinessMap":
       return <ChipReadinessMap rows={block.rows} />;
     case "lessons":
@@ -207,7 +227,6 @@ export default async function CaseStudyPage({
   const cs = getCaseStudy(slug);
   if (!cs) notFound();
 
-  const { prev, next } = getAdjacentStudies(slug);
   const caseItem = findWorkItemBySlug(slug);
 
   /* ── Build metadata rows (data override wins) ── */
@@ -231,8 +250,6 @@ export default async function CaseStudyPage({
         tags={cs.tags}
         demoLinks={cs.demoLinks}
         liveUrl={cs.liveUrl || undefined}
-        prev={prev}
-        next={next}
       >
         {/* ── Blocks mode, the one render path ── */}
         {cs.blocks ? (

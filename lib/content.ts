@@ -47,11 +47,17 @@ export type CaseBlock =
       kind: "decision";
       index: string;
       title: string;
-      why: string;
+      /** the decision lead, in HER voice; omit while the slot is empty
+       *  (TODO(elleta) comment in the content file marks it) */
+      why?: string;
       /** interactive recreation, never a client screenshot */
       evidence?: CaseBlock;
+      /** supporting paragraphs moved verbatim under the decision */
+      children?: CaseBlock[];
     }
   | { kind: "lessons"; text: string }
+  /* upfront NDA disclosure (Pass C): quiet note before the body */
+  | { kind: "disclosure"; text: string }
   /* photographic/still evidence attached to a decision (never a gallery);
    * href renders a text link below the image (poster-plus-link, no embeds) */
   | {
@@ -129,18 +135,6 @@ export default caseStudies;
 /** Look up a single case study by slug */
 export function getCaseStudy(slug: string): CaseStudy | undefined {
   return caseStudies.find((cs) => cs.slug === slug);
-}
-
-/** Get the previous and next case studies relative to a given slug */
-export function getAdjacentStudies(slug: string): {
-  prev: CaseStudy | null;
-  next: CaseStudy | null;
-} {
-  const index = caseStudies.findIndex((cs) => cs.slug === slug);
-  return {
-    prev: index > 0 ? caseStudies[index - 1] : null,
-    next: index < caseStudies.length - 1 ? caseStudies[index + 1] : null,
-  };
 }
 
 /** All slugs — used by generateStaticParams */

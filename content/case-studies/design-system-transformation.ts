@@ -47,6 +47,13 @@ const study: CaseStudy = {
    * prose redistributed into the new shape. Replace with the md content
    * when you drop it. ── */
   blocks: [
+    /* TODO(elleta): confirm the disclosure wording (pattern from the
+       17 Jul brief; industry-not-client, recreated artifacts,
+       illustrative data, no metrics) */
+    {
+      kind: "disclosure",
+      text: "This work is under strict NDA. Client specifics are withheld; the role, the process, and the decisions follow. Artifacts shown are recreated, data is illustrative, and the client appears as an industry descriptor only.",
+    },
     {
       kind: "summary",
       context:

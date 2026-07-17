@@ -48,15 +48,6 @@ const videos: LabVideo[] = [
     thumbnailSrc: "/images/thumbnails/AIPoweredSearch.png",
   },
   {
-    title: "AI-Powered Financial Stock Screener",
-    subtitle: "Redesigning financial screening workflows to improve filtering, sorting, and comparison of dense financial datasets.",
-    category: "FINTECH",
-    tags: ["FinTech", "Filtering Systems", "Data UX"],
-    embed: "https://www.loom.com/embed/0dbf0dc67b644224b8abf533f73106fb",
-    gradient: "linear-gradient(135deg, #1C0A0A 0%, #3D1010 50%, #140808 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
-    thumbnailSrc: "/images/thumbnails/FINVIZ.png",
-  },
-  {
     title: "Complex Insurance Forms",
     subtitle: "Designing scalable form architectures that support multilingual content, validation logic, and accessible interaction patterns.",
     category: "FORM DESIGN",
@@ -77,6 +68,17 @@ const videos: LabVideo[] = [
 ];
 
 const prototypes: LabPrototype[] = [
+  /* Pass C 2026-07-18: swapped from the Loom video card to the newer
+     finviz-kpi-tree interactive prototype (asset + link only) */
+  {
+    title: "AI-Powered Financial Stock Screener",
+    subtitle: "Redesigning financial screening workflows to improve filtering, sorting, and comparison of dense financial datasets.",
+    category: "FINTECH",
+    tags: ["FinTech", "Filtering Systems", "Data UX"],
+    href: "/demos/finviz-kpi-tree.html",
+    gradient: "linear-gradient(135deg, #1C0A0A 0%, #3D1010 50%, #140808 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
+    thumbnailSrc: "/images/thumbnails/finviz-kpi-tree.png",
+  },
   {
     title: "Travel Search & Filtering System",
     subtitle: "Interactive prototype exploring unified search, filtering, and booking patterns for a B2B travel platform.",

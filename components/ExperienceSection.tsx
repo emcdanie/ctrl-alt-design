@@ -9,6 +9,14 @@ import SectionShell from "@/components/ui/SectionShell";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 
+/* Logo slots (Pass C 2026-07-18): PUBLIC orgs only carry logoSrc (Brad
+   Frost Web, Mango, VML, Ironhack, ASU); abstracted clients stay
+   text-only forever (no logoSrc; LogoContainer falls back to the
+   initial-letter tile until a file exists).
+   TODO(elleta): files to upload/replace in public/images/logos/:
+   1. mango.png            MISSING (card renders the fallback "M" tile)
+   2. ASU-logo.png         REPLACE (3840x2160 letterboxed canvas; re-export trimmed)
+   3. bradfrostwebjpeg.jpeg REPLACE (baked-in cream padding; clean PNG) */
 const roles = [
   {
     title: "Product Designer, Design Systems",

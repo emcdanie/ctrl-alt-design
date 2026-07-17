@@ -199,6 +199,26 @@ const EXTRA_CASES: Record<string, Pick<WorkItem, "hi" | "lo" | "deep" | "text" |
   },
 };
 
+/** "More work like this" (Pass C 2026-07-18): case studies ranked by
+ * skill overlap with the current case (the same matrix data), current
+ * case excluded, deterministic order (overlap desc, rank asc, title).
+ * Slugs without a library row (EXTRA_CASES) fall back to rank order. */
+export function relatedWorkItems(slug: string, count = 3): WorkItem[] {
+  const cases = WORK_ITEMS.filter((i) => i.medium === "case study");
+  const current = cases.find((i) => i.href.endsWith(`/case-studies/${slug}`));
+  const overlap = (i: WorkItem) =>
+    current ? i.skills.filter((s) => current.skills.includes(s)).length : 0;
+  return cases
+    .filter((i) => i !== current)
+    .sort(
+      (a, b) =>
+        overlap(b) - overlap(a) ||
+        (a.rank ?? 99) - (b.rank ?? 99) ||
+        a.title.localeCompare(b.title)
+    )
+    .slice(0, count);
+}
+
 /** Case tokens for a case-study slug (sphere, accents). */
 export function findWorkItemBySlug(
   slug: string

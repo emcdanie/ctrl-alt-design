@@ -1869,28 +1869,19 @@ textarea:focus-visible {
 }
 
 /* Navigation */
-.cs-shell__nav {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-  gap: var(--spacing-4);
+/* End sequence: "More work like this" (Pass C 2026-07-18) */
+.cs-shell__related {
   border-top: 1px solid var(--color-border-soft);
   padding-top: var(--space-md);
   margin-top: var(--space-xl);
   margin-bottom: var(--space-md);
 }
 
-.cs-shell__nav-link {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-  max-width: 45%;
-  text-decoration: none;
-  color: inherit;
-}
-
-.cs-shell__nav-link--next {
-  align-items: flex-end;
+.cs-shell__related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--grid-gap);
+  align-items: stretch;
 }
 
 /* Bottom CTA */

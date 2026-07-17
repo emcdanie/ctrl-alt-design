@@ -42,21 +42,22 @@ const study: CaseStudy = {
     { label: "Organisation", value: "Into Design Systems Hackathon (sponsored by Figma)" },
   ],
   blocks: [
+    /* Decision-led restructure (Pass C 2026-07-18): existing prose moved
+       verbatim into the template buckets; nothing new written.
+       TODO(elleta): confirm the summary buckets, and rephrase `approach`
+       in your own words so it LEADS WITH THE DECISION. */
     {
-      kind: "section",
-      eyebrow: "OVERVIEW",
-      heading: "Project Overview",
-      children: [
-        { kind: "paragraph", text: "A designer is working under deadline. She needs a card component with a slightly different corner radius for a new feature. She duplicates the existing card, changes the radius, and ships it. Three sprints later, the product has two card components. Then three. Then a developer asks in Slack: \"which card is the canonical one?\" Nobody answers, because nobody knows. The design system didn't break. It just quietly stopped being the source of truth, and nobody found out until a code review caught the divergence six weeks too late." },
-        { kind: "paragraph", text: "During the Into Design Systems Hackathon (2026), sponsored by Figma, eight of us came together around that exact problem, one we had all lived. Design system interpretation happens in isolation. The consequences only surface at handoff, review, or production, the moments when change is hardest and most expensive." },
-        { kind: "paragraph", text: "The question wasn't \"how do we document better?\" It was: what if the design system could be present at the moment decisions are actually made, not after? That became Guardian: an AI-enabled concept that detects drift, surfaces contextual guidance, and helps teams make confident system decisions without leaving their workflow." },
-      ],
+      kind: "summary",
+      context: "A designer is working under deadline. She needs a card component with a slightly different corner radius for a new feature. She duplicates the existing card, changes the radius, and ships it. Three sprints later, the product has two card components. Then three. Then a developer asks in Slack: \"which card is the canonical one?\" Nobody answers, because nobody knows. The design system didn't break. It just quietly stopped being the source of truth, and nobody found out until a code review caught the divergence six weeks too late.",
+      approach: "The question wasn't \"how do we document better?\" It was: what if the design system could be present at the moment decisions are actually made, not after? That became Guardian: an AI-enabled concept that detects drift, surfaces contextual guidance, and helps teams make confident system decisions without leaving their workflow.",
+      outcome: "The concept demonstrated three things: real-time in-context guidance is architecturally feasible within Figma's plugin model; design-to-code comparison can be surfaced meaningfully for designers; and governance doesn't require enforcement, making decisions visible and intentional is sufficient to change behaviour.",
     },
     {
       kind: "section",
       eyebrow: "THE PROBLEM",
       heading: "Spotting the Gap",
       children: [
+        { kind: "paragraph", text: "During the Into Design Systems Hackathon (2026), sponsored by Figma, eight of us came together around that exact problem, one we had all lived. Design system interpretation happens in isolation. The consequences only surface at handoff, review, or production, the moments when change is hardest and most expensive." },
         { kind: "paragraph", text: "Most design systems fail not because they are poorly built, but because they are difficult to apply consistently under pressure. Three groups were operating with incomplete information and no shared feedback loop. Designers didn't always know what existed, what was permitted, or what had already drifted. Developers didn't know which components were canonical or when to extend versus rebuild. And the design system team had no visibility into what was being used, reused, or silently reinvented, until something surfaced in a review." },
         { kind: "paragraph", text: "The insight that reframed the entire project: documentation alone doesn't change behaviour. Real-time feedback does. Teams don't break design systems intentionally, they break them because they are moving fast, the system isn't present, and there is no signal telling them anything has gone wrong until it is expensive to fix." },
         { kind: "pullQuote", text: "\"The core problem wasn't a documentation gap. It was a feedback gap. Governance was arriving too late, at the highest possible cost.\"" },
@@ -80,27 +81,32 @@ const study: CaseStudy = {
         { kind: "paragraph", text: "Existing tools in this space shared a common characteristic: they were reactive. A designer had to know what to ask, leave their workflow to ask it, and interpret the answer independently. This became the clearest differentiator: most design system tools answer questions. Guardian intervenes at the moment decisions are made." },
       ],
     },
+    /* TODO(elleta): decision 01 `why` slot is empty. One paragraph in
+       your voice leading with the decision; the paragraphs below moved
+       verbatim from the former STRATEGY section. */
     {
-      kind: "section",
-      eyebrow: "STRATEGY",
-      heading: "Design Strategy",
+      kind: "decision",
+      index: "01",
+      title: "Design Strategy",
       children: [
         { kind: "paragraph", text: "The strategy had two interlocking parts. The first was defining what Guardian was not: not a linter, not a chatbot, not a blocking governance tool, not a dashboard for managers. The second was naming the actual pattern: situated system intelligence. A persistent, context-aware presence that lives where work happens, observes real decisions as they are made, and intervenes only when there is a genuine, high-confidence signal worth surfacing." },
         { kind: "paragraph", text: "Governance + Growth = Guardian. Governance: helping teams apply existing guidance consistently and as intended. Growth: identifying gaps, edge cases, and emerging needs so the system evolves based on real usage. Guardian as the mechanism connecting the two, making interpretation visible while work is being created, not after it has been delivered." },
       ],
     },
+    /* TODO(elleta): decision 02 `why` slot is empty (same as 01). */
     {
-      kind: "section",
-      eyebrow: "ARCHITECTURE",
-      heading: "Concept Architecture",
+      kind: "decision",
+      index: "02",
+      title: "Concept Architecture",
       children: [
         { kind: "paragraph", text: "Guardian operates across three layers. Detection: analysing design and implementation artifacts to identify potential drift before it becomes structural. Contextual feedback: surfacing guidance at the moment of decision rather than at review, not blocking work, but explaining it. Learning: capturing decisions and edge cases so the system can evolve intentionally. Repeated snowflakes signal missing variants. Frequent overrides signal token gaps. This is how governance becomes proactive rather than reactive." },
       ],
     },
+    /* TODO(elleta): decision 03 `why` slot is empty (same as 01). */
     {
-      kind: "section",
-      eyebrow: "INTERACTION DESIGN",
-      heading: "Interaction Design Decisions",
+      kind: "decision",
+      index: "03",
+      title: "Interaction Design Decisions",
       children: [
         { kind: "paragraph", text: "The interaction concept centred on Figma's existing FigPal extended into a context-aware guardian. FigPal was designed as an entry point, not a container, small, present, and quiet in its idle state, hovering just above the canvas toolbar. The character had emotional range across states (idle, alert, thinking, success) but the animations served function rather than personality. The most important constraint was restraint: FigPal would only speak when there was a genuine signal." },
         { kind: "paragraph", text: "Engaging with a FigPal signal opened a full-width, bottom-docked console inspired by VS Code's terminal model. Inside the console, the same underlying diff data could be viewed three ways, Design, Variants, and Code, so that the same conversation could happen with designers, developers, and system owners without requiring a separate tool." },
@@ -142,7 +148,6 @@ const study: CaseStudy = {
       heading: "Outcomes",
       children: [
         { kind: "paragraph", text: "The final demo showed a coherent, believable experience: a designer working in Figma receives a non-blocking signal from FigPal, engages with a bottom console surfacing the exact differences between their design and the system, makes a deliberate decision, and sends a note to development, all without leaving the canvas." },
-        { kind: "paragraph", text: "The concept demonstrated three things: real-time in-context guidance is architecturally feasible within Figma's plugin model; design-to-code comparison can be surfaced meaningfully for designers; and governance doesn't require enforcement, making decisions visible and intentional is sufficient to change behaviour." },
       ],
     },
     {
@@ -168,19 +173,9 @@ const study: CaseStudy = {
   ],
 };
 
-/* ── TODO(elleta): decision-led template scaffold. Fill in YOUR words,
- * then move this into the study object as `blocks: [...]` (see
- * design-system-transformation.ts for the model). Nothing here renders
- * while commented.
- *
- * { kind: "summary",
- *   context: "TODO(elleta): the situation and the tension",
- *   approach: "TODO(elleta): LEAD WITH THE DECISION",
- *   outcome: "TODO(elleta): what changed, honest, no invented metrics" },
- * { kind: "decision", index: "01", title: "TODO(elleta)", why: "TODO(elleta)",
- *   evidence: { kind: "embed", src: "/demos/<recreation>.html", title: "...", frame: "light" } },
- * { kind: "decision", index: "02", ... },
- * { kind: "lessons", text: "TODO(elleta): one paragraph" },
- * ── */
+/* TODO(elleta): the template's closing `lessons` block is empty. One
+ * paragraph in your voice distilling what this changed; KEY LEARNINGS
+ * and REFLECTION above hold your existing verbatim prose meanwhile.
+ * Add as: { kind: "lessons", text: "..." } before the closing bracket. */
 
 export default study;

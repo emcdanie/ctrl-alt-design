@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { findWorkItemBySlug } from "@/lib/workLibrary";
+import { findWorkItemBySlug, relatedWorkItems } from "@/lib/workLibrary";
 import { Tag } from "@/components/ui/Tag";
 import Heading from "@/components/ui/Heading";
 import CtaBanner from "@/components/ui/CtaBanner";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CaseCard from "@/components/CaseCard";
 
 /* ── Types ─────────────────────────────────────────────────────── */
 
@@ -33,10 +35,6 @@ export interface CaseStudyShellProps {
   demoLinks?: DemoLink[];
   /** Optional live URL */
   liveUrl?: string;
-  /** Previous case study (for nav) */
-  prev?: { slug: string; title: string; category: string } | null;
-  /** Next case study (for nav) */
-  next?: { slug: string; title: string; category: string } | null;
   /** Case slug — resolves the case colours for the sphere + headline */
   slug: string;
   /** Scrolling content (sections, pull quotes, images…) */
@@ -63,12 +61,11 @@ export default function CaseStudyShell({
   tags,
   demoLinks,
   liveUrl,
-  prev,
-  next,
   slug,
   children,
 }: CaseStudyShellProps) {
   const caseItem = findWorkItemBySlug(slug);
+  const related = relatedWorkItems(slug);
   const MetaList = () => (
     <dl className="cs-shell__meta">
       {metadata.map(({ label, value }) => (
@@ -206,31 +203,18 @@ export default function CaseStudyShell({
           {children}
         </div>
 
-        {/* Prev / Next navigation */}
-        {(prev || next) && (
-          <div className="cs-shell__nav">
-            {prev ? (
-              <Link href={`/case-studies/${prev.slug}`} className="cs-shell__nav-link">
-                <span className="section-label">← Previous</span>
-                <span className="heading-item" style={{ lineHeight: 1.3 }}>{prev.title}</span>
-                <span className="text-meta">{prev.category}</span>
-              </Link>
-            ) : (
-              <div />
-            )}
-            {next ? (
-              <Link
-                href={`/case-studies/${next.slug}`}
-                className="cs-shell__nav-link cs-shell__nav-link--next"
-              >
-                <span className="section-label">Next →</span>
-                <span className="heading-item" style={{ lineHeight: 1.3, textAlign: "right" }}>{next.title}</span>
-                <span className="text-meta">{next.category}</span>
-              </Link>
-            ) : (
-              <div />
-            )}
-          </div>
+        {/* End sequence (Pass C 2026-07-18): "More work like this", 3
+            case cards by skill overlap with this case (matrix data),
+            deterministic, the ONE Card; then the single closing CTA. */}
+        {related.length > 0 && (
+          <section className="cs-shell__related" aria-label="More work like this">
+            <SectionHeader label="Related" title="More work like this" />
+            <div className="cs-shell__related-grid">
+              {related.map((i) => (
+                <CaseCard key={i.id} item={i} />
+              ))}
+            </div>
+          </section>
         )}
 
         {/* Bottom CTA (visible on all sizes within the scrolling column) */}
