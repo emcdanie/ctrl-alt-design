@@ -3,10 +3,12 @@
  *   a legacy alias that resolves to Geist in globals.css).
  * - No font-family literal outside the token layer (app/globals.css):
  *   components/pages may only reference var(--font-*) tokens.
- * - Unique (--font-hero-display / --font-unique) renders only in the
- *   hero/bubble display surfaces: the token layer (globals.css: the
- *   .bubble-heading__title, .kbd-logo brand lockup rules), the home hero
- *   headline (Hero.module.css), and the font loader (app/layout.tsx). */
+ * - Unique (--font-hero-display / --font-unique) renders only through
+ *   the display Heading primitive (ui/Heading.tsx -> .display-heading
+ *   classes in globals.css), the bubble-heading title, the .kbd-logo
+ *   brand lockup, the home hero headline (Hero.module.css), and the
+ *   font loader (app/layout.tsx). Raw Unique anywhere else fails.
+ *   Floor: 24px, enforced by audit:contrast. */
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 

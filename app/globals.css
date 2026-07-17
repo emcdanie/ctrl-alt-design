@@ -677,17 +677,47 @@ li {
 ────────────────────────────────────────────────────────────────── */
 
 
-/* H2 — section titles (Case Studies, Experience, About…). ONE section
-   intro treatment (SectionHeader): matches the /work page title device
-   (mono iris eyebrow + Unique 700 uppercase), at section scale. */
-.heading-section {
-  font-family: var(--font-display);
-  font-size: var(--font-section-title);
+/* ─── Display heading system (corrective pass 2026-07-17) ──────────
+   ONE primitive for every display heading (ui/Heading.tsx renders
+   these classes; nothing else declares the display face). Unique 700
+   all-caps at four ramp tiers; the accent span is the established hero
+   treatment (key word in iris). Floor: 24px (gate). The bubble title,
+   home hero headline, and keycap lockup share the tokens through
+   their own shells. */
+.display-heading {
+  font-family: var(--font-hero-display);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.005em;
   line-height: 0.95;
   color: var(--color-ink);
+}
+
+.display-heading--hero {
+  font-size: var(--font-hero);
+  line-height: 0.9;
+}
+
+.display-heading--page {
+  font-size: var(--font-case-display);
+  line-height: 0.9;
+}
+
+.display-heading--section {
+  font-size: var(--font-section-title);
+}
+
+.display-heading--case {
+  font-size: var(--font-case-display);
+  line-height: 0.9;
+}
+
+.display-heading__accent {
+  color: var(--color-accent-ink);
+}
+
+.display-heading--inverse {
+  color: var(--ink-on-dark-strong);
 }
 
 /* H3 — sub-section headers (Education, Working with me…) */
@@ -1608,16 +1638,6 @@ textarea:focus-visible {
 }
 
 
-/* Case display headline in the case colour (Geist; Unique is bubble-only) */
-.cs-shell__title.cs-shell__title--display {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--font-case-display);
-  line-height: 0.9;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
-}
-
 /* §8: the case title device wrapper */
 .cs-shell__hero--bubble {
   display: flex;
@@ -1652,17 +1672,6 @@ textarea:focus-visible {
 }
 
 /* Title */
-.cs-shell__title {
-  font-family: var(--font-display);
-  /* page title — clearly outranks in-page section headings */
-  font-size: var(--font-case-title);
-  font-weight: var(--typography-font-weight-bold);
-  line-height: 1.08;
-  letter-spacing: 0.01em; /* Unique never gets negative tracking */
-  color: var(--color-ink);
-  margin: 0 0 var(--spacing-3);
-}
-
 /* Summary */
 .cs-shell__summary {
   font-family: var(--font-body);

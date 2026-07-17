@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Heading from "@/components/ui/Heading";
 
 interface SectionHeaderProps {
   label?: string;
@@ -31,12 +32,13 @@ export default function SectionHeader({
             {label}
           </p>
         ) : null}
-        <h2
-          className="heading-section"
-          style={inverse ? { color: "var(--ink-on-dark-strong)" } : undefined}
+        <Heading
+          tier="section"
+          as="h2"
+          className={inverse ? "display-heading--inverse" : ""}
         >
           {title}
-        </h2>
+        </Heading>
         {description ? (
           <p
             className="body-lg mt-3 max-w-xl"

@@ -100,20 +100,22 @@ Sizes: **13 / 14 / 16 / 18 / 20 / 24 / 32 / 40 / 56** px, plus the hero
 display step (see `--font-hero-unique`). Body text never below 16px. No
 other sizes.
 
-- Faces (TYPE LOCK 2026-07-17): exactly TWO typefaces. Unique renders
-  ONLY in the hero/bubble display surfaces: `.bubble-heading__title`, the
-  home hero headline, and the `.kbd-logo` brand lockup. Everything else,
-  every heading, label, eyebrow, and body run, is Geist (`--font-display`
-  and `--font-body` both resolve to Geist). Geist Mono is retired; the
-  `--font-mono` token is a legacy alias that resolves to Geist, and the
-  eyebrow look is carried by caps + `--tracking-eyebrow`, not a third
-  face. Enforced by `audit:fonts`.
-- Unique floor: 20px. Any Unique below 20px fails the gate
-  (`audit:contrast`, `display-font-below-20`); the keycap logo lockup is
+- Faces (revised 2026-07-17, supersedes the hero-only lock): exactly TWO
+  typefaces. Unique 700 = ALL display headings (home hero headline, page
+  titles, section headers, bubble titles, case display headlines, keycap
+  lockup), all-caps, rendered through the ONE `ui/Heading` primitive
+  (`.display-heading` tiers hero / page / section / case, accent span in
+  iris). Unique never below 24px (keycap lockup excepted) and never in
+  body, UI, card titles, eyebrows, meta, nav, buttons, or chips. Geist =
+  everything else; eyebrows are Geist caps + `--tracking-eyebrow`. Geist
+  Mono is retired; `--font-mono` is a legacy alias resolving to Geist.
+  Enforced by `audit:fonts` + the 24px floor in `audit:contrast`.
+- Unique floor: 24px. Any Unique below 24px fails the gate
+  (`audit:contrast`, `display-font-below-24`); the keycap logo lockup is
   the recorded exception. Titles below the floor (card/item titles) stay
   Geist semibold (`.heading-item`).
 - Section intros: ONE pattern, the shared `ui/SectionHeader` (Geist caps
-  iris eyebrow + `.heading-section`, Geist 700 uppercase at
+  iris eyebrow + the `ui/Heading` section tier, Unique 700 uppercase at
   `--font-section-title`). No ad-hoc section titles.
 - BELLA size tokens map 1:1 to the ramp: `tag` 13, `sm` 14, `base` 16,
   `lg` 18, `xl` 20, `2xl` 24, `3xl` 32, `4xl` 40, `5xl` 56.

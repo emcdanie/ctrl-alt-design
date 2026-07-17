@@ -1,4 +1,5 @@
 import BubbleHeading from "@/components/ui/BubbleHeading";
+import Heading from "@/components/ui/Heading";
 
 /**
  * Shared page open. variant="bubble" is the §8 one-per-page title
@@ -8,10 +9,13 @@ import BubbleHeading from "@/components/ui/BubbleHeading";
 export default function PageHeader({
   eyebrow,
   title,
+  accent,
   variant = "flat",
 }: {
   eyebrow: string;
   title: string;
+  /** accent segment in iris after the title (flat tier only) */
+  accent?: string;
   variant?: "flat" | "bubble";
 }) {
   return (
@@ -22,19 +26,9 @@ export default function PageHeader({
       {variant === "bubble" ? (
         <BubbleHeading title={title} />
       ) : (
-        <h1
-          style={{
-            fontFamily: "var(--font-display)",
-            fontWeight: 700,
-            fontSize: "var(--font-case-display)",
-            lineHeight: 0.9,
-            letterSpacing: "0.005em",
-            textTransform: "uppercase",
-            color: "var(--color-ink)",
-          }}
-        >
+        <Heading tier="page" as="h1" accent={accent}>
           {title}
-        </h1>
+        </Heading>
       )}
     </header>
   );

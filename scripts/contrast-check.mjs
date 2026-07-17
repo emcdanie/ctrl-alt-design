@@ -59,11 +59,11 @@ for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies
       if (!r.width || !r.height) continue;
       const cs = getComputedStyle(el);
       if (parseFloat(cs.fontSize) < 10) continue;
-      // Unique is display-only: below 20px it is illegible. The keycap
+      // Unique is display-only: it never renders below 24px. The keycap
       // logo lockup is the one recorded exception (brand device).
       const uniqueTooSmall =
         /unique/i.test(cs.fontFamily || "") &&
-        parseFloat(cs.fontSize) < 20 &&
+        parseFloat(cs.fontSize) < 24 &&
         !el.closest(".kbd-logo");
       out.push({ t: (el.textContent||"").trim().slice(0,32), c: cs.color, bg: bgOf(el), fs: cs.fontSize, tag: el.tagName, uniqueTooSmall });
     }
@@ -73,7 +73,7 @@ for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies
   for (const f of fails) {
     if (f.uniqueTooSmall) {
       bad++;
-      console.log(`  FAIL display-font-below-20 [${f.tag}] "${f.t}" at ${f.fs}`);
+      console.log(`  FAIL display-font-below-24 [${f.tag}] "${f.t}" at ${f.fs}`);
     }
     const c = parse(f.c);
     if ((c[3] ?? 1) === 0) continue;
