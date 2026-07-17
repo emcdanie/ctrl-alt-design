@@ -28,10 +28,11 @@ export const metadata: Metadata = {
     "Product Designer specialising in Design Systems & Complex Platforms. Designing scalable systems, intuitive workflows, and structured design languages.",
 };
 
-// Dark tokens are wired but sections still hardcode light backgrounds, so
-// light is PINNED until Phase 5 conformance. To re-enable OS-follow, swap in:
-// try{var m=matchMedia("(prefers-color-scheme: dark)");var a=function(){document.documentElement.dataset.theme=m.matches?"dark":"light"};a();m.addEventListener("change",a)}catch(e){}
-const themeInit = `document.documentElement.dataset.theme="light"`;
+// Theme follows the visitor (2026-07-17): a stored ThemeSwitch choice
+// wins; otherwise the OS preference applies, live (the matchMedia
+// listener re-runs on OS theme change and defers to a stored choice).
+// Pre-paint inline in <head>: no flash either way.
+const themeInit = `try{var d=document.documentElement,m=matchMedia("(prefers-color-scheme: dark)"),a=function(){var s=null;try{s=localStorage.getItem("theme")}catch(e){}d.dataset.theme=s||(m.matches?"dark":"light")};a();m.addEventListener("change",a)}catch(e){document.documentElement.dataset.theme="light"}`;
 
 export default function RootLayout({
   children,

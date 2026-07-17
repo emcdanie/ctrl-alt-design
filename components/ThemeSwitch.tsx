@@ -6,17 +6,17 @@ import styles from "./ThemeSwitch.module.css";
 
 /**
  * Sun/moon theme switch (from _proto/_hero.html): role="switch" with
- * aria-checked, sliding keycap thumb (iris in dark). Light is the
- * default on every load; the switch lets a visitor opt into navy dark
- * by flipping [data-theme] on <html> (BELLA's activation hook).
+ * aria-checked, sliding keycap thumb (iris in dark). The resolved theme
+ * follows the OS until the visitor chooses here; the choice persists to
+ * localStorage and the layout.tsx pre-paint script defers to it.
  */
 export default function ThemeSwitch() {
   const [dark, setDark] = useState(false);
 
-  // layout.tsx pins data-theme="light" before paint; mirror the DOM
-  // attribute (and watch it) so aria-checked can never disagree — the
-  // switch renders in both the header and the mobile menu, and both
-  // instances must stay in sync.
+  // layout.tsx resolves the theme before paint (stored choice, else OS);
+  // mirror the DOM attribute (and watch it) so aria-checked can never
+  // disagree — the switch renders in both the header and the mobile
+  // menu, and both instances must stay in sync.
   useEffect(() => {
     const sync = () => setDark(document.documentElement.dataset.theme === "dark");
     sync();
@@ -28,6 +28,11 @@ export default function ThemeSwitch() {
   const toggle = () => {
     const next = !dark;
     document.documentElement.dataset.theme = next ? "dark" : "light";
+    try {
+      localStorage.setItem("theme", next ? "dark" : "light");
+    } catch {
+      /* storage unavailable: theme still flips for this page view */
+    }
     setDark(next);
   };
 
