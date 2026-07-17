@@ -184,9 +184,8 @@ export default function DesignSystemSpecimens() {
         <div className="ds-specimen-row">
           <div className="ds-specimen">
             <p className="ds-section__kicker">Button</p>
-            <p className="ds-type__meta">True actions only; max one primary per view.</p>
+            <p className="ds-type__meta">True actions only; max one primary per view. The page's ONE primary is the opening keycap above.</p>
             <div className="ds-specimen__body">
-              <Button variant="primary">Primary</Button>
               <Button variant="secondary">Secondary</Button>
             </div>
           </div>
