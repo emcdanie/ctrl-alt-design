@@ -67,7 +67,7 @@ export default function VideoCard({
         </span>
       }
     >
-      <span className="section-label">Exploration</span>
+      <span className="section-label" style={{ color: "var(--case-design-lab-text)" }}>Exploration</span>
       <h3 className="font-body text-[length:var(--typography-font-size-xl)] font-bold leading-snug text-[color:var(--color-ink)]">
         {title}
       </h3>

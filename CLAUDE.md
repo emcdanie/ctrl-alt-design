@@ -60,11 +60,12 @@ override the constitution.
 - Geist = everything else. Eyebrows stay Geist caps with `--tracking-eyebrow`.
 
 ## 4. Color & dark mode
-- **Colour affordance rule (2026-07-17):** saturated iris at body scale means INTERACTIVE, and only
-  that. Eyebrows/kickers are wayfinding and wear `--color-eyebrow` (muted ink), never iris. Inline
-  body links are iris AND underlined. Decorative purple uses periwinkle tints, never the saturated
-  iris fill. Display headings keep their iris accent word (out of this rule's scope). Enforced by
-  the eyebrow check in `audit:structure`.
+- **Colour affordance rule (refined 2026-07-17):** saturated iris at body scale means INTERACTIVE,
+  and only that. Eyebrows/kickers: weight 700, tracked, NEVER iris; on case-scoped surfaces they
+  wear that case's identity colour (`--case-*-text`, AA on their ground); on neutral surfaces
+  `--color-eyebrow` (ink-soft). Inline body links are iris AND underlined. Decorative purple uses
+  periwinkle tints. Display headings keep their iris accent word. Enforced by the no-iris eyebrow
+  check in `audit:structure` + the live AA sweep in `audit:contrast`.
 - Every surface/text/border resolves from semantic tokens via `[data-theme="dark"]`. No hardcoded values.
 - Dark mode is a first-class contract on EVERY surface, not an afterthought — case pages included.
 - The dark keycap logo must not bloom a heavy glow on navy; tone the plate/shadow.

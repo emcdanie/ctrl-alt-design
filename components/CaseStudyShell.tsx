@@ -82,7 +82,7 @@ export default function CaseStudyShell({
           </Link>
 
           {/* Eyebrow */}
-          <p className="cs-shell__eyebrow">{eyebrow}</p>
+          <p className="cs-shell__eyebrow" style={caseItem ? { color: caseItem.text } : undefined}>{eyebrow}</p>
 
           {/* Title */}
           {/* title lives in the flat case Heading (right column) */}
@@ -180,7 +180,7 @@ export default function CaseStudyShell({
 
         {/* Mobile header, title, meta, tags (below hero on small screens) */}
         <div className="cs-shell__mobile-header">
-          <p className="cs-shell__eyebrow">{eyebrow}</p>
+          <p className="cs-shell__eyebrow" style={caseItem ? { color: caseItem.text } : undefined}>{eyebrow}</p>
           <p className="cs-shell__summary">{summary}</p>
           <div className="cs-shell__divider" />
           <dl className="cs-shell__meta">

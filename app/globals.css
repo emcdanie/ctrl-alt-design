@@ -103,13 +103,11 @@ body {
   --typography-font-family-display: var(--font-display);
   --typography-font-family-body: var(--font-body);
   --typography-font-family-mono: var(--font-mono);
-  /* Colour affordance rule (2026-07-17): saturated iris at body scale
-     means INTERACTIVE, only. Eyebrows are wayfinding -> muted ink,
-     decided by this ONE token. Declared on BODY, not :root: it chains
-     to --color-muted, whose dark value lives on [data-theme] body
-     (var() substitutes where the property is declared - the font-token
-     lesson, third occurrence). */
-  --color-eyebrow: var(--color-muted);
+  /* Colour affordance rule (refined 2026-07-17): iris stays banned on
+     eyebrows; neutral surfaces use ink-soft (muted lost too much
+     presence), case surfaces override with the case identity colour.
+     Declared on BODY, not :root (the font-token substitution lesson). */
+  --color-eyebrow: var(--color-ink-soft);
 }
 
 /* ─── APP TOKEN AUTHORITY (unlayered — MUST stay unlayered) ─────────
@@ -605,10 +603,11 @@ li {
 .eyebrow,
 .section-label {
   /* Eyebrows are Geist, uppercase, tracked (--tracking-eyebrow).
-     No mono face exists; --font-mono is a legacy alias for Geist. */
+     Presence pass 2026-07-17: 700 weight; case surfaces use the case
+     identity colour (-text flips), neutral surfaces ink-soft. */
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-sm); /* one ramp step up: 13 -> 14 (eyebrows read too quiet under the display heads) */
-  font-weight: 500;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: var(--tracking-eyebrow);
   /* wayfinding, not action: eyebrows never wear the interactive iris */
