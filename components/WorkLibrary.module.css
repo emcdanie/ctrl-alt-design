@@ -135,6 +135,10 @@
 /* ── Table ── */
 
 .tableWrap {
+  /* relative so sr-only absolute descendants resolve here, not the ICB:
+     without it they escape the scroll container and stretch html.scrollWidth
+     (phantom page-level h-scroll at 390) */
+  position: relative;
   overflow-x: auto;
   border: 1px solid var(--color-semantic-border-subtle);
   border-radius: var(--radius-2xl);

@@ -120,10 +120,14 @@ const study: CaseStudy = {
       children: [
         { kind: "paragraph", text: "To explore how AI tools could interact with a live design system, we connected the Figma component library to an MCP workflow and tested it in real time, alongside Brad Frost and TJ Pitre." },
         {
-          kind: "youtube",
-          src: "https://www.youtube.com/embed/w6bHNKU_Tn8?start=2376",
-          title: "Brad Frost, Elleta McDaniel & TJ Pitre, Connecting Figma Design System to MCP",
+          kind: "figure",
+          src: "/images/case-studies/mcp-session-poster.jpg",
+          alt: "Live session frame: the design system Figma file and component search on screen, with Brad Frost, TJ Pitre, and Elleta McDaniel on camera.",
           caption: "Recorded session with Brad Frost, TJ Pitre, and Elleta McDaniel, starts at the MCP integration demo (39:36).",
+          width: 1280,
+          height: 720,
+          href: "https://www.youtube.com/watch?v=w6bHNKU_Tn8&t=2376s",
+          linkLabel: "Watch the session on YouTube",
         },
       ],
     },

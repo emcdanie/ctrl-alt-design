@@ -155,7 +155,7 @@ function LearningEntryCard({ entry }: { entry: LearningEntry }) {
                 {entry.year}
               </span>
             </div>
-            <h4 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>{entry.title}</h4>
+            <h3 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>{entry.title}</h3>
             <p className="body-sm" style={{ margin: 0 }}>{entry.instructor}</p>
           </div>
         </>
@@ -259,9 +259,9 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 items-stretch gap-[var(--grid-gap)] sm:grid-cols-2">
               {collaborationCards.map((card) => (
                 <Card key={card.title} className="h-full">
-                  <h4 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>
+                  <h3 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>
                     {card.title}
-                  </h4>
+                  </h3>
                   <p className="body-base" style={{ margin: 0 }}>
                     {card.description}
                   </p>

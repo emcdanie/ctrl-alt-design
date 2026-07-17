@@ -1,17 +1,9 @@
 /** Shared typography primitives for case study pages */
 
 export function Eyebrow({ children }: { children: React.ReactNode }) {
+  /* ONE eyebrow treatment: the shared .eyebrow class (globals.css) */
   return (
-    <p style={{
-      /* mono eyebrows — same treatment as the home sections */
-      fontFamily: "var(--font-mono)",
-      fontSize: "var(--typography-font-size-tag)",
-      fontWeight: 500,
-      textTransform: "uppercase" as const,
-      letterSpacing: "var(--typography-letter-spacing-wider)",
-      color: "var(--color-eyebrow)",
-      marginBottom: "var(--spacing-4)",
-    }}>
+    <p className="eyebrow" style={{ marginBottom: "var(--spacing-4)" }}>
       {children}
     </p>
   );

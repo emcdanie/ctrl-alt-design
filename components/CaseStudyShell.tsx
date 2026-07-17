@@ -2,6 +2,7 @@ import Link from "next/link";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { Tag } from "@/components/ui/Tag";
 import Heading from "@/components/ui/Heading";
 import CtaBanner from "@/components/ui/CtaBanner";
 
@@ -84,9 +85,9 @@ export default function CaseStudyShell({
     tags.length > 0 ? (
       <div className="cs-shell__tags">
         {tags.map((tag) => (
-          <span
+          <Tag
             key={tag}
-            className="cs-shell__tag cs-shell__tag--identity"
+            identity
             style={
               caseItem
                 ? ({ "--case-tint-text": caseItem.text, "--case-tint-hi": caseItem.hi } as React.CSSProperties)
@@ -94,7 +95,7 @@ export default function CaseStudyShell({
             }
           >
             {tag}
-          </span>
+          </Tag>
         ))}
       </div>
     ) : null;

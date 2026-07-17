@@ -32,8 +32,6 @@ export type CaseBlock =
       minHeight?: number;
       frame?: "dark" | "light";
     }
-  | { kind: "youtube"; src: string; title: string; caption?: string }
-  | { kind: "video"; src: string; title: string; caption?: string }
   | {
       kind: "demoStep";
       index: string;
@@ -54,8 +52,18 @@ export type CaseBlock =
       evidence?: CaseBlock;
     }
   | { kind: "lessons"; text: string }
-  /* photographic/still evidence attached to a decision (never a gallery) */
-  | { kind: "figure"; src: string; alt: string; caption?: string; width: number; height: number }
+  /* photographic/still evidence attached to a decision (never a gallery);
+   * href renders a text link below the image (poster-plus-link, no embeds) */
+  | {
+      kind: "figure";
+      src: string;
+      alt: string;
+      caption?: string;
+      width: number;
+      height: number;
+      href?: string;
+      linkLabel?: string;
+    }
   /* CHIP: the interactive AI-readiness inspection map (illustrative data) */
   | {
       kind: "readinessMap";

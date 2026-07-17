@@ -1647,13 +1647,13 @@ textarea:focus-visible {
 
 /* §8 colour-as-identity: tags ON a case's own page wear its tint.
    Shared tags everywhere else stay neutral linen. */
-.cs-shell__tag.cs-shell__tag--identity {
+.tag.tag--identity {
   background: color-mix(in srgb, var(--case-tint-hi, var(--color-supporting-linen)) 36%, var(--color-card));
   color: var(--case-tint-text, var(--ink-on-paper));
 }
 
 /* dark: keep the tint plate near-navy so the light case text clears AA */
-[data-theme="dark"] .cs-shell__tag.cs-shell__tag--identity {
+[data-theme="dark"] .tag.tag--identity {
   background: color-mix(in srgb, var(--case-tint-hi, var(--color-supporting-linen)) 18%, var(--color-card));
 }
 
@@ -1724,19 +1724,6 @@ textarea:focus-visible {
   flex-wrap: wrap;
   gap: 5px;
   margin-bottom: var(--spacing-4);
-}
-
-.cs-shell__tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.35rem 0.8rem;
-  border-radius: var(--radius-full);
-  background: var(--color-supporting-linen);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: var(--typography-font-weight-medium);
-  color: var(--ink-on-paper);
-  white-space: nowrap;
 }
 
 /* Links section */

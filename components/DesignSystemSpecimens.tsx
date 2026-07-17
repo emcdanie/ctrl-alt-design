@@ -5,6 +5,7 @@ import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import { Button } from "@/components/ui/Button";
 import TokenInspector from "@/components/TokenInspector";
 import { Select } from "@/components/ui/Select";
+import Heading from "@/components/ui/Heading";
 
 /**
  * §8 /design-system: the site inspecting itself. Every value on this
@@ -47,10 +48,12 @@ const SPACING = ["--spacing-2", "--spacing-3", "--spacing-4", "--spacing-6", "--
 const RADII = ["--radius-md", "--radius-lg", "--radius-xl", "--radius-2xl", "--radius-full"];
 
 const TYPE_SPECIMENS = [
-  { token: "--font-section-title", family: "var(--font-display)", weight: 700, transform: "uppercase" as const, sample: "Geist 700, section titles" },
+  /* the section tier is Unique 700 through the Heading primitive; the
+     specimen renders the real primitive so the page cannot drift from it */
+  { token: "--font-section-display", display: true, sample: "Unique 700, section titles" },
   { token: "--font-subsection", family: "var(--font-body)", weight: 600, transform: "none" as const, sample: "Geist carries body and headings" },
   { token: "--typography-font-size-tag", family: "var(--font-mono)", weight: 600, transform: "uppercase" as const, sample: "Geist caps and tracking run eyebrows" },
-];
+] as const;
 
 const GATE = [
   { name: "audit:structure", line: "One route tree per case, the 1240 container everywhere, no arbitrary pixel classes, nothing off palette." },
@@ -154,18 +157,24 @@ export default function DesignSystemSpecimens() {
         <ul className="ds-type">
           {TYPE_SPECIMENS.map((t) => (
             <li key={t.token} className="ds-type__row">
-              <span
-                className="ds-type__sample"
-                style={{
-                  fontFamily: t.family,
-                  fontWeight: t.weight,
-                  fontSize: `var(${t.token})`,
-                  textTransform: t.transform,
-                  letterSpacing: t.transform === "uppercase" && t.family.includes("mono") ? "0.12em" : undefined,
-                }}
-              >
-                {t.sample}
-              </span>
+              {"display" in t ? (
+                <Heading tier="section" as="h3" className="ds-type__sample" style={{ margin: 0 }}>
+                  {t.sample}
+                </Heading>
+              ) : (
+                <span
+                  className="ds-type__sample"
+                  style={{
+                    fontFamily: t.family,
+                    fontWeight: t.weight,
+                    fontSize: `var(${t.token})`,
+                    textTransform: t.transform,
+                    letterSpacing: t.transform === "uppercase" && t.family.includes("mono") ? "0.12em" : undefined,
+                  }}
+                >
+                  {t.sample}
+                </span>
+              )}
               <span className="ds-type__meta">
                 {t.token} · {values[t.token] || "reading"}
               </span>
@@ -198,7 +207,6 @@ export default function DesignSystemSpecimens() {
                 options={[
                   { value: "table", label: "Table" },
                   { value: "map", label: "Map" },
-                  { value: "timeline", label: "Timeline" },
                 ]}
                 value={view}
                 onChange={setView}

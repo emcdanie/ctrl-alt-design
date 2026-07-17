@@ -71,63 +71,6 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
         </div>
       );
     }
-    case "video":
-      return (
-        <div
-          style={{
-            position: "relative",
-            width: "100%",
-            aspectRatio: "16 / 9",
-            borderRadius: "var(--radius-2xl)",
-            overflow: "hidden",
-            background: "var(--color-brand-ink)",
-            boxShadow: "var(--shadow-lg)",
-            marginTop: "var(--spacing-6)",
-            marginBottom: "var(--spacing-6)",
-          }}
-        >
-          <video autoPlay muted loop playsInline title={block.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}>
-            <source src={block.src} type="video/mp4" />
-          </video>
-        </div>
-      );
-    case "youtube":
-      return (
-        <div style={{ marginTop: "var(--spacing-6)", marginBottom: "var(--spacing-6)" }}>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              aspectRatio: "16 / 9",
-              borderRadius: "var(--radius-2xl)",
-              overflow: "hidden",
-              background: "var(--color-brand-ink)",
-              boxShadow: "var(--shadow-lg)",
-            }}
-          >
-            <iframe
-              src={block.src}
-              title={block.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
-            />
-          </div>
-          {block.caption && (
-            <p
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "var(--typography-font-size-tag)",
-                color: "var(--color-semantic-text-secondary)",
-                marginTop: "var(--spacing-3)",
-                lineHeight: 1.5,
-              }}
-            >
-              {block.caption}
-            </p>
-          )}
-        </div>
-      );
     case "demoStep":
       return (
         <div style={{ marginBottom: "var(--spacing-6)" }}>
@@ -221,6 +164,18 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
             >
               {block.caption}
             </figcaption>
+          )}
+          {block.href && (
+            <a
+              href={block.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="demo-link"
+              style={{ marginTop: "var(--spacing-3)" }}
+            >
+              <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span>{" "}
+              {block.linkLabel}
+            </a>
           )}
         </figure>
       );
