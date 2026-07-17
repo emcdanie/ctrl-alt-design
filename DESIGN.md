@@ -11,6 +11,12 @@ named token in this file (and the token source) first, then use the token.
 Token sources: `lib/bella/bella.css` (BELLA primitives/semantic/component) and
 `app/globals.css` `@theme` (app-level aliases). Both load on every page.
 
+Recorded 2026-07-17: `--color-card` light is `#FAFAF8` (aligned with
+`--surface-paper`; pure `#ffffff` retired). Accent tokens renamed to what
+they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
+(was gold). Eyebrow colour is decided by ONE token, `--color-eyebrow`
+(muted ink; declared on body, it chains to a theme-flipping token).
+
 ## Frames
 
 | Frame | Rule | Token |
@@ -169,7 +175,7 @@ treatment, `ui/GlassBanner`, replacing every dark background-inverse
 slab (About CTA, case-study bottom CTA, the contact form panel). A
 frosted gradient over a light glass base: brand hues only (iris and
 periwinkle `--hub-*`, mint `--case-clarity-*`, gold periwinkle
-`--color-accent-gold`) at low opacity. Dark keeps the same tints over a
+`--color-accent-peri`) at low opacity. Dark keeps the same tints over a
 translucent navy ground; it never reverts to a flat dark block. Driven
 by the `--banner-*` tokens in `globals.css` (radius 30px, `--banner-blur`,
 `--banner-border`, `--banner-shadow`, `--banner-ground`,

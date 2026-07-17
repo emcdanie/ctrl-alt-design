@@ -6,14 +6,14 @@
   /* Page + surfaces — lush ground (light default; navy dark via [data-theme]) */
   --color-cream: #faf9f5;
   --color-page: #F5F4EF;
-  --color-card: #ffffff;
+  --color-card: #FAFAF8; /* warm white, aligned with --surface-paper; pure #fff retired */
   --color-ink: #1A1720;
   --color-ink-soft: #2E2937;
   --color-ink-muted: #4A4652;
   --color-surface: #EDECE4;
   --color-white-pure: #fafaf8;
-  --color-accent-espresso: #5B4BD1;
-  --color-accent-gold: #A79CE2;
+  --color-accent-iris: #5B4BD1;
+  --color-accent-peri: #A79CE2;
 
   --color-border-soft: rgba(28, 26, 46, 0.08);
   --color-border-medium: rgba(28, 26, 46, 0.12);
@@ -103,6 +103,13 @@ body {
   --typography-font-family-display: var(--font-display);
   --typography-font-family-body: var(--font-body);
   --typography-font-family-mono: var(--font-mono);
+  /* Colour affordance rule (2026-07-17): saturated iris at body scale
+     means INTERACTIVE, only. Eyebrows are wayfinding -> muted ink,
+     decided by this ONE token. Declared on BODY, not :root: it chains
+     to --color-muted, whose dark value lives on [data-theme] body
+     (var() substitutes where the property is declared - the font-token
+     lesson, third occurrence). */
+  --color-eyebrow: var(--color-muted);
 }
 
 /* ─── APP TOKEN AUTHORITY (unlayered — MUST stay unlayered) ─────────
@@ -119,6 +126,7 @@ body {
   --header-height: 76px; /* keycap header, measured (BELLA default: 64) */
   /* Eyebrow/label tracking: caps + spacing carry the old mono look */
   --tracking-eyebrow: var(--typography-letter-spacing-wider);
+
   /* 3D language elevation tokens (token lock 2026-07-17): the orb,
      keycap switch, and nav-bar depth values, moved verbatim out of the
      component layer. Do not flatten; the depth IS the system. */
@@ -319,7 +327,7 @@ body {
   --banner-gradient:
     radial-gradient(120% 140% at 12% 0%, color-mix(in srgb, var(--hub-hi) 52%, transparent), transparent 55%),
     radial-gradient(110% 120% at 88% 8%, color-mix(in srgb, var(--case-clarity-hi) 38%, transparent), transparent 52%),
-    radial-gradient(140% 150% at 55% 100%, color-mix(in srgb, var(--color-accent-gold) 28%, transparent), transparent 58%);
+    radial-gradient(140% 150% at 55% 100%, color-mix(in srgb, var(--color-accent-peri) 28%, transparent), transparent 58%);
 }
 
 /* Dark overrides live on BODY, not html: var() inside a custom property
@@ -333,7 +341,7 @@ body {
   --banner-gradient:
     radial-gradient(120% 140% at 12% 0%, color-mix(in srgb, var(--hub-bright) 28%, transparent), transparent 55%),
     radial-gradient(110% 120% at 88% 8%, color-mix(in srgb, var(--case-clarity-lo) 20%, transparent), transparent 52%),
-    radial-gradient(140% 150% at 55% 100%, color-mix(in srgb, var(--color-accent-gold) 16%, transparent), transparent 58%);
+    radial-gradient(140% 150% at 55% 100%, color-mix(in srgb, var(--color-accent-peri) 16%, transparent), transparent 58%);
 }
 
 /* ─── Keycap logo lockup (header) — from _proto/_hero.html ──────────
@@ -514,7 +522,7 @@ body {
   --color-tag-border: rgba(244, 239, 230, 0.16);
   --color-border-soft: rgba(244, 239, 230, 0.1);
   --color-border-medium: rgba(244, 239, 230, 0.16);
-  --color-accent-espresso: #A79CE2;
+  --color-accent-iris: #A79CE2;
   background: var(--color-semantic-background);
 }
 
@@ -578,8 +586,8 @@ li {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--tracking-eyebrow);
-  /* iris accent as TEXT — #A79CE2 stays fill-only (2.25:1) */
-  color: var(--color-accent-ink);
+  /* wayfinding, not action: eyebrows never wear the interactive iris */
+  color: var(--color-eyebrow);
   line-height: 1.35;
 }
 
@@ -609,6 +617,8 @@ li {
   align-items: center;
   padding: 0.35rem 0.8rem;
   border-radius: var(--radius-full);
+  border: none; /* section 5 contract: Tag = flat wash, never chip-like */
+  cursor: default;
   background: var(--color-supporting-linen);
   font-family: var(--font-body);
   font-size: var(--typography-font-size-tag);
@@ -880,6 +890,11 @@ li {
   transition: background var(--motion-duration-fast), color var(--motion-duration-fast);
 }
 
+.filter-chip:hover {
+  border-color: var(--color-ink-muted);
+  background: var(--color-alpha-ink-6);
+}
+
 .filter-chip[aria-pressed="true"] {
   background: var(--color-semantic-background-inverse);
   border-color: var(--color-semantic-background-inverse);
@@ -1116,7 +1131,7 @@ section[id],
 }
 
 .cs-decision-block .eyebrow {
-  color: var(--case-marker-text, var(--color-accent-ink));
+  color: var(--case-marker-text, var(--color-eyebrow));
 }
 
 .cs-decision-block .eyebrow {
@@ -1574,7 +1589,7 @@ textarea:focus-visible {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--typography-letter-spacing-wider);
-  color: var(--color-accent-ink);
+  color: var(--color-eyebrow);
   margin-bottom: 10px;
 }
 

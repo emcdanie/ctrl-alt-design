@@ -115,7 +115,7 @@ function TypeIcon({ type }: { type: string }) {
    and real partner logos vs this icon treatment. */
 const TYPE_STYLE: Record<string, { bg: string; fg: string }> = {
   course: { bg: "var(--color-semantic-accent-subtle)", fg: "var(--color-accent-ink)" },
-  workshop: { bg: "color-mix(in srgb, var(--color-accent-gold) 26%, transparent)", fg: "var(--color-ink)" },
+  workshop: { bg: "color-mix(in srgb, var(--color-accent-peri) 26%, transparent)", fg: "var(--color-ink)" },
   conference: { bg: "color-mix(in srgb, var(--color-ink) 8%, transparent)", fg: "var(--color-ink)" },
 };
 
@@ -187,8 +187,9 @@ function LearningEntryCard({ entry }: { entry: LearningEntry }) {
               fontFamily: "var(--font-body)",
               fontSize: "var(--typography-font-size-tag)",
               fontWeight: 600,
-              color: "var(--color-ink)",
-              textDecoration: "none",
+              color: "var(--color-accent-ink)",
+              textDecoration: "underline",
+              textUnderlineOffset: "3px",
               minHeight: "var(--spacing-touch-target)",
             }}
           >
@@ -318,7 +319,7 @@ export default function AboutPage() {
                     fontFamily: "var(--font-body)",
                     fontSize: "var(--typography-font-size-sm)",
                     fontWeight: 600,
-                    color: "var(--color-ink)",
+                    color: "var(--color-accent-ink)",
                     textDecoration: "underline",
                     textUnderlineOffset: "3px",
                     minHeight: "var(--spacing-touch-target)",

@@ -76,10 +76,26 @@ for (const f of [...appFiles, ...componentFiles]) {
   }
 }
 
+/* 5b. Colour affordance (2026-07-17): saturated iris at body scale means
+ * INTERACTIVE, only. Eyebrow/kicker styles must use --color-eyebrow
+ * (muted ink), never the accent iris. Window scan: an accent-iris token
+ * within 3 lines of an eyebrow/section-label/kicker marker fails. */
+for (const f of [...appFiles, ...componentFiles]) {
+  const lines = readFileSync(f, "utf8").split("\n");
+  lines.forEach((l, i) => {
+    if (!/eyebrow|section-label|kicker/i.test(l)) return;
+    const windowText = lines.slice(i, i + 4).join("\n");
+    if (/--color-accent-(ink|iris)\b/.test(windowText)) {
+      fail(`iris on an eyebrow/kicker in ${f}:${i + 1} — eyebrows are wayfinding (use --color-eyebrow); iris at body scale means interactive`);
+    }
+  });
+}
+
 /* 6. Unique stays a display face — its tokens only appear in the
  * sanctioned hero/logo/display files. (Runtime <24px use is caught by
  * audit:contrast; this stops the drift at the source.) */
-const UNIQUE_OK = ["app/globals.css", "app/layout.tsx", "components/Hero.module.css"];
+const UNIQUE_OK = ["app/globals.css", "app/layout.tsx", "components/Hero.module.css",
+  "components/TestimonialSection.tsx"]; // quote glyph, recorded exception
 for (const f of [...appFiles, ...componentFiles]) {
   if (UNIQUE_OK.some((e) => f.includes(e))) continue;
   const s = readFileSync(f, "utf8");

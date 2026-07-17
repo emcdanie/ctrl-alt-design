@@ -75,7 +75,7 @@ export default function ExperienceCard({
       {caseStudySlug && (
         <Link
           href={`/${caseStudySlug}`}
-          className="mt-5 inline-flex items-center gap-1.5 text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--color-ink)] underline decoration-[color:var(--color-border-medium)] underline-offset-4 transition-all duration-200 hover:decoration-[color:var(--color-ink-muted)] hover:opacity-100"
+          className="mt-5 inline-flex items-center gap-1.5 text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--color-accent-ink)] underline underline-offset-4 transition-all duration-200 hover:opacity-80"
         >
           {caseStudyLabel}
         </Link>
