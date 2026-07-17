@@ -41,6 +41,8 @@ export interface WorkItem {
   role: string;
   impact: string;
   skills: Skill[];
+  /** honest medium taxonomy for the TYPE filter row (what a piece IS) */
+  medium: "case study" | "prototype" | "writing";
   /** current-focus piece, featured on the dashboard */
   featured?: boolean;
   /** explicit library order; lower ranks first in the default sort */
@@ -55,7 +57,29 @@ export interface WorkItem {
 
 export const WORK_ITEMS: WorkItem[] = [
   {
+    id: "chip",
+    medium: "case study",
+    rank: 0,
+    featured: true,
+    title: "CHIP",
+    bubbleLabel: "CHIP",
+    kicker: "AI + Design Systems · 2026",
+    ingredients: ["Agent governance, human in the loop", "AI-readiness inspection", "Building in public"],
+    href: "/case-studies/chip",
+    type: "AI + Design Systems",
+    year: "2026",
+    yearStart: 2026,
+    role: "Designer and builder (solo)",
+    impact: "The agent watches, catches drift, drafts, and waits for approval; my own systems scored in public",
+    skills: ["AI-enabled Design", "Design System Governance", "Design Systems"],
+    hi: "var(--case-chip-hi)",
+    lo: "var(--case-chip-lo)",
+    deep: "var(--case-chip-deep)",
+    text: "var(--case-chip-text)",
+  },
+  {
     id: "code-first",
+    medium: "case study",
     title: "Code First",
     bubbleLabel: "Code First",
     kicker: "Design Systems · 2024-25",
@@ -74,6 +98,7 @@ export const WORK_ITEMS: WorkItem[] = [
   },
   {
     id: "drift",
+    medium: "case study",
     rank: 1,
     title: "From Drift to Foundation",
     bubbleLabel: "Drift to|Foundation",
@@ -99,6 +124,7 @@ export const WORK_ITEMS: WorkItem[] = [
   },
   {
     id: "guardian",
+    medium: "case study",
     title: "Guardian",
     bubbleLabel: "Guardian",
     kicker: "AI UX · 2026",
@@ -117,6 +143,7 @@ export const WORK_ITEMS: WorkItem[] = [
   },
   {
     id: "clarity",
+    medium: "case study",
     title: "Operational Clarity",
     bubbleLabel: "Operational|Clarity",
     kicker: "Data Dashboard · 2025",
@@ -135,8 +162,8 @@ export const WORK_ITEMS: WorkItem[] = [
   },
   {
     id: "design-lab",
+    medium: "prototype",
     title: "Design Lab",
-    featured: true,
     bubbleLabel: "Design Lab",
     kicker: "Personal OS · 2026",
     ingredients: ["CHIP: my own operating system", "AI-enabled workflows", "Building in public"],
@@ -151,24 +178,6 @@ export const WORK_ITEMS: WorkItem[] = [
     lo: "var(--case-design-lab-lo)",
     deep: "var(--case-design-lab-deep)",
     text: "var(--case-design-lab-text)",
-  },
-  {
-    id: "writing",
-    title: "Writing",
-    bubbleLabel: "Writing",
-    kicker: "Notes · 2026",
-    ingredients: ["Design systems in practice", "Learning in public", "Talks and workshops"],
-    href: "/about#learning",
-    type: "Notes",
-    year: "2026",
-    yearStart: 2026,
-    role: "Author",
-    impact: "Design systems in practice, shared as notes, talks, and workshops",
-    skills: ["Design Systems", "Design System Governance"],
-    hi: "var(--case-writing-hi)",
-    lo: "var(--case-writing-lo)",
-    deep: "var(--case-writing-deep)",
-    text: "var(--case-writing-text)",
   },
 ];
 
@@ -194,7 +203,7 @@ export function findWorkItemBySlug(
 }
 
 /** The hub is not a work row — it belongs to the bubble cluster only. */
-export const HUB_ITEM: Omit<WorkItem, "type" | "year" | "yearStart" | "role" | "impact" | "skills"> = {
+export const HUB_ITEM: Omit<WorkItem, "type" | "year" | "yearStart" | "role" | "impact" | "skills" | "medium"> = {
   id: "hub",
   title: "How I think about design systems",
   bubbleLabel: "Design Systems",
@@ -204,7 +213,7 @@ export const HUB_ITEM: Omit<WorkItem, "type" | "year" | "yearStart" | "role" | "
     "Governance is what stops the drift.",
     "I read code, so design and engineering stay honest.",
   ],
-  href: "/point-of-view",
+  href: "/about#how-i-think",
   cta: "Read my full take",
   hi: "var(--hub-hi)",
   lo: "var(--hub-lo)",

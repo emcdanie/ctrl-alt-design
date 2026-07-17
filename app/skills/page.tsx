@@ -12,12 +12,13 @@ import { WorkFilterBar, useWorkFilters } from "@/components/WorkFilters";
    overlap colouring is the matrix's existing emphasis (case identity
    tints + dots), no new colour system. */
 function SkillsBody() {
-  const { caseFilters, skillFilters, toggleList, clearAll, matchCount } = useWorkFilters();
+  const { caseFilters, skillFilters, typeFilters, toggleList, clearAll, matchCount } = useWorkFilters();
   return (
     <>
       <WorkFilterBar
         caseFilters={caseFilters}
         skillFilters={skillFilters}
+        typeFilters={typeFilters}
         toggleList={toggleList}
         clearAll={clearAll}
         matchCount={matchCount}

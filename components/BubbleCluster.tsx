@@ -18,7 +18,7 @@ const GEOMETRY: Record<string, { size: number; top: number; left: number; fontSi
   guardian: { size: 124, top: 269, left: 0, fontSize: 18 },
   clarity: { size: 142, top: 486, left: 108, fontSize: 18 },
   "design-lab": { size: 156, top: 410, left: 415, fontSize: 19 },
-  writing: { size: 126, top: 128, left: 494, fontSize: 18 },
+  chip: { size: 126, top: 128, left: 494, fontSize: 18 },
   hub: { size: 196, top: 218, left: 205, fontSize: 22 },
 };
 

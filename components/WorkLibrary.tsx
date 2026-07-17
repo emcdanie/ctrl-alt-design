@@ -14,6 +14,7 @@ import { StatusPill } from "@/components/ui/StatusPill";
 import { SKILLS, WORK_ITEMS, slugify, type WorkItem } from "@/lib/workLibrary";
 import styles from "./WorkLibrary.module.css";
 import { WorkFilterBar } from "@/components/WorkFilters";
+import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
 
 /* The library: one collection, three views (segmented control), flat
  * multi-select filter chips with an applied row above the results, and
@@ -77,6 +78,7 @@ export default function WorkLibrary() {
     : "map";
   const caseFilters = parseList(params.get("case"));
   const skillFilters = parseList(params.get("skill"));
+  const typeFilters = parseList(params.get("type"));
   const sort: SortKey = params.get("sort") && params.get("sort")! in SORTS
     ? (params.get("sort") as SortKey)
     : "year-desc";
@@ -97,7 +99,7 @@ export default function WorkLibrary() {
   );
 
   const toggleList = useCallback(
-    (key: "case" | "skill", val: string, current: string[]) => {
+    (key: "case" | "skill" | "type", val: string, current: string[]) => {
       const next = current.includes(val) ? current.filter((v) => v !== val) : [...current, val];
       setParams({ [key]: next.join(",") });
     },
@@ -109,10 +111,11 @@ export default function WorkLibrary() {
     if (caseFilters.length) items = items.filter((i) => caseFilters.includes(i.id));
     if (skillFilters.length)
       items = items.filter((i) => i.skills.some((s) => skillFilters.includes(slugify(s))));
+    if (typeFilters.length) items = items.filter((i) => typeFilters.includes(slugify(i.medium)));
     return sortItems(items, sort);
-  }, [caseFilters, skillFilters, sort]);
+  }, [caseFilters, skillFilters, typeFilters, sort]);
 
-  const hasFilters = caseFilters.length > 0 || skillFilters.length > 0;
+  const hasFilters = caseFilters.length > 0 || skillFilters.length > 0 || typeFilters.length > 0;
   const appliedChips = [
     ...caseFilters.map((id) => ({
       key: `case:${id}`,
@@ -123,6 +126,11 @@ export default function WorkLibrary() {
       key: `skill:${sl}`,
       label: SKILLS.find((s) => slugify(s) === sl) ?? sl,
       remove: () => toggleList("skill", sl, skillFilters),
+    })),
+    ...typeFilters.map((m) => ({
+      key: `type:${m}`,
+      label: m,
+      remove: () => toggleList("type", m, typeFilters),
     })),
   ];
 
@@ -171,7 +179,7 @@ export default function WorkLibrary() {
             <p className={styles.count} role="status">
               {filtered.length} of {WORK_ITEMS.length} pieces
             </p>
-            <button type="button" className={styles.clearAll} onClick={() => setParams({ case: null, skill: null })}>
+            <button type="button" className={styles.clearAll} onClick={() => setParams({ case: null, skill: null, type: null })}>
               Clear all
             </button>
           </div>
@@ -185,6 +193,20 @@ export default function WorkLibrary() {
                   onClick={() => toggleList("case", i.id, caseFilters)}
                 >
                   {i.title}
+                </FilterChip>
+              ))}
+            </div>
+          </details>
+          <details className={styles.trayGroup}>
+            <summary>Type</summary>
+            <div className={styles.trayChips}>
+              {[...new Set(WORK_ITEMS.map((i) => i.medium))].map((m) => (
+                <FilterChip
+                  key={m}
+                  pressed={typeFilters.includes(slugify(m))}
+                  onClick={() => toggleList("type", slugify(m), typeFilters)}
+                >
+                  {m}
                 </FilterChip>
               ))}
             </div>
@@ -215,8 +237,9 @@ export default function WorkLibrary() {
       <WorkFilterBar
         caseFilters={caseFilters}
         skillFilters={skillFilters}
+        typeFilters={typeFilters}
         toggleList={toggleList}
-        clearAll={() => setParams({ case: null, skill: null })}
+        clearAll={() => setParams({ case: null, skill: null, type: null })}
         matchCount={filtered.length}
         desktopOnly
       />
@@ -227,7 +250,15 @@ export default function WorkLibrary() {
           <BubbleCluster highlightIds={hasFilters ? filtered.map((i) => i.id) : null} />
         </div>
       )}
-      {view === "cards" && <CardsView items={filtered} />}
+      {view === "cards" && (
+        <>
+          <CardsView items={filtered} />
+          {/* The Lab galleries live under Cards ONLY (view purity,
+              docs/fixes/work-view-purity.md): Map = bubbles, Table =
+              rows, Cards = cards. */}
+          <CtrlAltDesignSection />
+        </>
+      )}
     </div>
   );
 }

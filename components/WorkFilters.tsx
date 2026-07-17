@@ -23,6 +23,7 @@ export function useWorkFilters() {
 
   const caseFilters = parseList(params.get("case"));
   const skillFilters = parseList(params.get("skill"));
+  const typeFilters = parseList(params.get("type"));
 
   const setFilterParams = useCallback(
     (updates: Record<string, string | null>) => {
@@ -40,30 +41,38 @@ export function useWorkFilters() {
   );
 
   const toggleList = useCallback(
-    (key: "case" | "skill", val: string, current: string[]) => {
+    (key: "case" | "skill" | "type", val: string, current: string[]) => {
       const next = current.includes(val) ? current.filter((v) => v !== val) : [...current, val];
       setFilterParams({ [key]: next.join(",") });
     },
     [setFilterParams]
   );
 
-  const clearAll = useCallback(() => setFilterParams({ case: null, skill: null }), [setFilterParams]);
+  const clearAll = useCallback(
+    () => setFilterParams({ case: null, skill: null, type: null }),
+    [setFilterParams]
+  );
 
-  /* pieces matching the active filters (the live count) */
+  /* pieces matching the active filters (the live count, all three dims) */
   const matchCount = (() => {
     let items = WORK_ITEMS;
     if (caseFilters.length) items = items.filter((i) => caseFilters.includes(i.id));
     if (skillFilters.length)
       items = items.filter((i) => i.skills.some((s) => skillFilters.includes(slugify(s))));
+    if (typeFilters.length) items = items.filter((i) => typeFilters.includes(slugify(i.medium)));
     return items.length;
   })();
 
-  return { caseFilters, skillFilters, toggleList, clearAll, setFilterParams, matchCount };
+  return { caseFilters, skillFilters, typeFilters, toggleList, clearAll, setFilterParams, matchCount };
 }
+
+/* TYPE values are DERIVED from the data: only mediums that exist render */
+const MEDIUMS = [...new Set(WORK_ITEMS.map((i) => i.medium))];
 
 export function WorkFilterBar({
   caseFilters,
   skillFilters,
+  typeFilters,
   toggleList,
   clearAll,
   matchCount,
@@ -71,7 +80,8 @@ export function WorkFilterBar({
 }: {
   caseFilters: string[];
   skillFilters: string[];
-  toggleList: (key: "case" | "skill", val: string, current: string[]) => void;
+  typeFilters: string[];
+  toggleList: (key: "case" | "skill" | "type", val: string, current: string[]) => void;
   clearAll: () => void;
   matchCount: number;
   /** /work hides the rows on mobile (its tray takes over); /skills shows them everywhere */
@@ -79,7 +89,7 @@ export function WorkFilterBar({
 }) {
   const [skillsExpanded, setSkillsExpanded] = useState(false);
   const visibleSkills = skillsExpanded ? SKILLS : SKILLS.slice(0, SKILLS_VISIBLE);
-  const hasFilters = caseFilters.length > 0 || skillFilters.length > 0;
+  const hasFilters = caseFilters.length > 0 || skillFilters.length > 0 || typeFilters.length > 0;
   const rowClass = desktopOnly ? `${styles.filterRow} ${styles.desktopOnly}` : styles.filterRow;
 
   const appliedChips = [
@@ -92,6 +102,11 @@ export function WorkFilterBar({
       key: `skill:${sl}`,
       label: SKILLS.find((s) => slugify(s) === sl) ?? sl,
       remove: () => toggleList("skill", sl, skillFilters),
+    })),
+    ...typeFilters.map((m) => ({
+      key: `type:${m}`,
+      label: MEDIUMS.find((x) => slugify(x) === m) ?? m,
+      remove: () => toggleList("type", m, typeFilters),
     })),
   ];
 
@@ -106,6 +121,18 @@ export function WorkFilterBar({
             onClick={() => toggleList("case", i.id, caseFilters)}
           >
             {i.title}
+          </FilterChip>
+        ))}
+      </div>
+      <div className={rowClass} role="group" aria-label="Filter by type">
+        <span className={styles.filterLabel}>Type</span>
+        {MEDIUMS.map((m) => (
+          <FilterChip
+            key={m}
+            pressed={typeFilters.includes(slugify(m))}
+            onClick={() => toggleList("type", slugify(m), typeFilters)}
+          >
+            {m}
           </FilterChip>
         ))}
       </div>
