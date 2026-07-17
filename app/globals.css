@@ -1999,14 +1999,56 @@ textarea:focus-visible {
 
 .ds-swatch__name {
   font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
+  font-size: var(--typography-font-size-sm); /* type-presence: token names were the least legible text on the site */
   color: var(--color-ink);
   overflow-wrap: anywhere;
 }
 
+.ds-swatch__case {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ds-opening {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-4);
+  margin: var(--spacing-6) 0 var(--spacing-4);
+}
+
+.ds-agents__code {
+  overflow-x: auto;
+  padding: var(--spacing-5);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--spacing-4);
+}
+
+.ds-gate__pass {
+  display: inline-flex;
+  margin-left: var(--spacing-2);
+  padding: 1px var(--spacing-2);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--case-clarity-text);
+  color: var(--case-clarity-text);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+}
+
 .ds-swatch__value {
   font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
+  font-size: var(--typography-font-size-sm);
   color: var(--color-ink-muted);
   overflow-wrap: anywhere;
 }

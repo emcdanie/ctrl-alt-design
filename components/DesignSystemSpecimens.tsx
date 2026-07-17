@@ -26,14 +26,14 @@ const COLOUR_GROUPS: { title: string; tokens: string[] }[] = [
     ],
   },
   {
-    title: "Case identity",
+    title: "Case identity (colour IS identity; each links to its case)",
     tokens: [
+      "--case-chip-hi",
       "--case-code-first-hi",
       "--case-drift-hi",
       "--case-guardian-hi",
       "--case-clarity-hi",
       "--case-design-lab-hi",
-      "--case-writing-hi",
       "--hub-hi",
     ],
   },
@@ -61,6 +61,7 @@ const GATE = [
   { name: "audit:fonts", line: "Exactly two faces. Unique renders only through the display Heading primitive, the home hero, and the keycap lockup." },
   { name: "audit:tokens", line: "No colour literals and no raw spacing in app or components. Waivers are inline, reasoned, and counted." },
   { name: "audit:reuse", line: "Zero-import components fail. One implementation, no dead copy left rendering." },
+  { name: "audit:agents", line: "The agent surfaces (llms.txt, /api/bella.json) must match the live route registry. An agent surface that lies fails the build." },
 ];
 
 const ALL_TOKENS = [
@@ -69,6 +70,17 @@ const ALL_TOKENS = [
   ...RADII,
   ...TYPE_SPECIMENS.map((t) => t.token),
 ];
+
+/* colour = identity: the case swatches do their job on this page too */
+const CASE_SWATCH: Record<string, { name: string; href: string }> = {
+  "--case-chip-hi": { name: "CHIP", href: "/case-studies/chip" },
+  "--case-code-first-hi": { name: "Code First", href: "/case-studies/brad-frost" },
+  "--case-drift-hi": { name: "From Drift to Foundation", href: "/case-studies/design-system-transformation" },
+  "--case-guardian-hi": { name: "Guardian", href: "/case-studies/guardian" },
+  "--case-clarity-hi": { name: "Operational Clarity", href: "/case-studies/un-operational-dashboard" },
+  "--case-design-lab-hi": { name: "Design Lab", href: "/work" },
+  "--hub-hi": { name: "The hub (how I think)", href: "/about#how-i-think" },
+};
 
 export default function DesignSystemSpecimens() {
   const [values, setValues] = useState<Record<string, string>>({});
@@ -102,9 +114,15 @@ export default function DesignSystemSpecimens() {
       </p>
       <p className="ds-page__intro">
         It is also how I work with AI: the tokens rein the agent in, an agent can only
-        build with what the system exposes, and the gate keeps it honest. Eight audits run
+        build with what the system exposes, and the gate keeps it honest. Nine audits run
         before anything ships. Green or it does not merge.
       </p>
+      {/* the opening 3D moment: real keycaps, press them */}
+      <div className="ds-opening" aria-label="Live keycap specimens, press them">
+        <Button variant="primary">Press me</Button>
+        <Button variant="secondary">Or me</Button>
+        <span className="ds-type__meta">Real controls, not pictures. The whole page works this way.</span>
+      </div>
 
       {/* ── Colour ── */}
       <section className="ds-section" aria-labelledby="ds-colour">
@@ -116,6 +134,11 @@ export default function DesignSystemSpecimens() {
               {g.tokens.map((t) => (
                 <li key={t} className="ds-swatch">
                   <span className="ds-swatch__plate" style={{ background: `var(${t})` }} aria-hidden="true" />
+                  {CASE_SWATCH[t] ? (
+                    <a className="ds-swatch__case" href={CASE_SWATCH[t].href}>
+                      {CASE_SWATCH[t].name}
+                    </a>
+                  ) : null}
                   <span className="ds-swatch__name">{t}</span>
                   <span className="ds-swatch__value">{values[t] || "reading"}</span>
                 </li>
@@ -263,10 +286,40 @@ export default function DesignSystemSpecimens() {
       <section className="ds-section" aria-labelledby="ds-inspector">
         <h2 id="ds-inspector" className="ds-section__title">Token inspector</h2>
         <p className="ds-section__note">
-          Pick a zone of the keycap. The readout shows the tokens driving it, values
-          straight from the running stylesheet.
+          This is why the page cannot lie: pick a zone of the keycap and the readout shows
+          the tokens driving it, values read from the running stylesheet at that moment,
+          never copied into the page. If the system drifted, this page would show it.
         </p>
         <TokenInspector />
+      </section>
+
+      {/* ── For agents ── */}
+      <section className="ds-section" aria-labelledby="ds-agents">
+        <h2 id="ds-agents" className="ds-section__title">For agents</h2>
+        <p className="ds-section__note">
+          This site is readable by machines on purpose. An agent builds whatever your
+          system already is, so the system publishes itself: the same registry that
+          renders these pages serves a manifest, and the gate fails the build if the
+          two ever disagree.
+        </p>
+        <pre className="ds-agents__code">
+          <code>{`curl https://elleta.design/api/bella.json
+
+{
+  "name": "BELLA",
+  "owner": "Elleta McDaniel",
+  "positioning": "AI-enabled design systems",
+  "tokens": { "--color-page": "...", "--color-card": "...", 300+ more },
+  "controlTaxonomy": [{ "control": "Button", "use": "True actions only; ..." }],
+  "rules": ["Tokens only; a raw value fails the gate.", ...],
+  "cases": [{ "slug": "chip", "route": "/case-studies/chip" }, ...]
+}`}</code>
+        </pre>
+        <p className="ds-section__note">
+          There is also a plain-text map at{" "}
+          <a href="/llms.txt" className="ds-swatch__case">/llms.txt</a>. Coming next, per
+          the status below: the agent-queryable BELLA Brain (MCP).
+        </p>
       </section>
 
       {/* ── Rules of the system ── */}
@@ -312,12 +365,14 @@ export default function DesignSystemSpecimens() {
       <section className="ds-section" aria-labelledby="ds-gate">
         <h2 id="ds-gate" className="ds-section__title">The gate</h2>
         <p className="ds-section__note">
-          Eight audits run before anything ships. Green or it does not merge.
+          Nine audits run before anything ships. Green or it does not merge. The chips below show the last local gate run (17 Jul 2026), labelled honestly as a snapshot, not live CI.
         </p>
         <dl className="ds-gate">
           {GATE.map((g) => (
             <div key={g.name} className="ds-gate__row">
-              <dt>{g.name}</dt>
+              <dt>
+                {g.name} <span className="ds-gate__pass">PASS</span>
+              </dt>
               <dd>{g.line}</dd>
             </div>
           ))}

@@ -77,3 +77,18 @@ The brief names `audit:reuse`; no such audit exists in the gate today
 review-enforced here, or (b) add a small `audit:reuse` that fails on new files under
 components/ not referenced by more than zero routes, or on a second pin-card
 implementation. Decide at review; (a) assumed for this spec.
+
+## Amendments (2026-07-17, reconciled with decisions made since e198d7c)
+
+1. RESULTS RENDER AS THE EXISTING CaseCard (one-card rule from the card
+   pass supersedes the RevealCard extraction; no pin-card extraction
+   happens). Re-ranked case cards, each with ONE honest match sentence.
+2. PLACEMENT: the curated Work state (hybrid IA), a collapsed one-line
+   invitation above the case grid; the library machinery stays behind
+   ?explore. No-JS degradation: a noscript link to the explore filters.
+3. MATCHING: the deterministic trigger matcher in lib/fit.ts stays the
+   core and the guaranteed fallback. When ANTHROPIC_API_KEY is present
+   server-side, /api/fit re-ranks and phrases the one-line reasons via
+   a capped LLM call (rate-limited, hard token cap, key never client
+   side); the UI carries a small "AI-assisted match" note in that mode.
+   Reasons must derive from real case metadata in both modes.
