@@ -211,12 +211,8 @@ export default function OverlayNav() {
                 Theme
               </span>
             </div>
-            <a
-              href="mailto:elletamc@gmail.com"
-              className="w-fit font-[family:var(--font-body)] text-sm text-[color:var(--color-ink-muted)] transition-colors duration-150 hover:text-[color:var(--color-ink)]"
-            >
-              elletamc@gmail.com
-            </a>
+            {/* no plaintext email anywhere (copy rule, 2026-07-17):
+                the contact form is the channel */}
             <a
               href={social.linkedin}
               target="_blank"

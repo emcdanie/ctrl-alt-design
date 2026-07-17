@@ -187,8 +187,6 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
               <span>·</span>
               <span>Open to Hybrid/Remote</span>
               <span>·</span>
-              <a href="mailto:elletamc@gmail.com" className="hover:text-[color:var(--ink-on-paper)] transition-colors">elletamc@gmail.com</a>
-              <span>·</span>
               <span>+34 633287939</span>
               <span>·</span>
               <a href={social.linkedin} className="hover:text-[color:var(--ink-on-paper)] transition-colors">linkedin.com/in/elleta-mcdaniel</a>

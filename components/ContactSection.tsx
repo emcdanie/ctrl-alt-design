@@ -28,8 +28,6 @@ interface FormErrors {
  * states; posts to /api/contact -> Resend -> her inbox). The
  * mini-sitemap is gone: navigation lives in the nav and footer. */
 
-const EMAIL = "elletamc@gmail.com";
-
 const labelStyle: React.CSSProperties = {
   display: "block",
   fontFamily: "var(--font-body)",
@@ -49,6 +47,8 @@ const quietRow: React.CSSProperties = {
 
 export default function ContactSection() {
   const [form, setForm] = useState<FormState>({ name: "", email: "", message: "" });
+  const [honeypot, setHoneypot] = useState("");
+  const [startedAt] = useState(() => Date.now());
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
@@ -83,7 +83,7 @@ export default function ContactSection() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, company: honeypot, startedAt }),
       });
       if (res.ok) {
         setSubmitted(true);
@@ -136,38 +136,34 @@ export default function ContactSection() {
         <GlassBanner className="mb-16 grid grid-cols-1 gap-[var(--grid-gap)] md:grid-cols-2">
           {/* ── Left: the human ── */}
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-5)" }}>
-            <div className="photo-bubble" style={{ width: "clamp(140px, 12vw, 180px)" }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/thumbnails/Me.jpeg" alt="Elleta, portrait" />
-            </div>
-            <div>
-              <p className="heading-item" style={{ margin: 0 }}>
-                Elleta McDaniel
-              </p>
-              <p style={{ ...quietRow, color: "var(--color-muted)", marginTop: "var(--spacing-1)" }}>
-                Product Designer specialising in design systems and complex platforms. Open to
-                freelance, consulting, and full-time roles.
-              </p>
+            {/* identity: one aligned group, portrait beside name/title */}
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-5)" }}>
+              <div className="photo-bubble" style={{ width: "clamp(112px, 9vw, 140px)", flexShrink: 0 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/thumbnails/Me.jpeg" alt="Elleta, portrait" />
+              </div>
+              <div>
+                <p className="heading-item" style={{ margin: 0 }}>
+                  Elleta McDaniel
+                </p>
+                <p style={{ ...quietRow, color: "var(--color-muted)", marginTop: "var(--spacing-1)" }}>
+                  Product Designer specialising in design systems and complex platforms.
+                </p>
+              </div>
             </div>
 
             {/* quiet practical rows, not cards */}
             <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
               <p style={quietRow}>Open to full-time roles and select freelance projects.</p>
               <p style={quietRow}>Based near Barcelona, CET, remote-friendly.</p>
-              <p style={quietRow}>I usually reply within two days.</p>
             </div>
 
-            {/* the form's escape hatch: address and handle stay readable */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
-              <a href={`mailto:${EMAIL}`} style={linkStyle}>
-                <Icon name="Mail" size="sm" />
-                {EMAIL}
-              </a>
-              <a href={social.linkedin} target="_blank" rel="noopener noreferrer" style={linkStyle}>
-                <Icon name="Linkedin" size="sm" />
-                linkedin.com/in/elletamcdaniel
-              </a>
-            </div>
+            {/* no plaintext email anywhere (constitution copy rule); the
+                form is the channel, LinkedIn the alternative */}
+            <a href={social.linkedin} target="_blank" rel="noopener noreferrer" style={linkStyle}>
+              <Icon name="Linkedin" size="sm" />
+              linkedin.com/in/elletamcdaniel
+            </a>
           </div>
 
           {/* ── Right: the form ── */}
@@ -194,11 +190,23 @@ export default function ContactSection() {
                   className="text-[length:var(--typography-font-size-base)] mt-1"
                   style={{ color: "var(--color-ink-soft)" }}
                 >
-                  Thanks for reaching out, I&apos;ll get back to you soon.
+                  Thanks for reaching out. I usually reply within two days.
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate className="space-y-4">
+                {/* honeypot: humans never see or fill this */}
+                <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", overflow: "hidden" }}>
+                  <label htmlFor="contact-company">Company</label>
+                  <input
+                    id="contact-company"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </div>
                 <div>
                   <label htmlFor="contact-name" style={labelStyle}>
                     Your name{" "}
@@ -289,15 +297,15 @@ export default function ContactSection() {
                     className="text-[length:var(--typography-font-size-tag)]"
                     style={{ color: "var(--case-writing-text)" }}
                   >
-                    Something went wrong, please try emailing me directly at {EMAIL}. Your message is
-                    still here.
+                    Something went wrong sending this. Your message is still here, and you can
+                    always reach me on LinkedIn instead.
                   </p>
                 )}
                 <Button
                   type="submit"
                   variant="primary"
                   disabled={sending}
-                  className="w-full disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="w-full md:w-auto disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {sending ? "Sending…" : "Send message"}
                 </Button>
