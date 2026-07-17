@@ -10,7 +10,7 @@ import MetricsStrip from "@/components/MetricsStrip";
 import Card from "@/components/ui/Card";
 import DisclosureCard from "@/components/ui/DisclosureCard";
 import SectionHeader from "@/components/ui/SectionHeader";
-import GlassBanner from "@/components/ui/GlassBanner";
+import CtaBanner from "@/components/ui/CtaBanner";
 import TestimonialSection from "@/components/TestimonialSection";
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
@@ -362,21 +362,7 @@ export default function AboutPage() {
               I&apos;m at my best on hard problems with people who care about getting
               them right.
             </p>
-            <GlassBanner
-              className="flex flex-col gap-[var(--spacing-8)] md:flex-row md:items-center md:justify-between"
-            >
-              <div>
-                <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: "var(--typography-font-weight-medium)", textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--color-ink-muted)", marginBottom: "var(--spacing-2)" }}>
-                  Have a project in mind?
-                </p>
-                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "var(--font-subsection)", fontWeight: "var(--typography-font-weight-bold)", color: "var(--color-ink)", lineHeight: 1.15, textTransform: "uppercase" }}>
-                  Open to full-time roles &<br />select freelance projects.
-                </h2>
-              </div>
-              <Button href="/contact" className="shrink-0">
-                Get in touch <Icon name="ArrowRight" size="sm" />
-              </Button>
-            </GlassBanner>
+            <CtaBanner title={<>Open to full-time roles &<br />select freelance projects.</>} />
           </div>
         </section>
       </div>

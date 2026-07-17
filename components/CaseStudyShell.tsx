@@ -3,7 +3,7 @@ import { findWorkItemBySlug } from "@/lib/workLibrary";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import Heading from "@/components/ui/Heading";
-import GlassBanner from "@/components/ui/GlassBanner";
+import CtaBanner from "@/components/ui/CtaBanner";
 
 /* ── Types ─────────────────────────────────────────────────────── */
 
@@ -70,6 +70,35 @@ export default function CaseStudyShell({
   children,
 }: CaseStudyShellProps) {
   const caseItem = findWorkItemBySlug(slug);
+  const MetaList = () => (
+    <dl className="cs-shell__meta">
+      {metadata.map(({ label, value }) => (
+        <div key={label} className="cs-shell__meta-row">
+          <dt>{label}</dt>
+          <dd>{value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+  const TagRow = () =>
+    tags.length > 0 ? (
+      <div className="cs-shell__tags">
+        {tags.map((tag) => (
+          <span
+            key={tag}
+            className="cs-shell__tag cs-shell__tag--identity"
+            style={
+              caseItem
+                ? ({ "--case-tint-text": caseItem.text, "--case-tint-hi": caseItem.hi } as React.CSSProperties)
+                : undefined
+            }
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+    ) : null;
+
   return (
     <div className="cs-shell">
       {/* ════════════════════════════════════════════════════════════
@@ -94,35 +123,10 @@ export default function CaseStudyShell({
           <div className="cs-shell__divider" />
 
           {/* Metadata */}
-          <dl className="cs-shell__meta">
-            {metadata.map(({ label, value }) => (
-              <div key={label} className="cs-shell__meta-row">
-                <dt>{label}</dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
-          </dl>
+          <MetaList />
 
           {/* Tags */}
-          {tags.length > 0 && (
-            <div className="cs-shell__tags">
-              {tags.map((tag) => {
-                return (
-                  <span
-                    key={tag}
-                    className="cs-shell__tag cs-shell__tag--identity"
-                    style={
-                      caseItem
-                        ? ({ "--case-tint-text": caseItem.text, "--case-tint-hi": caseItem.hi } as React.CSSProperties)
-                        : undefined
-                    }
-                  >
-                    {tag}
-                  </span>
-                );
-              })}
-            </div>
-          )}
+          <TagRow />
 
           {/* Demo links + Live URL */}
           {((demoLinks && demoLinks.length > 0) || liveUrl) && (
@@ -183,33 +187,8 @@ export default function CaseStudyShell({
           <p className="cs-shell__eyebrow" style={caseItem ? { color: caseItem.text } : undefined}>{eyebrow}</p>
           <p className="cs-shell__summary">{summary}</p>
           <div className="cs-shell__divider" />
-          <dl className="cs-shell__meta">
-            {metadata.map(({ label, value }) => (
-              <div key={label} className="cs-shell__meta-row">
-                <dt>{label}</dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
-          </dl>
-          {tags.length > 0 && (
-            <div className="cs-shell__tags">
-              {tags.map((tag) => {
-                return (
-                  <span
-                    key={tag}
-                    className="cs-shell__tag cs-shell__tag--identity"
-                    style={
-                      caseItem
-                        ? ({ "--case-tint-text": caseItem.text, "--case-tint-hi": caseItem.hi } as React.CSSProperties)
-                        : undefined
-                    }
-                  >
-                    {tag}
-                  </span>
-                );
-              })}
-            </div>
-          )}
+          <MetaList />
+          <TagRow />
           {((demoLinks && demoLinks.length > 0) || liveUrl) && (
             <div className="cs-shell__links">
               {liveUrl && (
@@ -260,39 +239,7 @@ export default function CaseStudyShell({
 
         {/* Bottom CTA (visible on all sizes within the scrolling column) */}
         <div className="cs-shell__bottom-cta">
-          <GlassBanner style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "var(--spacing-5)",
-          }}>
-            <div>
-              <p style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "var(--typography-font-size-tag)",
-                fontWeight: "var(--typography-font-weight-medium)",
-                textTransform: "uppercase",
-                letterSpacing: "0.12em",
-                color: "var(--color-ink-muted)",
-                marginBottom: "var(--spacing-2)",
-              }}>
-                Have a project in mind?
-              </p>
-              <h2 style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "var(--font-subsection)",
-                fontWeight: "var(--typography-font-weight-bold)",
-                color: "var(--color-ink)",
-                lineHeight: 1.15,
-                textTransform: "uppercase",
-              }}>
-                Open to full-time roles &<br />
-                select freelance projects.
-              </h2>
-            </div>
-            <Button href="/contact" className="self-start">
-              Get in touch <Icon name="ArrowRight" size="sm" />
-            </Button>
-          </GlassBanner>
+          <CtaBanner title={<>Open to full-time roles &<br />select freelance projects.</>} />
         </div>
       </div>
     </div>
