@@ -77,6 +77,7 @@ export function WorkFilterBar({
   clearAll,
   matchCount,
   desktopOnly = false,
+  dense = false,
 }: {
   caseFilters: string[];
   skillFilters: string[];
@@ -86,6 +87,8 @@ export function WorkFilterBar({
   matchCount: number;
   /** /work hides the rows on mobile (its tray takes over); /skills shows them everywhere */
   desktopOnly?: boolean;
+  /** condensed chips for the explore state */
+  dense?: boolean;
 }) {
   const [skillsExpanded, setSkillsExpanded] = useState(false);
   const visibleSkills = skillsExpanded ? SKILLS : SKILLS.slice(0, SKILLS_VISIBLE);
@@ -117,6 +120,7 @@ export function WorkFilterBar({
         {WORK_ITEMS.map((i) => (
           <FilterChip
             key={i.id}
+            className={dense ? "filter-chip--dense" : undefined}
             pressed={caseFilters.includes(i.id)}
             onClick={() => toggleList("case", i.id, caseFilters)}
           >
@@ -129,6 +133,7 @@ export function WorkFilterBar({
         {MEDIUMS.map((m) => (
           <FilterChip
             key={m}
+            className={dense ? "filter-chip--dense" : undefined}
             pressed={typeFilters.includes(slugify(m))}
             onClick={() => toggleList("type", slugify(m), typeFilters)}
           >
@@ -141,6 +146,7 @@ export function WorkFilterBar({
         {visibleSkills.map((s) => (
           <FilterChip
             key={s}
+            className={dense ? "filter-chip--dense" : undefined}
             pressed={skillFilters.includes(slugify(s))}
             onClick={() => toggleList("skill", slugify(s), skillFilters)}
           >

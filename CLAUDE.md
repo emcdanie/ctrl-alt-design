@@ -35,6 +35,11 @@ override the constitution.
 - Primary nav (Elleta, 2026-07-17, supersedes the four-item cap): **Work · System · Skills ·
   About · Contact**. /design-system is a first-class page (the system inspecting itself);
   the footer "See the system" colophon link stays.
+- **Work is hybrid, curated first (Elleta, 2026-07-17, supersedes "Work lands on the Map").**
+  Default = zero machinery: featured CHIP, ranked case grid (order lives in the content data),
+  then Explorations. The Map/Table machinery, filters, and sort live behind ONE explore control
+  (?explore, reload- and back/forward-safe). The Cards view tab is gone: the curated default IS
+  the cards.
 
 ## 2. Layout
 - One centered container, **max-width 1240px**, consistent horizontal padding, every page. Never full-bleed text.

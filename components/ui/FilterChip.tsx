@@ -9,16 +9,19 @@ export function FilterChip({
   onClick,
   children,
   ariaLabel,
+  className,
 }: {
   pressed: boolean;
   onClick: () => void;
   children: React.ReactNode;
   ariaLabel?: string;
+  /** modifier class (e.g. the condensed explore variant) */
+  className?: string;
 }) {
   return (
     <button
       type="button"
-      className="filter-chip"
+      className={className ? `filter-chip ${className}` : "filter-chip"}
       aria-pressed={pressed}
       aria-label={ariaLabel}
       onClick={onClick}

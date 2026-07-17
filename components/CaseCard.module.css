@@ -22,6 +22,12 @@
   box-shadow: var(--shadow-card-elevated);
 }
 
+.card:hover .title,
+.card:focus-visible .title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .card:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: var(--ring-focus-offset);

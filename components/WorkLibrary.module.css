@@ -495,3 +495,42 @@
   gap: var(--grid-gap, var(--spacing-6));
   align-items: stretch;
 }
+
+/* ── Curated default (IA hybrid 2026-07-17) ─────────────────────── */
+.curatedGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--grid-gap);
+  align-items: stretch;
+  margin-top: var(--spacing-4);
+}
+
+.featuredSlot {
+  grid-column: 1 / -1;
+}
+
+.exploreLine {
+  margin: var(--spacing-8) 0 0;
+}
+
+.exploreLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .curatedGrid {
+    grid-template-columns: 1fr;
+  }
+}

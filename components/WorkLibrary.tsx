@@ -23,7 +23,7 @@ import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
  * headers). Map is the default and reset state; the skills matrix
  * lives on its own /skills page (IA lock 2026-07-17). */
 
-const VIEWS = ["map", "table", "cards"] as const;
+const VIEWS = ["map", "table"] as const;
 type View = (typeof VIEWS)[number];
 
 const SORTS = {
@@ -73,6 +73,7 @@ export default function WorkLibrary() {
     };
   }, [trayOpen]);
 
+  const explore = params.get("explore") !== null;
   const view: View = (VIEWS as readonly string[]).includes(params.get("view") ?? "")
     ? (params.get("view") as View)
     : "map";
@@ -134,8 +135,56 @@ export default function WorkLibrary() {
     })),
   ];
 
+  const caseItems = WORK_ITEMS.filter((i) => i.medium === "case study");
+  const featured = caseItems.find((i) => i.featured);
+  const rankedRest = caseItems.filter((i) => !i.featured);
+  const labCount = WORK_ITEMS.filter((i) => i.medium === "prototype").length;
+
+  /* ── Curated default (IA hybrid, 2026-07-17): zero machinery.
+     Featured CHIP, ranked case grid (order = content data), then the
+     Explorations section. The library machinery lives behind ONE
+     explore control (?explore + existing params, reload-safe). ── */
+  if (!explore) {
+    return (
+      <div>
+        <p className={styles.count} role="status">
+          {caseItems.length} case studies, {labCount} lab
+        </p>
+        <div className={styles.curatedGrid}>
+          {featured && (
+            <div className={styles.featuredSlot}>
+              <CaseCard item={featured} coverSrc="/case/chip/chip-evidence-0-bridge-hero.png" />
+            </div>
+          )}
+          {rankedRest.map((i) => (
+            <CaseCard key={i.id} item={i} />
+          ))}
+        </div>
+        <p className={styles.exploreLine}>
+          <button
+            type="button"
+            className={styles.exploreLink}
+            onClick={() => setParams({ explore: "1" })}
+          >
+            Explore the full library: map, table, filters →
+          </button>
+        </p>
+        <CtrlAltDesignSection />
+      </div>
+    );
+  }
+
   return (
     <div>
+      <p className={styles.exploreLine}>
+        <button
+          type="button"
+          className={styles.exploreLink}
+          onClick={() => setParams({ explore: null, view: null, case: null, skill: null, type: null, sort: null })}
+        >
+          ← Back to the curated view
+        </button>
+      </p>
       {/* ── View switch + sort (select only where no headers exist) ── */}
       <div className={styles.controls}>
         <SegmentedControl
@@ -144,7 +193,7 @@ export default function WorkLibrary() {
           value={view}
           onChange={(v) => setParams({ view: v === "map" ? null : v })}
         />
-        {(view === "map" || view === "cards") && (
+        {view === "map" && (
           <Select
             label="Sort"
             value={sort}
@@ -242,6 +291,7 @@ export default function WorkLibrary() {
         clearAll={() => setParams({ case: null, skill: null, type: null })}
         matchCount={filtered.length}
         desktopOnly
+        dense
       />
 
       {view === "table" && <TableView items={filtered} sort={sort} setParams={setParams} />}
@@ -249,15 +299,6 @@ export default function WorkLibrary() {
         <div className={styles.mapWrap}>
           <BubbleCluster highlightIds={hasFilters ? filtered.map((i) => i.id) : null} />
         </div>
-      )}
-      {view === "cards" && (
-        <>
-          <CardsView items={filtered} />
-          {/* The Lab galleries live under Cards ONLY (view purity,
-              docs/fixes/work-view-purity.md): Map = bubbles, Table =
-              rows, Cards = cards. */}
-          <CtrlAltDesignSection />
-        </>
       )}
     </div>
   );
@@ -463,24 +504,6 @@ export function MatrixView({
           })}
         </tbody>
       </table>
-    </div>
-  );
-}
-
-/* ── Cards (visual browse): the ONE CaseCard in a responsive grid over
- * the same filtered list. ── */
-
-function CardsView({ items }: { items: WorkItem[] }) {
-  return (
-    <div>
-      <ul className={styles.cardsGrid} aria-label="Work as cards">
-        {items.map((i) => (
-          <li key={i.id}>
-            <CaseCard item={i} />
-          </li>
-        ))}
-      </ul>
-      {items.length === 0 && <p className={styles.empty}>No pieces match these filters.</p>}
     </div>
   );
 }

@@ -900,6 +900,14 @@ li {
   transition: background var(--motion-duration-fast), color var(--motion-duration-fast);
 }
 
+/* condensed explore chips (Finviz pattern): denser, 13px, still
+   unmistakably interactive next to inert Tags */
+.filter-chip--dense {
+  min-height: var(--spacing-8);
+  padding: 2px var(--spacing-3);
+  font-size: var(--typography-font-size-tag);
+}
+
 .filter-chip:hover {
   border-color: var(--color-ink-muted);
   background: var(--color-alpha-ink-6);
