@@ -1,23 +1,25 @@
 /* NDA content gate: greps TRACKED FILE CONTENTS across the whole tree
  * (never the diff — renames hid names before; see docs/fixes/).
- * Project-banned terms live here; the user's private global term list
- * (~/.claude/nda-terms.txt) is merged at runtime when present, without
- * embedding those terms in the repo. This script exempts itself. */
+ * NO banned term appears in this committed script: project terms live in
+ * the gitignored _private/nda-terms.txt, merged with the user's global
+ * ~/.claude/nda-terms.txt at runtime. The constitution (CLAUDE.md) is
+ * committable because it references these files instead of naming names. */
 import { execSync } from "node:child_process";
 import { readFileSync, existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
-const PROJECT_TERMS = ["***REMOVED***", "***REMOVED***", "***REMOVED***"];
-let terms = [...PROJECT_TERMS];
+let terms = [];
+const readTerms = (p) =>
+  readFileSync(p, "utf8")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l && !l.startsWith("#"));
+const projectList = "_private/nda-terms.txt";
+if (existsSync(projectList)) terms.push(...readTerms(projectList));
 const globalList = join(homedir(), ".claude", "nda-terms.txt");
 if (existsSync(globalList)) {
-  terms.push(
-    ...readFileSync(globalList, "utf8")
-      .split("\n")
-      .map((l) => l.trim())
-      .filter((l) => l && !l.startsWith("#"))
-  );
+  terms.push(...readTerms(globalList));
 }
 
 const EXEMPT = ["scripts/audit-nda.mjs"];
