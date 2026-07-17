@@ -586,7 +586,7 @@ li {
   /* Eyebrows are Geist, uppercase, tracked (--tracking-eyebrow).
      No mono face exists; --font-mono is a legacy alias for Geist. */
   font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
+  font-size: var(--typography-font-size-sm); /* one ramp step up: 13 -> 14 (eyebrows read too quiet under the display heads) */
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--tracking-eyebrow);
