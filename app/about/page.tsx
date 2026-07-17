@@ -215,7 +215,7 @@ export default function AboutPage() {
           <div className="page-container">
             <div className="grid grid-cols-1 items-center gap-[var(--grid-gap)] lg:grid-cols-[1fr_auto]">
               <div>
-                <PageHeader eyebrow="About" title="Hey, I'm Elleta" />
+                <PageHeader eyebrow="About" title="Hey, I'm" accent="Elleta" />
                 <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)", maxWidth: "640px" }}>
                   <p className="body-lg">
                 I design{" "}
