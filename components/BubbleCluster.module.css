@@ -261,6 +261,8 @@
   border: none;
   border-radius: var(--btn-key-radius);
   padding: 11px var(--spacing-5) /* token-waiver: proto-exact chip height (recorded) */;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-eyebrow);
   margin-top: 6px /* token-waiver: proto-exact optical nudge */;
   min-height: var(--spacing-touch-target);
   background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));

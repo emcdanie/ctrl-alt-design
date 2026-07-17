@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import Heading from "@/components/ui/Heading";
 import GlassBanner from "@/components/ui/GlassBanner";
 
@@ -155,7 +156,7 @@ export default function CaseStudyShell({
           {/* CTA */}
           <div className="cs-shell__cta">
             <Button href="/contact" variant="primary">
-              Get in touch <span aria-hidden="true">↗</span>
+              Get in touch <Icon name="ArrowRight" size="sm" />
             </Button>
           </div>
         </div>
@@ -289,7 +290,7 @@ export default function CaseStudyShell({
               </h2>
             </div>
             <Button href="/contact" className="self-start">
-              Get in touch ↗
+              Get in touch <Icon name="ArrowRight" size="sm" />
             </Button>
           </GlassBanner>
         </div>

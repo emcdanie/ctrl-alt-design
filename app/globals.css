@@ -142,6 +142,16 @@ body {
   --shadow-switch-knob: 3px 5px 8px rgba(25, 23, 32, 0.24);
   --shadow-switch-knob-dark: 3px 5px 8px rgba(0, 0, 0, 0.4);
   --shadow-nav-bar: 0 18px 48px rgba(26, 24, 20, 0.08);
+  /* keycap specular sheen (button grammar 4b): one light source,
+     upper left, matching the orb gloss. Translucent overlays only, so
+     the per-stop contrast check still judges the real fill stops. */
+  --gloss-key: linear-gradient(color-mix(in srgb, white 18%, transparent), transparent 46%);
+  --gloss-key-hover: linear-gradient(color-mix(in srgb, white 26%, transparent), transparent 52%);
+  --gloss-key-pressed: linear-gradient(transparent 0 10%, color-mix(in srgb, white 12%, transparent) 10%, transparent 50%);
+  --shadow-key-hover:
+    2px 6px 0 var(--key-edge),
+    8px 12px 20px rgba(25, 23, 32, 0.22),
+    inset 0 1px 0 var(--key-face-hi);
   /* media scrim (one card system): text over cover media stays AA */
   --scrim-media: linear-gradient(to top, color-mix(in srgb, black 46%, transparent), color-mix(in srgb, black 10%, transparent) 42%, transparent 68%);
 }
@@ -348,6 +358,9 @@ body {
    html would resolve --color-card to the light #fff (the font-token
    lesson, same trap). */
 [data-theme="dark"] body {
+  --gloss-key: linear-gradient(color-mix(in srgb, white 10%, transparent), transparent 46%);
+  --gloss-key-hover: linear-gradient(color-mix(in srgb, white 16%, transparent), transparent 52%);
+  --gloss-key-pressed: linear-gradient(transparent 0 10%, color-mix(in srgb, white 7%, transparent) 10%, transparent 50%);
   --banner-border: rgba(207, 199, 246, 0.22);
   --banner-ground: color-mix(in srgb, var(--color-card) 82%, transparent);
   --banner-gradient:
@@ -1008,17 +1021,25 @@ li {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
   text-decoration: none;
   color: var(--hero-panel-ink);
-  background: linear-gradient(var(--key-face-hi), var(--key-face-lo));
+  background: var(--gloss-key), linear-gradient(var(--key-face-hi), var(--key-face-lo));
   box-shadow: var(--shadow-key-resting);
   transition: transform 0.1s, box-shadow 0.1s;
 }
 
+/* hover: the light lifts (sheen brightens, cap rises a hair) */
+.btn-key:hover {
+  transform: translateY(-1px);
+  background: var(--gloss-key-hover), linear-gradient(var(--key-face-hi), var(--key-face-lo));
+  box-shadow: var(--shadow-key-hover);
+}
+
 .btn-key:active {
   transform: translateY(3px);
+  background: var(--gloss-key-pressed), linear-gradient(var(--key-face-hi), var(--key-face-lo));
   box-shadow: var(--shadow-key-pressed);
 }
 
@@ -1029,15 +1050,21 @@ li {
 
 .btn-key--primary {
   color: var(--key-face-hi);
-  background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
+  background: var(--gloss-key), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
   box-shadow:
     2px 5px 0 var(--key-fill-edge),
     6px 9px 14px color-mix(in srgb, var(--key-fill-lo) 32%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    var(--edge-glass-hi-strong);
+}
+
+.btn-key--primary:hover {
+  transform: translateY(-1px);
+  background: var(--gloss-key-hover), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
 }
 
 .btn-key--primary:active {
   transform: translateY(3px);
+  background: var(--gloss-key-pressed), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
   box-shadow:
     1px 2px 0 var(--key-fill-edge),
     3px 5px 10px color-mix(in srgb, var(--key-fill-lo) 28%, transparent),
@@ -1233,29 +1260,26 @@ textarea:focus-visible {
   line-height: 1.6;
 }
 
-/* ─── Demo link buttons ─────────────────────────────────────────── */
+/* ─── Demo links: TERTIARY (text link, iris + underline) — demoted
+   from bordered pills per the button grammar (two button treatments
+   only; everything else is a text link) ── */
 
 .demo-link {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-2);
-  padding: 10px var(--spacing-5);
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border-medium);
-  background: var(--color-glass);
-  color: var(--color-ink);
+  min-height: var(--spacing-touch-target);
+  color: var(--color-accent-ink);
   font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: var(--typography-font-weight-medium);
-  text-decoration: none;
-  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
-  box-shadow: 0 2px 8px var(--color-alpha-shadow-warm-04);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s;
 }
 
 .demo-link:hover {
-  background: var(--color-glass-strong);
-  border-color: var(--color-border-medium);
-  box-shadow: 0 4px 14px rgba(28, 26, 46, 0.07);
+  opacity: 0.75;
 }
 
 

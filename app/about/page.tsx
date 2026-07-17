@@ -374,7 +374,7 @@ export default function AboutPage() {
                 </h2>
               </div>
               <Button href="/contact" className="shrink-0">
-                Get in touch ↗
+                Get in touch <Icon name="ArrowRight" size="sm" />
               </Button>
             </GlassBanner>
           </div>

@@ -254,3 +254,23 @@ is the ONLY way to render one:
   ramp here, do NOT re-conform): bubble labels 19/18px + hub 22px, hub
   sub + switch meta 11px, hero kicker 13.5px, hero intro 17px, reveal-card
   kicker 12px. Scope: hero cluster + reveal card + header chrome only.
+
+## Button grammar (2026-07-17, section 7 addendum)
+
+Labels: Geist caps + `--tracking-eyebrow` on every keycap, site-wide.
+Arrows render through the Icon component, never raw glyphs in labels:
+ArrowRight = internal navigation, ArrowUpRight = external/new context,
+Download = download, and NO arrow on submit actions. Sizing: hug
+content, min 44px target; full-width only inside forms below 768px.
+Three tiers: PRIMARY (single most important action of the view, max one,
+gate-enforced; iris fill, white label; the submit in forms), SECONDARY
+(supporting actions; neutral keycap face, ink label), TERTIARY
+(low-emphasis navigation; text link, iris + underline; caps reserved for
+the BACK TO WORK meta-link pattern). When in doubt, demote. Placement:
+form primary sits where the flow ends; paired actions keep primary
+trailing; no destructive tier exists by design. Exactly two button
+colour treatments, from tokens; disabled = opacity on the variant. The
+keycap face carries the specular sheen from the one upper-left light
+(`--gloss-key` family): sheen brightens on hover, shifts down on press,
+never animates on its own, and stays translucent so the per-stop
+contrast check judges the real fill stops.

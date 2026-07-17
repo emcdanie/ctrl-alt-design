@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { Icon } from "@/components/ui/Icon";
 import { WORK_ITEMS, HUB_ITEM } from "@/lib/workLibrary";
 import styles from "./BubbleCluster.module.css";
 
@@ -314,7 +315,7 @@ export default function BubbleCluster({
               ))}
             </p>
             <Link className={styles.pr} href={active.href} onClick={() => close()}>
-              {active.cta ?? "Read case"} <span aria-hidden="true">&nbsp;→</span>
+              {active.cta ?? "Read case"} <Icon name="ArrowRight" size="sm" />
             </Link>
           </div>
         )}

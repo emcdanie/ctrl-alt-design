@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Icon } from "@/components/ui/Icon";
 import BubbleCluster from "./BubbleCluster";
 import { Button } from "@/components/ui/Button";
 import { POSITIONING } from "@/lib/copy";
@@ -36,7 +37,7 @@ export default function Hero() {
           <div className={styles.ctaRow} style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--spacing-4)" }}>
             <Button href="/work" variant={peekOpen ? "secondary" : "primary"}>
               Browse the library
-              <span aria-hidden="true">→</span>
+              <Icon name="ArrowRight" size="sm" />
             </Button>
             <Link href="/quick" className={styles.quietLink}>
               Short on time? The quick version →

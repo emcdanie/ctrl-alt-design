@@ -85,6 +85,8 @@ toggles, or sort.
 - **Positioning term is "AI-enabled" / "AI enablement".** Never "AI-augmented" or "AI-assisted". Keep the
   phrase in one constant and reference it.
 - **No em or en dashes (—, –) anywhere.** Use a period, a comma, or "that".
+- **No email address rendered anywhere on the site** (2026-07-17: scrapers harvest plaintext;
+  the contact form is the channel, LinkedIn the alternative; the send address lives server-side).
 - Decision-led, NDA-safe, honest. No invented metrics or exaggerated outcomes.
 
 ## 7. NDA (hard rule)
