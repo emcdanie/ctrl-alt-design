@@ -10,6 +10,10 @@ interface SectionHeaderProps {
   contentClassName?: string;
   /** fixed-dark grounds (the contact footer): swap to on-dark inks */
   inverse?: boolean;
+  /** display tier; "hero" for a page's ONE deliberate scale moment */
+  tier?: "section" | "hero" | "page";
+  /** accent segment forwarded to Heading (iris accent word) */
+  accent?: ReactNode;
 }
 
 export default function SectionHeader({
@@ -20,6 +24,8 @@ export default function SectionHeader({
   className = "",
   contentClassName = "",
   inverse = false,
+  tier = "section",
+  accent,
 }: SectionHeaderProps) {
   return (
     <div className={`layout-header flex flex-col justify-between gap-4 sm:flex-row sm:items-end ${className}`.trim()}>
@@ -33,8 +39,9 @@ export default function SectionHeader({
           </p>
         ) : null}
         <Heading
-          tier="section"
+          tier={tier}
           as="h2"
+          accent={accent}
           className={inverse ? "display-heading--inverse" : ""}
         >
           {title}

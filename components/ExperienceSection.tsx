@@ -136,10 +136,8 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
       </div>
 
       <div style={{ marginTop: "var(--spacing-16)" }}>
-        <SectionHeader
-          label="Education"
-          title="Education"
-        />
+        {/* no label: it duplicated the title word-for-word (D4 rhythm) */}
+        <SectionHeader title="Education" />
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
           {education.map((edu) => (
             <Card key={edu.name} innerClassName="!p-0 overflow-hidden">

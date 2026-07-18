@@ -276,36 +276,42 @@ export default function AboutPage() {
             condensed; one accent highlight; ends at the proof case. */}
         <section id="how-i-think" className="layout-section-tight" style={{ scrollMarginTop: "calc(var(--header-height) + var(--spacing-4))" }}>
           <div className="page-container">
-            <SectionHeader label="How I Think" title="How I solve problems" />
-            <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-8)", maxWidth: "720px" }}>
-              <article>
+            {/* D3 (Pass D): the About mid-page Unique-energy moment,
+                ONE hero-tier header with the iris accent word */}
+            <SectionHeader label="How I Think" tier="page" title="How I solve" accent="problems." />
+            {/* D2 (Pass D): the three theses as designed tiles, the
+                stat-tile direction. Case colours per her 17 Jul brief
+                (supersedes the older About-is-not-a-case note); tokens
+                only; copy unchanged. */}
+            <div className="grid grid-cols-1 items-stretch gap-[var(--grid-gap)] lg:grid-cols-3">
+              <article className="thesis-tile" style={{ "--thesis-hi": "var(--hub-hi)" } as React.CSSProperties}>
                 <h3 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
                   Systems are{" "}
                   <span style={{ color: "var(--color-accent-ink)" }}>agreements</span>, not
                   component libraries.
                 </h3>
-                <p className="body-base" style={{ margin: 0 }}>
+                <p className="body-base" style={{ margin: 0, flex: 1 }}>
                   A component library is an artefact. The system is the set of agreements around
                   it: what counts as a pattern, who decides, when to extend versus build. When
                   only the artefact exists, every team renegotiates those agreements ad hoc, and
                   that is where drift starts.
                 </p>
               </article>
-              <article>
+              <article className="thesis-tile" style={{ "--thesis-hi": "var(--case-guardian-hi)" } as React.CSSProperties}>
                 <h3 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
                   Governance is what stops the drift.
                 </h3>
-                <p className="body-base" style={{ margin: 0 }}>
+                <p className="body-base" style={{ margin: 0, flex: 1 }}>
                   Drift is not a tooling failure; it is a decision-making failure. Naming, token
                   structure, and contribution flow are governance surfaces. The systems that hold
                   are the ones where the cheap path and the correct path are the same path.
                 </p>
               </article>
-              <article>
+              <article className="thesis-tile" style={{ "--thesis-hi": "var(--case-code-first-hi)" } as React.CSSProperties}>
                 <h3 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
                   I read code, so design and engineering stay honest.
                 </h3>
-                <p className="body-base" style={{ margin: 0 }}>
+                <p className="body-base" style={{ margin: 0, flex: 1 }}>
                   Parity between Figma and production is a claim that has to be checked in both
                   directions. Reading the code, tokens, props, rendered output, is how I keep the
                   design side accountable to what actually ships, and vice versa.

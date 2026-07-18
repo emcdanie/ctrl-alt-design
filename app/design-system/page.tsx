@@ -16,14 +16,17 @@ export default function DesignSystemPage() {
   return (
     <main id="main-content">
       <OverlayNav />
+      {/* D1 (Pass D): the specimens render as full-width bands, each
+          with its own inner 1240 container; only the header keeps the
+          page-level container */}
       <section
         className="layout-section"
         style={{ paddingTop: "calc(var(--header-height) + var(--spacing-16))" }}
       >
         <div className="layout-container">
           <PageHeader eyebrow="BELLA, the system behind the site" title="Design system" />
-          <DesignSystemSpecimens />
         </div>
+        <DesignSystemSpecimens />
       </section>
     </main>
   );

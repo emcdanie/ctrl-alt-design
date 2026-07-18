@@ -8,6 +8,7 @@ import TokenInspector from "@/components/TokenInspector";
 import { MatrixView } from "@/components/WorkLibrary";
 import { Button } from "@/components/ui/Button";
 import { POSITIONING } from "@/lib/copy";
+import Heading from "@/components/ui/Heading";
 import { WORK_ITEMS } from "@/lib/workLibrary";
 import Link from "next/link";
 
@@ -69,9 +70,13 @@ export default function QuickPage() {
             </ul>
           </section>
 
-          {/* Skills coverage at a glance; headers jump into the filtered library */}
+          {/* Skills coverage at a glance; headers jump into the filtered library.
+              D3 (Pass D): the page's ONE Unique-energy moment, the same words
+              at display scale with the accent treatment. */}
           <section aria-labelledby="quick-matrix" style={{ marginTop: "var(--spacing-16)" }}>
-            <p className="section-label mb-3" id="quick-matrix">Skills, mapped to the work</p>
+            <Heading tier="page" as="h2" id="quick-matrix" accent="to the work." className="mb-6">
+              Skills, mapped
+            </Heading>
             <MatrixView
               caseFilters={[]}
               skillFilters={[]}

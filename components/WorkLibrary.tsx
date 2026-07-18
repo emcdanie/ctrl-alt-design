@@ -118,7 +118,8 @@ export default function WorkLibrary() {
       {/* ── Cards: the curated composition, zero machinery ── */}
       {view === "cards" && (
         <div>
-          <p className={styles.count} role="status">
+          {/* D4: a breath between the toolbar and the library */}
+          <p className={styles.count} role="status" style={{ marginTop: "var(--spacing-4)" }}>
             {caseItems.length} case studies, {labCount} lab
           </p>
           <div className={styles.curatedGrid}>

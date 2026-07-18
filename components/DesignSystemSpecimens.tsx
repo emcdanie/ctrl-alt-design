@@ -27,18 +27,6 @@ const COLOUR_GROUPS: { title: string; tokens: string[] }[] = [
     ],
   },
   {
-    title: "Case identity (colour IS identity; each links to its case)",
-    tokens: [
-      "--case-chip-hi",
-      "--case-code-first-hi",
-      "--case-drift-hi",
-      "--case-guardian-hi",
-      "--case-clarity-hi",
-      "--case-design-lab-hi",
-      "--hub-hi",
-    ],
-  },
-  {
     title: "Keycap",
     tokens: ["--key-face-hi", "--key-face-lo", "--key-fill-hi", "--key-fill-lo", "--key-fill-edge"],
   },
@@ -67,23 +55,26 @@ const GATE = [
   { name: "audit:agents", line: "The agent surfaces (llms.txt, /api/bella.json) must match the live route registry. An agent surface that lies fails the build." },
 ];
 
+/* case identities render as the full-width orb band (D1); their tokens
+   still feed the live readouts below each orb */
+const CASE_ORBS = [
+  { hi: "--case-chip-hi", lo: "--case-chip-lo", name: "CHIP", href: "/case-studies/chip" },
+  { hi: "--case-code-first-hi", lo: "--case-code-first-lo", name: "Code First", href: "/case-studies/brad-frost" },
+  { hi: "--case-drift-hi", lo: "--case-drift-lo", name: "From Drift to Foundation", href: "/case-studies/design-system-transformation" },
+  { hi: "--case-guardian-hi", lo: "--case-guardian-lo", name: "Guardian", href: "/case-studies/guardian" },
+  { hi: "--case-clarity-hi", lo: "--case-clarity-lo", name: "Operational Clarity", href: "/case-studies/un-operational-dashboard" },
+  { hi: "--case-design-lab-hi", lo: "--case-design-lab-lo", name: "Design Lab", href: "/work", small: true },
+  { hi: "--hub-hi", lo: "--hub-lo", name: "The hub (how I think)", href: "/about#how-i-think", small: true },
+] as const;
+
 const ALL_TOKENS = [
+  "--font-hero",
+  ...CASE_ORBS.map((o) => o.hi),
   ...COLOUR_GROUPS.flatMap((g) => g.tokens),
   ...SPACING,
   ...RADII,
   ...TYPE_SPECIMENS.map((t) => t.token),
 ];
-
-/* colour = identity: the case swatches do their job on this page too */
-const CASE_SWATCH: Record<string, { name: string; href: string }> = {
-  "--case-chip-hi": { name: "CHIP", href: "/case-studies/chip" },
-  "--case-code-first-hi": { name: "Code First", href: "/case-studies/brad-frost" },
-  "--case-drift-hi": { name: "From Drift to Foundation", href: "/case-studies/design-system-transformation" },
-  "--case-guardian-hi": { name: "Guardian", href: "/case-studies/guardian" },
-  "--case-clarity-hi": { name: "Operational Clarity", href: "/case-studies/un-operational-dashboard" },
-  "--case-design-lab-hi": { name: "Design Lab", href: "/work" },
-  "--hub-hi": { name: "The hub (how I think)", href: "/about#how-i-think" },
-};
 
 export default function DesignSystemSpecimens() {
   const [values, setValues] = useState<Record<string, string>>({});
@@ -107,6 +98,10 @@ export default function DesignSystemSpecimens() {
 
   return (
     <div className="ds-page">
+      {/* D1 (Pass D): full-width specimen bands; text stays in the
+         1240 container inside each band. */}
+      <div className="ds-band">
+        <div className="layout-container">
       {/* ── Overview ── */}
       <p className="ds-page__intro">
         BELLA is the design system behind this site, small on purpose: a token layer every
@@ -127,7 +122,12 @@ export default function DesignSystemSpecimens() {
         <span className="ds-type__meta">Real controls, not pictures. The whole page works this way.</span>
       </div>
 
+        </div>
+      </div>
+
       {/* ── Colour ── */}
+      <div className="ds-band ds-band--card">
+        <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-colour">
         <h2 id="ds-colour" className="ds-section__title">Colour</h2>
         {COLOUR_GROUPS.map((g) => (
@@ -137,11 +137,6 @@ export default function DesignSystemSpecimens() {
               {g.tokens.map((t) => (
                 <li key={t} className="ds-swatch">
                   <span className="ds-swatch__plate" style={{ background: `var(${t})` }} aria-hidden="true" />
-                  {CASE_SWATCH[t] ? (
-                    <a className="ds-swatch__case" href={CASE_SWATCH[t].href}>
-                      {CASE_SWATCH[t].name}
-                    </a>
-                  ) : null}
                   <span className="ds-swatch__name">{t}</span>
                   <span className="ds-swatch__value">{values[t] || "reading"}</span>
                 </li>
@@ -151,9 +146,50 @@ export default function DesignSystemSpecimens() {
         ))}
       </section>
 
+        </div>
+      </div>
+
+      {/* ── Case identity: colour IS identity. The one signature 3D
+          moment: glossy orbs from the keycap-and-orb world, five case
+          identities named, live token readouts beneath. ── */}
+      <div className="ds-band ds-band--identity">
+        <div className="layout-container">
+          <section className="ds-section" aria-labelledby="ds-identity">
+            <h2 id="ds-identity" className="ds-section__title">Case identity</h2>
+            <p className="ds-section__note">
+              Colour is identity: each case owns a hue, and the hue does the wayfinding.
+            </p>
+            <ul className="ds-caseband">
+              {CASE_ORBS.map((o) => (
+                <li key={o.hi} className={"small" in o && o.small ? "ds-caseband__item ds-caseband__item--small" : "ds-caseband__item"}>
+                  <span
+                    className="ds-orb"
+                    style={{ "--orb-hi": `var(${o.hi})`, "--orb-lo": `var(${o.lo})` } as React.CSSProperties}
+                    aria-hidden="true"
+                  />
+                  <a className="ds-swatch__case" href={o.href}>{o.name}</a>
+                  <span className="ds-swatch__name">{o.hi}</span>
+                  <span className="ds-swatch__value">{values[o.hi] || "reading"}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      </div>
+
       {/* ── Type ── */}
+      <div className="ds-band">
+        <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-type">
         <h2 id="ds-type" className="ds-section__title">Type</h2>
+        {/* the oversized specimen: Unique at display scale, hero tier,
+            accent-word treatment, live token readout */}
+        <div className="ds-type__display">
+          <Heading tier="hero" as="h3" accent="display.">
+            Unique 700 carries the
+          </Heading>
+          <span className="ds-type__meta">--font-hero · {values["--font-hero"] || "reading"}</span>
+        </div>
         <ul className="ds-type">
           {TYPE_SPECIMENS.map((t) => (
             <li key={t.token} className="ds-type__row">
@@ -183,7 +219,12 @@ export default function DesignSystemSpecimens() {
         </ul>
       </section>
 
+        </div>
+      </div>
+
       {/* ── Controls ── */}
+      <div className="ds-band ds-band--card">
+        <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-controls">
         <h2 id="ds-controls" className="ds-section__title">Controls</h2>
         <p className="ds-section__note">
@@ -251,14 +292,23 @@ export default function DesignSystemSpecimens() {
           <div className="ds-specimen">
             <p className="ds-section__kicker">Bubble</p>
             <div className="ds-specimen__body">
-              <span className="ds-bubble-specimen" aria-hidden="true" />
+              <span
+                className="ds-orb ds-orb--small"
+                style={{ "--orb-hi": "var(--hub-hi)", "--orb-lo": "var(--hub-lo)" } as React.CSSProperties}
+                aria-hidden="true"
+              />
               <span className="ds-type__meta">radial at 36% 30%, one light source, upper left</span>
             </div>
           </div>
         </div>
       </section>
 
+        </div>
+      </div>
+
       {/* ── Spacing + radius ── */}
+      <div className="ds-band">
+        <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-scales">
         <h2 id="ds-scales" className="ds-section__title">Spacing and radius</h2>
         <div className="ds-specimen-row">
@@ -289,7 +339,12 @@ export default function DesignSystemSpecimens() {
         </div>
       </section>
 
+        </div>
+      </div>
+
       {/* ── Inspector ── */}
+      <div className="ds-band ds-band--card">
+        <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-inspector">
         <h2 id="ds-inspector" className="ds-section__title">Token inspector</h2>
         <p className="ds-section__note">
@@ -300,7 +355,12 @@ export default function DesignSystemSpecimens() {
         <TokenInspector />
       </section>
 
+        </div>
+      </div>
+
       {/* ── For agents ── */}
+      <div className="ds-band">
+        <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-agents">
         <h2 id="ds-agents" className="ds-section__title">For agents</h2>
         <p className="ds-section__note">
@@ -329,7 +389,12 @@ export default function DesignSystemSpecimens() {
         </p>
       </section>
 
+        </div>
+      </div>
+
       {/* ── Rules of the system ── */}
+      <div className="ds-band ds-band--card">
+        <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-rules">
         <h2 id="ds-rules" className="ds-section__title">Rules of the system</h2>
         <ol className="ds-rules">
@@ -352,7 +417,7 @@ export default function DesignSystemSpecimens() {
             <ul className="ds-status__list">
               <li>The token layer, both themes</li>
               <li>The control taxonomy, live on every page</li>
-              <li>The gate, eight audits and a pre-commit hook</li>
+              <li>The gate, nine audits and a pre-commit hook</li>
               <li>The dark-mode contract, AA on every route</li>
             </ul>
           </div>
@@ -368,7 +433,12 @@ export default function DesignSystemSpecimens() {
         </div>
       </section>
 
+        </div>
+      </div>
+
       {/* ── The gate ── */}
+      <div className="ds-band">
+        <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-gate">
         <h2 id="ds-gate" className="ds-section__title">The gate</h2>
         <p className="ds-section__note">
@@ -385,6 +455,8 @@ export default function DesignSystemSpecimens() {
           ))}
         </dl>
       </section>
+        </div>
+      </div>
     </div>
   );
 }

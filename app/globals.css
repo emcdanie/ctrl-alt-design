@@ -1940,6 +1940,104 @@ textarea:focus-visible {
    The page reads every value live from computed styles; this block is
    presentation only. All colours resolve from semantic tokens. */
 
+/* D2 (Pass D 2026-07-18): About thesis tiles, the stat-tile direction
+   with case colours (her 17 Jul brief). Plate = case hue mixed into
+   card; static border per the calm-card rule; ink text keeps AA. */
+.thesis-tile {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-8);
+  border-radius: var(--radius-2xl);
+  background: color-mix(in srgb, var(--thesis-hi) 22%, var(--color-card));
+  border: 1px solid color-mix(in srgb, var(--thesis-hi) 52%, var(--color-card));
+}
+
+[data-theme="dark"] .thesis-tile {
+  background: color-mix(in srgb, var(--thesis-hi) 14%, var(--color-card));
+  border-color: color-mix(in srgb, var(--thesis-hi) 32%, var(--color-card));
+}
+
+/* D1 (Pass D 2026-07-18): full-width specimen bands. The band paints
+   edge to edge; text stays inside the 1240 container it wraps. */
+.ds-band {
+  padding-block: var(--spacing-12);
+}
+
+.ds-band--card {
+  background: var(--color-card);
+  border-block: 1px solid var(--color-border-soft);
+}
+
+/* identity band: the five case hues wash the full width at low tint */
+.ds-band--identity {
+  background: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--case-chip-hi) 14%, var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-code-first-hi) 14%, var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-drift-hi) 14%, var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-guardian-hi) 14%, var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-clarity-hi) 14%, var(--color-semantic-background))
+  );
+  border-block: 1px solid var(--color-border-soft);
+}
+
+.ds-band .ds-section {
+  margin-top: 0;
+}
+
+.ds-band .ds-section + .ds-section {
+  margin-top: var(--spacing-16);
+}
+
+/* the ONE orb recipe (generalises the old bubble specimen): case hues
+   via --orb-hi/--orb-lo, one upper-left light, recorded elevation */
+.ds-orb {
+  display: block;
+  width: 112px;
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle at 36% 30%, var(--orb-hi), var(--orb-lo));
+  box-shadow: var(--shadow-orb);
+}
+
+.ds-orb--small {
+  width: 96px;
+}
+
+.ds-caseband {
+  list-style: none;
+  margin: var(--spacing-6) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-10) var(--spacing-12);
+  align-items: flex-start;
+}
+
+.ds-caseband__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  max-width: 180px;
+}
+
+.ds-caseband__item .ds-orb {
+  margin-bottom: var(--spacing-3);
+}
+
+.ds-caseband__item--small .ds-orb {
+  width: 72px;
+}
+
+/* the oversized type specimen (hero tier at display scale) */
+.ds-type__display {
+  margin: var(--spacing-6) 0 var(--spacing-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
 .ds-page__intro {
   font-family: var(--font-body);
   font-size: var(--font-body-size);
@@ -2101,17 +2199,6 @@ textarea:focus-visible {
   min-height: 120px;
 }
 
-.ds-bubble-specimen {
-  display: block;
-  width: 96px;
-  height: 96px;
-  border-radius: var(--radius-full);
-  background: radial-gradient(circle at 36% 30%, var(--hub-hi), var(--hub-lo));
-  box-shadow:
-    13px 22px 44px rgba(0, 0, 0, 0.26),
-    inset 7px 9px 18px rgba(255, 255, 255, 0.5),
-    inset -9px -13px 28px rgba(0, 0, 0, 0.16);
-}
 
 .ds-scale {
   list-style: none;
