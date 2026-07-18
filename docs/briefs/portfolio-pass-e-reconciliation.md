@@ -82,7 +82,9 @@ peri or a case hue), long lines via scale contrast (core word huge, rest a tier
 down). Her copy verbatim, body Geist 16px minimum, tokens only, Unique 24px floor,
 AA both themes. Screenshot live tiles AND the specimen version at 1440 and 390, both
 themes, into _review/after/pass-d-theses/, and STOP for her pick. Loser leaves no
-trace; winner recorded.
+trace; winner recorded. EITHER winner speaks the Card interaction language: hover
+gains the travelling border light (shared implementation), focus-visible ring,
+reduced-motion static. Flat-and-dead tiles are not an option (Elleta, 18 Jul).
 
 ## 7. Music returns (approved as Pass D task 5)
 
@@ -132,6 +134,27 @@ c. Logos in Experience only, per the existing public-org rule, now including the
 d. Amend CLAUDE.md section 7 deliberately with the scoped rule in the same commit.
 e. This composes with the history scrub: old history is clean; the names re-enter
    only in new commits, only in the two allowed surfaces.
+
+## 10. Card micro-heading presence (Elleta, 18 Jul)
+
+The bold sub-heads inside collab/experience/disclosure cards (I push back
+respectfully, etc.) sit too close to body text. Give card micro-headings one
+deliberate tier in the shared card heading style: a size step or eyebrow-weight
+treatment from the ramp, ONE change in the shared style, no per-card overrides.
+Both themes, hierarchy verified against the page-tier heads above them.
+
+## 11. Case template conformance, mechanical layer only (Elleta, 18 Jul)
+
+The census: only chip and design-system-transformation live the decision-led
+shape; brad-frost and guardian are essays with decisions appended; filters has
+ZERO decision blocks; un-operational carries TWO summary blocks. Mechanical fixes
+only in this pass: exactly one summary block per case (merge un-operational's
+second into the first, verbatim); every case renders the same section order
+(disclosure where present, summary, body, lessons, more-work row, CTA). Do NOT
+restructure prose into decisions in this pass: the editorial reshaping of the four
+essay cases happens with Elleta in Cowork (Travel Booking first, as the pattern),
+then lands as content edits. Add a conformance note per case file stating its
+current shape honestly.
 
 ## Close-out
 

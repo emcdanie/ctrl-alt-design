@@ -62,15 +62,6 @@ const learningEntries: LearningEntry[] = [
     relatedWork: { label: "Code First case study", href: "/case-studies/brad-frost" },
   },
   {
-    title: "Design Systems Course",
-    accent: "var(--case-clarity-text)",
-    instructor: "Samantha Gordeshko, Smashing Magazine",
-    type: "course",
-    year: "2025",
-    topics: ["Design Systems", "Governance", "Contribution Models"],
-    reflection: "A structured pass through design system practice beyond my own habits: governance models, contribution flows, and how other teams keep systems alive after the launch excitement fades.",
-  },
-  {
     title: "Smart Interface Design Patterns",
     accent: "var(--case-filters-text)",
     instructor: "Vitaly Friedman / Smashing Magazine",
