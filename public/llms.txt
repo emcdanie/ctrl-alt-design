@@ -1,0 +1,28 @@
+# Elleta McDaniel, elleta.design
+
+Product Designer specialising in AI-enabled design systems for complex,
+multi-role B2B and enterprise products. This site is its own small design
+system (BELLA): tokens, one control taxonomy, and a governance gate.
+
+Positioning term: AI-enabled (never "AI-augmented" or "AI-assisted").
+
+## Case studies
+- /case-studies/chip : AI builds whatever your system already is. I built CHIP to see it first.
+- /case-studies/brad-frost : Code First. What Building Brad Frost's Component System in Reverse Taught Me About Design
+- /case-studies/design-system-transformation : From Drift to Foundation. Rebuilding Design System Thinking in a Scaling SaaS Product
+- /case-studies/guardian : From Isolation to Interpretation. Designing a Context-Aware Design System Guardian, an AI-enabled concept that detects drift, surfaces contextual guidance, and helps teams make confident system decisions without leaving their workflow.
+- /case-studies/un-operational-dashboard : Designing Operational Clarity. A Unified ICT Platform Concept for a Complex International Organization
+- /case-studies/filters-decision-support-system : Search & Filtering System for Complex Travel Booking. Designing decision support for a multi-vertical B2B travel platform.
+
+## The system
+- /design-system : BELLA inspecting itself, live token values, control taxonomy, the gate.
+- /api/bella.json : machine-readable manifest (tokens, taxonomy, cases, rules). Read-only.
+- /skills : skill overlap mapped to the work.
+- /work : the library (curated default, ?explore for map/table/filters).
+
+## Contact
+- /contact : the contact form is the channel (no plaintext email anywhere, by design).
+- /about : who she is and how she thinks (#how-i-think).
+
+Generated from the live route registry at build time; audit:agents fails
+the build if this file and the registry disagree.

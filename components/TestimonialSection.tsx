@@ -1,364 +1,140 @@
-"use client";
+import FadeIn from "@/components/motion/FadeIn";
+import Card from "@/components/ui/Card";
+import SectionHeader from "@/components/ui/SectionHeader";
 
-import FadeIn from "@/components/FadeIn";
-
-/* ── Featured excerpt (shorter, scannable) ──────────────────────── */
-const featured = {
-  paragraphs: [
-    "Straight up: Elleta is awesome. When I met her at a conference, she immediately expressed her desire to dive into substantive design systems work, which stuck with me.",
-    "We\u2019ve thrown everything and the kitchen sink at her, and she\u2019s surprised and delighted us with her ability to make things happen while also being thoughtful and thorough. She sweats the details.",
-    "She\u2019s now with us on the bleeding edge of AI & design systems, embracing new tools and ways of working. Any team would be lucky to have Elleta join their crew.",
-  ],
-  name: "Brad Frost",
-  role: "Creator of Atomic Design",
-  url: "https://bradfrost.com",
-  linkedIn:
-    "https://www.linkedin.com/in/elletamcdaniel/details/recommendations/",
-};
-
-/* ── Supporting quotes ──────────────────────────────────────────── */
-const supporting = [
+/* One uniform quote card per recommendation, no avatars, no featured
+   size. Brad Frost goes first; his credential carries the weight. */
+const quotes = [
+  {
+    quote:
+      "Straight up: Elleta is awesome. Any team would be lucky to have Elleta join their crew.",
+    name: "Brad Frost",
+    role: "Creator of Atomic Design",
+  },
   {
     quote:
       "Elleta consistently brings clarity to complex product problems and builds systems that scale.",
     name: "Product Manager",
-    role: "***REMOVED***",
-    initials: "PM",
+    role: "A B2B travel platform",
   },
   {
     quote:
-      "She approaches design system work with the right mix of rigour and pragmatism \u2014 always grounded in real engineering constraints.",
+      "She approaches design system work with the right mix of rigour and pragmatism, always grounded in real engineering constraints.",
     name: "Engineering Lead",
-    role: "***REMOVED***",
-    initials: "EL",
+    role: "A B2B travel platform",
   },
   {
     quote:
       "Her ability to translate messy stakeholder requirements into clear, navigable prototypes was exceptional.",
     name: "ICTS Stakeholder",
-    role: "United Nations Office at Geneva",
-    initials: "IS",
+    role: "A UN agency, Geneva",
   },
 ];
 
-/* ── Supporting card ──────────────────────────────────────────────── */
-function SupportingCard({
+const LINKEDIN_RECOMMENDATIONS =
+  "https://www.linkedin.com/in/elletamcdaniel/details/recommendations/";
+
+function QuoteCard({
   quote,
   name,
   role,
-  initials,
   delay,
 }: {
   quote: string;
   name: string;
   role: string;
-  initials: string;
   delay: number;
 }) {
   return (
-    <FadeIn delay={delay}>
-      <div
-        className="card-elevated"
-        style={{
-          padding: "28px var(--spacing-6)",
-          display: "flex",
-          flexDirection: "column",
-          gap: "var(--spacing-4)",
-          height: "100%",
-        }}
-      >
-        {/* Quote mark */}
-        <span
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "28px",
-            lineHeight: 1,
-            color: "var(--color-accent-gold)",
-            opacity: 0.6,
-            userSelect: "none",
-          }}
-          aria-hidden
-        >
-          &ldquo;
-        </span>
-
-        <p
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--typography-font-size-sm)",
-            fontWeight: "var(--typography-font-weight-regular)",
-            color: "var(--color-ink-soft)",
-            lineHeight: 1.7,
-            margin: 0,
-            flex: 1,
-          }}
-        >
-          {quote}
-        </p>
-
-        {/* Attribution */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            marginTop: "auto",
-            paddingTop: "var(--spacing-3)",
-            borderTop: "1px solid var(--color-border-soft)",
-          }}
-        >
-          <div
+    <FadeIn delay={delay} distance={4} className="h-full">
+      <Card className="h-full" innerClassName="flex flex-col gap-[var(--spacing-3)]">
+        <figure style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)", flex: 1, margin: 0 }}>
+          {/* quote glyph: Unique display at >=24px, soft peri tint.
+              Recorded audit:fonts exception (the ONE decorative Unique). */}
+          <span
             style={{
-              width: "32px",
-              height: "32px",
-              borderRadius: "50%",
-              background: "var(--color-surface)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-              fontSize: "11px",
-              fontWeight: 600,
-              color: "var(--color-ink-muted)",
+              fontFamily: "var(--font-hero-display)",
+              fontSize: "var(--font-subsection)",
+              lineHeight: 1,
+              color: "var(--color-accent-peri)",
+              opacity: 0.35,
+              userSelect: "none",
+            }}
+            aria-hidden
+          >
+            &ldquo;
+          </span>
+
+          <blockquote
+            style={{
               fontFamily: "var(--font-body)",
-              letterSpacing: "0.02em",
+              fontSize: "var(--typography-font-size-lg)",
+              color: "var(--color-ink-soft)",
+              lineHeight: 1.6,
+              margin: 0,
+              flex: 1,
+              maxWidth: "45ch",
             }}
           >
-            {initials}
-          </div>
-          <div>
-            <p
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "var(--typography-font-size-tag)",
-                fontWeight: 600,
-                color: "var(--color-ink)",
-                margin: 0,
-                lineHeight: 1.3,
-              }}
-            >
-              {name}
-            </p>
-            <p
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "11px",
-                color: "var(--color-muted)",
-                margin: "1px 0 0",
-                lineHeight: 1.4,
-              }}
-            >
-              {role}
-            </p>
-          </div>
-        </div>
-      </div>
+            {quote}
+          </blockquote>
+
+          {/* attribution: one quiet line */}
+          <figcaption
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "var(--typography-font-size-tag)",
+              margin: 0,
+              paddingTop: "var(--spacing-3)",
+              borderTop: "1px solid var(--color-border-soft)",
+              color: "var(--color-muted)",
+              lineHeight: 1.4,
+            }}
+          >
+            <span style={{ fontWeight: 600, color: "var(--color-ink)" }}>{name}</span>
+            {", "}
+            {role}
+          </figcaption>
+        </figure>
+      </Card>
     </FadeIn>
   );
 }
 
-/* ── Section ────────────────────────────────────────────────────── */
 export default function TestimonialSection() {
   return (
-    <section className="layout-section">
+    <section className="layout-section-tight">
       <div className="layout-container">
-        {/* ── Header ─────────────────────────────────────────────── */}
-        <FadeIn>
-          <div className="layout-header">
-            <p className="section-label" style={{ marginBottom: "10px" }}>
-              &mdash; Social Proof
-            </p>
-            <h2 className="heading-section">Trusted by product teams</h2>
-          </div>
+        <FadeIn distance={4}>
+          <SectionHeader label="Social Proof" title="Trusted by product teams" />
         </FadeIn>
 
-        {/* ── Featured — Brad Frost ──────────────────────────────── */}
-        <FadeIn delay={60}>
-          <div
-            className="glass-card"
-            style={{
-              padding: "clamp(var(--spacing-8), 4vw, var(--spacing-12))",
-              maxWidth: "720px",
-              margin: "0 auto var(--spacing-12) auto",
-              position: "relative",
-            }}
-          >
-            {/* Decorative top accent */}
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: "clamp(var(--spacing-8), 4vw, var(--spacing-12))",
-                width: "48px",
-                height: "3px",
-                background:
-                  "linear-gradient(90deg, var(--color-accent-gold), transparent)",
-                borderRadius: "0 0 2px 2px",
-              }}
-            />
-
-            {/* Avatar + label row */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "14px",
-                marginBottom: "28px",
-              }}
-            >
-              <div
-                style={{
-                  width: "48px",
-                  height: "48px",
-                  borderRadius: "50%",
-                  background:
-                    "linear-gradient(135deg, var(--color-accent-gold) 0%, #8a6e4a 100%)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                  fontSize: "var(--typography-font-size-base)",
-                  fontWeight: "var(--typography-font-weight-bold)",
-                  color: "#1A1814",
-                  fontFamily: "var(--font-display)",
-                  letterSpacing: "var(--typography-letter-spacing-tight)",
-                }}
-              >
-                BF
-              </div>
-              <div>
-                <p
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "var(--typography-font-size-sm)",
-                    fontWeight: 600,
-                    color: "var(--color-ink)",
-                    margin: 0,
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {featured.name}
-                </p>
-                <p
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "12px",
-                    color: "var(--color-muted)",
-                    margin: "2px 0 0",
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {featured.role}
-                </p>
-              </div>
-            </div>
-
-            {/* Large quote mark */}
-            <span
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "var(--typography-font-size-5xl)",
-                lineHeight: 0.8,
-                color: "var(--color-accent-gold)",
-                opacity: 0.35,
-                display: "block",
-                marginBottom: "var(--spacing-1)",
-                userSelect: "none",
-              }}
-              aria-hidden
-            >
-              &ldquo;
-            </span>
-
-            {/* Excerpt paragraphs — editorial body font, not display */}
-            <blockquote style={{ margin: 0 }}>
-              {featured.paragraphs.map((para, i) => (
-                <p
-                  key={i}
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "clamp(18px, 1.8vw, 22px)",
-                    fontWeight: "var(--typography-font-weight-regular)",
-                    color: "var(--color-ink-soft)",
-                    lineHeight: 1.75,
-                    margin: i === 0 ? 0 : "14px 0 0",
-                    maxWidth: "640px",
-                  }}
-                >
-                  {para}
-                </p>
-              ))}
-            </blockquote>
-
-            {/* Read more link */}
-            <div style={{ marginTop: "28px" }}>
-              <a
-                href={featured.linkedIn}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  fontFamily: "var(--font-body)",
-                  fontSize: "12px",
-                  fontWeight: "var(--typography-font-weight-medium)",
-                  color: "var(--color-accent-gold)",
-                  textDecoration: "none",
-                  transition: "opacity 150ms",
-                  letterSpacing: "0.02em",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.opacity = "0.7";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.opacity = "1";
-                }}
-              >
-                Read full recommendation
-                <span aria-hidden style={{ fontSize: "var(--typography-font-size-sm)" }}>
-                  &rarr;
-                </span>
-              </a>
-            </div>
-          </div>
-        </FadeIn>
-
-        {/* ── Supporting cards — 3-column grid ────────────────────── */}
-        <div className="layout-grid-3">
-          {supporting.map((t, i) => (
-            <SupportingCard
-              key={t.name + t.role}
-              quote={t.quote}
-              name={t.name}
-              role={t.role}
-              initials={t.initials}
-              delay={120 + i * 60}
-            />
+        {/* One uniform grid. Four quotes wrap 2x2 (1-col mobile) so no
+            row is left with an orphan card; equal heights via stretch. */}
+        <div className="grid grid-cols-1 items-stretch gap-[var(--grid-gap)] sm:grid-cols-2">
+          {quotes.map((q, i) => (
+            <QuoteCard key={q.name + q.role} {...q} delay={60 + i * 60} />
           ))}
         </div>
 
-        {/* View all link */}
-        <FadeIn delay={340}>
-          <div style={{ marginTop: "28px" }}>
+        <FadeIn delay={340} distance={4}>
+          <div style={{ marginTop: "var(--spacing-6)" }}>
             <a
-              href={featured.linkedIn}
+              href={LINKEDIN_RECOMMENDATIONS}
               target="_blank"
               rel="noopener noreferrer"
+              className="footer-nav-link"
               style={{
+                display: "inline-flex",
+                alignItems: "center",
+                minHeight: "var(--spacing-touch-target)",
                 fontFamily: "var(--font-body)",
-                fontSize: "12px",
+                fontSize: "var(--typography-font-size-tag)",
                 fontWeight: "var(--typography-font-weight-medium)",
-                color: "var(--color-muted)",
-                textDecoration: "none",
-                transition: "color 150ms",
+                color: "var(--color-accent-ink)",
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
                 letterSpacing: "0.02em",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "var(--color-ink)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "var(--color-muted)";
               }}
             >
               View all recommendations &rarr;

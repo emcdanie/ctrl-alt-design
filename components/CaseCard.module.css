@@ -1,0 +1,89 @@
+/* THE case card — image-led, DESIGN.md frames (one radius, one shadow
+ * tier, token spacing). Cover placeholder is the muted warm pair; case
+ * colour lives ONLY in the kicker text. */
+
+.caseCard:hover .title,
+.caseCard:focus-visible .title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ── Cover slot ── */
+
+/* placeholder art: quiet oversized display type, clipped — reads as a
+ * branded plate, not a colour block */
+.coverPlaceholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  /* the warm plate is a FIXED-context surface (recorded cover tokens);
+     it must not inherit the theme-flipping media surface behind it */
+  background: linear-gradient(160deg, var(--cover-warm-hi), var(--cover-warm-lo));
+  padding: var(--spacing-4) var(--spacing-5);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-subsection);
+  line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--cover-warm-ink);
+  opacity: 0.55;
+  overflow: hidden;
+}
+
+/* ── Body ── */
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.tag {
+  font-size: 11px; /* matches the hub-sub recorded exception */
+  letter-spacing: 0.12em;
+  color: var(--color-accent-ink);
+  border: 1px solid var(--color-semantic-accent-border);
+  border-radius: var(--radius-full);
+  padding: 2px var(--spacing-2);
+  white-space: nowrap;
+}
+
+.title {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--font-card-title);
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+.impact {
+  /* card body text: 16px minimum (type-presence pass) */
+  font-size: var(--typography-font-size-base);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+  margin-top: var(--spacing-1);
+}
+
+.skill {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-ink-muted);
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  padding: 2px var(--spacing-2);
+  white-space: nowrap;
+}
+

@@ -6,9 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "audit:layout": "node scripts/audit-layout.mjs",
+    "audit:contrast": "node scripts/contrast-check.mjs",
+    "audit:structure": "node scripts/audit-structure.mjs",
+    "gate": "npm run audit:structure && npm run audit:fonts && npm run audit:tokens && npm run audit:copy && npm run audit:reuse && npm run audit:nda && npm run audit:controls && npm run audit:agents && npm run audit:contrast",
+    "audit:copy": "node scripts/audit-copy.mjs",
+    "audit:controls": "node scripts/audit-controls.mjs",
+    "audit:nda": "node scripts/audit-nda.mjs",
+    "audit:reuse": "node scripts/audit-reuse.mjs",
+    "audit:fonts": "node scripts/audit-fonts.mjs",
+    "audit:tokens": "node scripts/audit-tokens.mjs",
+    "audit:agents": "node scripts/generate-agent-surfaces.mjs && node scripts/audit-agents.mjs",
+    "prebuild": "node scripts/generate-agent-surfaces.mjs"
   },
   "dependencies": {
+    "iconoir-react": "^7.11.1",
     "next": "16.1.7",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -21,6 +34,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.7",
+    "playwright": "^1.60.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   },

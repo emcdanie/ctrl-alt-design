@@ -1,0 +1,79 @@
+/* Sun/moon theme switch — from _proto/_hero.html. Keycap thumb slides
+ * to the moon and goes iris in dark. Colours are the --switch-* /
+ * --key-* tokens (globals.css). */
+
+.switch {
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 5px 0 /* token-waiver: measured 44px touch-target math (recorded) */; /* lifts the hit area to the 44px touch target */
+  display: inline-flex;
+  align-items: center;
+}
+
+.track {
+  position: relative;
+  width: 66px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(var(--switch-track-hi), var(--switch-track-lo));
+  box-shadow: var(--shadow-switch-track);
+  transition: background 0.3s;
+}
+
+.ic {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.sun {
+  left: 8px;
+  color: var(--switch-icon-sun);
+}
+
+.moon {
+  right: 9px;
+  color: var(--switch-icon-moon);
+}
+
+.thumb {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  z-index: 1;
+  background: linear-gradient(var(--key-face-hi), var(--key-face-lo));
+  box-shadow:
+    2px 3px 0 var(--switch-thumb-edge),
+    var(--shadow-switch-knob),
+    inset 0 1px 0 var(--key-face-hi);
+  transition: left 0.24s cubic-bezier(0.3, 0.7, 0.3, 1), background 0.3s, box-shadow 0.3s;
+}
+
+.switch:focus-visible .track {
+  outline: 2px solid var(--hero-iris-bright);
+  outline-offset: 3px;
+}
+
+:global([data-theme="dark"]) .track {
+  box-shadow: var(--shadow-switch-track-dark);
+}
+
+:global([data-theme="dark"]) .thumb {
+  left: 35px;
+  background: linear-gradient(var(--key-iris-hi), var(--key-iris-lo));
+  box-shadow:
+    2px 3px 0 var(--key-iris-edge),
+    var(--shadow-switch-knob-dark),
+    var(--edge-glass-hi-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .thumb {
+    transition: none;
+  }
+}

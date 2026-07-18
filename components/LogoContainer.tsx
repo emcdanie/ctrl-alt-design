@@ -13,11 +13,19 @@ interface LogoContainerProps {
 /**
  * Consistent square logo container used across ExperienceSection,
  * CaseStudyGrid, and any other place that renders a company/client logo.
+ * One warm neutral tile for every logo by default (linen token); pass `bg`
+ * only when a mark genuinely needs a dark tile for contrast. Logos never
+ * crop or distort: object-fit contain inside consistent padding.
  * A missing/broken image falls back to the initial-letter tile — the
  * mount-time check covers 404s that resolve before hydration attaches onError.
  */
-export default function LogoContainer({ src, alt, bg = "#E8E4DC", size = 44 }: LogoContainerProps) {
-  const radius = Math.round(size * 0.22); // ~10px at 44px, scales with size
+export default function LogoContainer({
+  src,
+  alt,
+  bg = "var(--color-supporting-linen)",
+  size = 48,
+}: LogoContainerProps) {
+  const radius = Math.round(size * 0.22); // ~10px at 48px, scales with size
   const [failed, setFailed] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
@@ -34,14 +42,16 @@ export default function LogoContainer({ src, alt, bg = "#E8E4DC", size = 44 }: L
         width: `${size}px`,
         height: `${size}px`,
         borderRadius: `${radius}px`,
-        background: failed ? "#E8E4DC" : bg,
+        background: failed ? "var(--color-supporting-linen)" : bg,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         flexShrink: 0,
         overflow: "hidden",
-        border: "1px solid rgba(0,0,0,0.06)",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+        // consistent breathing room: image fills the rest via contain
+        padding: `${Math.round(size * 0.075)}px`,
+        border: "1px solid var(--color-semantic-border-subtle)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       {showImg ? (
@@ -50,16 +60,16 @@ export default function LogoContainer({ src, alt, bg = "#E8E4DC", size = 44 }: L
           ref={imgRef}
           src={src}
           alt={alt}
-          style={{ width: "78%", height: "78%", objectFit: "contain" }}
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
           onError={() => setFailed(true)}
         />
       ) : (
         <span
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: `${Math.round(size * 0.32)}px`,
+            fontSize: "var(--typography-font-size-base)",
             fontWeight: "var(--typography-font-weight-bold)",
-            color: "#1A1A1A",
+            color: "var(--color-ink)",
             lineHeight: 1,
             userSelect: "none",
           }}

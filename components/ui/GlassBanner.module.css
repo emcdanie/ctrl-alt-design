@@ -1,0 +1,21 @@
+/* GlassBanner: frosted gradient CTA surface. All values flow from the
+   --banner-* tokens in globals.css (light glass base in light theme,
+   tint over translucent navy in dark). No animation: reduced-motion
+   safe by construction. */
+.banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--banner-radius);
+  border: 1px solid var(--banner-border);
+  background: var(--banner-gradient), var(--banner-ground);
+  box-shadow: var(--banner-shadow);
+  backdrop-filter: blur(var(--banner-blur));
+  -webkit-backdrop-filter: blur(var(--banner-blur));
+  padding: var(--spacing-10);
+}
+
+@media (min-width: 768px) {
+  .banner {
+    padding: var(--spacing-12);
+  }
+}

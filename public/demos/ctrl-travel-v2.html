@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ctrl+travel — Future of Business Travel</title>
+<title>ctrl+travel, Future of Business Travel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
@@ -497,7 +497,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <!-- Search hero -->
 <div class="search-hero">
-  <div class="hero-label">Nova AI — smart travel search</div>
+  <div class="hero-label">Nova AI, smart travel search</div>
   <div class="ai-wrap">
     <span class="ai-icon">✦</span>
     <input class="ai-input" id="aiIn" placeholder="Try: 'Business class Paris Monday under €300' or 'Cheapest direct to Zurich this week'…"/>
@@ -518,7 +518,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <select class="fv-sel" id="fs-stops" onchange="applyF()"><option value="">Stops: Any</option><option value="0">Direct only</option><option value="1">Max 1 stop</option></select>
   <select class="fv-sel" id="fs-price" onchange="applyF()"><option value="">Price: Any</option><option value="100">Under €100</option><option value="200">Under €200</option><option value="300">Under €300</option></select>
   <select class="fv-sel" id="fs-airline" onchange="applyF()"><option value="">Airline: All</option><option>Lufthansa</option><option>Swiss Air</option><option>Air France</option><option>ITA Airways</option><option>easyJet</option><option>British Airways</option><option>KLM</option></select>
-  <select class="fv-sel" id="fs-time" onchange="applyF()"><option value="">Depart: Any</option><option value="early">Early (&lt;9am)</option><option value="morning">Morning (9–12)</option><option value="afternoon">Afternoon (12–6)</option><option value="evening">Evening (&gt;6pm)</option></select>
+  <select class="fv-sel" id="fs-time" onchange="applyF()"><option value="">Depart: Any</option><option value="early">Early (&lt;9am)</option><option value="morning">Morning (9-12)</option><option value="afternoon">Afternoon (12-6)</option><option value="evening">Evening (&gt;6pm)</option></select>
   <select class="fv-sel" id="fs-class" onchange="applyF()"><option value="">Class: All</option><option>Economy</option><option>Business</option></select>
   <select class="fv-sel" id="fs-policy" onchange="applyF()"><option value="">Policy: All</option><option value="ok">Within policy</option><option value="warn">Near limit</option></select>
   <div class="sep"></div>
@@ -588,7 +588,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="wallet-date" id="wDate">Mon Mar 24, 2025 · 12:00</div>
       <div class="wallet-grid">
         <div class="wallet-field"><label>Passenger</label><span>Elleta McCallum</span></div>
-        <div class="wallet-field"><label>Seat</label><span id="wSeat">—</span></div>
+        <div class="wallet-field"><label>Seat</label><span id="wSeat">, </span></div>
         <div class="wallet-field"><label>Class</label><span id="wClass">Economy</span></div>
         <div class="wallet-field"><label>Duration</label><span id="wDur">1h 40m</span></div>
       </div>
@@ -608,7 +608,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         </svg>
       </div>
     </div>
-    <button class="wallet-close" onclick="closeWallet()">Done — Added to Apple Wallet</button>
+    <button class="wallet-close" onclick="closeWallet()">Done, Added to Apple Wallet</button>
   </div>
 </div>
 
@@ -665,7 +665,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 </div>
 
 <!-- AI Bot FAB -->
-<button class="bot-fab" id="botFab" onclick="toggleBot()" title="Nova — Your AI assistant">✦</button>
+<button class="bot-fab" id="botFab" onclick="toggleBot()" title="Nova, Your AI assistant">✦</button>
 <div class="bot-drawer" id="botDrawer">
   <div class="bot-dhead">
     <div class="nova-fab-avatar">✦</div>
@@ -715,11 +715,11 @@ const TEAM=[
   {n:'James Wright',i:'JW',c:'#f59e0b',trip:'MXP→FRA',date:'Mar 24',status:'pending'},
   {n:'Sofia Chen',i:'SC',c:'#10b981',trip:'MXP→LHR',date:'Mar 25',status:'confirmed'},
   {n:'Raj Patel',i:'RP',c:'#8b5cf6',trip:'MXP→ZRH',date:'Mar 26',status:'confirmed'},
-  {n:'Marco Bianchi',i:'MB',c:'#ef4444',trip:'—',date:'—',status:'none'},
+  {n:'Marco Bianchi',i:'MB',c:'#ef4444',trip:', ',date:', ',status:'none'},
 ];
 const ANNS={
-  'search':{n:'1',t:'Nova AI Search',b:'Parse natural language queries into structured filters. Intent extraction identifies destination, class, price cap, time preference — displayed as chips so the AI\'s interpretation is always transparent and correctable.'},
-  'compare':{n:'2',t:'AI Comparison Engine',b:'Select 2–3 flights to compare side by side. Nova generates pros/cons for each option based on policy compliance, price, CO₂, refundability, and speed — then recommends the best fit.'},
+  'search':{n:'1',t:'Nova AI Search',b:'Parse natural language queries into structured filters. Intent extraction identifies destination, class, price cap, time preference, displayed as chips so the AI\'s interpretation is always transparent and correctable.'},
+  'compare':{n:'2',t:'AI Comparison Engine',b:'Select 2-3 flights to compare side by side. Nova generates pros/cons for each option based on policy compliance, price, CO₂, refundability, and speed, then recommends the best fit.'},
   'policy':{n:'3',t:'Travel Policy Guards',b:'Green = within policy. Amber = near limit. Red = over budget. Inline indicators self-screen travellers before submission, cutting manager review requests by ~60%.'},
   'book':{n:'4',t:'Pre-filled Booking',b:'Profile data, passport, cost centre and trip purpose are auto-filled from your ctrl+travel profile. Reduces booking time by ~70% vs traditional forms.'},
   'seat':{n:'5',t:'Seat Memory',b:'Window preference remembered from previous trips, pre-highlighted. This personalisation reduced seat re-selection interactions by 35% in testing.'},
@@ -929,7 +929,7 @@ function getBF(f,sub){
 function getRec(sub){
   const best=[...sub].sort((a,b)=>{let sa=0,sb=0;if(a.policy==='ok') sa+=3;if(b.policy==='ok') sb+=3;if(a.stops===0) sa+=2;if(b.stops===0) sb+=2;if(a.ref) sa+=1;if(b.ref) sb+=1;sa-=a.price/100;sb-=b.price/100;return sb-sa;})[0];
   const r=[];if(best.policy==='ok') r.push('within policy');if(best.stops===0) r.push('direct');if(best.ref) r.push('refundable');
-  return`Based on your profile, <strong>${best.airline} at €${best.price}</strong> is the strongest option — ${r.join(', ')}.`;
+  return`Based on your profile, <strong>${best.airline} at €${best.price}</strong> is the strongest option, ${r.join(', ')}.`;
 }
 function openCmpModal(){
   const sub=ALL.filter(f=>cmpSet.has(f.id));if(sub.length<2) return;
@@ -944,7 +944,7 @@ function openCmpModal(){
     const pl=f.policy==='ok'?'✓ Within policy':f.policy==='warn'?'⚠ Near limit':'✗ Over budget';
     h+=`<div class="cmp-col">
       <div class="cmp-airline-lg" style="background:${ac.bg};color:${ac.fg}">${f.airline.split(' ')[0].substring(0,3).toUpperCase()}</div>
-      <div class="cmp-route-big">${f.dep} – ${f.arr}</div>
+      <div class="cmp-route-big">${f.dep} - ${f.arr}</div>
       <div class="cmp-meta-sm">${f.airline} · ${f.orig} → ${f.dest}</div>
       <div class="cmp-row"><label>Price</label><div class="cmp-val ${f.price===Math.min(...pr)?'best':f.price===Math.max(...pr)&&sub.length>1?'worst':''}">€${f.price}</div></div>
       <div class="cmp-row"><label>Duration</label><div class="cmp-val">${f.dur}</div></div>
@@ -1000,7 +1000,7 @@ function renderBookBody(f){
         <div class="form-row"><label>Nationality</label><input class="form-inp" value="British" readonly/></div>
       </div>
       <div class="form-row"><label>Cost centre</label><input class="form-inp" value="UX Design / Q1 2025"/></div>
-      <div class="form-row"><label>Trip purpose</label><input class="form-inp" value="Client meeting — ${f.dest}"/></div>
+      <div class="form-row"><label>Trip purpose</label><input class="form-inp" value="Client meeting, ${f.dest}"/></div>
     </div>`;
   renderSeats();renderBookFoot(f);
 }
@@ -1027,7 +1027,7 @@ function renderBookFoot(f){
       <div class="pr total"><span>Total</span><span>€${total}</span></div>
     </div>
     <button class="book-btn" onclick="submitBook()" ${!selSeat?'disabled style="opacity:0.4;cursor:not-allowed"':''}>
-      ${selSeat?`Submit for approval — €${total}`:'Select a seat to continue'}
+      ${selSeat?`Submit for approval, €${total}`:'Select a seat to continue'}
     </button>
     ${selSeat?`<button class="wallet-btn" onclick="openWallet()">🎫 Add to Apple Wallet</button>`:''}`;
 }
@@ -1038,7 +1038,7 @@ function submitBook(){
     <div style="font-size:52px;margin-bottom:16px">✅</div>
     <h3 style="font-size:19px;font-weight:900;margin-bottom:10px">Submitted for approval</h3>
     <p style="font-family:var(--font2);color:var(--text2);font-size:13px;line-height:1.6;margin-bottom:24px">
-      ${f.airline} · ${f.dep}–${f.arr}<br>Seat ${selSeat} · €${f.price+tax} total<br>Your manager will be notified.
+      ${f.airline} · ${f.dep}-${f.arr}<br>Seat ${selSeat} · €${f.price+tax} total<br>Your manager will be notified.
     </p>
     <button onclick="openWallet()" style="background:linear-gradient(135deg,var(--purple),var(--cyan));border:none;color:#fff;padding:12px 28px;border-radius:var(--r-xl);font-family:var(--font);font-size:14px;font-weight:800;cursor:pointer;display:block;width:100%;margin-bottom:10px">🎫 Add to Apple Wallet</button>
     <button onclick="closeBook()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:11px 28px;border-radius:var(--r-xl);font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;width:100%">Back to search</button>
@@ -1052,7 +1052,7 @@ function openWallet(){
   document.getElementById('wAirline').textContent=f.airline;
   document.getElementById('wRoute').textContent=`${f.orig} → ${f.dest}`;
   document.getElementById('wDate').textContent=`Mon Mar 24, 2025 · ${f.dep}`;
-  document.getElementById('wSeat').textContent=selSeat||'—';
+  document.getElementById('wSeat').textContent=selSeat||', ';
   document.getElementById('wClass').textContent=f.cls;
   document.getElementById('wDur').textContent=f.dur;
   // Generate random barcode
@@ -1066,9 +1066,9 @@ function closeWallet(){document.getElementById('walletModal').classList.remove('
 const PLANNER_FLOW=[
   {msg:"Hi Elleta! ✦ I'm Nova, your ctrl+travel AI. Let me help you plan your next trip. Is this a company trip?",choices:['Yes, company trip','Personal travel']},
   {msg:"Great! What type of company trip is this?",choices:['Client meeting','Conference','Internal team','Trade show','Training']},
-  {msg:"How long will you be travelling?",choices:['Day trip','Overnight (1 night)','2–3 nights','A week or more']},
+  {msg:"How long will you be travelling?",choices:['Day trip','Overnight (1 night)','2-3 nights','A week or more']},
   {msg:"What matters most to you for this trip?",choices:['Cheapest option','Fastest journey','Business class','Refundable ticket','All within policy']},
-  {msg:"Last one — when do you want to travel?",choices:['This week','Next week','Next month','I\'ll set the date']},
+  {msg:"Last one, when do you want to travel?",choices:['This week','Next week','Next month','I\'ll set the date']},
 ];
 let plannerAnswers={};
 function openPlanner(){
@@ -1154,10 +1154,10 @@ function sendPlannerMsg(){
 }
 function getPlannerReply(t){
   const tl=t.toLowerCase();
-  if(tl.includes('direct')) return"Looking for direct flights only — great choice for shorter trips. I'll filter those now.";
+  if(tl.includes('direct')) return"Looking for direct flights only, great choice for shorter trips. I'll filter those now.";
   if(tl.includes('budget')||tl.includes('cheap')) return"Budget travel it is! I'll prioritise the most affordable options within your policy.";
-  if(tl.includes('business')) return"Business class noted. Comfort and productivity on longer routes — smart choice.";
-  if(tl.includes('paris')||tl.includes('cdg')) return"Paris CDG — beautiful city for a client meeting. I see 2 flights today from MXP.";
+  if(tl.includes('business')) return"Business class noted. Comfort and productivity on longer routes, smart choice.";
+  if(tl.includes('paris')||tl.includes('cdg')) return"Paris CDG, beautiful city for a client meeting. I see 2 flights today from MXP.";
   if(tl.includes('refund')) return"Refundable tickets are a great call for client trips where dates might shift. I'll filter for those.";
   if(tl.includes('help')||tl.includes('what')) return"I can help you filter flights by budget, destination, timing, or policy. What matters most for this trip?";
   return"Got it! Let me factor that into your search. Anything else before I pull up results?";
@@ -1178,7 +1178,7 @@ const OB_STEPS=[
      <option value="LIN">Milan Linate (LIN)</option><option value="LHR">London Heathrow (LHR)</option>
      <option value="CDG">Paris CDG</option><option value="AMS">Amsterdam Schiphol</option>
    </select>`},
-  {lbl:'Step 3 of 3',title:'Travel preferences',sub:'Remembered for every booking — change anytime.',
+  {lbl:'Step 3 of 3',title:'Travel preferences',sub:'Remembered for every booking, change anytime.',
    render:()=>`<div class="ob-label">Preferred class</div><div class="pref-grid">
     ${[{v:'Economy',i:'💺'},{v:'Business',i:'🎖'},{v:'Any',i:'✦'}].map(p=>`<div class="pref-opt ${obData.cls===p.v?'sel':''}" onclick="obData.cls='${p.v}';renderOb()"><span class="pref-icon">${p.i}</span>${p.v}</div>`).join('')}
    </div><div class="ob-label" style="margin-top:14px">Seat preference</div><div class="pref-grid">
@@ -1220,7 +1220,7 @@ function renderBot(){
     c.innerHTML=`<div class="bsec"><div class="bsec-title">Your upcoming trips</div>
     ${MY_TRIPS.map(t=>`<div class="trip-tile" onclick="">
       <div class="trip-tile-top"><div class="trip-dest-lg">${t.dest}</div><span class="t-status ${t.status==='confirmed'?'s-conf':t.status==='pending'?'s-pend':'s-draft'}">${t.status==='confirmed'?'✓ Confirmed':t.status==='pending'?'⏳ Pending':'Draft'}</span></div>
-      <div class="trip-tile-meta">${t.date} · ${t.dep}–${t.arr} · ${t.airline}</div>
+      <div class="trip-tile-meta">${t.date} · ${t.dep}-${t.arr} · ${t.airline}</div>
       <div class="trip-tile-meta" style="color:var(--text3);margin-top:2px">${t.ref}</div>
     </div>`).join('')}</div>
     <div class="bsec"><div class="bsec-title">✦ Nova says</div>
@@ -1233,11 +1233,11 @@ function renderBot(){
     ${TEAM.map(t=>`<div class="team-tile">
       <div class="team-av" style="background:${t.c}">${t.i}</div>
       <div class="team-info"><div class="team-n">${t.n}</div><div class="team-tr">${t.trip} · ${t.date}</div></div>
-      <span class="t-status ${t.status==='confirmed'?'s-conf':t.status==='pending'?'s-pend':'s-draft'}">${t.status==='confirmed'?'✓':t.status==='pending'?'⏳':'—'}</span>
+      <span class="t-status ${t.status==='confirmed'?'s-conf':t.status==='pending'?'s-pend':'s-draft'}">${t.status==='confirmed'?'✓':t.status==='pending'?'⏳':', '}</span>
     </div>`).join('')}</div></div>
     <div class="bsec"><div class="bsec-title">⚠ Conflicts</div>
     <div style="background:var(--amber-dim);border:1px solid rgba(245,158,11,0.3);border-radius:var(--r-md);padding:12px;font-family:var(--font2);font-size:12px;color:var(--amber);line-height:1.5">
-      Elleta &amp; James both travelling Mar 24 — ensure team coverage.
+      Elleta &amp; James both travelling Mar 24, ensure team coverage.
     </div></div>`;
   } else if(botTab==='book'){
     c.innerHTML=`<div class="bsec"><div class="bsec-title">Book same flight for team</div>
@@ -1352,7 +1352,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderR();addPins();renderBot();
   // Initialise planner with first message
   addPlannerMsg('nova',PLANNER_FLOW[0].msg,PLANNER_FLOW[0].choices);
-  // Removed: auto-start annotation on load — annotations now require user interaction
+  // Removed: auto-start annotation on load, annotations now require user interaction
   setTimeout(()=>showOb(),900);
 });
 </script>

@@ -1,5 +1,4 @@
 import OverlayNav from "@/components/OverlayNav";
-import BackToWorkButton from "@/components/BackToWorkButton";
 
 interface CaseStudyLayoutProps {
   children: React.ReactNode;
@@ -7,15 +6,17 @@ interface CaseStudyLayoutProps {
 
 /**
  * Canonical shell for every case study page.
- * Provides: page background, overlay nav, sticky back button.
+ * Provides: page background and the overlay nav. The back link lives
+ * INSIDE CaseStudyShell's container so it tracks the content column.
  *
- * Replaces CaseStudyShell — CaseStudyShell now re-exports this.
+ * Composes WITH CaseStudyShell (Layout = background + nav; Shell = case
+ * header/meta/footer). They are separate live components; the page nests
+ * CaseStudyShell inside CaseStudyLayout.
  */
 export default function CaseStudyLayout({ children }: CaseStudyLayoutProps) {
   return (
-    <main className="page-shell min-h-screen text-[var(--color-ink-soft)]">
+    <main id="main-content" className="page-shell min-h-screen text-[var(--color-ink-soft)]">
       <OverlayNav />
-      <BackToWorkButton />
       <div className="relative">{children}</div>
     </main>
   );

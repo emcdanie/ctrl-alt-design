@@ -8,3 +8,5 @@ export { default as designSystemTransformation } from "./design-system-transform
 export { default as unOperationalDashboard } from "./un-operational-dashboard";
 export { default as filtersDecisionSupportSystem } from "./filters-decision-support-system";
 export { default as bradFrost } from "./brad-frost";
+export { default as guardian } from "./guardian";
+export { default as chip } from "./chip";

@@ -1,0 +1,196 @@
+/* Shared card, from the bubble-cluster reveal-card recipe. ONE SYSTEM
+ * RULE (motion audit 2026-07-17): the card is CALM AT REST. Resting
+ * state = static 1px accent-tinted border, soft shadow, glass inner.
+ * The conic colour-trace border (light) and identity halo (dark) run
+ * ONLY on :hover / :focus-within, as an affordance. The bubble-cluster
+ * open peek (BubbleCluster.module.css .panel) is the single element
+ * allowed to animate at rest. prefers-reduced-motion: never trace;
+ * hover shows a static solid accent ring instead. Drive the identity
+ * colour with --cc (see Card.tsx `accent`). */
+
+@property --card-ang {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.card {
+  position: relative;
+  border-radius: 22px;
+  padding: 3px; /* reserved trace-ring thickness; keeps hover layout-stable */
+  box-shadow: 13px 26px 54px var(--hero-panel-shadow);
+  --cc: var(--hero-iris-bright);
+}
+
+/* Trace ring: present but invisible at rest, revealed as an affordance */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  padding: 3px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  background: conic-gradient(
+    from var(--card-ang),
+    var(--cc) 0deg,
+    var(--cc) 46deg,
+    color-mix(in srgb, var(--cc) 20%, transparent) 130deg,
+    color-mix(in srgb, var(--cc) 12%, transparent) 300deg,
+    var(--cc) 360deg
+  );
+  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  mask-composite: exclude;
+}
+
+.card:hover::before,
+.card:focus-within::before {
+  opacity: 1;
+  animation: card-trace 3.4s linear infinite;
+}
+
+@keyframes card-trace {
+  to {
+    --card-ang: 360deg;
+  }
+}
+
+/* Dark ONLY: identity halo, hover/focus affordance like the trace */
+:global([data-theme="dark"]) .card:hover,
+:global([data-theme="dark"]) .card:focus-within {
+  animation: card-glow-dark 3.6s ease-in-out infinite;
+}
+
+@keyframes card-glow-dark {
+  0%,
+  100% {
+    box-shadow:
+      13px 26px 54px var(--hero-panel-shadow),
+      0 0 16px -6px color-mix(in srgb, var(--cc) 50%, transparent);
+  }
+
+  50% {
+    box-shadow:
+      13px 26px 54px var(--hero-panel-shadow),
+      0 0 28px -5px color-mix(in srgb, var(--cc) 65%, transparent);
+  }
+}
+
+/* Glass inner panel, THEME-AWARE by default: backgrounds off
+   --color-card and inherits the normal semantic inks, so cards flip to
+   navy with light text in dark automatically. Rest border: 1px accent
+   at ~22% mix (quiet, but lets per-card accents read). */
+.inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  background: var(--color-card);
+  border: 1px solid color-mix(in srgb, var(--cc) 22%, transparent);
+  border-radius: 19px;
+  padding: var(--spacing-6);
+}
+
+/* variant="peek": the fixed ALWAYS-LIGHT reveal panel (white; cream in
+   dark), meant to float light on navy. Only the bubble-cluster open
+   peek uses this treatment (BubbleCluster.module.css consumes the same
+   --hero-panel-* tokens directly). Because the ground never flips, the
+   theme-flipping semantic inks are re-scoped to the fixed panel set,
+   or dark would render cream text on the cream panel. Custom
+   properties resolve at the element they are declared on, so this
+   covers all descendants. */
+.innerPanel {
+  background: var(--hero-panel-bg, var(--color-card));
+  color: var(--hero-panel-ink);
+  --color-ink: var(--hero-panel-ink);
+  --color-ink-soft: var(--hero-panel-ink-soft);
+  --color-ink-muted: var(--hero-panel-meta);
+  --color-muted: var(--hero-panel-meta);
+  --color-surface: var(--hero-panel-surface);
+  --color-border-soft: var(--hero-panel-border-soft);
+  --color-border-medium: var(--hero-panel-border-medium);
+  --color-accent-ink: var(--hero-panel-accent-ink);
+}
+
+/* Interactive cards: single anchor/button, unmistakably clickable */
+.interactive {
+  display: block;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.interactive:hover,
+.interactive:focus-visible {
+  transform: var(--motion-transform-hover-lift, translateY(-2px));
+  box-shadow: 13px 26px 54px var(--hero-panel-shadow), var(--shadow-card-elevated);
+}
+
+.interactive:focus-visible {
+  outline: var(--ring-focus-width, 2px) solid var(--ring-focus-color, var(--color-semantic-border-strong));
+  outline-offset: var(--ring-focus-offset, 3px);
+}
+
+/* Image variant: full-bleed media above the padded body */
+.innerFlush {
+  padding: 0;
+  overflow: hidden;
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.media > :global(img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--scrim-media);
+}
+
+.body {
+  padding: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+/* Reduced motion: no trace ever; hover/focus shows a static solid
+   accent ring, dark hover a static halo */
+@media (prefers-reduced-motion: reduce) {
+  .interactive,
+  .interactive:hover,
+  .interactive:focus-visible {
+    transition: none;
+    transform: none;
+  }
+
+  .card:hover::before,
+  .card:focus-within::before {
+    animation: none;
+    background: var(--cc);
+  }
+
+  :global([data-theme="dark"]) .card:hover,
+  :global([data-theme="dark"]) .card:focus-within {
+    animation: none;
+    box-shadow:
+      13px 26px 54px var(--hero-panel-shadow),
+      0 0 22px -4px color-mix(in srgb, var(--cc) 55%, transparent);
+  }
+}

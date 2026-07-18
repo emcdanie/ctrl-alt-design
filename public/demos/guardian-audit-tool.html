@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guardian — AI UX Audit Tool</title>
+<title>Guardian, AI UX Audit Tool</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -802,7 +802,7 @@
 <!-- Canvas with design -->
 <div class="canvas">
   <div class="design-frame" id="designFrame">
-    <span class="frame-label">Homepage / Desktop — 1440px</span>
+    <span class="frame-label">Homepage / Desktop, 1440px</span>
 
     <!-- Navigation -->
     <div class="design-nav" id="designNav">
@@ -905,10 +905,10 @@
 
   <!-- Scores -->
   <div class="score-strip" id="scoreStrip">
-    <div class="score-pill"><div class="s-label">Score</div><div class="s-value warn" id="sScore">—</div></div>
-    <div class="score-pill"><div class="s-label">Errors</div><div class="s-value bad" id="sErrors">—</div></div>
-    <div class="score-pill"><div class="s-label">Warnings</div><div class="s-value warn" id="sWarns">—</div></div>
-    <div class="score-pill"><div class="s-label">Info</div><div class="s-value info-c" id="sInfo">—</div></div>
+    <div class="score-pill"><div class="s-label">Score</div><div class="s-value warn" id="sScore">, </div></div>
+    <div class="score-pill"><div class="s-label">Errors</div><div class="s-value bad" id="sErrors">, </div></div>
+    <div class="score-pill"><div class="s-label">Warnings</div><div class="s-value warn" id="sWarns">, </div></div>
+    <div class="score-pill"><div class="s-label">Info</div><div class="s-value info-c" id="sInfo">, </div></div>
   </div>
 
   <!-- Findings -->
@@ -920,7 +920,7 @@
 
 <!-- Credit -->
 <div class="credit-bar">
-  <span>Guardian — AI UX Audit Tool · Concept by <a href="https://elleta.design">Elleta McDaniel</a></span>
+  <span>Guardian, AI UX Audit Tool · Concept by <a href="https://elleta.design">Elleta McDaniel</a></span>
   <span>Into Design Systems 2026</span>
 </div>
 
@@ -929,10 +929,10 @@ const findings = [
   {
     severity: "warning", category: "ux", catLabel: "UX Heuristic",
     title: "Navigation density exceeds cognitive threshold",
-    body: "Primary navigation contains 9 items. Research shows 5\u20137 items is optimal for horizontal nav. This violates the progressive disclosure principle \u2014 task-driven workflows should surface options based on intent, not dump everything upfront.",
-    code: '<span class="key">nav.primary</span> <span class="cmt">// children count</span>\n<span class="key">detected</span>:    <span class="val">9 items</span>\n<span class="key">recommended</span>: <span class="val">5\u20137 items</span>\n\n<span class="cmt">// Ref: Friedman, AI Scaffolding \u2014 Progressive Disclosure</span>',
-    suggestion: '<strong>Fix:</strong> Group Reports, Settings, Admin, and Help under a secondary overflow menu. Keep primary nav to 5\u20136 core items. Consider a task-driven scaffolding approach.',
-    why: 'Users scan navigation in under 2 seconds. Past 7 items, selection time rises sharply \u2014 Hick\u2019s Law in action. The scaffolding principle says: reveal complexity gradually, not all at once.',
+    body: "Primary navigation contains 9 items. Research shows 5, 7 items is optimal for horizontal nav. This violates the progressive disclosure principle, task-driven workflows should surface options based on intent, not dump everything upfront.",
+    code: '<span class="key">nav.primary</span> <span class="cmt">// children count</span>\n<span class="key">detected</span>:    <span class="val">9 items</span>\n<span class="key">recommended</span>: <span class="val">5, 7 items</span>\n\n<span class="cmt">// Ref: Friedman, AI Scaffolding, Progressive Disclosure</span>',
+    suggestion: '<strong>Fix:</strong> Group Reports, Settings, Admin, and Help under a secondary overflow menu. Keep primary nav to 5, 6 core items. Consider a task-driven scaffolding approach.',
+    why: 'Users scan navigation in under 2 seconds. Past 7 items, selection time rises sharply, Hick\u2019s Law in action. The scaffolding principle says: reveal complexity gradually, not all at once.',
     highlight: "hl-nav",
     fixLabel: "Group into overflow menu",
     docLabel: "Nav density guideline"
@@ -940,10 +940,10 @@ const findings = [
   {
     severity: "error", category: "product", catLabel: "Product",
     title: "Competing primary CTAs create decision hesitation",
-    body: "Two primary-styled buttons appear side by side in the hero. The center-stage layout pattern demands a single clear primary action \u2014 competing primaries break task focus and increase decision time.",
-    code: '<span class="key">button.primary</span>  "Search Flights"  <span class="cmt">// bg: #1A1A1A</span>\n<span class="key">button.primary</span>  "Search Hotels"   <span class="cmt">// bg: #2563EB</span>\n\n<span class="cmt">// Ref: Friedman, Task-Oriented Interfaces \u2014 Center Stage</span>',
+    body: "Two primary-styled buttons appear side by side in the hero. The center-stage layout pattern demands a single clear primary action, competing primaries break task focus and increase decision time.",
+    code: '<span class="key">button.primary</span>  "Search Flights"  <span class="cmt">// bg: #1A1A1A</span>\n<span class="key">button.primary</span>  "Search Hotels"   <span class="cmt">// bg: #2563EB</span>\n\n<span class="cmt">// Ref: Friedman, Task-Oriented Interfaces, Center Stage</span>',
     suggestion: '<strong>Fix:</strong> Make one unified \u201cSearch\u201d CTA as primary. Demote the other to secondary, or use a transport-type toggle (Flights | Hotels | Rail) before a single search action.',
-    why: 'The center-stage layout succeeds when there is one clear primary action. When two buttons compete equally, click-through drops on both. A single clear CTA increases conversion by 18\u201325%.',
+    why: 'The center-stage layout succeeds when there is one clear primary action. When two buttons compete equally, click-through drops on both. A single clear CTA increases conversion by 18, 25%.',
     highlight: "hl-ctas",
     fixLabel: "Unify into single CTA",
     docLabel: "CTA hierarchy pattern"
@@ -952,9 +952,9 @@ const findings = [
     severity: "drift", category: "system", catLabel: "System Drift",
     title: "Button padding deviates from spacing token",
     body: "Hero CTA buttons use 10px vertical / 24px horizontal padding instead of the design system\u2019s --spacing-sm (12px) and --spacing-lg (28px) tokens. This is interaction surface drift.",
-    code: '<span class="key">Design tokens</span>\n  <span class="key">--spacing-sm</span>  = <span class="val">12px</span>\n  <span class="key">--spacing-lg</span>  = <span class="val">28px</span>\n\n<span class="key">Detected</span>\n  <span class="key">padding</span>       = <span class="val">10px 24px</span>\n  <span class="cmt">// Ref: Friedman, Interaction Design \u2014 Consistent Surfaces</span>',
+    code: '<span class="key">Design tokens</span>\n  <span class="key">--spacing-sm</span>  = <span class="val">12px</span>\n  <span class="key">--spacing-lg</span>  = <span class="val">28px</span>\n\n<span class="key">Detected</span>\n  <span class="key">padding</span>       = <span class="val">10px 24px</span>\n  <span class="cmt">// Ref: Friedman, Interaction Design, Consistent Surfaces</span>',
     suggestion: '<strong>Fix:</strong> Replace hard-coded padding with <code>var(--spacing-sm) var(--spacing-lg)</code>. Run a token linter to catch similar drift elsewhere.',
-    why: 'Consistent interaction surfaces build user trust. Small token deviations compound silently \u2014 when 10 components each drift a few pixels, the visual language fragments.',
+    why: 'Consistent interaction surfaces build user trust. Small token deviations compound silently, when 10 components each drift a few pixels, the visual language fragments.',
     highlight: "hl-btns",
     fixLabel: "Apply spacing tokens",
     docLabel: "Token compliance rule"
@@ -962,10 +962,10 @@ const findings = [
   {
     severity: "info", category: "a11y", catLabel: "Accessibility",
     title: "Hero section lacks semantic landmark",
-    body: "The hero content area is a generic &lt;div&gt; rather than a &lt;section&gt; with an aria-label. Screen readers can\u2019t identify this as the primary content region \u2014 violating the semantic structure pattern.",
-    code: '<span class="key">Current</span>:  <span class="val">&lt;div class="hero"&gt;</span>\n<span class="key">Expected</span>: <span class="val">&lt;section role="region" aria-label="Search"&gt;</span>\n\n<span class="cmt">// Ref: Friedman, Accessibility \u2014 Landmarks &amp; Perceivability</span>',
+    body: "The hero content area is a generic &lt;div&gt; rather than a &lt;section&gt; with an aria-label. Screen readers can\u2019t identify this as the primary content region, violating the semantic structure pattern.",
+    code: '<span class="key">Current</span>:  <span class="val">&lt;div class="hero"&gt;</span>\n<span class="key">Expected</span>: <span class="val">&lt;section role="region" aria-label="Search"&gt;</span>\n\n<span class="cmt">// Ref: Friedman, Accessibility, Landmarks &amp; Perceivability</span>',
     suggestion: '<strong>Fix:</strong> Wrap the hero in a <code>&lt;section&gt;</code> with <code>aria-label="Trip search"</code>. This takes 30 seconds and benefits all screen reader users.',
-    why: 'Screen reader users navigate by landmarks. Without them, the page is a single undifferentiated block \u2014 like a book without chapter headings.',
+    why: 'Screen reader users navigate by landmarks. Without them, the page is a single undifferentiated block, like a book without chapter headings.',
     highlight: "hl-hero",
     fixLabel: "Add landmark role",
     docLabel: "Landmark requirements"
@@ -974,8 +974,8 @@ const findings = [
     severity: "warning", category: "ux", catLabel: "UX Heuristic",
     title: "No inline validation on search form",
     body: "The search form allows submission without validating required fields. Users only discover errors after submitting. The inline overlay pattern suggests real-time contextual feedback within the user\u2019s workflow.",
-    code: '<span class="key">form.search</span>\n  <span class="key">inline-validation</span>: <span class="val">none</span>\n  <span class="key">required-fields</span>:  <span class="val">3 (destination, depart, return)</span>\n\n<span class="cmt">// Ref: Friedman, Scaffolding \u2014 Inline Overlay Pattern</span>',
-    suggestion: '<strong>Fix:</strong> Add inline validation on blur for required fields. Show clear, persistent error states before the user hits submit. Consider AI-assisted suggestions as the user types.',
+    code: '<span class="key">form.search</span>\n  <span class="key">inline-validation</span>: <span class="val">none</span>\n  <span class="key">required-fields</span>:  <span class="val">3 (destination, depart, return)</span>\n\n<span class="cmt">// Ref: Friedman, Scaffolding, Inline Overlay Pattern</span>',
+    suggestion: '<strong>Fix:</strong> Add inline validation on blur for required fields. Show clear, persistent error states before the user hits submit. Consider AI-enabled suggestions as the user types.',
     why: 'Post-submission errors increase form abandonment by ~18%. The inline overlay pattern keeps feedback within the workflow rather than forcing context switches.',
     highlight: "hl-form",
     fixLabel: "Add inline validation",
@@ -995,8 +995,8 @@ const findings = [
   {
     severity: "error", category: "a11y", catLabel: "Accessibility",
     title: "Secondary button fails WCAG AA contrast",
-    body: "The \u2018View Policy\u2019 button text (#666 on white border) has a contrast ratio of 3.6:1 \u2014 below the 4.5:1 WCAG AA minimum. Accessibility is a baseline requirement, not an enhancement.",
-    code: '<span class="key">Element</span>:    <span class="val">button.secondary "View Policy"</span>\n<span class="key">Foreground</span>: <span class="val">#666666</span>\n<span class="key">Background</span>: <span class="val">#FFFFFF</span>\n<span class="key">Ratio</span>:      <span class="val">3.6:1</span> <span class="cmt">// Min: 4.5:1 (AA)</span>\n\n<span class="cmt">// Ref: Friedman, Accessibility \u2014 Perceivability</span>',
+    body: "The \u2018View Policy\u2019 button text (#666 on white border) has a contrast ratio of 3.6:1, below the 4.5:1 WCAG AA minimum. Accessibility is a baseline requirement, not an enhancement.",
+    code: '<span class="key">Element</span>:    <span class="val">button.secondary "View Policy"</span>\n<span class="key">Foreground</span>: <span class="val">#666666</span>\n<span class="key">Background</span>: <span class="val">#FFFFFF</span>\n<span class="key">Ratio</span>:      <span class="val">3.6:1</span> <span class="cmt">// Min: 4.5:1 (AA)</span>\n\n<span class="cmt">// Ref: Friedman, Accessibility, Perceivability</span>',
     suggestion: '<strong>Fix:</strong> Darken secondary button text to at least #595959 (7:1) or use the system --color-text-muted token which is already compliant.',
     why: '1 in 12 men and 1 in 200 women have colour vision deficiency. Failing AA contrast makes this button invisible to many users, and creates legal liability.',
     highlight: "hl-contrast",

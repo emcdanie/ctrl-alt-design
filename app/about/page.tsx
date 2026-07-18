@@ -2,21 +2,29 @@
 
 import { useState } from "react";
 import OverlayNav from "@/components/OverlayNav";
-import BackToWorkButton from "@/components/BackToWorkButton";
-import VinylPlayer from "@/components/VinylPlayer";
+import PageHeader from "@/components/PageHeader";
+import { Button } from "@/components/ui/Button";
+import ExperienceSection from "@/components/ExperienceSection";
+import ResumeModal from "@/components/ResumeModal";
 import MetricsStrip from "@/components/MetricsStrip";
+import Card from "@/components/ui/Card";
+import DisclosureCard from "@/components/ui/DisclosureCard";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CtaBanner from "@/components/ui/CtaBanner";
+import TestimonialSection from "@/components/TestimonialSection";
 import Link from "next/link";
+import { Icon } from "@/components/ui/Icon";
 
 /* ── Data ─────────────────────────────────────────────────────── */
 
 const collaborationCards = [
   {
     title: "I push back respectfully",
-    description: "If I think a brief is solving the wrong problem, I'll say so — with evidence, not just instinct. I'd rather surface a challenge early than deliver the wrong thing on time.",
+    description: "If I think a brief is solving the wrong problem, I'll say so, with evidence, not just instinct. I'd rather surface a challenge early than deliver the wrong thing on time.",
   },
   {
     title: "I get obsessed with solving complex problems",
-    description: "Ambiguity doesn't slow me down — it focuses me. I thrive in systems with competing constraints, unclear requirements, and high stakes.",
+    description: "Ambiguity doesn't slow me down, it focuses me. I thrive in systems with competing constraints, unclear requirements, and high stakes.",
   },
   {
     title: "I ask for early feedback",
@@ -24,7 +32,7 @@ const collaborationCards = [
   },
   {
     title: "I advocate for both users and the business",
-    description: "Good design solves for both. I don't treat business goals as a compromise — I treat them as part of the design problem.",
+    description: "Good design solves for both. I don't treat business goals as a compromise, I treat them as part of the design problem.",
   },
 ];
 
@@ -37,488 +45,330 @@ interface LearningEntry {
   reflection: string;
   relatedWork?: { label: string; href: string };
   certificateSrc?: string;
+  /** identity colour for the Card border/trace, so hover accents vary
+      per entry instead of all-iris (case palette + hub tokens) */
+  accent: string;
 }
 
 const learningEntries: LearningEntry[] = [
   {
+    title: "Brad Frost Web Maker Program",
+    accent: "var(--case-code-first-text)",
+    instructor: "Brad Frost",
+    type: "course",
+    year: "2024-2025",
+    topics: ["Atomic Design", "Design Systems", "AI Enablement", "Code-First"],
+    reflection: "Contributing to Brad Frost's own component system, code first. Atomic Design learned from the person who wrote it, and the first real proof for me that AI tooling can accelerate system investigation without replacing design judgement.",
+    relatedWork: { label: "Code First case study", href: "/case-studies/brad-frost" },
+  },
+  {
+    title: "Design Systems Course",
+    accent: "var(--case-clarity-text)",
+    instructor: "Samantha Gordeshko, Smashing Magazine",
+    type: "course",
+    year: "2025",
+    topics: ["Design Systems", "Governance", "Contribution Models"],
+    reflection: "A structured pass through design system practice beyond my own habits: governance models, contribution flows, and how other teams keep systems alive after the launch excitement fades.",
+  },
+  {
     title: "Smart Interface Design Patterns",
+    accent: "var(--case-filters-text)",
     instructor: "Vitaly Friedman / Smashing Magazine",
     type: "workshop",
     year: "2025",
     topics: ["Complex filtering patterns", "Progressive disclosure", "Cognitive load in UI", "Enterprise navigation"],
-    reflection: "This workshop fundamentally shaped how I think about filtering as a decision-support system rather than a data-exposure mechanism. The pattern vocabulary I developed here directly influenced the ***REMOVED*** search and filtering redesign.",
+    reflection: "This workshop fundamentally shaped how I think about filtering as a decision-support system rather than a data-exposure mechanism. The pattern vocabulary I developed here directly influenced the search and filtering redesign on a B2B travel platform.",
     relatedWork: { label: "Search & Filtering Case Study", href: "/case-studies/filters-decision-support-system" },
   },
   {
     title: "Into Design Systems",
+    accent: "var(--hub-bright)",
     instructor: "Into Design Systems Conference",
     type: "conference",
-    year: "2024",
+    year: "2025 & 2026",
     topics: ["Design token architecture", "Multi-brand systems", "Component governance", "Design-engineering handoff"],
-    reflection: "Attending IDS reinforced my conviction that design systems are fundamentally about shared language and governance, not component libraries. The talks on token architecture directly informed how I structured the ***REMOVED*** design system.",
+    reflection: "Attending IDS reinforced my conviction that design systems are fundamentally about shared language and governance, not component libraries. The talks on token architecture directly informed how I structured the design system on a B2B travel platform.",
     relatedWork: { label: "Design System Case Study", href: "/case-studies/design-system-transformation" },
   },
   {
     title: "Advanced Interface Design Patterns",
+    accent: "var(--case-drift-text)",
     instructor: "Vitaly Friedman / Smashing Magazine",
     type: "course",
     year: "2024",
     topics: ["Complex tables and data grids", "Search UX patterns", "Accordion and disclosure patterns", "Form design at scale"],
-    reflection: "The deep-dive into table and data grid patterns was particularly relevant — I was designing admin dashboards at ***REMOVED*** at the time, and being able to apply these patterns immediately made the learning stick.",
+    reflection: "The deep-dive into table and data grid patterns was particularly relevant, I was designing admin dashboards on a B2B travel platform at the time, and being able to apply these patterns immediately made the learning stick.",
   },
-];
-
-const timelineEvents = [
-  { year: "2025", label: "Smart Interface Design Patterns — Smashing Magazine" },
-  { year: "2025", label: "Brad Frost Maker Program — Design Systems" },
-  { year: "2024", label: "Into Design Systems Conference" },
-  { year: "2024", label: "Advanced Interface Design Patterns — Smashing Magazine" },
-  { year: "2023", label: "Ironhack UX/UI Design Bootcamp" },
 ];
 
 /* ── Components ──────────────────────────────────────────────── */
 
 function TypeIcon({ type }: { type: string }) {
-  const iconProps = { width: 18, height: 18, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.5, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
-
-  if (type === "workshop") return (
-    <svg {...iconProps} aria-hidden="true">
-      <path d="M12 19l7-7 3 3-7 7-3-3z" /><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" /><path d="M2 2l7.586 7.586" />
-    </svg>
-  );
-  if (type === "conference") return (
-    <svg {...iconProps} aria-hidden="true">
-      <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z" /><path d="M19 10v2a7 7 0 01-14 0v-2" /><line x1="12" y1="19" x2="12" y2="23" /><line x1="8" y1="23" x2="16" y2="23" />
-    </svg>
-  );
-  // course
-  return (
-    <svg {...iconProps} aria-hidden="true">
-      <path d="M4 19.5A2.5 2.5 0 016.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
-    </svg>
-  );
+  if (type === "workshop") return <Icon name="EditPencil" size="md" />;
+  if (type === "conference") return <Icon name="Microphone" size="md" />;
+  return <Icon name="Book" size="md" />;
 }
 
-function LearningCard({ entry }: { entry: LearningEntry }) {
-  const [expanded, setExpanded] = useState(false);
+/* ONE branded treatment per entry TYPE (generic metadata, deliberately
+   NOT case colours): a quiet tint on the icon tile + type badge so the
+   list scans by kind. Ink text keeps AA on every tint in both themes.
+   PROVISIONAL pending Elleta's call: per-type colour vs all-neutral,
+   and real partner logos vs this icon treatment. */
+const TYPE_STYLE: Record<string, { bg: string; fg: string }> = {
+  course: { bg: "var(--color-semantic-accent-subtle)", fg: "var(--color-accent-ink)" },
+  workshop: { bg: "color-mix(in srgb, var(--color-accent-peri) 26%, transparent)", fg: "var(--color-ink)" },
+  conference: { bg: "color-mix(in srgb, var(--color-ink) 8%, transparent)", fg: "var(--color-ink)" },
+};
 
-  const typeColors: Record<string, { bg: string; color: string }> = {
-    workshop: { bg: "rgba(42,95,168,0.1)", color: "#2A5FA8" },
-    course: { bg: "rgba(107,63,168,0.1)", color: "#6B3FA8" },
-    conference: { bg: "rgba(13,107,74,0.1)", color: "#0D6B4A" },
-  };
-
-  const style = typeColors[entry.type] ?? typeColors.workshop;
-
+/* Learning entries render on the shared DisclosureCard; the header is
+   the icon tile + type/year meta, the body is topics + reflection. */
+function LearningEntryCard({ entry }: { entry: LearningEntry }) {
   return (
-    <div
-      className="card-elevated"
-      style={{
-        padding: 0,
-        cursor: "pointer",
-        transition: "transform 0.24s ease, box-shadow 0.24s ease",
-        display: "flex",
-        overflow: "hidden",
-      }}
-      onClick={() => setExpanded(!expanded)}
-      onMouseEnter={e => {
-        const el = e.currentTarget as HTMLDivElement;
-        el.style.transform = "translateY(-2px)";
-        el.style.boxShadow = "0 12px 32px rgba(0,0,0,0.1)";
-      }}
-      onMouseLeave={e => {
-        const el = e.currentTarget as HTMLDivElement;
-        el.style.transform = "translateY(0)";
-        el.style.boxShadow = "";
-      }}
-    >
-      {/* Accent bar */}
-      <div
-        style={{
-          width: "4px",
-          flexShrink: 0,
-          background: style.color,
-          borderRadius: "4px 0 0 4px",
-        }}
-      />
-
-      <div style={{ flex: 1, padding: "var(--spacing-6)" }}>
-        {/* Header */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "var(--spacing-3)" }}>
-          <div style={{ display: "flex", gap: "14px", flex: 1 }}>
-            {/* Type icon */}
-            <div
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "10px",
-                background: style.bg,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: style.color,
-                flexShrink: 0,
-              }}
-            >
-              <TypeIcon type={entry.type} />
-            </div>
-
-            <div style={{ flex: 1 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-2)", marginBottom: "6px" }}>
-                <span
-                  style={{
-                    display: "inline-flex",
-                    padding: "2px 10px",
-                    borderRadius: "var(--radius-full)",
-                    background: style.bg,
-                    border: `1px solid ${style.color}22`,
-                    fontFamily: "var(--font-body)",
-                    fontSize: "10px",
-                    fontWeight: "var(--typography-font-weight-bold)",
-                    color: style.color,
-                    letterSpacing: "var(--typography-letter-spacing-wide)",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {entry.type}
-                </span>
-                <span style={{ fontFamily: "var(--font-body)", fontSize: "12px", color: "var(--color-muted)" }}>
-                  {entry.year}
-                </span>
-              </div>
-              <h4 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>{entry.title}</h4>
-              <p className="body-sm" style={{ margin: 0 }}>{entry.instructor}</p>
-            </div>
-          </div>
-
-          {/* Expand icon */}
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
+    <DisclosureCard
+      accent={entry.accent}
+      header={
+        <>
+          <div
             style={{
+              width: "var(--spacing-10)",
+              height: "var(--spacing-10)",
+              borderRadius: "var(--radius-lg)",
+              background: TYPE_STYLE[entry.type].bg,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: TYPE_STYLE[entry.type].fg,
               flexShrink: 0,
-              marginTop: "var(--spacing-1)",
-              transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
-              transition: "transform 0.25s ease",
             }}
           >
-            <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-
-      {/* Expandable content */}
-      <div
-        className="expand-transition"
-        style={{
-          maxHeight: expanded ? "500px" : "0px",
-          opacity: expanded ? 1 : 0,
-          marginTop: expanded ? "16px" : "0px",
-        }}
-      >
-        <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)", paddingTop: "var(--spacing-4)" }}>
-          {/* Topics */}
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6B665D", marginBottom: "var(--spacing-2)" }}>
-            Topics covered
-          </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "var(--spacing-4)" }}>
-            {entry.topics.map((topic) => (
-              <span key={topic} className="tag">{topic}</span>
-            ))}
+            <TypeIcon type={entry.type} />
           </div>
-
-          {/* Reflection */}
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6B665D", marginBottom: "var(--spacing-2)" }}>
-            What I took away
-          </p>
-          <p className="body-base" style={{ margin: 0, marginBottom: entry.relatedWork ? "12px" : "0px" }}>
-            {entry.reflection}
-          </p>
-
-          {/* Related work */}
-          {entry.relatedWork && (
-            <Link
-              href={entry.relatedWork.href}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                fontFamily: "var(--font-body)",
-                fontSize: "var(--typography-font-size-tag)",
-                fontWeight: 600,
-                color: "#1A1814",
-                textDecoration: "none",
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              → {entry.relatedWork.label}
-            </Link>
-          )}
+          <div className="min-w-0 flex-1">
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-2)", marginBottom: "var(--spacing-1)" }}>
+              <span
+                className="tag"
+                style={{ textTransform: "uppercase", background: TYPE_STYLE[entry.type].bg, color: "var(--color-ink)" }}
+              >
+                {entry.type}
+              </span>
+              <span style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", color: "var(--color-muted)" }}>
+                {entry.year}
+              </span>
+            </div>
+            <h3 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>{entry.title}</h3>
+            <p className="body-sm" style={{ margin: 0 }}>{entry.instructor}</p>
+          </div>
+        </>
+      }
+    >
+      <div style={{ paddingTop: "var(--spacing-4)" }}>
+        <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-ink-muted)", marginBottom: "var(--spacing-2)" }}>
+          Topics covered
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--spacing-2)", marginBottom: "var(--spacing-4)" }}>
+          {entry.topics.map((topic) => (
+            <span key={topic} className="tag">{topic}</span>
+          ))}
         </div>
+
+        <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-ink-muted)", marginBottom: "var(--spacing-2)" }}>
+          What I took away
+        </p>
+        <p className="body-base" style={{ margin: 0, marginBottom: entry.relatedWork ? "var(--spacing-3)" : 0 }}>
+          {entry.reflection}
+        </p>
+
+        {entry.relatedWork && (
+          <Link
+            href={entry.relatedWork.href}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              minHeight: "var(--spacing-touch-target)",
+              gap: "var(--spacing-2)",
+              fontFamily: "var(--font-body)",
+              fontSize: "var(--typography-font-size-tag)",
+              fontWeight: 600,
+              color: "var(--color-accent-ink)",
+              textDecoration: "underline",
+              textUnderlineOffset: "3px",
+            }}
+          >
+            → {entry.relatedWork.label}
+          </Link>
+        )}
       </div>
-      </div>{/* /inner content */}
-    </div>
+    </DisclosureCard>
   );
 }
 
 /* ── Page ─────────────────────────────────────────────────────── */
 
 export default function AboutPage() {
+  const [resumeOpen, setResumeOpen] = useState(false);
   return (
     <main className="page-shell min-h-screen text-[var(--color-ink-soft)]">
       <OverlayNav />
-      <BackToWorkButton />
 
       <div className="relative">
-        {/* Hero / Intro */}
-        <section style={{ padding: "120px var(--spacing-6) var(--spacing-16)" }}>
+        {/* Hero / Intro: the portrait bubble IS the page device (one per
+            page); title matches the /work flat treatment exactly. */}
+        <section className="layout-section-tight" style={{ paddingTop: "calc(var(--header-height) + var(--spacing-12))" }}>
           <div className="page-container">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-16 items-start">
+            <div className="grid grid-cols-1 items-center gap-[var(--grid-gap)] lg:grid-cols-[1fr_auto]">
               <div>
-                <p className="section-label mb-3">— About</p>
-                <h1
-                  className="heading-section"
-                  style={{ marginBottom: "28px", maxWidth: "640px" }}
-                >
-                  Hey, I&apos;m Elleta
-                </h1>
-                <div style={{ display: "flex", flexDirection: "column", gap: "14px", maxWidth: "600px" }}>
+                <PageHeader eyebrow="About" title="Hey, I'm" accent="Elleta" />
+                <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)", maxWidth: "640px" }}>
                   <p className="body-lg">
-                    I&apos;m a product designer who works at the intersection of systems thinking
-                    and interaction design. I care about building things that are coherent, scalable,
-                    and genuinely useful — not just polished.
-                  </p>
-                  <p className="body-lg">
-                    Most of my recent work has been in B2B SaaS — design systems, complex data interfaces,
-                    and multi-role platforms where the user journey is rarely linear and the stakes are high.
-                    I&apos;m drawn to the kind of problems where understanding the system matters more than
-                    making the screen look good.
-                  </p>
-                  <p className="body-lg">
-                    I&apos;m at my best when I&apos;m working on hard problems with people who care about
-                    getting them right. I think the best design work happens when you can hold the tension
-                    between user needs, business constraints, and technical reality — and find the solution
-                    that respects all three.
+                I design{" "}
+                <strong style={{ fontWeight: 600, color: "var(--color-accent-ink)" }}>
+                  AI-enabled design systems
+                </strong>{" "}
+                for complex, multi-role B2B and enterprise products. Tokens, components, and
+                the governance that keeps them from drifting. I read code, trace how components
+                actually behave in production, and work with engineers directly, so the system
+                stays true on both sides of handoff.
+              </p>
+                  <p className="body-lg" style={{ color: "var(--color-muted)" }}>
+                    Most of my work lives where the user journey is rarely linear and the stakes are
+                    high: booking platforms, operational dashboards, data-heavy tools, holding the
+                    tension between user needs, business constraints, and technical reality.
                   </p>
                 </div>
               </div>
 
-              {/* Photo */}
-              <div style={{
-                width: "100%",
-                maxWidth: "280px",
-                aspectRatio: "1",
-                borderRadius: "var(--radius-3xl)",
-                overflow: "hidden",
-                background: "#D8D4CC",
-                border: "3px solid rgba(26,24,20,0.06)",
-                justifySelf: "end",
-              }}>
+              <div className="photo-bubble justify-self-center lg:justify-self-end">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/thumbnails/Me.jpeg"
-                  alt="Elleta"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  onError={e => { (e.currentTarget.parentElement as HTMLElement).style.background = "#C8C4CC"; e.currentTarget.style.display = "none"; }}
-                />
+                <img src="/images/thumbnails/Me.jpeg" alt="Elleta, portrait" />
               </div>
             </div>
           </div>
         </section>
 
-        {/* Divider */}
-        <div className="page-container">
-          <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
-        </div>
-
-        {/* At-a-glance facts — relocated from landing */}
-        <section style={{ padding: "var(--spacing-12) var(--spacing-6)" }}>
+        {/* At-a-glance facts */}
+        <section className="layout-section-tight">
           <div className="page-container">
             <MetricsStrip />
           </div>
         </section>
 
-        {/* Divider */}
-        <div className="page-container">
-          <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
-        </div>
-
         {/* Working With Me */}
-        <section style={{ padding: "var(--spacing-16) var(--spacing-6)" }}>
+        <section className="layout-section-tight">
           <div className="page-container">
-            <p className="section-label mb-3">— Working With Me</p>
-            <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-6)" }}>
-              How I collaborate
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <SectionHeader label="Working With Me" title="How I collaborate" />
+            <div className="grid grid-cols-1 items-stretch gap-[var(--grid-gap)] sm:grid-cols-2">
               {collaborationCards.map((card) => (
-                <div
-                  key={card.title}
-                  className="card-elevated card-interactive"
-                  style={{ padding: "var(--spacing-6)", cursor: "default" }}
-                >
-                  <h4 className="heading-item" style={{ marginBottom: "6px" }}>
+                <Card key={card.title} className="h-full">
+                  <h3 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>
                     {card.title}
-                  </h4>
+                  </h3>
                   <p className="body-base" style={{ margin: 0 }}>
                     {card.description}
                   </p>
-                </div>
+                </Card>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Divider */}
-        <div className="page-container">
-          <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
-        </div>
-
-        {/* Learning & Experiments */}
-        <section style={{ padding: "var(--spacing-16) var(--spacing-6)" }}>
+        {/* How I solve problems (#how-i-think): the Point of View theses,
+            folded in from the retired /point-of-view route. Her words,
+            condensed; one accent highlight; ends at the proof case. */}
+        <section id="how-i-think" className="layout-section-tight" style={{ scrollMarginTop: "calc(var(--header-height) + var(--spacing-4))" }}>
           <div className="page-container">
-            <p className="section-label mb-3">— Learning &amp; Experiments</p>
-            <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
-              Continuous learning
-            </h2>
-            <p className="body-base" style={{ marginBottom: "28px", maxWidth: "560px", color: "var(--color-muted)" }}>
-              Workshops, courses, and conferences that have shaped how I think about design systems,
-              interaction patterns, and complex interfaces.
-            </p>
+            {/* D3 (Pass D): the About mid-page Unique-energy moment,
+                ONE hero-tier header with the iris accent word */}
+            <SectionHeader label="How I Think" tier="page" title="How I solve" accent="problems." />
+            {/* D2 (Pass D): the three theses as designed tiles, the
+                stat-tile direction. Case colours per her 17 Jul brief
+                (supersedes the older About-is-not-a-case note); tokens
+                only; copy unchanged. */}
+            <div className="grid grid-cols-1 items-stretch gap-[var(--grid-gap)] lg:grid-cols-3">
+              <article className="thesis-tile" style={{ "--thesis-hi": "var(--hub-hi)" } as React.CSSProperties}>
+                <h3 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
+                  Systems are{" "}
+                  <span style={{ color: "var(--color-accent-ink)" }}>agreements</span>, not
+                  component libraries.
+                </h3>
+                <p className="body-base" style={{ margin: 0, flex: 1 }}>
+                  A component library is an artefact. The system is the set of agreements around
+                  it: what counts as a pattern, who decides, when to extend versus build. When
+                  only the artefact exists, every team renegotiates those agreements ad hoc, and
+                  that is where drift starts.
+                </p>
+              </article>
+              <article className="thesis-tile" style={{ "--thesis-hi": "var(--case-guardian-hi)" } as React.CSSProperties}>
+                <h3 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
+                  Governance is what stops the drift.
+                </h3>
+                <p className="body-base" style={{ margin: 0, flex: 1 }}>
+                  Drift is not a tooling failure; it is a decision-making failure. Naming, token
+                  structure, and contribution flow are governance surfaces. The systems that hold
+                  are the ones where the cheap path and the correct path are the same path.
+                </p>
+              </article>
+              <article className="thesis-tile" style={{ "--thesis-hi": "var(--case-code-first-hi)" } as React.CSSProperties}>
+                <h3 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
+                  I read code, so design and engineering stay honest.
+                </h3>
+                <p className="body-base" style={{ margin: 0, flex: 1 }}>
+                  Parity between Figma and production is a claim that has to be checked in both
+                  directions. Reading the code, tokens, props, rendered output, is how I keep the
+                  design side accountable to what actually ships, and vice versa.
+                </p>
+                <Link
+                  href="/case-studies/design-system-transformation"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "var(--spacing-2)",
+                    marginTop: "var(--spacing-4)",
+                    fontFamily: "var(--font-body)",
+                    fontSize: "var(--typography-font-size-sm)",
+                    fontWeight: 600,
+                    color: "var(--color-accent-ink)",
+                    textDecoration: "underline",
+                    textUnderlineOffset: "3px",
+                    minHeight: "var(--spacing-touch-target)",
+                  }}
+                >
+                  See it applied: From Drift to Foundation →
+                </Link>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* THE one learning section (#learning) */}
+        <section id="learning" className="layout-section-tight">
+          <div className="page-container">
+            <SectionHeader
+              label="Learning"
+              title="Continuous learning"
+              description="Workshops, courses, and conferences that have shaped how I think about design systems, interaction patterns, and complex interfaces."
+            />
             <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
               {learningEntries.map((entry) => (
-                <LearningCard key={entry.title} entry={entry} />
+                <LearningEntryCard key={entry.title} entry={entry} />
               ))}
             </div>
           </div>
         </section>
 
-        {/* Divider */}
-        <div className="page-container">
-          <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
-        </div>
+        <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
+        <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
 
-        {/* Timeline */}
-        <section style={{ padding: "var(--spacing-16) var(--spacing-6)" }}>
+        {/* Social proof: the page ends with third-party words, then the ask */}
+        <TestimonialSection />
+
+        {/* Close + CTA */}
+        <section className="layout-section-tight">
           <div className="page-container">
-            <p className="section-label mb-3">— Timeline</p>
-            <h2 className="heading-subsection" style={{ marginBottom: "28px" }}>
-              Learning journey
-            </h2>
-            <div style={{ position: "relative", paddingLeft: "28px" }}>
-              {/* Vertical line */}
-              <div
-                style={{
-                  position: "absolute",
-                  left: "7px",
-                  top: "var(--spacing-2)",
-                  bottom: "var(--spacing-2)",
-                  width: "2px",
-                  background: "rgba(26,24,20,0.1)",
-                  borderRadius: "1px",
-                }}
-              />
-              <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-6)" }}>
-                {timelineEvents.map((event, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "var(--spacing-4)", position: "relative" }}>
-                    {/* Dot — positioned over the vertical line set by the
-                        parent's paddingLeft: 28px; offset back by the parent
-                        gap so the dot sits centered on the line. The previous
-                        `left: "-var(--spacing-6)"` was an unparseable string
-                        ("-" prefix on var() is invalid CSS) and rendered the
-                        dot at left:0 instead of -24px, drifting it across
-                        the timeline. */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: "calc(0px - var(--spacing-6))",
-                        top: "6px",
-                        width: "10px",
-                        height: "10px",
-                        borderRadius: "50%",
-                        background: i === 0 ? "#1A1814" : "rgba(26,24,20,0.15)",
-                        border: "2px solid var(--color-page)",
-                      }}
-                    />
-                    <div>
-                      <span
-                        style={{
-                          fontFamily: "var(--font-body)",
-                          fontSize: "12px",
-                          fontWeight: 600,
-                          color: "var(--color-muted)",
-                          display: "block",
-                          marginBottom: "2px",
-                        }}
-                      >
-                        {event.year}
-                      </span>
-                      <span
-                        style={{
-                          fontFamily: "var(--font-body)",
-                          fontSize: "15px",
-                          fontWeight: "var(--typography-font-weight-medium)",
-                          color: "#1A1814",
-                        }}
-                      >
-                        {event.label}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Divider */}
-        <div className="page-container">
-          <div style={{ borderTop: "1px solid rgba(26,24,20,0.08)" }} />
-        </div>
-
-        {/* Currently Listening */}
-        <section style={{ padding: "var(--spacing-16) var(--spacing-6) var(--spacing-20)" }}>
-          <div className="page-container">
-            <p className="section-label mb-3">— Currently Listening</p>
-            <h2 className="heading-subsection" style={{ marginBottom: "var(--spacing-6)" }}>
-              Design soundtrack
-            </h2>
-            <div style={{ maxWidth: "320px" }}>
-              <VinylPlayer />
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section style={{ padding: "0 var(--spacing-6) var(--spacing-20)" }}>
-          <div className="page-container">
-            <div
-              style={{
-                background: "#1A1814",
-                borderRadius: "var(--radius-3xl)",
-                padding: "56px var(--spacing-12)",
-                display: "flex",
-                flexDirection: "column",
-                gap: "var(--spacing-8)",
-              }}
-              className="md:flex-row md:items-center md:justify-between"
-            >
-              <div>
-                <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", fontWeight: "var(--typography-font-weight-medium)", textTransform: "uppercase", letterSpacing: "0.12em", color: "rgba(255,255,255,0.4)", marginBottom: "10px" }}>
-                  Have a project in mind?
-                </p>
-                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: "var(--typography-font-weight-bold)", color: "#FFFFFF", lineHeight: 1.15, textTransform: "uppercase" }}>
-                  Open to full-time roles &<br />select freelance projects.
-                </h2>
-              </div>
-              <Link
-                href="/#contact"
-                style={{ flexShrink: 0, background: "var(--color-semantic-text-inverse)", color: "#1A1814", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: "var(--typography-font-size-tag)", padding: "var(--spacing-3) var(--spacing-6)", borderRadius: "var(--radius-full)", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
-              >
-                Get in touch ↗
-              </Link>
-            </div>
+            <p className="body-lg" style={{ maxWidth: "600px", marginBottom: "var(--spacing-8)" }}>
+              I&apos;m at my best on hard problems with people who care about getting
+              them right.
+            </p>
+            <CtaBanner title={<>Open to full-time roles &<br />select freelance projects.</>} />
           </div>
         </section>
       </div>

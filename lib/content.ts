@@ -11,12 +11,6 @@
 
 // ── Type definitions ────────────────────────────────────────────
 
-export interface ProcessStep {
-  number: string;
-  title: string;
-  description: string;
-}
-
 export interface CaseStudyMetrics {
   role: string;
   team?: string;
@@ -24,15 +18,67 @@ export interface CaseStudyMetrics {
   scope: string;
 }
 
-export interface NarrativeSection {
-  label?: string;
-  heading: string;
-  paragraphs: string[];
-  /** Optional embedded visual (HTML file) shown after this section */
-  embedSrc?: string;
-  embedAlt?: string;
-  embedAspect?: string;
-}
+/* ── Content blocks — the ONE case-study render path ──────────────
+ * An ordered sequence that can represent everything the (former)
+ * hand-built pages rendered. Sections nest non-section blocks. */
+export type CaseBlock =
+  | { kind: "paragraph"; text: string } // **bold** supported
+  | { kind: "pullQuote"; text: string }
+  | {
+      kind: "embed";
+      src: string;
+      title: string;
+      aspect?: string;
+      minHeight?: number;
+      frame?: "dark" | "light";
+    }
+  | {
+      kind: "demoStep";
+      index: string;
+      description: string;
+      href?: string;
+      linkLabel?: string;
+    }
+  | { kind: "prototype"; src: string; title: string; height?: string }
+  | { kind: "section"; eyebrow: string; heading: string; children: CaseBlock[] }
+  /* decision-led template (Arthur-Kamsky / Justine structure) */
+  | { kind: "summary"; context: string; approach: string; outcome: string }
+  | {
+      kind: "decision";
+      index: string;
+      title: string;
+      /** the decision lead, in HER voice; omit while the slot is empty
+       *  (TODO(elleta) comment in the content file marks it) */
+      why?: string;
+      /** interactive recreation, never a client screenshot */
+      evidence?: CaseBlock;
+      /** supporting paragraphs moved verbatim under the decision */
+      children?: CaseBlock[];
+    }
+  | { kind: "lessons"; text: string }
+  /* upfront NDA disclosure (Pass C): quiet note before the body */
+  | { kind: "disclosure"; text: string }
+  /* photographic/still evidence attached to a decision (never a gallery);
+   * href renders a text link below the image (poster-plus-link, no embeds) */
+  | {
+      kind: "figure";
+      src: string;
+      alt: string;
+      caption?: string;
+      width: number;
+      height: number;
+      href?: string;
+      linkLabel?: string;
+    }
+  /* CHIP: the interactive AI-readiness inspection map (illustrative data) */
+  | {
+      kind: "readinessMap";
+      rows: {
+        id: string;
+        label: string;
+        cells: { station: string; status: "red" | "warn" | "green"; note: string }[];
+      }[];
+    };
 
 export interface CaseStudy {
   slug: string;
@@ -48,20 +94,16 @@ export interface CaseStudy {
   thumbnailImage?: string;
   heroVideo?: string;
   metrics?: CaseStudyMetrics;
-  overview: {
+  overview?: {
     headline: string;
     body: string;
   };
   images: string[];
-  problem: {
+  problem?: {
     title: string;
     body: string;
   };
-  process: {
-    title: string;
-    steps: ProcessStep[];
-  };
-  outcomes: {
+  outcomes?: {
     title: string;
     body: string;
     completionTag: string;
@@ -69,7 +111,13 @@ export interface CaseStudy {
   fullWidthImage?: string;
   tags: string[];
   description: string;
-  narrative?: NarrativeSection[];
+  /** Ordered content blocks — when present, they ARE the page body
+   *  (narrative/structured modes are ignored). */
+  blocks?: CaseBlock[];
+  /** Optional overrides for the shell (defaults: category+year / description / built rows) */
+  eyebrow?: string;
+  summary?: string;
+  metadata?: { label: string; value: string }[];
   clientLogo?: string;
   clientName?: string;
   demoLinks?: { label: string; href: string }[];
@@ -87,18 +135,6 @@ export default caseStudies;
 /** Look up a single case study by slug */
 export function getCaseStudy(slug: string): CaseStudy | undefined {
   return caseStudies.find((cs) => cs.slug === slug);
-}
-
-/** Get the previous and next case studies relative to a given slug */
-export function getAdjacentStudies(slug: string): {
-  prev: CaseStudy | null;
-  next: CaseStudy | null;
-} {
-  const index = caseStudies.findIndex((cs) => cs.slug === slug);
-  return {
-    prev: index > 0 ? caseStudies[index - 1] : null,
-    next: index < caseStudies.length - 1 ? caseStudies[index + 1] : null,
-  };
 }
 
 /** All slugs — used by generateStaticParams */

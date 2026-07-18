@@ -35,20 +35,21 @@ export default function FadeIn({
 
   const Component = Tag as React.ElementType;
 
+  /* reduced motion renders STATIC: no opacity gate, no slide, ever */
+  if (reduced) {
+    return <Component className={className}>{children}</Component>;
+  }
+
   return (
     <Component
       ref={ref}
       className={className}
-      style={
-        reduced
-          ? { opacity: inView ? 1 : 0 }
-          : {
-              opacity: inView ? 1 : 0,
-              transform: inView ? "translateY(0)" : `translateY(${distance}px)`,
-              transition: `opacity ${ms}ms ${easing.out} ${delay}ms, transform ${ms}ms ${easing.out} ${delay}ms`,
-              willChange: "opacity, transform",
-            }
-      }
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? "translateY(0)" : `translateY(${distance}px)`,
+        transition: `opacity ${ms}ms ${easing.out} ${delay}ms, transform ${ms}ms ${easing.out} ${delay}ms`,
+        willChange: "opacity, transform",
+      }}
     >
       {children}
     </Component>

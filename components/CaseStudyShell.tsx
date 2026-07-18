@@ -1,6 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
-import { tagColor } from "@/lib/tagColor";
+import { findWorkItemBySlug, relatedWorkItems } from "@/lib/workLibrary";
+import { Tag } from "@/components/ui/Tag";
+import Heading from "@/components/ui/Heading";
+import CtaBanner from "@/components/ui/CtaBanner";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CaseCard from "@/components/CaseCard";
 
 /* ── Types ─────────────────────────────────────────────────────── */
 
@@ -12,12 +16,6 @@ interface MetaRow {
 interface DemoLink {
   label: string;
   href: string;
-}
-
-interface ShellMedia {
-  type: "video" | "image" | "embed";
-  src: string;
-  alt?: string;
 }
 
 export interface CaseStudyShellProps {
@@ -33,16 +31,12 @@ export interface CaseStudyShellProps {
   metadata: MetaRow[];
   /** Tag pills */
   tags: string[];
-  /** Hero media — shown at top of scrolling column */
-  media: ShellMedia;
   /** Optional demo / prototype links */
   demoLinks?: DemoLink[];
   /** Optional live URL */
   liveUrl?: string;
-  /** Previous case study (for nav) */
-  prev?: { slug: string; title: string; category: string } | null;
-  /** Next case study (for nav) */
-  next?: { slug: string; title: string; category: string } | null;
+  /** Case slug — resolves the case colours for the sphere + headline */
+  slug: string;
   /** Scrolling content (sections, pull quotes, images…) */
   children: React.ReactNode;
 }
@@ -65,25 +59,58 @@ export default function CaseStudyShell({
   summary,
   metadata,
   tags,
-  media,
   demoLinks,
   liveUrl,
-  prev,
-  next,
+  slug,
   children,
 }: CaseStudyShellProps) {
+  const caseItem = findWorkItemBySlug(slug);
+  const related = relatedWorkItems(slug);
+  const MetaList = () => (
+    <dl className="cs-shell__meta">
+      {metadata.map(({ label, value }) => (
+        <div key={label} className="cs-shell__meta-row">
+          <dt>{label}</dt>
+          <dd>{value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+  const TagRow = () =>
+    tags.length > 0 ? (
+      <div className="cs-shell__tags">
+        {tags.map((tag) => (
+          <Tag
+            key={tag}
+            identity
+            style={
+              caseItem
+                ? ({ "--case-tint-text": caseItem.text, "--case-tint-hi": caseItem.hi } as React.CSSProperties)
+                : undefined
+            }
+          >
+            {tag}
+          </Tag>
+        ))}
+      </div>
+    ) : null;
+
   return (
     <div className="cs-shell">
       {/* ════════════════════════════════════════════════════════════
-          LEFT — Sticky sidebar panel (desktop only via CSS)
+          LEFT, Sticky sidebar panel (desktop only via CSS)
           ════════════════════════════════════════════════════════════ */}
       <aside className="cs-shell__left">
         <div className="cs-shell__sticky">
+          <Link href="/work" className="cs-shell__backlink">
+            <span aria-hidden="true">←</span> Back to Work
+          </Link>
+
           {/* Eyebrow */}
-          <p className="cs-shell__eyebrow">{eyebrow}</p>
+          <p className="cs-shell__eyebrow" style={caseItem ? { color: caseItem.text } : undefined}>{eyebrow}</p>
 
           {/* Title */}
-          <h1 className="cs-shell__title">{title}</h1>
+          {/* title lives in the flat case Heading (right column) */}
 
           {/* Summary */}
           <p className="cs-shell__summary">{summary}</p>
@@ -92,36 +119,10 @@ export default function CaseStudyShell({
           <div className="cs-shell__divider" />
 
           {/* Metadata */}
-          <dl className="cs-shell__meta">
-            {metadata.map(({ label, value }) => (
-              <div key={label} className="cs-shell__meta-row">
-                <dt>{label}</dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
-          </dl>
+          <MetaList />
 
           {/* Tags */}
-          {tags.length > 0 && (
-            <div className="cs-shell__tags">
-              {tags.map((tag) => {
-                const c = tagColor(tag);
-                return (
-                  <span
-                    key={tag}
-                    className="cs-shell__tag"
-                    style={{
-                      background: c.bg,
-                      color: c.color,
-                      borderColor: "var(--color-alpha-shadow-warm-08)",
-                    }}
-                  >
-                    {tag}
-                  </span>
-                );
-              })}
-            </div>
-          )}
+          <TagRow />
 
           {/* Demo links + Live URL */}
           {((demoLinks && demoLinks.length > 0) || liveUrl) && (
@@ -152,100 +153,35 @@ export default function CaseStudyShell({
             </div>
           )}
 
-          {/* CTA */}
-          <div className="cs-shell__cta">
-            <Link href="/#contact" className="cs-shell__cta-btn">
-              Get in touch <span aria-hidden="true">↗</span>
-            </Link>
-          </div>
+          {/* Template rule (Pass B 2026-07-18): ONE contact action per
+              case page. The sidebar is information; the closing
+              CtaBanner is the ask. No button here. */}
         </div>
       </aside>
 
       {/* ════════════════════════════════════════════════════════════
-          RIGHT — Scrolling content column
+          RIGHT, Scrolling content column
           ════════════════════════════════════════════════════════════ */}
       <div className="cs-shell__right">
-        {/* Hero media */}
+        <Link href="/work" className="cs-shell__backlink cs-shell__backlink--mobile">
+          <span aria-hidden="true">←</span> Back to Work
+        </Link>
+
+        {/* Flat case title (flat-headers pass): Heading case tier in the
+            case identity colour; bubbles are parked. */}
         <div className="cs-shell__hero">
-          <div className="cs-shell__hero-frame">
-            <div className="cs-shell__hero-sheen" />
-            {media.type === "video" ? (
-              <>
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="cs-shell__hero-media"
-                >
-                  <source src={media.src} type="video/mp4" />
-                </video>
-                <div className="cs-shell__hero-vignette" />
-              </>
-            ) : media.type === "embed" ? (
-              <iframe
-                src={media.src}
-                title={media.alt ?? title}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  border: "none",
-                  borderRadius: "inherit",
-                }}
-              />
-            ) : (
-              <>
-                <Image
-                  src={media.src}
-                  alt={media.alt ?? title}
-                  fill
-                  className="cs-shell__hero-media"
-                  priority
-                  sizes="(max-width: 1080px) 100vw, 860px"
-                />
-                <div className="cs-shell__hero-vignette-light" />
-              </>
-            )}
-          </div>
+          <Heading tier="case" as="h1" style={caseItem ? { color: caseItem.text } : undefined}>
+            {title}
+          </Heading>
         </div>
 
-        {/* Mobile header — title, meta, tags (below hero on small screens) */}
+        {/* Mobile header, title, meta, tags (below hero on small screens) */}
         <div className="cs-shell__mobile-header">
-          <p className="cs-shell__eyebrow">{eyebrow}</p>
-          <h1 className="cs-shell__title">{title}</h1>
+          <p className="cs-shell__eyebrow" style={caseItem ? { color: caseItem.text } : undefined}>{eyebrow}</p>
           <p className="cs-shell__summary">{summary}</p>
           <div className="cs-shell__divider" />
-          <dl className="cs-shell__meta">
-            {metadata.map(({ label, value }) => (
-              <div key={label} className="cs-shell__meta-row">
-                <dt>{label}</dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
-          </dl>
-          {tags.length > 0 && (
-            <div className="cs-shell__tags">
-              {tags.map((tag) => {
-                const c = tagColor(tag);
-                return (
-                  <span
-                    key={tag}
-                    className="cs-shell__tag"
-                    style={{
-                      background: c.bg,
-                      color: c.color,
-                      borderColor: "var(--color-alpha-shadow-warm-08)",
-                    }}
-                  >
-                    {tag}
-                  </span>
-                );
-              })}
-            </div>
-          )}
+          <MetaList />
+          <TagRow />
           {((demoLinks && demoLinks.length > 0) || liveUrl) && (
             <div className="cs-shell__links">
               {liveUrl && (
@@ -267,85 +203,23 @@ export default function CaseStudyShell({
           {children}
         </div>
 
-        {/* Prev / Next navigation */}
-        {(prev || next) && (
-          <div className="cs-shell__nav">
-            {prev ? (
-              <Link href={`/case-studies/${prev.slug}`} className="cs-shell__nav-link">
-                <span className="section-label">← Previous</span>
-                <span className="heading-item" style={{ lineHeight: 1.3 }}>{prev.title}</span>
-                <span className="text-meta">{prev.category}</span>
-              </Link>
-            ) : (
-              <div />
-            )}
-            {next ? (
-              <Link
-                href={`/case-studies/${next.slug}`}
-                className="cs-shell__nav-link cs-shell__nav-link--next"
-              >
-                <span className="section-label">Next →</span>
-                <span className="heading-item" style={{ lineHeight: 1.3, textAlign: "right" }}>{next.title}</span>
-                <span className="text-meta">{next.category}</span>
-              </Link>
-            ) : (
-              <div />
-            )}
-          </div>
+        {/* End sequence (Pass C 2026-07-18): "More work like this", 3
+            case cards by skill overlap with this case (matrix data),
+            deterministic, the ONE Card; then the single closing CTA. */}
+        {related.length > 0 && (
+          <section className="cs-shell__related" aria-label="More work like this">
+            <SectionHeader label="Related" title="More work like this" />
+            <div className="cs-shell__related-grid">
+              {related.map((i) => (
+                <CaseCard key={i.id} item={i} />
+              ))}
+            </div>
+          </section>
         )}
 
         {/* Bottom CTA (visible on all sizes within the scrolling column) */}
         <div className="cs-shell__bottom-cta">
-          <div className="surface-dark" style={{
-            borderRadius: "var(--radius-3xl)",
-            padding: "var(--spacing-12) var(--spacing-10)",
-            display: "flex",
-            flexDirection: "column",
-            gap: "var(--spacing-5)",
-          }}>
-            <div>
-              <p style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "11px",
-                fontWeight: "var(--typography-font-weight-medium)",
-                textTransform: "uppercase",
-                letterSpacing: "0.12em",
-                color: "rgba(255,255,255,0.4)",
-                marginBottom: "10px",
-              }}>
-                Have a project in mind?
-              </p>
-              <h2 style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(22px, 3vw, 32px)",
-                fontWeight: "var(--typography-font-weight-bold)",
-                color: "#FFFFFF",
-                lineHeight: 1.15,
-                textTransform: "uppercase",
-              }}>
-                Open to full-time roles &<br />
-                select freelance projects.
-              </h2>
-            </div>
-            <Link
-              href="/#contact"
-              style={{
-                alignSelf: "flex-start",
-                background: "var(--color-semantic-text-inverse)",
-                color: "#1A1814",
-                fontFamily: "var(--font-body)",
-                fontWeight: 600,
-                fontSize: "var(--typography-font-size-tag)",
-                padding: "var(--spacing-3) var(--spacing-6)",
-                borderRadius: "var(--radius-full)",
-                textDecoration: "none",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
-              Get in touch ↗
-            </Link>
-          </div>
+          <CtaBanner title={<>Open to full-time roles &<br />select freelance projects.</>} />
         </div>
       </div>
     </div>

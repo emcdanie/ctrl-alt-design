@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ctrl+travel — Smart Business Travel</title>
+<title>ctrl+travel, Smart Business Travel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
@@ -472,8 +472,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <select class="fv-select" id="fs-time" onchange="applyFilters()">
     <option value="">Depart: Any time</option>
     <option value="early">Early (before 9am)</option>
-    <option value="morning">Morning (9–12)</option>
-    <option value="afternoon">Afternoon (12–6)</option>
+    <option value="morning">Morning (9-12)</option>
+    <option value="afternoon">Afternoon (12-6)</option>
     <option value="evening">Evening (after 6pm)</option>
   </select>
   <select class="fv-select" id="fs-class" onchange="applyFilters()">
@@ -504,8 +504,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
       <span class="sort-label">Sort by</span>
       <select class="sort-select" id="sortSelect" onchange="renderResults()">
-        <option value="price-asc">Price (low–high)</option>
-        <option value="price-desc">Price (high–low)</option>
+        <option value="price-asc">Price (low-high)</option>
+        <option value="price-desc">Price (high-low)</option>
         <option value="dur-asc">Duration</option>
         <option value="dep-asc">Departure (early first)</option>
         <option value="dep-desc">Departure (late first)</option>
@@ -577,7 +577,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <!-- Global bar -->
 <div class="global-bar">
-  <span>✦ ctrl+alt+design portfolio demo — fictional data</span>
+  <span>✦ ctrl+alt+design portfolio demo, fictional data</span>
   <button id="annToggleBtn" class="on" onclick="toggleAnnotations()">📌 Annotations on</button>
   <button onclick="clearAllFilters()">✕ Clear filters</button>
   <button onclick="showOnboarding()">👤 Setup profile</button>
@@ -641,16 +641,16 @@ const TEAM_TRIPS=[
   {name:'James Wright',initials:'JW',color:'#f59e0b',trip:'MXP → FRA',date:'Mar 24',status:'pending',flight:'Lufthansa 07:15'},
   {name:'Sofia Chen',initials:'SC',color:'#10b981',trip:'MXP → LHR',date:'Mar 25',status:'confirmed',flight:'BA 06:30'},
   {name:'Raj Patel',initials:'RP',color:'#8b5cf6',trip:'MXP → ZRH',date:'Mar 26',status:'confirmed',flight:'Swiss Air 09:30'},
-  {name:'Marco Bianchi',initials:'MB',color:'#ef4444',trip:'—',date:'—',status:'none',flight:'No upcoming travel'},
+  {name:'Marco Bianchi',initials:'MB',color:'#ef4444',trip:', ',date:', ',status:'none',flight:'No upcoming travel'},
 ];
 
 const ANNOTATIONS={
-  'ai-search':{n:'1',title:'AI-Powered Natural Language Search',body:'Parses intent from natural language — extracts origin, destination, class, price cap, time preference. Matched tokens render as chips, making the AI\'s interpretation transparent and correctable.'},
-  'compare':{n:'2',title:'AI Flight Comparison',body:'Select up to 3 flights to compare side-by-side. The AI generates pro/con lists for each option based on price, duration, policy compliance, CO₂, and refund status — then recommends the best fit for your trip type.'},
-  'policy-badge':{n:'3',title:'Travel Policy Indicators',body:'Green = within policy. Amber = near the limit. Red = over budget. Inline indicators reduce the approval loop — travellers self-screen before submitting, cutting "needs review" requests by ~60% in testing.'},
+  'ai-search':{n:'1',title:'AI-Powered Natural Language Search',body:'Parses intent from natural language, extracts origin, destination, class, price cap, time preference. Matched tokens render as chips, making the AI\'s interpretation transparent and correctable.'},
+  'compare':{n:'2',title:'AI Flight Comparison',body:'Select up to 3 flights to compare side-by-side. The AI generates pro/con lists for each option based on price, duration, policy compliance, CO₂, and refund status, then recommends the best fit for your trip type.'},
+  'policy-badge':{n:'3',title:'Travel Policy Indicators',body:'Green = within policy. Amber = near the limit. Red = over budget. Inline indicators reduce the approval loop, travellers self-screen before submitting, cutting "needs review" requests by ~60% in testing.'},
   'booking-panel':{n:'4',title:'Pre-filled Booking Panel',body:'Traveller details, passport, cost centre and purpose are pulled from the employee profile. The panel slides in without page navigation, keeping flight context visible. Reduces booking time by ~70% vs traditional forms.'},
   'seat-map':{n:'5',title:'Seat Selection & Memory',body:'Previous seat preference (window/aisle) is remembered and pre-highlighted. Simplified 6-column grid shows availability at a glance. This personalisation reduced seat re-selection interactions by 35%.'},
-  'finviz-filters':{n:'6',title:'Finviz-style Filter Strip',body:'Inspired by Finviz stock screener — each dimension is an independent dropdown, presets chain multiple filters in one click. Live result count updates instantly so users feel filter impact without committing.'},
+  'finviz-filters':{n:'6',title:'Finviz-style Filter Strip',body:'Inspired by Finviz stock screener, each dimension is an independent dropdown, presets chain multiple filters in one click. Live result count updates instantly so users feel filter impact without committing.'},
 };
 
 // ══════════════════════════════════════════════════
@@ -943,15 +943,15 @@ function getProCons(f,subset){
   const co2s=subset.map(x=>x.co2);
   const pros=[],cons=[];
   if(f.price===Math.min(...prices)) pros.push('Lowest price in comparison');
-  if(f.stops===0) pros.push('Direct — no connection risk');
+  if(f.stops===0) pros.push('Direct, no connection risk');
   if(f.refundable) pros.push('Fully refundable ticket');
-  if(f.policy==='ok') pros.push('Within policy — no approval needed');
+  if(f.policy==='ok') pros.push('Within policy, no approval needed');
   if(f.cls==='Business') pros.push('Business class comfort');
   if(f.co2===Math.min(...co2s)) pros.push('Lowest CO₂ in comparison');
   if(f.price===Math.max(...prices)&&subset.length>1) cons.push('Most expensive option');
-  if(f.stops>0) cons.push(`${f.stops} connection — adds transit risk`);
-  if(!f.refundable) cons.push('Non-refundable — no changes');
-  if(f.policy==='warn') cons.push('Near policy limit — may need approval');
+  if(f.stops>0) cons.push(`${f.stops} connection, adds transit risk`);
+  if(!f.refundable) cons.push('Non-refundable, no changes');
+  if(f.policy==='warn') cons.push('Near policy limit, may need approval');
   if(f.co2===Math.max(...co2s)&&subset.length>1) cons.push('Highest CO₂ emissions');
   return{pros:pros.slice(0,3),cons:cons.slice(0,2)};
 }
@@ -981,7 +981,7 @@ function getAIRec(subset){
   if(best.policy==='ok') reasons.push('within travel policy');
   if(best.stops===0) reasons.push('a direct flight');
   if(best.refundable) reasons.push('fully refundable');
-  return`Based on your travel profile, <strong>${best.airline} at €${best.price}</strong> is the strongest option — it's ${reasons.join(', ')}.`;
+  return`Based on your travel profile, <strong>${best.airline} at €${best.price}</strong> is the strongest option, it's ${reasons.join(', ')}.`;
 }
 
 function openCompareModal(){
@@ -1003,7 +1003,7 @@ function openCompareModal(){
     html+=`<div class="compare-col">
       <div class="compare-col-header">
         <div class="cmp-airline-badge" style="background:${ac.bg};color:${ac.fg}">${f.airline.split(' ')[0].substring(0,3).toUpperCase()}</div>
-        <div class="cmp-route">${f.dep} – ${f.arr}</div>
+        <div class="cmp-route">${f.dep} - ${f.arr}</div>
         <div class="cmp-meta">${f.airline} · ${f.orig} → ${f.dest}</div>
       </div>
       <div class="compare-row"><label>Price</label><div class="val ${priceClass}">€${f.price}</div></div>
@@ -1088,7 +1088,7 @@ function renderBookingPanel(f){
         <div class="form-row"><label>Nationality</label><input class="form-input" value="British" readonly/></div>
       </div>
       <div class="form-row"><label>Cost centre</label><input class="form-input" value="UX Design / Q1 2025"/></div>
-      <div class="form-row"><label>Trip purpose</label><input class="form-input" value="Client meeting — ${f.dest}"/></div>
+      <div class="form-row"><label>Trip purpose</label><input class="form-input" value="Client meeting, ${f.dest}"/></div>
     </div>
   `;
   renderSeatGrid();
@@ -1123,7 +1123,7 @@ function renderBookingFooter(f){
       <div class="price-row total"><span>Total</span><span>€${total}</span></div>
     </div>
     <button class="book-btn" onclick="submitBooking()" ${!selectedSeat?'disabled style="opacity:0.5;cursor:not-allowed"':''}>
-      ${selectedSeat?`Submit for approval — €${total}`:'Select a seat to continue'}
+      ${selectedSeat?`Submit for approval, €${total}`:'Select a seat to continue'}
     </button>
   `;
 }
@@ -1137,7 +1137,7 @@ function submitBooking(){
       <div style="font-size:48px;margin-bottom:16px">✅</div>
       <h3 style="font-size:18px;margin-bottom:8px">Submitted for approval</h3>
       <p style="font-family:var(--font2);color:var(--text2);font-size:13px;line-height:1.6;margin-bottom:20px">
-        ${f.airline} ${f.dep}–${f.arr}<br>
+        ${f.airline} ${f.dep}-${f.arr}<br>
         Seat ${selectedSeat} · €${f.price+tax} total<br>
         Your manager will be notified by email.
       </p>
@@ -1199,7 +1199,7 @@ const ONBOARD_STEPS=[
   {
     label:'Step 3 of 3',
     title:'Travel preferences',
-    subtitle:'Remembered for every booking — you can change anytime.',
+    subtitle:'Remembered for every booking, you can change anytime.',
     render:()=>`
       <div class="onboard-field">
         <label>Preferred class</label>
@@ -1300,7 +1300,7 @@ function renderBotContent(){
               <div class="trip-dest">${t.dest}</div>
               <span class="trip-status status-${t.status}">${t.status==='confirmed'?'✓ Confirmed':t.status==='pending'?'⏳ Pending':'Draft'}</span>
             </div>
-            <div class="trip-meta">${t.date} · ${t.dep}–${t.arr} · ${t.airline}</div>
+            <div class="trip-meta">${t.date} · ${t.dep}-${t.arr} · ${t.airline}</div>
             <div class="trip-meta" style="margin-top:3px;color:var(--text4)">${t.ref}</div>
           </div>
         `).join('')}
@@ -1315,7 +1315,7 @@ function renderBotContent(){
   } else if(botTab==='team'){
     content.innerHTML=`
       <div class="bot-section">
-        <div class="bot-section-title">Team travel — next 7 days</div>
+        <div class="bot-section-title">Team travel, next 7 days</div>
         <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
           ${TEAM_TRIPS.map(t=>`
             <div class="team-row">
@@ -1324,7 +1324,7 @@ function renderBotContent(){
                 <div class="team-name">${t.name}</div>
                 <div class="team-trip">${t.trip} · ${t.date} · ${t.flight}</div>
               </div>
-              <span class="team-status ${t.status==='confirmed'?'status-confirmed':t.status==='pending'?'status-pending':'status-draft'}">${t.status==='confirmed'?'✓':t.status==='pending'?'⏳':'—'}</span>
+              <span class="team-status ${t.status==='confirmed'?'status-confirmed':t.status==='pending'?'status-pending':'status-draft'}">${t.status==='confirmed'?'✓':t.status==='pending'?'⏳':', '}</span>
             </div>
           `).join('')}
         </div>

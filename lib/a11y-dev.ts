@@ -46,7 +46,7 @@ export async function initA11yAudit() {
       );
       results.violations.forEach((v) => {
         console.groupCollapsed(
-          `%c${v.impact?.toUpperCase()} — ${v.description}`,
+          `%c${v.impact?.toUpperCase()}, ${v.description}`,
           `color: ${v.impact === "critical" || v.impact === "serious" ? "#ef4444" : "#f59e0b"}`
         );
         console.log("Help:", v.helpUrl);

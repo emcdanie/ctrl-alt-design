@@ -5,13 +5,16 @@ import VideoCard from "./VideoCard";
 import VideoModal from "./VideoModal";
 import SectionShell from "@/components/ui/SectionShell";
 import SectionHeader from "@/components/ui/SectionHeader";
+import Card from "@/components/ui/Card";
 
+/* One chip treatment for every lab category — the five-hue system read as
+ * templated. Ink chip, parchment text (18.6:1), periwinkle accent border. */
 const LAB_CATEGORY_COLORS: Record<string, { bg: string; color: string }> = {
-  "AI UX": { bg: "#1E4A8A", color: "#FFFFFF" },
-  "FINTECH": { bg: "#52308A", color: "#FFFFFF" },
-  "FORM DESIGN": { bg: "#7A4510", color: "#FFFFFF" },
-  "DASHBOARD": { bg: "#185438", color: "#FFFFFF" },
-  "INTERACTIVE": { bg: "#0A5438", color: "#FFFFFF" },
+  "AI UX": { bg: "var(--color-brand-ink)", color: "var(--ink-on-dark-strong)" },
+  "FINTECH": { bg: "var(--color-brand-ink)", color: "var(--ink-on-dark-strong)" },
+  "FORM DESIGN": { bg: "var(--color-brand-ink)", color: "var(--ink-on-dark-strong)" },
+  "DASHBOARD": { bg: "var(--color-brand-ink)", color: "var(--ink-on-dark-strong)" },
+  "INTERACTIVE": { bg: "var(--color-brand-ink)", color: "var(--ink-on-dark-strong)" },
 };
 
 interface LabVideo {
@@ -37,21 +40,12 @@ interface LabPrototype {
 const videos: LabVideo[] = [
   {
     title: "AI-Powered EUR-LEX UX + Multimedia Center",
-    subtitle: "Exploring AI-assisted legal search and multimedia navigation patterns for complex regulatory systems.",
+    subtitle: "Exploring AI-enabled legal search and multimedia navigation patterns for complex regulatory systems.",
     category: "AI UX",
     tags: ["AI UX", "Legal Tech", "Search Design"],
     embed: "https://www.loom.com/embed/685fc54dcb104d51baa15dcec8727da2",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #1A3A5C 50%, #0D2040 100%)",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #1A3A5C 50%, #0D2040 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/AIPoweredSearch.png",
-  },
-  {
-    title: "AI-Powered Financial Stock Screener",
-    subtitle: "Redesigning financial screening workflows to improve filtering, sorting, and comparison of dense financial datasets.",
-    category: "FINTECH",
-    tags: ["FinTech", "Filtering Systems", "Data UX"],
-    embed: "https://www.loom.com/embed/0dbf0dc67b644224b8abf533f73106fb",
-    gradient: "linear-gradient(135deg, #1C0A0A 0%, #3D1010 50%, #140808 100%)",
-    thumbnailSrc: "/images/thumbnails/FINVIZ.png",
   },
   {
     title: "Complex Insurance Forms",
@@ -59,113 +53,105 @@ const videos: LabVideo[] = [
     category: "FORM DESIGN",
     tags: ["Form Design", "Accessibility", "Insurance"],
     embed: "https://www.loom.com/embed/1a13cb50b6ac4282952f85efa11f9d7e",
-    gradient: "linear-gradient(135deg, #1A0A2E 0%, #3A1860 50%, #120820 100%)",
+    gradient: "linear-gradient(135deg, #1A0A2E 0%, #3A1860 50%, #120820 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/HealthForm.png",
   },
   {
-    title: "Operational Dashboard — F1 Singapore Grand Prix",
+    title: "Operational Dashboard, F1 Singapore Grand Prix",
     subtitle: "Designing a high-density operational dashboard inspired by Formula 1 race telemetry and control room systems.",
     category: "DASHBOARD",
     tags: ["Dashboard UX", "Data Visualisation", "Operational Design"],
     embed: "https://www.loom.com/embed/f93c664f6668417c81dbb774a2a7a4a3",
-    gradient: "linear-gradient(135deg, #0D1B10 0%, #1A3820 50%, #0A1410 100%)",
+    gradient: "linear-gradient(135deg, #0D1B10 0%, #1A3820 50%, #0A1410 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/FormularOne.png",
   },
 ];
 
 const prototypes: LabPrototype[] = [
+  /* Pass C 2026-07-18: swapped from the Loom video card to the newer
+     finviz-kpi-tree interactive prototype (asset + link only) */
+  {
+    title: "AI-Powered Financial Stock Screener",
+    subtitle: "Redesigning financial screening workflows to improve filtering, sorting, and comparison of dense financial datasets.",
+    category: "FINTECH",
+    tags: ["FinTech", "Filtering Systems", "Data UX"],
+    href: "/demos/finviz-kpi-tree.html",
+    gradient: "linear-gradient(135deg, #1C0A0A 0%, #3D1010 50%, #140808 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
+    thumbnailSrc: "/images/thumbnails/finviz-kpi-tree.png",
+  },
   {
     title: "Travel Search & Filtering System",
     subtitle: "Interactive prototype exploring unified search, filtering, and booking patterns for a B2B travel platform.",
     category: "INTERACTIVE",
     tags: ["Search UX", "Filtering", "Prototype"],
     href: "/demos/ctrl-travel-v2.html",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #132040 60%, #0A1628 100%)",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #132040 60%, #0A1628 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/TRAVEL.png",
   },
   {
     title: "Brad Frost Command Center",
-    subtitle: "Design system investigation dashboard — exploring AI-assisted component analysis and governance workflows.",
+    subtitle: "Design system investigation dashboard, exploring AI-enabled component analysis and governance workflows.",
     category: "INTERACTIVE",
     tags: ["Design Systems", "AI UX", "Dashboard"],
     href: "/demos/brad-frost-command-center.html",
-    gradient: "linear-gradient(135deg, #1A0A2E 0%, #2D1650 50%, #1A0A2E 100%)",
+    gradient: "linear-gradient(135deg, #1A0A2E 0%, #2D1650 50%, #1A0A2E 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/BradFrostCommandCenter.png",
   },
   {
-    title: "Guardian — AI UX Audit Tool",
-    subtitle: "Hackathon prototype: AI-assisted UX auditing on a Figma-style canvas — heuristic evaluation, drift detection, and accessibility checks with real-time highlights.",
+    title: "Guardian, AI UX Audit Tool",
+    subtitle: "Hackathon prototype: AI-enabled UX auditing on a Figma-style canvas, heuristic evaluation, drift detection, and accessibility checks with real-time highlights.",
     category: "INTERACTIVE",
     tags: ["AI UX", "Hackathon", "Governance"],
     href: "/demos/guardian-audit-tool.html",
-    gradient: "linear-gradient(135deg, #0F1117 0%, #161822 50%, #0F1117 100%)",
+    gradient: "linear-gradient(135deg, #0F1117 0%, #161822 50%, #0F1117 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/GuardianAuditTool.svg",
   },
   {
-    title: "Pattern Mentor — Design Feedback Plugin",
+    title: "Pattern Mentor, Design Feedback Plugin",
     subtitle: "Evolved from Guardian: cream-glass plugin with pattern citations, inline fix application, documentation push, and a browseable pattern library.",
     category: "INTERACTIVE",
     tags: ["AI UX", "Design Patterns", "Plugin"],
     href: "/demos/pattern-mentor.html",
-    gradient: "linear-gradient(135deg, var(--color-semantic-surface) 0%, #E8E3DB 50%, var(--color-semantic-surface) 100%)",
+    gradient: "linear-gradient(135deg, var(--color-semantic-surface) 0%, #E8E3DB 50%, var(--color-semantic-surface) 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/PatternMentor.svg",
   },
 ];
 
 function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
   return (
-    <a
+    <Card
       href={prototype.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group card-elevated flex h-full cursor-pointer flex-col overflow-hidden rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(44,24,16,0.1),0_6px_16px_rgba(44,24,16,0.07)]"
-      style={{ textDecoration: "none" }}
+      className="h-full"
+      media={
+        <span style={{ display: "block", position: "absolute", inset: 0, background: prototype.gradient }}>
+          {prototype.thumbnailSrc && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={prototype.thumbnailSrc} alt="" loading="lazy" />
+          )}
+        </span>
+      }
     >
-      {/* Thumbnail */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-[20px]" style={{ background: prototype.gradient }}>
-        {prototype.thumbnailSrc && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={prototype.thumbnailSrc}
-            alt={prototype.title}
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-          />
-        )}
-
-        {/* Hover overlay with CTA */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/20">
-          <span
-            className="rounded-full border border-white/50 bg-white/90 px-5 py-2.5 text-[13px] font-semibold text-[#1A1814] opacity-0 shadow-[0_8px_24px_rgba(0,0,0,0.15)] backdrop-blur-sm transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2"
-            style={{ fontFamily: "var(--font-body)" }}
-          >
-            Try Demo →
+      <h3
+        className="text-[length:var(--typography-font-size-lg)] font-bold leading-snug text-[color:var(--color-ink)]"
+        style={{ fontFamily: "var(--font-body)" }}
+      >
+        {prototype.title}
+      </h3>
+      <p
+        className="flex-1 text-[length:var(--typography-font-size-sm)] leading-[1.65]"
+        style={{ color: "var(--color-muted)", margin: 0 }}
+      >
+        {prototype.subtitle}
+      </p>
+      <span className="flex flex-wrap items-center gap-2">
+        <span className="tag">Try demo →</span>
+        {prototype.tags.slice(0, 3).map((tag) => (
+          <span key={tag} className="tag">
+            {tag}
           </span>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="flex flex-1 flex-col p-5 md:p-6">
-        <h3
-          className="mb-2 text-[18px] font-bold leading-snug text-[#1A1814]"
-          style={{ fontFamily: "var(--font-display)", maxWidth: "320px" }}
-        >
-          {prototype.title}
-        </h3>
-        <p
-          className="mb-4 flex-1 text-[14px] leading-[1.65]"
-          style={{ color: "var(--color-muted)", maxWidth: "380px" }}
-        >
-          {prototype.subtitle}
-        </p>
-        <div className="flex flex-wrap items-center gap-2">
-          {prototype.tags.map((tag) => (
-            <span key={tag} className="tag">
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    </a>
+        ))}
+      </span>
+    </Card>
   );
 }
 
@@ -175,27 +161,22 @@ export default function CtrlAltDesignSection() {
   return (
     <SectionShell id="design-lab" className="bg-[var(--color-semantic-background)]">
       <SectionHeader
-        label="— Design Lab"
+        label="Design Lab"
         title="CTRL_ALT_DESIGN"
-        description="Rapid investigations into complex interaction patterns, system dashboards, and AI-assisted workflows."
+        description="Rapid investigations into complex interaction patterns, system dashboards, and AI-enabled workflows."
         className="mb-6"
       />
 
       <div className="mb-10 h-px w-full bg-black/8" />
 
-      {/* Video explorations — fixed 2-col on tablet+ (data is exactly 4 items
+      {/* Video explorations, fixed 2-col on tablet+ (data is exactly 4 items
           → 2×2 grid, no orphan). Stacks to single col below 768px.
           Equal heights via items-stretch (BELLA Rule 2). */}
       <div className="grid grid-cols-1 items-stretch md:grid-cols-2" style={{ gap: "var(--grid-gap)" }}>
         {videos.map((video) => {
-          const catStyle = LAB_CATEGORY_COLORS[video.category] ?? { bg: "#1A1814", color: "#FFFFFF" };
-
           return (
             <div key={video.title} className="relative h-full">
-              <span
-                className="pointer-events-none absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[11px] font-bold tracking-widest"
-                style={{ background: catStyle.bg, color: catStyle.color, letterSpacing: "0.1em" }}
-              >
+              <span className="tag pointer-events-none absolute left-3 top-3 z-10">
                 {video.category}
               </span>
               <VideoCard
@@ -203,7 +184,6 @@ export default function CtrlAltDesignSection() {
                 subtitle={video.subtitle}
                 tags={video.tags}
                 gradient={video.gradient}
-                embedUrl={video.embed}
                 thumbnailSrc={video.thumbnailSrc}
                 onClick={() => setActiveVideo(video)}
               />
@@ -212,12 +192,12 @@ export default function CtrlAltDesignSection() {
         })}
       </div>
 
-      {/* Interactive prototypes — same 2-col pattern. Data trimmed to exactly
-          4 items (was 5 — F1 Grand Prix Analytics removed; that project is
+      {/* Interactive prototypes, same 2-col pattern. Data trimmed to exactly
+          4 items (was 5, F1 Grand Prix Analytics removed; that project is
           already represented in the Videos grid above). */}
-      <div style={{ marginTop: "56px" }}>
+      <div style={{ marginTop: "var(--spacing-12)" }}>
         <SectionHeader
-          label="— Interactive Work"
+          label="Interactive Work"
           title="Interactive product experiments"
           description="Real prototypes exploring complex interaction patterns, system logic, and workflow design."
           className="mb-10"

@@ -1,0 +1,107 @@
+/* Hero layout — headline column + the bubble cluster (BubbleCluster.tsx,
+ * styles in BubbleCluster.module.css). From _proto/_hero.html. */
+
+.hero {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  /* proto: 104px top under its own meta strip; here the fixed header
+     (--header-height) already offsets the view, so the grid centers in
+     the remaining viewport like the proto's min-height:100vh center */
+  padding: calc(var(--header-height) + var(--spacing-8)) var(--container-padding) var(--spacing-16);
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-10);
+  align-items: center;
+  width: 100%;
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 13.5px; /* proto-exact (recorded exception) */
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent-ink);
+  margin: 0 0 var(--spacing-4);
+}
+
+.headline {
+  font-family: var(--font-hero-display);
+  /* Unique's single heavy cut: the proto maps it 400-700, the build
+     splits Regular/Bold — 700 selects the Bold cut that matches the
+     proto's chunky weight. */
+  font-weight: 700;
+  font-size: var(--font-hero-unique);
+  line-height: 0.8;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  margin: 0 0 var(--spacing-6);
+  color: var(--color-ink);
+}
+
+.headline .o {
+  color: var(--color-accent-ink);
+}
+
+.intro {
+  font-family: var(--font-body);
+  font-size: 17px; /* proto-exact (recorded exception) */
+  line-height: 1.55;
+  color: var(--color-ink);
+  max-width: 40ch;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.intro b {
+  font-weight: 600;
+}
+
+.ctaRow {
+  margin-top: var(--spacing-8);
+}
+
+.systemLine {
+  margin-top: var(--spacing-4);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  color: var(--hero-copy-muted, var(--color-muted));
+}
+
+.quietLink {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  /* inline-flex so min-height actually applies to the anchor */
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: 0 var(--spacing-2);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--color-ink-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.quietLink:hover,
+.quietLink:focus-visible {
+  color: var(--color-accent-ink);
+}
+
+.quietLink:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+
+@media (max-width: 860px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 88px 22px 150px /* token-waiver: proto-exact mobile hero geometry (recorded) */;
+    gap: var(--spacing-6);
+    min-height: 0;
+  }
+}

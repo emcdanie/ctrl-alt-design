@@ -1,18 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Card from "@/components/ui/Card";
+import { Icon } from "@/components/ui/Icon";
 
-interface VideoCardProps {
-  title: string;
-  subtitle: string;
-  tags: string[];
-  gradient: string;
-  embedUrl: string;
-  videoSrc?: string;
-  thumbnailSrc?: string;
-  onClick: () => void;
-}
-
+/**
+ * Lab video card, on the ONE Card system (button variant: opens the
+ * video modal). Cover media with the token scrim; play affordance over
+ * the media; eyebrow / title / one-liner / tags in the body.
+ */
 export default function VideoCard({
   title,
   subtitle,
@@ -21,74 +17,73 @@ export default function VideoCard({
   videoSrc,
   thumbnailSrc,
   onClick,
-}: VideoCardProps) {
+}: {
+  title: string;
+  subtitle: string;
+  tags: string[];
+  gradient: string;
+  videoSrc?: string;
+  thumbnailSrc?: string;
+  onClick: () => void;
+}) {
   const [imgFailed, setImgFailed] = useState(false);
 
   return (
-    <div
-      className="group card-elevated flex h-full cursor-pointer flex-col overflow-hidden rounded-[20px] transition-all duration-300 hover:[transform:var(--motion-transform-hover-lift)] hover:shadow-[var(--shadow-card-elevated)]"
+    <Card
       onClick={onClick}
-    >
-      <div className="relative aspect-video w-full overflow-hidden" style={{ background: gradient }}>
-        {videoSrc && (
-          <video
-            src={videoSrc}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-          />
-        )}
-
-        {!videoSrc && thumbnailSrc && !imgFailed && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={thumbnailSrc}
-            alt={title}
-            onError={() => setImgFailed(true)}
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-          />
-        )}
-
-        {!videoSrc && (!thumbnailSrc || imgFailed) && (
-          <div
-            className="absolute inset-0 opacity-[0.15]"
+      className="h-full"
+      ariaLabel={`Play video: ${title}`}
+      media={
+        <span style={{ display: "block", position: "absolute", inset: 0, background: gradient }}>
+          {videoSrc && (
+            <video
+              src={videoSrc}
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          )}
+          {!videoSrc && thumbnailSrc && !imgFailed && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={thumbnailSrc} alt="" loading="lazy" onError={() => setImgFailed(true)} />
+          )}
+          <span
             style={{
-              backgroundImage:
-                "url(data:image/svg+xml,%3Csvg viewBox=%270 0 200 200%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.85%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27/%3E%3C/svg%3E)",
-              backgroundSize: "160px",
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
-          />
-        )}
-
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.28),transparent_42%),linear-gradient(to_bottom,rgba(255,255,255,0.06),transparent_28%)]" />
-
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/40 bg-white/82 shadow-[0_18px_42px_rgba(0,0,0,0.2)] backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M5 3.5l10 5.5-10 5.5V3.5z" fill="#1A1814" />
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-1 flex-col p-5 md:p-6">
-        <p className="section-label mb-3">EXPLORATION</p>
-        <h3 className="font-display mb-2 text-[20px] font-bold leading-snug text-[#1A1814]">
-          {title}
-        </h3>
-        <p className="mb-4 flex-1 text-[15px] leading-[1.72] text-[#6B665D]">
-          {subtitle}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <span key={tag} className="tag">
-              {tag}
+          >
+            <span
+              className="flex h-16 w-16 items-center justify-center rounded-full border border-[color:var(--color-alpha-glass-48)] bg-[color:var(--color-alpha-glass-82)] shadow-[var(--shadow-card-elevated)] backdrop-blur-md"
+            >
+              <Icon name="Play" size="md" style={{ color: "var(--ink-on-paper)" }} />
             </span>
-          ))}
-        </div>
-      </div>
-    </div>
+          </span>
+        </span>
+      }
+    >
+      <span className="section-label" style={{ color: "var(--case-design-lab-text)" }}>Exploration</span>
+      <h3 className="font-body text-[length:var(--typography-font-size-xl)] font-bold leading-snug text-[color:var(--color-ink)]">
+        {title}
+      </h3>
+      <p
+        className="flex-1 text-[length:var(--typography-font-size-base)] leading-[1.72] text-[color:var(--color-ink-muted)]"
+        style={{ margin: 0 }}
+      >
+        {subtitle}
+      </p>
+      <span className="flex flex-wrap items-center gap-2">
+        {tags.slice(0, 3).map((tag) => (
+          <span key={tag} className="tag">
+            {tag}
+          </span>
+        ))}
+      </span>
+    </Card>
   );
 }

@@ -2,17 +2,30 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { social } from "@/lib/social";
+import ThemeSwitch from "@/components/ThemeSwitch";
 
+
+/* Primary IA — visible in the desktop header (NN/g: hidden desktop nav
+ * halves discoverability); the same list collapses into the hamburger
+ * on mobile. */
 const menuItems = [
-  { num: "01", label: "Work", href: "#work" },
-  { num: "02", label: "Guardian", href: "/case-studies/guardian" },
-  { num: "03", label: "Experience", href: "#experience" },
-  { num: "04", label: "Get in Touch", href: "#contact" },
+  { num: "01", label: "Work", href: "/work" },
+  { num: "02", label: "System", href: "/design-system" },
+  { num: "03", label: "Skills", href: "/skills" },
+  { num: "04", label: "About", href: "/about" },
+  { num: "05", label: "Contact", href: "/contact" },
 ];
 
 export default function OverlayNav() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  /* Work owns the library and every case page */
+  const isCurrent = (href: string) =>
+    href === "/work"
+      ? pathname.startsWith("/work") || pathname.startsWith("/case-studies")
+      : pathname === href || pathname.startsWith(href + "/");
   const [hovered, setHovered] = useState<string | null>(null);
   const [triggerHovered, setTriggerHovered] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -58,35 +71,47 @@ export default function OverlayNav() {
       <div
         className="pointer-events-none fixed inset-x-0 top-0 z-[9995]"
       >
-        <div className="flex w-full items-center justify-between border-b border-white/60 bg-[var(--color-semantic-background)]/72 px-4 py-3 shadow-[0_18px_48px_rgba(26,24,20,0.08)] backdrop-blur-xl sm:px-6"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.7)" }}
+        <div className="flex w-full items-center justify-between border-b border-[color:var(--color-semantic-border-glass-edge)] bg-[var(--color-semantic-background)]/72 px-4 py-3 shadow-[var(--shadow-nav-bar)] backdrop-blur-xl sm:px-6"
+          style={{ borderTop: "1px solid var(--color-semantic-border-glass-top)" }}
         >
           <Link
             href="/"
-            className="pointer-events-auto"
+            className="kbd-logo pointer-events-auto"
+            aria-label="ctrl alt design, home"
             onClick={() => setOpen(false)}
           >
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#1A1814]/10 bg-[#1A1814] text-white shadow-[0_10px_24px_rgba(26,24,20,0.18)] transition-all duration-200 hover:scale-[0.98] hover:opacity-85">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                <text
-                  x="3"
-                  y="14"
-                  fontFamily="'Clash Display', system-ui, sans-serif"
-                  fontWeight="700"
-                  fontSize="16"
-                  fill="white"
-                >
-                  E
-                </text>
-              </svg>
-            </div>
+            <span className="key">Ctrl</span>
+            <span className="plus" aria-hidden="true">+</span>
+            <span className="key">Alt</span>
+            <span className="plus" aria-hidden="true">+</span>
+            <span className="key key-iris">Design</span>
           </Link>
 
+          {/* Desktop primary nav, hidden below lg, where the hamburger takes over */}
+          <nav aria-label="Primary" className="pointer-events-auto hidden lg:flex items-center gap-1">
+            {menuItems.map((item) => (
+              <Link
+                key={item.num}
+                href={item.href}
+                aria-current={isCurrent(item.href) ? "page" : undefined}
+                className={`flex min-h-[var(--spacing-touch-target)] items-center rounded-[var(--radius-md)] px-3 font-[family:var(--font-mono)] text-[length:var(--typography-font-size-tag)] font-medium uppercase tracking-[0.1em] transition-colors hover:text-[color:var(--color-accent-ink)] ${
+                  isCurrent(item.href)
+                    ? "text-[color:var(--color-accent-ink)] underline underline-offset-8 decoration-2"
+                    : "text-[color:var(--color-ink-soft)]"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-4">
+          <ThemeSwitch />
           <button
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
             onMouseLeave={() => setTriggerHovered(false)}
-            className="pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[#1A1814]/10 bg-white/45 text-[#1A1814] shadow-[0_10px_30px_rgba(26,24,20,0.08)] transition-all duration-200 hover:bg-white/60"
+            className="lg:hidden pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--color-border-medium)] bg-[color:var(--color-glass)] text-[color:var(--color-ink)] shadow-[var(--shadow-soft)] transition-all duration-200 hover:bg-[color:var(--color-glass-strong)]"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="overlay-menu"
@@ -112,6 +137,7 @@ export default function OverlayNav() {
               }}
             />
           </button>
+          </div>
         </div>
       </div>
 
@@ -119,17 +145,24 @@ export default function OverlayNav() {
         ref={menuRef}
         id="overlay-menu"
         inert={!open}
-        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[#1A1814] transition-[clip-path] duration-300 ease-[cubic-bezier(0.76,0,0.24,1)]"
+        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[color:var(--color-ink)] ease-[cubic-bezier(0.76,0,0.24,1)]"
         style={{
           clipPath: open ? "inset(0% 0 0% 0)" : "inset(100% 0 0% 0)",
+          /* belt-and-braces with the inert guard: closed-menu content can
+             never paint or catch focus. visibility flips instantly on
+             open, and waits for the 300ms clip animation on close. */
+          visibility: open ? "visible" : "hidden",
+          transitionProperty: "clip-path, visibility",
+          transitionDuration: "300ms, 0s",
+          transitionDelay: open ? "0s, 0s" : "0s, 300ms",
         }}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.8),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(215,197,166,0.22),transparent_34%)]" />
-        <div className="absolute left-6 right-6 top-6 h-px bg-[#1A1814]/8 sm:left-8 sm:right-8" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,var(--color-glass-strong),transparent_36%),radial-gradient(circle_at_bottom_right,var(--color-semantic-accent-subtle),transparent_34%)]" />
+        <div className="absolute left-6 right-6 top-6 h-px bg-[color:var(--color-border-soft)] sm:left-8 sm:right-8" />
 
         <div className="relative flex h-full flex-col justify-between px-6 pb-8 pt-28 sm:px-8 sm:pb-10 sm:pt-32 lg:px-16 lg:pb-14 lg:pt-36">
           <div
-            className="pointer-events-none absolute right-[-16px] top-1/2 -translate-y-1/2 select-none font-[family:var(--font-display)] text-[clamp(120px,18vw,240px)] font-bold leading-none tracking-[-0.04em] text-[#E9E1D3]"
+            className="pointer-events-none absolute right-[-16px] top-1/2 -translate-y-1/2 select-none font-[family:var(--font-display)] text-[clamp(120px,18vw,240px)] font-bold leading-none tracking-[-0.04em] text-[color:var(--color-semantic-accent-border)]"
             aria-hidden="true"
           >
             EM
@@ -142,24 +175,24 @@ export default function OverlayNav() {
               const dimmed = anyHovered && !isHovered;
 
               const sharedClasses =
-                "font-[family:var(--font-display)] text-[clamp(42px,8vw,96px)] font-normal leading-[1.02] tracking-[-0.02em] transition-colors duration-150";
-              const colorClass = dimmed ? "text-[#847B6E]" : "text-[#1A1814]";
+                "font-[family:var(--font-display)] text-[length:var(--font-hero)] font-normal leading-[1.02] tracking-[-0.02em] transition-colors duration-150";
+              const colorClass = dimmed ? "text-[color:var(--color-ink-muted)]" : "text-[color:var(--color-ink)]";
 
               return (
                 <div
                   key={item.num}
-                  className="group flex items-start gap-4 border-b border-[#1A1814]/8 py-4 sm:gap-6 sm:py-5 lg:gap-10"
+                  className="group flex items-start gap-4 border-b border-[color:var(--color-border-soft)] py-4 sm:gap-6 sm:py-5 lg:gap-10"
                   onMouseEnter={() => setHovered(item.num)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  <span className="mt-2 min-w-14 font-[family:var(--font-body)] text-[11px] uppercase tracking-[0.24em] text-[#6B665D] sm:min-w-20">
+                  <span className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] sm:min-w-20">
                     (_{item.num})
                   </span>
 
                   {item.href.startsWith("#") ? (
                     <button
                       onClick={() => handleNavClick(item.href)}
-                      className={`${sharedClasses} ${colorClass} bg-transparent p-0 text-left hover:text-[#5E554A]`}
+                      className={`${sharedClasses} ${colorClass} bg-transparent p-0 text-left hover:text-[color:var(--color-ink-soft)]`}
                     >
                       {item.label}
                     </button>
@@ -167,7 +200,8 @@ export default function OverlayNav() {
                     <Link
                       href={item.href}
                       onClick={() => setOpen(false)}
-                      className={`${sharedClasses} ${colorClass} block hover:text-[#5E554A]`}
+                      aria-current={isCurrent(item.href) ? "page" : undefined}
+                      className={`${sharedClasses} ${colorClass} block hover:text-[color:var(--color-ink-soft)]`}
                     >
                       {item.label}
                     </Link>
@@ -178,17 +212,20 @@ export default function OverlayNav() {
           </nav>
 
           <div className="relative z-10 mt-12 flex flex-col gap-3 sm:mt-16">
-            <a
-              href="mailto:elletamc@gmail.com"
-              className="w-fit font-[family:var(--font-body)] text-sm text-[#6B665D] transition-colors duration-150 hover:text-[#1A1814]"
-            >
-              elletamc@gmail.com
-            </a>
+            <div className="flex items-center gap-3">
+              <ThemeSwitch />
+              <span className="font-[family:var(--font-mono)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.12em] text-[color:var(--color-ink-muted)]">
+                Theme
+              </span>
+            </div>
+            {/* no plaintext email anywhere (copy rule, 2026-07-17):
+                the contact form is the channel */}
             <a
               href={social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-fit font-[family:var(--font-body)] text-xs uppercase tracking-[0.18em] text-[#6B665D] transition-colors duration-150 hover:text-[#1A1814]"
+              className="inline-flex w-fit items-center font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.18em] text-[color:var(--color-ink-muted)] transition-colors duration-150 hover:text-[color:var(--color-ink)]"
+              style={{ minHeight: "var(--spacing-touch-target)" }}
             >
               LinkedIn
             </a>

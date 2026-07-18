@@ -1,0 +1,559 @@
+/* Work library — Map / Table / Timeline. Frames per DESIGN.md: one card
+ * radius, token spacing, §5 ramp type only. */
+
+/* ── ONE toolbar row (rebuild 2026-07-18): search left, switcher right ── */
+.toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-6);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-6);
+}
+
+.toolbarSearch {
+  flex: 1 1 420px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.toolbarSwitcher {
+  flex: 0 0 auto;
+}
+
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+}
+
+.searchInput {
+  flex: 1 1 260px;
+  min-width: 0;
+  max-width: 640px;
+  min-height: var(--spacing-touch-target);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2) var(--spacing-4);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.5;
+  color: var(--color-ink);
+}
+
+.searchInput::placeholder {
+  color: var(--color-muted);
+}
+
+.searchInput:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.quickPicks {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+}
+
+.fitResults {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-8);
+}
+
+.sortRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-3);
+}
+
+.filterRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-3);
+}
+
+.filterLabel {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  min-width: 48px;
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: 0.08em;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+.moreToggle {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  min-height: 32px;
+  padding: var(--spacing-1) var(--spacing-3);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.moreToggle:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+/* applied filters live ABOVE the results; min-height keeps layout stable */
+.appliedRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  min-height: 44px;
+  margin: var(--spacing-3) 0 var(--spacing-4);
+}
+
+.appliedChip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  cursor: pointer;
+  min-height: var(--spacing-touch-target);
+  padding: var(--spacing-1) var(--spacing-3);
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--color-semantic-accent-subtle);
+  color: var(--color-accent-ink);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.appliedChip:focus-visible,
+.clearAll:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.clearAll {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  min-height: 32px;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--color-ink-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.empty {
+  font-size: var(--font-body-size);
+  color: var(--color-ink-muted);
+  padding: var(--spacing-8) 0;
+}
+
+/* ── Table ── */
+
+.tableWrap {
+  /* relative so sr-only absolute descendants resolve here, not the ICB:
+     without it they escape the scroll container and stretch html.scrollWidth
+     (phantom page-level h-scroll at 390) */
+  position: relative;
+  overflow-x: auto;
+  border: 1px solid var(--color-semantic-border-subtle);
+  border-radius: var(--radius-2xl);
+  background: var(--color-card);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-soft);
+}
+
+.table th,
+.table td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--spacing-4) var(--spacing-5);
+  border-bottom: 1px solid var(--color-semantic-border-subtle);
+}
+
+.table thead th {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+}
+
+.table tbody tr:last-child th,
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background: var(--color-semantic-accent-subtle);
+}
+
+.thSort {
+  all: unset;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  min-height: var(--spacing-touch-target);
+  display: inline-flex;
+  align-items: center;
+}
+
+.thSort:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.rowTitle {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--typography-font-size-base);
+  text-decoration: none;
+  /* 44px house rule, inline hit-area growth (no layout shift in the row) */
+  padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
+}
+
+.rowTitle:hover,
+.rowTitle:focus-visible {
+  text-decoration: underline;
+}
+
+.focusTag {
+  display: inline-block;
+  margin-left: var(--spacing-2);
+  font-family: var(--font-mono);
+  font-size: 11px; /* matches the hub-sub recorded exception */
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-ink);
+  border: 1px solid var(--color-semantic-accent-border);
+  border-radius: var(--radius-full);
+  padding: 2px var(--spacing-2);
+  white-space: nowrap;
+}
+
+.skillList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+  max-width: 260px;
+}
+
+.skillTag {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-ink-muted);
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  padding: 2px var(--spacing-2);
+  white-space: nowrap;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.impactCell {
+  min-width: 220px;
+}
+
+/* ── Mobile: stacked cards replace the table below 768px ── */
+.stackList {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 767px) {
+  .table {
+    display: none;
+  }
+
+  /* the matrix is real 2-axis data: it stays a table and scrolls in its
+     own container instead of stacking */
+  .table.matrix {
+    display: table;
+  }
+
+  .stackList {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stackCard {
+    padding: var(--spacing-5);
+    border-bottom: 1px solid var(--color-semantic-border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    align-items: flex-start;
+  }
+
+  .stackCard:last-child {
+    border-bottom: none;
+  }
+
+  .stackMeta {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--typography-font-size-tag);
+    letter-spacing: 0.06em;
+    color: var(--color-ink-muted);
+  }
+
+  .stackImpact {
+    margin: 0;
+    font-size: var(--typography-font-size-base);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+  }
+}
+
+/* ── Map ── */
+
+.mapWrap {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--spacing-8) 0 var(--spacing-16);
+}
+
+/* ── Timeline ── */
+
+
+
+
+/* Reduced motion: the timeline flattens to a vertical list; no snap, no
+ * horizontal scroll, no parallax (JS is also gated). */
+@media (prefers-reduced-motion: reduce) {
+}
+
+/* ── Mobile filter tray (Vitaly pattern: full-page, accordions,
+ * sticky Apply with the live count) ── */
+
+.trayTrigger {
+  display: none;
+  margin-bottom: var(--spacing-3);
+}
+
+/* disclosure, not a filter: its own look, same weight as a chip */
+.trayTriggerBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  cursor: pointer;
+  min-height: var(--spacing-touch-target);
+  padding: var(--spacing-1) var(--spacing-5);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-medium);
+  background: var(--color-card);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--color-ink);
+}
+
+.trayTriggerBtn:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+  .desktopOnly {
+    display: none;
+  }
+
+  .trayTrigger {
+    display: block;
+  }
+}
+
+.tray {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--color-page);
+  padding: var(--spacing-5) var(--spacing-5) var(--spacing-20);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.trayHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--spacing-touch-target);
+}
+
+.trayGroup summary {
+  cursor: pointer;
+  min-height: var(--spacing-touch-target);
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.trayGroup summary:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.trayChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) 0;
+}
+
+.trayApply {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--spacing-4) var(--spacing-5);
+  background: var(--color-page);
+  border-top: 1px solid var(--color-semantic-border-subtle);
+}
+
+
+/* ── Skills x projects matrix (§8) ── */
+
+.matrix th,
+.matrix td {
+  vertical-align: middle;
+}
+
+.matrix thead th {
+  white-space: normal;
+  min-width: 96px;
+}
+
+.mxHead {
+  all: unset;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  min-height: var(--spacing-touch-target);
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+
+.mxHead:hover {
+  color: var(--color-accent-ink);
+}
+
+.mxHead[aria-pressed="true"] {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.mxHead:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.mxCell {
+  text-align: center;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+/* marked cell: case tint + dot, never colour-only (sr-only text in TSX) */
+.mxCell.mxOn {
+  background: color-mix(in srgb, var(--case-tint-hi) 36%, var(--color-card));
+}
+
+:global([data-theme="dark"]) .mxCell.mxOn {
+  background: color-mix(in srgb, var(--case-tint-hi) 18%, var(--color-card));
+}
+
+.mxDot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--case-tint-text);
+}
+
+.mxDim {
+  opacity: 0.3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mxHead,
+  .mxCell {
+    transition: none;
+  }
+}
+
+/* ── Cards view: CaseCard grid ── */
+
+.cardsGrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--grid-gap, var(--spacing-6));
+  align-items: stretch;
+}
+
+/* ── Curated default (IA hybrid 2026-07-17) ─────────────────────── */
+.curatedGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--grid-gap);
+  align-items: stretch;
+  margin-top: var(--spacing-4);
+}
+
+.featuredSlot {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+  .curatedGrid {
+    grid-template-columns: 1fr;
+  }
+}

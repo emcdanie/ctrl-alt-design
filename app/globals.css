@@ -3,17 +3,17 @@
 
 /* ─── Design tokens ─────────────────────────────────────────────── */
 @theme {
-  /* Page + surfaces — warm cream editorial base */
-  --color-cream: #f7f3ec;
-  --color-page: #f6f1e8;
-  --color-card: #ffffff;
-  --color-ink: #1a1a1a;
-  --color-ink-soft: #2c2c2c;
-  --color-ink-muted: #3d3832;
-  --color-surface: #f0ebe3;
+  /* Page + surfaces — lush ground (light default; navy dark via [data-theme]) */
+  --color-cream: #faf9f5;
+  --color-page: #F5F4EF;
+  --color-card: #FAFAF8; /* warm white, aligned with --surface-paper; pure #fff retired */
+  --color-ink: #1A1720;
+  --color-ink-soft: #2E2937;
+  --color-ink-muted: #4A4652;
+  --color-surface: #EDECE4;
   --color-white-pure: #fafaf8;
-  --color-accent-espresso: #3B2E7A;
-  --color-accent-gold: #A79CE2;
+  --color-accent-iris: #5B4BD1;
+  --color-accent-peri: #A79CE2;
 
   --color-border-soft: rgba(28, 26, 46, 0.08);
   --color-border-medium: rgba(28, 26, 46, 0.12);
@@ -21,17 +21,12 @@
   --color-glass-strong: rgba(255, 255, 255, 0.82);
   --color-tag-bg: rgba(255, 255, 255, 0.72);
   --color-tag-border: rgba(28, 26, 46, 0.1);
-  --color-muted: #3d3832;
+  --color-muted: #4A4652;
 
   --shadow-soft: 0 1px 2px rgba(28, 26, 46, 0.04), 0 10px 30px rgba(28, 26, 46, 0.06),
     0 24px 60px rgba(28, 26, 46, 0.04);
   --shadow-layered: 0 1px 2px rgba(28, 26, 46, 0.05), 0 12px 40px rgba(28, 26, 46, 0.08),
     0 28px 80px rgba(28, 26, 46, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-
-  /* Display font trial (Jul 2026) — AI-Realist-style Roman serif caps.
-     Revert: --font-display: "Clash Display", system-ui, sans-serif; */
-  --font-display: var(--font-fraunces), "Fraunces", "Iowan Old Style", Palatino, Georgia, serif;
-  --font-body: var(--font-plus-jakarta), "Plus Jakarta Sans", system-ui, sans-serif;
 
   /* ── Layout system spacing scale ───────────────────────────────── */
   --space-1: 8px;
@@ -54,43 +49,390 @@
   --space-section-lg: 96px;
 
   /* Layout */
-  --container-width: 1200px;
+  --container-width: 1240px;
   --container-padding: 32px;
   --grid-gap: 32px;
   --card-padding: 24px;
   --card-radius: 20px;
 
-  /* Header offset — all sticky/fixed elements below the nav use this */
-  --header-height: 70px;
-
-  --animate-scroll-left: scroll-left 35s linear infinite;
   --animate-fade-in-up: fadeInUp 0.6s ease-out forwards;
 }
 
-/* ─── Fluid typography scale ───────────────────────────────────── */
-:root {
-  --font-hero: clamp(2.8rem, 5vw, 4.5rem);
-  --font-section-title: clamp(1.8rem, 2.5vw, 2.5rem);
-  --font-card-title: clamp(1.2rem, 1.4vw, 1.5rem);
-  --font-body-size: clamp(1rem, 1.1vw, 1.125rem);
-  --font-small: clamp(0.85rem, 0.9vw, 0.95rem);
+/* Font utilities (redesign/lush v3). Unique is the display face for all
+   headings; Geist carries body and label/eyebrow
+   face. `inline` so the font-* utilities emit var(--font-*) resolved at
+   the element. The real stacks are declared ONCE, on body below, because
+   the next/font variables only exist there. Nothing font-related lives
+   in @theme, so there is no dead :root copy to edit by mistake. */
+@theme inline {
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+  --font-hero-display: var(--font-hero-display);
 }
 
-/* ─── OKLCH color system ───────────────────────────────────────── */
-:root {
-  --oklch-bg: oklch(95.5% 0.015 80);
-  --oklch-surface: oklch(93% 0.015 80);
-  --oklch-text-primary: oklch(15% 0.005 260);
-  --oklch-text-secondary: oklch(48% 0.012 65);
-  --oklch-accent: oklch(70% 0.11 285);
-  --oklch-border: oklch(88% 0.01 80);
+/* v3: every semantic heading defaults to the Unique display face. Class-level
+   font-family still wins. TYPE LOCK: exactly two faces. Unique renders
+   only through the display Heading primitive (.display-heading), the
+   home hero headline, and the .kbd-logo brand lockup; labels, body, and
+   eyebrows are Geist. No mono family exists. Bubble page headers are
+   PARKED (last live at e25eefc; may return in the expression pass). */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
 }
 
-/* Apply OKLCH where supported, keep hex fallbacks via @theme */
-@supports (color: oklch(0% 0 0)) {
-  body {
-    background-color: var(--oklch-bg);
-    color: var(--oklch-text-primary);
+/* ─── BELLA token bridge ─────────────────────────────────────────
+   bella.css ships serif/mono-era typography primitives (generated
+   file, not hand-edited). Bridge the primitives to the app fonts so every
+   BELLA-styled surface uses the same stack. */
+/* next/font exposes --font-geist / --font-geist-mono / --font-unique on
+ * <body> (layout.tsx className). Custom properties resolve at the element
+ * they're DECLARED on, not where they're used, so every var that chains to
+ * a next/font variable must be declared at body level. This block is the
+ * ONE place the font stacks are defined; the @theme inline block above only
+ * maps the font-* utilities onto these vars and emits no :root copies.
+ * The BELLA typography primitives bridge here for the same reason (they'd
+ * otherwise compute against :root, where the app fonts are undefined). */
+body {
+  --font-display: var(--font-geist, "Geist"), system-ui, sans-serif;
+  --font-body: var(--font-geist, "Geist"), system-ui, sans-serif;
+  /* retired mono: token repointed to Geist so legacy consumers keep
+     rendering; the eyebrow look is caps + tracking, not a third face */
+  --font-mono: var(--font-geist, "Geist"), system-ui, sans-serif;
+  --font-hero-display: var(--font-unique, "Unique"), "Arial Narrow", sans-serif;
+  --typography-font-family-display: var(--font-display);
+  --typography-font-family-body: var(--font-body);
+  --typography-font-family-mono: var(--font-mono);
+  /* Colour affordance rule (refined 2026-07-17): iris stays banned on
+     eyebrows; neutral surfaces use ink-soft (muted lost too much
+     presence), case surfaces override with the case identity colour.
+     Declared on BODY, not :root (the font-token substitution lesson). */
+  --color-eyebrow: var(--color-ink-soft);
+}
+
+/* ─── APP TOKEN AUTHORITY (unlayered — MUST stay unlayered) ─────────
+   Cascade rule: unlayered author styles beat every @layer, and later
+   source order beats bella.css's unlayered :root. Tailwind's @theme
+   emits inside @layer theme, so any token that must override a BELLA
+   :root default HAS to live here, not (only) in @theme. Importing bella
+   into a low layer instead would let preflight (border:0) beat bella's
+   component borders — do not "fix" it that way.
+   Every app token that overrides a BELLA default goes in this block. */
+:root {
+  /* Header offset. All sticky/fixed elements below the nav use this.
+     Defined ONLY here (unlayered authority), not in @theme. */
+  --header-height: 76px; /* keycap header, measured (BELLA default: 64) */
+  /* Eyebrow/label tracking: caps + spacing carry the old mono look */
+  --tracking-eyebrow: var(--typography-letter-spacing-wider);
+
+  /* 3D language elevation tokens (token lock 2026-07-17): the orb,
+     keycap switch, and nav-bar depth values, moved verbatim out of the
+     component layer. Do not flatten; the depth IS the system. */
+  --shadow-orb: 13px 22px 44px rgba(0, 0, 0, 0.26), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+  --shadow-orb-raised: 14px 24px 48px rgba(0, 0, 0, 0.26), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+  --shadow-orb-selected: 14px 24px 48px rgba(0, 0, 0, 0.3), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+  --gloss-orb: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 72%);
+  --edge-glass-hi: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  --edge-glass-hi-strong: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  --gloss-press: inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  --shadow-switch-track: inset 0 2px 5px rgba(25, 23, 32, 0.22);
+  --shadow-switch-track-dark: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+  --shadow-switch-knob: 3px 5px 8px rgba(25, 23, 32, 0.24);
+  --shadow-switch-knob-dark: 3px 5px 8px rgba(0, 0, 0, 0.4);
+  --shadow-nav-bar: 0 18px 48px rgba(26, 24, 20, 0.08);
+  /* keycap specular sheen (button grammar 4b): one light source,
+     upper left, matching the orb gloss. Translucent overlays only, so
+     the per-stop contrast check still judges the real fill stops. */
+  --gloss-key: linear-gradient(color-mix(in srgb, white 18%, transparent), transparent 46%);
+  --gloss-key-hover: linear-gradient(color-mix(in srgb, white 26%, transparent), transparent 52%);
+  --gloss-key-pressed: linear-gradient(transparent 0 10%, color-mix(in srgb, white 12%, transparent) 10%, transparent 50%);
+  --shadow-key-hover:
+    2px 6px 0 var(--key-edge),
+    8px 12px 20px rgba(25, 23, 32, 0.22),
+    inset 0 1px 0 var(--key-face-hi);
+  /* media scrim (one card system): text over cover media stays AA */
+  --scrim-media: linear-gradient(to top, color-mix(in srgb, black 46%, transparent), color-mix(in srgb, black 10%, transparent) 42%, transparent 68%);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --header-height: 64px;
+  }
+}
+
+/* ─── Fluid typography scale — DESIGN.md §5 ─────────────────────
+   Ramp: 13/14/16/18/20/24/32/40/56. One fluid pair per step, endpoints
+   on the ramp, defined ONCE here. No other clamp() in components. */
+:root {
+  --font-hero-unique: clamp(80px, 12.5vw, 184px);
+  --font-case-title: clamp(40px, 4vw, 64px);
+  --font-case-display: clamp(40px, 5vw, 96px);
+  --font-hero: clamp(40px, 5vw, 56px);
+  --font-section-title: clamp(32px, 2.5vw, 40px);
+  /* Display-section step (type-presence pass 2026-07-17): condensed
+     Unique needs more size than Geist did in the same slot. Endpoints
+     on the ramp (32/56); page tier stays larger at every width. */
+  --font-section-display: clamp(32px, 3.5vw, 56px);
+  --font-subsection: clamp(24px, 2.2vw, 32px);
+  --font-card-title: clamp(20px, 1.4vw, 24px);
+  --font-body-size: clamp(16px, 1.1vw, 18px);
+  --font-small: 14px;
+}
+
+/* ─── Case-cover + atom tokens (DESIGN.md: recorded additions) ────
+   Cover plates for the label-style case cards and the atom hero
+   nucleus. Text pairs are AAA on their plates (verified in DESIGN.md). */
+:root {
+  --color-cover-graphite: #221F2C;
+  --color-cover-graphite-ink: #EDE9F4;
+  --color-cover-graphite-kicker: #C9C2E6;
+  --color-cover-peri-hi: #C6BEEF;
+  --color-cover-peri-lo: #B2A8E6;
+  --color-cover-peri-ink: #231D3A;
+  --color-cover-sage-hi: #D2DCC7;
+  --color-cover-sage-lo: #C1CEB1;
+  --color-cover-sage-ink: #242C18;
+  --cover-min-height: 250px;
+  --panel-min-height: 172px;
+  --nucleus-size: 120px;
+}
+
+/* ─── Bubble-hero + keycap-logo tokens (DESIGN.md: recorded additions) ──
+   From the vetted _proto/_hero.html (2026-07-16). Per-case bubble
+   gradients (hi/lo), a deep readable accent per case (AA+ on the white
+   reveal card), the iris hub, and the keycap logo plates. The reveal
+   card is ALWAYS a light card — its ink is fixed-context, it does not
+   flip with [data-theme]. */
+:root {
+  --hero-iris-bright: #7A6BE8;
+  --peri: #A79CE2; /* fixed periwinkle (proto --peri) */
+  --case-code-first-hi: #F6BBD6;
+  --case-code-first-lo: #F0A0C8;
+  --case-code-first-deep: #B23A70;
+  --case-drift-hi: #D6AFEE;
+  --case-drift-lo: #C58AE6;
+  --case-drift-deep: #6A40AC;
+  --case-guardian-hi: #AEBCF5;
+  --case-guardian-lo: #8FA2F0;
+  --case-guardian-deep: #3B4FAC;
+  --case-clarity-hi: #A6D8BC;
+  --case-clarity-lo: #7FC79E;
+  --case-clarity-deep: #256B4C;
+  --case-design-lab-hi: #F7C08C;
+  --case-design-lab-lo: #F2A25C;
+  --case-design-lab-deep: #9E4C1A;
+  --case-writing-hi: #F5A79C;
+  --case-writing-lo: #F0796B;
+  --case-writing-deep: #B23C30;
+  --case-code-first-text: var(--case-code-first-deep);
+  --case-drift-text: var(--case-drift-deep);
+  --case-guardian-text: var(--case-guardian-deep);
+  --case-clarity-text: var(--case-clarity-deep);
+  --case-design-lab-text: var(--case-design-lab-deep);
+  --case-writing-text: var(--case-writing-deep);
+  --case-filters-text: var(--case-filters-deep);
+  /* CHIP (2026): teal identity, AA as text on light (deep) and navy (hi) */
+  --case-chip-hi: #9ED9D2;
+  --case-chip-lo: #79C6BC;
+  --case-chip-deep: #1D6A61;
+  --case-chip-text: var(--case-chip-deep);
+  --case-filters-hi: #AFC9E8;
+  --case-filters-lo: #8FB4DC;
+  --case-filters-deep: #2A5A8E;
+  --hub-hi: #CFC7F6;
+  --hub-lo: #A99BEC;
+  --hub-bright: #6C5CE0;
+  --hub-deep: #5647C4;
+  --hero-bub-ink: #141019;
+  --hero-panel-bg: #FFFFFF;
+  --hero-panel-ink: #1A1720;
+  --hero-panel-ink-soft: #2E2937;
+  --hero-panel-meta: #4A4652;
+  --hero-panel-close: #9A948B;
+  /* panel-ground companions: the reveal-card panel is ALWAYS light
+     (white, cream in dark), so surfaces/borders inside it must not
+     flip with the theme (see Card.module.css panel scope) */
+  --hero-panel-surface: #EDECE4;
+  --hero-panel-border-soft: rgba(28, 26, 46, 0.08);
+  --hero-panel-border-medium: rgba(28, 26, 46, 0.12);
+  --hero-panel-accent-ink: #5B4BD1; /* iris as TEXT on the light panel */
+
+  /* Case-card cover placeholder — muted warm, never bright (IA spec) */
+  --cover-warm-hi: #E9E2D2;
+  --cover-warm-lo: #D9CDB9;
+  --cover-warm-ink: #4A4030;
+
+  /* Fixed-context "paper" tokens — surfaces that stay light in BOTH
+     modes (reveal card, resume modal). Never flip these. */
+  --surface-paper: #FAFAF8;
+  --ink-on-paper: #1A1720;
+  --ink-on-paper-soft: #4A4652;
+  --ink-on-paper-muted: #6B665D;
+  --ink-on-paper-border: rgba(26, 23, 32, 0.1);
+  --modal-backdrop: rgba(26, 23, 32, 0.7);
+  /* page-top glow — flips to near-none on navy */
+  --page-glow: rgba(255, 255, 255, 0.55);
+  --hero-panel-shadow: rgba(26, 23, 32, 0.22);
+  --hero-link: rgba(26, 23, 32, 0.16);
+  --key-face-hi: #FFFFFF;
+  --key-face-lo: #ECEAE3;
+  --key-edge: #D7D3CA;
+  --key-iris-hi: #8E7EEC;
+  --key-iris-lo: #6C5CE0;
+  --key-iris-edge: #4A3FB0;
+  /* Filled-keycap face — FIXED in both themes. White labels need ≥4.5:1
+     on every gradient stop: #6C5CE0 4.9:1, #5B4BD1 6.1:1 (the lighter
+     #8E7EEC is 3.3:1 — never under a white label). */
+  --key-fill-hi: #6C5CE0;
+  --key-fill-lo: #5B4BD1;
+  --key-fill-edge: #4A3FB0;
+  --key-plus: #B4AFA6;
+
+  /* Theme switch (sun/moon keycap-thumb slider, from _proto/_hero.html) */
+  --switch-track-hi: #E7E4DB;
+  --switch-track-lo: #D8D4CA;
+  --switch-thumb-edge: #C9C5BC;
+  --switch-icon-sun: #8F8A7F;
+  --switch-icon-moon: #7C776F;
+
+  /* Keycap Button tokens — the site-wide button style (from _proto/_hero.html
+     .toggle). Down-right plate + soft cast shadow + inset top highlight;
+     :active sinks the key (translateY(3px)) onto a reduced plate. */
+  --btn-key-radius: var(--radius-lg);
+  /* secondary keycaps must clear their ground in both themes (Pass B):
+     ONE token-level border, no per-instance overrides */
+  --btn-key-border: var(--key-edge);
+  --shadow-key-resting:
+    2px 5px 0 var(--key-edge),
+    6px 9px 14px rgba(25, 23, 32, 0.18),
+    inset 0 1px 0 var(--key-face-hi);
+  --shadow-key-pressed:
+    1px 2px 0 var(--key-edge),
+    3px 5px 10px rgba(25, 23, 32, 0.16),
+    inset 0 1px 0 var(--key-face-hi);
+}
+
+[data-theme="dark"] {
+  /* case accents as TEXT flip to the bright variant on navy (deep is
+     calibrated for light cards only) */
+  --case-code-first-text: var(--case-code-first-hi);
+  --case-drift-text: var(--case-drift-hi);
+  --case-guardian-text: var(--case-guardian-hi);
+  --case-clarity-text: var(--case-clarity-hi);
+  --case-design-lab-text: var(--case-design-lab-hi);
+  --case-writing-text: var(--case-writing-hi);
+  --case-filters-text: var(--case-filters-hi);
+  --case-chip-text: var(--case-chip-hi);
+  --hero-panel-bg: #F4EFE6;
+  --hero-panel-shadow: rgba(0, 0, 0, 0.44);
+  --hero-link: rgba(244, 239, 230, 0.2);
+  --key-plus: rgba(244, 239, 230, 0.5);
+  --switch-track-hi: #2B2B5C;
+  --switch-track-lo: #20204A;
+  --switch-icon-sun: rgba(244, 239, 230, 0.32);
+  --switch-icon-moon: #CFC7F6;
+  --modal-backdrop: rgba(0, 0, 0, 0.6);
+  --page-glow: rgba(255, 255, 255, 0.04);
+}
+
+/* ─── GlassBanner surface (DESIGN.md: recorded surface) ─────────────
+   Apple-style frosted gradient panel for end-of-page CTAs. Brand hues
+   only: iris/periwinkle (--hub-*) + mint (--case-clarity-*) + gold
+   periwinkle, low opacity over a light glass base. Dark keeps the same
+   tints over a translucent navy ground: glassy, never a flat block.
+   Text inside uses the NORMAL semantic inks (theme-aware). */
+:root {
+  --banner-radius: 30px;
+  --banner-blur: var(--bella-blur-lg);
+  --banner-border: rgba(255, 255, 255, 0.6);
+  --banner-shadow: var(--shadow-soft);
+  --banner-ground: var(--color-glass-strong);
+  --banner-gradient:
+    radial-gradient(120% 140% at 12% 0%, color-mix(in srgb, var(--hub-hi) 52%, transparent), transparent 55%),
+    radial-gradient(110% 120% at 88% 8%, color-mix(in srgb, var(--case-clarity-hi) 38%, transparent), transparent 52%),
+    radial-gradient(140% 150% at 55% 100%, color-mix(in srgb, var(--color-accent-peri) 28%, transparent), transparent 58%);
+}
+
+/* Dark overrides live on BODY, not html: var() inside a custom property
+   substitutes where the property is DECLARED, and --color-card's dark
+   value is declared on [data-theme="dark"] body. Declaring these on
+   html would resolve --color-card to the light #fff (the font-token
+   lesson, same trap). */
+[data-theme="dark"] body {
+  --gloss-key: linear-gradient(color-mix(in srgb, white 10%, transparent), transparent 46%);
+  --gloss-key-hover: linear-gradient(color-mix(in srgb, white 16%, transparent), transparent 52%);
+  --gloss-key-pressed: linear-gradient(transparent 0 10%, color-mix(in srgb, white 7%, transparent) 10%, transparent 50%);
+  --banner-border: rgba(207, 199, 246, 0.22);
+  --banner-ground: color-mix(in srgb, var(--color-card) 82%, transparent);
+  --banner-gradient:
+    radial-gradient(120% 140% at 12% 0%, color-mix(in srgb, var(--hub-bright) 28%, transparent), transparent 55%),
+    radial-gradient(110% 120% at 88% 8%, color-mix(in srgb, var(--case-clarity-lo) 20%, transparent), transparent 52%),
+    radial-gradient(140% 150% at 55% 100%, color-mix(in srgb, var(--color-accent-peri) 16%, transparent), transparent 58%);
+}
+
+/* ─── Keycap logo lockup (header) — from _proto/_hero.html ──────────
+   CTRL + ALT + DESIGN as keyboard keys; DESIGN is the iris key.
+   Unique at 28px — recorded §5 exception: the logo is a brand lockup,
+   not running text (see DESIGN.md). */
+.kbd-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.kbd-logo .key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 16px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-hero-display);
+  font-weight: 700; /* Unique Bold cut — same as the hero headline */
+  text-transform: uppercase;
+  font-size: 28px;
+  letter-spacing: 0.02em;
+  color: var(--hero-panel-ink);
+  line-height: 1;
+  background: linear-gradient(var(--key-face-hi), var(--key-face-lo));
+  box-shadow:
+    2px 5px 0 var(--key-edge),
+    6px 10px 16px rgba(25, 23, 32, 0.18),
+    inset 0 1px 0 var(--key-face-hi);
+}
+
+.kbd-logo .key-iris {
+  color: var(--key-face-hi); /* fixed white — the face is fixed too */
+  /* fill tokens, not iris-hi: white labels need >=4.5 on every stop
+     (#6C5CE0 4.9, #5B4BD1 6.1; the lighter #8E7EEC was 3.3) */
+  background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
+  box-shadow:
+    2px 5px 0 var(--key-iris-edge),
+    6px 10px 18px color-mix(in srgb, var(--color-accent-ink) 36%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.kbd-logo .plus {
+  font-family: var(--font-hero-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--key-plus);
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .kbd-logo {
+    gap: 6px;
+  }
+
+  .kbd-logo .key {
+    font-size: 20px;
+    padding: 8px 11px;
+  }
+
+  .kbd-logo .plus {
+    font-size: 16px;
   }
 }
 
@@ -106,8 +448,8 @@
 
 /* Section rhythm — one scale (4-based --spacing-*), one value per tier */
 .layout-section {
-  padding-top: var(--spacing-20);
-  padding-bottom: var(--spacing-20);
+  padding-top: var(--space-section);
+  padding-bottom: var(--space-section);
 }
 
 .layout-section-tight {
@@ -149,16 +491,6 @@
   margin-bottom: var(--spacing-12);
 }
 
-/* ─── Keyframes ─────────────────────────────────────────────────── */
-@keyframes scroll-left {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-}
 
 @keyframes fadeInUp {
   from {
@@ -181,28 +513,56 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--color-page);
+  background-color: var(--color-semantic-background);
 }
 
 body {
   font-family: var(--font-body);
-  font-size: 17px;
+  font-size: var(--typography-font-size-base);
   line-height: 1.65;
   letter-spacing: 0.01em;
   background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.65), transparent 36%),
-    linear-gradient(180deg, #f8f4ec 0%, var(--color-page) 24%, #f4efe6 100%);
+    radial-gradient(circle at top, var(--page-glow), transparent 36%),
+    var(--color-semantic-background);
   color: var(--color-ink-soft);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
+/* Navy dark mode — surfaces flip via BELLA [data-theme="dark"]; every
+   app-level surface/ink/border alias flips here (single place, no
+   per-component hex). Components must consume THESE tokens, never raw
+   grounds/inks — see DESIGN.md "Global theming contract". */
+[data-theme="dark"] body {
+  --color-ink: #F4EFE6;
+  --color-ink-soft: #E6E1D6;
+  /* AAA bump (Pass B 2026-07-18): 7.5:1 on the elevated surface
+     #2B2B5C, 8.4 on card, 9.4 on page (was #B9B4C7, 6.5 on surface) */
+  --color-ink-muted: #C6C2D4;
+  --color-muted: #C6C2D4;
+  --color-page: #1B1B40;
+  --color-cream: #232350;
+  --color-card: #232350;
+  --color-surface: #2B2B5C;
+  --color-white-pure: #2B2B5C;
+  --color-glass: rgba(35, 35, 80, 0.68);
+  --color-glass-strong: rgba(35, 35, 80, 0.82);
+  --color-tag-bg: rgba(244, 239, 230, 0.08);
+  --color-tag-border: rgba(244, 239, 230, 0.16);
+  --color-border-soft: rgba(244, 239, 230, 0.1);
+  --color-border-medium: rgba(244, 239, 230, 0.16);
+  --color-accent-iris: #A79CE2;
+  background: var(--color-semantic-background);
+}
+
 h1,
 h2 {
   font-family: var(--font-display);
   color: var(--color-ink);
-  letter-spacing: -0.03em;
+  /* v3: headings render Unique (condensed). Negative tracking makes its
+     glyphs COLLIDE; Unique display sizes always track >= 0. */
+  letter-spacing: 0.01em;
 }
 
 h3,
@@ -234,6 +594,9 @@ li {
   position: fixed;
   left: var(--space-2);
   top: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
   padding: var(--space-1) var(--space-2);
   background: var(--color-ink);
   color: var(--color-page);
@@ -244,27 +607,21 @@ li {
   background-color: var(--color-page);
 }
 
-.text-muted {
-  color: var(--color-muted);
-}
 
-.border-soft {
-  border-color: var(--color-border-soft);
-}
 
-.surface-subtle {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.22) 100%);
-}
 
 .eyebrow,
 .section-label {
-  font-family: var(--font-body);
-  font-size: clamp(0.65rem, 0.75vw, 0.75rem);
-  font-weight: 600;
+  /* Eyebrows are Geist, uppercase, tracked (--tracking-eyebrow).
+     Presence pass 2026-07-17: 700 weight; case surfaces use the case
+     identity colour (-text flips), neutral surfaces ink-soft. */
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm); /* one ramp step up: 13 -> 14 (eyebrows read too quiet under the display heads) */
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  /* iris accent as TEXT — #A79CE2 stays fill-only (2.25:1) */
-  color: var(--color-accent-ink);
+  letter-spacing: var(--tracking-eyebrow);
+  /* wayfinding, not action: eyebrows never wear the interactive iris */
+  color: var(--color-eyebrow);
   line-height: 1.35;
 }
 
@@ -280,27 +637,30 @@ li {
 .glass-card {
   background: linear-gradient(180deg, var(--color-glass-strong) 0%, var(--color-glass) 100%);
   border: 1px solid var(--color-alpha-glass-72);
-  border-radius: var(--radius-3xl);
+  /* DESIGN.md: one card radius everywhere */
+  border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-layered);
   backdrop-filter: blur(var(--bella-blur-lg));
   -webkit-backdrop-filter: blur(var(--bella-blur-lg));
 }
 
+/* THE tag — one neutral treatment everywhere (spec: Geist, ink on
+   linen). Fixed-context chip: linen face + fixed ink in both themes. */
 .tag {
   display: inline-flex;
   align-items: center;
   padding: 0.35rem 0.8rem;
   border-radius: var(--radius-full);
-  border: 1px solid var(--color-tag-border);
-  background: var(--color-tag-bg);
+  border: none; /* section 5 contract: Tag = flat wash, never chip-like */
+  cursor: default;
+  background: var(--color-supporting-linen);
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: var(--typography-font-size-tag);
   font-weight: var(--typography-font-weight-medium);
-  color: var(--color-ink-soft);
+  color: var(--ink-on-paper);
   white-space: nowrap;
   line-height: var(--typography-line-height-normal);
   letter-spacing: 0.02em;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
 .card-hover {
@@ -327,66 +687,100 @@ li {
   -webkit-backdrop-filter: blur(var(--bella-blur-sm));
 }
 
-.pull-quote {
-  font-family: var(--font-display);
-  font-size: clamp(22px, 2.5vw, 28px);
-  font-style: italic;
-  color: #2c2c2c;
-  border-left: 3px solid #1a1a1a;
-  padding: var(--spacing-5) var(--spacing-6);
-  background: var(--color-semantic-surface-elevated);
-  border-radius: var(--radius-sm);
-  margin: var(--spacing-10) 0;
+
+/* ─── Feature panel — the owned-color moment ─────────────────────
+   Full periwinkle color block (Anthropic-panel feel). Everything inside
+   reads in ink: #111 on #A79CE2 is 7.9:1, so body text passes 7:1. */
+.feature-panel {
+  background: var(--color-semantic-accent);
+  border-radius: var(--radius-3xl);
+  box-shadow: var(--shadow-soft);
+  color: var(--color-brand-ink);
+  overflow: hidden;
 }
+
+.feature-panel .eyebrow,
+.feature-panel .section-label,
+.feature-panel h3,
+.feature-panel p {
+  color: var(--color-brand-ink);
+}
+
+.feature-panel .tag {
+  background: var(--color-alpha-glass-48);
+  border-color: var(--color-alpha-ink-6);
+  color: var(--color-brand-ink);
+}
+
+
+
+
 
 /* ─── Type scale ─────────────────────────────────────────────────
    Modular scale (×1.25 ratio). Use these classes instead of
    ad-hoc inline font-size / font-weight declarations.
 ────────────────────────────────────────────────────────────────── */
 
-/* H1 — page / hero title */
-.heading-display {
-  font-family: var(--font-display);
-  font-size: var(--font-hero);
-  font-weight: var(--typography-font-weight-bold);
-  letter-spacing: -0.025em;
+
+/* ─── Display heading system (corrective pass 2026-07-17) ──────────
+   ONE primitive for every display heading (ui/Heading.tsx renders
+   these classes; nothing else declares the display face). Unique 700
+   all-caps at four ramp tiers; the accent span is the established hero
+   treatment (key word in iris). Floor: 24px (gate). The bubble title,
+   home hero headline, and keycap lockup share the tokens through
+   their own shells. */
+.display-heading {
+  font-family: var(--font-hero-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
   line-height: 0.95;
   color: var(--color-ink);
 }
 
-/* H2 — section titles (Case Studies, Experience, About…) */
-.heading-section {
-  font-family: var(--font-display);
-  font-size: var(--font-section-title);
-  font-weight: var(--typography-font-weight-bold);
-  letter-spacing: var(--typography-letter-spacing-tight);
-  line-height: 1.08;
-  color: var(--color-ink);
+.display-heading--hero {
+  font-size: var(--font-hero);
+  line-height: 0.9;
+}
+
+.display-heading--page {
+  font-size: var(--font-case-display);
+  line-height: 0.9;
+}
+
+.display-heading--section {
+  font-size: var(--font-section-display);
+}
+
+.display-heading--case {
+  font-size: var(--font-case-display);
+  line-height: 0.9;
+}
+
+.display-heading__accent {
+  color: var(--color-accent-ink);
+}
+
+.display-heading--inverse {
+  color: var(--ink-on-dark-strong);
 }
 
 /* H3 — sub-section headers (Education, Working with me…) */
 .heading-subsection {
   font-family: var(--font-display);
-  font-size: clamp(1.375rem, 2.2vw, 2rem);
+  font-size: var(--font-subsection);
   font-weight: var(--typography-font-weight-bold);
-  letter-spacing: -0.015em;
+  letter-spacing: 0.01em; /* Unique never gets negative tracking */
   line-height: 1.15;
   color: var(--color-ink);
 }
 
-/* H4 — card / case-study titles */
-.heading-card {
-  font-family: var(--font-display);
-  font-size: var(--font-card-title);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.18;
-  color: var(--color-ink);
-}
 
 /* H5 — inline item labels (collaboration cards, role titles…) */
 .heading-item {
-  font-family: var(--font-display);
+  /* item/card titles are below the 20px Unique floor: they stay Geist
+     (Unique is display-only and illegible at label sizes) */
+  font-family: var(--font-body);
   font-size: var(--font-small);
   font-weight: 600;
   letter-spacing: -0.005em;
@@ -414,7 +808,7 @@ li {
 
 .body-sm {
   font-family: var(--font-body);
-  font-size: clamp(0.8rem, 0.85vw, 0.875rem);
+  font-size: var(--font-small);
   line-height: var(--typography-line-height-normal);
   letter-spacing: 0.01em;
   color: var(--color-muted);
@@ -429,24 +823,7 @@ li {
   color: var(--color-ink-muted);
 }
 
-/* Long-form reading — case studies, articles */
-.body-reading {
-  font-family: var(--font-body);
-  font-size: var(--font-body-size);
-  line-height: 1.85;
-  letter-spacing: 0.01em;
-  color: var(--color-ink-soft);
-}
 
-/* Case study title — larger, editorial */
-.heading-case-study {
-  font-family: var(--font-display);
-  font-size: clamp(2.25rem, 4vw, 3.5rem);
-  font-weight: var(--typography-font-weight-bold);
-  letter-spacing: -0.025em;
-  line-height: 1.02;
-  color: var(--color-ink);
-}
 
 /* ─── Surface system ────────────────────────────────────────────── */
 
@@ -456,9 +833,10 @@ li {
   backdrop-filter: blur(var(--bella-blur-sm));
   -webkit-backdrop-filter: blur(var(--bella-blur-sm));
   border: 1px solid var(--color-alpha-glass-55);
-  border-radius: var(--radius-xl);
+  /* DESIGN.md: one card radius everywhere */
+  border-radius: var(--radius-2xl);
   box-shadow: 0 1px 4px var(--color-alpha-shadow-warm-03), 0 4px 16px var(--color-alpha-shadow-warm-04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    inset 0 1px 0 var(--color-semantic-border-glass-top);
 }
 
 /* Glass card — case study cards, content panels, featured surfaces */
@@ -467,20 +845,281 @@ li {
   backdrop-filter: blur(var(--bella-blur-md));
   -webkit-backdrop-filter: blur(var(--bella-blur-md));
   border: 1px solid var(--color-alpha-glass-55);
-  border-top: 1px solid rgba(255, 255, 255, 0.75);
+  border-top: 1px solid var(--color-semantic-border-glass-top);
   border-radius: var(--radius-2xl);
   box-shadow: 0 1px 2px var(--color-alpha-shadow-warm-04), 0 8px 24px var(--color-alpha-shadow-warm-06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    inset 0 1px 0 var(--color-semantic-border-glass-top);
 }
 
 /* Dark utility surface — CTAs, key controls */
 .surface-dark {
+  /* fixed-context charcoal chip — same in both modes */
   background: #1A1814;
-  color: var(--color-semantic-background);
+  color: var(--ink-on-dark-strong);
+}
+
+
+/* ─── §7 Control taxonomy — flat controls (keycap = actions only) ──── */
+
+/* §8: ONE connected control. Segments touch; hairline dividers between
+   inactive neighbours, no gaps, active segment reads as a filled section
+   of the same object. */
+.seg-control {
+  display: inline-flex;
+  list-style: none;
+  margin: 0;
+  /* concentric radii (pixel pass 2026-07-18): the selected fill's
+     radius = container radius minus this inset, so the curves share a
+     centre instead of the fill following the container clip */
+  --seg-inset: 3px;
+  padding: var(--seg-inset);
+  gap: 0;
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-lg);
+  background: var(--color-glass);
+}
+
+.seg-control button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  min-height: 38px;
+  padding: 0 var(--spacing-4);
+  border-radius: calc(var(--radius-lg) - var(--seg-inset));
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+/* hairline divider between segments (markup is ul > li > button) */
+.seg-control li + li button {
+  box-shadow: -1px 0 0 0 var(--color-border-medium);
+}
+
+/* no divider against the selected fill: the seam dies on the trailing
+   side too (the selected button's own ring already replaces its side) */
+.seg-control li:has(button[aria-current="true"]) + li button {
+  box-shadow: none;
+}
+
+.seg-control button[aria-current="true"] {
+  background: var(--color-semantic-accent-subtle);
+  color: var(--color-accent-ink);
+  box-shadow: inset 0 0 0 1px var(--color-semantic-accent-border);
+}
+
+.seg-control button:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: -3px;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  cursor: pointer;
+  min-height: 32px;
+  padding: 4px var(--spacing-4);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-medium);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--color-ink-soft);
+  transition: background var(--motion-duration-fast), color var(--motion-duration-fast);
+}
+
+/* condensed explore chips (Finviz pattern): denser, 13px, still
+   unmistakably interactive next to inert Tags */
+.filter-chip--dense {
+  min-height: var(--spacing-8);
+  padding: 2px var(--spacing-3);
+  font-size: var(--typography-font-size-tag);
+}
+
+.filter-chip:hover {
+  border-color: var(--color-ink-muted);
+  background: var(--color-alpha-ink-6);
+}
+
+.filter-chip[aria-pressed="true"] {
+  background: var(--color-semantic-background-inverse);
+  border-color: var(--color-semantic-background-inverse);
+  color: var(--color-semantic-text-inverse);
+}
+
+.filter-chip:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+  .filter-chip {
+    min-height: var(--spacing-touch-target);
+  }
+}
+
+.select-control {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.select-control__field {
+  position: relative;
+  display: inline-flex;
+}
+
+.select-control select {
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-ink);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-2) var(--spacing-8) var(--spacing-2) var(--spacing-3);
+  min-height: var(--spacing-touch-target);
+}
+
+.select-control select:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.select-control__chevron {
+  position: absolute;
+  right: var(--spacing-2);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--color-ink-muted);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px; /* matches the hub-sub recorded exception */
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-ink);
+  border: 1px solid var(--color-semantic-accent-border);
+  border-radius: var(--radius-full);
+  padding: 2px var(--spacing-2);
+  white-space: nowrap;
+}
+
+/* ─── Keycap Button — the site-wide button style ─────────────────
+   Neutral = light key; primary = coloured key (--key-c sets the face:
+   accent by default, or a case colour). Labels stay Geist caps at tag
+   size — NEVER Unique (locked type rule). Values are the --btn-key /
+   --shadow-key tokens; press = translateY(3px) onto the reduced plate. */
+.btn-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  cursor: pointer;
+  /* visible border + the raised plate: the cap never blends into its
+     ground (token-level, both themes) */
+  border: 1px solid var(--btn-key-border);
+  border-radius: var(--btn-key-radius);
+  padding: 11px 18px;
+  min-height: var(--spacing-touch-target);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--hero-panel-ink);
+  background: var(--gloss-key), linear-gradient(var(--key-face-hi), var(--key-face-lo));
+  box-shadow: var(--shadow-key-resting);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+/* hover: the light lifts (sheen brightens, cap rises a hair) */
+.btn-key:hover {
+  transform: translateY(-1px);
+  background: var(--gloss-key-hover), linear-gradient(var(--key-face-hi), var(--key-face-lo));
+  box-shadow: var(--shadow-key-hover);
+}
+
+.btn-key:active {
+  transform: translateY(3px);
+  background: var(--gloss-key-pressed), linear-gradient(var(--key-face-hi), var(--key-face-lo));
+  box-shadow: var(--shadow-key-pressed);
+}
+
+.btn-key:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.btn-key--primary {
+  color: var(--key-face-hi);
+  border-color: var(--key-fill-edge);
+  background: var(--gloss-key), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
+  box-shadow:
+    2px 5px 0 var(--key-fill-edge),
+    6px 9px 14px color-mix(in srgb, var(--key-fill-lo) 32%, transparent),
+    var(--edge-glass-hi-strong);
+}
+
+.btn-key--primary:hover {
+  transform: translateY(-1px);
+  background: var(--gloss-key-hover), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
+}
+
+.btn-key--primary:active {
+  transform: translateY(3px);
+  background: var(--gloss-key-pressed), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
+  box-shadow:
+    1px 2px 0 var(--key-fill-edge),
+    3px 5px 10px color-mix(in srgb, var(--key-fill-lo) 28%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Pressed-in state for toggles (selected view tab, active filter chip) */
+.btn-key[aria-pressed="true"],
+.btn-key[aria-selected="true"] {
+  transform: translateY(3px);
+  box-shadow: var(--shadow-key-pressed);
+}
+
+.btn-key--primary[aria-pressed="true"],
+.btn-key--primary[aria-selected="true"] {
+  transform: translateY(3px);
+  box-shadow:
+    1px 2px 0 var(--key-fill-edge),
+    3px 5px 10px color-mix(in srgb, var(--key-fill-lo) 28%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-key {
+    transition: none;
+  }
 }
 
 /* ─── Scroll anchor offset ──────────────────────────────────────── */
-/* BELLA v0.1 Rule 4: --header-height is defined in @theme above (70px).
+/* BELLA v0.1 Rule 4: --header-height is defined in the unlayered :root
+ * authority block above (76px desktop, 64px at 640px and below).
  * scroll-padding-top on the document scroll container (html) is what
  * actually moves the in-viewport landing position of anchor jumps.
  * scroll-margin-top on the targets themselves is the per-element fallback
@@ -497,18 +1136,78 @@ section[id],
   scroll-margin-top: calc(var(--header-height) + var(--spacing-4));
 }
 
-/* Case study pages — scroll padding so anchor jumps clear the fixed nav.
- * .cs-shell is the actual wrapper used by CaseStudyShell. The wrapper's
- * resting top padding is already set by .cs-shell { padding: var(--space-8) ... }
- * (clears the 70px nav comfortably); we only need scroll-padding-top here.
- * .case-study-content is kept for any consumer that wires it up. */
-.cs-shell,
-.case-study-content {
+/* Case study pages — scroll padding so anchor jumps clear the fixed nav. */
+.cs-shell {
   scroll-padding-top: calc(var(--header-height) + var(--spacing-4));
 }
 
-.case-study-content {
-  padding-top: var(--header-height);
+
+/* Portrait bubble (About): the glossy orb recipe holding a photo.
+   One-light-source treatment (upper-left gloss, down-right shadow,
+   --shadow-orb family) plus an iris outline ring so the photo reads
+   as a deliberate device, not a cropped square. */
+.photo-bubble {
+  position: relative;
+  width: clamp(180px, 18vw, 240px);
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  padding: var(--spacing-2);
+  background: radial-gradient(circle at 36% 30%, var(--hub-hi), var(--hub-lo));
+  box-shadow:
+    13px 22px 44px rgba(0, 0, 0, 0.26),
+    inset 7px 9px 18px rgba(255, 255, 255, 0.5),
+    inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+  outline: 2px solid var(--color-semantic-accent-border);
+  outline-offset: 6px;
+}
+
+.photo-bubble img {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+/* gloss highlight sits ABOVE the photo, same spot as the orb's */
+.photo-bubble::after {
+  content: "";
+  position: absolute;
+  top: 12%;
+  left: 20%;
+  width: 24%;
+  height: 20%;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.55), transparent 72%);
+  pointer-events: none;
+}
+
+/* ─── Decision-led case blocks ──────────────────────────────────── */
+
+.cs-summary-block {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--grid-gap);
+  margin: 0 0 var(--spacing-16);
+}
+
+.cs-summary-block .eyebrow {
+  display: block;
+  margin-bottom: var(--spacing-2);
+}
+
+.cs-decision-block {
+  margin: 0 0 var(--spacing-16);
+  padding-left: var(--spacing-5);
+  border-left: 3px solid var(--case-marker, var(--color-semantic-accent-border));
+}
+
+.cs-decision-block .eyebrow {
+  color: var(--case-marker-text, var(--color-eyebrow));
+}
+
+.cs-decision-block .eyebrow {
+  display: block;
+  margin-bottom: var(--spacing-2);
 }
 
 /* ─── Focus states ──────────────────────────────────────────────── */
@@ -520,22 +1219,17 @@ section[id],
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid #1A1814;
+  outline: 2px solid var(--color-semantic-border-strong);
   outline-offset: 3px;
 }
 
-/* Focus on dark backgrounds — high-contrast light outline */
-.bg-\[\#1A1814\] :focus-visible,
-footer :focus-visible {
-  outline: 2px solid rgba(237, 232, 223, 0.7);
-  outline-offset: 3px;
-}
-
-/* Contact form fields — stable focus, no flicker, no radius change */
+/* Contact form fields — stable focus, no flicker, no radius change.
+   Fields sit on the light GlassBanner (light theme) / navy tint (dark);
+   the semantic tokens flip with the theme. */
 .contact-field:focus {
   outline: none;
-  border-color: var(--ink-on-dark-strong) !important;
-  box-shadow: 0 0 0 2px rgba(247, 244, 239, 0.28);
+  border-color: var(--color-accent-ink) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent-ink) 25%, transparent);
 }
 
 .contact-field:focus-visible {
@@ -543,14 +1237,21 @@ footer :focus-visible {
 }
 
 .contact-field::placeholder {
-  /* Rule 1 (BELLA v0.1): placeholders use --ink-on-dark-muted on dark surfaces */
-  color: var(--ink-on-dark-muted);
+  color: var(--color-ink-muted);
   opacity: 1; /* Firefox lowers placeholder opacity by default; reset for AAA */
 }
 
-/* Footer nav links: --ink-on-dark-body resting, --ink-on-dark-strong on hover */
+/* Footer nav links: muted resting, full ink on hover (theme-aware).
+   44px house rule: inline links keep their line box but grow the hit
+   area via block padding (inline elements paint/hit padding without
+   moving lines), centred on the touch target with lh. */
+.footer-nav-link,
+.touch-inline {
+  padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
+}
+
 .footer-nav-link:hover {
-  color: var(--ink-on-dark-strong);
+  color: var(--color-ink);
 }
 
 /* Generic form focus fallback for non-contact forms */
@@ -560,71 +1261,62 @@ textarea:focus-visible {
   outline-offset: 2px;
 }
 
-/* ─── Demo link buttons ─────────────────────────────────────────── */
+/* System page: rules + status lists */
+.ds-rules {
+  margin: 0;
+  padding-left: var(--spacing-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-soft);
+  line-height: 1.6;
+}
+
+.ds-status {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--grid-gap);
+}
+
+.ds-status__list {
+  margin: 0;
+  padding-left: var(--spacing-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-soft);
+  line-height: 1.6;
+}
+
+/* ─── Demo links: TERTIARY (text link, iris + underline) — demoted
+   from bordered pills per the button grammar (two button treatments
+   only; everything else is a text link) ── */
 
 .demo-link {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-2);
-  padding: 10px var(--spacing-5);
-  border-radius: var(--radius-full);
-  border: 1px solid rgba(26, 24, 20, 0.14);
-  background: var(--color-alpha-glass-72);
-  color: #1A1814;
+  min-height: var(--spacing-touch-target);
+  color: var(--color-accent-ink);
   font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: var(--typography-font-weight-medium);
-  text-decoration: none;
-  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
-  box-shadow: 0 2px 8px var(--color-alpha-shadow-warm-04);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s;
 }
 
 .demo-link:hover {
-  background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(26, 24, 20, 0.22);
-  box-shadow: 0 4px 14px rgba(28, 26, 46, 0.07);
+  opacity: 0.75;
 }
 
-/* ─── Bento cards ──────────────────────────────────────────────── */
-.bento-card {
-  background: linear-gradient(
-    180deg,
-    var(--color-alpha-glass-72) 0%,
-    rgba(255, 255, 255, 0.52) 100%
-  );
-  backdrop-filter: blur(var(--bella-blur-md));
-  -webkit-backdrop-filter: blur(var(--bella-blur-md));
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-top: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: var(--radius-3xl);
-  box-shadow:
-    0 1px 2px var(--color-alpha-shadow-warm-04),
-    0 8px 32px var(--color-alpha-shadow-warm-06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7);
-  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1);
-  text-decoration: none;
-  color: inherit;
-}
 
-.bento-card:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 8px 24px var(--color-alpha-shadow-warm-08),
-    0 24px 56px rgba(28, 26, 46, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-}
 
-/* ─── Carousel ──────────────────────────────────────────────────── */
-.carousel-track {
-  display: flex;
-  width: max-content;
-  animation: scroll-left 35s linear infinite;
-}
 
-.carousel-track:hover {
-  animation-play-state: paused;
-}
 
 /* ─── Process section accordion ───────────────────────────────── */
 /* Behaviour: one open at a time, first item open by default. Animated
@@ -673,7 +1365,7 @@ textarea:focus-visible {
 .process-accordion-number {
   flex-shrink: 0;
   font-family: var(--font-display);
-  font-size: clamp(24px, 3vw, 32px);
+  font-size: var(--font-subsection);
   font-weight: var(--typography-font-weight-bold);
   line-height: 1;
   min-width: 2.5ch;
@@ -682,7 +1374,7 @@ textarea:focus-visible {
 .process-accordion-title {
   flex: 1;
   font-family: var(--font-display);
-  font-size: clamp(20px, 2.2vw, 26px);
+  font-size: var(--font-card-title);
   font-weight: var(--typography-font-weight-bold);
   line-height: var(--typography-line-height-snug);
   color: var(--color-ink);
@@ -767,25 +1459,15 @@ textarea:focus-visible {
   }
 }
 
-.carousel-card {
-  width: 168px;
-  height: 470px;
-}
 
 /* Mobile: shrink carousel cards further than 4715913 (was 120×280px).
  * Even at 280px (34% of an 812px viewport) the strip dominated the
  * landing screenshot and the Hero felt squeezed. 220px is 27% — the
  * carousel reads as a footer band, not a co-equal element. */
-@media (max-width: 768px) {
-  .carousel-card {
-    width: 110px;
-    height: 220px;
-  }
-}
 
 /* ─── Page container ───────────────────────────────────────────── */
 .page-container {
-  max-width: 1200px;
+  max-width: var(--container-width);
   padding-left: var(--spacing-8);
   padding-right: var(--spacing-8);
   margin-left: auto;
@@ -840,9 +1522,6 @@ textarea:focus-visible {
   }
 
   /* Keep carousel visible but stop scrolling */
-  .carousel-track {
-    animation: none;
-  }
 
   /* Disable hover lifts */
   .card-hover:hover,
@@ -871,47 +1550,8 @@ textarea:focus-visible {
 }
 
 /* ─── Snap shell — two-view layout ────────────────────────────── */
-/* View 1: Landing (hero + carousel) fills the viewport.
-   View 2: Dashboard (sidebar + scrollable content panel).
-   Body does not scroll — only the snap shell and the dashboard
-   panel scroll. Nav bar (OverlayNav) stays on top always. */
 
-.snap-shell {
-  height: 100vh;
-  height: 100dvh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: var(--color-page);
-  color: #1A1A1A;
-  /* scroll-snap-type intentionally omitted. Was "y mandatory" (relaxed
-   * to "y proximity" at mobile in 4715913). Both broke programmatic
-   * scroll in browser/extension full-page screenshot tools, which call
-   * scrollTo on the scroll container — snap intercepts and pulls them
-   * back to the snap point. The snap-between-views feel was a
-   * nice-to-have; ordinary scroll is load-bearing for capture tools,
-   * keyboard scroll, and assistive tech. */
-}
 
-/* View 1 — Landing */
-.view-landing {
-  height: 100vh;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  padding-top: var(--header-height);
-  flex-shrink: 0;
-  overflow: hidden;
-}
-
-/* View 2 — Dashboard (sidebar + content) */
-.view-dashboard {
-  height: 100vh;
-  height: 100dvh;
-  flex-shrink: 0;
-  display: flex;
-  overflow: hidden;
-  padding-top: var(--header-height);
-}
 
 /* Mobile: relax view-landing from a fixed 100dvh "share-with-Carousel"
  * box to a flowing min-height container. Hero (flex:1 inline) still
@@ -922,68 +1562,13 @@ textarea:focus-visible {
  * Carousel up into the Hero's visual zone. overflow: visible lets the
  * Carousel sit below the fold instead of being forced into a shared
  * 812px box. */
-@media (max-width: 768px) {
-  .view-landing {
-    height: auto;
-    min-height: 100dvh;
-    overflow: visible;
-  }
-}
 
-/* ─── Sidebar (inside dashboard view) ─────────────────────────── */
-.dashboard-sidebar {
-  display: none;                   /* hidden on mobile */
-  flex-direction: column;
-  width: 220px;
-  flex-shrink: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(246, 241, 232, 0.95) 0%,
-    rgba(246, 241, 232, 0.88) 100%
-  );
-  backdrop-filter: blur(var(--bella-blur-md));
-  -webkit-backdrop-filter: blur(var(--bella-blur-md));
-  border-right: 1px solid var(--color-border-soft);
-  overflow-y: auto;
-}
 
-@media (min-width: 1024px) {
-  .dashboard-sidebar {
-    display: flex;
-  }
-}
 
-.sidebar-brand {
-  padding: 28px var(--spacing-5) var(--spacing-5);
-  border-bottom: 1px solid var(--color-border-soft);
-}
 
-.sidebar-nav {
-  padding: var(--spacing-4) var(--spacing-3);
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
-}
 
-.sidebar-footer {
-  padding: var(--spacing-4) 14px 22px;
-  border-top: 1px solid var(--color-border-soft);
-}
 
-/* ─── Dashboard content panel (scrolls inside) ────────────────── */
-.dashboard-panel {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  overscroll-behavior: contain;     /* prevents scroll leaking to snap shell */
-  scroll-behavior: smooth;
-  min-width: 0;
-}
 
-/* Legacy class — no longer needs padding offset */
-.dashboard-content {
-}
 
 /* ─── Mobile: case study embed & section spacing ──────────────── */
 @media (max-width: 768px) {
@@ -998,7 +1583,8 @@ textarea:focus-visible {
   }
 
   .cs-shell__hero-frame {
-    border-radius: var(--radius-lg);
+    /* DESIGN.md: one card radius everywhere */
+    border-radius: var(--radius-2xl);
   }
 }
 
@@ -1045,53 +1631,76 @@ textarea:focus-visible {
 
 .cs-shell__sticky {
   position: sticky;
-  top: calc(var(--header-height) + 16px);
+  top: calc(var(--header-height) + var(--spacing-8));
   display: flex;
   flex-direction: column;
   gap: 0;
   padding-bottom: var(--spacing-10);
 }
 
-/* Back button */
-.cs-shell__back {
+
+
+/* Eyebrow — mono, same treatment as home sections */
+.cs-shell__backlink {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: var(--typography-font-weight-medium);
-  color: var(--color-muted);
-  text-decoration: none;
-  margin-bottom: var(--spacing-6);
-  transition: color 0.15s ease;
-}
-
-.cs-shell__back:hover {
-  color: var(--color-ink);
-}
-
-/* Eyebrow */
-.cs-shell__eyebrow {
-  font-family: var(--font-body);
-  font-size: 10px;
+  gap: var(--spacing-2);
+  min-height: var(--spacing-touch-target);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
   font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  text-decoration: none;
+  color: var(--color-ink-muted);
+  margin-bottom: var(--spacing-4);
+}
+
+.cs-shell__backlink:hover,
+.cs-shell__backlink:focus-visible {
   color: var(--color-accent-ink);
+}
+
+/* the right-column copy only shows when the left panel is hidden */
+.cs-shell__backlink--mobile {
+  margin-bottom: var(--spacing-2);
+}
+
+@media (min-width: 1080px) {
+  .cs-shell__backlink--mobile {
+    display: none;
+  }
+}
+
+
+/* §8: the case title device wrapper */
+
+
+
+
+/* §8 colour-as-identity: tags ON a case's own page wear its tint.
+   Shared tags everywhere else stay neutral linen. */
+.tag.tag--identity {
+  background: color-mix(in srgb, var(--case-tint-hi, var(--color-supporting-linen)) 36%, var(--color-card));
+  color: var(--case-tint-text, var(--ink-on-paper));
+}
+
+/* dark: keep the tint plate near-navy so the light case text clears AA */
+[data-theme="dark"] .tag.tag--identity {
+  background: color-mix(in srgb, var(--case-tint-hi, var(--color-supporting-linen)) 18%, var(--color-card));
+}
+
+.cs-shell__eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--typography-letter-spacing-wider);
+  color: var(--color-eyebrow);
   margin-bottom: 10px;
 }
 
 /* Title */
-.cs-shell__title {
-  font-family: var(--font-display);
-  font-size: clamp(24px, 2.8vw, 34px);
-  font-weight: var(--typography-font-weight-bold);
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-  color: var(--color-ink);
-  margin: 0 0 var(--spacing-3);
-}
-
 /* Summary */
 .cs-shell__summary {
   font-family: var(--font-body);
@@ -1125,7 +1734,7 @@ textarea:focus-visible {
 
 .cs-shell__meta-row dt {
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: var(--typography-font-size-tag);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -1135,7 +1744,7 @@ textarea:focus-visible {
 
 .cs-shell__meta-row dd {
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: var(--typography-font-size-tag);
   line-height: 1.5;
   color: var(--color-ink-soft);
   text-align: right;
@@ -1150,20 +1759,6 @@ textarea:focus-visible {
   margin-bottom: var(--spacing-4);
 }
 
-.cs-shell__tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 10px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-alpha-shadow-warm-08);
-  font-family: var(--font-body);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  line-height: 1.4;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
-}
-
 /* Links section */
 .cs-shell__links {
   display: flex;
@@ -1173,36 +1768,12 @@ textarea:focus-visible {
 }
 
 .cs-shell__links .demo-link {
-  font-size: 12px;
+  font-size: var(--typography-font-size-tag);
   padding: var(--spacing-2) var(--spacing-4);
 }
 
-/* CTA (desktop sidebar) */
-.cs-shell__cta {
-  margin-top: var(--spacing-2);
-  padding-top: var(--spacing-4);
-  border-top: 1px solid var(--color-border-soft);
-}
 
-.cs-shell__cta-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 9px var(--spacing-5);
-  border-radius: var(--radius-full);
-  background: var(--color-ink);
-  color: var(--color-page);
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 600;
-  text-decoration: none;
-  letter-spacing: 0.04em;
-  transition: opacity 0.15s ease;
-}
 
-.cs-shell__cta-btn:hover {
-  opacity: 0.85;
-}
 
 /* ── Right column — visual narrative ─────────────────────────── */
 
@@ -1212,11 +1783,6 @@ textarea:focus-visible {
   padding-top: clamp(var(--spacing-20), 10vh, 120px);
 }
 
-/* Mobile back */
-.cs-shell__mobile-back {
-  display: block;
-  margin-bottom: var(--spacing-4);
-}
 
 /* Hero media — controlled, not oversized */
 .cs-shell__hero {
@@ -1228,7 +1794,8 @@ textarea:focus-visible {
   aspect-ratio: 16 / 9;
   width: 100%;
   overflow: hidden;
-  border-radius: var(--radius-xl);
+  /* DESIGN.md: one card radius everywhere */
+  border-radius: var(--radius-2xl);
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: #110f12;
   box-shadow:
@@ -1302,28 +1869,19 @@ textarea:focus-visible {
 }
 
 /* Navigation */
-.cs-shell__nav {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-  gap: var(--spacing-4);
+/* End sequence: "More work like this" (Pass C 2026-07-18) */
+.cs-shell__related {
   border-top: 1px solid var(--color-border-soft);
   padding-top: var(--space-md);
   margin-top: var(--space-xl);
   margin-bottom: var(--space-md);
 }
 
-.cs-shell__nav-link {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-  max-width: 45%;
-  text-decoration: none;
-  color: inherit;
-}
-
-.cs-shell__nav-link--next {
-  align-items: flex-end;
+.cs-shell__related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--grid-gap);
+  align-items: stretch;
 }
 
 /* Bottom CTA */
@@ -1344,25 +1902,23 @@ textarea:focus-visible {
     display: block;
     width: 320px;
     flex-shrink: 0;
-    padding-top: 88px;
+    /* proto's 104px top-breathing feel — clears the fixed header */
+    padding-top: calc(var(--header-height) + var(--spacing-8));
   }
 
   .cs-shell__right {
     flex: 1;
     min-width: 0;
-    padding-top: 88px;
+    padding-top: calc(var(--header-height) + var(--spacing-8));
   }
 
   /* Hide mobile-only elements */
-  .cs-shell__mobile-back {
-    display: none;
-  }
 
   .cs-shell__mobile-header {
     display: none;
   }
 
-  /* Hero slightly larger radius on desktop */
+  /* Same radius as every other card frame (DESIGN.md) */
   .cs-shell__hero-frame {
     border-radius: var(--radius-2xl);
   }
@@ -1377,5 +1933,466 @@ textarea:focus-visible {
 
   .cs-shell__left {
     width: 340px;
+  }
+}
+
+/* ─── §8 /design-system: specimens + token inspector ──────────────
+   The page reads every value live from computed styles; this block is
+   presentation only. All colours resolve from semantic tokens. */
+
+/* D2 (Pass D 2026-07-18): About thesis tiles, the stat-tile direction
+   with case colours (her 17 Jul brief). Plate = case hue mixed into
+   card; static border per the calm-card rule; ink text keeps AA. */
+.thesis-tile {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-8);
+  border-radius: var(--radius-2xl);
+  background: color-mix(in srgb, var(--thesis-hi) 22%, var(--color-card));
+  border: 1px solid color-mix(in srgb, var(--thesis-hi) 52%, var(--color-card));
+}
+
+[data-theme="dark"] .thesis-tile {
+  background: color-mix(in srgb, var(--thesis-hi) 14%, var(--color-card));
+  border-color: color-mix(in srgb, var(--thesis-hi) 32%, var(--color-card));
+}
+
+/* D1 (Pass D 2026-07-18): full-width specimen bands. The band paints
+   edge to edge; text stays inside the 1240 container it wraps. */
+.ds-band {
+  padding-block: var(--spacing-12);
+}
+
+.ds-band--card {
+  background: var(--color-card);
+  border-block: 1px solid var(--color-border-soft);
+}
+
+/* identity band: the five case hues wash the full width at low tint */
+.ds-band--identity {
+  background: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--case-chip-hi) 14%, var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-code-first-hi) 14%, var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-drift-hi) 14%, var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-guardian-hi) 14%, var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-clarity-hi) 14%, var(--color-semantic-background))
+  );
+  border-block: 1px solid var(--color-border-soft);
+}
+
+.ds-band .ds-section {
+  margin-top: 0;
+}
+
+.ds-band .ds-section + .ds-section {
+  margin-top: var(--spacing-16);
+}
+
+/* the ONE orb recipe (generalises the old bubble specimen): case hues
+   via --orb-hi/--orb-lo, one upper-left light, recorded elevation */
+.ds-orb {
+  display: block;
+  width: 112px;
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle at 36% 30%, var(--orb-hi), var(--orb-lo));
+  box-shadow: var(--shadow-orb);
+}
+
+.ds-orb--small {
+  width: 96px;
+}
+
+.ds-caseband {
+  list-style: none;
+  margin: var(--spacing-6) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-10) var(--spacing-12);
+  align-items: flex-start;
+}
+
+.ds-caseband__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  max-width: 180px;
+}
+
+.ds-caseband__item .ds-orb {
+  margin-bottom: var(--spacing-3);
+}
+
+.ds-caseband__item--small .ds-orb {
+  width: 72px;
+}
+
+/* the oversized type specimen (hero tier at display scale) */
+.ds-type__display {
+  margin: var(--spacing-6) 0 var(--spacing-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.ds-page__intro {
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  max-width: 62ch;
+  margin: var(--spacing-8) 0 0;
+}
+
+.ds-section {
+  margin-top: var(--spacing-16);
+}
+
+.ds-section__title {
+  font-family: var(--font-body);
+  font-size: var(--font-subsection);
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 0 0 var(--spacing-4);
+}
+
+.ds-section__kicker {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: var(--spacing-6) 0 var(--spacing-3);
+}
+
+.ds-section__note {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  max-width: 62ch;
+  margin: 0 0 var(--spacing-6);
+}
+
+.ds-swatches {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--spacing-4);
+}
+
+.ds-swatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.ds-swatch__plate {
+  display: block;
+  height: 64px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-medium);
+}
+
+.ds-swatch__name {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm); /* type-presence: token names were the least legible text on the site */
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+}
+
+.ds-swatch__case {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  /* 44px house rule, inline hit-area growth */
+  padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
+}
+
+.ds-opening {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-4);
+  margin: var(--spacing-6) 0 var(--spacing-4);
+}
+
+.ds-agents__code {
+  overflow-x: auto;
+  padding: var(--spacing-5);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--spacing-4);
+}
+
+.ds-gate__pass {
+  display: inline-flex;
+  margin-left: var(--spacing-2);
+  padding: 1px var(--spacing-2);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--case-clarity-text);
+  color: var(--case-clarity-text);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+}
+
+.ds-swatch__value {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-ink-muted);
+  overflow-wrap: anywhere;
+}
+
+.ds-type {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.ds-type__sample {
+  display: block;
+  color: var(--color-ink);
+  line-height: 1.15;
+}
+
+.ds-type__meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-ink-muted);
+  margin-top: var(--spacing-1);
+}
+
+.ds-specimen-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-6);
+}
+
+.ds-specimen__body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-xl);
+  background: var(--color-card);
+  min-height: 120px;
+}
+
+
+.ds-scale {
+  list-style: none;
+  margin: 0;
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-xl);
+  background: var(--color-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.ds-scale__row {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.ds-scale__bar {
+  display: block;
+  height: 12px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-ink);
+  justify-self: start;
+}
+
+.ds-scale__box {
+  display: block;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--color-accent-ink);
+  justify-self: start;
+}
+
+.ds-gate {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  max-width: 72ch;
+}
+
+.ds-gate__row dt {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+}
+
+.ds-gate__row dd {
+  margin: var(--spacing-1) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+/* ── Token inspector ── */
+
+.tok-inspector {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(260px, 1.2fr);
+  gap: var(--spacing-8);
+  align-items: start;
+  padding: var(--spacing-8);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-2xl);
+  background: var(--color-card);
+}
+
+.tok-inspector__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-8);
+  padding-top: var(--spacing-6);
+}
+
+/* keycap specimen, built from the same tokens the readout names */
+.tok-inspector__key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 34px;
+  min-height: var(--spacing-touch-target);
+  border-radius: var(--btn-key-radius);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--key-face-hi);
+  background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
+  box-shadow:
+    2px 5px 0 var(--key-fill-edge),
+    6px 9px 14px color-mix(in srgb, var(--key-fill-lo) 32%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  outline: 2px dashed transparent;
+  outline-offset: 6px;
+  transition: outline-color 0.15s;
+}
+
+.tok-inspector__key[data-zone] {
+  outline-color: var(--color-accent-ink);
+}
+
+.tok-inspector__zones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-2);
+}
+
+.tok-inspector__zone {
+  cursor: pointer;
+  min-height: 32px;
+  padding: 4px var(--spacing-3);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-full);
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.tok-inspector__zone[aria-pressed="true"] {
+  background: var(--color-semantic-accent-subtle);
+  border-color: var(--color-semantic-accent-border);
+  color: var(--color-accent-ink);
+}
+
+.tok-inspector__zone:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.tok-inspector__drives {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--spacing-4);
+  min-height: 3.2em;
+}
+
+.tok-inspector__tokens {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.tok-inspector__row dt {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+}
+
+.tok-inspector__row dd {
+  margin: 2px 0 0;
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-2);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+  overflow-wrap: anywhere;
+}
+
+.tok-inspector__chip {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-medium);
+  align-self: center;
+}
+
+@media (max-width: 720px) {
+  .tok-inspector {
+    grid-template-columns: 1fr;
+    padding: var(--spacing-6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tok-inspector__key {
+    transition: none;
   }
 }

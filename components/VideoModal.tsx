@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { Icon } from "@/components/ui/Icon";
 
 interface VideoModalProps {
   isOpen: boolean;
@@ -69,7 +70,7 @@ export default function VideoModal({
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-10"
-      style={{ background: "rgba(10, 9, 8, 0.92)" }}
+      style={{ background: "var(--modal-backdrop)" }}
       onClick={onClose}
     >
       <div
@@ -84,20 +85,13 @@ export default function VideoModal({
         <button
           ref={closeBtnRef}
           onClick={onClose}
-          className="absolute -top-9 right-0 flex items-center gap-1.5 text-white/50 hover:text-white transition-colors text-[13px] font-medium tracking-wide cursor-pointer"
+          className="absolute -top-9 right-0 flex items-center gap-1.5 text-white/50 hover:text-white transition-colors text-[length:var(--typography-font-size-tag)] font-medium tracking-wide cursor-pointer"
         >
           Close
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path
-              d="M1 1l12 12M13 1L1 13"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
+          <Icon name="Xmark" size="sm" />
         </button>
 
-        {/* Video — standard 16:9 */}
+        {/* Video, standard 16:9 */}
         <div
           className="relative w-full rounded-2xl overflow-hidden bg-black"
           style={{ paddingTop: "56.25%", height: 0 }}
@@ -120,17 +114,17 @@ export default function VideoModal({
 
         {/* Info */}
         <div className="mt-6">
-          <h3 id="video-modal-title" className="font-display font-bold text-white text-[1.2rem] mb-2 leading-snug">
+          <h3 id="video-modal-title" className="font-display font-bold text-white text-[length:var(--font-card-title)] mb-2 leading-snug">
             {title}
           </h3>
-          <p className="text-white/55 text-[14px] leading-relaxed mb-4">
+          <p className="text-white/55 text-[length:var(--typography-font-size-base)] leading-relaxed mb-4">
             {description}
           </p>
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="text-[13px] text-white/50 border border-white/15 px-2.5 py-1 rounded-full"
+                className="text-[length:var(--typography-font-size-tag)] text-white/50 border border-white/15 px-2.5 py-1 rounded-full"
               >
                 {tag}
               </span>
