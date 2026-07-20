@@ -76,7 +76,10 @@ override the constitution.
 ## 5. Controls (one taxonomy — see conformance spec §7)
 The raised **keycap** is reserved for the brand logo and TRUE actions only. Do not use it for filters,
 toggles, or sort.
-- **Button (keycap):** primary (filled iris) + secondary (neutral). Max ONE primary per view.
+- **Button (grammar v5, 2026-07-20):** purple means clickable at every tier. PRIMARY = filled iris
+  keycap, the one 3D moment per view (max ONE). SECONDARY = flat iris outline, iris text, no fill, no
+  elevation (periwinkle on dark and fixed-dark chrome). TERTIARY = text link, iris + underlined. The
+  neutral keycap is retired.
 - **SegmentedControl:** mutually exclusive views (e.g. TABLE/MAP/TIMELINE). Single-select, `aria-current`,
   lighter than a keycap.
 - **FilterChip:** multi-select filters. Flat/outline, `aria-pressed`. Not a keycap.
