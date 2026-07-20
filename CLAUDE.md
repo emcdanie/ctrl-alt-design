@@ -129,6 +129,8 @@ Must pass before any work is "done":
   primitive, home hero, or keycap lockup fails; any mono family reference fails.
 - `audit:tokens` — colour literals and raw spacing (>=4px) in `app/**`/`components/**` fail;
   `token-waiver:` inline comments mark the reviewed proto-exact/artwork exceptions.
+- `audit:parity` — every case-study slug has exactly one `WORK_ITEMS` row and vice versa; side
+  tables for case identity (the deleted `EXTRA_CASES` pattern) fail.
 - tsc clean; all routes 200 (light + dark); NDA content-grep clean.
 
 ## 10. How this file was built and stays alive
