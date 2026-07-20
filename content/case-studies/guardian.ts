@@ -1,5 +1,9 @@
 import type { CaseStudy } from "@/lib/content";
 
+/* Conformance (Pass E task 11, honest): still an ESSAY with three
+ * decisions appended; the editorial reshaping happens with Elleta in
+ * Cowork (per the restructure brief order), then lands as content
+ * edits. One summary; no lessons block yet (TODO below). */
 const study: CaseStudy = {
   slug: "guardian",
   href: "/case-studies/guardian",
@@ -38,9 +42,11 @@ const study: CaseStudy = {
   eyebrow: "Hackathon Concept · 2026",
   summary:
     "Designing a Context-Aware Design System Guardian, an AI-enabled concept that detects drift, surfaces contextual guidance, and helps teams make confident system decisions without leaving their workflow.",
+  /* canonical sidebar meta (Pass E task 11g): Role, Year, Type or
+     Scope, Organisation, Tools where applicable; omit empty rows */
   metadata: [
-    { label: "Year", value: "2026" },
     { label: "Role", value: "Concept Lead, Interaction & Strategy" },
+    { label: "Year", value: "2026" },
     { label: "Scope", value: "AI UX · Design System Governance · Figma Plugin Concept" },
     { label: "Organisation", value: "Into Design Systems Hackathon (sponsored by Figma)" },
   ],
@@ -77,7 +83,7 @@ const study: CaseStudy = {
     },
     {
       kind: "section",
-      eyebrow: "RESEARCH",
+      eyebrow: "DISCOVERY",
       heading: "Investigation & Research",
       children: [
         { kind: "paragraph", text: "Early sessions on the FigJam board surfaced a large volume of valid pain points across all three groups. The risk at this stage was fragmentation: every team member had lived a slightly different version of the problem, and there was a strong pull toward solving all of them simultaneously. Working through How Might We statements, anchored in a Vitaly Friedman-style frame that prioritised behaviour change over feature invention, helped the team converge on a shared north star." },
@@ -120,7 +126,7 @@ const study: CaseStudy = {
     },
     {
       kind: "section",
-      eyebrow: "PROTOTYPE",
+      eyebrow: "THE BUILD",
       heading: "Hackathon Prototype: Guardian Audit Tool",
       children: [
         { kind: "paragraph", text: "During the hackathon, I prototyped an interactive UX audit tool that demonstrates how Guardian could work in practice. Built in 48 hours, the tool analyses a page design and returns structured feedback across four dimensions: UX heuristics, design system compliance, accessibility, and product insight. Click the FigPal button (bottom-right) to open the audit panel, then hit \"Scan Page\" to see it in action." },
@@ -140,7 +146,7 @@ const study: CaseStudy = {
     },
     {
       kind: "section",
-      eyebrow: "PROCESS",
+      eyebrow: "WORKING METHOD",
       heading: "Collaboration and Process",
       children: [
         { kind: "paragraph", text: "The process itself became a design constraint. Roles were separated clearly: designers owned the screens and narrative, developers evaluated feasibility and architecture, and a shared canon, a single agreed flow, explicit definitions, a set of non-negotiables, served as the system everyone worked from. The most useful facilitation principle was resisting the pull toward premature detail. Holding the boundary, this is a design-time tool, not a global update mechanism, prevented the concept from expanding beyond what could be demonstrated or defended." },
@@ -148,7 +154,7 @@ const study: CaseStudy = {
     },
     {
       kind: "section",
-      eyebrow: "OUTCOMES",
+      eyebrow: "RESULTS",
       heading: "Outcomes",
       children: [
         { kind: "paragraph", text: "The final demo showed a coherent, believable experience: a designer working in Figma receives a non-blocking signal from FigPal, engages with a bottom console surfacing the exact differences between their design and the system, makes a deliberate decision, and sends a note to development, all without leaving the canvas." },
@@ -156,7 +162,7 @@ const study: CaseStudy = {
     },
     {
       kind: "section",
-      eyebrow: "KEY LEARNINGS",
+      eyebrow: "TAKEAWAYS",
       heading: "Key Learnings",
       children: [
         { kind: "paragraph", text: "**Governance needs visibility before it needs rules.** Teams struggle to follow design systems when there is no clear signal about when things diverge. Making drift visible is the prerequisite for everything else." },
@@ -166,7 +172,7 @@ const study: CaseStudy = {
     },
     {
       kind: "section",
-      eyebrow: "REFLECTION",
+      eyebrow: "CLOSING",
       heading: "Reflection",
       children: [
         { kind: "paragraph", text: "The most useful reframe on this project was recognising that the design system problem is not, at its core, a tooling problem. It is a communication problem that happens to live inside tools. Documentation doesn't change behaviour because reading documentation is not part of the flow state where decisions actually get made." },

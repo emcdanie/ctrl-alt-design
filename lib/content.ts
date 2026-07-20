@@ -49,6 +49,10 @@ export type CaseBlock =
       poster?: string;
       posterAlt?: string;
     }
+  /* Eyebrow vocabulary rule (Pass E task 11f, Elleta 18 Jul): a
+   * section eyebrow must not repeat a summary label (Context /
+   * Approach / Outcome) and must not equal a word of its own heading.
+   * Change or drop the collider. */
   | { kind: "section"; eyebrow: string; heading: string; children: CaseBlock[] }
   /* decision-led template (Arthur-Kamsky / Justine structure) */
   | { kind: "summary"; context: string; approach: string; outcome: string }

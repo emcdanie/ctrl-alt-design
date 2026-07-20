@@ -239,14 +239,15 @@ export default async function CaseStudyPage({
 
   const caseItem = findWorkItemBySlug(slug);
 
-  /* ── Build metadata rows (data override wins) ── */
-  const metadata = cs.metadata ?? [
-    { label: "Year", value: cs.year },
+  /* ── Build metadata rows (data override wins). Canonical field set
+     (Pass E task 11g): Role, Year, Type or Scope, Organisation, Tools
+     where applicable; same labels, same order; omit empty rows rather
+     than invent content. ── */
+  const metadata = cs.metadata ?? ([
     cs.metrics?.role ? { label: "Role", value: cs.metrics.role } : null,
-    cs.metrics?.team ? { label: "Team", value: cs.metrics.team } : null,
-    { label: "Timeline", value: cs.timeline },
-    { label: "Scope", value: cs.scope },
-  ].filter(Boolean) as { label: string; value: string }[];
+    cs.year ? { label: "Year", value: cs.year } : null,
+    cs.scope ? { label: "Scope", value: cs.scope } : null,
+  ].filter(Boolean) as { label: string; value: string }[]);
 
 
   return (

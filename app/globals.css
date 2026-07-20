@@ -1941,11 +1941,20 @@ textarea:focus-visible {
   margin-bottom: var(--space-md);
 }
 
+/* Related cards render as ONE 3-col row at desktop, stacked on mobile
+   (Pass E task 11e: auto-fill orphaned the third card in a 2-col
+   grid inside the narrow case column). */
 .cs-shell__related-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--grid-gap);
   align-items: stretch;
+}
+
+@media (max-width: 767px) {
+  .cs-shell__related-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Bottom CTA */

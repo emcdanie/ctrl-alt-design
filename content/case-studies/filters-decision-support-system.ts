@@ -1,5 +1,10 @@
 import type { CaseStudy } from "@/lib/content";
 
+/* Conformance (Pass E task 11, honest): decision-led since the 20 Jul
+ * restructure (approved mapping). One summary, intro + problem
+ * sections, three decisions with evidence, prototype journey, lessons,
+ * then REFLECTION last per the approved order. No disclosure (industry
+ * descriptor only, not one of the two disclosure cases). */
 const study: CaseStudy = {
   slug: "filters-decision-support-system",
   /* Statement headline (Elleta, 18 Jul, verbatim): the case THESIS is

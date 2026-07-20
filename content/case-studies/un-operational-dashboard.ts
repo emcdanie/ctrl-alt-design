@@ -1,5 +1,9 @@
 import type { CaseStudy } from "@/lib/content";
 
+/* Conformance (Pass E task 11, honest): an ESSAY, zero live decision
+ * blocks (scaffold commented at the foot of this file); disclosure +
+ * one summary present; no lessons block yet. The editorial reshaping
+ * happens with Elleta in Cowork, then lands as content edits. */
 const study: CaseStudy = {
   slug: "un-operational-dashboard",
   /* Statement headline (Elleta, 18 Jul, verbatim): the case THESIS is
@@ -61,7 +65,7 @@ const study: CaseStudy = {
        comment below). Sections carry the existing prose verbatim. */
     {
       kind: "section",
-      eyebrow: "CONTEXT",
+      eyebrow: "BACKGROUND",
       heading: "Project Context",
       children: [
         { kind: "paragraph", text: "This wasn't a tooling failure. The tools existed. The data existed. The teams were capable. But the information lived in silos, monitoring platforms, ticketing systems, spreadsheets, with no consistent model connecting them. Answering a basic operational question like 'what depends on this server?' required manual assembly from multiple sources, every single time." },
@@ -70,7 +74,7 @@ const study: CaseStudy = {
     },
     {
       kind: "section",
-      eyebrow: "ROLE",
+      eyebrow: "ENGAGEMENT",
       heading: "My Role",
       children: [
         { kind: "paragraph", text: "I was responsible for the full design process: stakeholder discovery, information architecture, interaction design, and the delivery of a high-fidelity, interactive prototype in Figma." },
@@ -119,7 +123,7 @@ const study: CaseStudy = {
     },
     {
       kind: "section",
-      eyebrow: "OUTCOMES",
+      eyebrow: "RESULTS",
       heading: "A Shared Reference Point",
       children: [
         { kind: "paragraph", text: "The prototype functioned as a vision artifact: a concrete, interactive expression of what a unified operational platform could look like, and why the underlying data architecture mattered to achieve it." },
