@@ -82,16 +82,8 @@ const prototypes: LabPrototype[] = [
     gradient: "linear-gradient(135deg, #1C0A0A 0%, #3D1010 50%, #140808 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/finviz-3.png",
   },
-  {
-    /* TODO(elleta): title/subtitle wording is a proposal, reword freely */
-    title: "Finviz AI, Solution Canvas",
-    subtitle: "The strategy artifact behind the screener: user needs traced through overlays and teach layers to hypothetical OKRs, one unbroken argument per need.",
-    category: "STRATEGY",
-    tags: ["Product Strategy", "FinTech", "Data UX"],
-    href: "/demos/finviz-kpi-tree.html",
-    gradient: "linear-gradient(135deg, #1C0A0A 0%, #3D1010 50%, #140808 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
-    thumbnailSrc: "/images/thumbnails/finviz-kpi-tree.png",
-  },
+  /* Solution Canvas card retired (Elleta, 21 Jul, spec system-page-v2);
+     the prototypes/ source stays local. The screener card above stays. */
   {
     title: "Travel Search & Filtering System",
     subtitle: "Interactive prototype exploring unified search, filtering, and booking patterns for a B2B travel platform.",
