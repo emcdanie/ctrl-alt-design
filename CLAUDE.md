@@ -35,13 +35,14 @@ override the constitution.
 - Primary nav (Elleta, 2026-07-17, supersedes the four-item cap): **Work · System · Skills ·
   About · Contact**. /design-system is a first-class page (the system inspecting itself);
   the footer "See the system" colophon link stays.
-- **Work toolbar (Elleta, 2026-07-17 review note, supersedes the ?explore hybrid).** ONE
-  toolbar row above the library: find-your-fit search on the LEFT (always visible, quick-pick
-  skill chips beneath so the box is never empty), view switcher on the RIGHT (SegmentedControl,
-  Cards · Map · Table, always visible). Cards is the default and IS the curated composition:
-  featured CHIP, ranked case grid (order lives in the content data), then Explorations, plain
-  section headers, no second tab row. Filter rows (dense) and sort render in Map and Table
-  views only. No hidden explore state: the view lives in the URL (`view` param, back/forward
+- **Work toolbar (amended 2026-07-20, Pass E task 3; supersedes the 17 Jul filter-row note).**
+  ONE toolbar row above the library: find-your-fit search on the LEFT (always visible), view
+  switcher on the RIGHT (SegmentedControl, Cards · Map · Table, always visible). The chip row
+  beneath the search is the library's ONE skill/type filter, in EVERY view (the former CASE and
+  SKILL rows are deleted); one stable order everywhere: toolbar, chip row, count, content. Cards
+  is the default and IS the curated composition (featured CHIP, ranked case grid, Explorations),
+  and it filters like every view. Sort renders only where order means something: table headers,
+  never the Map. No hidden explore state: the view lives in the URL (`view` param, back/forward
   safe, defaults keep clean URLs).
 
 ## 2. Layout
