@@ -171,6 +171,24 @@ h. Statement headlines: the case display headline is the case THESIS in its
    and breadcrumb. Wording per case is Elleta-approved only (list lives in
    claude-progress.md when she signs it off); never invent statements.
 
+## 12. Registry-vs-library parity gate (Elleta + Cowork, 20 Jul)
+
+Context: filters-decision-support-system existed in content/case-studies but had
+no WORK_ITEMS row, so /work showed 5 of 6 case studies and no case page ever
+recommended it in more-work-like-this (found live 20 Jul, data fixed same day).
+Encode the invariant so it cannot recur:
+a. New structural audit in the gate: every slug exported from
+   content/case-studies/index.ts has exactly one WORK_ITEMS row with medium
+   "case study" whose href ends with that slug, and every case-study
+   WORK_ITEMS row resolves back to a registry slug. On failure the audit
+   names the missing or extra slugs; the gate goes red.
+b. The audit also rejects side tables for case identity (the EXTRA_CASES
+   pattern deleted 20 Jul): a case kept out of the hero bubble cluster is an
+   explicit flag on its WORK_ITEMS row, recorded in DESIGN.md, never a
+   parallel data structure.
+c. Runs inside npm run gate with the other audits; a case can never again be
+   routable but invisible in the library.
+
 ## Close-out
 
 Update claude-progress.md. Report per task: diff summary, gate output, honest
