@@ -252,6 +252,15 @@ is the ONLY way to render one:
 - Hero bubble geometry (sizes 126–196px, cluster positions) is recorded
   data in `components/BubbleCluster.tsx`, from `_proto/_hero.html` — not
   ramp/spacing values.
+- Thesis presentation (task-6 winner, Elleta 2026-07-20): the About
+  "How I solve problems" theses are SPECIMEN BANDS on the fixed-dark
+  navy ground (`--thesis-band-ground/-ink`, same both themes, the
+  dark-contact-chrome fixed-context pattern): Unique display scale
+  through the Heading primitive, core word huge in the case identity
+  colour (Drift thesis wears Drift), rest a tier down, body Geist 16px
+  floor. Bands speak the Card interaction language via the SHARED
+  `.trace-host` recipe. The stat-tile THESIS treatment is retired;
+  `.thesis-tile` itself stays, consumed by MetricsStrip (task 8).
 - Cluster membership (Elleta, 2026-07-20): the hero cluster is six
   bubbles + hub, and membership is the `inCluster` flag on a case's ONE
   `WORK_ITEMS` row (absent = in; `false` = out, as on Travel Booking).

@@ -10,6 +10,7 @@ import MetricsStrip from "@/components/MetricsStrip";
 import Card from "@/components/ui/Card";
 import DisclosureCard from "@/components/ui/DisclosureCard";
 import SectionHeader from "@/components/ui/SectionHeader";
+import Heading from "@/components/ui/Heading";
 import CtaBanner from "@/components/ui/CtaBanner";
 import TestimonialSection from "@/components/TestimonialSection";
 import Link from "next/link";
@@ -295,13 +296,16 @@ export default function AboutPage() {
                 stat-tile direction. Case colours per her 17 Jul brief
                 (supersedes the older About-is-not-a-case note); tokens
                 only; copy unchanged. */}
-            <div className="grid grid-cols-1 items-stretch gap-[var(--grid-gap)] lg:grid-cols-3">
-              <article className="thesis-tile" style={{ "--thesis-hi": "var(--hub-hi)" } as React.CSSProperties}>
-                <h3 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
-                  Systems are{" "}
-                  <span style={{ color: "var(--color-accent-ink)" }}>agreements</span>, not
-                  component libraries.
-                </h3>
+            <div>
+              {/* Task-6 winner (Elleta, 20 Jul): specimen bands on the
+                  fixed-dark ground; her copy verbatim, core word huge
+                  in the case colour. Drift thesis wears Drift. */}
+              <article className="thesis-band trace-host" style={{ "--cc": "var(--case-drift-hi)" } as React.CSSProperties}>
+                <Heading tier="section" as="h3" className="thesis-band__line" style={{ marginBottom: "var(--spacing-4)" }}>
+                  <span className="thesis-band__rest">Systems are </span>
+                  <span className="thesis-band__core" style={{ color: "var(--case-drift-hi)" }}>agreements,</span>
+                  <span className="thesis-band__rest">not component libraries.</span>
+                </Heading>
                 <p className="body-base" style={{ margin: 0, flex: 1 }}>
                   A component library is an artefact. The system is the set of agreements around
                   it: what counts as a pattern, who decides, when to extend versus build. When
@@ -309,20 +313,23 @@ export default function AboutPage() {
                   that is where drift starts.
                 </p>
               </article>
-              <article className="thesis-tile" style={{ "--thesis-hi": "var(--case-guardian-hi)" } as React.CSSProperties}>
-                <h3 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
-                  Governance is what stops the drift.
-                </h3>
+              <article className="thesis-band trace-host" style={{ "--cc": "var(--case-guardian-hi)" } as React.CSSProperties}>
+                <Heading tier="section" as="h3" className="thesis-band__line" style={{ marginBottom: "var(--spacing-4)" }}>
+                  <span className="thesis-band__core" style={{ color: "var(--case-guardian-hi)" }}>Governance</span>
+                  <span className="thesis-band__rest"> is what stops the drift.</span>
+                </Heading>
                 <p className="body-base" style={{ margin: 0, flex: 1 }}>
                   Drift is not a tooling failure; it is a decision-making failure. Naming, token
                   structure, and contribution flow are governance surfaces. The systems that hold
                   are the ones where the cheap path and the correct path are the same path.
                 </p>
               </article>
-              <article className="thesis-tile" style={{ "--thesis-hi": "var(--case-code-first-hi)" } as React.CSSProperties}>
-                <h3 className="heading-subsection" style={{ marginBottom: "var(--spacing-2)" }}>
-                  I read code, so design and engineering stay honest.
-                </h3>
+              <article className="thesis-band trace-host" style={{ "--cc": "var(--case-code-first-hi)" } as React.CSSProperties}>
+                <Heading tier="section" as="h3" className="thesis-band__line" style={{ marginBottom: "var(--spacing-4)" }}>
+                  <span className="thesis-band__rest">I read </span>
+                  <span className="thesis-band__core" style={{ color: "var(--case-code-first-hi)" }}>code,</span>
+                  <span className="thesis-band__rest">so design and engineering stay honest.</span>
+                </Heading>
                 <p className="body-base" style={{ margin: 0, flex: 1 }}>
                   Parity between Figma and production is a claim that has to be checked in both
                   directions. Reading the code, tokens, props, rendered output, is how I keep the
@@ -338,7 +345,7 @@ export default function AboutPage() {
                     fontFamily: "var(--font-body)",
                     fontSize: "var(--typography-font-size-sm)",
                     fontWeight: 600,
-                    color: "var(--color-accent-ink)",
+                    color: "var(--cc)",
                     textDecoration: "underline",
                     textUnderlineOffset: "3px",
                     minHeight: "var(--spacing-touch-target)",
