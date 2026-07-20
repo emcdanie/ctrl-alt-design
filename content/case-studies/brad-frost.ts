@@ -163,6 +163,10 @@ const study: CaseStudy = {
   ],
 };
 
+/* TODO(elleta): the library row now claims Accessibility (Pass E task
+ * 5a); nothing in this prose backs it yet. One line in your words, or
+ * the claim comes back out. */
+
 /* TODO(elleta): the template's closing `lessons` block is empty. One
  * paragraph in your voice distilling what this changed; KEY LEARNINGS
  * and REFLECTION above hold your existing verbatim prose meanwhile.

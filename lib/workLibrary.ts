@@ -78,7 +78,7 @@ export const WORK_ITEMS: WorkItem[] = [
     yearStart: 2026,
     role: "Designer and builder (solo)",
     impact: "The agent watches, catches drift, drafts, and waits for approval; my own systems scored in public",
-    skills: ["AI-enabled Design", "Design System Governance", "Design Systems"],
+    skills: ["AI-enabled Design", "Design System Governance", "Design Systems", "Accessibility"],
     hi: "var(--case-chip-hi)",
     lo: "var(--case-chip-lo)",
     deep: "var(--case-chip-deep)",
@@ -98,7 +98,7 @@ export const WORK_ITEMS: WorkItem[] = [
     yearStart: 2024,
     role: "Design System Collaborator",
     impact: "Figma ⇄ Storybook parity; tokens aligned across the stack",
-    skills: ["Design Systems", "Design Tokens", "Component Libraries", "Figma ⇄ Code"],
+    skills: ["Design Systems", "Design Tokens", "Component Libraries", "Figma ⇄ Code", "Accessibility"],
     hi: "var(--case-code-first-hi)",
     lo: "var(--case-code-first-lo)",
     deep: "var(--case-code-first-deep)",
@@ -122,6 +122,8 @@ export const WORK_ITEMS: WorkItem[] = [
     skills: [
       "Design Systems",
       "Design Tokens",
+      /* mid-array: a structural claim for this case (Pass E task 5a) */
+      "Accessibility",
       "Design System Governance",
       "Component Libraries",
       "Product Design",
@@ -145,7 +147,7 @@ export const WORK_ITEMS: WorkItem[] = [
     yearStart: 2026,
     role: "Concept Lead, Interaction & Strategy",
     impact: "Decision-time drift detection, from hackathon concept to interactive prototype",
-    skills: ["AI-enabled Design", "Design System Governance", "Design Systems", "UX Research"],
+    skills: ["AI-enabled Design", "Design System Governance", "Design Systems", "UX Research", "Accessibility"],
     hi: "var(--case-guardian-hi)",
     lo: "var(--case-guardian-lo)",
     deep: "var(--case-guardian-deep)",
@@ -238,6 +240,17 @@ export function relatedWorkItems(slug: string, count = 3): WorkItem[] {
     )
     .slice(0, count);
 }
+
+/* ── Evidence layer, structure only (Pass E task 5c) ──────────────
+ * One line per case-and-skill pair, in HER words. Where a line exists
+ * the matrix cell exposes it on demand (disclosure) with the case
+ * link; an absent line means the cell just links. Deterministic data,
+ * NO AI labelling — the AI entry point stays find-your-fit, whose
+ * why-rows this matrix verifies.
+ * TODO(elleta): fill the lines; the structure ships dark until then.
+ * Shape: { [itemId]: { [skill]: "one line" } }, e.g.
+ *   drift: { Accessibility: "…", "Design Tokens": "…" } */
+export const SKILL_EVIDENCE: Record<string, Partial<Record<Skill, string>>> = {};
 
 /** Case tokens for a case-study slug (sphere, accents). */
 export function findWorkItemBySlug(

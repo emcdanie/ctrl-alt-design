@@ -5,7 +5,11 @@ import type { CaseStudy } from "@/lib/content";
  * a personal line on what was hard in the five days; a line on what
  * CHIP changed in her weekly workflow; an optional building-in-public
  * moment; the Loom URL (chip-evidence-0-bridge-hero.png is reserved
- * as its poster and is deliberately not placed yet). */
+ * as its poster and is deliberately not placed yet).
+ * TODO(elleta): the library row now claims Accessibility (Pass E task
+ * 5a); nothing in this prose backs it yet. One line in your words
+ * (e.g. the readiness map's keyboard/aria work), or the claim comes
+ * back out. */
 
 const study: CaseStudy = {
   slug: "chip",

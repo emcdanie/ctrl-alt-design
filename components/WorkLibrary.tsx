@@ -9,7 +9,7 @@ import FindYourFit from "@/components/FindYourFit";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import { Tag } from "@/components/ui/Tag";
 import { StatusPill } from "@/components/ui/StatusPill";
-import { SKILLS, WORK_ITEMS, slugify, type WorkItem } from "@/lib/workLibrary";
+import { SKILLS, SKILL_EVIDENCE, WORK_ITEMS, slugify, type WorkItem } from "@/lib/workLibrary";
 import styles from "./WorkLibrary.module.css";
 import { WorkChipRow, WorkAppliedRow, useWorkFilters } from "@/components/WorkFilters";
 import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
@@ -318,6 +318,7 @@ export function MatrixView({
                 </th>
                 {WORK_ITEMS.map((i) => {
                   const marked = i.skills.includes(skill);
+                  const evidence = SKILL_EVIDENCE[i.id]?.[skill];
                   return (
                     <td
                       key={i.id}
@@ -330,14 +331,32 @@ export function MatrixView({
                           : undefined
                       }
                     >
-                      {marked && (
-                        <>
-                          <span aria-hidden="true" className={styles.mxDot} />
-                          <span className="sr-only">
-                            {skill} used in {i.title}
-                          </span>
-                        </>
-                      )}
+                      {/* Dead dots are doors (Pass E task 5b): every dot
+                          links to its case; a cell with an evidence line
+                          exposes it on demand first (disclosure). */}
+                      {marked &&
+                        (evidence ? (
+                          <details className={styles.mxDetails}>
+                            <summary
+                              className={styles.mxLink}
+                              aria-label={`${i.title}: ${skill}, show evidence`}
+                            >
+                              <span aria-hidden="true" className={styles.mxDot} />
+                            </summary>
+                            <div className={styles.mxPanel}>
+                              <p>{evidence}</p>
+                              <Link href={i.href}>Read {i.title}</Link>
+                            </div>
+                          </details>
+                        ) : (
+                          <Link
+                            href={i.href}
+                            className={styles.mxLink}
+                            aria-label={`${i.title}: ${skill}, read the case study`}
+                          >
+                            <span aria-hidden="true" className={styles.mxDot} />
+                          </Link>
+                        ))}
                     </td>
                   );
                 })}

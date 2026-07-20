@@ -407,6 +407,61 @@
   background: var(--case-tint-text);
 }
 
+/* the dot's door: a real link (or disclosure summary) with a full
+   touch target and a visible focus ring — never a dead cell */
+.mxLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--spacing-touch-target);
+  min-height: var(--spacing-touch-target);
+  cursor: pointer;
+  list-style: none;
+}
+
+.mxLink::-webkit-details-marker {
+  display: none;
+}
+
+.mxLink:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+  border-radius: var(--radius-full);
+}
+
+.mxDetails {
+  position: relative;
+  display: inline-block;
+}
+
+.mxPanel {
+  position: absolute;
+  z-index: 5;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 240px;
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-medium);
+  background: var(--color-card);
+  box-shadow: var(--shadow-soft);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-ink-soft);
+  line-height: 1.5;
+  text-align: left;
+}
+
+.mxPanel p {
+  margin: 0 0 var(--spacing-2);
+}
+
+.mxPanel a {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+}
+
 .mxDim {
   opacity: 0.3;
 }
