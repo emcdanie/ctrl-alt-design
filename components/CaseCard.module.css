@@ -34,10 +34,14 @@
 
 /* ── Body ── */
 
+/* one line, always (the contract, 20 Jul): the pill lives on the
+   cover; at extreme narrow widths the tail ellipsizes rather than
+   wrapping the row */
 .kicker {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 600;
@@ -45,10 +49,21 @@
   text-transform: uppercase;
 }
 
+/* Current-focus badge on the cover (one contract, 20 Jul): a solid
+   card ground so it reads on any cover art; the eyebrow row stays one
+   line. */
 .tag {
+  position: absolute;
+  top: var(--spacing-3);
+  left: var(--spacing-3);
+  z-index: 1;
+  font-family: var(--font-mono);
   font-size: 11px; /* matches the hub-sub recorded exception */
+  font-weight: 600;
   letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--color-accent-ink);
+  background: var(--color-card);
   border: 1px solid var(--color-semantic-accent-border);
   border-radius: var(--radius-full);
   padding: 2px var(--spacing-2);
@@ -85,5 +100,9 @@
   border-radius: var(--radius-sm);
   padding: 2px var(--spacing-2);
   white-space: nowrap;
+  /* a chip never exceeds its card (narrow related row) */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 

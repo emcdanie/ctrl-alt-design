@@ -252,6 +252,11 @@ is the ONLY way to render one:
 - Hero bubble geometry (sizes 126–196px, cluster positions) is recorded
   data in `components/BubbleCluster.tsx`, from `_proto/_hero.html` — not
   ramp/spacing values.
+- Decision why-lines (Elleta, 2026-07-20): the key-line style
+  (`.cs-decision-why`, 18px/600 in the case marker colour) applies
+  ONLY when the why is a single short statement of ~160 characters or
+  fewer; longer whys render as regular body ink. Key-line trims are
+  per-decision content edits in her words, via Cowork.
 - Thesis presentation (task-6 winner, Elleta 2026-07-20): the About
   "How I solve problems" theses are SPECIMEN BANDS on the fixed-dark
   navy ground (`--thesis-band-ground/-ink`, same both themes, the

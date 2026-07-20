@@ -87,6 +87,9 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "code-first",
     medium: "case study",
+    /* TODO(elleta): cover asset slot (20 Jul). The command-center
+       still stays until you provide the new visual or pick an
+       alternative; do not swap without her asset. */
     cover: "/images/thumbnails/BradFrostCommandCenter.png",
     title: "Code First",
     bubbleLabel: "Code First",

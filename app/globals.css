@@ -1273,6 +1273,13 @@ section[id],
 .cs-decision-head {
   padding-left: var(--spacing-5);
   border-left: 3px solid var(--case-marker, var(--color-semantic-accent-border));
+  /* the rule spans eyebrow + title + why IDENTICALLY on every
+     decision: no trailing margin extends it past the content */
+  margin-bottom: var(--spacing-5);
+}
+
+.cs-decision-head > :last-child {
+  margin-bottom: 0;
 }
 
 /* The why-line is the visual KEY POINT (readability pass, 20 Jul):
@@ -1979,12 +1986,18 @@ textarea:focus-visible {
 
 /* Related cards render as ONE 3-col row at desktop, stacked on mobile
    (Pass E task 11e: auto-fill orphaned the third card in a 2-col
-   grid inside the narrow case column). */
+   grid inside the narrow case column). min-width: 0 on the items:
+   nowrap skill chips otherwise push min-content past the 1fr track
+   and blow the grid out of the column (Elleta, 20 Jul). */
 .cs-shell__related-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--grid-gap);
   align-items: stretch;
+}
+
+.cs-shell__related-grid > * {
+  min-width: 0;
 }
 
 @media (max-width: 767px) {

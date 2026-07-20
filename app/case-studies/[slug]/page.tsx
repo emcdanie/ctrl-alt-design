@@ -130,13 +130,18 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
           <div className="cs-decision-head">
             <p className="eyebrow">Decision {block.index}</p>
             <H2>{block.title}</H2>
-            {/* the why-line is the visual key point (readability pass):
-                one shared style, the line to remember */}
-            {block.why && (
-              <p className="cs-decision-why">
-                <BoldText text={block.why} strongStyle={{ fontWeight: 700 }} />
-              </p>
-            )}
+            {/* the why-line is the visual key point ONLY when it is a
+                single short statement (<=160 chars, Elleta 20 Jul);
+                longer whys read as regular body ink until her
+                per-decision key-line trims land via Cowork */}
+            {block.why &&
+              (block.why.length <= 160 ? (
+                <p className="cs-decision-why">
+                  <BoldText text={block.why} strongStyle={{ fontWeight: 700 }} />
+                </p>
+              ) : (
+                <RichBody text={block.why} />
+              ))}
           </div>
           {block.evidence && <Block block={block.evidence} title={title} marker={marker} markerText={markerText} />}
           {block.children?.map((child, i) => (

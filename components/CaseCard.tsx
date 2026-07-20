@@ -23,17 +23,21 @@ export default function CaseCard({
       accent={item.text}
       className={styles.caseCard}
       media={
-        cover ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={cover} alt="" loading="lazy" />
-        ) : (
-          <span className={styles.coverPlaceholder}>{item.title}</span>
-        )
+        <>
+          {cover ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={cover} alt="" loading="lazy" />
+          ) : (
+            <span className={styles.coverPlaceholder}>{item.title}</span>
+          )}
+          {/* the pill rides the cover (Elleta, 20 Jul): it never
+              forces the eyebrow to wrap */}
+          {item.featured && <span className={styles.tag}>Current focus</span>}
+        </>
       }
     >
       <span className={styles.kicker} style={{ color: item.text }}>
         {item.kicker}
-        {item.featured && <span className={styles.tag}>Current focus</span>}
       </span>
       <span className={styles.title}>{item.title}</span>
       <span className={styles.impact}>{item.impact}</span>
