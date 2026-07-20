@@ -509,6 +509,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div class="global-bar">
   <span>✦ Portfolio demo, fictional data</span>
   <button id="annToggleBtn" class="on" onclick="toggleAnnotations()">📌 Annotations on</button>
+  <button id="voiceToggleBtn" aria-pressed="false" onclick="toggleVoice()">🔊 Voiceover off</button>
   <button onclick="clearAllFilters()">✕ Clear filters</button>
   <span id="speakingBadge" style="display:none" class="speaking-indicator"><span class="dot-pulse"></span> Narrating…</span>
 </div>
@@ -1052,7 +1053,23 @@ function toggleAnnotations(){
 // ══════════════════════════════════════════════════
 // SPEECH
 // ══════════════════════════════════════════════════
-function speak(text){
+
+/* Audio consent (WCAG 1.4.2, 2026-07-20): voice starts OFF and only an
+   explicit, labelled control enables it. speak() is inert until then. */
+let voiceEnabled = false;
+function toggleVoice() {
+  voiceEnabled = !voiceEnabled;
+  const b = document.getElementById('voiceToggle') || document.getElementById('voiceToggleBtn') || document.getElementById('voiceBtn');
+  if (b) {
+    b.setAttribute('aria-pressed', String(voiceEnabled));
+    b.classList.toggle('on', voiceEnabled);
+    b.textContent = voiceEnabled ? '🔊 Voiceover on' : '🔊 Voiceover off';
+  }
+  if (!voiceEnabled && window.speechSynthesis) speechSynthesis.cancel();
+}
+
+function speak(text) {
+  if (!voiceEnabled) return;
   if(!window.speechSynthesis) return;
   stopSpeak();
   const u=new SpeechSynthesisUtterance(text);

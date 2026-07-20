@@ -840,6 +840,7 @@ img { display: block; }
 <div class="global-bar">
   <span style="font-size:11px">🏁 Portfolio demo, Grand Prix Dashboard (design twin)</span>
   <button class="global-bar-btn on" id="annToggle" onclick="toggleAnnotations()">📌 Annotations</button>
+  <button class="global-bar-btn" id="voiceToggle" aria-pressed="false" onclick="toggleVoice()">🔊 Voiceover off</button>
   <button class="global-bar-btn" onclick="stopSpeak()">■ Stop</button>
   <span style="margin-left:auto;font-size:11px;color:var(--text-tertiary)">
     Vitaly Friedman principles applied · Before/After case study
@@ -1123,7 +1124,23 @@ function toggleAnnotations() {
 // ══════════════════════════════════════════════════
 // SPEECH
 // ══════════════════════════════════════════════════
+
+/* Audio consent (WCAG 1.4.2, 2026-07-20): voice starts OFF and only an
+   explicit, labelled control enables it. speak() is inert until then. */
+let voiceEnabled = false;
+function toggleVoice() {
+  voiceEnabled = !voiceEnabled;
+  const b = document.getElementById('voiceToggle') || document.getElementById('voiceToggleBtn') || document.getElementById('voiceBtn');
+  if (b) {
+    b.setAttribute('aria-pressed', String(voiceEnabled));
+    b.classList.toggle('on', voiceEnabled);
+    b.textContent = voiceEnabled ? '🔊 Voiceover on' : '🔊 Voiceover off';
+  }
+  if (!voiceEnabled && window.speechSynthesis) speechSynthesis.cancel();
+}
+
 function speak(text) {
+  if (!voiceEnabled) return;
   if (!window.speechSynthesis) return;
   stopSpeak();
   const u = new SpeechSynthesisUtterance(text);

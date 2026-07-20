@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 
 interface PrototypeEmbedProps {
@@ -8,7 +8,7 @@ interface PrototypeEmbedProps {
   title: string;
   description?: string;
   height?: string;
-  /** static poster shown below tablet width instead of the live iframe */
+  /** static poster: the resting facade at every width */
   poster?: string;
   posterAlt?: string;
 }
@@ -22,20 +22,14 @@ export default function PrototypeEmbed({
   posterAlt,
 }: PrototypeEmbedProps) {
   const [loaded, setLoaded] = useState(false);
-  /* Below 768px the iframe never mounts (Elleta, 20 Jul): the poster +
-   * open-in-new-tab link render instead. null (SSR / pre-hydration)
-   * renders the poster variant too, so no-JS visitors and the first
-   * paint never issue the iframe request; desktop swaps to the live
-   * embed once matchMedia resolves. */
-  const [live, setLive] = useState<boolean | null>(null);
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
-    const apply = () => setLive(mq.matches);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
-  const showIframe = live === true;
+  /* Click-to-activate at EVERY width (Elleta, 20 Jul, supersedes the
+   * matchMedia split): the poster facade is the resting state
+   * everywhere, with a labelled activation control; the iframe mounts
+   * only on explicit activation. No audio, no load, no hydration
+   * poster-flash before the visitor asks for it. SSR and no-JS render
+   * the facade with the open-in-new-tab link as the working path. */
+  const [active, setActive] = useState(false);
+  const showIframe = active;
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
@@ -199,7 +193,7 @@ export default function PrototypeEmbed({
               </div>
             )}
 
-            {/* Live iframe (desktop only) */}
+            {/* Live iframe (mounts only on activation) */}
             <iframe
               src={src}
               title={title}
@@ -218,39 +212,69 @@ export default function PrototypeEmbed({
             />
           </>
         ) : (
-          /* Poster + open action (below tablet width and pre-hydration) */
-          <a
-            href={src}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ display: "block", textDecoration: "none" }}
-          >
-            {poster && (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
-                src={poster}
-                alt={posterAlt ?? `${title}, static preview`}
-                style={{ width: "100%", display: "block" }}
-              />
-            )}
-            <span
+          /* The facade: poster + one labelled activation control */
+          <div>
+            <button
+              type="button"
+              onClick={() => setActive(true)}
+              aria-label={`Load the interactive prototype: ${title}`}
+              style={{
+                display: "block",
+                width: "100%",
+                padding: 0,
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+              }}
+            >
+              {poster && (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={poster}
+                  alt={posterAlt ?? `${title}, static preview`}
+                  style={{ width: "100%", display: "block" }}
+                />
+              )}
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "var(--spacing-2)",
+                  padding: "var(--spacing-3) var(--spacing-4)",
+                  fontFamily: "var(--font-body)",
+                  fontSize: "var(--typography-font-size-sm)",
+                  fontWeight: 600,
+                  color: "color-mix(in srgb, white 85%, transparent)",
+                }}
+              >
+                <Icon name="Play" size="sm" />
+                Load the interactive prototype
+              </span>
+            </button>
+            <a
+              href={src}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "var(--spacing-2)",
-                padding: "var(--spacing-3) var(--spacing-4)",
+                gap: "var(--spacing-1)",
+                padding: "var(--spacing-2) var(--spacing-4) var(--spacing-3)",
                 fontFamily: "var(--font-body)",
-                fontSize: "var(--typography-font-size-sm)",
+                fontSize: "var(--typography-font-size-tag)",
                 fontWeight: 600,
-                color: "color-mix(in srgb, white 85%, transparent)",
+                color: "color-mix(in srgb, white 55%, transparent)",
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
                 borderTop: "1px solid var(--color-alpha-parchment-6)",
               }}
             >
               Open prototype in new tab
               <Icon name="OpenNewWindow" size="sm" />
-            </span>
-          </a>
+            </a>
+          </div>
         )}
       </div>
     </div>

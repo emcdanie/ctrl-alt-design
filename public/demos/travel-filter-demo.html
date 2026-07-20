@@ -591,6 +591,7 @@
   <!-- Controls -->
   <div class="controls" id="controls">
     <button class="pill-btn primary" id="toggleAnnotations">📌 Annotations on</button>
+  <button class="pill-btn" id="voiceToggleBtn" aria-pressed="false" onclick="toggleVoice()">🔊 Voiceover off</button>
     <button class="pill-btn ghost" id="stopNarration" style="display:none">■ Stop</button>
     <button class="pill-btn danger" id="clearFilters" style="display:none">Clear filters</button>
   </div>
@@ -1024,7 +1025,23 @@ function triggerAnn(key) {
 }
 
 // ── Speech ────────────────────────────────────────────────────────────────────
+
+/* Audio consent (WCAG 1.4.2, 2026-07-20): voice starts OFF and only an
+   explicit, labelled control enables it. speak() is inert until then. */
+let voiceEnabled = false;
+function toggleVoice() {
+  voiceEnabled = !voiceEnabled;
+  const b = document.getElementById('voiceToggle') || document.getElementById('voiceToggleBtn') || document.getElementById('voiceBtn');
+  if (b) {
+    b.setAttribute('aria-pressed', String(voiceEnabled));
+    b.classList.toggle('on', voiceEnabled);
+    b.textContent = voiceEnabled ? '🔊 Voiceover on' : '🔊 Voiceover off';
+  }
+  if (!voiceEnabled && window.speechSynthesis) speechSynthesis.cancel();
+}
+
 function speak(text) {
+  if (!voiceEnabled) return;
   if (!window.speechSynthesis) return;
   stopSpeak();
   const utt = new SpeechSynthesisUtterance(text);
