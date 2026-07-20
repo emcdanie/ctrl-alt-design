@@ -1025,6 +1025,69 @@ li {
   white-space: nowrap;
 }
 
+/* ─── Travelling border light — the ONE trace implementation ─────
+   (Pass E task 2). Card and any surface that speaks the Card
+   interaction language consume this recipe; no second copy exists.
+   Host sets --cc (identity colour), --trace-r (ring radius, default
+   22px) and --trace-w (thickness, default 3px). Invisible at rest;
+   travels on hover/focus; reduced motion shows a static solid ring. */
+@property --trace-ang {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.trace-host {
+  position: relative;
+  --trace-r: 22px;
+  --trace-w: 3px;
+}
+
+.trace-host::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--trace-r);
+  padding: var(--trace-w);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  background: conic-gradient(
+    from var(--trace-ang),
+    var(--cc) 0deg,
+    var(--cc) 46deg,
+    color-mix(in srgb, var(--cc) 20%, transparent) 130deg,
+    color-mix(in srgb, var(--cc) 12%, transparent) 300deg,
+    var(--cc) 360deg
+  );
+  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  mask-composite: exclude;
+}
+
+.trace-host:hover::before,
+.trace-host:focus-within::before,
+.trace-host:focus-visible::before {
+  opacity: 1;
+  animation: trace-travel 3.4s linear infinite;
+}
+
+@keyframes trace-travel {
+  to {
+    --trace-ang: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trace-host:hover::before,
+  .trace-host:focus-within::before,
+  .trace-host:focus-visible::before {
+    animation: none;
+    background: var(--cc);
+  }
+}
+
 /* ─── Button grammar v5 (Pass E task 1) ──────────────────────────
    Purple means clickable at every tier. PRIMARY = the filled iris
    keycap, the ONE 3D moment per view (audit:controls enforces max
