@@ -99,18 +99,22 @@ const study: CaseStudy = {
       index: "02",
       title: "Put tokens under everything so decisions propagate",
       why: "Instead of a button storing a hard-coded hex value, it references a semantic token that is defined once and propagates everywhere.",
-      /* interactive recreation -> prototype behind the facade (task 2) */
-      evidence: {
-        kind: "prototype",
-        src: "/demos/token-parity.html",
-        title: "Interactive recreation: token cascade and design-code parity",
-        designWidth: 1280,
-        designHeight: 970,
-        poster: "/images/case-studies/token-parity-poster.png",
-        posterAlt: "Token cascade recreation: primitive, semantic, and component token tiers connected by arrows, with a design-code parity check panel",
-      },
+      /* Reorder only (Elleta, 21 Jul, via Cowork): the body paragraph
+         says "the interactive recreation below", so the recreation
+         renders after it. The prototype moved from the evidence slot
+         into children (same Block, identical render); evidence is
+         optional and nothing mechanical consumes the slot. */
       children: [
         { kind: "paragraph", text: "Foundations, components, documentation, and a system hub, each tier with a clear purpose, so a change made at the bottom of the cascade lands consistently at the top. The interactive recreation below shows the cascade and the design-code parity it makes checkable." },
+        {
+          kind: "prototype",
+          src: "/demos/token-parity.html",
+          title: "Interactive recreation: token cascade and design-code parity",
+          designWidth: 1280,
+          designHeight: 970,
+          poster: "/images/case-studies/token-parity-poster.png",
+          posterAlt: "Token cascade recreation: primitive, semantic, and component token tiers connected by arrows, with a design-code parity check panel",
+        },
       ],
     },
     {

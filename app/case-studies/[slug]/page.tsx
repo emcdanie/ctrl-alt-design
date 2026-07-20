@@ -15,9 +15,11 @@ export async function generateStaticParams() {
 }
 
 /* Per-case tab identity (Elleta, 21 Jul, audit finding 7): the tab wears
-   the case NAME (the library title), never the thesis; description is the
-   case summary with the route's existing description fallback. Unknown
-   slug or missing library row inherits the root metadata. */
+   the case NAME (the library title), never the thesis. Description is the
+   top-level summary; where a case lacks one (Elleta, 21 Jul), the first
+   sentence of its summary-block context, verbatim; else the route's
+   existing description fallback. Unknown slug or missing library row
+   inherits the root metadata. */
 export async function generateMetadata({
   params,
 }: {
@@ -27,9 +29,14 @@ export async function generateMetadata({
   const cs = getCaseStudy(slug);
   if (!cs) return {};
   const caseItem = findWorkItemBySlug(slug);
+  const summaryBlock = cs.blocks?.find((b) => b.kind === "summary");
+  const contextFirstSentence =
+    summaryBlock && "context" in summaryBlock
+      ? summaryBlock.context.match(/^[\s\S]*?\./)?.[0]
+      : undefined;
   return {
     ...(caseItem ? { title: `${caseItem.title}, Elleta McDaniel` } : {}),
-    description: cs.summary ?? cs.description,
+    description: cs.summary ?? contextFirstSentence ?? cs.description,
   };
 }
 
