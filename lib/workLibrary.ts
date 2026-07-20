@@ -227,8 +227,9 @@ export const WORK_ITEMS: WorkItem[] = [
 /** "More work like this" (Pass C 2026-07-18): case studies ranked by
  * skill overlap with the current case (the same matrix data), current
  * case excluded, deterministic order (overlap desc, rank asc, title).
- * Every case slug has a library row (parity gate); rank breaks ties. */
-export function relatedWorkItems(slug: string, count = 3): WorkItem[] {
+ * Every case slug has a library row (parity gate); rank breaks ties.
+ * TWO cards at a wider width (Elleta, 21 Jul, spec system-page-v2). */
+export function relatedWorkItems(slug: string, count = 2): WorkItem[] {
   const cases = WORK_ITEMS.filter((i) => i.medium === "case study");
   const current = cases.find((i) => i.href.endsWith(`/case-studies/${slug}`));
   const overlap = (i: WorkItem) =>

@@ -1989,9 +1989,10 @@ textarea:focus-visible {
    grid inside the narrow case column). min-width: 0 on the items:
    nowrap skill chips otherwise push min-content past the 1fr track
    and blow the grid out of the column (Elleta, 20 Jul). */
+/* TWO related cards at a wider width (Elleta, 21 Jul) */
 .cs-shell__related-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--grid-gap);
   align-items: stretch;
 }
