@@ -14,30 +14,32 @@ interface MetricItem {
   stat: string;
   label: string;
   detail: string;
+  /** identity tint (thesis-tile direction, Pass E task 8): case hue
+      where the fact points at a case, hub iris otherwise */
+  hi: string;
+  text: string;
 }
 
 const metrics: MetricItem[] = [
-  { stat: "E2E", label: "END TO END",           detail: "Tokens to governance to shipped code" },
-  { stat: "2",  label: "DESIGN SYSTEMS BUILT", detail: "A B2B travel platform / Brad Frost Atomic System" },
-  { stat: "B2B", label: "PRIMARY DOMAIN",      detail: "Travel, finance, govtech" },
-  { stat: "BCN", label: "BASED IN",            detail: "Canet de Mar, Spain" },
+  { stat: "E2E", label: "END TO END",           detail: "Tokens to governance to shipped code",              hi: "var(--hub-hi)",          text: "var(--color-accent-ink)" },
+  { stat: "2",  label: "DESIGN SYSTEMS BUILT", detail: "A B2B travel platform / Brad Frost Atomic System", hi: "var(--case-drift-hi)",   text: "var(--case-drift-text)" },
+  { stat: "B2B", label: "PRIMARY DOMAIN",      detail: "Travel, finance, govtech",                          hi: "var(--case-filters-hi)", text: "var(--case-filters-text)" },
+  { stat: "BCN", label: "BASED IN",            detail: "Canet de Mar, Spain",                               hi: "var(--case-clarity-hi)", text: "var(--case-clarity-text)" },
 ];
 
 function MetricCard({ item }: { item: MetricItem }) {
   return (
+    /* Stat-tile direction (Elleta, 17 Jul night; encoded Pass E task
+       8): About elements may wear identity colour. ONE construction,
+       the shared .thesis-tile recipe, so metrics and thesis tiles
+       tint identically in both themes. This supersedes the older
+       "About is not a case, site accent only" rule. */
     <div
-      className="card-default"
+      className="thesis-tile"
       style={{
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        padding: "var(--spacing-6)",
         textAlign: "left",
-        /* About accent pass: quiet periwinkle tint, iris stat. Site
-           accent only, never case colours (About is not a case). */
-        background: "var(--color-semantic-accent-subtle)",
-        border: "1px solid var(--color-semantic-accent-border)",
-      }}
+        "--thesis-hi": item.hi,
+      } as React.CSSProperties}
     >
       {/* Stat */}
       <div
@@ -45,7 +47,7 @@ function MetricCard({ item }: { item: MetricItem }) {
           fontFamily: "var(--font-display)",
           fontSize: "var(--font-section-title)",
           fontWeight: "var(--typography-font-weight-bold)",
-          color: "var(--color-accent-ink)",
+          color: item.text,
           lineHeight: 1,
           marginBottom: "var(--spacing-2)",
         }}
