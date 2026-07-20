@@ -296,10 +296,13 @@ export default function AboutPage() {
                 stat-tile direction. Case colours per her 17 Jul brief
                 (supersedes the older About-is-not-a-case note); tokens
                 only; copy unchanged. */}
-            <div>
-              {/* Task-6 winner (Elleta, 20 Jul): specimen bands on the
+            <div className="thesis-row">
+              {/* Task-6 winner (Elleta, 20 Jul): specimen treatment on the
                   fixed-dark ground; her copy verbatim, core word huge
-                  in the case colour. Drift thesis wears Drift. */}
+                  in the case colour. Drift thesis wears Drift.
+                  Recomposed (Elleta, 21 Jul, via Cowork): ONE row of three
+                  equal-height dark cards at desktop, stacked on mobile; no
+                  full-width bands with an empty right half. */}
               <article className="thesis-band trace-host" style={{ "--cc": "var(--case-drift-hi)" } as React.CSSProperties}>
                 <Heading tier="section" as="h3" className="thesis-band__line" style={{ marginBottom: "var(--spacing-4)" }}>
                   <span className="thesis-band__rest">Systems are </span>

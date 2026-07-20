@@ -2083,20 +2083,37 @@ textarea:focus-visible {
   border-color: color-mix(in srgb, var(--thesis-hi) 32%, var(--color-card));
 }
 
-/* ─── Thesis specimen bands (task-6 winner, Elleta 20 Jul) ────────
+/* ─── Thesis specimen cards (task-6 winner, Elleta 20 Jul; recomposed
+   as ONE row of equal-height dark cards, Elleta 21 Jul via Cowork) ──
    Full specimen treatment on the fixed-dark navy ground: Unique
    display scale through the Heading primitive, all-caps, core word
    huge in the case identity colour (the dark-calibrated -hi stops, AA
-   on navy), rest a tier down. Speaks the Card interaction language:
+   on navy), rest a tier down (type steps one tier so three-up fits;
+   both tiers stay >=24px). Speaks the Card interaction language:
    hover gains the SHARED travelling border light, focus-within ring,
    reduced motion static. Body Geist 16px floor. */
+.thesis-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--grid-gap);
+  align-items: stretch;
+}
+
+@media (max-width: 1023px) {
+  .thesis-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 .thesis-band {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
   background: var(--thesis-band-ground);
   color: var(--thesis-band-ink);
   border-radius: var(--radius-2xl);
   padding: var(--spacing-10) var(--spacing-8);
-  margin-bottom: var(--grid-gap);
   --trace-r: var(--radius-2xl);
   --trace-w: 3px;
 }
@@ -2107,13 +2124,13 @@ textarea:focus-visible {
 
 .thesis-band__core {
   display: block;
-  font-size: var(--font-hero);
+  font-size: var(--font-section-display);
   line-height: 0.95;
 }
 
 .thesis-band__rest {
   display: block;
-  font-size: var(--font-section-display);
+  font-size: var(--font-subsection);
   line-height: 1.05;
 }
 
