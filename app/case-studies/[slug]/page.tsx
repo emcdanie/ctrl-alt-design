@@ -130,7 +130,13 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
           <div className="cs-decision-head">
             <p className="eyebrow">Decision {block.index}</p>
             <H2>{block.title}</H2>
-            {block.why && <RichBody text={block.why} />}
+            {/* the why-line is the visual key point (readability pass):
+                one shared style, the line to remember */}
+            {block.why && (
+              <p className="cs-decision-why">
+                <BoldText text={block.why} strongStyle={{ fontWeight: 700 }} />
+              </p>
+            )}
           </div>
           {block.evidence && <Block block={block.evidence} title={title} marker={marker} markerText={markerText} />}
           {block.children?.map((child, i) => (
@@ -202,10 +208,21 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
     case "readinessMap":
       return <ChipReadinessMap rows={block.rows} />;
     case "lessons":
+      /* the takeaway band (readability pass): one token surface, the
+         same recipe every case, findable by scroll */
       return (
-        <Section eyebrow="LESSONS" heading="What this changed">
-          <RichBody text={block.text} />
-        </Section>
+        <div
+          className="cs-lessons-band"
+          style={
+            marker
+              ? ({ "--case-marker": marker, "--case-marker-text": markerText } as React.CSSProperties)
+              : undefined
+          }
+        >
+          <Section eyebrow="LESSONS" heading="What this changed">
+            <RichBody text={block.text} />
+          </Section>
+        </div>
       );
     case "section":
       return (

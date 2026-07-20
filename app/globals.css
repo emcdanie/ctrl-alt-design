@@ -303,6 +303,8 @@ body {
      and consumes no key tokens. :active sinks the key (translateY(2px))
      onto the reduced plate. */
   --btn-key-radius: var(--radius-lg);
+  /* case prose measure (readability pass 2026-07-20): ~70ch, one place */
+  --measure-case: 70ch;
   --shadow-key-resting:
     1px 3px 0 var(--key-fill-edge),
     3px 6px 10px color-mix(in srgb, var(--key-fill-lo) 24%, transparent),
@@ -1271,6 +1273,34 @@ section[id],
   border-left: 3px solid var(--case-marker, var(--color-semantic-accent-border));
 }
 
+/* The why-line is the visual KEY POINT (readability pass, 20 Jul):
+   one ramp size step at 600 in the case marker colour, the line to
+   remember. Case text tokens are AA-calibrated in both themes. */
+.cs-decision-why {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-lg);
+  font-weight: 600;
+  line-height: var(--typography-line-height-normal);
+  color: var(--case-marker-text, var(--color-ink));
+  max-width: var(--measure-case);
+  margin: 0 0 var(--spacing-5);
+}
+
+/* The takeaway band (readability pass, 20 Jul): "What this changed"
+   sits on ONE quiet case-tinted token surface, the same recipe every
+   case, findable by scroll. */
+.cs-lessons-band {
+  background: color-mix(in srgb, var(--case-marker, var(--color-accent-peri)) 9%, var(--color-card));
+  border: 1px solid color-mix(in srgb, var(--case-marker, var(--color-accent-peri)) 26%, var(--color-card));
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-8) var(--spacing-8) var(--spacing-2);
+  margin: 0 0 var(--spacing-16);
+}
+
+.cs-lessons-band .cs-section {
+  margin-bottom: 0;
+}
+
 .cs-decision-block .eyebrow {
   color: var(--case-marker-text, var(--color-eyebrow));
 }
@@ -1905,13 +1935,16 @@ textarea:focus-visible {
   margin-bottom: var(--spacing-10);
 }
 
-/* Content — readable column width for text, visuals can break out */
+/* Content — readable column width for text, visuals can break out.
+   Readability pass (Elleta, 20 Jul, Smashing guidance): prose clamps
+   to the ONE measure token; headings, embeds, and figures may exceed
+   it. */
 .cs-shell__content {
   max-width: 720px;
 }
 
 .cs-shell__content p {
-  max-width: 66ch;
+  max-width: var(--measure-case);
 }
 
 /* Section spacing inside case study pages */

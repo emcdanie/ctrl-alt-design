@@ -32,8 +32,10 @@ export function Body({ children }: { children: React.ReactNode }) {
       fontSize: "var(--typography-font-size-base)",
       fontWeight: "var(--typography-font-weight-regular)",
       color: "var(--color-ink-soft)",
-      lineHeight: 1.65,
-      marginBottom: "var(--spacing-4)",
+      /* readability pass (20 Jul): the 1.6 token, and one spacing step
+         up so paragraphs read as units, not a wall */
+      lineHeight: "var(--typography-line-height-normal)",
+      marginBottom: "var(--spacing-5)",
     }}>
       {children}
     </p>
