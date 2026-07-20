@@ -24,7 +24,9 @@ export function Button({
   children: React.ReactNode;
   ariaLabel?: string;
 }) {
-  const cls = `btn-key${variant === "primary" ? " btn-key--primary" : ""}${className ? ` ${className}` : ""}`;
+  /* primary = the calm keycap + the SHARED travelling border light
+     (task-2 pick, 20 Jul): trace-host is the one trace implementation */
+  const cls = `btn-key${variant === "primary" ? " btn-key--primary trace-host" : ""}${className ? ` ${className}` : ""}`;
   if (href) {
     return (
       <Link href={href} className={cls} aria-label={ariaLabel}>

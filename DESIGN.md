@@ -206,7 +206,7 @@ variants in `app/globals.css`:
 
 | Tier | Class | Treatment |
 | --- | --- | --- |
-| Primary | `.btn-key--primary` | Filled iris keycap, the ONE 3D moment per view. Calm extrusion from the `--shadow-key` family: thin plate (`1px 3px 0 --key-fill-edge`), small soft cast, inset top highlight — one upper-left light source, both themes. |
+| Primary | `.btn-key--primary` | Filled iris keycap, the ONE 3D moment per view (Elleta's task-2 pick, 20 Jul). Calm extrusion from the `--shadow-key` family: thin plate (`1px 3px 0 --key-fill-edge`), small soft cast, inset top highlight — one upper-left light source, both themes. Hover gains the travelling border light via the SHARED `.trace-host` recipe (2px ring at `--btn-key-radius`); focus-visible keeps its own ring; reduced motion renders the static accent border. |
 | Secondary | `.btn-key` | FLAT: 1.5px iris outline + iris text on transparent, tinted wash on hover/active, no elevation. Colour is `--color-accent-ink` (iris light / periwinkle dark; fixed-dark chrome scopes the same token to its peri stop). Never confusable with FilterChip or Tag. |
 | Tertiary | text link | Iris + underlined, the inline-link pattern. |
 

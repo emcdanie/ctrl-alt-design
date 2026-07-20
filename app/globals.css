@@ -1136,14 +1136,21 @@ li {
   outline-offset: var(--ring-focus-offset);
 }
 
-/* PRIMARY: the calm keycap. Values are the --shadow-key / --gloss-key
-   token families; press = translateY(2px) onto the reduced plate. */
+/* PRIMARY: the calm keycap, Elleta's task-2 pick (Candidate A,
+   20 Jul). Values are the --shadow-key / --gloss-key token families;
+   press = translateY(2px) onto the reduced plate. Hover gains the
+   travelling border light via the SHARED .trace-host recipe (Button
+   adds the class); focus-visible keeps its real ring independent of
+   the trace; reduced motion renders the static accent border. */
 .btn-key--primary {
   color: var(--key-face-hi);
   border: 1px solid var(--key-fill-edge);
   background: var(--gloss-key), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
   box-shadow: var(--shadow-key-resting);
   transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
+  --trace-r: var(--btn-key-radius);
+  --trace-w: 2px;
+  --cc: var(--hero-iris-bright);
 }
 
 /* hover: the light lifts (sheen brightens, cap rises a hair) */
