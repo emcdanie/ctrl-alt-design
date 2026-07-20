@@ -99,11 +99,15 @@ toggles, or sort.
 ## 7. NDA (hard rule)
 - No real internal screens, dashboards, metrics, or client tool/team names from any employer or
   client. Abstract to a descriptor ("a UN agency in Geneva"). Recreated/abstract diagrams only.
-  Banned terms live in `_private/nda-terms.txt` (gitignored), merged with the global
-  `~/.claude/nda-terms.txt`; the pre-commit hook and `audit:nda` read from both, so no name is
-  ever written in a committed file, this one included.
-- Employer history (company names as where I worked) is fine; the client work as a case *subject* must be
-  scrubbed of internal specifics.
+  INTERNAL terms live in `_private/nda-terms.txt` (gitignored, banned EVERYWHERE), merged with the
+  global `~/.claude/nda-terms.txt`; the pre-commit hook and `audit:nda` read from both, so no name
+  is ever written in a committed file, this one included.
+- **Employer scoping (2026-07-20, Pass E task 9).** Employment history is public; case content stays
+  abstracted. Employer and engagement org names live in `_private/nda-employers.txt` (gitignored)
+  and are banned everywhere EXCEPT `components/ExperienceSection.tsx` and
+  `components/ResumeModal.tsx`. No other file is exempt, ever. The library data, tags, and matrix
+  stay name-free; case studies keep industry-not-client naming, recreated artifacts, and their
+  disclosure lines.
 - The NDA check greps file **contents across the whole tree**, not diffs or filenames — renamed files hid
   names before. Never rely on the diff alone.
 
