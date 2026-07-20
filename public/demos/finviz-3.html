@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<!-- Published copy of prototypes/finviz-3/index.html (the source of
+     truth stays in prototypes/, same pairing as finviz-kpi-tree).
+     Differences from source: em/en dashes swept for the site copy
+     gate; one visible mocked-data line added. 2026-07-20. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Finviz 3.0, AI Screener Concept · Elleta</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2330; --line:#2b3546;
+    --text:#e6edf3; --muted:#8b98a9; --faint:#5b6675;
+    --accent:#4da3ff; --accent-dim:#1f3a5c;
+    --green:#3fb970; --red:#e5534b; --amber:#d9a13c; --purple:#a884f3;
+    --elite:#e3b341;
+    --radius:10px;
+    font-size:15px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; min-width:1200px;}
+  button{font:inherit; color:inherit; background:none; border:none; cursor:pointer;}
+
+  /* ---------- header ---------- */
+  header{display:flex; align-items:center; gap:28px; padding:14px 28px; border-bottom:1px solid var(--line); background:var(--panel);}
+  .logo{font-weight:700; font-size:1.15rem; letter-spacing:.02em;}
+  .logo span{color:var(--accent);}
+  nav{display:flex; gap:4px;}
+  nav button{padding:7px 14px; border-radius:8px; color:var(--muted); font-size:.95rem;}
+  nav button.active{background:var(--panel2); color:var(--text);}
+  .spacer{flex:1;}
+  .ticker{display:flex; gap:18px; font-size:.85rem; color:var(--muted); font-variant-numeric:tabular-nums;}
+  .ticker b{color:var(--text); font-weight:600;}
+  .up{color:var(--green);} .down{color:var(--red);}
+  .elite-pill{border:1px solid var(--elite); color:var(--elite); border-radius:999px; padding:5px 14px; font-size:.85rem;}
+
+  /* ---------- layout ---------- */
+  .wrap{display:grid; grid-template-columns:1fr 320px; gap:0; min-height:calc(100vh - 61px);}
+  main{padding:22px 26px; border-right:1px solid var(--line); min-width:0;}
+  aside{padding:22px 20px; background:var(--panel);}
+
+  /* ---------- prompt bar ---------- */
+  .promptbar{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px;}
+  .promptrow{display:flex; align-items:center; gap:12px;}
+  .promptrow .ai-dot{width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px var(--accent); flex:none;}
+  #query{flex:1; background:none; border:none; outline:none; color:var(--text); font-size:1.02rem; font-family:inherit;}
+  #query::placeholder{color:var(--faint);}
+  .mode{display:flex; align-items:center; gap:8px; font-size:.8rem; color:var(--muted); flex:none;}
+  .switch{display:flex; border:1px solid var(--line); border-radius:999px; overflow:hidden;}
+  .switch button{padding:4px 12px; font-size:.78rem; color:var(--muted);}
+  .switch button.on{background:var(--accent-dim); color:var(--accent);}
+  .scopes{display:flex; gap:8px; margin-top:12px; align-items:center; flex-wrap:wrap;}
+  .scopes .lbl{font-size:.75rem; color:var(--faint); text-transform:uppercase; letter-spacing:.06em;}
+  .scope{border:1px solid var(--line); border-radius:999px; padding:4px 12px; font-size:.82rem; color:var(--muted);}
+  .scope b{color:var(--text); font-weight:600;}
+  .preprompts{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;}
+  .preprompts button{border:1px dashed var(--line); border-radius:999px; padding:5px 13px; font-size:.82rem; color:var(--muted);}
+  .preprompts button:hover{color:var(--accent); border-color:var(--accent);}
+
+  /* ---------- AI response / chips ---------- */
+  .airesp{margin-top:16px; background:var(--panel); border:1px solid var(--accent-dim); border-radius:var(--radius); padding:16px;}
+  .airesp .head{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
+  .airesp .head h2{font-size:.95rem; font-weight:600;}
+  .stamp{font-size:.75rem; color:var(--faint); margin-left:auto;}
+  .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;}
+  .chip{display:inline-flex; align-items:center; gap:7px; background:var(--panel2); border:1px solid var(--line); border-radius:999px; padding:6px 8px 6px 13px; font-size:.87rem; position:relative;}
+  .chip.off{opacity:.38; text-decoration:line-through;}
+  .chip .why{width:17px; height:17px; border-radius:50%; background:var(--accent-dim); color:var(--accent); font-size:.7rem; line-height:17px; text-align:center; flex:none;}
+  .chip .x{color:var(--faint); font-size:.95rem; padding:0 4px;}
+  .chip .x:hover{color:var(--red);}
+  .chip.hidden-teach .why{display:none;}
+  .tip{position:absolute; z-index:30; top:calc(100% + 8px); left:0; width:300px; background:#0a0e14; border:1px solid var(--accent-dim); border-radius:10px; padding:12px 14px; font-size:.82rem; color:var(--muted); display:none; box-shadow:0 10px 30px rgba(0,0,0,.5);}
+  .tip b{color:var(--text); display:block; margin-bottom:4px;}
+  .tip .range{color:var(--accent); margin-top:6px; display:block;}
+  .chip:hover .tip{display:block;}
+  .meta-row{display:flex; align-items:center; gap:16px; margin-top:13px; flex-wrap:wrap;}
+  .count{font-size:.85rem; color:var(--muted);}
+  .count b{color:var(--green); font-weight:600;}
+  .count.warn b{color:var(--amber);}
+  .linkbtn{font-size:.83rem; color:var(--accent);}
+  .actions{margin-left:auto; display:flex; gap:8px;}
+  .btn{border:1px solid var(--line); border-radius:8px; padding:6px 13px; font-size:.83rem; color:var(--text);}
+  .btn:hover{border-color:var(--accent); color:var(--accent);}
+  .btn.saved{border-color:var(--green); color:var(--green);}
+  .trace{display:none; margin-top:13px; border-top:1px dashed var(--line); padding-top:13px; font-size:.85rem; color:var(--muted); line-height:1.55;}
+  .trace.open{display:block;}
+  .trace b{color:var(--text);}
+  .flag{display:inline-block; margin-top:10px; background:rgba(217,161,60,.1); border:1px solid rgba(217,161,60,.4); color:var(--amber); border-radius:8px; padding:6px 12px; font-size:.8rem;}
+
+  /* ---------- presets ---------- */
+  .presets{display:flex; gap:8px; align-items:center; margin-top:16px; flex-wrap:wrap;}
+  .presets .lbl{font-size:.75rem; color:var(--faint); text-transform:uppercase; letter-spacing:.06em;}
+  .preset{border:1px solid var(--line); background:var(--panel); border-radius:8px; padding:5px 12px; font-size:.83rem; color:var(--muted);}
+  .preset.new{border-color:var(--green); color:var(--green);}
+
+  /* ---------- table ---------- */
+  table{width:100%; border-collapse:collapse; margin-top:16px; font-variant-numeric:tabular-nums;}
+  th{font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--faint); text-align:right; padding:8px 10px; border-bottom:1px solid var(--line); cursor:pointer; white-space:nowrap;}
+  th:first-child,th:nth-child(2){text-align:left;}
+  th .arr{color:var(--accent);}
+  td{padding:9px 10px; border-bottom:1px solid #1a2230; font-size:.9rem; text-align:right; white-space:nowrap;}
+  td:first-child,td:nth-child(2){text-align:left;}
+  tbody tr{cursor:pointer;}
+  tbody tr:hover{background:var(--panel);}
+  tbody tr.sel{background:var(--accent-dim);}
+  .tick{font-weight:700;}
+  .co{color:var(--muted); font-size:.85rem;}
+  svg.spark{display:block;}
+
+  /* ---------- AI read panel ---------- */
+  .read{margin-top:18px; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:18px; display:flex; gap:22px;}
+  .read .txt{flex:1; min-width:0;}
+  .read h3{font-size:1rem; margin-bottom:6px;}
+  .read p{font-size:.9rem; color:var(--muted); line-height:1.6;}
+  .read p b{color:var(--text);}
+  .likel{flex:none; width:170px; text-align:center; border-left:1px solid var(--line); padding-left:22px;}
+  .likel .num{font-size:2.1rem; font-weight:700; color:var(--green);}
+  .likel .num.mid{color:var(--amber);}
+  .likel .cap{font-size:.75rem; color:var(--faint); line-height:1.5; margin-top:6px;}
+  .srcline{margin-top:12px; font-size:.75rem; color:var(--faint); display:flex; gap:14px; flex-wrap:wrap;}
+  .srcline span::before{content:"·"; margin-right:14px; color:var(--line);}
+  .srcline span:first-child::before{content:"";margin:0;}
+  .disclaimer{margin-top:14px; font-size:.75rem; color:var(--faint); text-align:center;}
+
+  /* ---------- attention feed ---------- */
+  aside h2{font-size:.8rem; text-transform:uppercase; letter-spacing:.07em; color:var(--faint); margin-bottom:4px;}
+  aside .sub{font-size:.8rem; color:var(--muted); margin-bottom:16px;}
+  .card{background:var(--panel2); border:1px solid var(--line); border-radius:var(--radius); padding:14px; margin-bottom:12px;}
+  .card .top{display:flex; align-items:center; gap:8px; margin-bottom:7px;}
+  .sev{width:8px; height:8px; border-radius:50%; flex:none;}
+  .sev.hi{background:var(--red); box-shadow:0 0 6px var(--red);}
+  .sev.md{background:var(--amber);}
+  .sev.lo{background:var(--accent);}
+  .card .top b{font-size:.9rem;}
+  .card .top time{margin-left:auto; font-size:.72rem; color:var(--faint);}
+  .card p{font-size:.83rem; color:var(--muted); line-height:1.5;}
+  .card .lk{font-size:.75rem; color:var(--faint); margin-top:7px;}
+  .card .lk b{color:var(--text);}
+  .card .act{margin-top:10px; display:flex; gap:8px;}
+  .card .act button{font-size:.78rem; border:1px solid var(--line); border-radius:7px; padding:4px 10px; color:var(--text);}
+  .card .act button:hover{border-color:var(--accent); color:var(--accent);}
+  .card.elite{border-color:rgba(227,179,65,.5); background:rgba(227,179,65,.06);}
+  .card.elite .top b{color:var(--elite);}
+  .card.elite .cta{display:block; margin-top:10px; text-align:center; border:1px solid var(--elite); color:var(--elite); border-radius:8px; padding:7px; font-size:.82rem; width:100%;}
+  .lowconf{border:1px dashed var(--line); border-radius:var(--radius); padding:13px; font-size:.8rem; color:var(--muted); line-height:1.55; margin-top:4px;}
+  .lowconf b{color:var(--amber);}
+
+  /* ---------- metric annotations ---------- */
+  .mbadge{display:none; width:26px; height:26px; border-radius:50%; background:var(--purple); color:#fff; font-size:.8rem; line-height:26px; text-align:center; cursor:pointer; flex:none; box-shadow:0 0 10px rgba(168,132,243,.5); border:none; vertical-align:middle; margin-left:8px;}
+  body.metrics-on .mbadge{display:inline-block; animation:pulse 2s ease-in-out infinite;}
+  @keyframes pulse{50%{box-shadow:0 0 16px rgba(168,132,243,.9);}}
+  #mpop{display:none; position:fixed; right:30px; top:90px; width:400px; max-height:78vh; overflow:auto; background:#0a0e14; border:1px solid var(--purple); border-radius:14px; padding:20px 22px; z-index:60; box-shadow:0 20px 60px rgba(0,0,0,.6);}
+  #mpop h3{font-size:1rem; margin-bottom:2px;}
+  #mpop .feat{color:var(--purple); font-size:.75rem; text-transform:uppercase; letter-spacing:.08em;}
+  #mpop .blk{margin-top:14px; border-top:1px solid var(--line); padding-top:12px;}
+  #mpop .blk .lbl{font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; color:var(--faint); margin-bottom:6px;}
+  #mpop .blk p{font-size:.85rem; color:var(--muted); line-height:1.55; margin-bottom:8px;}
+  #mpop .blk p b{color:var(--text);}
+  #mpop .chain{font-size:.82rem; color:var(--accent); font-variant-numeric:tabular-nums;}
+  #mpop .x{position:absolute; top:10px; right:14px; color:var(--faint); background:none; border:none; font-size:1.1rem; cursor:pointer;}
+  /* ---------- system map view ---------- */
+  .sysbtn{border:1px solid var(--purple); color:var(--purple); border-radius:999px; padding:5px 14px; font-size:.85rem;}
+  .sysbtn.on{background:var(--purple); color:#fff;}
+  #sysview{display:none; padding:22px 26px;}
+  #sysview h2{font-size:1rem; margin-bottom:4px;}
+  #sysview .sub{color:var(--muted); font-size:.85rem; margin-bottom:14px;}
+  #sysview svg{display:block; width:100%; height:1180px;}
+  .tierlbl{font-size:13px; fill:var(--faint); letter-spacing:.14em; font-weight:700;}
+  .edge{stroke:var(--line); stroke-width:1.4; fill:none; transition:opacity .25s, stroke .25s;}
+  .edge.lit{stroke-width:2.5; stroke-dasharray:6 5; animation:flow 1s linear infinite;}
+  @keyframes flow{to{stroke-dashoffset:-11;}}
+  .tnode rect{fill:var(--panel); stroke:var(--line); stroke-width:1.5; rx:9; cursor:pointer; transition:opacity .25s;}
+  .tnode text{font-size:11.5px; fill:var(--text); pointer-events:none;}
+  .tnode .tag{font-size:8.5px; fill:var(--muted); letter-spacing:.06em;}
+  .t-okr rect{stroke:var(--elite);} .t-kpi rect{stroke:var(--accent);} .t-metric rect{stroke:var(--green);}
+  .t-what rect{stroke:var(--purple);} .t-where rect{stroke:var(--amber);} .t-why rect{stroke:#e8619a;}
+  .t-risk rect{stroke:var(--red); stroke-dasharray:5 4;}
+  .dimmed{opacity:.15;} .tnode.sel rect{stroke-width:3;}
+  #sysinfo{position:sticky; bottom:14px; background:#0a0e14; border:1px solid var(--purple); border-radius:10px; padding:12px 16px; font-size:.88rem; color:var(--muted); min-height:44px;}
+  #sysinfo b{color:var(--text);}
+  /* toast */
+  #toast{position:fixed; bottom:26px; left:50%; transform:translateX(-50%); background:#0a0e14; border:1px solid var(--green); color:var(--text); border-radius:10px; padding:11px 20px; font-size:.88rem; display:none; z-index:50;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">finviz<span>·3.0</span></div>
+  <nav>
+    <button class="active">Screener</button><button>Portfolio</button><button>Maps</button><button>Groups</button>
+  </nav>
+  <div class="spacer"></div>
+  <div class="ticker">
+    <span>S&amp;P 500 <b class="up">6,912.44 ▲0.6%</b></span>
+    <span>NASDAQ <b class="up">24,180.10 ▲0.9%</b></span>
+    <span>10Y <b class="down">3.87% ▼</b></span>
+  </div>
+  <button class="sysbtn" id="metToggle">📐 Metrics</button>
+  <button class="sysbtn" id="sysToggle">🧭 System</button>
+  <button class="elite-pill">✦ Elite</button>
+</header>
+
+<section id="sysview" aria-label="System map">
+  <h2>The system behind the screen, WHY → WHERE → WHAT → HOW</h2>
+  <p class="sub">Hover any node: its full lineage lights up and gets explained below. Click to pin it. Every user need (bottom) must trace an unbroken path to an OKR (top), if it can't, something is missing from the design.</p>
+  <svg id="treeSvg" viewBox="0 0 1280 1180" xmlns="http://www.w3.org/2000/svg"></svg>
+  <div id="sysinfo">Try <b>“Understand filters & domain”</b> at the bottom, it climbs through overlays → teach layer → graduation rate → time-to-competence → KR3. One need, one unbroken argument.</div>
+</section>
+
+<div class="wrap">
+<main>
+
+  <!-- NL prompt bar with scoping + mode toggle -->
+  <section class="promptbar" aria-label="Ask the screener">
+    <div class="promptrow">
+      <span class="ai-dot"></span>
+      <input id="query" value="Find stocks with consistent dividend growth over the past 10 years in the utilities sector" aria-label="Natural language query">
+      <div class="mode">
+        <span>Mode</span>
+        <div class="switch" role="group" aria-label="Assistance mode">
+          <button id="teachBtn" class="on">Teach me</button><button id="doBtn">Just do it</button>
+        </div>
+      </div>
+    </div>
+    <div class="scopes">
+      <span class="lbl">Scope</span>
+      <span class="scope">Sector <b>Utilities</b></span>
+      <span class="scope">Market cap <b>Any</b></span>
+      <span class="scope">Timeframe <b>10 years</b></span>
+      <span class="scope">Data <b>US exchanges · live</b></span>
+    </div>
+    <div class="preprompts">
+      <button>Compare my top 5 by payout safety</button>
+      <button>Which of these is closest to its 52-week low?</button>
+      <button>Set an alert if any cuts its dividend</button>
+    </div>
+  </section>
+
+  <!-- AI translation: editable chips + reasoning trace -->
+  <section class="airesp" aria-label="AI interpretation">
+    <div class="head">
+      <h2>I translated that into 6 filters, every one is editable.</h2>
+      <span class="stamp">Finviz screener data · as of 09:31 CET today</span>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="meta-row">
+      <span class="count" id="count"></span>
+      <button class="linkbtn" id="traceBtn">Why these filters ▾</button>
+      <div class="actions">
+        <button class="btn" id="saveBtn">＋ Save as preset</button>
+        <button class="btn" id="alertBtn">🔔 Create alert</button>
+      </div>
+    </div>
+    <div class="trace" id="trace">
+      <b>Reasoning:</b> "Consistent dividend growth" isn't one Finviz filter, it's a combination. I used <b>Dividend Yield 2-6%</b> to exclude yield traps (very high yield usually signals a falling price, not a healthy dividend), <b>Payout &lt; 60%</b> so the dividend is affordable from earnings, and <b>EPS growth 5Y positive</b> because dividends can only keep growing if earnings do. <b>D/E &lt; 1.5</b> and <b>ROE &gt; 10%</b> screen for the balance-sheet strength utilities need to sustain payouts through rate cycles. Exact 10-year dividend-streak data isn't a native filter, I'm approximating with the 5-year growth fields and flagging each stock's actual streak in the table.
+      <div class="flag">⚠ Heads-up: your 10-year timeframe exceeds the 5-year growth filters Finviz exposes. Results are a close approximation, check the "streak" column for the true count.</div>
+    </div>
+  </section>
+
+  <!-- presets -->
+  <div class="presets">
+    <span class="lbl">My presets</span>
+    <button class="preset">SaaS · 8-qtr earnings beats</button>
+    <button class="preset">Energy 52-wk breakouts</button>
+    <button class="preset">Airlines debt watch</button>
+    <span id="newPreset"></span>
+  </div>
+
+  <!-- results table -->
+  <table id="tbl" aria-label="Screener results">
+    <thead><tr>
+      <th data-k="t">Ticker</th><th data-k="co">Company</th><th data-k="price">Price</th>
+      <th data-k="pe">P/E</th><th data-k="dy">Div yield</th><th data-k="po">Payout</th>
+      <th data-k="eps">EPS 5Y</th><th data-k="de">D/E</th><th data-k="roe">ROE</th>
+      <th data-k="streak">Streak (yrs)</th><th>1Y trend</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <!-- AI chart read -->
+  <section class="read" id="read" aria-live="polite"></section>
+  <p class="disclaimer">AI reads are likelihood estimates grounded in Finviz data, never financial advice. Source and freshness shown on every answer. All data in this concept is mocked, built for a product exercise.</p>
+
+</main>
+
+<aside>
+  <h2>Attention feed</h2>
+  <p class="sub">Watching your 54 portfolios so you don't have to. 3 items need you now.</p>
+
+  <div class="card">
+    <div class="top"><span class="sev hi"></span><b>TSLA broke its 200-day MA</b><time>2 min ago</time></div>
+    <p>Crossed $312.40 on 2.1× average volume. You hold TSLA in 6 client portfolios ("Speculation", "Long Term" ×5).</p>
+    <div class="lk">Continuation likelihood <b>68%</b> · based on 14 similar crossings since 2019</div>
+    <div class="act"><button>Open chart</button><button>Draft alert for clients</button></div>
+  </div>
+
+  <div class="card">
+    <div class="top"><span class="sev md"></span><b>Portfolio "Retirement-M" drifted</b><time>34 min ago</time></div>
+    <p>Tech allocation is 47% against a 40% target after this week's rally. Rebalancing would trim 3 positions.</p>
+    <div class="lk">Drift severity <b>moderate</b> · 7pts over target</div>
+    <div class="act"><button>Review trim plan</button></div>
+  </div>
+
+  <div class="card">
+    <div class="top"><span class="sev lo"></span><b>Earnings this week: 4 holdings</b><time>today</time></div>
+    <p>NEE (Wed), DUK (Thu), SO (Thu), AEP (Fri). Consensus is positive on 3 of 4.</p>
+    <div class="act"><button>Prep summary</button></div>
+  </div>
+
+  <div class="card elite">
+    <div class="top"><span class="sev hi"></span><b>✦ Elite would have caught this</b><time>09:42</time></div>
+    <p>ED dropped 5.2% in 11 minutes this morning. Elite's real-time alerts would have pinged you at 09:42, the free plan surfaces it end-of-day.</p>
+    <button class="cta">See what Elite watches → 30-day money-back</button>
+  </div>
+
+  <h2 style="margin-top:22px">When I'm not sure</h2>
+  <div class="lowconf">
+    <b>Low-confidence example:</b> asked about a micro-cap with 3 weeks of data, the AI answers: <i>"I don't have enough history to score this, here's what I'd check instead: float, insider transactions, and the IPO lockup date."</i> It never invents a number.
+  </div>
+</aside>
+</div>
+
+<div id="toast" role="status"></div>
+<div id="mpop" role="dialog" aria-label="Metric annotation"><button class="x" onclick="mpopClose()">✕</button><div id="mpopBody"></div></div>
+
+<script>
+/* ------------ data ------------ */
+const STOCKS=[
+ {t:"NEE",co:"NextEra Energy",sec:"Utilities",price:78.4,pe:22.1,dy:2.9,po:53,eps:9.1,de:1.28,roe:12.1,streak:29,spark:[62,64,63,66,68,67,70,72,71,74,76,78],read:"NextEra has raised its dividend for 29 straight years and pairs a utility's stability with renewables growth, EPS compounding at 9.1% is the engine. Payout at 53% leaves room to keep raising even if rates stay high. The 1-year trend shows steady accumulation with shallow pullbacks, institutional behavior, not retail momentum.",lk:78},
+ {t:"DUK",co:"Duke Energy",sec:"Utilities",price:104.2,pe:19.8,dy:4.0,po:58,eps:4.2,de:1.42,roe:10.4,streak:18,spark:[95,96,94,97,99,98,100,101,100,102,103,104],read:"Duke is the classic slow-and-steady: 18-year streak, 4% yield, and a payout ratio of 58% that sits right at the comfortable ceiling. EPS growth is modest at 4.2%, so future raises will likely be small. The chart is a low-volatility grind higher, it behaves like the bond-proxy it is.",lk:71},
+ {t:"SO",co:"Southern Company",sec:"Utilities",price:88.7,pe:20.6,dy:3.8,po:57,eps:5.6,de:1.39,roe:11.8,streak:23,spark:[78,80,79,82,84,83,85,86,88,87,88,89],read:"Southern's 23-year streak survived the Vogtle nuclear cost overruns, now complete, which removes the biggest drag on earnings. EPS growth at 5.6% with payout under 60% supports continued raises. Trend is firmly up since the reactors came online.",lk:74},
+ {t:"AEP",co:"American Electric Power",sec:"Utilities",price:96.1,pe:18.9,dy:3.6,po:55,eps:5.1,de:1.44,roe:10.9,streak:15,spark:[88,87,89,91,90,92,93,92,94,95,96,96],read:"AEP's transmission-heavy business is the quiet winner of data-center electricity demand. 15-year streak, 55% payout, and a D/E of 1.44 that's typical for the capex cycle it's in. The trend has been re-rating upward as AI power demand became a mainstream thesis.",lk:69},
+ {t:"XEL",co:"Xcel Energy",sec:"Utilities",price:64.3,pe:17.2,dy:3.4,po:54,eps:6.3,de:1.35,roe:10.7,streak:21,spark:[60,59,58,60,61,60,62,63,62,63,64,64],read:"Xcel has raised for 21 consecutive years with mid-single-digit EPS growth. Wildfire liability headlines knocked it sideways for two quarters, that's the flat stretch in the chart, but fundamentals didn't move. Often the value pick of this list when sentiment is against it.",lk:66},
+ {t:"WEC",co:"WEC Energy Group",sec:"Utilities",price:99.8,pe:21.4,dy:3.3,po:59,eps:6.0,de:1.31,roe:11.2,streak:22,spark:[90,92,91,93,95,94,96,97,96,98,99,100],read:"WEC is one of the most consistent operators in the sector, 22-year streak, ROE above 11%, and management guides raises years in advance. Payout at 59% is the highest on this list that still clears your filter; watch it if EPS growth slows.",lk:72},
+ {t:"ATO",co:"Atmos Energy",sec:"Utilities",price:118.5,pe:19.1,dy:2.4,po:48,eps:7.4,de:1.12,roe:11.6,streak:40,spark:[105,107,106,109,111,110,113,114,113,116,117,119],read:"Atmos is the streak king here, 40 consecutive years of raises, the lowest payout ratio on the list at 48%, and the strongest balance sheet (D/E 1.12). The trade-off is the lowest yield at 2.4%: you're paying for safety and growth of the dividend, not current income.",lk:81},
+ {t:"ES",co:"Eversource Energy",sec:"Utilities",price:61.9,pe:16.8,dy:4.6,po:59,eps:3.9,de:1.49,roe:10.1,streak:14,spark:[68,66,64,62,60,58,59,60,61,60,61,62],read:"Eversource is the highest yield that still passes, 4.6%, but it passes at the very edge: payout 59%, D/E 1.49, and the softest EPS growth on the list after selling its offshore wind stake at a loss. The chart shows a stock still repairing a downtrend. Higher income, higher risk of a pause in raises.",lk:58}
+];
+const CHIPS=[
+ {id:"sec",label:"Sector = Utilities",def:"Sector",why:"Broad industry category. You asked for utilities, regulated power, gas and water companies whose steady cash flows make them the classic dividend-growth hunting ground.",range:"One of 11 GICS sectors",test:s=>s.sec==="Utilities"},
+ {id:"dy",label:"Dividend yield 2-6%",def:"Dividend Yield",why:"Annual dividend ÷ price. Below 2% barely counts as income; above 6% usually means the market expects a cut (a 'yield trap'). The healthy middle is where growth streaks live.",range:"Typical healthy range: 2-6%",test:s=>s.dy>=2&&s.dy<=6},
+ {id:"po",label:"Payout ratio < 60%",def:"Payout Ratio",why:"Share of earnings paid out as dividends. Under 60% means the dividend is comfortably affordable and can keep growing even in a weak year.",range:"Sustainable: < 60%",test:s=>s.po<60},
+ {id:"eps",label:"EPS growth 5Y > 0",def:"EPS growth past 5 years",why:"Dividends can only keep rising if earnings do. A positive 5-year trend is the minimum evidence the growth is funded, not borrowed.",range:"Must be positive",test:s=>s.eps>0},
+ {id:"de",label:"Debt/Equity < 1.5",def:"Debt/Equity",why:"Total debt vs shareholder equity. Utilities always carry debt for infrastructure, but above ~1.5 rising interest rates start eating the dividend's lunch.",range:"Preferably < 1.5",test:s=>s.de<1.5},
+ {id:"roe",label:"ROE > 10%",def:"Return on Equity",why:"Profit generated per dollar of shareholder equity. Above 10% signals management earns enough on its capital to fund both growth and the payout.",range:"Efficient: > 10%",test:s=>s.roe>10}
+];
+let off=new Set(), sel="ATO", teach=true, sortK=null, sortDir=1;
+
+/* ------------ render chips ------------ */
+function renderChips(){
+  document.getElementById("chips").innerHTML=CHIPS.map(c=>`
+    <span class="chip ${off.has(c.id)?"off":""} ${teach?"":"hidden-teach"}" data-id="${c.id}">
+      ${c.label}
+      <span class="why" title="What does this mean?">?</span>
+      <button class="x" data-x="${c.id}" aria-label="Remove filter">✕</button>
+      <span class="tip"><b>${c.def}</b>${c.why}<span class="range">${c.range}</span></span>
+    </span>`).join("");
+  document.querySelectorAll("[data-x]").forEach(b=>b.onclick=e=>{
+    const id=e.target.dataset.x; off.has(id)?off.delete(id):off.add(id);
+    renderChips(); renderRows();
+  });
+}
+
+/* ------------ render table ------------ */
+function spark(d,up){
+  const w=110,h=26,min=Math.min(...d),max=Math.max(...d);
+  const pts=d.map((v,i)=>`${(i/(d.length-1)*w).toFixed(1)},${(h-((v-min)/(max-min||1))*(h-4)-2).toFixed(1)}`).join(" ");
+  return `<svg class="spark" width="${w}" height="${h}"><polyline points="${pts}" fill="none" stroke="${up?"var(--green)":"var(--red)"}" stroke-width="1.6"/></svg>`;
+}
+function filtered(){
+  return STOCKS.filter(s=>CHIPS.every(c=>off.has(c.id)||c.test(s)));
+}
+function renderRows(){
+  let rows=filtered();
+  if(sortK) rows=[...rows].sort((a,b)=>(a[sortK]>b[sortK]?1:-1)*sortDir);
+  document.getElementById("rows").innerHTML=rows.map(s=>`
+    <tr data-t="${s.t}" class="${s.t===sel?"sel":""}">
+      <td class="tick">${s.t}</td><td class="co">${s.co}</td>
+      <td>$${s.price.toFixed(2)}</td><td>${s.pe.toFixed(1)}</td>
+      <td>${s.dy.toFixed(1)}%</td><td>${s.po}%</td>
+      <td class="${s.eps>5?"up":""}">${s.eps.toFixed(1)}%</td>
+      <td>${s.de.toFixed(2)}</td><td>${s.roe.toFixed(1)}%</td>
+      <td><b>${s.streak}</b></td>
+      <td>${spark(s.spark,s.spark[11]>=s.spark[0])}</td>
+    </tr>`).join("");
+  const n=rows.length, c=document.getElementById("count");
+  c.className="count"+(n===0||n>200?" warn":"");
+  c.innerHTML=n===0
+    ? `<b>0 matches</b>, too narrow. Try removing the ROE or payout filter.`
+    : `<b>${n} matches</b>, a healthy shortlist for comparing.`;
+  document.querySelectorAll("#rows tr").forEach(r=>r.onclick=()=>{sel=r.dataset.t; renderRows(); renderRead();});
+  if(!rows.find(s=>s.t===sel)&&rows[0]){sel=rows[0].t; renderRead();}
+}
+
+/* ------------ AI read panel ------------ */
+function renderRead(){
+  const s=STOCKS.find(x=>x.t===sel); if(!s) return;
+  document.getElementById("read").innerHTML=`
+    <div class="txt">
+      <h3>What ${s.t}'s chart is telling you</h3>
+      <p>${s.read}</p>
+      <div class="srcline">
+        <span>Source: Finviz historical + fundamentals</span>
+        <span>Data as of 09:31 CET</span>
+        <span>Reasoning: expandable above</span>
+      </div>
+    </div>
+    <div class="likel">
+      <div class="num ${s.lk<65?"mid":""}">${s.lk}%</div>
+      <div>likelihood the streak<br>continues 12 months</div>
+      <div class="cap">Grounded in payout, EPS trend and ${s.streak}-yr history. A likelihood, not advice.</div>
+    </div>`;
+}
+
+/* ------------ interactions ------------ */
+document.getElementById("traceBtn").onclick=e=>{
+  const t=document.getElementById("trace"); t.classList.toggle("open");
+  e.target.textContent=t.classList.contains("open")?"Why these filters ▴":"Why these filters ▾";
+};
+document.getElementById("teachBtn").onclick=()=>{teach=true; mode(); renderChips();};
+document.getElementById("doBtn").onclick=()=>{teach=false; mode(); renderChips();};
+function mode(){
+  document.getElementById("teachBtn").classList.toggle("on",teach);
+  document.getElementById("doBtn").classList.toggle("on",!teach);
+}
+document.getElementById("saveBtn").onclick=e=>{
+  document.getElementById("newPreset").innerHTML=`<button class="preset new">Utility dividend growers ✓</button>`;
+  e.target.classList.add("saved"); e.target.textContent="✓ Saved as preset";
+  toast("Preset saved, it'll appear on every device.");
+};
+document.getElementById("alertBtn").onclick=()=>toast("✦ Custom alerts are an Elite feature, here's the moment they pay for themselves: try free for 30 days.");
+document.querySelectorAll(".preprompts button").forEach(b=>b.onclick=()=>{
+  document.getElementById("query").value=b.textContent; toast("In the full build, this re-runs the translation with your current scope.");
+});
+document.querySelectorAll("th[data-k]").forEach(h=>h.onclick=()=>{
+  const k=h.dataset.k; sortDir=sortK===k?-sortDir:1; sortK=k;
+  document.querySelectorAll("th .arr").forEach(a=>a.remove());
+  h.insertAdjacentHTML("beforeend",` <span class="arr">${sortDir>0?"▲":"▼"}</span>`);
+  renderRows();
+});
+let toastT;
+function toast(msg){
+  const t=document.getElementById("toast"); t.textContent=msg; t.style.display="block";
+  clearTimeout(toastT); toastT=setTimeout(()=>t.style.display="none",3400);
+}
+
+renderChips(); renderRows(); renderRead();
+
+/* ============ SYSTEM MAP (canvas flow) ============ */
+const TN=[
+ {id:"kr3",t:"okr",x:280,label:"KR3: free→Elite 42→21 days",d:"Headline OKR, fed by user competence and conversion moments."},
+ {id:"churn",t:"okr",x:640,label:"Churn 9.7% → 5.6%",d:"Comprehension failures drive churn."},
+ {id:"paying",t:"okr",x:980,label:"+20% paying customers",d:"Via the visualization/dashboard UX (KR4)."},
+ {id:"ttc",t:"kpi",x:140,label:"Time-to-competence",d:"Speed to 'trust' on the learning ladder. Upstream of time-to-Elite."},
+ {id:"tti",t:"kpi",x:400,label:"Time-to-insight",d:"Query → trusted shortlist."},
+ {id:"trust",t:"kpi",x:650,label:"Calibrated trust",d:"Users trust the AI the right amount, earned, not demanded."},
+ {id:"moneff",t:"kpi",x:890,label:"Monitoring efficiency",d:"5-6h of watching → a glance."},
+ {id:"conv",t:"kpi",x:1120,label:"Elite conversion @ AI moments",d:"Upgrades at the moment of demonstrated value, no nagging."},
+ {id:"grad",t:"metric",x:70,label:"Graduation rate (teach→do)",d:"% switching teach-me → just-do-it. Competence made measurable."},
+ {id:"expl",t:"metric",x:235,label:"Explainer opens",d:"Teach-layer adoption among new users."},
+ {id:"exit",t:"metric",x:395,label:"External-exit rate ↓",d:"Sessions leaving to Google/YouTube mid-build, should trend to zero."},
+ {id:"chip",t:"metric",x:550,label:"Chip acceptance rate",d:"% of AI-proposed filters kept vs edited vs abandoned."},
+ {id:"trace",t:"metric",x:700,label:"Trace-open curve",d:"Declining = trust earned; rising after an error = trust alarm."},
+ {id:"undo",t:"metric",x:840,label:"Undo / override rate",d:"Regret signal on one-tap actions."},
+ {id:"prec",t:"metric",x:975,label:"Alert precision",d:"% of 'needs you now' acted on; dismissal = false positive."},
+ {id:"ctr",t:"metric",x:1120,label:"Upgrade CTR (1×/day cap)",d:"Conversion without the friction the brief forbids."},
+ {id:"teach",t:"what",x:110,label:"Teach layer ①",d:"Inline explainers + teach-me mode, learning in the moment of use."},
+ {id:"nl",t:"what",x:340,label:"NL → filters ①②",d:"Intent → editable chips. Never a black box."},
+ {id:"reads",t:"what",x:570,label:"Chart reads ③",d:"Plain language + likelihood + source stamp."},
+ {id:"feed",t:"what",x:800,label:"Attention feed ④",d:"Outlier detection across 50-60 portfolios."},
+ {id:"evals",t:"what",x:1040,label:"Eval suite, release gate",d:"Groundedness · calibration · honest refusal · consistency · advice-line. Chip edits feed its dataset back: the product writes its own tests."},
+ {id:"ov",t:"where",x:180,label:"Inline overlays",d:"Teach in context, on filters and charts. The core move."},
+ {id:"cp",t:"where",x:430,label:"Co-pilot panel + voz",d:"NL screening, follow-ups, voice for busy hands."},
+ {id:"pp",t:"where",x:670,label:"Pre-prompts contextuales",d:"Seeded from the current screen."},
+ {id:"fs",t:"where",x:900,label:"Feed surface",d:"Ambient monitoring, the grid stays primary."},
+ {id:"learn",t:"why",x:80,label:"Understand filters & domain",d:"The #1 onboarding failure: 70+ filters, no guidance."},
+ {id:"speed",t:"why",x:330,label:"Intent → screen, fast",d:"Build a trusted screen without leaving the tool."},
+ {id:"read",t:"why",x:580,label:"Read charts with confidence",d:"The real job: compare data, form a hypothesis."},
+ {id:"watch",t:"why",x:830,label:"Watch 50-60 portfolios",d:"Catch the signal in time, where money is won or lost."},
+ {id:"data",t:"risk",x:1080,label:"⚠ Data: owner pending",d:"THE dependency: taxonomy, historicals and portfolio data need a named owner and source of truth. No grounding → no trustworthy AI, nothing above this node holds."},
+];
+const TE=[["learn","ov"],["speed","cp"],["speed","pp"],["read","ov"],["read","cp"],["watch","fs"],
+ ["data","teach"],["data","nl"],["data","reads"],["data","feed"],["data","evals"],
+ ["ov","teach"],["ov","reads"],["cp","nl"],["cp","reads"],["pp","nl"],["fs","feed"],
+ ["teach","grad"],["teach","expl"],["teach","exit"],["nl","chip"],["nl","exit"],["nl","trace"],
+ ["reads","trace"],["reads","undo"],["feed","prec"],["feed","ctr"],["feed","undo"],
+ ["evals","trace"],["evals","chip"],["evals","prec"],
+ ["grad","ttc"],["expl","ttc"],["exit","ttc"],["exit","tti"],["chip","tti"],["chip","trust"],
+ ["trace","trust"],["undo","trust"],["prec","moneff"],["prec","trust"],["ctr","conv"],
+ ["ttc","kr3"],["tti","kr3"],["trust","churn"],["tti","churn"],["moneff","churn"],
+ ["moneff","paying"],["conv","kr3"],["conv","paying"]];
+const TY={okr:40,kpi:190,metric:340,what:520,where:720,why:920,risk:920};
+const TW={okr:230,kpi:200,metric:150,what:200,where:210,why:220,risk:180}, TH=54;
+const TL=[["OKR",40],["HOW · KPI",190],["HOW · METRICS",340],["WHAT",520],["WHERE",720],["WHY",920]];
+const tById={}; TN.forEach(n=>tById[n.id]=n);
+const treeSvg=document.getElementById("treeSvg");
+function tc(n){return {x:n.x+TW[n.t]/2, top:TY[n.t], bot:TY[n.t]+TH};}
+let th="";
+TL.forEach(([l,y])=>{th+=`<text class="tierlbl" x="8" y="${y-14}">${l}</text>`;});
+TE.forEach(([a,b])=>{const A=tc(tById[a]),B=tc(tById[b]);
+  th+=`<path class="edge" data-a="${a}" data-b="${b}" d="M ${A.x} ${A.top} C ${A.x} ${A.top-80}, ${B.x} ${B.bot+80}, ${B.x} ${B.bot}"/>`;});
+TN.forEach(n=>{
+  const tag={okr:"OKR",kpi:"KPI",metric:"METRIC",what:"WHAT · FEATURE",where:"WHERE · SURFACE",why:"WHY · NEED",risk:"WHY · RISK"}[n.t];
+  th+=`<g class="tnode t-${n.t}" data-id="${n.id}" transform="translate(${n.x},${TY[n.t]})">
+    <rect width="${TW[n.t]}" height="${TH}"/><text x="10" y="19" class="tag">${tag}</text><text x="10" y="38">${n.label}</text></g>`;});
+treeSvg.innerHTML=th;
+
+let pinned=null;
+function tLineage(id){
+  const up=new Set([id]), down=new Set([id]); let ch=true;
+  while(ch){ch=false; TE.forEach(([a,b])=>{if(up.has(a)&&!up.has(b)){up.add(b);ch=true;}});}
+  ch=true; while(ch){ch=false; TE.forEach(([a,b])=>{if(down.has(b)&&!down.has(a)){down.add(a);ch=true;}});}
+  return new Set([...up,...down]);
+}
+function tSelect(id){
+  const keep=id?tLineage(id):null;
+  document.querySelectorAll(".tnode").forEach(g=>{
+    g.classList.toggle("dimmed", !!(keep&&!keep.has(g.dataset.id)));
+    g.classList.toggle("sel", g.dataset.id===id&&id===pinned);
+  });
+  document.querySelectorAll(".edge").forEach(p=>{
+    const lit=keep&&keep.has(p.dataset.a)&&keep.has(p.dataset.b);
+    p.classList.toggle("lit",!!lit); p.classList.toggle("dimmed", !!(keep&&!lit));
+  });
+  const info=document.getElementById("sysinfo");
+  if(id){const n=tById[id]; info.innerHTML=`<b>${n.label}</b>, ${n.d}`;}
+  else info.innerHTML='Try <b>“Understand filters & domain”</b> at the bottom, it climbs through overlays → teach layer → graduation rate → time-to-competence → KR3. One need, one unbroken argument.';
+}
+treeSvg.addEventListener("mouseover",e=>{const g=e.target.closest(".tnode"); if(g&&!pinned) tSelect(g.dataset.id);});
+treeSvg.addEventListener("mouseout",e=>{if(!pinned) tSelect(null);});
+treeSvg.addEventListener("click",e=>{
+  const g=e.target.closest(".tnode");
+  pinned=(g&&pinned!==g.dataset.id)?g.dataset.id:null;
+  tSelect(pinned);
+});
+/* ---- metric annotations: canvas rationale pinned to real features ---- */
+const ANNOT={
+ nl:{feat:"NL → Filters (editable chips)", host:()=>document.querySelector(".airesp .head h2"),
+   why:"speed", metrics:["chip","exit","trace"], kpis:["tti","trust"], okrs:["kr3","churn"],
+   evalNote:"Filter-translation eval: the golden dataset is the brief's 20 representative tasks; programmatic grader, exact filters, zero invented values. Every chip a user edits becomes next week's test case."},
+ teach:{feat:"Teach layer (teach-me mode)", host:()=>document.querySelector(".mode span"),
+   why:"learn", metrics:["grad","expl","exit"], kpis:["ttc"], okrs:["kr3","churn"],
+   evalNote:"Explainers generate from the filter taxonomy (grounded), never from model memory. Zero-tolerance groundedness eval."},
+ reads:{feat:"Chart read (likelihood + sources)", host:()=>document.querySelector(".read"),
+   why:"read", metrics:["trace","undo"], kpis:["trust"], okrs:["churn"],
+   evalNote:"Monthly calibration eval: a 72% must mean ~72% (historical backtest). Refusal eval: with thin data the correct answer is 'I'm not sure.' Advice-line eval: likelihood, never advice."},
+ feed:{feat:"Attention feed", host:()=>document.querySelector("aside h2"),
+   why:"watch", metrics:["prec","ctr","undo"], kpis:["moneff","conv"], okrs:["churn","kr3","paying"],
+   evalNote:"Every dismissed alert = a labeled false positive → tunes the detector. The Elite teaser is capped at 1×/day: conversion without the friction the brief forbids."}
+};
+function mpopClose(){document.getElementById("mpop").style.display="none";}
+function mpopOpen(key){
+  const a=ANNOT[key], n=id=>tById[id];
+  document.getElementById("mpopBody").innerHTML=`
+    <div class="feat">Feature · from the AI Solution Canvas</div><h3>${a.feat}</h3>
+    <div class="blk"><div class="lbl">Why, the need</div><p><b>${n(a.why).label}.</b> ${n(a.why).d}</p></div>
+    <div class="blk"><div class="lbl">How we measure it</div>${a.metrics.map(m=>`<p><b>${n(m).label}</b>, ${n(m).d}</p>`).join("")}</div>
+    <div class="blk"><div class="lbl">What it answers to</div><p class="chain">${a.metrics.map(m=>n(m).label.split(" (")[0]).join(" · ")} → ${a.kpis.map(k=>n(k).label).join(" + ")} → ${a.okrs.map(o=>n(o).label).join(" · ")}</p></div>
+    <div class="blk"><div class="lbl">The eval guarding it</div><p>${a.evalNote}</p></div>`;
+  document.getElementById("mpop").style.display="block";
+}
+Object.keys(ANNOT).forEach(key=>{
+  const host=ANNOT[key].host(); if(!host) return;
+  const b=document.createElement("button"); b.className="mbadge"; b.textContent="📐";
+  b.setAttribute("aria-label","See this feature's metrics");
+  b.onclick=e=>{e.stopPropagation(); mpopOpen(key);};
+  host.appendChild(b);
+});
+document.getElementById("metToggle").onclick=function(){
+  const on=document.body.classList.toggle("metrics-on");
+  this.classList.toggle("on",on);
+  if(!on) mpopClose();
+  else toast("Metrics mode: tap a 📐 to see how each feature is measured and why.");
+};
+document.getElementById("sysToggle").onclick=()=>{
+  const sys=document.getElementById("sysview"), wrap=document.querySelector(".wrap"), b=document.getElementById("sysToggle");
+  const on=sys.style.display!=="block";
+  sys.style.display=on?"block":"none"; wrap.style.display=on?"none":"grid"; b.classList.toggle("on",on);
+};
+</script>
+</body>
+</html>

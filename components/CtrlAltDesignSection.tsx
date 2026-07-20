@@ -68,13 +68,26 @@ const videos: LabVideo[] = [
 ];
 
 const prototypes: LabPrototype[] = [
-  /* Pass C 2026-07-18: swapped from the Loom video card to the newer
-     finviz-kpi-tree interactive prototype (asset + link only) */
+  /* Lab cards addendum v2 (Elleta, 20 Jul): the screener card now
+     opens the REAL screener concept (prototypes/finviz-3, published to
+     /demos/finviz-3.html); the solution canvas gets its own STRATEGY
+     card below, the process story that leads here. */
   {
+    /* TODO(elleta): subtitle wording is a proposal, reword freely */
     title: "AI-Powered Financial Stock Screener",
-    subtitle: "Redesigning financial screening workflows to improve filtering, sorting, and comparison of dense financial datasets.",
+    subtitle: "Clickable AI screener concept: natural-language filters as editable chips, inline metric explainers, and a reasoning trace. Built from the Smashing AI interface patterns.",
     category: "FINTECH",
     tags: ["FinTech", "Filtering Systems", "Data UX"],
+    href: "/demos/finviz-3.html",
+    gradient: "linear-gradient(135deg, #1C0A0A 0%, #3D1010 50%, #140808 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
+    thumbnailSrc: "/images/thumbnails/finviz-3.png",
+  },
+  {
+    /* TODO(elleta): title/subtitle wording is a proposal, reword freely */
+    title: "Finviz AI, Solution Canvas",
+    subtitle: "The strategy artifact behind the screener: user needs traced through overlays and teach layers to hypothetical OKRs, one unbroken argument per need.",
+    category: "STRATEGY",
+    tags: ["Product Strategy", "FinTech", "Data UX"],
     href: "/demos/finviz-kpi-tree.html",
     gradient: "linear-gradient(135deg, #1C0A0A 0%, #3D1010 50%, #140808 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/finviz-kpi-tree.png",
