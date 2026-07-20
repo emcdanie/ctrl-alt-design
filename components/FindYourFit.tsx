@@ -95,11 +95,6 @@ export default function FindYourFit({ switcher, chipRow }: { switcher?: ReactNod
             <Button variant="primary" onClick={() => run(jd)}>
               Find my fit
             </Button>
-            {aiReasons && (
-              <span className="section-label" style={{ margin: 0 }}>
-                AI-enabled match
-              </span>
-            )}
           </div>
           {/* the ONE chip row: the library's skill/type filter, under
               the search box in every view */}
@@ -122,31 +117,46 @@ export default function FindYourFit({ switcher, chipRow }: { switcher?: ReactNod
 
       {result && result.cases.length > 0 && (
         <div className={styles.fitResults}>
-          <p style={{ margin: 0, fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-base)", color: "var(--color-ink-soft)" }}>
-            {line}
-          </p>
+          {/* ONE contextual message (Pass E task 4): the summary
+              sentence plus expandable why-rows, verifiable in seconds.
+              Per-card footnotes are deleted; the cards stay clean. */}
+          <div role="status" aria-live="polite" style={{ margin: 0 }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-base)", color: "var(--color-ink-soft)" }}>
+              {line}
+              {aiReasons && (
+                <span className="section-label" style={{ margin: "0 0 0 var(--spacing-3)" }}>
+                  AI-enabled match
+                </span>
+              )}
+            </p>
+            <details>
+              <summary style={{ cursor: "pointer", fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", color: "var(--color-muted)", marginTop: "var(--spacing-2)" }}>
+                Why these matches
+              </summary>
+              <ul style={{ margin: "var(--spacing-2) 0 0", paddingLeft: "var(--spacing-5)", fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", color: "var(--color-ink-soft)", lineHeight: 1.6 }}>
+                {result.matchedSkills.map((m) => (
+                  <li key={m.skill}>
+                    &quot;{m.phrases[0]}&quot; in your text → {m.skill} →{" "}
+                    {result.cases
+                      .filter((c) => c.matched.includes(m.skill))
+                      .map((c) => c.title)
+                      .join(", ")}
+                  </li>
+                ))}
+                {aiReasons &&
+                  result.cases.map((c) =>
+                    aiReasons[c.id] ? (
+                      <li key={`ai-${c.id}`}>
+                        {c.title}: {aiReasons[c.id]} <em>(AI-enabled ranking)</em>
+                      </li>
+                    ) : null
+                  )}
+              </ul>
+            </details>
+          </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "var(--grid-gap)", alignItems: "stretch" }}>
             {result.cases.map((c) => (
-              <div key={c.id} style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
-                <CaseCard item={c} />
-                <p style={{ margin: 0, fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-sm)", color: "var(--color-muted)", lineHeight: 1.5 }}>
-                  {aiReasons?.[c.id] ?? `Matches on ${c.matched.join(", ")}.`}
-                </p>
-                <details>
-                  <summary style={{ cursor: "pointer", fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", color: "var(--color-muted)" }}>
-                    Why this match
-                  </summary>
-                  <ul style={{ margin: "var(--spacing-2) 0 0", paddingLeft: "var(--spacing-5)", fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", color: "var(--color-ink-soft)", lineHeight: 1.6 }}>
-                    {result.matchedSkills
-                      .filter((m) => c.matched.includes(m.skill))
-                      .map((m) => (
-                        <li key={m.skill}>
-                          &quot;{m.phrases[0]}&quot; in your text → {m.skill} → {c.title}
-                        </li>
-                      ))}
-                  </ul>
-                </details>
-              </div>
+              <CaseCard key={c.id} item={c} />
             ))}
           </div>
         </div>
