@@ -779,11 +779,14 @@ li {
 
 /* H5 — inline item labels (collaboration cards, role titles…) */
 .heading-item {
-  /* item/card titles are below the 20px Unique floor: they stay Geist
-     (Unique is display-only and illegible at label sizes) */
+  /* item/card titles stay Geist (Unique is display-only and illegible
+     at label sizes). Micro-heading presence (Pass E task 10, Elleta
+     18 Jul): ONE deliberate tier above body text — a ramp size step
+     (18px) at 700 — so card sub-heads no longer sit flush against
+     16px body copy. One change here, no per-card overrides. */
   font-family: var(--font-body);
-  font-size: var(--font-small);
-  font-weight: 600;
+  font-size: var(--typography-font-size-lg);
+  font-weight: 700;
   letter-spacing: -0.005em;
   line-height: var(--typography-line-height-snug);
   color: var(--color-ink);

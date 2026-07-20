@@ -96,7 +96,8 @@ export default function VinylPlayer() {
 
         {/* Album info (her stash hunks: ramp sizes) */}
         <div style={{ textAlign: "center" }}>
-          <h3 className="heading-item" style={{ fontSize: "var(--typography-font-size-base)", marginBottom: "var(--spacing-1)" }}>
+          {/* no per-card size override: the shared .heading-item tier rules (task 10) */}
+          <h3 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>
             {ALBUM_TITLE}
           </h3>
           <p className="body-sm" style={{ margin: 0, fontSize: "var(--typography-font-size-tag)" }}>
