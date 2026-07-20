@@ -224,7 +224,7 @@ export const WORK_ITEMS: WorkItem[] = [
 /** "More work like this" (Pass C 2026-07-18): case studies ranked by
  * skill overlap with the current case (the same matrix data), current
  * case excluded, deterministic order (overlap desc, rank asc, title).
- * Slugs without a library row (EXTRA_CASES) fall back to rank order. */
+ * Every case slug has a library row (parity gate); rank breaks ties. */
 export function relatedWorkItems(slug: string, count = 3): WorkItem[] {
   const cases = WORK_ITEMS.filter((i) => i.medium === "case study");
   const current = cases.find((i) => i.href.endsWith(`/case-studies/${slug}`));
