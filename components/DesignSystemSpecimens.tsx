@@ -3,7 +3,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import { Button } from "@/components/ui/Button";
+import { FilterChip } from "@/components/ui/FilterChip";
+import { Tag } from "@/components/ui/Tag";
+import { StatusPill } from "@/components/ui/StatusPill";
 import TokenInspector from "@/components/TokenInspector";
+import TokenAnnotation from "@/components/TokenAnnotation";
 import { Select } from "@/components/ui/Select";
 import Heading from "@/components/ui/Heading";
 
@@ -56,17 +60,39 @@ const GATE = [
   { name: "audit:agents", line: "The agent surfaces (llms.txt, /api/bella.json) must match the live route registry. An agent surface that lies fails the build." },
 ];
 
-/* case identities render as the full-width orb band (D1); their tokens
-   still feed the live readouts below each orb */
+/* case identities render as the orb band; their tokens still feed the
+   live readouts below each orb. ONE sphere size, one grid, aligned
+   readouts (Elleta, 21 Jul, spec system-page-v2): eight items, the
+   six cases + Design Lab + hub; the small modifier is retired. */
 const CASE_ORBS = [
   { hi: "--case-chip-hi", lo: "--case-chip-lo", name: "CHIP", href: "/case-studies/chip" },
   { hi: "--case-code-first-hi", lo: "--case-code-first-lo", name: "Code First", href: "/case-studies/brad-frost" },
   { hi: "--case-drift-hi", lo: "--case-drift-lo", name: "From Drift to Foundation", href: "/case-studies/design-system-transformation" },
   { hi: "--case-guardian-hi", lo: "--case-guardian-lo", name: "Guardian", href: "/case-studies/guardian" },
   { hi: "--case-clarity-hi", lo: "--case-clarity-lo", name: "Operational Clarity", href: "/case-studies/un-operational-dashboard" },
-  { hi: "--case-design-lab-hi", lo: "--case-design-lab-lo", name: "Design Lab", href: "/work", small: true },
-  { hi: "--hub-hi", lo: "--hub-lo", name: "The hub (how I think)", href: "/about#how-i-think", small: true },
+  { hi: "--case-filters-hi", lo: "--case-filters-lo", name: "Travel Booking", href: "/case-studies/filters-decision-support-system" },
+  { hi: "--case-design-lab-hi", lo: "--case-design-lab-lo", name: "Design Lab", href: "/work" },
+  { hi: "--hub-hi", lo: "--hub-lo", name: "The hub (how I think)", href: "/about#how-i-think" },
 ] as const;
+
+/* per-specimen attached tokens for the shared annotation (stable
+   module-level arrays; every list verified against the recipe it
+   names in globals.css) */
+const ORB_TOKENS = CASE_ORBS.map((o) => [o.hi, o.lo] as const);
+const ANN = {
+  opening: ["--key-fill-hi", "--key-fill-lo", "--key-fill-edge", "--btn-key-radius", "--shadow-key-resting"],
+  button: ["--color-accent-ink", "--btn-key-radius", "--spacing-touch-target"],
+  seg: ["--color-glass", "--color-border-medium", "--radius-lg", "--color-semantic-accent-subtle", "--color-accent-ink"],
+  chip: ["--color-border-medium", "--radius-full", "--color-semantic-background-inverse", "--color-semantic-text-inverse"],
+  tagPill: ["--color-supporting-linen", "--color-accent-ink", "--color-semantic-accent-border"],
+  select: ["--color-card", "--color-border-medium", "--radius-md", "--spacing-touch-target"],
+  bubble: ["--hub-hi", "--hub-lo", "--shadow-orb"],
+  /* the display face token itself is off-limits outside the Heading
+     primitive (audit:structure); the size token is the annotation */
+  typeDisplay: ["--font-hero"],
+} as const;
+
+const TYPE_ANN = TYPE_SPECIMENS.map((t) => [t.token] as const);
 
 const ALL_TOKENS = [
   "--font-hero",
@@ -113,7 +139,7 @@ export default function DesignSystemSpecimens() {
       </p>
       <p className="ds-page__intro">
         It is also how I work with AI: the tokens rein the agent in, an agent can only
-        build with what the system exposes, and the gate keeps it honest. Nine audits run
+        build with what the system exposes, and the gate keeps it honest. Ten audits run
         before anything ships. Green or it does not merge.
       </p>
       {/* the opening 3D moment: real keycaps, press them */}
@@ -122,6 +148,7 @@ export default function DesignSystemSpecimens() {
         <Button variant="secondary">Or me</Button>
         <span className="ds-type__meta">Real controls, not pictures. The whole page works this way.</span>
       </div>
+      <TokenAnnotation tokens={ANN.opening} />
 
         </div>
       </div>
@@ -137,8 +164,8 @@ export default function DesignSystemSpecimens() {
               Colour is identity: each case owns a hue, and the hue does the wayfinding.
             </p>
             <ul className="ds-caseband">
-              {CASE_ORBS.map((o) => (
-                <li key={o.hi} className={"small" in o && o.small ? "ds-caseband__item ds-caseband__item--small" : "ds-caseband__item"}>
+              {CASE_ORBS.map((o, i) => (
+                <li key={o.hi} className="ds-caseband__item">
                   <span
                     className="ds-orb"
                     style={{ "--orb-hi": `var(${o.hi})`, "--orb-lo": `var(${o.lo})` } as React.CSSProperties}
@@ -147,6 +174,7 @@ export default function DesignSystemSpecimens() {
                   <a className="ds-swatch__case" href={o.href}>{o.name}</a>
                   <span className="ds-swatch__name">{o.hi}</span>
                   <span className="ds-swatch__value">{values[o.hi] || "reading"}</span>
+                  <TokenAnnotation tokens={ORB_TOKENS[i]} />
                 </li>
               ))}
             </ul>
@@ -166,9 +194,10 @@ export default function DesignSystemSpecimens() {
             Unique 700 carries the
           </Heading>
           <span className="ds-type__meta">--font-hero · {values["--font-hero"] || "reading"}</span>
+          <TokenAnnotation tokens={ANN.typeDisplay} />
         </div>
         <ul className="ds-type">
-          {TYPE_SPECIMENS.map((t) => (
+          {TYPE_SPECIMENS.map((t, i) => (
             <li key={t.token} className="ds-type__row">
               {"display" in t ? (
                 <Heading tier="section" as="h3" className="ds-type__sample" style={{ margin: 0 }}>
@@ -191,6 +220,7 @@ export default function DesignSystemSpecimens() {
               <span className="ds-type__meta">
                 {t.token} · {values[t.token] || "reading"}
               </span>
+              <TokenAnnotation tokens={TYPE_ANN[i]} />
             </li>
           ))}
         </ul>
@@ -275,6 +305,7 @@ export default function DesignSystemSpecimens() {
             <div className="ds-specimen__body">
               <Button variant="secondary">Secondary</Button>
             </div>
+            <TokenAnnotation tokens={ANN.button} />
           </div>
           <div className="ds-specimen">
             <p className="ds-section__kicker">SegmentedControl</p>
@@ -290,26 +321,30 @@ export default function DesignSystemSpecimens() {
                 onChange={setView}
               />
             </div>
+            <TokenAnnotation tokens={ANN.seg} />
           </div>
           <div className="ds-specimen">
             <p className="ds-section__kicker">FilterChip</p>
             <p className="ds-type__meta">Multi-select filters; outline, aria-pressed, hover.</p>
             <div className="ds-specimen__body">
-              <button type="button" className="filter-chip" aria-pressed={chipOn} onClick={() => setChipOn(!chipOn)}>
+              {/* the REAL ui/FilterChip (21 Jul: redrawn copies replaced) */}
+              <FilterChip pressed={chipOn} onClick={() => setChipOn(!chipOn)}>
                 Design Tokens
-              </button>
-              <button type="button" className="filter-chip" aria-pressed={!chipOn} onClick={() => setChipOn(!chipOn)}>
+              </FilterChip>
+              <FilterChip pressed={!chipOn} onClick={() => setChipOn(!chipOn)}>
                 Governance
-              </button>
+              </FilterChip>
             </div>
+            <TokenAnnotation tokens={ANN.chip} />
           </div>
           <div className="ds-specimen">
             <p className="ds-section__kicker">Tag and StatusPill</p>
             <p className="ds-type__meta">Tag: flat metadata wash, never clickable. StatusPill: quiet status.</p>
             <div className="ds-specimen__body">
-              <span className="tag">Non-interactive metadata</span>
-              <span className="status-pill">Current focus</span>
+              <Tag>Non-interactive metadata</Tag>
+              <StatusPill>Current focus</StatusPill>
             </div>
+            <TokenAnnotation tokens={ANN.tagPill} />
           </div>
           <div className="ds-specimen">
             <p className="ds-section__kicker">Select</p>
@@ -325,6 +360,7 @@ export default function DesignSystemSpecimens() {
                 ]}
               />
             </div>
+            <TokenAnnotation tokens={ANN.select} />
           </div>
           <div className="ds-specimen">
             <p className="ds-section__kicker">Bubble</p>
@@ -336,6 +372,7 @@ export default function DesignSystemSpecimens() {
               />
               <span className="ds-type__meta">radial at 36% 30%, one light source, upper left</span>
             </div>
+            <TokenAnnotation tokens={ANN.bubble} />
           </div>
         </div>
       </section>
@@ -443,8 +480,9 @@ export default function DesignSystemSpecimens() {
       <section className="ds-section" aria-labelledby="ds-gate">
         <h2 id="ds-gate" className="ds-section__title">The gate</h2>
         <p className="ds-section__note">
-          Nine audits run before anything ships. Green or it does not merge. The chips below show the last local gate run (17 Jul 2026), labelled honestly as a snapshot, not live CI.
+          Ten audits run before anything ships. Green or it does not merge. The cards below show the last local gate run (21 Jul 2026), labelled honestly as a snapshot, not live CI.
         </p>
+        {/* scannable status-card grid (Elleta, 21 Jul, spec system-page-v2) */}
         <dl className="ds-gate">
           {GATE.map((g) => (
             <div key={g.name} className="ds-gate__row">

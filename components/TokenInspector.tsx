@@ -1,14 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
+import TokenAnnotation from "@/components/TokenAnnotation";
 
 /**
  * §8 /design-system: the clickable proof that this site runs on tokens.
  * A keycap specimen whose anatomy zones are real buttons; the readout
- * shows the driving tokens with values read LIVE from computed styles,
- * so the inspector cannot drift from the stylesheet. Re-reads on theme
- * flip. Also embedded chromeless (/design-system/inspector) as Code
- * First case evidence.
+ * is the SHARED TokenAnnotation (alwaysOpen), so the inspector and the
+ * specimen annotations are one implementation. Also embedded chromeless
+ * (/design-system/inspector) as Code First case evidence.
  */
 
 const ZONES: {
@@ -49,29 +49,8 @@ const ZONES: {
   },
 ];
 
-const ALL_TOKENS = ZONES.flatMap((z) => z.tokens);
-
-function isColour(v: string) {
-  return /^#|^rgb|^hsl|^oklch|^color\(/.test(v.trim());
-}
-
 export default function TokenInspector() {
   const [zone, setZone] = useState("face");
-  const [values, setValues] = useState<Record<string, string>>({});
-
-  const read = useCallback(() => {
-    const cs = getComputedStyle(document.documentElement);
-    const next: Record<string, string> = {};
-    for (const t of ALL_TOKENS) next[t] = cs.getPropertyValue(t).trim();
-    setValues(next);
-  }, []);
-
-  useEffect(() => {
-    read();
-    const mo = new MutationObserver(read);
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => mo.disconnect();
-  }, [read]);
 
   const active = ZONES.find((z) => z.id === zone)!;
 
@@ -98,25 +77,8 @@ export default function TokenInspector() {
         </div>
       </div>
 
-      <div className="tok-inspector__readout" aria-live="polite">
-        <p className="tok-inspector__drives">{active.drives}</p>
-        <dl className="tok-inspector__tokens">
-          {active.tokens.map((t) => (
-            <div key={t} className="tok-inspector__row">
-              <dt>{t}</dt>
-              <dd>
-                {isColour(values[t] ?? "") && (
-                  <span
-                    className="tok-inspector__chip"
-                    style={{ background: values[t] }}
-                    aria-hidden="true"
-                  />
-                )}
-                {values[t] || "reading"}
-              </dd>
-            </div>
-          ))}
-        </dl>
+      <div className="tok-inspector__readout">
+        <TokenAnnotation tokens={active.tokens} note={active.drives} alwaysOpen />
       </div>
     </div>
   );
