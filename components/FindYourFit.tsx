@@ -3,31 +3,24 @@
 import { useState, type ReactNode } from "react";
 import CaseCard from "@/components/CaseCard";
 import { Button } from "@/components/ui/Button";
-import { FilterChip } from "@/components/ui/FilterChip";
-import { SKILLS } from "@/lib/workLibrary";
 import { matchFit, type FitMatch } from "@/lib/fit";
 import styles from "./WorkLibrary.module.css";
 
-/* find-your-fit (specs/find-your-fit, amended; toolbar rebuild
- * 2026-07-18): the site's one AI touchpoint IS the Work toolbar search.
- * Always visible on the left, quick-pick skill chips beneath so the box
- * is never empty; the view switcher rides the same row on the right
- * (passed in as `switcher`). Deterministic trigger matching is the core
- * and the guaranteed fallback; the /api/fit leg (when configured)
- * re-ranks and phrases the reasons, and the UI says so honestly.
- * Results are the existing CaseCards, re-ranked. */
+/* find-your-fit (specs/find-your-fit, amended; one-chip-row pass
+ * 2026-07-20): the site's one AI touchpoint IS the Work toolbar search.
+ * Always visible on the left; the chip row beneath the box is the
+ * library's ONE skill/type filter (passed in as `chipRow` — it filters
+ * the views, it does not feed this matcher); the view switcher rides
+ * the same row on the right (`switcher`). Deterministic trigger
+ * matching is the core and the guaranteed fallback; the /api/fit leg
+ * (when configured) re-ranks and phrases the reasons, and the UI says
+ * so honestly. Results are the existing CaseCards, re-ranked. */
 
-const QUICK_PICKS = SKILLS.slice(0, 6);
-
-export default function FindYourFit({ switcher }: { switcher?: ReactNode }) {
+export default function FindYourFit({ switcher, chipRow }: { switcher?: ReactNode; chipRow?: ReactNode }) {
   const [jd, setJd] = useState("");
-  const [picked, setPicked] = useState<string[]>([]);
   const [result, setResult] = useState<FitMatch | null>(null);
   const [aiReasons, setAiReasons] = useState<Record<string, string> | null>(null);
   const [ran, setRan] = useState(false);
-
-  const queryFrom = (text: string, picks: string[]) =>
-    [text.trim(), ...picks].filter(Boolean).join(", ");
 
   const run = async (query: string) => {
     if (!query.trim()) {
@@ -64,12 +57,6 @@ export default function FindYourFit({ switcher }: { switcher?: ReactNode }) {
     }
   };
 
-  const togglePick = (skill: string) => {
-    const next = picked.includes(skill) ? picked.filter((s) => s !== skill) : [...picked, skill];
-    setPicked(next);
-    run(queryFrom(jd, next));
-  };
-
   const skillNames = result?.matchedSkills.map((m) => m.skill) ?? [];
   const line =
     result && result.cases.length > 0
@@ -95,17 +82,17 @@ export default function FindYourFit({ switcher }: { switcher?: ReactNode }) {
               className={styles.searchInput}
               onChange={(e) => {
                 setJd(e.target.value);
-                if (!e.target.value.trim() && picked.length === 0) run("");
+                if (!e.target.value.trim()) run("");
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
-                  run(queryFrom(jd, picked));
+                  run(jd);
                 }
               }}
             />
             {/* the page's ONE at-rest primary (Elleta, 17 Jul evening) */}
-            <Button variant="primary" onClick={() => run(queryFrom(jd, picked))}>
+            <Button variant="primary" onClick={() => run(jd)}>
               Find my fit
             </Button>
             {aiReasons && (
@@ -114,18 +101,9 @@ export default function FindYourFit({ switcher }: { switcher?: ReactNode }) {
               </span>
             )}
           </div>
-          <div className={styles.quickPicks} role="group" aria-label="Quick-pick skills">
-            {QUICK_PICKS.map((s) => (
-              <FilterChip
-                key={s}
-                className="filter-chip--dense"
-                pressed={picked.includes(s)}
-                onClick={() => togglePick(s)}
-              >
-                {s}
-              </FilterChip>
-            ))}
-          </div>
+          {/* the ONE chip row: the library's skill/type filter, under
+              the search box in every view */}
+          {chipRow}
           <noscript>
             <p style={{ margin: 0, fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-sm)", color: "var(--color-ink-soft)" }}>
               <a href="/work?view=table">Browse the library as a table with filters instead.</a>

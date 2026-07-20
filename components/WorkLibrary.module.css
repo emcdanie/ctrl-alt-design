@@ -54,11 +54,12 @@
   outline-offset: var(--ring-focus-offset);
 }
 
-.quickPicks {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--spacing-2);
+/* separates the skill chips from the TYPE chips in the ONE row */
+.chipDivider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--color-border-medium);
+  margin: 0 var(--spacing-2);
 }
 
 .fitResults {
@@ -68,27 +69,12 @@
   margin-bottom: var(--spacing-8);
 }
 
-.sortRow {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: var(--spacing-3);
-}
-
 .filterRow {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: var(--spacing-2);
   margin-bottom: var(--spacing-3);
-}
-
-.filterLabel {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-  min-width: 48px;
 }
 
 .count {
@@ -356,101 +342,6 @@
  * horizontal scroll, no parallax (JS is also gated). */
 @media (prefers-reduced-motion: reduce) {
 }
-
-/* ── Mobile filter tray (Vitaly pattern: full-page, accordions,
- * sticky Apply with the live count) ── */
-
-.trayTrigger {
-  display: none;
-  margin-bottom: var(--spacing-3);
-}
-
-/* disclosure, not a filter: its own look, same weight as a chip */
-.trayTriggerBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  cursor: pointer;
-  min-height: var(--spacing-touch-target);
-  padding: var(--spacing-1) var(--spacing-5);
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border-medium);
-  background: var(--color-card);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  font-weight: var(--typography-font-weight-medium);
-  color: var(--color-ink);
-}
-
-.trayTriggerBtn:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
-}
-
-@media (max-width: 767px) {
-  .desktopOnly {
-    display: none;
-  }
-
-  .trayTrigger {
-    display: block;
-  }
-}
-
-.tray {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  background: var(--color-page);
-  padding: var(--spacing-5) var(--spacing-5) var(--spacing-20);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
-}
-
-.trayHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: var(--spacing-touch-target);
-}
-
-.trayGroup summary {
-  cursor: pointer;
-  min-height: var(--spacing-touch-target);
-  display: flex;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-ink);
-}
-
-.trayGroup summary:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
-}
-
-.trayChips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-2);
-  padding: var(--spacing-3) 0;
-}
-
-.trayApply {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: var(--spacing-4) var(--spacing-5);
-  background: var(--color-page);
-  border-top: 1px solid var(--color-semantic-border-subtle);
-}
-
 
 /* ── Skills x projects matrix (§8) ── */
 
