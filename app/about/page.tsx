@@ -14,6 +14,27 @@ import CtaBanner from "@/components/ui/CtaBanner";
 import TestimonialSection from "@/components/TestimonialSection";
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
+import VinylPlayer from "@/components/VinylPlayer";
+
+/* Outside-the-work podcasts (Pass E task 7): her historical list,
+ * verbatim, from the pre-lush LearningSection */
+const PODCASTS = [
+  {
+    title: "Honest UX Talks",
+    by: "Wix Studio",
+    href: "https://podcasts.apple.com/es/podcast/honest-ux-talks-by-wix-studio/id1547832809?l=en-GB",
+  },
+  {
+    title: "Patterns Podcast",
+    by: "Design Patterns",
+    href: "https://podcasts.apple.com/es/podcast/patterns-podcast/id1491843793?l=en-GB",
+  },
+  {
+    title: "On Purpose",
+    by: "Jay Shetty",
+    href: "https://podcasts.apple.com/es/podcast/on-purpose-with-jay-shetty/id1450994021?l=en-GB",
+  },
+];
 
 /* ── Data ─────────────────────────────────────────────────────── */
 
@@ -348,6 +369,91 @@ export default function AboutPage() {
 
         <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
         <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
+
+        {/* Outside the work (Pass E task 7): the music moment returns,
+            rebuilt on the current system. Her historical copy verbatim
+            (em dash swept); vinyl + podcasts on the ONE Card. */}
+        <section id="outside-the-work" className="layout-section-tight">
+          <div className="page-container">
+            <SectionHeader label="Outside the work" title="Learning & Inspiration" />
+            <div className="grid grid-cols-1 items-stretch gap-[var(--grid-gap)] sm:grid-cols-2">
+              <VinylPlayer />
+              <Card className="h-full">
+                <div style={{ padding: "var(--spacing-6)", height: "100%", display: "flex", flexDirection: "column" }}>
+                  <div
+                    style={{
+                      width: "var(--spacing-12)",
+                      height: "var(--spacing-12)",
+                      borderRadius: "var(--radius-lg)",
+                      background: "var(--color-tag-bg)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginBottom: "var(--spacing-4)",
+                      color: "var(--color-ink)",
+                    }}
+                  >
+                    <Icon name="Podcast" size="lg" />
+                  </div>
+                  <h3 className="heading-item" style={{ marginBottom: "var(--spacing-2)" }}>Podcasts</h3>
+                  <p className="body-base" style={{ color: "var(--color-muted)", marginBottom: "var(--spacing-4)" }}>
+                    Design thinking, systems, and personal growth, what I listen to between projects.
+                  </p>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)", marginTop: "auto" }}>
+                    {PODCASTS.map((pod) => (
+                      <a
+                        key={pod.title}
+                        href={pod.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: "var(--spacing-2)",
+                          padding: "var(--spacing-3) var(--spacing-4)",
+                          borderRadius: "var(--radius-lg)",
+                          background: "var(--color-tag-bg)",
+                          textDecoration: "none",
+                          minHeight: "var(--spacing-touch-target)",
+                        }}
+                      >
+                        <span style={{ minWidth: 0 }}>
+                          <span
+                            style={{
+                              display: "block",
+                              fontFamily: "var(--font-body)",
+                              fontSize: "var(--typography-font-size-base)",
+                              fontWeight: 600,
+                              color: "var(--color-accent-ink)",
+                              textDecoration: "underline",
+                              textUnderlineOffset: "3px",
+                              lineHeight: 1.3,
+                            }}
+                          >
+                            {pod.title}
+                          </span>
+                          <span
+                            style={{
+                              display: "block",
+                              fontFamily: "var(--font-body)",
+                              fontSize: "var(--typography-font-size-tag)",
+                              color: "var(--color-muted)",
+                              marginTop: "2px",
+                            }}
+                          >
+                            {pod.by}
+                          </span>
+                        </span>
+                        <Icon name="OpenNewWindow" size="sm" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </section>
 
         {/* Social proof: the page ends with third-party words, then the ask */}
         <TestimonialSection />

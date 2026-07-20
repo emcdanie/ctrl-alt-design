@@ -35,13 +35,14 @@ override the constitution.
 - Primary nav (Elleta, 2026-07-17, supersedes the four-item cap): **Work · System · Skills ·
   About · Contact**. /design-system is a first-class page (the system inspecting itself);
   the footer "See the system" colophon link stays.
-- **Work toolbar (Elleta, 2026-07-17 review note, supersedes the ?explore hybrid).** ONE
-  toolbar row above the library: find-your-fit search on the LEFT (always visible, quick-pick
-  skill chips beneath so the box is never empty), view switcher on the RIGHT (SegmentedControl,
-  Cards · Map · Table, always visible). Cards is the default and IS the curated composition:
-  featured CHIP, ranked case grid (order lives in the content data), then Explorations, plain
-  section headers, no second tab row. Filter rows (dense) and sort render in Map and Table
-  views only. No hidden explore state: the view lives in the URL (`view` param, back/forward
+- **Work toolbar (amended 2026-07-20, Pass E task 3; supersedes the 17 Jul filter-row note).**
+  ONE toolbar row above the library: find-your-fit search on the LEFT (always visible), view
+  switcher on the RIGHT (SegmentedControl, Cards · Map · Table, always visible). The chip row
+  beneath the search is the library's ONE skill/type filter, in EVERY view (the former CASE and
+  SKILL rows are deleted); one stable order everywhere: toolbar, chip row, count, content. Cards
+  is the default and IS the curated composition (featured CHIP, ranked case grid, Explorations),
+  and it filters like every view. Sort renders only where order means something: table headers,
+  never the Map. No hidden explore state: the view lives in the URL (`view` param, back/forward
   safe, defaults keep clean URLs).
 
 ## 2. Layout
@@ -76,7 +77,10 @@ override the constitution.
 ## 5. Controls (one taxonomy — see conformance spec §7)
 The raised **keycap** is reserved for the brand logo and TRUE actions only. Do not use it for filters,
 toggles, or sort.
-- **Button (keycap):** primary (filled iris) + secondary (neutral). Max ONE primary per view.
+- **Button (grammar v5, 2026-07-20):** purple means clickable at every tier. PRIMARY = filled iris
+  keycap, the one 3D moment per view (max ONE). SECONDARY = flat iris outline, iris text, no fill, no
+  elevation (periwinkle on dark and fixed-dark chrome). TERTIARY = text link, iris + underlined. The
+  neutral keycap is retired.
 - **SegmentedControl:** mutually exclusive views (e.g. TABLE/MAP/TIMELINE). Single-select, `aria-current`,
   lighter than a keycap.
 - **FilterChip:** multi-select filters. Flat/outline, `aria-pressed`. Not a keycap.
@@ -96,11 +100,15 @@ toggles, or sort.
 ## 7. NDA (hard rule)
 - No real internal screens, dashboards, metrics, or client tool/team names from any employer or
   client. Abstract to a descriptor ("a UN agency in Geneva"). Recreated/abstract diagrams only.
-  Banned terms live in `_private/nda-terms.txt` (gitignored), merged with the global
-  `~/.claude/nda-terms.txt`; the pre-commit hook and `audit:nda` read from both, so no name is
-  ever written in a committed file, this one included.
-- Employer history (company names as where I worked) is fine; the client work as a case *subject* must be
-  scrubbed of internal specifics.
+  INTERNAL terms live in `_private/nda-terms.txt` (gitignored, banned EVERYWHERE), merged with the
+  global `~/.claude/nda-terms.txt`; the pre-commit hook and `audit:nda` read from both, so no name
+  is ever written in a committed file, this one included.
+- **Employer scoping (2026-07-20, Pass E task 9).** Employment history is public; case content stays
+  abstracted. Employer and engagement org names live in `_private/nda-employers.txt` (gitignored)
+  and are banned everywhere EXCEPT `components/ExperienceSection.tsx` and
+  `components/ResumeModal.tsx`. No other file is exempt, ever. The library data, tags, and matrix
+  stay name-free; case studies keep industry-not-client naming, recreated artifacts, and their
+  disclosure lines.
 - The NDA check greps file **contents across the whole tree**, not diffs or filenames — renamed files hid
   names before. Never rely on the diff alone.
 
@@ -122,6 +130,8 @@ Must pass before any work is "done":
   primitive, home hero, or keycap lockup fails; any mono family reference fails.
 - `audit:tokens` — colour literals and raw spacing (>=4px) in `app/**`/`components/**` fail;
   `token-waiver:` inline comments mark the reviewed proto-exact/artwork exceptions.
+- `audit:parity` — every case-study slug has exactly one `WORK_ITEMS` row and vice versa; side
+  tables for case identity (the deleted `EXTRA_CASES` pattern) fail.
 - tsc clean; all routes 200 (light + dark); NDA content-grep clean.
 
 ## 10. How this file was built and stays alive

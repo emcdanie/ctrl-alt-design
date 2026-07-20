@@ -1,5 +1,12 @@
 import type { CaseStudy } from "@/lib/content";
 
+/* TODO(elleta): the library row lists Accessibility MID-ARRAY (a
+ * structural claim, Pass E task 5a); the prose currently backs it with
+ * one phrase ("accessibility requirements" in the documentation
+ * layer). Strengthen with a line in your words, or the claim demotes. */
+/* Conformance (Pass E task 11, honest): decision-led. Disclosure,
+ * one summary, three decisions with recreated-embed evidence, lessons.
+ * Close to the CHIP reference. */
 const study: CaseStudy = {
   slug: "design-system-transformation",
   /* Statement headline (Elleta, 18 Jul, verbatim): the case THESIS is

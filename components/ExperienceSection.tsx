@@ -9,14 +9,17 @@ import SectionShell from "@/components/ui/SectionShell";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 
-/* Logo slots (Pass C 2026-07-18): PUBLIC orgs only carry logoSrc (Brad
-   Frost Web, Mango, VML, Ironhack, ASU); abstracted clients stay
-   text-only forever (no logoSrc; LogoContainer falls back to the
-   initial-letter tile until a file exists).
+/* Logo slots (Pass E task 9c, supersedes the Pass C list): PUBLIC orgs
+   carry logoSrc, now including the two orgs from the employers file
+   (their marks re-enter as fresh assets Elleta provides; no logoSrc
+   until a file exists, LogoContainer falls back to the initial-letter
+   tile). Case studies stay industry-not-client, always.
    TODO(elleta): files to upload/replace in public/images/logos/:
    1. mango.png            MISSING (card renders the fallback "M" tile)
    2. ASU-logo.png         REPLACE (3840x2160 letterboxed canvas; re-export trimmed)
-   3. bradfrostwebjpeg.jpeg REPLACE (baked-in cream padding; clean PNG) */
+   3. bradfrostwebjpeg.jpeg REPLACE (baked-in cream padding; clean PNG)
+   4. bizaway mark          NEW (fresh asset from Elleta; add logoSrc then)
+   5. UNOG mark             NEW (fresh asset from Elleta; add logoSrc then) */
 const roles = [
   {
     title: "Product Designer, Design Systems",
@@ -47,7 +50,7 @@ const roles = [
   },
   {
     title: "UX/UI Designer, Product & Design Systems",
-    company: "A B2B travel management platform",
+    company: "BizAway" /* TODO(elleta): exact entry wording is yours; the name is restored per _private/nda-employers.txt (Pass E task 9) */,
     period: "Jul 2024, Feb 2026",
     caseStudySlug: "case-studies/design-system-transformation",
     caseStudyLabel: "From Drift to Foundation →",
@@ -60,7 +63,7 @@ const roles = [
   },
   {
     title: "Product Designer, Data Dashboard (Contract)",
-    company: "A UN agency, Geneva (contract)",
+    company: "UN Office at Geneva (UNOG) · Contract" /* TODO(elleta): exact entry wording is yours; the name is restored per _private/nda-employers.txt (Pass E task 9) */,
     period: "Oct 2025, Dec 2025",
     caseStudySlug: "case-studies/un-operational-dashboard",
     caseStudyLabel: "Designing Operational Clarity →",

@@ -5,8 +5,15 @@ import type { CaseStudy } from "@/lib/content";
  * a personal line on what was hard in the five days; a line on what
  * CHIP changed in her weekly workflow; an optional building-in-public
  * moment; the Loom URL (chip-evidence-0-bridge-hero.png is reserved
- * as its poster and is deliberately not placed yet). */
+ * as its poster and is deliberately not placed yet).
+ * TODO(elleta): the library row now claims Accessibility (Pass E task
+ * 5a); nothing in this prose backs it yet. One line in your words
+ * (e.g. the readiness map's keyboard/aria work), or the claim comes
+ * back out. */
 
+/* Conformance (Pass E task 11, honest): decision-led, the template
+ * REFERENCE. One summary, three decisions with evidence, lessons.
+ * No disclosure needed (own work, no client). */
 const study: CaseStudy = {
   slug: "chip",
   title: "AI builds whatever your system already is. I built CHIP to see it first.",
@@ -20,19 +27,23 @@ const study: CaseStudy = {
   heroVideo: undefined,
   eyebrow: "DESIGN LAB · AI + DESIGN SYSTEMS · 2026 · CURRENT FOCUS",
   summary: "AI doesn't fix a neglected design system. It sends you the bill.",
+  /* canonical sidebar meta (Pass E task 11g): Role, Year, Type or
+     Scope, Organisation, Tools; Built kept as this case's extra final
+     row (her line, carries the hackathon timing) */
   metadata: [
     { label: "Role", value: "Designer and builder (solo, personal project)" },
+    { label: "Year", value: "2026" },
     { label: "Type", value: "CHIP, a personal OS, honest prototype, building in public" },
     {
       label: "Scope",
       value:
         "Agent governance (human in the loop), AI-readiness inspection, design-system health metrics, building in public",
     },
+    { label: "Tools", value: "Claude Code / CLI, BELLA tokens, MCP" },
     {
       label: "Built",
       value: "Five-day build for the Anthropic Claude Code hackathon, April 2026, CHIP 2.0 in progress",
     },
-    { label: "Tools", value: "Claude Code / CLI, BELLA tokens, MCP" },
   ],
   images: [],
   tags: ["AI-enabled Design", "Design System Governance", "Building in Public", "Claude Code"],

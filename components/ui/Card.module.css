@@ -8,54 +8,16 @@
  * hover shows a static solid accent ring instead. Drive the identity
  * colour with --cc (see Card.tsx `accent`). */
 
-@property --card-ang {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-
+/* The travelling trace ring is the SHARED .trace-host recipe in
+   globals.css (Pass E task 2, one implementation) — the Card only
+   sets its geometry defaults (22px / 3px match the shared defaults)
+   and the identity colour via --cc. */
 .card {
   position: relative;
   border-radius: 22px;
   padding: 3px; /* reserved trace-ring thickness; keeps hover layout-stable */
   box-shadow: 13px 26px 54px var(--hero-panel-shadow);
   --cc: var(--hero-iris-bright);
-}
-
-/* Trace ring: present but invisible at rest, revealed as an affordance */
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 22px;
-  padding: 3px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 200ms ease;
-  background: conic-gradient(
-    from var(--card-ang),
-    var(--cc) 0deg,
-    var(--cc) 46deg,
-    color-mix(in srgb, var(--cc) 20%, transparent) 130deg,
-    color-mix(in srgb, var(--cc) 12%, transparent) 300deg,
-    var(--cc) 360deg
-  );
-  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
-  mask-composite: exclude;
-}
-
-.card:hover::before,
-.card:focus-within::before {
-  opacity: 1;
-  animation: card-trace 3.4s linear infinite;
-}
-
-@keyframes card-trace {
-  to {
-    --card-ang: 360deg;
-  }
 }
 
 /* Dark ONLY: identity halo, hover/focus affordance like the trace */
@@ -180,11 +142,8 @@
     transform: none;
   }
 
-  .card:hover::before,
-  .card:focus-within::before {
-    animation: none;
-    background: var(--cc);
-  }
+  /* trace reduced-motion fallback lives in the shared .trace-host
+     recipe (globals.css) */
 
   :global([data-theme="dark"]) .card:hover,
   :global([data-theme="dark"]) .card:focus-within {

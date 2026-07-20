@@ -147,9 +147,9 @@ body {
   --gloss-key-hover: linear-gradient(color-mix(in srgb, white 26%, transparent), transparent 52%);
   --gloss-key-pressed: linear-gradient(transparent 0 10%, color-mix(in srgb, white 12%, transparent) 10%, transparent 50%);
   --shadow-key-hover:
-    2px 6px 0 var(--key-edge),
-    8px 12px 20px rgba(25, 23, 32, 0.22),
-    inset 0 1px 0 var(--key-face-hi);
+    1px 4px 0 var(--key-fill-edge),
+    4px 8px 14px color-mix(in srgb, var(--key-fill-lo) 28%, transparent),
+    var(--edge-glass-hi-strong);
   /* media scrim (one card system): text over cover media stays AA */
   --scrim-media: linear-gradient(to top, color-mix(in srgb, black 46%, transparent), color-mix(in srgb, black 10%, transparent) 42%, transparent 68%);
 }
@@ -295,21 +295,22 @@ body {
   --switch-icon-sun: #8F8A7F;
   --switch-icon-moon: #7C776F;
 
-  /* Keycap Button tokens — the site-wide button style (from _proto/_hero.html
-     .toggle). Down-right plate + soft cast shadow + inset top highlight;
-     :active sinks the key (translateY(3px)) onto a reduced plate. */
+  /* Keycap Button tokens — v5 (Pass E task 1): the raised keycap is
+     the PRIMARY tier only, the one 3D moment per view. Calm extrusion:
+     thin plate, small soft cast, one upper-left light source (inset
+     top highlight, down-right shadow), both themes. The neutral keycap
+     and --btn-key-border are RETIRED; secondary is flat iris outline
+     and consumes no key tokens. :active sinks the key (translateY(2px))
+     onto the reduced plate. */
   --btn-key-radius: var(--radius-lg);
-  /* secondary keycaps must clear their ground in both themes (Pass B):
-     ONE token-level border, no per-instance overrides */
-  --btn-key-border: var(--key-edge);
   --shadow-key-resting:
-    2px 5px 0 var(--key-edge),
-    6px 9px 14px rgba(25, 23, 32, 0.18),
-    inset 0 1px 0 var(--key-face-hi);
+    1px 3px 0 var(--key-fill-edge),
+    3px 6px 10px color-mix(in srgb, var(--key-fill-lo) 24%, transparent),
+    var(--edge-glass-hi-strong);
   --shadow-key-pressed:
-    1px 2px 0 var(--key-edge),
-    3px 5px 10px rgba(25, 23, 32, 0.16),
-    inset 0 1px 0 var(--key-face-hi);
+    0 1px 0 var(--key-fill-edge),
+    2px 3px 8px color-mix(in srgb, var(--key-fill-lo) 20%, transparent),
+    var(--edge-glass-hi-strong);
 }
 
 [data-theme="dark"] {
@@ -778,11 +779,14 @@ li {
 
 /* H5 — inline item labels (collaboration cards, role titles…) */
 .heading-item {
-  /* item/card titles are below the 20px Unique floor: they stay Geist
-     (Unique is display-only and illegible at label sizes) */
+  /* item/card titles stay Geist (Unique is display-only and illegible
+     at label sizes). Micro-heading presence (Pass E task 10, Elleta
+     18 Jul): ONE deliberate tier above body text — a ramp size step
+     (18px) at 700 — so card sub-heads no longer sit flush against
+     16px body copy. One change here, no per-card overrides. */
   font-family: var(--font-body);
-  font-size: var(--font-small);
-  font-weight: 600;
+  font-size: var(--typography-font-size-lg);
+  font-weight: 700;
   letter-spacing: -0.005em;
   line-height: var(--typography-line-height-snug);
   color: var(--color-ink);
@@ -1024,20 +1028,85 @@ li {
   white-space: nowrap;
 }
 
-/* ─── Keycap Button — the site-wide button style ─────────────────
-   Neutral = light key; primary = coloured key (--key-c sets the face:
-   accent by default, or a case colour). Labels stay Geist caps at tag
-   size — NEVER Unique (locked type rule). Values are the --btn-key /
-   --shadow-key tokens; press = translateY(3px) onto the reduced plate. */
+/* ─── Travelling border light — the ONE trace implementation ─────
+   (Pass E task 2). Card and any surface that speaks the Card
+   interaction language consume this recipe; no second copy exists.
+   Host sets --cc (identity colour), --trace-r (ring radius, default
+   22px) and --trace-w (thickness, default 3px). Invisible at rest;
+   travels on hover/focus; reduced motion shows a static solid ring. */
+@property --trace-ang {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.trace-host {
+  position: relative;
+  --trace-r: 22px;
+  --trace-w: 3px;
+}
+
+.trace-host::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--trace-r);
+  padding: var(--trace-w);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  background: conic-gradient(
+    from var(--trace-ang),
+    var(--cc) 0deg,
+    var(--cc) 46deg,
+    color-mix(in srgb, var(--cc) 20%, transparent) 130deg,
+    color-mix(in srgb, var(--cc) 12%, transparent) 300deg,
+    var(--cc) 360deg
+  );
+  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  mask-composite: exclude;
+}
+
+.trace-host:hover::before,
+.trace-host:focus-within::before,
+.trace-host:focus-visible::before {
+  opacity: 1;
+  animation: trace-travel 3.4s linear infinite;
+}
+
+@keyframes trace-travel {
+  to {
+    --trace-ang: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trace-host:hover::before,
+  .trace-host:focus-within::before,
+  .trace-host:focus-visible::before {
+    animation: none;
+    background: var(--cc);
+  }
+}
+
+/* ─── Button grammar v5 (Pass E task 1) ──────────────────────────
+   Purple means clickable at every tier. PRIMARY = the filled iris
+   keycap, the ONE 3D moment per view (audit:controls enforces max
+   one). SECONDARY = flat iris outline, iris text, no fill, no
+   elevation — never confusable with a FilterChip (neutral flat,
+   aria-pressed) or a Tag (inert). TERTIARY = text link, iris and
+   underlined. Labels stay Geist caps at tag size — NEVER Unique.
+   Secondary colour rides --color-accent-ink (iris light / periwinkle
+   dark; fixed-dark chrome scopes the same token to its peri stop). */
 .btn-key {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-2);
   cursor: pointer;
-  /* visible border + the raised plate: the cap never blends into its
-     ground (token-level, both themes) */
-  border: 1px solid var(--btn-key-border);
+  border: 1.5px solid var(--color-accent-ink);
   border-radius: var(--btn-key-radius);
   padding: 11px 18px;
   min-height: var(--spacing-touch-target);
@@ -1047,23 +1116,17 @@ li {
   letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--hero-panel-ink);
-  background: var(--gloss-key), linear-gradient(var(--key-face-hi), var(--key-face-lo));
-  box-shadow: var(--shadow-key-resting);
-  transition: transform 0.1s, box-shadow 0.1s;
+  color: var(--color-accent-ink);
+  background: transparent;
+  transition: background 0.15s, color 0.15s;
 }
 
-/* hover: the light lifts (sheen brightens, cap rises a hair) */
 .btn-key:hover {
-  transform: translateY(-1px);
-  background: var(--gloss-key-hover), linear-gradient(var(--key-face-hi), var(--key-face-lo));
-  box-shadow: var(--shadow-key-hover);
+  background: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
 }
 
 .btn-key:active {
-  transform: translateY(3px);
-  background: var(--gloss-key-pressed), linear-gradient(var(--key-face-hi), var(--key-face-lo));
-  box-shadow: var(--shadow-key-pressed);
+  background: color-mix(in srgb, var(--color-accent-ink) 16%, transparent);
 }
 
 .btn-key:focus-visible {
@@ -1071,49 +1134,50 @@ li {
   outline-offset: var(--ring-focus-offset);
 }
 
+/* PRIMARY: the calm keycap. Values are the --shadow-key / --gloss-key
+   token families; press = translateY(2px) onto the reduced plate. */
 .btn-key--primary {
   color: var(--key-face-hi);
-  border-color: var(--key-fill-edge);
+  border: 1px solid var(--key-fill-edge);
   background: var(--gloss-key), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
-  box-shadow:
-    2px 5px 0 var(--key-fill-edge),
-    6px 9px 14px color-mix(in srgb, var(--key-fill-lo) 32%, transparent),
-    var(--edge-glass-hi-strong);
+  box-shadow: var(--shadow-key-resting);
+  transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
 }
 
+/* hover: the light lifts (sheen brightens, cap rises a hair) */
 .btn-key--primary:hover {
   transform: translateY(-1px);
   background: var(--gloss-key-hover), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
+  box-shadow: var(--shadow-key-hover);
 }
 
 .btn-key--primary:active {
-  transform: translateY(3px);
+  transform: translateY(2px);
   background: var(--gloss-key-pressed), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
-  box-shadow:
-    1px 2px 0 var(--key-fill-edge),
-    3px 5px 10px color-mix(in srgb, var(--key-fill-lo) 28%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-/* Pressed-in state for toggles (selected view tab, active filter chip) */
-.btn-key[aria-pressed="true"],
-.btn-key[aria-selected="true"] {
-  transform: translateY(3px);
   box-shadow: var(--shadow-key-pressed);
 }
 
-.btn-key--primary[aria-pressed="true"],
-.btn-key--primary[aria-selected="true"] {
-  transform: translateY(3px);
-  box-shadow:
-    1px 2px 0 var(--key-fill-edge),
-    3px 5px 10px color-mix(in srgb, var(--key-fill-lo) 28%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+@media (prefers-reduced-motion: reduce) {
+  .btn-key,
+  .btn-key--primary {
+    transition: none;
+  }
+}
+
+/* ─── Vinyl disc (About, Outside the work) ───────────────────────
+   The spin runs only while playing and honours reduced motion. */
+.vinyl-disc[data-spinning] {
+  animation: vinyl-spin 3s linear infinite;
+}
+
+.vinyl-disc:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn-key {
-    transition: none;
+  .vinyl-disc[data-spinning] {
+    animation: none;
   }
 }
 
@@ -1877,11 +1941,20 @@ textarea:focus-visible {
   margin-bottom: var(--space-md);
 }
 
+/* Related cards render as ONE 3-col row at desktop, stacked on mobile
+   (Pass E task 11e: auto-fill orphaned the third card in a 2-col
+   grid inside the narrow case column). */
 .cs-shell__related-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--grid-gap);
   align-items: stretch;
+}
+
+@media (max-width: 767px) {
+  .cs-shell__related-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Bottom CTA */

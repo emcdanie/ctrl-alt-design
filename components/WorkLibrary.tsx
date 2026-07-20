@@ -1,20 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import BubbleCluster from "./BubbleCluster";
 import CaseCard from "./CaseCard";
 import FindYourFit from "@/components/FindYourFit";
-import { Button } from "@/components/ui/Button";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
-import { FilterChip } from "@/components/ui/FilterChip";
-import { Select } from "@/components/ui/Select";
 import { Tag } from "@/components/ui/Tag";
 import { StatusPill } from "@/components/ui/StatusPill";
-import { SKILLS, WORK_ITEMS, slugify, type WorkItem } from "@/lib/workLibrary";
+import { SKILLS, SKILL_EVIDENCE, WORK_ITEMS, slugify, type WorkItem } from "@/lib/workLibrary";
 import styles from "./WorkLibrary.module.css";
-import { WorkFilterBar, useWorkFilters } from "@/components/WorkFilters";
+import { WorkChipRow, WorkAppliedRow, useWorkFilters } from "@/components/WorkFilters";
 import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
 
 /* The library (toolbar rebuild 2026-07-18): ONE toolbar row above
@@ -56,22 +53,6 @@ export default function WorkLibrary() {
   const params = useSearchParams();
   const { caseFilters, skillFilters, typeFilters, toggleList, clearAll, setFilterParams } =
     useWorkFilters();
-  const [trayOpen, setTrayOpen] = useState(false);
-  const trayRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!trayOpen) return;
-    trayRef.current?.focus();
-    document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setTrayOpen(false);
-    };
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = "";
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [trayOpen]);
 
   const view: View = (VIEWS as readonly string[]).includes(params.get("view") ?? "")
     ? (params.get("view") as View)
@@ -90,17 +71,28 @@ export default function WorkLibrary() {
   }, [caseFilters, skillFilters, typeFilters, sort]);
 
   const hasFilters = caseFilters.length > 0 || skillFilters.length > 0 || typeFilters.length > 0;
-  const appliedCount = caseFilters.length + skillFilters.length + typeFilters.length;
 
-  const caseItems = WORK_ITEMS.filter((i) => i.medium === "case study");
+  /* every view renders the same filtered set (Pass E task 3): the
+     curated Cards composition narrows too, it never ignores a chip */
+  const caseItems = filtered.filter((i) => i.medium === "case study");
   const featured = caseItems.find((i) => i.featured);
   const rankedRest = caseItems.filter((i) => !i.featured);
-  const labCount = WORK_ITEMS.filter((i) => i.medium === "prototype").length;
+  const showLab = filtered.some((i) => i.medium === "prototype");
 
   return (
     <div>
-      {/* ── ONE toolbar: search left (find-your-fit), switcher right ── */}
+      {/* ── ONE stable order in every view (Pass E task 3): toolbar
+          (search + chip row | switcher), contextual message, count,
+          content. Nothing jumps when the view changes. ── */}
       <FindYourFit
+        chipRow={
+          <WorkChipRow
+            skillFilters={skillFilters}
+            typeFilters={typeFilters}
+            toggleList={toggleList}
+            dense
+          />
+        }
         switcher={
           <SegmentedControl
             label="View mode"
@@ -115,13 +107,19 @@ export default function WorkLibrary() {
         }
       />
 
-      {/* ── Cards: the curated composition, zero machinery ── */}
+      {/* the honest count, identical element in every view */}
+      <WorkAppliedRow
+        caseFilters={caseFilters}
+        skillFilters={skillFilters}
+        typeFilters={typeFilters}
+        toggleList={toggleList}
+        clearAll={clearAll}
+        matchCount={filtered.length}
+      />
+
+      {/* ── Cards: the curated composition, filtered like every view ── */}
       {view === "cards" && (
         <div>
-          {/* D4: a breath between the toolbar and the library */}
-          <p className={styles.count} role="status" style={{ marginTop: "var(--spacing-4)" }}>
-            {caseItems.length} case studies, {labCount} lab
-          </p>
           <div className={styles.curatedGrid}>
             {featured && (
               <div className={styles.featuredSlot}>
@@ -132,122 +130,16 @@ export default function WorkLibrary() {
               <CaseCard key={i.id} item={i} />
             ))}
           </div>
-          <CtrlAltDesignSection />
+          {showLab && <CtrlAltDesignSection />}
         </div>
       )}
 
-      {/* ── Map / Table: filters (dense) + sort ride with the views ── */}
-      {view !== "cards" && (
-        <div>
-          {/* Mobile: one Filter button opens the tray (never 15 wrapped chips) */}
-          <div className={styles.trayTrigger}>
-            <button
-              type="button"
-              className={styles.trayTriggerBtn}
-              aria-expanded={trayOpen}
-              onClick={() => setTrayOpen(true)}
-            >
-              Filter{appliedCount > 0 ? ` (${appliedCount})` : ""}
-            </button>
-          </div>
-
-          {trayOpen && (
-            <div
-              ref={trayRef}
-              tabIndex={-1}
-              role="dialog"
-              aria-modal="true"
-              aria-label="Filters"
-              className={styles.tray}
-            >
-              <div className={styles.trayHeader}>
-                <p className={styles.count} role="status">
-                  {filtered.length} of {WORK_ITEMS.length} pieces
-                </p>
-                <button type="button" className={styles.clearAll} onClick={clearAll}>
-                  Clear all
-                </button>
-              </div>
-              <details open className={styles.trayGroup}>
-                <summary>Case</summary>
-                <div className={styles.trayChips}>
-                  {WORK_ITEMS.map((i) => (
-                    <FilterChip
-                      key={i.id}
-                      pressed={caseFilters.includes(i.id)}
-                      onClick={() => toggleList("case", i.id, caseFilters)}
-                    >
-                      {i.title}
-                    </FilterChip>
-                  ))}
-                </div>
-              </details>
-              <details className={styles.trayGroup}>
-                <summary>Type</summary>
-                <div className={styles.trayChips}>
-                  {[...new Set(WORK_ITEMS.map((i) => i.medium))].map((m) => (
-                    <FilterChip
-                      key={m}
-                      pressed={typeFilters.includes(slugify(m))}
-                      onClick={() => toggleList("type", slugify(m), typeFilters)}
-                    >
-                      {m}
-                    </FilterChip>
-                  ))}
-                </div>
-              </details>
-              <details className={styles.trayGroup}>
-                <summary>Skill</summary>
-                <div className={styles.trayChips}>
-                  {SKILLS.map((sk) => (
-                    <FilterChip
-                      key={sk}
-                      pressed={skillFilters.includes(slugify(sk))}
-                      onClick={() => toggleList("skill", slugify(sk), skillFilters)}
-                    >
-                      {sk}
-                    </FilterChip>
-                  ))}
-                </div>
-              </details>
-              <div className={styles.trayApply}>
-                <Button variant="primary" onClick={() => setTrayOpen(false)} className="w-full">
-                  Show {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* ── ONE shared filter bar (WorkFilters): chips + applied + count ── */}
-          <WorkFilterBar
-            caseFilters={caseFilters}
-            skillFilters={skillFilters}
-            typeFilters={typeFilters}
-            toggleList={toggleList}
-            clearAll={clearAll}
-            matchCount={filtered.length}
-            desktopOnly
-            dense
-          />
-
-          {/* sort stays with the filters (headers sort in the table view) */}
-          {view === "map" && (
-            <div className={styles.sortRow}>
-              <Select
-                label="Sort"
-                value={sort}
-                onChange={(v) => setFilterParams({ sort: v === "year-desc" ? null : v })}
-                options={Object.entries(SORTS).map(([k, s]) => ({ value: k, label: s.label }))}
-              />
-            </div>
-          )}
-
-          {view === "table" && <TableView items={filtered} sort={sort} setParams={setFilterParams} />}
-          {view === "map" && (
-            <div className={styles.mapWrap}>
-              <BubbleCluster highlightIds={hasFilters ? filtered.map((i) => i.id) : null} />
-            </div>
-          )}
+      {/* sort renders only where order means something: table headers
+          (aria-sort buttons). The Map is spatial; it sorts nothing. */}
+      {view === "table" && <TableView items={filtered} sort={sort} setParams={setFilterParams} />}
+      {view === "map" && (
+        <div className={styles.mapWrap}>
+          <BubbleCluster highlightIds={hasFilters ? filtered.map((i) => i.id) : null} />
         </div>
       )}
     </div>
@@ -426,6 +318,7 @@ export function MatrixView({
                 </th>
                 {WORK_ITEMS.map((i) => {
                   const marked = i.skills.includes(skill);
+                  const evidence = SKILL_EVIDENCE[i.id]?.[skill];
                   return (
                     <td
                       key={i.id}
@@ -438,14 +331,32 @@ export function MatrixView({
                           : undefined
                       }
                     >
-                      {marked && (
-                        <>
-                          <span aria-hidden="true" className={styles.mxDot} />
-                          <span className="sr-only">
-                            {skill} used in {i.title}
-                          </span>
-                        </>
-                      )}
+                      {/* Dead dots are doors (Pass E task 5b): every dot
+                          links to its case; a cell with an evidence line
+                          exposes it on demand first (disclosure). */}
+                      {marked &&
+                        (evidence ? (
+                          <details className={styles.mxDetails}>
+                            <summary
+                              className={styles.mxLink}
+                              aria-label={`${i.title}: ${skill}, show evidence`}
+                            >
+                              <span aria-hidden="true" className={styles.mxDot} />
+                            </summary>
+                            <div className={styles.mxPanel}>
+                              <p>{evidence}</p>
+                              <Link href={i.href}>Read {i.title}</Link>
+                            </div>
+                          </details>
+                        ) : (
+                          <Link
+                            href={i.href}
+                            className={styles.mxLink}
+                            aria-label={`${i.title}: ${skill}, read the case study`}
+                          >
+                            <span aria-hidden="true" className={styles.mxDot} />
+                          </Link>
+                        ))}
                     </td>
                   );
                 })}

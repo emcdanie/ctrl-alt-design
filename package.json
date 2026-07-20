@@ -10,7 +10,7 @@
     "audit:layout": "node scripts/audit-layout.mjs",
     "audit:contrast": "node scripts/contrast-check.mjs",
     "audit:structure": "node scripts/audit-structure.mjs",
-    "gate": "npm run audit:structure && npm run audit:fonts && npm run audit:tokens && npm run audit:copy && npm run audit:reuse && npm run audit:nda && npm run audit:controls && npm run audit:agents && npm run audit:contrast",
+    "gate": "npm run audit:structure && npm run audit:fonts && npm run audit:tokens && npm run audit:copy && npm run audit:reuse && npm run audit:nda && npm run audit:controls && npm run audit:parity && npm run audit:agents && npm run audit:contrast",
     "audit:copy": "node scripts/audit-copy.mjs",
     "audit:controls": "node scripts/audit-controls.mjs",
     "audit:nda": "node scripts/audit-nda.mjs",
@@ -18,7 +18,8 @@
     "audit:fonts": "node scripts/audit-fonts.mjs",
     "audit:tokens": "node scripts/audit-tokens.mjs",
     "audit:agents": "node scripts/generate-agent-surfaces.mjs && node scripts/audit-agents.mjs",
-    "prebuild": "node scripts/generate-agent-surfaces.mjs"
+    "prebuild": "node scripts/generate-agent-surfaces.mjs",
+    "audit:parity": "node scripts/audit-parity.mjs"
   },
   "dependencies": {
     "iconoir-react": "^7.11.1",

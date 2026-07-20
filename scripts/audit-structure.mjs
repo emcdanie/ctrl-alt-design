@@ -83,7 +83,10 @@ for (const f of [...appFiles, ...componentFiles]) {
 for (const f of [...appFiles, ...componentFiles]) {
   const lines = readFileSync(f, "utf8").split("\n");
   lines.forEach((l, i) => {
-    if (!/eyebrow|section-label|kicker/i.test(l)) return;
+    /* --tracking-eyebrow is a typography token, not an eyebrow element:
+       v5 secondary buttons legitimately pair it with iris text. Eyebrow
+       selectors/classes still match. */
+    if (!/eyebrow|section-label|kicker/i.test(l.replace(/--tracking-eyebrow/g, ""))) return;
     const windowText = lines.slice(i, i + 4).join("\n");
     if (/--color-accent-(ink|iris)\b/.test(windowText)) {
       fail(`iris on an eyebrow/kicker in ${f}:${i + 1} — eyebrows are wayfinding (use --color-eyebrow); iris at body scale means interactive`);

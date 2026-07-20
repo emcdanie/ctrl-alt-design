@@ -1,5 +1,9 @@
 import type { CaseStudy } from "@/lib/content";
 
+/* Conformance (Pass E task 11, honest): still an ESSAY with two
+ * decisions appended; the editorial reshaping happens with Elleta in
+ * Cowork (per the restructure brief order), then lands as content
+ * edits. One summary; no lessons block yet (TODO below). */
 const study: CaseStudy = {
   slug: "brad-frost",
   href: "/case-studies/brad-frost",
@@ -41,9 +45,11 @@ const study: CaseStudy = {
   eyebrow: "Design System Collaboration · 2024-2025",
   summary:
     "What building Brad Frost's component system in reverse taught me about design, and why working code-first changes everything you pay attention to.",
+  /* canonical sidebar meta (Pass E task 11g): Role, Year, Type or
+     Scope, Organisation, Tools where applicable; omit empty rows */
   metadata: [
-    { label: "Year", value: "2024-2025" },
     { label: "Role", value: "Design System Collaborator" },
+    { label: "Year", value: "2024-2025" },
     { label: "Scope", value: "Component Architecture · Token Alignment · Figma-Storybook Integration · MCP" },
     { label: "Organisation", value: "Brad Frost Web, Maker Program" },
   ],
@@ -60,7 +66,7 @@ const study: CaseStudy = {
     },
     {
       kind: "section",
-      eyebrow: "CONTEXT",
+      eyebrow: "BACKGROUND",
       heading: "Starting From Code",
       children: [
         { kind: "paragraph", text: "This was Brad Frost's design system. The person who wrote Atomic Design. If alignment could drift here, in a system built on first principles by someone who literally invented the vocabulary, it could drift anywhere. That realisation reframed the entire project for me." },
@@ -142,7 +148,7 @@ const study: CaseStudy = {
     },
     {
       kind: "section",
-      eyebrow: "KEY LEARNINGS",
+      eyebrow: "TAKEAWAYS",
       heading: "Key Learnings",
       children: [
         { kind: "paragraph", text: "**Code-first is a design skill.** Reading a codebase to understand design intent requires the same analytical rigour as reading a user research report. The information is just encoded differently." },
@@ -153,7 +159,7 @@ const study: CaseStudy = {
     },
     {
       kind: "section",
-      eyebrow: "REFLECTION",
+      eyebrow: "CLOSING",
       heading: "Reflection",
       children: [
         { kind: "paragraph", text: "This project shifted my intuition about where design system work actually happens. The highest-value work isn't in the Figma file, it's in the alignment between design intent and implementation reality. That alignment requires a designer who can read code, trace decisions, and understand a system on its own terms before proposing changes to it." },
@@ -162,6 +168,10 @@ const study: CaseStudy = {
     },
   ],
 };
+
+/* TODO(elleta): the library row now claims Accessibility (Pass E task
+ * 5a); nothing in this prose backs it yet. One line in your words, or
+ * the claim comes back out. */
 
 /* TODO(elleta): the template's closing `lessons` block is empty. One
  * paragraph in your voice distilling what this changed; KEY LEARNINGS

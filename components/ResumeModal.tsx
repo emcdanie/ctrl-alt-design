@@ -54,7 +54,7 @@ const roles = [
   {
     period: "July 2024, Feb 2026",
     title: "UX/UI Designer, Product & Design Systems",
-    company: "A B2B travel management platform",
+    company: "BizAway" /* TODO(elleta): exact entry wording is yours; the name is restored per _private/nda-employers.txt (Pass E task 9) */,
     highlights: [
       "Led the UX transformation of a complex B2B SaaS travel platform, redesigning the booking foundation across flights, car rentals, finance, admin, and multi-role dashboards.",
       "Built and implemented the company's first scalable design system from scratch: token architecture, reusable component library, and theme support, with tokens integrated directly into production code.",
@@ -65,7 +65,7 @@ const roles = [
   {
     period: "Oct 2025, Dec 2025",
     title: "Product Designer, Data Dashboard Prototype (Contract)",
-    company: "A UN agency, Geneva (contract)",
+    company: "UN Office at Geneva (UNOG) · Contract" /* TODO(elleta): exact entry wording is yours; the name is restored per _private/nda-employers.txt (Pass E task 9) */,
     highlights: [
       "Designed a high-fidelity dashboard prototype supporting operational transparency across multiple UN teams, translating complex organisational workflows into clear data visualisations and interactive analytics interfaces.",
       "Conducted stakeholder interviews and requirements gathering across technical and non-technical users to define information architecture and layout structure.",

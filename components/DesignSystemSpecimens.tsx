@@ -52,6 +52,7 @@ const GATE = [
   { name: "audit:fonts", line: "Exactly two faces. Unique renders only through the display Heading primitive, the home hero, and the keycap lockup." },
   { name: "audit:tokens", line: "No colour literals and no raw spacing in app or components. Waivers are inline, reasoned, and counted." },
   { name: "audit:reuse", line: "Zero-import components fail. One implementation, no dead copy left rendering." },
+  { name: "audit:parity", line: "Every case-study slug has exactly one library row and every case row resolves back to a slug. A case can never be routable but invisible." },
   { name: "audit:agents", line: "The agent surfaces (llms.txt, /api/bella.json) must match the live route registry. An agent surface that lies fails the build." },
 ];
 
@@ -417,7 +418,7 @@ export default function DesignSystemSpecimens() {
             <ul className="ds-status__list">
               <li>The token layer, both themes</li>
               <li>The control taxonomy, live on every page</li>
-              <li>The gate, nine audits and a pre-commit hook</li>
+              <li>The gate, ten audits and a pre-commit hook</li>
               <li>The dark-mode contract, AA on every route</li>
             </ul>
           </div>

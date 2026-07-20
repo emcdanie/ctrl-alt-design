@@ -199,22 +199,24 @@ open peek is the single element allowed to animate at rest. Reduced
 motion never traces; hover shows a static solid accent ring. Goal: at
 most one animated element on screen at a time.
 
-## Buttons — the keycap Button (site-wide)
+## Buttons — grammar v5 (2026-07-20, supersedes the neutral keycap)
 
-From `_proto/_hero.html` `.toggle`. One button style, two variants, both in
-`app/globals.css`:
+Purple means clickable at every tier. One `ui/Button` component, both
+variants in `app/globals.css`:
 
-| Variant | Class | Face | Plate |
-| --- | --- | --- | --- |
-| Neutral | `.btn-key` | `--key-face-hi` → `--key-face-lo` | `--shadow-key-resting` (`2px 5px 0 --key-edge` + soft cast + inset top highlight) |
-| Primary | `.btn-key--primary` | `--key-c` (accent default; set a case colour to re-key) | `color-mix(in srgb, var(--key-c) 64%, black)` |
-| Secondary (card CTA) | `.pr` in `BubbleCluster.module.css` | iris `--color-accent-ink`, ALWAYS — never per-case (case colour stays in kicker/trace/glow) | `color-mix(in srgb, accent 60%, black)` |
+| Tier | Class | Treatment |
+| --- | --- | --- |
+| Primary | `.btn-key--primary` | Filled iris keycap, the ONE 3D moment per view. Calm extrusion from the `--shadow-key` family: thin plate (`1px 3px 0 --key-fill-edge`), small soft cast, inset top highlight — one upper-left light source, both themes. |
+| Secondary | `.btn-key` | FLAT: 1.5px iris outline + iris text on transparent, tinted wash on hover/active, no elevation. Colour is `--color-accent-ink` (iris light / periwinkle dark; fixed-dark chrome scopes the same token to its peri stop). Never confusable with FilterChip or Tag. |
+| Tertiary | text link | Iris + underlined, the inline-link pattern. |
 
-- Radius `--btn-key-radius` (12px). Labels Geist Mono, `tag` size, 600,
+- The neutral keycap and `--btn-key-border` are RETIRED (v5).
+- The bubble-peek CTA (`.pr`) is the view's primary while the peek is
+  open (the hero demotes); it rides the same `--shadow-key` family.
+- Radius `--btn-key-radius` (12px). Labels Geist caps, `tag` size, 600,
   uppercase — NEVER Unique (locked type rule).
-- Press: `translateY(3px)` onto `--shadow-key-pressed` (reduced plate).
-  `aria-pressed="true"` / `aria-selected="true"` hold the pressed-in state
-  (view tabs, filter chips).
+- Primary press: `translateY(2px)` onto `--shadow-key-pressed` (reduced
+  plate). Keycaps are never toggles (audit:controls).
 - Min-height `--spacing-touch-target`; focus ring `--ring-focus-*`.
 
 ## Icons — the Iconoir layer (site-wide)
@@ -267,11 +269,12 @@ Arrows render through the Icon component, never raw glyphs in labels:
 ArrowRight = internal navigation, ArrowUpRight = external/new context,
 Download = download, and NO arrow on submit actions. Sizing: hug
 content, min 44px target; full-width only inside forms below 768px.
-Three tiers: PRIMARY (single most important action of the view, max one,
-gate-enforced; iris fill, white label; the submit in forms), SECONDARY
-(supporting actions; neutral keycap face, ink label), TERTIARY
-(low-emphasis navigation; text link, iris + underline; caps reserved for
-the BACK TO WORK meta-link pattern). When in doubt, demote. Placement:
+Three tiers (v5, 2026-07-20): PRIMARY (single most important action of
+the view, max one, gate-enforced; iris keycap, white label; the submit
+in forms), SECONDARY (supporting actions; flat iris outline, iris text,
+no fill), TERTIARY (low-emphasis navigation; text link, iris +
+underline; caps reserved for the BACK TO WORK meta-link pattern). When
+in doubt, demote. Placement:
 form primary sits where the flow ends; paired actions keep primary
 trailing; no destructive tier exists by design. Exactly two button
 colour treatments, from tokens; disabled = opacity on the variant. The

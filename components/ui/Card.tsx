@@ -48,7 +48,7 @@ export default function Card({
   style,
   children,
 }: CardProps) {
-  const outerClass = [styles.card, href || onClick ? styles.interactive : "", className]
+  const outerClass = [styles.card, "trace-host", href || onClick ? styles.interactive : "", className]
     .filter(Boolean)
     .join(" ");
   const inner = [
