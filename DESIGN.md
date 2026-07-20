@@ -250,6 +250,11 @@ is the ONLY way to render one:
 - Hero bubble geometry (sizes 126–196px, cluster positions) is recorded
   data in `components/BubbleCluster.tsx`, from `_proto/_hero.html` — not
   ramp/spacing values.
+- Cluster membership (Elleta, 2026-07-20): the hero cluster is six
+  bubbles + hub, and membership is the `inCluster` flag on a case's ONE
+  `WORK_ITEMS` row (absent = in; `false` = out, as on Travel Booking).
+  Never a parallel data structure — the old `EXTRA_CASES` side table is
+  deleted; the registry-parity audit rejects the pattern.
 - Proto-exact hero type (2026-07-16 correction — the proto wins over the
   ramp here, do NOT re-conform): bubble labels 19/18px + hub 22px, hub
   sub + switch meta 11px, hero kicker 13.5px, hero intro 17px, reveal-card

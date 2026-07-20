@@ -45,6 +45,10 @@ export interface WorkItem {
   medium: "case study" | "prototype" | "writing";
   /** current-focus piece, featured on the dashboard */
   featured?: boolean;
+  /** hero bubble cluster membership (Elleta, 20 Jul): absent means in
+   *  the cluster; false keeps a case out of it EXPLICITLY, on its own
+   *  row, never via a side table. Recorded in DESIGN.md. */
+  inCluster?: boolean;
   /** explicit library order; lower ranks first in the default sort */
   rank?: number;
   /** honest cover image (real work product); warm placeholder otherwise */
@@ -167,6 +171,34 @@ export const WORK_ITEMS: WorkItem[] = [
     text: "var(--case-clarity-text)",
   },
   {
+    id: "filters",
+    medium: "case study",
+    cover: "/images/carosel/CTRL_ATL_TRAVEL.jpeg",
+    /* Registry parity (Elleta, 20 Jul): every case-study slug carries
+       exactly one WORK_ITEMS row. The hero cluster stays six bubbles +
+       hub; this case sits outside it by explicit flag. */
+    inCluster: false,
+    title: "Travel Booking",
+    bubbleLabel: "Travel|Booking",
+    kicker: "UX Strategy · 2024-25",
+    ingredients: [
+      "Search and filtering as one flow",
+      "Policy as a visible dimension",
+      "Making it safe to experiment",
+    ],
+    href: "/case-studies/filters-decision-support-system",
+    type: "UX Strategy",
+    year: "2024-2025",
+    yearStart: 2024,
+    role: "Lead Product Designer",
+    impact: "A reusable filtering interaction pattern with a consistent contract across the product",
+    skills: ["Product Design", "UX Research", "Design Systems"],
+    hi: "var(--case-filters-hi)",
+    lo: "var(--case-filters-lo)",
+    deep: "var(--case-filters-deep)",
+    text: "var(--case-filters-text)",
+  },
+  {
     id: "design-lab",
     medium: "prototype",
     title: "Design Lab",
@@ -186,18 +218,6 @@ export const WORK_ITEMS: WorkItem[] = [
     text: "var(--case-design-lab-text)",
   },
 ];
-
-/** Case identities that live outside the 6-bubble hero cluster (they
- * still get the colour + sphere thread on their case pages). */
-const EXTRA_CASES: Record<string, Pick<WorkItem, "hi" | "lo" | "deep" | "text" | "bubbleLabel">> = {
-  "filters-decision-support-system": {
-    hi: "var(--case-filters-hi)",
-    lo: "var(--case-filters-lo)",
-    deep: "var(--case-filters-deep)",
-    text: "var(--case-filters-text)",
-    bubbleLabel: "Travel|Booking",
-  },
-};
 
 /** "More work like this" (Pass C 2026-07-18): case studies ranked by
  * skill overlap with the current case (the same matrix data), current
@@ -223,9 +243,7 @@ export function relatedWorkItems(slug: string, count = 3): WorkItem[] {
 export function findWorkItemBySlug(
   slug: string
 ): Pick<WorkItem, "hi" | "lo" | "deep" | "text" | "bubbleLabel"> | undefined {
-  return (
-    WORK_ITEMS.find((i) => i.href.endsWith(`/case-studies/${slug}`)) ?? EXTRA_CASES[slug]
-  );
+  return WORK_ITEMS.find((i) => i.href.endsWith(`/case-studies/${slug}`));
 }
 
 /** The hub is not a work row — it belongs to the bubble cluster only. */

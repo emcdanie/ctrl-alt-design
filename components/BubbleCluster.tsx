@@ -23,8 +23,12 @@ const GEOMETRY: Record<string, { size: number; top: number; left: number; fontSi
   hub: { size: 196, top: 218, left: 205, fontSize: 22 },
 };
 
-const BUBBLES = [...WORK_ITEMS, HUB_ITEM];
-const HUB_I = WORK_ITEMS.length;
+/* The cluster renders only inCluster rows (Elleta, 20 Jul): six
+ * bubbles + hub. GEOMETRY is keyed by id; a row flagged out of the
+ * cluster never reaches it. */
+const CLUSTER_ITEMS = WORK_ITEMS.filter((i) => i.inCluster !== false);
+const BUBBLES = [...CLUSTER_ITEMS, HUB_ITEM];
+const HUB_I = CLUSTER_ITEMS.length;
 /* hub connects to all, plus cross-links for the hive */
 const CONNS: [number, number][] = [
   [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5],
@@ -264,7 +268,7 @@ export default function BubbleCluster({
           <span className={styles.sub}>My take</span>
         </button>
 
-        {WORK_ITEMS.map((b, i) => (
+        {CLUSTER_ITEMS.map((b, i) => (
           <button
             key={b.id}
             ref={(el) => {
