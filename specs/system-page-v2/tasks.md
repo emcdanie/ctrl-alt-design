@@ -15,5 +15,5 @@
 - [x] T6 Finviz canvas card + demo + thumbnail removed
 - [x] T8 UX review fixes: bio from POSITIONING, case breadcrumbs,
       view-honest work counts, bubble status tier (brief item 8)
-- [ ] T7 Verify + push: gate/tsc/routes/shots DONE; PUSH BLOCKED on the
-      T1-sweep decision (see claude-progress.md 21 Jul)
+- [x] T7 Verify + push: gate/tsc/routes/shots done; history rewritten
+      per her call (option b, 21 Jul) and pushed clean
