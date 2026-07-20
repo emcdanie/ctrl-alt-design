@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getCaseStudy, getAllSlugs, type CaseBlock } from "@/lib/content";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
 import PrototypeEmbed from "@/components/PrototypeEmbed";
+import ScaledFrame from "@/components/ScaledFrame";
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseStudyShell from "@/components/CaseStudyShell";
 import { Body, PullQuote, Section, Eyebrow, H2 } from "@/components/CaseStudyTypography";
@@ -31,6 +32,10 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
       return <PullQuote>{block.text}</PullQuote>;
     case "embed": {
       const dark = block.frame === "dark";
+      /* Scaled to fit, never cropped (task 2): the full canvas scales
+         to the container; embeds are for viewing (ScaledFrame
+         suppresses pointer events). Interactive demos are "prototype"
+         blocks behind the activation facade. */
       return (
         <div
           style={{
@@ -46,28 +51,12 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
               : "1px solid var(--color-semantic-border-subtle)",
           }}
         >
-          <div
-            style={{
-              position: "relative",
-              aspectRatio: block.aspect ?? "16/10",
-              width: "100%",
-              minHeight: `${block.minHeight ?? 480}px`,
-            }}
-          >
-            <iframe
-              src={block.src}
-              title={block.title}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                border: "none",
-                borderRadius: "var(--radius-2xl)",
-              }}
-            />
-          </div>
+          <ScaledFrame
+            src={block.src}
+            title={block.title}
+            designWidth={block.designWidth}
+            designHeight={block.designHeight}
+          />
         </div>
       );
     }
@@ -111,7 +100,8 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
         <PrototypeEmbed
           src={block.src}
           title={block.title}
-          height={block.height ?? "700px"}
+          designWidth={block.designWidth}
+          designHeight={block.designHeight}
           poster={block.poster}
           posterAlt={block.posterAlt}
         />

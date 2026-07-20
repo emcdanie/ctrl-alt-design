@@ -1920,7 +1920,8 @@ textarea:focus-visible {
 }
 
 /* Embedded visuals inside case study content */
-.cs-shell__content iframe,
+/* rhythm rides the frame WRAPPERS; the iframe itself is absolutely
+   positioned inside ScaledFrame and must never carry margins */
 .cs-shell__content .prototype-iframe {
   margin-top: var(--spacing-12);
   margin-bottom: var(--spacing-16);

@@ -82,7 +82,7 @@ const study: CaseStudy = {
         { kind: "paragraph", text: "The problem was not that the controls were broken. The problem was that they had been designed as isolated data-exposure mechanisms rather than as parts of a decision flow. There was no progressive structure to the exploration. No prioritisation of what mattered first. No feedback loop between what the user had done and what remained possible. Filtering was a feature. It needed to become a system." },
       ],
     },
-    { kind: "embed", src: "/demos/case-study-visuals/filters-before.html", title: "Before: nine filter controls at equal visual weight", aspect: "3/2", minHeight: 360, frame: "light" },
+    { kind: "embed", src: "/demos/case-study-visuals/filters-before.html", title: "Before: nine filter controls at equal visual weight", designWidth: 1280, designHeight: 800, frame: "light" },
     {
       kind: "decision",
       index: "01",
@@ -101,7 +101,7 @@ const study: CaseStudy = {
       index: "02",
       title: "Policy as a visible dimension",
       why: "Treating policy not as a blocker that appears at checkout but as a visible dimension of every result.",
-      evidence: { kind: "embed", src: "/demos/case-study-visuals/filters-after.html", title: "After: progressive disclosure with prioritised filters", aspect: "3/2", minHeight: 360, frame: "light" },
+      evidence: { kind: "embed", src: "/demos/case-study-visuals/filters-after.html", title: "After: progressive disclosure with prioritised filters", designWidth: 1280, designHeight: 840, frame: "light" },
       children: [
         { kind: "paragraph", text: "Faceted filtering, the ability to narrow results along multiple independent dimensions simultaneously, is well-established in e-commerce but underused in complex enterprise products. The challenge is not implementing it. The challenge is deciding which facets matter, in what order, and how they interact." },
         { kind: "paragraph", text: "For travel booking, the most decision-relevant facets are price, departure time, number of stops, airline, and class. But there is a second layer that enterprise travel adds: policy compliance. A flight might be the cheapest option and still be wrong if it exceeds the company's travel policy. The faceted model here layers business constraints alongside personal preference, treating policy not as a blocker that appears at checkout but as a visible dimension of every result." },
@@ -130,7 +130,7 @@ const study: CaseStudy = {
         /* demoSteps 01 and 02 moved into decisions 01 and 03 as evidence
            (decision placement wins; the same demo never renders twice). */
         { kind: "demoStep", index: "03 · Final Decision System", description: "The complete integrated prototype, search, filtering, comparison, and booking operating as one unified decision flow with AI-enabled search and policy awareness." },
-        { kind: "prototype", src: "/demos/ctrl-travel-v2.html", title: "ctrl+travel, Search & Filtering System", height: "700px", poster: "/images/case-studies/ctrl-travel-v2-poster.png", posterAlt: "ctrl+travel prototype: a natural-language search bar with preset filter chips (Direct to Frankfurt, Business class London, Cheapest within policy), a faceted filter row for stops, price, airline, departure, class, and policy, and flight results showing prices, durations, and within-policy badges" },
+        { kind: "prototype", src: "/demos/ctrl-travel-v2.html", title: "ctrl+travel, Search & Filtering System", designWidth: 1280, designHeight: 800, poster: "/images/case-studies/ctrl-travel-v2-poster.png", posterAlt: "ctrl+travel prototype: a natural-language search bar with preset filter chips (Direct to Frankfurt, Business class London, Cheapest within policy), a faceted filter row for stops, price, airline, departure, class, and policy, and flight results showing prices, durations, and within-policy badges" },
         { kind: "paragraph", text: "**Progressive booking.** Selecting a flight opens a booking panel with pre-filled traveller details, a seat map with preference memory, and a price breakdown, reducing the transition from decision to action." },
       ],
     },

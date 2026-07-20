@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
+import ScaledFrame from "@/components/ScaledFrame";
 
 interface PrototypeEmbedProps {
   src: string;
   title: string;
   description?: string;
-  height?: string;
+  /** intrinsic canvas (task 2): the full prototype scales to fit */
+  designWidth?: number;
+  designHeight?: number;
   /** static poster: the resting facade at every width */
   poster?: string;
   posterAlt?: string;
@@ -17,7 +20,8 @@ export default function PrototypeEmbed({
   src,
   title,
   description,
-  height = "650px",
+  designWidth,
+  designHeight,
   poster,
   posterAlt,
 }: PrototypeEmbedProps) {
@@ -193,23 +197,21 @@ export default function PrototypeEmbed({
               </div>
             )}
 
-            {/* Live iframe (mounts only on activation) */}
-            <iframe
-              src={src}
-              title={title}
-              onLoad={() => setLoaded(true)}
+            {/* Live iframe (mounts only on activation): the FULL
+                canvas scales to the container, interactive */}
+            <div
               className="prototype-iframe"
-              style={{
-                width: "100%",
-                height: height,
-                border: "none",
-                display: "block",
-                opacity: loaded ? 1 : 0,
-                transition: "opacity 0.3s ease",
-              }}
-              allow="fullscreen"
-              allowFullScreen
-            />
+              style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.3s ease" }}
+            >
+              <ScaledFrame
+                src={src}
+                title={title}
+                designWidth={designWidth}
+                designHeight={designHeight}
+                interactive
+                onLoad={() => setLoaded(true)}
+              />
+            </div>
           </>
         ) : (
           /* The facade: poster + one labelled activation control */

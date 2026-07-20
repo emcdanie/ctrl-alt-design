@@ -130,7 +130,7 @@ const study: CaseStudy = {
       heading: "Hackathon Prototype: Guardian Audit Tool",
       children: [
         { kind: "paragraph", text: "During the hackathon, I prototyped an interactive UX audit tool that demonstrates how Guardian could work in practice. Built in 48 hours, the tool analyses a page design and returns structured feedback across four dimensions: UX heuristics, design system compliance, accessibility, and product insight. Click the FigPal button (bottom-right) to open the audit panel, then hit \"Scan Page\" to see it in action." },
-        { kind: "embed", src: "/demos/guardian-audit-tool.html", title: "Guardian AI UX Audit Tool, Interactive Prototype", frame: "dark" },
+        { kind: "prototype", src: "/demos/guardian-audit-tool.html", title: "Guardian AI UX Audit Tool, Interactive Prototype", designWidth: 1280, designHeight: 800, poster: "/images/case-studies/guardian-audit-tool-poster.png", posterAlt: "Guardian audit tool: a page design with the FigPal button and an audit panel scoring UX heuristics, system compliance, accessibility, and product insight" },
       ],
     },
     {
@@ -140,7 +140,7 @@ const study: CaseStudy = {
       children: [
         { kind: "paragraph", text: "After the hackathon, I kept building. The Guardian concept proved the idea was sound, but the prototype was rough, built under time pressure, focused on demo not depth. On my own, using Claude as a creative partner, I rebuilt the interaction model from scratch. Pattern Mentor is what Guardian became with more time: a cream-glass plugin concept that cites real design patterns, lets you apply fixes inline, push decisions directly to documentation, and browse a pattern library that teaches while it audits." },
         { kind: "paragraph", text: "The walkthrough mode (use the arrows at the bottom) shows the full flow: empty state, scan, findings with highlights, pattern library, and token comparison. Each finding now includes an \"Apply fix\" button and an \"Add to docs\" button, features I sketched during the hackathon but didn't have time to build." },
-        { kind: "embed", src: "/demos/pattern-mentor.html", title: "Pattern Mentor, Evolved Design Feedback Plugin", frame: "light" },
+        { kind: "prototype", src: "/demos/pattern-mentor.html", title: "Pattern Mentor, Evolved Design Feedback Plugin", designWidth: 1280, designHeight: 800, poster: "/images/case-studies/pattern-mentor-poster.png", posterAlt: "Pattern Mentor plugin concept: cream-glass panel with findings, pattern citations, apply-fix and add-to-docs actions beside a design canvas" },
         { kind: "paragraph", text: "Together, the two prototypes tell the same story at different stages of maturity. Guardian shows what's possible in 48 hours with the right team and a clear problem. Pattern Mentor shows what happens when you keep going, when you treat a hackathon not as an endpoint but as a starting line." },
       ],
     },

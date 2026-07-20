@@ -24,12 +24,17 @@ export interface CaseStudyMetrics {
 export type CaseBlock =
   | { kind: "paragraph"; text: string } // **bold** supported
   | { kind: "pullQuote"; text: string }
+  /* Scaled to fit, never cropped (visual pass task 2): the FULL canvas
+   * renders at the intrinsic design size and scales to the container.
+   * Embeds are for VIEWING (pointer events suppressed); anything
+   * interactive is a "prototype" block behind the activation facade. */
   | {
       kind: "embed";
       src: string;
       title: string;
-      aspect?: string;
-      minHeight?: number;
+      /** intrinsic canvas, default 1280 x 800 */
+      designWidth?: number;
+      designHeight?: number;
       frame?: "dark" | "light";
     }
   | {
@@ -43,9 +48,11 @@ export type CaseBlock =
       kind: "prototype";
       src: string;
       title: string;
-      height?: string;
-      /** static preview shown below tablet width (the iframe never
-       *  mounts there); alt text must describe the prototype */
+      /** intrinsic canvas, default 1280 x 800 */
+      designWidth?: number;
+      designHeight?: number;
+      /** static preview: the resting facade at every width; alt text
+       *  must describe the prototype */
       poster?: string;
       posterAlt?: string;
     }

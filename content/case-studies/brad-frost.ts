@@ -118,13 +118,15 @@ const study: CaseStudy = {
       heading: "The Same Discipline, on This Site",
       children: [
         { kind: "paragraph", text: "The portfolio you are reading runs on the same code-first discipline: a token layer, one component per job, and a governance gate that fails the build on drift. The inspector below is live, it reads the driving tokens straight from this site's running stylesheet." },
+        /* live interactive inspector -> prototype behind the facade */
         {
-          kind: "embed",
+          kind: "prototype",
           src: "/design-system/inspector",
           title: "Token inspector, live from this site's design system",
-          frame: "light",
-          aspect: "16/9",
-          minHeight: 460,
+          designWidth: 1280,
+          designHeight: 800,
+          poster: "/images/case-studies/token-inspector-poster.png",
+          posterAlt: "The live token inspector: driving tokens read from this site's running stylesheet, listed with their computed values",
         },
       ],
     },
