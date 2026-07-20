@@ -271,6 +271,11 @@ is the ONLY way to render one:
   one tier (core `--font-section-display`, rest `--font-subsection`) so
   three-up fits; treatment and copy unchanged. No full-width band with an
   empty right half.
+- TODO content slots (Elleta, 2026-07-21, spec system-page-v2): a
+  TODO(elleta) slot renders NOTHING publicly until her words land. The
+  slot survives as a code/HTML comment so it stays findable; placeholder
+  copy ("[ Your words here ]", TBD, lorem) must never reach a rendered
+  surface or a published demo.
 - System page map (Elleta, 2026-07-21, spec system-page-v2): a sticky
   section nav (`DesignSystemNav`) lists Identity, Type, Colour, Spacing,
   Controls, Inspector, Gate, and the band order follows the map. Left

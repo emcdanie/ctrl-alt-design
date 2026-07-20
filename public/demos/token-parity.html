@@ -54,7 +54,10 @@ input[type=range]{flex:1;min-width:220px;accent-color:var(--iris);height:6px}
 <div class="panel"><p class="ptitle">Code</p><div class="code" id="code"></div><div class="driftbadge" id="db">&#9888; Drift &mdash; code still reads the old token</div></div>
 </div>
 <p class="caption">One primitive, one pipeline. Design and code both resolve from <code>--brand-500</code>, so they can't disagree. Break the pipeline and the two describe the same component differently, the bug nobody sees, because the system still <i>looks</i> right.</p>
-<p class="note">[ Your words here: why parity mattered on a token-first system at scale, and the honest before/after. Principle-level, NDA-safe. ]</p>
+<!-- TODO(elleta) content slot: why parity mattered on a token-first
+     system at scale, and the honest before/after. Principle-level,
+     NDA-safe. Renders NOTHING until her words land (21 Jul rule). -->
+
 </div>
 <script>
 const hue=document.getElementById('hue'),code=document.getElementById('code'),db=document.getElementById('db');
