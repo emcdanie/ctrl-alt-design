@@ -3,7 +3,10 @@ import type { CaseStudy } from "@/lib/content";
 const study: CaseStudy = {
   slug: "brad-frost",
   href: "/case-studies/brad-frost",
-  title: "Code First",
+  /* Statement headline (Elleta, 18 Jul, verbatim): the case THESIS is
+   * the display headline; the case NAME (Code First) lives in the
+   * library, sidebar, and breadcrumb surfaces. CSS sets it all-caps. */
+  title: "Working code-first changes what you pay attention to.",
   category: "DESIGN SYSTEMS",
   year: "2024-2025",
   scope: "Component Architecture, Token Alignment, Figma-Storybook Integration",
@@ -76,7 +79,8 @@ const study: CaseStudy = {
         { kind: "paragraph", text: "The third was tooling: using Claude via MCP to interrogate system structure, surface token relationships, and accelerate the investigation work that would otherwise require extensive manual tracing. This was the most experimental part of the project and the one I learned the most from." },
       ],
     },
-    { kind: "pullQuote", text: "\"Working code-first changes what you pay attention to. You stop asking 'what should this look like?' and start asking 'what does this actually do, and why?'\"" },
+    /* Pull quote deleted (18 Jul rule): promoted to the display
+       headline; a promoted quote never also renders as a pull quote. */
     /* TODO(elleta): decision 01 `why` slot is empty. One paragraph in
        your voice leading with the decision; the paragraphs below moved
        verbatim from the former TECHNICAL WORK section. */

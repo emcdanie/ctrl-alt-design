@@ -26,7 +26,7 @@ system (BELLA): tokens, one control taxonomy, and a governance gate.
 Positioning term: AI-enabled (never "AI-augmented" or "AI-assisted").
 
 ## Case studies
-${cases.map((c) => c.desc && c.desc !== c.title ? `- /case-studies/${c.slug} : ${c.title}. ${c.desc}` : `- /case-studies/${c.slug} : ${c.title}`).join("\n")}
+${cases.map((c) => c.desc && c.desc !== c.title ? `- /case-studies/${c.slug} : ${c.title}${/[.!?]$/.test(c.title) ? "" : "."} ${c.desc}` : `- /case-studies/${c.slug} : ${c.title}`).join("\n")}
 
 ## The system
 - /design-system : BELLA inspecting itself, live token values, control taxonomy, the gate.

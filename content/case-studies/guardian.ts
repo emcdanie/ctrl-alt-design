@@ -3,7 +3,10 @@ import type { CaseStudy } from "@/lib/content";
 const study: CaseStudy = {
   slug: "guardian",
   href: "/case-studies/guardian",
-  title: "From Isolation to Interpretation",
+  /* Statement headline (Elleta, 18 Jul, verbatim): the case THESIS is
+   * the display headline; the case NAME (Guardian) lives in the
+   * library, sidebar, and breadcrumb surfaces. CSS sets it all-caps. */
+  title: "Governance was arriving too late, at the highest possible cost.",
   category: "AI UX",
   year: "2026",
   scope: "AI UX · Design System Governance · Figma Plugin Concept",
@@ -60,7 +63,8 @@ const study: CaseStudy = {
         { kind: "paragraph", text: "During the Into Design Systems Hackathon (2026), sponsored by Figma, eight of us came together around that exact problem, one we had all lived. Design system interpretation happens in isolation. The consequences only surface at handoff, review, or production, the moments when change is hardest and most expensive." },
         { kind: "paragraph", text: "Most design systems fail not because they are poorly built, but because they are difficult to apply consistently under pressure. Three groups were operating with incomplete information and no shared feedback loop. Designers didn't always know what existed, what was permitted, or what had already drifted. Developers didn't know which components were canonical or when to extend versus rebuild. And the design system team had no visibility into what was being used, reused, or silently reinvented, until something surfaced in a review." },
         { kind: "paragraph", text: "The insight that reframed the entire project: documentation alone doesn't change behaviour. Real-time feedback does. Teams don't break design systems intentionally, they break them because they are moving fast, the system isn't present, and there is no signal telling them anything has gone wrong until it is expensive to fix." },
-        { kind: "pullQuote", text: "\"The core problem wasn't a documentation gap. It was a feedback gap. Governance was arriving too late, at the highest possible cost.\"" },
+        /* Pull quote deleted (18 Jul rule): promoted to the display
+           headline; a promoted quote never also renders as a pull quote. */
       ],
     },
     {

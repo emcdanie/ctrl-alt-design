@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import localFont from "next/font/local";
 import DevTools from "@/components/DevTools";
 import IconProvider from "@/components/ui/IconProvider";
+import { POSITIONING } from "@/lib/copy";
 import "./globals.css";
 
 const geist = Geist({
@@ -22,10 +23,26 @@ const unique = localFont({
   display: "swap",
 });
 
+/* Site metadata (Elleta, 2026-07-20). The positioning phrase resolves
+ * from the ONE constant (constitution section 6); the title wears its
+ * title-case form, derived, never a second literal. */
+const siteTitle = `Elleta McDaniel, ${POSITIONING.replace(/\b[a-z]/g, (c) => c.toUpperCase())} Designer`;
+const siteDescription = `${POSITIONING[0].toUpperCase()}${POSITIONING.slice(1)} and complex platforms. Token-first foundations, agent-ready governance, and systems that ship.`;
+
 export const metadata: Metadata = {
-  title: "Elleta McDaniel, Product Designer",
-  description:
-    "Product Designer specialising in Design Systems & Complex Platforms. Designing scalable systems, intuitive workflows, and structured design languages.",
+  title: siteTitle,
+  description: siteDescription,
+  openGraph: {
+    title: siteTitle,
+    description: siteDescription,
+    type: "website",
+    siteName: "elleta.design",
+  },
+  twitter: {
+    card: "summary",
+    title: siteTitle,
+    description: siteDescription,
+  },
 };
 
 // Theme follows the visitor (2026-07-17): a stored ThemeSwitch choice

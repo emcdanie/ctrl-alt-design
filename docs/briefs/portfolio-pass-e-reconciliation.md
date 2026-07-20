@@ -155,6 +155,21 @@ restructure prose into decisions in this pass: the editorial reshaping of the fo
 essay cases happens with Elleta in Cowork (Travel Booking first, as the pattern),
 then lands as content edits. Add a conformance note per case file stating its
 current shape honestly.
+Plus the live-review findings (Elleta + Cowork, 18 Jul, verified on production):
+e. More-work-like-this renders 3 cards in a 2-col grid, orphaning the third
+   (Guardian sits alone on brad-frost). Related cards render as one 3-col row
+   at desktop, stacked on mobile.
+f. Eyebrow vocabulary rule: a section eyebrow must not repeat a summary label
+   (CONTEXT appears twice on brad-frost) and must not equal its own heading
+   word (REFLECTION over Reflection). Change or drop the collider; record the
+   rule in the template.
+g. Canonical sidebar meta: one ordered field set for every case (ROLE, YEAR,
+   TYPE or SCOPE, ORGANISATION, TOOLS where applicable); same labels, same
+   order; omit empty rows rather than invent content.
+h. Statement headlines: the case display headline is the case THESIS in its
+   identity colour (CHIP is the reference); the case NAME stays in the sidebar
+   and breadcrumb. Wording per case is Elleta-approved only (list lives in
+   claude-progress.md when she signs it off); never invent statements.
 
 ## Close-out
 

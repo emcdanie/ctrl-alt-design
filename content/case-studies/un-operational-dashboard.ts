@@ -2,7 +2,10 @@ import type { CaseStudy } from "@/lib/content";
 
 const study: CaseStudy = {
   slug: "un-operational-dashboard",
-  title: "Designing Operational Clarity",
+  /* Statement headline (Elleta, 18 Jul, verbatim): the case THESIS is
+   * the display headline; the case NAME (Operational Clarity) lives in
+   * the library, sidebar, and breadcrumb surfaces. CSS sets it all-caps. */
+  title: "Six operational domains. One interface. Eight weeks.",
   category: "DATA VIZ",
   year: "2025",
   scope: "Information Architecture, Role-Based UX, Enterprise Platform Design",
