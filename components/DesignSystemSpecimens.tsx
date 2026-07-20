@@ -126,30 +126,6 @@ export default function DesignSystemSpecimens() {
         </div>
       </div>
 
-      {/* ── Colour ── */}
-      <div className="ds-band ds-band--card">
-        <div className="layout-container">
-      <section className="ds-section" aria-labelledby="ds-colour">
-        <h2 id="ds-colour" className="ds-section__title">Colour</h2>
-        {COLOUR_GROUPS.map((g) => (
-          <div key={g.title}>
-            <p className="ds-section__kicker">{g.title}</p>
-            <ul className="ds-swatches">
-              {g.tokens.map((t) => (
-                <li key={t} className="ds-swatch">
-                  <span className="ds-swatch__plate" style={{ background: `var(${t})` }} aria-hidden="true" />
-                  <span className="ds-swatch__name">{t}</span>
-                  <span className="ds-swatch__value">{values[t] || "reading"}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </section>
-
-        </div>
-      </div>
-
       {/* ── Case identity: colour IS identity. The one signature 3D
           moment: glossy orbs from the keycap-and-orb world, five case
           identities named, live token readouts beneath. ── */}
@@ -218,6 +194,66 @@ export default function DesignSystemSpecimens() {
             </li>
           ))}
         </ul>
+      </section>
+
+        </div>
+      </div>
+
+      {/* ── Colour ── */}
+      <div className="ds-band ds-band--card">
+        <div className="layout-container">
+      <section className="ds-section" aria-labelledby="ds-colour">
+        <h2 id="ds-colour" className="ds-section__title">Colour</h2>
+        {COLOUR_GROUPS.map((g) => (
+          <div key={g.title}>
+            <p className="ds-section__kicker">{g.title}</p>
+            <ul className="ds-swatches">
+              {g.tokens.map((t) => (
+                <li key={t} className="ds-swatch">
+                  <span className="ds-swatch__plate" style={{ background: `var(${t})` }} aria-hidden="true" />
+                  <span className="ds-swatch__name">{t}</span>
+                  <span className="ds-swatch__value">{values[t] || "reading"}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </section>
+
+        </div>
+      </div>
+
+      {/* ── Spacing + radius ── */}
+      <div className="ds-band">
+        <div className="layout-container">
+      <section className="ds-section" aria-labelledby="ds-scales">
+        <h2 id="ds-scales" className="ds-section__title">Spacing and radius</h2>
+        <div className="ds-specimen-row">
+          <div className="ds-specimen">
+            <p className="ds-section__kicker">Spacing</p>
+            <ul className="ds-scale">
+              {SPACING.map((t) => (
+                <li key={t} className="ds-scale__row">
+                  <span className="ds-scale__bar" style={{ width: `var(${t})` }} aria-hidden="true" />
+                  <span className="ds-swatch__name">{t}</span>
+                  <span className="ds-swatch__value">{values[t] || "reading"}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="ds-specimen">
+            <p className="ds-section__kicker">Radius</p>
+            <ul className="ds-scale">
+              {RADII.map((t) => (
+                <li key={t} className="ds-scale__row">
+                  <span className="ds-scale__box" style={{ borderRadius: `var(${t})` }} aria-hidden="true" />
+                  <span className="ds-swatch__name">{t}</span>
+                  <span className="ds-swatch__value">{values[t] || "reading"}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </section>
 
         </div>
@@ -307,44 +343,8 @@ export default function DesignSystemSpecimens() {
         </div>
       </div>
 
-      {/* ── Spacing + radius ── */}
-      <div className="ds-band">
-        <div className="layout-container">
-      <section className="ds-section" aria-labelledby="ds-scales">
-        <h2 id="ds-scales" className="ds-section__title">Spacing and radius</h2>
-        <div className="ds-specimen-row">
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Spacing</p>
-            <ul className="ds-scale">
-              {SPACING.map((t) => (
-                <li key={t} className="ds-scale__row">
-                  <span className="ds-scale__bar" style={{ width: `var(${t})` }} aria-hidden="true" />
-                  <span className="ds-swatch__name">{t}</span>
-                  <span className="ds-swatch__value">{values[t] || "reading"}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Radius</p>
-            <ul className="ds-scale">
-              {RADII.map((t) => (
-                <li key={t} className="ds-scale__row">
-                  <span className="ds-scale__box" style={{ borderRadius: `var(${t})` }} aria-hidden="true" />
-                  <span className="ds-swatch__name">{t}</span>
-                  <span className="ds-swatch__value">{values[t] || "reading"}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-        </div>
-      </div>
-
       {/* ── Inspector ── */}
-      <div className="ds-band ds-band--card">
+      <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-inspector">
         <h2 id="ds-inspector" className="ds-section__title">Token inspector</h2>
@@ -360,7 +360,7 @@ export default function DesignSystemSpecimens() {
       </div>
 
       {/* ── For agents ── */}
-      <div className="ds-band">
+      <div className="ds-band ds-band--card">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-agents">
         <h2 id="ds-agents" className="ds-section__title">For agents</h2>
@@ -394,7 +394,7 @@ export default function DesignSystemSpecimens() {
       </div>
 
       {/* ── Rules of the system ── */}
-      <div className="ds-band ds-band--card">
+      <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-rules">
         <h2 id="ds-rules" className="ds-section__title">Rules of the system</h2>
@@ -438,7 +438,7 @@ export default function DesignSystemSpecimens() {
       </div>
 
       {/* ── The gate ── */}
-      <div className="ds-band">
+      <div className="ds-band ds-band--card">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-gate">
         <h2 id="ds-gate" className="ds-section__title">The gate</h2>

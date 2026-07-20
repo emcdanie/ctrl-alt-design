@@ -2148,10 +2148,101 @@ textarea:focus-visible {
   outline-offset: var(--ring-focus-offset);
 }
 
-/* D1 (Pass D 2026-07-18): full-width specimen bands. The band paints
-   edge to edge; text stays inside the 1240 container it wraps. */
+/* D1 (Pass D 2026-07-18; amended 21 Jul for the map): specimen bands
+   paint the CONTENT COLUMN edge to edge (the full viewport when no
+   rail is present); text stays inside the 1240 container it wraps. */
 .ds-band {
   padding-block: var(--spacing-12);
+}
+
+/* ── The System map (Elleta, 21 Jul, spec system-page-v2) ──
+   >=1280px: [rail | content] grid, rail sticky under the header.
+   Below: the rail collapses to a sticky horizontal pill row. */
+.ds-layout {
+  display: block;
+}
+
+.ds-layout__content {
+  min-width: 0;
+}
+
+.ds-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.ds-nav__link {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+@media (min-width: 1280px) {
+  .ds-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .ds-nav {
+    position: sticky;
+    top: calc(var(--header-height) + var(--spacing-8));
+    padding: var(--spacing-6);
+  }
+
+  .ds-nav__list {
+    flex-direction: column;
+    gap: var(--spacing-1);
+  }
+
+  .ds-nav__link {
+    padding: var(--spacing-2) var(--spacing-3);
+    border-left: 2px solid transparent;
+  }
+
+  .ds-nav__link:hover {
+    color: var(--color-ink);
+  }
+
+  .ds-nav__link[aria-current="true"] {
+    color: var(--color-accent-ink);
+    border-left-color: var(--color-accent-ink);
+  }
+}
+
+@media (max-width: 1279px) {
+  .ds-nav {
+    position: sticky;
+    top: var(--header-height);
+    z-index: 30;
+    background: var(--color-semantic-background);
+    border-bottom: 1px solid var(--color-border-soft);
+    padding: var(--spacing-3) var(--spacing-6);
+    overflow-x: auto;
+  }
+
+  .ds-nav__link {
+    padding: var(--spacing-1) var(--spacing-3);
+    border: 1px solid var(--color-border-medium);
+    border-radius: var(--radius-full);
+  }
+
+  .ds-nav__link[aria-current="true"] {
+    color: var(--color-accent-ink);
+    border-color: var(--color-accent-ink);
+  }
+}
+
+/* anchor targets are the section titles; clear the sticky chrome */
+.ds-section__title {
+  scroll-margin-top: calc(var(--header-height) + var(--spacing-16));
 }
 
 .ds-band--card {

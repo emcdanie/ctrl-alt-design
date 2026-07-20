@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import OverlayNav from "@/components/OverlayNav";
 import PageHeader from "@/components/PageHeader";
 import DesignSystemSpecimens from "@/components/DesignSystemSpecimens";
+import DesignSystemNav from "@/components/DesignSystemNav";
 
 export const metadata: Metadata = {
   title: "Design system, Elleta McDaniel",
@@ -26,7 +27,14 @@ export default function DesignSystemPage() {
         <div className="layout-container">
           <PageHeader eyebrow="BELLA, the system behind the site" title="Design system" />
         </div>
-        <DesignSystemSpecimens />
+        {/* The map (Elleta, 21 Jul): sticky rail at >=1280, pill row
+            below; bands paint the content column edge to edge */}
+        <div className="ds-layout">
+          <DesignSystemNav />
+          <div className="ds-layout__content">
+            <DesignSystemSpecimens />
+          </div>
+        </div>
       </section>
     </main>
   );
