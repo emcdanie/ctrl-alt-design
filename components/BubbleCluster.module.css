@@ -109,7 +109,10 @@
   background: radial-gradient(circle at 36% 30%, var(--hub-hi), var(--hub-lo));
 }
 
-.hub .sub {
+/* the status sub-label is its OWN tier on every bubble (Elleta,
+   21 Jul): the hub always had this eyebrow treatment; CHIP's
+   Current-focus wore no style at all and ran into the case name */
+.sub {
   display: block;
   font-family: var(--font-mono);
   font-weight: 600;

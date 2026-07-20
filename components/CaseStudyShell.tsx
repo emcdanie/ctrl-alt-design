@@ -102,9 +102,19 @@ export default function CaseStudyShell({
           ════════════════════════════════════════════════════════════ */}
       <aside className="cs-shell__left">
         <div className="cs-shell__sticky">
-          <Link href="/work" className="cs-shell__backlink">
-            <span aria-hidden="true">←</span> Back to Work
-          </Link>
+          {/* Breadcrumb (Elleta, 21 Jul): "← Work / <Case name>", the
+              name from the ONE library row; no row, link alone */}
+          <nav aria-label="Breadcrumb" className="cs-shell__crumbs">
+            <Link href="/work" className="cs-shell__backlink">
+              <span aria-hidden="true">←</span> Work
+            </Link>
+            {caseItem?.title && (
+              <>
+                <span aria-hidden="true" className="cs-shell__crumb-sep">/</span>
+                <span className="cs-shell__crumb" aria-current="page">{caseItem.title}</span>
+              </>
+            )}
+          </nav>
 
           {/* Eyebrow */}
           <p className="cs-shell__eyebrow" style={caseItem ? { color: caseItem.text } : undefined}>{eyebrow}</p>
@@ -163,9 +173,17 @@ export default function CaseStudyShell({
           RIGHT, Scrolling content column
           ════════════════════════════════════════════════════════════ */}
       <div className="cs-shell__right">
-        <Link href="/work" className="cs-shell__backlink cs-shell__backlink--mobile">
-          <span aria-hidden="true">←</span> Back to Work
-        </Link>
+        <nav aria-label="Breadcrumb" className="cs-shell__crumbs cs-shell__crumbs--mobile">
+          <Link href="/work" className="cs-shell__backlink cs-shell__backlink--mobile">
+            <span aria-hidden="true">←</span> Work
+          </Link>
+          {caseItem?.title && (
+            <>
+              <span aria-hidden="true" className="cs-shell__crumb-sep">/</span>
+              <span className="cs-shell__crumb" aria-current="page">{caseItem.title}</span>
+            </>
+          )}
+        </nav>
 
         {/* Flat case title (flat-headers pass): Heading case tier in the
             case identity colour; bubbles are parked. */}

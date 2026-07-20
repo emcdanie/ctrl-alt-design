@@ -12,7 +12,7 @@ import { StatusPill } from "@/components/ui/StatusPill";
 import { SKILLS, SKILL_EVIDENCE, WORK_ITEMS, slugify, type WorkItem } from "@/lib/workLibrary";
 import styles from "./WorkLibrary.module.css";
 import { WorkChipRow, WorkAppliedRow, useWorkFilters } from "@/components/WorkFilters";
-import CtrlAltDesignSection from "@/components/CtrlAltDesignSection";
+import CtrlAltDesignSection, { LAB_PIECE_COUNT } from "@/components/CtrlAltDesignSection";
 
 /* The library (toolbar rebuild 2026-07-18): ONE toolbar row above
  * everything — find-your-fit search on the left, view switcher on the
@@ -78,6 +78,10 @@ export default function WorkLibrary() {
   const featured = caseItems.find((i) => i.featured);
   const rankedRest = caseItems.filter((i) => !i.featured);
   const showLab = filtered.some((i) => i.medium === "prototype");
+  /* the map renders the cluster (inCluster !== false), not the
+     filtered list; its count line must match (Elleta, 21 Jul) */
+  const clusterItems = WORK_ITEMS.filter((i) => i.inCluster !== false);
+  const clusterCases = clusterItems.filter((i) => i.medium === "case study");
 
   return (
     <div>
@@ -107,7 +111,8 @@ export default function WorkLibrary() {
         }
       />
 
-      {/* the honest count, identical element in every view */}
+      {/* the honest count, identical element in every view; the text
+          reports what the CURRENT view renders (Elleta, 21 Jul) */}
       <WorkAppliedRow
         caseFilters={caseFilters}
         skillFilters={skillFilters}
@@ -115,6 +120,12 @@ export default function WorkLibrary() {
         toggleList={toggleList}
         clearAll={clearAll}
         matchCount={filtered.length}
+        view={view as "cards" | "table" | "map"}
+        caseCount={caseItems.length}
+        labCount={showLab ? LAB_PIECE_COUNT : 0}
+        mapTotal={clusterCases.length}
+        mapLab={clusterItems.length - clusterCases.length}
+        mapHighlighted={clusterItems.filter((i) => filtered.includes(i)).length}
       />
 
       {/* ── Cards: the curated composition, filtered like every view ── */}

@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { useEffect, useState } from "react";
 import { social } from "@/lib/social";
+import { POSITIONING } from "@/lib/copy";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import GlassBanner from "@/components/ui/GlassBanner";
@@ -160,7 +161,8 @@ export default function ContactSection() {
                   Elleta McDaniel
                 </p>
                 <p style={{ ...quietRow, color: "var(--color-muted)", marginTop: "var(--spacing-1)" }}>
-                  Product Designer specialising in design systems and complex platforms.
+                  {/* positioning phrase from the ONE constant (21 Jul) */}
+                  Product Designer specialising in {POSITIONING} and complex platforms.
                 </p>
               </div>
             </div>

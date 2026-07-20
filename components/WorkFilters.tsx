@@ -134,6 +134,12 @@ export function WorkAppliedRow({
   toggleList,
   clearAll,
   matchCount,
+  view,
+  caseCount = 0,
+  labCount = 0,
+  mapTotal = 0,
+  mapLab = 0,
+  mapHighlighted = 0,
 }: {
   caseFilters: string[];
   skillFilters: string[];
@@ -141,6 +147,15 @@ export function WorkAppliedRow({
   toggleList: (key: "case" | "skill" | "type", val: string, current: string[]) => void;
   clearAll: () => void;
   matchCount: number;
+  /** view-honest counts (Elleta, 21 Jul): the line reports what the
+      CURRENT view renders, never hidden items. Absent view (the /skills
+      bar) keeps the generic library count. */
+  view?: "cards" | "table" | "map";
+  caseCount?: number;
+  labCount?: number;
+  mapTotal?: number;
+  mapLab?: number;
+  mapHighlighted?: number;
 }) {
   const hasFilters = caseFilters.length > 0 || skillFilters.length > 0 || typeFilters.length > 0;
 
@@ -162,10 +177,27 @@ export function WorkAppliedRow({
     })),
   ];
 
+  /* the line reports what the CURRENT view renders (Elleta, 21 Jul):
+     cards = case cards + lab cards on screen; map = cluster bubbles;
+     table (and the /skills bar) = the filtered library rows */
+  const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+  const countLabel =
+    view === "cards"
+      ? `${plural(caseCount, "case study", "case studies")}${
+          labCount ? ` · ${plural(labCount, "lab piece", "lab pieces")}` : ""
+        }`
+      : view === "map"
+        ? hasFilters
+          ? `${mapHighlighted} of ${mapTotal + mapLab} highlighted on the map`
+          : `${plural(mapTotal, "case study", "case studies")}${
+              mapLab ? ` · ${plural(mapLab, "lab piece", "lab pieces")}` : ""
+            } on the map`
+        : `${matchCount} of ${WORK_ITEMS.length} pieces`;
+
   return (
     <div className={styles.appliedRow}>
       <p className={styles.count} role="status">
-        {matchCount} of {WORK_ITEMS.length} pieces
+        {countLabel}
         {hasFilters ? `, matching ${appliedChips.map((c) => c.label).join(" + ")}` : ""}
       </p>
       {appliedChips.map((c) => (

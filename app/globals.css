@@ -1744,6 +1744,34 @@ textarea:focus-visible {
 
 
 /* Eyebrow — mono, same treatment as home sections */
+/* Breadcrumb (Elleta, 21 Jul): "← Work / <Case name>". The link keeps
+   the backlink recipe; the current name is inert, same tier, ink-soft
+   so the link still reads as the interactive part. */
+.cs-shell__crumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-width: 0;
+}
+
+.cs-shell__crumb-sep {
+  color: var(--color-ink-muted);
+  margin-bottom: var(--spacing-4);
+}
+
+.cs-shell__crumb {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  margin-bottom: var(--spacing-4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .cs-shell__backlink {
   display: inline-flex;
   align-items: center;

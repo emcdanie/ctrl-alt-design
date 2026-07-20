@@ -122,6 +122,10 @@ const prototypes: LabPrototype[] = [
   },
 ];
 
+/* the honest lab count for the /work status line (Elleta, 21 Jul):
+   derived from the SAME arrays this section renders, never a literal */
+export const LAB_PIECE_COUNT = videos.length + prototypes.length;
+
 function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
   return (
     <Card

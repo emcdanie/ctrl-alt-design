@@ -104,7 +104,25 @@ The "Finviz AI, Solution Canvas" STRATEGY card leaves `CtrlAltDesignSection`;
 `prototypes/` source stays local (gitignored). The Finviz 3.0 screener card
 stays exactly as is.
 
-## 7. Verification
+## 7. UX review fixes (Elleta, 21 Jul, same session; brief item 8)
+
+a. Contact bio: the "design systems" phrase resolves from the POSITIONING
+   constant ("Product Designer specialising in {POSITIONING} and complex
+   platforms."); no second literal.
+b. Case pages: the back link is a breadcrumb, "← Work / <Case name>", the
+   name from the ONE library row via findWorkItemBySlug (all six cases;
+   with no library row the Work link renders alone). Both the desktop
+   sidebar and the mobile header instance.
+c. /work count line reports what the CURRENT view renders: cards = case
+   cards + lab cards on screen (lab count derived from the arrays
+   CtrlAltDesignSection renders, exported as LAB_PIECE_COUNT); map = the
+   cluster's case bubbles (highlight count when filtered); table and the
+   /skills bar keep the filtered-library count. No counting hidden items.
+d. Hero bubbles: the .sub status label ("Current focus" on CHIP) carries
+   the hub's eyebrow treatment on EVERY bubble (the rule was scoped to
+   .hub only, so CHIP's status rendered unstyled inside the name).
+
+## 8. Verification
 
 Gate 10/10 + tsc per task commit; final: all routes 200 both themes,
 screenshots 1440/390 both themes to `_review/after/system-v2/`
