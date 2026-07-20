@@ -1161,6 +1161,23 @@ li {
   }
 }
 
+/* ─── Vinyl disc (About, Outside the work) ───────────────────────
+   The spin runs only while playing and honours reduced motion. */
+.vinyl-disc[data-spinning] {
+  animation: vinyl-spin 3s linear infinite;
+}
+
+.vinyl-disc:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vinyl-disc[data-spinning] {
+    animation: none;
+  }
+}
+
 /* ─── Scroll anchor offset ──────────────────────────────────────── */
 /* BELLA v0.1 Rule 4: --header-height is defined in the unlayered :root
  * authority block above (76px desktop, 64px at 640px and below).
