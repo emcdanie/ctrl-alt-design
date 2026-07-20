@@ -107,7 +107,15 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
         </div>
       );
     case "prototype":
-      return <PrototypeEmbed src={block.src} title={block.title} height={block.height ?? "700px"} />;
+      return (
+        <PrototypeEmbed
+          src={block.src}
+          title={block.title}
+          height={block.height ?? "700px"}
+          poster={block.poster}
+          posterAlt={block.posterAlt}
+        />
+      );
     case "summary":
       return (
         <div className="cs-summary-block">
@@ -129,9 +137,11 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
               : undefined
           }
         >
-          <p className="eyebrow">Decision {block.index}</p>
-          <H2>{block.title}</H2>
-          {block.why && <RichBody text={block.why} />}
+          <div className="cs-decision-head">
+            <p className="eyebrow">Decision {block.index}</p>
+            <H2>{block.title}</H2>
+            {block.why && <RichBody text={block.why} />}
+          </div>
           {block.evidence && <Block block={block.evidence} title={title} marker={marker} markerText={markerText} />}
           {block.children?.map((child, i) => (
             <Block key={i} block={child} title={title} marker={marker} markerText={markerText} />

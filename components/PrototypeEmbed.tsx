@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 
 interface PrototypeEmbedProps {
@@ -8,6 +8,9 @@ interface PrototypeEmbedProps {
   title: string;
   description?: string;
   height?: string;
+  /** static poster shown below tablet width instead of the live iframe */
+  poster?: string;
+  posterAlt?: string;
 }
 
 export default function PrototypeEmbed({
@@ -15,8 +18,24 @@ export default function PrototypeEmbed({
   title,
   description,
   height = "650px",
+  poster,
+  posterAlt,
 }: PrototypeEmbedProps) {
   const [loaded, setLoaded] = useState(false);
+  /* Below 768px the iframe never mounts (Elleta, 20 Jul): the poster +
+   * open-in-new-tab link render instead. null (SSR / pre-hydration)
+   * renders the poster variant too, so no-JS visitors and the first
+   * paint never issue the iframe request; desktop swaps to the live
+   * embed once matchMedia resolves. */
+  const [live, setLive] = useState<boolean | null>(null);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const apply = () => setLive(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+  const showIframe = live === true;
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
@@ -98,101 +117,141 @@ export default function PrototypeEmbed({
               {title}
             </span>
           </div>
+          {showIframe && (
+            <a
+              href={src}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "var(--typography-font-size-tag)",
+                fontWeight: 600,
+                color: "color-mix(in srgb, white 40%, transparent)",
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "var(--spacing-1)",
+                padding: "var(--spacing-1) var(--spacing-2)",
+                borderRadius: "6px",
+                transition: "color 0.15s, background 0.15s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "color-mix(in srgb, white 80%, transparent)";
+                e.currentTarget.style.background = "color-mix(in srgb, white 8%, transparent)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "color-mix(in srgb, white 40%, transparent)";
+                e.currentTarget.style.background = "transparent";
+              }}
+            >
+              Open in new tab
+              <Icon name="OpenNewWindow" size="sm" />
+            </a>
+          )}
+        </div>
+
+        {showIframe ? (
+          <>
+            {/* Loading state */}
+            {!loaded && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "var(--spacing-10)",
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "var(--color-brand-ink)",
+                  zIndex: 2,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "var(--spacing-3)",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      border: "2px solid color-mix(in srgb, white 10%, transparent)",
+                      borderTopColor: "color-mix(in srgb, white 50%, transparent)",
+                      borderRadius: "50%",
+                      animation: "vinyl-spin 0.8s linear infinite",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      fontSize: "var(--typography-font-size-tag)",
+                      color: "color-mix(in srgb, white 30%, transparent)",
+                    }}
+                  >
+                    Loading prototype…
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Live iframe (desktop only) */}
+            <iframe
+              src={src}
+              title={title}
+              onLoad={() => setLoaded(true)}
+              className="prototype-iframe"
+              style={{
+                width: "100%",
+                height: height,
+                border: "none",
+                display: "block",
+                opacity: loaded ? 1 : 0,
+                transition: "opacity 0.3s ease",
+              }}
+              allow="fullscreen"
+              allowFullScreen
+            />
+          </>
+        ) : (
+          /* Poster + open action (below tablet width and pre-hydration) */
           <a
             href={src}
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "var(--typography-font-size-tag)",
-              fontWeight: 600,
-              color: "color-mix(in srgb, white 40%, transparent)",
-              textDecoration: "none",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "var(--spacing-1)",
-              padding: "var(--spacing-1) var(--spacing-2)",
-              borderRadius: "6px",
-              transition: "color 0.15s, background 0.15s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = "color-mix(in srgb, white 80%, transparent)";
-              e.currentTarget.style.background = "color-mix(in srgb, white 8%, transparent)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = "color-mix(in srgb, white 40%, transparent)";
-              e.currentTarget.style.background = "transparent";
-            }}
+            style={{ display: "block", textDecoration: "none" }}
           >
-            Open in new tab
-            <Icon name="OpenNewWindow" size="sm" />
-          </a>
-        </div>
-
-        {/* Loading state */}
-        {!loaded && (
-          <div
-            style={{
-              position: "absolute",
-              top: "var(--spacing-10)",
-              left: 0,
-              right: 0,
-              bottom: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "var(--color-brand-ink)",
-              zIndex: 2,
-            }}
-          >
-            <div
+            {poster && (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={poster}
+                alt={posterAlt ?? `${title}, static preview`}
+                style={{ width: "100%", display: "block" }}
+              />
+            )}
+            <span
               style={{
                 display: "flex",
-                flexDirection: "column",
                 alignItems: "center",
-                gap: "var(--spacing-3)",
+                justifyContent: "center",
+                gap: "var(--spacing-2)",
+                padding: "var(--spacing-3) var(--spacing-4)",
+                fontFamily: "var(--font-body)",
+                fontSize: "var(--typography-font-size-sm)",
+                fontWeight: 600,
+                color: "color-mix(in srgb, white 85%, transparent)",
+                borderTop: "1px solid var(--color-alpha-parchment-6)",
               }}
             >
-              <div
-                style={{
-                  width: "32px",
-                  height: "32px",
-                  border: "2px solid color-mix(in srgb, white 10%, transparent)",
-                  borderTopColor: "color-mix(in srgb, white 50%, transparent)",
-                  borderRadius: "50%",
-                  animation: "vinyl-spin 0.8s linear infinite",
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "var(--typography-font-size-tag)",
-                  color: "color-mix(in srgb, white 30%, transparent)",
-                }}
-              >
-                Loading prototype…
-              </span>
-            </div>
-          </div>
+              Open prototype in new tab
+              <Icon name="OpenNewWindow" size="sm" />
+            </span>
+          </a>
         )}
-
-        {/* Iframe, responsive: uses aspect-ratio on small screens, fixed height on desktop */}
-        <iframe
-          src={src}
-          title={title}
-          onLoad={() => setLoaded(true)}
-          className="prototype-iframe"
-          style={{
-            width: "100%",
-            height: height,
-            border: "none",
-            display: "block",
-            opacity: loaded ? 1 : 0,
-            transition: "opacity 0.3s ease",
-          }}
-          allow="fullscreen"
-          allowFullScreen
-        />
       </div>
     </div>
   );

@@ -125,7 +125,7 @@ const study: CaseStudy = {
         /* demoSteps 01 and 02 moved into decisions 01 and 03 as evidence
            (decision placement wins; the same demo never renders twice). */
         { kind: "demoStep", index: "03 · Final Decision System", description: "The complete integrated prototype, search, filtering, comparison, and booking operating as one unified decision flow with AI-enabled search and policy awareness." },
-        { kind: "prototype", src: "/demos/ctrl-travel-v2.html", title: "ctrl+travel, Search & Filtering System", height: "700px" },
+        { kind: "prototype", src: "/demos/ctrl-travel-v2.html", title: "ctrl+travel, Search & Filtering System", height: "700px", poster: "/images/case-studies/ctrl-travel-v2-poster.png", posterAlt: "ctrl+travel prototype: a natural-language search bar with preset filter chips (Direct to Frankfurt, Business class London, Cheapest within policy), a faceted filter row for stops, price, airline, departure, class, and policy, and flight results showing prices, durations, and within-policy badges" },
         { kind: "paragraph", text: "**Progressive booking.** Selecting a flight opens a booking panel with pre-filled traveller details, a seat map with preference memory, and a price breakdown, reducing the transition from decision to action." },
       ],
     },

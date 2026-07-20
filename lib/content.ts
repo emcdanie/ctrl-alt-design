@@ -39,7 +39,16 @@ export type CaseBlock =
       href?: string;
       linkLabel?: string;
     }
-  | { kind: "prototype"; src: string; title: string; height?: string }
+  | {
+      kind: "prototype";
+      src: string;
+      title: string;
+      height?: string;
+      /** static preview shown below tablet width (the iframe never
+       *  mounts there); alt text must describe the prototype */
+      poster?: string;
+      posterAlt?: string;
+    }
   | { kind: "section"; eyebrow: string; heading: string; children: CaseBlock[] }
   /* decision-led template (Arthur-Kamsky / Justine structure) */
   | { kind: "summary"; context: string; approach: string; outcome: string }

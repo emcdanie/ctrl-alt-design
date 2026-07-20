@@ -1197,6 +1197,12 @@ section[id],
 
 .cs-decision-block {
   margin: 0 0 var(--spacing-16);
+}
+
+/* The decision marker rules the header only (Elleta, 20 Jul): the
+   case-tinted rule spans eyebrow + title + why; evidence and children
+   render after the head and read as a plain column. */
+.cs-decision-head {
   padding-left: var(--spacing-5);
   border-left: 3px solid var(--case-marker, var(--color-semantic-accent-border));
 }
@@ -1588,14 +1594,8 @@ textarea:focus-visible {
   }
 }
 
-/* ─── Prototype embed responsive ───────────────────────────────── */
-@media (max-width: 768px) {
-  .prototype-iframe {
-    height: auto !important;
-    min-height: 400px;
-    aspect-ratio: 16 / 10;
-  }
-}
+/* Prototype embeds below tablet width render a poster + open link
+   instead of the iframe (PrototypeEmbed.tsx); no iframe media query. */
 
 /* Screen reader only — used by LoadingBubbles */
 .sr-only {
