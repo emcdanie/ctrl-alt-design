@@ -14,6 +14,25 @@ export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
 }
 
+/* Per-case tab identity (Elleta, 21 Jul, audit finding 7): the tab wears
+   the case NAME (the library title), never the thesis; description is the
+   case summary with the route's existing description fallback. Unknown
+   slug or missing library row inherits the root metadata. */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const cs = getCaseStudy(slug);
+  if (!cs) return {};
+  const caseItem = findWorkItemBySlug(slug);
+  return {
+    ...(caseItem ? { title: `${caseItem.title}, Elleta McDaniel` } : {}),
+    description: cs.summary ?? cs.description,
+  };
+}
+
 /** Renders inline **bold** markers inside a paragraph */
 function RichBody({ text }: { text: string }) {
   return (

@@ -78,7 +78,10 @@ const study: CaseStudy = {
       kind: "decision",
       index: "01",
       title: "Make the drift undeniable before proposing anything",
-      why: "Nobody set out to fragment the system; it accumulated one sprint at a time. The audit mapped duplicated UI decisions across search, results, booking, and forms, and reframed the conversation from 'our UI looks inconsistent' to 'our current structure creates measurable overhead, here is the evidence.' **One undocumented decision had created three downstream inconsistencies.**",
+      /* Key line trimmed to one sentence (Elleta, 21 Jul, via Cowork);
+         the rest of the old why moved verbatim into the body below.
+         Bold markers dropped: the key-line style carries the emphasis. */
+      why: "One undocumented decision had created three downstream inconsistencies.",
       evidence: {
         kind: "embed",
         src: "/demos/case-study-visuals/ds-audit-buttons.html",
@@ -87,12 +90,15 @@ const study: CaseStudy = {
         designHeight: 1320,
         frame: "light",
       },
+      children: [
+        { kind: "paragraph", text: "Nobody set out to fragment the system; it accumulated one sprint at a time. The audit mapped duplicated UI decisions across search, results, booking, and forms, and reframed the conversation from 'our UI looks inconsistent' to 'our current structure creates measurable overhead, here is the evidence.'" },
+      ],
     },
     {
       kind: "decision",
       index: "02",
       title: "Put tokens under everything so decisions propagate",
-      why: "Instead of a button storing a hard-coded hex value, it references a semantic token that is defined once and propagates everywhere. Foundations, components, documentation, and a system hub, each tier with a clear purpose, so a change made at the bottom of the cascade lands consistently at the top. The interactive recreation below shows the cascade and the design-code parity it makes checkable.",
+      why: "Instead of a button storing a hard-coded hex value, it references a semantic token that is defined once and propagates everywhere.",
       /* interactive recreation -> prototype behind the facade (task 2) */
       evidence: {
         kind: "prototype",
@@ -103,12 +109,15 @@ const study: CaseStudy = {
         poster: "/images/case-studies/token-parity-poster.png",
         posterAlt: "Token cascade recreation: primitive, semantic, and component token tiers connected by arrows, with a design-code parity check panel",
       },
+      children: [
+        { kind: "paragraph", text: "Foundations, components, documentation, and a system hub, each tier with a clear purpose, so a change made at the bottom of the cascade lands consistently at the top. The interactive recreation below shows the cascade and the design-code parity it makes checkable." },
+      ],
     },
     {
       kind: "decision",
       index: "03",
       title: "Govern with status, not enforcement",
-      why: "The hardest problem is not building the system, it is preventing it from fragmenting again. A low-friction proposal path, component status conventions (stable, in review, experimental, deprecated), and a gradual rollout that let active features pull the system into use. When an engineer reached for an existing pattern and found it already solved, the system gained credibility.",
+      why: "The hardest problem is not building the system, it is preventing it from fragmenting again.",
       evidence: {
         kind: "embed",
         src: "/demos/case-study-visuals/ds-after-system.html",
@@ -117,6 +126,9 @@ const study: CaseStudy = {
         designHeight: 1923,
         frame: "light",
       },
+      children: [
+        { kind: "paragraph", text: "A low-friction proposal path, component status conventions (stable, in review, experimental, deprecated), and a gradual rollout that let active features pull the system into use. When an engineer reached for an existing pattern and found it already solved, the system gained credibility." },
+      ],
     },
     {
       kind: "lessons",

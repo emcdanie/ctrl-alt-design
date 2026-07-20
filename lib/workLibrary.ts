@@ -258,7 +258,7 @@ export const SKILL_EVIDENCE: Record<string, Partial<Record<Skill, string>>> = {}
 /** Case tokens for a case-study slug (sphere, accents). */
 export function findWorkItemBySlug(
   slug: string
-): Pick<WorkItem, "hi" | "lo" | "deep" | "text" | "bubbleLabel"> | undefined {
+): Pick<WorkItem, "title" | "hi" | "lo" | "deep" | "text" | "bubbleLabel"> | undefined {
   return WORK_ITEMS.find((i) => i.href.endsWith(`/case-studies/${slug}`));
 }
 
