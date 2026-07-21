@@ -147,7 +147,7 @@ const education = [
   {
     period: "2005, 2009",
     name: "Arizona State University",
-    degree: "BSc Design, Interior Architecture",
+    degree: "BSc Design, Interior Architecture, 3.9 GPA",
     logo: "/images/logos/ASU-logo.png",
     description: "Foundation in design principles, visual communication, typography, and creative problem-solving across digital and physical media.",
   },

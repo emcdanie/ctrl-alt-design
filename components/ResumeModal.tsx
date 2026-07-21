@@ -35,7 +35,7 @@ const education = [
   {
     period: "2005, 2009",
     institution: "Arizona State University",
-    degree: "BSc Design, Interior Architecture",
+    degree: "BSc Design, Interior Architecture, 3.9 GPA",
   },
 ];
 

@@ -113,6 +113,14 @@ toggles, or sort.
   disclosure lines.
 - The NDA check greps file **contents across the whole tree**, not diffs or filenames — renamed files hid
   names before. Never rely on the diff alone.
+- **Apple exception (Elleta, 2026-07-21, deliberate — do NOT "fix").** Apple is a public past
+  employer (B2B & Consumer Sales Representative, 2011-2013) referenced only in the two Experience
+  surfaces, but the word is deliberately NOT in `_private/nda-employers.txt`: "Apple" also appears
+  legitimately as a platform name in Apple Music/Podcasts URLs and comments (VinylPlayer, the About
+  podcast list, a globals.css comment, audit-copy, two briefs), so a repo-wide ban would fail the
+  gate on all of them. Verified 2026-07-21: outside the two exempt surfaces, "Apple" occurs nowhere
+  as an employer reference. If protection is ever wanted anyway, teach `audit:nda` per-term
+  allowlisting first; do not just add the word to the list.
 
 ## 8. Working method (spec → review → execute)
 Use the `portfolio-spec` skill. For any non-trivial task:
