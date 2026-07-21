@@ -70,19 +70,15 @@
   white-space: nowrap;
 }
 
+/* DEMOTED (Elleta, 21 Jul, card-voice): the title renders through the
+   shared .heading-item recipe; this class remains only as the hover
+   underline hook. No card keeps a private title tier. */
 .title {
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: var(--font-card-title);
-  line-height: 1.15;
-  color: var(--color-ink);
 }
 
 .impact {
-  /* card body text: 16px minimum (type-presence pass) */
-  font-size: var(--typography-font-size-base);
-  line-height: 1.55;
-  color: var(--color-ink-soft);
+  /* type comes from the shared .card-body recipe (21 Jul) */
+  display: block;
 }
 
 .skills {

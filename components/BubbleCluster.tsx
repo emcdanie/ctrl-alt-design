@@ -312,10 +312,17 @@ export default function BubbleCluster({
               ✕
             </button>
             <p className={styles.pk}>{active.kicker}</p>
-            <p className={styles.pt}>{active.title}</p>
+            {/* the ONE heading recipe (card-voice item 1, 21 Jul): same
+                  computed size as CaseCard titles; page-tier 2xl retired */}
+              <p className={`heading-item ${styles.pt}`}>{active.title}</p>
+            {/* solid CSS discs via the ONE shared list recipe
+                (card-voice, 21 Jul); icons left this tier, ui/Icon
+                stays on the interactive CTA below */}
             <p className={styles.pi}>
               {active.ingredients.map((x) => (
-                <span key={x}>◦ {x}</span>
+                <span key={x} className="card-list-item">
+                  <span>{x}</span>
+                </span>
               ))}
             </p>
             <Link className={styles.pr} href={active.href} onClick={() => close()}>

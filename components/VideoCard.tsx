@@ -78,10 +78,7 @@ export default function VideoCard({
       <h3 className="heading-item" style={{ margin: 0 }}>
         {title}
       </h3>
-      <p
-        className="flex-1 text-[length:var(--typography-font-size-base)] leading-[1.72] text-[color:var(--color-ink-muted)]"
-        style={{ margin: 0 }}
-      >
+      <p className="card-body flex-1" style={{ margin: 0 }}>
         {subtitle}
       </p>
       <span className="flex flex-wrap items-center gap-2">
