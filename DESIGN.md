@@ -106,6 +106,12 @@ Sizes: **13 / 14 / 16 / 18 / 20 / 24 / 32 / 40 / 56** px, plus the hero
 display step (see `--font-hero-unique`). Body text never below 16px. No
 other sizes.
 
+- Card titles and subtitles (Elleta, 2026-07-21, via Cowork): BODY font,
+  never Unique. Content-card titles (About "Working with me", Learning
+  cards, and every other content card) render through the ONE shared
+  `.heading-item` style (Geist 18px/700); Unique stays display only:
+  hero, statement headlines, section display heads, keycap lockup. No
+  per-card overrides.
 - Faces (revised 2026-07-17, supersedes the hero-only lock): exactly TWO
   typefaces. Unique 700 = ALL display headings (home hero headline, page
   titles, section headers, case display headlines, keycap lockup),
