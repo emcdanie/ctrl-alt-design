@@ -277,6 +277,13 @@ is the ONLY way to render one:
   one tier (core `--font-section-display`, rest `--font-subsection`) so
   three-up fits; treatment and copy unchanged. No full-width band with an
   empty right half.
+  REVERSED (Elleta, 2026-07-21, later the same day): the fixed-dark
+  decision is withdrawn; the thesis cards are THEME-AWARE. The
+  `--thesis-band-ground/-ink` pair resolves to the card surface + ink in
+  light and the navy specimen pair under `[data-theme="dark"]`; core
+  words moved from the dark-calibrated `--case-*-hi` stops to
+  `--case-*-text` (AA on its ground in both themes); the card gains the
+  soft border. Composition, Unique specimen type, and copy unchanged.
 - TODO content slots (Elleta, 2026-07-21, spec system-page-v2): a
   TODO(elleta) slot renders NOTHING publicly until her words land. The
   slot survives as a code/HTML comment so it stays findable; placeholder

@@ -17,21 +17,25 @@ const skills = [
 
 const education = [
   {
-    period: "2022, 2023",
+    period: "Nov 2022, Jan 2023",
     institution: "Ironhack",
     degree: "UX/UI Design",
   },
   {
-    /* SheCodes (Elleta, 21 Jul): track name + completion year are
-       TODO(elleta) slots; they render nothing until her words land */
-    period: "",
+    /* filled from her LinkedIn (Elleta, 21 Jul, via Cowork) */
+    period: "Apr 2021, Jan 2022",
     institution: "SheCodes",
-    degree: "Front-End Development",
+    degree: "Frontend Developer, Information Technology",
+  },
+  {
+    period: "2012, 2013",
+    institution: "IDEP Barcelona",
+    degree: "Postgraduate, Fashion Design and Image",
   },
   {
     period: "2005, 2009",
     institution: "Arizona State University",
-    degree: "Bachelors of Science in Design, GPA: 3.9/4.0",
+    degree: "BSc Design, Interior Architecture",
   },
 ];
 
@@ -92,10 +96,9 @@ const roles = [
      LinkedIn by her choice; names scoped in _private/nda-employers.txt
      to ExperienceSection + this surface only. Highlights are
      TODO(elleta) content slots and render NOTHING until her words
-     land. TODO(elleta): Co.Lab vs Allianz order is a guess pending
-     months; reorder freely. */
+     land. Order confirmed by Elleta (Co.Lab before Allianz, 21 Jul). */
   {
-    period: "2022",
+    period: "Feb 2022, Mar 2022",
     title: "Frontend Developer",
     company: "Co.Lab" /* TODO(elleta): exact entry wording is yours */,
     highlights: [],
@@ -111,6 +114,18 @@ const roles = [
     title: "Client Account Manager",
     company: "ADP" /* TODO(elleta): exact entry wording is yours */,
     highlights: [],
+  },
+  {
+    /* Combined earlier-roles entry per Dirk's advice (Elleta, 21 Jul).
+       TODO(elleta): confirm the ecological fashion brand name. */
+    period: "2011, 2020",
+    title: "Earlier career",
+    company: "",
+    highlights: [
+      "Partner Business Manager, SELLBYTEL Group (2014 - 2020)",
+      "Junior Fashion Designer, ecological fashion brand internship (2016)",
+      "B2B & Consumer Sales Representative, Apple (2011 - 2013)",
+    ],
   },
 ];
 
@@ -279,7 +294,9 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
                   <div>
                     <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)] leading-snug">
                       {role.title}{" "}
-                      <span className="font-normal text-[color:var(--ink-on-paper-soft)]">@ {role.company}</span>
+                      {role.company && (
+                        <span className="font-normal text-[color:var(--ink-on-paper-soft)]">@ {role.company}</span>
+                      )}
                     </p>
                     <ul className="mt-2 space-y-1">
                       {role.highlights.map((h) => (

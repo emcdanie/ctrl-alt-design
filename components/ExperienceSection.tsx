@@ -95,7 +95,7 @@ const roles = [
   {
     title: "Frontend Developer",
     company: "Co.Lab" /* TODO(elleta): exact entry wording is yours */,
-    period: "2022",
+    period: "Feb 2022, Mar 2022",
     highlights: [],
   },
   {
@@ -110,29 +110,44 @@ const roles = [
     period: "Dec 2020, Jan 2022",
     highlights: [],
   },
+  {
+    /* Combined earlier-roles entry per Dirk's advice (Elleta, 21 Jul).
+       TODO(elleta): confirm the ecological fashion brand name. */
+    title: "Earlier career",
+    company:
+      "Partner Business Manager, SELLBYTEL Group (2014 - 2020); Junior Fashion Designer, ecological fashion brand internship (2016); B2B & Consumer Sales Representative, Apple (2011 - 2013)",
+    period: "",
+    highlights: [],
+  },
 ];
 
 const education = [
   {
-    period: "2022, 2023",
+    period: "Nov 2022, Jan 2023",
     name: "Ironhack",
-    degree: "UX/UI Design Bootcamp",
+    degree: "UX/UI Design",
     logo: "/images/logos/Ironhack.png",
     description: "Intensive 9-month bootcamp covering end-to-end UX/UI design, user research, information architecture, interaction design, prototyping, and usability testing.",
   },
   {
-    /* SheCodes (Elleta, 21 Jul): track name + completion year are
-       TODO(elleta) slots; they render nothing until her words land */
-    period: "",
+    /* filled from her LinkedIn (Elleta, 21 Jul, via Cowork) */
+    period: "Apr 2021, Jan 2022",
     name: "SheCodes",
-    degree: "Front-End Development",
+    degree: "Frontend Developer, Information Technology",
+    logo: undefined,
+    description: "Responsive web apps: HTML, CSS, JavaScript, React.",
+  },
+  {
+    period: "2012, 2013",
+    name: "IDEP Barcelona",
+    degree: "Postgraduate, Fashion Design and Image",
     logo: undefined,
     description: "",
   },
   {
     period: "2005, 2009",
     name: "Arizona State University",
-    degree: "BSc in Design, GPA: 3.9/4.0",
+    degree: "BSc Design, Interior Architecture",
     logo: "/images/logos/ASU-logo.png",
     description: "Foundation in design principles, visual communication, typography, and creative problem-solving across digital and physical media.",
   },

@@ -298,15 +298,16 @@ export default function AboutPage() {
                 only; copy unchanged. */}
             <div className="thesis-row">
               {/* Task-6 winner (Elleta, 20 Jul): specimen treatment on the
-                  fixed-dark ground; her copy verbatim, core word huge
+                  theme-aware ground (fixed-dark reversed 21 Jul);
+                  her copy verbatim, core word huge
                   in the case colour. Drift thesis wears Drift.
                   Recomposed (Elleta, 21 Jul, via Cowork): ONE row of three
                   equal-height dark cards at desktop, stacked on mobile; no
                   full-width bands with an empty right half. */}
-              <article className="thesis-band trace-host" style={{ "--cc": "var(--case-drift-hi)" } as React.CSSProperties}>
+              <article className="thesis-band trace-host" style={{ "--cc": "var(--case-drift-text)" } as React.CSSProperties}>
                 <Heading tier="section" as="h3" className="thesis-band__line" style={{ marginBottom: "var(--spacing-4)" }}>
                   <span className="thesis-band__rest">Systems are </span>
-                  <span className="thesis-band__core" style={{ color: "var(--case-drift-hi)" }}>agreements,</span>
+                  <span className="thesis-band__core" style={{ color: "var(--case-drift-text)" }}>agreements,</span>
                   <span className="thesis-band__rest">not component libraries.</span>
                 </Heading>
                 <p className="body-base" style={{ margin: 0, flex: 1 }}>
@@ -316,9 +317,9 @@ export default function AboutPage() {
                   that is where drift starts.
                 </p>
               </article>
-              <article className="thesis-band trace-host" style={{ "--cc": "var(--case-guardian-hi)" } as React.CSSProperties}>
+              <article className="thesis-band trace-host" style={{ "--cc": "var(--case-guardian-text)" } as React.CSSProperties}>
                 <Heading tier="section" as="h3" className="thesis-band__line" style={{ marginBottom: "var(--spacing-4)" }}>
-                  <span className="thesis-band__core" style={{ color: "var(--case-guardian-hi)" }}>Governance</span>
+                  <span className="thesis-band__core" style={{ color: "var(--case-guardian-text)" }}>Governance</span>
                   <span className="thesis-band__rest"> is what stops the drift.</span>
                 </Heading>
                 <p className="body-base" style={{ margin: 0, flex: 1 }}>
@@ -327,10 +328,10 @@ export default function AboutPage() {
                   are the ones where the cheap path and the correct path are the same path.
                 </p>
               </article>
-              <article className="thesis-band trace-host" style={{ "--cc": "var(--case-code-first-hi)" } as React.CSSProperties}>
+              <article className="thesis-band trace-host" style={{ "--cc": "var(--case-code-first-text)" } as React.CSSProperties}>
                 <Heading tier="section" as="h3" className="thesis-band__line" style={{ marginBottom: "var(--spacing-4)" }}>
                   <span className="thesis-band__rest">I read </span>
-                  <span className="thesis-band__core" style={{ color: "var(--case-code-first-hi)" }}>code,</span>
+                  <span className="thesis-band__core" style={{ color: "var(--case-code-first-text)" }}>code,</span>
                   <span className="thesis-band__rest">so design and engineering stay honest.</span>
                 </Heading>
                 <p className="body-base" style={{ margin: 0, flex: 1 }}>

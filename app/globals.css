@@ -305,11 +305,12 @@ body {
   --btn-key-radius: var(--radius-lg);
   /* case prose measure (readability pass 2026-07-20): ~70ch, one place */
   --measure-case: 70ch;
-  /* Thesis band stops (task-6 winner, Elleta 20 Jul): FIXED-dark navy
-     ground, same in both themes (the dark-contact-chrome fixed-context
-     pattern). Recorded here, never per-instance. */
-  --thesis-band-ground: #1B1B40;
-  --thesis-band-ink: #F4EFE6;
+  /* Thesis card stops (Elleta, 21 Jul: the 20 Jul fixed-dark decision
+     is REVERSED; the cards are THEME-AWARE). Light theme = the card
+     surface pair; the dark override below restores the navy specimen
+     ground. Recorded here, never per-instance. */
+  --thesis-band-ground: var(--color-card);
+  --thesis-band-ink: var(--color-ink);
   --shadow-key-resting:
     1px 3px 0 var(--key-fill-edge),
     3px 6px 10px color-mix(in srgb, var(--key-fill-lo) 24%, transparent),
@@ -331,6 +332,10 @@ body {
   --case-writing-text: var(--case-writing-hi);
   --case-filters-text: var(--case-filters-hi);
   --case-chip-text: var(--case-chip-hi);
+  /* thesis cards in dark keep the navy specimen ground (21 Jul
+     theme-aware reversal; light values at the :root definition) */
+  --thesis-band-ground: #1B1B40;
+  --thesis-band-ink: #F4EFE6;
   --hero-panel-bg: #F4EFE6;
   --hero-panel-shadow: rgba(0, 0, 0, 0.44);
   --hero-link: rgba(244, 239, 230, 0.2);
@@ -2112,15 +2117,16 @@ textarea:focus-visible {
   border-color: color-mix(in srgb, var(--thesis-hi) 32%, var(--color-card));
 }
 
-/* ─── Thesis specimen cards (task-6 winner, Elleta 20 Jul; recomposed
-   as ONE row of equal-height dark cards, Elleta 21 Jul via Cowork) ──
-   Full specimen treatment on the fixed-dark navy ground: Unique
-   display scale through the Heading primitive, all-caps, core word
-   huge in the case identity colour (the dark-calibrated -hi stops, AA
-   on navy), rest a tier down (type steps one tier so three-up fits;
-   both tiers stay >=24px). Speaks the Card interaction language:
-   hover gains the SHARED travelling border light, focus-within ring,
-   reduced motion static. Body Geist 16px floor. */
+/* ─── Thesis specimen cards (task-6 winner 20 Jul; one row 21 Jul;
+   THEME-AWARE 21 Jul, the fixed-dark decision reversed by Elleta) ──
+   Specimen treatment, side-by-side composition: Unique display scale
+   through the Heading primitive, all-caps, core word huge in the case
+   identity colour (--case-*-text, which flips per theme and stays AA
+   on its ground), rest a tier down (both tiers >=24px). Ground/ink
+   from --thesis-band-ground/-ink: card surface in light, navy specimen
+   ground in dark. Speaks the Card interaction language: hover gains
+   the SHARED travelling border light, focus-within ring, reduced
+   motion static. Body Geist 16px floor. */
 .thesis-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2141,6 +2147,7 @@ textarea:focus-visible {
   height: 100%;
   background: var(--thesis-band-ground);
   color: var(--thesis-band-ink);
+  border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-2xl);
   padding: var(--spacing-10) var(--spacing-8);
   --trace-r: var(--radius-2xl);

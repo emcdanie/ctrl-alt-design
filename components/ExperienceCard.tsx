@@ -49,7 +49,7 @@ export default function ExperienceCard({
           )}
         </div>
         <div className="mt-1 text-[length:var(--typography-font-size-sm)] leading-relaxed text-[color:var(--color-ink-muted)]">
-          {company} · {period}
+          {period ? `${company} · ${period}` : company}
         </div>
       </div>
     </>
