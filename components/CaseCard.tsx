@@ -39,7 +39,7 @@ export default function CaseCard({
       <span className={styles.kicker} style={{ color: item.text }}>
         {item.kicker}
       </span>
-      <span className={styles.title}>{item.title}</span>
+      <span className={`heading-item ${styles.title}`}>{item.title}</span>
       <span className={styles.impact}>{item.impact}</span>
       <span className={styles.skills}>
         {item.skills.slice(0, 4).map((s) => (

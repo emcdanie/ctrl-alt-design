@@ -61,6 +61,10 @@ override the constitution.
   consume them.
 - Unique never renders below 24px except the keycap logo (the gate enforces this), and never in
   body, UI, card titles, eyebrows, meta, nav links, buttons, or chips.
+- **Unique never renders inside a Card (Elleta, 2026-07-21, card-voice).** Cards use Geist only;
+  Unique stays page-tier (the Heading primitive: section heads and heroes). Card statements use
+  the shared `.card-statement` recipe (Geist 700 at `--font-card-title`), card titles the shared
+  `.heading-item`. Enforced by the Unique-in-card check in `audit:reuse`.
 - Geist = everything else. Eyebrows stay Geist caps with `--tracking-eyebrow`.
 
 ## 4. Color & dark mode

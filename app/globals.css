@@ -2123,16 +2123,16 @@ textarea:focus-visible {
   border-color: color-mix(in srgb, var(--thesis-hi) 32%, var(--color-card));
 }
 
-/* ─── Thesis specimen cards (task-6 winner 20 Jul; one row 21 Jul;
-   THEME-AWARE 21 Jul, the fixed-dark decision reversed by Elleta) ──
-   Specimen treatment, side-by-side composition: Unique display scale
-   through the Heading primitive, all-caps, core word huge in the case
-   identity colour (--case-*-text, which flips per theme and stays AA
-   on its ground), rest a tier down (both tiers >=24px). Ground/ink
-   from --thesis-band-ground/-ink: card surface in light, navy specimen
-   ground in dark. Speaks the Card interaction language: hover gains
-   the SHARED travelling border light, focus-within ring, reduced
-   motion static. Body Geist 16px floor. */
+/* ─── Statement cards (card-voice, Elleta 21 Jul: Unique never
+   renders inside a Card; the Unique specimen treatment is retired) ──
+   Geist statements on the ONE shared .card-statement recipe: hierarchy
+   from weight (700), size (--font-card-title, the shared card-ramp
+   step above .heading-item), and colour (ONE accent word in the case
+   identity colour, --case-*-text, AA both themes). Ground/ink from
+   --thesis-band-ground/-ink: card surface in light, navy in dark.
+   Speaks the Card interaction language: hover gains the SHARED
+   travelling border light, focus-within ring, reduced motion static.
+   Body Geist 16px, relaxed line-height. */
 .thesis-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2140,10 +2140,34 @@ textarea:focus-visible {
   align-items: stretch;
 }
 
+/* four-up sibling grids (the collab statements) pair instead of
+   thirds; same gap, same stretch, one implementation */
+.thesis-row--pair {
+  grid-template-columns: repeat(2, 1fr);
+}
+
 @media (max-width: 1023px) {
-  .thesis-row {
+  .thesis-row,
+  .thesis-row--pair {
     grid-template-columns: 1fr;
   }
+}
+
+/* the ONE card statement recipe (card-voice, 21 Jul): Geist, the
+   card-ramp step above .heading-item, statement colour = card ink,
+   accent word coloured inline */
+.card-statement {
+  font-family: var(--font-body);
+  font-size: var(--font-card-title);
+  font-weight: 700;
+  line-height: var(--typography-line-height-snug);
+  letter-spacing: -0.005em;
+  color: var(--thesis-band-ink);
+}
+
+/* relaxed reading rhythm inside statement cards */
+.body-relaxed {
+  line-height: 1.7;
 }
 
 .thesis-band {
@@ -2158,22 +2182,6 @@ textarea:focus-visible {
   padding: var(--spacing-10) var(--spacing-8);
   --trace-r: var(--radius-2xl);
   --trace-w: 3px;
-}
-
-.thesis-band .display-heading {
-  color: var(--thesis-band-ink);
-}
-
-.thesis-band__core {
-  display: block;
-  font-size: var(--font-section-display);
-  line-height: 0.95;
-}
-
-.thesis-band__rest {
-  display: block;
-  font-size: var(--font-subsection);
-  line-height: 1.05;
 }
 
 .thesis-band p {

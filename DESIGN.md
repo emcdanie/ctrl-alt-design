@@ -112,6 +112,17 @@ other sizes.
   `.heading-item` style (Geist 18px/700); Unique stays display only:
   hero, statement headlines, section display heads, keycap lockup. No
   per-card overrides.
+- Card voice (Elleta, 2026-07-21, card-voice branch): **Unique never
+  renders inside a Card.** CaseCard is DEMOTED to `.heading-item` (its
+  private `--font-card-title` title rule deleted; the token itself now
+  serves the shared `.card-statement` recipe: Geist 700 at
+  `--font-card-title`, hierarchy from weight/size/colour, ONE accent
+  word in the case identity colour, AA both themes). Both About
+  statement sections (How I solve problems, How I collaborate) render
+  through the ONE `StatementCard` on the theme-aware `thesis-band`
+  surface; the Unique specimen treatment inside cards is retired
+  (`.thesis-band__core/__rest` deleted). Enforced by the Unique-in-card
+  check in `audit:reuse` (seeded-offender verified).
 - Faces (revised 2026-07-17, supersedes the hero-only lock): exactly TWO
   typefaces. Unique 700 = ALL display headings (home hero headline, page
   titles, section headers, case display headlines, keycap lockup),

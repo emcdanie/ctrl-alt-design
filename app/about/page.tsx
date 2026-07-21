@@ -10,7 +10,6 @@ import MetricsStrip from "@/components/MetricsStrip";
 import Card from "@/components/ui/Card";
 import DisclosureCard from "@/components/ui/DisclosureCard";
 import SectionHeader from "@/components/ui/SectionHeader";
-import Heading from "@/components/ui/Heading";
 import CtaBanner from "@/components/ui/CtaBanner";
 import TestimonialSection from "@/components/TestimonialSection";
 import Link from "next/link";
@@ -39,24 +38,127 @@ const PODCASTS = [
 
 /* ── Data ─────────────────────────────────────────────────────── */
 
-const collaborationCards = [
+/* Card voice (Elleta, 21 Jul, card-voice): Unique never renders
+   inside a Card. Statements are Geist on the ONE shared
+   .card-statement recipe; both statement sections render through the
+   same StatementCard. Copy verbatim; accent word + colour picks are
+   MINE, flagged for her preview review. Receipts are TODO(elleta)
+   content slots: one concrete moment proving the principle (+ case
+   link where one exists). NEVER invent them; while the text is empty
+   the card renders as a non-interactive statement. */
+
+/* The three How-I-solve-problems theses, her copy verbatim (sentence
+   case; the old all-caps came from the retired Unique specimen CSS) */
+const THESES = [
   {
-    title: "I push back respectfully",
-    description: "If I think a brief is solving the wrong problem, I'll say so, with evidence, not just instinct. I'd rather surface a challenge early than deliver the wrong thing on time.",
+    pre: "Systems are ",
+    accentWord: "agreements,",
+    post: " not component libraries.",
+    accent: "var(--case-drift-text)",
+    body: "A component library is an artefact. The system is the set of agreements around it: what counts as a pattern, who decides, when to extend versus build. When only the artefact exists, every team renegotiates those agreements ad hoc, and that is where drift starts.",
   },
   {
-    title: "I get obsessed with solving complex problems",
-    description: "Ambiguity doesn't slow me down, it focuses me. I thrive in systems with competing constraints, unclear requirements, and high stakes.",
+    pre: "",
+    accentWord: "Governance",
+    post: " is what stops the drift.",
+    accent: "var(--case-guardian-text)",
+    body: "Drift is not a tooling failure; it is a decision-making failure. Naming, token structure, and contribution flow are governance surfaces. The systems that hold are the ones where the cheap path and the correct path are the same path.",
   },
   {
-    title: "I ask for early feedback",
-    description: "I share rough work early and often. A scrappy concept that starts a conversation is worth more than a polished direction no one saw coming.",
-  },
-  {
-    title: "I advocate for both users and the business",
-    description: "Good design solves for both. I don't treat business goals as a compromise, I treat them as part of the design problem.",
+    pre: "I read ",
+    accentWord: "code,",
+    post: " so design and engineering stay honest.",
+    accent: "var(--case-code-first-text)",
+    body: "Parity between Figma and production is a claim that has to be checked in both directions. Reading the code, tokens, props, rendered output, is how I keep the design side accountable to what actually ships, and vice versa.",
   },
 ];
+
+const COLLAB_PRINCIPLES = [
+  {
+    pre: "I push back ",
+    accentWord: "respectfully",
+    post: "",
+    accent: "var(--case-chip-text)",
+    body: "If I think a brief is solving the wrong problem, I'll say so, with evidence, not just instinct. I'd rather surface a challenge early than deliver the wrong thing on time.",
+    receipt: { text: "" /* TODO(elleta): the concrete moment */, caseHref: "", caseLabel: "" },
+  },
+  {
+    pre: "I get ",
+    accentWord: "obsessed",
+    post: " with solving complex problems",
+    accent: "var(--case-clarity-text)",
+    body: "Ambiguity doesn't slow me down, it focuses me. I thrive in systems with competing constraints, unclear requirements, and high stakes.",
+    receipt: { text: "" /* TODO(elleta): the concrete moment */, caseHref: "", caseLabel: "" },
+  },
+  {
+    pre: "I ask for ",
+    accentWord: "early",
+    post: " feedback",
+    accent: "var(--case-filters-text)",
+    body: "I share rough work early and often. A scrappy concept that starts a conversation is worth more than a polished direction no one saw coming.",
+    receipt: { text: "" /* TODO(elleta): the concrete moment */, caseHref: "", caseLabel: "" },
+  },
+  {
+    pre: "I advocate for ",
+    accentWord: "both",
+    post: " users and the business",
+    accent: "var(--case-design-lab-text)",
+    body: "Good design solves for both. I don't treat business goals as a compromise, I treat them as part of the design problem.",
+    receipt: { text: "" /* TODO(elleta): the concrete moment */, caseHref: "", caseLabel: "" },
+  },
+];
+
+/* the ONE statement-card renderer for both sections */
+function StatementCard({
+  p,
+  children,
+}: {
+  p: { pre: string; accentWord: string; post: string; accent: string; body: string };
+  children?: React.ReactNode;
+}) {
+  return (
+    <article className="thesis-band trace-host" style={{ "--cc": p.accent } as React.CSSProperties}>
+      <h3 className="card-statement" style={{ margin: "0 0 var(--spacing-4)" }}>
+        {p.pre}
+        <span style={{ color: p.accent }}>{p.accentWord}</span>
+        {p.post}
+      </h3>
+      <p className="body-base body-relaxed" style={{ margin: 0, flex: 1 }}>{p.body}</p>
+      {children}
+    </article>
+  );
+}
+
+/* The receipt disclosure: TokenAnnotation pattern language (trigger
+   button, aria-expanded/aria-controls, keyboard native, no animation
+   so reduced motion is safe by construction). Renders ONLY when the
+   receipt text exists. */
+function CollabReceipt({ receipt, accent, id }: { receipt: { text: string; caseHref?: string; caseLabel?: string }; accent: string; id: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ marginTop: "var(--spacing-4)" }}>
+      <button
+        type="button"
+        className="tok-annotation__trigger"
+        aria-expanded={open}
+        aria-controls={id}
+        onClick={() => setOpen(!open)}
+      >
+        Receipt
+      </button>
+      {open && (
+        <div id={id} className="tok-annotation__panel">
+          <p className="body-base" style={{ margin: 0 }}>{receipt.text}</p>
+          {receipt.caseHref && (
+            <Link href={receipt.caseHref} style={{ color: accent, fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-sm)", fontWeight: 600, display: "inline-flex", marginTop: "var(--spacing-2)" }}>
+              {receipt.caseLabel}
+            </Link>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 interface LearningEntry {
   title: string;
@@ -269,16 +371,16 @@ export default function AboutPage() {
         <section className="layout-section-tight">
           <div className="page-container">
             <SectionHeader label="Working With Me" title="How I collaborate" />
-            <div className="grid grid-cols-1 items-stretch gap-[var(--grid-gap)] sm:grid-cols-2">
-              {collaborationCards.map((card) => (
-                <Card key={card.title} className="h-full">
-                  <h3 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>
-                    {card.title}
-                  </h3>
-                  <p className="body-base" style={{ margin: 0 }}>
-                    {card.description}
-                  </p>
-                </Card>
+            {/* Same card grammar as How-I-solve-problems: ONE shared
+                StatementCard, pair grid; disclosure appears only when a
+                receipt line exists (TODO slots render nothing). */}
+            <div className="thesis-row thesis-row--pair">
+              {COLLAB_PRINCIPLES.map((p, i) => (
+                <StatementCard key={p.accentWord} p={p}>
+                  {p.receipt.text.trim() !== "" && (
+                    <CollabReceipt receipt={p.receipt} accent={p.accent} id={`collab-receipt-${i}`} />
+                  )}
+                </StatementCard>
               ))}
             </div>
           </div>
@@ -297,67 +399,33 @@ export default function AboutPage() {
                 (supersedes the older About-is-not-a-case note); tokens
                 only; copy unchanged. */}
             <div className="thesis-row">
-              {/* Task-6 winner (Elleta, 20 Jul): specimen treatment on the
-                  theme-aware ground (fixed-dark reversed 21 Jul);
-                  her copy verbatim, core word huge
-                  in the case colour. Drift thesis wears Drift.
-                  Recomposed (Elleta, 21 Jul, via Cowork): ONE row of three
-                  equal-height dark cards at desktop, stacked on mobile; no
-                  full-width bands with an empty right half. */}
-              <article className="thesis-band trace-host" style={{ "--cc": "var(--case-drift-text)" } as React.CSSProperties}>
-                <Heading tier="section" as="h3" className="thesis-band__line" style={{ marginBottom: "var(--spacing-4)" }}>
-                  <span className="thesis-band__rest">Systems are </span>
-                  <span className="thesis-band__core" style={{ color: "var(--case-drift-text)" }}>agreements,</span>
-                  <span className="thesis-band__rest">not component libraries.</span>
-                </Heading>
-                <p className="body-base" style={{ margin: 0, flex: 1 }}>
-                  A component library is an artefact. The system is the set of agreements around
-                  it: what counts as a pattern, who decides, when to extend versus build. When
-                  only the artefact exists, every team renegotiates those agreements ad hoc, and
-                  that is where drift starts.
-                </p>
-              </article>
-              <article className="thesis-band trace-host" style={{ "--cc": "var(--case-guardian-text)" } as React.CSSProperties}>
-                <Heading tier="section" as="h3" className="thesis-band__line" style={{ marginBottom: "var(--spacing-4)" }}>
-                  <span className="thesis-band__core" style={{ color: "var(--case-guardian-text)" }}>Governance</span>
-                  <span className="thesis-band__rest"> is what stops the drift.</span>
-                </Heading>
-                <p className="body-base" style={{ margin: 0, flex: 1 }}>
-                  Drift is not a tooling failure; it is a decision-making failure. Naming, token
-                  structure, and contribution flow are governance surfaces. The systems that hold
-                  are the ones where the cheap path and the correct path are the same path.
-                </p>
-              </article>
-              <article className="thesis-band trace-host" style={{ "--cc": "var(--case-code-first-text)" } as React.CSSProperties}>
-                <Heading tier="section" as="h3" className="thesis-band__line" style={{ marginBottom: "var(--spacing-4)" }}>
-                  <span className="thesis-band__rest">I read </span>
-                  <span className="thesis-band__core" style={{ color: "var(--case-code-first-text)" }}>code,</span>
-                  <span className="thesis-band__rest">so design and engineering stay honest.</span>
-                </Heading>
-                <p className="body-base" style={{ margin: 0, flex: 1 }}>
-                  Parity between Figma and production is a claim that has to be checked in both
-                  directions. Reading the code, tokens, props, rendered output, is how I keep the
-                  design side accountable to what actually ships, and vice versa.
-                </p>
-                <Link
-                  href="/case-studies/design-system-transformation"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "var(--spacing-2)",
-                    marginTop: "var(--spacing-4)",
-                    fontFamily: "var(--font-body)",
-                    fontSize: "var(--typography-font-size-sm)",
-                    fontWeight: 600,
-                    color: "var(--cc)",
-                    textDecoration: "underline",
-                    textUnderlineOffset: "3px",
-                    minHeight: "var(--spacing-touch-target)",
-                  }}
-                >
-                  See it applied: From Drift to Foundation →
-                </Link>
-              </article>
+              {/* Card voice (Elleta, 21 Jul): statements in Geist on
+                  the shared .card-statement recipe; her copy verbatim;
+                  the theme-aware thesis-band surface + trace stays. */}
+              {THESES.map((t, i) => (
+                <StatementCard key={t.accentWord} p={t}>
+                  {i === 2 && (
+                    <Link
+                      href="/case-studies/design-system-transformation"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "var(--spacing-2)",
+                        marginTop: "var(--spacing-4)",
+                        fontFamily: "var(--font-body)",
+                        fontSize: "var(--typography-font-size-sm)",
+                        fontWeight: 600,
+                        color: "var(--cc)",
+                        textDecoration: "underline",
+                        textUnderlineOffset: "3px",
+                        minHeight: "var(--spacing-touch-target)",
+                      }}
+                    >
+                      See it applied: From Drift to Foundation →
+                    </Link>
+                  )}
+                </StatementCard>
+              ))}
             </div>
           </div>
         </section>
