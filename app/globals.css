@@ -2295,6 +2295,23 @@ textarea:focus-visible {
     align-items: start;
   }
 
+  /* rail descriptions (v3 T3): block under the label; layout holds
+     with zero or all filled (the link is a column either way) */
+  .ds-nav__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+  }
+
+  .ds-nav__desc {
+    font-family: var(--font-body);
+    font-size: var(--typography-font-size-tag);
+    font-weight: 400;
+    color: var(--color-ink-muted);
+    line-height: 1.4;
+    white-space: normal;
+  }
+
   .ds-nav {
     position: sticky;
     top: calc(var(--header-height) + var(--spacing-8));

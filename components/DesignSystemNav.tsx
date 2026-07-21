@@ -12,16 +12,20 @@ import { useEffect, useState } from "react";
  * the last listed highlight.
  */
 
+/* Rail purpose descriptions (v3 T3): one line under each label, HER
+   voice; every slot is TODO(elleta) and renders NOTHING while empty.
+   COUNT NOTE: the brief said "all ten"; the map has NINE sections.
+   The tenth is hers to name if the count was literal. */
 const SECTIONS = [
-  { id: "ds-identity", label: "Identity" },
-  { id: "ds-type", label: "Type" },
-  { id: "ds-colour", label: "Colour" },
-  { id: "ds-scales", label: "Spacing" },
-  { id: "ds-controls", label: "Controls" },
-  { id: "ds-inspector", label: "Inspector" },
-  { id: "ds-agents", label: "Agents" },
-  { id: "ds-rules", label: "Rules" },
-  { id: "ds-gate", label: "Gate" },
+  { id: "ds-identity", label: "Identity", desc: "" /* TODO(elleta) */ },
+  { id: "ds-type", label: "Type", desc: "" /* TODO(elleta) */ },
+  { id: "ds-colour", label: "Colour", desc: "" /* TODO(elleta) */ },
+  { id: "ds-scales", label: "Spacing", desc: "" /* TODO(elleta) */ },
+  { id: "ds-controls", label: "Controls", desc: "" /* TODO(elleta) */ },
+  { id: "ds-inspector", label: "Inspector", desc: "" /* TODO(elleta) */ },
+  { id: "ds-agents", label: "Agents", desc: "" /* TODO(elleta) */ },
+  { id: "ds-rules", label: "Rules", desc: "" /* TODO(elleta) */ },
+  { id: "ds-gate", label: "Gate", desc: "" /* TODO(elleta) */ },
 ] as const;
 
 export default function DesignSystemNav() {
@@ -68,7 +72,8 @@ export default function DesignSystemNav() {
               href={`#${s.id}`}
               aria-current={active === s.id ? "true" : undefined}
             >
-              {s.label}
+              <span className="ds-nav__label">{s.label}</span>
+              {s.desc.trim() !== "" && <span className="ds-nav__desc">{s.desc}</span>}
             </a>
           </li>
         ))}
