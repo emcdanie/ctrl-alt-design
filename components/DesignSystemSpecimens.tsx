@@ -10,6 +10,7 @@ import TokenInspector from "@/components/TokenInspector";
 import TokenAnnotation from "@/components/TokenAnnotation";
 import { Select } from "@/components/ui/Select";
 import Heading from "@/components/ui/Heading";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 /**
  * §8 /design-system: the site inspecting itself. Every value on this
@@ -148,7 +149,7 @@ export default function DesignSystemSpecimens() {
       <div className="ds-opening" aria-label="Live keycap specimens, press them">
         <Button variant="primary">Press me</Button>
         <Button variant="secondary">Or me</Button>
-        <span className="ds-type__meta">Real controls, not pictures. The whole page works this way.</span>
+        <span className="ds-section__note" style={{ margin: 0 }}>Real controls, not pictures. The whole page works this way.</span>
       </div>
       <TokenAnnotation tokens={ANN.opening} />
 
@@ -161,7 +162,7 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band ds-band--identity">
         <div className="layout-container">
           <section className="ds-section" aria-labelledby="ds-identity">
-            <h2 id="ds-identity" className="ds-section__title">Case identity</h2>
+            <SectionHeader id="ds-identity" title="Case identity" className="ds-section__header" />
             <p className="ds-section__note">
               Colour is identity: each case owns a hue, and the hue does the wayfinding.
             </p>
@@ -188,7 +189,7 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-type">
-        <h2 id="ds-type" className="ds-section__title">Type</h2>
+        <SectionHeader id="ds-type" title="Type" className="ds-section__header" />
         {/* the oversized specimen: Unique at display scale, hero tier,
             accent-word treatment, live token readout */}
         <div className="ds-type__display">
@@ -235,7 +236,7 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band ds-band--card">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-colour">
-        <h2 id="ds-colour" className="ds-section__title">Colour</h2>
+        <SectionHeader id="ds-colour" title="Colour" className="ds-section__header" />
         {COLOUR_GROUPS.map((g) => (
           <div key={g.title}>
             <p className="ds-section__kicker">{g.title}</p>
@@ -259,7 +260,7 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-scales">
-        <h2 id="ds-scales" className="ds-section__title">Spacing and radius</h2>
+        <SectionHeader id="ds-scales" title="Spacing and radius" className="ds-section__header" />
         <div className="ds-specimen-row">
           <div className="ds-specimen">
             <p className="ds-section__kicker">Spacing</p>
@@ -295,7 +296,7 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band ds-band--card">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-controls">
-        <h2 id="ds-controls" className="ds-section__title">Controls</h2>
+        <SectionHeader id="ds-controls" title="Controls" className="ds-section__header" />
         <p className="ds-section__note">
           One taxonomy: the keycap is reserved for true actions, and each control names its
           state in ARIA. The gate fails any view with more than one primary.
@@ -303,7 +304,7 @@ export default function DesignSystemSpecimens() {
         <div className="ds-specimen-row">
           <div className="ds-specimen">
             <p className="ds-section__kicker">Button</p>
-            <p className="ds-type__meta">True actions only; max one primary per view. The page's ONE primary is the opening keycap above.</p>
+            <p className="ds-section__note" style={{ margin: 0 }}>True actions only; max one primary per view. The page's ONE primary is the opening keycap above.</p>
             <div className="ds-specimen__body">
               <Button variant="secondary">Secondary</Button>
             </div>
@@ -311,7 +312,7 @@ export default function DesignSystemSpecimens() {
           </div>
           <div className="ds-specimen">
             <p className="ds-section__kicker">SegmentedControl</p>
-            <p className="ds-type__meta">Mutually exclusive views; single select, aria-current.</p>
+            <p className="ds-section__note" style={{ margin: 0 }}>Mutually exclusive views; single select, aria-current.</p>
             <div className="ds-specimen__body">
               <SegmentedControl
                 label="Specimen views"
@@ -327,7 +328,7 @@ export default function DesignSystemSpecimens() {
           </div>
           <div className="ds-specimen">
             <p className="ds-section__kicker">FilterChip</p>
-            <p className="ds-type__meta">Multi-select filters; outline, aria-pressed, hover.</p>
+            <p className="ds-section__note" style={{ margin: 0 }}>Multi-select filters; outline, aria-pressed, hover.</p>
             <div className="ds-specimen__body">
               {/* the REAL ui/FilterChip (21 Jul: redrawn copies replaced) */}
               <FilterChip pressed={chipOn} onClick={() => setChipOn(!chipOn)}>
@@ -341,7 +342,7 @@ export default function DesignSystemSpecimens() {
           </div>
           <div className="ds-specimen">
             <p className="ds-section__kicker">Tag and StatusPill</p>
-            <p className="ds-type__meta">Tag: flat metadata wash, never clickable. StatusPill: quiet status.</p>
+            <p className="ds-section__note" style={{ margin: 0 }}>Tag: flat metadata wash, never clickable. StatusPill: quiet status.</p>
             <div className="ds-specimen__body">
               <Tag>Non-interactive metadata</Tag>
               <StatusPill>Current focus</StatusPill>
@@ -350,7 +351,7 @@ export default function DesignSystemSpecimens() {
           </div>
           <div className="ds-specimen">
             <p className="ds-section__kicker">Select</p>
-            <p className="ds-type__meta">Dropdowns like sort; native, styled, never a keycap.</p>
+            <p className="ds-section__note" style={{ margin: 0 }}>Dropdowns like sort; native, styled, never a keycap.</p>
             <div className="ds-specimen__body">
               <Select
                 label="Sort specimen"
@@ -386,7 +387,7 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-inspector">
-        <h2 id="ds-inspector" className="ds-section__title">Token inspector</h2>
+        <SectionHeader id="ds-inspector" title="Token inspector" className="ds-section__header" />
         <p className="ds-section__note">
           This is why the page cannot lie: pick a zone of the keycap and the readout shows
           the tokens driving it, values read from the running stylesheet at that moment,
@@ -402,7 +403,7 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band ds-band--card">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-agents">
-        <h2 id="ds-agents" className="ds-section__title">What agents read</h2>
+        <SectionHeader id="ds-agents" title="What agents read" className="ds-section__header" />
         {/* TODO(elleta): voice-pass this copy; content is mechanical
             on purpose (21 Jul brief: no hype claims) */}
         <p className="ds-section__note">
@@ -440,7 +441,7 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-rules">
-        <h2 id="ds-rules" className="ds-section__title">Rules of the system</h2>
+        <SectionHeader id="ds-rules" title="Rules of the system" className="ds-section__header" />
         {/* Published constitution rules (Elleta, 21 Jul): wording
             verbatim or minimally trimmed from CLAUDE.md / DESIGN.md,
             never invented. */}
@@ -462,7 +463,7 @@ export default function DesignSystemSpecimens() {
 
       {/* ── Current status ── */}
       <section className="ds-section" aria-labelledby="ds-status">
-        <h2 id="ds-status" className="ds-section__title">Current status</h2>
+        <SectionHeader id="ds-status" title="Current status" className="ds-section__header" />
         <div className="ds-status">
           <div>
             <p className="ds-section__kicker">Available now</p>
@@ -492,7 +493,7 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band ds-band--card">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-gate">
-        <h2 id="ds-gate" className="ds-section__title">The gate</h2>
+        <SectionHeader id="ds-gate" title="The gate" className="ds-section__header" />
         <p className="ds-section__note">
           Twelve audits run before anything ships. Green or it does not merge. The cards below show the last local gate run (21 Jul 2026), labelled honestly as a snapshot, not live CI.
         </p>
