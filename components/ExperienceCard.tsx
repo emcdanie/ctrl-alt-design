@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import LogoContainer from "@/components/LogoContainer";
+import { Icon } from "@/components/ui/Icon";
 import DisclosureCard from "@/components/ui/DisclosureCard";
 import Card from "@/components/ui/Card";
 import { BoldText } from "@/lib/richtext";
@@ -74,7 +75,7 @@ export default function ExperienceCard({
       <ul className="flex flex-col gap-3 pt-5">
         {highlights.map((h, i) => (
           <li key={i} className="card-body flex gap-3" style={{ maxWidth: "none" }}>
-            <span className="mt-[1px] shrink-0 text-[color:var(--color-ink-muted)]">, </span>
+            <Icon name="NavArrowRight" size="sm" aria-hidden style={{ color: "var(--color-accent-ink)", flexShrink: 0, marginTop: "var(--spacing-1)" }} />
             <span>
               <BoldText text={h} strongClassName="font-bold text-[color:var(--color-ink)]" />
             </span>

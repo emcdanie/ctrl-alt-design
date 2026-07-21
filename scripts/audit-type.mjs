@@ -23,11 +23,26 @@ for (const route of ROUTES) {
     await page.waitForTimeout(30);
   }
   if (route === "/work") {
+    /* computed-equality assertion (card-voice item 1, 21 Jul): the
+       popup title must compute the SAME size as CaseCard titles on
+       Work — no page-tier sizes inside any card or popup */
+    const cardTitleSize = await page.evaluate(() => {
+      const t = document.querySelector('[class*="caseCard"] .heading-item, [class*="CaseCard"] .heading-item');
+      return t ? parseFloat(getComputedStyle(t).fontSize) : null;
+    });
     /* the map popup is a card too */
     await page.goto("http://localhost:3000/work?view=map", { waitUntil: "networkidle" });
     await page.waitForTimeout(500);
     await page.evaluate(() => document.querySelector("button[data-bubble]")?.dispatchEvent(new MouseEvent("click", { bubbles: true })));
     await page.waitForTimeout(600);
+    const popupTitleSize = await page.evaluate(() => {
+      const t = document.querySelector('[role="dialog"] .heading-item');
+      return t ? parseFloat(getComputedStyle(t).fontSize) : null;
+    });
+    if (cardTitleSize === null || popupTitleSize === null || cardTitleSize !== popupTitleSize) {
+      fails++;
+      console.error(`TYPE FAIL /work: popup title (${popupTitleSize}px) must equal CaseCard title (${cardTitleSize}px)`);
+    }
   }
   const bad = await page.evaluate(
     ({ scope, exempt }) => {

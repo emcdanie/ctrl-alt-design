@@ -227,12 +227,9 @@
   margin: 0;
 }
 
+/* type comes from the shared .heading-item recipe (card-voice item 1,
+   21 Jul); this class keeps only the paper ink + spacing */
 .pt {
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: var(--typography-font-size-2xl);
-  line-height: 1.12;
-  letter-spacing: -0.01em;
   color: var(--hero-panel-ink);
   margin: 2px 0 var(--spacing-1);
 }
@@ -247,10 +244,12 @@
   margin: 0;
 }
 
-.pi span {
-  display: block;
-  padding-left: var(--spacing-4);
-  text-indent: -16px;
+/* icon-marker rows (card-voice item 2, 21 Jul): list-style none by
+   construction (spans), marker aligned to the first text line */
+.pitem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
 }
 
 /* Card CTA — ONE consistent secondary keycap, iris on every card. The
