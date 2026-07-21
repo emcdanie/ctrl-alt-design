@@ -296,6 +296,17 @@ is the ONLY way to render one:
   >=1280px, horizontal pill row below; scroll-spy sets `aria-current`.
   D1 amended: with a rail present, specimen bands paint the CONTENT
   COLUMN edge to edge, not the viewport.
+- audit:axe joins the gate (Elleta, 2026-07-21, a11y pass): axe-core
+  runs against every route in both themes, zero violations to pass; the
+  gate is ELEVEN audits. This was the blind spot that let the
+  readiness-map dark-mode contrast fail ship. Fixed in the same pass:
+  dark `--case-writing-text` brightened toward the on-dark ink (AA on
+  its own wash), `main-content` id restored on /about (dead skip link),
+  the mobile breadcrumb nav leaves the tree at desktop (duplicate
+  landmark + visual leak), sr-only h1 on the chromeless inspector.
+  Axe "incomplete" nodes (text over gradients) are counted by the audit
+  and verified manually; the 2026-07-21 manual pass measured the
+  identity-band worst case at 5.72:1.
 - Lab maturity taxonomy (Elleta, 2026-07-21, v3): every Design Lab card
   wears a StatusPill with an honest maturity value, one of Live (a
   deployed, working tool), Prototype (a clickable working demo),

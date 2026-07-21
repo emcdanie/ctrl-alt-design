@@ -220,7 +220,7 @@ function LearningEntryCard({ entry }: { entry: LearningEntry }) {
 export default function AboutPage() {
   const [resumeOpen, setResumeOpen] = useState(false);
   return (
-    <main className="page-shell min-h-screen text-[var(--color-ink-soft)]">
+    <main id="main-content" className="page-shell min-h-screen text-[var(--color-ink-soft)]">
       <OverlayNav />
 
       <div className="relative">

@@ -160,6 +160,8 @@ Must pass before any work is "done":
   `token-waiver:` inline comments mark the reviewed proto-exact/artwork exceptions.
 - `audit:parity` — every case-study slug has exactly one `WORK_ITEMS` row and vice versa; side
   tables for case identity (the deleted `EXTRA_CASES` pattern) fail.
+- `audit:axe` — axe-core over every route in BOTH themes; zero violations to pass (needs-review
+  nodes are counted, not failed, and verified by hand when they change).
 - tsc clean; all routes 200 (light + dark); NDA content-grep clean.
 
 ## 10. How this file was built and stays alive
