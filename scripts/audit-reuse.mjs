@@ -37,5 +37,30 @@ for (const c of components) {
   }
 }
 
+/* ── Card-surface conformance (Elleta, 21 Jul 2026): ONE title
+   implementation on content cards. Every raw <h3>/<h4> in app/ or
+   components/ must carry the shared .heading-item recipe (the Heading
+   primitive renders through <Heading>, unaffected), and the
+   local-title fingerprint (an inline ramp-size + bold/semibold combo
+   on a heading element) fails. Recorded exception: CaseCard's module
+   .title on the recorded --font-card-title token (two-tier call
+   pending, see _review/component-conformance.md). ── */
+const CARD_TITLE_EXEMPT = ["components/CaseCard.tsx"];
+for (const { f, s: src } of sources) {
+  if (CARD_TITLE_EXEMPT.some((e) => f.endsWith(e))) continue;
+  const rawHeadings = src.match(/<h[34][^>]*>/g) ?? [];
+  for (const tag of rawHeadings) {
+    if (!/heading-item|sr-only|ds-section__title/.test(tag)) {
+      fails++;
+      console.error(`REUSE FAIL: ${f} raw ${tag.slice(0, 60)}... without .heading-item — card titles share ONE recipe`);
+    }
+  }
+  const fingerprint = /<(?:h[34]|span)[^>]*font-size-(?:base|lg|xl)\)\][^>]*font-(?:bold|semibold)/g;
+  for (const m of src.match(fingerprint) ?? []) {
+    fails++;
+    console.error(`REUSE FAIL: ${f} local title recipe "${m.slice(0, 70)}" — use .heading-item`);
+  }
+}
+
 console.log(fails === 0 ? "reuse gate: PASS" : `reuse gate: ${fails} failure(s)`);
 process.exit(fails === 0 ? 0 : 1);

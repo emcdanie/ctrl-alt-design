@@ -114,10 +114,13 @@ export default function VideoModal({
 
         {/* Info */}
         <div className="mt-6">
-          <h3 id="video-modal-title" className="font-display font-bold text-white text-[length:var(--font-card-title)] mb-2 leading-snug">
+          {/* the ONE content-card title recipe on the fixed-dark modal
+              chrome (conformance, 21 Jul): heading-item + the recorded
+              on-dark ink; the old font-display/text-white pair is gone */}
+          <h3 id="video-modal-title" className="heading-item mb-2" style={{ color: "var(--ink-on-dark-strong)" }}>
             {title}
           </h3>
-          <p className="text-white/55 text-[length:var(--typography-font-size-base)] leading-relaxed mb-4">
+          <p className="text-[color:var(--ink-on-dark-body)] text-[length:var(--typography-font-size-base)] leading-relaxed mb-4">
             {description}
           </p>
           <div className="flex flex-wrap gap-2">
