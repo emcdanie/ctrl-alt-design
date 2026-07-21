@@ -1,0 +1,48 @@
+name: gate
+
+# The full BELLA gate + tsc on every PR and every push to main
+# (Elleta, 21 Jul 2026, via Cowork). NOTE: audit:nda passes vacuously
+# here, the banned-term lists are gitignored (_private/) and never
+# reach CI by design; NDA enforcement is local (pre-commit hook + the
+# local gate). Everything else runs exactly as it does locally.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+
+      - name: Serve the built site
+        run: |
+          npm run start &
+          for i in $(seq 1 60); do
+            curl -sf -o /dev/null http://localhost:3000 && exit 0
+            sleep 1
+          done
+          echo "server never came up" && exit 1
+
+      - name: Run the gate (ten audits)
+        run: npm run gate

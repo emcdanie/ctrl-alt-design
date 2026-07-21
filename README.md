@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+[![gate](https://github.com/emcdanie/ctrl-alt-design/actions/workflows/gate.yml/badge.svg)](https://github.com/emcdanie/ctrl-alt-design/actions/workflows/gate.yml)
+
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app). The working rules live in `CLAUDE.md` (the repo constitution); the ten-audit gate runs locally via `npm run gate` and in CI on every PR and push to main.
 
 ## Getting Started
 
