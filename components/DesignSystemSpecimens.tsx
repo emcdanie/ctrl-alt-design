@@ -49,6 +49,47 @@ const TYPE_SPECIMENS = [
   { token: "--typography-font-size-tag", family: "var(--font-mono)", weight: 600, transform: "uppercase" as const, sample: "Geist caps and tracking run eyebrows" },
 ] as const;
 
+/* Slip receipts (v3 T4, moved from the retired dark receipts section;
+   her structure spec 21 Jul): what the check said / what it missed or
+   caught / what changed. EVERY prose field is TODO(elleta) except the
+   one line her spec supplied verbatim. Facts for her voice pass:
+   - audit:parity: Travel Booking had no WORK_ITEMS row; /work showed
+     5 of 6 cases and related rows never recommended it while every
+     page-level check stayed green; the parity audit now fails
+     registry/library divergence in both directions.
+   - audit:axe: an external audit reported 8 ink-soft AA failures on
+     the System page in dark; manual measurement cleared all 8
+     (needs-review over gradients, worst 5.72:1) while the REAL miss
+     was 3 readiness-map cells failing AA in dark that the page-level
+     contrast sweep never sampled; axe on every node in both themes
+     became the tripwire.
+   - the CI run: run #1 came back red, the contact route built its
+     Resend client at module scope and broke any build without the
+     secret; fixed to lazy init before merge. The red run is history,
+     told honestly.
+   Section intro + closer are also her slots (from the same spec). */
+const GATE_INTRO = "" /* TODO(elleta) ~2 sentences: why an external audit can be right in method and still wrong in verdict; what a page-level check can't see */;
+const GATE_CLOSER = "" /* TODO(elleta) 1 line: checks moved from page level to component level in Storybook */;
+const RECEIPT_LABELS = ["What the check said", "What it missed, or caught", "What changed"] as const;
+type Receipt = { said: string; missedOrCaught: string; changed: string };
+const GATE_RECEIPTS: Record<string, Receipt> = {
+  "audit:parity": {
+    said: "" /* TODO(elleta) */,
+    missedOrCaught: "" /* TODO(elleta): the receipt in your words */,
+    changed: "" /* TODO(elleta) */,
+  },
+  "audit:axe": {
+    said: "" /* TODO(elleta) */,
+    missedOrCaught: "" /* TODO(elleta): what the gate couldn't see and how the tripwire came from it */,
+    changed: "" /* TODO(elleta) */,
+  },
+  "the CI run": {
+    said: "" /* TODO(elleta) */,
+    missedOrCaught: "Caught the Resend bug before merge." /* from her spec verbatim */,
+    changed: "" /* TODO(elleta): one line on why a red first run is the system working, not failing */,
+  },
+};
+
 const GATE = [
   { name: "audit:structure", line: "One route tree per case, the 1240 container everywhere, no arbitrary pixel classes, nothing off palette." },
   { name: "audit:contrast", line: "WCAG AA on every text node, both themes, worst gradient stop included. Unique below 24px fails outside the keycap logo." },
@@ -62,92 +103,10 @@ const GATE = [
   { name: "audit:agents", line: "The agent surfaces (llms.txt, /api/bella.json) must match the live route registry. An agent surface that lies fails the build." },
   { name: "audit:axe", line: "axe-core against every route in both themes; zero violations to pass. Needs-review nodes are counted and verified by hand." },
   { name: "audit:type", line: "No card surface renders reading text below 16px computed; the shared card body never below 18. Metadata rows are their own tier." },
+  { name: "audit:visual", line: "One ground on the System page (identity wash excepted), sibling specimen cards render equal heights, cover placeholders clear 3:1." },
+  /* the harness itself is part of how the gate works */
+  { name: "the CI run", line: "tsc, the production build, and every audit run on each pull request and push to main; merge only on green." },
 ];
-
-/* "Audits are a guide, not a verdict" (Elleta, 21 Jul, via Cowork,
-   structure spec): three receipts from this repo's own gate history.
-   EVERY prose field is a TODO(elleta) content slot and renders
-   NOTHING until her words land; the SECTION renders only once the
-   intro exists (ships dark, the Pass E task-5 precedent). When it
-   goes live, add { id: "ds-receipts", label: "Receipts" } to
-   DesignSystemNav.
-   Facts for her writing, per receipt:
-   1. Parity miss (20 Jul): Travel Booking had no WORK_ITEMS row, so
-      /work showed 5 of 6 cases and the related rows never recommended
-      it, while every page-level check stayed green; audit:parity now
-      fails registry/library divergence in both directions.
-   2. Ink-soft blind spot (21 Jul): an external audit reported 8
-      ink-soft AA failures on /design-system dark; manual measurement
-      cleared all 8 (needs-review over gradients, worst 5.72:1), while
-      the REAL miss was 3 readiness-map cells failing AA in dark that
-      the page-level contrast sweep never sampled; audit:axe (every
-      node, both themes) became the tripwire.
-   3. CI run #1 (21 Jul): the first gate workflow run came back red,
-      the contact route built its Resend client at module scope and
-      broke any build without the secret; fixed to lazy init before
-      merge.
-   Closer fact: the Storybook extraction kickoff moves checks from
-   page level to component level (docs/briefs/
-   storybook-extraction-kickoff.md). */
-const AUDIT_RECEIPTS = {
-  intro: "" /* TODO(elleta) ~2 sentences: why an external audit can be right in method and still wrong in verdict; what a page-level check can't see */,
-  receipts: [
-    {
-      title: "The parity miss",
-      said: "" /* TODO(elleta): what the check said */,
-      missedOrCaught: "" /* TODO(elleta): the receipt in your words */,
-      changed: "" /* TODO(elleta): what changed because of it */,
-    },
-    {
-      title: "The ink-soft dark gate blind spot",
-      said: "" /* TODO(elleta): what the check said */,
-      missedOrCaught: "" /* TODO(elleta): what the gate couldn't see */,
-      changed: "" /* TODO(elleta): how the tripwire came from it */,
-    },
-    {
-      title: "CI run #1, the red run that earned its keep",
-      said: "" /* TODO(elleta): what the check said */,
-      missedOrCaught: "Caught the Resend bug before merge." /* from her spec verbatim */,
-      changed: "" /* TODO(elleta): one line on why a red first run is the system working, not failing */,
-    },
-  ],
-  closer: "" /* TODO(elleta) 1 line: checks moved from page level to component level in Storybook */,
-};
-
-const RECEIPT_LABELS = ["What the check said", "What it missed, or caught", "What changed"] as const;
-
-function AuditReceiptsSection() {
-  /* TODO slots render nothing; the whole section waits for the intro */
-  if (!AUDIT_RECEIPTS.intro.trim()) return null;
-  return (
-    <div className="ds-band">
-      <div className="layout-container">
-        <section className="ds-section" aria-labelledby="ds-receipts">
-          <h2 id="ds-receipts" className="ds-section__title">Audits are a guide, not a verdict</h2>
-          <p className="ds-section__note">{AUDIT_RECEIPTS.intro}</p>
-          <div className="ds-gate">
-            {AUDIT_RECEIPTS.receipts.map((r) => (
-              <div key={r.title} className="ds-gate__row">
-                <p className="ds-section__kicker">{r.title}</p>
-                {[r.said, r.missedOrCaught, r.changed].map(
-                  (line, i) =>
-                    line.trim() !== "" && (
-                      <p key={RECEIPT_LABELS[i]} className="ds-section__note" style={{ margin: "var(--spacing-2) 0 0" }}>
-                        <strong>{RECEIPT_LABELS[i]}:</strong> {line}
-                      </p>
-                    )
-                )}
-              </div>
-            ))}
-          </div>
-          {AUDIT_RECEIPTS.closer.trim() !== "" && (
-            <p className="ds-section__note" style={{ marginTop: "var(--spacing-6)" }}>{AUDIT_RECEIPTS.closer}</p>
-          )}
-        </section>
-      </div>
-    </div>
-  );
-}
 
 /* case identities render as the orb band; their tokens still feed the
    live readouts below each orb. ONE sphere size, one grid, aligned
@@ -264,7 +223,7 @@ export default function DesignSystemSpecimens() {
       </p>
       <p className="ds-page__intro">
         It is also how I work with AI: the tokens rein the agent in, an agent can only
-        build with what the system exposes, and the gate keeps it honest. Twelve audits run
+        build with what the system exposes, and the gate keeps it honest. Thirteen audits run
         before anything ships. Green or it does not merge.
       </p>
       {/* the opening 3D moment: real keycaps, press them */}
@@ -565,24 +524,25 @@ export default function DesignSystemSpecimens() {
       <section className="ds-section" aria-labelledby="ds-status">
         <SectionHeader id="ds-status" title="Current status" className="ds-section__header" />
         <div className="ds-status">
-          <div>
-            <p className="ds-section__kicker">Available now</p>
+          <SpecimenCard kicker="Available now" center={false}>
             <ul className="ds-status__list">
               <li>The token layer, both themes</li>
               <li>The control taxonomy, live on every page</li>
-              <li>The gate, twelve audits and a pre-commit hook</li>
+              <li>The gate, thirteen audits and a pre-commit hook</li>
               <li>The dark-mode contract, AA on every route</li>
             </ul>
-          </div>
-          <div>
-            <p className="ds-section__kicker">Coming next</p>
+          </SpecimenCard>
+          {/* the coming list from the real plan docs (v3 T4): the
+              Storybook extraction kickoff + standing status entries */}
+          <SpecimenCard kicker="Coming next" center={false}>
             <ul className="ds-status__list">
+              <li>Storybook, the full component set</li>
               <li>The Figma leg</li>
-              <li>A Storybook workshop</li>
-              <li>Agent-queryable BELLA Brain</li>
+              <li>Agent-queryable BELLA Brain (MCP)</li>
               <li>npx bella init distribution</li>
+              <li>BFW inspection baseline, pending</li>
             </ul>
-          </div>
+          </SpecimenCard>
         </div>
       </section>
 
@@ -593,27 +553,46 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-gate">
-        <SectionHeader id="ds-gate" title="The gate" className="ds-section__header" />
+        <SectionHeader id="ds-gate" title="How the gate works" className="ds-section__header" />
         <p className="ds-section__note">
-          Twelve audits run before anything ships. Green or it does not merge. The cards below show the last local gate run (21 Jul 2026), labelled honestly as a snapshot, not live CI.
+          Thirteen audits run before anything ships, locally and on every pull request.
+          Green or it does not merge. Last local run: 21 Jul 2026.
         </p>
-        {/* scannable status-card grid (Elleta, 21 Jul, spec system-page-v2) */}
-        <dl className="ds-gate">
-          {GATE.map((g) => (
-            <div key={g.name} className="ds-gate__row">
-              <dt>
-                {g.name} <span className="ds-gate__pass">PASS</span>
-              </dt>
-              <dd>{g.line}</dd>
-            </div>
-          ))}
-        </dl>
+        {GATE_INTRO.trim() !== "" && <p className="ds-section__note">{GATE_INTRO}</p>}
+        {/* one card per audit: what it catches, and where real, the
+            receipt of a slip (v3 T4; no bare grid of green chips) */}
+        <div className="ds-gate">
+          {GATE.map((g) => {
+            const r = GATE_RECEIPTS[g.name];
+            const lines = r ? [r.said, r.missedOrCaught, r.changed] : [];
+            return (
+              <SpecimenCard key={g.name} kicker={g.name} center={false}>
+                <p className="ds-section__note" style={{ margin: 0 }}>{g.line}</p>
+                {lines.some((l) => l.trim() !== "") && (
+                  <div className="ds-gate__receipt">
+                    {lines.map(
+                      (line, i) =>
+                        line.trim() !== "" && (
+                          <p key={RECEIPT_LABELS[i]} className="ds-section__note" style={{ margin: 0 }}>
+                            <strong>{RECEIPT_LABELS[i]}:</strong> {line}
+                          </p>
+                        )
+                    )}
+                  </div>
+                )}
+              </SpecimenCard>
+            );
+          })}
+        </div>
+        <p className="ds-section__note" style={{ marginTop: "var(--spacing-6)" }}>
+          Not covered yet, honestly: hover states are not pixel-snapshotted, and CI skips
+          pixel comparison; the local gate enforces those.
+        </p>
+        {GATE_CLOSER.trim() !== "" && <p className="ds-section__note">{GATE_CLOSER}</p>}
       </section>
         </div>
       </div>
 
-      {/* ships dark until her words land (see AUDIT_RECEIPTS) */}
-      <AuditReceiptsSection />
     </div>
   );
 }

@@ -2543,18 +2543,6 @@ textarea:focus-visible {
   margin: 0 0 var(--spacing-4);
 }
 
-.ds-gate__pass {
-  display: inline-flex;
-  margin-left: var(--spacing-2);
-  padding: 1px var(--spacing-2);
-  border-radius: var(--radius-full);
-  border: 1px solid var(--case-clarity-text);
-  color: var(--case-clarity-text);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-}
-
 .ds-swatch__value {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-sm);
@@ -2630,6 +2618,15 @@ textarea:focus-visible {
   padding-top: var(--spacing-3);
 }
 
+.ds-gate__receipt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: var(--spacing-3);
+  margin-top: var(--spacing-3);
+}
+
 .ds-card__readout {
   display: flex;
   flex-direction: column;
@@ -2677,31 +2674,9 @@ textarea:focus-visible {
 .ds-gate {
   margin: 0;
   display: grid;
+  align-items: stretch;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--spacing-4);
-}
-
-.ds-gate__row {
-  padding: var(--spacing-4) var(--spacing-6);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-xl);
-  background: var(--color-card);
-  min-width: 0;
-}
-
-.ds-gate__row dt {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  font-weight: 600;
-  color: var(--color-accent-ink);
-}
-
-.ds-gate__row dd {
-  margin: var(--spacing-1) 0 0;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
 }
 
 /* ── Token inspector ── */
