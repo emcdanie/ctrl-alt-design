@@ -123,7 +123,7 @@ function StatementCard({
         <span style={{ color: p.accent }}>{p.accentWord}</span>
         {p.post}
       </h3>
-      <p className="body-base body-relaxed" style={{ margin: 0, flex: 1 }}>{p.body}</p>
+      <p className="card-body" style={{ margin: 0, flex: 1 }}>{p.body}</p>
       {children}
     </article>
   );
@@ -148,7 +148,7 @@ function CollabReceipt({ receipt, accent, id }: { receipt: { text: string; caseH
       </button>
       {open && (
         <div id={id} className="tok-annotation__panel">
-          <p className="body-base" style={{ margin: 0 }}>{receipt.text}</p>
+          <p className="card-body" style={{ margin: 0 }}>{receipt.text}</p>
           {receipt.caseHref && (
             <Link href={receipt.caseHref} style={{ color: accent, fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-sm)", fontWeight: 600, display: "inline-flex", marginTop: "var(--spacing-2)" }}>
               {receipt.caseLabel}
@@ -271,7 +271,7 @@ function LearningEntryCard({ entry }: { entry: LearningEntry }) {
               </span>
             </div>
             <h3 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>{entry.title}</h3>
-            <p className="body-sm" style={{ margin: 0 }}>{entry.instructor}</p>
+            <p className="card-meta" style={{ margin: 0 }}>{entry.instructor}</p>
           </div>
         </>
       }
@@ -475,7 +475,7 @@ export default function AboutPage() {
                     <Icon name="Podcast" size="lg" />
                   </div>
                   <h3 className="heading-item" style={{ marginBottom: "var(--spacing-2)" }}>Podcasts</h3>
-                  <p className="body-base" style={{ color: "var(--color-muted)", marginBottom: "var(--spacing-4)" }}>
+                  <p className="card-body" style={{ marginBottom: "var(--spacing-4)" }}>
                     Design thinking, systems, and personal growth, what I listen to between projects.
                   </p>
                   <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)", marginTop: "auto" }}>

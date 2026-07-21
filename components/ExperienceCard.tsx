@@ -73,10 +73,7 @@ export default function ExperienceCard({
     >
       <ul className="flex flex-col gap-3 pt-5">
         {highlights.map((h, i) => (
-          <li
-            key={i}
-            className="flex gap-3 text-[length:var(--typography-font-size-base)] leading-[1.75] text-[color:var(--color-ink-soft)]"
-          >
+          <li key={i} className="card-body flex gap-3" style={{ maxWidth: "none" }}>
             <span className="mt-[1px] shrink-0 text-[color:var(--color-ink-muted)]">, </span>
             <span>
               <BoldText text={h} strongClassName="font-bold text-[color:var(--color-ink)]" />

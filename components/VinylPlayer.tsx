@@ -100,7 +100,7 @@ export default function VinylPlayer() {
           <h3 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>
             {ALBUM_TITLE}
           </h3>
-          <p className="body-sm" style={{ margin: 0, fontSize: "var(--typography-font-size-tag)" }}>
+          <p className="card-meta" style={{ margin: 0 }}>
             {ALBUM_ARTIST}
           </p>
         </div>
@@ -123,15 +123,7 @@ export default function VinylPlayer() {
             title={`${ALBUM_TITLE}, ${ALBUM_ARTIST}`}
           />
         ) : (
-          <p
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "var(--typography-font-size-tag)",
-              color: "var(--color-muted)",
-              margin: 0,
-              textAlign: "center",
-            }}
-          >
+          <p className="card-body" style={{ margin: 0, textAlign: "center" }}>
             Tap the record to listen
           </p>
         )}

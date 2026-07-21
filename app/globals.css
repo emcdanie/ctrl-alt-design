@@ -305,6 +305,8 @@ body {
   --btn-key-radius: var(--radius-lg);
   /* case prose measure (readability pass 2026-07-20): ~70ch, one place */
   --measure-case: 70ch;
+  /* card body measure (card-voice readability, 21 Jul) */
+  --measure-card: 70ch;
   /* Thesis card stops (Elleta, 21 Jul: the 20 Jul fixed-dark decision
      is REVERSED; the cards are THEME-AWARE). Light theme = the card
      surface pair; the dark override below restores the navy specimen
@@ -2165,9 +2167,27 @@ textarea:focus-visible {
   color: var(--thesis-band-ink);
 }
 
-/* relaxed reading rhythm inside statement cards */
-.body-relaxed {
-  line-height: 1.7;
+/* the ONE card body recipe (Elleta, 21 Jul): one ramp step above the
+   16px floor, relaxed leading, capped measure, FULL ink on card
+   surfaces (muted stays for metadata rows only) */
+.card-body {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-lg);
+  line-height: 1.6;
+  max-width: var(--measure-card);
+  color: var(--color-ink);
+}
+
+.thesis-band .card-body {
+  color: var(--thesis-band-ink);
+}
+
+/* the metadata tier inside cards (bylines, artists, period rows):
+   deliberately below body scale, muted, exempt from the reading floor */
+.card-meta {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-ink-muted);
 }
 
 .thesis-band {

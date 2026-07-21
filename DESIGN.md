@@ -333,8 +333,21 @@ is the ONLY way to render one:
   deleted; the registry-parity audit rejects the pattern.
 - Proto-exact hero type (2026-07-16 correction — the proto wins over the
   ramp here, do NOT re-conform): bubble labels 19/18px + hub 22px, hub
-  sub + switch meta 11px, hero kicker 13.5px, hero intro 17px, reveal-card
-  kicker 12px. Scope: hero cluster + reveal card + header chrome only.
+  sub + switch meta 11px, hero kicker 13.5px, hero intro 17px. Scope:
+  hero cluster + header chrome only. AMENDED (Elleta, 2026-07-21,
+  card-voice readability): the reveal/peek CARD leaves the proto-exact
+  scope; its kicker joins the shared eyebrow scale, its list joins the
+  card body step, its CTA the 16px floor.
+- Card body (Elleta, 2026-07-21, card-voice readability): the ONE
+  `.card-body` recipe: Geist at `--typography-font-size-lg` (18px, one
+  ramp step above the 16px floor), line-height 1.6, measure capped at
+  `--measure-card` (70ch), FULL ink on card surfaces (thesis-band ink on
+  the statement ground); muted is reserved for metadata rows only. The
+  statement head (`--font-card-title`, 20-24px) sits at most two ramp
+  steps above it. Enforced by `audit:type` (computed sizes, both the
+  16px floor and the 18px card-body step); the gate is TWELVE audits.
+  Known 14px `.body-base` (misnamed, `--font-small`) remains OUTSIDE
+  card surfaces only (/quick); flagged for a future pass.
 
 ## Button grammar (2026-07-17, section 7 addendum)
 

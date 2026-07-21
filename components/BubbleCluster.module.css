@@ -217,7 +217,9 @@
 
 .pk {
   font-family: var(--font-mono);
-  font-size: 12px; /* proto-exact (recorded exception) */
+  /* conformed off proto-exact 12px to the shared eyebrow scale
+     (card-voice readability, 21 Jul; metadata row, not body) */
+  font-size: var(--typography-font-size-tag);
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -236,10 +238,12 @@
 }
 
 .pi {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  line-height: 1.75;
-  color: var(--hero-panel-meta);
+  /* list joins the card body step (card-voice readability, 21 Jul):
+     body face, 18px, full paper ink; the mono meta look is retired */
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-lg);
+  line-height: 1.6;
+  color: var(--ink-on-paper);
   margin: 0;
 }
 
@@ -258,7 +262,8 @@
   cursor: pointer;
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: var(--typography-font-size-sm);
+  /* CTA joins the 16px floor (card-voice readability, 21 Jul) */
+  font-size: var(--typography-font-size-base);
   color: var(--key-face-hi);
   text-decoration: none;
   border: none;

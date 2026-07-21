@@ -40,7 +40,7 @@ export default function CaseCard({
         {item.kicker}
       </span>
       <span className={`heading-item ${styles.title}`}>{item.title}</span>
-      <span className={styles.impact}>{item.impact}</span>
+      <span className={`card-body ${styles.impact}`}>{item.impact}</span>
       <span className={styles.skills}>
         {item.skills.slice(0, 4).map((s) => (
           <span key={s} className={styles.skill}>

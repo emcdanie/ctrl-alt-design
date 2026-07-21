@@ -77,10 +77,8 @@
 }
 
 .impact {
-  /* card body text: 16px minimum (type-presence pass) */
-  font-size: var(--typography-font-size-base);
-  line-height: 1.55;
-  color: var(--color-ink-soft);
+  /* type comes from the shared .card-body recipe (21 Jul) */
+  display: block;
 }
 
 .skills {
