@@ -86,6 +86,30 @@ const roles = [
       "**Contributed to new business pitches**, translating complex briefs into clear UX frameworks within tight turnaround timelines.",
     ],
   },
+  /* Pre-design roles (Elleta, 21 Jul, via Cowork): public on her
+     LinkedIn by her choice; names scoped in _private/nda-employers.txt
+     to this surface + ResumeModal only. Highlights are TODO(elleta)
+     content slots and render NOTHING until her words land (21 Jul
+     rule). TODO(elleta): Co.Lab vs Allianz order is a guess pending
+     months; reorder freely. */
+  {
+    title: "Frontend Developer",
+    company: "Co.Lab" /* TODO(elleta): exact entry wording is yours */,
+    period: "2022",
+    highlights: [],
+  },
+  {
+    title: "DevOps Engineer",
+    company: "Allianz Technology" /* TODO(elleta): exact entry wording is yours */,
+    period: "Jun 2022, Sep 2022",
+    highlights: [],
+  },
+  {
+    title: "Client Account Manager",
+    company: "ADP" /* TODO(elleta): exact entry wording is yours */,
+    period: "Dec 2020, Jan 2022",
+    highlights: [],
+  },
 ];
 
 const education = [
@@ -95,6 +119,15 @@ const education = [
     degree: "UX/UI Design Bootcamp",
     logo: "/images/logos/Ironhack.png",
     description: "Intensive 9-month bootcamp covering end-to-end UX/UI design, user research, information architecture, interaction design, prototyping, and usability testing.",
+  },
+  {
+    /* SheCodes (Elleta, 21 Jul): track name + completion year are
+       TODO(elleta) slots; they render nothing until her words land */
+    period: "",
+    name: "SheCodes",
+    degree: "Front-End Development",
+    logo: undefined,
+    description: "",
   },
   {
     period: "2005, 2009",
@@ -151,7 +184,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
                     {edu.name}
                   </span>
                   <div className="mt-1 text-[length:var(--typography-font-size-sm)] leading-relaxed text-[color:var(--color-ink-muted)]">
-                    {edu.degree} · {edu.period}
+                    {edu.period ? `${edu.degree} · ${edu.period}` : edu.degree}
                   </div>
                 </div>
               </div>

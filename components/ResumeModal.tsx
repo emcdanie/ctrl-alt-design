@@ -22,6 +22,13 @@ const education = [
     degree: "UX/UI Design",
   },
   {
+    /* SheCodes (Elleta, 21 Jul): track name + completion year are
+       TODO(elleta) slots; they render nothing until her words land */
+    period: "",
+    institution: "SheCodes",
+    degree: "Front-End Development",
+  },
+  {
     period: "2005, 2009",
     institution: "Arizona State University",
     degree: "Bachelors of Science in Design, GPA: 3.9/4.0",
@@ -80,6 +87,30 @@ const roles = [
       "Designed mobile-native interfaces and digital products for client-facing applications, from wireframes through high-fidelity prototypes.",
       "Conducted UX research, benchmarking, and usability evaluations; collaborated cross-functionally with product managers and developers to ensure consistent implementation of user-centred designs.",
     ],
+  },
+  /* Pre-design roles (Elleta, 21 Jul, via Cowork): public on her
+     LinkedIn by her choice; names scoped in _private/nda-employers.txt
+     to ExperienceSection + this surface only. Highlights are
+     TODO(elleta) content slots and render NOTHING until her words
+     land. TODO(elleta): Co.Lab vs Allianz order is a guess pending
+     months; reorder freely. */
+  {
+    period: "2022",
+    title: "Frontend Developer",
+    company: "Co.Lab" /* TODO(elleta): exact entry wording is yours */,
+    highlights: [],
+  },
+  {
+    period: "Jun 2022, Sep 2022",
+    title: "DevOps Engineer",
+    company: "Allianz Technology" /* TODO(elleta): exact entry wording is yours */,
+    highlights: [],
+  },
+  {
+    period: "Dec 2020, Jan 2022",
+    title: "Client Account Manager",
+    company: "ADP" /* TODO(elleta): exact entry wording is yours */,
+    highlights: [],
   },
 ];
 

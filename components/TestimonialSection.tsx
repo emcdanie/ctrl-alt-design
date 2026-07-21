@@ -32,7 +32,7 @@ const quotes = [
 ];
 
 const LINKEDIN_RECOMMENDATIONS =
-  "https://www.linkedin.com/in/elletamcdaniel/details/recommendations/";
+  "https://www.linkedin.com/in/elleta-mcdaniel/details/recommendations/";
 
 function QuoteCard({
   quote,

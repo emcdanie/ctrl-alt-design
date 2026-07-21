@@ -177,7 +177,7 @@ export default function ContactSection() {
                 form is the channel, LinkedIn the alternative */}
             <a href={social.linkedin} target="_blank" rel="noopener noreferrer" style={linkStyle}>
               <Icon name="Linkedin" size="sm" />
-              linkedin.com/in/elletamcdaniel
+              linkedin.com/in/elleta-mcdaniel
             </a>
           </div>
 

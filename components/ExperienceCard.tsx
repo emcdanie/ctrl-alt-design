@@ -3,6 +3,7 @@
 import Link from "next/link";
 import LogoContainer from "@/components/LogoContainer";
 import DisclosureCard from "@/components/ui/DisclosureCard";
+import Card from "@/components/ui/Card";
 import { BoldText } from "@/lib/richtext";
 
 export interface ExperienceCardProps {
@@ -33,30 +34,42 @@ export default function ExperienceCard({
   isOpen,
   onToggle,
 }: ExperienceCardProps) {
+  const header = (
+    <>
+      <LogoContainer src={logoSrc} alt={company} bg={logoBg} size={48} />
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="font-body text-[length:var(--typography-font-size-base)] font-semibold leading-[1.3] text-[color:var(--color-ink)] md:text-[length:var(--typography-font-size-lg)]">
+            {title}
+          </span>
+          {isCurrent && (
+            <span className="rounded-full bg-[color:var(--color-semantic-background-inverse)] px-2.5 py-1 text-[length:var(--typography-font-size-tag)] font-bold uppercase tracking-[0.1em] text-[color:var(--color-semantic-text-inverse)]">
+              NOW
+            </span>
+          )}
+        </div>
+        <div className="mt-1 text-[length:var(--typography-font-size-sm)] leading-relaxed text-[color:var(--color-ink-muted)]">
+          {company} · {period}
+        </div>
+      </div>
+    </>
+  );
+
+  /* nothing to disclose (TODO(elleta) highlight slots render nothing,
+     21 Jul rule): a plain card, no chevron, no dead expander */
+  if (highlights.length === 0 && !caseStudySlug) {
+    return (
+      <Card innerClassName="!p-0 overflow-hidden">
+        <div className="flex w-full items-center gap-4 p-6">{header}</div>
+      </Card>
+    );
+  }
+
   return (
     <DisclosureCard
       isOpen={isOpen}
       onToggle={onToggle}
-      header={
-        <>
-          <LogoContainer src={logoSrc} alt={company} bg={logoBg} size={48} />
-          <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="font-body text-[length:var(--typography-font-size-base)] font-semibold leading-[1.3] text-[color:var(--color-ink)] md:text-[length:var(--typography-font-size-lg)]">
-                {title}
-              </span>
-              {isCurrent && (
-                <span className="rounded-full bg-[color:var(--color-semantic-background-inverse)] px-2.5 py-1 text-[length:var(--typography-font-size-tag)] font-bold uppercase tracking-[0.1em] text-[color:var(--color-semantic-text-inverse)]">
-                  NOW
-                </span>
-              )}
-            </div>
-            <div className="mt-1 text-[length:var(--typography-font-size-sm)] leading-relaxed text-[color:var(--color-ink-muted)]">
-              {company} · {period}
-            </div>
-          </div>
-        </>
-      }
+      header={header}
     >
       <ul className="flex flex-col gap-3 pt-5">
         {highlights.map((h, i) => (
