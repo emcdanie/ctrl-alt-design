@@ -14,6 +14,8 @@ interface SectionHeaderProps {
   tier?: "section" | "hero" | "page";
   /** accent segment forwarded to Heading (iris accent word) */
   accent?: ReactNode;
+  /** anchor id forwarded to the Heading element (section maps) */
+  id?: string;
 }
 
 export default function SectionHeader({
@@ -26,6 +28,7 @@ export default function SectionHeader({
   inverse = false,
   tier = "section",
   accent,
+  id,
 }: SectionHeaderProps) {
   return (
     <div className={`layout-header flex flex-col justify-between gap-4 sm:flex-row sm:items-end ${className}`.trim()}>
@@ -41,6 +44,7 @@ export default function SectionHeader({
         <Heading
           tier={tier}
           as="h2"
+          id={id}
           accent={accent}
           className={inverse ? "display-heading--inverse" : ""}
         >
