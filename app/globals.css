@@ -343,6 +343,12 @@ body {
      theme-aware reversal; light values at the :root definition) */
   --thesis-band-ground: #1B1B40;
   --thesis-band-ink: #F4EFE6;
+  /* cover placeholder flips as a SET in dark (cover-contrast fix,
+     21 Jul): dark warm plate, parchment-warm ink; >=3:1 large-text on
+     every stop, scrim-free (the placeholder skips the media scrim) */
+  --cover-warm-hi: #3A3428;
+  --cover-warm-lo: #2C271E;
+  --cover-warm-ink: #E9E2D2;
   --hero-panel-bg: #F4EFE6;
   --hero-panel-shadow: rgba(0, 0, 0, 0.44);
   --hero-link: rgba(244, 239, 230, 0.2);
@@ -813,7 +819,9 @@ li {
 
 .body-base {
   font-family: var(--font-body);
-  font-size: var(--font-small);
+  /* was --font-small (14px), a misname that leaked sub-floor reading
+     text (/quick); base means base (type-floor sweep, 21 Jul) */
+  font-size: var(--typography-font-size-base);
   line-height: 1.65;
   letter-spacing: 0.01em;
   color: var(--color-ink-soft);
@@ -1850,7 +1858,8 @@ textarea:focus-visible {
 /* Summary */
 .cs-shell__summary {
   font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
+  /* reading text joins the 16px ramp step (type-floor sweep, 21 Jul) */
+  font-size: var(--typography-font-size-base);
   line-height: 1.65;
   color: var(--color-muted);
   margin: 0 0 var(--spacing-4);

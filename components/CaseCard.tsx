@@ -22,6 +22,7 @@ export default function CaseCard({
       href={item.href}
       accent={item.text}
       className={styles.caseCard}
+      mediaScrim={Boolean(cover)}
       media={
         <>
           {cover ? (

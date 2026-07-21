@@ -289,7 +289,7 @@ function LearningEntryCard({ entry }: { entry: LearningEntry }) {
         <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-ink-muted)", marginBottom: "var(--spacing-2)" }}>
           What I took away
         </p>
-        <p className="body-base" style={{ margin: 0, marginBottom: entry.relatedWork ? "var(--spacing-3)" : 0 }}>
+        <p className="card-body" style={{ margin: 0, marginBottom: entry.relatedWork ? "var(--spacing-3)" : 0 }}>
           {entry.reflection}
         </p>
 

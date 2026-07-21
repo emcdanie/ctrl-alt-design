@@ -6,7 +6,12 @@
  * below; the popup's reading text is included by opening a bubble. */
 import { chromium } from "playwright";
 
-const ROUTES = ["/about", "/work", "/case-studies/chip", "/design-system"];
+const ROUTES = [
+  "/", "/about", "/work", "/contact", "/skills", "/design-system", "/quick",
+  "/case-studies/chip", "/case-studies/brad-frost", "/case-studies/guardian",
+  "/case-studies/design-system-transformation", "/case-studies/un-operational-dashboard",
+  "/case-studies/filters-decision-support-system",
+];
 const CARD_SCOPE = '[class*="card"], [class*="Card"], .thesis-band, .ds-gate__row, [role="dialog"]';
 const META_EXEMPT =
   /tag|pill|eyebrow|kicker|section-label|sr-only|meta|badge|__pk|period|swatch__name|swatch__value|tok-inspector|tok-annotation__trigger|demo-link|card-meta/;
@@ -66,6 +71,27 @@ for (const route of ROUTES) {
   for (const b of bad) {
     fails++;
     console.error(`TYPE FAIL ${route}: ${b}`);
+  }
+  /* ── sitewide reading floor (type-floor sweep, 21 Jul): any P or LI
+     whose OWN text runs past ~40 chars is reading text and must
+     compute >= 16px, wherever it lives. Meta tiers allowlisted. ── */
+  const floorBad = await page.evaluate((exempt) => {
+    const exemptRe = new RegExp(exempt);
+    const out = [];
+    for (const el of document.querySelectorAll("p, li")) {
+      const own = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join("").trim();
+      const full = el.textContent.trim();
+      const text = own.length >= 40 ? own : (el.children.length === 0 ? full : own);
+      if (text.length < 40) continue;
+      if (exemptRe.test(el.className.toString()) || el.closest("figcaption, footer, dt, dd")) continue;
+      const size = parseFloat(getComputedStyle(el).fontSize);
+      if (size < 16) out.push(`${el.className.toString().split(" ")[0] || el.tagName}@${size}px :: ${text.slice(0, 40)}`);
+    }
+    return [...new Set(out)];
+  }, META_EXEMPT.source);
+  for (const b of floorBad) {
+    fails++;
+    console.error(`TYPE FLOOR FAIL ${route}: ${b}`);
   }
 }
 await browser.close();
