@@ -2613,6 +2613,99 @@ textarea:focus-visible {
   justify-content: center;
 }
 
+/* ── redline flags (v3 T6): the annotation grammar of a design spec.
+   METADATA TIER, recorded exempt from the reading floor; aria-hidden,
+   pointer-events none, never focusable. Leader lines via ::before. ── */
+.ds-flagwrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ds-flagwrap > .ds-card__demo {
+  flex: 1;
+}
+
+.ds-flags {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ds-flag {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-card);
+  border: 1px solid var(--color-semantic-accent-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-accent-ink);
+  white-space: nowrap;
+  box-shadow: var(--shadow-card-default);
+  z-index: 2;
+  /* a flag never leaves its own card: long values ellipsize like a
+     real redline (the inspector list shows full values) */
+  max-width: 100%;
+}
+
+.ds-flag__value,
+.ds-flag__token {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ds-flag::before {
+  content: "";
+  position: absolute;
+  background: var(--color-semantic-accent-border);
+}
+
+.ds-flag__chip {
+  width: var(--spacing-3);
+  height: var(--spacing-3);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-medium);
+  flex-shrink: 0;
+}
+
+.ds-flag__token {
+  color: var(--color-ink-muted);
+}
+
+/* annotate mode reserves gutter LANES above and below the demo, so
+   flags can never collide with centred content (the tight-space rule:
+   the flag sits outside the demo edge like a real redline) */
+.ds-flagwrap--on {
+  padding-block: calc(var(--spacing-10) + var(--spacing-8));
+}
+
+.ds-flag--top-left { top: 0; left: 0; }
+.ds-flag--top { top: 0; left: 50%; transform: translateX(-50%); }
+.ds-flag--top-right { top: var(--spacing-8); right: 0; }
+.ds-flag--bottom-left { bottom: 0; left: 0; }
+.ds-flag--bottom { bottom: 0; left: 50%; transform: translateX(-50%); }
+.ds-flag--bottom-right { bottom: var(--spacing-8); right: 0; }
+
+.ds-flag--top-left::before,
+.ds-flag--top::before,
+.ds-flag--top-right::before { width: 1px; height: var(--spacing-2); left: 50%; top: 100%; }
+.ds-flag--bottom-left::before,
+.ds-flag--bottom::before,
+.ds-flag--bottom-right::before { width: 1px; height: var(--spacing-2); left: 50%; bottom: 100%; }
+
+/* tight space (390): token names drop, value-only flags, still outside
+   the demo content like a real redline */
+@media (max-width: 767px) {
+  .ds-flag__token {
+    display: none;
+  }
+}
+
 .ds-card__foot {
   margin-top: auto;
   padding-top: var(--spacing-3);

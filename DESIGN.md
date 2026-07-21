@@ -338,6 +338,15 @@ is the ONLY way to render one:
   card-voice readability): the reveal/peek CARD leaves the proto-exact
   scope; its kicker joins the shared eyebrow scale, its list joins the
   card body step, its CTA the 16px floor.
+- Redline spec annotations (Elleta, 2026-07-21, system-page-v3 T6):
+  specimen tokens annotate as measurement FLAGS with leader lines (the
+  design-spec grammar), lane-placed in reserved gutters so they never
+  overlap demo content or each other; per-band Annotate toggles
+  (aria-pressed, keyboard, default off). Flags are the METADATA tier,
+  RECORDED exempt from the 16px reading floor (mono tag-size, accent
+  ink on the card ground, AA both themes); aria-hidden, pointer-events
+  none, long values ellipsize. The ONE TokenAnnotation implementation
+  carries list, alwaysOpen (inspector), and flags modes.
 - List markers (Elleta, 2026-07-21, card-voice): solid CSS discs,
   NEVER glyphs, rings, or icons. The ONE `.card-list-item` recipe:
   `::before` disc at `--list-marker-size` (6px, recorded token),

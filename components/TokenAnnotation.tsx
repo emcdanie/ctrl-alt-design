@@ -3,34 +3,53 @@
 import { useCallback, useEffect, useId, useState } from "react";
 
 /**
- * The ONE specimen annotation (Elleta, 21 Jul, spec system-page-v2):
- * a list of the tokens attached to a specimen, name + value resolved
- * LIVE from computed styles (re-read on theme flip), colour chip when
- * the value is a colour. Two modes, one implementation:
- * - default: a disclosure. The "Tokens" trigger button reveals the
- *   panel on click or focus+Enter (button semantics), aria-expanded.
- * - alwaysOpen: the readout alone; the keycap TokenInspector consumes
- *   it this way, its zone buttons choosing WHICH tokens show.
+ * The ONE specimen annotation (spec system-page-v2; redlines added in
+ * v3 T6): tokens attached to a specimen, values resolved LIVE from
+ * computed styles (re-read on theme flip). Three modes, ONE
+ * implementation:
+ * - default: a disclosure ("Tokens" trigger, aria-expanded).
+ * - alwaysOpen: the readout alone (the keycap TokenInspector's mode).
+ * - flags: redline-style measurement flags with leader lines, the
+ *   annotation grammar of a design spec; radius at the corner, size on
+ *   the edge, colour by the fill. Controlled by a per-band annotate
+ *   toggle (the `open` prop); flags are aria-hidden METADATA (recorded
+ *   exempt from the reading floor), pointer-events none, never focus.
  */
+export type FlagSpec = {
+  token: string;
+  /** what the flag measures; styles the leader grammar */
+  kind: "radius" | "size" | "color" | "shadow" | "font";
+  /** which gutter lane the flag occupies (lanes, never mid-edge, so
+      flags cannot collide with centred demo content) */
+  at: "top-left" | "top" | "top-right" | "bottom-left" | "bottom" | "bottom-right";
+};
 export default function TokenAnnotation({
   tokens,
   note,
   alwaysOpen = false,
+  variant = "list",
+  open: openProp,
 }: {
-  tokens: readonly string[];
+  tokens: readonly (string | FlagSpec)[];
   /** one line on what the tokens drive (inspector zones use this) */
   note?: string;
   alwaysOpen?: boolean;
+  /** "flags" renders the redline overlay (v3 T6) */
+  variant?: "list" | "flags";
+  /** flags mode: controlled by the band's annotate toggle */
+  open?: boolean;
 }) {
   const [open, setOpen] = useState(alwaysOpen);
+  const names = tokens.map((t) => (typeof t === "string" ? t : t.token));
   const [values, setValues] = useState<Record<string, string>>({});
   const panelId = useId();
 
   const read = useCallback(() => {
     const cs = getComputedStyle(document.documentElement);
     const next: Record<string, string> = {};
-    for (const t of tokens) next[t] = cs.getPropertyValue(t).trim();
+    for (const t of names) next[t] = cs.getPropertyValue(t).trim();
     setValues(next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tokens]);
 
   useEffect(() => {
@@ -41,6 +60,26 @@ export default function TokenAnnotation({
   }, [read]);
 
   const isColour = (v: string) => /^#|^rgb|^hsl|^oklch|^color\(/.test(v.trim());
+
+  if (variant === "flags") {
+    if (!openProp) return null;
+    return (
+      <span className="ds-flags" aria-hidden="true">
+        {tokens.map((t) => {
+          const f = typeof t === "string" ? ({ token: t, kind: "size", at: "bottom" } as FlagSpec) : t;
+          const v = values[f.token] || "reading";
+          return (
+            <span key={f.token} className={`ds-flag ds-flag--${f.at} ds-flag--k-${f.kind}`}>
+              {isColour(v) && <span className="ds-flag__chip" style={{ background: v }} />}
+              <span className="ds-flag__value">{v}</span>
+              <span className="ds-flag__token">{f.token}</span>
+            </span>
+          );
+        })}
+      </span>
+    );
+  }
+
   const showPanel = alwaysOpen || open;
 
   return (
@@ -60,7 +99,7 @@ export default function TokenAnnotation({
         <div className="tok-annotation__panel" id={panelId} aria-live="polite">
           {note && <p className="tok-inspector__drives">{note}</p>}
           <dl className="tok-inspector__tokens">
-            {tokens.map((t) => (
+            {names.map((t) => (
               <div key={t} className="tok-inspector__row">
                 <dt>{t}</dt>
                 <dd>

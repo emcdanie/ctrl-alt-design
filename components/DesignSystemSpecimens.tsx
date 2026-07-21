@@ -7,7 +7,7 @@ import { FilterChip } from "@/components/ui/FilterChip";
 import { Tag } from "@/components/ui/Tag";
 import { StatusPill } from "@/components/ui/StatusPill";
 import TokenInspector from "@/components/TokenInspector";
-import TokenAnnotation from "@/components/TokenAnnotation";
+import TokenAnnotation, { type FlagSpec } from "@/components/TokenAnnotation";
 import { Select } from "@/components/ui/Select";
 import Heading from "@/components/ui/Heading";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -126,15 +126,47 @@ const CASE_ORBS = [
 /* per-specimen attached tokens for the shared annotation (stable
    module-level arrays; every list verified against the recipe it
    names in globals.css) */
-const ORB_TOKENS = CASE_ORBS.map((o) => [o.hi, o.lo] as const);
+const ORB_TOKENS = CASE_ORBS.map(
+  (o) =>
+    [
+      { token: o.hi, kind: "color", at: "top-left" },
+      { token: o.lo, kind: "color", at: "bottom-right" },
+    ] as const satisfies readonly FlagSpec[]
+);
+/* redline flag specs (v3 T6): radius at the corner, size on the edge,
+   colour by the fill; <=4 flags per specimen so nothing overlaps */
 const ANN = {
   opening: ["--key-fill-hi", "--key-fill-lo", "--key-fill-edge", "--btn-key-radius", "--shadow-key-resting"],
-  button: ["--color-accent-ink", "--btn-key-radius", "--spacing-touch-target"],
-  seg: ["--color-glass", "--color-border-medium", "--radius-lg", "--color-semantic-accent-subtle", "--color-accent-ink"],
-  chip: ["--color-border-medium", "--radius-full", "--color-semantic-background-inverse", "--color-semantic-text-inverse"],
-  tagPill: ["--color-supporting-linen", "--color-accent-ink", "--color-semantic-accent-border"],
-  select: ["--color-card", "--color-border-medium", "--radius-md", "--spacing-touch-target"],
-  bubble: ["--hub-hi", "--hub-lo", "--shadow-orb"],
+  button: [
+    { token: "--btn-key-radius", kind: "radius", at: "top-left" },
+    { token: "--color-accent-ink", kind: "color", at: "bottom-left" },
+    { token: "--spacing-touch-target", kind: "size", at: "bottom-right" },
+  ] as const satisfies readonly FlagSpec[],
+  seg: [
+    { token: "--radius-lg", kind: "radius", at: "top-left" },
+    { token: "--color-border-medium", kind: "color", at: "top-right" },
+    { token: "--color-semantic-accent-subtle", kind: "color", at: "bottom-left" },
+  ] as const satisfies readonly FlagSpec[],
+  chip: [
+    { token: "--radius-full", kind: "radius", at: "top-left" },
+    { token: "--color-border-medium", kind: "color", at: "bottom-left" },
+    { token: "--color-semantic-background-inverse", kind: "color", at: "bottom-right" },
+  ] as const satisfies readonly FlagSpec[],
+  tagPill: [
+    { token: "--color-supporting-linen", kind: "color", at: "top-left" },
+    { token: "--color-accent-ink", kind: "color", at: "bottom-left" },
+    { token: "--color-semantic-accent-border", kind: "color", at: "bottom-right" },
+  ] as const satisfies readonly FlagSpec[],
+  select: [
+    { token: "--radius-md", kind: "radius", at: "top-left" },
+    { token: "--color-border-medium", kind: "color", at: "bottom-left" },
+    { token: "--spacing-touch-target", kind: "size", at: "bottom-right" },
+  ] as const satisfies readonly FlagSpec[],
+  bubble: [
+    { token: "--hub-hi", kind: "color", at: "top-left" },
+    { token: "--hub-lo", kind: "color", at: "bottom-left" },
+    { token: "--shadow-orb", kind: "shadow", at: "bottom-right" },
+  ] as const satisfies readonly FlagSpec[],
   /* the display face token itself is off-limits outside the Heading
      primitive (audit:structure); the size token is the annotation */
   typeDisplay: ["--font-hero"],
@@ -161,12 +193,15 @@ function SpecimenCard({
   note,
   tokens,
   center = true,
+  annotate = false,
   children,
 }: {
   kicker?: React.ReactNode;
   note?: React.ReactNode;
-  tokens?: readonly string[];
+  tokens?: readonly (string | FlagSpec)[];
   center?: boolean;
+  /** the band's annotate toggle: redline flags on/off (v3 T6) */
+  annotate?: boolean;
   children: React.ReactNode;
 }) {
   return (
@@ -177,13 +212,25 @@ function SpecimenCard({
           {note && <p className="ds-section__note" style={{ margin: 0 }}>{note}</p>}
         </div>
       )}
-      <div className={center ? "ds-card__demo ds-card__demo--center" : "ds-card__demo"}>{children}</div>
-      {tokens && (
-        <div className="ds-card__foot">
-          <TokenAnnotation tokens={tokens} />
-        </div>
-      )}
+      <div className={annotate && tokens ? "ds-flagwrap ds-flagwrap--on" : "ds-flagwrap"}>
+        <div className={center ? "ds-card__demo ds-card__demo--center" : "ds-card__demo"}>{children}</div>
+        {tokens && <TokenAnnotation tokens={tokens} variant="flags" open={annotate} />}
+      </div>
     </Card>
+  );
+}
+
+/* the annotate toggle: the relocated trigger, one per band (v3 T6) */
+function AnnotateToggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
+  return (
+    <button
+      type="button"
+      className="tok-annotation__trigger"
+      aria-pressed={on}
+      onClick={onToggle}
+    >
+      Annotate
+    </button>
   );
 }
 
@@ -192,6 +239,9 @@ export default function DesignSystemSpecimens() {
   const [view, setView] = useState("table");
   const [chipOn, setChipOn] = useState(true);
   const [sortSpec, setSortSpec] = useState("year");
+  /* per-band annotate toggles (v3 T6); default OFF, the page stays calm */
+  const [annotateIdentity, setAnnotateIdentity] = useState(false);
+  const [annotateControls, setAnnotateControls] = useState(false);
 
   const read = useCallback(() => {
     const cs = getComputedStyle(document.documentElement);
@@ -243,7 +293,12 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band ds-band--identity">
         <div className="layout-container">
           <section className="ds-section" aria-labelledby="ds-identity">
-            <SectionHeader id="ds-identity" title="Case identity" className="ds-section__header" />
+            <SectionHeader
+              id="ds-identity"
+              title="Case identity"
+              className="ds-section__header"
+              actions={<AnnotateToggle on={annotateIdentity} onToggle={() => setAnnotateIdentity(!annotateIdentity)} />}
+            />
             <p className="ds-section__note">
               Colour is identity: each case owns a hue, and the hue does the wayfinding.
             </p>
@@ -253,6 +308,7 @@ export default function DesignSystemSpecimens() {
                   <SpecimenCard
                     kicker={<a className="ds-swatch__case" href={o.href}>{o.name}</a>}
                     tokens={ORB_TOKENS[i]}
+                    annotate={annotateIdentity}
                   >
                     <span
                       className="ds-orb"
@@ -381,16 +437,21 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-controls">
-        <SectionHeader id="ds-controls" title="Controls" className="ds-section__header" />
+        <SectionHeader
+          id="ds-controls"
+          title="Controls"
+          className="ds-section__header"
+          actions={<AnnotateToggle on={annotateControls} onToggle={() => setAnnotateControls(!annotateControls)} />}
+        />
         <p className="ds-section__note">
           One taxonomy: the keycap is reserved for true actions, and each control names its
           state in ARIA. The gate fails any view with more than one primary.
         </p>
         <div className="ds-specimen-row">
-          <SpecimenCard kicker="Button" note="True actions only; max one primary per view. The page's ONE primary is the opening keycap above." tokens={ANN.button}>
+          <SpecimenCard kicker="Button" note="True actions only; max one primary per view. The page's ONE primary is the opening keycap above." tokens={ANN.button} annotate={annotateControls}>
             <Button variant="secondary">Secondary</Button>
           </SpecimenCard>
-          <SpecimenCard kicker="SegmentedControl" note="Mutually exclusive views; single select, aria-current." tokens={ANN.seg}>
+          <SpecimenCard kicker="SegmentedControl" note="Mutually exclusive views; single select, aria-current." tokens={ANN.seg} annotate={annotateControls}>
             <SegmentedControl
               label="Specimen views"
               options={[
@@ -401,7 +462,7 @@ export default function DesignSystemSpecimens() {
               onChange={setView}
             />
           </SpecimenCard>
-          <SpecimenCard kicker="FilterChip" note="Multi-select filters; outline, aria-pressed, hover." tokens={ANN.chip}>
+          <SpecimenCard kicker="FilterChip" note="Multi-select filters; outline, aria-pressed, hover." tokens={ANN.chip} annotate={annotateControls}>
             <FilterChip pressed={chipOn} onClick={() => setChipOn(!chipOn)}>
               Design Tokens
             </FilterChip>
@@ -409,11 +470,11 @@ export default function DesignSystemSpecimens() {
               Governance
             </FilterChip>
           </SpecimenCard>
-          <SpecimenCard kicker="Tag and StatusPill" note="Tag: flat metadata wash, never clickable. StatusPill: quiet status." tokens={ANN.tagPill}>
+          <SpecimenCard kicker="Tag and StatusPill" note="Tag: flat metadata wash, never clickable. StatusPill: quiet status." tokens={ANN.tagPill} annotate={annotateControls}>
             <Tag>Non-interactive metadata</Tag>
             <StatusPill>Current focus</StatusPill>
           </SpecimenCard>
-          <SpecimenCard kicker="Select" note="Dropdowns like sort; native, styled, never a keycap." tokens={ANN.select}>
+          <SpecimenCard kicker="Select" note="Dropdowns like sort; native, styled, never a keycap." tokens={ANN.select} annotate={annotateControls}>
             <Select
               label="Sort specimen"
               value={sortSpec}
@@ -424,7 +485,7 @@ export default function DesignSystemSpecimens() {
               ]}
             />
           </SpecimenCard>
-          <SpecimenCard kicker="Bubble" tokens={ANN.bubble}>
+          <SpecimenCard kicker="Bubble" tokens={ANN.bubble} annotate={annotateControls}>
             <span
               className="ds-orb ds-orb--small"
               style={{ "--orb-hi": "var(--hub-hi)", "--orb-lo": "var(--hub-lo)" } as React.CSSProperties}
