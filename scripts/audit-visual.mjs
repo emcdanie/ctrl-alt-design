@@ -48,7 +48,7 @@ for (const theme of ["light", "dark"]) {
 
   const rowBad = await page.evaluate(() => {
     const out = [];
-    for (const grid of document.querySelectorAll(".ds-specimen-row")) {
+    for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-gate, .ds-caseband, .ds-status")) {
       const cards = [...grid.children].filter((c) => c.getBoundingClientRect().width > 0);
       /* group siblings by row (same top), assert equal heights */
       const rows = new Map();
