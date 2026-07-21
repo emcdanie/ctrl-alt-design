@@ -2419,11 +2419,7 @@ textarea:focus-visible {
 }
 
 .ds-caseband__item .ds-orb {
-  margin-bottom: var(--spacing-3);
-}
-
-.ds-caseband__item .ds-swatch__case {
-  min-height: 2.9em;
+  margin-inline: auto;
 }
 
 /* the oversized type specimen (hero tier at display scale) */
@@ -2576,33 +2572,64 @@ textarea:focus-visible {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: var(--spacing-6);
+  /* equal-height cards (v3 T5): stretch is the default; cards fill */
+  align-items: stretch;
 }
 
-.ds-specimen__body {
+/* ── the ONE specimen-card internals (v3 T2+T5): ui/Card is the
+   surface; fixed-height head slot so every demo starts level; demo
+   centred; annotation control pinned to the bottom ── */
+.ds-card__inner {
   display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+}
+
+.ds-card__head {
+  min-height: calc(var(--spacing-12) + var(--spacing-8));
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.ds-card__demo {
+  flex: 1;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.ds-card__demo--center {
+  flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  /* every specimen centres inside the SAME card recipe (21 Jul) */
   justify-content: center;
-  gap: var(--spacing-3);
-  padding: var(--spacing-6);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-xl);
-  background: var(--color-card);
-  min-height: 120px;
+}
+
+.ds-card__foot {
+  margin-top: auto;
+  padding-top: var(--spacing-3);
+}
+
+.ds-card__readout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  width: 100%;
+  text-align: center;
 }
 
 
 .ds-scale {
   list-style: none;
   margin: 0;
-  padding: var(--spacing-6);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-xl);
-  background: var(--color-card);
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
+  width: 100%;
 }
 
 .ds-scale__row {

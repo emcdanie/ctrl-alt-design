@@ -93,6 +93,29 @@ for (const route of ROUTES) {
     fails++;
     console.error(`TYPE FLOOR FAIL ${route}: ${b}`);
   }
+  /* Unique never renders inside a Card (runtime leg of the card-voice
+     rule; the static file-level check exempts the System page whose
+     type specimens are Unique ON THE GROUND by recorded exception) */
+  const uniqueBad = await page.evaluate(() => {
+    const out = [];
+    for (const card of document.querySelectorAll('[class*="card"], [class*="Card"], .thesis-band')) {
+      for (const el of card.querySelectorAll("*")) {
+        if (!el.textContent.trim() || el.children.length > 0) continue;
+        /* single-glyph decorative marks (the testimonial drop-quote)
+           are ornament, not type; flagged for Elleta's ruling in the
+           v3 PR, exempted here pending her word */
+        if (el.textContent.trim().length <= 2) continue;
+        if (/unique/i.test(getComputedStyle(el).fontFamily)) {
+          out.push(el.textContent.trim().slice(0, 40));
+        }
+      }
+    }
+    return [...new Set(out)].slice(0, 5);
+  });
+  for (const b of uniqueBad) {
+    fails++;
+    console.error(`TYPE FAIL ${route}: Unique inside a card scope :: ${b}`);
+  }
 }
 await browser.close();
 

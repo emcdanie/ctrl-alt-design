@@ -11,6 +11,7 @@ import TokenAnnotation from "@/components/TokenAnnotation";
 import { Select } from "@/components/ui/Select";
 import Heading from "@/components/ui/Heading";
 import SectionHeader from "@/components/ui/SectionHeader";
+import Card from "@/components/ui/Card";
 
 /**
  * §8 /design-system: the site inspecting itself. Every value on this
@@ -191,6 +192,42 @@ const ALL_TOKENS = [
   ...TYPE_SPECIMENS.map((t) => t.token),
 ];
 
+/* The ONE specimen card (v3 T2+T5): ui/Card carries every content
+   unit; fixed-height head slot so demo areas start level, demo centred
+   in the shared body recipe, annotation control pinned to the bottom.
+   TYPE display specimens are the recorded exception (Unique never
+   renders inside a Card) and stay on the ground. */
+function SpecimenCard({
+  kicker,
+  note,
+  tokens,
+  center = true,
+  children,
+}: {
+  kicker?: React.ReactNode;
+  note?: React.ReactNode;
+  tokens?: readonly string[];
+  center?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Card className="h-full" innerClassName="ds-card__inner">
+      {(kicker || note) && (
+        <div className="ds-card__head">
+          {kicker && <p className="ds-section__kicker" style={{ margin: 0 }}>{kicker}</p>}
+          {note && <p className="ds-section__note" style={{ margin: 0 }}>{note}</p>}
+        </div>
+      )}
+      <div className={center ? "ds-card__demo ds-card__demo--center" : "ds-card__demo"}>{children}</div>
+      {tokens && (
+        <div className="ds-card__foot">
+          <TokenAnnotation tokens={tokens} />
+        </div>
+      )}
+    </Card>
+  );
+}
+
 export default function DesignSystemSpecimens() {
   const [values, setValues] = useState<Record<string, string>>({});
   const [view, setView] = useState("table");
@@ -254,15 +291,20 @@ export default function DesignSystemSpecimens() {
             <ul className="ds-caseband">
               {CASE_ORBS.map((o, i) => (
                 <li key={o.hi} className="ds-caseband__item">
-                  <span
-                    className="ds-orb"
-                    style={{ "--orb-hi": `var(${o.hi})`, "--orb-lo": `var(${o.lo})` } as React.CSSProperties}
-                    aria-hidden="true"
-                  />
-                  <a className="ds-swatch__case" href={o.href}>{o.name}</a>
-                  <span className="ds-swatch__name">{o.hi}</span>
-                  <span className="ds-swatch__value">{values[o.hi] || "reading"}</span>
-                  <TokenAnnotation tokens={ORB_TOKENS[i]} />
+                  <SpecimenCard
+                    kicker={<a className="ds-swatch__case" href={o.href}>{o.name}</a>}
+                    tokens={ORB_TOKENS[i]}
+                  >
+                    <span
+                      className="ds-orb"
+                      style={{ "--orb-hi": `var(${o.hi})`, "--orb-lo": `var(${o.lo})` } as React.CSSProperties}
+                      aria-hidden="true"
+                    />
+                    <span className="ds-card__readout">
+                      <span className="ds-swatch__name">{o.hi}</span>
+                      <span className="ds-swatch__value">{values[o.hi] || "reading"}</span>
+                    </span>
+                  </SpecimenCard>
                 </li>
               ))}
             </ul>
@@ -322,20 +364,21 @@ export default function DesignSystemSpecimens() {
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-colour">
         <SectionHeader id="ds-colour" title="Colour" className="ds-section__header" />
-        {COLOUR_GROUPS.map((g) => (
-          <div key={g.title}>
-            <p className="ds-section__kicker">{g.title}</p>
-            <ul className="ds-swatches">
-              {g.tokens.map((t) => (
-                <li key={t} className="ds-swatch">
-                  <span className="ds-swatch__plate" style={{ background: `var(${t})` }} aria-hidden="true" />
-                  <span className="ds-swatch__name">{t}</span>
-                  <span className="ds-swatch__value">{values[t] || "reading"}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <div className="ds-specimen-row">
+          {COLOUR_GROUPS.map((g) => (
+            <SpecimenCard key={g.title} kicker={g.title} center={false}>
+              <ul className="ds-swatches">
+                {g.tokens.map((t) => (
+                  <li key={t} className="ds-swatch">
+                    <span className="ds-swatch__plate" style={{ background: `var(${t})` }} aria-hidden="true" />
+                    <span className="ds-swatch__name">{t}</span>
+                    <span className="ds-swatch__value">{values[t] || "reading"}</span>
+                  </li>
+                ))}
+              </ul>
+            </SpecimenCard>
+          ))}
+        </div>
       </section>
 
         </div>
@@ -347,8 +390,7 @@ export default function DesignSystemSpecimens() {
       <section className="ds-section" aria-labelledby="ds-scales">
         <SectionHeader id="ds-scales" title="Spacing and radius" className="ds-section__header" />
         <div className="ds-specimen-row">
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Spacing</p>
+          <SpecimenCard kicker="Spacing" center={false}>
             <ul className="ds-scale">
               {SPACING.map((t) => (
                 <li key={t} className="ds-scale__row">
@@ -358,9 +400,8 @@ export default function DesignSystemSpecimens() {
                 </li>
               ))}
             </ul>
-          </div>
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Radius</p>
+          </SpecimenCard>
+          <SpecimenCard kicker="Radius" center={false}>
             <ul className="ds-scale">
               {RADII.map((t) => (
                 <li key={t} className="ds-scale__row">
@@ -370,7 +411,7 @@ export default function DesignSystemSpecimens() {
                 </li>
               ))}
             </ul>
-          </div>
+          </SpecimenCard>
         </div>
       </section>
 
@@ -387,81 +428,51 @@ export default function DesignSystemSpecimens() {
           state in ARIA. The gate fails any view with more than one primary.
         </p>
         <div className="ds-specimen-row">
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Button</p>
-            <p className="ds-section__note" style={{ margin: 0 }}>True actions only; max one primary per view. The page's ONE primary is the opening keycap above.</p>
-            <div className="ds-specimen__body">
-              <Button variant="secondary">Secondary</Button>
-            </div>
-            <TokenAnnotation tokens={ANN.button} />
-          </div>
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">SegmentedControl</p>
-            <p className="ds-section__note" style={{ margin: 0 }}>Mutually exclusive views; single select, aria-current.</p>
-            <div className="ds-specimen__body">
-              <SegmentedControl
-                label="Specimen views"
-                options={[
-                  { value: "table", label: "Table", icon: "Table" },
-                  { value: "map", label: "Map", icon: "Map" },
-                ]}
-                value={view}
-                onChange={setView}
-              />
-            </div>
-            <TokenAnnotation tokens={ANN.seg} />
-          </div>
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">FilterChip</p>
-            <p className="ds-section__note" style={{ margin: 0 }}>Multi-select filters; outline, aria-pressed, hover.</p>
-            <div className="ds-specimen__body">
-              {/* the REAL ui/FilterChip (21 Jul: redrawn copies replaced) */}
-              <FilterChip pressed={chipOn} onClick={() => setChipOn(!chipOn)}>
-                Design Tokens
-              </FilterChip>
-              <FilterChip pressed={!chipOn} onClick={() => setChipOn(!chipOn)}>
-                Governance
-              </FilterChip>
-            </div>
-            <TokenAnnotation tokens={ANN.chip} />
-          </div>
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Tag and StatusPill</p>
-            <p className="ds-section__note" style={{ margin: 0 }}>Tag: flat metadata wash, never clickable. StatusPill: quiet status.</p>
-            <div className="ds-specimen__body">
-              <Tag>Non-interactive metadata</Tag>
-              <StatusPill>Current focus</StatusPill>
-            </div>
-            <TokenAnnotation tokens={ANN.tagPill} />
-          </div>
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Select</p>
-            <p className="ds-section__note" style={{ margin: 0 }}>Dropdowns like sort; native, styled, never a keycap.</p>
-            <div className="ds-specimen__body">
-              <Select
-                label="Sort specimen"
-                value={sortSpec}
-                onChange={setSortSpec}
-                options={[
-                  { value: "year", label: "Year, newest first" },
-                  { value: "title", label: "Title A-Z" },
-                ]}
-              />
-            </div>
-            <TokenAnnotation tokens={ANN.select} />
-          </div>
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Bubble</p>
-            <div className="ds-specimen__body">
-              <span
-                className="ds-orb ds-orb--small"
-                style={{ "--orb-hi": "var(--hub-hi)", "--orb-lo": "var(--hub-lo)" } as React.CSSProperties}
-                aria-hidden="true"
-              />
-              <span className="ds-type__meta">radial at 36% 30%, one light source, upper left</span>
-            </div>
-            <TokenAnnotation tokens={ANN.bubble} />
-          </div>
+          <SpecimenCard kicker="Button" note="True actions only; max one primary per view. The page's ONE primary is the opening keycap above." tokens={ANN.button}>
+            <Button variant="secondary">Secondary</Button>
+          </SpecimenCard>
+          <SpecimenCard kicker="SegmentedControl" note="Mutually exclusive views; single select, aria-current." tokens={ANN.seg}>
+            <SegmentedControl
+              label="Specimen views"
+              options={[
+                { value: "table", label: "Table", icon: "Table" },
+                { value: "map", label: "Map", icon: "Map" },
+              ]}
+              value={view}
+              onChange={setView}
+            />
+          </SpecimenCard>
+          <SpecimenCard kicker="FilterChip" note="Multi-select filters; outline, aria-pressed, hover." tokens={ANN.chip}>
+            <FilterChip pressed={chipOn} onClick={() => setChipOn(!chipOn)}>
+              Design Tokens
+            </FilterChip>
+            <FilterChip pressed={!chipOn} onClick={() => setChipOn(!chipOn)}>
+              Governance
+            </FilterChip>
+          </SpecimenCard>
+          <SpecimenCard kicker="Tag and StatusPill" note="Tag: flat metadata wash, never clickable. StatusPill: quiet status." tokens={ANN.tagPill}>
+            <Tag>Non-interactive metadata</Tag>
+            <StatusPill>Current focus</StatusPill>
+          </SpecimenCard>
+          <SpecimenCard kicker="Select" note="Dropdowns like sort; native, styled, never a keycap." tokens={ANN.select}>
+            <Select
+              label="Sort specimen"
+              value={sortSpec}
+              onChange={setSortSpec}
+              options={[
+                { value: "year", label: "Year, newest first" },
+                { value: "title", label: "Title A-Z" },
+              ]}
+            />
+          </SpecimenCard>
+          <SpecimenCard kicker="Bubble" tokens={ANN.bubble}>
+            <span
+              className="ds-orb ds-orb--small"
+              style={{ "--orb-hi": "var(--hub-hi)", "--orb-lo": "var(--hub-lo)" } as React.CSSProperties}
+              aria-hidden="true"
+            />
+            <span className="ds-type__meta">radial at 36% 30%, one light source, upper left</span>
+          </SpecimenCard>
         </div>
       </section>
 
@@ -478,7 +489,9 @@ export default function DesignSystemSpecimens() {
           the tokens driving it, values read from the running stylesheet at that moment,
           never copied into the page. If the system drifted, this page would show it.
         </p>
-        <TokenInspector />
+        <Card innerClassName="ds-card__inner">
+          <TokenInspector />
+        </Card>
       </section>
 
         </div>
@@ -501,7 +514,8 @@ export default function DesignSystemSpecimens() {
           the case registry. The audit:agents gate fails the build if either surface
           disagrees with the live route registry.
         </p>
-        <pre className="ds-agents__code">
+        <Card innerClassName="ds-card__inner">
+        <pre className="ds-agents__code" style={{ margin: 0 }}>
           <code>{`curl https://elleta.design/api/bella.json
 
 {
@@ -514,6 +528,7 @@ export default function DesignSystemSpecimens() {
   "cases": [{ "slug": "chip", "route": "/case-studies/chip" }, ...]
 }`}</code>
         </pre>
+        </Card>
         <p className="ds-section__note">
           Coming next, per the status below: the agent-queryable BELLA Brain (MCP).
         </p>
