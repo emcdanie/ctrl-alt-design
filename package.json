@@ -40,7 +40,7 @@
     "eslint-config-next": "16.1.7",
     "playwright": "^1.60.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^7"
   },
   "optionalDependencies": {
     "@tailwindcss/oxide-darwin-arm64": "^4.2.1"
