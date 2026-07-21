@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+/* Lazy init (21 Jul): the Resend constructor throws without a key, so
+ * a module-scope instance breaks `next build` anywhere the secret is
+ * absent (CI). The client is built on first send instead. */
+let resendClient: Resend | null = null;
+const resend = () => (resendClient ??= new Resend(process.env.RESEND_API_KEY));
 
 /* Quiet anti-spam (2026-07-17, no CAPTCHA): honeypot field, minimum
  * fill time, and a small per-IP rate limit. Rejected humans still see
@@ -37,7 +41,7 @@ export async function POST(req: NextRequest) {
     recent.push(now);
     hits.set(ip, recent);
 
-    const { error } = await resend.emails.send({
+    const { error } = await resend().emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
       to: "elletamc@gmail.com",
       replyTo: email,
