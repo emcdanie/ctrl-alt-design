@@ -122,6 +122,24 @@ toggles, or sort.
   as an employer reference. If protection is ever wanted anyway, teach `audit:nda` per-term
   allowlisting first; do not just add the word to the list.
 
+## 7b. Branch flow (Elleta, 2026-07-21, via Cowork — every session follows this)
+- **No direct pushes to main.** Terminal sessions work on short-lived branches
+  (`<type>/<slug>`, e.g. `fix/thesis-theme`), open a PR, and merge only on green.
+- The PR carries the template: what changed, local gate output (CI cannot run
+  audit:nda — the private lists never leave this machine), screenshots for
+  anything visual, and the Elleta-approval line for content changes.
+- Include the Vercel preview link in the PR body once the bot posts it.
+- CI (`.github/workflows/gate.yml`) runs tsc + the full gate on every PR and
+  every push to main; the `gate` check is REQUIRED by branch protection, and
+  force-pushes to main are blocked.
+- **Break-glass (approved history surgery only, e.g. the NDA scrub class of
+  event):** temporarily lift protection with
+  `gh api -X DELETE repos/emcdanie/ctrl-alt-design/branches/main/protection`,
+  do the approved surgery, then re-apply protection immediately (the settings
+  are recorded in `docs/branch-protection.json`; re-apply with
+  `gh api -X PUT .../protection --input docs/branch-protection.json`). Every
+  break-glass use gets a line in `claude-progress.md` with her approval.
+
 ## 8. Working method (spec → review → execute)
 Use the `portfolio-spec` skill. For any non-trivial task:
 1. I give intent (often a screenshot / Figma link / description).
