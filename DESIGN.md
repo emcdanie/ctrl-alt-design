@@ -338,6 +338,12 @@ is the ONLY way to render one:
   card-voice readability): the reveal/peek CARD leaves the proto-exact
   scope; its kicker joins the shared eyebrow scale, its list joins the
   card body step, its CTA the 16px floor.
+- List markers (Elleta, 2026-07-21, card-voice): solid CSS discs,
+  NEVER glyphs, rings, or icons. The ONE `.card-list-item` recipe:
+  `::before` disc at `--list-marker-size` (6px, recorded token),
+  `--radius-full`, `--color-accent-ink` (iris light / periwinkle
+  dark), centred on the first line box, `list-style: none`. ui/Icon is
+  reserved for interactive affordances (e.g. the popup CTA arrow).
 - Card body (Elleta, 2026-07-21, card-voice readability): the ONE
   `.card-body` recipe: Geist at `--typography-font-size-lg` (18px, one
   ramp step above the 16px floor), line-height 1.6, measure capped at

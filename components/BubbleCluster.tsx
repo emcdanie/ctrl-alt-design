@@ -315,13 +315,12 @@ export default function BubbleCluster({
             {/* the ONE heading recipe (card-voice item 1, 21 Jul): same
                   computed size as CaseCard titles; page-tier 2xl retired */}
               <p className={`heading-item ${styles.pt}`}>{active.title}</p>
+            {/* solid CSS discs via the ONE shared list recipe
+                (card-voice, 21 Jul); icons left this tier, ui/Icon
+                stays on the interactive CTA below */}
             <p className={styles.pi}>
               {active.ingredients.map((x) => (
-                <span key={x} className={styles.pitem}>
-                  {/* Iconoir marker via the ONE Icon layer (brief's <ICON>
-                      placeholder was unfilled; NavArrowRight is MY pick,
-                      swap freely) */}
-                  <Icon name="NavArrowRight" size="sm" aria-hidden style={{ color: "var(--color-accent-ink)", flexShrink: 0, marginTop: "var(--spacing-1)" }} />
+                <span key={x} className="card-list-item">
                   <span>{x}</span>
                 </span>
               ))}

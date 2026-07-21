@@ -244,14 +244,6 @@
   margin: 0;
 }
 
-/* icon-marker rows (card-voice item 2, 21 Jul): list-style none by
-   construction (spans), marker aligned to the first text line */
-.pitem {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--spacing-2);
-}
-
 /* Card CTA — ONE consistent secondary keycap, iris on every card. The
  * case colour lives in the kicker/trace/glow, never in this button. */
 .pr {

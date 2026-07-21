@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { social } from "@/lib/social";
-import { Icon } from "@/components/ui/Icon";
 
 interface ResumeModalProps {
   open: boolean;
@@ -301,8 +300,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
                     </p>
                     <ul className="mt-2 space-y-1">
                       {role.highlights.map((h) => (
-                        <li key={h} className="text-[length:var(--typography-font-size-base)] text-[color:var(--ink-on-paper-soft)] leading-relaxed flex gap-2">
-                          <Icon name="NavArrowRight" size="sm" aria-hidden style={{ color: "var(--color-accent-ink)", flexShrink: 0, marginTop: "var(--spacing-1)" }} />
+                        <li key={h} className="card-list-item text-[length:var(--typography-font-size-base)] text-[color:var(--ink-on-paper-soft)] leading-relaxed">
                           <span>{h}</span>
                         </li>
                       ))}

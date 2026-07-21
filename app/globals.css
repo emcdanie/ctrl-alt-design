@@ -307,6 +307,8 @@ body {
   --measure-case: 70ch;
   /* card body measure (card-voice readability, 21 Jul) */
   --measure-card: 70ch;
+  /* solid-disc list marker (card-voice, 21 Jul): the recorded size */
+  --list-marker-size: 6px;
   /* Thesis card stops (Elleta, 21 Jul: the 20 Jul fixed-dark decision
      is REVERSED; the cards are THEME-AWARE). Light theme = the card
      surface pair; the dark override below restores the navy specimen
@@ -2180,6 +2182,27 @@ textarea:focus-visible {
 
 .thesis-band .card-body {
   color: var(--thesis-band-ink);
+}
+
+/* the ONE card list recipe (card-voice, 21 Jul): solid CSS disc
+   markers, never glyphs, rings, or icons; ui/Icon stays reserved for
+   interactive affordances. Disc centres on the first line box (the
+   1.6 leading of .card-body). */
+.card-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+  list-style: none;
+}
+
+.card-list-item::before {
+  content: "";
+  flex-shrink: 0;
+  width: var(--list-marker-size);
+  height: var(--list-marker-size);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-ink);
+  margin-top: calc((1.6em - var(--list-marker-size)) / 2);
 }
 
 /* the metadata tier inside cards (bylines, artists, period rows):
