@@ -39,7 +39,7 @@ export default function ExperienceCard({
       <LogoContainer src={logoSrc} alt={company} bg={logoBg} size={48} />
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-body text-[length:var(--typography-font-size-base)] font-semibold leading-[1.3] text-[color:var(--color-ink)] md:text-[length:var(--typography-font-size-lg)]">
+          <span className="heading-item">
             {title}
           </span>
           {isCurrent && (

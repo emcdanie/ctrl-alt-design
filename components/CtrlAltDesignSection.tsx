@@ -155,15 +155,14 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
       }
     >
       <span><StatusPill>{prototype.maturity}</StatusPill></span>
-      <h3
-        className="text-[length:var(--typography-font-size-lg)] font-bold leading-snug text-[color:var(--color-ink)]"
-        style={{ fontFamily: "var(--font-body)" }}
-      >
+      {/* the ONE content-card title recipe (conformance, 21 Jul) */}
+      <h3 className="heading-item" style={{ margin: 0 }}>
         {prototype.title}
       </h3>
+      {/* subtitle joins the reading ramp: 16px floor (conformance, 21 Jul) */}
       <p
-        className="flex-1 text-[length:var(--typography-font-size-sm)] leading-[1.65]"
-        style={{ color: "var(--color-muted)", margin: 0 }}
+        className="flex-1 text-[length:var(--typography-font-size-base)] leading-[1.65]"
+        style={{ color: "var(--color-ink-muted)", margin: 0 }}
       >
         {prototype.subtitle}
       </p>

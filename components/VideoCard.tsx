@@ -74,7 +74,8 @@ export default function VideoCard({
       {/* the old hardcoded "Exploration" eyebrow is now the honest
           maturity StatusPill from the data (21 Jul) */}
       <span><StatusPill>{maturity}</StatusPill></span>
-      <h3 className="font-body text-[length:var(--typography-font-size-xl)] font-bold leading-snug text-[color:var(--color-ink)]">
+      {/* the ONE content-card title recipe (conformance, 21 Jul) */}
+      <h3 className="heading-item" style={{ margin: 0 }}>
         {title}
       </h3>
       <p

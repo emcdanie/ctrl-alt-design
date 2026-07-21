@@ -195,7 +195,7 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
               <div className="flex w-full items-center gap-4 p-6">
                 <LogoContainer src={edu.logo} alt={edu.name} size={48} />
                 <div className="min-w-0 flex-1">
-                  <span className="font-body text-[length:var(--typography-font-size-base)] font-semibold leading-[1.3] text-[color:var(--color-ink)] md:text-[length:var(--typography-font-size-lg)]">
+                  <span className="heading-item" style={{ display: "block" }}>
                     {edu.name}
                   </span>
                   <div className="mt-1 text-[length:var(--typography-font-size-sm)] leading-relaxed text-[color:var(--color-ink-muted)]">
