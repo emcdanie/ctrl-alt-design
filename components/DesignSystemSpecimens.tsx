@@ -138,7 +138,9 @@ const ORB_TOKENS = CASE_ORBS.map(
 const OPENING_FLAGS = [
   { token: "--btn-key-radius", kind: "radius", at: "top-left" },
   { token: "--key-fill-hi", kind: "color", at: "top-right" },
-  { token: "--key-fill-lo", kind: "color", at: "bottom" },
+  /* all three ride the TOP lanes: the zone buttons own the space
+     under the keycap (v3 polish overlap fix) */
+  { token: "--key-fill-lo", kind: "color", at: "top" },
   /* no shadow flag here: the inspector's own Edge-and-shadow zone IS
      that annotation (no double display), and the zone row occupies the
      bottom-right lane */
@@ -283,7 +285,7 @@ export default function DesignSystemSpecimens() {
               the intro at 1440 (v3 review constraint) */}
           <div className="ds-flagwrap">
             <TokenInspector />
-            <TokenAnnotation tokens={OPENING_FLAGS} variant="flags" />
+            <TokenAnnotation tokens={OPENING_FLAGS} variant="flags" targetSelector=".tok-inspector__key" />
           </div>
           <p className="ds-section__note" style={{ margin: 0 }}>
             This is why the page cannot lie: pick a zone of the keycap and the readout shows
@@ -333,35 +335,48 @@ export default function DesignSystemSpecimens() {
         <SectionHeader id="ds-type" title="Type" className="ds-section__header" />
         {/* the oversized specimen: Unique at display scale, hero tier,
             accent-word treatment, live token readout */}
-        <div className="ds-type__display">
-          <Heading tier="hero" as="h3" accent="display.">
-            Unique 700 carries the
-          </Heading>
-          <span className="ds-type__meta">--font-hero · {values["--font-hero"] || "reading"}</span>
-        </div>
+        {/* fix 3 (22 Jul): the ramp uses its right column. Sample left,
+            baseline leader, aligned annotation flag right; below
+            1024px the flag returns under the sample. */}
         <ul className="ds-type">
+          <li className="ds-type__row">
+            <div className="ds-type__cell">
+              <Heading tier="hero" as="h3" accent="display.">
+                Unique 700 carries the
+              </Heading>
+            </div>
+            <span className="ds-type__leader" aria-hidden="true" />
+            <span className="ds-flag ds-flag--ramp">
+              <span className="ds-flag__value">{values["--font-hero"] || "reading"}</span>
+              <span className="ds-flag__token">--font-hero</span>
+            </span>
+          </li>
           {TYPE_SPECIMENS.map((t) => (
             <li key={t.token} className="ds-type__row">
-              {"display" in t ? (
-                <Heading tier="section" as="h3" className="ds-type__sample" style={{ margin: 0 }}>
-                  {t.sample}
-                </Heading>
-              ) : (
-                <span
-                  className="ds-type__sample"
-                  style={{
-                    fontFamily: t.family,
-                    fontWeight: t.weight,
-                    fontSize: `var(${t.token})`,
-                    textTransform: t.transform,
-                    letterSpacing: t.transform === "uppercase" && t.family.includes("mono") ? "0.12em" : undefined,
-                  }}
-                >
-                  {t.sample}
-                </span>
-              )}
-              <span className="ds-type__meta">
-                {t.token} · {values[t.token] || "reading"}
+              <div className="ds-type__cell">
+                {"display" in t ? (
+                  <Heading tier="section" as="h3" className="ds-type__sample" style={{ margin: 0 }}>
+                    {t.sample}
+                  </Heading>
+                ) : (
+                  <span
+                    className="ds-type__sample"
+                    style={{
+                      fontFamily: t.family,
+                      fontWeight: t.weight,
+                      fontSize: `var(${t.token})`,
+                      textTransform: t.transform,
+                      letterSpacing: t.transform === "uppercase" && t.family.includes("mono") ? "0.12em" : undefined,
+                    }}
+                  >
+                    {t.sample}
+                  </span>
+                )}
+              </div>
+              <span className="ds-type__leader" aria-hidden="true" />
+              <span className="ds-flag ds-flag--ramp">
+                <span className="ds-flag__value">{values[t.token] || "reading"}</span>
+                <span className="ds-flag__token">{t.token}</span>
               </span>
             </li>
           ))}

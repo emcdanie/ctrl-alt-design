@@ -9,6 +9,12 @@
  * 3. COVER PLACEHOLDERS: >= 3:1 large-text against both stops of the
  *    token gradient, both themes (moved here from contrast-check; one
  *    home for visual assertions).
+ * 4. LEADER-TOUCH (v3 polish): every measured flag's leader line
+ *    intersects both its flag rect and the annotated target rect
+ *    (within 2px), so no flag ever floats.
+ * 5. SPECIMEN-CENTRED (v3 polish): centred demos sit within 8px of
+ *    their slot centre on both axes, and no card's internal vertical
+ *    gap (head -> demo -> flag lanes) exceeds --spacing-8 + 2px.
  */
 import { chromium } from "playwright";
 
@@ -68,6 +74,77 @@ for (const theme of ["light", "dark"]) {
     console.error(`VISUAL FAIL (${theme}) unequal specimen heights: ${b}`);
   }
 
+  /* ── 4: leader-touch ── */
+  const leaderBad = await page.evaluate(() => {
+    const out = [];
+    const expand = (r, n) => ({ left: r.left - n, right: r.right + n, top: r.top - n, bottom: r.bottom + n });
+    const hits = (a, b) => !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom);
+    for (const wrap of document.querySelectorAll(".ds-flagwrap")) {
+      const target = wrap.querySelector("[data-annotated]") ?? wrap.querySelector(".ds-hitrect");
+      /* leaders may be polylines: group segments per token; the group
+         must touch the flag AND the target */
+      const groups = new Map();
+      for (const leader of wrap.querySelectorAll(".ds-flag-leader")) {
+        const k = leader.dataset.for;
+        groups.set(k, [...(groups.get(k) ?? []), leader]);
+      }
+      for (const [k, segs] of groups) {
+        const flag = wrap.querySelector(`[data-flag-token="${k}"]`);
+        if (!flag) continue;
+        const anchor = flag.className.includes("k-size") ? wrap.querySelector(".ds-hitrect") ?? target : target;
+        if (!anchor) continue;
+        const fOk = segs.some((l) => hits(expand(l.getBoundingClientRect(), 2), flag.getBoundingClientRect()));
+        const tOk = segs.some((l) => hits(expand(l.getBoundingClientRect(), 2), anchor.getBoundingClientRect()));
+        if (!fOk || !tOk) out.push(`${k}: touches flag=${fOk} target=${tOk}`);
+      }
+    }
+    return out;
+  });
+  for (const b of leaderBad) {
+    fails++;
+    console.error(`VISUAL FAIL (${theme}) leader does not touch: ${b}`);
+  }
+
+  /* ── 5: centred demos + gap discipline ── */
+  const centreBad = await page.evaluate(() => {
+    const out = [];
+    const rootCs = getComputedStyle(document.documentElement);
+    const maxGap = (parseFloat(rootCs.getPropertyValue("--spacing-8")) || 32) + 2;
+    for (const demo of document.querySelectorAll(".ds-card__demo--center")) {
+      const kids = [...demo.children].filter((c) => c.getBoundingClientRect().width > 0);
+      if (!kids.length) continue;
+      const dr = demo.getBoundingClientRect();
+      const box = kids.reduce(
+        (a, c) => {
+          const r = c.getBoundingClientRect();
+          return { l: Math.min(a.l, r.left), r: Math.max(a.r, r.right), t: Math.min(a.t, r.top), b: Math.max(a.b, r.bottom) };
+        },
+        { l: Infinity, r: -Infinity, t: Infinity, b: -Infinity }
+      );
+      const dx = Math.abs((box.l + box.r) / 2 - (dr.left + dr.right) / 2);
+      const dy = Math.abs((box.t + box.b) / 2 - (dr.top + dr.bottom) / 2);
+      if (dx > 8 || dy > 8) {
+        const kicker = demo.closest(".ds-card__inner")?.querySelector(".ds-section__kicker")?.textContent ?? "?";
+        out.push(`${kicker}: off-centre dx=${Math.round(dx)} dy=${Math.round(dy)}`);
+      }
+    }
+    for (const inner of document.querySelectorAll(".ds-card__inner")) {
+      const parts = [inner.querySelector(".ds-card__head"), inner.querySelector(".ds-flagwrap") ?? inner.querySelector(".ds-card__demo")].filter(Boolean);
+      for (let i = 0; i + 1 < parts.length; i++) {
+        const gap = parts[i + 1].getBoundingClientRect().top - parts[i].getBoundingClientRect().bottom;
+        if (gap > maxGap) {
+          const kicker = inner.querySelector(".ds-section__kicker")?.textContent ?? "?";
+          out.push(`${kicker}: internal gap ${Math.round(gap)}px > ${maxGap}`);
+        }
+      }
+    }
+    return out;
+  });
+  for (const b of centreBad) {
+    fails++;
+    console.error(`VISUAL FAIL (${theme}) centring/gap: ${b}`);
+  }
+
   /* ── 3: cover placeholders on /work ── */
   await page.goto("http://localhost:3000/work", { waitUntil: "networkidle", timeout: 30000 });
   await page.waitForTimeout(500);
@@ -98,4 +175,4 @@ if (fails > 0) {
   console.error(`visual gate: ${fails} failure(s)`);
   process.exit(1);
 }
-console.log("visual gate: PASS (one ground, equal specimen rows, cover placeholders >= 3:1)");
+console.log("visual gate: PASS (one ground, equal rows, covers >= 3:1, leaders touch, demos centred, gaps <= spacing-8)");

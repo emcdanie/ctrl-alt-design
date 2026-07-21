@@ -2448,7 +2448,7 @@ textarea:focus-visible {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-10) var(--spacing-8);
-  align-items: start;
+  align-items: stretch;
 }
 
 @media (max-width: 767px) {
@@ -2468,12 +2468,51 @@ textarea:focus-visible {
   margin-inline: auto;
 }
 
-/* the oversized type specimen (hero tier at display scale) */
-.ds-type__display {
-  margin: var(--spacing-6) 0 var(--spacing-10);
+/* the ramp's annotation column (fix 3, 22 Jul): grid so every flag
+   shares ONE left edge (the column line); leaders run sample -> flag
+   on the baseline. Below 1024px flags return under the samples. */
+.ds-type {
+  list-style: none;
+  margin: var(--spacing-6) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--spacing-8);
+}
+
+.ds-type__row {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2);
+  min-width: 0;
+}
+
+.ds-flag.ds-flag--ramp {
+  position: static;
+  align-self: flex-start;
+}
+
+@media (min-width: 1024px) {
+  .ds-type__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, auto);
+    align-items: baseline;
+    gap: var(--spacing-3);
+  }
+
+  .ds-type__cell {
+    min-width: 0;
+  }
+
+  .ds-type__leader {
+    border-bottom: 1px solid var(--color-semantic-accent-border);
+    min-width: var(--spacing-8);
+    transform: translateY(calc(-1 * var(--spacing-1)));
+  }
+
+  .ds-flag.ds-flag--ramp {
+    justify-self: start;
+  }
 }
 
 .ds-page__intro {
@@ -2579,15 +2618,6 @@ textarea:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.ds-type {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-6);
-}
-
 .ds-type__sample {
   display: block;
   color: var(--color-ink);
@@ -2620,11 +2650,13 @@ textarea:focus-visible {
   min-width: 0;
 }
 
+/* fix 2/4 (22 Jul): the fixed head slot retires; ONE spacing pair
+   runs the card rhythm and no internal gap exceeds --spacing-8 */
 .ds-card__head {
-  min-height: calc(var(--spacing-12) + var(--spacing-8));
   display: flex;
   flex-direction: column;
   gap: var(--spacing-1);
+  margin-bottom: var(--spacing-3);
 }
 
 .ds-card__demo {
@@ -2680,18 +2712,13 @@ textarea:focus-visible {
   /* a flag never leaves its own card: long values ellipsize like a
      real redline (the inspector list shows full values) */
   max-width: 100%;
+  position: absolute;
 }
 
 .ds-flag__value,
 .ds-flag__token {
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.ds-flag::before {
-  content: "";
-  position: absolute;
-  background: var(--color-semantic-accent-border);
 }
 
 .ds-flag__chip {
@@ -2706,26 +2733,28 @@ textarea:focus-visible {
   color: var(--color-ink-muted);
 }
 
-/* annotate mode reserves gutter LANES above and below the demo, so
-   flags can never collide with centred content (the tight-space rule:
-   the flag sits outside the demo edge like a real redline) */
+/* v3 polish (22 Jul): geometry is MEASURED in TokenAnnotation; flags
+   hug the annotated element, leaders touch it. The wrap reserves ONE
+   spacing pair of vertical room; internal gaps never exceed
+   --spacing-8 (asserted). */
 .ds-flagwrap--on {
-  padding-block: calc(var(--spacing-10) + var(--spacing-8));
+  padding-block: var(--spacing-8);
 }
 
-.ds-flag--top-left { top: 0; left: 0; }
-.ds-flag--top { top: 0; left: 50%; transform: translateX(-50%); }
-.ds-flag--top-right { top: var(--spacing-8); right: 0; }
-.ds-flag--bottom-left { bottom: 0; left: 0; }
-.ds-flag--bottom { bottom: 0; left: 50%; transform: translateX(-50%); }
-.ds-flag--bottom-right { bottom: var(--spacing-8); right: 0; }
+.ds-flag-leader {
+  position: absolute;
+  background: var(--color-semantic-accent-border);
+  pointer-events: none;
+  z-index: 1;
+}
 
-.ds-flag--top-left::before,
-.ds-flag--top::before,
-.ds-flag--top-right::before { width: 1px; height: var(--spacing-2); left: 50%; top: 100%; }
-.ds-flag--bottom-left::before,
-.ds-flag--bottom::before,
-.ds-flag--bottom-right::before { width: 1px; height: var(--spacing-2); left: 50%; bottom: 100%; }
+.ds-hitrect {
+  position: absolute;
+  border: 1px dashed var(--color-semantic-accent-border);
+  border-radius: var(--radius-md);
+  pointer-events: none;
+  z-index: 1;
+}
 
 /* tight space (<768px, v3 review 22 Jul): lanes give way to a compact
    stacked row BELOW the item; full token names return; never a toggle */
@@ -2747,10 +2776,7 @@ textarea:focus-visible {
     transform: none;
   }
 
-  .ds-flag::before {
-    display: none;
   }
-}
 
 .ds-card__foot {
   margin-top: auto;
