@@ -329,7 +329,10 @@ body {
   --case-guardian-text: var(--case-guardian-hi);
   --case-clarity-text: var(--case-clarity-hi);
   --case-design-lab-text: var(--case-design-lab-hi);
-  --case-writing-text: var(--case-writing-hi);
+  /* brightened toward the on-dark ink (a11y, 21 Jul): the raw -hi
+     salmon sat under 4.5:1 on its own 26% wash (chip readiness map);
+     still hue-true, now AA on every ground it renders on */
+  --case-writing-text: color-mix(in srgb, var(--case-writing-hi) 62%, var(--ink-on-dark-strong));
   --case-filters-text: var(--case-filters-hi);
   --case-chip-text: var(--case-chip-hi);
   /* thesis cards in dark keep the navy specimen ground (21 Jul
@@ -1797,13 +1800,16 @@ textarea:focus-visible {
   color: var(--color-accent-ink);
 }
 
-/* the right-column copy only shows when the left panel is hidden */
+/* the right-column copy only shows when the left panel is hidden.
+   The WHOLE mobile breadcrumb nav leaves the tree at desktop (a11y,
+   21 Jul): two nav[aria-label="Breadcrumb"] landmarks failed
+   axe landmark-unique, and the crumb spans leaked visually. */
 .cs-shell__backlink--mobile {
   margin-bottom: var(--spacing-2);
 }
 
 @media (min-width: 1080px) {
-  .cs-shell__backlink--mobile {
+  .cs-shell__crumbs--mobile {
     display: none;
   }
 }

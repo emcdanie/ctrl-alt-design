@@ -58,6 +58,7 @@ const GATE = [
   { name: "audit:reuse", line: "Zero-import components fail. One implementation, no dead copy left rendering." },
   { name: "audit:parity", line: "Every case-study slug has exactly one library row and every case row resolves back to a slug. A case can never be routable but invisible." },
   { name: "audit:agents", line: "The agent surfaces (llms.txt, /api/bella.json) must match the live route registry. An agent surface that lies fails the build." },
+  { name: "audit:axe", line: "axe-core against every route in both themes; zero violations to pass. Needs-review nodes are counted and verified by hand." },
 ];
 
 /* case identities render as the orb band; their tokens still feed the
@@ -139,7 +140,7 @@ export default function DesignSystemSpecimens() {
       </p>
       <p className="ds-page__intro">
         It is also how I work with AI: the tokens rein the agent in, an agent can only
-        build with what the system exposes, and the gate keeps it honest. Ten audits run
+        build with what the system exposes, and the gate keeps it honest. Eleven audits run
         before anything ships. Green or it does not merge.
       </p>
       {/* the opening 3D moment: real keycaps, press them */}
@@ -467,7 +468,7 @@ export default function DesignSystemSpecimens() {
             <ul className="ds-status__list">
               <li>The token layer, both themes</li>
               <li>The control taxonomy, live on every page</li>
-              <li>The gate, ten audits and a pre-commit hook</li>
+              <li>The gate, eleven audits and a pre-commit hook</li>
               <li>The dark-mode contract, AA on every route</li>
             </ul>
           </div>
@@ -492,7 +493,7 @@ export default function DesignSystemSpecimens() {
       <section className="ds-section" aria-labelledby="ds-gate">
         <h2 id="ds-gate" className="ds-section__title">The gate</h2>
         <p className="ds-section__note">
-          Ten audits run before anything ships. Green or it does not merge. The cards below show the last local gate run (21 Jul 2026), labelled honestly as a snapshot, not live CI.
+          Eleven audits run before anything ships. Green or it does not merge. The cards below show the last local gate run (21 Jul 2026), labelled honestly as a snapshot, not live CI.
         </p>
         {/* scannable status-card grid (Elleta, 21 Jul, spec system-page-v2) */}
         <dl className="ds-gate">

@@ -21,6 +21,9 @@ export default function InspectorEmbedPage() {
         background: "var(--color-semantic-background)",
       }}
     >
+      {/* chromeless embed still needs a page heading (axe
+          page-has-heading-one); visually silent */}
+      <h1 className="sr-only">Token inspector</h1>
       <TokenInspector />
     </main>
   );
