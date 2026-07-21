@@ -2250,9 +2250,11 @@ textarea:focus-visible {
   outline-offset: var(--ring-focus-offset);
 }
 
-/* D1 (Pass D 2026-07-18; amended 21 Jul for the map): specimen bands
-   paint the CONTENT COLUMN edge to edge (the full viewport when no
-   rail is present); text stays inside the 1240 container it wraps. */
+/* D1 (Pass D 2026-07-18; amended 21 Jul for the map; ONE GROUND,
+   system-page-v3): every band renders on the page ground; the identity
+   band's low-tint wash is the page's single recorded background moment
+   (Elleta's call). audit:visual asserts no other band ever gains a
+   surface again. */
 .ds-band {
   padding-block: var(--spacing-12);
 }
@@ -2352,11 +2354,6 @@ textarea:focus-visible {
 /* the ds heads keep the section rhythm the private recipe had */
 .ds-section__header {
   margin: 0 0 var(--spacing-4);
-}
-
-.ds-band--card {
-  background: var(--color-card);
-  border-block: 1px solid var(--color-border-soft);
 }
 
 /* identity band: the five case hues wash the full width at low tint */

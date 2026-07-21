@@ -119,7 +119,7 @@ function AuditReceiptsSection() {
   /* TODO slots render nothing; the whole section waits for the intro */
   if (!AUDIT_RECEIPTS.intro.trim()) return null;
   return (
-    <div className="ds-band ds-band--card">
+    <div className="ds-band">
       <div className="layout-container">
         <section className="ds-section" aria-labelledby="ds-receipts">
           <h2 id="ds-receipts" className="ds-section__title">Audits are a guide, not a verdict</h2>
@@ -318,7 +318,7 @@ export default function DesignSystemSpecimens() {
       </div>
 
       {/* ── Colour ── */}
-      <div className="ds-band ds-band--card">
+      <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-colour">
         <SectionHeader id="ds-colour" title="Colour" className="ds-section__header" />
@@ -378,7 +378,7 @@ export default function DesignSystemSpecimens() {
       </div>
 
       {/* ── Controls ── */}
-      <div className="ds-band ds-band--card">
+      <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-controls">
         <SectionHeader id="ds-controls" title="Controls" className="ds-section__header" />
@@ -485,7 +485,7 @@ export default function DesignSystemSpecimens() {
       </div>
 
       {/* ── For agents ── */}
-      <div className="ds-band ds-band--card">
+      <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-agents">
         <SectionHeader id="ds-agents" title="What agents read" className="ds-section__header" />
@@ -575,7 +575,7 @@ export default function DesignSystemSpecimens() {
       </div>
 
       {/* ── The gate ── */}
-      <div className="ds-band ds-band--card">
+      <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-gate">
         <SectionHeader id="ds-gate" title="The gate" className="ds-section__header" />
