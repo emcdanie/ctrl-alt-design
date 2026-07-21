@@ -1406,6 +1406,7 @@ textarea:focus-visible {
 .ds-status {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-auto-rows: 1fr;
   gap: var(--grid-gap);
 }
 
@@ -2447,6 +2448,7 @@ textarea:focus-visible {
   padding: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
   gap: var(--spacing-10) var(--spacing-8);
   align-items: stretch;
 }
@@ -2600,6 +2602,10 @@ textarea:focus-visible {
 
 .ds-agents__code {
   overflow-x: auto;
+  /* flex-child containment (containment law): never wider than the
+     card's inner box; the code scrolls inside instead */
+  min-width: 0;
+  max-width: 100%;
   padding: var(--spacing-5);
   border-radius: var(--radius-xl);
   border: 1px solid var(--color-border-soft);
@@ -2635,8 +2641,10 @@ textarea:focus-visible {
 .ds-specimen-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  /* one card size per band (containment law item 2): every implicit
+     row takes the tallest natural card's height */
+  grid-auto-rows: 1fr;
   gap: var(--spacing-6);
-  /* equal-height cards (v3 T5): stretch is the default; cards fill */
   align-items: stretch;
 }
 
@@ -2650,13 +2658,14 @@ textarea:focus-visible {
   min-width: 0;
 }
 
-/* fix 2/4 (22 Jul): the fixed head slot retires; ONE spacing pair
-   runs the card rhythm and no internal gap exceeds --spacing-8 */
+/* containment law item 2 (22 Jul): fixed two-line head min-height so
+   one- and two-line titles align across a row */
 .ds-card__head {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-1);
   margin-bottom: var(--spacing-3);
+  min-height: var(--spacing-10);
 }
 
 .ds-card__demo {
@@ -2712,7 +2721,7 @@ textarea:focus-visible {
   /* a flag never leaves its own card: long values ellipsize like a
      real redline (the inspector list shows full values) */
   max-width: 100%;
-  position: absolute;
+  position: relative;
 }
 
 .ds-flag__value,
@@ -2733,27 +2742,42 @@ textarea:focus-visible {
   color: var(--color-ink-muted);
 }
 
-/* v3 polish (22 Jul): geometry is MEASURED in TokenAnnotation; flags
-   hug the annotated element, leaders touch it. The wrap reserves ONE
-   spacing pair of vertical room; internal gaps never exceed
-   --spacing-8 (asserted). */
-.ds-flagwrap--on {
-  padding-block: var(--spacing-8);
+/* containment law (22 Jul, supersedes every overlay/outside-edge
+   rule): flags are IN-FLOW rows in two lanes inside the card, above
+   and below the demo; leader ticks span the lane-to-demo gap so they
+   touch by construction; nothing renders outside the card border box
+   (asserted by audit:visual). */
+.ds-flaglane {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  min-width: 0;
 }
 
-.ds-flag-leader {
+.ds-flaglane--top {
+  margin-bottom: var(--spacing-2);
+}
+
+.ds-flaglane--bottom {
+  margin-top: var(--spacing-2);
+}
+
+.ds-flaglane--top .ds-flag::after,
+.ds-flaglane--bottom .ds-flag::before {
+  content: "";
   position: absolute;
+  left: 50%;
+  width: 1px;
+  height: var(--spacing-2);
   background: var(--color-semantic-accent-border);
-  pointer-events: none;
-  z-index: 1;
 }
 
-.ds-hitrect {
-  position: absolute;
-  border: 1px dashed var(--color-semantic-accent-border);
-  border-radius: var(--radius-md);
-  pointer-events: none;
-  z-index: 1;
+.ds-flaglane--top .ds-flag::after {
+  top: 100%;
+}
+
+.ds-flaglane--bottom .ds-flag::before {
+  bottom: 100%;
 }
 
 /* tight space (<768px, v3 review 22 Jul): lanes give way to a compact
@@ -2839,6 +2863,7 @@ textarea:focus-visible {
 .ds-gate {
   margin: 0;
   display: grid;
+  grid-auto-rows: 1fr;
   align-items: stretch;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--spacing-4);

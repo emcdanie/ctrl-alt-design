@@ -220,10 +220,9 @@ function SpecimenCard({
           {note && <p className="ds-section__note" style={{ margin: 0 }}>{note}</p>}
         </div>
       )}
-      <div className={tokens ? "ds-flagwrap ds-flagwrap--on" : "ds-flagwrap"}>
-        <div className={center ? "ds-card__demo ds-card__demo--center" : "ds-card__demo"}>{children}</div>
-        {tokens && <TokenAnnotation tokens={tokens} variant="flags" />}
-      </div>
+      {tokens && <TokenAnnotation tokens={tokens} variant="flags" lane="top" ariaHidden={flagsAriaHidden} />}
+      <div className={center ? "ds-card__demo ds-card__demo--center" : "ds-card__demo"}>{children}</div>
+      {tokens && <TokenAnnotation tokens={tokens} variant="flags" lane="bottom" ariaHidden={flagsAriaHidden} />}
     </Card>
   );
 }
@@ -280,13 +279,10 @@ export default function DesignSystemSpecimens() {
           </div>
         </div>
         <div className="ds-opening-grid__specimen">
-          {/* no reserved gutter here: the inspector card's own padding
-              is the redline zone, so the specimen stays shorter than
-              the intro at 1440 (v3 review constraint) */}
-          <div className="ds-flagwrap">
-            <TokenInspector />
-            <TokenAnnotation tokens={OPENING_FLAGS} variant="flags" targetSelector=".tok-inspector__key" />
-          </div>
+          {/* containment law (22 Jul): the flag lane is IN-FLOW above
+              the inspector, inside this column */}
+          <TokenAnnotation tokens={OPENING_FLAGS} variant="flags" lane="top" />
+          <TokenInspector />
           <p className="ds-section__note" style={{ margin: 0 }}>
             This is why the page cannot lie: pick a zone of the keycap and the readout shows
             the tokens driving it, values read from the running stylesheet at that moment,
