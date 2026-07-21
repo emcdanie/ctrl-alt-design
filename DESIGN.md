@@ -112,6 +112,17 @@ other sizes.
   `.heading-item` style (Geist 18px/700); Unique stays display only:
   hero, statement headlines, section display heads, keycap lockup. No
   per-card overrides.
+- Card voice (Elleta, 2026-07-21, card-voice branch): **Unique never
+  renders inside a Card.** CaseCard is DEMOTED to `.heading-item` (its
+  private `--font-card-title` title rule deleted; the token itself now
+  serves the shared `.card-statement` recipe: Geist 700 at
+  `--font-card-title`, hierarchy from weight/size/colour, ONE accent
+  word in the case identity colour, AA both themes). Both About
+  statement sections (How I solve problems, How I collaborate) render
+  through the ONE `StatementCard` on the theme-aware `thesis-band`
+  surface; the Unique specimen treatment inside cards is retired
+  (`.thesis-band__core/__rest` deleted). Enforced by the Unique-in-card
+  check in `audit:reuse` (seeded-offender verified).
 - Faces (revised 2026-07-17, supersedes the hero-only lock): exactly TWO
   typefaces. Unique 700 = ALL display headings (home hero headline, page
   titles, section headers, case display headlines, keycap lockup),
@@ -322,8 +333,27 @@ is the ONLY way to render one:
   deleted; the registry-parity audit rejects the pattern.
 - Proto-exact hero type (2026-07-16 correction — the proto wins over the
   ramp here, do NOT re-conform): bubble labels 19/18px + hub 22px, hub
-  sub + switch meta 11px, hero kicker 13.5px, hero intro 17px, reveal-card
-  kicker 12px. Scope: hero cluster + reveal card + header chrome only.
+  sub + switch meta 11px, hero kicker 13.5px, hero intro 17px. Scope:
+  hero cluster + header chrome only. AMENDED (Elleta, 2026-07-21,
+  card-voice readability): the reveal/peek CARD leaves the proto-exact
+  scope; its kicker joins the shared eyebrow scale, its list joins the
+  card body step, its CTA the 16px floor.
+- List markers (Elleta, 2026-07-21, card-voice): solid CSS discs,
+  NEVER glyphs, rings, or icons. The ONE `.card-list-item` recipe:
+  `::before` disc at `--list-marker-size` (6px, recorded token),
+  `--radius-full`, `--color-accent-ink` (iris light / periwinkle
+  dark), centred on the first line box, `list-style: none`. ui/Icon is
+  reserved for interactive affordances (e.g. the popup CTA arrow).
+- Card body (Elleta, 2026-07-21, card-voice readability): the ONE
+  `.card-body` recipe: Geist at `--typography-font-size-lg` (18px, one
+  ramp step above the 16px floor), line-height 1.6, measure capped at
+  `--measure-card` (70ch), FULL ink on card surfaces (thesis-band ink on
+  the statement ground); muted is reserved for metadata rows only. The
+  statement head (`--font-card-title`, 20-24px) sits at most two ramp
+  steps above it. Enforced by `audit:type` (computed sizes, both the
+  16px floor and the 18px card-body step); the gate is TWELVE audits.
+  Known 14px `.body-base` (misnamed, `--font-small`) remains OUTSIDE
+  card surfaces only (/quick); flagged for a future pass.
 
 ## Button grammar (2026-07-17, section 7 addendum)
 

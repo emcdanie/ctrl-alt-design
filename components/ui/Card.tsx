@@ -20,6 +20,8 @@ export interface CardProps {
    * the token scrim (--scrim-media) so text over the image stays AA.
    */
   media?: ReactNode;
+  /** skip the media scrim (placeholder covers on known token grounds) */
+  mediaScrim?: boolean;
   /** whole card is ONE link (internal or external), no nested links */
   href?: string;
   /** whole card is ONE button (e.g. opens a modal) */
@@ -42,6 +44,7 @@ export default function Card({
   innerClassName,
   variant = "default",
   media,
+  mediaScrim = true,
   href,
   onClick,
   ariaLabel,
@@ -66,7 +69,10 @@ export default function Card({
       {media != null && (
         <div className={styles.media} aria-hidden={ariaLabel ? true : undefined}>
           {media}
-          <span className={styles.scrim} aria-hidden="true" />
+          {/* the scrim exists so text over ARBITRARY art stays AA; a
+              placeholder cover is a known token ground and skips it
+              (cover-contrast fix, 21 Jul) */}
+          {mediaScrim && <span className={styles.scrim} aria-hidden="true" />}
         </div>
       )}
       {media != null ? <div className={styles.body}>{children}</div> : children}

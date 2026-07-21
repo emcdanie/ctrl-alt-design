@@ -159,11 +159,7 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
       <h3 className="heading-item" style={{ margin: 0 }}>
         {prototype.title}
       </h3>
-      {/* subtitle joins the reading ramp: 16px floor (conformance, 21 Jul) */}
-      <p
-        className="flex-1 text-[length:var(--typography-font-size-base)] leading-[1.65]"
-        style={{ color: "var(--color-ink-muted)", margin: 0 }}
-      >
+      <p className="card-body flex-1" style={{ margin: 0 }}>
         {prototype.subtitle}
       </p>
       <span className="flex flex-wrap items-center gap-2">

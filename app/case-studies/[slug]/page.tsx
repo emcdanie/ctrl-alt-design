@@ -105,7 +105,8 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
           <p
             style={{
               fontFamily: "var(--font-body)",
-              fontSize: "var(--typography-font-size-sm)",
+              /* reading text, 16px floor (type-floor sweep, 21 Jul) */
+              fontSize: "var(--typography-font-size-base)",
               color: "var(--color-muted)",
               lineHeight: 1.6,
               marginBottom: "var(--spacing-3)",
@@ -225,7 +226,8 @@ function Block({ block, title, marker, markerText }: { block: CaseBlock; title: 
           role="note"
           style={{
             fontFamily: "var(--font-body)",
-            fontSize: "var(--typography-font-size-sm)",
+            /* reading text, 16px floor (type-floor sweep, 21 Jul) */
+            fontSize: "var(--typography-font-size-base)",
             lineHeight: 1.6,
             color: "var(--color-ink-soft)",
             borderLeft: "3px solid var(--color-border-medium)",

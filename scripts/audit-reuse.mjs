@@ -45,12 +45,12 @@ for (const c of components) {
    on a heading element) fails. Recorded exception: CaseCard's module
    .title on the recorded --font-card-title token (two-tier call
    pending, see _review/component-conformance.md). ── */
-const CARD_TITLE_EXEMPT = ["components/CaseCard.tsx"];
+const CARD_TITLE_EXEMPT = [];
 for (const { f, s: src } of sources) {
   if (CARD_TITLE_EXEMPT.some((e) => f.endsWith(e))) continue;
   const rawHeadings = src.match(/<h[34][^>]*>/g) ?? [];
   for (const tag of rawHeadings) {
-    if (!/heading-item|sr-only|ds-section__title/.test(tag)) {
+    if (!/heading-item|card-statement|sr-only|ds-section__title/.test(tag)) {
       fails++;
       console.error(`REUSE FAIL: ${f} raw ${tag.slice(0, 60)}... without .heading-item — card titles share ONE recipe`);
     }
@@ -59,6 +59,16 @@ for (const { f, s: src } of sources) {
   for (const m of src.match(fingerprint) ?? []) {
     fails++;
     console.error(`REUSE FAIL: ${f} local title recipe "${m.slice(0, 70)}" — use .heading-item`);
+  }
+  /* Unique never renders inside a Card (Elleta, 21 Jul, card-voice):
+     a file that renders card surfaces (direct ui/Card or DisclosureCard
+     import, or the .thesis-band statement surface) must not render the
+     display Heading primitive; Unique stays page-tier. SectionHeader
+     is fine: it renders outside the cards it introduces. */
+  const rendersCards = /from "@\/components\/ui\/(?:Card|DisclosureCard)"|className="thesis-band/.test(src);
+  if (rendersCards && /<Heading[\s>]/.test(src)) {
+    fails++;
+    console.error(`REUSE FAIL: ${f} renders <Heading> in a file with Card surfaces — Unique never renders inside a Card (card-voice rule)`);
   }
 }
 
