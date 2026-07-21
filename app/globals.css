@@ -2368,20 +2368,49 @@ textarea:focus-visible {
   scroll-margin-top: calc(var(--header-height) + var(--spacing-16));
 }
 
+/* two-column opening (v3 review, 22 Jul): [intro | specimen] at
+   >=1024px, specimen vertically centred against the intro; stacked
+   below, intro first (source order) */
+.ds-opening-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+@media (min-width: 1024px) {
+  .ds-opening-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--spacing-12);
+    align-items: center;
+  }
+}
+
+.ds-opening-grid__specimen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  min-width: 0;
+}
+
 /* the ds heads keep the section rhythm the private recipe had */
 .ds-section__header {
   margin: 0 0 var(--spacing-4);
 }
 
-/* identity band: the five case hues wash the full width at low tint */
+/* identity band: the page's ONE sanctioned background moment (v3 T1);
+   tint stepped up via token until the wash reads at a glance in both
+   themes (v3 review, 22 Jul). Cards stay opaque; the wash lives in
+   the gaps and margins. */
 .ds-band--identity {
+  --identity-wash-tint: 30%;
   background: linear-gradient(
     100deg,
-    color-mix(in srgb, var(--case-chip-hi) 14%, var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-code-first-hi) 14%, var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-drift-hi) 14%, var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-guardian-hi) 14%, var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-clarity-hi) 14%, var(--color-semantic-background))
+    color-mix(in srgb, var(--case-chip-hi) var(--identity-wash-tint), var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-code-first-hi) var(--identity-wash-tint), var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-drift-hi) var(--identity-wash-tint), var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-guardian-hi) var(--identity-wash-tint), var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-clarity-hi) var(--identity-wash-tint), var(--color-semantic-background))
   );
   border-block: 1px solid var(--color-border-soft);
 }
@@ -2698,10 +2727,27 @@ textarea:focus-visible {
 .ds-flag--bottom::before,
 .ds-flag--bottom-right::before { width: 1px; height: var(--spacing-2); left: 50%; bottom: 100%; }
 
-/* tight space (390): token names drop, value-only flags, still outside
-   the demo content like a real redline */
+/* tight space (<768px, v3 review 22 Jul): lanes give way to a compact
+   stacked row BELOW the item; full token names return; never a toggle */
 @media (max-width: 767px) {
-  .ds-flag__token {
+  .ds-flagwrap--on {
+    padding-block: 0;
+  }
+
+  .ds-flags {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    margin-top: var(--spacing-3);
+  }
+
+  .ds-flag {
+    position: static;
+    transform: none;
+  }
+
+  .ds-flag::before {
     display: none;
   }
 }

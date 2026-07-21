@@ -135,8 +135,16 @@ const ORB_TOKENS = CASE_ORBS.map(
 );
 /* redline flag specs (v3 T6): radius at the corner, size on the edge,
    colour by the fill; <=4 flags per specimen so nothing overlaps */
+const OPENING_FLAGS = [
+  { token: "--btn-key-radius", kind: "radius", at: "top-left" },
+  { token: "--key-fill-hi", kind: "color", at: "top-right" },
+  { token: "--key-fill-lo", kind: "color", at: "bottom" },
+  /* no shadow flag here: the inspector's own Edge-and-shadow zone IS
+     that annotation (no double display), and the zone row occupies the
+     bottom-right lane */
+] as const satisfies readonly FlagSpec[];
+
 const ANN = {
-  opening: ["--key-fill-hi", "--key-fill-lo", "--key-fill-edge", "--btn-key-radius", "--shadow-key-resting"],
   button: [
     { token: "--btn-key-radius", kind: "radius", at: "top-left" },
     { token: "--color-accent-ink", kind: "color", at: "bottom-left" },
@@ -172,8 +180,6 @@ const ANN = {
   typeDisplay: ["--font-hero"],
 } as const;
 
-const TYPE_ANN = TYPE_SPECIMENS.map((t) => [t.token] as const);
-
 const ALL_TOKENS = [
   "--font-hero",
   ...CASE_ORBS.map((o) => o.hi),
@@ -193,15 +199,15 @@ function SpecimenCard({
   note,
   tokens,
   center = true,
-  annotate = false,
+  flagsAriaHidden = false,
   children,
 }: {
   kicker?: React.ReactNode;
   note?: React.ReactNode;
   tokens?: readonly (string | FlagSpec)[];
   center?: boolean;
-  /** the band's annotate toggle: redline flags on/off (v3 T6) */
-  annotate?: boolean;
+  /** flags duplicate visible inline text on this card */
+  flagsAriaHidden?: boolean;
   children: React.ReactNode;
 }) {
   return (
@@ -212,25 +218,11 @@ function SpecimenCard({
           {note && <p className="ds-section__note" style={{ margin: 0 }}>{note}</p>}
         </div>
       )}
-      <div className={annotate && tokens ? "ds-flagwrap ds-flagwrap--on" : "ds-flagwrap"}>
+      <div className={tokens ? "ds-flagwrap ds-flagwrap--on" : "ds-flagwrap"}>
         <div className={center ? "ds-card__demo ds-card__demo--center" : "ds-card__demo"}>{children}</div>
-        {tokens && <TokenAnnotation tokens={tokens} variant="flags" open={annotate} />}
+        {tokens && <TokenAnnotation tokens={tokens} variant="flags" />}
       </div>
     </Card>
-  );
-}
-
-/* the annotate toggle: the relocated trigger, one per band (v3 T6) */
-function AnnotateToggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
-  return (
-    <button
-      type="button"
-      className="tok-annotation__trigger"
-      aria-pressed={on}
-      onClick={onToggle}
-    >
-      Annotate
-    </button>
   );
 }
 
@@ -239,9 +231,6 @@ export default function DesignSystemSpecimens() {
   const [view, setView] = useState("table");
   const [chipOn, setChipOn] = useState(true);
   const [sortSpec, setSortSpec] = useState("year");
-  /* per-band annotate toggles (v3 T6); default OFF, the page stays calm */
-  const [annotateIdentity, setAnnotateIdentity] = useState(false);
-  const [annotateControls, setAnnotateControls] = useState(false);
 
   const read = useCallback(() => {
     const cs = getComputedStyle(document.documentElement);
@@ -263,26 +252,46 @@ export default function DesignSystemSpecimens() {
          1240 container inside each band. */}
       <div className="ds-band">
         <div className="layout-container">
-      {/* ── Overview ── */}
-      <p className="ds-page__intro">
-        BELLA is the design system behind this site, small on purpose: a token layer every
-        surface resolves from, one control taxonomy with one job per control, and two
-        typefaces with locked roles. This page is the system inspecting itself. Every value
-        below is read live from computed styles, not copied into the page, so it cannot
-        drift from the stylesheet. Flip the theme and watch the values follow.
-      </p>
-      <p className="ds-page__intro">
-        It is also how I work with AI: the tokens rein the agent in, an agent can only
-        build with what the system exposes, and the gate keeps it honest. Thirteen audits run
-        before anything ships. Green or it does not merge.
-      </p>
-      {/* the opening 3D moment: real keycaps, press them */}
-      <div className="ds-opening" aria-label="Live keycap specimens, press them">
-        <Button variant="primary">Press me</Button>
-        <Button variant="secondary">Or me</Button>
-        <span className="ds-section__note" style={{ margin: 0 }}>Real controls, not pictures. The whole page works this way.</span>
+      {/* ── Two-column opening (v3 review, 22 Jul): [intro | specimen]
+          at >=1024, stacked below, intro first. The specimen is THE
+          keycap inspector, moved here (its band is gone), live and
+          interactive, wearing static redline flags. ── */}
+      <div className="ds-opening-grid">
+        <div className="ds-opening-grid__intro">
+          <p className="ds-page__intro">
+            BELLA is the design system behind this site, small on purpose: a token layer every
+            surface resolves from, one control taxonomy with one job per control, and two
+            typefaces with locked roles. This page is the system inspecting itself. Every value
+            below is read live from computed styles, not copied into the page, so it cannot
+            drift from the stylesheet. Flip the theme and watch the values follow.
+          </p>
+          <p className="ds-page__intro">
+            It is also how I work with AI: the tokens rein the agent in, an agent can only
+            build with what the system exposes, and the gate keeps it honest. Thirteen audits run
+            before anything ships. Green or it does not merge.
+          </p>
+          {/* the opening 3D moment: real keycaps, press them */}
+          <div className="ds-opening" aria-label="Live keycap specimens, press them">
+            <Button variant="primary">Press me</Button>
+            <Button variant="secondary">Or me</Button>
+            <span className="ds-section__note" style={{ margin: 0 }}>Real controls, not pictures. The whole page works this way.</span>
+          </div>
+        </div>
+        <div className="ds-opening-grid__specimen">
+          {/* no reserved gutter here: the inspector card's own padding
+              is the redline zone, so the specimen stays shorter than
+              the intro at 1440 (v3 review constraint) */}
+          <div className="ds-flagwrap">
+            <TokenInspector />
+            <TokenAnnotation tokens={OPENING_FLAGS} variant="flags" />
+          </div>
+          <p className="ds-section__note" style={{ margin: 0 }}>
+            This is why the page cannot lie: pick a zone of the keycap and the readout shows
+            the tokens driving it, values read from the running stylesheet at that moment,
+            never copied into the page. If the system drifted, this page would show it.
+          </p>
+        </div>
       </div>
-      <TokenAnnotation tokens={ANN.opening} />
 
         </div>
       </div>
@@ -293,12 +302,7 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band ds-band--identity">
         <div className="layout-container">
           <section className="ds-section" aria-labelledby="ds-identity">
-            <SectionHeader
-              id="ds-identity"
-              title="Case identity"
-              className="ds-section__header"
-              actions={<AnnotateToggle on={annotateIdentity} onToggle={() => setAnnotateIdentity(!annotateIdentity)} />}
-            />
+            <SectionHeader id="ds-identity" title="Case identity" className="ds-section__header" />
             <p className="ds-section__note">
               Colour is identity: each case owns a hue, and the hue does the wayfinding.
             </p>
@@ -308,17 +312,12 @@ export default function DesignSystemSpecimens() {
                   <SpecimenCard
                     kicker={<a className="ds-swatch__case" href={o.href}>{o.name}</a>}
                     tokens={ORB_TOKENS[i]}
-                    annotate={annotateIdentity}
                   >
                     <span
                       className="ds-orb"
                       style={{ "--orb-hi": `var(${o.hi})`, "--orb-lo": `var(${o.lo})` } as React.CSSProperties}
                       aria-hidden="true"
                     />
-                    <span className="ds-card__readout">
-                      <span className="ds-swatch__name">{o.hi}</span>
-                      <span className="ds-swatch__value">{values[o.hi] || "reading"}</span>
-                    </span>
                   </SpecimenCard>
                 </li>
               ))}
@@ -339,10 +338,9 @@ export default function DesignSystemSpecimens() {
             Unique 700 carries the
           </Heading>
           <span className="ds-type__meta">--font-hero · {values["--font-hero"] || "reading"}</span>
-          <TokenAnnotation tokens={ANN.typeDisplay} />
         </div>
         <ul className="ds-type">
-          {TYPE_SPECIMENS.map((t, i) => (
+          {TYPE_SPECIMENS.map((t) => (
             <li key={t.token} className="ds-type__row">
               {"display" in t ? (
                 <Heading tier="section" as="h3" className="ds-type__sample" style={{ margin: 0 }}>
@@ -365,7 +363,6 @@ export default function DesignSystemSpecimens() {
               <span className="ds-type__meta">
                 {t.token} · {values[t.token] || "reading"}
               </span>
-              <TokenAnnotation tokens={TYPE_ANN[i]} />
             </li>
           ))}
         </ul>
@@ -437,21 +434,16 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-controls">
-        <SectionHeader
-          id="ds-controls"
-          title="Controls"
-          className="ds-section__header"
-          actions={<AnnotateToggle on={annotateControls} onToggle={() => setAnnotateControls(!annotateControls)} />}
-        />
+        <SectionHeader id="ds-controls" title="Controls" className="ds-section__header" />
         <p className="ds-section__note">
           One taxonomy: the keycap is reserved for true actions, and each control names its
           state in ARIA. The gate fails any view with more than one primary.
         </p>
         <div className="ds-specimen-row">
-          <SpecimenCard kicker="Button" note="True actions only; max one primary per view. The page's ONE primary is the opening keycap above." tokens={ANN.button} annotate={annotateControls}>
+          <SpecimenCard kicker="Button" note="True actions only; max one primary per view. The page's ONE primary is the opening keycap above." tokens={ANN.button}>
             <Button variant="secondary">Secondary</Button>
           </SpecimenCard>
-          <SpecimenCard kicker="SegmentedControl" note="Mutually exclusive views; single select, aria-current." tokens={ANN.seg} annotate={annotateControls}>
+          <SpecimenCard kicker="SegmentedControl" note="Mutually exclusive views; single select, aria-current." tokens={ANN.seg}>
             <SegmentedControl
               label="Specimen views"
               options={[
@@ -462,7 +454,7 @@ export default function DesignSystemSpecimens() {
               onChange={setView}
             />
           </SpecimenCard>
-          <SpecimenCard kicker="FilterChip" note="Multi-select filters; outline, aria-pressed, hover." tokens={ANN.chip} annotate={annotateControls}>
+          <SpecimenCard kicker="FilterChip" note="Multi-select filters; outline, aria-pressed, hover." tokens={ANN.chip}>
             <FilterChip pressed={chipOn} onClick={() => setChipOn(!chipOn)}>
               Design Tokens
             </FilterChip>
@@ -470,11 +462,11 @@ export default function DesignSystemSpecimens() {
               Governance
             </FilterChip>
           </SpecimenCard>
-          <SpecimenCard kicker="Tag and StatusPill" note="Tag: flat metadata wash, never clickable. StatusPill: quiet status." tokens={ANN.tagPill} annotate={annotateControls}>
+          <SpecimenCard kicker="Tag and StatusPill" note="Tag: flat metadata wash, never clickable. StatusPill: quiet status." tokens={ANN.tagPill}>
             <Tag>Non-interactive metadata</Tag>
             <StatusPill>Current focus</StatusPill>
           </SpecimenCard>
-          <SpecimenCard kicker="Select" note="Dropdowns like sort; native, styled, never a keycap." tokens={ANN.select} annotate={annotateControls}>
+          <SpecimenCard kicker="Select" note="Dropdowns like sort; native, styled, never a keycap." tokens={ANN.select}>
             <Select
               label="Sort specimen"
               value={sortSpec}
@@ -485,7 +477,7 @@ export default function DesignSystemSpecimens() {
               ]}
             />
           </SpecimenCard>
-          <SpecimenCard kicker="Bubble" tokens={ANN.bubble} annotate={annotateControls}>
+          <SpecimenCard kicker="Bubble" tokens={ANN.bubble}>
             <span
               className="ds-orb ds-orb--small"
               style={{ "--orb-hi": "var(--hub-hi)", "--orb-lo": "var(--hub-lo)" } as React.CSSProperties}
@@ -494,24 +486,6 @@ export default function DesignSystemSpecimens() {
             <span className="ds-type__meta">radial at 36% 30%, one light source, upper left</span>
           </SpecimenCard>
         </div>
-      </section>
-
-        </div>
-      </div>
-
-      {/* ── Inspector ── */}
-      <div className="ds-band">
-        <div className="layout-container">
-      <section className="ds-section" aria-labelledby="ds-inspector">
-        <SectionHeader id="ds-inspector" title="Token inspector" className="ds-section__header" />
-        <p className="ds-section__note">
-          This is why the page cannot lie: pick a zone of the keycap and the readout shows
-          the tokens driving it, values read from the running stylesheet at that moment,
-          never copied into the page. If the system drifted, this page would show it.
-        </p>
-        <Card innerClassName="ds-card__inner">
-          <TokenInspector />
-        </Card>
       </section>
 
         </div>

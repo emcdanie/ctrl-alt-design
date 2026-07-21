@@ -28,7 +28,7 @@ export default function TokenAnnotation({
   note,
   alwaysOpen = false,
   variant = "list",
-  open: openProp,
+  ariaHidden = false,
 }: {
   tokens: readonly (string | FlagSpec)[];
   /** one line on what the tokens drive (inspector zones use this) */
@@ -36,8 +36,8 @@ export default function TokenAnnotation({
   alwaysOpen?: boolean;
   /** "flags" renders the redline overlay (v3 T6) */
   variant?: "list" | "flags";
-  /** flags mode: controlled by the band's annotate toggle */
-  open?: boolean;
+  /** flags duplicate visible inline text: hide from the tree */
+  ariaHidden?: boolean;
 }) {
   const [open, setOpen] = useState(alwaysOpen);
   const names = tokens.map((t) => (typeof t === "string" ? t : t.token));
@@ -62,9 +62,11 @@ export default function TokenAnnotation({
   const isColour = (v: string) => /^#|^rgb|^hsl|^oklch|^color\(/.test(v.trim());
 
   if (variant === "flags") {
-    if (!openProp) return null;
+    /* v3 review (22 Jul): flags are ALWAYS ON, never a mode; they are
+       non-interactive metadata. aria-hidden only where the flag
+       duplicates visible inline text (the caller decides). */
     return (
-      <span className="ds-flags" aria-hidden="true">
+      <span className="ds-flags" aria-hidden={ariaHidden || undefined}>
         {tokens.map((t) => {
           const f = typeof t === "string" ? ({ token: t, kind: "size", at: "bottom" } as FlagSpec) : t;
           const v = values[f.token] || "reading";

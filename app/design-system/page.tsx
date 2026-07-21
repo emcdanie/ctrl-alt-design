@@ -24,14 +24,15 @@ export default function DesignSystemPage() {
         className="layout-section"
         style={{ paddingTop: "calc(var(--header-height) + var(--spacing-16))" }}
       >
-        <div className="layout-container">
-          <PageHeader eyebrow="BELLA, the system behind the site" title="Design system" />
-        </div>
-        {/* The map (Elleta, 21 Jul): sticky rail at >=1280, pill row
-            below; bands paint the content column edge to edge */}
+        {/* ONE left edge (v3 review, 22 Jul): the title block lives in
+            the content column of the rail grid, so head and body share
+            the grid line; the rail column is simply empty beside it */}
         <div className="ds-layout">
           <DesignSystemNav />
           <div className="ds-layout__content">
+            <div className="layout-container">
+              <PageHeader eyebrow="BELLA, the system behind the site" title="Design system" />
+            </div>
             <DesignSystemSpecimens />
           </div>
         </div>
