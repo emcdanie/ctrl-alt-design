@@ -400,12 +400,18 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band ds-band--card">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-agents">
-        <h2 id="ds-agents" className="ds-section__title">For agents</h2>
+        <h2 id="ds-agents" className="ds-section__title">What agents read</h2>
+        {/* TODO(elleta): voice-pass this copy; content is mechanical
+            on purpose (21 Jul brief: no hype claims) */}
         <p className="ds-section__note">
-          This site is readable by machines on purpose. An agent builds whatever your
-          system already is, so the system publishes itself: the same registry that
-          renders these pages serves a manifest, and the gate fails the build if the
-          two ever disagree.
+          Two machine-readable surfaces ship with the site, generated from the same
+          registry that renders these pages.{" "}
+          <a href="/llms.txt" className="ds-swatch__case">/llms.txt</a> is a plain-text
+          map of the routes, case studies, and their headlines.{" "}
+          <a href="/api/bella.json" className="ds-swatch__case">/api/bella.json</a> is a
+          JSON endpoint serving the token layer, the control taxonomy, the rules, and
+          the case registry. The audit:agents gate fails the build if either surface
+          disagrees with the live route registry.
         </p>
         <pre className="ds-agents__code">
           <code>{`curl https://elleta.design/api/bella.json
@@ -421,9 +427,7 @@ export default function DesignSystemSpecimens() {
 }`}</code>
         </pre>
         <p className="ds-section__note">
-          There is also a plain-text map at{" "}
-          <a href="/llms.txt" className="ds-swatch__case">/llms.txt</a>. Coming next, per
-          the status below: the agent-queryable BELLA Brain (MCP).
+          Coming next, per the status below: the agent-queryable BELLA Brain (MCP).
         </p>
       </section>
 
@@ -435,14 +439,22 @@ export default function DesignSystemSpecimens() {
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-rules">
         <h2 id="ds-rules" className="ds-section__title">Rules of the system</h2>
+        {/* Published constitution rules (Elleta, 21 Jul): wording
+            verbatim or minimally trimmed from CLAUDE.md / DESIGN.md,
+            never invented. */}
+        <p className="ds-section__note">
+          From the repo constitution, wording verbatim or minimally trimmed. These are the
+          eight that define the system.
+        </p>
         <ol className="ds-rules">
-          <li>Tokens only; a raw value fails the gate.</li>
-          <li>No pure white and no pure black.</li>
-          <li>Body text never below 16px.</li>
-          <li>Two typefaces; Unique is display only.</li>
-          <li>Saturated iris means interactive, and only that.</li>
-          <li>One primary action per view.</li>
-          <li>One light source, upper left.</li>
+          <li>No hardcoded hex or px in components. Reference tokens only.</li>
+          <li>One implementation: edit the live component and delete the old one. Never leave old and new both rendering.</li>
+          <li>The primary is the one 3D moment per view, max one.</li>
+          <li>Body min 16px. Never smaller for reading text.</li>
+          <li>No em or en dashes anywhere. Use a period, a comma, or &quot;that&quot;.</li>
+          <li>Unique is display only: never below 24px outside the keycap logo, never in body, UI, or chrome.</li>
+          <li>WCAG AA on every text node, both themes.</li>
+          <li>The gate must pass before any work is done. Green or it isn&apos;t done.</li>
         </ol>
       </section>
 

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Card from "@/components/ui/Card";
 import { Icon } from "@/components/ui/Icon";
+import { StatusPill } from "@/components/ui/StatusPill";
 
 /**
  * Lab video card, on the ONE Card system (button variant: opens the
@@ -16,6 +17,7 @@ export default function VideoCard({
   gradient,
   videoSrc,
   thumbnailSrc,
+  maturity,
   onClick,
 }: {
   title: string;
@@ -24,6 +26,8 @@ export default function VideoCard({
   gradient: string;
   videoSrc?: string;
   thumbnailSrc?: string;
+  /** honest maturity chip (Elleta, 21 Jul; taxonomy in DESIGN.md) */
+  maturity: string;
   onClick: () => void;
 }) {
   const [imgFailed, setImgFailed] = useState(false);
@@ -67,7 +71,9 @@ export default function VideoCard({
         </span>
       }
     >
-      <span className="section-label" style={{ color: "var(--case-design-lab-text)" }}>Exploration</span>
+      {/* the old hardcoded "Exploration" eyebrow is now the honest
+          maturity StatusPill from the data (21 Jul) */}
+      <span><StatusPill>{maturity}</StatusPill></span>
       <h3 className="font-body text-[length:var(--typography-font-size-xl)] font-bold leading-snug text-[color:var(--color-ink)]">
         {title}
       </h3>

@@ -282,12 +282,21 @@ is the ONLY way to render one:
   slot survives as a code/HTML comment so it stays findable; placeholder
   copy ("[ Your words here ]", TBD, lorem) must never reach a rendered
   surface or a published demo.
-- System page map (Elleta, 2026-07-21, spec system-page-v2): a sticky
-  section nav (`DesignSystemNav`) lists Identity, Type, Colour, Spacing,
-  Controls, Inspector, Gate, and the band order follows the map. Left
-  rail at >=1280px, horizontal pill row below; scroll-spy sets
-  `aria-current`. D1 amended: with a rail present, specimen bands paint
-  the CONTENT COLUMN edge to edge, not the viewport.
+- System page map (Elleta, 2026-07-21, spec system-page-v2; Agents +
+  Rules added in v3, same day): a sticky section nav (`DesignSystemNav`)
+  lists Identity, Type, Colour, Spacing, Controls, Inspector, Agents,
+  Rules, Gate, and the band order follows the map. Left rail at
+  >=1280px, horizontal pill row below; scroll-spy sets `aria-current`.
+  D1 amended: with a rail present, specimen bands paint the CONTENT
+  COLUMN edge to edge, not the viewport.
+- Lab maturity taxonomy (Elleta, 2026-07-21, v3): every Design Lab card
+  wears a StatusPill with an honest maturity value, one of Live (a
+  deployed, working tool), Prototype (a clickable working demo),
+  Exploration (recorded or static design exploration), Concept
+  (idea-stage artifact). Assigned from what the artifact IS, never
+  aspirationally; a card that cannot be honestly classified carries a
+  TODO(elleta) instead of a guess. Current assignments: the three video
+  cards = Exploration, the five clickable demos = Prototype.
 - Cluster membership (Elleta, 2026-07-20): the hero cluster is six
   bubbles + hub, and membership is the `inCluster` flag on a case's ONE
   `WORK_ITEMS` row (absent = in; `false` = out, as on Travel Booking).

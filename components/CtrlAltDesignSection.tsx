@@ -6,6 +6,7 @@ import VideoModal from "./VideoModal";
 import SectionShell from "@/components/ui/SectionShell";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Card from "@/components/ui/Card";
+import { StatusPill } from "@/components/ui/StatusPill";
 
 /* One chip treatment for every lab category — the five-hue system read as
  * templated. Ink chip, parchment text (18.6:1), periwinkle accent border. */
@@ -17,6 +18,8 @@ const LAB_CATEGORY_COLORS: Record<string, { bg: string; color: string }> = {
   "INTERACTIVE": { bg: "var(--color-brand-ink)", color: "var(--ink-on-dark-strong)" },
 };
 
+type LabMaturity = "Live" | "Prototype" | "Exploration" | "Concept";
+
 interface LabVideo {
   title: string;
   subtitle: string;
@@ -25,6 +28,8 @@ interface LabVideo {
   embed: string;
   gradient: string;
   thumbnailSrc: string;
+  /* honest maturity (Elleta, 21 Jul; taxonomy recorded in DESIGN.md) */
+  maturity: LabMaturity;
 }
 
 interface LabPrototype {
@@ -35,11 +40,13 @@ interface LabPrototype {
   href: string;
   gradient: string;
   thumbnailSrc: string | null;
+  maturity: LabMaturity;
 }
 
 const videos: LabVideo[] = [
   {
     title: "AI-Powered EUR-LEX UX + Multimedia Center",
+    maturity: "Exploration",
     subtitle: "Exploring AI-enabled legal search and multimedia navigation patterns for complex regulatory systems.",
     category: "AI UX",
     tags: ["AI UX", "Legal Tech", "Search Design"],
@@ -49,6 +56,7 @@ const videos: LabVideo[] = [
   },
   {
     title: "Complex Insurance Forms",
+    maturity: "Exploration",
     subtitle: "Designing scalable form architectures that support multilingual content, validation logic, and accessible interaction patterns.",
     category: "FORM DESIGN",
     tags: ["Form Design", "Accessibility", "Insurance"],
@@ -58,6 +66,7 @@ const videos: LabVideo[] = [
   },
   {
     title: "Operational Dashboard, F1 Singapore Grand Prix",
+    maturity: "Exploration",
     subtitle: "Designing a high-density operational dashboard inspired by Formula 1 race telemetry and control room systems.",
     category: "DASHBOARD",
     tags: ["Dashboard UX", "Data Visualisation", "Operational Design"],
@@ -75,6 +84,7 @@ const prototypes: LabPrototype[] = [
   {
     /* TODO(elleta): subtitle wording is a proposal, reword freely */
     title: "AI-Powered Financial Stock Screener",
+    maturity: "Prototype",
     subtitle: "Clickable AI screener concept: natural-language filters as editable chips, inline metric explainers, and a reasoning trace. Built from the Smashing AI interface patterns.",
     category: "FINTECH",
     tags: ["FinTech", "Filtering Systems", "Data UX"],
@@ -86,6 +96,7 @@ const prototypes: LabPrototype[] = [
      the prototypes/ source stays local. The screener card above stays. */
   {
     title: "Travel Search & Filtering System",
+    maturity: "Prototype",
     subtitle: "Interactive prototype exploring unified search, filtering, and booking patterns for a B2B travel platform.",
     category: "INTERACTIVE",
     tags: ["Search UX", "Filtering", "Prototype"],
@@ -95,6 +106,7 @@ const prototypes: LabPrototype[] = [
   },
   {
     title: "Brad Frost Command Center",
+    maturity: "Prototype",
     subtitle: "Design system investigation dashboard, exploring AI-enabled component analysis and governance workflows.",
     category: "INTERACTIVE",
     tags: ["Design Systems", "AI UX", "Dashboard"],
@@ -104,6 +116,7 @@ const prototypes: LabPrototype[] = [
   },
   {
     title: "Guardian, AI UX Audit Tool",
+    maturity: "Prototype",
     subtitle: "Hackathon prototype: AI-enabled UX auditing on a Figma-style canvas, heuristic evaluation, drift detection, and accessibility checks with real-time highlights.",
     category: "INTERACTIVE",
     tags: ["AI UX", "Hackathon", "Governance"],
@@ -113,6 +126,7 @@ const prototypes: LabPrototype[] = [
   },
   {
     title: "Pattern Mentor, Design Feedback Plugin",
+    maturity: "Prototype",
     subtitle: "Evolved from Guardian: cream-glass plugin with pattern citations, inline fix application, documentation push, and a browseable pattern library.",
     category: "INTERACTIVE",
     tags: ["AI UX", "Design Patterns", "Plugin"],
@@ -140,6 +154,7 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
         </span>
       }
     >
+      <span><StatusPill>{prototype.maturity}</StatusPill></span>
       <h3
         className="text-[length:var(--typography-font-size-lg)] font-bold leading-snug text-[color:var(--color-ink)]"
         style={{ fontFamily: "var(--font-body)" }}
@@ -194,6 +209,7 @@ export default function CtrlAltDesignSection() {
                 tags={video.tags}
                 gradient={video.gradient}
                 thumbnailSrc={video.thumbnailSrc}
+                maturity={video.maturity}
                 onClick={() => setActiveVideo(video)}
               />
             </div>

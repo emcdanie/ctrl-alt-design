@@ -19,6 +19,8 @@ const SECTIONS = [
   { id: "ds-scales", label: "Spacing" },
   { id: "ds-controls", label: "Controls" },
   { id: "ds-inspector", label: "Inspector" },
+  { id: "ds-agents", label: "Agents" },
+  { id: "ds-rules", label: "Rules" },
   { id: "ds-gate", label: "Gate" },
 ] as const;
 
