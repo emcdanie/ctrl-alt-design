@@ -1099,7 +1099,10 @@ li {
 
 .trace-host:hover::before,
 .trace-host:focus-within::before,
-.trace-host:focus-visible::before {
+.trace-host:focus-visible::before,
+.trace-host.trace-on::before {
+  /* .trace-on: the persistent active state (step rails); the SAME
+     one trace, pinned on */
   opacity: 1;
   animation: trace-travel 3.4s linear infinite;
 }
@@ -1113,7 +1116,8 @@ li {
 @media (prefers-reduced-motion: reduce) {
   .trace-host:hover::before,
   .trace-host:focus-within::before,
-  .trace-host:focus-visible::before {
+  .trace-host:focus-visible::before,
+  .trace-host.trace-on::before {
     animation: none;
     background: var(--cc);
   }
@@ -3706,58 +3710,24 @@ textarea:focus-visible {
 /* ── beat 02: the layered journey (contract _proto/beat2.html) ── */
 
 .jn {
-  display: grid;
-  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
-  gap: var(--spacing-8);
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  align-items: stretch;
   width: 100%;
 }
 
-@media (max-width: 899px) {
-  .jn {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* the rail, reversed; the active layer takes the dark plate with the
-   offset shadow (the proto's signature) */
+/* the rail: REAL system cards; the active step wears the travelling
+   trace (.trace-on). The bespoke dark plate is retired. */
 .jn-rail {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
 }
 
-/* the proto dims inactive layers by opacity; opacity fails AA (axe
-   caught it), so the resting layers dim by BORDER and keep AA inks;
-   the dark active plate carries the hierarchy */
-.jn-layer {
-  text-align: left;
-  border: 1px dashed var(--color-border-soft);
-  border-radius: var(--radius-xl);
-  background: var(--color-card);
-  padding: var(--spacing-4) var(--spacing-4);
-  cursor: pointer;
-  transition: background-color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-  display: flex;
-  flex-direction: column;
+.jn-layercard {
   gap: var(--spacing-1);
-}
-
-.jn-layer:hover {
-  border-style: solid;
-  border-color: var(--color-border-medium);
-}
-
-.jn-layer[aria-current="true"] {
-  border-style: solid;
-  background: var(--color-semantic-background-inverse);
-  border-color: var(--color-semantic-background-inverse);
-  box-shadow: var(--shadow-soft);
-}
-
-.jn-layer:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  padding: 0;
 }
 
 .jn-layer__n {
@@ -3767,23 +3737,43 @@ textarea:focus-visible {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-ink);
+  text-align: left;
 }
 
 .jn-layer__d {
   font-family: var(--font-body);
   font-size: var(--typography-font-size-sm);
   color: var(--color-ink-muted);
+  text-align: left;
 }
 
-.jn-layer[aria-current="true"] .jn-layer__n {
-  color: var(--color-semantic-background);
+/* the demo aligns to the section grid: full width, flush left */
+.jn {
+  width: 100%;
 }
 
-.jn-layer[aria-current="true"] .jn-layer__d {
-  color: color-mix(in srgb, var(--color-semantic-background) 72%, transparent);
+.jn-board {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: var(--spacing-8);
+  align-items: start;
+  width: 100%;
 }
 
-/* the right panel */
+@media (max-width: 899px) {
+  .jn-board {
+    grid-template-columns: 1fr;
+  }
+}
+
+.jn-run {
+  align-self: flex-start;
+}
+
+.jn-caption-slot {
+  margin: 0;
+}
+
 .jn-right {
   min-width: 0;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
 import { SpecimenCardBody } from "@/components/CaseSpecimen";
 
 /**
@@ -10,8 +10,12 @@ import { SpecimenCardBody } from "@/components/CaseSpecimen";
  * the active layer on the dark plate with the offset shadow, the
  * Delivers-up / Receives-down framing, a Layer N of 7 counter, and
  * the shared case-card specimen travelling with what each layer does
- * to it. Previous/Next ride the real BELLA secondary Button; square
- * step dots; every step hash-linkable (#journey-<slug>); keyboard
+ * to it. POLISH PASS (Elleta, 22 Jul): Previous/Next and the dots
+ * are gone; ONE Run control (the demo-register primary, her
+ * confirmed call) plays the journey top to bottom; the rail steps
+ * are the REAL ui/Card with the travelling trace pinned on for the
+ * active step (.trace-on, the one trace recipe); rail clicks still
+ * jump directly and every step stays hash-linkable; keyboard
  * navigable. In-panel titles are GEIST (Unique never inside a card);
  * the beat head on the ground stays Unique. Opens on THE GATE.
  * Reduced motion renders the whole journey as a static annotated
@@ -166,11 +170,42 @@ function Panel({ i, animate }: { i: number; animate: boolean }) {
   );
 }
 
+/* the one-line label above the demo, her voice */
+const JOURNEY_CAPTION = "" /* TODO(elleta): what this demo shows, one line */;
+
 export default function LayerJourney() {
   /* opens on THE GATE, the money shot (proto) */
   const [step, setStep] = useState(5);
   const [reduced, setReduced] = useState(false);
+  const [running, setRunning] = useState(false);
   const railRef = useRef<HTMLDivElement>(null);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+
+  /* Run: auto-advance through the layers, bottom to top of the
+     stack (Figma -> Production); the gate layer holds longer */
+  const run = () => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setStep(L.length - 1);
+      window.history.replaceState(null, "", `#journey-${L[L.length - 1].slug}`);
+      return;
+    }
+    setRunning(true);
+    let t = 0;
+    L.forEach((l, i) => {
+      timers.current.push(
+        setTimeout(() => {
+          setStep(i);
+          window.history.replaceState(null, "", `#journey-${l.slug}`);
+          if (i === L.length - 1) setRunning(false);
+        }, t)
+      );
+      t += l.slug === "gate" ? 4200 : 2100;
+    });
+  };
 
   useEffect(() => {
     setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -219,39 +254,41 @@ export default function LayerJourney() {
   }
 
   return (
-    <div className="jn">
-      {/* the rail, REVERSED: Production top, Figma bottom */}
-      <div className="jn-rail" ref={railRef} onKeyDown={onKey}>
-        {[...L].reverse().map((l) => {
-          const i = L.indexOf(l);
-          return (
-            <button
-              key={l.slug}
-              type="button"
-              className="jn-layer"
-              aria-current={i === step ? "true" : undefined}
-              onClick={() => go(i)}
-            >
-              <span className="jn-layer__n">{l.n}</span>
-              <span className="jn-layer__d">{l.d}</span>
-            </button>
-          );
-        })}
-      </div>
-      <div className="jn-right" id={`journey-${L[step].slug}`}>
-        <Panel i={step} animate />
-        <div className="jn-nav">
-          <Button variant="secondary" onClick={() => go(step - 1)} ariaLabel="Previous layer">
-            ‹ Previous
-          </Button>
-          <span className="jn-dots" aria-hidden="true">
-            {L.map((l, i) => (
-              <i key={l.slug} className={`jn-dot${i === step ? " on" : ""}`} />
-            ))}
-          </span>
-          <Button variant="secondary" onClick={() => go(step + 1)} ariaLabel="Next layer">
-            Next ›
-          </Button>
+    <div className="jn demo-scope">
+      {/* the label slot above the demo, her voice; renders nothing
+          while empty */}
+      {JOURNEY_CAPTION.trim() !== "" && (
+        <p className="ds-section__kicker jn-caption-slot" style={{ margin: 0 }}>{JOURNEY_CAPTION}</p>
+      )}
+      {/* ONE Run control: plays the journey top to bottom (reduced
+          motion resolves instantly to the end state) */}
+      <button type="button" className="demo-btn jn-run" onClick={run}>
+        {running ? "Running the journey…" : "Run the journey"}
+      </button>
+      <div className="jn-board">
+        {/* the rail, REVERSED: Production top, Figma bottom; the
+            steps are the REAL system card, the active one wearing
+            the travelling trace */}
+        <div className="jn-rail" ref={railRef} onKeyDown={onKey}>
+          {[...L].reverse().map((l) => {
+            const i = L.indexOf(l);
+            const on = i === step;
+            return (
+              <Card
+                key={l.slug}
+                onClick={() => go(i)}
+                ariaCurrent={on ? "step" : undefined}
+                className={on ? "trace-on" : undefined}
+                innerClassName="ds-card__inner jn-layercard"
+              >
+                <span className="jn-layer__n">{l.n}</span>
+                <span className="jn-layer__d">{l.d}</span>
+              </Card>
+            );
+          })}
+        </div>
+        <div className="jn-right" id={`journey-${L[step].slug}`}>
+          <Panel i={step} animate />
         </div>
       </div>
     </div>

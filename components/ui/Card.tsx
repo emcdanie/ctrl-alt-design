@@ -27,6 +27,8 @@ export interface CardProps {
   /** whole card is ONE button (e.g. opens a modal) */
   onClick?: () => void;
   ariaLabel?: string;
+  /** for step/nav cards: aria-current on the rendered control */
+  ariaCurrent?: "true" | "step";
   style?: CSSProperties;
   children?: ReactNode;
 }
@@ -48,6 +50,7 @@ export default function Card({
   href,
   onClick,
   ariaLabel,
+  ariaCurrent,
   style,
   children,
 }: CardProps) {
@@ -103,7 +106,14 @@ export default function Card({
   }
   if (onClick) {
     return (
-      <button type="button" onClick={onClick} className={outerClass} style={outerStyle} aria-label={ariaLabel}>
+      <button
+        type="button"
+        onClick={onClick}
+        className={outerClass}
+        style={outerStyle}
+        aria-label={ariaLabel}
+        aria-current={ariaCurrent}
+      >
         {content}
       </button>
     );
