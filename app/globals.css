@@ -3079,7 +3079,9 @@ textarea:focus-visible {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: var(--spacing-12);
-    align-items: center;
+    /* START, not center: headlines and text sit at the TOP beside
+       their visual, never floating mid-white (polish pass) */
+    align-items: start;
   }
 
   .cs2-screen__grid--flip .cs2-screen__text {
@@ -4163,4 +4165,9 @@ textarea:focus-visible {
   .jn-layer {
     transition: none;
   }
+}
+
+/* the gate footer line sits tight under the gate scene, quiet */
+.cs2-gatefoot {
+  margin-top: var(--spacing-2);
 }

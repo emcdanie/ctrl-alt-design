@@ -167,7 +167,7 @@ function DriftBeat() {
         onChange={setView}
       />
       <CaseSpecimen flagStates={flagStates} label={before ? "Before" : "On system"} />
-      <p className="cs2-kicker-row" style={{ textAlign: "center" }}>
+      <p className="cs2-kicker-row" style={{ margin: 0 }}>
         {before
           ? "Before: Figma said one thing, the code said another. Same card."
           : "On system: both sides carry the same token names."}
@@ -255,7 +255,10 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
           brief scopes it out); content untouched, only the Z-pattern
           side flipped (visual LEFT after beat 01's visual-right). ── */}
       <Beat index={2} id="cs2-b3">
-        <div className="cs2-screen__grid cs2-screen__grid--flip">
+        {/* visual RIGHT: the clip break left with the session block,
+            so beat 03 alternates against beat 04's visual-left
+            (the Z-law caught the left-left pair) */}
+        <div className="cs2-screen__grid">
           <div className="cs2-screen__text">
             <Scannable
               text={para(cs, (b) => b.kind === "decision" && b.index === "01", 1)}
@@ -285,19 +288,13 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
             />
           }
         />
-        {/* the agent surfaces, two flat lines with the real links */}
-        <div className="cs2-measure">
-          <p className="ds-section__note" style={{ margin: 0 }}>
-            <a href="/llms.txt" className="ds-swatch__case">/llms.txt</a> is the plain-text map
-            of routes and case studies agents read first.
-          </p>
-          <p className="ds-section__note" style={{ margin: 0 }}>
-            <a href="/api/bella.json" className="ds-swatch__case">/api/bella.json</a> serves the
-            token layer, control taxonomy, rules, and case registry as JSON.
-          </p>
-        </div>
-        <p className="cs2-kicker-row">
-          BELLA tokens · the 13-audit gate · the CLAUDE.md constitution · agent surfaces
+        {/* the machine-surface lines compressed to ONE quiet footer
+            (insider metadata, not case content). TODO(elleta): keep
+            this footer line or cut it entirely; your call. */}
+        <p className="cs2-kicker-row cs2-gatefoot">
+          Machine surfaces:{" "}
+          <a href="/llms.txt" className="ds-swatch__case">/llms.txt</a> ·{" "}
+          <a href="/api/bella.json" className="ds-swatch__case">/api/bella.json</a>
         </p>
         <BeatLink index={3} />
       </Beat>
