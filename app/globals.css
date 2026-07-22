@@ -3035,34 +3035,6 @@ textarea:focus-visible {
   background: var(--color-accent-ink);
 }
 
-/* the in-flow head: no sticky side title, no void */
-.cs2-head {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--spacing-4);
-  padding-top: calc(var(--header-height) + var(--spacing-12));
-  max-width: 62ch;
-}
-
-.cs2-subhead {
-  font-family: var(--font-body);
-  font-size: var(--font-body-size);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
-  margin: 0;
-}
-
-.cs2-meta {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-  margin: 0;
-}
-
 /* text BESIDE its visual: the scene grid (beats law, amendment 2) */
 .cs2-screen__grid {
   display: flex;
@@ -3074,8 +3046,10 @@ textarea:focus-visible {
   .cs2-screen__grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--spacing-12);
-    align-items: center;
+    gap: var(--rhythm-col);
+    /* START, not center (proto case-template law): the title and
+       text sit at the TOP beside their visual, never floating */
+    align-items: start;
   }
 
   .cs2-screen__grid--flip .cs2-screen__text {
@@ -3276,6 +3250,9 @@ textarea:focus-visible {
   align-items: flex-start;
   gap: var(--spacing-3);
   min-width: 0;
+  /* the stage is size-contained (container query), so the wrap must
+     take its width from the parent, never from stage content */
+  width: 100%;
 }
 
 .spec-stage {
@@ -3286,6 +3263,9 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* the annotated-specimen fallback keys on the STAGE's own width
+     (figure frames make stages narrow at any viewport) */
+  container-type: inline-size;
 }
 
 /* ── the case-specimen DEMO register (Elleta's ruling; recorded in
@@ -3585,8 +3565,11 @@ textarea:focus-visible {
 .csp-flag--br { right: 0; bottom: 0; }
 
 /* narrow fallback: the flags become a wrapped lane ABOVE the card;
-   the leaders rest (no clean empty ground to cross at this width) */
-@media (max-width: 719px) {
+   the leaders rest (no clean empty ground to cross at this width).
+   Container query: the STAGE width decides, not the viewport (the
+   overlap law caught side flags colliding inside half-width figure
+   frames at desktop widths). */
+@container (max-width: 620px) {
   .csp {
     flex-direction: column;
     gap: var(--spacing-4);
@@ -3639,27 +3622,6 @@ textarea:focus-visible {
 /* ── Beats law (PR 41 amendment 2, Elleta 22 Jul): five beats, one
    scene each. Spacing by PROXIMITY: tight inside a scene, large
    between beats. No screen holds two competing voices. ── */
-.cs2-beat {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-6);
-}
-
-.cs2-beat + .cs2-beat {
-  /* between-beat air: spacing-20+ (the largest recorded step) */
-  margin-top: var(--spacing-20);
-}
-
-.cs2-beat .cs2-screen__grid {
-  gap: var(--spacing-6);
-}
-
-@media (min-width: 1024px) {
-  .cs2-beat .cs2-screen__grid {
-    gap: var(--spacing-10);
-  }
-}
-
 /* the connective line between beats: her voice, renders nothing empty */
 .cs2-beat__link {
   font-family: var(--font-body);
@@ -4165,6 +4127,370 @@ textarea:focus-visible {
   .gv-rail__chip,
   .jn-dot,
   .jn-layer {
+    transition: none;
+  }
+}
+
+/* ── THE case scroll-spine template (Elleta's decision record 22 Jul;
+   contracts _proto/case-template.html + case-layout.html). ONE
+   spacing rhythm, named once, used identically in every beat; these
+   are the only vertical gaps the template uses. SUPERSEDES the
+   five-beat spacing for the case shell. ── */
+:root {
+  --rhythm-beat: var(--spacing-16);       /* beat padding, all equal */
+  --rhythm-headtobody: var(--spacing-8);  /* title block -> body */
+  --rhythm-para: var(--spacing-4);        /* paragraph -> paragraph */
+  --rhythm-col: var(--spacing-12);        /* text column <-> visual */
+}
+
+.cst-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--rhythm-para);
+  padding-top: calc(var(--header-height) + var(--spacing-10));
+  padding-bottom: var(--rhythm-beat);
+}
+
+.cst-sub {
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+  max-width: 52ch;
+  margin: 0;
+}
+
+.cst-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: var(--spacing-3);
+  width: 100%;
+}
+
+.cst-meta__item {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.cst-meta__dot {
+  width: var(--spacing-1);
+  height: var(--spacing-1);
+  border-radius: var(--radius-full);
+  background: var(--color-ink-muted);
+  opacity: 0.5;
+}
+
+/* the spine layout: sticky rail beside the beats at >=1024 */
+.cst-layout {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .cst-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: var(--rhythm-col);
+    align-items: start;
+  }
+}
+
+.cst-content {
+  min-width: 0;
+}
+
+/* ── the repeating beat module ── */
+.cst-beat {
+  padding-block: var(--rhythm-beat);
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.cst-bhead {
+  /* the number column from the scale: 64+32 desktop, 48+8 narrow */
+  --cst-numcol: calc(var(--spacing-16) + var(--spacing-8));
+  display: grid;
+  grid-template-columns: var(--cst-numcol) minmax(0, 1fr);
+  gap: var(--spacing-3);
+  align-items: start;
+  margin-bottom: var(--rhythm-headtobody);
+}
+
+@media (max-width: 719px) {
+  .cst-bhead {
+    --cst-numcol: calc(var(--spacing-12) + var(--spacing-2));
+    grid-template-columns: var(--cst-numcol) minmax(0, 1fr);
+    gap: var(--spacing-2);
+  }
+}
+
+/* the display number: globals-recorded display face (same exemption
+   class as the other recorded display recipes in this file) */
+.cst-bnum {
+  font-family: var(--font-display);
+  font-size: var(--font-section-display);
+  line-height: 0.8;
+  /* muted ink at full opacity: AA both themes, and never iris (the
+     number is decoration, not an affordance) */
+  color: var(--color-ink-muted);
+}
+
+.cst-bhead__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhythm-para);
+  min-width: 0;
+}
+
+.cst-bhead__title {
+  margin: 0;
+}
+
+.cst-anchor {
+  display: block;
+  scroll-margin-top: calc(var(--header-height) + var(--spacing-16));
+}
+
+/* the beat body: text beside its visual, START-aligned, indented past
+   the number column (proto) */
+.cst-bbody {
+  display: grid;
+  /* the proto's asymmetric split (360px text beside the wide figure)
+     so annotated stages keep room for side flags and leaders */
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: var(--rhythm-col);
+  align-items: start;
+}
+
+@media (min-width: 720px) {
+  .cst-bbody,
+  .cst-bbody--txtonly,
+  .cst-extrafig,
+  .cst-agents {
+    padding-left: calc(var(--spacing-16) + var(--spacing-8) + var(--spacing-3));
+  }
+}
+
+@media (max-width: 899px) {
+  .cst-bbody {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-8);
+  }
+}
+
+.cst-bbody--flip .cst-txt { order: 2; }
+.cst-bbody--flip .cst-fig-col { order: 1; }
+
+@media (max-width: 899px) {
+  .cst-bbody--flip .cst-txt { order: 1; }
+  .cst-bbody--flip .cst-fig-col { order: 2; }
+}
+
+.cst-txt,
+.cst-fig-col {
+  min-width: 0;
+}
+
+.cst-p {
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--rhythm-para);
+  max-width: 46ch;
+}
+
+.cst-keyline {
+  max-width: 46ch;
+}
+
+/* the identical figure frame internals (ui/Card is the frame) */
+.cst-figframe {
+  gap: var(--spacing-3);
+}
+
+.cst-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  min-width: 0;
+}
+
+.cst-figcaption {
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: var(--spacing-2);
+  font-family: var(--font-body);
+  /* the proto captions at 14 bow to the 16px reading floor: caption
+     bullets run past 40 characters and are reading text */
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+  line-height: 1.5;
+}
+
+.cst-figcaption__list {
+  margin: 0;
+  padding-left: var(--spacing-4);
+}
+
+.cst-figcaption__list li {
+  margin: var(--spacing-1) 0;
+}
+
+.cst-extrafig {
+  margin-top: var(--rhythm-col);
+  max-width: 640px;
+}
+
+.cst-agents {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  margin-top: var(--rhythm-col);
+}
+
+.cst-outcol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+/* the outcomes tick card internals */
+.cst-outcomes__kicker {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: 0 0 var(--spacing-3);
+}
+
+.cst-outcomes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cst-outcomes__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) 0;
+  border-top: 1px solid var(--color-border-soft);
+  align-items: start;
+}
+
+.cst-outcomes__row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.cst-tick {
+  width: var(--spacing-5);
+  height: var(--spacing-5);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--case-clarity-hi) 40%, var(--color-card));
+  color: var(--case-clarity-text);
+  display: grid;
+  place-items: center;
+  font-size: var(--typography-font-size-tag);
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* ── the case rail skin: the scroll-spine (dashed connector, filled
+   active dot; iris = the active NAVIGATION affordance) ── */
+@media (min-width: 1024px) {
+  /* the case rail is a rail from 1024 up; neutralize the base pill-row
+     styles that otherwise apply until 1279 */
+  .ds-nav--case {
+    position: sticky;
+    top: calc(var(--header-height) + var(--spacing-8));
+    padding: var(--spacing-4) 0;
+    background: transparent;
+    border-bottom: 0;
+    overflow: visible;
+    z-index: auto;
+  }
+
+  .ds-nav--case .ds-nav__list {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .ds-nav--case .ds-nav__link {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--spacing-3);
+    align-items: start;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 0 0 var(--spacing-6);
+    position: relative;
+    white-space: normal;
+  }
+
+  /* the dashed connector between steps */
+  .ds-nav--case li:not(:last-child) .ds-nav__link::before {
+    content: "";
+    position: absolute;
+    left: calc(var(--spacing-2) - 1px);
+    top: var(--spacing-4);
+    bottom: 0;
+    border-left: 1px dashed var(--color-border-medium);
+  }
+
+  .ds-nav--case .ds-nav__dot {
+    width: var(--spacing-4);
+    height: var(--spacing-4);
+    border-radius: var(--radius-full);
+    border: 2px solid var(--color-ink-muted);
+    background: transparent;
+    margin-top: 2px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ds-nav--case .ds-nav__link[aria-current="true"] .ds-nav__dot {
+    border-color: var(--color-accent-ink);
+    background: var(--color-accent-ink);
+  }
+
+  .ds-nav--case .ds-nav__label {
+    font-family: var(--font-body);
+    font-size: var(--typography-font-size-sm);
+    font-weight: 600;
+    color: var(--color-ink-muted);
+  }
+
+  .ds-nav--case .ds-nav__link[aria-current="true"] .ds-nav__label {
+    color: var(--color-accent-ink);
+  }
+}
+
+@media (max-width: 1023px) {
+  .ds-nav--case {
+    top: var(--header-height);
+  }
+
+  .ds-nav--case .ds-nav__dot {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-nav--case .ds-nav__dot {
     transition: none;
   }
 }

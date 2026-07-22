@@ -398,15 +398,21 @@ for (const theme of ["light", "dark"]) {
        Layout law, checked once at 1440. */
     if (theme === "light" && width === 1440) {
       const zBad = await page.evaluate(() => {
-        const seq = [...document.querySelectorAll(".cs2-screen__grid, .jn, [data-zbreak]")];
+        const seq = [...document.querySelectorAll(".cs2-screen__grid, .cst-bbody, .jn, [data-zbreak]")];
         const out = [];
         let prev = null;
         for (const el of seq) {
-          if (!el.classList.contains("cs2-screen__grid")) {
+          const sided =
+            (el.classList.contains("cs2-screen__grid") || el.classList.contains("cst-bbody")) &&
+            !el.classList.contains("cst-bbody--txtonly");
+          if (!sided) {
             prev = null; // a full-width break resets the alternation
             continue;
           }
-          const side = el.classList.contains("cs2-screen__grid--flip") ? "left" : "right";
+          const side =
+            el.classList.contains("cs2-screen__grid--flip") || el.classList.contains("cst-bbody--flip")
+              ? "left"
+              : "right";
           if (prev !== null && prev === side) {
             out.push(`two consecutive scenes put the visual ${side}`);
           }
@@ -418,11 +424,46 @@ for (const theme of ["light", "dark"]) {
         fails++;
         console.error(`VISUAL FAIL z-pattern: ${b}`);
       }
+      /* the float is gone: every beat grid TOP-aligns (proto law) */
+      const floatBad = await page.evaluate(() =>
+        [...document.querySelectorAll(".cst-bbody, .cs2-screen__grid")]
+          .filter((el) => getComputedStyle(el).display === "grid" && getComputedStyle(el).alignItems !== "start")
+          .map((el) => el.className)
+      );
+      for (const b of floatBad) {
+        fails++;
+        console.error(`VISUAL FAIL floating title: ${b} is not align-items start`);
+      }
     }
     await ctx.close();
   }
 }
 await browser.close();
+
+/* ── ONE RHYTHM (scroll-template law): the case-template CSS block
+   uses only --spacing/--rhythm vars for spacing; no --space-* and no
+   raw px spacing values ── */
+{
+  const { readFileSync } = await import("node:fs");
+  const css = readFileSync("app/globals.css", "utf8");
+  const start = css.indexOf("THE case scroll-spine template");
+  const block = start >= 0 ? css.slice(start) : "";
+  if (!block) {
+    fails++;
+    console.error("VISUAL FAIL rhythm: the case-template CSS block marker is missing");
+  } else {
+    for (const m of block.matchAll(/--space-[a-z]/g)) {
+      fails++;
+      console.error(`VISUAL FAIL rhythm: legacy token ${m[0]}… in the case template block`);
+    }
+    for (const m of block.matchAll(/(?:^|[^a-zA-Z-])(padding|margin|gap)[a-z-]*\s*:\s*([^;{}]+)/g)) {
+      if (/\b([4-9]|\d{2,})px\b/.test(m[2])) {
+        fails++;
+        console.error(`VISUAL FAIL rhythm: raw spacing "${m[2].trim().slice(0, 40)}" in the case template block`);
+      }
+    }
+  }
+}
 
 if (fails > 0) {
   console.error(`visual gate: ${fails} failure(s)`);

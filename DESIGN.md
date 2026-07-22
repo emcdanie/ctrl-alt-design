@@ -447,3 +447,21 @@ ground. Asserted in audit:visual (no leader path may intersect the bounding
 box of any text or table node; proven red on the pre-restory parity layout
 before the fix). The `.demo-scope` class is the flat variant of the
 case-specimen register scope (same leak law as `.spec-stage`).
+
+## Case scroll-spine template (Elleta's decision record, 2026-07-22)
+
+The case layout is the scroll-spine template (recipe:
+docs/recipes/case-study-scroll-template.md; contracts
+_proto/case-template.html + case-layout.html). SUPERSESSIONS, deliberate and
+hers: (1) the "Code First = five beats" beats-law (PR 41 amendments 2-3) is
+replaced by the canonical rail (Context / Problem / Key decisions /
+Challenges / Impact / Outcome and learnings) with her narrative headlines
+inside the sections; (2) for this template, specimens sit inside the ONE
+FigureFrame (ui/Card), superseding the uncarded-specimen rule from the PR 41
+amendment-1 pass; (3) the recorded-session link renders once, in the header
+meta, never mid-column. The rhythm tokens --rhythm-beat/-headtobody/-para/
+-col alias --spacing-16/8/4/12 and are the template's only vertical gaps;
+the beat grid is align-items START (a centered grid floats the headline, the
+bug this fixed). The rail reuses the ONE DesignSystemNav scroll-spy
+(variant="case"). chip + drift stay on the old cs-shell until their own
+passes; the old shell leaves when the last case leaves it.
