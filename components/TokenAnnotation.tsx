@@ -1,62 +1,53 @@
 "use client";
 
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
- * The ONE specimen annotation (spec system-page-v2; redlines added in
- * v3 T6): tokens attached to a specimen, values resolved LIVE from
- * computed styles (re-read on theme flip). Three modes, ONE
- * implementation:
- * - default: a disclosure ("Tokens" trigger, aria-expanded).
- * - alwaysOpen: the readout alone (the keycap TokenInspector's mode).
- * - flags: CONTAINED redline lanes (containment law, 22 Jul; the
- *   outside-the-edge rule is withdrawn). Flags are IN-FLOW rows in two
- *   fixed lanes inside the card, above and below the demo, inside the
- *   padding; leader ticks span the lane-to-demo gap so they touch by
- *   construction; flags ellipsize to the card's inner width. No
- *   descendant of a card ever renders outside the card's border box
- *   (asserted by audit:visual). Non-interactive metadata (recorded
- *   exempt from the reading floor), never focusable.
+ * The ONE specimen annotation (Phase 2 rebuild, 22 Jul, per the
+ * committed audit docs/briefs/system-annotation-audit.md section 5):
+ * flags only, ONE in-flow lane per card, rendered between the card
+ * head and the demo. Values are resolved LIVE from computed styles
+ * (re-read on theme flip) so the page cannot drift from the
+ * stylesheet. A value that cannot fit is shortened DELIBERATELY at a
+ * token boundary (comma or space), never mid-token; token names may
+ * wrap at their hyphens but never ellipsize. Non-interactive metadata
+ * (recorded exempt from the reading floor), never focusable.
+ *
+ * FlagLeaders is the companion leader layer: an SVG inside the demo
+ * area drawing one line per flag from the lane to the specimen so the
+ * leaders TOUCH what they measure (the proto's in-card SVG model). One
+ * annotation implementation, one leader implementation.
  */
-export type FlagSpec = {
-  token: string;
-  /** what the flag measures; styles the leader grammar */
-  kind: "radius" | "size" | "color" | "shadow" | "font";
-  /** which gutter lane the flag occupies (lanes, never mid-edge, so
-      flags cannot collide with centred demo content) */
-  at: "top-left" | "top" | "top-right" | "bottom-left" | "bottom" | "bottom-right";
-};
+
+/** deliberate display shortening: cut at the last comma or space
+    before the cap, never inside a value token */
+const DISPLAY_CAP = 32;
+function shortenValue(v: string): string {
+  if (v.length <= DISPLAY_CAP) return v;
+  const head = v.slice(0, DISPLAY_CAP);
+  const cut = Math.max(head.lastIndexOf(","), head.lastIndexOf(" "));
+  return (cut > 0 ? v.slice(0, cut) : head).trimEnd() + " …";
+}
+
 export default function TokenAnnotation({
   tokens,
-  note,
-  alwaysOpen = false,
-  variant = "list",
   ariaHidden = false,
-  lane = "top",
 }: {
-  tokens: readonly (string | FlagSpec)[];
-  /** one line on what the tokens drive (inspector zones use this) */
-  note?: string;
-  alwaysOpen?: boolean;
-  /** "flags" renders the redline overlay (v3 T6) */
-  variant?: "list" | "flags";
+  tokens: readonly string[];
   /** flags duplicate visible inline text: hide from the tree */
   ariaHidden?: boolean;
-  /** flags mode: which in-flow lane this call renders */
-  lane?: "top" | "bottom";
 }) {
-  const [open, setOpen] = useState(alwaysOpen);
-  const names = tokens.map((t) => (typeof t === "string" ? t : t.token));
   const [values, setValues] = useState<Record<string, string>>({});
-  const panelId = useId();
 
+  /* keyed on the token NAMES, not the array identity, so an inline
+     array literal at a call site cannot re-trigger the effect loop */
+  const namesKey = tokens.join("|");
   const read = useCallback(() => {
     const cs = getComputedStyle(document.documentElement);
     const next: Record<string, string> = {};
-    for (const t of names) next[t] = cs.getPropertyValue(t).trim();
+    for (const t of namesKey.split("|")) next[t] = cs.getPropertyValue(t).trim();
     setValues(next);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tokens]);
+  }, [namesKey]);
 
   useEffect(() => {
     read();
@@ -67,65 +58,96 @@ export default function TokenAnnotation({
 
   const isColour = (v: string) => /^#|^rgb|^hsl|^oklch|^color\(/.test(v.trim());
 
-  if (variant === "flags") {
-    const specs: FlagSpec[] = tokens.map((t) =>
-      typeof t === "string" ? ({ token: t, kind: "size", at: "bottom" } as FlagSpec) : t
-    );
-    const inLane = specs.filter((f) => (lane === "top" ? f.at.startsWith("top") : !f.at.startsWith("top")));
-    if (!inLane.length) return null;
-    return (
-      <span className={`ds-flaglane ds-flaglane--${lane}`} aria-hidden={ariaHidden || undefined}>
-        {inLane.map((f) => {
-          const v = values[f.token] || "reading";
-          return (
-            <span key={f.token} data-flag-token={f.token} className={`ds-flag ds-flag--k-${f.kind}`}>
-              {isColour(v) && <span className="ds-flag__chip" style={{ background: v }} />}
-              <span className="ds-flag__value">{v}</span>
-              <span className="ds-flag__token">{f.token}</span>
-            </span>
-          );
-        })}
-      </span>
-    );
-  }
-
-  const showPanel = alwaysOpen || open;
-
+  if (!tokens.length) return null;
   return (
-    <div className="tok-annotation">
-      {!alwaysOpen && (
-        <button
-          type="button"
-          className="tok-annotation__trigger"
-          aria-expanded={open}
-          aria-controls={panelId}
-          onClick={() => setOpen(!open)}
-        >
-          Tokens
-        </button>
-      )}
-      {showPanel && (
-        <div className="tok-annotation__panel" id={panelId} aria-live="polite">
-          {note && <p className="tok-inspector__drives">{note}</p>}
-          <dl className="tok-inspector__tokens">
-            {names.map((t) => (
-              <div key={t} className="tok-inspector__row">
-                <dt>{t}</dt>
-                <dd>
-                  {isColour(values[t] ?? "") && (
-                    <span
-                      className="tok-inspector__chip"
-                      style={{ background: values[t] }}
-                      aria-hidden="true"
-                    />
-                  )}
-                  {values[t] || "reading"}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      )}
-    </div>
+    <span className="ds-flaglane" aria-hidden={ariaHidden || undefined}>
+      {tokens.map((t) => {
+        const v = values[t] || "reading";
+        return (
+          <span key={t} data-flag-token={t} className="ds-flag">
+            {isColour(v) && <span className="ds-flag__chip" style={{ background: v }} />}
+            <span className="ds-flag__value">{shortenValue(v)}</span>
+            <span className="ds-flag__token">{t}</span>
+          </span>
+        );
+      })}
+    </span>
   );
+}
+
+/**
+ * The in-card leader layer: absolutely inset inside the demo area
+ * (contained by construction), one line per flag from the lane edge to
+ * the specimen's near edge, x clamped into the specimen's width so
+ * every leader TOUCHES what it measures. Redrawn on resize, on any
+ * content change in the card (live values arriving, zone swaps), and
+ * on theme flip; mutations inside the SVG itself are ignored so the
+ * draw never feeds itself.
+ */
+export function FlagLeaders() {
+  const ref = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    const svg = ref.current;
+    if (!svg) return;
+    const host = svg.parentElement;
+    const root = svg.closest(".ds-card__inner, .tok-inspector");
+    if (!host || !root) return;
+    let raf = 0;
+
+    const draw = () => {
+      raf = 0;
+      const lane = root.querySelector(".ds-flaglane");
+      const target = [...host.children].find((c) => c !== svg);
+      const dr = host.getBoundingClientRect();
+      if (!lane || !target || dr.width < 1) {
+        svg.replaceChildren();
+        return;
+      }
+      svg.setAttribute("viewBox", `0 0 ${dr.width} ${dr.height}`);
+      const tr = target.getBoundingClientRect();
+      const lines: SVGLineElement[] = [];
+      for (const f of lane.querySelectorAll(".ds-flag")) {
+        const fr = f.getBoundingClientRect();
+        const below = fr.top > tr.bottom;
+        const x1 = fr.left + fr.width / 2 - dr.left;
+        const y1 = (below ? fr.top : fr.bottom) - dr.top;
+        const x2 = Math.max(tr.left - dr.left + 8, Math.min(x1, tr.right - dr.left - 8));
+        const y2 = (below ? tr.bottom : tr.top) - dr.top;
+        const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        l.setAttribute("x1", String(x1));
+        l.setAttribute("y1", String(y1));
+        l.setAttribute("x2", String(x2));
+        l.setAttribute("y2", String(y2));
+        lines.push(l);
+      }
+      svg.replaceChildren(...lines);
+    };
+
+    const queue = () => {
+      if (!raf) raf = requestAnimationFrame(draw);
+    };
+    draw();
+    const ro = new ResizeObserver(queue);
+    ro.observe(root);
+    const mo = new MutationObserver((muts) => {
+      if (muts.some((m) => !svg.contains(m.target))) queue();
+    });
+    mo.observe(root, {
+      subtree: true,
+      childList: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: ["aria-pressed", "data-zone", "style"],
+    });
+    window.addEventListener("resize", queue);
+    return () => {
+      ro.disconnect();
+      mo.disconnect();
+      window.removeEventListener("resize", queue);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  return <svg ref={ref} className="ds-leaders" aria-hidden="true" />;
 }

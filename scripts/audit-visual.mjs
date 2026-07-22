@@ -9,11 +9,17 @@
  * 3. COVER PLACEHOLDERS: >= 3:1 large-text against both stops of the
  *    token gradient, both themes (moved here from contrast-check; one
  *    home for visual assertions).
- * 4. CONTAINMENT (containment law, 22 Jul, supersedes the lane/hug
- *    assertions): no descendant of a card renders outside the card's
- *    border box, at 1440 AND 390, both themes.
+ * 4. CONTAINMENT (Phase 2 rebuild, 22 Jul, supersedes the border-box
+ *    two-width check): card set = every .trace-host card (the .btn-key
+ *    primaries are controls, not cards) AND .tok-inspector; boundary =
+ *    the inner CONTENT box (padding respected), not the outer edge; NO
+ *    clip-ancestor forgiveness, nothing may rely on the overflow clip.
+ *    Width sweep = 1440/1200/1024/900/768/390 plus every column-count
+ *    boundary of the specimen grid's auto-fit minmax(260px, 1fr),
+ *    measured live, both themes. Proven red on pre-fix code (Select at
+ *    1200, the agents code block at 768 and 390) before the fix.
  * 5. UNIFORMITY: all cards in one band grid share identical width and
- *    height.
+ *    height, at every swept width.
  * 6. TRACE RING: the inspector ring keeps one equal offset from the
  *    keycap edge on all four sides (within 1px per side).
  */
@@ -75,35 +81,85 @@ for (const theme of ["light", "dark"]) {
     console.error(`VISUAL FAIL (${theme}) unequal specimen heights: ${b}`);
   }
 
-  /* ── 4 + 5: containment + uniformity, at 1440 and 390 ── */
-  for (const width of [1440, 390]) {
+  /* ── 4 + 5: containment + uniformity, width-swept ── */
+  /* the sweep: six fixed widths plus every column-count boundary of
+     the specimen grid (auto-fit minmax(260px, 1fr)). Card width is
+     non-monotonic in viewport width: cards are at their narrowest just
+     above each boundary, so the boundary and boundary+6 are the widths
+     the old two-point sample never saw. Chrome (viewport minus grid)
+     is measured live below the container cap, not hardcoded. */
+  await page.setViewportSize({ width: 900, height: 900 });
+  await page.waitForTimeout(200);
+  const geom = await page.evaluate(() => {
+    const grid = document.querySelector(".ds-specimen-row");
+    if (!grid) return null;
+    return {
+      grid: grid.getBoundingClientRect().width,
+      gap: parseFloat(getComputedStyle(grid).columnGap) || 0,
+    };
+  });
+  const MINCOL = 260;
+  const widths = new Set([1440, 1200, 1024, 900, 768, 390]);
+  if (geom) {
+    const chrome = 900 - geom.grid;
+    for (let n = 2; n <= 6; n++) {
+      const boundary = Math.round(n * MINCOL + (n - 1) * geom.gap + chrome);
+      for (const w of [boundary, boundary + 6]) {
+        if (w >= 390 && w <= 1440) widths.add(w);
+      }
+    }
+  }
+  for (const width of [...widths].sort((a, b) => b - a)) {
     await page.setViewportSize({ width, height: 900 });
     await page.waitForTimeout(300);
     const results = await page.evaluate(() => {
       const out = { contain: [], uniform: [] };
-      const cards = [...document.querySelectorAll(".ds-card__inner")].map((inner) => inner.parentElement ?? inner);
+      /* card set: every trace-host card AND the inspector. The btn-key
+         primaries share the trace recipe but are controls, not cards. */
+      const cards = [
+        ...document.querySelectorAll(".trace-host:not(.btn-key)"),
+        ...document.querySelectorAll(".tok-inspector"),
+      ];
       for (const card of cards) {
-        const cr = card.getBoundingClientRect();
-        for (const el of card.querySelectorAll("*")) {
+        /* boundary = the inner CONTENT box: the glass panel for
+           ui/Card (first child inside the 3px trace wrapper), the
+           inspector's own box for .tok-inspector; padding respected. */
+        const inner = card.classList.contains("tok-inspector") ? card : card.firstElementChild;
+        if (!inner) continue;
+        const cs = getComputedStyle(inner);
+        const ir = inner.getBoundingClientRect();
+        const box = {
+          left: ir.left + parseFloat(cs.borderLeftWidth) + parseFloat(cs.paddingLeft),
+          right: ir.right - parseFloat(cs.borderRightWidth) - parseFloat(cs.paddingRight),
+          top: ir.top + parseFloat(cs.borderTopWidth) + parseFloat(cs.paddingTop),
+          bottom: ir.bottom - parseFloat(cs.borderBottomWidth) - parseFloat(cs.paddingBottom),
+        };
+        for (const el of inner.querySelectorAll("*")) {
+          /* raw rects, no clip-ancestor forgiveness: containment is by
+             construction, nothing relies on an overflow clip. Judged on
+             the PAINTED box: an element with no background, border, or
+             shadow paints only its content, so its invisible padding
+             (the 44px hit-area rule grows link padding) is not an
+             escape; anything painted (chips, flags, fields) is judged
+             on its full border box. */
           let r = el.getBoundingClientRect();
           if (r.width === 0 && r.height === 0) continue;
-          /* content inside a scroll/clip container does not PAINT
-             outside it: intersect with every clipping ancestor up to
-             the card before judging containment */
-          let anc = el.parentElement;
-          let rect = { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
-          while (anc && anc !== card) {
-            const o = getComputedStyle(anc).overflow + getComputedStyle(anc).overflowX + getComputedStyle(anc).overflowY;
-            if (/(hidden|auto|scroll|clip)/.test(o)) {
-              const ar = anc.getBoundingClientRect();
-              rect = { left: Math.max(rect.left, ar.left), right: Math.min(rect.right, ar.right), top: Math.max(rect.top, ar.top), bottom: Math.min(rect.bottom, ar.bottom) };
-            }
-            anc = anc.parentElement;
+          const ecs = getComputedStyle(el);
+          const unpainted =
+            /rgba\(0, 0, 0, 0\)/.test(ecs.backgroundColor) &&
+            ecs.backgroundImage === "none" &&
+            ecs.boxShadow === "none" &&
+            [ecs.borderTopWidth, ecs.borderRightWidth, ecs.borderBottomWidth, ecs.borderLeftWidth].every((w) => parseFloat(w) === 0);
+          if (unpainted) {
+            r = {
+              left: r.left + parseFloat(ecs.paddingLeft),
+              right: r.right - parseFloat(ecs.paddingRight),
+              top: r.top + parseFloat(ecs.paddingTop),
+              bottom: r.bottom - parseFloat(ecs.paddingBottom),
+            };
           }
-          r = { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom, width: rect.right - rect.left, height: rect.bottom - rect.top };
-          if (r.width <= 0 || r.height <= 0) continue;
-          if (r.left < cr.left - 1 || r.right > cr.right + 1 || r.top < cr.top - 1 || r.bottom > cr.bottom + 1) {
-            out.contain.push(`${(el.className.toString().split(" ")[0] || el.tagName)} escapes its card by ${Math.round(Math.max(cr.left - r.left, r.right - cr.right, cr.top - r.top, r.bottom - cr.bottom))}px :: ${el.textContent.trim().slice(0, 24)}`);
+          if (r.left < box.left - 1 || r.right > box.right + 1 || r.top < box.top - 1 || r.bottom > box.bottom + 1) {
+            out.contain.push(`${(el.className.toString().split(" ")[0] || el.tagName)} escapes the content box by ${Math.round(Math.max(box.left - r.left, r.right - box.right, box.top - r.top, r.bottom - box.bottom))}px :: ${el.textContent.trim().slice(0, 24)}`);
           }
         }
       }

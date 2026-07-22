@@ -7,7 +7,7 @@ import { FilterChip } from "@/components/ui/FilterChip";
 import { Tag } from "@/components/ui/Tag";
 import { StatusPill } from "@/components/ui/StatusPill";
 import TokenInspector from "@/components/TokenInspector";
-import TokenAnnotation, { type FlagSpec } from "@/components/TokenAnnotation";
+import TokenAnnotation, { FlagLeaders } from "@/components/TokenAnnotation";
 import { Select } from "@/components/ui/Select";
 import Heading from "@/components/ui/Heading";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -125,71 +125,28 @@ const CASE_ORBS = [
 
 /* per-specimen attached tokens for the shared annotation (stable
    module-level arrays; every list verified against the recipe it
-   names in globals.css) */
-const ORB_TOKENS = CASE_ORBS.map(
-  (o) =>
-    [
-      { token: o.hi, kind: "color", at: "top-left" },
-      { token: o.lo, kind: "color", at: "bottom-right" },
-    ] as const satisfies readonly FlagSpec[]
-);
-/* redline flag specs (v3 T6): radius at the corner, size on the edge,
-   colour by the fill; <=4 flags per specimen so nothing overlaps */
-const OPENING_FLAGS = [
-  { token: "--btn-key-radius", kind: "radius", at: "top-left" },
-  { token: "--key-fill-hi", kind: "color", at: "top-right" },
-  /* all three ride the TOP lanes: the zone buttons own the space
-     under the keycap (v3 polish overlap fix) */
-  { token: "--key-fill-lo", kind: "color", at: "top" },
-  /* no shadow flag here: the inspector's own Edge-and-shadow zone IS
-     that annotation (no double display), and the zone row occupies the
-     bottom-right lane */
-] as const satisfies readonly FlagSpec[];
+   names in globals.css). ONE flat list per card, one lane (Phase 2,
+   audit section 5: FlagSpec.at collapsed away). */
+const ORB_TOKENS = CASE_ORBS.map((o) => [o.hi, o.lo] as const);
 
 const ANN = {
-  button: [
-    { token: "--btn-key-radius", kind: "radius", at: "top-left" },
-    { token: "--color-accent-ink", kind: "color", at: "bottom-left" },
-    { token: "--spacing-touch-target", kind: "size", at: "bottom-right" },
-  ] as const satisfies readonly FlagSpec[],
-  seg: [
-    { token: "--radius-lg", kind: "radius", at: "top-left" },
-    { token: "--color-border-medium", kind: "color", at: "top-right" },
-    { token: "--color-semantic-accent-subtle", kind: "color", at: "bottom-left" },
-  ] as const satisfies readonly FlagSpec[],
-  chip: [
-    { token: "--radius-full", kind: "radius", at: "top-left" },
-    { token: "--color-border-medium", kind: "color", at: "bottom-left" },
-    { token: "--color-semantic-background-inverse", kind: "color", at: "bottom-right" },
-  ] as const satisfies readonly FlagSpec[],
-  tagPill: [
-    { token: "--color-supporting-linen", kind: "color", at: "top-left" },
-    { token: "--color-accent-ink", kind: "color", at: "bottom-left" },
-    { token: "--color-semantic-accent-border", kind: "color", at: "bottom-right" },
-  ] as const satisfies readonly FlagSpec[],
-  select: [
-    { token: "--radius-md", kind: "radius", at: "top-left" },
-    { token: "--color-border-medium", kind: "color", at: "bottom-left" },
-    { token: "--spacing-touch-target", kind: "size", at: "bottom-right" },
-  ] as const satisfies readonly FlagSpec[],
-  bubble: [
-    { token: "--hub-hi", kind: "color", at: "top-left" },
-    { token: "--hub-lo", kind: "color", at: "bottom-left" },
-    { token: "--shadow-orb", kind: "shadow", at: "bottom-right" },
-  ] as const satisfies readonly FlagSpec[],
+  button: ["--btn-key-radius", "--color-accent-ink", "--spacing-touch-target"],
+  seg: ["--radius-lg", "--color-border-medium", "--color-semantic-accent-subtle"],
+  chip: ["--radius-full", "--color-border-medium", "--color-semantic-background-inverse"],
+  tagPill: ["--color-supporting-linen", "--color-accent-ink", "--color-semantic-accent-border"],
+  select: ["--radius-md", "--color-border-medium", "--spacing-touch-target"],
+  bubble: ["--hub-hi", "--hub-lo", "--shadow-orb"],
   /* the display face token itself is off-limits outside the Heading
      primitive (audit:structure); the size token is the annotation */
   typeDisplay: ["--font-hero"],
 } as const;
 
-const ALL_TOKENS = [
-  "--font-hero",
-  ...CASE_ORBS.map((o) => o.hi),
-  ...COLOUR_GROUPS.flatMap((g) => g.tokens),
-  ...SPACING,
-  ...RADII,
-  ...TYPE_SPECIMENS.map((t) => t.token),
-];
+/* only the swatch and scale readouts read here now; the flags and the
+   Type band read their own values inside TokenAnnotation */
+const ALL_TOKENS = [...COLOUR_GROUPS.flatMap((g) => g.tokens), ...SPACING, ...RADII];
+
+/* stable per-row flag lists for the Type band ramp */
+const TYPE_FLAGS = TYPE_SPECIMENS.map((t) => [t.token] as const);
 
 /* The ONE specimen card (v3 T2+T5): ui/Card carries every content
    unit; fixed-height head slot so demo areas start level, demo centred
@@ -206,12 +163,14 @@ function SpecimenCard({
 }: {
   kicker?: React.ReactNode;
   note?: React.ReactNode;
-  tokens?: readonly (string | FlagSpec)[];
+  tokens?: readonly string[];
   center?: boolean;
   /** flags duplicate visible inline text on this card */
   flagsAriaHidden?: boolean;
   children: React.ReactNode;
 }) {
+  /* proto slot order: head / lane / demo; ONE lane per card, tokens
+     appear once; leaders live inside the demo and touch the specimen */
   return (
     <Card className="h-full" innerClassName="ds-card__inner">
       {(kicker || note) && (
@@ -220,9 +179,11 @@ function SpecimenCard({
           {note && <p className="ds-section__note" style={{ margin: 0 }}>{note}</p>}
         </div>
       )}
-      {tokens && <TokenAnnotation tokens={tokens} variant="flags" lane="top" ariaHidden={flagsAriaHidden} />}
-      <div className={center ? "ds-card__demo ds-card__demo--center" : "ds-card__demo"}>{children}</div>
-      {tokens && <TokenAnnotation tokens={tokens} variant="flags" lane="bottom" ariaHidden={flagsAriaHidden} />}
+      {tokens && <TokenAnnotation tokens={tokens} ariaHidden={flagsAriaHidden} />}
+      <div className={center ? "ds-card__demo ds-card__demo--center" : "ds-card__demo"}>
+        {tokens && <FlagLeaders />}
+        {children}
+      </div>
     </Card>
   );
 }
@@ -279,9 +240,8 @@ export default function DesignSystemSpecimens() {
           </div>
         </div>
         <div className="ds-opening-grid__specimen">
-          {/* containment law (22 Jul): the flag lane is IN-FLOW above
-              the inspector, inside this column */}
-          <TokenAnnotation tokens={OPENING_FLAGS} variant="flags" lane="top" />
+          {/* the inspector's own lane is the annotation, inside the
+              card (Phase 2: the outer lane is gone) */}
           <TokenInspector />
           <p className="ds-section__note" style={{ margin: 0 }}>
             This is why the page cannot lie: pick a zone of the keycap and the readout shows
@@ -342,12 +302,9 @@ export default function DesignSystemSpecimens() {
               </Heading>
             </div>
             <span className="ds-type__leader" aria-hidden="true" />
-            <span className="ds-flag ds-flag--ramp">
-              <span className="ds-flag__value">{values["--font-hero"] || "reading"}</span>
-              <span className="ds-flag__token">--font-hero</span>
-            </span>
+            <TokenAnnotation tokens={ANN.typeDisplay} />
           </li>
-          {TYPE_SPECIMENS.map((t) => (
+          {TYPE_SPECIMENS.map((t, i) => (
             <li key={t.token} className="ds-type__row">
               <div className="ds-type__cell">
                 {"display" in t ? (
@@ -370,10 +327,7 @@ export default function DesignSystemSpecimens() {
                 )}
               </div>
               <span className="ds-type__leader" aria-hidden="true" />
-              <span className="ds-flag ds-flag--ramp">
-                <span className="ds-flag__value">{values[t.token] || "reading"}</span>
-                <span className="ds-flag__token">{t.token}</span>
-              </span>
+              <TokenAnnotation tokens={TYPE_FLAGS[i]} />
             </li>
           ))}
         </ul>

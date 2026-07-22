@@ -1,18 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import TokenAnnotation, { type FlagSpec } from "@/components/TokenAnnotation";
+import TokenAnnotation, { FlagLeaders } from "@/components/TokenAnnotation";
 
 /**
  * §8 /design-system: the clickable proof that this site runs on tokens.
- * A keycap specimen whose anatomy zones are real buttons. Inspector
- * refinements (Elleta, 22 Jul): the right-hand readout list is gone,
- * the FLAGS are the readout — selecting a zone swaps the visible flags
- * to that zone's tokens (contained lanes above and below the keycap,
- * leader ticks per the containment law). Live computed reads + theme
- * re-read live in TokenAnnotation, unchanged. The measurable ring
- * element keeps ONE equal offset from the keycap edge on all sides
- * (token offset, concentric radius; asserted in audit:visual). Also
+ * A keycap specimen whose anatomy zones are real buttons. Phase 2
+ * rebuild (22 Jul, audit section 5): proto slot order INSIDE the card,
+ * ONE lane at the top, then the stage, the zones, the caption. The
+ * flags are the readout: selecting a zone swaps the lane to that
+ * zone's tokens; tokens appear once. Live computed reads + theme
+ * re-read live in TokenAnnotation, unchanged. The ring reserves its
+ * space IN FLOW: the ringwrap pads one spacing token per side and the
+ * ring sits at inset 0 with a concentric radius (no negative insets).
+ * Leaders are the in-card SVG, drawn to touch the keycap. Also
  * embedded chromeless (/design-system/inspector) as case evidence.
  */
 
@@ -20,49 +21,37 @@ const ZONES: {
   id: string;
   label: string;
   drives: string;
-  flags: readonly FlagSpec[];
+  flags: readonly string[];
 }[] = [
   {
     id: "face",
     label: "Face",
     drives: "The filled key face, a two-stop gradient. Fixed in both themes so the white label always clears AA.",
-    flags: [
-      { token: "--key-fill-hi", kind: "color", at: "top" },
-      { token: "--key-fill-lo", kind: "color", at: "bottom" },
-    ],
+    flags: ["--key-fill-hi", "--key-fill-lo"],
   },
   {
     id: "label",
     label: "Label",
     drives: "Label colour, and the mono face all UI labels share.",
-    flags: [
-      { token: "--key-face-hi", kind: "color", at: "top" },
-      { token: "--font-mono", kind: "font", at: "bottom" },
-    ],
+    flags: ["--key-face-hi", "--font-mono"],
   },
   {
     id: "radius",
     label: "Radius",
     drives: "Corner rounding, one alias deep: the key radius points at the scale.",
-    flags: [
-      { token: "--btn-key-radius", kind: "radius", at: "top-left" },
-      { token: "--radius-lg", kind: "radius", at: "bottom-left" },
-    ],
+    flags: ["--btn-key-radius", "--radius-lg"],
   },
   {
     id: "edge",
     label: "Edge and shadow",
     drives: "The down-right plate edge and the resting cast shadow. Pressing the key swaps to the pressed pair.",
-    flags: [
-      { token: "--key-fill-edge", kind: "color", at: "top" },
-      { token: "--shadow-key-resting", kind: "shadow", at: "bottom" },
-    ],
+    flags: ["--key-fill-edge", "--shadow-key-resting"],
   },
   {
     id: "size",
     label: "Hit area",
     drives: "Minimum touch target on every interactive control.",
-    flags: [{ token: "--spacing-touch-target", kind: "size", at: "top" }],
+    flags: ["--spacing-touch-target"],
   },
 ];
 
@@ -73,18 +62,21 @@ export default function TokenInspector() {
 
   return (
     <div className="tok-inspector">
-      {/* the flags ARE the readout (22 Jul): top lane, keycap, bottom
-          lane, zone chips, the zone's caption sentence */}
-      <TokenAnnotation key={`${zone}-top`} tokens={active.flags} variant="flags" lane="top" />
+      {/* proto slot order: lane / stage / zones / caption, all inside
+          the card; the flags ARE the readout */}
+      <TokenAnnotation key={zone} tokens={active.flags} />
       <div className="tok-inspector__stage">
-        <span className="tok-inspector__key" data-zone={zone} aria-hidden="true">
-          design
-          {/* the measurable trace ring: one token offset per side,
-              concentric corners (audit:visual asserts the geometry) */}
+        <FlagLeaders />
+        <span className="tok-inspector__ringwrap" data-zone={zone}>
+          {/* the measurable trace ring: space reserved in flow by the
+              ringwrap padding, ring at inset 0, concentric corners
+              (audit:visual asserts the geometry) */}
           <span className="tok-inspector__ring" aria-hidden="true" />
+          <span className="tok-inspector__key" aria-hidden="true">
+            design
+          </span>
         </span>
       </div>
-      <TokenAnnotation key={`${zone}-bottom`} tokens={active.flags} variant="flags" lane="bottom" />
       <div className="tok-inspector__zones" role="group" aria-label="Keycap anatomy zones">
         {ZONES.map((z) => (
           <button
