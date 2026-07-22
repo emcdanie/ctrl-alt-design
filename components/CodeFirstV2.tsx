@@ -99,6 +99,42 @@ function P({ text }: { text: string }) {
   );
 }
 
+/** Vitaly scannability, applied MECHANICALLY (her training notes:
+    layer-cake scanning, inverted pyramid): the keyline is an EXACT
+    sentence lifted from her text and front-loaded on the keyline
+    recipe (bold ink, never iris); the rest re-chunks at sentence
+    boundaries into short paragraphs, every word hers, none written */
+function Scannable({ text, keyline }: { text: string; keyline?: string }) {
+  if (!text.trim()) return null;
+  let rest = text;
+  if (keyline && text.includes(keyline)) {
+    rest = text.replace(keyline, "").replace(/\s{2,}/g, " ").trim();
+  }
+  const sentences = rest.split(/(?<=[.!?])\s+/).filter(Boolean);
+  const chunks: string[] = [];
+  let cur: string[] = [];
+  let words = 0;
+  for (const sen of sentences) {
+    const w = sen.split(/\s+/).length;
+    if (words + w > 42 && cur.length) {
+      chunks.push(cur.join(" "));
+      cur = [];
+      words = 0;
+    }
+    cur.push(sen);
+    words += w;
+  }
+  if (cur.length) chunks.push(cur.join(" "));
+  return (
+    <>
+      {keyline && <p className="cs-decision-why">{keyline}</p>}
+      {chunks.map((c) => (
+        <P key={c.slice(0, 24)} text={c} />
+      ))}
+    </>
+  );
+}
+
 function BeatLink({ index }: { index: number }) {
   const line = BEAT_LINKS[index] ?? "";
   if (line.trim() === "") return null;
@@ -177,7 +213,11 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
       <Beat index={0} id="cs2-b1">
         <div className="cs2-screen__grid">
           <div className="cs2-screen__text">
-            <P text={summary?.context ?? ""} />
+            {/* keyline: her exact fragment, front-loaded */}
+            <Scannable
+              text={summary?.context ?? ""}
+              keyline="Same component. Different names. Different assumptions."
+            />
             <p className="ds-section__note" style={{ margin: 0 }}>{DEMO_DISCLOSURE}</p>
           </div>
           <div className="cs2-screen__visual">
@@ -192,7 +232,10 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
       {/* ── 02 · the tokens testify: the journey of a component ── */}
       <Beat index={1} id="cs2-b2">
         <div className="cs2-measure">
-          <P text={para(cs, (b) => b.kind === "decision" && b.index === "01", 0)} />
+          <Scannable
+            text={para(cs, (b) => b.kind === "decision" && b.index === "01", 0)}
+            keyline="Token alignment was the most technically demanding part of the work."
+          />
           <p className="ds-section__note">
             Walk the Tile through the layers and watch each one act on it; the step is
             linkable, and the values re-read on every theme flip.
@@ -214,8 +257,13 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
       <Beat index={2} id="cs2-b3">
         <div className="cs2-screen__grid cs2-screen__grid--flip">
           <div className="cs2-screen__text">
-            <P text={para(cs, (b) => b.kind === "decision" && b.index === "01", 1)} />
-            <P text={para(cs, (b) => b.kind === "decision" && b.index === "02", 0)} />
+            <Scannable
+              text={para(cs, (b) => b.kind === "decision" && b.index === "01", 1)}
+              keyline="Several components had diverged between Figma and Storybook over time."
+            />
+            {/* TODO(elleta): trim. The MCP paragraph runs long; split
+                mechanically below, cut in your voice when you pass. */}
+            <Scannable text={para(cs, (b) => b.kind === "decision" && b.index === "02", 0)} />
           </div>
           <div className="cs2-screen__visual">
             <SystemTree />
@@ -230,7 +278,12 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
           _proto/beat4.html) ── */}
       <Beat index={3} id="cs2-b4">
         <GateRun
-          text={<P text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "Evidence", 0)} />}
+          text={
+            <Scannable
+              text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "Evidence", 0)}
+              keyline="The portfolio you are reading runs on the same code-first discipline: a token layer, one component per job, and a governance gate that fails the build on drift."
+            />
+          }
         />
         {/* the agent surfaces, two flat lines with the real links */}
         <div className="cs2-measure">
@@ -252,8 +305,13 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
       {/* ── 05 · the close: outcomes, journey, the exit ── */}
       <Beat index={4} id="cs2-b5">
         <div className="cs2-measure">
-          <P text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 0)} />
-          <P text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 1)} />
+          {/* TODO(elleta): trim. The two closing paragraphs run ~90
+              words each; split mechanically below, your cuts win. */}
+          <Scannable
+            text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 0)}
+            keyline="The highest-value work isn't in the Figma file, it's in the alignment between design intent and implementation reality."
+          />
+          <Scannable text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 1)} />
         </div>
         <div>
           <p className="ds-section__note" style={{ marginBottom: "var(--spacing-3)" }}>
