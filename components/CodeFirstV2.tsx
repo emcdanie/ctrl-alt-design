@@ -8,7 +8,6 @@ import Card from "@/components/ui/Card";
 import CaseCard from "@/components/CaseCard";
 import CaseSpecimen, { SPEC_FLAGS, useResolvedTokens, type FlagState } from "@/components/CaseSpecimen";
 import LayerJourney from "@/components/LayerJourney";
-import SystemTree from "@/components/SystemTree";
 import GateRun from "@/components/GateRun";
 import { PullQuote } from "@/components/CaseStudyTypography";
 import { BoldText } from "@/lib/richtext";
@@ -251,6 +250,12 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
     | { context: string; approach: string; outcome: string }
     | undefined;
   const pullQuote = cs.blocks?.find((b) => b.kind === "pullQuote") as { text: string } | undefined;
+  /* the recorded session figure, straight from the case content */
+  const clip = cs.blocks
+    ?.flatMap((b) => (b.kind === "section" && "children" in b ? b.children : []))
+    .find((b) => b.kind === "figure") as
+    | { src: string; alt: string; caption?: string; href?: string; linkLabel?: string }
+    | undefined;
   const outcomes = (summary?.outcome ?? "").split(/(?<=\.)\s+/).filter(Boolean);
   const nextItem = WORK_ITEMS.find((i) => i.id === "drift"); /* the three stars loop: chip -> code-first -> drift -> chip */
 
@@ -328,7 +333,15 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
           brief scopes it out); content untouched, only the Z-pattern
           side flipped (visual LEFT after beat 01's visual-right). ── */}
       <Beat index={2} id="cs2-b3">
-        {/* visual RIGHT (Z: right, left, right, left) */}
+        {/* visual RIGHT (Z kept). PROPOSAL per the markup pass: the
+            invented dependency graph is gone (names nobody in the
+            story had met); the RECORDED SESSION is the beat's
+            evidence, the honest artifact of the MCP investigation
+            this copy describes. The one-session-link law holds: the
+            link moved HERE from the header meta.
+            TODO(elleta): confirm the session as the beat-03 visual,
+            or pick another direction from _review/beat03-viz-ideas.md
+            and the header link comes back. */}
         <Scene
           txt={
             <>
@@ -341,7 +354,32 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
               <Scannable text={para(cs, (b) => b.kind === "decision" && b.index === "02", 0)} />
             </>
           }
-          visual={<SystemTree />}
+          visual={
+            clip ? (
+              <Card innerClassName="ds-card__inner">
+                <figure style={{ margin: 0, display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={clip.src}
+                    alt={clip.alt}
+                    loading="lazy"
+                    style={{ width: "100%", height: "auto", borderRadius: "var(--radius-lg)" }}
+                  />
+                  {clip.caption && (
+                    <figcaption className="ds-section__note" style={{ margin: 0 }}>{clip.caption}</figcaption>
+                  )}
+                </figure>
+              </Card>
+            ) : null
+          }
+          foot={
+            clip?.href ? (
+              <a href={clip.href} target="_blank" rel="noopener noreferrer" className="demo-link">
+                <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span>{" "}
+                {clip.linkLabel ?? "Watch the session"}
+              </a>
+            ) : undefined
+          }
         />
         {pullQuote && <PullQuote>{pullQuote.text}</PullQuote>}
         <BeatLink index={2} />
