@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
-import Card from "@/components/ui/Card";
 import CaseCard from "@/components/CaseCard";
+import CaseBeat from "@/components/CaseBeat";
 import CaseSpecimen, { SPEC_FLAGS, useResolvedTokens, type FlagState } from "@/components/CaseSpecimen";
 import LayerJourney from "@/components/LayerJourney";
 import GateRun from "@/components/GateRun";
@@ -38,15 +38,6 @@ import type { CaseStudy, CaseBlock } from "@/lib/content";
  * inspector and the theming card (both live on /design-system; the
  * theme story closes beat 02's text).
  */
-
-/* ── beat headings: HER DRAFTS from the brief, reword-at-will ── */
-const BEATS = [
-  "The button didn't match the code.",
-  "So I made the tokens testify.",
-  "Then I rebuilt what the system wanted.",
-  "Now the system checks itself.",
-  "What the work walked away with.",
-];
 
 /* one connective sentence between beats, her voice; each renders
    nothing while empty */
@@ -105,6 +96,7 @@ function P({ text }: { text: string }) {
     recipe (bold ink, never iris); the rest re-chunks at sentence
     boundaries into short paragraphs, every word hers, none written */
 function Scannable({ text, keyline }: { text: string; keyline?: string }) {
+  /* keyline is STRIPPED here and rendered by CaseBeat's keyline slot */
   if (!text.trim()) return null;
   let rest = text;
   if (keyline && text.includes(keyline)) {
@@ -127,43 +119,10 @@ function Scannable({ text, keyline }: { text: string; keyline?: string }) {
   if (cur.length) chunks.push(cur.join(" "));
   return (
     <>
-      {keyline && <p className="cs-decision-why">{keyline}</p>}
       {chunks.map((c) => (
         <P key={c.slice(0, 24)} text={c} />
       ))}
     </>
-  );
-}
-
-/** the ONE scene skeleton (consistency pass): identical two-column
-    grid every beat, mirrored by Z alternation; the visual column
-    stacks [control][visual][footnote] with one treatment */
-function Scene({
-  flip = false,
-  wide = false,
-  txt,
-  control,
-  visual,
-  foot,
-}: {
-  flip?: boolean;
-  /** the wide-visual variant: same skeleton, asymmetric columns for
-      compound visuals (the journey); recorded in DESIGN.md */
-  wide?: boolean;
-  txt: React.ReactNode;
-  control?: React.ReactNode;
-  visual: React.ReactNode;
-  foot?: React.ReactNode;
-}) {
-  return (
-    <div className={`cs2-screen__grid${flip ? " cs2-screen__grid--flip" : ""}${wide ? " cs2-screen__grid--wide" : ""}`}>
-      <div className="cs2-screen__text">{txt}</div>
-      <div className="cs2-screen__visual scene-vis">
-        {control && <div className="scene-control">{control}</div>}
-        {visual}
-        {foot && <div className="scene-foot">{foot}</div>}
-      </div>
-    </div>
   );
 }
 
@@ -182,6 +141,35 @@ function BeatLink({ index }: { index: number }) {
    to true to enable (reduced motion skips to the end state either
    way; the toggle stays available). */
 const DRIFT_AUTOPLAY = false;
+
+/** beat 01's visual: self-contained; the toggle in the control slot
+    directly above the FLAT stage, the caption in the footnote slot */
+function DriftBeat() {
+  const d = useDriftBeat();
+  return (
+    <>
+      <div className="scene-control">
+        <SegmentedControl
+          label="View"
+          options={[
+            { value: "on", label: "On system" },
+            { value: "before", label: "Before" },
+          ]}
+          value={d.view}
+          onChange={d.setView}
+        />
+      </div>
+      <CaseSpecimen flagStates={d.flagStates} label={d.before ? "Before" : "On system"} />
+      <div className="scene-foot">
+        <p className="cs2-kicker-row" style={{ margin: 0 }}>
+          {d.before
+            ? "Before: Figma said one thing, the code said another. Same card."
+            : "On system: both sides carry the same token names."}
+        </p>
+      </div>
+    </>
+  );
+}
 
 function useDriftBeat() {
   const [view, setView] = useState("on");
@@ -221,27 +209,6 @@ function useDriftBeat() {
   return { view, setView, before, flagStates };
 }
 
-/** one beat: the numbered sentence head, then ONE scene */
-function Beat({
-  index,
-  id,
-  children,
-}: {
-  index: number;
-  id: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="cs2-beat" aria-labelledby={id}>
-      <div>
-        <p className="ds-section__kicker" style={{ margin: 0 }}>{String(index + 1).padStart(2, "0")}</p>
-        <SectionHeader id={id} title={BEATS[index]} className="cs2-screen__head" />
-      </div>
-      {children}
-    </section>
-  );
-}
-
 /* ── the composition ── */
 
 export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
@@ -261,199 +228,168 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
 
   return (
     <div className="cs2-body-col">
-      {/* ── 01 · the problem: the drift stage, skeleton instance ── */}
-      <Beat index={0} id="cs2-b1">
-        <Scene
-          txt={
-            <>
-              <Scannable
-                text={summary?.context ?? ""}
-                keyline="Same component. Different names. Different assumptions."
-              />
-              <p className="ds-section__note" style={{ margin: 0 }}>{DEMO_DISCLOSURE}</p>
-            </>
-          }
-          control={
-            <SegmentedControl
-              label="View"
-              options={[
-                { value: "on", label: "On system" },
-                { value: "before", label: "Before" },
-              ]}
-              value={drift.view}
-              onChange={drift.setView}
-            />
-          }
-          visual={
-            <CaseSpecimen
-              flagStates={drift.flagStates}
-              label={drift.before ? "Before" : "On system"}
-            />
-          }
-          foot={
-            <p className="cs2-kicker-row" style={{ margin: 0 }}>
-              {drift.before
-                ? "Before: Figma said one thing, the code said another. Same card."
-                : "On system: both sides carry the same token names."}
-            </p>
-          }
-        />
-        <BeatLink index={0} />
-      </Beat>
-
-      {/* ── 02 · the tokens testify: back in the skeleton on the
-          WIDE-VISUAL variant (recorded in DESIGN.md): slim text
-          beside the journey; inside the visual, rail LEFT beside the
-          panel it drives, equal heights ── */}
-      <Beat index={1} id="cs2-b2">
-        <Scene
-          flip
-          wide
-          txt={
-            <>
-              <Scannable
-                text={para(cs, (b) => b.kind === "decision" && b.index === "01", 0)}
-                keyline="Token alignment was the most technically demanding part of the work."
-              />
-              <p className="ds-section__note">
-                Walk the Tile through the layers and watch each one act on it; the step is
-                linkable, and the values re-read on every theme flip.
-                <strong> Flip the theme and watch the values follow.</strong>
-              </p>
-            </>
-          }
-          visual={<LayerJourney />}
-        />
-        <BeatLink index={1} />
-      </Beat>
-
-      {/* ── 03 · the rebuild: the system tree is the scene; the
-          session clip follows as the compact media moment.
-          TODO(elleta): the tree awaits its own proto (the rebuild
-          brief scopes it out); content untouched, only the Z-pattern
-          side flipped (visual LEFT after beat 01's visual-right). ── */}
-      <Beat index={2} id="cs2-b3">
-        {/* visual RIGHT (Z kept). PROPOSAL per the markup pass: the
-            invented dependency graph is gone (names nobody in the
-            story had met); the RECORDED SESSION is the beat's
-            evidence, the honest artifact of the MCP investigation
-            this copy describes. The one-session-link law holds: the
-            link moved HERE from the header meta.
-            TODO(elleta): confirm the session as the beat-03 visual,
-            or pick another direction from _review/beat03-viz-ideas.md
-            and the header link comes back. */}
-        <Scene
-          txt={
-            <>
-              <Scannable
-                text={para(cs, (b) => b.kind === "decision" && b.index === "01", 1)}
-                keyline="Several components had diverged between Figma and Storybook over time."
-              />
-              {/* TODO(elleta): trim. The MCP paragraph runs long; split
-                  mechanically below, cut in your voice when you pass. */}
-              <Scannable text={para(cs, (b) => b.kind === "decision" && b.index === "02", 0)} />
-            </>
-          }
-          visual={
-            clip ? (
-              <Card innerClassName="ds-card__inner">
-                <figure style={{ margin: 0, display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={clip.src}
-                    alt={clip.alt}
-                    loading="lazy"
-                    style={{ width: "100%", height: "auto", borderRadius: "var(--radius-lg)" }}
-                  />
-                  {clip.caption && (
-                    <figcaption className="ds-section__note" style={{ margin: 0 }}>{clip.caption}</figcaption>
-                  )}
-                </figure>
-              </Card>
-            ) : null
-          }
-          foot={
-            clip?.href ? (
-              <a href={clip.href} target="_blank" rel="noopener noreferrer" className="demo-link">
-                <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span>{" "}
-                {clip.linkLabel ?? "Watch the session"}
-              </a>
-            ) : undefined
-          }
-        />
-        {pullQuote && <PullQuote>{pullQuote.text}</PullQuote>}
-        <BeatLink index={2} />
-      </Beat>
-
-      {/* ── 04 · the system checks itself: the gate check on the
-          shared specimen, visual-LEFT / text-RIGHT (contract
-          _proto/beat4.html) ── */}
-      <Beat index={3} id="cs2-b4">
-        {/* visual LEFT (Z close); the gate device fills the scene's
-            control/visual/footnote slots itself */}
-        <Scene
-          flip
-          txt={
+      {/* the five beats: instances of THE CaseBeat template
+          (docs/briefs/case-layout-constitution.md); alternation via
+          flip only, headline inside the text column always */}
+      <CaseBeat
+        index="01"
+        kicker="The mismatch"
+        headline="The button didn't match the code."
+        keyline="Same component. Different names. Different assumptions."
+        id="cs2-b1"
+        body={
+          <>
             <Scannable
-              text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "Evidence", 0)}
-              keyline="The portfolio you are reading runs on the same code-first discipline: a token layer, one component per job, and a governance gate that fails the build on drift."
+              text={summary?.context ?? ""}
+              keyline="Same component. Different names. Different assumptions."
             />
-          }
-          visual={<GateRun />}
-        />
-        <BeatLink index={3} />
-      </Beat>
+            <p className="ds-section__note" style={{ margin: 0 }}>{DEMO_DISCLOSURE}</p>
+          </>
+        }
+        visual={<DriftBeat />}
+      />
+      <BeatLink index={0} />
 
-      {/* ── 05 · the close: skeleton instance, no orphaned right
-          half. TODO(elleta): the outcomes card placement (right
-          column) is my read of "use the right column purposefully";
-          say the word for the single-measured-column variant. ── */}
-      <Beat index={4} id="cs2-b5">
-        <Scene
-          txt={
-            <>
-              {/* TODO(elleta): trim. The two closing paragraphs run
-                  ~90 words each; split mechanically below, your cuts
-                  win. */}
-              <Scannable
-                text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 0)}
-                keyline="The highest-value work isn't in the Figma file, it's in the alignment between design intent and implementation reality."
-              />
-              <Scannable text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 1)} />
-              {/* the takeaways: clean numbered rows, one idea per
-                  line, above the CTA */}
-              <ol className="ds-rules" style={{ margin: 0 }}>
-                {[...JOURNEY, ...(JOURNEY_FAILURE_LINE.trim() !== "" ? [JOURNEY_FAILURE_LINE] : [])].map((j) => (
-                  <li key={j}>{j}</li>
-                ))}
-              </ol>
-              {/* the CTA: SECONDARY, directly under the body copy */}
-              <div className="cs2-personality">
-                {PERSONALITY_LINE.trim() !== "" && (
-                  <p className="ds-section__note" style={{ margin: 0 }}>{PERSONALITY_LINE}</p>
-                )}
-                <Button variant="secondary" href="/contact">Get in touch</Button>
-              </div>
-            </>
-          }
-          visual={
-            <Card innerClassName="ds-card__inner">
-              <p className="cs2-kicker-row" style={{ margin: 0 }}>What shipped</p>
-              <ul className="cs2-flatlist">
-                {outcomes.map((o) => (
-                  <li key={o} className="ds-section__note" style={{ margin: 0 }}>{o}</li>
-                ))}
-              </ul>
-            </Card>
-          }
-          foot={
-            <p className="cs2-kicker-row" style={{ margin: 0 }}>
-              {NO_NUMBERS_LINE}
-              {NO_NUMBERS_DETAIL.trim() !== "" && ` ${NO_NUMBERS_DETAIL}`}
+      <CaseBeat
+        index="02"
+        kicker="The proof"
+        headline="So I made the tokens testify."
+        keyline="Token alignment was the most technically demanding part of the work."
+        id="cs2-b2"
+        flip
+        body={
+          <>
+            <Scannable
+              text={para(cs, (b) => b.kind === "decision" && b.index === "01", 0)}
+              keyline="Token alignment was the most technically demanding part of the work."
+            />
+            <p className="ds-section__note">
+              Walk the Tile through the layers and watch each one act on it; the step is
+              linkable, and the values re-read on every theme flip.
+              <strong> Flip the theme and watch the values follow.</strong>
             </p>
-          }
-        />
-      </Beat>
+          </>
+        }
+        visual={<LayerJourney />}
+      />
+      <BeatLink index={1} />
+
+      {/* PROPOSAL held from the markups pass, TODO(elleta): the
+          recorded session as beat 03's visual, or your pick from
+          _review/beat03-viz-ideas.md (the header link returns then).
+          The one-session-link law holds: the link lives here. */}
+      <CaseBeat
+        index="03"
+        kicker="The rebuild"
+        headline="Then I rebuilt what the system wanted."
+        keyline="Several components had diverged between Figma and Storybook over time."
+        id="cs2-b3"
+        body={
+          <>
+            <Scannable
+              text={para(cs, (b) => b.kind === "decision" && b.index === "01", 1)}
+              keyline="Several components had diverged between Figma and Storybook over time."
+            />
+            {/* TODO(elleta): trim. The MCP paragraph runs long; split
+                mechanically below, cut in your voice when you pass. */}
+            <Scannable text={para(cs, (b) => b.kind === "decision" && b.index === "02", 0)} />
+          </>
+        }
+        visual={
+          clip ? (
+            <>
+              <figure style={{ margin: 0, display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={clip.src}
+                  alt={clip.alt}
+                  loading="lazy"
+                  style={{ width: "100%", height: "auto", borderRadius: "var(--radius-lg)", border: "1px solid var(--color-border-soft)" }}
+                />
+                {clip.caption && (
+                  <figcaption className="ds-section__note" style={{ margin: 0 }}>{clip.caption}</figcaption>
+                )}
+              </figure>
+              {clip.href && (
+                <div className="scene-foot">
+                  <a href={clip.href} target="_blank" rel="noopener noreferrer" className="demo-link">
+                    <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span>{" "}
+                    {clip.linkLabel ?? "Watch the session"}
+                  </a>
+                </div>
+              )}
+            </>
+          ) : null
+        }
+      />
+      {pullQuote && <PullQuote>{pullQuote.text}</PullQuote>}
+      <BeatLink index={2} />
+
+      <CaseBeat
+        index="04"
+        kicker="The gate"
+        headline="Now the system checks itself."
+        keyline="The portfolio you are reading runs on the same code-first discipline: a token layer, one component per job, and a governance gate that fails the build on drift."
+        id="cs2-b4"
+        flip
+        body={
+          <Scannable
+            text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "Evidence", 0)}
+            keyline="The portfolio you are reading runs on the same code-first discipline: a token layer, one component per job, and a governance gate that fails the build on drift."
+          />
+        }
+        visual={<GateRun />}
+      />
+      <BeatLink index={3} />
+
+      <CaseBeat
+        index="05"
+        kicker="The takeaway"
+        headline="What the work walked away with."
+        keyline="The highest-value work isn't in the Figma file, it's in the alignment between design intent and implementation reality."
+        id="cs2-b5"
+        body={
+          <>
+            {/* TODO(elleta): trim. The two closing paragraphs run ~90
+                words each; split mechanically below, your cuts win. */}
+            <Scannable
+              text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 0)}
+              keyline="The highest-value work isn't in the Figma file, it's in the alignment between design intent and implementation reality."
+            />
+            <Scannable text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 1)} />
+            <ol className="ds-rules" style={{ margin: 0 }}>
+              {[...JOURNEY, ...(JOURNEY_FAILURE_LINE.trim() !== "" ? [JOURNEY_FAILURE_LINE] : [])].map((j) => (
+                <li key={j}>{j}</li>
+              ))}
+            </ol>
+            <div className="cs2-personality">
+              {PERSONALITY_LINE.trim() !== "" && (
+                <p className="ds-section__note" style={{ margin: 0 }}>{PERSONALITY_LINE}</p>
+              )}
+              <Button variant="secondary" href="/contact">Get in touch</Button>
+            </div>
+          </>
+        }
+        visual={
+          <>
+            {/* the outcomes as FLAT rows (the constitution: the demo
+                specimen is the only card).
+                TODO(elleta): placement stays your call. */}
+            <p className="cs2-kicker-row" style={{ margin: 0 }}>What shipped</p>
+            <ul className="beat-outcomes">
+              {outcomes.map((o) => (
+                <li key={o} className="ds-section__note" style={{ margin: 0 }}>{o}</li>
+              ))}
+            </ul>
+            <div className="scene-foot">
+              <p className="cs2-kicker-row" style={{ margin: 0 }}>
+                {NO_NUMBERS_LINE}
+                {NO_NUMBERS_DETAIL.trim() !== "" && ` ${NO_NUMBERS_DETAIL}`}
+              </p>
+            </div>
+          </>
+        }
+      />
 
       {/* next case: the ONE surviving card, the three stars in a loop */}
       {nextItem && (

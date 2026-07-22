@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Card from "@/components/ui/Card";
 import { SpecimenCardBody } from "@/components/CaseSpecimen";
 
 /**
@@ -225,12 +224,12 @@ export default function LayerJourney() {
   }, []);
 
   const onKey = (e: React.KeyboardEvent) => {
-    /* the rail is reversed: ArrowUp climbs toward Production */
-    if (e.key === "ArrowUp" || e.key === "ArrowRight") {
+    /* journey order: down/right advances toward Production */
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") {
       e.preventDefault();
       go(step + 1);
     }
-    if (e.key === "ArrowDown" || e.key === "ArrowLeft") {
+    if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
       e.preventDefault();
       go(step - 1);
     }
@@ -256,45 +255,40 @@ export default function LayerJourney() {
   }
 
   return (
-    /* ONE CARD (contract _proto/beat02-onecard.html): rail and detail
-       share a single container, equal height by construction; the Run
-       control sits in the card header; rail labels are single-line
-       with the travelling trace on the active step */
+    /* FLAT (the layout constitution: no card around a visual): the
+       control slot heads the demo, then rail LEFT beside the detail,
+       equal height, adjacent; the rail reads in JOURNEY ORDER,
+       Figma at the top, Production shipped at the bottom */
     <div className="jn demo-scope">
       {JOURNEY_CAPTION.trim() !== "" && (
         <p className="ds-section__kicker jn-caption-slot" style={{ margin: 0 }}>{JOURNEY_CAPTION}</p>
       )}
-      <Card innerClassName="ds-card__inner jn-onecard">
-        <div className="jn-onecard__head">
-          <span className="cs2-kicker-row" style={{ margin: 0 }}>The journey</span>
-          <button type="button" className="demo-btn jn-run" onClick={run}>
-            {running ? "Running…" : "Run the journey"}
-          </button>
+      <div className="scene-control">
+        <button type="button" className="demo-btn jn-run" onClick={run}>
+          {running ? "Running…" : "Run the journey"}
+        </button>
+      </div>
+      <div className="jn-onecard__body jn-flatbody">
+        <div className="jn-rail" ref={railRef} onKeyDown={onKey}>
+          {L.map((l, i) => {
+            const on = i === step;
+            return (
+              <button
+                key={l.slug}
+                type="button"
+                className={`jn-step trace-host${on ? " trace-on" : ""}`}
+                aria-current={on ? "step" : undefined}
+                onClick={() => go(i)}
+              >
+                {l.n}
+              </button>
+            );
+          })}
         </div>
-        <div className="jn-onecard__body">
-          {/* the slim rail, REVERSED: Production top, Figma bottom */}
-          <div className="jn-rail" ref={railRef} onKeyDown={onKey}>
-            {[...L].reverse().map((l) => {
-              const i = L.indexOf(l);
-              const on = i === step;
-              return (
-                <button
-                  key={l.slug}
-                  type="button"
-                  className={`jn-step trace-host${on ? " trace-on" : ""}`}
-                  aria-current={on ? "step" : undefined}
-                  onClick={() => go(i)}
-                >
-                  {l.n}
-                </button>
-              );
-            })}
-          </div>
-          <div className="jn-right" id={`journey-${L[step].slug}`}>
-            <Panel i={step} animate />
-          </div>
+        <div className="jn-right" id={`journey-${L[step].slug}`}>
+          <Panel i={step} animate />
         </div>
-      </Card>
+      </div>
     </div>
   );
 }
