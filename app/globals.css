@@ -3701,65 +3701,202 @@ textarea:focus-visible {
   gap: var(--spacing-4);
 }
 
-/* ── beat 02: the journey as ONE static diagram (simplification
-   pass, Elleta-approved 22 Jul 2026): seven layers in journey order,
-   Figma/foundation at the top, Production shipped at the bottom;
-   flat on the ground, no stepper, no run, no autoplay. The animated
-   LayerJourney/GateRun devices and their CSS are deleted. ── */
-.beat-journey {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* ── beat 02: the layered journey, RESTORED CLEANED (AI-flow spec,
+   22 Jul 2026; contract _proto/beat2.html + beat02-onecard.html).
+   No --demo-* scope; the run control lives in the CaseBeat control
+   slot. The jn-nav/dots and the seven-panel reduced-motion stack
+   stay retired. ── */
+
+.jn {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-4);
+  align-items: stretch;
   width: 100%;
 }
 
-.beat-journey__row {
+/* the ONE-card journey (contract _proto/beat02-onecard.html): rail
+   and detail in a single container, equal height by construction;
+   slim single-line steps, the active one wearing the ONE travelling
+   trace */
+/* the flat journey body: a hairline divider between rail and detail
+   is internal structure, not a frame (the root paints nothing) */
+.jn-onecard__body {
   display: grid;
-  grid-template-columns: auto minmax(150px, 180px) minmax(0, 1fr);
-  align-items: baseline;
-  gap: var(--spacing-4);
-  padding: var(--spacing-3) 0;
-}
-
-.beat-journey__row + .beat-journey__row {
-  border-top: 1px solid var(--color-border-soft);
-}
-
-.beat-journey__n {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  font-weight: 600;
-  color: var(--color-ink-muted);
-}
-
-.beat-journey__name {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
-  color: var(--color-ink);
-}
-
-.beat-journey__desc {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: 1.5;
-  color: var(--color-ink-soft);
+  grid-template-columns: minmax(150px, 180px) minmax(0, 1fr);
+  align-items: stretch;
 }
 
 @media (max-width: 519px) {
-  .beat-journey__row {
-    grid-template-columns: auto minmax(0, 1fr);
-  }
-
-  .beat-journey__desc {
-    grid-column: 2;
+  .jn-onecard__body {
+    grid-template-columns: 1fr;
   }
 }
 
+.jn-rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  padding: var(--spacing-2);
+  border-right: 1px solid var(--color-border-soft);
+}
+
+.jn-step {
+  --cc: var(--hero-iris-bright, var(--color-accent-ink));
+  --trace-r: var(--radius-md);
+  --trace-w: 2px;
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-ink-muted);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jn-step:hover {
+  color: var(--color-ink);
+}
+
+.jn-step[aria-current="step"] {
+  color: var(--color-accent-ink);
+}
+
+.jn-step:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.jn-caption-slot {
+  margin: 0;
+}
+
+
+.jn-right {
+  min-width: 0;
+}
+
+.jn-panel {
+  /* borderless: the ONE card is the container */
+  padding: var(--spacing-4) var(--spacing-5) var(--spacing-5);
+}
+
+.jn-kickerband {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+.jn-kickerband__tag {
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-1) var(--spacing-2);
+  color: var(--color-ink);
+}
+
+.jn-kicker-where {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: var(--spacing-5) 0 var(--spacing-1);
+}
+
+/* GEIST in the panel; Unique never inside a card */
+.jn-paneltitle {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--font-subsection);
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin: 0;
+}
+
+.jn-sub {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-soft);
+  margin: var(--spacing-1) 0 0;
+}
+
+.jn-stagebox {
+  border: 1px dashed var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  min-height: 230px;
+  margin: var(--spacing-5) 0;
+  padding: var(--spacing-5);
+  display: flex;
+  gap: var(--spacing-6);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* the travelling specimen, scaled down inside the panel */
+.jn-mini {
+  flex: none;
+  width: 190px;
+}
+
+.jn-mini .csp-card {
+  width: 100%;
+  padding: var(--spacing-4);
+}
+
+.jn-mini .csp-sphere {
+  width: 32px;
+  height: 32px;
+  margin-bottom: var(--spacing-3);
+}
+
+.jn-mini .csp-title {
+  font-size: var(--typography-font-size-base);
+}
+
+.jn-mini .csp-desc {
+  display: none;
+}
+
+.jn-mini--flagged .csp-card {
+  outline: 2px solid var(--case-writing-text);
+  outline-offset: 2px;
+}
+
+.jn-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.7;
+  min-width: 0;
+}
+
+.jn-detail__line--mut { color: var(--color-ink-muted); }
+.jn-detail__line--ok { color: var(--color-ink); font-weight: 700; }
+
+
 /* drift TEXT on card surfaces: the drift hue pulled toward ink so it
    clears AA in both themes (axe caught the raw case colour) */
+.jn-detail__line--err,
 .csp-flag--drift .csp-flag__val,
 .csp-flag--fail .csp-flag__val {
   color: color-mix(in srgb, var(--case-writing-text) 65%, var(--color-ink));
@@ -3768,6 +3905,7 @@ textarea:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .csp-flag,
+  .jn-reveal,
   .spec-stage.in .csp-flag--t {
     transition: none;
     opacity: 1;

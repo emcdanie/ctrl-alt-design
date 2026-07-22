@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { Button } from "@/components/ui/Button";
 import CaseCard from "@/components/CaseCard";
 import CaseBeat from "@/components/CaseBeat";
 import CaseSpecimen, { SPEC_FLAGS, type FlagState } from "@/components/CaseSpecimen";
+import LayerJourney from "@/components/LayerJourney";
 import { PullQuote } from "@/components/CaseStudyTypography";
 import { BoldText } from "@/lib/richtext";
 import { WORK_ITEMS } from "@/lib/workLibrary";
@@ -102,20 +105,6 @@ const METRICS: { value: string; label: string; takeaway: string }[] = [
 ];
 const THANKS_LINE = "Thanks for reading.";
 
-/** Beat 02's visual, STATIC INTERIM (Part A): the seven-layer journey
-    as one diagram in journey order. Part B commit 1 replaces this
-    with the restored LayerJourney animation; the two must never both
-    render. Layer names and descriptors are the approved copy. */
-const JOURNEY_LAYERS = [
-  { n: "Figma", d: "the component library, what you design" },
-  { n: "Readable layer", d: "descriptions + tokens with meaning" },
-  { n: "The Bridge", d: "Code Connect · MCP" },
-  { n: "Storybook / Code", d: "the source of truth" },
-  { n: "Agents", d: "build with it" },
-  { n: "The Gate", d: "audit + evals, nothing ships without review" },
-  { n: "Production", d: "published, and watched" },
-] as const;
-
 /** Beat 03's visual, STATIC INTERIM (Part A): the gate as a settled
     green state. Part B commit 3 restores GateRun. */
 const GATE_PASS_FLAGS: Record<string, FlagState> = Object.fromEntries(
@@ -183,6 +172,9 @@ function BeatLink({ index }: { index: number }) {
 /* ── the composition ── */
 
 export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
+  /* the run controls live in CaseBeat's control slot under the body
+     (AI-flow spec); a bumped signal tells the device to run */
+  const [journeySignal, setJourneySignal] = useState(0);
   const summary = cs.blocks?.find((b) => b.kind === "summary") as
     | { context: string; approach: string; outcome: string }
     | undefined;
@@ -254,17 +246,14 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
                 agents, and the gate are steps in that journey). */}
           </>
         }
-        visual={
-          <ol className="beat-journey">
-            {JOURNEY_LAYERS.map((l, i) => (
-              <li key={l.n} className="beat-journey__row">
-                <span className="beat-journey__n">{String(i + 1).padStart(2, "0")}</span>
-                <span className="beat-journey__name">{l.n}</span>
-                <span className="beat-journey__desc">{l.d}</span>
-              </li>
-            ))}
-          </ol>
+        control={
+          /* SECONDARY iris (flat outline): the page keeps zero
+             primaries; the one keycap moment stays unclaimed */
+          <Button variant="secondary" onClick={() => setJourneySignal((n) => n + 1)}>
+            Run the journey
+          </Button>
         }
+        visual={<LayerJourney runSignal={journeySignal} />}
         foot={
           <>
             <p className="cs2-kicker-row" style={{ margin: 0 }}>{SESSION_CAPTION}</p>
