@@ -430,3 +430,20 @@ resolves outside a specimen stage fails the gate.
 Animation law for stages: CSS transitions on tokens only, no keyframes, no
 motion libraries; `prefers-reduced-motion: reduce` renders everything
 immediately (leaders drawn, flags and console lines visible).
+
+## Data display dialect + status set (PR 41 amendment 2, 22 Jul 2026)
+
+CHIP's display grammar, generalized for case prototypes: every data point
+answers "so what" in one glance (value + verdict + action). Parity states
+render as bars WITH counts (n of total) and a StatusPill verdict beside them;
+divergence is stated as a consequence ("three props behind the code"), never
+a bare number; finding tables carry an Action column so every row ends in a
+verb. The RECORDED status set is: In sync / Drift / Stale / Critical (words,
+never colour-only). No dashboards for decoration; only data the story needs.
+
+Stage geometry law: the component and its flags own a reserved stage zone;
+readouts and consoles start BELOW the zone; leaders may only cross empty
+ground. Asserted in audit:visual (no leader path may intersect the bounding
+box of any text or table node; proven red on the pre-restory parity layout
+before the fix). The `.demo-scope` class is the flat variant of the
+case-specimen register scope (same leak law as `.spec-stage`).

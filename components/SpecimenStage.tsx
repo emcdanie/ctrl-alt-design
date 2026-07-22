@@ -29,6 +29,7 @@ export default function SpecimenStage({
   anchors,
   hasBefore = false,
   beforeLabel = "Before",
+  flat = false,
   children,
 }: {
   /** the state tag in the stage corner */
@@ -41,6 +42,9 @@ export default function SpecimenStage({
   /** the case has an honest before state (amendment item 4) */
   hasBefore?: boolean;
   beforeLabel?: string;
+  /** flat stage: full-width block, tight padding (consoles and
+      inspectors; the reserved zone law still applies to any flags) */
+  flat?: boolean;
   /** node, or a function receiving the highlight setter so children
       (console lines) can drive the same highlight recipe */
   children: React.ReactNode | ((setZone: (z: string | null) => void) => React.ReactNode);
@@ -88,6 +92,7 @@ export default function SpecimenStage({
         ref={ref}
         className={[
           "spec-stage",
+          flat ? "spec-stage--flat" : "",
           inView ? "in" : "",
           before ? "spec-stage--before" : "",
         ]

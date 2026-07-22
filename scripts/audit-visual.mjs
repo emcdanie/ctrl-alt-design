@@ -284,6 +284,73 @@ for (const theme of ["light", "dark"]) {
   }
   await ctx.close();
 }
+/* ── STAGE GEOMETRY LAW (PR 41 amendment 2, Elleta 22 Jul): the
+   component and its flags own a reserved stage zone; readouts and
+   consoles start BELOW it. Leaders may only cross empty ground: no
+   leader path may intersect the bounding box of any text or table
+   node (the path's own flag and its anchor target excepted). Swept
+   on the case page, both themes, 1440 and 390. Proven red on the
+   pre-restory parity layout (the --demo-touch leader crossed the
+   readout table) before the fix landed. ── */
+for (const theme of ["light", "dark"]) {
+  for (const width of [1440, 390]) {
+    const ctx = await browser.newContext({ viewport: { width, height: width > 800 ? 900 : 844 } });
+    const page = await ctx.newPage();
+    await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
+    await page.goto("http://localhost:3000/case-studies/brad-frost", { waitUntil: "networkidle", timeout: 30000 });
+    /* walk every stage into view so .in fires and leaders draw */
+    const stageCount = await page.evaluate(() => document.querySelectorAll(".spec-stage").length);
+    for (let i = 0; i < stageCount; i++) {
+      await page.evaluate((idx) => {
+        document.querySelectorAll(".spec-stage")[idx].scrollIntoView({ block: "center" });
+      }, i);
+      await page.waitForTimeout(350);
+    }
+    await page.waitForTimeout(600);
+    const geomBad = await page.evaluate(() => {
+      const out = [];
+      for (const stage of document.querySelectorAll(".spec-stage")) {
+        const paths = [...stage.querySelectorAll(".ds-leaders path")];
+        if (!paths.length) continue;
+        const svg = stage.querySelector(".ds-leaders");
+        const sr = svg.getBoundingClientRect();
+        /* candidate obstacles: any element in the stage that paints
+           its own text, or a list/table, excluding the flags, the
+           state tag, and highlightable parts (leaders must TOUCH
+           their target) */
+        const boxes = [];
+        for (const el of stage.querySelectorAll("*")) {
+          if (el.closest(".ds-flag") || el.closest("svg") || el.classList.contains("spec-stage__tag")) continue;
+          if (el.closest("[data-part]")) continue;
+          const ownText = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim().length > 0);
+          const isTable = /^(UL|OL|TABLE|DL)$/.test(el.tagName);
+          if (!ownText && !isTable) continue;
+          const r = el.getBoundingClientRect();
+          if (r.width > 0 && r.height > 0) boxes.push({ r, label: `${el.tagName}:${(el.textContent || "").trim().slice(0, 24)}` });
+        }
+        for (const p of paths) {
+          const len = p.getTotalLength();
+          for (let t = 0.03; t <= 0.97; t += 0.05) {
+            const pt = p.getPointAtLength(len * t);
+            const x = sr.left + pt.x;
+            const y = sr.top + pt.y;
+            const hit = boxes.find((b) => x > b.r.left && x < b.r.right && y > b.r.top && y < b.r.bottom);
+            if (hit) {
+              out.push(`leader for ${p.parentElement ? "" : ""}${(stage.querySelector(".spec-stage__tag")?.textContent ?? "stage")} crosses ${hit.label}`);
+              break;
+            }
+          }
+        }
+      }
+      return [...new Set(out)];
+    });
+    for (const b of geomBad) {
+      fails++;
+      console.error(`VISUAL FAIL (${theme} ${width}) stage geometry: ${b}`);
+    }
+    await ctx.close();
+  }
+}
 await browser.close();
 
 if (fails > 0) {
