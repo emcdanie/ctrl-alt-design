@@ -69,7 +69,10 @@ for (const { f, s: src } of sources) {
      display specimens are Unique BY DEFINITION and render on the
      ground, outside every card; the runtime check in audit:type
      asserts no Unique computes inside a card scope. */
-  const UNIQUE_IN_CARD_EXEMPT = ["components/DesignSystemSpecimens.tsx"];
+  /* DesignSystem2: the take-2 composition carries the same recorded
+     exception (its Type ramp is the one on-ground unit); the runtime
+     audit:type probe covers /design-system2 too. */
+  const UNIQUE_IN_CARD_EXEMPT = ["components/DesignSystemSpecimens.tsx", "components/DesignSystem2.tsx"];
   const rendersCards = /from "@\/components\/ui\/(?:Card|DisclosureCard)"|className="thesis-band/.test(src);
   if (!UNIQUE_IN_CARD_EXEMPT.some((e) => f.endsWith(e)) && rendersCards && /<Heading[\s>]/.test(src)) {
     fails++;

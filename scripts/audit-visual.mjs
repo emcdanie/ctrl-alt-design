@@ -202,6 +202,95 @@ for (const theme of ["light", "dark"]) {
     console.error(`VISUAL FAIL (${theme}) trace ring: ${b}`);
   }
 
+  /* ── 7: /design-system2, the take-2 grammar (spec
+     specs/system2-modeless): one ground (no bands, no section-level
+     surface), one metadata register, one card-head recipe, notes on
+     the reading tier, and the fixed ring recipe (2px VISUAL gap
+     around the visible key including the 2/5px plate). ── */
+  await page.goto("http://localhost:3000/design-system2", { waitUntil: "networkidle", timeout: 30000 });
+  const h2 = await page.evaluate(() => document.body.scrollHeight);
+  for (let y = 0; y < h2; y += 800) {
+    await page.evaluate((v) => scrollTo(0, v), y);
+    await page.waitForTimeout(30);
+  }
+  const ds2Bad = await page.evaluate(() => {
+    const out = [];
+    const pageBg = getComputedStyle(document.body).backgroundColor;
+    if (document.querySelector(".ds-band")) out.push("a .ds-band exists on the one-ground page");
+    for (const el of document.querySelectorAll(
+      "main, .layout-section, .ds-layout, .ds-layout__content, .layout-container, .ds2, .ds2 > section, .ds2 > div"
+    )) {
+      const cs = getComputedStyle(el);
+      const transparent = /rgba\(0, 0, 0, 0\)/.test(cs.backgroundColor);
+      if ((!transparent && cs.backgroundColor !== pageBg) || cs.backgroundImage !== "none") {
+        out.push(`section-level surface off the ground: ${el.className.toString().split(" ")[0] || el.tagName}`);
+      }
+    }
+    const ref = document.querySelector(".ds-section__kicker");
+    if (!ref) {
+      out.push("no kicker found for the register reference");
+    } else {
+      const rcs = getComputedStyle(ref);
+      for (const el of document.querySelectorAll(
+        ".ds-section__kicker, .ds-nav__label, .tok-inspector__zone, .ds-flag"
+      )) {
+        const cs = getComputedStyle(el);
+        if (cs.fontFamily !== rcs.fontFamily || cs.fontSize !== rcs.fontSize) {
+          out.push(`metadata register divergence: ${el.className.toString().split(" ")[0]} ${cs.fontSize}`);
+        }
+      }
+      for (const head of document.querySelectorAll(".ds-card__head")) {
+        for (const child of head.children) {
+          if (!child.classList.contains("ds-section__kicker") && !child.classList.contains("ds-section__note")) {
+            out.push(`off-recipe card head child: ${child.className}`);
+          }
+        }
+      }
+      for (const el of document.querySelectorAll(".ds-section__note")) {
+        if (parseFloat(getComputedStyle(el).fontSize) < 16) {
+          out.push("a .ds-section__note computes below 16px");
+          break;
+        }
+      }
+    }
+    const key = document.querySelector(".tok-inspector__key");
+    const ring = document.querySelector(".tok-inspector__ring");
+    if (!key || !ring) {
+      out.push("ring or keycap missing");
+    } else {
+      /* visual gap per side = ring inner edge (2px border) to the
+         visible key edge (border box + the 2px/5px plate overhang) */
+      const k = key.getBoundingClientRect();
+      const r = ring.getBoundingClientRect();
+      const gaps = {
+        left: k.left - (r.left + 2),
+        top: k.top - (r.top + 2),
+        right: r.right - 2 - (k.right + 2),
+        bottom: r.bottom - 2 - (k.bottom + 5),
+      };
+      for (const [side, g] of Object.entries(gaps)) {
+        if (Math.abs(g - 2) > 1) out.push(`ring visual gap ${side} = ${g.toFixed(1)}px, want 2`);
+      }
+    }
+    /* equal heights in the take-2 card rows (same law as page 1) */
+    for (const grid of document.querySelectorAll(".ds2 .ds-specimen-row, .ds2 .ds-gate, .ds2 .ds-caseband")) {
+      const rows = new Map();
+      for (const c of [...grid.children].filter((c) => c.getBoundingClientRect().width > 0)) {
+        const r = c.getBoundingClientRect();
+        const key2 = Math.round(r.top);
+        rows.set(key2, [...(rows.get(key2) ?? []), Math.round(r.height)]);
+      }
+      for (const [top, heights] of rows) {
+        if (new Set(heights).size > 1) out.push(`unequal card heights row@${top}: ${heights.join(",")}`);
+      }
+    }
+    return out;
+  });
+  for (const b of ds2Bad) {
+    fails++;
+    console.error(`VISUAL FAIL (${theme}) ds2: ${b}`);
+  }
+
   /* ── 3: cover placeholders on /work ── */
   await page.goto("http://localhost:3000/work", { waitUntil: "networkidle", timeout: 30000 });
   await page.waitForTimeout(500);

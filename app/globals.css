@@ -3012,3 +3012,93 @@ textarea:focus-visible {
     transition: none;
   }
 }
+
+/* ── /design-system2: the take-2 scope (Elleta's brief 22 Jul 2026,
+   spec specs/system2-modeless). The modeless grammar on BELLA: one
+   ground, Card as the only structural device, one metadata register.
+   Additive overrides only; page 1 is untouched. This whole block is
+   deleted with the losing page in the follow-up. ── */
+
+/* tight opening (grammar item 3): head stacks straight into the body */
+.ds2-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-8);
+}
+
+/* columns top-aligned so the text column never stretches to match
+   the inspector card */
+.ds2-page .ds-opening-grid {
+  align-items: start;
+}
+
+/* one metadata register (grammar item 5): the rail labels join the
+   existing mono eyebrow tier */
+.ds2-page .ds-nav__label {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* rules as numbered law (grammar item 7): one row card per rule */
+.ds2-rules {
+  list-style: none;
+  margin: var(--spacing-6) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.ds2-rule {
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--spacing-4);
+}
+
+/* current status (grammar item 9): two equal honest columns, one card
+   per row */
+.ds2-status {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-6);
+  align-items: start;
+}
+
+@media (max-width: 719px) {
+  .ds2-status {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ds2-status__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  min-width: 0;
+}
+
+/* the inspector renders through ui/Card (grammar item 2): strip the
+   bespoke .tok-inspector chrome so exactly ONE surface paints */
+.ds2-page .tok-inspector {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+/* fixed ring recipe (brief item 10): a uniform 2px VISUAL gap around
+   the visible key INCLUDING the 3D plate. Per-side padding = 2px gap
+   + 2px ring border + plate overhang (0 top/left, 2px right, 5px
+   bottom, mirroring the recorded key shadow offsets), reserved in
+   flow; audit:visual asserts the gap at 2px per side. */
+.ds2-page .tok-inspector__ringwrap {
+  padding: 4px 6px 9px 4px;
+}
+
+.ds2-page .tok-inspector__ring {
+  border-radius: calc(var(--btn-key-radius) + 4px);
+}

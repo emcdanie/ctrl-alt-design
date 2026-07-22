@@ -20,6 +20,7 @@ const ROUTES = [
   "/skills",
   "/design-system",
   "/design-system/inspector",
+  "/design-system2",
   "/quick",
   "/case-studies/chip",
   "/case-studies/brad-frost",
