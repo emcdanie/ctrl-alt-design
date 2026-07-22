@@ -3366,7 +3366,9 @@ textarea:focus-visible {
   border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-lg);
   padding: var(--spacing-5) var(--spacing-5) var(--spacing-6);
-  box-shadow: var(--shadow-orb);
+  /* cards wear --shadow-soft; --shadow-orb is sphere/keycap only
+     (the sticker look, polish pass rule, asserted) */
+  box-shadow: var(--shadow-soft);
 }
 
 /* the corner target hugs the BOTTOM-right corner: the corner leader
@@ -3484,7 +3486,7 @@ textarea:focus-visible {
   background: var(--color-card);
   border: 1px solid var(--color-border-medium);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-orb);
+  box-shadow: var(--shadow-soft);
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   color: var(--color-ink);
@@ -3750,7 +3752,7 @@ textarea:focus-visible {
   border-style: solid;
   background: var(--color-semantic-background-inverse);
   border-color: var(--color-semantic-background-inverse);
-  box-shadow: var(--spacing-2) var(--spacing-2) 0 color-mix(in srgb, var(--color-semantic-background-inverse) 14%, transparent);
+  box-shadow: var(--shadow-soft);
 }
 
 .jn-layer:focus-visible {

@@ -481,6 +481,25 @@ for (const theme of ["light", "dark"]) {
 }
 await browser.close();
 
+/* ── SHADOW LAW (polish pass, 22 Jul): card surfaces use
+   --shadow-soft; --shadow-orb belongs to spheres and keycaps only.
+   Static sweep of globals: no card/flag/panel selector may reference
+   the orb shadow. ── */
+{
+  const { readFileSync } = await import("node:fs");
+  /* comments stripped: the law judges declarations, not prose */
+  const css = readFileSync("app/globals.css", "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  for (const rule of css.split("}")) {
+    if (!rule.includes("--shadow-orb")) continue;
+    const sel = rule.slice(0, rule.indexOf("{")).trim().split(",").map((x) => x.trim()).join(",");
+    if (!sel) continue;
+    if (/card|flag|panel|layer|tile|frame/i.test(sel) || (/csp-/.test(sel) && !/sphere/.test(sel))) {
+      fails++;
+      console.error(`VISUAL FAIL shadow law: ${sel.slice(0, 60)} uses --shadow-orb`);
+    }
+  }
+}
+
 if (fails > 0) {
   console.error(`visual gate: ${fails} failure(s)`);
   process.exit(1);
