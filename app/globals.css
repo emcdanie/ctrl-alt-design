@@ -1406,6 +1406,7 @@ textarea:focus-visible {
 .ds-status {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-auto-rows: 1fr;
   gap: var(--grid-gap);
 }
 
@@ -2250,9 +2251,11 @@ textarea:focus-visible {
   outline-offset: var(--ring-focus-offset);
 }
 
-/* D1 (Pass D 2026-07-18; amended 21 Jul for the map): specimen bands
-   paint the CONTENT COLUMN edge to edge (the full viewport when no
-   rail is present); text stays inside the 1240 container it wraps. */
+/* D1 (Pass D 2026-07-18; amended 21 Jul for the map; ONE GROUND,
+   system-page-v3): every band renders on the page ground; the identity
+   band's low-tint wash is the page's single recorded background moment
+   (Elleta's call). audit:visual asserts no other band ever gains a
+   surface again. */
 .ds-band {
   padding-block: var(--spacing-12);
 }
@@ -2291,6 +2294,23 @@ textarea:focus-visible {
     display: grid;
     grid-template-columns: 220px minmax(0, 1fr);
     align-items: start;
+  }
+
+  /* rail descriptions (v3 T3): block under the label; layout holds
+     with zero or all filled (the link is a column either way) */
+  .ds-nav__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+  }
+
+  .ds-nav__desc {
+    font-family: var(--font-body);
+    font-size: var(--typography-font-size-tag);
+    font-weight: 400;
+    color: var(--color-ink-muted);
+    line-height: 1.4;
+    white-space: normal;
   }
 
   .ds-nav {
@@ -2349,25 +2369,49 @@ textarea:focus-visible {
   scroll-margin-top: calc(var(--header-height) + var(--spacing-16));
 }
 
+/* two-column opening (v3 review, 22 Jul): [intro | specimen] at
+   >=1024px, specimen vertically centred against the intro; stacked
+   below, intro first (source order) */
+.ds-opening-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+@media (min-width: 1024px) {
+  .ds-opening-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--spacing-12);
+    align-items: center;
+  }
+}
+
+.ds-opening-grid__specimen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  min-width: 0;
+}
+
 /* the ds heads keep the section rhythm the private recipe had */
 .ds-section__header {
   margin: 0 0 var(--spacing-4);
 }
 
-.ds-band--card {
-  background: var(--color-card);
-  border-block: 1px solid var(--color-border-soft);
-}
-
-/* identity band: the five case hues wash the full width at low tint */
+/* identity band: the page's ONE sanctioned background moment (v3 T1);
+   tint stepped up via token until the wash reads at a glance in both
+   themes (v3 review, 22 Jul). Cards stay opaque; the wash lives in
+   the gaps and margins. */
 .ds-band--identity {
+  --identity-wash-tint: 30%;
   background: linear-gradient(
     100deg,
-    color-mix(in srgb, var(--case-chip-hi) 14%, var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-code-first-hi) 14%, var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-drift-hi) 14%, var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-guardian-hi) 14%, var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-clarity-hi) 14%, var(--color-semantic-background))
+    color-mix(in srgb, var(--case-chip-hi) var(--identity-wash-tint), var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-code-first-hi) var(--identity-wash-tint), var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-drift-hi) var(--identity-wash-tint), var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-guardian-hi) var(--identity-wash-tint), var(--color-semantic-background)),
+    color-mix(in srgb, var(--case-clarity-hi) var(--identity-wash-tint), var(--color-semantic-background))
   );
   border-block: 1px solid var(--color-border-soft);
 }
@@ -2404,8 +2448,9 @@ textarea:focus-visible {
   padding: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
   gap: var(--spacing-10) var(--spacing-8);
-  align-items: start;
+  align-items: stretch;
 }
 
 @media (max-width: 767px) {
@@ -2422,19 +2467,54 @@ textarea:focus-visible {
 }
 
 .ds-caseband__item .ds-orb {
-  margin-bottom: var(--spacing-3);
+  margin-inline: auto;
 }
 
-.ds-caseband__item .ds-swatch__case {
-  min-height: 2.9em;
+/* the ramp's annotation column (fix 3, 22 Jul): grid so every flag
+   shares ONE left edge (the column line); leaders run sample -> flag
+   on the baseline. Below 1024px flags return under the samples. */
+.ds-type {
+  list-style: none;
+  margin: var(--spacing-6) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--spacing-8);
 }
 
-/* the oversized type specimen (hero tier at display scale) */
-.ds-type__display {
-  margin: var(--spacing-6) 0 var(--spacing-10);
+.ds-type__row {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2);
+  min-width: 0;
+}
+
+.ds-flag.ds-flag--ramp {
+  position: static;
+  align-self: flex-start;
+}
+
+@media (min-width: 1024px) {
+  .ds-type__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, auto);
+    align-items: baseline;
+    gap: var(--spacing-3);
+  }
+
+  .ds-type__cell {
+    min-width: 0;
+  }
+
+  .ds-type__leader {
+    border-bottom: 1px solid var(--color-semantic-accent-border);
+    min-width: var(--spacing-8);
+    transform: translateY(calc(-1 * var(--spacing-1)));
+  }
+
+  .ds-flag.ds-flag--ramp {
+    justify-self: start;
+  }
 }
 
 .ds-page__intro {
@@ -2522,6 +2602,10 @@ textarea:focus-visible {
 
 .ds-agents__code {
   overflow-x: auto;
+  /* flex-child containment (containment law): never wider than the
+     card's inner box; the code scrolls inside instead */
+  min-width: 0;
+  max-width: 100%;
   padding: var(--spacing-5);
   border-radius: var(--radius-xl);
   border: 1px solid var(--color-border-soft);
@@ -2533,32 +2617,11 @@ textarea:focus-visible {
   margin: 0 0 var(--spacing-4);
 }
 
-.ds-gate__pass {
-  display: inline-flex;
-  margin-left: var(--spacing-2);
-  padding: 1px var(--spacing-2);
-  border-radius: var(--radius-full);
-  border: 1px solid var(--case-clarity-text);
-  color: var(--case-clarity-text);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-}
-
 .ds-swatch__value {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-sm);
   color: var(--color-ink-muted);
   overflow-wrap: anywhere;
-}
-
-.ds-type {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-6);
 }
 
 .ds-type__sample {
@@ -2578,34 +2641,198 @@ textarea:focus-visible {
 .ds-specimen-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  /* one card size per band (containment law item 2): every implicit
+     row takes the tallest natural card's height */
+  grid-auto-rows: 1fr;
   gap: var(--spacing-6);
+  align-items: stretch;
 }
 
-.ds-specimen__body {
+/* ── the ONE specimen-card internals (v3 T2+T5): ui/Card is the
+   surface; fixed-height head slot so every demo starts level; demo
+   centred; annotation control pinned to the bottom ── */
+.ds-card__inner {
   display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+}
+
+/* containment law item 2 (22 Jul): fixed two-line head min-height so
+   one- and two-line titles align across a row */
+.ds-card__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  margin-bottom: var(--spacing-3);
+  min-height: var(--spacing-10);
+}
+
+.ds-card__demo {
+  flex: 1;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.ds-card__demo--center {
+  flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  /* every specimen centres inside the SAME card recipe (21 Jul) */
   justify-content: center;
-  gap: var(--spacing-3);
-  padding: var(--spacing-6);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-xl);
+}
+
+/* ── redline flags (v3 T6): the annotation grammar of a design spec.
+   METADATA TIER, recorded exempt from the reading floor; aria-hidden,
+   pointer-events none, never focusable. Leader lines via ::before. ── */
+.ds-flagwrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ds-flagwrap > .ds-card__demo {
+  flex: 1;
+}
+
+.ds-flags {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ds-flag {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-2);
   background: var(--color-card);
-  min-height: 120px;
+  border: 1px solid var(--color-semantic-accent-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-accent-ink);
+  white-space: nowrap;
+  box-shadow: var(--shadow-card-default);
+  z-index: 2;
+  /* a flag never leaves its own card: long values ellipsize like a
+     real redline (the inspector list shows full values) */
+  max-width: 100%;
+  position: relative;
+}
+
+.ds-flag__value,
+.ds-flag__token {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ds-flag__chip {
+  width: var(--spacing-3);
+  height: var(--spacing-3);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-medium);
+  flex-shrink: 0;
+}
+
+.ds-flag__token {
+  color: var(--color-ink-muted);
+}
+
+/* containment law (22 Jul, supersedes every overlay/outside-edge
+   rule): flags are IN-FLOW rows in two lanes inside the card, above
+   and below the demo; leader ticks span the lane-to-demo gap so they
+   touch by construction; nothing renders outside the card border box
+   (asserted by audit:visual). */
+.ds-flaglane {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  min-width: 0;
+}
+
+.ds-flaglane--top {
+  margin-bottom: var(--spacing-2);
+}
+
+.ds-flaglane--bottom {
+  margin-top: var(--spacing-2);
+}
+
+.ds-flaglane--top .ds-flag::after,
+.ds-flaglane--bottom .ds-flag::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  height: var(--spacing-2);
+  background: var(--color-semantic-accent-border);
+}
+
+.ds-flaglane--top .ds-flag::after {
+  top: 100%;
+}
+
+.ds-flaglane--bottom .ds-flag::before {
+  bottom: 100%;
+}
+
+/* tight space (<768px, v3 review 22 Jul): lanes give way to a compact
+   stacked row BELOW the item; full token names return; never a toggle */
+@media (max-width: 767px) {
+  .ds-flagwrap--on {
+    padding-block: 0;
+  }
+
+  .ds-flags {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    margin-top: var(--spacing-3);
+  }
+
+  .ds-flag {
+    position: static;
+    transform: none;
+  }
+
+  }
+
+.ds-card__foot {
+  margin-top: auto;
+  padding-top: var(--spacing-3);
+}
+
+.ds-gate__receipt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: var(--spacing-3);
+  margin-top: var(--spacing-3);
+}
+
+.ds-card__readout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  width: 100%;
+  text-align: center;
 }
 
 
 .ds-scale {
   list-style: none;
   margin: 0;
-  padding: var(--spacing-6);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-xl);
-  background: var(--color-card);
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
+  width: 100%;
 }
 
 .ds-scale__row {
@@ -2636,40 +2863,20 @@ textarea:focus-visible {
 .ds-gate {
   margin: 0;
   display: grid;
+  grid-auto-rows: 1fr;
+  align-items: stretch;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--spacing-4);
-}
-
-.ds-gate__row {
-  padding: var(--spacing-4) var(--spacing-6);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-xl);
-  background: var(--color-card);
-  min-width: 0;
-}
-
-.ds-gate__row dt {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  font-weight: 600;
-  color: var(--color-accent-ink);
-}
-
-.ds-gate__row dd {
-  margin: var(--spacing-1) 0 0;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
 }
 
 /* ── Token inspector ── */
 
 .tok-inspector {
-  display: grid;
-  grid-template-columns: minmax(240px, 1fr) minmax(260px, 1.2fr);
-  gap: var(--spacing-8);
-  align-items: start;
+  /* single column (22 Jul): the flags are the readout; the two-column
+     readout grid is retired */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
   padding: var(--spacing-8);
   border: 1px solid var(--color-border-medium);
   border-radius: var(--radius-2xl);
@@ -2703,13 +2910,19 @@ textarea:focus-visible {
     2px 5px 0 var(--key-fill-edge),
     6px 9px 14px color-mix(in srgb, var(--key-fill-lo) 32%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  outline: 2px dashed transparent;
-  outline-offset: 6px;
-  transition: outline-color 0.15s;
+  position: relative;
 }
 
-.tok-inspector__key[data-zone] {
-  outline-color: var(--color-accent-ink);
+/* the trace ring (22 Jul): a MEASURABLE element with ONE token offset
+   per side and a concentric radius (keycap radius + offset), replacing
+   the outline that ignored the 3D plate. audit:visual asserts the
+   per-side offsets are equal within 1px. */
+.tok-inspector__ring {
+  position: absolute;
+  inset: calc(-1 * var(--spacing-2));
+  border: 2px dashed var(--color-accent-ink);
+  border-radius: calc(var(--btn-key-radius) + var(--spacing-2));
+  pointer-events: none;
 }
 
 .tok-inspector__zones {

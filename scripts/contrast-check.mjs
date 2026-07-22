@@ -99,41 +99,6 @@ for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies
   console.log(`${url} -> ${bad} contrast fails / ${fails.length} nodes`);
   totalBad += bad;
 }
-/* ── Cover placeholder check (cover-contrast fix, 21 Jul; the brief's
-   "audit:visual" lives here, in the visual AA audit): every
-   .coverPlaceholder must clear 3:1 large-text against BOTH stops of
-   its own token gradient, in BOTH themes. The media scrim is skipped
-   on placeholders by construction (Card mediaScrim). ── */
-for (const theme of ["light", "dark"]) {
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-  const page = await ctx.newPage();
-  await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
-  await page.goto("http://localhost:3000/work", { waitUntil: "networkidle", timeout: 30000 });
-  await page.waitForTimeout(500);
-  const worst = await page.evaluate(() => {
-    const lum = (m) => { const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }; return 0.2126 * f(m[0]) + 0.7152 * f(m[1]) + 0.0722 * f(m[2]); };
-    const parse = (str) => str.match(/\d+/g).map(Number).slice(0, 3);
-    let min = Infinity;
-    for (const ph of document.querySelectorAll('[class*="coverPlaceholder"]')) {
-      const cs = getComputedStyle(ph);
-      const stops = (cs.backgroundImage.match(/rgb\([^)]+\)/g) ?? []).map(parse);
-      const ink = parse(cs.color);
-      for (const g of stops) {
-        const l1 = lum(ink), l2 = lum(g);
-        min = Math.min(min, (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05));
-      }
-    }
-    return min;
-  });
-  if (worst !== null && worst < 3) {
-    totalBad++;
-    console.log(`  FAIL cover placeholder worst ratio ${worst.toFixed(2)} < 3:1 (${theme})`);
-  } else {
-    console.log(`cover placeholders (${theme}) -> worst ${worst === Infinity ? "n/a" : worst.toFixed(2)}, >= 3:1`);
-  }
-  await ctx.close();
-}
-
 await browser.close();
 if (totalBad > 0) {
   console.log(`contrast gate: ${totalBad} failure(s)`);

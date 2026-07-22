@@ -65,8 +65,13 @@ for (const { f, s: src } of sources) {
      import, or the .thesis-band statement surface) must not render the
      display Heading primitive; Unique stays page-tier. SectionHeader
      is fine: it renders outside the cards it introduces. */
+  /* DesignSystemSpecimens: recorded exception (v3 T2) — the TYPE
+     display specimens are Unique BY DEFINITION and render on the
+     ground, outside every card; the runtime check in audit:type
+     asserts no Unique computes inside a card scope. */
+  const UNIQUE_IN_CARD_EXEMPT = ["components/DesignSystemSpecimens.tsx"];
   const rendersCards = /from "@\/components\/ui\/(?:Card|DisclosureCard)"|className="thesis-band/.test(src);
-  if (rendersCards && /<Heading[\s>]/.test(src)) {
+  if (!UNIQUE_IN_CARD_EXEMPT.some((e) => f.endsWith(e)) && rendersCards && /<Heading[\s>]/.test(src)) {
     fails++;
     console.error(`REUSE FAIL: ${f} renders <Heading> in a file with Card surfaces — Unique never renders inside a Card (card-voice rule)`);
   }

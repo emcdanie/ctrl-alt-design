@@ -167,8 +167,12 @@ Must pass before any work is "done":
 - `audit:axe` — axe-core over every route in BOTH themes; zero violations to pass (needs-review
   nodes are counted, not failed, and verified by hand when they change).
 - `audit:type` — no Card surface renders reading text below 16px COMPUTED; the shared
-  `.card-body` recipe never computes below 18px. Metadata rows (tags/pills/eyebrows/kickers)
-  are a deliberate separate tier and exempt.
+  `.card-body` recipe never computes below 18px; sitewide, any P/LI with own text past ~40
+  chars computes >= 16px. Metadata rows (tags/pills/eyebrows/kickers) are a deliberate
+  separate tier and exempt.
+- `audit:visual` — one ground on /design-system (band backgrounds equal the page ground,
+  identity wash excepted), sibling specimen cards render equal heights, cover placeholders
+  clear 3:1 against both gradient stops, both themes.
 - tsc clean; all routes 200 (light + dark); NDA content-grep clean.
 
 ## 10. How this file was built and stays alive

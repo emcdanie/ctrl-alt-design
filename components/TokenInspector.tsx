@@ -1,51 +1,68 @@
 "use client";
 
 import { useState } from "react";
-import TokenAnnotation from "@/components/TokenAnnotation";
+import TokenAnnotation, { type FlagSpec } from "@/components/TokenAnnotation";
 
 /**
  * §8 /design-system: the clickable proof that this site runs on tokens.
- * A keycap specimen whose anatomy zones are real buttons; the readout
- * is the SHARED TokenAnnotation (alwaysOpen), so the inspector and the
- * specimen annotations are one implementation. Also embedded chromeless
- * (/design-system/inspector) as Code First case evidence.
+ * A keycap specimen whose anatomy zones are real buttons. Inspector
+ * refinements (Elleta, 22 Jul): the right-hand readout list is gone,
+ * the FLAGS are the readout — selecting a zone swaps the visible flags
+ * to that zone's tokens (contained lanes above and below the keycap,
+ * leader ticks per the containment law). Live computed reads + theme
+ * re-read live in TokenAnnotation, unchanged. The measurable ring
+ * element keeps ONE equal offset from the keycap edge on all sides
+ * (token offset, concentric radius; asserted in audit:visual). Also
+ * embedded chromeless (/design-system/inspector) as case evidence.
  */
 
 const ZONES: {
   id: string;
   label: string;
   drives: string;
-  tokens: string[];
+  flags: readonly FlagSpec[];
 }[] = [
   {
     id: "face",
     label: "Face",
     drives: "The filled key face, a two-stop gradient. Fixed in both themes so the white label always clears AA.",
-    tokens: ["--key-fill-hi", "--key-fill-lo"],
+    flags: [
+      { token: "--key-fill-hi", kind: "color", at: "top" },
+      { token: "--key-fill-lo", kind: "color", at: "bottom" },
+    ],
   },
   {
     id: "label",
     label: "Label",
     drives: "Label colour, and the mono face all UI labels share.",
-    tokens: ["--key-face-hi", "--font-mono"],
+    flags: [
+      { token: "--key-face-hi", kind: "color", at: "top" },
+      { token: "--font-mono", kind: "font", at: "bottom" },
+    ],
   },
   {
     id: "radius",
     label: "Radius",
     drives: "Corner rounding, one alias deep: the key radius points at the scale.",
-    tokens: ["--btn-key-radius", "--radius-lg"],
+    flags: [
+      { token: "--btn-key-radius", kind: "radius", at: "top-left" },
+      { token: "--radius-lg", kind: "radius", at: "bottom-left" },
+    ],
   },
   {
     id: "edge",
     label: "Edge and shadow",
     drives: "The down-right plate edge and the resting cast shadow. Pressing the key swaps to the pressed pair.",
-    tokens: ["--key-fill-edge", "--shadow-key-resting"],
+    flags: [
+      { token: "--key-fill-edge", kind: "color", at: "top" },
+      { token: "--shadow-key-resting", kind: "shadow", at: "bottom" },
+    ],
   },
   {
     id: "size",
     label: "Hit area",
     drives: "Minimum touch target on every interactive control.",
-    tokens: ["--spacing-touch-target"],
+    flags: [{ token: "--spacing-touch-target", kind: "size", at: "top" }],
   },
 ];
 
@@ -56,30 +73,34 @@ export default function TokenInspector() {
 
   return (
     <div className="tok-inspector">
+      {/* the flags ARE the readout (22 Jul): top lane, keycap, bottom
+          lane, zone chips, the zone's caption sentence */}
+      <TokenAnnotation key={`${zone}-top`} tokens={active.flags} variant="flags" lane="top" />
       <div className="tok-inspector__stage">
         <span className="tok-inspector__key" data-zone={zone} aria-hidden="true">
           design
+          {/* the measurable trace ring: one token offset per side,
+              concentric corners (audit:visual asserts the geometry) */}
+          <span className="tok-inspector__ring" aria-hidden="true" />
         </span>
-        <div className="tok-inspector__zones" role="group" aria-label="Keycap anatomy zones">
-          {ZONES.map((z) => (
-            <button
-              key={z.id}
-              type="button"
-              className="tok-inspector__zone"
-              aria-pressed={zone === z.id}
-              onClick={() => setZone(z.id)}
-              onFocus={() => setZone(z.id)}
-              onMouseEnter={() => setZone(z.id)}
-            >
-              {z.label}
-            </button>
-          ))}
-        </div>
       </div>
-
-      <div className="tok-inspector__readout">
-        <TokenAnnotation tokens={active.tokens} note={active.drives} alwaysOpen />
+      <TokenAnnotation key={`${zone}-bottom`} tokens={active.flags} variant="flags" lane="bottom" />
+      <div className="tok-inspector__zones" role="group" aria-label="Keycap anatomy zones">
+        {ZONES.map((z) => (
+          <button
+            key={z.id}
+            type="button"
+            className="tok-inspector__zone"
+            aria-pressed={zone === z.id}
+            onClick={() => setZone(z.id)}
+            onFocus={() => setZone(z.id)}
+            onMouseEnter={() => setZone(z.id)}
+          >
+            {z.label}
+          </button>
+        ))}
       </div>
+      <p className="tok-inspector__drives">{active.drives}</p>
     </div>
   );
 }

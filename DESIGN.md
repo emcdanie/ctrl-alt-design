@@ -338,6 +338,20 @@ is the ONLY way to render one:
   card-voice readability): the reveal/peek CARD leaves the proto-exact
   scope; its kicker joins the shared eyebrow scale, its list joins the
   card body step, its CTA the 16px floor.
+- Redline spec annotations, CONTAINMENT LAW (Elleta, 2026-07-22,
+  supersedes every earlier flag-placement rule including the withdrawn
+  outside-the-edge allowance): no descendant of a card renders outside
+  the card border box, ever. Flags are IN-FLOW rows in two fixed lanes
+  inside the card (above and below the demo, inside the padding),
+  always on, leader ticks spanning the lane-to-demo gap, values
+  ellipsizing to the card inner width. Flags are the METADATA tier,
+  RECORDED exempt from the 16px reading floor; non-interactive, never
+  focusable. One card size per band grid (grid-auto-rows 1fr + the
+  two-line head slot). Enforced by audit:visual: containment (every
+  descendant bbox inside its card, clip-aware, 1440 AND 390, both
+  themes) + uniformity (identical card dims per band grid). The ONE
+  TokenAnnotation carries list, alwaysOpen (inspector), and flags
+  modes.
 - List markers (Elleta, 2026-07-21, card-voice): solid CSS discs,
   NEVER glyphs, rings, or icons. The ONE `.card-list-item` recipe:
   `::before` disc at `--list-marker-size` (6px, recorded token),

@@ -7,10 +7,11 @@ import { FilterChip } from "@/components/ui/FilterChip";
 import { Tag } from "@/components/ui/Tag";
 import { StatusPill } from "@/components/ui/StatusPill";
 import TokenInspector from "@/components/TokenInspector";
-import TokenAnnotation from "@/components/TokenAnnotation";
+import TokenAnnotation, { type FlagSpec } from "@/components/TokenAnnotation";
 import { Select } from "@/components/ui/Select";
 import Heading from "@/components/ui/Heading";
 import SectionHeader from "@/components/ui/SectionHeader";
+import Card from "@/components/ui/Card";
 
 /**
  * §8 /design-system: the site inspecting itself. Every value on this
@@ -48,6 +49,47 @@ const TYPE_SPECIMENS = [
   { token: "--typography-font-size-tag", family: "var(--font-mono)", weight: 600, transform: "uppercase" as const, sample: "Geist caps and tracking run eyebrows" },
 ] as const;
 
+/* Slip receipts (v3 T4, moved from the retired dark receipts section;
+   her structure spec 21 Jul): what the check said / what it missed or
+   caught / what changed. EVERY prose field is TODO(elleta) except the
+   one line her spec supplied verbatim. Facts for her voice pass:
+   - audit:parity: Travel Booking had no WORK_ITEMS row; /work showed
+     5 of 6 cases and related rows never recommended it while every
+     page-level check stayed green; the parity audit now fails
+     registry/library divergence in both directions.
+   - audit:axe: an external audit reported 8 ink-soft AA failures on
+     the System page in dark; manual measurement cleared all 8
+     (needs-review over gradients, worst 5.72:1) while the REAL miss
+     was 3 readiness-map cells failing AA in dark that the page-level
+     contrast sweep never sampled; axe on every node in both themes
+     became the tripwire.
+   - the CI run: run #1 came back red, the contact route built its
+     Resend client at module scope and broke any build without the
+     secret; fixed to lazy init before merge. The red run is history,
+     told honestly.
+   Section intro + closer are also her slots (from the same spec). */
+const GATE_INTRO = "" /* TODO(elleta) ~2 sentences: why an external audit can be right in method and still wrong in verdict; what a page-level check can't see */;
+const GATE_CLOSER = "" /* TODO(elleta) 1 line: checks moved from page level to component level in Storybook */;
+const RECEIPT_LABELS = ["What the check said", "What it missed, or caught", "What changed"] as const;
+type Receipt = { said: string; missedOrCaught: string; changed: string };
+const GATE_RECEIPTS: Record<string, Receipt> = {
+  "audit:parity": {
+    said: "" /* TODO(elleta) */,
+    missedOrCaught: "" /* TODO(elleta): the receipt in your words */,
+    changed: "" /* TODO(elleta) */,
+  },
+  "audit:axe": {
+    said: "" /* TODO(elleta) */,
+    missedOrCaught: "" /* TODO(elleta): what the gate couldn't see and how the tripwire came from it */,
+    changed: "" /* TODO(elleta) */,
+  },
+  "the CI run": {
+    said: "" /* TODO(elleta) */,
+    missedOrCaught: "Caught the Resend bug before merge." /* from her spec verbatim */,
+    changed: "" /* TODO(elleta): one line on why a red first run is the system working, not failing */,
+  },
+};
+
 const GATE = [
   { name: "audit:structure", line: "One route tree per case, the 1240 container everywhere, no arbitrary pixel classes, nothing off palette." },
   { name: "audit:contrast", line: "WCAG AA on every text node, both themes, worst gradient stop included. Unique below 24px fails outside the keycap logo." },
@@ -61,92 +103,10 @@ const GATE = [
   { name: "audit:agents", line: "The agent surfaces (llms.txt, /api/bella.json) must match the live route registry. An agent surface that lies fails the build." },
   { name: "audit:axe", line: "axe-core against every route in both themes; zero violations to pass. Needs-review nodes are counted and verified by hand." },
   { name: "audit:type", line: "No card surface renders reading text below 16px computed; the shared card body never below 18. Metadata rows are their own tier." },
+  { name: "audit:visual", line: "One ground on the System page (identity wash excepted), sibling specimen cards render equal heights, cover placeholders clear 3:1." },
+  /* the harness itself is part of how the gate works */
+  { name: "the CI run", line: "tsc, the production build, and every audit run on each pull request and push to main; merge only on green." },
 ];
-
-/* "Audits are a guide, not a verdict" (Elleta, 21 Jul, via Cowork,
-   structure spec): three receipts from this repo's own gate history.
-   EVERY prose field is a TODO(elleta) content slot and renders
-   NOTHING until her words land; the SECTION renders only once the
-   intro exists (ships dark, the Pass E task-5 precedent). When it
-   goes live, add { id: "ds-receipts", label: "Receipts" } to
-   DesignSystemNav.
-   Facts for her writing, per receipt:
-   1. Parity miss (20 Jul): Travel Booking had no WORK_ITEMS row, so
-      /work showed 5 of 6 cases and the related rows never recommended
-      it, while every page-level check stayed green; audit:parity now
-      fails registry/library divergence in both directions.
-   2. Ink-soft blind spot (21 Jul): an external audit reported 8
-      ink-soft AA failures on /design-system dark; manual measurement
-      cleared all 8 (needs-review over gradients, worst 5.72:1), while
-      the REAL miss was 3 readiness-map cells failing AA in dark that
-      the page-level contrast sweep never sampled; audit:axe (every
-      node, both themes) became the tripwire.
-   3. CI run #1 (21 Jul): the first gate workflow run came back red,
-      the contact route built its Resend client at module scope and
-      broke any build without the secret; fixed to lazy init before
-      merge.
-   Closer fact: the Storybook extraction kickoff moves checks from
-   page level to component level (docs/briefs/
-   storybook-extraction-kickoff.md). */
-const AUDIT_RECEIPTS = {
-  intro: "" /* TODO(elleta) ~2 sentences: why an external audit can be right in method and still wrong in verdict; what a page-level check can't see */,
-  receipts: [
-    {
-      title: "The parity miss",
-      said: "" /* TODO(elleta): what the check said */,
-      missedOrCaught: "" /* TODO(elleta): the receipt in your words */,
-      changed: "" /* TODO(elleta): what changed because of it */,
-    },
-    {
-      title: "The ink-soft dark gate blind spot",
-      said: "" /* TODO(elleta): what the check said */,
-      missedOrCaught: "" /* TODO(elleta): what the gate couldn't see */,
-      changed: "" /* TODO(elleta): how the tripwire came from it */,
-    },
-    {
-      title: "CI run #1, the red run that earned its keep",
-      said: "" /* TODO(elleta): what the check said */,
-      missedOrCaught: "Caught the Resend bug before merge." /* from her spec verbatim */,
-      changed: "" /* TODO(elleta): one line on why a red first run is the system working, not failing */,
-    },
-  ],
-  closer: "" /* TODO(elleta) 1 line: checks moved from page level to component level in Storybook */,
-};
-
-const RECEIPT_LABELS = ["What the check said", "What it missed, or caught", "What changed"] as const;
-
-function AuditReceiptsSection() {
-  /* TODO slots render nothing; the whole section waits for the intro */
-  if (!AUDIT_RECEIPTS.intro.trim()) return null;
-  return (
-    <div className="ds-band ds-band--card">
-      <div className="layout-container">
-        <section className="ds-section" aria-labelledby="ds-receipts">
-          <h2 id="ds-receipts" className="ds-section__title">Audits are a guide, not a verdict</h2>
-          <p className="ds-section__note">{AUDIT_RECEIPTS.intro}</p>
-          <div className="ds-gate">
-            {AUDIT_RECEIPTS.receipts.map((r) => (
-              <div key={r.title} className="ds-gate__row">
-                <p className="ds-section__kicker">{r.title}</p>
-                {[r.said, r.missedOrCaught, r.changed].map(
-                  (line, i) =>
-                    line.trim() !== "" && (
-                      <p key={RECEIPT_LABELS[i]} className="ds-section__note" style={{ margin: "var(--spacing-2) 0 0" }}>
-                        <strong>{RECEIPT_LABELS[i]}:</strong> {line}
-                      </p>
-                    )
-                )}
-              </div>
-            ))}
-          </div>
-          {AUDIT_RECEIPTS.closer.trim() !== "" && (
-            <p className="ds-section__note" style={{ marginTop: "var(--spacing-6)" }}>{AUDIT_RECEIPTS.closer}</p>
-          )}
-        </section>
-      </div>
-    </div>
-  );
-}
 
 /* case identities render as the orb band; their tokens still feed the
    live readouts below each orb. ONE sphere size, one grid, aligned
@@ -166,21 +126,61 @@ const CASE_ORBS = [
 /* per-specimen attached tokens for the shared annotation (stable
    module-level arrays; every list verified against the recipe it
    names in globals.css) */
-const ORB_TOKENS = CASE_ORBS.map((o) => [o.hi, o.lo] as const);
+const ORB_TOKENS = CASE_ORBS.map(
+  (o) =>
+    [
+      { token: o.hi, kind: "color", at: "top-left" },
+      { token: o.lo, kind: "color", at: "bottom-right" },
+    ] as const satisfies readonly FlagSpec[]
+);
+/* redline flag specs (v3 T6): radius at the corner, size on the edge,
+   colour by the fill; <=4 flags per specimen so nothing overlaps */
+const OPENING_FLAGS = [
+  { token: "--btn-key-radius", kind: "radius", at: "top-left" },
+  { token: "--key-fill-hi", kind: "color", at: "top-right" },
+  /* all three ride the TOP lanes: the zone buttons own the space
+     under the keycap (v3 polish overlap fix) */
+  { token: "--key-fill-lo", kind: "color", at: "top" },
+  /* no shadow flag here: the inspector's own Edge-and-shadow zone IS
+     that annotation (no double display), and the zone row occupies the
+     bottom-right lane */
+] as const satisfies readonly FlagSpec[];
+
 const ANN = {
-  opening: ["--key-fill-hi", "--key-fill-lo", "--key-fill-edge", "--btn-key-radius", "--shadow-key-resting"],
-  button: ["--color-accent-ink", "--btn-key-radius", "--spacing-touch-target"],
-  seg: ["--color-glass", "--color-border-medium", "--radius-lg", "--color-semantic-accent-subtle", "--color-accent-ink"],
-  chip: ["--color-border-medium", "--radius-full", "--color-semantic-background-inverse", "--color-semantic-text-inverse"],
-  tagPill: ["--color-supporting-linen", "--color-accent-ink", "--color-semantic-accent-border"],
-  select: ["--color-card", "--color-border-medium", "--radius-md", "--spacing-touch-target"],
-  bubble: ["--hub-hi", "--hub-lo", "--shadow-orb"],
+  button: [
+    { token: "--btn-key-radius", kind: "radius", at: "top-left" },
+    { token: "--color-accent-ink", kind: "color", at: "bottom-left" },
+    { token: "--spacing-touch-target", kind: "size", at: "bottom-right" },
+  ] as const satisfies readonly FlagSpec[],
+  seg: [
+    { token: "--radius-lg", kind: "radius", at: "top-left" },
+    { token: "--color-border-medium", kind: "color", at: "top-right" },
+    { token: "--color-semantic-accent-subtle", kind: "color", at: "bottom-left" },
+  ] as const satisfies readonly FlagSpec[],
+  chip: [
+    { token: "--radius-full", kind: "radius", at: "top-left" },
+    { token: "--color-border-medium", kind: "color", at: "bottom-left" },
+    { token: "--color-semantic-background-inverse", kind: "color", at: "bottom-right" },
+  ] as const satisfies readonly FlagSpec[],
+  tagPill: [
+    { token: "--color-supporting-linen", kind: "color", at: "top-left" },
+    { token: "--color-accent-ink", kind: "color", at: "bottom-left" },
+    { token: "--color-semantic-accent-border", kind: "color", at: "bottom-right" },
+  ] as const satisfies readonly FlagSpec[],
+  select: [
+    { token: "--radius-md", kind: "radius", at: "top-left" },
+    { token: "--color-border-medium", kind: "color", at: "bottom-left" },
+    { token: "--spacing-touch-target", kind: "size", at: "bottom-right" },
+  ] as const satisfies readonly FlagSpec[],
+  bubble: [
+    { token: "--hub-hi", kind: "color", at: "top-left" },
+    { token: "--hub-lo", kind: "color", at: "bottom-left" },
+    { token: "--shadow-orb", kind: "shadow", at: "bottom-right" },
+  ] as const satisfies readonly FlagSpec[],
   /* the display face token itself is off-limits outside the Heading
      primitive (audit:structure); the size token is the annotation */
   typeDisplay: ["--font-hero"],
 } as const;
-
-const TYPE_ANN = TYPE_SPECIMENS.map((t) => [t.token] as const);
 
 const ALL_TOKENS = [
   "--font-hero",
@@ -190,6 +190,42 @@ const ALL_TOKENS = [
   ...RADII,
   ...TYPE_SPECIMENS.map((t) => t.token),
 ];
+
+/* The ONE specimen card (v3 T2+T5): ui/Card carries every content
+   unit; fixed-height head slot so demo areas start level, demo centred
+   in the shared body recipe, annotation control pinned to the bottom.
+   TYPE display specimens are the recorded exception (Unique never
+   renders inside a Card) and stay on the ground. */
+function SpecimenCard({
+  kicker,
+  note,
+  tokens,
+  center = true,
+  flagsAriaHidden = false,
+  children,
+}: {
+  kicker?: React.ReactNode;
+  note?: React.ReactNode;
+  tokens?: readonly (string | FlagSpec)[];
+  center?: boolean;
+  /** flags duplicate visible inline text on this card */
+  flagsAriaHidden?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Card className="h-full" innerClassName="ds-card__inner">
+      {(kicker || note) && (
+        <div className="ds-card__head">
+          {kicker && <p className="ds-section__kicker" style={{ margin: 0 }}>{kicker}</p>}
+          {note && <p className="ds-section__note" style={{ margin: 0 }}>{note}</p>}
+        </div>
+      )}
+      {tokens && <TokenAnnotation tokens={tokens} variant="flags" lane="top" ariaHidden={flagsAriaHidden} />}
+      <div className={center ? "ds-card__demo ds-card__demo--center" : "ds-card__demo"}>{children}</div>
+      {tokens && <TokenAnnotation tokens={tokens} variant="flags" lane="bottom" ariaHidden={flagsAriaHidden} />}
+    </Card>
+  );
+}
 
 export default function DesignSystemSpecimens() {
   const [values, setValues] = useState<Record<string, string>>({});
@@ -217,26 +253,43 @@ export default function DesignSystemSpecimens() {
          1240 container inside each band. */}
       <div className="ds-band">
         <div className="layout-container">
-      {/* ── Overview ── */}
-      <p className="ds-page__intro">
-        BELLA is the design system behind this site, small on purpose: a token layer every
-        surface resolves from, one control taxonomy with one job per control, and two
-        typefaces with locked roles. This page is the system inspecting itself. Every value
-        below is read live from computed styles, not copied into the page, so it cannot
-        drift from the stylesheet. Flip the theme and watch the values follow.
-      </p>
-      <p className="ds-page__intro">
-        It is also how I work with AI: the tokens rein the agent in, an agent can only
-        build with what the system exposes, and the gate keeps it honest. Twelve audits run
-        before anything ships. Green or it does not merge.
-      </p>
-      {/* the opening 3D moment: real keycaps, press them */}
-      <div className="ds-opening" aria-label="Live keycap specimens, press them">
-        <Button variant="primary">Press me</Button>
-        <Button variant="secondary">Or me</Button>
-        <span className="ds-section__note" style={{ margin: 0 }}>Real controls, not pictures. The whole page works this way.</span>
+      {/* ── Two-column opening (v3 review, 22 Jul): [intro | specimen]
+          at >=1024, stacked below, intro first. The specimen is THE
+          keycap inspector, moved here (its band is gone), live and
+          interactive, wearing static redline flags. ── */}
+      <div className="ds-opening-grid">
+        <div className="ds-opening-grid__intro">
+          <p className="ds-page__intro">
+            BELLA is the design system behind this site, small on purpose: a token layer every
+            surface resolves from, one control taxonomy with one job per control, and two
+            typefaces with locked roles. This page is the system inspecting itself. Every value
+            below is read live from computed styles, not copied into the page, so it cannot
+            drift from the stylesheet. Flip the theme and watch the values follow.
+          </p>
+          <p className="ds-page__intro">
+            It is also how I work with AI: the tokens rein the agent in, an agent can only
+            build with what the system exposes, and the gate keeps it honest. Thirteen audits run
+            before anything ships. Green or it does not merge.
+          </p>
+          {/* the opening 3D moment: real keycaps, press them */}
+          <div className="ds-opening" aria-label="Live keycap specimens, press them">
+            <Button variant="primary">Press me</Button>
+            <Button variant="secondary">Or me</Button>
+            <span className="ds-section__note" style={{ margin: 0 }}>Real controls, not pictures. The whole page works this way.</span>
+          </div>
+        </div>
+        <div className="ds-opening-grid__specimen">
+          {/* containment law (22 Jul): the flag lane is IN-FLOW above
+              the inspector, inside this column */}
+          <TokenAnnotation tokens={OPENING_FLAGS} variant="flags" lane="top" />
+          <TokenInspector />
+          <p className="ds-section__note" style={{ margin: 0 }}>
+            This is why the page cannot lie: pick a zone of the keycap and the readout shows
+            the tokens driving it, values read from the running stylesheet at that moment,
+            never copied into the page. If the system drifted, this page would show it.
+          </p>
+        </div>
       </div>
-      <TokenAnnotation tokens={ANN.opening} />
 
         </div>
       </div>
@@ -254,15 +307,16 @@ export default function DesignSystemSpecimens() {
             <ul className="ds-caseband">
               {CASE_ORBS.map((o, i) => (
                 <li key={o.hi} className="ds-caseband__item">
-                  <span
-                    className="ds-orb"
-                    style={{ "--orb-hi": `var(${o.hi})`, "--orb-lo": `var(${o.lo})` } as React.CSSProperties}
-                    aria-hidden="true"
-                  />
-                  <a className="ds-swatch__case" href={o.href}>{o.name}</a>
-                  <span className="ds-swatch__name">{o.hi}</span>
-                  <span className="ds-swatch__value">{values[o.hi] || "reading"}</span>
-                  <TokenAnnotation tokens={ORB_TOKENS[i]} />
+                  <SpecimenCard
+                    kicker={<a className="ds-swatch__case" href={o.href}>{o.name}</a>}
+                    tokens={ORB_TOKENS[i]}
+                  >
+                    <span
+                      className="ds-orb"
+                      style={{ "--orb-hi": `var(${o.hi})`, "--orb-lo": `var(${o.lo})` } as React.CSSProperties}
+                      aria-hidden="true"
+                    />
+                  </SpecimenCard>
                 </li>
               ))}
             </ul>
@@ -277,38 +331,49 @@ export default function DesignSystemSpecimens() {
         <SectionHeader id="ds-type" title="Type" className="ds-section__header" />
         {/* the oversized specimen: Unique at display scale, hero tier,
             accent-word treatment, live token readout */}
-        <div className="ds-type__display">
-          <Heading tier="hero" as="h3" accent="display.">
-            Unique 700 carries the
-          </Heading>
-          <span className="ds-type__meta">--font-hero · {values["--font-hero"] || "reading"}</span>
-          <TokenAnnotation tokens={ANN.typeDisplay} />
-        </div>
+        {/* fix 3 (22 Jul): the ramp uses its right column. Sample left,
+            baseline leader, aligned annotation flag right; below
+            1024px the flag returns under the sample. */}
         <ul className="ds-type">
-          {TYPE_SPECIMENS.map((t, i) => (
+          <li className="ds-type__row">
+            <div className="ds-type__cell">
+              <Heading tier="hero" as="h3" accent="display.">
+                Unique 700 carries the
+              </Heading>
+            </div>
+            <span className="ds-type__leader" aria-hidden="true" />
+            <span className="ds-flag ds-flag--ramp">
+              <span className="ds-flag__value">{values["--font-hero"] || "reading"}</span>
+              <span className="ds-flag__token">--font-hero</span>
+            </span>
+          </li>
+          {TYPE_SPECIMENS.map((t) => (
             <li key={t.token} className="ds-type__row">
-              {"display" in t ? (
-                <Heading tier="section" as="h3" className="ds-type__sample" style={{ margin: 0 }}>
-                  {t.sample}
-                </Heading>
-              ) : (
-                <span
-                  className="ds-type__sample"
-                  style={{
-                    fontFamily: t.family,
-                    fontWeight: t.weight,
-                    fontSize: `var(${t.token})`,
-                    textTransform: t.transform,
-                    letterSpacing: t.transform === "uppercase" && t.family.includes("mono") ? "0.12em" : undefined,
-                  }}
-                >
-                  {t.sample}
-                </span>
-              )}
-              <span className="ds-type__meta">
-                {t.token} · {values[t.token] || "reading"}
+              <div className="ds-type__cell">
+                {"display" in t ? (
+                  <Heading tier="section" as="h3" className="ds-type__sample" style={{ margin: 0 }}>
+                    {t.sample}
+                  </Heading>
+                ) : (
+                  <span
+                    className="ds-type__sample"
+                    style={{
+                      fontFamily: t.family,
+                      fontWeight: t.weight,
+                      fontSize: `var(${t.token})`,
+                      textTransform: t.transform,
+                      letterSpacing: t.transform === "uppercase" && t.family.includes("mono") ? "0.12em" : undefined,
+                    }}
+                  >
+                    {t.sample}
+                  </span>
+                )}
+              </div>
+              <span className="ds-type__leader" aria-hidden="true" />
+              <span className="ds-flag ds-flag--ramp">
+                <span className="ds-flag__value">{values[t.token] || "reading"}</span>
+                <span className="ds-flag__token">{t.token}</span>
               </span>
-              <TokenAnnotation tokens={TYPE_ANN[i]} />
             </li>
           ))}
         </ul>
@@ -318,24 +383,25 @@ export default function DesignSystemSpecimens() {
       </div>
 
       {/* ── Colour ── */}
-      <div className="ds-band ds-band--card">
+      <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-colour">
         <SectionHeader id="ds-colour" title="Colour" className="ds-section__header" />
-        {COLOUR_GROUPS.map((g) => (
-          <div key={g.title}>
-            <p className="ds-section__kicker">{g.title}</p>
-            <ul className="ds-swatches">
-              {g.tokens.map((t) => (
-                <li key={t} className="ds-swatch">
-                  <span className="ds-swatch__plate" style={{ background: `var(${t})` }} aria-hidden="true" />
-                  <span className="ds-swatch__name">{t}</span>
-                  <span className="ds-swatch__value">{values[t] || "reading"}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <div className="ds-specimen-row">
+          {COLOUR_GROUPS.map((g) => (
+            <SpecimenCard key={g.title} kicker={g.title} center={false}>
+              <ul className="ds-swatches">
+                {g.tokens.map((t) => (
+                  <li key={t} className="ds-swatch">
+                    <span className="ds-swatch__plate" style={{ background: `var(${t})` }} aria-hidden="true" />
+                    <span className="ds-swatch__name">{t}</span>
+                    <span className="ds-swatch__value">{values[t] || "reading"}</span>
+                  </li>
+                ))}
+              </ul>
+            </SpecimenCard>
+          ))}
+        </div>
       </section>
 
         </div>
@@ -347,8 +413,7 @@ export default function DesignSystemSpecimens() {
       <section className="ds-section" aria-labelledby="ds-scales">
         <SectionHeader id="ds-scales" title="Spacing and radius" className="ds-section__header" />
         <div className="ds-specimen-row">
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Spacing</p>
+          <SpecimenCard kicker="Spacing" center={false}>
             <ul className="ds-scale">
               {SPACING.map((t) => (
                 <li key={t} className="ds-scale__row">
@@ -358,9 +423,8 @@ export default function DesignSystemSpecimens() {
                 </li>
               ))}
             </ul>
-          </div>
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Radius</p>
+          </SpecimenCard>
+          <SpecimenCard kicker="Radius" center={false}>
             <ul className="ds-scale">
               {RADII.map((t) => (
                 <li key={t} className="ds-scale__row">
@@ -370,7 +434,7 @@ export default function DesignSystemSpecimens() {
                 </li>
               ))}
             </ul>
-          </div>
+          </SpecimenCard>
         </div>
       </section>
 
@@ -378,7 +442,7 @@ export default function DesignSystemSpecimens() {
       </div>
 
       {/* ── Controls ── */}
-      <div className="ds-band ds-band--card">
+      <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-controls">
         <SectionHeader id="ds-controls" title="Controls" className="ds-section__header" />
@@ -387,105 +451,59 @@ export default function DesignSystemSpecimens() {
           state in ARIA. The gate fails any view with more than one primary.
         </p>
         <div className="ds-specimen-row">
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Button</p>
-            <p className="ds-section__note" style={{ margin: 0 }}>True actions only; max one primary per view. The page's ONE primary is the opening keycap above.</p>
-            <div className="ds-specimen__body">
-              <Button variant="secondary">Secondary</Button>
-            </div>
-            <TokenAnnotation tokens={ANN.button} />
-          </div>
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">SegmentedControl</p>
-            <p className="ds-section__note" style={{ margin: 0 }}>Mutually exclusive views; single select, aria-current.</p>
-            <div className="ds-specimen__body">
-              <SegmentedControl
-                label="Specimen views"
-                options={[
-                  { value: "table", label: "Table", icon: "Table" },
-                  { value: "map", label: "Map", icon: "Map" },
-                ]}
-                value={view}
-                onChange={setView}
-              />
-            </div>
-            <TokenAnnotation tokens={ANN.seg} />
-          </div>
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">FilterChip</p>
-            <p className="ds-section__note" style={{ margin: 0 }}>Multi-select filters; outline, aria-pressed, hover.</p>
-            <div className="ds-specimen__body">
-              {/* the REAL ui/FilterChip (21 Jul: redrawn copies replaced) */}
-              <FilterChip pressed={chipOn} onClick={() => setChipOn(!chipOn)}>
-                Design Tokens
-              </FilterChip>
-              <FilterChip pressed={!chipOn} onClick={() => setChipOn(!chipOn)}>
-                Governance
-              </FilterChip>
-            </div>
-            <TokenAnnotation tokens={ANN.chip} />
-          </div>
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Tag and StatusPill</p>
-            <p className="ds-section__note" style={{ margin: 0 }}>Tag: flat metadata wash, never clickable. StatusPill: quiet status.</p>
-            <div className="ds-specimen__body">
-              <Tag>Non-interactive metadata</Tag>
-              <StatusPill>Current focus</StatusPill>
-            </div>
-            <TokenAnnotation tokens={ANN.tagPill} />
-          </div>
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Select</p>
-            <p className="ds-section__note" style={{ margin: 0 }}>Dropdowns like sort; native, styled, never a keycap.</p>
-            <div className="ds-specimen__body">
-              <Select
-                label="Sort specimen"
-                value={sortSpec}
-                onChange={setSortSpec}
-                options={[
-                  { value: "year", label: "Year, newest first" },
-                  { value: "title", label: "Title A-Z" },
-                ]}
-              />
-            </div>
-            <TokenAnnotation tokens={ANN.select} />
-          </div>
-          <div className="ds-specimen">
-            <p className="ds-section__kicker">Bubble</p>
-            <div className="ds-specimen__body">
-              <span
-                className="ds-orb ds-orb--small"
-                style={{ "--orb-hi": "var(--hub-hi)", "--orb-lo": "var(--hub-lo)" } as React.CSSProperties}
-                aria-hidden="true"
-              />
-              <span className="ds-type__meta">radial at 36% 30%, one light source, upper left</span>
-            </div>
-            <TokenAnnotation tokens={ANN.bubble} />
-          </div>
+          <SpecimenCard kicker="Button" note="True actions only; max one primary per view. The page's ONE primary is the opening keycap above." tokens={ANN.button}>
+            <Button variant="secondary">Secondary</Button>
+          </SpecimenCard>
+          <SpecimenCard kicker="SegmentedControl" note="Mutually exclusive views; single select, aria-current." tokens={ANN.seg}>
+            <SegmentedControl
+              label="Specimen views"
+              options={[
+                { value: "table", label: "Table", icon: "Table" },
+                { value: "map", label: "Map", icon: "Map" },
+              ]}
+              value={view}
+              onChange={setView}
+            />
+          </SpecimenCard>
+          <SpecimenCard kicker="FilterChip" note="Multi-select filters; outline, aria-pressed, hover." tokens={ANN.chip}>
+            <FilterChip pressed={chipOn} onClick={() => setChipOn(!chipOn)}>
+              Design Tokens
+            </FilterChip>
+            <FilterChip pressed={!chipOn} onClick={() => setChipOn(!chipOn)}>
+              Governance
+            </FilterChip>
+          </SpecimenCard>
+          <SpecimenCard kicker="Tag and StatusPill" note="Tag: flat metadata wash, never clickable. StatusPill: quiet status." tokens={ANN.tagPill}>
+            <Tag>Non-interactive metadata</Tag>
+            <StatusPill>Current focus</StatusPill>
+          </SpecimenCard>
+          <SpecimenCard kicker="Select" note="Dropdowns like sort; native, styled, never a keycap." tokens={ANN.select}>
+            <Select
+              label="Sort specimen"
+              value={sortSpec}
+              onChange={setSortSpec}
+              options={[
+                { value: "year", label: "Year, newest first" },
+                { value: "title", label: "Title A-Z" },
+              ]}
+            />
+          </SpecimenCard>
+          <SpecimenCard kicker="Bubble" tokens={ANN.bubble}>
+            <span
+              className="ds-orb ds-orb--small"
+              style={{ "--orb-hi": "var(--hub-hi)", "--orb-lo": "var(--hub-lo)" } as React.CSSProperties}
+              aria-hidden="true"
+            />
+            <span className="ds-type__meta">radial at 36% 30%, one light source, upper left</span>
+          </SpecimenCard>
         </div>
-      </section>
-
-        </div>
-      </div>
-
-      {/* ── Inspector ── */}
-      <div className="ds-band">
-        <div className="layout-container">
-      <section className="ds-section" aria-labelledby="ds-inspector">
-        <SectionHeader id="ds-inspector" title="Token inspector" className="ds-section__header" />
-        <p className="ds-section__note">
-          This is why the page cannot lie: pick a zone of the keycap and the readout shows
-          the tokens driving it, values read from the running stylesheet at that moment,
-          never copied into the page. If the system drifted, this page would show it.
-        </p>
-        <TokenInspector />
       </section>
 
         </div>
       </div>
 
       {/* ── For agents ── */}
-      <div className="ds-band ds-band--card">
+      <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-agents">
         <SectionHeader id="ds-agents" title="What agents read" className="ds-section__header" />
@@ -501,7 +519,8 @@ export default function DesignSystemSpecimens() {
           the case registry. The audit:agents gate fails the build if either surface
           disagrees with the live route registry.
         </p>
-        <pre className="ds-agents__code">
+        <Card innerClassName="ds-card__inner">
+        <pre className="ds-agents__code" style={{ margin: 0 }}>
           <code>{`curl https://elleta.design/api/bella.json
 
 {
@@ -514,6 +533,7 @@ export default function DesignSystemSpecimens() {
   "cases": [{ "slug": "chip", "route": "/case-studies/chip" }, ...]
 }`}</code>
         </pre>
+        </Card>
         <p className="ds-section__note">
           Coming next, per the status below: the agent-queryable BELLA Brain (MCP).
         </p>
@@ -550,24 +570,25 @@ export default function DesignSystemSpecimens() {
       <section className="ds-section" aria-labelledby="ds-status">
         <SectionHeader id="ds-status" title="Current status" className="ds-section__header" />
         <div className="ds-status">
-          <div>
-            <p className="ds-section__kicker">Available now</p>
+          <SpecimenCard kicker="Available now" center={false}>
             <ul className="ds-status__list">
               <li>The token layer, both themes</li>
               <li>The control taxonomy, live on every page</li>
-              <li>The gate, twelve audits and a pre-commit hook</li>
+              <li>The gate, thirteen audits and a pre-commit hook</li>
               <li>The dark-mode contract, AA on every route</li>
             </ul>
-          </div>
-          <div>
-            <p className="ds-section__kicker">Coming next</p>
+          </SpecimenCard>
+          {/* the coming list from the real plan docs (v3 T4): the
+              Storybook extraction kickoff + standing status entries */}
+          <SpecimenCard kicker="Coming next" center={false}>
             <ul className="ds-status__list">
+              <li>Storybook, the full component set</li>
               <li>The Figma leg</li>
-              <li>A Storybook workshop</li>
-              <li>Agent-queryable BELLA Brain</li>
+              <li>Agent-queryable BELLA Brain (MCP)</li>
               <li>npx bella init distribution</li>
+              <li>BFW inspection baseline, pending</li>
             </ul>
-          </div>
+          </SpecimenCard>
         </div>
       </section>
 
@@ -575,30 +596,49 @@ export default function DesignSystemSpecimens() {
       </div>
 
       {/* ── The gate ── */}
-      <div className="ds-band ds-band--card">
+      <div className="ds-band">
         <div className="layout-container">
       <section className="ds-section" aria-labelledby="ds-gate">
-        <SectionHeader id="ds-gate" title="The gate" className="ds-section__header" />
+        <SectionHeader id="ds-gate" title="How the gate works" className="ds-section__header" />
         <p className="ds-section__note">
-          Twelve audits run before anything ships. Green or it does not merge. The cards below show the last local gate run (21 Jul 2026), labelled honestly as a snapshot, not live CI.
+          Thirteen audits run before anything ships, locally and on every pull request.
+          Green or it does not merge. Last local run: 21 Jul 2026.
         </p>
-        {/* scannable status-card grid (Elleta, 21 Jul, spec system-page-v2) */}
-        <dl className="ds-gate">
-          {GATE.map((g) => (
-            <div key={g.name} className="ds-gate__row">
-              <dt>
-                {g.name} <span className="ds-gate__pass">PASS</span>
-              </dt>
-              <dd>{g.line}</dd>
-            </div>
-          ))}
-        </dl>
+        {GATE_INTRO.trim() !== "" && <p className="ds-section__note">{GATE_INTRO}</p>}
+        {/* one card per audit: what it catches, and where real, the
+            receipt of a slip (v3 T4; no bare grid of green chips) */}
+        <div className="ds-gate">
+          {GATE.map((g) => {
+            const r = GATE_RECEIPTS[g.name];
+            const lines = r ? [r.said, r.missedOrCaught, r.changed] : [];
+            return (
+              <SpecimenCard key={g.name} kicker={g.name} center={false}>
+                <p className="ds-section__note" style={{ margin: 0 }}>{g.line}</p>
+                {lines.some((l) => l.trim() !== "") && (
+                  <div className="ds-gate__receipt">
+                    {lines.map(
+                      (line, i) =>
+                        line.trim() !== "" && (
+                          <p key={RECEIPT_LABELS[i]} className="ds-section__note" style={{ margin: 0 }}>
+                            <strong>{RECEIPT_LABELS[i]}:</strong> {line}
+                          </p>
+                        )
+                    )}
+                  </div>
+                )}
+              </SpecimenCard>
+            );
+          })}
+        </div>
+        <p className="ds-section__note" style={{ marginTop: "var(--spacing-6)" }}>
+          Not covered yet, honestly: hover states are not pixel-snapshotted, and CI skips
+          pixel comparison; the local gate enforces those.
+        </p>
+        {GATE_CLOSER.trim() !== "" && <p className="ds-section__note">{GATE_CLOSER}</p>}
       </section>
         </div>
       </div>
 
-      {/* ships dark until her words land (see AUDIT_RECEIPTS) */}
-      <AuditReceiptsSection />
     </div>
   );
 }
