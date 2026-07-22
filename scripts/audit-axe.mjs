@@ -23,6 +23,7 @@ const ROUTES = [
   "/quick",
   "/case-studies/chip",
   "/case-studies/brad-frost",
+  "/case-template",
   "/case-studies/design-system-transformation",
 ];
 

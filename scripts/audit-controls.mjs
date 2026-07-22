@@ -8,7 +8,7 @@ import { chromium } from "playwright";
 const routes = ["/", "/work", "/work?view=map", "/work?view=timeline", "/about", "/contact",
   "/point-of-view", "/case-studies/brad-frost", "/case-studies/chip",
   "/case-studies/design-system-transformation",
-  "/skills", "/work?view=cards", "/design-system", "/quick"];
+  "/skills", "/work?view=cards", "/design-system", "/quick", "/case-template"];
 
 /* ── source scan: the retired demo register must not return.
    Matches DECLARATIONS and USAGES (definitions, var() reads, CSS

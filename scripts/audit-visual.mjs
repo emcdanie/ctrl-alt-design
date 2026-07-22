@@ -242,7 +242,7 @@ for (const theme of ["light", "dark"]) {
     "/", "/work", "/work?view=map", "/work?view=table", "/about", "/contact",
     "/skills", "/design-system", "/design-system/inspector", "/quick",
     "/case-studies/chip", "/case-studies/brad-frost",
-    "/case-studies/design-system-transformation",
+    "/case-studies/design-system-transformation", "/case-template",
   ];
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
@@ -292,12 +292,15 @@ for (const theme of ["light", "dark"]) {
    on the case page, both themes, 1440 and 390. Proven red on the
    pre-restory parity layout (the --demo-touch leader crossed the
    readout table) before the fix landed. ── */
+/* beat-law routes: the live case page AND the blank template
+   reference page (/case-template, the contract Elleta verifies) */
+for (const beatRoute of ["/case-studies/brad-frost", "/case-template"]) {
 for (const theme of ["light", "dark"]) {
   for (const width of [1440, 390]) {
     const ctx = await browser.newContext({ viewport: { width, height: width > 800 ? 900 : 844 } });
     const page = await ctx.newPage();
     await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
-    await page.goto("http://localhost:3000/case-studies/brad-frost", { waitUntil: "networkidle", timeout: 30000 });
+    await page.goto(`http://localhost:3000${beatRoute}`, { waitUntil: "networkidle", timeout: 30000 });
     /* walk every stage into view so .in fires and leaders draw */
     const stageCount = await page.evaluate(() => document.querySelectorAll(".spec-stage").length);
     for (let i = 0; i < stageCount; i++) {
@@ -497,10 +500,11 @@ for (const theme of ["light", "dark"]) {
     });
     for (const b of beatBad) {
       fails++;
-      console.error(`VISUAL FAIL (${theme} ${width}) beat template: ${b}`);
+      console.error(`VISUAL FAIL (${theme} ${width} ${beatRoute}) beat template: ${b}`);
     }
     await ctx.close();
   }
+}
 }
 await browser.close();
 
