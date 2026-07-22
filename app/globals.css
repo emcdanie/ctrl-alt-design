@@ -3733,12 +3733,16 @@ textarea:focus-visible {
 .jn-rail {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-3);
+  gap: var(--spacing-2);
 }
 
-.jn-layercard {
-  gap: var(--spacing-1);
-  padding: 0;
+/* compact rows (layout fix 2): small label + one-line meta on a slim
+   item; the travelling trace stays, the padded card bulk goes */
+.jn-rail .jn-layercard {
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
 }
 
 .jn-layer__n {
@@ -3756,6 +3760,7 @@ textarea:focus-visible {
   font-size: var(--typography-font-size-sm);
   color: var(--color-ink-muted);
   text-align: left;
+  min-width: 0;
 }
 
 /* the demo aligns to the section grid: full width, flush left */
