@@ -4119,11 +4119,12 @@ textarea:focus-visible {
   padding-top: 0;
 }
 /* the template CONTROL slot: run/toggle/link controls sit DIRECTLY
-   under the body text, left edge on the body's left edge (AI-flow
-   spec, 22 Jul 2026: probed control-left == body-left) */
+   under the body text, RIGHT-ALIGNED to the body column's right edge
+   (Elleta, confirmed 22 Jul 2026, case-beat-template-rules; this
+   supersedes the AI-flow spec's left-edge probe) */
 .beat-control {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   gap: var(--spacing-3);
   margin-top: var(--spacing-2);
 }

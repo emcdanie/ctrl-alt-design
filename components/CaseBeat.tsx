@@ -44,8 +44,9 @@ export default function CaseBeat({
   /** FLAT visual; no card wrapper (the demo specimen is the subject) */
   visual: React.ReactNode;
   /** the CONTROL slot: run/toggle/link controls DIRECTLY under the
-      body text, left-aligned with it (BELLA button grammar only;
-      the black demo-btn register is retired) */
+      body text, right-aligned to the body column's right edge
+      (Elleta, 22 Jul; BELLA button grammar only; the black demo-btn
+      register is retired) */
   control?: React.ReactNode;
   /** the FOOTNOTE slot: one quiet row beneath the visual */
   foot?: React.ReactNode;
