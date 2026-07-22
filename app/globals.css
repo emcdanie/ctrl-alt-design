@@ -166,6 +166,9 @@ body {
 :root {
   --font-hero-unique: clamp(80px, 12.5vw, 184px);
   --font-case-title: clamp(40px, 4vw, 64px);
+  /* the beat headline: one clear step below the case H1, same Unique
+     face; one scale with the H1 (template-first fix, 22 Jul) */
+  --font-beat-headline: clamp(28px, 2.8vw, 42px);
   --font-case-display: clamp(40px, 5vw, 96px);
   --font-hero: clamp(40px, 5vw, 56px);
   --font-section-title: clamp(32px, 2.5vw, 40px);
@@ -3308,7 +3311,8 @@ textarea:focus-visible {
    .demo-scope is the flat variant for demo controls outside a stage;
    same scope law. ── */
 .spec-stage,
-.demo-scope {
+.demo-scope,
+.demo-btn {
   --demo-surface: #FFFFFF;
   --demo-ink: #17181C;
   --demo-muted: #5D6067;
@@ -3321,7 +3325,8 @@ textarea:focus-visible {
 }
 
 [data-theme="dark"] .spec-stage,
-[data-theme="dark"] .demo-scope {
+[data-theme="dark"] .demo-scope,
+[data-theme="dark"] .demo-btn {
   --demo-surface: #17181C;
   --demo-ink: #F2F2F4;
   --demo-muted: #A6A8B0;
@@ -4218,8 +4223,10 @@ textarea:focus-visible {
 
 /* the display face on the page ground, inside its column */
 .beat-headline {
-  font-family: var(--font-display);
-  font-size: var(--font-section-display);
+  /* UNIQUE (the hero-display face), a clear step below the case H1;
+     never below 24px (the contrast gate enforces it) */
+  font-family: var(--font-hero-display);
+  font-size: var(--font-beat-headline);
   font-weight: 700;
   text-transform: uppercase;
   line-height: 0.98;
@@ -4274,4 +4281,50 @@ textarea:focus-visible {
 .beat-outcomes li:first-child {
   border-top: 0;
   padding-top: 0;
+}
+/* ONE control recipe for every demo run/media control: the
+   demo-register black primary (her standing call), a REAL button,
+   self-scoped so it resolves inside or outside a specimen stage;
+   works as <button> or <a>. (The original rule was lost in a tail
+   rewrite; the shrinking-buttons finding was this.) */
+.demo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  min-height: var(--demo-touch);
+  padding: var(--spacing-3) var(--spacing-6);
+  border: 1px solid var(--demo-border);
+  border-radius: var(--demo-radius);
+  background: var(--demo-primary);
+  color: var(--demo-primary-ink);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.demo-btn:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+/* the template CONTROL slot: run/media controls, right-aligned,
+   directly under the body text on the text side */
+.beat-control {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-2);
+}
+
+/* the template FOOTNOTE slot: one quiet row beneath the visual */
+.beat-foot {
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  align-items: flex-start;
 }
