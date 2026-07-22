@@ -3732,20 +3732,8 @@ textarea:focus-visible {
    and detail in a single container, equal height by construction;
    slim single-line steps, the active one wearing the ONE travelling
    trace */
-.jn-onecard {
-  padding: 0;
-  gap: 0;
-}
-
-.jn-onecard__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-3);
-  padding: var(--spacing-3) var(--spacing-4);
-  border-bottom: 1px solid var(--color-border-soft);
-}
-
+/* the flat journey body: a hairline divider between rail and detail
+   is internal structure, not a frame (the root paints nothing) */
 .jn-onecard__body {
   display: grid;
   grid-template-columns: minmax(150px, 180px) minmax(0, 1fr);
@@ -4177,3 +4165,113 @@ textarea:focus-visible {
   }
 }
 
+
+/* ── THE case-study beat template (airtight spec, 22 Jul 2026;
+   docs/briefs/case-layout-constitution.md). The headline is a CHILD
+   of the text column; alternation swaps grid order only; visuals are
+   FLAT; --spacing-* rhythm only. ── */
+
+.beat {
+  padding-block: var(--spacing-16);
+}
+
+.beat + .beat {
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.beat-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+@media (min-width: 1024px) {
+  .beat-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--spacing-12);
+    align-items: start;
+  }
+
+  /* alternation: the flip swaps COLUMN ORDER only; the text column's
+     internal order never changes */
+  .beat--flip .beat-text { order: 2; }
+  .beat--flip .beat-visual { order: 1; }
+}
+
+.beat-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  min-width: 0;
+}
+
+.beat-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+/* the display face on the page ground, inside its column */
+.beat-headline {
+  font-family: var(--font-display);
+  font-size: var(--font-section-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.98;
+  letter-spacing: 0.004em;
+  color: var(--color-ink);
+  margin: 0 0 var(--spacing-4);
+  scroll-margin-top: calc(var(--header-height) + var(--spacing-16));
+}
+
+/* one keyline per beat: bold ink, never iris */
+.beat-keyline {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-lg);
+  font-weight: 600;
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-ink);
+  max-width: var(--measure-case);
+  margin: 0;
+}
+
+.beat-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  min-width: 0;
+}
+
+/* FLAT: no background, no border, no shadow, no padding frame
+   (asserted in audit:visual) */
+.beat-visual {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+/* flat outcome rows (the constitution: the demo specimen is the only
+   card); one idea per line, quiet dividers */
+.beat-outcomes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.beat-outcomes li {
+  padding: var(--spacing-3) 0;
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.beat-outcomes li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}

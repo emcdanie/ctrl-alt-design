@@ -449,32 +449,55 @@ for (const theme of ["light", "dark"]) {
       fails++;
       console.error(`VISUAL FAIL (${theme} ${width}) leader crossing: ${b}`);
     }
-    /* Z-PATTERN LAW (rebuild brief, 22 Jul): consecutive sided scenes
-       alternate which side the visual sits on; a full-width block
-       (stepper, clip, [data-zbreak]) between them resets the run.
-       Layout law, checked once at 1440. */
-    if (theme === "light" && width === 1440) {
-      const zBad = await page.evaluate(() => {
-        const seq = [...document.querySelectorAll(".cs2-screen__grid, .jn, [data-zbreak]")];
-        const out = [];
-        let prev = null;
-        for (const el of seq) {
-          if (!el.classList.contains("cs2-screen__grid")) {
-            prev = null; // a full-width break resets the alternation
-            continue;
-          }
-          const side = el.classList.contains("cs2-screen__grid--flip") ? "left" : "right";
-          if (prev !== null && prev === side) {
-            out.push(`two consecutive scenes put the visual ${side}`);
-          }
-          prev = side;
+    /* ── BEAT TEMPLATE LAW (airtight spec, 22 Jul;
+       case-layout-constitution): checked at every swept width/theme.
+       1. headline-shares-column-with-body: the headline's left edge
+          equals the body's left edge; on flipped beats both sit on
+          the flipped side.
+       2. visual-has-no-frame: the visual root paints no border,
+          shadow, or background, and NO ui/Card (trace-host) wraps a
+          visual; the demo specimen is the only card.
+       3. alternation: consecutive beats flip alternately. */
+    const beatBad = await page.evaluate(() => {
+      const out = [];
+      const beats = [...document.querySelectorAll("section.beat")];
+      let prevFlip = null;
+      for (const beat of beats) {
+        const label = beat.querySelector(".beat-headline")?.textContent?.slice(0, 24) ?? "beat";
+        const h = beat.querySelector(".beat-headline");
+        const body = beat.querySelector(".beat-body");
+        if (h && body) {
+          const hd = Math.abs(h.getBoundingClientRect().left - body.getBoundingClientRect().left);
+          if (hd > 1.5) out.push(`headline detaches from its body (${Math.round(hd)}px): ${label}`);
+        } else {
+          out.push(`beat missing headline or body: ${label}`);
         }
-        return out;
-      });
-      for (const b of zBad) {
-        fails++;
-        console.error(`VISUAL FAIL z-pattern: ${b}`);
+        const vis = beat.querySelector(".beat-visual");
+        if (vis) {
+          const cs = getComputedStyle(vis);
+          const framed =
+            !/rgba\(0, 0, 0, 0\)/.test(cs.backgroundColor) ||
+            cs.boxShadow !== "none" ||
+            [cs.borderTopWidth, cs.borderRightWidth, cs.borderBottomWidth, cs.borderLeftWidth].some((w) => parseFloat(w) > 0);
+          if (framed) out.push(`visual root wears a frame: ${label}`);
+          /* ui/Card specifically (its module class), not every
+             trace-recipe consumer (rail steps wear the trace too) */
+          if ([...vis.querySelectorAll(".trace-host")].some((el) => /Card-module/.test(el.className))) {
+            out.push(`a ui/Card wraps the visual (only the demo specimen may be a card): ${label}`);
+          }
+        } else {
+          out.push(`beat missing its visual: ${label}`);
+        }
+        const flip = beat.classList.contains("beat--flip");
+        if (prevFlip !== null && flip === prevFlip) out.push(`two consecutive beats on the same side: ${label}`);
+        prevFlip = flip;
       }
+      if (!beats.length) out.push("no beat sections found (template not rendering)");
+      return out;
+    });
+    for (const b of beatBad) {
+      fails++;
+      console.error(`VISUAL FAIL (${theme} ${width}) beat template: ${b}`);
     }
     await ctx.close();
   }
