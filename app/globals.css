@@ -4222,8 +4222,9 @@ textarea:focus-visible {
   }
 }
 
-/* the journey board collapses inside a narrow scene column, keyed on
-   its own width */
+/* the journey board collapses only when ITS OWN width is genuinely
+   narrow (mobile); at full content width the rail sits BESIDE the
+   panel it drives, never stacked (the beat-02 exception) */
 .jn {
   container-type: inline-size;
 }
@@ -4232,4 +4233,22 @@ textarea:focus-visible {
   .jn-board {
     grid-template-columns: 1fr;
   }
+}
+
+/* the active step visibly points at the panel it drives: an arrow on
+   the active row + the shared iris accent on the panel edge */
+@media (min-width: 900px) {
+  .jn-rail .trace-host.trace-on::after {
+    content: "";
+    position: absolute;
+    right: calc(-1 * var(--spacing-5));
+    top: 50%;
+    transform: translateY(-50%);
+    border-block: var(--spacing-2) solid transparent;
+    border-left: var(--spacing-2) solid var(--color-accent-ink);
+  }
+}
+
+.jn-panel {
+  border-left: 2px solid var(--color-accent-ink);
 }

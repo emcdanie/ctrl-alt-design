@@ -458,3 +458,13 @@ the left. Asserted in audit:visual (pairwise polyline intersection + the
 enter-once rule, both themes, 1440 + 390); proven red on the pre-polish
 corner routing before the fix. Shadow law recorded with it: card surfaces use
 --shadow-soft; --shadow-orb is for spheres and keycaps only (asserted).
+
+## Beat 02 full-width exception (consistency pass follow-up, 22 Jul 2026)
+
+The Code First journey (beat 02) is THE one full-width exception to the scene
+skeleton, recorded like the pull quote: the intro renders as a measured lead
+ABOVE the journey; below it the step rail sits LEFT beside the detail panel
+it drives, side by side and top-aligned, never stacked. The active rail step
+links to the panel visibly: the row's travelling trace, a small iris pointer
+on the active row, and the shared iris accent on the panel's left edge. All
+other beats stay on the mirrored skeleton.

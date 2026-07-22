@@ -291,27 +291,23 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
         <BeatLink index={0} />
       </Beat>
 
-      {/* ── 02 · the tokens testify: the journey, skeleton instance
-          (visual LEFT completes the strict Z: right, left, right,
-          left) ── */}
+      {/* ── 02 · the tokens testify: THE one full-width exception
+          (recorded in DESIGN.md, like the pull quote). The intro is a
+          lead above the journey; below, the rail sits LEFT beside the
+          panel it drives, never stacked. ── */}
       <Beat index={1} id="cs2-b2">
-        <Scene
-          flip
-          txt={
-            <>
-              <Scannable
-                text={para(cs, (b) => b.kind === "decision" && b.index === "01", 0)}
-                keyline="Token alignment was the most technically demanding part of the work."
-              />
-              <p className="ds-section__note">
-                Walk the Tile through the layers and watch each one act on it; the step is
-                linkable, and the values re-read on every theme flip.
-                <strong> Flip the theme and watch the values follow.</strong>
-              </p>
-            </>
-          }
-          visual={<LayerJourney />}
-        />
+        <div className="cs2-measure">
+          <Scannable
+            text={para(cs, (b) => b.kind === "decision" && b.index === "01", 0)}
+            keyline="Token alignment was the most technically demanding part of the work."
+          />
+          <p className="ds-section__note">
+            Walk the Tile through the layers and watch each one act on it; the step is
+            linkable, and the values re-read on every theme flip.
+            <strong> Flip the theme and watch the values follow.</strong>
+          </p>
+        </div>
+        <LayerJourney />
         <BeatLink index={1} />
       </Beat>
 
