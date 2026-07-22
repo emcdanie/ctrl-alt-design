@@ -3046,7 +3046,14 @@ textarea:focus-visible {
   align-items: flex-start;
   gap: var(--spacing-4);
   padding-top: calc(var(--header-height) + var(--spacing-12));
-  max-width: 62ch;
+  /* the head no longer caps at a body measure: the display title
+     breathes across the content column (two balanced lines max at
+     1440); only the reading-tier subhead keeps a measure below */
+}
+
+.cs2-head .display-heading {
+  max-width: none;
+  text-wrap: balance;
 }
 
 .cs2-subhead {
@@ -3054,6 +3061,8 @@ textarea:focus-visible {
   font-size: var(--font-body-size);
   line-height: 1.6;
   color: var(--color-ink-soft);
+  /* the reading-tier subhead keeps the measure the head gave up */
+  max-width: 62ch;
   margin: 0;
 }
 
