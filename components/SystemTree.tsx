@@ -144,14 +144,15 @@ export default function SystemTree() {
           );
         })}
       </div>
-      {/* the plain caption (polish pass): what this is and why it
-          matters, unmistakable */}
-      <p className="ds-section__note" style={{ margin: 0 }} aria-live="polite">
-        {selected
-          ? `${NODES.find((n) => n.id === selected)?.name}: every highlighted node consumes it, directly or through the chain.`
-          : "Every node is a real component in this repo. Drift in one primitive propagates up to everything that imports it."}
-      </p>
-      <p className="tree__kicker">atoms · molecules · organisms · red = the drift path</p>
+      {/* the caption + legend ride the ONE footnote slot treatment */}
+      <div className="scene-foot">
+        <p className="ds-section__note" style={{ margin: 0 }} aria-live="polite">
+          {selected
+            ? `${NODES.find((n) => n.id === selected)?.name}: every highlighted node consumes it, directly or through the chain.`
+            : "Every node is a real component in this repo. Drift in one primitive propagates up to everything that imports it."}
+        </p>
+        <p className="tree__kicker" style={{ margin: 0 }}>atoms · molecules · organisms · red = the drift path</p>
+      </div>
     </div>
   );
 }

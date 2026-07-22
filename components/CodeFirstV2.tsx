@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
@@ -135,6 +135,34 @@ function Scannable({ text, keyline }: { text: string; keyline?: string }) {
   );
 }
 
+/** the ONE scene skeleton (consistency pass): identical two-column
+    grid every beat, mirrored by Z alternation; the visual column
+    stacks [control][visual][footnote] with one treatment */
+function Scene({
+  flip = false,
+  txt,
+  control,
+  visual,
+  foot,
+}: {
+  flip?: boolean;
+  txt: React.ReactNode;
+  control?: React.ReactNode;
+  visual: React.ReactNode;
+  foot?: React.ReactNode;
+}) {
+  return (
+    <div className={`cs2-screen__grid${flip ? " cs2-screen__grid--flip" : ""}`}>
+      <div className="cs2-screen__text">{txt}</div>
+      <div className="cs2-screen__visual scene-vis">
+        {control && <div className="scene-control">{control}</div>}
+        {visual}
+        {foot && <div className="scene-foot">{foot}</div>}
+      </div>
+    </div>
+  );
+}
+
 function BeatLink({ index }: { index: number }) {
   const line = BEAT_LINKS[index] ?? "";
   if (line.trim() === "") return null;
@@ -145,9 +173,40 @@ function BeatLink({ index }: { index: number }) {
     specimen; the toggle changes ONLY the flag labels and the drift
     colour. Before labels are the ACTUAL resolved values, read live,
     marked hand-set; the specimen itself never changes. */
-function DriftBeat() {
+/* TODO(elleta): auto-play the before -> on-system flip once on
+   scroll-into-view? The capability is wired and dormant; flip this
+   to true to enable (reduced motion skips to the end state either
+   way; the toggle stays available). */
+const DRIFT_AUTOPLAY = false;
+
+function useDriftBeat() {
   const [view, setView] = useState("on");
   const before = view === "before";
+  /* the dormant auto-play: when enabled, the first scroll into beat
+     01 shows Before, then flips to On-system once; reduced motion
+     keeps the end state; the toggle stays live throughout */
+  useEffect(() => {
+    if (!DRIFT_AUTOPLAY) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const target = document.getElementById("cs2-b1");
+    if (!target) return;
+    let t: ReturnType<typeof setTimeout> | undefined;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setView("before");
+          t = setTimeout(() => setView("on"), 1800);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    io.observe(target);
+    return () => {
+      io.disconnect();
+      if (t) clearTimeout(t);
+    };
+  }, []);
   const resolved = useResolvedTokens(SPEC_FLAGS.map((f) => f.token));
   const flagStates: Record<string, FlagState> = {};
   if (before) {
@@ -155,25 +214,7 @@ function DriftBeat() {
       flagStates[f.token] = { label: `${resolved[f.token] ?? "…"} hand-set`, tone: "drift" };
     }
   }
-  return (
-    <div className="cs2-driftbeat">
-      <SegmentedControl
-        label="View"
-        options={[
-          { value: "on", label: "On system" },
-          { value: "before", label: "Before" },
-        ]}
-        value={view}
-        onChange={setView}
-      />
-      <CaseSpecimen flagStates={flagStates} label={before ? "Before" : "On system"} />
-      <p className="cs2-kicker-row" style={{ margin: 0 }}>
-        {before
-          ? "Before: Figma said one thing, the code said another. Same card."
-          : "On system: both sides carry the same token names."}
-      </p>
-    </div>
-  );
+  return { view, setView, before, flagStates };
 }
 
 /** one beat: the numbered sentence head, then ONE scene */
@@ -200,6 +241,7 @@ function Beat({
 /* ── the composition ── */
 
 export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
+  const drift = useDriftBeat();
   const summary = cs.blocks?.find((b) => b.kind === "summary") as
     | { context: string; approach: string; outcome: string }
     | undefined;
@@ -209,43 +251,67 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
 
   return (
     <div className="cs2-body-col">
-      {/* ── 01 · the problem, one scene: the drift stage ── */}
+      {/* ── 01 · the problem: the drift stage, skeleton instance ── */}
       <Beat index={0} id="cs2-b1">
-        <div className="cs2-screen__grid">
-          <div className="cs2-screen__text">
-            {/* keyline: her exact fragment, front-loaded */}
-            <Scannable
-              text={summary?.context ?? ""}
-              keyline="Same component. Different names. Different assumptions."
+        <Scene
+          txt={
+            <>
+              <Scannable
+                text={summary?.context ?? ""}
+                keyline="Same component. Different names. Different assumptions."
+              />
+              <p className="ds-section__note" style={{ margin: 0 }}>{DEMO_DISCLOSURE}</p>
+            </>
+          }
+          control={
+            <SegmentedControl
+              label="View"
+              options={[
+                { value: "on", label: "On system" },
+                { value: "before", label: "Before" },
+              ]}
+              value={drift.view}
+              onChange={drift.setView}
             />
-            <p className="ds-section__note" style={{ margin: 0 }}>{DEMO_DISCLOSURE}</p>
-          </div>
-          <div className="cs2-screen__visual">
-            {/* the shared specimen; the toggle moves only the
-                annotation layer (contract _proto/beat1.html) */}
-            <DriftBeat />
-          </div>
-        </div>
+          }
+          visual={
+            <CaseSpecimen
+              flagStates={drift.flagStates}
+              label={drift.before ? "Before" : "On system"}
+            />
+          }
+          foot={
+            <p className="cs2-kicker-row" style={{ margin: 0 }}>
+              {drift.before
+                ? "Before: Figma said one thing, the code said another. Same card."
+                : "On system: both sides carry the same token names."}
+            </p>
+          }
+        />
         <BeatLink index={0} />
       </Beat>
 
-      {/* ── 02 · the tokens testify: the journey of a component ── */}
+      {/* ── 02 · the tokens testify: the journey, skeleton instance
+          (visual LEFT completes the strict Z: right, left, right,
+          left) ── */}
       <Beat index={1} id="cs2-b2">
-        <div className="cs2-measure">
-          <Scannable
-            text={para(cs, (b) => b.kind === "decision" && b.index === "01", 0)}
-            keyline="Token alignment was the most technically demanding part of the work."
-          />
-          <p className="ds-section__note">
-            Walk the Tile through the layers and watch each one act on it; the step is
-            linkable, and the values re-read on every theme flip.
-            <strong> Flip the theme and watch the values follow.</strong>
-          </p>
-        </div>
-        {/* amendment 3 item 2: the journey of a component through the
-            layers; the former inspector findings are the Readable
-            layer's events */}
-        <LayerJourney />
+        <Scene
+          flip
+          txt={
+            <>
+              <Scannable
+                text={para(cs, (b) => b.kind === "decision" && b.index === "01", 0)}
+                keyline="Token alignment was the most technically demanding part of the work."
+              />
+              <p className="ds-section__note">
+                Walk the Tile through the layers and watch each one act on it; the step is
+                linkable, and the values re-read on every theme flip.
+                <strong> Flip the theme and watch the values follow.</strong>
+              </p>
+            </>
+          }
+          visual={<LayerJourney />}
+        />
         <BeatLink index={1} />
       </Beat>
 
@@ -255,23 +321,21 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
           brief scopes it out); content untouched, only the Z-pattern
           side flipped (visual LEFT after beat 01's visual-right). ── */}
       <Beat index={2} id="cs2-b3">
-        {/* visual RIGHT: the clip break left with the session block,
-            so beat 03 alternates against beat 04's visual-left
-            (the Z-law caught the left-left pair) */}
-        <div className="cs2-screen__grid">
-          <div className="cs2-screen__text">
-            <Scannable
-              text={para(cs, (b) => b.kind === "decision" && b.index === "01", 1)}
-              keyline="Several components had diverged between Figma and Storybook over time."
-            />
-            {/* TODO(elleta): trim. The MCP paragraph runs long; split
-                mechanically below, cut in your voice when you pass. */}
-            <Scannable text={para(cs, (b) => b.kind === "decision" && b.index === "02", 0)} />
-          </div>
-          <div className="cs2-screen__visual">
-            <SystemTree />
-          </div>
-        </div>
+        {/* visual RIGHT (Z: right, left, right, left) */}
+        <Scene
+          txt={
+            <>
+              <Scannable
+                text={para(cs, (b) => b.kind === "decision" && b.index === "01", 1)}
+                keyline="Several components had diverged between Figma and Storybook over time."
+              />
+              {/* TODO(elleta): trim. The MCP paragraph runs long; split
+                  mechanically below, cut in your voice when you pass. */}
+              <Scannable text={para(cs, (b) => b.kind === "decision" && b.index === "02", 0)} />
+            </>
+          }
+          visual={<SystemTree />}
+        />
         {pullQuote && <PullQuote>{pullQuote.text}</PullQuote>}
         <BeatLink index={2} />
       </Beat>
@@ -280,22 +344,18 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
           shared specimen, visual-LEFT / text-RIGHT (contract
           _proto/beat4.html) ── */}
       <Beat index={3} id="cs2-b4">
-        <GateRun
-          text={
+        {/* visual LEFT (Z close); the gate device fills the scene's
+            control/visual/footnote slots itself */}
+        <Scene
+          flip
+          txt={
             <Scannable
               text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "Evidence", 0)}
               keyline="The portfolio you are reading runs on the same code-first discipline: a token layer, one component per job, and a governance gate that fails the build on drift."
             />
           }
+          visual={<GateRun />}
         />
-        {/* the machine-surface lines compressed to ONE quiet footer
-            (insider metadata, not case content). TODO(elleta): keep
-            this footer line or cut it entirely; your call. */}
-        <p className="cs2-kicker-row cs2-gatefoot">
-          Machine surfaces:{" "}
-          <a href="/llms.txt" className="ds-swatch__case">/llms.txt</a> ·{" "}
-          <a href="/api/bella.json" className="ds-swatch__case">/api/bella.json</a>
-        </p>
         <BeatLink index={3} />
       </Beat>
 

@@ -36,7 +36,7 @@ const MAP: Record<string, { token: string; zone: string }> = {
 
 type Phase = "idle" | "running" | "fixing" | "done";
 
-export default function GateRun({ text }: { text?: React.ReactNode }) {
+export default function GateRun() {
   const hostRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<Phase>("idle");
   const [okCount, setOkCount] = useState(0);
@@ -124,10 +124,14 @@ export default function GateRun({ text }: { text?: React.ReactNode }) {
   }
 
   return (
-    /* Z-pattern: this beat is visual-LEFT / text-RIGHT (the proto) */
-    <div ref={hostRef} className="cs2-screen__grid cs2-screen__grid--flip gv">
-      <div className="cs2-screen__text">
-        {text}
+    /* the gate device fills the ONE scene skeleton's visual column:
+       [control slot: Run + progress] [the specimen] [footnote slot:
+       the audit chips, the console, the machine surfaces] */
+    <div ref={hostRef} className="gv scene-vis">
+      <div className="scene-control demo-scope">
+        <button type="button" className="demo-btn" onClick={run}>
+          {phase === "idle" ? "Run the gate" : "Run it again"}
+        </button>
         <p className="gv-prog" aria-live="polite">
           {phase === "idle" && "idle · 13 audits waiting"}
           {phase === "running" && (
@@ -140,25 +144,25 @@ export default function GateRun({ text }: { text?: React.ReactNode }) {
             <>gate: <b>green (13/13)</b> · merged on green</>
           )}
         </p>
-        {/* the run control: the proto's iris run action, NOT a keycap
-            (one primary per view stays the contact action) */}
-        <button type="button" className="gv-run" onClick={run}>
-          {phase === "idle" ? "Run the gate" : "Run it again"}
-        </button>
       </div>
-      <div className="cs2-screen__visual">
-        <div ref={specRef} data-hl={zone ?? undefined} className="gv-host">
-          <CaseSpecimen flagStates={flagStates} label={done ? "Green, merged" : fixing ? "Red, fixing" : phase === "running" ? "Running" : "The gate"} onZone={setZone} />
-          {/* the 13-audit rail: BELOW the reserved stage zone, never
-              on it (the geometry law caught the in-stage version) */}
-          <div className="gv-rail" role="log" aria-label="The thirteen audits, in gate order">
-            {AUDITS.map((a) => (
-              <i key={a} className={`gv-rail__chip${okSet.has(a) || done ? " ok" : ""}${a === "tokens" && fixing ? " bad" : ""}`}>
-                {a}
-              </i>
-            ))}
-          </div>
+      <div ref={specRef} data-hl={zone ?? undefined} className="gv-host">
+        <CaseSpecimen flagStates={flagStates} label={done ? "Green, merged" : fixing ? "Red, fixing" : phase === "running" ? "Running" : "The gate"} onZone={setZone} />
+      </div>
+      <div className="scene-foot">
+        <div className="gv-rail" role="log" aria-label="The thirteen audits, in gate order">
+          {AUDITS.map((a) => (
+            <i key={a} className={`gv-rail__chip${okSet.has(a) || done ? " ok" : ""}${a === "tokens" && fixing ? " bad" : ""}`}>
+              {a}
+            </i>
+          ))}
         </div>
+        {/* the machine-surface footer (insider metadata; TODO(elleta):
+            keep or cut, your call) */}
+        <p className="cs2-kicker-row" style={{ margin: 0 }}>
+          Machine surfaces:{" "}
+          <a href="/llms.txt" className="ds-swatch__case">/llms.txt</a> ·{" "}
+          <a href="/api/bella.json" className="ds-swatch__case">/api/bella.json</a>
+        </p>
       </div>
     </div>
   );

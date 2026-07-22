@@ -260,11 +260,13 @@ export default function LayerJourney() {
       {JOURNEY_CAPTION.trim() !== "" && (
         <p className="ds-section__kicker jn-caption-slot" style={{ margin: 0 }}>{JOURNEY_CAPTION}</p>
       )}
-      {/* ONE Run control: plays the journey top to bottom (reduced
-          motion resolves instantly to the end state) */}
-      <button type="button" className="demo-btn jn-run" onClick={run}>
-        {running ? "Running the journey…" : "Run the journey"}
-      </button>
+      {/* ONE Run control in the shared control slot (reduced motion
+          resolves instantly to the end state) */}
+      <div className="scene-control">
+        <button type="button" className="demo-btn jn-run" onClick={run}>
+          {running ? "Running the journey…" : "Run the journey"}
+        </button>
+      </div>
       <div className="jn-board">
         {/* the rail, REVERSED: Production top, Figma bottom; the
             steps are the REAL system card, the active one wearing
