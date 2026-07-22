@@ -65,8 +65,8 @@ const roles = [
     title: "Product Designer, Data Dashboard (Contract)",
     company: "UN Office at Geneva (UNOG) · Contract" /* TODO(elleta): exact entry wording is yours; the name is restored per _private/nda-employers.txt (Pass E task 9) */,
     period: "Oct 2025, Dec 2025",
-    caseStudySlug: "case-studies/un-operational-dashboard",
-    caseStudyLabel: "Designing Operational Clarity →",
+    /* case link removed (curation, 22 Jul 2026): the clarity case is
+       archived; the entry renders linkless like the other roles */
     highlights: [
       "**Designed a high-fidelity operational dashboard** for the UN ICT division, translating complex multi-team workflows into clear data visualisations and role-based analytics interfaces.",
       "**Delivered within an 8-week contract**, from stakeholder interviews and IA definition through interactive prototype and annotated engineering handoff specs.",

@@ -1,3 +1,7 @@
+/* ARCHIVED (deliberately unrouted, Elleta 22 Jul 2026, case curation):
+   full content preserved; not exported from the registry index, no
+   route, no library row. Restore by moving back beside index.ts and
+   re-adding the export + WORK_ITEMS row. */
 import type { CaseStudy } from "@/lib/content";
 
 /* Conformance (Pass E task 11, honest): still an ESSAY with three

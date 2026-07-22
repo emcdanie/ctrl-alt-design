@@ -226,10 +226,58 @@ for (const theme of ["light", "dark"]) {
   }
   await ctx.close();
 }
+
+/* ── DEAD-LINK SWEEP (curation, Elleta 22 Jul 2026): no dead routes,
+   no dead links anywhere. On every route: (a) the archived case route
+   strings must appear nowhere in the rendered DOM, (b) every internal
+   <a href> must resolve below 400. Links are content, one theme
+   suffices. ── */
+{
+  const ARCHIVED = [
+    "/case-studies/guardian",
+    "/case-studies/un-operational-dashboard",
+    "/case-studies/filters-decision-support-system",
+  ];
+  const ROUTES = [
+    "/", "/work", "/work?view=map", "/work?view=table", "/about", "/contact",
+    "/skills", "/design-system", "/design-system/inspector", "/quick",
+    "/case-studies/chip", "/case-studies/brad-frost",
+    "/case-studies/design-system-transformation",
+  ];
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  const internal = new Map(); // path -> first route that links it
+  for (const route of ROUTES) {
+    await page.goto(`http://localhost:3000${route}`, { waitUntil: "networkidle", timeout: 30000 });
+    const found = await page.evaluate((archived) => {
+      const dead = archived.filter((a) => document.documentElement.outerHTML.includes(a));
+      const hrefs = [...document.querySelectorAll("a[href]")]
+        .map((a) => a.getAttribute("href"))
+        .filter((h) => h && (h.startsWith("/") || h.startsWith("#")));
+      return { dead, hrefs };
+    }, ARCHIVED);
+    for (const d of found.dead) {
+      fails++;
+      console.error(`VISUAL FAIL dead-link: archived route ${d} referenced on ${route}`);
+    }
+    for (const h of found.hrefs) {
+      const path = h.split("#")[0];
+      if (path && !internal.has(path)) internal.set(path, route);
+    }
+  }
+  for (const [path, from] of internal) {
+    const res = await page.request.get(`http://localhost:3000${path}`);
+    if (res.status() >= 400) {
+      fails++;
+      console.error(`VISUAL FAIL dead-link: ${path} -> ${res.status()} (linked from ${from})`);
+    }
+  }
+  await ctx.close();
+}
 await browser.close();
 
 if (fails > 0) {
   console.error(`visual gate: ${fails} failure(s)`);
   process.exit(1);
 }
-console.log("visual gate: PASS (one ground, containment, uniform band cards, covers >= 3:1)");
+console.log("visual gate: PASS (one ground, containment, uniform band cards, covers >= 3:1, no dead links)");

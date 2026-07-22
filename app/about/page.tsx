@@ -193,7 +193,8 @@ const learningEntries: LearningEntry[] = [
     year: "2025",
     topics: ["Complex filtering patterns", "Progressive disclosure", "Cognitive load in UI", "Enterprise navigation"],
     reflection: "This workshop fundamentally shaped how I think about filtering as a decision-support system rather than a data-exposure mechanism. The pattern vocabulary I developed here directly influenced the search and filtering redesign on a B2B travel platform.",
-    relatedWork: { label: "Search & Filtering Case Study", href: "/case-studies/filters-decision-support-system" },
+    /* relatedWork link removed (curation, 22 Jul 2026): it pointed at
+       the archived filters case; the entry renders without a link */
   },
   {
     title: "Into Design Systems",

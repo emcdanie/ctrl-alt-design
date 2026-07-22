@@ -23,10 +23,7 @@ const ROUTES = [
   "/quick",
   "/case-studies/chip",
   "/case-studies/brad-frost",
-  "/case-studies/guardian",
   "/case-studies/design-system-transformation",
-  "/case-studies/un-operational-dashboard",
-  "/case-studies/filters-decision-support-system",
 ];
 
 const browser = await chromium.launch();

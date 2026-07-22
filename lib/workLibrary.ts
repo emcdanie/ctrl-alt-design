@@ -61,6 +61,11 @@ export interface WorkItem {
   text: string;
 }
 
+/* Curation (Elleta, 22 Jul 2026): three star cases + the Design Lab
+ * row. Archived cases (guardian, clarity, filters) live with full
+ * content in content/case-studies/_archive/; everything downstream
+ * (counts, fit corpus, matrix, related rows, bella.json) derives from
+ * this array and follows. */
 export const WORK_ITEMS: WorkItem[] = [
   {
     id: "chip",
@@ -135,73 +140,6 @@ export const WORK_ITEMS: WorkItem[] = [
     lo: "var(--case-drift-lo)",
     deep: "var(--case-drift-deep)",
     text: "var(--case-drift-text)",
-  },
-  {
-    id: "guardian",
-    medium: "case study",
-    cover: "/images/thumbnails/GuardianAuditTool.svg",
-    title: "Guardian",
-    bubbleLabel: "Guardian",
-    kicker: "AI UX · 2026",
-    ingredients: ["Drift detection at decision-time", "Contextual guidance", "Human-in-control governance"],
-    href: "/case-studies/guardian",
-    type: "AI UX",
-    year: "2026",
-    yearStart: 2026,
-    role: "Concept Lead, Interaction & Strategy",
-    impact: "Decision-time drift detection, from hackathon concept to interactive prototype",
-    skills: ["AI-enabled Design", "Design System Governance", "Design Systems", "UX Research", "Accessibility"],
-    hi: "var(--case-guardian-hi)",
-    lo: "var(--case-guardian-lo)",
-    deep: "var(--case-guardian-deep)",
-    text: "var(--case-guardian-text)",
-  },
-  {
-    id: "clarity",
-    medium: "case study",
-    title: "Operational Clarity",
-    bubbleLabel: "Operational|Clarity",
-    kicker: "Data Dashboard · 2025",
-    ingredients: ["6+ operational domains, one interface", "Role-based analytics", "8-week contract"],
-    href: "/case-studies/un-operational-dashboard",
-    type: "Data Dashboard",
-    year: "2025",
-    yearStart: 2025,
-    role: "Product Designer, Contract",
-    impact: "6+ operational domains unified in one interface, in an 8-week contract",
-    skills: ["Product Design", "Accessibility", "UX Research"],
-    hi: "var(--case-clarity-hi)",
-    lo: "var(--case-clarity-lo)",
-    deep: "var(--case-clarity-deep)",
-    text: "var(--case-clarity-text)",
-  },
-  {
-    id: "filters",
-    medium: "case study",
-    cover: "/images/carosel/CTRL_ATL_TRAVEL.jpeg",
-    /* Registry parity (Elleta, 20 Jul): every case-study slug carries
-       exactly one WORK_ITEMS row. The hero cluster stays six bubbles +
-       hub; this case sits outside it by explicit flag. */
-    inCluster: false,
-    title: "Travel Booking",
-    bubbleLabel: "Travel|Booking",
-    kicker: "UX Strategy · 2024-25",
-    ingredients: [
-      "Search and filtering as one flow",
-      "Policy as a visible dimension",
-      "Making it safe to experiment",
-    ],
-    href: "/case-studies/filters-decision-support-system",
-    type: "UX Strategy",
-    year: "2024-2025",
-    yearStart: 2024,
-    role: "Lead Product Designer",
-    impact: "A reusable filtering interaction pattern with a consistent contract across the product",
-    skills: ["Product Design", "UX Research", "Design Systems"],
-    hi: "var(--case-filters-hi)",
-    lo: "var(--case-filters-lo)",
-    deep: "var(--case-filters-deep)",
-    text: "var(--case-filters-text)",
   },
   {
     id: "design-lab",

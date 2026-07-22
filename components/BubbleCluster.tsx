@@ -23,23 +23,35 @@ const GEOMETRY: Record<string, { size: number; top: number; left: number; fontSi
   hub: { size: 196, top: 218, left: 205, fontSize: 22 },
 };
 
-/* The cluster renders only inCluster rows (Elleta, 20 Jul): six
- * bubbles + hub. GEOMETRY is keyed by id; a row flagged out of the
- * cluster never reaches it. */
+/* The cluster follows the registry (curation, Elleta 22 Jul 2026):
+ * inCluster rows render as interactive case/lab bubbles with their
+ * live links; the archived-case positions stay in the hive as TOPIC
+ * spheres, colour + topic label only, non-interactive, no link. */
 const CLUSTER_ITEMS = WORK_ITEMS.filter((i) => i.inCluster !== false);
 const BUBBLES = [...CLUSTER_ITEMS, HUB_ITEM];
 const HUB_I = CLUSTER_ITEMS.length;
-/* hub connects to all, plus cross-links for the hive */
-const CONNS: [number, number][] = [
-  [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5],
-  [0, 1], [0, 2], [1, 5], [2, 3], [3, 4], [4, 5],
+
+/* labels are the retired rows' type fields; colours the recorded case
+ * tokens, which stay in the token layer */
+const TOPIC_SPHERES = [
+  { id: "guardian", label: "AI UX", hi: "var(--case-guardian-hi)", lo: "var(--case-guardian-lo)" },
+  { id: "clarity", label: "Data|Dashboard", hi: "var(--case-clarity-hi)", lo: "var(--case-clarity-lo)" },
+];
+
+/* connectors by id, resolved through GEOMETRY: the hive keeps its
+ * exact shape regardless of which spheres are interactive */
+const CONN_IDS: [string, string][] = [
+  ["hub", "chip"], ["hub", "code-first"], ["hub", "drift"],
+  ["hub", "guardian"], ["hub", "clarity"], ["hub", "design-lab"],
+  ["chip", "code-first"], ["chip", "drift"], ["code-first", "design-lab"],
+  ["drift", "guardian"], ["guardian", "clarity"], ["clarity", "design-lab"],
 ];
 
 /* connector endpoints are bubble centres in design space — deterministic,
  * no DOM measurement, and they scale with the space */
-const LINES = CONNS.map(([a, b]) => {
-  const ga = GEOMETRY[BUBBLES[a].id];
-  const gb = GEOMETRY[BUBBLES[b].id];
+const LINES = CONN_IDS.map(([a, b]) => {
+  const ga = GEOMETRY[a];
+  const gb = GEOMETRY[b];
   return {
     x1: ga.left + ga.size / 2,
     y1: ga.top + ga.size / 2,
@@ -231,15 +243,17 @@ export default function BubbleCluster({
         <div className={styles.space}>
           <svg className={styles.links} viewBox={`0 0 ${DESIGN_W} ${DESIGN_H}`} aria-hidden="true">
             {LINES.map((l, i) => {
-              const on =
-                selected !== null && (CONNS[i][0] === selected || CONNS[i][1] === selected);
+              const selId = selected !== null ? BUBBLES[selected].id : null;
+              const on = selId !== null && CONN_IDS[i].includes(selId);
               /* a connector dims with its endpoints: full-strength
                  hairlines through 35%-opacity discs read as lines ON
-                 TOP of the bubbles (docs/fixes/map-connector-dim.md) */
+                 TOP of the bubbles (docs/fixes/map-connector-dim.md).
+                 Topic-sphere endpoints never match a filter id, so
+                 their connectors dim whenever filters are active. */
               const dimmed =
                 highlightIds &&
-                (!highlightIds.includes(BUBBLES[CONNS[i][0]].id) ||
-                  !highlightIds.includes(BUBBLES[CONNS[i][1]].id));
+                (!highlightIds.includes(CONN_IDS[i][0]) ||
+                  !highlightIds.includes(CONN_IDS[i][1]));
               return (
                 <line
                   key={i}
@@ -289,6 +303,30 @@ export default function BubbleCluster({
             </span>
           </button>
         ))}
+
+        {/* topic spheres (curation, 22 Jul): identity colour + topic
+            label only; not buttons, no peek, no link, never routable */}
+        {TOPIC_SPHERES.map((t) => {
+          const g = GEOMETRY[t.id];
+          return (
+            <span
+              key={t.id}
+              className={`${styles.bub} ${styles.topicSphere} ${highlightIds ? styles.dim : ""}`}
+              style={{
+                width: g.size,
+                height: g.size,
+                top: g.top,
+                left: g.left,
+                fontSize: g.fontSize,
+                ["--bub-hi" as string]: t.hi,
+                ["--bub-lo" as string]: t.lo,
+                zIndex: 1,
+              }}
+            >
+              <BubbleLabel label={t.label} />
+            </span>
+          );
+        })}
         </div>
       </div>
 

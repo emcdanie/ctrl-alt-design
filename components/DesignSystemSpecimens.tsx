@@ -112,13 +112,16 @@ const GATE = [
    live readouts below each orb. ONE sphere size, one grid, aligned
    readouts (Elleta, 21 Jul, spec system-page-v2): eight items, the
    six cases + Design Lab + hub; the small modifier is retired. */
-const CASE_ORBS = [
+/* Curation (Elleta, 22 Jul 2026): archived-case identities keep their
+   orbs (the tokens are real and live) but lose their links; only
+   routable surfaces carry an href. */
+const CASE_ORBS: readonly { hi: string; lo: string; name: string; href?: string }[] = [
   { hi: "--case-chip-hi", lo: "--case-chip-lo", name: "CHIP", href: "/case-studies/chip" },
   { hi: "--case-code-first-hi", lo: "--case-code-first-lo", name: "Code First", href: "/case-studies/brad-frost" },
   { hi: "--case-drift-hi", lo: "--case-drift-lo", name: "From Drift to Foundation", href: "/case-studies/design-system-transformation" },
-  { hi: "--case-guardian-hi", lo: "--case-guardian-lo", name: "Guardian", href: "/case-studies/guardian" },
-  { hi: "--case-clarity-hi", lo: "--case-clarity-lo", name: "Operational Clarity", href: "/case-studies/un-operational-dashboard" },
-  { hi: "--case-filters-hi", lo: "--case-filters-lo", name: "Travel Booking", href: "/case-studies/filters-decision-support-system" },
+  { hi: "--case-guardian-hi", lo: "--case-guardian-lo", name: "Guardian" },
+  { hi: "--case-clarity-hi", lo: "--case-clarity-lo", name: "Operational Clarity" },
+  { hi: "--case-filters-hi", lo: "--case-filters-lo", name: "Travel Booking" },
   { hi: "--case-design-lab-hi", lo: "--case-design-lab-lo", name: "Design Lab", href: "/work" },
   { hi: "--hub-hi", lo: "--hub-lo", name: "The hub (how I think)", href: "/about#how-i-think" },
 ] as const;
@@ -268,7 +271,13 @@ export default function DesignSystemSpecimens() {
               {CASE_ORBS.map((o, i) => (
                 <li key={o.hi} className="ds-caseband__item">
                   <SpecimenCard
-                    kicker={<a className="ds-swatch__case" href={o.href}>{o.name}</a>}
+                    kicker={
+                      o.href ? (
+                        <a className="ds-swatch__case" href={o.href}>{o.name}</a>
+                      ) : (
+                        o.name
+                      )
+                    }
                     tokens={ORB_TOKENS[i]}
                   >
                     <span
