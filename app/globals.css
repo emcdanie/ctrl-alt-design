@@ -3770,9 +3770,10 @@ textarea:focus-visible {
 
 .jn-board {
   display: grid;
-  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
-  gap: var(--spacing-8);
-  align-items: start;
+  grid-template-columns: minmax(200px, 240px) minmax(0, 1fr);
+  gap: var(--spacing-6);
+  /* stretch: rail and panel share a height, bottoms aligned */
+  align-items: stretch;
   width: 100%;
 }
 
@@ -4222,17 +4223,36 @@ textarea:focus-visible {
   }
 }
 
+/* the wide-visual variant of the ONE scene grid: same skeleton,
+   asymmetric columns so a compound visual (the journey) keeps a
+   readable panel; the slim side carries the text. Mirrored under
+   --flip like every beat. */
+@media (min-width: 1024px) {
+  .cs2-screen__grid--wide {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  }
+
+  .cs2-screen__grid--wide.cs2-screen__grid--flip {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
+
 /* the journey board collapses only when ITS OWN width is genuinely
-   narrow (mobile); at full content width the rail sits BESIDE the
-   panel it drives, never stacked (the beat-02 exception) */
+   narrow; beside the slim text column it stays rail-next-to-panel */
 .jn {
   container-type: inline-size;
 }
 
-@container (max-width: 720px) {
+@container (max-width: 600px) {
   .jn-board {
     grid-template-columns: 1fr;
   }
+}
+
+/* equal heights: the rail distributes its rows so rail and panel
+   bottoms align */
+.jn-rail {
+  justify-content: space-between;
 }
 
 /* the active step visibly points at the panel it drives: an arrow on

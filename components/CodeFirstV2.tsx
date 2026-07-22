@@ -140,19 +140,23 @@ function Scannable({ text, keyline }: { text: string; keyline?: string }) {
     stacks [control][visual][footnote] with one treatment */
 function Scene({
   flip = false,
+  wide = false,
   txt,
   control,
   visual,
   foot,
 }: {
   flip?: boolean;
+  /** the wide-visual variant: same skeleton, asymmetric columns for
+      compound visuals (the journey); recorded in DESIGN.md */
+  wide?: boolean;
   txt: React.ReactNode;
   control?: React.ReactNode;
   visual: React.ReactNode;
   foot?: React.ReactNode;
 }) {
   return (
-    <div className={`cs2-screen__grid${flip ? " cs2-screen__grid--flip" : ""}`}>
+    <div className={`cs2-screen__grid${flip ? " cs2-screen__grid--flip" : ""}${wide ? " cs2-screen__grid--wide" : ""}`}>
       <div className="cs2-screen__text">{txt}</div>
       <div className="cs2-screen__visual scene-vis">
         {control && <div className="scene-control">{control}</div>}
@@ -291,23 +295,29 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
         <BeatLink index={0} />
       </Beat>
 
-      {/* ── 02 · the tokens testify: THE one full-width exception
-          (recorded in DESIGN.md, like the pull quote). The intro is a
-          lead above the journey; below, the rail sits LEFT beside the
-          panel it drives, never stacked. ── */}
+      {/* ── 02 · the tokens testify: back in the skeleton on the
+          WIDE-VISUAL variant (recorded in DESIGN.md): slim text
+          beside the journey; inside the visual, rail LEFT beside the
+          panel it drives, equal heights ── */}
       <Beat index={1} id="cs2-b2">
-        <div className="cs2-measure">
-          <Scannable
-            text={para(cs, (b) => b.kind === "decision" && b.index === "01", 0)}
-            keyline="Token alignment was the most technically demanding part of the work."
-          />
-          <p className="ds-section__note">
-            Walk the Tile through the layers and watch each one act on it; the step is
-            linkable, and the values re-read on every theme flip.
-            <strong> Flip the theme and watch the values follow.</strong>
-          </p>
-        </div>
-        <LayerJourney />
+        <Scene
+          flip
+          wide
+          txt={
+            <>
+              <Scannable
+                text={para(cs, (b) => b.kind === "decision" && b.index === "01", 0)}
+                keyline="Token alignment was the most technically demanding part of the work."
+              />
+              <p className="ds-section__note">
+                Walk the Tile through the layers and watch each one act on it; the step is
+                linkable, and the values re-read on every theme flip.
+                <strong> Flip the theme and watch the values follow.</strong>
+              </p>
+            </>
+          }
+          visual={<LayerJourney />}
+        />
         <BeatLink index={1} />
       </Beat>
 
