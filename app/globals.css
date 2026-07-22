@@ -990,6 +990,13 @@ li {
 .select-control {
   display: inline-flex;
   align-items: center;
+  /* shrink fix (Phase 2, 22 Jul): the control fits every card width
+     the specimen grid can produce; the label wraps above the field
+     instead of forcing min-content overflow */
+  flex-wrap: wrap;
+  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
   gap: var(--spacing-2);
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
@@ -1001,9 +1008,13 @@ li {
 .select-control__field {
   position: relative;
   display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .select-control select {
+  min-width: 0;
+  max-width: 100%;
   appearance: none;
   -webkit-appearance: none;
   font-family: var(--font-body);
@@ -2429,6 +2440,9 @@ textarea:focus-visible {
 .ds-orb {
   display: block;
   width: 112px;
+  /* shrink fix: at the narrowest cards the orb scales down and the
+     aspect ratio keeps it a circle; it never leaves the content box */
+  max-width: 100%;
   aspect-ratio: 1;
   border-radius: var(--radius-full);
   background: radial-gradient(circle at 36% 30%, var(--orb-hi), var(--orb-lo));
@@ -2453,9 +2467,19 @@ textarea:focus-visible {
   align-items: stretch;
 }
 
-@media (max-width: 767px) {
+/* below the opening's own stack point the four-up items get too
+   narrow for the case names' longest words (containment, content-box
+   boundary): two-up from 1023px down, one-up below 480 where the
+   tracked uppercase names outgrow a half-width card */
+@media (max-width: 1023px) {
   .ds-caseband {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 479px) {
+  .ds-caseband {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -2489,9 +2513,13 @@ textarea:focus-visible {
   min-width: 0;
 }
 
-.ds-flag.ds-flag--ramp {
-  position: static;
-  align-self: flex-start;
+/* the ramp's flags are the ONE TokenAnnotation lane (Phase 2, kills
+   the hand-rolled duplicate); in this band the lane is a single flag
+   riding the annotation column, not a centred card lane */
+.ds-type__row .ds-flaglane {
+  justify-content: flex-start;
+  min-height: 0;
+  margin-bottom: 0;
 }
 
 @media (min-width: 1024px) {
@@ -2512,7 +2540,7 @@ textarea:focus-visible {
     transform: translateY(calc(-1 * var(--spacing-1)));
   }
 
-  .ds-flag.ds-flag--ramp {
+  .ds-type__row .ds-flaglane {
     justify-self: start;
   }
 }
@@ -2601,9 +2629,12 @@ textarea:focus-visible {
 }
 
 .ds-agents__code {
+  /* Phase 2 (22 Jul, confirmed live break): lines WRAP at token
+     boundaries inside the clipped card instead of cutting mid-word at
+     narrow widths; overflow-x stays as the backstop nothing relies on */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   overflow-x: auto;
-  /* flex-child containment (containment law): never wider than the
-     card's inner box; the code scrolls inside instead */
   min-width: 0;
   max-width: 100%;
   padding: var(--spacing-5);
@@ -2656,6 +2687,10 @@ textarea:focus-visible {
   flex-direction: column;
   height: 100%;
   min-width: 0;
+  /* containment by construction (proto card law, line 35): the clip is
+     the backstop; the real shrink fixes below mean nothing relies on it
+     (audit:visual proves containment with no clip forgiveness) */
+  overflow: hidden;
 }
 
 /* containment law item 2 (22 Jul): fixed two-line head min-height so
@@ -2674,6 +2709,8 @@ textarea:focus-visible {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
+  /* anchors the in-card leader SVG */
+  position: relative;
 }
 
 .ds-card__demo--center {
@@ -2683,28 +2720,20 @@ textarea:focus-visible {
   justify-content: center;
 }
 
-/* ── redline flags (v3 T6): the annotation grammar of a design spec.
-   METADATA TIER, recorded exempt from the reading floor; aria-hidden,
-   pointer-events none, never focusable. Leader lines via ::before. ── */
-.ds-flagwrap {
-  position: relative;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+/* real shrink fix: demo flex children may never force min-content
+   overflow past the card's content box */
+.ds-card__demo--center > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
-.ds-flagwrap > .ds-card__demo {
-  flex: 1;
-}
-
-.ds-flags {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
+/* ── redline flags (Phase 2 rebuild, 22 Jul, audit section 5): ONE
+   in-flow lane per card, head / lane / demo order, tokens appear once.
+   METADATA TIER, recorded exempt from the reading floor; aria-hidden
+   where they duplicate visible text, never focusable. Values are
+   shortened deliberately in TokenAnnotation (never mid-token); token
+   names may wrap at their hyphens, never ellipsize. ── */
 .ds-flag {
-  position: absolute;
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-1);
@@ -2715,19 +2744,8 @@ textarea:focus-visible {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   color: var(--color-accent-ink);
-  white-space: nowrap;
-  box-shadow: var(--shadow-card-default);
-  z-index: 2;
-  /* a flag never leaves its own card: long values ellipsize like a
-     real redline (the inspector list shows full values) */
   max-width: 100%;
-  position: relative;
-}
-
-.ds-flag__value,
-.ds-flag__token {
-  overflow: hidden;
-  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .ds-flag__chip {
@@ -2738,73 +2756,45 @@ textarea:focus-visible {
   flex-shrink: 0;
 }
 
+.ds-flag__value,
+.ds-flag__token {
+  /* flex items must be allowed to shrink or the text never wraps;
+     token names wrap at their hyphens, values are pre-shortened in
+     TokenAnnotation, nothing ellipsizes mid-token */
+  min-width: 0;
+}
+
 .ds-flag__token {
   color: var(--color-ink-muted);
 }
 
-/* containment law (22 Jul, supersedes every overlay/outside-edge
-   rule): flags are IN-FLOW rows in two lanes inside the card, above
-   and below the demo; leader ticks span the lane-to-demo gap so they
-   touch by construction; nothing renders outside the card border box
-   (asserted by audit:visual). */
+/* the ONE lane, centred like the proto's, with a stable minimum so
+   sibling cards keep uniform rhythm across flag counts */
 .ds-flaglane {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
   gap: var(--spacing-2);
   min-width: 0;
-}
-
-.ds-flaglane--top {
+  min-height: var(--spacing-8);
   margin-bottom: var(--spacing-2);
 }
 
-.ds-flaglane--bottom {
-  margin-top: var(--spacing-2);
-}
-
-.ds-flaglane--top .ds-flag::after,
-.ds-flaglane--bottom .ds-flag::before {
-  content: "";
+/* the in-card leader layer (replaces the fixed-height tick
+   pseudo-elements): an SVG inset in the demo, lines drawn by
+   FlagLeaders to TOUCH the specimen */
+.ds-leaders {
   position: absolute;
-  left: 50%;
-  width: 1px;
-  height: var(--spacing-2);
-  background: var(--color-semantic-accent-border);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
-.ds-flaglane--top .ds-flag::after {
-  top: 100%;
-}
-
-.ds-flaglane--bottom .ds-flag::before {
-  bottom: 100%;
-}
-
-/* tight space (<768px, v3 review 22 Jul): lanes give way to a compact
-   stacked row BELOW the item; full token names return; never a toggle */
-@media (max-width: 767px) {
-  .ds-flagwrap--on {
-    padding-block: 0;
-  }
-
-  .ds-flags {
-    position: static;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-2);
-    margin-top: var(--spacing-3);
-  }
-
-  .ds-flag {
-    position: static;
-    transform: none;
-  }
-
-  }
-
-.ds-card__foot {
-  margin-top: auto;
-  padding-top: var(--spacing-3);
+.ds-leaders line {
+  stroke: var(--color-semantic-accent-border);
+  stroke-width: 1.5;
 }
 
 .ds-gate__receipt {
@@ -2815,15 +2805,6 @@ textarea:focus-visible {
   padding-top: var(--spacing-3);
   margin-top: var(--spacing-3);
 }
-
-.ds-card__readout {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-  width: 100%;
-  text-align: center;
-}
-
 
 .ds-scale {
   list-style: none;
@@ -2873,7 +2854,8 @@ textarea:focus-visible {
 
 .tok-inspector {
   /* single column (22 Jul): the flags are the readout; the two-column
-     readout grid is retired */
+     readout grid is retired. Proto slot order: lane / stage / zones /
+     caption, all inside this box; contained by construction. */
   display: flex;
   flex-direction: column;
   gap: var(--spacing-4);
@@ -2881,6 +2863,7 @@ textarea:focus-visible {
   border: 1px solid var(--color-border-medium);
   border-radius: var(--radius-2xl);
   background: var(--color-card);
+  overflow: hidden;
 }
 
 .tok-inspector__stage {
@@ -2889,6 +2872,8 @@ textarea:focus-visible {
   align-items: center;
   gap: var(--spacing-8);
   padding-top: var(--spacing-6);
+  /* anchors the in-card leader SVG */
+  position: relative;
 }
 
 /* keycap specimen, built from the same tokens the readout names */
@@ -2910,16 +2895,21 @@ textarea:focus-visible {
     2px 5px 0 var(--key-fill-edge),
     6px 9px 14px color-mix(in srgb, var(--key-fill-lo) 32%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  position: relative;
 }
 
-/* the trace ring (22 Jul): a MEASURABLE element with ONE token offset
-   per side and a concentric radius (keycap radius + offset), replacing
-   the outline that ignored the 3D plate. audit:visual asserts the
-   per-side offsets are equal within 1px. */
+/* the trace ring (Phase 2 rebuild, 22 Jul): ring space reserved IN
+   FLOW by the ringwrap's one-token padding; the ring sits at inset 0
+   with a concentric radius (keycap radius + offset). No negative
+   insets. audit:visual asserts the per-side offsets are equal. */
+.tok-inspector__ringwrap {
+  position: relative;
+  display: inline-block;
+  padding: var(--spacing-2);
+}
+
 .tok-inspector__ring {
   position: absolute;
-  inset: calc(-1 * var(--spacing-2));
+  inset: 0;
   border: 2px dashed var(--color-accent-ink);
   border-radius: calc(var(--btn-key-radius) + var(--spacing-2));
   pointer-events: none;
@@ -3002,15 +2992,6 @@ textarea:focus-visible {
   background: var(--color-card);
 }
 
-/* inside the keycap inspector the panel is the readout itself: no
-   second card chrome around it */
-.tok-inspector__readout .tok-annotation__panel {
-  margin-top: 0;
-  padding: 0;
-  border: none;
-  background: transparent;
-}
-
 .tok-inspector__drives {
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
@@ -3020,44 +3001,8 @@ textarea:focus-visible {
   min-height: 3.2em;
 }
 
-.tok-inspector__tokens {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-}
-
-.tok-inspector__row dt {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  font-weight: 600;
-  color: var(--color-accent-ink);
-}
-
-.tok-inspector__row dd {
-  margin: 2px 0 0;
-  display: flex;
-  align-items: baseline;
-  gap: var(--spacing-2);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  line-height: 1.5;
-  color: var(--color-ink-muted);
-  overflow-wrap: anywhere;
-}
-
-.tok-inspector__chip {
-  flex: none;
-  width: 14px;
-  height: 14px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border-medium);
-  align-self: center;
-}
-
 @media (max-width: 720px) {
   .tok-inspector {
-    grid-template-columns: 1fr;
     padding: var(--spacing-6);
   }
 }
