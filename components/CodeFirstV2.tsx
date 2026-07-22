@@ -3,9 +3,9 @@
 import { Button } from "@/components/ui/Button";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CaseCard from "@/components/CaseCard";
-import { type StageFlag } from "@/components/TokenAnnotation";
-import SpecimenStage from "@/components/SpecimenStage";
-import ParityInspector from "@/components/ParityInspector";
+import TwinStage from "@/components/TwinStage";
+import LayerJourney from "@/components/LayerJourney";
+import SystemTree from "@/components/SystemTree";
 import GateRun from "@/components/GateRun";
 import { PullQuote } from "@/components/CaseStudyTypography";
 import { BoldText } from "@/lib/richtext";
@@ -58,19 +58,6 @@ const BEAT_LINKS = [
 /* the clarifying line near the live specimens */
 const DEMO_DISCLOSURE =
   "The interactive demos run on BELLA, my own system, demonstrating the same method deployed in the client's library. Client code stays the client's.";
-
-/* opener stage flags: the demo product subject on the scoped
-   register; annotations stay BELLA iris */
-const OPENER_FLAGS: readonly StageFlag[] = [
-  { token: "--demo-radius", corner: "tl", zone: "button" },
-  { token: "--demo-primary", corner: "tr", zone: "button" },
-  { token: "--demo-touch", corner: "bl", zone: "button" },
-];
-const BUTTON_ANCHORS = {
-  "--demo-radius": '[data-part="button"]',
-  "--demo-primary": '[data-part="button"]',
-  "--demo-touch": '[data-part="button"]',
-};
 
 /* the clip summary: three bullets on what the short clip shows,
    derived from the figure caption + decision 02 copy */
@@ -170,32 +157,33 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
             <p className="ds-section__note" style={{ margin: 0 }}>{DEMO_DISCLOSURE}</p>
           </div>
           <div className="cs2-screen__visual">
-            <SpecimenStage flags={OPENER_FLAGS} anchors={BUTTON_ANCHORS} hasBefore>
-              <button type="button" className="demo-btn" data-part="button">
-                Book demo
-              </button>
-            </SpecimenStage>
+            {/* amendment 3 item 1: identical twins, the toggle moves
+                only the annotation layer */}
+            <TwinStage />
           </div>
         </div>
         <BeatLink index={0} />
       </Beat>
 
-      {/* ── 02 · the tokens testify: the parity inspector ── */}
+      {/* ── 02 · the tokens testify: the journey of a component ── */}
       <Beat index={1} id="cs2-b2">
         <div className="cs2-measure">
           <P text={para(cs, (b) => b.kind === "decision" && b.index === "01", 0)} />
           <p className="ds-section__note">
-            Run the inspection and read the verdicts; the values re-read on every theme flip.
+            Walk the Tile through the layers and watch each one act on it; the step is
+            linkable, and the values re-read on every theme flip.
             <strong> Flip the theme and watch the values follow.</strong>
           </p>
         </div>
-        <SpecimenStage label="Inspection" flat>
-          {(setZone) => <ParityInspector onZone={setZone} />}
-        </SpecimenStage>
+        {/* amendment 3 item 2: the journey of a component through the
+            layers; the former inspector findings are the Readable
+            layer's events */}
+        <LayerJourney />
         <BeatLink index={1} />
       </Beat>
 
-      {/* ── 03 · the rebuild: the recorded session clip ── */}
+      {/* ── 03 · the rebuild: the system tree is the scene; the
+          session clip follows as the compact media moment ── */}
       <Beat index={2} id="cs2-b3">
         <div className="cs2-screen__grid">
           <div className="cs2-screen__text">
@@ -203,6 +191,12 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
             <P text={para(cs, (b) => b.kind === "decision" && b.index === "02", 0)} />
           </div>
           <div className="cs2-screen__visual">
+            {/* amendment 3 item 3: the animated system tree, real
+                registry edges; the visual argument for architecture */}
+            <SystemTree />
+          </div>
+        </div>
+        <div style={{ maxWidth: "560px" }}>
             {clip && (
               <figure style={{ margin: 0, display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -230,7 +224,6 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
                 )}
               </figure>
             )}
-          </div>
         </div>
         {pullQuote && <PullQuote>{pullQuote.text}</PullQuote>}
         <BeatLink index={2} />

@@ -30,6 +30,7 @@ export default function SpecimenStage({
   hasBefore = false,
   beforeLabel = "Before",
   flat = false,
+  beforeStyling = true,
   children,
 }: {
   /** the state tag in the stage corner */
@@ -45,9 +46,17 @@ export default function SpecimenStage({
   /** flat stage: full-width block, tight padding (consoles and
       inspectors; the reserved zone law still applies to any flags) */
   flat?: boolean;
-  /** node, or a function receiving the highlight setter so children
-      (console lines) can drive the same highlight recipe */
-  children: React.ReactNode | ((setZone: (z: string | null) => void) => React.ReactNode);
+  /** when false, the before state carries NO component restyling: the
+      specimen never changes, only the children's annotation layer
+      responds (amendment 3 item 1: the eye sees no difference, the
+      labels tell the truth) */
+  beforeStyling?: boolean;
+  /** node, or a function receiving the highlight setter (and the
+      before state, for stages whose toggle swaps the ANNOTATION layer
+      while the specimen itself never changes, amendment 3 item 1) */
+  children:
+    | React.ReactNode
+    | ((setZone: (z: string | null) => void, before: boolean) => React.ReactNode);
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
@@ -94,7 +103,7 @@ export default function SpecimenStage({
           "spec-stage",
           flat ? "spec-stage--flat" : "",
           inView ? "in" : "",
-          before ? "spec-stage--before" : "",
+          before && beforeStyling ? "spec-stage--before" : "",
         ]
           .filter(Boolean)
           .join(" ")}
@@ -108,7 +117,7 @@ export default function SpecimenStage({
           </>
         )}
         <div className="spec-stage__demo">
-          {typeof children === "function" ? children(setZone) : children}
+          {typeof children === "function" ? children(setZone, before) : children}
         </div>
       </div>
     </div>

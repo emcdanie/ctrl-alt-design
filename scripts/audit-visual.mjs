@@ -307,6 +307,25 @@ for (const theme of ["light", "dark"]) {
       await page.waitForTimeout(350);
     }
     await page.waitForTimeout(600);
+    /* twin equality (amendment 3 item 1): the two buttons must render
+       IDENTICAL geometry and colours; only the annotation layer may
+       differ between Before and On-system */
+    const twinBad = await page.evaluate(() => {
+      const twins = [...document.querySelectorAll("[data-twin]")];
+      if (twins.length !== 2) return [`expected 2 twin specimens, found ${twins.length}`];
+      const shape = (el) => {
+        const r = el.getBoundingClientRect();
+        const cs = getComputedStyle(el);
+        return [Math.round(r.width), Math.round(r.height), cs.backgroundColor, cs.color, cs.borderRadius, cs.borderTopColor, cs.fontFamily].join("|");
+      };
+      const a = shape(twins[0]);
+      const b = shape(twins[1]);
+      return a === b ? [] : [`twin specimens diverge: ${a} vs ${b}`];
+    });
+    for (const b of twinBad) {
+      fails++;
+      console.error(`VISUAL FAIL (${theme} ${width}) twin equality: ${b}`);
+    }
     const geomBad = await page.evaluate(() => {
       const out = [];
       for (const stage of document.querySelectorAll(".spec-stage")) {
