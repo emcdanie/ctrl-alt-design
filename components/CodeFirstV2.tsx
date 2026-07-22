@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Card from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CaseCard from "@/components/CaseCard";
-import TokenAnnotation, { FlagLeaders } from "@/components/TokenAnnotation";
+import TokenAnnotation, { FlagLeaders, type StageFlag } from "@/components/TokenAnnotation";
 import TokenInspector from "@/components/TokenInspector";
+import SpecimenStage from "@/components/SpecimenStage";
 import { PullQuote } from "@/components/CaseStudyTypography";
 import { BoldText } from "@/lib/richtext";
 import { WORK_ITEMS } from "@/lib/workLibrary";
@@ -36,15 +37,51 @@ import type { CaseStudy, CaseBlock } from "@/lib/content";
 const DRIFT_FIGMA = "Primary, Large";
 const DRIFT_CODE = "variant: action, size: lg";
 
-/* parity table: declared values are the recorded BELLA source values
-   (lib/bella/bella.css); the live column reads the running
-   stylesheet. All three tokens are deliberately theme-stable so the
-   comparison is honest in both themes. */
+/* the clarifying line near the live specimens (amendment item 7) */
+const DEMO_DISCLOSURE =
+  "The interactive demos run on BELLA, my own system, demonstrating the same method deployed in the client's library. Client code stays the client's.";
+
+/* stage flags for the demo-register specimens (amendment items 1-6):
+   the subject is a neutral demo product component on the scoped
+   --demo-* register; the annotations stay BELLA iris. Values resolve
+   LIVE inside the stage scope. */
+const OPENER_FLAGS: readonly StageFlag[] = [
+  { token: "--demo-radius", corner: "tl", zone: "button" },
+  { token: "--demo-primary", corner: "tr", zone: "button" },
+  { token: "--demo-touch", corner: "bl", zone: "button" },
+];
+const BUTTON_ANCHORS = {
+  "--demo-radius": '[data-part="button"]',
+  "--demo-primary": '[data-part="button"]',
+  "--demo-touch": '[data-part="button"]',
+};
+
+/* parity table: declared values are the recorded demo-register source
+   values (globals.css, DESIGN.md record); the live column reads the
+   running stylesheet inside the stage scope. All three are
+   deliberately theme-stable so the comparison is honest in both
+   themes. */
 const PARITY_TOKENS = [
-  { token: "--btn-key-radius", declared: "12px" },
-  { token: "--spacing-touch-target", declared: "44px" },
-  { token: "--spacing-2", declared: "8px" },
+  { token: "--demo-radius", declared: "8px" },
+  { token: "--demo-touch", declared: "44px" },
+  { token: "--demo-primary", declared: "#101114" /* token-waiver: the recorded demo-register source value (DESIGN.md), quoted as DATA for the parity comparison, never painted from here */ },
 ] as const;
+
+/* the readiness inspection console (amendment item 7): the drift
+   CLASSES are the real ones from the engagement (decision 01 copy:
+   variant names not matching prop names, values updated in one place
+   not the other, undocumented components); the Figma-side values are
+   an illustrative pair, labelled as such. Counts are counts of the
+   lines below, nothing invented. */
+const CONSOLE_LINES: readonly { word: "audit" | "drift" | "pass"; text: string; zone?: string }[] = [
+  { word: "audit", text: "reading the component pair: Tile" },
+  { word: "drift", text: "description empty in Figma; code documents the prop", zone: "description" },
+  { word: "drift", text: "prop name mismatch: brand in Figma, variant in code", zone: "propname" },
+  { word: "drift", text: "radius set by hand in Figma; code resolves 8px from the token", zone: "value" },
+  { word: "pass", text: "touch target clears 44px on both sides", zone: "button" },
+  { word: "pass", text: "ink and surface resolve from tokens", zone: "value" },
+  { word: "audit", text: "three drifts, two passes. The gate would fail this pair." },
+];
 
 /* the compact foundation swatch set (live readouts, System-page
    pattern) */
@@ -97,6 +134,12 @@ const JOURNEY = [
   "MCP investigation: structural questions answered in minutes, verified by hand.",
   "In progress: the same discipline runs this site, gated on every push.",
 ];
+
+/* amendment item 8, optional and hers: one honest line about the
+   investigation dashboard that did not stick and what replaced it
+   (record-your-failures principle). Renders as a journey line only
+   when her words land; no artwork either way. */
+const JOURNEY_FAILURE_LINE = "" /* TODO(elleta) */;
 
 const PERSONALITY_LINE = "" /* TODO(elleta): the personality-break line, your voice */;
 const THANKS_LINE = "Thanks for reading.";
@@ -170,63 +213,138 @@ function P({ text }: { text: string }) {
   );
 }
 
-/* ── specimens ── */
+/* ── specimens (stage recipe, amendment items 1-6) ── */
 
-/** the before state, visible before any reading (brief item 7): one
-    real keycap, two names, the drift annotated with the flag recipe
-    (static values: the depicted state is the client system's history,
-    so the flags carry the observed pair, not live reads) */
-function DriftSpecimen() {
+/** the demo product button: the working subject, --demo-* register
+    only, one part carrying the highlight */
+function DemoButton({ label }: { label: string }) {
   return (
-    <Card className="h-full" innerClassName="ds-card__inner">
-      <span className="ds-flaglane">
-        <span className="ds-flag">
-          <span className="ds-flag__value">{DRIFT_FIGMA}</span>
-          <span className="ds-flag__token">Figma</span>
-        </span>
-        <span className="ds-flag">
-          <span className="ds-flag__value">{DRIFT_CODE}</span>
-          <span className="ds-flag__token">Storybook</span>
-        </span>
-      </span>
-      <div className="ds-card__demo ds-card__demo--center">
-        <FlagLeaders />
-        <Button variant="secondary">One button</Button>
-      </div>
-      <p className="ds-section__note" style={{ margin: 0 }}>
-        Same component. Different names. Different assumptions.
-      </p>
-    </Card>
+    <button type="button" className="demo-btn" data-part="button">
+      {label}
+    </button>
   );
 }
 
-/** the interactive parity specimen (brief item 8): declared source
-    value vs the value the running stylesheet renders, per token,
-    leaders anchored by the one merged flag recipe */
-function ParitySpecimen() {
-  const live = useLiveTokens(PARITY_TOKENS.map((p) => p.token));
+/** the opener: the working component floats on the ground; the honest
+    before state shows the depicted mess (italic, cramped, off-palette
+    colours; the two-typeface law holds even in depictions) and hides
+    the annotations */
+function DriftStage() {
   return (
-    <Card className="h-full" innerClassName="ds-card__inner">
-      <TokenAnnotation tokens={PARITY_TOKENS.map((p) => p.token)} />
-      <div className="ds-card__demo ds-card__demo--center">
-        <FlagLeaders />
-        <Button variant="secondary">Specimen</Button>
+    <SpecimenStage flags={OPENER_FLAGS} anchors={BUTTON_ANCHORS} hasBefore>
+      <DemoButton label="Book demo" />
+    </SpecimenStage>
+  );
+}
+
+/** the parity stage: same subject, and beneath it the declared source
+    value vs the value the running stylesheet renders inside the
+    stage scope, verdict in words */
+function ParityStage() {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const [live, setLive] = useState<Record<string, string>>({});
+  useEffect(() => {
+    const read = () => {
+      const el = hostRef.current;
+      if (!el) return;
+      const cs = getComputedStyle(el);
+      const next: Record<string, string> = {};
+      for (const { token } of PARITY_TOKENS) next[token] = cs.getPropertyValue(token).trim();
+      setLive(next);
+    };
+    read();
+    const mo = new MutationObserver(read);
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => mo.disconnect();
+  }, []);
+  return (
+    <SpecimenStage flags={OPENER_FLAGS} anchors={BUTTON_ANCHORS} label="Parity">
+      <div ref={hostRef} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--spacing-6)", minWidth: 0, width: "100%" }}>
+        <DemoButton label="Specimen" />
+        <ul className="cs2-parity" style={{ maxWidth: "520px", width: "100%" }}>
+          {PARITY_TOKENS.map(({ token, declared }) => {
+            const rendered = live[token] || "reading";
+            const inSync = rendered === declared;
+            return (
+              <li key={token} className="cs2-parity__row">
+                <span className="ds-swatch__name">{token}</span>
+                <span className="ds-swatch__value">design {declared}</span>
+                <span className="ds-swatch__value">live {rendered}</span>
+                <span className="cs2-parity__state">{rendered === "reading" ? "…" : inSync ? "In sync" : "Drift"}</span>
+              </li>
+            );
+          })}
+        </ul>
       </div>
-      <ul className="cs2-parity">
-        {PARITY_TOKENS.map(({ token, declared }) => {
-          const rendered = live[token] || "reading";
-          const inSync = rendered === declared;
-          return (
-            <li key={token} className="cs2-parity__row">
-              <span className="ds-swatch__name">{token}</span>
-              <span className="ds-swatch__value">design {declared}</span>
-              <span className="ds-swatch__value">live {rendered}</span>
-              <span className="cs2-parity__state">{rendered === "reading" ? "…" : inSync ? "In sync" : "Drift"}</span>
-            </li>
-          );
-        })}
-      </ul>
-    </Card>
+    </SpecimenStage>
+  );
+}
+
+/** the AI-readiness inspection (amendment item 7): the Figma
+    representation vs the code component, audit console beneath;
+    hovering or focusing a console line highlights the offending prop
+    on both sides through the one highlight recipe. NDA-safe: the
+    subject is BELLA's own demo tile, the drift classes are the real
+    engagement classes, the Figma values an illustrative pair. */
+function ReadinessStage() {
+  return (
+    <SpecimenStage label="Inspection">
+      {(setZone) => (
+        <div style={{ width: "100%", minWidth: 0 }}>
+          <div className="spec-split">
+            <div className="spec-split__panel">
+              <p className="spec-split__head">Figma, the component as designed</p>
+              <ul className="spec-props">
+                <li className="spec-props__row">
+                  <span>component</span>
+                  <span>Tile / Brand</span>
+                </li>
+                <li className="spec-props__row" data-part="propname">
+                  <span>prop</span>
+                  <span>brand: periwinkle</span>
+                </li>
+                <li className="spec-props__row" data-part="description">
+                  <span>description</span>
+                  <span>(empty)</span>
+                </li>
+                <li className="spec-props__row" data-part="value">
+                  <span>radius</span>
+                  <span>set by hand</span>
+                </li>
+              </ul>
+            </div>
+            <div className="spec-split__panel">
+              <p className="spec-split__head">Code, the component as shipped</p>
+              <div className="demo-tile" data-part="value">
+                <p className="demo-tile__title">Tile</p>
+                <p className="demo-tile__desc" data-part="description">
+                  A compact content tile. Variant and size resolve from tokens.
+                </p>
+                <p className="demo-tile__meta" data-part="propname">variant=&quot;primary&quot; size=&quot;md&quot;</p>
+                <span data-part="button" style={{ display: "inline-flex" }}>
+                  <button type="button" className="demo-btn">Action</button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="spec-console" role="group" aria-label="Parity audit console">
+            {CONSOLE_LINES.map((l) => (
+              <button
+                key={l.text}
+                type="button"
+                className="spec-console__line"
+                onMouseEnter={() => setZone(l.zone ?? null)}
+                onMouseLeave={() => setZone(null)}
+                onFocus={() => setZone(l.zone ?? null)}
+                onBlur={() => setZone(null)}
+              >
+                <span className="spec-console__word">{l.word}</span> · {l.text}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </SpecimenStage>
   );
 }
 
@@ -270,9 +388,16 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
         spine="01 · Foundation"
         id="cs2-problem"
         heading="The problem, visible"
-        text={<P text={summary?.context ?? ""} />}
+        text={
+          <>
+            <P text={summary?.context ?? ""} />
+            {/* the one clarifying line near the live specimens
+                (amendment item 7) */}
+            <p className="ds-section__note" style={{ margin: 0 }}>{DEMO_DISCLOSURE}</p>
+          </>
+        }
       >
-        <DriftSpecimen />
+        <DriftStage />
       </Screen>
 
       {/* the token layer as an artifact, not a description */}
@@ -296,13 +421,13 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
             <P text={para(cs, (b) => b.kind === "decision" && b.index === "01", 1)} />
             <p className="ds-section__note">
               The specimen beside this text is live: the declared source value and the value
-              the running stylesheet renders, per token. If this site drifted, this row would
+              the running stylesheet renders, per token. If this demo drifted, this row would
               say so.
             </p>
           </>
         }
       >
-        <ParitySpecimen />
+        <ParityStage />
       </Screen>
 
       {/* readable by AI: the real story */}
@@ -363,25 +488,26 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
         </div>
       </section>
 
-      {/* ── 02 · The design work ── */}
-      <Screen
-        spine="02 · The design work"
-        id="cs2-work"
-        heading="Token alignment and component architecture"
-        text={<P text={para(cs, (b) => b.kind === "decision" && b.index === "01", 2)} />}
-      >
-        {cs.heroImage ? (
-          <Card className="h-full" innerClassName="ds-card__inner">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={cs.heroImage}
-              alt="The Code First command-center workspace"
-              loading="lazy"
-              style={{ width: "100%", height: "auto", borderRadius: "var(--radius-lg)" }}
-            />
-          </Card>
-        ) : null}
-      </Screen>
+      {/* ── 02 · The design work: the AI-readiness inspection replaces
+          the Command Center imagery (amendment items 7-8; the Command
+          Center remains a Design Lab piece only) ── */}
+      <section className="cs2-screen" aria-labelledby="cs2-work">
+        <p className="ds-section__kicker" style={{ margin: 0 }}>02 · The design work</p>
+        <SectionHeader
+          id="cs2-work"
+          title="Token alignment and component architecture"
+          className="cs2-screen__head"
+        />
+        <div className="cs2-measure">
+          <P text={para(cs, (b) => b.kind === "decision" && b.index === "01", 2)} />
+          <p className="ds-section__note">
+            The inspection below runs the same parity method: the component as designed
+            beside the component as shipped, and the console naming what drifted.
+            Illustrative pair; the drift classes are the real ones.
+          </p>
+        </div>
+        <ReadinessStage />
+      </section>
 
       <Screen
         spine="02 · The design work"
@@ -504,7 +630,7 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
       <section className="cs2-screen" aria-labelledby="cs2-journey">
         <SectionHeader id="cs2-journey" title="The journey" className="cs2-screen__head" />
         <ol className="ds-rules">
-          {JOURNEY.map((j) => (
+          {[...JOURNEY, ...(JOURNEY_FAILURE_LINE.trim() !== "" ? [JOURNEY_FAILURE_LINE] : [])].map((j) => (
             <li key={j}>{j}</li>
           ))}
         </ol>

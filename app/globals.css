@@ -3275,3 +3275,403 @@ textarea:focus-visible {
     white-space: normal;
   }
 }
+
+/* ── Case specimen stage (PR 41 amendment, Elleta 22 Jul 2026;
+   contract _proto/annotated-specimen-proto.html). The working
+   component floats on the page ground: NO card, no frame. All
+   animation is CSS transitions; reduced motion shows everything
+   immediately. ── */
+
+.spec-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+  min-width: 0;
+}
+
+.spec-stage {
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+  padding: var(--spacing-20) var(--spacing-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* ── the case-specimen DEMO register (Elleta's ruling, item 6;
+     recorded in DESIGN.md as case-specimen-scoped, leak-asserted in
+     audit:visual). Neutral product register: near-black ink, gray
+     borders, white surface, BLACK primary, one restrained blue for
+     selected states only. The annotation layer stays BELLA iris. ── */
+  --demo-surface: #FFFFFF;
+  --demo-ink: #17181C;
+  --demo-muted: #5D6067;
+  --demo-border: #D7D8DC;
+  --demo-primary: #101114;
+  --demo-primary-ink: #FFFFFF;
+  --demo-selected: #3D5A96;
+  --demo-radius: 8px;
+  --demo-touch: 44px;
+}
+
+[data-theme="dark"] .spec-stage {
+  --demo-surface: #17181C;
+  --demo-ink: #F2F2F4;
+  --demo-muted: #A6A8B0;
+  --demo-border: #3A3C42;
+  /* the primary stays BLACK in both themes (the ruling); a border
+     keeps it legible on the near-black surface */
+  --demo-primary: #101114;
+  --demo-primary-ink: #FFFFFF;
+  --demo-selected: #8FACE0;
+}
+
+.spec-stage__tag {
+  position: absolute;
+  left: var(--spacing-4);
+  top: var(--spacing-3);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.spec-stage__demo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* stage-mode lane: a positioning layer, not a flex row */
+.ds-flaglane--stage {
+  position: absolute;
+  inset: 0;
+  display: block;
+  min-height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+/* stage flags are interactive buttons (hover/focus highlight,
+   keyboard parity); staggered entry rides the stage's .in class */
+.ds-flag--stage {
+  position: absolute;
+  pointer-events: auto;
+  cursor: pointer;
+  border-radius: var(--radius-full);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.2s ease;
+}
+
+.spec-stage.in .ds-flag--stage {
+  opacity: 1;
+  transform: none;
+}
+
+.spec-stage.in .ds-flag--stage:nth-of-type(2) { transition-delay: 0.25s; }
+.spec-stage.in .ds-flag--stage:nth-of-type(3) { transition-delay: 0.4s; }
+.spec-stage.in .ds-flag--stage:nth-of-type(4) { transition-delay: 0.55s; }
+.spec-stage.in .ds-flag--stage:nth-of-type(5) { transition-delay: 0.7s; }
+
+.ds-flag--stage:hover,
+.ds-flag--stage:focus-visible {
+  background: var(--color-semantic-accent-subtle);
+}
+
+.ds-flag--stage:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.ds-flag--tl { left: 0; top: var(--spacing-8); }
+.ds-flag--tr { right: 0; top: var(--spacing-8); }
+.ds-flag--bl { left: 0; bottom: var(--spacing-6); }
+.ds-flag--br { right: 0; bottom: var(--spacing-6); }
+
+/* anchored leaders: measured curved paths, stroke-dash draw-in on
+   scroll (transition only), endpoint dots after the draw */
+.spec-stage .ds-leaders path {
+  stroke: var(--color-semantic-accent-border);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+  transition: stroke-dashoffset 0.7s ease 0.1s;
+}
+
+.spec-stage.in .ds-leaders path {
+  stroke-dashoffset: 0;
+}
+
+.spec-stage .ds-leaders circle {
+  fill: var(--color-accent-ink);
+  opacity: 0;
+  transition: opacity 0.3s ease 0.6s;
+}
+
+.spec-stage.in .ds-leaders circle {
+  opacity: 0.9;
+}
+
+/* the ONE highlight recipe (item 3): a flag's zone rings the exact
+   part its token drives, hover and keyboard focus alike */
+.spec-stage[data-hl] [data-part] {
+  transition: box-shadow 0.2s ease;
+}
+
+.spec-stage[data-hl="button"] [data-part="button"],
+.spec-stage[data-hl="radius"] [data-part="radius"],
+.spec-stage[data-hl="surface"] [data-part="surface"],
+.spec-stage[data-hl="primary"] [data-part="primary"],
+.spec-stage[data-hl="touch"] [data-part="touch"],
+.spec-stage[data-hl="ink"] [data-part="ink"],
+.spec-stage[data-hl="border"] [data-part="border"],
+.spec-stage[data-hl="selected"] [data-part="selected"],
+.spec-stage[data-hl="description"] [data-part="description"],
+.spec-stage[data-hl="propname"] [data-part="propname"],
+.spec-stage[data-hl="value"] [data-part="value"] {
+  box-shadow: 0 0 0 2px var(--color-accent-ink);
+  border-radius: var(--radius-md);
+}
+
+/* ── demo product components (the --demo-* register only) ── */
+
+.demo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--demo-touch);
+  padding: 0 var(--spacing-6);
+  border: 1px solid var(--demo-border);
+  border-radius: var(--demo-radius);
+  background: var(--demo-primary);
+  color: var(--demo-primary-ink);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.demo-tile {
+  width: min(340px, 100%);
+  padding: var(--spacing-5);
+  background: var(--demo-surface);
+  border: 1px solid var(--demo-border);
+  border-radius: var(--demo-radius);
+  color: var(--demo-ink);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  text-align: left;
+}
+
+.demo-tile__title {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--demo-ink);
+  margin: 0;
+}
+
+.demo-tile__desc {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.5;
+  color: var(--demo-muted);
+  margin: 0;
+}
+
+.demo-tile__meta {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--demo-selected);
+  margin: 0;
+}
+
+/* the BEFORE state: the honest mess (amendment item 4); annotations
+   are hidden by the component, the component shows the drift */
+/* the depicted mess (before state only): drift shown with the system's
+   own faces (two-typeface law holds even in depictions): italic,
+   cramped, mixed radius, off-palette colours */
+.spec-stage--before .demo-btn {
+  border-radius: 2px;
+  min-height: 34px;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  background: #2E3B52; /* token-waiver: depicted before-state drift colours, never system UI */
+  border-color: #B08050; /* token-waiver: depicted before-state drift colours */
+}
+
+.spec-stage--before .demo-tile {
+  border-radius: 2px;
+  font-style: italic;
+}
+
+/* ── the parity split view + audit console (item 7) ── */
+
+.spec-split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-6);
+  width: 100%;
+  align-items: start;
+}
+
+@media (max-width: 719px) {
+  .spec-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.spec-split__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  min-width: 0;
+}
+
+.spec-split__head {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+.spec-props {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  width: 100%;
+}
+
+.spec-props__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: var(--spacing-3);
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--demo-border);
+  border-radius: var(--demo-radius);
+  background: var(--demo-surface);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  color: var(--demo-ink);
+  min-width: 0;
+}
+
+.spec-props__row dt {
+  color: var(--demo-muted);
+}
+
+.spec-props__row dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* the audit console: lines enter in sequence on scroll (staggered CSS
+   transitions, no keyframes); reduced motion shows all lines */
+.spec-console {
+  width: 100%;
+  margin-top: var(--spacing-6);
+  padding: var(--spacing-5);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.7;
+  color: var(--color-ink-soft);
+}
+
+.spec-console__line {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.35s ease, transform 0.35s ease, color 0.2s ease;
+}
+
+.spec-stage.in .spec-console__line {
+  opacity: 1;
+  transform: none;
+}
+
+.spec-console__line:hover,
+.spec-console__line:focus-visible {
+  color: var(--color-accent-ink);
+}
+
+.spec-console__line:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.spec-console__word {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-flag--stage,
+  .spec-console__line {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .spec-stage .ds-leaders path {
+    transition: none;
+    stroke-dashoffset: 0;
+  }
+
+  .spec-stage .ds-leaders circle {
+    transition: none;
+    opacity: 0.9;
+  }
+}
+
+/* density (amendment item 1): the screens no longer force a viewport
+   height; composition carries the rhythm */
+@media (min-width: 1024px) {
+  .cs2-screen {
+    min-height: 0;
+  }
+}
+
+.cs2-screen {
+  padding-block: var(--spacing-12);
+}
+
+/* console line stagger (rides the same .in trigger; capped list) */
+.spec-stage.in .spec-console__line:nth-child(2) { transition-delay: 0.35s; }
+.spec-stage.in .spec-console__line:nth-child(3) { transition-delay: 0.7s; }
+.spec-stage.in .spec-console__line:nth-child(4) { transition-delay: 1.05s; }
+.spec-stage.in .spec-console__line:nth-child(5) { transition-delay: 1.4s; }
+.spec-stage.in .spec-console__line:nth-child(6) { transition-delay: 1.75s; }
+.spec-stage.in .spec-console__line:nth-child(7) { transition-delay: 2.1s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .spec-stage.in .spec-console__line {
+    transition-delay: 0s;
+  }
+}

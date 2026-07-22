@@ -92,10 +92,10 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "code-first",
     medium: "case study",
-    /* TODO(elleta): cover asset slot (20 Jul). The command-center
-       still stays until you provide the new visual or pick an
-       alternative; do not swap without her asset. */
-    cover: "/images/thumbnails/BradFrostCommandCenter.png",
+    /* TODO(elleta): cover asset slot. The Command Center imagery left
+       the case entirely (PR 41 amendment item 8, 22 Jul; it remains a
+       Design Lab piece only); the warm placeholder renders until your
+       asset lands. */
     title: "Code First",
     bubbleLabel: "Code First",
     kicker: "Design Systems · 2024-25",

@@ -403,3 +403,30 @@ Single-column forms left-align the submit button with the fields (NN/g
 single-column guidance, settled as the site rule); full-width below
 768px. The contact form is the reference implementation. Forms validate
 on blur per field, and again on submit.
+
+## Case-specimen demo register (PR 41 amendment, Elleta 22 Jul 2026)
+
+The `--demo-*` token set is the neutral product register for CASE SPECIMEN
+STAGES ONLY (her ruling): the specimen reads as "a product", the annotation
+layer (flags, leaders, highlights) stays BELLA iris in both themes. Scope is
+the `.spec-stage` selector in globals.css; the tokens exist nowhere else and
+must never appear in site chrome.
+
+Palette (light / dark): surface #FFFFFF / #17181C · ink #17181C / #F2F2F4 ·
+muted #5D6067 / #A6A8B0 · border #D7D8DC / #3A3C42 · primary #101114 both
+themes (BLACK primary is the ruling; a border keeps it legible on the dark
+surface) · primary ink #FFFFFF · selected #3D5A96 / #8FACE0 (the one
+restrained blue, selected states only) · radius 8px · touch 44px.
+
+Recorded exceptions, deliberate: the demo register uses a pure white surface
+and a black primary INSIDE stages, overriding the site-wide "no pure
+white/black" rule by her ruling; the before-state mess styles (Georgia,
+off-palette colours) are depicted drift, never system UI.
+
+LEAK ASSERTION (audit:visual): on every swept route, `--demo-ink` must
+resolve to EMPTY on both the document root and body. A `--demo-*` token that
+resolves outside a specimen stage fails the gate.
+
+Animation law for stages: CSS transitions on tokens only, no keyframes, no
+motion libraries; `prefers-reduced-motion: reduce` renders everything
+immediately (leaders drawn, flags and console lines visible).

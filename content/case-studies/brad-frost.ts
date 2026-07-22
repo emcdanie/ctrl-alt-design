@@ -15,7 +15,9 @@ const study: CaseStudy = {
   year: "2024-2025",
   scope: "Component Architecture, Token Alignment, Figma-Storybook Integration",
   timeline: "Oct 2024 - Jan 2025",
-  heroImage: "/images/thumbnails/BradFrostCommandCenter.png",
+  /* heroImage removed (PR 41 amendment item 8, Elleta 22 Jul): the
+     Command Center imagery leaves the case entirely; it remains a
+     Design Lab piece only */
   metrics: {
     role: "Design System Collaborator",
     team: "Brad Frost Web Maker Program",

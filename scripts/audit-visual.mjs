@@ -254,8 +254,18 @@ for (const theme of ["light", "dark"]) {
       const hrefs = [...document.querySelectorAll("a[href]")]
         .map((a) => a.getAttribute("href"))
         .filter((h) => h && (h.startsWith("/") || h.startsWith("#")));
-      return { dead, hrefs };
+      /* demo-register leak assertion (DESIGN.md, Elleta's ruling 22
+         Jul): --demo-* may resolve ONLY inside a .spec-stage scope;
+         root and body must resolve it to empty everywhere */
+      const demoLeak =
+        getComputedStyle(document.documentElement).getPropertyValue("--demo-ink").trim() !== "" ||
+        getComputedStyle(document.body).getPropertyValue("--demo-ink").trim() !== "";
+      return { dead, hrefs, demoLeak };
     }, ARCHIVED);
+    if (found.demoLeak) {
+      fails++;
+      console.error(`VISUAL FAIL demo-register leak: --demo-ink resolves outside a specimen stage on ${route}`);
+    }
     for (const d of found.dead) {
       fails++;
       console.error(`VISUAL FAIL dead-link: archived route ${d} referenced on ${route}`);
