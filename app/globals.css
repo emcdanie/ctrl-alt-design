@@ -3625,7 +3625,8 @@ textarea:focus-visible {
 }
 
 /* the one highlight recipe: a flag's zone rings the exact part */
-.spec-stage[data-hl] [data-part] {
+.spec-stage[data-hl] [data-part],
+.gv-host[data-hl] [data-part] {
   transition: box-shadow 0.2s ease;
 }
 
@@ -3929,10 +3930,47 @@ textarea:focus-visible {
 }
 
 
+/* ── beat 03: the gate check on the specimen, RESTORED CLEANED
+   (AI-flow spec, 22 Jul 2026; contract _proto/beat4.html). The
+   run control lives in the CaseBeat control slot; gv-prog is the
+   live status readout above the specimen. The audit-chip rail and
+   the internal gv-run stay retired. ── */
+.gv-host {
+  width: 100%;
+  min-width: 0;
+}
+
+.gv-prog {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.6;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+.gv-prog b {
+  color: var(--case-clarity-text);
+}
+
 /* ── ONE scene skeleton (consistency pass, Elleta 22 Jul): every beat
    is the same two-column grid, mirrored by the Z alternation; the
-   visual column stacks [visual] [footnote slot] with one treatment
-   everywhere (the run-control slot died with the demos). ── */
+   visual column stacks [status] [visual] [footnote slot]; run/toggle
+   controls live in the CaseBeat control slot under the body. ── */
+.scene-vis {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  min-width: 0;
+}
+
+/* the status/readout row directly above its visual (not a control) */
+.scene-control {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+}
+
 /* the ONE footnote slot: a quiet row beneath the visual */
 .scene-foot {
   border-top: 1px solid var(--color-border-soft);

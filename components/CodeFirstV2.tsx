@@ -8,6 +8,7 @@ import CaseCard from "@/components/CaseCard";
 import CaseBeat from "@/components/CaseBeat";
 import CaseSpecimen, { SPEC_FLAGS, useResolvedTokens, type FlagState } from "@/components/CaseSpecimen";
 import LayerJourney from "@/components/LayerJourney";
+import GateRun from "@/components/GateRun";
 import { PullQuote } from "@/components/CaseStudyTypography";
 import { BoldText } from "@/lib/richtext";
 import { WORK_ITEMS } from "@/lib/workLibrary";
@@ -106,12 +107,6 @@ const METRICS: { value: string; label: string; takeaway: string }[] = [
 ];
 const THANKS_LINE = "Thanks for reading.";
 
-/** Beat 03's visual, STATIC INTERIM (Part A): the gate as a settled
-    green state. Part B commit 3 restores GateRun. */
-const GATE_PASS_FLAGS: Record<string, FlagState> = Object.fromEntries(
-  SPEC_FLAGS.map((f) => [f.token, { label: f.token, tone: "pass" } satisfies FlagState])
-);
-
 /* ── helpers ── */
 
 function para(cs: CaseStudy, pred: (b: CaseBlock) => boolean, child: number): string {
@@ -195,6 +190,7 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
   /* the run controls live in CaseBeat's control slot under the body
      (AI-flow spec); a bumped signal tells the device to run */
   const [journeySignal, setJourneySignal] = useState(0);
+  const [gateSignal, setGateSignal] = useState(0);
   const drift = useDriftBeat();
   const summary = cs.blocks?.find((b) => b.kind === "summary") as
     | { context: string; approach: string; outcome: string }
@@ -321,12 +317,12 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
             keyline="The portfolio you are reading runs on the same code-first discipline: a token layer, one component per job, and a governance gate that fails the build on drift."
           />
         }
-        visual={<CaseSpecimen flagStates={GATE_PASS_FLAGS} label="Green, merged" />}
-        foot={
-          <p className="cs2-kicker-row" style={{ margin: 0 }}>
-            gate: green (13/13) · merged on green
-          </p>
+        control={
+          <Button variant="secondary" onClick={() => setGateSignal((n) => n + 1)}>
+            Run the gate
+          </Button>
         }
+        visual={<GateRun runSignal={gateSignal} />}
       />
       <BeatLink index={2} />
 
