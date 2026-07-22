@@ -1,5 +1,7 @@
 "use client";
 
+import Heading from "@/components/ui/Heading";
+
 /**
  * THE case-study beat template (airtight spec, Elleta 22 Jul 2026;
  * docs/briefs/case-layout-constitution.md is the law this file
@@ -41,8 +43,9 @@ export default function CaseBeat({
   body: React.ReactNode;
   /** FLAT visual; no card wrapper (the demo specimen is the subject) */
   visual: React.ReactNode;
-  /** the CONTROL slot: run/media controls, right-aligned under the
-      body on the text side (one size, the demo-btn recipe) */
+  /** the CONTROL slot: media/link controls, right-aligned under the
+      body on the text side (BELLA button grammar only; the black
+      demo-btn register is retired) */
   control?: React.ReactNode;
   /** the FOOTNOTE slot: one quiet row beneath the visual */
   foot?: React.ReactNode;
@@ -55,7 +58,10 @@ export default function CaseBeat({
       <div className="beat-grid">
         <div className="beat-text">
           <p className="beat-eyebrow">{index} · {kicker}</p>
-          <h2 className="beat-headline" id={id}>{headline}</h2>
+          {/* the beat headline is the page's section tier, through
+              THE Heading primitive (type-scale fix, 22 Jul 2026);
+              .beat-headline keeps only rhythm + scroll anchoring */}
+          <Heading tier="section" as="h2" className="beat-headline" id={id}>{headline}</Heading>
           {keyline && <p className="beat-keyline">{keyline}</p>}
           <div className="beat-body">{body}</div>
           {control && <div className="beat-control">{control}</div>}

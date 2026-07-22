@@ -1,19 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import CaseCard from "@/components/CaseCard";
 import CaseBeat from "@/components/CaseBeat";
-import CaseSpecimen, { SPEC_FLAGS, useResolvedTokens, type FlagState } from "@/components/CaseSpecimen";
-import LayerJourney from "@/components/LayerJourney";
-import GateRun from "@/components/GateRun";
+import CaseSpecimen, { SPEC_FLAGS, type FlagState } from "@/components/CaseSpecimen";
 import { PullQuote } from "@/components/CaseStudyTypography";
 import { BoldText } from "@/lib/richtext";
 import { WORK_ITEMS } from "@/lib/workLibrary";
 import type { CaseStudy, CaseBlock } from "@/lib/content";
 
 /**
+ * STATIC-FIRST (simplification pass, Elleta-approved 22 Jul 2026):
+ * the interactive gizmos are stripped. One strong still per beat:
+ * the annotated specimen (01), the journey as one static diagram
+ * (02), the recorded-session still (03), the gate as a settled
+ * green state (04). LayerJourney, GateRun, the run-signal plumbing,
+ * DRIFT_AUTOPLAY, and the demo-btn register are deleted.
+ *
  * Code First in FIVE beats (PR 41 amendment 2, Elleta 22 Jul 2026):
  * one beat = one scene = one piece of evidence beside its text,
  * numbered 01-05 once each, headings as sentences (her drafts,
@@ -47,9 +50,11 @@ const BEAT_LINKS = [
   "" /* TODO(elleta): beat 04 -> 05 */,
 ];
 
-/* the clarifying line near the live specimens */
+/* the clarifying line near the specimens; mechanical trim of her
+   approved line (simplification pass: "interactive" cut, the demos
+   are stills now). TODO(elleta): confirm the trim. */
 const DEMO_DISCLOSURE =
-  "The interactive demos run on BELLA, my own system, demonstrating the same method deployed in the client's library. Client code stays the client's.";
+  "The demos run on BELLA, my own system, demonstrating the same method deployed in the client's library. Client code stays the client's.";
 
 /* outcomes: qualitative, from the approved outcome copy; the
    no-invented-numbers line is her stated value */
@@ -152,91 +157,31 @@ function BeatLink({ index }: { index: number }) {
   return <p className="cs2-beat__link">{line}</p>;
 }
 
-/** Beat 01 (contract _proto/beat1.html + the shared specimen): ONE
-    specimen; the toggle changes ONLY the flag labels and the drift
-    colour. Before labels are the ACTUAL resolved values, read live,
-    marked hand-set; the specimen itself never changes. */
-/* TODO(elleta): auto-play the before -> on-system flip once on
-   scroll-into-view? The capability is wired and dormant; flip this
-   to true to enable (reduced motion skips to the end state either
-   way; the toggle stays available). */
-const DRIFT_AUTOPLAY = false;
+/** Beat 02's visual, STATIC (simplification pass, Elleta 22 Jul
+    2026): the seven-layer journey as ONE simple diagram in journey
+    order, Figma/foundation at the top, Production shipped at the
+    bottom. No stepper, no run signal, no autoplay; layer names and
+    descriptors are the approved LayerJourney copy. */
+const JOURNEY_LAYERS = [
+  { n: "Figma", d: "the component library, what you design" },
+  { n: "Readable layer", d: "descriptions + tokens with meaning" },
+  { n: "The Bridge", d: "Code Connect · MCP" },
+  { n: "Storybook / Code", d: "the source of truth" },
+  { n: "Agents", d: "build with it" },
+  { n: "The Gate", d: "audit + evals, nothing ships without review" },
+  { n: "Production", d: "published, and watched" },
+] as const;
 
-/** beat 01's visual: self-contained; the toggle in the control slot
-    directly above the FLAT stage, the caption in the footnote slot */
-function DriftBeat() {
-  const d = useDriftBeat();
-  return (
-    <>
-      <div className="scene-control">
-        <SegmentedControl
-          label="View"
-          options={[
-            { value: "on", label: "On system" },
-            { value: "before", label: "Before" },
-          ]}
-          value={d.view}
-          onChange={d.setView}
-        />
-      </div>
-      <CaseSpecimen flagStates={d.flagStates} label={d.before ? "Before" : "On system"} />
-      <div className="scene-foot">
-        <p className="cs2-kicker-row" style={{ margin: 0 }}>
-          {d.before
-            ? "Before: Figma said one thing, the code said another. Same card."
-            : "On system: both sides carry the same token names."}
-        </p>
-      </div>
-    </>
-  );
-}
-
-function useDriftBeat() {
-  const [view, setView] = useState("on");
-  const before = view === "before";
-  /* the dormant auto-play: when enabled, the first scroll into beat
-     01 shows Before, then flips to On-system once; reduced motion
-     keeps the end state; the toggle stays live throughout */
-  useEffect(() => {
-    if (!DRIFT_AUTOPLAY) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const target = document.getElementById("cs2-b1");
-    if (!target) return;
-    let t: ReturnType<typeof setTimeout> | undefined;
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setView("before");
-          t = setTimeout(() => setView("on"), 1800);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.4 }
-    );
-    io.observe(target);
-    return () => {
-      io.disconnect();
-      if (t) clearTimeout(t);
-    };
-  }, []);
-  const resolved = useResolvedTokens(SPEC_FLAGS.map((f) => f.token));
-  const flagStates: Record<string, FlagState> = {};
-  if (before) {
-    for (const f of SPEC_FLAGS) {
-      flagStates[f.token] = { label: `${resolved[f.token] ?? "…"} hand-set`, tone: "drift" };
-    }
-  }
-  return { view, setView, before, flagStates };
-}
+/** Beat 04's visual, STATIC: the gate as a settled green state, every
+    flag PASS on its real token; the 13/13 line is real (the audits in
+    package.json, run on every push). */
+const GATE_PASS_FLAGS: Record<string, FlagState> = Object.fromEntries(
+  SPEC_FLAGS.map((f) => [f.token, { label: f.token, tone: "pass" } satisfies FlagState])
+);
 
 /* ── the composition ── */
 
 export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
-  const drift = useDriftBeat();
-  /* the run controls live in CaseBeat's control slot (template-first
-     fix); a bumped signal tells the device to run */
-  const [journeySignal, setJourneySignal] = useState(0);
-  const [gateSignal, setGateSignal] = useState(0);
   const summary = cs.blocks?.find((b) => b.kind === "summary") as
     | { context: string; approach: string; outcome: string }
     | undefined;
@@ -269,7 +214,12 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
             <p className="ds-section__note" style={{ margin: 0 }}>{DEMO_DISCLOSURE}</p>
           </>
         }
-        visual={<DriftBeat />}
+        visual={<CaseSpecimen label="On system" />}
+        foot={
+          <p className="cs2-kicker-row" style={{ margin: 0 }}>
+            On system: both sides carry the same token names.
+          </p>
+        }
       />
       <BeatLink index={0} />
 
@@ -286,19 +236,22 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
               text={para(cs, (b) => b.kind === "decision" && b.index === "01", 0)}
               keyline="Token alignment was the most technically demanding part of the work."
             />
-            <p className="ds-section__note">
-              Walk the Tile through the layers and watch each one act on it; the step is
-              linkable, and the values re-read on every theme flip.
-              <strong> Flip the theme and watch the values follow.</strong>
-            </p>
+            {/* the demo-walkthrough note died with the interactive
+                journey (simplification pass). TODO(elleta): one line
+                on the diagram, your voice, if the beat wants it. */}
           </>
         }
-        control={
-          <button type="button" className="demo-btn" onClick={() => setJourneySignal((n) => n + 1)}>
-            Run the journey
-          </button>
+        visual={
+          <ol className="beat-journey">
+            {JOURNEY_LAYERS.map((l, i) => (
+              <li key={l.n} className="beat-journey__row">
+                <span className="beat-journey__n">{String(i + 1).padStart(2, "0")}</span>
+                <span className="beat-journey__name">{l.n}</span>
+                <span className="beat-journey__desc">{l.d}</span>
+              </li>
+            ))}
+          </ol>
         }
-        visual={<LayerJourney runSignal={journeySignal} />}
       />
       <BeatLink index={1} />
 
@@ -341,7 +294,7 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
         }
         control={
           clip?.href ? (
-            <a href={clip.href} target="_blank" rel="noopener noreferrer" className="demo-btn">
+            <a href={clip.href} target="_blank" rel="noopener noreferrer" className="demo-link">
               {clip.linkLabel ?? "Watch the session"}
             </a>
           ) : undefined
@@ -363,12 +316,12 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
             keyline="The portfolio you are reading runs on the same code-first discipline: a token layer, one component per job, and a governance gate that fails the build on drift."
           />
         }
-        control={
-          <button type="button" className="demo-btn" onClick={() => setGateSignal((n) => n + 1)}>
-            Run the gate
-          </button>
+        visual={<CaseSpecimen flagStates={GATE_PASS_FLAGS} label="Green, merged" />}
+        foot={
+          <p className="cs2-kicker-row" style={{ margin: 0 }}>
+            gate: green (13/13) · merged on green
+          </p>
         }
-        visual={<GateRun runSignal={gateSignal} />}
       />
       <BeatLink index={3} />
 
@@ -429,7 +382,9 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
       {/* next case: the ONE surviving card, the three stars in a loop */}
       {nextItem && (
         <section className="cs2-beat" aria-label="Next case">
-          <SectionHeader label="Next case" title={nextItem.title} className="cs2-screen__head" />
+          {/* tier "case": the smallest display step, a clear step
+              below the beat headlines (type-scale fix, 22 Jul 2026) */}
+          <SectionHeader label="Next case" tier="case" title={nextItem.title} className="cs2-screen__head" />
           <div className="cs2-next">
             <CaseCard item={nextItem} />
           </div>
