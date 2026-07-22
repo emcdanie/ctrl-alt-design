@@ -150,7 +150,7 @@ function Panel({ i, animate }: { i: number; animate: boolean }) {
       <p className="jn-kickerband">
         <span className="jn-kickerband__tag">Delivers ↑</span> {l.up}
       </p>
-      <p className="jn-where">Layer {i + 1} of 7 · the card is here</p>
+      <p className="jn-kicker-where">Layer {i + 1} of 7 · the card is here</p>
       <p className="jn-paneltitle">{l.title}</p>
       {/* the rail label is single-line; the descriptor lives here */}
       <p className="jn-sub">{l.d}</p>

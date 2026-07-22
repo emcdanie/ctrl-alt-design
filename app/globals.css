@@ -3840,7 +3840,7 @@ textarea:focus-visible {
   color: var(--color-ink);
 }
 
-.jn-where {
+.jn-kicker-where {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 600;
