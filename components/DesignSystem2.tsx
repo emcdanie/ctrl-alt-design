@@ -82,21 +82,24 @@ const GATE_RECEIPTS: Record<string, Receipt> = {
   },
 };
 
+/* PR 40 amendment 4 (Elleta, 22 Jul): note text capped at two lines
+   per card at 1440. Each line below is the sharpest trim of the page-1
+   copy, nothing invented; page 1 keeps the long versions. */
 const GATE = [
-  { name: "audit:structure", line: "One route tree per case, the 1240 container everywhere, no arbitrary pixel classes, nothing off palette." },
-  { name: "audit:contrast", line: "WCAG AA on every text node, both themes, worst gradient stop included. Unique below 24px fails outside the keycap logo." },
+  { name: "audit:structure", line: "One route tree per case, one container, nothing off palette." },
+  { name: "audit:contrast", line: "WCAG AA on every text node, both themes, gradients included." },
   { name: "audit:copy", line: "No em or en dashes, and one positioning term only." },
-  { name: "audit:controls", line: "Keycaps are actions only, max one primary per view, filters and view switches carry their ARIA state." },
-  { name: "audit:nda", line: "A whole-tree content grep against a private banned-terms list. Renamed files cannot hide from it." },
-  { name: "audit:fonts", line: "Exactly two faces. Unique renders only through the display Heading primitive, the home hero, and the keycap lockup." },
-  { name: "audit:tokens", line: "No colour literals and no raw spacing in app or components. Waivers are inline, reasoned, and counted." },
-  { name: "audit:reuse", line: "Zero-import components fail. One implementation, no dead copy left rendering." },
-  { name: "audit:parity", line: "Every case-study slug has exactly one library row and every case row resolves back to a slug. A case can never be routable but invisible." },
-  { name: "audit:agents", line: "The agent surfaces (llms.txt, /api/bella.json) must match the live route registry. An agent surface that lies fails the build." },
-  { name: "audit:axe", line: "axe-core against every route in both themes; zero violations to pass. Needs-review nodes are counted and verified by hand." },
-  { name: "audit:type", line: "No card surface renders reading text below 16px computed; the shared card body never below 18. Metadata rows are their own tier." },
-  { name: "audit:visual", line: "One ground on the System page (identity wash excepted), sibling specimen cards render equal heights, cover placeholders clear 3:1." },
-  { name: "the CI run", line: "tsc, the production build, and every audit run on each pull request and push to main; merge only on green." },
+  { name: "audit:controls", line: "Keycaps are actions only, max one primary per view." },
+  { name: "audit:nda", line: "A whole-tree grep against a private banned-terms list." },
+  { name: "audit:fonts", line: "Exactly two faces, and Unique renders display only." },
+  { name: "audit:tokens", line: "No colour literals and no raw spacing; waivers counted." },
+  { name: "audit:reuse", line: "One implementation, no dead copy left rendering." },
+  { name: "audit:parity", line: "A case can never be routable but invisible." },
+  { name: "audit:agents", line: "An agent surface that lies fails the build." },
+  { name: "audit:axe", line: "axe-core on every route, both themes, zero violations." },
+  { name: "audit:type", line: "No reading text below 16px computed on a card surface." },
+  { name: "audit:visual", line: "One ground, equal card rows, covers clearing 3:1." },
+  { name: "the CI run", line: "Every audit on every pull request; merge only on green." },
 ];
 
 const CASE_ORBS = [

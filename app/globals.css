@@ -3081,6 +3081,19 @@ textarea:focus-visible {
   min-width: 0;
 }
 
+/* How things slip (PR 40 amendment 1, Elleta 22 Jul): the page-global
+   equal height is gone; each ROW sizes to its tallest card and cards
+   fill their row (grid align-items: stretch + h-full stand). The
+   120px demo minimum is a specimen-band affordance the gate cards do
+   not need; without it no card carries dead bottom space. */
+.ds2 .ds-gate {
+  grid-auto-rows: auto;
+}
+
+.ds2 .ds-gate .ds-card__demo {
+  min-height: 0;
+}
+
 /* the inspector renders through ui/Card (grammar item 2): strip the
    bespoke .tok-inspector chrome so exactly ONE surface paints */
 .ds2-page .tok-inspector {

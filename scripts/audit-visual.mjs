@@ -272,6 +272,17 @@ for (const theme of ["light", "dark"]) {
         if (Math.abs(g - 2) > 1) out.push(`ring visual gap ${side} = ${g.toFixed(1)}px, want 2`);
       }
     }
+    /* PR 40 amendment (22 Jul): no card ever clips its content. Every
+       card inner (and the inspector) must have scrollHeight within
+       1px of clientHeight. */
+    for (const card of document.querySelectorAll(".trace-host:not(.btn-key)")) {
+      const inner = card.firstElementChild;
+      if (inner && inner.scrollHeight > inner.clientHeight + 1) {
+        out.push(
+          `card clips its content (${inner.scrollHeight} > ${inner.clientHeight}): ${(inner.textContent ?? "").trim().slice(0, 32)}`
+        );
+      }
+    }
     /* equal heights in the take-2 card rows (same law as page 1) */
     for (const grid of document.querySelectorAll(".ds2 .ds-specimen-row, .ds2 .ds-gate, .ds2 .ds-caseband")) {
       const rows = new Map();
