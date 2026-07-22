@@ -61,14 +61,6 @@ const BEAT_LINKS = [
 const DEMO_DISCLOSURE =
   "The interactive demos run on BELLA, my own system, demonstrating the same method deployed in the client's library. Client code stays the client's.";
 
-/* the clip summary: three bullets on what the short clip shows,
-   derived from the figure caption + decision 02 copy */
-const CLIP_BULLETS = [
-  "The Figma component library searched live over MCP",
-  "Structural questions answered from the actual code, not memory",
-  "Recorded with Brad Frost and TJ Pitre; the demo starts at 39:36",
-];
-
 /* outcomes: qualitative, from the approved outcome copy; the
    no-invented-numbers line is her stated value */
 const NO_NUMBERS_LINE = "No invented numbers.";
@@ -175,11 +167,6 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
   const summary = cs.blocks?.find((b) => b.kind === "summary") as
     | { context: string; approach: string; outcome: string }
     | undefined;
-  const clip = cs.blocks
-    ?.flatMap((b) => (b.kind === "section" && "children" in b ? b.children : []))
-    .find((b) => b.kind === "figure") as
-    | { src: string; alt: string; caption?: string; href?: string; linkLabel?: string; width: number; height: number }
-    | undefined;
   const pullQuote = cs.blocks?.find((b) => b.kind === "pullQuote") as { text: string } | undefined;
   const outcomes = (summary?.outcome ?? "").split(/(?<=\.)\s+/).filter(Boolean);
   const nextItem = WORK_ITEMS.find((i) => i.id === "drift"); /* the three stars loop: chip -> code-first -> drift -> chip */
@@ -233,36 +220,6 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
           <div className="cs2-screen__visual">
             <SystemTree />
           </div>
-        </div>
-        {/* the clip is a full-width media break in the Z-pattern */}
-        <div style={{ maxWidth: "560px" }} data-zbreak>
-            {clip && (
-              <figure style={{ margin: 0, display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={clip.src}
-                  alt={clip.alt}
-                  loading="lazy"
-                  style={{ width: "100%", height: "auto", borderRadius: "var(--radius-lg)", border: "1px solid var(--color-border-soft)" }}
-                />
-                <p className="ds-section__kicker" style={{ margin: 0 }}>What you would see</p>
-                <ul className="cs2-bullets">
-                  {CLIP_BULLETS.map((b) => (
-                    <li key={b}>
-                      <span className="card-list-item">
-                        <span className="ds-section__note" style={{ margin: 0 }}>{b}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                {clip.href && (
-                  <a href={clip.href} target="_blank" rel="noopener noreferrer" className="demo-link">
-                    <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span>{" "}
-                    {clip.linkLabel ?? "Watch the session"}
-                  </a>
-                )}
-              </figure>
-            )}
         </div>
         {pullQuote && <PullQuote>{pullQuote.text}</PullQuote>}
         <BeatLink index={2} />

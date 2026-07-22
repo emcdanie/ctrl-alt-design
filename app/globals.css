@@ -3973,7 +3973,8 @@ textarea:focus-visible {
 .tree {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-4);
+  /* section rhythm under the tree, not a tight hand-set gap */
+  gap: var(--spacing-6);
   width: 100%;
 }
 
