@@ -312,7 +312,12 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
         flip
         body={
           <Scannable
-            text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "Evidence", 0)}
+            /* mechanical trim (simplification pass): the "inspector
+               below is live" sentence is cut, the gate visual is a
+               still now. TODO(elleta): confirm the trim. */
+            text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "Evidence", 0)
+              .replace(/\s*The inspector below is live[^.]*\.\s*/, " ")
+              .trim()}
             keyline="The portfolio you are reading runs on the same code-first discipline: a token layer, one component per job, and a governance gate that fails the build on drift."
           />
         }
