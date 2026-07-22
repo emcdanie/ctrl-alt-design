@@ -1,38 +1,35 @@
-[![gate](https://github.com/emcdanie/ctrl-alt-design/actions/workflows/gate.yml/badge.svg)](https://github.com/emcdanie/ctrl-alt-design/actions/workflows/gate.yml)
+# ctrl-alt-design
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app). The working rules live in `CLAUDE.md` (the repo constitution); the ten-audit gate runs locally via `npm run gate` and in CI on every PR and push to main.
+The portfolio at [elleta.design](https://www.elleta.design). Built as a working
+design system, not a brochure: every page ships through a 13-audit gate, every
+token comes from [BELLA](https://github.com/emcdanie/bella), and the repo is
+governed by a written constitution that AI agents and humans both follow.
 
-## Getting Started
+## Why this repo is public
 
-First, run the development server:
+I design AI-enabled design systems for complex B2B SaaS and e-commerce. This
+repo is the practice applied to my own site. The interesting part is not the
+pages, it is the harness around them:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **`CLAUDE.md`** is the constitution. Tokens, type, layout, control taxonomy,
+  copy rules, NDA rules. Agents read it before every session.
+- **`DESIGN.md`** holds the layout and frame contract the audits point to.
+- **`specs/`** holds a design.md, requirements.md and tasks.md per feature.
+  Spec first, then build.
+- **`docs/`** holds briefs, fixes that must never regress, and audit notes.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## The gate
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`npm run gate` runs 13 audits locally and in CI on every PR. Structure,
+contrast (WCAG AA, AAA-minded), copy rules, control taxonomy, font usage,
+token discipline, data parity, axe-core over every route in both themes,
+computed type sizes, and visual assertions. Main is protected; the gate is a
+required check. Green or it does not merge.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Stack
 
-## Learn More
+Next.js, Tailwind CSS, BELLA design tokens (DTCG), deployed on Vercel.
 
-To learn more about Next.js, take a look at the following resources:
+## Running it
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+npm install, npm run dev, npm run gate before any PR.
