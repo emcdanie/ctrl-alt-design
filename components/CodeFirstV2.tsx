@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
+import Card from "@/components/ui/Card";
 import CaseCard from "@/components/CaseCard";
 import CaseSpecimen, { SPEC_FLAGS, useResolvedTokens, type FlagState } from "@/components/CaseSpecimen";
 import LayerJourney from "@/components/LayerJourney";
@@ -365,39 +366,55 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
         <BeatLink index={3} />
       </Beat>
 
-      {/* ── 05 · the close: outcomes, journey, the exit ── */}
+      {/* ── 05 · the close: skeleton instance, no orphaned right
+          half. TODO(elleta): the outcomes card placement (right
+          column) is my read of "use the right column purposefully";
+          say the word for the single-measured-column variant. ── */}
       <Beat index={4} id="cs2-b5">
-        <div className="cs2-measure">
-          {/* TODO(elleta): trim. The two closing paragraphs run ~90
-              words each; split mechanically below, your cuts win. */}
-          <Scannable
-            text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 0)}
-            keyline="The highest-value work isn't in the Figma file, it's in the alignment between design intent and implementation reality."
-          />
-          <Scannable text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 1)} />
-        </div>
-        <div>
-          <p className="ds-section__note" style={{ marginBottom: "var(--spacing-3)" }}>
-            {NO_NUMBERS_LINE}
-            {NO_NUMBERS_DETAIL.trim() !== "" && ` ${NO_NUMBERS_DETAIL}`}
-          </p>
-          <ul className="cs2-flatlist">
-            {outcomes.map((o) => (
-              <li key={o} className="ds-section__note" style={{ margin: 0 }}>{o}</li>
-            ))}
-          </ul>
-        </div>
-        <ol className="ds-rules">
-          {[...JOURNEY, ...(JOURNEY_FAILURE_LINE.trim() !== "" ? [JOURNEY_FAILURE_LINE] : [])].map((j) => (
-            <li key={j}>{j}</li>
-          ))}
-        </ol>
-        <div className="cs2-personality">
-          {PERSONALITY_LINE.trim() !== "" && (
-            <p className="ds-section__note" style={{ margin: 0 }}>{PERSONALITY_LINE}</p>
-          )}
-          <Button variant="primary" href="/contact">Get in touch</Button>
-        </div>
+        <Scene
+          txt={
+            <>
+              {/* TODO(elleta): trim. The two closing paragraphs run
+                  ~90 words each; split mechanically below, your cuts
+                  win. */}
+              <Scannable
+                text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 0)}
+                keyline="The highest-value work isn't in the Figma file, it's in the alignment between design intent and implementation reality."
+              />
+              <Scannable text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 1)} />
+              {/* the takeaways: clean numbered rows, one idea per
+                  line, above the CTA */}
+              <ol className="ds-rules" style={{ margin: 0 }}>
+                {[...JOURNEY, ...(JOURNEY_FAILURE_LINE.trim() !== "" ? [JOURNEY_FAILURE_LINE] : [])].map((j) => (
+                  <li key={j}>{j}</li>
+                ))}
+              </ol>
+              {/* the CTA: SECONDARY, directly under the body copy */}
+              <div className="cs2-personality">
+                {PERSONALITY_LINE.trim() !== "" && (
+                  <p className="ds-section__note" style={{ margin: 0 }}>{PERSONALITY_LINE}</p>
+                )}
+                <Button variant="secondary" href="/contact">Get in touch</Button>
+              </div>
+            </>
+          }
+          visual={
+            <Card innerClassName="ds-card__inner">
+              <p className="cs2-kicker-row" style={{ margin: 0 }}>What shipped</p>
+              <ul className="cs2-flatlist">
+                {outcomes.map((o) => (
+                  <li key={o} className="ds-section__note" style={{ margin: 0 }}>{o}</li>
+                ))}
+              </ul>
+            </Card>
+          }
+          foot={
+            <p className="cs2-kicker-row" style={{ margin: 0 }}>
+              {NO_NUMBERS_LINE}
+              {NO_NUMBERS_DETAIL.trim() !== "" && ` ${NO_NUMBERS_DETAIL}`}
+            </p>
+          }
+        />
       </Beat>
 
       {/* next case: the ONE surviving card, the three stars in a loop */}
