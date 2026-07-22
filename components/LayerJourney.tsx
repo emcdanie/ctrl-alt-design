@@ -152,6 +152,8 @@ function Panel({ i, animate }: { i: number; animate: boolean }) {
       </p>
       <p className="jn-where">Layer {i + 1} of 7 · the card is here</p>
       <p className="jn-paneltitle">{l.title}</p>
+      {/* the rail label is single-line; the descriptor lives here */}
+      <p className="jn-sub">{l.d}</p>
       <p className="jn-sub">{l.sub}</p>
       <div className="jn-stagebox">
         <div className={`jn-mini${"flag" in l && l.flag ? " jn-mini--flagged" : ""}`}>
@@ -254,45 +256,45 @@ export default function LayerJourney() {
   }
 
   return (
+    /* ONE CARD (contract _proto/beat02-onecard.html): rail and detail
+       share a single container, equal height by construction; the Run
+       control sits in the card header; rail labels are single-line
+       with the travelling trace on the active step */
     <div className="jn demo-scope">
-      {/* the label slot above the demo, her voice; renders nothing
-          while empty */}
       {JOURNEY_CAPTION.trim() !== "" && (
         <p className="ds-section__kicker jn-caption-slot" style={{ margin: 0 }}>{JOURNEY_CAPTION}</p>
       )}
-      {/* ONE Run control in the shared control slot (reduced motion
-          resolves instantly to the end state) */}
-      <div className="scene-control">
-        <button type="button" className="demo-btn jn-run" onClick={run}>
-          {running ? "Running the journey…" : "Run the journey"}
-        </button>
-      </div>
-      <div className="jn-board">
-        {/* the rail, REVERSED: Production top, Figma bottom; the
-            steps are the REAL system card, the active one wearing
-            the travelling trace */}
-        <div className="jn-rail" ref={railRef} onKeyDown={onKey}>
-          {[...L].reverse().map((l) => {
-            const i = L.indexOf(l);
-            const on = i === step;
-            return (
-              <Card
-                key={l.slug}
-                onClick={() => go(i)}
-                ariaCurrent={on ? "step" : undefined}
-                className={on ? "trace-on" : undefined}
-                innerClassName="ds-card__inner jn-layercard"
-              >
-                <span className="jn-layer__n">{l.n}</span>
-                <span className="jn-layer__d">{l.d}</span>
-              </Card>
-            );
-          })}
+      <Card innerClassName="ds-card__inner jn-onecard">
+        <div className="jn-onecard__head">
+          <span className="cs2-kicker-row" style={{ margin: 0 }}>The journey</span>
+          <button type="button" className="demo-btn jn-run" onClick={run}>
+            {running ? "Running…" : "Run the journey"}
+          </button>
         </div>
-        <div className="jn-right" id={`journey-${L[step].slug}`}>
-          <Panel i={step} animate />
+        <div className="jn-onecard__body">
+          {/* the slim rail, REVERSED: Production top, Figma bottom */}
+          <div className="jn-rail" ref={railRef} onKeyDown={onKey}>
+            {[...L].reverse().map((l) => {
+              const i = L.indexOf(l);
+              const on = i === step;
+              return (
+                <button
+                  key={l.slug}
+                  type="button"
+                  className={`jn-step trace-host${on ? " trace-on" : ""}`}
+                  aria-current={on ? "step" : undefined}
+                  onClick={() => go(i)}
+                >
+                  {l.n}
+                </button>
+              );
+            })}
+          </div>
+          <div className="jn-right" id={`journey-${L[step].slug}`}>
+            <Panel i={step} animate />
+          </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }
