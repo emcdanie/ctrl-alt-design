@@ -2872,10 +2872,11 @@ textarea:focus-visible {
 /* ── Token inspector ── */
 
 .tok-inspector {
-  display: grid;
-  grid-template-columns: minmax(240px, 1fr) minmax(260px, 1.2fr);
-  gap: var(--spacing-8);
-  align-items: start;
+  /* single column (22 Jul): the flags are the readout; the two-column
+     readout grid is retired */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
   padding: var(--spacing-8);
   border: 1px solid var(--color-border-medium);
   border-radius: var(--radius-2xl);
@@ -2909,13 +2910,19 @@ textarea:focus-visible {
     2px 5px 0 var(--key-fill-edge),
     6px 9px 14px color-mix(in srgb, var(--key-fill-lo) 32%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  outline: 2px dashed transparent;
-  outline-offset: 6px;
-  transition: outline-color 0.15s;
+  position: relative;
 }
 
-.tok-inspector__key[data-zone] {
-  outline-color: var(--color-accent-ink);
+/* the trace ring (22 Jul): a MEASURABLE element with ONE token offset
+   per side and a concentric radius (keycap radius + offset), replacing
+   the outline that ignored the 3D plate. audit:visual asserts the
+   per-side offsets are equal within 1px. */
+.tok-inspector__ring {
+  position: absolute;
+  inset: calc(-1 * var(--spacing-2));
+  border: 2px dashed var(--color-accent-ink);
+  border-radius: calc(var(--btn-key-radius) + var(--spacing-2));
+  pointer-events: none;
 }
 
 .tok-inspector__zones {

@@ -14,6 +14,8 @@
  *    border box, at 1440 AND 390, both themes.
  * 5. UNIFORMITY: all cards in one band grid share identical width and
  *    height.
+ * 6. TRACE RING: the inspector ring keeps one equal offset from the
+ *    keycap edge on all four sides (within 1px per side).
  */
 import { chromium } from "playwright";
 
@@ -122,6 +124,27 @@ for (const theme of ["light", "dark"]) {
     }
   }
   await page.setViewportSize({ width: 1440, height: 900 });
+  await page.waitForTimeout(200);
+
+  /* ── 6: trace ring concentricity ── */
+  const ringBad = await page.evaluate(() => {
+    const key = document.querySelector(".tok-inspector__key");
+    const ring = document.querySelector(".tok-inspector__ring");
+    if (!key || !ring) return ["ring or keycap missing"];
+    const k = key.getBoundingClientRect();
+    const r = ring.getBoundingClientRect();
+    const sides = {
+      left: k.left - r.left, right: r.right - k.right,
+      top: k.top - r.top, bottom: r.bottom - k.bottom,
+    };
+    const vals = Object.values(sides);
+    const spread = Math.max(...vals) - Math.min(...vals);
+    return spread > 1 ? [`ring offsets unequal: ${JSON.stringify(sides)}`] : [];
+  });
+  for (const b of ringBad) {
+    fails++;
+    console.error(`VISUAL FAIL (${theme}) trace ring: ${b}`);
+  }
 
   /* ── 3: cover placeholders on /work ── */
   await page.goto("http://localhost:3000/work", { waitUntil: "networkidle", timeout: 30000 });
