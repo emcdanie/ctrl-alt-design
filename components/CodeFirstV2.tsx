@@ -10,35 +10,26 @@ import { WORK_ITEMS } from "@/lib/workLibrary";
 import type { CaseStudy, CaseBlock } from "@/lib/content";
 
 /**
- * STATIC-FIRST (simplification pass, Elleta-approved 22 Jul 2026):
- * the interactive gizmos are stripped. One strong still per beat:
- * the annotated specimen (01), the journey as one static diagram
- * (02), the recorded-session still (03), the gate as a settled
- * green state (04). LayerJourney, GateRun, the run-signal plumbing,
- * DRIFT_AUTOPLAY, and the demo-btn register are deleted.
- *
- * Code First in FIVE beats (PR 41 amendment 2, Elleta 22 Jul 2026):
- * one beat = one scene = one piece of evidence beside its text,
- * numbered 01-05 once each, headings as sentences (her drafts,
- * reword-at-will). Card chrome is dead in the case body; cards
- * survive only in the next-case footer. Spacing by proximity: tight
- * inside a scene, spacing-20 between beats.
+ * AI-FLOW RESTRUCTURE (Elleta-approved 22 Jul 2026, after the Vitaly
+ * audit; spec: _review/code-first-ai-flow-spec.md). FOUR beats:
+ * 01 the mismatch (reconciled to the CARD, matching the specimen),
+ * 02 the AI-enabled workflow (the old beat 03 MCP-investigation
+ * content folds in; the recorded-session link is its footnote link),
+ * 03 the gate, 04 the takeaway. The old "tokens testify / token
+ * alignment" framing is retired from render (the paragraphs stay in
+ * the content file).
  *
  * COPY LAW: narrative is her existing approved case copy pulled from
  * the content file, or a cited mechanical trim; new prose slots are
- * TODO(elleta) and render nothing. The next-case footer renders
- * through CaseCard (the one surviving card surface); section heads
- * go through SectionHeader.
+ * TODO(elleta) and render nothing (except the beat 02 headline,
+ * which renders a marked placeholder because a beat cannot render
+ * headline-less). The machine restructures and places; it does not
+ * write her voice.
  *
- * MERGED OR DELETED as duplicated evidence (amendment item 1): the
- * swatch strip, the before/on-system caption cards (the opener's
- * toggle IS that story), the standalone parity table (folded into
- * the inspector), the readiness split (now the inspector), the
- * static Readable-by-AI block (now the gate run), the four
- * differentiator cards (now one caption row), the feature row (its
- * copy lives in beat 03's prose source), the embedded token
- * inspector and the theming card (both live on /design-system; the
- * theme story closes beat 02's text).
+ * Keeps PR 44's wins: the stepped type scale (Heading tiers page /
+ * section / case) and the iris control grammar (no black demo
+ * register). Part B restores the three animations one commit at a
+ * time, controls in the CaseBeat control slot under the body.
  */
 
 /* one connective sentence between beats, her voice; each renders
@@ -47,36 +38,48 @@ const BEAT_LINKS = [
   "" /* TODO(elleta): beat 01 -> 02 */,
   "" /* TODO(elleta): beat 02 -> 03 */,
   "" /* TODO(elleta): beat 03 -> 04 */,
-  "" /* TODO(elleta): beat 04 -> 05 */,
 ];
 
 /* the clarifying line near the specimens; mechanical trim of her
-   approved line (simplification pass: "interactive" cut, the demos
-   are stills now). TODO(elleta): confirm the trim. */
+   approved line (simplification pass: "interactive" cut).
+   TODO(elleta): confirm the trim. */
 const DEMO_DISCLOSURE =
   "The demos run on BELLA, my own system, demonstrating the same method deployed in the client's library. Client code stays the client's.";
+
+/* ── beat 01, reconciled to the CARD (the specimen is the card;
+   text and specimen must name the same object). The button
+   anecdote ("Primary, Large" / "variant: action, size: lg") is cut
+   from render as a cited mechanical trim; the card's what-said-what
+   is HER story to tell. Renders nothing while empty. */
+const BEAT01_CARD_LINE =
+  "" /* TODO(elleta): what the card said in Figma vs what it said in
+        code, real names only; the specimen's tokens are the anchor
+        (--case-clarity-hi, --color-ink, --color-ink-muted,
+        --case-clarity-text, --radius-lg) */;
+
+/* ── beat 02, the AI-enabled workflow: headline + keyline are HERS.
+   A beat cannot render headline-less, so the placeholder renders
+   VISIBLY marked until she writes it. */
+const AI_FLOW_HEADLINE = "TODO(elleta): the AI-flow headline";
+const AI_FLOW_KEYLINE = "" /* TODO(elleta): one keyline, bold ink */;
+
+/* beat 02 footnote: what the recorded clip ACTUALLY shows.
+   TODO(elleta): refine in your voice. */
+const SESSION_CAPTION =
+  "TJ Pitre runs a live audit over Console MCP, pushing changes into the Figma library from the console and using his design-system MCP to surface where the system was lacking, naming conventions, gaps, drift. With Brad Frost.";
 
 /* outcomes: qualitative, from the approved outcome copy; the
    no-invented-numbers line is her stated value */
 const NO_NUMBERS_LINE = "No invented numbers.";
 const NO_NUMBERS_DETAIL = "" /* TODO(elleta): one line on why outcomes here stay qualitative */;
 
-/* the journey phase-list and the What-shipped rows were folded out of
-   beat 05 (template-first fix); both live in git history and the
-   content file if a slot wants them back */
-
 const PERSONALITY_LINE = "" /* TODO(elleta): the personality-break line, your voice */;
 
-/* beat 03: what the recorded clip ACTUALLY shows (the old caption
-   described a different session). TODO(elleta): refine in your voice. */
-const BEAT03_CAPTION =
-  "TJ Pitre runs a live audit over Console MCP, pushing changes into the Figma library from the console and using his design-system MCP to surface where the system was lacking, naming conventions, gaps, drift. With Brad Frost.";
-
-/* beat 05 impact: one short statement, hers; renders nothing while
+/* beat 04 impact: one short statement, hers; renders nothing while
    empty (the keyline carries the takeaway meanwhile) */
 const IMPACT_LINE = "" /* TODO(elleta): the short impact statement */;
 
-/* beat 05 metric slots (the plan: _review/ai-enablement-case-and-metrics.md).
+/* beat 04 metric slots (the plan: _review/ai-enablement-case-and-metrics.md).
    Ladder: BELLA/portfolio numbers are real and yours; client outcomes
    directional, words only. Empty slots render nothing. */
 const METRICS: { value: string; label: string; takeaway: string }[] = [
@@ -98,6 +101,26 @@ const METRICS: { value: string; label: string; takeaway: string }[] = [
   },
 ];
 const THANKS_LINE = "Thanks for reading.";
+
+/** Beat 02's visual, STATIC INTERIM (Part A): the seven-layer journey
+    as one diagram in journey order. Part B commit 1 replaces this
+    with the restored LayerJourney animation; the two must never both
+    render. Layer names and descriptors are the approved copy. */
+const JOURNEY_LAYERS = [
+  { n: "Figma", d: "the component library, what you design" },
+  { n: "Readable layer", d: "descriptions + tokens with meaning" },
+  { n: "The Bridge", d: "Code Connect · MCP" },
+  { n: "Storybook / Code", d: "the source of truth" },
+  { n: "Agents", d: "build with it" },
+  { n: "The Gate", d: "audit + evals, nothing ships without review" },
+  { n: "Production", d: "published, and watched" },
+] as const;
+
+/** Beat 03's visual, STATIC INTERIM (Part A): the gate as a settled
+    green state. Part B commit 3 restores GateRun. */
+const GATE_PASS_FLAGS: Record<string, FlagState> = Object.fromEntries(
+  SPEC_FLAGS.map((f) => [f.token, { label: f.token, tone: "pass" } satisfies FlagState])
+);
 
 /* ── helpers ── */
 
@@ -157,28 +180,6 @@ function BeatLink({ index }: { index: number }) {
   return <p className="cs2-beat__link">{line}</p>;
 }
 
-/** Beat 02's visual, STATIC (simplification pass, Elleta 22 Jul
-    2026): the seven-layer journey as ONE simple diagram in journey
-    order, Figma/foundation at the top, Production shipped at the
-    bottom. No stepper, no run signal, no autoplay; layer names and
-    descriptors are the approved LayerJourney copy. */
-const JOURNEY_LAYERS = [
-  { n: "Figma", d: "the component library, what you design" },
-  { n: "Readable layer", d: "descriptions + tokens with meaning" },
-  { n: "The Bridge", d: "Code Connect · MCP" },
-  { n: "Storybook / Code", d: "the source of truth" },
-  { n: "Agents", d: "build with it" },
-  { n: "The Gate", d: "audit + evals, nothing ships without review" },
-  { n: "Production", d: "published, and watched" },
-] as const;
-
-/** Beat 04's visual, STATIC: the gate as a settled green state, every
-    flag PASS on its real token; the 13/13 line is real (the audits in
-    package.json, run on every push). */
-const GATE_PASS_FLAGS: Record<string, FlagState> = Object.fromEntries(
-  SPEC_FLAGS.map((f) => [f.token, { label: f.token, tone: "pass" } satisfies FlagState])
-);
-
 /* ── the composition ── */
 
 export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
@@ -194,23 +195,34 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
     | undefined;
   const nextItem = WORK_ITEMS.find((i) => i.id === "drift"); /* the three stars loop: chip -> code-first -> drift -> chip */
 
+  /* beat 01 body, mechanically reconciled to the CARD: the two
+     button-anecdote sentences and their anaphoric "And this was one
+     of the simpler ones." are cut (cited trim; the card version is
+     BEAT01_CARD_LINE, hers). Everything that renders is her copy. */
+  const beat01Text = (summary?.context ?? "")
+    .replace("The button in Figma said 'Primary, Large.' The button in Storybook said 'variant: action, size: lg.' ", "")
+    .replace("And this was one of the simpler ones. ", "");
+
   return (
     <div className="cs2-body-col">
-      {/* the five beats: instances of THE CaseBeat template
-          (docs/briefs/case-layout-constitution.md); alternation via
-          flip only, headline inside the text column always */}
+      {/* the four beats: instances of THE CaseBeat template
+          (docs/recipes/case-beat.md); alternation via flip only,
+          headline inside the text column always */}
       <CaseBeat
         index="01"
         kicker="The mismatch"
-        headline="The button didn't match the code."
+        headline="The card didn't match the code." /* mechanical noun
+          swap button -> card (approved reconciliation direction).
+          TODO(elleta): confirm the wording. */
         keyline="Same component. Different names. Different assumptions."
         id="cs2-b1"
         body={
           <>
             <Scannable
-              text={summary?.context ?? ""}
+              text={beat01Text}
               keyline="Same component. Different names. Different assumptions."
             />
+            <P text={BEAT01_CARD_LINE} />
             <p className="ds-section__note" style={{ margin: 0 }}>{DEMO_DISCLOSURE}</p>
           </>
         }
@@ -223,22 +235,23 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
       />
       <BeatLink index={0} />
 
+      {/* beat 02: the AI-enabled workflow. The old beat 03 folds in
+          here: the MCP-investigation paragraph is the body, the
+          recorded session is the footnote link. The alignment-framing
+          paragraphs (decision 01) are retired from render. */}
       <CaseBeat
         index="02"
-        kicker="The proof"
-        headline="So I made the tokens testify."
-        keyline="Token alignment was the most technically demanding part of the work."
+        kicker="The AI-enabled workflow"
+        headline={AI_FLOW_HEADLINE}
+        keyline={AI_FLOW_KEYLINE.trim() !== "" ? AI_FLOW_KEYLINE : undefined}
         id="cs2-b2"
         flip
         body={
           <>
-            <Scannable
-              text={para(cs, (b) => b.kind === "decision" && b.index === "01", 0)}
-              keyline="Token alignment was the most technically demanding part of the work."
-            />
-            {/* the demo-walkthrough note died with the interactive
-                journey (simplification pass). TODO(elleta): one line
-                on the diagram, your voice, if the beat wants it. */}
+            <Scannable text={para(cs, (b) => b.kind === "decision" && b.index === "02", 0)} />
+            {/* TODO(elleta): the connective line that lands the AI
+                positioning (the component travels the layers; MCP,
+                agents, and the gate are steps in that journey). */}
           </>
         }
         visual={
@@ -252,64 +265,26 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
             ))}
           </ol>
         }
-      />
-      <BeatLink index={1} />
-
-      {/* PROPOSAL held from the markups pass, TODO(elleta): the
-          recorded session as beat 03's visual, or your pick from
-          _review/beat03-viz-ideas.md (the header link returns then).
-          The one-session-link law holds: the link lives here. */}
-      <CaseBeat
-        index="03"
-        kicker="The rebuild"
-        headline="Then I rebuilt what the system wanted."
-        keyline="Several components had diverged between Figma and Storybook over time."
-        id="cs2-b3"
-        body={
+        foot={
           <>
-            <Scannable
-              text={para(cs, (b) => b.kind === "decision" && b.index === "01", 1)}
-              keyline="Several components had diverged between Figma and Storybook over time."
-            />
-            {/* TODO(elleta): trim. The MCP paragraph runs long; split
-                mechanically below, cut in your voice when you pass. */}
-            <Scannable text={para(cs, (b) => b.kind === "decision" && b.index === "02", 0)} />
+            <p className="cs2-kicker-row" style={{ margin: 0 }}>{SESSION_CAPTION}</p>
+            {clip?.href && (
+              <a href={clip.href} target="_blank" rel="noopener noreferrer" className="demo-link">
+                {clip.linkLabel ?? "Watch the session"}
+              </a>
+            )}
           </>
-        }
-        visual={
-          clip ? (
-            <>
-              <figure style={{ margin: 0, display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={clip.src}
-                  alt={clip.alt}
-                  loading="lazy"
-                  style={{ width: "100%", height: "auto", borderRadius: "var(--radius-lg)", border: "1px solid var(--color-border-soft)" }}
-                />
-                <figcaption className="ds-section__note" style={{ margin: 0 }}>{BEAT03_CAPTION}</figcaption>
-              </figure>
-            </>
-          ) : null
-        }
-        control={
-          clip?.href ? (
-            <a href={clip.href} target="_blank" rel="noopener noreferrer" className="demo-link">
-              {clip.linkLabel ?? "Watch the session"}
-            </a>
-          ) : undefined
         }
       />
       {pullQuote && <PullQuote>{pullQuote.text}</PullQuote>}
-      <BeatLink index={2} />
+      <BeatLink index={1} />
 
       <CaseBeat
-        index="04"
+        index="03"
         kicker="The gate"
         headline="Now the system checks itself."
         keyline="The portfolio you are reading runs on the same code-first discipline: a token layer, one component per job, and a governance gate that fails the build on drift."
-        id="cs2-b4"
-        flip
+        id="cs2-b3"
         body={
           <Scannable
             /* mechanical trim (simplification pass): the "inspector
@@ -328,14 +303,15 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
           </p>
         }
       />
-      <BeatLink index={3} />
+      <BeatLink index={2} />
 
       <CaseBeat
-        index="05"
+        index="04"
         kicker="The takeaway"
         headline="What the work walked away with."
         keyline="The highest-value work isn't in the Figma file, it's in the alignment between design intent and implementation reality."
-        id="cs2-b5"
+        id="cs2-b4"
+        flip
         body={
           <>
             {/* the wall is CUT (template-first fix): the second closing
@@ -360,9 +336,7 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
         visual={
           <>
             {/* metric slots, flat (the plan: _review/ai-enablement-case-and-metrics.md);
-                a slot renders only when its value has landed. "What
-                shipped" folded away: the outcomes live in the content
-                file if a slot wants them back. */}
+                a slot renders only when its value has landed. */}
             <dl className="beat-metrics">
               {METRICS.filter((m) => m.value.trim() !== "").map((m) => (
                 <div key={m.label || m.value} className="beat-metric">

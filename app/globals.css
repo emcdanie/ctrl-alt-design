@@ -3942,11 +3942,12 @@ textarea:focus-visible {
   border-top: 0;
   padding-top: 0;
 }
-/* the template CONTROL slot: media/link controls, right-aligned,
-   directly under the body text on the text side */
+/* the template CONTROL slot: run/toggle/link controls sit DIRECTLY
+   under the body text, left edge on the body's left edge (AI-flow
+   spec, 22 Jul 2026: probed control-left == body-left) */
 .beat-control {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: var(--spacing-3);
   margin-top: var(--spacing-2);
 }
