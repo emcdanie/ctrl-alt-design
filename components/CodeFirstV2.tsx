@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/Button";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import CaseCard from "@/components/CaseCard";
@@ -57,21 +56,42 @@ const DEMO_DISCLOSURE =
 const NO_NUMBERS_LINE = "No invented numbers.";
 const NO_NUMBERS_DETAIL = "" /* TODO(elleta): one line on why outcomes here stay qualitative */;
 
-/* the journey: numbered phases, one line each, derived from the case
-   copy; the in-progress phase is honest */
-const JOURNEY = [
-  "Component archaeology: read the system before proposing changes to it.",
-  "Figma alignment: variant names and token usage reconciled to code.",
-  "MCP investigation: structural questions answered in minutes, verified by hand.",
-  "In progress: the same discipline runs this site, gated on every push.",
-];
-
-/* amendment item 8 (previous round), optional and hers: the
-   investigation dashboard that did not stick; renders only when her
-   words land */
-const JOURNEY_FAILURE_LINE = "" /* TODO(elleta) */;
+/* the journey phase-list and the What-shipped rows were folded out of
+   beat 05 (template-first fix); both live in git history and the
+   content file if a slot wants them back */
 
 const PERSONALITY_LINE = "" /* TODO(elleta): the personality-break line, your voice */;
+
+/* beat 03: what the recorded clip ACTUALLY shows (the old caption
+   described a different session). TODO(elleta): refine in your voice. */
+const BEAT03_CAPTION =
+  "TJ Pitre runs a live audit over Console MCP, pushing changes into the Figma library from the console and using his design-system MCP to surface where the system was lacking, naming conventions, gaps, drift. With Brad Frost.";
+
+/* beat 05 impact: one short statement, hers; renders nothing while
+   empty (the keyline carries the takeaway meanwhile) */
+const IMPACT_LINE = "" /* TODO(elleta): the short impact statement */;
+
+/* beat 05 metric slots (the plan: _review/ai-enablement-case-and-metrics.md).
+   Ladder: BELLA/portfolio numbers are real and yours; client outcomes
+   directional, words only. Empty slots render nothing. */
+const METRICS: { value: string; label: string; takeaway: string }[] = [
+  {
+    /* the gate: real, yours, running on the page being read */
+    value: "13/13",
+    label: "audits green on every push",
+    takeaway: "The same gate runs on this site. Nothing merges red." /* TODO(elleta): your wording */,
+  },
+  {
+    value: "" /* TODO(elleta): the BELLA workflow-speed number, e.g. "N components, one pass" */,
+    label: "one pass across the library, on BELLA",
+    takeaway: "" /* TODO(elleta): the so-what line */,
+  },
+  {
+    value: "" /* TODO(elleta): directional client outcome, words not figures */,
+    label: "",
+    takeaway: "",
+  },
+];
 const THANKS_LINE = "Thanks for reading.";
 
 /* ── helpers ── */
@@ -213,6 +233,10 @@ function useDriftBeat() {
 
 export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
   const drift = useDriftBeat();
+  /* the run controls live in CaseBeat's control slot (template-first
+     fix); a bumped signal tells the device to run */
+  const [journeySignal, setJourneySignal] = useState(0);
+  const [gateSignal, setGateSignal] = useState(0);
   const summary = cs.blocks?.find((b) => b.kind === "summary") as
     | { context: string; approach: string; outcome: string }
     | undefined;
@@ -223,7 +247,6 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
     .find((b) => b.kind === "figure") as
     | { src: string; alt: string; caption?: string; href?: string; linkLabel?: string }
     | undefined;
-  const outcomes = (summary?.outcome ?? "").split(/(?<=\.)\s+/).filter(Boolean);
   const nextItem = WORK_ITEMS.find((i) => i.id === "drift"); /* the three stars loop: chip -> code-first -> drift -> chip */
 
   return (
@@ -270,7 +293,12 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
             </p>
           </>
         }
-        visual={<LayerJourney />}
+        control={
+          <button type="button" className="demo-btn" onClick={() => setJourneySignal((n) => n + 1)}>
+            Run the journey
+          </button>
+        }
+        visual={<LayerJourney runSignal={journeySignal} />}
       />
       <BeatLink index={1} />
 
@@ -306,20 +334,17 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
                   loading="lazy"
                   style={{ width: "100%", height: "auto", borderRadius: "var(--radius-lg)", border: "1px solid var(--color-border-soft)" }}
                 />
-                {clip.caption && (
-                  <figcaption className="ds-section__note" style={{ margin: 0 }}>{clip.caption}</figcaption>
-                )}
+                <figcaption className="ds-section__note" style={{ margin: 0 }}>{BEAT03_CAPTION}</figcaption>
               </figure>
-              {clip.href && (
-                <div className="scene-foot">
-                  <a href={clip.href} target="_blank" rel="noopener noreferrer" className="demo-link">
-                    <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span>{" "}
-                    {clip.linkLabel ?? "Watch the session"}
-                  </a>
-                </div>
-              )}
             </>
           ) : null
+        }
+        control={
+          clip?.href ? (
+            <a href={clip.href} target="_blank" rel="noopener noreferrer" className="demo-btn">
+              {clip.linkLabel ?? "Watch the session"}
+            </a>
+          ) : undefined
         }
       />
       {pullQuote && <PullQuote>{pullQuote.text}</PullQuote>}
@@ -338,7 +363,12 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
             keyline="The portfolio you are reading runs on the same code-first discipline: a token layer, one component per job, and a governance gate that fails the build on drift."
           />
         }
-        visual={<GateRun />}
+        control={
+          <button type="button" className="demo-btn" onClick={() => setGateSignal((n) => n + 1)}>
+            Run the gate
+          </button>
+        }
+        visual={<GateRun runSignal={gateSignal} />}
       />
       <BeatLink index={3} />
 
@@ -350,37 +380,42 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
         id="cs2-b5"
         body={
           <>
-            {/* TODO(elleta): trim. The two closing paragraphs run ~90
-                words each; split mechanically below, your cuts win. */}
-            <Scannable
-              text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 0)}
-              keyline="The highest-value work isn't in the Figma file, it's in the alignment between design intent and implementation reality."
-            />
-            <Scannable text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 1)} />
-            <ol className="ds-rules" style={{ margin: 0 }}>
-              {[...JOURNEY, ...(JOURNEY_FAILURE_LINE.trim() !== "" ? [JOURNEY_FAILURE_LINE] : [])].map((j) => (
-                <li key={j}>{j}</li>
-              ))}
-            </ol>
-            <div className="cs2-personality">
-              {PERSONALITY_LINE.trim() !== "" && (
-                <p className="ds-section__note" style={{ margin: 0 }}>{PERSONALITY_LINE}</p>
-              )}
-              <Button variant="secondary" href="/contact">Get in touch</Button>
-            </div>
+            {/* the wall is CUT (template-first fix): the second closing
+                paragraph, the journey list, and the contact CTA are
+                gone; the first closing paragraph holds the beat until
+                IMPACT_LINE lands, then it goes too. The Get-in-touch
+                button was a second CTA on a reading page; the site nav
+                owns Contact. */}
+            {IMPACT_LINE.trim() !== "" ? (
+              <P text={IMPACT_LINE} />
+            ) : (
+              <Scannable
+                text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 0)}
+                keyline="The highest-value work isn't in the Figma file, it's in the alignment between design intent and implementation reality."
+              />
+            )}
+            {PERSONALITY_LINE.trim() !== "" && (
+              <p className="ds-section__note" style={{ margin: 0 }}>{PERSONALITY_LINE}</p>
+            )}
           </>
         }
         visual={
           <>
-            {/* the outcomes as FLAT rows (the constitution: the demo
-                specimen is the only card).
-                TODO(elleta): placement stays your call. */}
-            <p className="cs2-kicker-row" style={{ margin: 0 }}>What shipped</p>
-            <ul className="beat-outcomes">
-              {outcomes.map((o) => (
-                <li key={o} className="ds-section__note" style={{ margin: 0 }}>{o}</li>
+            {/* metric slots, flat (the plan: _review/ai-enablement-case-and-metrics.md);
+                a slot renders only when its value has landed. "What
+                shipped" folded away: the outcomes live in the content
+                file if a slot wants them back. */}
+            <dl className="beat-metrics">
+              {METRICS.filter((m) => m.value.trim() !== "").map((m) => (
+                <div key={m.label || m.value} className="beat-metric">
+                  <dt className="beat-metric__kicker">{m.label}</dt>
+                  <dd className="beat-metric__value">{m.value}</dd>
+                  {m.takeaway.trim() !== "" && (
+                    <dd className="beat-metric__takeaway">{m.takeaway}</dd>
+                  )}
+                </div>
               ))}
-            </ul>
+            </dl>
             <div className="scene-foot">
               <p className="cs2-kicker-row" style={{ margin: 0 }}>
                 {NO_NUMBERS_LINE}

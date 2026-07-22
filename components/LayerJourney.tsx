@@ -174,7 +174,7 @@ function Panel({ i, animate }: { i: number; animate: boolean }) {
 /* the one-line label above the demo, her voice */
 const JOURNEY_CAPTION = "" /* TODO(elleta): what this demo shows, one line */;
 
-export default function LayerJourney() {
+export default function LayerJourney({ runSignal = 0 }: { runSignal?: number }) {
   /* opens on THE GATE, the money shot (proto) */
   const [step, setStep] = useState(5);
   const [reduced, setReduced] = useState(false);
@@ -183,6 +183,12 @@ export default function LayerJourney() {
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
+
+  /* the beat's control slot drives the run (template-first fix) */
+  useEffect(() => {
+    if (runSignal > 0) run();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [runSignal]);
 
   /* Run: auto-advance through the layers, bottom to top of the
      stack (Figma -> Production); the gate layer holds longer */
@@ -263,11 +269,6 @@ export default function LayerJourney() {
       {JOURNEY_CAPTION.trim() !== "" && (
         <p className="ds-section__kicker jn-caption-slot" style={{ margin: 0 }}>{JOURNEY_CAPTION}</p>
       )}
-      <div className="scene-control">
-        <button type="button" className="demo-btn jn-run" onClick={run}>
-          {running ? "Running…" : "Run the journey"}
-        </button>
-      </div>
       <div className="jn-onecard__body jn-flatbody">
         <div className="jn-rail" ref={railRef} onKeyDown={onKey}>
           {L.map((l, i) => {

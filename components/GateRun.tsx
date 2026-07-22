@@ -36,7 +36,7 @@ const MAP: Record<string, { token: string; zone: string }> = {
 
 type Phase = "idle" | "running" | "fixing" | "done";
 
-export default function GateRun() {
+export default function GateRun({ runSignal = 0 }: { runSignal?: number }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<Phase>("idle");
   const [okCount, setOkCount] = useState(0);
@@ -99,6 +99,12 @@ export default function GateRun() {
     timers.current.push(setTimeout(() => setPhase("done"), t + 400));
   };
 
+  /* the beat's control slot drives the run (template-first fix) */
+  useEffect(() => {
+    if (runSignal > 0) run();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [runSignal]);
+
   const okSet = new Set(AUDITS.slice(0, okCount));
   const fixing = phase === "fixing";
   const done = phase === "done";
@@ -129,9 +135,6 @@ export default function GateRun() {
        the audit chips, the console, the machine surfaces] */
     <div ref={hostRef} className="gv scene-vis">
       <div className="scene-control demo-scope">
-        <button type="button" className="demo-btn" onClick={run}>
-          {phase === "idle" ? "Run the gate" : "Run it again"}
-        </button>
         <p className="gv-prog" aria-live="polite">
           {phase === "idle" && "idle · 13 audits waiting"}
           {phase === "running" && (
@@ -148,22 +151,11 @@ export default function GateRun() {
       <div ref={specRef} data-hl={zone ?? undefined} className="gv-host">
         <CaseSpecimen flagStates={flagStates} label={done ? "Green, merged" : fixing ? "Red, fixing" : phase === "running" ? "Running" : "The gate"} onZone={setZone} />
       </div>
-      <div className="scene-foot">
-        <div className="gv-rail" role="log" aria-label="The thirteen audits, in gate order">
-          {AUDITS.map((a) => (
-            <i key={a} className={`gv-rail__chip${okSet.has(a) || done ? " ok" : ""}${a === "tokens" && fixing ? " bad" : ""}`}>
-              {a}
-            </i>
-          ))}
-        </div>
-        {/* the machine-surface footer (insider metadata; TODO(elleta):
-            keep or cut, your call) */}
-        <p className="cs2-kicker-row" style={{ margin: 0 }}>
-          Machine surfaces:{" "}
-          <a href="/llms.txt" className="ds-swatch__case">/llms.txt</a> ·{" "}
-          <a href="/api/bella.json" className="ds-swatch__case">/api/bella.json</a>
-        </p>
-      </div>
+      {/* the 13 audit chips and the /llms.txt + /api/bella.json
+          machine-surface links are CUT (insider detail, no reader
+          payoff, per the template-first audit). TODO(elleta):
+          restore as ONE quiet footnote line only if a one-line
+          "what this is" earns them. */}
     </div>
   );
 }
