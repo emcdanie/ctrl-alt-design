@@ -3265,11 +3265,10 @@ textarea:focus-visible {
   }
 }
 
-/* ── Case specimen stage (PR 41 amendment, Elleta 22 Jul 2026;
-   contract _proto/annotated-specimen-proto.html). The working
-   component floats on the page ground: NO card, no frame. All
-   animation is CSS transitions; reduced motion shows everything
-   immediately. ── */
+/* ── The case specimen stage (proto-contract rebuild, Elleta 22 Jul
+   2026; contracts _proto/specimen.html + beat1/beat2/beat4.html).
+   The working specimen floats on the page ground; all animation is
+   CSS transitions; reduced motion renders every end state instantly. ── */
 
 .spec-wrap {
   display: flex;
@@ -3283,19 +3282,16 @@ textarea:focus-visible {
   position: relative;
   width: 100%;
   min-height: 300px;
-  padding: var(--spacing-20) var(--spacing-6);
+  padding: var(--spacing-16) var(--spacing-4);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* ── the case-specimen DEMO register (Elleta's ruling, item 6;
-   recorded in DESIGN.md as case-specimen-scoped, leak-asserted in
-   audit:visual). Neutral product register: near-black ink, gray
-   borders, white surface, BLACK primary, one restrained blue for
-   selected states only. The annotation layer stays BELLA iris.
-   .demo-scope is the flat variant for demo controls outside a stage
-   (the gate run's replay action); same scope law. ── */
+/* ── the case-specimen DEMO register (Elleta's ruling; recorded in
+   DESIGN.md as case-specimen-scoped, leak-asserted in audit:visual).
+   .demo-scope is the flat variant for demo controls outside a stage;
+   same scope law. ── */
 .spec-stage,
 .demo-scope {
   --demo-surface: #FFFFFF;
@@ -3315,8 +3311,6 @@ textarea:focus-visible {
   --demo-ink: #F2F2F4;
   --demo-muted: #A6A8B0;
   --demo-border: #3A3C42;
-  /* the primary stays BLACK in both themes (the ruling); a border
-     keeps it legible on the near-black surface */
   --demo-primary: #101114;
   --demo-primary-ink: #FFFFFF;
   --demo-selected: #8FACE0;
@@ -3340,324 +3334,306 @@ textarea:focus-visible {
   justify-content: center;
   min-width: 0;
   max-width: 100%;
+  width: 100%;
 }
 
-/* stage-mode lane: a positioning layer, not a flex row */
-.ds-flaglane--stage {
-  position: absolute;
-  inset: 0;
+.spec-stage--flat {
   display: block;
   min-height: 0;
-  margin: 0;
+  padding: var(--spacing-8) 0 var(--spacing-4);
+}
+
+/* ── the shared specimen (contract _proto/specimen.html): a BELLA
+   case card on a CASE identity (clarity mint) so the iris annotation
+   layer never collides. Z-ORDER LAW (Elleta's review fix): card 1,
+   leaders 2, flags 3; the leaders render IN FRONT of the card and
+   the dots/rings sit ON the annotated part. ── */
+
+.csp {
+  position: relative;
+  width: 100%;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.csp-card {
+  position: relative;
+  z-index: 1;
+  width: min(300px, 100%);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-5) var(--spacing-5) var(--spacing-6);
+  box-shadow: var(--shadow-orb);
+}
+
+.csp-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--spacing-5);
+  height: var(--spacing-5);
   pointer-events: none;
 }
 
-/* stage flags are interactive buttons (hover/focus highlight,
-   keyboard parity); staggered entry rides the stage's .in class */
-.ds-flag--stage {
-  position: absolute;
-  pointer-events: auto;
-  cursor: pointer;
+.csp-sphere {
+  display: block;
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-full);
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.2s ease;
+  background: radial-gradient(circle at 34% 30%, var(--case-clarity-hi), var(--case-clarity-lo, var(--case-clarity-hi)) 60%, var(--case-clarity-deep));
+  box-shadow: var(--shadow-orb);
+  margin-bottom: var(--spacing-4);
 }
 
-.spec-stage.in .ds-flag--stage {
-  opacity: 1;
-  transform: none;
-}
-
-.spec-stage.in .ds-flag--stage:nth-of-type(2) { transition-delay: 0.25s; }
-.spec-stage.in .ds-flag--stage:nth-of-type(3) { transition-delay: 0.4s; }
-.spec-stage.in .ds-flag--stage:nth-of-type(4) { transition-delay: 0.55s; }
-.spec-stage.in .ds-flag--stage:nth-of-type(5) { transition-delay: 0.7s; }
-
-.ds-flag--stage:hover,
-.ds-flag--stage:focus-visible {
-  background: var(--color-semantic-accent-subtle);
-}
-
-.ds-flag--stage:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
-}
-
-.ds-flag--tl { left: 0; top: var(--spacing-8); }
-.ds-flag--tr { right: 0; top: var(--spacing-8); }
-.ds-flag--bl { left: 0; bottom: var(--spacing-6); }
-.ds-flag--br { right: 0; bottom: var(--spacing-6); }
-
-/* anchored leaders: measured curved paths, stroke-dash draw-in on
-   scroll (transition only), endpoint dots after the draw */
-.spec-stage .ds-leaders path {
-  stroke: var(--color-semantic-accent-border);
-  stroke-width: 1.5;
-  fill: none;
-  stroke-dasharray: var(--len);
-  stroke-dashoffset: var(--len);
-  transition: stroke-dashoffset 0.7s ease 0.1s;
-}
-
-.spec-stage.in .ds-leaders path {
-  stroke-dashoffset: 0;
-}
-
-.spec-stage .ds-leaders circle {
-  fill: var(--color-accent-ink);
-  opacity: 0;
-  transition: opacity 0.3s ease 0.6s;
-}
-
-.spec-stage.in .ds-leaders circle {
-  opacity: 0.9;
-}
-
-/* the ONE highlight recipe (item 3): a flag's zone rings the exact
-   part its token drives, hover and keyboard focus alike */
-.spec-stage[data-hl] [data-part] {
-  transition: box-shadow 0.2s ease;
-}
-
-.spec-stage[data-hl="button"] [data-part="button"],
-.spec-stage[data-hl="radius"] [data-part="radius"],
-.spec-stage[data-hl="surface"] [data-part="surface"],
-.spec-stage[data-hl="primary"] [data-part="primary"],
-.spec-stage[data-hl="touch"] [data-part="touch"],
-.spec-stage[data-hl="ink"] [data-part="ink"],
-.spec-stage[data-hl="border"] [data-part="border"],
-.spec-stage[data-hl="selected"] [data-part="selected"],
-.spec-stage[data-hl="description"] [data-part="description"],
-.spec-stage[data-hl="propname"] [data-part="propname"],
-.spec-stage[data-hl="value"] [data-part="value"] {
-  box-shadow: 0 0 0 2px var(--color-accent-ink);
-  border-radius: var(--radius-md);
-}
-
-/* ── demo product components (the --demo-* register only) ── */
-
-.demo-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--demo-touch);
-  padding: 0 var(--spacing-6);
-  border: 1px solid var(--demo-border);
-  border-radius: var(--demo-radius);
-  background: var(--demo-primary);
-  color: var(--demo-primary-ink);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.demo-tile {
-  width: min(340px, 100%);
-  padding: var(--spacing-5);
-  background: var(--demo-surface);
-  border: 1px solid var(--demo-border);
-  border-radius: var(--demo-radius);
-  color: var(--demo-ink);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  text-align: left;
-}
-
-.demo-tile__title {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
-  color: var(--demo-ink);
-  margin: 0;
-}
-
-.demo-tile__desc {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: 1.5;
-  color: var(--demo-muted);
-  margin: 0;
-}
-
-.demo-tile__meta {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  color: var(--demo-selected);
-  margin: 0;
-}
-
-/* the BEFORE state: the honest mess (amendment item 4); annotations
-   are hidden by the component, the component shows the drift */
-/* the depicted mess (before state only): drift shown with the system's
-   own faces (two-typeface law holds even in depictions): italic,
-   cramped, mixed radius, off-palette colours */
-.spec-stage--before .demo-btn {
-  border-radius: 2px;
-  min-height: 34px;
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  background: #2E3B52; /* token-waiver: depicted before-state drift colours, never system UI */
-  border-color: #B08050; /* token-waiver: depicted before-state drift colours */
-}
-
-.spec-stage--before .demo-tile {
-  border-radius: 2px;
-  font-style: italic;
-}
-
-/* ── the parity split view + audit console (item 7) ── */
-
-.spec-split {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--spacing-6);
-  width: 100%;
-  align-items: start;
-}
-
-@media (max-width: 719px) {
-  .spec-split {
-    grid-template-columns: 1fr;
-  }
-}
-
-.spec-split__panel {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  min-width: 0;
-}
-
-.spec-split__head {
+.csp-kicker {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-ink-muted);
-  margin: 0;
+  margin: 0 0 var(--spacing-2);
 }
 
-.spec-props {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-  width: 100%;
-}
-
-.spec-props__row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-  gap: var(--spacing-3);
-  padding: var(--spacing-2) var(--spacing-3);
-  border: 1px solid var(--demo-border);
-  border-radius: var(--demo-radius);
-  background: var(--demo-surface);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  color: var(--demo-ink);
-  min-width: 0;
-}
-
-.spec-props__row dt {
-  color: var(--demo-muted);
-}
-
-.spec-props__row dd {
-  margin: 0;
-  overflow-wrap: anywhere;
-}
-
-/* the audit console: lines enter in sequence on scroll (staggered CSS
-   transitions, no keyframes); reduced motion shows all lines */
-.spec-console {
-  width: 100%;
-  margin-top: var(--spacing-6);
-  padding: var(--spacing-5);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--color-border-soft);
-  background: var(--color-surface);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  line-height: 1.7;
-  color: var(--color-ink-soft);
-}
-
-.spec-console__line {
+/* Geist inside the card (the card rule); the recorded card-title step */
+.csp-title {
   display: block;
-  width: 100%;
-  text-align: left;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  font: inherit;
-  color: inherit;
+  font-size: var(--font-card-title);
+  color: var(--color-ink);
+  margin: 0 0 var(--spacing-2);
+}
+
+.csp-desc {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.45;
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--spacing-4);
+}
+
+.csp-tag {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  color: var(--case-clarity-text);
+  background: color-mix(in srgb, var(--case-clarity-hi) 26%, var(--color-card));
+  border-radius: var(--radius-full);
+  padding: var(--spacing-2) var(--spacing-3);
+}
+
+/* the leader layer: IN FRONT of the card */
+.csp .ds-leaders {
+  z-index: 2;
+}
+
+.csp .ds-leaders path {
+  stroke: var(--color-accent-ink);
+  stroke-width: 1.5;
+  fill: none;
+  opacity: 0.55;
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.spec-stage.in .csp .ds-leaders path {
+  stroke-dashoffset: 0;
+}
+
+.csp .ds-leaders .dot {
+  fill: var(--color-accent-ink);
+  opacity: 0;
+  transition: opacity 0.3s ease 0.55s;
+}
+
+.csp .ds-leaders .ring {
+  stroke: var(--color-accent-ink);
+  stroke-width: 1.5;
+  fill: none;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.55s;
+}
+
+.spec-stage.in .csp .ds-leaders .dot,
+.spec-stage.in .csp .ds-leaders .ring {
+  opacity: 0.9;
+}
+
+/* the flags: swatch of the ACTUAL value + the real token name */
+.csp-flags {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.csp-flag {
+  position: absolute;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-orb);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-ink);
+  white-space: nowrap;
   cursor: pointer;
   opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.35s ease, transform 0.35s ease, color 0.2s ease;
+  transform: translateY(6px);
+  transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
-.spec-stage.in .spec-console__line {
+.spec-stage.in .csp-flag {
   opacity: 1;
   transform: none;
 }
 
-.spec-console__line:hover,
-.spec-console__line:focus-visible {
-  color: var(--color-accent-ink);
-}
+.spec-stage.in .csp-flag:nth-of-type(2) { transition-delay: 0.1s; }
+.spec-stage.in .csp-flag:nth-of-type(3) { transition-delay: 0.2s; }
+.spec-stage.in .csp-flag:nth-of-type(4) { transition-delay: 0.3s; }
+.spec-stage.in .csp-flag:nth-of-type(5) { transition-delay: 0.4s; }
 
-.spec-console__line:focus-visible {
+.csp-flag:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 2px;
 }
 
-.spec-console__word {
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.csp-flag__sw {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-medium);
+  flex: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ds-flag--stage,
-  .spec-console__line {
-    transition: none;
-    opacity: 1;
+.csp-flag__sw--round {
+  border-radius: var(--radius-full);
+}
+
+.csp-flag__rad {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  border: 2px solid var(--color-accent-ink);
+  border-top-left-radius: var(--radius-md);
+  flex: none;
+}
+
+.csp-flag__text {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.csp-flag__part {
+  font-weight: 600;
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.csp-flag__val {
+  font-weight: 600;
+  color: var(--color-accent-ink);
+}
+
+/* tones: iris default; drift = the recorded drift status colour;
+   pass/fail = the recorded readiness pair */
+.csp-flag--drift {
+  border-color: var(--case-writing-text);
+}
+
+.csp-flag--fail {
+  border-color: var(--case-writing-text);
+}
+
+.csp-flag--pass {
+  border-color: color-mix(in srgb, var(--case-clarity-hi) 60%, var(--color-border-medium));
+}
+
+.csp-flag--pass .csp-flag__val {
+  color: var(--case-clarity-text);
+}
+
+/* desktop positions (the specimen contract); the flag rows sit in
+   vertically CLEARED zones above and below the card so no flag can
+   intersect another flag or the card at any column width (asserted
+   in audit:visual, proven red on a seeded overlap first) */
+.csp {
+  /* the two-line flags run ~64px tall: two cleared rows above the
+     card (title row, then tl/tr) and one below; the paddings reserve
+     each zone plus a breathing step */
+  padding-top: calc(var(--spacing-16) * 2 + var(--spacing-3));
+  padding-bottom: calc(var(--spacing-16) + var(--spacing-3));
+}
+
+.csp-flag--t  { left: 50%; transform: translate(-50%, 6px); top: 0; }
+.spec-stage.in .csp-flag--t { transform: translate(-50%, 0); }
+.csp-flag--tl { left: 0; top: calc(var(--spacing-16) + var(--spacing-2)); }
+.csp-flag--tr { right: 0; top: calc(var(--spacing-16) + var(--spacing-2)); }
+.csp-flag--bl { left: 0; bottom: 0; }
+.csp-flag--br { right: 0; bottom: 0; }
+
+/* narrow fallback: the flags become a wrapped lane ABOVE the card;
+   the leaders rest (no clean empty ground to cross at this width) */
+@media (max-width: 719px) {
+  .csp {
+    flex-direction: column;
+    gap: var(--spacing-4);
+    min-height: 0;
+  }
+
+  .csp-flags {
+    position: static;
+    inset: auto;
+    order: -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    justify-content: center;
+    pointer-events: auto;
+  }
+
+  .csp-flag,
+  .csp-flag--t {
+    position: static;
+    transform: none;
+    white-space: normal;
+  }
+
+  .spec-stage.in .csp-flag--t {
     transform: none;
   }
 
-  .spec-stage .ds-leaders path {
-    transition: none;
-    stroke-dashoffset: 0;
-  }
-
-  .spec-stage .ds-leaders circle {
-    transition: none;
-    opacity: 0.9;
+  .csp .ds-leaders {
+    display: none;
   }
 }
 
+/* the one highlight recipe: a flag's zone rings the exact part */
+.spec-stage[data-hl] [data-part],
+.gv-host[data-hl] [data-part] {
+  transition: box-shadow 0.2s ease;
+}
 
-/* console line stagger (rides the same .in trigger; capped list) */
-.spec-stage.in .spec-console__line:nth-child(2) { transition-delay: 0.35s; }
-.spec-stage.in .spec-console__line:nth-child(3) { transition-delay: 0.7s; }
-.spec-stage.in .spec-console__line:nth-child(4) { transition-delay: 1.05s; }
-.spec-stage.in .spec-console__line:nth-child(5) { transition-delay: 1.4s; }
-.spec-stage.in .spec-console__line:nth-child(6) { transition-delay: 1.75s; }
-.spec-stage.in .spec-console__line:nth-child(7) { transition-delay: 2.1s; }
-
-@media (prefers-reduced-motion: reduce) {
-  .spec-stage.in .spec-console__line {
-    transition-delay: 0s;
-  }
+.spec-stage[data-hl="sphere"] [data-part="sphere"],
+.spec-stage[data-hl="kicker"] [data-part="kicker"],
+.spec-stage[data-hl="title"] [data-part="title"],
+.spec-stage[data-hl="tag"] [data-part="tag"],
+.spec-stage[data-hl="corner"] [data-part="corner"],
+.spec-stage[data-hl="card"] [data-part="card"] {
+  box-shadow: 0 0 0 2px var(--color-accent-ink);
+  border-radius: var(--radius-md);
 }
 
 /* ── Beats law (PR 41 amendment 2, Elleta 22 Jul): five beats, one
@@ -3722,229 +3698,11 @@ textarea:focus-visible {
   gap: var(--spacing-4);
 }
 
-/* ── the parity inspector (amendment 2 item 4) + gate run (item 5),
-   CHIP display dialect (item 7): value + verdict + action in one
-   glance; the recorded status set is In sync / Drift / Stale /
-   Critical (DESIGN.md) ── */
+/* ── beat 02: the layered journey (contract _proto/beat2.html) ── */
 
-.pin {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-5);
-  width: 100%;
-  min-width: 0;
-}
-
-.pin-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--spacing-4);
-}
-
-/* the parity bar row: counts, verdict pill, consequence in one glance */
-.pin-bar-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-3);
-}
-
-.pin-bar {
-  flex: 1;
-  min-width: 120px;
-  max-width: 280px;
-  height: 10px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border-medium);
-  overflow: hidden;
-  background: var(--color-card);
-}
-
-.pin-bar__fill {
-  display: block;
-  height: 100%;
-  background: var(--color-accent-ink);
-  transition: width 0.5s ease;
-}
-
-.pin-consequence {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
-  margin: 0;
-}
-
-/* findings: every row is value + verdict word + ACTION verb */
-.pin-findings {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-  width: 100%;
-}
-
-.pin-row {
-  display: grid;
-  grid-template-columns: minmax(64px, auto) minmax(0, 1fr) auto;
-  gap: var(--spacing-3);
-  align-items: baseline;
-  width: 100%;
-  text-align: left;
-  border: 0;
-  background: transparent;
-  padding: var(--spacing-1) 0;
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s ease;
-}
-
-.pin-row.show {
-  opacity: 1;
-  transform: none;
-}
-
-.pin-row:hover,
-.pin-row:focus-visible,
-.pin-row[aria-pressed="true"] {
-  color: var(--color-accent-ink);
-}
-
-.pin-row:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
-}
-
-.pin-row__action {
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.pin-fix {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  line-height: 1.7;
-  color: var(--color-ink-soft);
-  border-left: 3px solid var(--color-semantic-accent-border);
-  padding-left: var(--spacing-4);
-  margin: 0;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-.pin-fix.show {
-  opacity: 1;
-  transform: none;
-}
-
-/* the gate-run console (item 5): honest theatre, real audit order */
-.gr-line {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  line-height: 1.7;
-  color: var(--color-ink-soft);
-  opacity: 0;
-  transform: translateY(3px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.gr-line.show {
-  opacity: 1;
-  transform: none;
-}
-
-.gr-line--fail {
-  color: var(--color-ink);
-  font-weight: 600;
-}
-
-.gr-line--struck {
-  text-decoration: line-through;
-  text-decoration-thickness: 1px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pin-row,
-  .pin-fix,
-  .gr-line {
-    transition: none;
-    opacity: 1;
-    transform: none;
-  }
-
-  .pin-bar__fill {
-    transition: none;
-  }
-}
-
-/* flat stage (inspectors, consoles): full-width block, tight padding;
-   the state tag rides the top-left as ever */
-.spec-stage--flat {
-  display: block;
-  min-height: 0;
-  padding: var(--spacing-10) 0 var(--spacing-4);
-}
-
-/* ── Amendment 3 (Elleta 22 Jul): the component travels and the
-   system acts on it visibly. CSS transitions only, reduced motion
-   renders end states instantly. ── */
-
-/* drift-status flags: the recorded drift colour (the readiness-map
-   status precedent, --case-writing-*) on the annotation layer */
-.ds-flag--drift {
-  border-color: var(--case-writing-text);
-  color: var(--case-writing-text);
-}
-
-.ds-flag--drift .ds-flag__token {
-  color: var(--case-writing-text);
-}
-
-/* beat 01: the identical twins; only the annotation layer changes */
-.twin {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--spacing-8);
-  width: 100%;
-  align-items: start;
-}
-
-@media (max-width: 599px) {
-  .twin {
-    grid-template-columns: 1fr;
-  }
-}
-
-.twin__side {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-3);
-  min-width: 0;
-  text-align: center;
-}
-
-.twin__flags {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--spacing-2);
-}
-
-/* beat 02: the journey of a component */
 .jn {
   display: grid;
-  grid-template-columns: minmax(200px, 260px) minmax(0, 1fr);
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
   gap: var(--spacing-8);
   align-items: start;
   width: 100%;
@@ -3956,202 +3714,246 @@ textarea:focus-visible {
   }
 }
 
+/* the rail, reversed; the active layer takes the dark plate with the
+   offset shadow (the proto's signature) */
 .jn-rail {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-4);
+  gap: var(--spacing-3);
 }
 
-.jn-rail__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* the proto dims inactive layers by opacity; opacity fails AA (axe
+   caught it), so the resting layers dim by BORDER and keep AA inks;
+   the dark active plate carries the hierarchy */
+.jn-layer {
+  text-align: left;
+  border: 1px dashed var(--color-border-soft);
+  border-radius: var(--radius-xl);
+  background: var(--color-card);
+  padding: var(--spacing-4) var(--spacing-4);
+  cursor: pointer;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-1);
 }
 
-.jn-rail__item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  width: 100%;
-  text-align: left;
-  border: 0;
-  border-left: 2px solid transparent;
-  background: transparent;
-  padding: var(--spacing-2) var(--spacing-3);
-  cursor: pointer;
+.jn-layer:hover {
+  border-style: solid;
+  border-color: var(--color-border-medium);
 }
 
-.jn-rail__item[aria-current="step"] {
-  border-left-color: var(--color-accent-ink);
+.jn-layer[aria-current="true"] {
+  border-style: solid;
+  background: var(--color-semantic-background-inverse);
+  border-color: var(--color-semantic-background-inverse);
+  box-shadow: var(--spacing-2) var(--spacing-2) 0 color-mix(in srgb, var(--color-semantic-background-inverse) 14%, transparent);
 }
 
-.jn-rail__item:focus-visible {
+.jn-layer:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 2px;
 }
 
-.jn-rail__name {
+.jn-layer__n {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-ink);
 }
 
-.jn-rail__item[aria-current="step"] .jn-rail__name {
-  color: var(--color-accent-ink);
-}
-
-.jn-rail__line {
+.jn-layer__d {
   font-family: var(--font-body);
   font-size: var(--typography-font-size-sm);
   color: var(--color-ink-muted);
 }
 
+.jn-layer[aria-current="true"] .jn-layer__n {
+  color: var(--color-semantic-background);
+}
+
+.jn-layer[aria-current="true"] .jn-layer__d {
+  color: color-mix(in srgb, var(--color-semantic-background) 72%, transparent);
+}
+
+/* the right panel */
+.jn-right {
+  min-width: 0;
+}
+
+.jn-panel {
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-2xl);
+  background: var(--color-card);
+  padding: var(--spacing-6) var(--spacing-6);
+}
+
+.jn-kickerband {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+.jn-kickerband__tag {
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-1) var(--spacing-2);
+  color: var(--color-ink);
+}
+
+.jn-where {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: var(--spacing-5) 0 var(--spacing-1);
+}
+
+/* GEIST in the panel; Unique never inside a card */
+.jn-paneltitle {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--font-subsection);
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin: 0;
+}
+
+.jn-sub {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-soft);
+  margin: var(--spacing-1) 0 0;
+}
+
+.jn-stagebox {
+  border: 1px dashed var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  min-height: 230px;
+  margin: var(--spacing-5) 0;
+  padding: var(--spacing-5);
+  display: flex;
+  gap: var(--spacing-6);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* the travelling specimen, scaled down inside the panel */
+.jn-mini {
+  flex: none;
+  width: 190px;
+}
+
+.jn-mini .csp-card {
+  width: 100%;
+  padding: var(--spacing-4);
+}
+
+.jn-mini .csp-sphere {
+  width: 32px;
+  height: 32px;
+  margin-bottom: var(--spacing-3);
+}
+
+.jn-mini .csp-title {
+  font-size: var(--typography-font-size-base);
+}
+
+.jn-mini .csp-desc {
+  display: none;
+}
+
+.jn-mini--flagged .csp-card {
+  outline: 2px solid var(--case-writing-text);
+  outline-offset: 2px;
+}
+
+.jn-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.7;
+  min-width: 0;
+}
+
+.jn-detail__line--mut { color: var(--color-ink-muted); }
+.jn-detail__line--ok { color: var(--color-ink); font-weight: 700; }
+
+/* drift TEXT on card surfaces: the drift hue pulled toward ink so it
+   clears AA in both themes (axe caught the raw case colour) */
+.jn-detail__line--err,
+.csp-flag--drift .csp-flag__val,
+.csp-flag--fail .csp-flag__val {
+  color: color-mix(in srgb, var(--case-writing-text) 65%, var(--color-ink));
+  font-weight: 700;
+}
+
+.jn-reveal {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.jn-panel.go .jn-reveal {
+  opacity: 1;
+  transform: none;
+}
+
+.jn-note {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: var(--spacing-3) 0 0;
+}
+
+.jn-recv {
+  border-top: 1px solid var(--color-border-soft);
+  margin-top: var(--spacing-5);
+  padding-top: var(--spacing-4);
+  display: flex;
+}
+
 .jn-nav {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--spacing-3);
+  margin-top: var(--spacing-5);
 }
 
 .jn-dots {
   display: inline-flex;
-  gap: var(--spacing-1);
+  gap: var(--spacing-2);
 }
 
 .jn-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: var(--radius-full);
-  background: var(--color-border-medium);
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--color-ink-muted);
+  border-radius: 2px;
+  display: block;
   transition: background-color 0.2s ease;
 }
 
 .jn-dot.on {
-  background: var(--color-accent-ink);
+  background: var(--color-semantic-background-inverse);
+  border-color: var(--color-semantic-background-inverse);
 }
 
-.jn-stage {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
-  min-height: 340px;
-}
-
-.jn-scene {
-  min-width: 0;
-}
-
-/* layer events enter as the layer acts on the component */
-.jn-scene .jn-reveal {
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
-}
-
-.jn-scene.go .jn-reveal {
-  opacity: 1;
-  transform: none;
-}
-
-.jn-tilewrap {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--spacing-4);
-}
-
-.jn-tile--flagged {
-  box-shadow: 0 0 0 2px var(--case-writing-text);
-}
-
-.jn-gatelines {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.jn-shipline {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--color-accent-ink);
-  margin: 0;
-}
-
-.jn-caption {
-  max-width: 62ch;
-}
-
-/* the Bridge: values stream from frame to code */
-.jn-bridge {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  gap: var(--spacing-4);
-  align-items: center;
-  width: 100%;
-}
-
-@media (max-width: 719px) {
-  .jn-bridge {
-    grid-template-columns: 1fr;
-  }
-}
-
-.jn-bridge__panel {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  min-width: 0;
-}
-
-.jn-bridge__stream {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  align-items: center;
-}
-
-.jn-chip {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  color: var(--color-accent-ink);
-  border: 1px solid var(--color-semantic-accent-border);
-  border-radius: var(--radius-full);
-  padding: 2px var(--spacing-3);
-  opacity: 0;
-  transform: translateX(-16px);
-  transition: opacity 0.45s ease, transform 0.45s ease;
-}
-
-.jn-scene.go .jn-chip {
-  opacity: 1;
-  transform: none;
-}
-
-.jn-scene.go .jn-chip:nth-child(2) { transition-delay: 0.25s; }
-.jn-scene.go .jn-chip:nth-child(3) { transition-delay: 0.5s; }
-
-.jn-code {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-4);
-  margin: 0;
-  white-space: pre;
-  overflow-x: auto;
-}
-
-/* reduced motion / static sequence */
 .jn--static {
   display: flex;
   flex-direction: column;
@@ -4160,7 +3962,7 @@ textarea:focus-visible {
 
 .jn-staticrow {
   display: grid;
-  grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
+  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
   gap: var(--spacing-6);
   align-items: start;
 }
@@ -4170,6 +3972,7 @@ textarea:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+
 
 /* beat 03: the system tree */
 .tree {
@@ -4248,121 +4051,120 @@ textarea:focus-visible {
   margin: 0;
 }
 
-/* beat 04: the visual gate run */
-.gv {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
+/* ── beat 04: the gate check on the specimen (contract
+   _proto/beat4.html) ── */
+
+.gv-host {
   width: 100%;
+  min-width: 0;
 }
 
-.gv-stage {
-  min-height: 260px;
-}
-
-.gv-spec {
-  position: relative;
-  display: inline-flex;
-}
-
-.gv-stamp {
-  position: absolute;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  pointer-events: none;
-}
-
-.gv-stamp--on {
-  opacity: 1;
-  transform: none;
-}
-
-/* what each featured check validates, shown ON the component */
-.gv-hl-label .btn-key {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-.gv-hl-border .btn-key {
-  box-shadow: 0 0 0 2px var(--color-accent-ink);
-}
-
-.gv-hl-fail .btn-key {
-  box-shadow: 0 0 0 2px var(--case-writing-text);
-}
-
-.gv-hl-hit .btn-key {
-  outline: 2px dashed var(--color-accent-ink);
-  outline-offset: 4px;
-}
-
-.gv-measure {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: calc(-1 * var(--spacing-6));
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  color: var(--color-accent-ink);
-  border-top: 1px solid var(--color-semantic-accent-border);
-  padding-top: 2px;
-  white-space: nowrap;
-}
-
-.gv-failflag {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: calc(-1 * var(--spacing-8));
-  white-space: nowrap;
-}
-
-.gv-row {
+.gv-rail {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-2);
+  justify-content: center;
+  margin-top: var(--spacing-6);
+  width: 100%;
 }
 
-/* the not-yet-run state dims by border, never by opacity: the label
-   stays AA (axe caught the opacity version, kept honest) */
-.gv-chip {
+.gv-rail__chip {
+  font-style: normal;
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   color: var(--color-ink-muted);
   border: 1px dashed var(--color-border-soft);
   border-radius: var(--radius-full);
-  padding: 2px var(--spacing-3);
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-card);
   transition: color 0.3s ease, border-color 0.3s ease;
 }
 
-.gv-chip.on {
-  color: var(--color-ink);
-  border: 1px solid var(--color-border-medium);
+.gv-rail__chip.ok {
+  color: var(--case-clarity-text);
+  border: 1px solid color-mix(in srgb, var(--case-clarity-hi) 60%, var(--color-border-medium));
 }
 
-.gv-chip--fail {
+.gv-rail__chip.bad {
   color: var(--case-writing-text);
-  border-color: var(--case-writing-text);
+  border: 1px solid var(--case-writing-text);
 }
 
-.gv-console {
-  margin-top: 0;
+.gv-prog {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.6;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+.gv-prog b {
+  color: var(--case-clarity-text);
+}
+
+/* the run control (the proto's iris run action, deliberately NOT a
+   keycap: the one primary per view stays the contact action) */
+.gv-run {
+  align-self: flex-start;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  /* the recorded key-face pair: fixed in both themes so the light
+     label always clears AA (the keycap contract; the control itself
+     stays a run action, not a keycap) */
+  color: var(--key-face-hi);
+  background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
+  padding: var(--spacing-4) var(--spacing-6);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 3px 0 var(--key-fill-edge),
+    0 8px 16px color-mix(in srgb, var(--key-fill-lo) 28%, transparent);
+}
+
+.gv-run:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.cs2-driftbeat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  align-items: flex-start;
+  width: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .jn-scene .jn-reveal,
-  .jn-scene .jn-chip,
-  .tree__edge,
-  .tree__node,
-  .gv-stamp {
+  .csp-flag,
+  .jn-reveal,
+  .spec-stage.in .csp-flag--t {
     transition: none;
     opacity: 1;
     transform: none;
   }
 
-  .tree__node {
-    transform: translate(-50%, -50%);
+  .csp-flag--t {
+    transform: translate(-50%, 0);
+  }
+
+  .csp .ds-leaders path {
+    transition: none;
+    stroke-dashoffset: 0;
+  }
+
+  .csp .ds-leaders .dot,
+  .csp .ds-leaders .ring {
+    transition: none;
+    opacity: 0.9;
+  }
+
+  .gv-rail__chip,
+  .jn-dot,
+  .jn-layer {
+    transition: none;
   }
 }

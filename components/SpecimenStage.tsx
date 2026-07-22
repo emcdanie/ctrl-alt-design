@@ -1,32 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import TokenAnnotation, { FlagLeaders, type StageFlag } from "@/components/TokenAnnotation";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 
 /**
- * The case specimen stage (PR 41 amendment, Elleta 22 Jul 2026;
- * contract _proto/annotated-specimen-proto.html). A WORKING component
- * floats directly on the page ground: no card, no frame; density
- * from composition. The stage hosts the one annotation implementation
- * in stage mode: leaders draw in on scroll (IntersectionObserver +
- * stroke-dash, CSS transitions only), flags enter staggered, each
- * leader anchors to the computed geometry of the part its token
- * drives, and hovering or focusing a flag highlights that exact part
- * of the live component (keyboard parity included). Where a case has
- * an honest before state, the Before / On-system toggle (the
- * existing SegmentedControl, single-select with ARIA state) shows
- * the real mess and hides the annotations. prefers-reduced-motion
- * renders everything immediately.
- *
- * The specimen inside wears the scoped --demo-* register (Elleta's
- * ruling, recorded in DESIGN.md): the specimen reads as "a product",
- * the annotation layer stays BELLA iris on both themes.
+ * The case specimen stage: the working specimen floats directly on
+ * the page ground (no card chrome around the stage), the stage gains
+ * .in on scroll to trigger the CSS-transition draw-ins, and the
+ * [data-hl] attribute carries the one highlight recipe for whatever
+ * device sits inside (flags, console lines, rails). Hosts the
+ * --demo-* register scope and the Before / On-system toggle where a
+ * beat needs one (the toggle is the real SegmentedControl).
+ * prefers-reduced-motion renders everything immediately. The flags
+ * and leaders themselves belong to the devices inside (CaseSpecimen);
+ * the stage is the ground they stand on.
  */
 export default function SpecimenStage({
   label = "On system",
-  flags,
-  anchors,
   hasBefore = false,
   beforeLabel = "Before",
   flat = false,
@@ -35,25 +25,16 @@ export default function SpecimenStage({
 }: {
   /** the state tag in the stage corner */
   label?: string;
-  /** corner flags; omit for stages whose interaction lives in the
-      children (the readiness console drives its own highlights) */
-  flags?: readonly StageFlag[];
-  /** token -> selector of the [data-part] element it drives */
-  anchors?: Record<string, string>;
-  /** the case has an honest before state (amendment item 4) */
+  /** the beat has an honest before state, toggled above the stage */
   hasBefore?: boolean;
   beforeLabel?: string;
-  /** flat stage: full-width block, tight padding (consoles and
-      inspectors; the reserved zone law still applies to any flags) */
+  /** flat stage: full-width block, tight padding */
   flat?: boolean;
-  /** when false, the before state carries NO component restyling: the
-      specimen never changes, only the children's annotation layer
-      responds (amendment 3 item 1: the eye sees no difference, the
-      labels tell the truth) */
+  /** when false, the before state carries NO component restyling:
+      only the children's annotation layer responds */
   beforeStyling?: boolean;
-  /** node, or a function receiving the highlight setter (and the
-      before state, for stages whose toggle swaps the ANNOTATION layer
-      while the specimen itself never changes, amendment 3 item 1) */
+  /** node, or a function receiving the highlight setter and the
+      before state */
   children:
     | React.ReactNode
     | ((setZone: (z: string | null) => void, before: boolean) => React.ReactNode);
@@ -110,12 +91,6 @@ export default function SpecimenStage({
         data-hl={zone ?? undefined}
       >
         <span className="spec-stage__tag" aria-hidden="true">{before ? beforeLabel : label}</span>
-        {!before && flags && anchors && (
-          <>
-            <FlagLeaders anchors={anchors} />
-            <TokenAnnotation tokens={[]} stageFlags={flags} scoped onZone={setZone} />
-          </>
-        )}
         <div className="spec-stage__demo">
           {typeof children === "function" ? children(setZone, before) : children}
         </div>

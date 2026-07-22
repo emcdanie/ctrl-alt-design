@@ -307,24 +307,33 @@ for (const theme of ["light", "dark"]) {
       await page.waitForTimeout(350);
     }
     await page.waitForTimeout(600);
-    /* twin equality (amendment 3 item 1): the two buttons must render
-       IDENTICAL geometry and colours; only the annotation layer may
-       differ between Before and On-system */
-    const twinBad = await page.evaluate(() => {
-      const twins = [...document.querySelectorAll("[data-twin]")];
-      if (twins.length !== 2) return [`expected 2 twin specimens, found ${twins.length}`];
-      const shape = (el) => {
-        const r = el.getBoundingClientRect();
-        const cs = getComputedStyle(el);
-        return [Math.round(r.width), Math.round(r.height), cs.backgroundColor, cs.color, cs.borderRadius, cs.borderTopColor, cs.fontFamily].join("|");
-      };
-      const a = shape(twins[0]);
-      const b = shape(twins[1]);
-      return a === b ? [] : [`twin specimens diverge: ${a} vs ${b}`];
+    /* specimen overlap law (proto-contract rebuild, 22 Jul): no flag
+       box may intersect another flag or the card body; proven red on
+       a seeded overlapping layout before landing */
+    const overlapBad = await page.evaluate(() => {
+      const out = [];
+      const rect = (el) => el.getBoundingClientRect();
+      const hit = (a, b) =>
+        a.left < b.right - 1 && a.right > b.left + 1 && a.top < b.bottom - 1 && a.bottom > b.top + 1;
+      for (const stage of document.querySelectorAll(".spec-stage")) {
+        const flags = [...stage.querySelectorAll(".csp-flag")].filter((f) => rect(f).width > 0);
+        const card = stage.querySelector(".csp-card");
+        for (let i = 0; i < flags.length; i++) {
+          for (let j = i + 1; j < flags.length; j++) {
+            if (hit(rect(flags[i]), rect(flags[j]))) {
+              out.push(`flags overlap: ${flags[i].textContent.trim().slice(0, 18)} × ${flags[j].textContent.trim().slice(0, 18)}`);
+            }
+          }
+          if (card && hit(rect(flags[i]), rect(card))) {
+            out.push(`flag overlaps the card: ${flags[i].textContent.trim().slice(0, 24)}`);
+          }
+        }
+      }
+      return [...new Set(out)];
     });
-    for (const b of twinBad) {
+    for (const b of overlapBad) {
       fails++;
-      console.error(`VISUAL FAIL (${theme} ${width}) twin equality: ${b}`);
+      console.error(`VISUAL FAIL (${theme} ${width}) specimen overlap: ${b}`);
     }
     const geomBad = await page.evaluate(() => {
       const out = [];
@@ -333,29 +342,45 @@ for (const theme of ["light", "dark"]) {
         if (!paths.length) continue;
         const svg = stage.querySelector(".ds-leaders");
         const sr = svg.getBoundingClientRect();
+        /* leaders deliberately rest below the lane-fallback width
+           (display none); a zero-size svg has no drawn geometry */
+        if (sr.width < 2 || sr.height < 2) continue;
         /* candidate obstacles: any element in the stage that paints
-           its own text, or a list/table, excluding the flags, the
-           state tag, and highlightable parts (leaders must TOUCH
-           their target) */
+           its own text, or a list/table, or ANOTHER flag's box; a
+           path's OWN flag (data-for) and highlightable parts are
+           excepted (leaders must START at their flag and TOUCH their
+           target) */
         const boxes = [];
         for (const el of stage.querySelectorAll("*")) {
-          if (el.closest(".ds-flag") || el.closest("svg") || el.classList.contains("spec-stage__tag")) continue;
+          if (el.closest("svg") || el.classList.contains("spec-stage__tag")) continue;
           if (el.closest("[data-part]")) continue;
+          const flagHost = el.closest(".ds-flag, .csp-flag");
+          if (flagHost && flagHost !== el) continue; // the flag box itself is the obstacle, once
           const ownText = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim().length > 0);
+          const isFlag = !!flagHost;
           const isTable = /^(UL|OL|TABLE|DL)$/.test(el.tagName);
-          if (!ownText && !isTable) continue;
+          if (!ownText && !isTable && !isFlag) continue;
           const r = el.getBoundingClientRect();
-          if (r.width > 0 && r.height > 0) boxes.push({ r, label: `${el.tagName}:${(el.textContent || "").trim().slice(0, 24)}` });
+          if (r.width > 0 && r.height > 0) {
+            boxes.push({
+              r,
+              flagToken: isFlag ? el.getAttribute("data-flag-token") : null,
+              label: `${el.tagName}:${(el.textContent || "").trim().slice(0, 24)}`,
+            });
+          }
         }
         for (const p of paths) {
+          const own = p.getAttribute("data-for");
           const len = p.getTotalLength();
-          for (let t = 0.03; t <= 0.97; t += 0.05) {
+          for (let t = 0.04; t <= 0.96; t += 0.04) {
             const pt = p.getPointAtLength(len * t);
             const x = sr.left + pt.x;
             const y = sr.top + pt.y;
-            const hit = boxes.find((b) => x > b.r.left && x < b.r.right && y > b.r.top && y < b.r.bottom);
+            const hit = boxes.find(
+              (b) => !(own && b.flagToken === own) && x > b.r.left && x < b.r.right && y > b.r.top && y < b.r.bottom
+            );
             if (hit) {
-              out.push(`leader for ${p.parentElement ? "" : ""}${(stage.querySelector(".spec-stage__tag")?.textContent ?? "stage")} crosses ${hit.label}`);
+              out.push(`leader ${own ?? ""} crosses ${hit.label}`);
               break;
             }
           }
@@ -366,6 +391,33 @@ for (const theme of ["light", "dark"]) {
     for (const b of geomBad) {
       fails++;
       console.error(`VISUAL FAIL (${theme} ${width}) stage geometry: ${b}`);
+    }
+    /* Z-PATTERN LAW (rebuild brief, 22 Jul): consecutive sided scenes
+       alternate which side the visual sits on; a full-width block
+       (stepper, clip, [data-zbreak]) between them resets the run.
+       Layout law, checked once at 1440. */
+    if (theme === "light" && width === 1440) {
+      const zBad = await page.evaluate(() => {
+        const seq = [...document.querySelectorAll(".cs2-screen__grid, .jn, [data-zbreak]")];
+        const out = [];
+        let prev = null;
+        for (const el of seq) {
+          if (!el.classList.contains("cs2-screen__grid")) {
+            prev = null; // a full-width break resets the alternation
+            continue;
+          }
+          const side = el.classList.contains("cs2-screen__grid--flip") ? "left" : "right";
+          if (prev !== null && prev === side) {
+            out.push(`two consecutive scenes put the visual ${side}`);
+          }
+          prev = side;
+        }
+        return out;
+      });
+      for (const b of zBad) {
+        fails++;
+        console.error(`VISUAL FAIL z-pattern: ${b}`);
+      }
     }
     await ctx.close();
   }

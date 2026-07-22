@@ -2,190 +2,216 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { SpecimenCardBody } from "@/components/CaseSpecimen";
 
 /**
- * Beat 02 (PR 41 amendment 3, item 2): the journey of a component
- * through the layers, Elleta's layered-stepper pattern generalized to
- * BELLA in English. The layer stack runs down the left (keyboard and
- * click navigation, Previous/Next, step dots); the stage on the right
- * shows the Tile at that layer with what the layer DOES to it,
- * animated with CSS transitions only. The component travels and the
- * system acts on it visibly. The step is shareable: each layer keeps
- * a location hash. Reduced motion renders all six layers as a static
- * annotated sequence.
- *
- * The Readable layer's events are the former parity-inspector
- * findings (description written in, brand renamed variant, radius
- * bound to the token); the Gate layer's near-miss gray is honest
- * theatre: a near-miss gray hand-set against the register token
- * (values quoted in the gateLines data below, waived there), the
- * class of drift the eye cannot see.
+ * Beat 02: the layered journey (binding contract _proto/beat2.html).
+ * Seven layers, the rail REVERSED (Production top, Figma bottom),
+ * the active layer on the dark plate with the offset shadow, the
+ * Delivers-up / Receives-down framing, a Layer N of 7 counter, and
+ * the shared case-card specimen travelling with what each layer does
+ * to it. Previous/Next ride the real BELLA secondary Button; square
+ * step dots; every step hash-linkable (#journey-<slug>); keyboard
+ * navigable. In-panel titles are GEIST (Unique never inside a card);
+ * the beat head on the ground stays Unique. Opens on THE GATE.
+ * Reduced motion renders the whole journey as a static annotated
+ * sequence. The gate layer's drift value is a data-quote, never
+ * painted.
  */
 
-export const LAYERS = [
+const L = [
   {
     slug: "figma",
-    name: "Figma",
-    line: "Designed",
-    caption: "The Tile as drawn: props visible, description empty. The gap is already here, just invisible.",
+    n: "Figma",
+    d: "the component library, what you design",
+    up: "the design",
+    title: "FIGMA",
+    sub: "The card as drawn",
+    flag: true,
+    detail: [
+      { t: "component  Card", tone: "mut" },
+      { t: "prop  brand: periwinkle", tone: "mut" },
+      { t: "description: (empty)", tone: "err" },
+    ],
   },
   {
     slug: "readable",
-    name: "Readable layer",
-    line: "Descriptions and tokens with meaning",
-    caption: "The description writes itself in, the prop takes the code's name, the radius binds to its token.",
+    n: "Readable layer",
+    d: "descriptions + tokens with meaning",
+    up: "names with meaning",
+    title: "READABLE LAYER",
+    sub: "The gap gets a name",
+    detail: [
+      { t: "description written in", tone: "ok" },
+      { t: "prop brand → variant", tone: "ok" },
+      { t: "radius → --radius-lg", tone: "ok" },
+    ],
   },
   {
     slug: "bridge",
-    name: "The Bridge",
-    line: "Code Connect / MCP",
-    caption: "The Figma frame and the code answer each other: asked in minutes, verified by hand.",
+    n: "The Bridge",
+    d: "Code Connect · MCP",
+    up: "a wired pair",
+    title: "THE BRIDGE",
+    sub: "Figma ⇄ code, values stream across",
+    detail: [
+      { t: "Figma frame ⇄ code snippet", tone: "mut" },
+      { t: "asked in minutes", tone: "mut" },
+      { t: "verified by hand", tone: "ok" },
+    ],
   },
   {
     slug: "code",
-    name: "Code + Storybook",
-    line: "Source of truth",
-    caption: "The Tile renders as shipped; variant and size resolve from tokens.",
+    n: "Storybook / Code",
+    d: "the source of truth",
+    up: "the shipped component",
+    title: "STORYBOOK / CODE",
+    sub: "The card as shipped",
+    detail: [
+      { t: '<Card variant="action" size="lg" />', tone: "ok" },
+      { t: "resolves from tokens", tone: "mut" },
+    ],
+  },
+  {
+    slug: "agents",
+    n: "Agents",
+    d: "build with it",
+    up: "new work, on-system",
+    title: "AGENTS",
+    sub: "Built only from what the system exposes",
+    detail: [
+      { t: "agent composes the card", tone: "mut" },
+      { t: "can only use exposed tokens", tone: "mut" },
+      { t: "nothing off-palette", tone: "ok" },
+    ],
   },
   {
     slug: "gate",
-    name: "The Gate",
-    line: "Audits; nothing ships without review",
-    caption: "The audit runs ON the component. Red first, corrected at source, green on the second review.",
+    n: "The Gate",
+    d: "audit + evals, nothing ships without review",
+    up: "only what passes",
+    title: "THE GATE",
+    sub: "Audit and evals; nothing ships without review",
+    gate: true,
+    detail: [
+      { t: "auditing tokens…", tone: "mut" },
+      { t: "✗ border: #c7c7c7, hardcoded", tone: "err" }, // token-waiver: the depicted drift value, quoted as data
+      { t: "→ fixed at source: --color-border-soft", tone: "mut" },
+      { t: "✓ now passes", tone: "ok" },
+    ],
+    note: "Second review… now it passes.",
   },
   {
     slug: "production",
-    name: "Production",
-    line: "No new debt",
-    caption: "The Tile ships. Only what the system approves.",
+    n: "Production",
+    d: "published, and watched",
+    up: "the finished product",
+    title: "PRODUCTION",
+    sub: "Published, no new debt",
+    detail: [
+      { t: "✓ shipped", tone: "ok" },
+      { t: "only what the system approved", tone: "mut" },
+    ],
   },
 ] as const;
 
-/** the Tile at one layer; `state` drives what the layer has done */
-function TileAt({ layer, animate }: { layer: number; animate: boolean }) {
+function Detail({ lines, animate }: { lines: readonly { t: string; tone: string }[]; animate: boolean }) {
+  return (
+    <div className="jn-detail">
+      {lines.map((l, i) => (
+        <span
+          key={l.t}
+          className={`jn-detail__line jn-detail__line--${l.tone}${animate ? " jn-reveal" : ""}`}
+          style={animate ? { transitionDelay: `${0.2 + i * 0.35}s` } : undefined}
+        >
+          {l.t}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function Panel({ i, animate }: { i: number; animate: boolean }) {
+  const l = L[i];
   const [go, setGo] = useState(!animate);
   useEffect(() => {
     if (!animate) return;
     setGo(false);
     const raf = requestAnimationFrame(() => requestAnimationFrame(() => setGo(true)));
     return () => cancelAnimationFrame(raf);
-  }, [layer, animate]);
-
-  const readable = layer >= 1;
-  const gateFixed = layer >= 5;
-
-  /* the Gate layer's own sequence: red finding, correction, pass */
-  const gateLines = [
-    "auditing tokens on Tile",
-    "TOKEN FAIL border #C7C7C7 hand-set; the token resolves #D7D8DC", // token-waiver: depicted drift line, data not paint
-    "corrected at source: border bound to --demo-border",
-    "second review: tokens PASS",
-  ];
+  }, [i, animate]);
 
   return (
-    <div className={`jn-scene${go ? " go" : ""}`}>
-      {layer === 2 ? (
-        /* the Bridge: frame and code connect, values streaming */
-        <div className="jn-bridge">
-          <div className="jn-bridge__panel">
-            <p className="spec-split__head" style={{ margin: 0 }}>Figma frame</p>
-            <ul className="spec-props">
-              <li className="spec-props__row"><span>variant</span><span>primary</span></li>
-              <li className="spec-props__row"><span>radius</span><span>--demo-radius</span></li>
-            </ul>
-          </div>
-          <div className="jn-bridge__stream" aria-hidden="true">
-            <span className="jn-chip">variant</span>
-            <span className="jn-chip">--demo-radius</span>
-            <span className="jn-chip">description</span>
-          </div>
-          <div className="jn-bridge__panel">
-            <p className="spec-split__head" style={{ margin: 0 }}>Code answer</p>
-            <pre className="jn-code">{`<Tile variant="primary"\n  size="md" />`}</pre>
-          </div>
+    <div className={`jn-panel${go ? " go" : ""}`}>
+      <p className="jn-kickerband">
+        <span className="jn-kickerband__tag">Delivers ↑</span> {l.up}
+      </p>
+      <p className="jn-where">Layer {i + 1} of 7 · the card is here</p>
+      <p className="jn-paneltitle">{l.title}</p>
+      <p className="jn-sub">{l.sub}</p>
+      <div className="jn-stagebox">
+        <div className={`jn-mini${"flag" in l && l.flag ? " jn-mini--flagged" : ""}`}>
+          <SpecimenCardBody />
         </div>
-      ) : (
-        <div className="jn-tilewrap">
-          <div className={`demo-tile${layer === 4 && !gateFixed ? " jn-tile--flagged" : ""}`} data-part="value">
-            <p className="demo-tile__title">Tile</p>
-            {readable ? (
-              <p className="demo-tile__desc jn-reveal">A compact content tile. Variant and size resolve from tokens.</p>
-            ) : (
-              <p className="demo-tile__desc">
-                <span className="ds-flag ds-flag--drift"><span className="ds-flag__token">description: (empty)</span></span>
-              </p>
-            )}
-            <p className="demo-tile__meta jn-reveal">
-              {readable ? 'variant="primary" size="md"' : "brand: periwinkle"}
-            </p>
-            <span style={{ display: "inline-flex" }}>
-              <span className="demo-btn" aria-hidden="true">Action</span>
-            </span>
-          </div>
-          {layer === 4 && (
-            <div className="jn-gatelines" role="log" aria-label="The gate acting on the Tile">
-              {gateLines.map((l, i) => (
-                <span key={l} className={`gr-line jn-gateline${go ? " show" : ""}${i === 1 ? " gr-line--fail" : ""}`} style={{ transitionDelay: go ? `${0.5 + i * 0.9}s` : "0s" }}>
-                  {l}
-                </span>
-              ))}
-            </div>
-          )}
-          {layer === 5 && (
-            <p className="jn-shipline jn-reveal">Shipped. Only what the system approves.</p>
-          )}
+        <div>
+          <Detail lines={l.detail} animate={animate} />
+          {"note" in l && l.note && <p className="jn-note">{l.note}</p>}
         </div>
-      )}
+      </div>
+      <p className="jn-kickerband jn-recv">
+        <span className="jn-kickerband__tag">Receives ↓</span>{" "}
+        {i === 0 ? "nothing, this is the origin" : "everything built below, by human or agent"}
+      </p>
     </div>
   );
 }
 
 export default function LayerJourney() {
-  const [step, setStep] = useState(0);
+  /* opens on THE GATE, the money shot (proto) */
+  const [step, setStep] = useState(5);
   const [reduced, setReduced] = useState(false);
-  const railRef = useRef<HTMLUListElement>(null);
+  const railRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-    /* shareable step: read the hash once (e.g. #journey-gate) */
     const m = window.location.hash.match(/^#journey-([a-z]+)/);
     if (m) {
-      const i = LAYERS.findIndex((l) => l.slug === m[1]);
+      const i = L.findIndex((x) => x.slug === m[1]);
       if (i >= 0) setStep(i);
     }
   }, []);
 
   const go = useCallback((i: number) => {
-    const next = Math.max(0, Math.min(LAYERS.length - 1, i));
+    const next = Math.max(0, Math.min(L.length - 1, i));
     setStep(next);
-    /* keep the layer linkable without scrolling the page */
-    window.history.replaceState(null, "", `#journey-${LAYERS[next].slug}`);
+    window.history.replaceState(null, "", `#journey-${L[next].slug}`);
   }, []);
 
   const onKey = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+    /* the rail is reversed: ArrowUp climbs toward Production */
+    if (e.key === "ArrowUp" || e.key === "ArrowRight") {
       e.preventDefault();
       go(step + 1);
-      (railRef.current?.children[Math.min(step + 1, LAYERS.length - 1)]?.firstElementChild as HTMLElement)?.focus();
     }
-    if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+    if (e.key === "ArrowDown" || e.key === "ArrowLeft") {
       e.preventDefault();
       go(step - 1);
-      (railRef.current?.children[Math.max(step - 1, 0)]?.firstElementChild as HTMLElement)?.focus();
     }
   };
 
-  /* reduced motion: the whole journey as a static annotated sequence */
   if (reduced) {
+    /* the whole journey as a static annotated sequence */
     return (
       <div className="jn jn--static">
-        {LAYERS.map((l, i) => (
+        {L.map((l, i) => (
           <div key={l.slug} className="jn-staticrow" id={`journey-${l.slug}`}>
             <div>
-              <p className="ds-section__kicker" style={{ margin: 0 }}>{String(i + 1).padStart(2, "0")} · {l.name}</p>
-              <p className="ds-section__note" style={{ margin: 0 }}>{l.caption}</p>
+              <p className="ds-section__kicker" style={{ margin: 0 }}>
+                Layer {i + 1} of 7 · {l.n}
+              </p>
+              <p className="ds-section__note" style={{ margin: 0 }}>{l.sub}</p>
             </div>
-            <TileAt layer={i} animate={false} />
+            <Panel i={i} animate={false} />
           </div>
         ))}
       </div>
@@ -194,39 +220,39 @@ export default function LayerJourney() {
 
   return (
     <div className="jn">
-      <div className="jn-rail">
-        <ul ref={railRef} className="jn-rail__list" onKeyDown={onKey} aria-label="The layers">
-          {LAYERS.map((l, i) => (
-            <li key={l.slug}>
-              <button
-                type="button"
-                className="jn-rail__item"
-                aria-current={i === step ? "step" : undefined}
-                onClick={() => go(i)}
-              >
-                <span className="jn-rail__name">{l.name}</span>
-                <span className="jn-rail__line">{l.line}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
+      {/* the rail, REVERSED: Production top, Figma bottom */}
+      <div className="jn-rail" ref={railRef} onKeyDown={onKey}>
+        {[...L].reverse().map((l) => {
+          const i = L.indexOf(l);
+          return (
+            <button
+              key={l.slug}
+              type="button"
+              className="jn-layer"
+              aria-current={i === step ? "true" : undefined}
+              onClick={() => go(i)}
+            >
+              <span className="jn-layer__n">{l.n}</span>
+              <span className="jn-layer__d">{l.d}</span>
+            </button>
+          );
+        })}
+      </div>
+      <div className="jn-right" id={`journey-${L[step].slug}`}>
+        <Panel i={step} animate />
         <div className="jn-nav">
           <Button variant="secondary" onClick={() => go(step - 1)} ariaLabel="Previous layer">
-            Previous
+            ‹ Previous
           </Button>
           <span className="jn-dots" aria-hidden="true">
-            {LAYERS.map((l, i) => (
-              <span key={l.slug} className={`jn-dot${i === step ? " on" : ""}`} />
+            {L.map((l, i) => (
+              <i key={l.slug} className={`jn-dot${i === step ? " on" : ""}`} />
             ))}
           </span>
           <Button variant="secondary" onClick={() => go(step + 1)} ariaLabel="Next layer">
-            Next
+            Next ›
           </Button>
         </div>
-      </div>
-      <div className="jn-stage" id={`journey-${LAYERS[step].slug}`}>
-        <TileAt layer={step} animate />
-        <p className="ds-section__note jn-caption" aria-live="polite">{LAYERS[step].caption}</p>
       </div>
     </div>
   );

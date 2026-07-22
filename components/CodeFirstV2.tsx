@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import CaseCard from "@/components/CaseCard";
-import TwinStage from "@/components/TwinStage";
+import CaseSpecimen, { SPEC_FLAGS, useResolvedTokens, type FlagState } from "@/components/CaseSpecimen";
 import LayerJourney from "@/components/LayerJourney";
 import SystemTree from "@/components/SystemTree";
 import GateRun from "@/components/GateRun";
@@ -111,6 +113,41 @@ function BeatLink({ index }: { index: number }) {
   return <p className="cs2-beat__link">{line}</p>;
 }
 
+/** Beat 01 (contract _proto/beat1.html + the shared specimen): ONE
+    specimen; the toggle changes ONLY the flag labels and the drift
+    colour. Before labels are the ACTUAL resolved values, read live,
+    marked hand-set; the specimen itself never changes. */
+function DriftBeat() {
+  const [view, setView] = useState("on");
+  const before = view === "before";
+  const resolved = useResolvedTokens(SPEC_FLAGS.map((f) => f.token));
+  const flagStates: Record<string, FlagState> = {};
+  if (before) {
+    for (const f of SPEC_FLAGS) {
+      flagStates[f.token] = { label: `${resolved[f.token] ?? "…"} hand-set`, tone: "drift" };
+    }
+  }
+  return (
+    <div className="cs2-driftbeat">
+      <SegmentedControl
+        label="View"
+        options={[
+          { value: "on", label: "On system" },
+          { value: "before", label: "Before" },
+        ]}
+        value={view}
+        onChange={setView}
+      />
+      <CaseSpecimen flagStates={flagStates} label={before ? "Before" : "On system"} />
+      <p className="cs2-kicker-row" style={{ textAlign: "center" }}>
+        {before
+          ? "Before: Figma said one thing, the code said another. Same card."
+          : "On system: both sides carry the same token names."}
+      </p>
+    </div>
+  );
+}
+
 /** one beat: the numbered sentence head, then ONE scene */
 function Beat({
   index,
@@ -157,9 +194,9 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
             <p className="ds-section__note" style={{ margin: 0 }}>{DEMO_DISCLOSURE}</p>
           </div>
           <div className="cs2-screen__visual">
-            {/* amendment 3 item 1: identical twins, the toggle moves
-                only the annotation layer */}
-            <TwinStage />
+            {/* the shared specimen; the toggle moves only the
+                annotation layer (contract _proto/beat1.html) */}
+            <DriftBeat />
           </div>
         </div>
         <BeatLink index={0} />
@@ -183,20 +220,22 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
       </Beat>
 
       {/* ── 03 · the rebuild: the system tree is the scene; the
-          session clip follows as the compact media moment ── */}
+          session clip follows as the compact media moment.
+          TODO(elleta): the tree awaits its own proto (the rebuild
+          brief scopes it out); content untouched, only the Z-pattern
+          side flipped (visual LEFT after beat 01's visual-right). ── */}
       <Beat index={2} id="cs2-b3">
-        <div className="cs2-screen__grid">
+        <div className="cs2-screen__grid cs2-screen__grid--flip">
           <div className="cs2-screen__text">
             <P text={para(cs, (b) => b.kind === "decision" && b.index === "01", 1)} />
             <P text={para(cs, (b) => b.kind === "decision" && b.index === "02", 0)} />
           </div>
           <div className="cs2-screen__visual">
-            {/* amendment 3 item 3: the animated system tree, real
-                registry edges; the visual argument for architecture */}
             <SystemTree />
           </div>
         </div>
-        <div style={{ maxWidth: "560px" }}>
+        {/* the clip is a full-width media break in the Z-pattern */}
+        <div style={{ maxWidth: "560px" }} data-zbreak>
             {clip && (
               <figure style={{ margin: 0, display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -229,12 +268,13 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
         <BeatLink index={2} />
       </Beat>
 
-      {/* ── 04 · the system checks itself: the gate run ── */}
+      {/* ── 04 · the system checks itself: the gate check on the
+          shared specimen, visual-LEFT / text-RIGHT (contract
+          _proto/beat4.html) ── */}
       <Beat index={3} id="cs2-b4">
-        <div className="cs2-measure">
-          <P text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "Evidence", 0)} />
-        </div>
-        <GateRun />
+        <GateRun
+          text={<P text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "Evidence", 0)} />}
+        />
         {/* the agent surfaces, two flat lines with the real links */}
         <div className="cs2-measure">
           <p className="ds-section__note" style={{ margin: 0 }}>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @font-face{font-family:"Unique";src:url("Unique_Bold.woff2") format("woff2");font-weight:700}
+  @font-face{font-family:"Geist";src:url("geist.woff2") format("woff2");font-weight:100 900}
+  :root{
+    --page:#F5F4EF; --ink:#1A1720; --muted:#5C5865; --line:#E4E1D8; --active:#1A1720;
+    --iris:#5B4BD1; --err:#B45309; --surface:#FBFAF7;
+  }
+  *{margin:0;box-sizing:border-box}
+  body{background:var(--page);font-family:"Geist",system-ui,sans-serif;color:var(--ink);padding:48px 32px}
+  .wrap{max-width:1120px;margin:0 auto}
+  .head{text-align:center;margin-bottom:36px}
+  .head h2{font-family:"Unique";font-weight:700;text-transform:uppercase;font-size:38px;letter-spacing:.005em}
+  .head p{font-size:15px;color:var(--muted);margin-top:12px;max-width:560px;margin-inline:auto;line-height:1.5}
+  .board{display:grid;grid-template-columns:300px 1fr;gap:36px;align-items:start}
+
+  /* left rail: layers, reversed (production top -> figma bottom) */
+  .rail{display:flex;flex-direction:column;gap:14px}
+  .layer{position:relative;text-align:left;border:1px solid var(--line);border-radius:16px;background:var(--surface);
+    padding:16px 18px;cursor:pointer;transition:.15s}
+  .layer .n{font:600 11px/1 ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .layer .d{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .layer[aria-current="true"]{background:var(--active);border-color:var(--active);color:#fff;box-shadow:8px 8px 0 rgba(16,17,20,.12)}
+  .layer[aria-current="true"] .n,.layer[aria-current="true"] .d{color:#fff}
+  .layer[aria-current="true"] .d{opacity:.72}
+  .layer:not([aria-current="true"]){opacity:.5}
+  .layer:not([aria-current="true"]):hover{opacity:.85}
+
+  /* right panel */
+  .panel{border:1px solid var(--line);border-radius:22px;background:var(--surface);padding:28px 30px;box-shadow:0 2px 12px rgba(26,23,32,.05)}
+  .band{display:inline-flex;align-items:center;gap:10px;font:600 11px/1 ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .band .tag{border:1px solid var(--line);border-radius:6px;padding:6px 10px;color:var(--ink)}
+  .where{font:600 11px/1 ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+  /* Geist inside the card, NOT Unique (BELLA rule: Unique never inside a card) */
+  .panel h3{font-family:"Geist";font-weight:700;font-size:24px;letter-spacing:-.01em}
+  .sub{font-size:14px;color:var(--muted);margin-top:4px}
+  .stage{border:1px dashed var(--line);border-radius:10px;min-height:230px;margin:20px 0;padding:24px;display:flex;gap:24px;align-items:center}
+  .tile{width:150px;flex:none}
+  .tile .img{height:78px;border-radius:8px 8px 0 0;background:repeating-linear-gradient(135deg,#eceae4 0 8px,#e3e0d8 8px 16px)}
+  .tile .body{border:1px solid var(--line);border-top:0;border-radius:0 0 8px 8px;padding:12px;background:#fff}
+  .tile .bar{height:10px;width:70%;background:var(--active);border-radius:3px}
+  .tile .bar.sm{width:40%;margin-top:7px;background:var(--line)}
+  .tile.flag .img{outline:2px solid var(--err);outline-offset:2px}
+  .detail{font:500 14px/1.7 ui-monospace,monospace}
+  .detail .err{color:var(--err);font-weight:700}
+  .detail .ok{color:var(--ink);font-weight:700}
+  .detail .mut{color:var(--muted)}
+  .note{font-size:14px;color:var(--ink);font-weight:600;margin-top:2px}
+  .recv{border-top:1px solid var(--line);margin-top:20px;padding-top:16px}
+  .nav{display:flex;align-items:center;justify-content:space-between;margin-top:22px}
+  /* chrome nav = BELLA secondary button recipe (real Button component at build) */
+  .nav button{border:2px solid var(--iris);background:transparent;border-radius:999px;padding:10px 20px;font:600 12px/1 "Geist";letter-spacing:.06em;text-transform:uppercase;color:var(--iris);cursor:pointer;transition:.15s}
+  .nav button:hover{background:var(--iris);color:#fff}
+  .dots{display:flex;gap:8px}
+  .dots i{width:9px;height:9px;border:1px solid var(--muted);border-radius:2px;display:block}
+  .dots i.on{background:var(--active);border-color:var(--active)}
+</style></head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h2>The system, in layers — the journey of a Tile</h2>
+    <p>From the design file to production. Each layer consumes what the one below it produces. We follow one real component — a Tile — at every jump.</p>
+  </div>
+  <div class="board">
+    <div class="rail" id="rail"></div>
+    <div class="panel" id="panel"></div>
+  </div>
+</div>
+<script>
+  // journey order bottom(0) -> top(6); rail renders reversed
+  const L=[
+    {n:"Figma", d:"Web Components Library — what you design", up:"the design", title:"FIGMA",
+      sub:"The Tile as drawn", flag:true,
+      detail:`<span class="mut">component</span> Tile<br><span class="mut">prop</span> brand: periwinkle<br><span class="err">description: (empty)</span>`},
+    {n:"Readable layer", d:"descriptions + tokens with meaning", up:"names with meaning", title:"READABLE LAYER",
+      sub:"The gap gets a name", detail:`<span class="ok">description</span> written in<br>prop <span class="mut">brand</span> → <span class="ok">variant</span><br>radius → <span class="ok">--demo-radius</span>`},
+    {n:"The Bridge", d:"Code Connect · direct merge", up:"a wired pair", title:"THE BRIDGE",
+      sub:"Figma ↔ code, values stream across", detail:`<span class="mut">Figma frame</span> ⇄ <span class="mut">code snippet</span><br>asked in minutes<br><span class="ok">verified by hand</span>`},
+    {n:"Storybook / Code", d:"the source of truth", up:"the shipped component", title:"STORYBOOK / CODE",
+      sub:"The Tile as shipped", detail:`&lt;Tile <span class="ok">variant="action"</span> <span class="ok">size="lg"</span> /&gt;<br><span class="mut">resolves from tokens</span>`},
+    {n:"Agents", d:"build with it", up:"new work, on-system", title:"AGENTS",
+      sub:"Built only from what the system exposes", detail:`agent composes the Tile<br><span class="mut">can only use exposed tokens</span><br><span class="ok">nothing off-palette</span>`},
+    {n:"The Gate", d:"audit + evals — nothing ships without review", up:"only what passes", title:"THE GATE",
+      sub:"audit + evals — nothing ships without review", gate:true,
+      detail:`auditing tokens…<br><span class="err">✗ border: #c7c7c7 — hardcoded</span><br><span class="mut">→ fixed at source:</span> <span class="ok">sem/border/soft</span><br><span class="ok">✓ now passes</span>`,
+      note:"Second review… now it passes."},
+    {n:"Production", d:"published — and watched", up:"—", title:"PRODUCTION",
+      sub:"Published, no new debt", detail:`<span class="ok">✓ shipped</span><br><span class="mut">only what the system approved</span>`},
+  ];
+  let cur=5; // open on THE GATE, the money shot
+  const rail=document.getElementById('rail'), panel=document.getElementById('panel');
+  function render(){
+    rail.innerHTML=L.map((l,i)=>l).reverse().map((l)=>{const i=L.indexOf(l);
+      return `<button class="layer" aria-current="${i===cur}" onclick="go(${i})"><div class="n">${l.n}</div><div class="d">${l.d}</div></button>`}).join('');
+    const l=L[cur];
+    panel.innerHTML=`
+      <div class="band"><span class="tag">Delivers ↑</span> ${l.up==="—"?"the finished product":l.up}</div>
+      <div class="where">Layer ${cur+1} of 7 · the Tile is here</div>
+      <h3>${l.title}</h3><div class="sub">${l.sub}</div>
+      <div class="stage">
+        <div class="tile ${l.flag?'flag':''}"><div class="img"></div><div class="body"><div class="bar"></div><div class="bar sm"></div></div></div>
+        <div><div class="detail">${l.detail}</div>${l.note?`<div class="note" style="margin-top:12px">${l.note}</div>`:''}</div>
+      </div>
+      <div class="recv"><div class="band"><span class="tag">Receives ↓</span> ${cur===0?"nothing — this is the origin":"everything built below — by human or agent"}</div></div>
+      <div class="nav">
+        <button onclick="go(${Math.max(0,cur-1)})">‹ Previous</button>
+        <div class="dots">${L.map((_,i)=>`<i class="${i===cur?'on':''}"></i>`).join('')}</div>
+        <button onclick="go(${Math.min(6,cur+1)})">Next ›</button>
+      </div>`;
+  }
+  window.go=i=>{cur=i;render()};
+  render();
+</script>
+</body></html>
