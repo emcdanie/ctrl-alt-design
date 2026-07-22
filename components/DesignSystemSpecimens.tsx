@@ -12,6 +12,7 @@ import { Select } from "@/components/ui/Select";
 import Heading from "@/components/ui/Heading";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Card from "@/components/ui/Card";
+import AiReadinessExplainer from "@/components/AiReadinessExplainer";
 
 /**
  * §8 /design-system: the site inspecting itself. Every value on this
@@ -462,6 +463,14 @@ export default function DesignSystemSpecimens() {
         </div>
       </section>
 
+        </div>
+      </div>
+
+      {/* ── AI readiness: into or around (its own band; the agents
+          band below is the evidence for it) ── */}
+      <div className="ds-band">
+        <div className="layout-container">
+          <AiReadinessExplainer />
         </div>
       </div>
 

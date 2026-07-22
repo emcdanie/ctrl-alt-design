@@ -22,6 +22,7 @@ const SECTIONS = [
   { id: "ds-colour", label: "Colour", desc: "" /* TODO(elleta) */ },
   { id: "ds-scales", label: "Spacing", desc: "" /* TODO(elleta) */ },
   { id: "ds-controls", label: "Controls", desc: "" /* TODO(elleta) */ },
+  { id: "ds-ai-readiness", label: "AI readiness", desc: "" /* TODO(elleta) */ },
   { id: "ds-agents", label: "Agents", desc: "" /* TODO(elleta) */ },
   { id: "ds-rules", label: "Rules", desc: "" /* TODO(elleta) */ },
   { id: "ds-gate", label: "Gate", desc: "" /* TODO(elleta) */ },
