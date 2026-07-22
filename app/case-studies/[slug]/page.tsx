@@ -6,6 +6,8 @@ import PrototypeEmbed from "@/components/PrototypeEmbed";
 import ScaledFrame from "@/components/ScaledFrame";
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseStudyShell from "@/components/CaseStudyShell";
+import CaseShellV2 from "@/components/CaseShellV2";
+import CodeFirstV2 from "@/components/CodeFirstV2";
 import { Body, PullQuote, Section, Eyebrow, H2 } from "@/components/CaseStudyTypography";
 import { BoldText } from "@/lib/richtext";
 import ChipReadinessMap from "@/components/ChipReadinessMap";
@@ -276,6 +278,37 @@ export default async function CaseStudyPage({
   const { slug } = await params;
   const cs = getCaseStudy(slug);
   if (!cs) notFound();
+
+  /* ── Case shell v2 (case-shell-v2 brief, 22 Jul 2026): Code First
+     renders on the new shell; chip and drift keep the old one until
+     their own passes. The old shell code leaves only when the last
+     case leaves it (brief item 14). ── */
+  if (slug === "brad-frost") {
+    /* reading time, mechanical: every narrative string in the content
+       file at 200 wpm, rounded up */
+    const words = JSON.stringify(cs.blocks ?? [])
+      .replace(/[^a-zA-Z\s]/g, " ")
+      .split(/\s+/)
+      .filter(Boolean).length;
+    const readingMinutes = Math.max(1, Math.ceil(words / 200));
+    return (
+      <CaseStudyLayout>
+        <div className="layout-container">
+          <CaseShellV2
+            slug={slug}
+            eyebrow={cs.eyebrow ?? `${cs.category} · ${cs.year}`}
+            title={cs.title}
+            subhead={cs.summary ?? cs.description}
+            readingMinutes={readingMinutes}
+            tags={cs.tags}
+            linkOut={{ label: "Watch the recorded session", href: "https://www.youtube.com/watch?v=w6bHNKU_Tn8&t=2376s" }}
+          >
+            <CodeFirstV2 cs={cs} />
+          </CaseShellV2>
+        </div>
+      </CaseStudyLayout>
+    );
+  }
 
   const caseItem = findWorkItemBySlug(slug);
 

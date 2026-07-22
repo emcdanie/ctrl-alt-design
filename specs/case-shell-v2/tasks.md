@@ -2,26 +2,36 @@
 
 ## Phase A
 
-- [ ] A1 git mv the four content files into content/case-studies/_archive/ +
+- [x] A1 git mv the four content files into content/case-studies/_archive/ +
       ARCHIVED header comments; trim index.ts to the three stars.
-- [ ] A2 WORK_ITEMS: remove guardian/clarity/filters rows (Design Lab row stays).
-- [ ] A3 BubbleCluster: TOPIC_SPHERES for guardian + clarity (non-interactive,
+- [x] A2 WORK_ITEMS: remove guardian/clarity/filters rows (Design Lab row stays).
+- [x] A3 BubbleCluster: TOPIC_SPHERES for guardian + clarity (non-interactive,
       unlinked, type-field labels, same colour tokens); registry spheres + hub
       unchanged; hive geometry + connectors intact.
-- [ ] A4 Unlink the three archived orbs in DesignSystemSpecimens CASE_ORBS.
-- [ ] A5 about/page.tsx Vitaly relatedWork removed (lift/restore procedure);
+- [x] A4 Unlink the three archived orbs in DesignSystemSpecimens CASE_ORBS.
+- [x] A5 about/page.tsx Vitaly relatedWork removed (lift/restore procedure);
       the Geneva contract entry's caseStudySlug/Label removed.
-- [ ] A6 generate-agent-surfaces list -> 3 stars; llms.txt regenerated.
-- [ ] A7 Route lists: archived case routes out of axe/type/controls/contrast
+- [x] A6 generate-agent-surfaces list -> 3 stars; llms.txt regenerated.
+- [x] A7 Route lists: archived case routes out of axe/type/controls/contrast
       (+ audit-layout); audit-reuse _archive exemption.
-- [ ] A8 audit-visual dead-link sweep: internal hrefs 200 + archived route
-      strings appear nowhere, every gate route.
-- [ ] A9 Verify: gate 13/13, tsc, routes 200 both themes, home + /work shots
-      into _review/after/case-shell-v2/. Open PR. STOP at preview.
+- [x] A8 audit-visual dead-link sweep: internal hrefs 200 + archived route
+      strings appear nowhere, every gate route (seeded-verified).
+- [x] A9 Verified: gate 13/13, tsc, routes 200 both themes, phaseA-* shots in
+      _review/after/case-shell-v2/. PR 41 opened, own commit for her isolated
+      review.
 
-## Phase B (blocked on Elleta's go)
+## Phase B (FINAL brief: run without waiting)
 
-- [ ] B1 Case shell v2 for brad-frost (in-flow title, one idea per screen,
-      annotated opener, parity specimen, dark payoff, clip pattern).
-- [ ] B2 /skills grouped list default; matrix secondary at most.
-- [ ] B3 Verify + shots (/work, home, Code First, /skills); push same PR. STOP.
+- [x] B1 Case shell v2 for brad-frost: CaseShellV2 (in-flow head, reading
+      progress) + CodeFirstV2 (numbered spine, drift opener, live swatches,
+      parity specimen, Readable-by-AI, before/after, differentiator band,
+      design-work screens, clip + 3 bullets, feature row, live inspector,
+      theming payoff on the real contract, reflection, outcomes, journey,
+      personality keycap, next-case loop, thanks). Old shell stays for
+      chip + drift (item 14).
+- [x] B2 /skills: grouped list default (Systems / AI and code / Craft),
+      proven-in links, TODO one-liner slots; matrix behind the toggle.
+- [x] B3 Verified: gate 13/13, tsc, zero console errors (an update-depth loop
+      in the live-token hook was caught and fixed), shots of home, /work,
+      Code First, /skills (1440/390 x themes). Pushed to PR 41. STOP at
+      preview.

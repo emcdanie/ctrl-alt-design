@@ -3012,3 +3012,266 @@ textarea:focus-visible {
     transition: none;
   }
 }
+
+/* ── Case shell v2 (case-shell-v2 brief, Elleta 22 Jul 2026; Carmen
+   ADOPT list + Justine scan rules). Code First only for now; chip and
+   drift keep the old cs-shell recipes until their own passes. ── */
+
+/* thin token-coloured reading-progress indicator, case pages only */
+.cs2-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.cs2-progress__bar {
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  background: var(--color-accent-ink);
+}
+
+/* the in-flow head: no sticky side title, no void */
+.cs2-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-4);
+  padding-top: calc(var(--header-height) + var(--spacing-12));
+  max-width: 62ch;
+}
+
+.cs2-subhead {
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  margin: 0;
+}
+
+.cs2-meta {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+/* one idea per screen: generous rhythm, text BESIDE its visual */
+.cs2-screen {
+  padding-block: var(--spacing-16);
+}
+
+.cs2-screen__grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+@media (min-width: 1024px) {
+  .cs2-screen {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .cs2-screen__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--spacing-12);
+    align-items: center;
+  }
+
+  .cs2-screen__grid--flip .cs2-screen__text {
+    order: 2;
+  }
+
+  .cs2-screen__grid--flip .cs2-screen__visual {
+    order: 1;
+  }
+}
+
+.cs2-screen__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  min-width: 0;
+}
+
+.cs2-screen__head {
+  margin: 0;
+}
+
+.cs2-screen__visual {
+  min-width: 0;
+}
+
+.cs2-body {
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  margin: 0;
+  max-width: 62ch;
+}
+
+.cs2-measure {
+  max-width: 70ch;
+}
+
+/* card rows: 2 / 3 / 4 columns, equal heights, single column narrow */
+.cs2-row {
+  display: grid;
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+  gap: var(--spacing-6);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .cs2-row--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cs2-row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cs2-row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .cs2-row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* the parity readout rows inside the specimen card */
+.cs2-parity {
+  list-style: none;
+  margin: var(--spacing-4) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.cs2-parity__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: var(--spacing-3);
+  align-items: baseline;
+  min-width: 0;
+}
+
+.cs2-parity__state {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+@media (max-width: 479px) {
+  .cs2-parity__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+/* clip bullets ride the shared disc-marker recipe */
+.cs2-bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+/* personality break: her line (TODO slot) + the ONE contact keycap */
+.cs2-personality {
+  align-items: flex-start;
+  gap: var(--spacing-4);
+}
+
+.cs2-next {
+  max-width: 480px;
+}
+
+.cs2-thanks {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+  text-align: center;
+  margin: 0 0 var(--spacing-12);
+}
+
+/* iris emphasis register (brief item 13, the new rule): iris + bold
+   marks scanning words in case narrative. Defined for her voice pass;
+   applied only where she marks words. Case identity colours stay
+   case-scoped; this register is the ACCENT ink, not a case colour. */
+.cs2-em {
+  color: var(--color-accent-ink);
+  font-weight: 700;
+}
+
+/* ── /skills v2 (brief item 15): the readable grouped list ── */
+.sk-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-10);
+}
+
+.sk-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.sk-group__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sk-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr) auto;
+  gap: var(--spacing-4);
+  align-items: baseline;
+  padding-block: var(--spacing-4);
+  border-bottom: 1px solid var(--color-border-soft);
+  min-width: 0;
+}
+
+.sk-row__line {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+.sk-row__proof {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  /* 44px house rule, inline hit-area growth */
+  padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
+}
+
+@media (max-width: 719px) {
+  .sk-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-1);
+  }
+
+  .sk-row__proof {
+    white-space: normal;
+  }
+}

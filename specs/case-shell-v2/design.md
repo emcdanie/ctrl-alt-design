@@ -54,27 +54,52 @@ Bespoke sites that need hands:
 
 STOP at preview after Phase A. Elleta checks the curated library.
 
-## Phase B (only on her go, this session): case shell v2 on Code First
+## Phase B (FINAL brief, 22 Jul, supersedes the stop-and-wait version): case
+## shell v2 on Code First, per the Carmen ADOPT list + Justine scan rules
 
-- Sticky side title dies; the case title is a normal in-flow head.
-- Screen architecture: each section ONE idea at roughly one viewport, text
-  BESIDE its visual (alternating), nothing competing within a screen.
-- Opening screen: the broken/before state annotated with the merged flag
-  recipe (TokenAnnotation, one lane, anchored leaders) so the problem is
-  visible before any reading.
-- One interactive specimen: the parity specimen, Figma value vs Storybook
-  value read live, flags anchored to the exact part each token drives.
-- Theming payoff: the same specimen flipped dark via the existing contract,
-  framed "same tokens, second theme, zero redesign".
-- Video only as short clips with a 3-bullet "what you'd see" beside them.
-- Narrative text is real HTML at the 16px reading tier, keyword-rich; existing
-  approved copy reused where it fits, new prose slots TODO(elleta); NDA-safe
-  outbound links to shipped surfaces where allowed.
-- chip and drift keep the old shell (rebuilt in their own passes); the old
-  shell code is deleted only when the last case leaves it.
-- /skills: default becomes a plain grouped list (skill, one plain-language
-  line TODO(elleta), a "proven in" link to a case or lab piece); the matrix
-  stays as a secondary toggle only if it costs nothing.
+Reference committed: docs/briefs/carmen-structure-audit.md (from _review/).
+
+- In-flow head (sticky side title dead): outcome-framed title (the existing
+  thesis), one-sentence problem subhead (the existing summary sentence),
+  mechanical reading time, existing Tag row, link out to the public recorded
+  session (the NDA-safe shipped surface).
+- Numbered spine 01 Foundation / 02 The design work / 03 Current chapter;
+  every screen ONE idea at roughly one viewport, text BESIDE its visual,
+  alternating; thin token-coloured reading-progress bar on case pages only.
+- 01 Foundation: the drift pair visible before reading (the observed
+  "Primary, Large" vs "variant: action, size: lg" annotated with the flag
+  recipe + leaders); the token layer as live swatch artifacts; the PARITY
+  specimen (declared source value vs live rendered value per theme-stable
+  token, In sync / Drift stated in words); the Readable-by-AI block (real
+  llms.txt / bella.json / gate story); the honest Before tokens / On system
+  pair.
+- Differentiator band, hers and real: BELLA tokens, the 13-audit gate, the
+  CLAUDE.md constitution, agent surfaces; band title TODO(elleta).
+- 02 The design work: token-alignment screen (decision 01 copy + the
+  command-center visual), the MCP screen (decision 02 copy + the short clip
+  with its 3-bullet "what you would see" and the 39:36 link), the pull
+  quote, and the three-column feature row (the three work areas).
+- 03 Current chapter: the live inspector inline ("the same discipline, on
+  this site", existing Evidence copy); the theming payoff via the REAL
+  contract (nested fixed-theme panels are outside the recorded theming
+  contract, so the payoff is the live lane + the site's own theme toggle,
+  "flip the theme and watch the values follow"); her closing reflection.
+- OUTCOMES band: three qualitative cards from the approved outcome copy,
+  "No invented numbers." line, TODO(elleta) elaboration slot.
+- THE JOURNEY: numbered phases, one line each, the rules-as-law recipe; the
+  in-progress phase is the discipline running this site.
+- Personality-break card (TODO(elleta) voice) with the ONE contact keycap;
+  NEXT CASE card chaining chip -> code-first -> drift -> chip; small thanks
+  line.
+- Iris emphasis register (.cs2-em, iris + 700) defined for her scanning-word
+  pass; applied nowhere until she marks words.
+- chip and drift keep the old shell; old shell code is deleted only when the
+  last case leaves it.
+- /skills: DEFAULT is the plain grouped list (grouping taxonomy: Systems /
+  AI and code / Craft, my mechanical pick); per skill a TODO(elleta)
+  one-liner slot and a "proven in" link to the best-ranked live piece; a
+  skill with no live proof renders honestly linkless (UX Research, flagged);
+  the matrix stays as the secondary SegmentedControl toggle.
 
 ## Standing rules
 
