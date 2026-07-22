@@ -479,3 +479,15 @@ Interactive MULTI-PART demos (the journey) get ONE container card (one
 border, one shadow) holding all their working parts. The mixed treatment is
 deliberate: flat = a specimen under inspection; carded = an instrument you
 operate.
+
+## CaseBeat is THE case-study beat template (airtight spec, 22 Jul 2026)
+
+components/CaseBeat.tsx + docs/recipes/case-beat.md implement
+docs/briefs/case-layout-constitution.md. The structural law: the headline is
+a CHILD of the text column (never a full-width banner), so the whole
+narrative unit moves together under `.beat--flip`; visuals are FLAT (no
+card/frame; the demo specimen is the only card); align-items start;
+--spacing-* only. Asserted in audit:visual (headline-shares-column,
+visual-has-no-frame + no-Card-wrapper, strict alternation), proven RED on
+the carded beat-02 journey before the fix. Future case studies compose
+beats from CaseBeat, never bespoke.
