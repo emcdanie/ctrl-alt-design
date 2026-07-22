@@ -392,6 +392,63 @@ for (const theme of ["light", "dark"]) {
       fails++;
       console.error(`VISUAL FAIL (${theme} ${width}) stage geometry: ${b}`);
     }
+    /* LEADERS DO NOT CROSS (polish pass, Elleta 22 Jul; DESIGN.md
+       section 5 addendum): no annotation leader may cross another
+       leader, and a leader may enter the card body at most once and
+       never exit it again (it lands on its part, it does not
+       traverse). Proven red on the pre-polish corner routing. */
+    const crossBad = await page.evaluate(() => {
+      const out = [];
+      const seg = (a, b, c, d) => {
+        const ccw = (p, q, r) => (r.y - p.y) * (q.x - p.x) - (q.y - p.y) * (r.x - p.x);
+        return ccw(a, c, d) * ccw(b, c, d) < 0 && ccw(a, b, c) * ccw(a, b, d) < 0;
+      };
+      for (const stage of document.querySelectorAll(".spec-stage")) {
+        const svg = stage.querySelector(".ds-leaders");
+        if (!svg) continue;
+        const sr = svg.getBoundingClientRect();
+        if (sr.width < 2) continue;
+        const card = stage.querySelector(".csp-card")?.getBoundingClientRect();
+        const polys = [...stage.querySelectorAll(".ds-leaders path")].map((p) => {
+          const len = p.getTotalLength();
+          const pts = [];
+          for (let t = 0; t <= 1.001; t += 0.05) {
+            const pt = p.getPointAtLength(len * Math.min(1, t));
+            pts.push({ x: sr.left + pt.x, y: sr.top + pt.y });
+          }
+          return { id: p.getAttribute("data-for") ?? "?", pts };
+        });
+        for (let i = 0; i < polys.length; i++) {
+          for (let j = i + 1; j < polys.length; j++) {
+            let crossed = false;
+            for (let a = 0; a < polys[i].pts.length - 1 && !crossed; a++) {
+              for (let b = 0; b < polys[j].pts.length - 1 && !crossed; b++) {
+                if (seg(polys[i].pts[a], polys[i].pts[a + 1], polys[j].pts[b], polys[j].pts[b + 1])) {
+                  crossed = true;
+                }
+              }
+            }
+            if (crossed) out.push(`leaders cross: ${polys[i].id} × ${polys[j].id}`);
+          }
+          if (card) {
+            let entered = false;
+            for (const pt of polys[i].pts) {
+              const inside = pt.x > card.left && pt.x < card.right && pt.y > card.top && pt.y < card.bottom;
+              if (inside) entered = true;
+              else if (entered) {
+                out.push(`leader ${polys[i].id} traverses the card body`);
+                break;
+              }
+            }
+          }
+        }
+      }
+      return [...new Set(out)];
+    });
+    for (const b of crossBad) {
+      fails++;
+      console.error(`VISUAL FAIL (${theme} ${width}) leader crossing: ${b}`);
+    }
     /* Z-PATTERN LAW (rebuild brief, 22 Jul): consecutive sided scenes
        alternate which side the visual sits on; a full-width block
        (stepper, clip, [data-zbreak]) between them resets the run.

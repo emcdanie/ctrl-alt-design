@@ -3369,9 +3369,12 @@ textarea:focus-visible {
   box-shadow: var(--shadow-orb);
 }
 
+/* the corner target hugs the BOTTOM-right corner: the corner leader
+   takes a short low path and never routes up past META (the
+   leaders-do-not-cross rule, DESIGN.md section 5 addendum) */
 .csp-corner {
   position: absolute;
-  top: 0;
+  bottom: 0;
   right: 0;
   width: var(--spacing-5);
   height: var(--spacing-5);

@@ -447,3 +447,14 @@ ground. Asserted in audit:visual (no leader path may intersect the bounding
 box of any text or table node; proven red on the pre-restory parity layout
 before the fix). The `.demo-scope` class is the flat variant of the
 case-specimen register scope (same leak law as `.spec-stage`).
+
+## Section 5 addendum: annotation leaders do not cross (polish pass, 22 Jul 2026)
+
+No annotation leader may cross another leader, and a leader enters the card
+body at most once, landing on its part, never traversing. Routing law for the
+case specimen: CORNER hugs the bottom-right corner with a short low path
+(never up past META); META and TITLE drop straight; IDENTITY and TAG stay on
+the left. Asserted in audit:visual (pairwise polyline intersection + the
+enter-once rule, both themes, 1440 + 390); proven red on the pre-polish
+corner routing before the fix. Shadow law recorded with it: card surfaces use
+--shadow-soft; --shadow-orb is for spheres and keycaps only (asserted).
