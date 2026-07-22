@@ -3,9 +3,10 @@
 import { useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Button } from "@/components/ui/Button";
+import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import CaseCard from "@/components/CaseCard";
 import CaseBeat from "@/components/CaseBeat";
-import CaseSpecimen, { SPEC_FLAGS, type FlagState } from "@/components/CaseSpecimen";
+import CaseSpecimen, { SPEC_FLAGS, useResolvedTokens, type FlagState } from "@/components/CaseSpecimen";
 import LayerJourney from "@/components/LayerJourney";
 import { PullQuote } from "@/components/CaseStudyTypography";
 import { BoldText } from "@/lib/richtext";
@@ -169,12 +170,32 @@ function BeatLink({ index }: { index: number }) {
   return <p className="cs2-beat__link">{line}</p>;
 }
 
+/** Beat 01's before/on-system toggle, RESTORED (Part B2): moves ONLY
+    the annotation layer. Before labels are the ACTUAL resolved
+    values, read live, marked hand-set; the card itself is
+    probe-identical between states. State lives here so the toggle
+    sits in the CaseBeat control slot under the body. (The dormant
+    DRIFT_AUTOPLAY stays retired.) */
+function useDriftBeat() {
+  const [view, setView] = useState("on");
+  const before = view === "before";
+  const resolved = useResolvedTokens(SPEC_FLAGS.map((f) => f.token));
+  const flagStates: Record<string, FlagState> = {};
+  if (before) {
+    for (const f of SPEC_FLAGS) {
+      flagStates[f.token] = { label: `${resolved[f.token] ?? "…"} hand-set`, tone: "drift" };
+    }
+  }
+  return { view, setView, before, flagStates };
+}
+
 /* ── the composition ── */
 
 export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
   /* the run controls live in CaseBeat's control slot under the body
      (AI-flow spec); a bumped signal tells the device to run */
   const [journeySignal, setJourneySignal] = useState(0);
+  const drift = useDriftBeat();
   const summary = cs.blocks?.find((b) => b.kind === "summary") as
     | { context: string; approach: string; outcome: string }
     | undefined;
@@ -218,10 +239,25 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
             <p className="ds-section__note" style={{ margin: 0 }}>{DEMO_DISCLOSURE}</p>
           </>
         }
-        visual={<CaseSpecimen label="On system" />}
+        control={
+          /* the toggle moves ONLY the annotation layer; SegmentedControl
+             is the taxonomy's mutually-exclusive-views control (§5) */
+          <SegmentedControl
+            label="View"
+            options={[
+              { value: "on", label: "On system" },
+              { value: "before", label: "Before" },
+            ]}
+            value={drift.view}
+            onChange={drift.setView}
+          />
+        }
+        visual={<CaseSpecimen flagStates={drift.flagStates} label={drift.before ? "Before" : "On system"} />}
         foot={
           <p className="cs2-kicker-row" style={{ margin: 0 }}>
-            On system: both sides carry the same token names.
+            {drift.before
+              ? "Before: Figma said one thing, the code said another. Same card."
+              : "On system: both sides carry the same token names."}
           </p>
         }
       />
