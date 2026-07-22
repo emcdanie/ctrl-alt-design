@@ -470,3 +470,12 @@ bottoms align). The active rail step links to the panel visibly: the row's
 travelling trace, a small iris pointer, and the shared iris accent on the
 panel's left edge. The short-lived full-width exception from earlier the
 same day is superseded; the pull quote remains the one full-width moment.
+
+## Specimens flat, demos carded (Elleta's markups, 22 Jul 2026)
+
+Annotated SPECIMENS (the drift and gate beats) sit FLAT on the page ground:
+the card is the subject and the flags float around it, never framed. 
+Interactive MULTI-PART demos (the journey) get ONE container card (one
+border, one shadow) holding all their working parts. The mixed treatment is
+deliberate: flat = a specimen under inspection; carded = an instrument you
+operate.
