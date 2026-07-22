@@ -491,3 +491,14 @@ card/frame; the demo specimen is the only card); align-items start;
 visual-has-no-frame + no-Card-wrapper, strict alternation), proven RED on
 the carded beat-02 journey before the fix. Future case studies compose
 beats from CaseBeat, never bespoke.
+
+## Case-page type hierarchy, locked (template-first fix, 22 Jul 2026)
+
+One scale, one display family: H1 case title = Unique via --font-hero-display
+at --font-case-title (largest) -> beat headline = Unique at the dedicated
+--font-beat-headline step below (never Geist at display size; the 22 Jul
+regression is the counter-example) -> eyebrow = mono tag tier -> keyline =
+Geist 600 at lg -> body 16-18px. Demo run/media controls share ONE size (the
+demo-btn recipe, a real button) and live in CaseBeat's control slot,
+right-aligned under the body text; quiet captions/links live in the footnote
+slot beneath the visual. Both slots are template-level.

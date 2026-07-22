@@ -24,6 +24,8 @@ export default function CaseBeat({
   keyline,
   body,
   visual,
+  control,
+  foot,
   flip = false,
   id,
 }: {
@@ -39,6 +41,11 @@ export default function CaseBeat({
   body: React.ReactNode;
   /** FLAT visual; no card wrapper (the demo specimen is the subject) */
   visual: React.ReactNode;
+  /** the CONTROL slot: run/media controls, right-aligned under the
+      body on the text side (one size, the demo-btn recipe) */
+  control?: React.ReactNode;
+  /** the FOOTNOTE slot: one quiet row beneath the visual */
+  foot?: React.ReactNode;
   flip?: boolean;
   /** anchor id, applied to the headline */
   id?: string;
@@ -51,8 +58,12 @@ export default function CaseBeat({
           <h2 className="beat-headline" id={id}>{headline}</h2>
           {keyline && <p className="beat-keyline">{keyline}</p>}
           <div className="beat-body">{body}</div>
+          {control && <div className="beat-control">{control}</div>}
         </div>
-        <div className="beat-visual">{visual}</div>
+        <div className="beat-visual">
+          {visual}
+          {foot && <div className="beat-foot">{foot}</div>}
+        </div>
       </div>
     </section>
   );
