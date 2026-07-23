@@ -1180,6 +1180,14 @@ li {
   outline-offset: var(--ring-focus-offset);
 }
 
+/* ChipReadinessMap: the inline-styled cell + approve buttons carry no
+   focus ring of their own; this gives them the shared visible-focus
+   recipe (backs the case's Accessibility tag). */
+.chip-rmap__btn:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
 /* PRIMARY: the calm keycap, Elleta's task-2 pick (Candidate A,
    20 Jul). Values are the --shadow-key / --gloss-key token families;
    press = translateY(2px) onto the reduced plate. Hover gains the

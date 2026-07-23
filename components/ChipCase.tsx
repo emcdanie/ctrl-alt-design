@@ -127,6 +127,19 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
         id="chip-b2"
         flip
         body={<Scannable text={approachOwnSystems} />}
+        control={
+          /* §5 SECONDARY: flat iris outline (the .btn-key base), never the
+             primary keycap. External static demo, opens in a new tab. */
+          <a
+            className="btn-key"
+            href="/demos/chip-dashboard.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open the live CHIP prototype (opens in a new tab)"
+          >
+            Open the live CHIP prototype
+          </a>
+        }
         visual={mapRows ? <ChipReadinessMap rows={mapRows} /> : <CasePlaceholder />}
       />
 

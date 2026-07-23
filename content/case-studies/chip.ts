@@ -6,10 +6,12 @@ import type { CaseStudy } from "@/lib/content";
  * CHIP changed in her weekly workflow; an optional building-in-public
  * moment; the Loom URL (chip-evidence-0-bridge-hero.png is reserved
  * as its poster and is deliberately not placed yet).
- * TODO(elleta): the library row now claims Accessibility (Pass E task
- * 5a); nothing in this prose backs it yet. One line in your words
- * (e.g. the readiness map's keyboard/aria work), or the claim comes
- * back out. */
+ * ACCESSIBILITY TAG (Pass E task 5a) — RESOLVED: the library row's
+ * Accessibility claim is now backed by the interactive ChipReadinessMap
+ * (beat 02) — cells are keyboard-operable buttons, aria-pressed and
+ * labelled, visible focus, reduced-motion respected, with a visible
+ * a11y line on the map itself. TODO(elleta): confirm that line's
+ * wording (components/ChipReadinessMap.tsx). */
 
 /* Conformance (Pass E task 11, honest): decision-led, the template
  * REFERENCE. One summary, three decisions with evidence, lessons.

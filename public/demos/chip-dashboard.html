@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CHIP · System Health</title>
+<style>
+  /* ============================================================
+     BELLA tokens (placeholders, swap for the real BELLA values).
+     Token-first: nothing below references a raw hex directly.
+     Warm neutral palette, no pure white, editorial.
+     ============================================================ */
+  :root {
+    /* Surfaces */
+    --bella-color-paper:        #F1ECE2;   /* page, warm, not white */
+    --bella-color-surface:      #FBF8F1;   /* cards, warm off-white */
+    --bella-color-surface-sunk: #EBE4D6;
+
+    /* Ink */
+    --bella-color-ink:          #29241E;   /* AAA on paper */
+    --bella-color-ink-soft:     #5B5348;
+    --bella-color-ink-faint:    #8A8072;
+
+    /* Structure */
+    --bella-color-line:         #DCD3C4;
+    --bella-color-line-strong:  #C9BEAB;
+
+    /* Accent */
+    --bella-color-accent:       #B0512A;   /* clay */
+    --bella-color-accent-ink:   #7E3A1E;
+
+    /* Score bands (warm-tuned semantic) */
+    --bella-score-strong-bg:    #D9E4CB;
+    --bella-score-strong-ink:   #35521F;
+    --bella-score-mid-bg:       #F0DEBC;
+    --bella-score-mid-ink:      #7A5717;
+    --bella-score-low-bg:       #EBCBC1;
+    --bella-score-low-ink:      #8C3320;
+
+    /* Type */
+    --bella-font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --bella-font-text:    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --bella-text-base:    16px;   /* body minimum */
+
+    /* Space */
+    --bella-space-1: 4px;
+    --bella-space-2: 8px;
+    --bella-space-3: 12px;
+    --bella-space-4: 16px;
+    --bella-space-5: 24px;
+    --bella-space-6: 32px;
+    --bella-space-7: 48px;
+
+    --bella-radius: 10px;
+    --bella-radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bella-color-paper);
+    color: var(--bella-color-ink);
+    font-family: var(--bella-font-text);
+    font-size: var(--bella-text-base);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: var(--bella-space-7) var(--bella-space-5) var(--bella-space-6);
+  }
+
+  .eyebrow {
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--bella-color-accent-ink);
+    font-weight: 700;
+    margin: 0 0 var(--bella-space-3);
+  }
+
+  /* ---------- Masthead ---------- */
+  .masthead {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--bella-space-5);
+    border-bottom: 2px solid var(--bella-color-ink);
+    padding-bottom: var(--bella-space-4);
+  }
+  .wordmark {
+    font-family: var(--bella-font-display);
+    font-size: 46px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    margin: 0;
+    font-weight: 600;
+  }
+  .wordmark span { color: var(--bella-color-accent); }
+  .masthead .sub {
+    font-size: 16px;
+    color: var(--bella-color-ink-soft);
+    margin: var(--bella-space-2) 0 0;
+    max-width: 30ch;
+  }
+  .masthead .stamp {
+    text-align: right;
+    font-size: 14px;
+    color: var(--bella-color-ink-faint);
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .masthead .stamp b { color: var(--bella-color-ink); font-weight: 600; }
+
+  /* ---------- Section heads ---------- */
+  .section-title {
+    font-family: var(--bella-font-display);
+    font-size: 24px;
+    font-weight: 600;
+    margin: var(--bella-space-7) 0 var(--bella-space-2);
+  }
+  .section-note {
+    font-size: 16px;
+    color: var(--bella-color-ink-soft);
+    margin: 0 0 var(--bella-space-5);
+    max-width: 66ch;
+  }
+
+  /* ---------- KPI band ---------- */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--bella-space-4);
+    margin-top: var(--bella-space-6);
+  }
+  .kpi {
+    background: var(--bella-color-surface);
+    border: 1px solid var(--bella-color-line);
+    border-radius: var(--bella-radius);
+    padding: var(--bella-space-5) var(--bella-space-4) var(--bella-space-4);
+  }
+  .kpi .label {
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bella-color-ink-faint);
+    margin: 0 0 var(--bella-space-3);
+    font-weight: 600;
+  }
+  .kpi .num {
+    font-family: var(--bella-font-display);
+    font-size: 40px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi .delta {
+    font-size: 14px;
+    margin-top: var(--bella-space-3);
+    color: var(--bella-color-ink-soft);
+  }
+  .kpi .delta .up { color: var(--bella-score-strong-ink); font-weight: 600; }
+  .kpi .flow {
+    font-size: 13px;
+    color: var(--bella-color-accent-ink);
+    margin-top: var(--bella-space-2);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- Readiness map ---------- */
+  .systems { display: grid; gap: var(--bella-space-4); }
+  .system {
+    background: var(--bella-color-surface);
+    border: 1px solid var(--bella-color-line);
+    border-radius: var(--bella-radius);
+    padding: var(--bella-space-5);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--bella-space-5);
+    align-items: center;
+  }
+  .system .id .name {
+    font-family: var(--bella-font-display);
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0;
+  }
+  .system .id .kind {
+    font-size: 14px;
+    color: var(--bella-color-ink-faint);
+    margin: var(--bella-space-1) 0 var(--bella-space-3);
+  }
+  .overall {
+    display: flex;
+    align-items: baseline;
+    gap: var(--bella-space-2);
+  }
+  .overall .score {
+    font-family: var(--bella-font-display);
+    font-size: 38px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .overall .of { font-size: 15px; color: var(--bella-color-ink-faint); }
+  .track {
+    height: 7px;
+    background: var(--bella-color-surface-sunk);
+    border-radius: 999px;
+    margin-top: var(--bella-space-3);
+    overflow: hidden;
+  }
+  .track > span { display: block; height: 100%; background: var(--bella-color-accent); border-radius: 999px; }
+
+  /* station strip */
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: var(--bella-space-2);
+  }
+  .cell {
+    border-radius: var(--bella-radius-sm);
+    padding: var(--bella-space-3) var(--bella-space-1);
+    text-align: center;
+    border: 1px solid transparent;
+  }
+  .cell .v {
+    font-size: 17px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .cell .s {
+    display: block;
+    margin-top: var(--bella-space-2);
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+  .b-strong { background: var(--bella-score-strong-bg); color: var(--bella-score-strong-ink); }
+  .b-mid    { background: var(--bella-score-mid-bg);    color: var(--bella-score-mid-ink); }
+  .b-low    { background: var(--bella-score-low-bg);    color: var(--bella-score-low-ink); }
+
+  /* legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--bella-space-4);
+    align-items: center;
+    margin-top: var(--bella-space-5);
+    font-size: 14px;
+    color: var(--bella-color-ink-soft);
+  }
+  .swatch {
+    display: inline-block; width: 14px; height: 14px; border-radius: 4px;
+    vertical-align: -2px; margin-right: var(--bella-space-2);
+  }
+
+  .footer {
+    margin-top: var(--bella-space-7);
+    border-top: 1px solid var(--bella-color-line);
+    padding-top: var(--bella-space-4);
+    font-size: 14px;
+    color: var(--bella-color-ink-faint);
+    display: flex; justify-content: space-between; gap: var(--bella-space-4);
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 720px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .system { grid-template-columns: 1fr; }
+    .strip { grid-template-columns: repeat(5, 1fr); }
+    .wordmark { font-size: 38px; }
+    .masthead { flex-direction: column; align-items: flex-start; }
+    .masthead .stamp { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Masthead -->
+  <header class="masthead">
+    <div>
+      <h1 class="wordmark">CHIP<span>.</span></h1>
+      <p class="sub">My personal operating system. Capture by voice, cluster the mess, publish what matters, and keep my own systems AI-ready.</p>
+    </div>
+    <div class="stamp">
+      <b>System Health</b><br />
+      Cycle: June 2026<br />
+      Illustrative data
+    </div>
+  </header>
+
+  <!-- Pipeline KPIs -->
+  <h2 class="section-title">The pipeline this cycle</h2>
+  <p class="section-note">Voice in, clarity out. CHIP’s job is to move raw thinking from a shower-thought to a published idea without losing the thread.</p>
+  <section class="kpis" aria-label="Pipeline metrics">
+    <div class="kpi">
+      <p class="label">Captured</p>
+      <div class="num">148</div>
+      <div class="delta"><span class="up">▲ 22</span> vs. last cycle</div>
+      <div class="flow">voice notes →</div>
+    </div>
+    <div class="kpi">
+      <p class="label">Clustered</p>
+      <div class="num">23</div>
+      <div class="delta"><span class="up">▲ 5</span> themes surfaced</div>
+      <div class="flow">→ clusters →</div>
+    </div>
+    <div class="kpi">
+      <p class="label">Drafted</p>
+      <div class="num">11</div>
+      <div class="delta">staged, ready to edit</div>
+      <div class="flow">→ drafts →</div>
+    </div>
+    <div class="kpi">
+      <p class="label">Published</p>
+      <div class="num">6</div>
+      <div class="delta"><span class="up">▲ 2</span> learning in public</div>
+      <div class="flow">→ out loud</div>
+    </div>
+  </section>
+
+  <!-- AI-Readiness Map -->
+  <h2 class="section-title">AI-readiness map</h2>
+  <p class="section-note">
+    I borrowed the ten-station inspection from Brad Frost, TJ Pitre &amp; Ian Frost’s AI &amp; Design Systems course
+    and pointed it at my <em>own</em> systems. Same question, different subject: how ready is each one to be read and
+    wielded by an AI agent, not just a human? Each cell is a station score; the number on the left is the system’s overall readiness.
+  </p>
+
+  <div class="systems">
+    <!-- BELLA -->
+    <article class="system">
+      <div class="id">
+        <p class="name">BELLA</p>
+        <p class="kind">Design system · token-first</p>
+        <div class="overall"><span class="score">92</span><span class="of">/ 100</span></div>
+        <div class="track"><span style="width:92%"></span></div>
+      </div>
+      <div class="strip" aria-label="BELLA station scores">
+        <div class="cell b-strong"><div class="v">95</div><span class="s">Cov</span></div>
+        <div class="cell b-strong"><div class="v">90</div><span class="s">Best</span></div>
+        <div class="cell b-strong"><div class="v">98</div><span class="s">A11y</span></div>
+        <div class="cell b-strong"><div class="v">94</div><span class="s">Lang</span></div>
+        <div class="cell b-strong"><div class="v">85</div><span class="s">Test</span></div>
+        <div class="cell b-strong"><div class="v">88</div><span class="s">Orch</span></div>
+        <div class="cell b-strong"><div class="v">90</div><span class="s">Gov</span></div>
+        <div class="cell b-strong"><div class="v">92</div><span class="s">Docs</span></div>
+        <div class="cell b-strong"><div class="v">95</div><span class="s">M-Read</span></div>
+        <div class="cell b-strong"><div class="v">96</div><span class="s">Agent</span></div>
+      </div>
+    </article>
+
+    <!-- elleta.design -->
+    <article class="system">
+      <div class="id">
+        <p class="name">elleta.design</p>
+        <p class="kind">Portfolio site · in migration</p>
+        <div class="overall"><span class="score">74</span><span class="of">/ 100</span></div>
+        <div class="track"><span style="width:74%"></span></div>
+      </div>
+      <div class="strip" aria-label="elleta.design station scores">
+        <div class="cell b-strong"><div class="v">80</div><span class="s">Cov</span></div>
+        <div class="cell b-mid"><div class="v">72</div><span class="s">Best</span></div>
+        <div class="cell b-strong"><div class="v">85</div><span class="s">A11y</span></div>
+        <div class="cell b-mid"><div class="v">70</div><span class="s">Lang</span></div>
+        <div class="cell b-low"><div class="v">55</div><span class="s">Test</span></div>
+        <div class="cell b-mid"><div class="v">68</div><span class="s">Orch</span></div>
+        <div class="cell b-mid"><div class="v">62</div><span class="s">Gov</span></div>
+        <div class="cell b-mid"><div class="v">75</div><span class="s">Docs</span></div>
+        <div class="cell b-mid"><div class="v">78</div><span class="s">M-Read</span></div>
+        <div class="cell b-strong"><div class="v">80</div><span class="s">Agent</span></div>
+      </div>
+    </article>
+
+    <!-- Content Engine -->
+    <article class="system">
+      <div class="id">
+        <p class="name">Content Engine</p>
+        <p class="kind">Learning-in-public workflow</p>
+        <div class="overall"><span class="score">68</span><span class="of">/ 100</span></div>
+        <div class="track"><span style="width:68%"></span></div>
+      </div>
+      <div class="strip" aria-label="Content Engine station scores">
+        <div class="cell b-mid"><div class="v">70</div><span class="s">Cov</span></div>
+        <div class="cell b-mid"><div class="v">65</div><span class="s">Best</span></div>
+        <div class="cell b-mid"><div class="v">62</div><span class="s">A11y</span></div>
+        <div class="cell b-mid"><div class="v">72</div><span class="s">Lang</span></div>
+        <div class="cell b-low"><div class="v">50</div><span class="s">Test</span></div>
+        <div class="cell b-mid"><div class="v">60</div><span class="s">Orch</span></div>
+        <div class="cell b-low"><div class="v">58</div><span class="s">Gov</span></div>
+        <div class="cell b-strong"><div class="v">80</div><span class="s">Docs</span></div>
+        <div class="cell b-strong"><div class="v">82</div><span class="s">M-Read</span></div>
+        <div class="cell b-strong"><div class="v">85</div><span class="s">Agent</span></div>
+      </div>
+    </article>
+  </div>
+
+  <div class="legend" aria-label="Legend">
+    <span><span class="swatch" style="background:var(--bella-score-strong-bg)"></span>80-100 · sturdy</span>
+    <span><span class="swatch" style="background:var(--bella-score-mid-bg)"></span>60-79 · drifting</span>
+    <span><span class="swatch" style="background:var(--bella-score-low-bg)"></span>&lt;60 · check engine light</span>
+    <span style="margin-left:auto">Stations: Coverage · Best practices · Accessibility · Shared language · Testing · Orchestration · Governance · Docs · Machine-readable · Agent access</span>
+  </div>
+
+  <footer class="footer">
+    <span>CHIP concept · built on BELLA tokens · data is illustrative.</span>
+    <span>Readiness model adapted from the AI &amp; Design Systems course (Frost / Pitre / Frost).</span>
+  </footer>
+
+</div>
+</body>
+</html>
