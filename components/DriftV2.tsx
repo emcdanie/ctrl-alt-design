@@ -1,0 +1,209 @@
+import CaseBeat from "@/components/CaseBeat";
+import CaseCard from "@/components/CaseCard";
+import CasePlaceholder from "@/components/CasePlaceholder";
+import ScaledFrame from "@/components/ScaledFrame";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { P, Scannable, para } from "@/components/CaseProse";
+import { WORK_ITEMS } from "@/lib/workLibrary";
+import type { CaseStudy } from "@/lib/content";
+
+/**
+ * From Drift to Foundation on the CaseBeat template (case-migration
+ * kickoff, Elleta 23 Jul; the worked reference is CodeFirstV2).
+ * STRUCTURAL MIGRATION, NOT A REWRITE: every rendered sentence is her
+ * existing approved copy from content/case-studies/
+ * design-system-transformation.ts restructured into four beats;
+ * cited mechanical trims are commented at their site; every NEW word
+ * a slot needs is marked TODO(elleta). Visuals are STATIC: the
+ * case's recreated embeds and poster still; the outcome beat carries
+ * the sanctioned In-progress placeholder until her asset lands.
+ *
+ * Beat map (headlines = her decision titles / outcome statement,
+ * keylines = her why lines / lessons lead, all verbatim):
+ * 01 the audit -> 02 the cascade -> 03 the governance -> 04 the takeaway.
+ */
+
+/* kickers: mechanical single-noun extractions from her copy
+   ("audit", "cascade", "governance" are her words; "The takeaway"
+   matches the Code First convention). TODO(elleta): confirm all four. */
+const KICKERS = ["The audit", "The cascade", "The governance", "The takeaway"];
+
+/* her decision-02 paragraph names "the interactive recreation below";
+   the visual is a STILL now (kickoff: static only), so that sentence
+   is a cited mechanical trim. TODO(elleta): confirm the trim. */
+const CASCADE_TRIM = /\s*The interactive recreation below[^.]*\.\s*/;
+
+/* the poster caption: the content file's prototype title with
+   "Interactive " cut (the still is not interactive; caption accuracy,
+   case-build-check). TODO(elleta): confirm the wording. */
+const CASCADE_CAPTION = "Recreation: token cascade and design-code parity";
+
+export default function DriftV2({ cs }: { cs: CaseStudy }) {
+  const summary = cs.blocks?.find((b) => b.kind === "summary") as
+    | { context: string; approach: string; outcome: string }
+    | undefined;
+  const disclosure = cs.blocks?.find((b) => b.kind === "disclosure") as { text: string } | undefined;
+  const lessons = cs.blocks?.find((b) => b.kind === "lessons") as { text: string } | undefined;
+  const decision = (index: string) =>
+    cs.blocks?.find((b) => b.kind === "decision" && (b as { index?: string }).index === index) as
+      | { title: string; why?: string; evidence?: { src: string; title: string; designWidth: number; designHeight: number } }
+      | undefined;
+  const d1 = decision("01");
+  const d2 = decision("02");
+  const d3 = decision("03");
+  /* her outcome statement (bold lead) is beat 04's headline; the rest
+     of the outcome is body. Markers strip mechanically. */
+  const outcomeLead = "A shared language for how the product should look, behave, and grow.";
+  const outcomeRest = (summary?.outcome ?? "").replace(/\*\*/g, "").replace(outcomeLead, "").trim();
+  /* lessons: first sentence is the keyline, verbatim; the rest is body */
+  const lessonsKeyline =
+    "Inconsistency is rarely the root problem, it is a symptom of missing structure and undocumented decisions.";
+  const lessonsRest = (lessons?.text ?? "").replace(lessonsKeyline, "").trim();
+  const nextItem = WORK_ITEMS.find((i) => i.id === "chip"); /* the three stars loop: chip -> code-first -> drift -> chip */
+
+  return (
+    <div className="cs2-body-col">
+      {/* the NDA disclosure, her wording verbatim, quiet note before the beats */}
+      {disclosure && (
+        <p
+          role="note"
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "var(--typography-font-size-base)",
+            lineHeight: 1.6,
+            color: "var(--color-ink-soft)",
+            borderLeft: "3px solid var(--color-border-medium)",
+            paddingLeft: "var(--spacing-4)",
+            margin: "0 0 var(--spacing-8)",
+          }}
+        >
+          {disclosure.text}
+        </p>
+      )}
+
+      {/* 01 · the audit: context + the audit decision, the recreated
+          17-button audit as the visual */}
+      <CaseBeat
+        index="01"
+        kicker={KICKERS[0]}
+        headline={d1?.title ?? ""}
+        keyline={d1?.why}
+        id="drift-b1"
+        body={
+          <>
+            <Scannable text={summary?.context ?? ""} />
+            <Scannable text={para(cs, (b) => b.kind === "decision" && (b as { index?: string }).index === "01", 0)} />
+            {/* her approach summary closes the beat: the upstream pivot */}
+            <Scannable text={summary?.approach ?? ""} />
+          </>
+        }
+        visual={
+          d1?.evidence ? (
+            <ScaledFrame
+              src={d1.evidence.src}
+              title={d1.evidence.title}
+              designWidth={d1.evidence.designWidth}
+              designHeight={d1.evidence.designHeight}
+            />
+          ) : (
+            <CasePlaceholder />
+          )
+        }
+        foot={
+          <>
+            <p className="cs2-kicker-row" style={{ margin: 0 }}>{d1?.evidence?.title}</p>
+            {/* the ctrl+travel recreations from the case's demo links.
+                TODO(elleta): keep here, move, or cut. */}
+            {cs.demoLinks?.map((l) => (
+              <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="demo-link">
+                {l.label}
+              </a>
+            ))}
+          </>
+        }
+      />
+
+      {/* 02 · the cascade: tokens under everything; the poster still
+          (static, kickoff rule; the interactive recreation stays in
+          the content file for a later pass) */}
+      <CaseBeat
+        index="02"
+        kicker={KICKERS[1]}
+        headline={d2?.title ?? ""}
+        keyline={d2?.why}
+        id="drift-b2"
+        flip
+        body={
+          <Scannable
+            text={para(cs, (b) => b.kind === "decision" && (b as { index?: string }).index === "02", 0).replace(CASCADE_TRIM, " ").trim()}
+          />
+        }
+        visual={
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src="/images/case-studies/token-parity-poster.png"
+            alt="Token cascade recreation: primitive, semantic, and component token tiers connected by arrows, with a design-code parity check panel"
+            loading="lazy"
+            style={{ width: "100%", height: "auto", borderRadius: "var(--radius-xl)", display: "block" }}
+          />
+        }
+        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>{CASCADE_CAPTION}</p>}
+      />
+
+      {/* 03 · the governance: status not enforcement; the recreated
+          system documentation as the visual */}
+      <CaseBeat
+        index="03"
+        kicker={KICKERS[2]}
+        headline={d3?.title ?? ""}
+        keyline={d3?.why}
+        id="drift-b3"
+        body={
+          <Scannable text={para(cs, (b) => b.kind === "decision" && (b as { index?: string }).index === "03", 0)} />
+        }
+        visual={
+          d3?.evidence ? (
+            <ScaledFrame
+              src={d3.evidence.src}
+              title={d3.evidence.title}
+              designWidth={d3.evidence.designWidth}
+              designHeight={d3.evidence.designHeight}
+            />
+          ) : (
+            <CasePlaceholder />
+          )
+        }
+        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>{d3?.evidence?.title}</p>}
+      />
+
+      {/* 04 · the takeaway: her outcome statement leads, lessons close.
+          Visual: the sanctioned In-progress placeholder.
+          TODO(elleta): the outcome/maturity visual for this slot. */}
+      <CaseBeat
+        index="04"
+        kicker={KICKERS[3]}
+        headline={outcomeLead}
+        keyline={lessonsKeyline}
+        id="drift-b4"
+        flip
+        body={
+          <>
+            <P text={outcomeRest} />
+            <Scannable text={lessonsRest} />
+          </>
+        }
+        visual={<CasePlaceholder />}
+      />
+
+      {/* next case: the ONE surviving card, the three stars in a loop */}
+      {nextItem && (
+        <section className="cs2-beat cs2-nextcase" aria-label="Next case">
+          <SectionHeader label="Next case" tier="case" title={nextItem.title} className="cs2-screen__head" />
+          <div className="cs2-next">
+            <CaseCard item={nextItem} />
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}

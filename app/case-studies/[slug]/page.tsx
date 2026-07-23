@@ -8,6 +8,7 @@ import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseStudyShell from "@/components/CaseStudyShell";
 import CaseShellV2 from "@/components/CaseShellV2";
 import CodeFirstV2 from "@/components/CodeFirstV2";
+import DriftV2 from "@/components/DriftV2";
 import { Body, PullQuote, Section, Eyebrow, H2 } from "@/components/CaseStudyTypography";
 import { BoldText } from "@/lib/richtext";
 import ChipReadinessMap from "@/components/ChipReadinessMap";
@@ -279,11 +280,12 @@ export default async function CaseStudyPage({
   const cs = getCaseStudy(slug);
   if (!cs) notFound();
 
-  /* ── Case shell v2 (case-shell-v2 brief, 22 Jul 2026): Code First
-     renders on the new shell; chip and drift keep the old one until
-     their own passes. The old shell code leaves only when the last
-     case leaves it (brief item 14). ── */
-  if (slug === "brad-frost") {
+  /* ── Case shell v2 (case-shell-v2 brief, 22 Jul 2026; drift joined
+     at feat/case-migration-drift): brad-frost and drift render on the
+     new shell + CaseBeat compositions; chip keeps the old one until
+     its own pass. The old shell code leaves only when the last case
+     leaves it (brief item 14). ── */
+  if (slug === "brad-frost" || slug === "design-system-transformation") {
     /* reading time, mechanical: every narrative string in the content
        file at 200 wpm, rounded up */
     const words = JSON.stringify(cs.blocks ?? [])
@@ -305,7 +307,7 @@ export default async function CaseStudyPage({
                pass proposal); restore here if Elleta picks another
                beat-03 direction */
           >
-            <CodeFirstV2 cs={cs} />
+            {slug === "brad-frost" ? <CodeFirstV2 cs={cs} /> : <DriftV2 cs={cs} />}
           </CaseShellV2>
         </div>
       </CaseStudyLayout>
