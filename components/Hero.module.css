@@ -1,16 +1,14 @@
-/* Hero layout — headline column + the bubble cluster (BubbleCluster.tsx,
- * styles in BubbleCluster.module.css). From _proto/_hero.html. */
+/* Hero layout — headline column + the portrait bubble (globals.css
+ * .photo-bubble, the About recipe). Compact since surface-the-work
+ * (2026-07-23): no 100dvh centering, so the selected-work row reaches
+ * above the fold on a laptop. */
 
 .hero {
   max-width: var(--container-width);
   margin: 0 auto;
-  /* proto: 104px top under its own meta strip; here the fixed header
-     (--header-height) already offsets the view, so the grid centers in
-     the remaining viewport like the proto's min-height:100vh center */
-  padding: calc(var(--header-height) + var(--spacing-8)) var(--container-padding) var(--spacing-16);
-  min-height: 100dvh;
+  padding: calc(var(--header-height) + var(--spacing-12)) var(--container-padding) var(--spacing-8);
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr auto;
   gap: var(--spacing-10);
   align-items: center;
   width: 100%;
@@ -26,22 +24,13 @@
   margin: 0 0 var(--spacing-4);
 }
 
+/* The Heading primitive supplies face/weight/caps/ink; this shell keeps
+   only the recorded home-hero scale (--font-hero-unique) and the proto's
+   tight leading, so PICK A PIECE stays the page's one scale moment. */
 .headline {
-  font-family: var(--font-hero-display);
-  /* Unique's single heavy cut: the proto maps it 400-700, the build
-     splits Regular/Bold — 700 selects the Bold cut that matches the
-     proto's chunky weight. */
-  font-weight: 700;
   font-size: var(--font-hero-unique);
   line-height: 0.8;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
   margin: 0 0 var(--spacing-6);
-  color: var(--color-ink);
-}
-
-.headline .o {
-  color: var(--color-accent-ink);
 }
 
 .intro {
@@ -100,8 +89,7 @@
 @media (max-width: 860px) {
   .hero {
     grid-template-columns: 1fr;
-    padding: 88px 22px 150px /* token-waiver: proto-exact mobile hero geometry (recorded) */;
+    padding: 88px 22px 56px /* token-waiver: proto-exact mobile hero geometry (recorded; bottom tightened for the work row) */;
     gap: var(--spacing-6);
-    min-height: 0;
   }
 }

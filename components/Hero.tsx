@@ -1,32 +1,29 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
-import BubbleCluster from "./BubbleCluster";
 import { Button } from "@/components/ui/Button";
+import Heading from "@/components/ui/Heading";
 import { POSITIONING } from "@/lib/copy";
 import styles from "./Hero.module.css";
 
 /**
- * Bubble-cluster hero (from _proto/_hero.html): "Pick a piece." headline
- * (the only Unique surface) next to the glossy case-bubble cluster.
- * Cluster behaviour + a11y live in BubbleCluster (also the /work Map view).
+ * Compact landing hero (surface-the-work, 2026-07-23): what-you-do +
+ * name + portrait, "Pick a piece." energy intact. The bubble cluster
+ * moved below the selected-work row (app/page.tsx, philosophy layer);
+ * the portrait reuses the About .photo-bubble recipe, no new pattern.
+ * The headline renders through the Heading primitive (hero tier); the
+ * .headline shell keeps the proto's recorded hero scale.
  */
-export default function Hero() {
-  // §7: max one primary per view. While the reveal card (peek) is open it
-  // owns the primary, so the hero CTA demotes to secondary.
-  const [peekOpen, setPeekOpen] = useState(false);
+export default function Hero({ peekOpen = false }: { peekOpen?: boolean }) {
   return (
-    <section className="hero-landing" style={{ display: "flex", alignItems: "center", flex: 1, minHeight: 0 }}>
+    <section className="hero-landing">
       <div className={styles.hero}>
         {/* ── Headline ── */}
         <div>
           <p className={styles.kicker}>Elleta McDaniel, Barcelona</p>
-          <h1 className={styles.headline}>
+          <Heading tier="hero" className={styles.headline}>
             Pick a<br />
-            <span className={styles.o}>piece.</span>
-          </h1>
+            <span className="display-heading__accent">piece.</span>
+          </Heading>
           <p className={styles.intro}>
             I design <b>{POSITIONING}</b>. Tokens, components, and the governance
             that keeps them from drifting. I read code and work with engineers directly.
@@ -52,7 +49,11 @@ export default function Hero() {
           </p>
         </div>
 
-        <BubbleCluster onOpenChange={setPeekOpen} />
+        {/* ── Portrait: the About bubble treatment, same asset ── */}
+        <div className="photo-bubble justify-self-center lg:justify-self-end">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/thumbnails/Me.jpeg" alt="Elleta, portrait" />
+        </div>
       </div>
     </section>
   );
