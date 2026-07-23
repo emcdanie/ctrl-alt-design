@@ -5,13 +5,19 @@ import Heading from "@/components/ui/Heading";
 import { POSITIONING } from "@/lib/copy";
 import styles from "./Hero.module.css";
 
+/* the display headline IS the positioning phrase, resolved from the
+   ONE constant (constitution section 6); split only for the line break
+   and the established iris accent word, never a second literal */
+const WORDS = POSITIONING.split(" ");
+
 /**
- * Compact landing hero (surface-the-work, 2026-07-23): what-you-do +
- * name + portrait, "Pick a piece." energy intact. The bubble cluster
- * moved below the selected-work row (app/page.tsx, philosophy layer);
+ * Compact landing hero (surface-the-work, 2026-07-23; hierarchy fix
+ * same day): what-you-do leads as the display H1 (the POSITIONING
+ * constant through the Heading primitive), name eyebrow above, "Pick a
+ * piece." demoted to the eyebrow leading the doors. The bubble cluster
+ * lives below the selected-work row (app/page.tsx, philosophy layer);
  * the portrait reuses the About .photo-bubble recipe, no new pattern.
- * The headline renders through the Heading primitive (hero tier); the
- * .headline shell keeps the proto's recorded hero scale.
+ * The .headline shell keeps the proto's recorded hero scale.
  */
 export default function Hero({ peekOpen = false }: { peekOpen?: boolean }) {
   return (
@@ -21,13 +27,18 @@ export default function Hero({ peekOpen = false }: { peekOpen?: boolean }) {
         <div>
           <p className={styles.kicker}>Elleta McDaniel, Barcelona</p>
           <Heading tier="hero" className={styles.headline}>
-            Pick a<br />
-            <span className="display-heading__accent">piece.</span>
+            {WORDS.slice(0, -1).join(" ")}{" "}
+            <br />
+            <span className="display-heading__accent">{WORDS[WORDS.length - 1]}.</span>
           </Heading>
           <p className={styles.intro}>
             I design <b>{POSITIONING}</b>. Tokens, components, and the governance
             that keeps them from drifting. I read code and work with engineers directly.
           </p>
+
+          {/* "Pick a piece." keeps its energy as the eyebrow framing the
+              doors: the cards below, the library, the quick version. */}
+          <p className={`section-label ${styles.pick}`}>Pick a piece.</p>
 
           {/* Two doors, no forced path: explore (the library) or the
               four-minute quick version. ONE primary per view. */}

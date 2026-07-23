@@ -223,9 +223,14 @@ body {
   --case-clarity-hi: #A6D8BC;
   --case-clarity-lo: #7FC79E;
   --case-clarity-deep: #256B4C;
-  --case-design-lab-hi: #F7C08C;
-  --case-design-lab-lo: #F2A25C;
-  --case-design-lab-deep: #9E4C1A;
+  /* Design Lab wore the proto's warm-orange family, outside the
+     palette rule (Elleta, 23 Jul). It now shares the filters/steel
+     values, the one identity not already in the home cluster; the
+     archived Travel Booking topic keeps the same values (collision
+     recorded, they co-render only on the /design-system band). */
+  --case-design-lab-hi: var(--case-filters-hi);
+  --case-design-lab-lo: var(--case-filters-lo);
+  --case-design-lab-deep: var(--case-filters-deep);
   --case-writing-hi: #F5A79C;
   --case-writing-lo: #F0796B;
   --case-writing-deep: #B23C30;

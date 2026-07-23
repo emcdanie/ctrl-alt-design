@@ -92,10 +92,11 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "code-first",
     medium: "case study",
-    /* TODO(elleta): cover asset slot. The Command Center imagery left
-       the case entirely (PR 41 amendment item 8, 22 Jul; it remains a
-       Design Lab piece only); the warm placeholder renders until your
-       asset lands. */
+    /* Cover = the case's own token-inspector poster (its one in-case UI
+       still; the Command Center imagery left the case entirely, PR 41
+       amendment item 8, 22 Jul). TODO(elleta): swap for a dedicated
+       crop if you want a denser card image. */
+    cover: "/images/case-studies/token-inspector-poster.png",
     title: "Code First",
     bubbleLabel: "Code First",
     kicker: "Design Systems · 2024-25",

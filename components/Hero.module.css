@@ -47,8 +47,14 @@
   font-weight: 600;
 }
 
+/* the demoted "Pick a piece." eyebrow (hierarchy fix, 23 Jul): the
+   shared .section-label recipe, spacing only here */
+.pick {
+  margin: var(--spacing-8) 0 0;
+}
+
 .ctaRow {
-  margin-top: var(--spacing-8);
+  margin-top: var(--spacing-4);
 }
 
 .systemLine {
