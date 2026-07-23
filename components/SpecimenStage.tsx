@@ -17,12 +17,16 @@ import { useEffect, useRef, useState } from "react";
 export default function SpecimenStage({
   label = "On system",
   flat = false,
+  zone: forcedZone = null,
   children,
 }: {
   /** the state tag in the stage corner */
   label?: string;
   /** flat stage: full-width block, tight padding */
   flat?: boolean;
+  /** controlled highlight zone (the gate run drives the ring);
+      overrides the hover zone while set */
+  zone?: string | null;
   /** node, or a function receiving the highlight setter */
   children:
     | React.ReactNode
@@ -59,7 +63,7 @@ export default function SpecimenStage({
         className={["spec-stage", flat ? "spec-stage--flat" : "", inView ? "in" : ""]
           .filter(Boolean)
           .join(" ")}
-        data-hl={zone ?? undefined}
+        data-hl={forcedZone ?? zone ?? undefined}
       >
         <span className="spec-stage__tag" aria-hidden="true">{label}</span>
         <div className="spec-stage__demo">

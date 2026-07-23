@@ -3912,21 +3912,13 @@ textarea:focus-visible {
   color: var(--case-clarity-text);
 }
 
-/* the subject, plain and centred; the drift outline marks the red
-   moment (pre-merge trim: the five annotation flags are cut at this
-   width, the chips + status line carry the story) */
-.gv-card {
-  display: flex;
-  justify-content: center;
-  padding: var(--spacing-4) 0;
-}
-
-.gv-card--fail .csp-card {
-  outline: 2px solid var(--case-writing-text);
-  outline-offset: 2px;
-}
-
-/* the 13-audit chip rail (the original gate's clarity, restored) */
+/* the 13-audit chip rail (gate+pullquote spec, 23 Jul 2026): each
+   chip steps pending -> checking -> pass/fail with a state GLYPH
+   beside the label, never colour-only; labels hold full contrast in
+   every state (the axe chip-dimming lesson). Checking wears the
+   BELLA semantic info border with a neutral glyph (no amber, the
+   constitution's hard rule; the spec's amber maps to info); pass and
+   fail ride the recorded clarity/writing pairs, AA both themes. */
 .gv-rail {
   display: flex;
   flex-wrap: wrap;
@@ -3936,25 +3928,40 @@ textarea:focus-visible {
 }
 
 .gv-rail__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
   font-style: normal;
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 600;
   letter-spacing: 0.06em;
-  color: var(--color-ink-muted);
-  border: 1px dashed var(--color-border-soft);
   border-radius: var(--radius-full);
   padding: var(--spacing-1) var(--spacing-2);
   background: var(--color-card);
   transition: color 0.3s ease, border-color 0.3s ease;
 }
 
-.gv-rail__chip.ok {
+.gv-rail__glyph {
+  font-family: var(--font-body);
+}
+
+.gv-rail__chip--pending {
+  color: var(--color-ink-muted);
+  border: 1px dashed var(--color-border-soft);
+}
+
+.gv-rail__chip--checking {
+  color: var(--color-ink);
+  border: 1px solid var(--color-semantic-info);
+}
+
+.gv-rail__chip--ok {
   color: var(--case-clarity-text);
   border: 1px solid color-mix(in srgb, var(--case-clarity-hi) 60%, var(--color-border-medium));
 }
 
-.gv-rail__chip.bad {
+.gv-rail__chip--bad {
   color: var(--case-writing-text);
   border: 1px solid var(--case-writing-text);
 }
