@@ -19,23 +19,25 @@ import type { CaseStudy } from "@/lib/content";
  * the sanctioned In-progress placeholder until her asset lands.
  *
  * Beat map (headlines = her decision titles / outcome statement,
- * keylines = her why lines / lessons lead, all verbatim):
- * 01 the audit -> 02 the cascade -> 03 the governance -> 04 the takeaway.
+ * keylines = her why lines / lessons lead, all verbatim; kickers and
+ * trims approved at the PR 56 review, Elleta 23 Jul):
+ * 01 the audit -> 02 the cascade -> 03 the governance -> 04 the foundation.
+ * The ONE remaining TODO(elleta) is the beat-04 pending visual.
  */
 
-/* kickers: mechanical single-noun extractions from her copy
-   ("audit", "cascade", "governance" are her words; "The takeaway"
-   matches the Code First convention). TODO(elleta): confirm all four. */
-const KICKERS = ["The audit", "The cascade", "The governance", "The takeaway"];
+/* kickers approved (Elleta, 23 Jul, PR 56 review): audit / cascade /
+   governance are her words; "The foundation" echoes the case title
+   and beat 04's outcome. */
+const KICKERS = ["The audit", "The cascade", "The governance", "The foundation"];
 
 /* her decision-02 paragraph names "the interactive recreation below";
-   the visual is a STILL now (kickoff: static only), so that sentence
-   is a cited mechanical trim. TODO(elleta): confirm the trim. */
+   the visual is a STILL (kickoff: static only), so that sentence is a
+   cited mechanical trim, accepted (Elleta, 23 Jul, PR 56 review). */
 const CASCADE_TRIM = /\s*The interactive recreation below[^.]*\.\s*/;
 
 /* the poster caption: the content file's prototype title with
    "Interactive " cut (the still is not interactive; caption accuracy,
-   case-build-check). TODO(elleta): confirm the wording. */
+   case-build-check). Accepted (Elleta, 23 Jul, PR 56 review). */
 const CASCADE_CAPTION = "Recreation: token cascade and design-code parity";
 
 export default function DriftV2({ cs }: { cs: CaseStudy }) {
@@ -112,8 +114,8 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
         foot={
           <>
             <p className="cs2-kicker-row" style={{ margin: 0 }}>{d1?.evidence?.title}</p>
-            {/* the ctrl+travel recreations from the case's demo links.
-                TODO(elleta): keep here, move, or cut. */}
+            {/* the ctrl+travel recreations from the case's demo links;
+                placement approved (Elleta, 23 Jul, PR 56 review) */}
             {cs.demoLinks?.map((l) => (
               <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="demo-link">
                 {l.label}
