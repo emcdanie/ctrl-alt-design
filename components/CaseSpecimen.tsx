@@ -40,18 +40,30 @@ export interface SpecFlag {
   anchor: LeaderAnchor;
 }
 
-/** the five canonical flags from the specimen contract */
-export const SPEC_FLAGS: readonly SpecFlag[] = [
-  { token: "--case-clarity-hi", part: "identity", swatch: "round", pos: "tl", zone: "sphere", anchor: { sel: '[data-part="sphere"]', ring: true } },
-  { token: "--color-ink-muted", part: "meta", swatch: "square", pos: "tr", zone: "kicker", anchor: { sel: '[data-part="kicker"]' } },
-  { token: "--color-ink", part: "title", swatch: "square", pos: "t", zone: "title", anchor: { sel: '[data-part="title"]' } },
-  { token: "--case-clarity-text", part: "tag", swatch: "square", pos: "bl", zone: "tag", anchor: { sel: '[data-part="tag"]' } },
-  { token: "--radius-lg", part: "corner", swatch: "radius", pos: "br", zone: "corner", anchor: { sel: '[data-part="corner"]', ring: true } },
-];
+/** a specimen identity: the case tokens the sphere/tag flags name.
+    lo/deep derive from the -hi name; the ONE specimen wears them via
+    the --csp-* vars (globals.css) */
+export interface SpecIdentity {
+  hi: string;
+  text: string;
+}
 
-const ANCHORS: Record<string, LeaderAnchor> = Object.fromEntries(
-  SPEC_FLAGS.map((f) => [f.token, f.anchor])
-);
+/** the canonical identity (the specimen contract): Operational Clarity */
+const CLARITY: SpecIdentity = { hi: "--case-clarity-hi", text: "--case-clarity-text" };
+
+/** the five canonical flags from the specimen contract, for an identity */
+export function specFlags(identity: SpecIdentity = CLARITY): readonly SpecFlag[] {
+  return [
+    { token: identity.hi, part: "identity", swatch: "round", pos: "tl", zone: "sphere", anchor: { sel: '[data-part="sphere"]', ring: true } },
+    { token: "--color-ink-muted", part: "meta", swatch: "square", pos: "tr", zone: "kicker", anchor: { sel: '[data-part="kicker"]' } },
+    { token: "--color-ink", part: "title", swatch: "square", pos: "t", zone: "title", anchor: { sel: '[data-part="title"]' } },
+    { token: identity.text, part: "tag", swatch: "square", pos: "bl", zone: "tag", anchor: { sel: '[data-part="tag"]' } },
+    { token: "--radius-lg", part: "corner", swatch: "radius", pos: "br", zone: "corner", anchor: { sel: '[data-part="corner"]', ring: true } },
+  ];
+}
+
+/** the canonical flags (the beats' flagStates key on these tokens) */
+export const SPEC_FLAGS: readonly SpecFlag[] = specFlags();
 
 /** per-flag display state, driven by the beats */
 export interface FlagState {
@@ -80,17 +92,33 @@ export function useResolvedTokens(tokens: readonly string[]): Record<string, str
   return values;
 }
 
+/** card copy; defaults = the canonical Operational Clarity contract
+    (real identity, approved one-line impact) */
+export interface SpecCardCopy {
+  kicker: string;
+  title: string;
+  desc: string;
+  tag: string;
+}
+
+const CLARITY_COPY: SpecCardCopy = {
+  kicker: "Data Dashboard · 2025",
+  title: "Operational Clarity",
+  desc: "One system, six operational domains, unified in an 8-week contract.",
+  tag: "Design Tokens",
+};
+
 /** the card itself; parts carry [data-part] for leaders + highlights */
-export function SpecimenCardBody() {
+export function SpecimenCardBody({ copy = CLARITY_COPY }: { copy?: SpecCardCopy }) {
   return (
     <div className="csp-card" data-part="card">
       {/* the corner target: a zero-size point at the top-right radius */}
       <span className="csp-corner" data-part="corner" aria-hidden="true" />
       <span className="csp-sphere" data-part="sphere" aria-hidden="true" />
-      <p className="csp-kicker" data-part="kicker">Data Dashboard · 2025</p>
-      <p className="csp-title heading-item" data-part="title">Operational Clarity</p>
-      <p className="csp-desc">One system, six operational domains, unified in an 8-week contract.</p>
-      <span className="csp-tag" data-part="tag">Design Tokens</span>
+      <p className="csp-kicker" data-part="kicker">{copy.kicker}</p>
+      <p className="csp-title heading-item" data-part="title">{copy.title}</p>
+      <p className="csp-desc">{copy.desc}</p>
+      <span className="csp-tag" data-part="tag">{copy.tag}</span>
     </div>
   );
 }
@@ -106,6 +134,8 @@ export default function CaseSpecimen({
   interactive = true,
   zone = null,
   onZone,
+  identity,
+  copy,
   children,
 }: {
   flagStates?: Record<string, FlagState>;
@@ -117,9 +147,27 @@ export default function CaseSpecimen({
       overrides flag hover while set */
   zone?: string | null;
   onZone?: (zone: string | null) => void;
+  /** case identity variant (default: the canonical Clarity contract) */
+  identity?: SpecIdentity;
+  /** card copy variant (default: the canonical Clarity contract) */
+  copy?: SpecCardCopy;
   /** extra stage content below the card (rails, consoles) */
   children?: React.ReactNode;
 }) {
+  const flags = identity ? specFlags(identity) : SPEC_FLAGS;
+  const anchors: Record<string, LeaderAnchor> = Object.fromEntries(
+    flags.map((f) => [f.token, f.anchor])
+  );
+  /* a variant identity re-points the --csp-* vars (globals.css); the
+     lo/deep names derive from the -hi name, same as the token layer */
+  const identityStyle = identity
+    ? ({
+        "--csp-hi": `var(${identity.hi})`,
+        "--csp-lo": `var(${identity.hi.replace(/-hi$/, "-lo")}, var(${identity.hi}))`,
+        "--csp-deep": `var(${identity.hi.replace(/-hi$/, "-deep")})`,
+        "--csp-text": `var(${identity.text})`,
+      } as React.CSSProperties)
+    : undefined;
   return (
     <SpecimenStage label={label} zone={zone}>
       {(setZone) => {
@@ -128,11 +176,11 @@ export default function CaseSpecimen({
           onZone?.(z);
         };
         return (
-          <div className="csp">
-            <SpecimenCardBody />
-            <FlagLeaders anchors={ANCHORS} />
+          <div className="csp" style={identityStyle}>
+            <SpecimenCardBody copy={copy} />
+            <FlagLeaders anchors={anchors} />
             <div className="csp-flags">
-              {SPEC_FLAGS.map((f) => {
+              {flags.map((f) => {
                 const st = flagStates[f.token];
                 const tone = st?.tone ?? "iris";
                 const label = st?.label ?? f.token;

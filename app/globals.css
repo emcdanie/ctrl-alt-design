@@ -223,9 +223,14 @@ body {
   --case-clarity-hi: #A6D8BC;
   --case-clarity-lo: #7FC79E;
   --case-clarity-deep: #256B4C;
-  --case-design-lab-hi: #F7C08C;
-  --case-design-lab-lo: #F2A25C;
-  --case-design-lab-deep: #9E4C1A;
+  /* Design Lab wore the proto's warm-orange family, outside the
+     palette rule (Elleta, 23 Jul). It now shares the filters/steel
+     values, the one identity not already in the home cluster; the
+     archived Travel Booking topic keeps the same values (collision
+     recorded, they co-render only on the /design-system band). */
+  --case-design-lab-hi: var(--case-filters-hi);
+  --case-design-lab-lo: var(--case-filters-lo);
+  --case-design-lab-deep: var(--case-filters-deep);
   --case-writing-hi: #F5A79C;
   --case-writing-lo: #F0796B;
   --case-writing-deep: #B23C30;
@@ -1289,6 +1294,25 @@ section[id],
   border-radius: var(--radius-full);
   background: radial-gradient(circle, rgba(255, 255, 255, 0.55), transparent 72%);
   pointer-events: none;
+}
+
+/* ─── Home: surface the work (audit P0, 2026-07-23) ─────────────────
+   The selected-work row under the hero (library grid values, same
+   CaseCard) and the demoted constellation's stage (the /work mapWrap
+   geometry). */
+.home-work-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--grid-gap);
+  align-items: stretch;
+  margin-top: var(--spacing-4);
+}
+
+.philosophy-stage {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--spacing-8) 0 0;
 }
 
 /* ─── Decision-led case blocks ──────────────────────────────────── */
@@ -3550,12 +3574,24 @@ textarea:focus-visible {
   pointer-events: none;
 }
 
+/* the specimen's case identity rides four scoped vars so the ONE
+   specimen can wear another case's colours (the Code First cover
+   export); defaults = the canonical Operational Clarity contract.
+   .jn-mini hosts the card without a .csp wrapper (LayerJourney). */
+.csp,
+.jn-mini {
+  --csp-hi: var(--case-clarity-hi);
+  --csp-lo: var(--case-clarity-lo, var(--case-clarity-hi));
+  --csp-deep: var(--case-clarity-deep);
+  --csp-text: var(--case-clarity-text);
+}
+
 .csp-sphere {
   display: block;
   width: 44px;
   height: 44px;
   border-radius: var(--radius-full);
-  background: radial-gradient(circle at 34% 30%, var(--case-clarity-hi), var(--case-clarity-lo, var(--case-clarity-hi)) 60%, var(--case-clarity-deep));
+  background: radial-gradient(circle at 34% 30%, var(--csp-hi), var(--csp-lo) 60%, var(--csp-deep));
   box-shadow: var(--shadow-orb);
   margin-bottom: var(--spacing-4);
 }
@@ -3591,8 +3627,8 @@ textarea:focus-visible {
   font-family: var(--font-body);
   font-size: var(--typography-font-size-sm);
   font-weight: 600;
-  color: var(--case-clarity-text);
-  background: color-mix(in srgb, var(--case-clarity-hi) 26%, var(--color-card));
+  color: var(--csp-text);
+  background: color-mix(in srgb, var(--csp-hi) 26%, var(--color-card));
   border-radius: var(--radius-full);
   padding: var(--spacing-2) var(--spacing-3);
 }
@@ -4373,9 +4409,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   text-transform: uppercase;
   letter-spacing: 0.005em;
   line-height: 1.05;
-  font-size: var(--font-case-headline);
+  /* the thesis dominates (Elleta, 23 Jul): banner tier, a full step
+     ABOVE the beat headlines (--font-section-display), not below */
+  font-size: var(--font-case-display);
   color: var(--color-ink);
-  max-width: 34ch;
+  max-width: 44ch;
   text-align: center;
 }
 

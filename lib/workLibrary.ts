@@ -92,10 +92,11 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "code-first",
     medium: "case study",
-    /* TODO(elleta): cover asset slot. The Command Center imagery left
-       the case entirely (PR 41 amendment item 8, 22 Jul; it remains a
-       Design Lab piece only); the warm placeholder renders until your
-       asset lands. */
+    /* Cover = the ONE annotated specimen rendered as its Code First
+       variant (CaseSpecimen identity/copy props), captured static
+       (resolves the cover TODO; the Command Center imagery stays out
+       of the case, PR 41 amendment item 8, 22 Jul). */
+    cover: "/images/case-studies/code-first-specimen.png",
     title: "Code First",
     bubbleLabel: "Code First",
     kicker: "Design Systems · 2024-25",
