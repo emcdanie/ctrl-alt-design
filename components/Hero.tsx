@@ -31,9 +31,11 @@ export default function Hero({ peekOpen = false }: { peekOpen?: boolean }) {
             <br />
             <span className="display-heading__accent">{WORDS[WORDS.length - 1]}.</span>
           </Heading>
+          {/* the H1 states the positioning; the body starts at the how
+              (repeat dropped, Elleta 23 Jul) */}
           <p className={styles.intro}>
-            I design <b>{POSITIONING}</b>. Tokens, components, and the governance
-            that keeps them from drifting. I read code and work with engineers directly.
+            Tokens, components, and the governance that keeps them from drifting.
+            I read code and work with engineers directly.
           </p>
 
           {/* "Pick a piece." keeps its energy as the eyebrow framing the
@@ -60,8 +62,8 @@ export default function Hero({ peekOpen = false }: { peekOpen?: boolean }) {
           </p>
         </div>
 
-        {/* ── Portrait: the About bubble treatment, same asset ── */}
-        <div className="photo-bubble justify-self-center lg:justify-self-end">
+        {/* ── Portrait: the About bubble frame at hero scale ── */}
+        <div className={`photo-bubble ${styles.portrait} justify-self-center lg:justify-self-end`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/thumbnails/Me.jpeg" alt="Elleta, portrait" />
         </div>

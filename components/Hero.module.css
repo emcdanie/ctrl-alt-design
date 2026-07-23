@@ -47,6 +47,13 @@
   font-weight: 600;
 }
 
+/* hero-scale portrait (Elleta, 23 Jul): ~1.5x the About bubble so it
+   holds against the H1; the frame recipe stays globals .photo-bubble,
+   only the size is the hero's own. Min 240 clears 390 comfortably. */
+.portrait {
+  width: clamp(240px, 27vw, 360px) /* token-waiver: hero portrait scale, 1.5x the recorded About bubble */;
+}
+
 /* the demoted "Pick a piece." eyebrow (hierarchy fix, 23 Jul): the
    shared .section-label recipe, spacing only here */
 .pick {

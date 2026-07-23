@@ -4409,9 +4409,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   text-transform: uppercase;
   letter-spacing: 0.005em;
   line-height: 1.05;
-  font-size: var(--font-case-headline);
+  /* the thesis dominates (Elleta, 23 Jul): banner tier, a full step
+     ABOVE the beat headlines (--font-section-display), not below */
+  font-size: var(--font-case-display);
   color: var(--color-ink);
-  max-width: 34ch;
+  max-width: 44ch;
   text-align: center;
 }
 
