@@ -1,4 +1,5 @@
 import { chromium } from "playwright";
+import { receipt } from "./lib/receipt.mjs";
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 
@@ -73,7 +74,7 @@ for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies
   for (const f of fails) {
     if (f.uniqueTooSmall) {
       bad++;
-      console.log(`  FAIL display-font-below-24 [${f.tag}] "${f.t}" at ${f.fs}`);
+      console.log("  " + receipt("contrast", `[${f.tag}] "${f.t}"`, `Unique at ${f.fs}`, ">=24px (display face floor, keycap logo excepted)"));
     }
     const c = parse(f.c);
     if ((c[3] ?? 1) === 0) continue;
@@ -93,7 +94,7 @@ for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies
     const min = large ? 3 : 4.5;
     if (worst < min) {
       bad++;
-      if (bad <= 12) console.log(`  FAIL ${worst.toFixed(2)} [${f.tag}] "${f.t}" ${f.c} on ${worstBg}`);
+      if (bad <= 12) console.log("  " + receipt("contrast", `[${f.tag}] "${f.t}" ${f.c} on ${worstBg}`, `${worst.toFixed(2)}:1`, `>=${min}:1 (WCAG AA at this size)`));
     }
   }
   console.log(`${url} -> ${bad} contrast fails / ${fails.length} nodes`);

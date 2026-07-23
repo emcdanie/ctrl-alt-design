@@ -481,6 +481,19 @@ visual-has-no-frame + no-Card-wrapper, strict alternation), proven RED on
 the carded beat-02 journey before the fix. Future case studies compose
 beats from CaseBeat, never bespoke.
 
+## The receipt: the gate refuses by name (A1, 23 Jul 2026)
+
+Southleft's rule, adopted: a failing check is never papered over with a
+plausible value. Every audit failure prints ONE format via
+`scripts/lib/receipt.mjs`:
+
+    audit:<name>: <offender> — got <actual>, expected <expected>
+
+The offender is the exact element/selector/file:line, the actual is what
+rendered or was written, the expected is the token/tier/rule it violated.
+All 13 audits share the helper; exit codes are unchanged. A bare FAIL
+with no receipt is a regression.
+
 ## Takeaway band card exception (pre-merge spec, Elleta 23 Jul 2026)
 
 The Code First takeaway (beat 04) renders as a 3-card band on the About

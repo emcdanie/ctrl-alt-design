@@ -2,6 +2,7 @@
  * Comments are exempt (not copy). */
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { receipt } from "./lib/receipt.mjs";
 
 const walk = (dir) => {
   const out = [];
@@ -14,7 +15,8 @@ const walk = (dir) => {
 };
 
 let fails = 0;
-const fail = (m) => { fails++; console.error("COPY FAIL:", m); };
+/* the receipt (A1): offender, actual, expected — one format */
+const fail = (offender, got, expected) => { fails++; console.error(receipt("copy", offender, got, expected)); };
 const isComment = (l) => /^\s*(\/\/|\*|\/\*)/.test(l);
 
 /* VinylPlayer is frozen: the pre-commit hook false-positives its Apple
@@ -25,16 +27,16 @@ for (const f of [...walk("app"), ...walk("components"), ...walk("content/case-st
   const lines = readFileSync(f, "utf8").split("\n");
   lines.forEach((l, i) => {
     if (isComment(l)) return;
-    if (/—|–/.test(l)) fail(`${f}:${i + 1} em/en dash in copy`);
-    if (/AI-augmented|AI-assisted/.test(l)) fail(`${f}:${i + 1} banned positioning variant`);
+    if (/—|–/.test(l)) fail(`${f}:${i + 1}`, "an em/en dash in copy", "a period, a comma, or that");
+    if (/AI-augmented|AI-assisted/.test(l)) fail(`${f}:${i + 1}`, l.match(/AI-augmented|AI-assisted/)[0], '"AI-enabled" (the one positioning term)');
     /* dash escapes render as real dashes even from string literals */
-    if (/\\u201[34]/.test(l)) fail(`${f}:${i + 1} em/en dash hidden as a \\u escape`);
+    if (/\\u201[34]/.test(l)) fail(`${f}:${i + 1}`, "an em/en dash hidden as a \\u escape", "a period, a comma, or that");
     /* JSX text does NOT process \uXXXX — it renders literally (the
        colophon bug). Escapes inside quoted strings are fine, so strip
        string spans first, then flag what remains. */
     const noStrings = l.replace(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`/g, "");
     if (/\\u[0-9a-fA-F]{4}/.test(noStrings)) {
-      fail(`${f}:${i + 1} literal \\u escape in JSX text — it renders verbatim; type the real character`);
+      fail(`${f}:${i + 1}`, "a literal \\u escape in JSX text (renders verbatim)", "the real character");
     }
   });
 }

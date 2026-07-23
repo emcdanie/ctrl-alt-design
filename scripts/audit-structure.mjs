@@ -2,14 +2,17 @@
  * Runs alongside audit:contrast (npm run audit:structure). */
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { receipt } from "./lib/receipt.mjs";
 
 let fails = 0;
-const fail = (msg) => { fails++; console.error("STRUCTURE FAIL:", msg); };
+/* the receipt (A1): every failure names the offender, the actual,
+   and the expected — one format across all 13 audits */
+const fail = (offender, got, expected) => { fails++; console.error(receipt("structure", offender, got, expected)); };
 
 /* 1. ONE case-study render path — no per-case route dirs */
 for (const entry of readdirSync("app/case-studies")) {
   if (entry !== "[slug]" && statSync(join("app/case-studies", entry)).isDirectory()) {
-    fail(`per-case route dir exists: app/case-studies/${entry} — cases render via [slug] only`);
+    fail(`app/case-studies/${entry}`, "a per-case route dir", "cases render via [slug] only");
   }
 }
 
@@ -29,9 +32,9 @@ const componentFiles = walk("components", [".tsx", ".css"]);
 /* 2. zero amber — no amber-named token or warm-amber hex in app/components */
 for (const f of [...appFiles, ...componentFiles]) {
   const s = readFileSync(f, "utf8");
-  if (/amber/i.test(s)) fail(`amber reference in ${f}`);
+  if (/amber/i.test(s)) fail(f, "an amber reference", "zero amber (constitution)");
   if (/#(C4956A|F2A25C|F59E0B|D97706)\b/i.test(s) && !f.includes("globals.css")) {
-    fail(`warm amber hex in ${f}`);
+    fail(f, "a warm amber hex", "no amber anywhere");
   }
 }
 
@@ -41,7 +44,7 @@ for (const f of [...appFiles, ...componentFiles]) {
 const pageOk = /layout-container|page-container|layout-section|CaseStudyShell|<Hero/;
 for (const f of appFiles.filter((f) => f.endsWith("page.tsx"))) {
   const s = readFileSync(f, "utf8");
-  if (!pageOk.test(s)) fail(`${f} lacks the container/section system (layout-*/page-container/CaseStudyShell)`);
+  if (!pageOk.test(s)) fail(f, "no container/section marker", "layout-container / page-container / layout-section / CaseStudyShell / Hero");
 }
 
 /* 4. no arbitrary px type in components (recorded proto exceptions excluded) */
@@ -51,7 +54,7 @@ for (const f of [...appFiles, ...componentFiles]) {
   if (EXEMPT.some((e) => f.includes(e))) continue;
   const s = readFileSync(f, "utf8");
   const m = s.match(/text-\[[0-9.]+px\]/);
-  if (m) fail(`arbitrary type size ${m[0]} in ${f} — use the ramp tokens`);
+  if (m) fail(f, `arbitrary type size ${m[0]}`, "the ramp tokens, no text-[Npx]");
 }
 
 /* 5. one type system — no literal font-family in app/components; every
@@ -64,14 +67,14 @@ for (const f of [...appFiles, ...componentFiles]) {
   /* TSX: quoted string values (variables holding token strings pass) */
   for (const m of s.matchAll(/fontFamily\s*:\s*["']([^"']+)["']/g)) {
     if (!m[1].startsWith("var(--font-")) {
-      fail(`literal font-family "${m[1]}" in ${f} — use the var(--font-*) tokens`);
+      fail(`${f} fontFamily`, `"${m[1]}"`, "a var(--font-*) token");
     }
   }
   /* CSS: declaration values */
   for (const m of s.matchAll(/font-family\s*:\s*([^;}]+)/g)) {
     const v = m[1].trim();
     if (!v.startsWith("var(--font-") && v !== "inherit") {
-      fail(`literal font-family "${v}" in ${f} — use the var(--font-*) tokens`);
+      fail(`${f} font-family`, `"${v}"`, "a var(--font-*) token");
     }
   }
 }
@@ -89,7 +92,7 @@ for (const f of [...appFiles, ...componentFiles]) {
     if (!/eyebrow|section-label|kicker/i.test(l.replace(/--tracking-eyebrow/g, ""))) return;
     const windowText = lines.slice(i, i + 4).join("\n");
     if (/--color-accent-(ink|iris)\b/.test(windowText)) {
-      fail(`iris on an eyebrow/kicker in ${f}:${i + 1} — eyebrows are wayfinding (use --color-eyebrow); iris at body scale means interactive`);
+      fail(`${f}:${i + 1} eyebrow/kicker`, "accent iris", "--color-eyebrow (iris at body scale means interactive)");
     }
   });
 }
@@ -103,7 +106,7 @@ for (const f of [...appFiles, ...componentFiles]) {
   if (UNIQUE_OK.some((e) => f.includes(e))) continue;
   const s = readFileSync(f, "utf8");
   if (/--font-hero-display|--font-unique/.test(s)) {
-    fail(`Unique font token in ${f} — Unique renders only via the Heading primitive classes, home hero, or keycap logo (sanctioned files: ${UNIQUE_OK.join(", ")})`);
+    fail(f, "a Unique font token", "the Heading primitive classes, home hero, or keycap logo only");
   }
 }
 

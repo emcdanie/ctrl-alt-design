@@ -2,9 +2,11 @@
  * case slugs must match the live registry. An agent surface that lies
  * is worse than none; drift here fails the build. */
 import { readFileSync, readdirSync } from "node:fs";
+import { receipt } from "./lib/receipt.mjs";
 
 let failures = 0;
-const fail = (m) => { failures++; console.log(`AGENTS FAIL ${m}`); };
+/* the receipt (A1): offender, actual, expected — one format */
+const fail = (offender, got, expected) => { failures++; console.log(receipt("agents", offender, got, expected)); };
 
 const registry = readdirSync("content/case-studies")
   .filter((f) => f.endsWith(".ts") && f !== "index.ts" && f !== "design-lab.ts")
@@ -16,14 +18,14 @@ const live = registry.filter((slug) => exported.includes(slug.replace(/-([a-z])/
 
 const llms = readFileSync("public/llms.txt", "utf8");
 for (const slug of live) {
-  if (!llms.includes(`/case-studies/${slug}`)) fail(`llms.txt missing live case route: ${slug}`);
+  if (!llms.includes(`/case-studies/${slug}`)) fail("public/llms.txt", `no route for live case "${slug}"`, `/case-studies/${slug} listed`);
 }
 for (const m of llms.matchAll(/\/case-studies\/([a-z0-9-]+)/g)) {
-  if (!live.includes(m[1])) fail(`llms.txt lists a route not in the registry: ${m[1]}`);
+  if (!live.includes(m[1])) fail("public/llms.txt", `route /case-studies/${m[1]} (not in the registry)`, "live registry routes only");
 }
 
 const bella = readFileSync("app/api/bella.json/route.ts", "utf8");
-if (!bella.includes("caseStudies.map")) fail("bella.json no longer derives cases from the live registry");
+if (!bella.includes("caseStudies.map")) fail("app/api/bella.json/route.ts", "cases not derived from the registry", "caseStudies.map over the live registry");
 
 if (failures) { console.log(`agents gate: ${failures} failure(s)`); process.exit(1); }
 console.log("agents gate: PASS");

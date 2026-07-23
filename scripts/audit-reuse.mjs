@@ -3,6 +3,7 @@
  * A dead copy that nothing renders is exactly how two implementations
  * drift apart, so it fails the build. */
 import { readdirSync, readFileSync, statSync } from "node:fs";
+import { receipt } from "./lib/receipt.mjs";
 import { join, basename } from "node:path";
 
 /* VinylPlayer: frozen (pre-commit hook false-positive, see docs/fixes).
@@ -36,7 +37,7 @@ for (const c of components) {
   );
   if (!used) {
     fails++;
-    console.error(`REUSE FAIL: ${c} is imported nowhere — delete it or wire it in (one implementation, no orphans)`);
+    console.error(receipt("reuse", c, "0 imports (an orphan)", "delete it or wire it in (one implementation)"));
   }
 }
 
@@ -55,13 +56,13 @@ for (const { f, s: src } of sources) {
   for (const tag of rawHeadings) {
     if (!/heading-item|card-statement|sr-only|ds-section__title/.test(tag)) {
       fails++;
-      console.error(`REUSE FAIL: ${f} raw ${tag.slice(0, 60)}... without .heading-item — card titles share ONE recipe`);
+      console.error(receipt("reuse", `${f} ${tag.slice(0, 40)}`, "a raw h3/h4 without .heading-item", "the ONE .heading-item recipe"));
     }
   }
   const fingerprint = /<(?:h[34]|span)[^>]*font-size-(?:base|lg|xl)\)\][^>]*font-(?:bold|semibold)/g;
   for (const m of src.match(fingerprint) ?? []) {
     fails++;
-    console.error(`REUSE FAIL: ${f} local title recipe "${m.slice(0, 70)}" — use .heading-item`);
+    console.error(receipt("reuse", f, `a local title recipe "${m.slice(0, 50)}"`, "the ONE .heading-item recipe"));
   }
   /* Unique never renders inside a Card (Elleta, 21 Jul, card-voice):
      a file that renders card surfaces (direct ui/Card or DisclosureCard
@@ -76,7 +77,7 @@ for (const { f, s: src } of sources) {
   const rendersCards = /from "@\/components\/ui\/(?:Card|DisclosureCard)"|className="thesis-band/.test(src);
   if (!UNIQUE_IN_CARD_EXEMPT.some((e) => f.endsWith(e)) && rendersCards && /<Heading[\s>]/.test(src)) {
     fails++;
-    console.error(`REUSE FAIL: ${f} renders <Heading> in a file with Card surfaces — Unique never renders inside a Card (card-voice rule)`);
+    console.error(receipt("reuse", f, "<Heading> beside Card surfaces", "SectionHeader (Unique never renders inside a Card)"));
   }
 }
 

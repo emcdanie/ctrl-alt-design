@@ -24,6 +24,7 @@
  *    keycap edge on all four sides (within 1px per side).
  */
 import { chromium } from "playwright";
+import { receipt } from "./lib/receipt.mjs";
 
 const browser = await chromium.launch();
 let fails = 0;
@@ -55,7 +56,7 @@ for (const theme of ["light", "dark"]) {
   });
   for (const b of bandBad) {
     fails++;
-    console.error(`VISUAL FAIL (${theme}) band surface off the page ground: ${b}`);
+    console.error(receipt("visual", `(${theme}) System band ${b.split(":")[0]}`, `surface ${b.split(": ")[1] ?? b}`, "the page ground (one ground, no band surfaces)"));
   }
 
   const rowBad = await page.evaluate(() => {
@@ -77,7 +78,7 @@ for (const theme of ["light", "dark"]) {
   });
   for (const b of rowBad) {
     fails++;
-    console.error(`VISUAL FAIL (${theme}) unequal specimen heights: ${b}`);
+    console.error(receipt("visual", `(${theme}) specimen ${b.split(":")[0]}`, `heights ${b.split("heights ")[1] ?? b}`, "equal heights per row (grid stretch)"));
   }
 
   /* ── 4 + 5: containment + uniformity, width-swept ── */
@@ -174,11 +175,11 @@ for (const theme of ["light", "dark"]) {
     });
     for (const b of results.contain) {
       fails++;
-      console.error(`VISUAL FAIL (${theme} ${width}) containment: ${b}`);
+      console.error(receipt("visual", `(${theme} ${width}) ${b}`, "content past the card's content box", "containment by construction"));
     }
     for (const b of results.uniform) {
       fails++;
-      console.error(`VISUAL FAIL (${theme} ${width}) uniformity: ${b}`);
+      console.error(receipt("visual", `(${theme} ${width}) ${b}`, "non-uniform card dims in one grid", "identical width and height per band grid"));
     }
   }
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -201,7 +202,7 @@ for (const theme of ["light", "dark"]) {
   });
   for (const b of ringBad) {
     fails++;
-    console.error(`VISUAL FAIL (${theme}) trace ring: ${b}`);
+    console.error(receipt("visual", `(${theme}) inspector trace ring`, b, "one equal offset on all four sides (within 1px)"));
   }
 
   /* ── 3: cover placeholders on /work ── */
@@ -224,7 +225,7 @@ for (const theme of ["light", "dark"]) {
   });
   if (worst < 3) {
     fails++;
-    console.error(`VISUAL FAIL (${theme}) cover placeholder worst ratio ${worst.toFixed(2)} < 3:1`);
+    console.error(receipt("visual", `(${theme}) cover placeholder`, `worst ratio ${worst.toFixed(2)}:1`, ">= 3:1 against both gradient stops"));
   }
   await ctx.close();
 }
@@ -266,11 +267,11 @@ for (const theme of ["light", "dark"]) {
     }, ARCHIVED);
     if (found.demoLeak) {
       fails++;
-      console.error(`VISUAL FAIL demo-register leak: --demo-ink resolves outside a specimen stage on ${route}`);
+      console.error(receipt("visual", `${route} document root/body`, "--demo-ink resolves (register leak)", "the retired register resolves nowhere"));
     }
     for (const d of found.dead) {
       fails++;
-      console.error(`VISUAL FAIL dead-link: archived route ${d} referenced on ${route}`);
+      console.error(receipt("visual", `${route}`, `a reference to archived route ${d}`, "no dead links to archived routes"));
     }
     for (const h of found.hrefs) {
       const path = h.split("#")[0];
@@ -281,7 +282,7 @@ for (const theme of ["light", "dark"]) {
     const res = await page.request.get(`http://localhost:3000${path}`);
     if (res.status() >= 400) {
       fails++;
-      console.error(`VISUAL FAIL dead-link: ${path} -> ${res.status()} (linked from ${from})`);
+      console.error(receipt("visual", `${path} (linked from ${from})`, `HTTP ${res.status()}`, "200 for every internal link"));
     }
   }
   await ctx.close();
@@ -335,7 +336,7 @@ for (const theme of ["light", "dark"]) {
     });
     for (const b of overlapBad) {
       fails++;
-      console.error(`VISUAL FAIL (${theme} ${width}) specimen overlap: ${b}`);
+      console.error(receipt("visual", `(${theme} ${width}) ${b}`, "overlapping specimen elements", "flags/leaders/card clear of each other"));
     }
     const geomBad = await page.evaluate(() => {
       const out = [];
@@ -392,7 +393,7 @@ for (const theme of ["light", "dark"]) {
     });
     for (const b of geomBad) {
       fails++;
-      console.error(`VISUAL FAIL (${theme} ${width}) stage geometry: ${b}`);
+      console.error(receipt("visual", `(${theme} ${width}) ${b}`, "content inside the reserved stage zone", "readouts and consoles below the stage"));
     }
     /* LEADERS DO NOT CROSS (polish pass, Elleta 22 Jul; DESIGN.md
        section 5 addendum): no annotation leader may cross another
@@ -449,7 +450,7 @@ for (const theme of ["light", "dark"]) {
     });
     for (const b of crossBad) {
       fails++;
-      console.error(`VISUAL FAIL (${theme} ${width}) leader crossing: ${b}`);
+      console.error(receipt("visual", `(${theme} ${width}) leader ${b}`, "a crossing/overlapping leader path", "leaders cross only empty ground"));
     }
     /* ── BEAT TEMPLATE LAW (airtight spec, 22 Jul;
        case-layout-constitution): checked at every swept width/theme.
@@ -510,7 +511,7 @@ for (const theme of ["light", "dark"]) {
     });
     for (const b of beatBad) {
       fails++;
-      console.error(`VISUAL FAIL (${theme} ${width}) beat template: ${b}`);
+      console.error(receipt("visual", `(${theme} ${width}) ${b}`, "a beat-template violation", "the CaseBeat law (headline with body, flat visuals, alternation)"));
     }
     await ctx.close();
   }
@@ -531,7 +532,7 @@ await browser.close();
     if (!sel) continue;
     if (/card|flag|panel|layer|tile|frame/i.test(sel) || (/csp-/.test(sel) && !/sphere/.test(sel))) {
       fails++;
-      console.error(`VISUAL FAIL shadow law: ${sel.slice(0, 60)} uses --shadow-orb`);
+      console.error(receipt("visual", sel.slice(0, 60), "--shadow-orb on a card/flag/panel", "--shadow-soft (orb is sphere/keycap only)"));
     }
   }
 }

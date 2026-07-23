@@ -8,11 +8,13 @@
  * EXTRA_CASES pattern is deleted; cluster exclusion is the inCluster
  * flag on the row, recorded in DESIGN.md. */
 import { readFileSync } from "node:fs";
+import { receipt } from "./lib/receipt.mjs";
 
 let fails = 0;
-const fail = (m) => {
+/* the receipt (A1): offender, actual, expected — one format */
+const fail = (offender, got, expected) => {
   fails++;
-  console.error("PARITY FAIL:", m);
+  console.error(receipt("parity", offender, got, expected));
 };
 
 /* registry slugs: the files index.ts actually exports */
@@ -21,7 +23,7 @@ const files = [...index.matchAll(/from "\.\/([\w-]+)"/g)].map((m) => m[1]);
 const registrySlugs = files.map((f) => {
   const src = readFileSync(`content/case-studies/${f}.ts`, "utf8");
   const m = src.match(/slug: "([^"]+)"/);
-  if (!m) fail(`${f}.ts exports no slug`);
+  if (!m) fail(`content/case-studies/${f}.ts`, "no slug export", "a slug field");
   return m?.[1];
 }).filter(Boolean);
 
@@ -41,21 +43,21 @@ const caseRows = rows.filter((r) => r.medium === "case study");
 for (const slug of registrySlugs) {
   const matches = caseRows.filter((r) => r.href.endsWith(`/case-studies/${slug}`));
   if (matches.length === 0)
-    fail(`registry slug "${slug}" has NO case-study WORK_ITEMS row (routable but invisible in the library)`);
+    fail(`registry slug "${slug}"`, "0 case-study WORK_ITEMS rows (routable but invisible)", "exactly 1 row");
   if (matches.length > 1)
-    fail(`registry slug "${slug}" has ${matches.length} WORK_ITEMS rows (${matches.map((m) => m.id).join(", ")})`);
+    fail(`registry slug "${slug}"`, `${matches.length} WORK_ITEMS rows (${matches.map((m) => m.id).join(", ")})`, "exactly 1 row");
 }
 
 /* b) every case-study row -> a registry slug */
 for (const r of caseRows) {
   const slug = r.href.split("/case-studies/")[1];
   if (!slug || !registrySlugs.includes(slug))
-    fail(`WORK_ITEMS row "${r.id}" (${r.href}) resolves to no registry slug (extra or mistyped row)`);
+    fail(`WORK_ITEMS row "${r.id}" (${r.href})`, "no matching registry slug (extra or mistyped)", "a registered case slug");
 }
 
 /* c) no side tables for case identity */
 if (/EXTRA_CASES/.test(lib))
-  fail("EXTRA_CASES side table is back in lib/workLibrary.ts; case identity lives on the ONE WORK_ITEMS row (inCluster flag for cluster exclusion)");
+  fail("lib/workLibrary.ts", "an EXTRA_CASES side table", "case identity on the ONE WORK_ITEMS row (inCluster for exclusion)");
 
 if (fails) {
   console.error(`parity gate: ${fails} failure(s)`);

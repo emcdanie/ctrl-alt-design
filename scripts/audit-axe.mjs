@@ -6,6 +6,7 @@
  * gradients) do not fail the gate; they are counted in the output and
  * verified manually when they change (see _review/audit notes). */
 import { readFileSync } from "node:fs";
+import { receipt } from "./lib/receipt.mjs";
 import { chromium } from "playwright";
 
 const axeSource = readFileSync("node_modules/axe-core/axe.min.js", "utf8");
@@ -57,7 +58,7 @@ for (const theme of ["light", "dark"]) {
     incompleteTotal += res.incomplete;
     for (const v of res.violations) {
       fails += v.nodes.length;
-      console.error(`AXE FAIL [${theme}] ${route} ${v.id} (${v.impact}): ${v.nodes.join(", ")}`);
+      console.error(receipt("axe", `[${theme}] ${route} ${v.nodes.join(", ").slice(0, 80)}`, `${v.id} (${v.impact})`, "zero axe violations"));
     }
   }
   await ctx.close();
