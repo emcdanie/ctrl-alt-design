@@ -62,11 +62,13 @@ const BEAT01_CARD_LINE =
         (--case-clarity-hi, --color-ink, --color-ink-muted,
         --case-clarity-text, --radius-lg) */;
 
-/* ── beat 02, the AI-enabled workflow: headline + keyline are HERS.
-   A beat cannot render headline-less, so the placeholder renders
-   VISIBLY marked until she writes it. */
-const AI_FLOW_HEADLINE = "TODO(elleta): the AI-flow headline";
-const AI_FLOW_KEYLINE = "" /* TODO(elleta): one keyline, bold ink */;
+/* ── beat 02, the AI-enabled workflow: Elleta-approved copy
+   (pre-merge spec, 23 Jul 2026); editable constants, hers to swap */
+const AI_FLOW_HEADLINE = "So I asked the codebase directly.";
+const AI_FLOW_KEYLINE =
+  "MCP let the model read the actual code, so the answers came from the system, not a guess.";
+const AI_FLOW_CONNECTIVE =
+  "The system is built so an agent can work with it safely. Same discipline, every layer, gated on every push.";
 
 /* beat 02 footnote: what the recorded clip ACTUALLY shows.
    TODO(elleta): refine in your voice. */
@@ -273,9 +275,7 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
         body={
           <>
             <Scannable text={para(cs, (b) => b.kind === "decision" && b.index === "02", 0)} />
-            {/* TODO(elleta): the connective line that lands the AI
-                positioning (the component travels the layers; MCP,
-                agents, and the gate are steps in that journey). */}
+            <p className="ds-section__note" style={{ margin: 0 }}>{AI_FLOW_CONNECTIVE}</p>
           </>
         }
         control={
