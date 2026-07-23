@@ -42,16 +42,29 @@ function Panel({ i }: { i: number }) {
       <p className="jn-paneltitle">{l.title}</p>
       <p className="jn-sub">{l.sub}</p>
       <div className="jn-stagebox">
-        {/* the gate layer wears the beat-03 check-flag grammar: one
-            clean flag, straight leader, dot on the card, no crossing
-            (gate-feedback spec item 2) */}
+        {/* the gate layer shows a SMALL RAIL of checks coloured by
+            state (green pass, red fail), the beat-03 chip recipe
+            reused, not a single flag (Elleta, 23 Jul); the caught
+            drift is fixed at source, told by the quiet line */}
         {isGate && (
           <div className="jn-gatecol">
-            <div className="jn-checkflag">
-              <span>
-                tokens · <strong>border #c7c7c7 hardcoded ✗</strong> → <strong>--color-border-soft ✓</strong>{/* token-waiver: depicted drift value, data not paint */}
-              </span>
+            <div className="gv-rail jn-gaterail" aria-label="A sample of the gate's checks, by state">
+              {(
+                [
+                  ["structure", "ok"],
+                  ["fonts", "ok"],
+                  ["tokens", "bad"],
+                  ["contrast", "ok"],
+                  ["visual", "ok"],
+                ] as const
+              ).map(([name, state]) => (
+                <i key={name} className={`gv-rail__chip gv-rail__chip--${state}`}>
+                  <span aria-hidden="true" className="gv-rail__glyph">{state === "ok" ? "✓" : "✗"}</span>
+                  {name}
+                </i>
+              ))}
             </div>
+            <p className="cs2-kicker-row" style={{ margin: 0 }}>→ fixed at source: --color-border-soft</p>
             <div className="jn-mini">
               <SpecimenCardBody />
             </div>
