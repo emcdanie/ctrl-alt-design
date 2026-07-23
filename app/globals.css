@@ -4143,6 +4143,32 @@ textarea:focus-visible {
   margin-top: var(--spacing-2);
 }
 
+/* ── the pull quote as an editorial display moment (gate+pullquote
+   spec, Elleta 23 Jul 2026): Unique on the page ground, black ink,
+   her chosen words in the CASE identity accent (never iris), FLAT,
+   generous air above and below. Floor clears the 24px Unique minimum
+   (min 28px). The display face reference lives HERE, the sanctioned
+   token layer, like every .display-heading class. ── */
+.cs2-displayquote {
+  margin: var(--spacing-20) 0;
+}
+
+.cs2-displayquote__quote {
+  margin: 0;
+  font-family: var(--font-hero-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  line-height: 1.05;
+  font-size: var(--font-case-headline);
+  color: var(--color-ink);
+  max-width: 30ch;
+}
+
+.cs2-displayquote__accent {
+  color: var(--case-code-first-text);
+}
+
 /* ── beat 04, the takeaway band (pre-merge spec, 23 Jul 2026): the
    About statement-card treatment on the case page, a DELIBERATE
    recorded card exception (DESIGN.md; audit:visual allows thesis

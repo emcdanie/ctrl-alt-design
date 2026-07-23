@@ -9,7 +9,6 @@ import CaseBeat from "@/components/CaseBeat";
 import CaseSpecimen, { SPEC_FLAGS, useResolvedTokens, type FlagState } from "@/components/CaseSpecimen";
 import LayerJourney from "@/components/LayerJourney";
 import GateRun from "@/components/GateRun";
-import { PullQuote } from "@/components/CaseStudyTypography";
 import { BoldText } from "@/lib/richtext";
 import { WORK_ITEMS } from "@/lib/workLibrary";
 import type { CaseStudy, CaseBlock } from "@/lib/content";
@@ -110,6 +109,34 @@ const TAKEAWAY_CARDS: { key: string; statement: string; body: string }[] = [
   },
 ];
 const THANKS_LINE = "Thanks for reading.";
+
+/* the pull quote's accent words, the CASE identity pink (the same
+   accent the hero title wears, never iris). Editable: Elleta may
+   pick different words (gate+pullquote spec, 23 Jul 2026). */
+const QUOTE_ACCENT_PHRASE = "the investigation";
+
+/** the pull quote as an editorial display moment: Unique on the page
+    ground (the display treatment rides globals, the sanctioned
+    surface), black ink, her chosen words in the case accent, FLAT,
+    generous air. The quote text is hers, unchanged. */
+function DisplayQuote({ text }: { text: string }) {
+  const i = text.indexOf(QUOTE_ACCENT_PHRASE);
+  return (
+    <figure className="cs2-displayquote">
+      <blockquote className="cs2-displayquote__quote">
+        {i === -1 ? (
+          text
+        ) : (
+          <>
+            {text.slice(0, i)}
+            <span className="cs2-displayquote__accent">{QUOTE_ACCENT_PHRASE}</span>
+            {text.slice(i + QUOTE_ACCENT_PHRASE.length)}
+          </>
+        )}
+      </blockquote>
+    </figure>
+  );
+}
 
 /* ── helpers ── */
 
@@ -299,7 +326,7 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
           </>
         }
       />
-      {pullQuote && <PullQuote>{pullQuote.text}</PullQuote>}
+      {pullQuote && <DisplayQuote text={pullQuote.text} />}
       <BeatLink index={1} />
 
       <CaseBeat
