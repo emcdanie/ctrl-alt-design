@@ -4027,53 +4027,16 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: var(--spacing-3);
 }
 
-/* the gate layer's check flag (gate-feedback spec item 2): the
-   beat-03 feedback grammar in the journey panel. Sits ABOVE the
-   card; the leader is a short straight drop landing on the card's
-   top edge with a dot, in front, crossing nothing by construction. */
-.jn-checkflag {
-  position: relative;
-  align-self: flex-start;
-  display: inline-flex;
-  background: var(--color-card);
-  border: 1px solid var(--color-semantic-info);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
-  padding: var(--spacing-2) var(--spacing-3);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  color: var(--color-ink);
-  margin-bottom: var(--spacing-6);
-  z-index: 2;
+/* the journey's gate rail: left-set, compact (the shared gv-rail
+   chip recipe carries the state colours) */
+.jn-gaterail {
+  justify-content: flex-start;
+  width: auto;
 }
 
-.jn-checkflag strong {
-  font-weight: 700;
-}
-
-.jn-checkflag::after {
-  content: "";
-  position: absolute;
-  left: var(--spacing-6);
-  top: 100%;
-  width: 2px;
-  height: var(--spacing-5);
-  background: var(--color-semantic-info);
-}
-
-.jn-checkflag::before {
-  content: "";
-  position: absolute;
-  left: calc(var(--spacing-6) - 2px);
-  top: calc(100% + var(--spacing-5));
-  width: 6px;
-  height: 6px;
-  border-radius: var(--radius-full);
-  background: var(--color-semantic-info);
-  z-index: 2;
-}
 /* the travelling specimen, scaled down inside the panel */
 .jn-mini {
   flex: none;
@@ -4396,7 +4359,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    (min 28px). The display face reference lives HERE, the sanctioned
    token layer, like every .display-heading class. ── */
 .cs2-displayquote {
+  /* balanced, not marooned (Elleta, 23 Jul): the block and its text
+     centre in the content column; the measure widens a step */
   margin: var(--spacing-20) 0;
+  display: flex;
+  justify-content: center;
 }
 
 .cs2-displayquote__quote {
@@ -4408,7 +4375,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   line-height: 1.05;
   font-size: var(--font-case-headline);
   color: var(--color-ink);
-  max-width: 30ch;
+  max-width: 34ch;
+  text-align: center;
 }
 
 .cs2-displayquote__accent {
