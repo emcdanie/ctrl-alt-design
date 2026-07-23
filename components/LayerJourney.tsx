@@ -4,171 +4,47 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { SpecimenCardBody } from "@/components/CaseSpecimen";
 
 /**
- * Beat 02: the layered journey, RESTORED CLEANED (AI-flow spec,
- * Elleta 22 Jul 2026; binding contract _proto/beat2.html +
- * _proto/beat02-onecard.html). The Card travels the layers in
- * journey order, Figma at the top, Production shipped at the bottom;
- * a layer acts on the tile at each step; the gate layer shows a
- * hardcoded value caught and fixed at source. Rail steps are
- * click + keyboard navigable, single-line labels, hash-linkable;
- * the active step wears the ONE travelling trace (.trace-on).
- * Opens on THE GATE (the money shot).
+ * Beat 02: the layered journey, SIMPLIFIED IN PLACE (pre-merge spec,
+ * Elleta 23 Jul 2026; keeps the half-column beside the text). The
+ * legible essence: the 7-layer rail in journey order (Figma at the
+ * top, Production shipped at the bottom) plus the active layer's ONE
+ * clean panel: a plain counter, the layer title, one line, and the
+ * travelling card. The in-panel audit-trace lines, the Delivers/
+ * Receives scaffolding, the descriptor duplicate, and the drift
+ * outline are CUT (the gate demo in beat 03 owns the fail-fix story;
+ * escalation, not repetition). The gate layer's duplicated caption is
+ * fixed to the ONE approved line.
  *
- * Cleaned vs the polish version: the --demo-* register scope is
- * gone (retired in PR 44); the run control lives in CaseBeat's
- * control slot under the body (iris grammar) and drives the run via
- * `runSignal`; prefers-reduced-motion renders the STATIC END STATE
- * (Production, no autoplay, rail still navigable) instead of the
- * old seven-panel stack. In-panel titles are GEIST (Unique never
- * inside a card). The gate layer's drift value is a data-quote,
- * never painted.
+ * Rail steps stay click + keyboard navigable and hash-linkable; the
+ * active step wears the ONE travelling trace (.trace-on). Opens on
+ * THE GATE. The run control lives in CaseBeat's control slot
+ * (runSignal); reduced motion renders the static end state.
  */
 
 const L = [
-  {
-    slug: "figma",
-    n: "Figma",
-    d: "the component library, what you design",
-    up: "the design",
-    title: "FIGMA",
-    sub: "The card as drawn",
-    flag: true,
-    detail: [
-      { t: "component  Card", tone: "mut" },
-      { t: "prop  brand: periwinkle", tone: "mut" },
-      { t: "description: (empty)", tone: "err" },
-    ],
-  },
-  {
-    slug: "readable",
-    n: "Readable layer",
-    d: "descriptions + tokens with meaning",
-    up: "names with meaning",
-    title: "READABLE LAYER",
-    sub: "The gap gets a name",
-    detail: [
-      { t: "description written in", tone: "ok" },
-      { t: "prop brand → variant", tone: "ok" },
-      { t: "radius → --radius-lg", tone: "ok" },
-    ],
-  },
-  {
-    slug: "bridge",
-    n: "The Bridge",
-    d: "Code Connect · MCP",
-    up: "a wired pair",
-    title: "THE BRIDGE",
-    sub: "Figma ⇄ code, values stream across",
-    detail: [
-      { t: "Figma frame ⇄ code snippet", tone: "mut" },
-      { t: "asked in minutes", tone: "mut" },
-      { t: "verified by hand", tone: "ok" },
-    ],
-  },
-  {
-    slug: "code",
-    n: "Storybook / Code",
-    d: "the source of truth",
-    up: "the shipped component",
-    title: "STORYBOOK / CODE",
-    sub: "The card as shipped",
-    detail: [
-      { t: '<Card variant="action" size="lg" />', tone: "ok" },
-      { t: "resolves from tokens", tone: "mut" },
-    ],
-  },
-  {
-    slug: "agents",
-    n: "Agents",
-    d: "build with it",
-    up: "new work, on-system",
-    title: "AGENTS",
-    sub: "Built only from what the system exposes",
-    detail: [
-      { t: "agent composes the card", tone: "mut" },
-      { t: "can only use exposed tokens", tone: "mut" },
-      { t: "nothing off-palette", tone: "ok" },
-    ],
-  },
-  {
-    slug: "gate",
-    n: "The Gate",
-    d: "audit + evals, nothing ships without review",
-    up: "only what passes",
-    title: "THE GATE",
-    sub: "Audit and evals; nothing ships without review",
-    gate: true,
-    detail: [
-      { t: "auditing tokens…", tone: "mut" },
-      { t: "✗ border: #c7c7c7, hardcoded", tone: "err" }, // token-waiver: the depicted drift value, quoted as data
-      { t: "→ fixed at source: --color-border-soft", tone: "mut" },
-      { t: "✓ now passes", tone: "ok" },
-    ],
-    note: "Second review… now it passes.",
-  },
-  {
-    slug: "production",
-    n: "Production",
-    d: "published, and watched",
-    up: "the finished product",
-    title: "PRODUCTION",
-    sub: "Published, no new debt",
-    detail: [
-      { t: "✓ shipped", tone: "ok" },
-      { t: "only what the system approved", tone: "mut" },
-    ],
-  },
+  { slug: "figma", n: "Figma", title: "FIGMA", sub: "The card as drawn" },
+  { slug: "readable", n: "Readable layer", title: "READABLE LAYER", sub: "The gap gets a name" },
+  { slug: "bridge", n: "The Bridge", title: "THE BRIDGE", sub: "Figma ⇄ code, values stream across" },
+  { slug: "code", n: "Storybook / Code", title: "STORYBOOK / CODE", sub: "The card as shipped" },
+  { slug: "agents", n: "Agents", title: "AGENTS", sub: "Built only from what the system exposes" },
+  /* the ONE approved gate line (pre-merge spec: the d/sub duplicate
+     is dead; this string renders once) */
+  { slug: "gate", n: "The Gate", title: "THE GATE", sub: "Audit and evals. Nothing ships without review." },
+  { slug: "production", n: "Production", title: "PRODUCTION", sub: "Published, no new debt" },
 ] as const;
 
-function Detail({ lines, animate }: { lines: readonly { t: string; tone: string }[]; animate: boolean }) {
-  return (
-    <div className="jn-detail">
-      {lines.map((l, i) => (
-        <span
-          key={l.t}
-          className={`jn-detail__line jn-detail__line--${l.tone}${animate ? " jn-reveal" : ""}`}
-          style={animate ? { transitionDelay: `${0.2 + i * 0.35}s` } : undefined}
-        >
-          {l.t}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function Panel({ i, animate }: { i: number; animate: boolean }) {
+function Panel({ i }: { i: number }) {
   const l = L[i];
-  const [go, setGo] = useState(!animate);
-  useEffect(() => {
-    if (!animate) return;
-    setGo(false);
-    const raf = requestAnimationFrame(() => requestAnimationFrame(() => setGo(true)));
-    return () => cancelAnimationFrame(raf);
-  }, [i, animate]);
-
   return (
-    <div className={`jn-panel${go ? " go" : ""}`}>
-      <p className="jn-kickerband">
-        <span className="jn-kickerband__tag">Delivers ↑</span> {l.up}
-      </p>
-      <p className="jn-kicker-where">Layer {i + 1} of 7 · the card is here</p>
+    <div className="jn-panel">
+      <p className="jn-kicker-where">Layer {i + 1} of 7</p>
       <p className="jn-paneltitle">{l.title}</p>
-      {/* the rail label is single-line; the descriptor lives here */}
-      <p className="jn-sub">{l.d}</p>
       <p className="jn-sub">{l.sub}</p>
       <div className="jn-stagebox">
-        <div className={`jn-mini${"flag" in l && l.flag ? " jn-mini--flagged" : ""}`}>
+        <div className="jn-mini">
           <SpecimenCardBody />
         </div>
-        <div>
-          <Detail lines={l.detail} animate={animate} />
-          {"note" in l && l.note && <p className="jn-note">{l.note}</p>}
-        </div>
       </div>
-      <p className="jn-kickerband jn-recv">
-        <span className="jn-kickerband__tag">Receives ↓</span>{" "}
-        {i === 0 ? "nothing, this is the origin" : "everything built below, by human or agent"}
-      </p>
     </div>
   );
 }
@@ -180,7 +56,6 @@ export default function LayerJourney({ runSignal = 0 }: { runSignal?: number }) 
   /* opens on THE GATE, the money shot (proto); reduced motion opens
      on the STATIC END STATE instead (Production, rail navigable) */
   const [step, setStep] = useState(5);
-  const [animate, setAnimate] = useState(true);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
@@ -209,13 +84,12 @@ export default function LayerJourney({ runSignal = 0 }: { runSignal?: number }) 
           window.history.replaceState(null, "", `#journey-${l.slug}`);
         }, t)
       );
-      t += l.slug === "gate" ? 4200 : 2100;
+      t += l.slug === "gate" ? 2800 : 1400;
     });
   };
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setAnimate(false);
       setStep(L.length - 1);
     }
     const m = window.location.hash.match(/^#journey-([a-z]+)/);
@@ -245,8 +119,8 @@ export default function LayerJourney({ runSignal = 0 }: { runSignal?: number }) 
 
   return (
     /* FLAT (the layout constitution: no card around a visual): rail
-       LEFT beside the detail, equal height, adjacent; the rail reads
-       in JOURNEY ORDER, Figma at the top, Production at the bottom */
+       LEFT beside the panel, equal height; the rail reads in JOURNEY
+       ORDER, Figma at the top, Production at the bottom */
     <div className="jn">
       {JOURNEY_CAPTION.trim() !== "" && (
         <p className="ds-section__kicker jn-caption-slot" style={{ margin: 0 }}>{JOURNEY_CAPTION}</p>
@@ -269,7 +143,7 @@ export default function LayerJourney({ runSignal = 0 }: { runSignal?: number }) 
           })}
         </div>
         <div className="jn-right" id={`journey-${L[step].slug}`}>
-          <Panel i={step} animate={animate} />
+          <Panel i={step} />
         </div>
       </div>
     </div>

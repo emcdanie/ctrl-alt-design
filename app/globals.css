@@ -3792,26 +3792,6 @@ textarea:focus-visible {
   padding: var(--spacing-4) var(--spacing-5) var(--spacing-5);
 }
 
-.jn-kickerband {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-3);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-  margin: 0;
-}
-
-.jn-kickerband__tag {
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-1) var(--spacing-2);
-  color: var(--color-ink);
-}
-
 .jn-kicker-where {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
@@ -3876,28 +3856,8 @@ textarea:focus-visible {
   display: none;
 }
 
-.jn-mini--flagged .csp-card {
-  outline: 2px solid var(--case-writing-text);
-  outline-offset: 2px;
-}
-
-.jn-detail {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  line-height: 1.7;
-  min-width: 0;
-}
-
-.jn-detail__line--mut { color: var(--color-ink-muted); }
-.jn-detail__line--ok { color: var(--color-ink); font-weight: 700; }
-
-
 /* drift TEXT on card surfaces: the drift hue pulled toward ink so it
    clears AA in both themes (axe caught the raw case colour) */
-.jn-detail__line--err,
 .csp-flag--drift .csp-flag__val,
 .csp-flag--fail .csp-flag__val {
   color: color-mix(in srgb, var(--case-writing-text) 65%, var(--color-ink));
@@ -3906,7 +3866,7 @@ textarea:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .csp-flag,
-  .jn-reveal,
+  .gv-rail__chip,
   .spec-stage.in .csp-flag--t {
     transition: none;
     opacity: 1;
@@ -3950,6 +3910,53 @@ textarea:focus-visible {
 
 .gv-prog b {
   color: var(--case-clarity-text);
+}
+
+/* the subject, plain and centred; the drift outline marks the red
+   moment (pre-merge trim: the five annotation flags are cut at this
+   width, the chips + status line carry the story) */
+.gv-card {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-4) 0;
+}
+
+.gv-card--fail .csp-card {
+  outline: 2px solid var(--case-writing-text);
+  outline-offset: 2px;
+}
+
+/* the 13-audit chip rail (the original gate's clarity, restored) */
+.gv-rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  justify-content: center;
+  width: 100%;
+}
+
+.gv-rail__chip {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-muted);
+  border: 1px dashed var(--color-border-soft);
+  border-radius: var(--radius-full);
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-card);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.gv-rail__chip.ok {
+  color: var(--case-clarity-text);
+  border: 1px solid color-mix(in srgb, var(--case-clarity-hi) 60%, var(--color-border-medium));
+}
+
+.gv-rail__chip.bad {
+  color: var(--case-writing-text);
+  border: 1px solid var(--case-writing-text);
 }
 
 /* ── ONE scene skeleton (consistency pass, Elleta 22 Jul): every beat
