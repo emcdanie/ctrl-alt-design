@@ -126,6 +126,50 @@ export function FlagLeaders({ anchors }: { anchors?: Record<string, string | Lea
 
       if (anchors) {
         /* anchored mode: measured curved paths, dot or ring landings */
+
+        /* Glyph-run obstacles (leaders-clear-glyphs, Elleta 23 Jul):
+           part BLOCK boxes span the card, so a drop that is legal
+           against boxes can still pass through RENDERED TEXT (the
+           Code First kicker ran under the title leader). Obstacles
+           are the measured glyph runs (Range) of every text-bearing
+           part; a dot landing walks sideways inside its target box
+           until the sampled curve clears them. Computed from rendered
+           geometry, never hand-tuned. */
+        const glyphRuns: { el: Element; r: DOMRect }[] = [];
+        for (const part of root.querySelectorAll("[data-part]")) {
+          /* leaf text parts only: composite hosts (the card) have no
+             text nodes of their own and would swallow the whole box */
+          const ownText = [...part.childNodes].some(
+            (n) => n.nodeType === 3 && n.textContent && n.textContent.trim().length > 0
+          );
+          if (!ownText) continue;
+          const range = document.createRange();
+          range.selectNodeContents(part);
+          const rr = range.getBoundingClientRect();
+          if (rr.width > 0 && rr.height > 0) glyphRuns.push({ el: part, r: rr });
+        }
+        /* the drawn cubic, sampled analytically (detached paths
+           cannot be measured): x eases x1->x2, y eases y1->y2 with
+           the 0.6 bend used below */
+        const curveHits = (x1: number, y1: number, x2: number, y2: number, own: Element) => {
+          const bend = (y2 - y1) * 0.6;
+          for (let t = 0.02; t < 1; t += 0.02) {
+            const x = dr.left + x1 + (x2 - x1) * t * t * (3 - 2 * t);
+            const mt = 1 - t;
+            const y =
+              dr.top +
+              mt * mt * mt * y1 +
+              3 * mt * mt * t * (y1 + bend) +
+              3 * mt * t * t * (y2 - bend) +
+              t * t * t * y2;
+            for (const g of glyphRuns) {
+              if (g.el === own) continue;
+              if (x > g.r.left - 3 && x < g.r.right + 3 && y > g.r.top - 3 && y < g.r.bottom + 3) return true;
+            }
+          }
+          return false;
+        };
+
         const nodes: SVGElement[] = [];
         for (const f of lane.querySelectorAll(".ds-flag, .csp-flag")) {
           const spec = anchors[f.getAttribute("data-flag-token") ?? ""];
@@ -144,12 +188,25 @@ export function FlagLeaders({ anchors }: { anchors?: Record<string, string | Lea
           /* the landing point: the ring circles the part; the dot
              lands on the part's near edge, computed from geometry */
           const rad = ring ? Math.max(tr.width, tr.height) / 2 + 6 : 0;
-          const x2 = ring
+          let x2 = ring
             ? tcx - dr.left + (x1 < tcx - dr.left ? -rad : rad) * 0.7071
             : Math.max(tr.left - dr.left + 6, Math.min(x1, tr.right - dr.left - 6));
           const y2 = ring
             ? tcy - dr.top + (below ? rad : -rad) * 0.7071
             : (below ? tr.bottom : tr.top) - dr.top;
+          if (!ring && curveHits(x1, y1, x2, y2, target)) {
+            /* walk the landing sideways (nearest first, both ways)
+               inside the target box until the curve clears the glyph
+               runs; no clean landing keeps the geometric default */
+            const lo = tr.left - dr.left + 6;
+            const hi = tr.right - dr.left - 6;
+            for (let dx = 8; dx <= Math.max(hi - x2, x2 - lo); dx += 8) {
+              const right = x2 + dx;
+              const left = x2 - dx;
+              if (right <= hi && !curveHits(x1, y1, right, y2, target)) { x2 = right; break; }
+              if (left >= lo && !curveHits(x1, y1, left, y2, target)) { x2 = left; break; }
+            }
+          }
           const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
           const bend = (y2 - y1) * 0.6;
           path.setAttribute("d", `M${x1},${y1} C${x1},${y1 + bend} ${x2},${y2 - bend} ${x2},${y2}`);
