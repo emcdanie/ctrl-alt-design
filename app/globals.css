@@ -3433,67 +3433,6 @@ textarea:focus-visible {
   font-weight: 700;
 }
 
-/* ── /skills v2 (brief item 15): the readable grouped list ── */
-.sk-groups {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-10);
-}
-
-.sk-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
-}
-
-.sk-group__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.sk-row {
-  display: grid;
-  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr) auto;
-  gap: var(--spacing-4);
-  align-items: baseline;
-  padding-block: var(--spacing-4);
-  border-bottom: 1px solid var(--color-border-soft);
-  min-width: 0;
-}
-
-.sk-row__line {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
-}
-
-.sk-row__proof {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
-  color: var(--color-accent-ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  white-space: nowrap;
-  /* 44px house rule, inline hit-area growth */
-  padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
-}
-
-@media (max-width: 719px) {
-  .sk-row {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-1);
-  }
-
-  .sk-row__proof {
-    white-space: normal;
-  }
-}
-
 /* ── The case specimen stage (proto-contract rebuild, Elleta 22 Jul
    2026; contracts _proto/specimen.html + beat1/beat2/beat4.html).
    The working specimen floats on the page ground; all animation is
