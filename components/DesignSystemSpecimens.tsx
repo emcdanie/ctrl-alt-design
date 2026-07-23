@@ -13,6 +13,7 @@ import Heading from "@/components/ui/Heading";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Card from "@/components/ui/Card";
 import AiReadinessExplainer from "@/components/AiReadinessExplainer";
+import BellaMaturityMap from "@/components/BellaMaturityMap";
 
 /**
  * §8 /design-system: the site inspecting itself. Every value on this
@@ -474,6 +475,14 @@ export default function DesignSystemSpecimens() {
       <div className="ds-band">
         <div className="layout-container">
           <AiReadinessExplainer />
+        </div>
+      </div>
+
+      {/* ── The maturity map: the explainer is the framework, this is
+          the honest self-score; the two bands read as one story ── */}
+      <div className="ds-band">
+        <div className="layout-container">
+          <BellaMaturityMap />
         </div>
       </div>
 

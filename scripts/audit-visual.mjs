@@ -60,7 +60,7 @@ for (const theme of ["light", "dark"]) {
 
   const rowBad = await page.evaluate(() => {
     const out = [];
-    for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-gate, .ds-caseband, .ds-status")) {
+    for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-gate, .ds-caseband, .ds-status, .bmm-list")) {
       const cards = [...grid.children].filter((c) => c.getBoundingClientRect().width > 0);
       /* group siblings by row (same top), assert equal heights */
       const rows = new Map();
@@ -162,6 +162,9 @@ for (const theme of ["light", "dark"]) {
           }
         }
       }
+      /* the maturity map (.bmm-list) is a one-column stack: its cards
+         share a width but not a height (rationale lengths differ), so
+         it rides the row-equality check above, not this one */
       for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-gate, .ds-caseband, .ds-status")) {
         const dims = [...grid.querySelectorAll(":scope > * ")].filter((c) => c.getBoundingClientRect().width > 0)
           .map((c) => { const r = c.getBoundingClientRect(); return Math.round(r.width) + "x" + Math.round(r.height); });

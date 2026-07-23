@@ -2694,6 +2694,121 @@ textarea:focus-visible {
   }
 }
 
+/* ── BELLA maturity map (System band, 23 Jul 2026, rebuilt from her
+   bella-maturity-map mockup; copy hers verbatim). Token mapping per
+   the spec: the mockup's mint pair = the clarity case pair (the
+   frontier accent), its warm V1 hue = the writing case pair, Growing
+   = the accent family. Same 900 column as the explainer above so the
+   two bands read as one AI-readiness story. ── */
+.bmm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  max-width: 900px;
+}
+
+/* the honest note wears the frontier accent as a quiet left keyline,
+   the same device as .air-takeaway */
+.bmm-honest {
+  border-left: 3px solid var(--case-clarity-hi);
+  padding-left: var(--spacing-4);
+  max-width: 64ch;
+}
+
+.bmm-scale {
+  color: var(--color-ink-muted);
+}
+
+.bmm-scale strong {
+  color: var(--color-ink);
+}
+
+.bmm-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.bmm-axis {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.bmm-axis__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
+/* stage badges: metadata tier (the tag/pill register), stage colour
+   from semantic families only */
+.bmm-badge {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.bmm-badge--v1 {
+  background: color-mix(in srgb, var(--case-writing-hi) 22%, var(--color-card));
+  color: var(--case-writing-text);
+}
+
+.bmm-badge--growing {
+  background: var(--color-semantic-accent-subtle);
+  color: var(--color-accent-ink);
+}
+
+.bmm-badge--teenage {
+  background: color-mix(in srgb, var(--case-clarity-hi) 30%, var(--color-card));
+  color: var(--case-clarity-text);
+}
+
+/* dark flips clarity-text to clarity-hi (light mint); on the 30% tint
+   it measured 4.44:1, a hair under AA. Step the tint down so the same
+   text clears with margin (measured 6.0:1). */
+[data-theme="dark"] .bmm-badge--teenage {
+  background: color-mix(in srgb, var(--case-clarity-hi) 18%, var(--color-card));
+}
+
+/* the 4-step track; filled = the accent family, the frontier axis
+   fills in the clarity pair. Redundant with the badge text, so the
+   track itself is decorative. */
+.bmm-track {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.bmm-track__step {
+  flex: 1;
+  height: var(--spacing-2);
+  border-radius: var(--radius-full);
+  background: var(--color-border-medium);
+}
+
+.bmm-track__step--on {
+  background: var(--color-accent-ink);
+}
+
+.bmm-track__step--frontier {
+  background: var(--case-clarity-text);
+}
+
+.bmm-foot {
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: var(--spacing-4);
+}
+
 .ds-swatches {
   list-style: none;
   margin: 0;
