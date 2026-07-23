@@ -55,9 +55,11 @@ const ANCHORS: Record<string, LeaderAnchor> = Object.fromEntries(
 
 /** per-flag display state, driven by the beats */
 export interface FlagState {
-  /** the value line under the part label */
-  label: string;
-  tone?: "iris" | "drift" | "pass" | "fail";
+  /** the value line under the part label; nodes allowed so feedback
+      flags can bold the value + verdict (gate-feedback spec) */
+  label: React.ReactNode;
+  /** focus = the ACTIVE feedback flag: larger, bolder, in front */
+  tone?: "iris" | "drift" | "pass" | "fail" | "focus";
 }
 
 export function useResolvedTokens(tokens: readonly string[]): Record<string, string> {
@@ -102,6 +104,7 @@ export default function CaseSpecimen({
   flagStates = {},
   label = "On system",
   interactive = true,
+  zone = null,
   onZone,
   children,
 }: {
@@ -110,12 +113,15 @@ export default function CaseSpecimen({
   label?: string;
   /** flags are focusable buttons highlighting their part */
   interactive?: boolean;
+  /** controlled highlight zone (the gate run's live pointer);
+      overrides flag hover while set */
+  zone?: string | null;
   onZone?: (zone: string | null) => void;
   /** extra stage content below the card (rails, consoles) */
   children?: React.ReactNode;
 }) {
   return (
-    <SpecimenStage label={label}>
+    <SpecimenStage label={label} zone={zone}>
       {(setZone) => {
         const zone = (z: string | null) => {
           setZone(z);

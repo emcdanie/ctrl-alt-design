@@ -165,7 +165,12 @@ body {
    on the ramp, defined ONCE here. No other clamp() in components. */
 :root {
   --font-hero-unique: clamp(80px, 12.5vw, 184px);
-  --font-case-title: clamp(40px, 4vw, 64px);
+  /* the smallest display step (tier "case": next-case pointers), a
+     clear step below the section tier; floor clears the 24px Unique
+     minimum (type-scale fix, 22 Jul 2026; --font-beat-headline and
+     the unused --font-case-title retired, beat headlines now sit on
+     --font-section-display through the Heading primitive) */
+  --font-case-headline: clamp(28px, 2.8vw, 42px);
   --font-case-display: clamp(40px, 5vw, 96px);
   --font-hero: clamp(40px, 5vw, 56px);
   --font-section-title: clamp(32px, 2.5vw, 40px);
@@ -779,8 +784,10 @@ li {
 }
 
 .display-heading--case {
-  font-size: var(--font-case-display);
-  line-height: 0.9;
+  /* the SMALLEST display step (next-case pointers), one clear step
+     below section; case-study H1s render tier page (type-scale fix,
+     22 Jul 2026: no two tiers resolve the same rendered px) */
+  font-size: var(--font-case-headline);
 }
 
 .display-heading__accent {
@@ -1099,7 +1106,10 @@ li {
 
 .trace-host:hover::before,
 .trace-host:focus-within::before,
-.trace-host:focus-visible::before {
+.trace-host:focus-visible::before,
+.trace-host.trace-on::before {
+  /* .trace-on: the persistent active state (step rails); the SAME
+     one trace, pinned on */
   opacity: 1;
   animation: trace-travel 3.4s linear infinite;
 }
@@ -1113,7 +1123,8 @@ li {
 @media (prefers-reduced-motion: reduce) {
   .trace-host:hover::before,
   .trace-host:focus-within::before,
-  .trace-host:focus-visible::before {
+  .trace-host:focus-visible::before,
+  .trace-host.trace-on::before {
     animation: none;
     background: var(--cc);
   }
@@ -3271,7 +3282,14 @@ textarea:focus-visible {
   align-items: flex-start;
   gap: var(--spacing-4);
   padding-top: calc(var(--header-height) + var(--spacing-12));
-  max-width: 62ch;
+  /* the head no longer caps at a body measure: the display title
+     breathes across the content column (two balanced lines max at
+     1440); only the reading-tier subhead keeps a measure below */
+}
+
+.cs2-head .display-heading {
+  max-width: none;
+  text-wrap: balance;
 }
 
 .cs2-subhead {
@@ -3279,6 +3297,8 @@ textarea:focus-visible {
   font-size: var(--font-body-size);
   line-height: 1.6;
   color: var(--color-ink-soft);
+  /* the reading-tier subhead keeps the measure the head gave up */
+  max-width: 62ch;
   margin: 0;
 }
 
@@ -3304,7 +3324,9 @@ textarea:focus-visible {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: var(--spacing-12);
-    align-items: center;
+    /* START, not center: headlines and text sit at the TOP beside
+       their visual, never floating mid-white (polish pass) */
+    align-items: start;
   }
 
   .cs2-screen__grid--flip .cs2-screen__text {
@@ -3456,33 +3478,10 @@ textarea:focus-visible {
   justify-content: center;
 }
 
-/* ── the case-specimen DEMO register (Elleta's ruling; recorded in
-   DESIGN.md as case-specimen-scoped, leak-asserted in audit:visual).
-   .demo-scope is the flat variant for demo controls outside a stage;
-   same scope law. ── */
-.spec-stage,
-.demo-scope {
-  --demo-surface: #FFFFFF;
-  --demo-ink: #17181C;
-  --demo-muted: #5D6067;
-  --demo-border: #D7D8DC;
-  --demo-primary: #101114;
-  --demo-primary-ink: #FFFFFF;
-  --demo-selected: #3D5A96;
-  --demo-radius: 8px;
-  --demo-touch: 44px;
-}
-
-[data-theme="dark"] .spec-stage,
-[data-theme="dark"] .demo-scope {
-  --demo-surface: #17181C;
-  --demo-ink: #F2F2F4;
-  --demo-muted: #A6A8B0;
-  --demo-border: #3A3C42;
-  --demo-primary: #101114;
-  --demo-primary-ink: #FFFFFF;
-  --demo-selected: #8FACE0;
-}
+/* the --demo-* control register is RETIRED (simplification pass,
+   22 Jul 2026): the black demo primary was off-system, hardcoded
+   hex. Controls use BELLA's button grammar (CLAUDE.md §5);
+   audit:controls fails any demo-btn / --demo-* comeback. */
 
 .spec-stage__tag {
   position: absolute;
@@ -3534,12 +3533,17 @@ textarea:focus-visible {
   border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-lg);
   padding: var(--spacing-5) var(--spacing-5) var(--spacing-6);
-  box-shadow: var(--shadow-orb);
+  /* cards wear --shadow-soft; --shadow-orb is sphere/keycap only
+     (the sticker look, polish pass rule, asserted) */
+  box-shadow: var(--shadow-soft);
 }
 
+/* the corner target hugs the BOTTOM-right corner: the corner leader
+   takes a short low path and never routes up past META (the
+   leaders-do-not-cross rule, DESIGN.md section 5 addendum) */
 .csp-corner {
   position: absolute;
-  top: 0;
+  bottom: 0;
   right: 0;
   width: var(--spacing-5);
   height: var(--spacing-5);
@@ -3649,7 +3653,7 @@ textarea:focus-visible {
   background: var(--color-card);
   border: 1px solid var(--color-border-medium);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-orb);
+  box-shadow: var(--shadow-soft);
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   color: var(--color-ink);
@@ -3733,6 +3737,23 @@ textarea:focus-visible {
   color: var(--case-clarity-text);
 }
 
+/* the ACTIVE feedback flag (gate-feedback spec): the check's value +
+   verdict, a size step up, value and glyph in strong, in front of
+   the resting flags; checking wears the semantic info border */
+.csp-flag--focus {
+  border-color: var(--color-semantic-info);
+  z-index: 4;
+}
+
+.csp-flag--focus .csp-flag__val {
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-ink);
+}
+
+.csp-flag--focus .csp-flag__val strong,
+.csp-flag--fail .csp-flag__val strong {
+  font-weight: 700;
+}
 /* desktop positions (the specimen contract); the flag rows sit in
    vertically CLEARED zones above and below the card so no flag can
    intersect another flag or the card at any column width (asserted
@@ -3828,6 +3849,12 @@ textarea:focus-visible {
   }
 }
 
+/* beat 02's body reads a step up (gate-feedback spec item 3): the
+   MCP story was marooned at base size beside the tall journey; lg
+   keeps the two-column layout and the 16px floor with room over it */
+section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
+  font-size: var(--typography-font-size-lg);
+}
 /* the connective line between beats: her voice, renders nothing empty */
 .cs2-beat__link {
   font-family: var(--font-body);
@@ -3866,119 +3893,96 @@ textarea:focus-visible {
   gap: var(--spacing-4);
 }
 
-/* ── beat 02: the layered journey (contract _proto/beat2.html) ── */
+/* ── beat 02: the layered journey, RESTORED CLEANED (AI-flow spec,
+   22 Jul 2026; contract _proto/beat2.html + beat02-onecard.html).
+   No --demo-* scope; the run control lives in the CaseBeat control
+   slot. The jn-nav/dots and the seven-panel reduced-motion stack
+   stay retired. ── */
 
 .jn {
-  display: grid;
-  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
-  gap: var(--spacing-8);
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  align-items: stretch;
   width: 100%;
 }
 
-@media (max-width: 899px) {
-  .jn {
+/* the ONE-card journey (contract _proto/beat02-onecard.html): rail
+   and detail in a single container, equal height by construction;
+   slim single-line steps, the active one wearing the ONE travelling
+   trace */
+/* the flat journey body: a hairline divider between rail and detail
+   is internal structure, not a frame (the root paints nothing) */
+.jn-onecard__body {
+  display: grid;
+  grid-template-columns: minmax(150px, 180px) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+@media (max-width: 519px) {
+  .jn-onecard__body {
     grid-template-columns: 1fr;
   }
 }
 
-/* the rail, reversed; the active layer takes the dark plate with the
-   offset shadow (the proto's signature) */
 .jn-rail {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-3);
-}
-
-/* the proto dims inactive layers by opacity; opacity fails AA (axe
-   caught it), so the resting layers dim by BORDER and keep AA inks;
-   the dark active plate carries the hierarchy */
-.jn-layer {
-  text-align: left;
-  border: 1px dashed var(--color-border-soft);
-  border-radius: var(--radius-xl);
-  background: var(--color-card);
-  padding: var(--spacing-4) var(--spacing-4);
-  cursor: pointer;
-  transition: background-color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-  display: flex;
-  flex-direction: column;
   gap: var(--spacing-1);
+  padding: var(--spacing-2);
+  border-right: 1px solid var(--color-border-soft);
 }
 
-.jn-layer:hover {
-  border-style: solid;
-  border-color: var(--color-border-medium);
+.jn-step {
+  --cc: var(--hero-iris-bright, var(--color-accent-ink));
+  --trace-r: var(--radius-md);
+  --trace-w: 2px;
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-ink-muted);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.jn-layer[aria-current="true"] {
-  border-style: solid;
-  background: var(--color-semantic-background-inverse);
-  border-color: var(--color-semantic-background-inverse);
-  box-shadow: var(--spacing-2) var(--spacing-2) 0 color-mix(in srgb, var(--color-semantic-background-inverse) 14%, transparent);
+.jn-step:hover {
+  color: var(--color-ink);
 }
 
-.jn-layer:focus-visible {
+.jn-step[aria-current="step"] {
+  color: var(--color-accent-ink);
+}
+
+.jn-step:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 2px;
 }
 
-.jn-layer__n {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-ink);
+.jn-caption-slot {
+  margin: 0;
 }
 
-.jn-layer__d {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  color: var(--color-ink-muted);
-}
-
-.jn-layer[aria-current="true"] .jn-layer__n {
-  color: var(--color-semantic-background);
-}
-
-.jn-layer[aria-current="true"] .jn-layer__d {
-  color: color-mix(in srgb, var(--color-semantic-background) 72%, transparent);
-}
-
-/* the right panel */
 .jn-right {
   min-width: 0;
 }
 
 .jn-panel {
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-2xl);
-  background: var(--color-card);
-  padding: var(--spacing-6) var(--spacing-6);
+  /* borderless: the ONE card is the container */
+  padding: var(--spacing-4) var(--spacing-5) var(--spacing-5);
 }
 
-.jn-kickerband {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-3);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-  margin: 0;
-}
-
-.jn-kickerband__tag {
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-1) var(--spacing-2);
-  color: var(--color-ink);
-}
-
-.jn-where {
+.jn-kicker-where {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 600;
@@ -4017,6 +4021,59 @@ textarea:focus-visible {
   flex-wrap: wrap;
 }
 
+/* the gate layer's flag + card stack (flag above, leader drops
+   straight onto the card) */
+.jn-gatecol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* the gate layer's check flag (gate-feedback spec item 2): the
+   beat-03 feedback grammar in the journey panel. Sits ABOVE the
+   card; the leader is a short straight drop landing on the card's
+   top edge with a dot, in front, crossing nothing by construction. */
+.jn-checkflag {
+  position: relative;
+  align-self: flex-start;
+  display: inline-flex;
+  background: var(--color-card);
+  border: 1px solid var(--color-semantic-info);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: var(--spacing-2) var(--spacing-3);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-ink);
+  margin-bottom: var(--spacing-6);
+  z-index: 2;
+}
+
+.jn-checkflag strong {
+  font-weight: 700;
+}
+
+.jn-checkflag::after {
+  content: "";
+  position: absolute;
+  left: var(--spacing-6);
+  top: 100%;
+  width: 2px;
+  height: var(--spacing-5);
+  background: var(--color-semantic-info);
+}
+
+.jn-checkflag::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--spacing-6) - 2px);
+  top: calc(100% + var(--spacing-5));
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-semantic-info);
+  z-index: 2;
+}
 /* the travelling specimen, scaled down inside the panel */
 .jn-mini {
   flex: none;
@@ -4042,273 +4099,17 @@ textarea:focus-visible {
   display: none;
 }
 
-.jn-mini--flagged .csp-card {
-  outline: 2px solid var(--case-writing-text);
-  outline-offset: 2px;
-}
-
-.jn-detail {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  line-height: 1.7;
-  min-width: 0;
-}
-
-.jn-detail__line--mut { color: var(--color-ink-muted); }
-.jn-detail__line--ok { color: var(--color-ink); font-weight: 700; }
-
 /* drift TEXT on card surfaces: the drift hue pulled toward ink so it
    clears AA in both themes (axe caught the raw case colour) */
-.jn-detail__line--err,
 .csp-flag--drift .csp-flag__val,
 .csp-flag--fail .csp-flag__val {
   color: color-mix(in srgb, var(--case-writing-text) 65%, var(--color-ink));
   font-weight: 700;
 }
 
-.jn-reveal {
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.jn-panel.go .jn-reveal {
-  opacity: 1;
-  transform: none;
-}
-
-.jn-note {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
-  color: var(--color-ink);
-  margin: var(--spacing-3) 0 0;
-}
-
-.jn-recv {
-  border-top: 1px solid var(--color-border-soft);
-  margin-top: var(--spacing-5);
-  padding-top: var(--spacing-4);
-  display: flex;
-}
-
-.jn-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-3);
-  margin-top: var(--spacing-5);
-}
-
-.jn-dots {
-  display: inline-flex;
-  gap: var(--spacing-2);
-}
-
-.jn-dot {
-  width: 9px;
-  height: 9px;
-  border: 1px solid var(--color-ink-muted);
-  border-radius: 2px;
-  display: block;
-  transition: background-color 0.2s ease;
-}
-
-.jn-dot.on {
-  background: var(--color-semantic-background-inverse);
-  border-color: var(--color-semantic-background-inverse);
-}
-
-.jn--static {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-8);
-}
-
-.jn-staticrow {
-  display: grid;
-  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
-  gap: var(--spacing-6);
-  align-items: start;
-}
-
-@media (max-width: 719px) {
-  .jn-staticrow {
-    grid-template-columns: 1fr;
-  }
-}
-
-
-/* beat 03: the system tree */
-.tree {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
-  width: 100%;
-}
-
-.tree__space {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 640 / 360;
-}
-
-.tree__edges {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.tree__edge {
-  stroke: var(--color-border-medium);
-  stroke-width: 1.5;
-  opacity: 0;
-  transition: opacity 0.5s ease, stroke 0.4s ease;
-}
-
-.tree.in .tree__edge--lv0 { opacity: 1; transition-delay: 0.9s; }
-.tree.in .tree__edge--lv1 { opacity: 1; transition-delay: 1.6s; }
-
-.tree__edge.on {
-  stroke: var(--case-writing-text);
-}
-
-.tree__node {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--color-ink);
-  background: var(--color-card);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-full);
-  padding: var(--spacing-1) var(--spacing-3);
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.5s ease, border-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
-  white-space: nowrap;
-  max-width: 100%;
-}
-
-.tree.in .tree__node--lv0 { opacity: 1; transition-delay: 0.2s; }
-.tree.in .tree__node--lv1 { opacity: 1; transition-delay: 1.1s; }
-.tree.in .tree__node--lv2 { opacity: 1; transition-delay: 1.8s; }
-
-.tree.in .tree__node.drift {
-  border-color: var(--case-writing-text);
-  color: var(--case-writing-text);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--case-writing-hi) 40%, transparent);
-}
-
-.tree__node:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
-}
-
-.tree__kicker {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  color: var(--color-ink-muted);
-  margin: 0;
-}
-
-/* ── beat 04: the gate check on the specimen (contract
-   _proto/beat4.html) ── */
-
-.gv-host {
-  width: 100%;
-  min-width: 0;
-}
-
-.gv-rail {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-2);
-  justify-content: center;
-  margin-top: var(--spacing-6);
-  width: 100%;
-}
-
-.gv-rail__chip {
-  font-style: normal;
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: var(--color-ink-muted);
-  border: 1px dashed var(--color-border-soft);
-  border-radius: var(--radius-full);
-  padding: var(--spacing-1) var(--spacing-2);
-  background: var(--color-card);
-  transition: color 0.3s ease, border-color 0.3s ease;
-}
-
-.gv-rail__chip.ok {
-  color: var(--case-clarity-text);
-  border: 1px solid color-mix(in srgb, var(--case-clarity-hi) 60%, var(--color-border-medium));
-}
-
-.gv-rail__chip.bad {
-  color: var(--case-writing-text);
-  border: 1px solid var(--case-writing-text);
-}
-
-.gv-prog {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  line-height: 1.6;
-  color: var(--color-ink-muted);
-  margin: 0;
-}
-
-.gv-prog b {
-  color: var(--case-clarity-text);
-}
-
-/* the run control (the proto's iris run action, deliberately NOT a
-   keycap: the one primary per view stays the contact action) */
-.gv-run {
-  align-self: flex-start;
-  border: 0;
-  cursor: pointer;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  /* the recorded key-face pair: fixed in both themes so the light
-     label always clears AA (the keycap contract; the control itself
-     stays a run action, not a keycap) */
-  color: var(--key-face-hi);
-  background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
-  padding: var(--spacing-4) var(--spacing-6);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 3px 0 var(--key-fill-edge),
-    0 8px 16px color-mix(in srgb, var(--key-fill-lo) 28%, transparent);
-}
-
-.gv-run:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
-}
-
-.cs2-driftbeat {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  align-items: flex-start;
-  width: 100%;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .csp-flag,
-  .jn-reveal,
+  .gv-rail__chip,
   .spec-stage.in .csp-flag--t {
     transition: none;
     opacity: 1;
@@ -4329,10 +4130,335 @@ textarea:focus-visible {
     transition: none;
     opacity: 0.9;
   }
+}
 
-  .gv-rail__chip,
-  .jn-dot,
-  .jn-layer {
-    transition: none;
+
+/* ── beat 03: the gate check on the specimen, RESTORED CLEANED
+   (AI-flow spec, 22 Jul 2026; contract _proto/beat4.html). The
+   run control lives in the CaseBeat control slot; gv-prog is the
+   live status readout above the specimen. The audit-chip rail and
+   the internal gv-run stay retired. ── */
+.gv-host {
+  width: 100%;
+  min-width: 0;
+}
+
+/* the status line sits directly ABOVE the chip rail it summarizes
+   (gate-feedback spec, 23 Jul 2026): a clear size step up, the
+   verdict + count bold where the eye lands */
+.gv-prog {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-lg);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+  margin: 0;
+  text-align: center;
+}
+
+.gv-prog b {
+  font-weight: 700;
+  color: inherit;
+}
+
+/* only the settled verdict wears green */
+.gv-prog--done b {
+  color: var(--case-clarity-text);
+}
+
+/* the 13-audit chip rail (gate+pullquote spec, 23 Jul 2026): each
+   chip steps pending -> checking -> pass/fail with a state GLYPH
+   beside the label, never colour-only; labels hold full contrast in
+   every state (the axe chip-dimming lesson). Checking wears the
+   BELLA semantic info border with a neutral glyph (the warm warning
+   hue is constitutionally banned; the spec's warning tone maps to
+   info); pass and
+   fail ride the recorded clarity/writing pairs, AA both themes. */
+.gv-rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  justify-content: center;
+  width: 100%;
+}
+
+.gv-rail__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  border-radius: var(--radius-full);
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-card);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.gv-rail__glyph {
+  font-family: var(--font-body);
+}
+
+.gv-rail__chip--pending {
+  color: var(--color-ink-muted);
+  border: 1px dashed var(--color-border-soft);
+}
+
+.gv-rail__chip--checking {
+  color: var(--color-ink);
+  border: 1px solid var(--color-semantic-info);
+}
+
+.gv-rail__chip--ok {
+  color: var(--case-clarity-text);
+  border: 1px solid color-mix(in srgb, var(--case-clarity-hi) 60%, var(--color-border-medium));
+}
+
+.gv-rail__chip--bad {
+  color: var(--case-writing-text);
+  border: 1px solid var(--case-writing-text);
+}
+
+/* ── ONE scene skeleton (consistency pass, Elleta 22 Jul): every beat
+   is the same two-column grid, mirrored by the Z alternation; the
+   visual column stacks [status] [visual] [footnote slot]; run/toggle
+   controls live in the CaseBeat control slot under the body. ── */
+.scene-vis {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  min-width: 0;
+}
+
+/* the ONE footnote slot: a quiet row beneath the visual */
+.scene-foot {
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  align-items: flex-start;
+}
+
+/* the visual sits flush at the top of its column: the stage sheds
+   its tall outer breathing (the flag zones live INSIDE .csp and are
+   untouched in wide mode) */
+.spec-stage {
+  min-height: 0;
+  padding: var(--spacing-4) var(--spacing-4);
+}
+
+/* lane mode: the cleared flag zones are dead space when the flags
+   flow statically above the card; drop them (the beat-01 gap fix) */
+@container (max-width: 620px) {
+  .csp {
+    padding-top: 0;
+    padding-bottom: 0;
+    min-height: 0;
   }
+}
+
+/* the wide-visual variant of the ONE scene grid: same skeleton,
+   asymmetric columns so a compound visual (the journey) keeps a
+   readable panel; the slim side carries the text. Mirrored under
+   --flip like every beat. */
+@media (min-width: 1024px) {
+  .cs2-screen__grid--wide {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  }
+
+  .cs2-screen__grid--wide.cs2-screen__grid--flip {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
+
+
+/* ── THE case-study beat template (airtight spec, 22 Jul 2026;
+   docs/briefs/case-layout-constitution.md). The headline is a CHILD
+   of the text column; alternation swaps grid order only; visuals are
+   FLAT; --spacing-* rhythm only. ── */
+
+.beat {
+  padding-block: var(--spacing-16);
+}
+
+.beat + .beat {
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.beat-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+@media (min-width: 1024px) {
+  .beat-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--spacing-12);
+    align-items: start;
+  }
+
+  /* alternation: the flip swaps COLUMN ORDER only; the text column's
+     internal order never changes */
+  .beat--flip .beat-text { order: 2; }
+  .beat--flip .beat-visual { order: 1; }
+}
+
+.beat-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  min-width: 0;
+}
+
+.beat-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+/* the beat headline renders through the Heading primitive at the
+   SECTION tier (type-scale fix, 22 Jul 2026); this class carries
+   only beat rhythm + scroll anchoring */
+.beat-headline {
+  margin: 0 0 var(--spacing-4);
+  scroll-margin-top: calc(var(--header-height) + var(--spacing-16));
+}
+
+/* one keyline per beat: bold ink, never iris */
+.beat-keyline {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-lg);
+  font-weight: 600;
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-ink);
+  max-width: var(--measure-case);
+  margin: 0;
+}
+
+.beat-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  min-width: 0;
+}
+
+/* FLAT: no background, no border, no shadow, no padding frame
+   (asserted in audit:visual) */
+.beat-visual {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+/* flat outcome rows (the constitution: the demo specimen is the only
+   card); one idea per line, quiet dividers */
+.beat-outcomes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.beat-outcomes li {
+  padding: var(--spacing-3) 0;
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.beat-outcomes li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+/* the template CONTROL slot: run/toggle/link controls sit DIRECTLY
+   under the body text, RIGHT-ALIGNED to the body column's right edge
+   (Elleta, confirmed 22 Jul 2026, case-beat-template-rules; this
+   supersedes the AI-flow spec's left-edge probe) */
+.beat-control {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-2);
+}
+
+/* ── the pull quote as an editorial display moment (gate+pullquote
+   spec, Elleta 23 Jul 2026): Unique on the page ground, black ink,
+   her chosen words in the CASE identity accent (never iris), FLAT,
+   generous air above and below. Floor clears the 24px Unique minimum
+   (min 28px). The display face reference lives HERE, the sanctioned
+   token layer, like every .display-heading class. ── */
+.cs2-displayquote {
+  margin: var(--spacing-20) 0;
+}
+
+.cs2-displayquote__quote {
+  margin: 0;
+  font-family: var(--font-hero-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  line-height: 1.05;
+  font-size: var(--font-case-headline);
+  color: var(--color-ink);
+  max-width: 30ch;
+}
+
+.cs2-displayquote__accent {
+  color: var(--case-code-first-text);
+}
+
+/* ── beat 04, the takeaway band (pre-merge spec, 23 Jul 2026): the
+   About statement-card treatment on the case page, a DELIBERATE
+   recorded card exception (DESIGN.md; audit:visual allows thesis
+   cards on case routes only inside this band). Intro above, three
+   equal cards, the quiet no-numbers foot below. ── */
+.cs2-takeaway {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.cs2-takeaway__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  max-width: 62ch;
+}
+
+.cs2-takeaway__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  align-items: stretch;
+}
+
+@media (max-width: 899px) {
+  .cs2-takeaway__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* the NEXT CASE pointer sits well below the takeaway band (pre-merge
+   spec item 4): one clear step above the between-beat rhythm */
+.cs2-beat.cs2-nextcase {
+  /* outranks the .cs2-beat + .cs2-beat rhythm rule */
+  margin-top: calc(var(--spacing-20) + var(--spacing-12));
+}
+
+/* the template FOOTNOTE slot: one quiet row beneath the visual */
+.beat-foot {
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  align-items: flex-start;
 }

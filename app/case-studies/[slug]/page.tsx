@@ -301,7 +301,9 @@ export default async function CaseStudyPage({
             subhead={cs.summary ?? cs.description}
             readingMinutes={readingMinutes}
             tags={cs.tags}
-            linkOut={{ label: "Watch the recorded session", href: "https://www.youtube.com/watch?v=w6bHNKU_Tn8&t=2376s" }}
+            /* the one session link moved into beat 03 (the markup
+               pass proposal); restore here if Elleta picks another
+               beat-03 direction */
           >
             <CodeFirstV2 cs={cs} />
           </CaseShellV2>

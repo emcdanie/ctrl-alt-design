@@ -152,8 +152,8 @@ other sizes.
 | Token | Pair |
 | --- | --- |
 | `--font-hero-unique` | `clamp(80px, 12.5vw, 184px)` (Unique hero headline only — recorded display-step exception, from `_proto/_hero.html`) |
-| `--font-case-title` | `clamp(40px, 4vw, 64px)` (case-study page titles — outranks section headings) |
-| `--font-case-display` | `clamp(40px, 5vw, 96px)` (Unique display case headline — visual-language move #1) |
+| `--font-case-headline` | `clamp(28px, 2.8vw, 42px)` (tier "case": the smallest display step, next-case pointers) |
+| `--font-case-display` | `clamp(40px, 5vw, 96px)` (tier "page": page titles + case-study H1s) |
 | `--font-hero` | `clamp(40px, 5vw, 56px)` |
 | `--font-section-title` | `clamp(32px, 2.5vw, 40px)` |
 | `--font-subsection` | `clamp(24px, 2.2vw, 32px)` |
@@ -404,32 +404,21 @@ single-column guidance, settled as the site rule); full-width below
 768px. The contact form is the reference implementation. Forms validate
 on blur per field, and again on submit.
 
-## Case-specimen demo register (PR 41 amendment, Elleta 22 Jul 2026)
+## Case-specimen demo register — RETIRED (simplification pass, 22 Jul 2026)
 
-The `--demo-*` token set is the neutral product register for CASE SPECIMEN
-STAGES ONLY (her ruling): the specimen reads as "a product", the annotation
-layer (flags, leaders, highlights) stays BELLA iris in both themes. Scope is
-the `.spec-stage` selector in globals.css; the tokens exist nowhere else and
-must never appear in site chrome.
-
-Palette (light / dark): surface #FFFFFF / #17181C · ink #17181C / #F2F2F4 ·
-muted #5D6067 / #A6A8B0 · border #D7D8DC / #3A3C42 · primary #101114 both
-themes (BLACK primary is the ruling; a border keeps it legible on the dark
-surface) · primary ink #FFFFFF · selected #3D5A96 / #8FACE0 (the one
-restrained blue, selected states only) · radius 8px · touch 44px.
-
-Recorded exceptions, deliberate: the demo register uses a pure white surface
-and a black primary INSIDE stages, overriding the site-wide "no pure
-white/black" rule by her ruling; the before-state mess styles (Georgia,
-off-palette colours) are depicted drift, never system UI.
-
-LEAK ASSERTION (audit:visual): on every swept route, `--demo-ink` must
-resolve to EMPTY on both the document root and body. A `--demo-*` token that
-resolves outside a specimen stage fails the gate.
+The `--demo-*` token set and the black `.demo-btn` primary are DELETED
+(Elleta-approved static-first shift; supersedes the PR 41 register ruling).
+The case beats are stills: no run controls, no toggles, no autoplay. Any
+control that survives on a case page uses BELLA's button grammar (CLAUDE.md
+§5): PRIMARY iris keycap (max one per view), SECONDARY flat iris outline,
+TERTIARY iris underlined text link (`.demo-link`). Enforced two ways:
+`audit:controls` source-scans for any `--demo-*` / `.demo-btn` comeback, and
+`audit:visual` keeps the leak assertion (`--demo-ink` must resolve to EMPTY
+on root and body everywhere).
 
 Animation law for stages: CSS transitions on tokens only, no keyframes, no
 motion libraries; `prefers-reduced-motion: reduce` renders everything
-immediately (leaders drawn, flags and console lines visible).
+immediately (leaders drawn, flags visible).
 
 ## Data display dialect + status set (PR 41 amendment 2, 22 Jul 2026)
 
@@ -447,3 +436,70 @@ ground. Asserted in audit:visual (no leader path may intersect the bounding
 box of any text or table node; proven red on the pre-restory parity layout
 before the fix). The `.demo-scope` class is the flat variant of the
 case-specimen register scope (same leak law as `.spec-stage`).
+
+## Section 5 addendum: annotation leaders do not cross (polish pass, 22 Jul 2026)
+
+No annotation leader may cross another leader, and a leader enters the card
+body at most once, landing on its part, never traversing. Routing law for the
+case specimen: CORNER hugs the bottom-right corner with a short low path
+(never up past META); META and TITLE drop straight; IDENTITY and TAG stay on
+the left. Asserted in audit:visual (pairwise polyline intersection + the
+enter-once rule, both themes, 1440 + 390); proven red on the pre-polish
+corner routing before the fix. Shadow law recorded with it: card surfaces use
+--shadow-soft; --shadow-orb is for spheres and keycaps only (asserted).
+
+## Beat 02 wide-visual variant (supersedes the full-width exception, 22 Jul 2026)
+
+The Code First journey (beat 02) rejoined the scene skeleton on the
+WIDE-VISUAL variant: the same mirrored two-column grid, asymmetric columns
+(slim text beside a wider visual) so a compound visual keeps a readable
+panel. Inside the visual the rail sits LEFT beside the detail panel it
+drives, adjacent and EQUAL HEIGHT (the rail distributes its rows so both
+bottoms align). The active rail step links to the panel visibly: the row's
+travelling trace, a small iris pointer, and the shared iris accent on the
+panel's left edge. The short-lived full-width exception from earlier the
+same day is superseded; the pull quote remains the one full-width moment.
+
+## Specimens flat, demos carded (Elleta's markups, 22 Jul 2026)
+
+Annotated SPECIMENS (the drift and gate beats) sit FLAT on the page ground:
+the card is the subject and the flags float around it, never framed. 
+Interactive MULTI-PART demos (the journey) get ONE container card (one
+border, one shadow) holding all their working parts. The mixed treatment is
+deliberate: flat = a specimen under inspection; carded = an instrument you
+operate.
+
+## CaseBeat is THE case-study beat template (airtight spec, 22 Jul 2026)
+
+components/CaseBeat.tsx + docs/recipes/case-beat.md implement
+docs/briefs/case-layout-constitution.md. The structural law: the headline is
+a CHILD of the text column (never a full-width banner), so the whole
+narrative unit moves together under `.beat--flip`; visuals are FLAT (no
+card/frame; the demo specimen is the only card); align-items start;
+--spacing-* only. Asserted in audit:visual (headline-shares-column,
+visual-has-no-frame + no-Card-wrapper, strict alternation), proven RED on
+the carded beat-02 journey before the fix. Future case studies compose
+beats from CaseBeat, never bespoke.
+
+## Takeaway band card exception (pre-merge spec, Elleta 23 Jul 2026)
+
+The Code First takeaway (beat 04) renders as a 3-card band on the About
+statement-card treatment (the shared `.thesis-band` + `.card-statement`
+recipes), a DELIBERATE exception to the case-page "only the demo specimen
+is a card" law. Scope: `.cs2-takeaway` only; `audit:visual` fails any
+thesis card on a case route outside that band. Statement/body split is
+mechanical at the first sentence; 13/13 stays the only metric on the page.
+
+## Case-page type hierarchy, locked (type-scale fix, 22 Jul 2026)
+
+One scale, one display family, stepped through the Heading primitive's four
+tiers, each a DISTINCT rendered size: H1 case title = tier page
+(--font-case-display, 72px at 1440) -> beat headline = tier section
+(--font-section-display, ~50px at 1440; never Geist at display size; the
+22 Jul regression is the counter-example) -> next-case pointer = tier case
+(--font-case-headline, ~40px at 1440, the smallest display step) -> eyebrow
+= tag tier -> keyline = Geist 600 at lg -> body 16-18px. --font-beat-headline
+and the unused --font-case-title are retired. Media/link controls use the
+BELLA grammar (tertiary .demo-link) in CaseBeat's control slot, right-aligned
+under the body text; quiet captions/links live in the footnote slot beneath
+the visual. Both slots are template-level.

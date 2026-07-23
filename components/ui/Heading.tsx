@@ -5,8 +5,11 @@ export type HeadingTier = "hero" | "page" | "section" | "case";
 /**
  * THE display heading primitive (corrective pass 2026-07-17): every
  * display heading renders through this. Unique 700 all-caps at four
- * ramp tiers; semantic level is decoupled from the visual tier via
- * `as`. `accent` renders the established hero treatment (key word /
+ * ramp tiers, each a DISTINCT rendered size (type-scale fix, 22 Jul
+ * 2026): page (page + case-study H1s) > hero > section (section
+ * heads + case beat headlines) > case (the smallest display step,
+ * next-case pointers). Semantic level is decoupled from the visual
+ * tier via `as`. `accent` renders the established hero treatment (key word /
  * trailing line in iris). The home hero headline and keycap lockup
  * keep their own shells but consume the same tokens; bubble page
  * headers are parked (last live at e25eefc). Unique never renders below 24px (gate-enforced) and

@@ -102,7 +102,7 @@ export default function CaseShellV2({
         <p className="cs-shell__eyebrow" style={caseItem ? { color: caseItem.text, margin: 0 } : { margin: 0 }}>
           {eyebrow}
         </p>
-        <Heading tier="case" as="h1" style={caseItem ? { color: caseItem.text } : undefined}>
+        <Heading tier="page" as="h1" style={caseItem ? { color: caseItem.text } : undefined}>
           {title}
         </Heading>
         <p className="cs2-subhead">{subhead}</p>

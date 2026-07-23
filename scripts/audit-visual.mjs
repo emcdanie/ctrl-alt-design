@@ -394,37 +394,147 @@ for (const theme of ["light", "dark"]) {
       fails++;
       console.error(`VISUAL FAIL (${theme} ${width}) stage geometry: ${b}`);
     }
-    /* Z-PATTERN LAW (rebuild brief, 22 Jul): consecutive sided scenes
-       alternate which side the visual sits on; a full-width block
-       (stepper, clip, [data-zbreak]) between them resets the run.
-       Layout law, checked once at 1440. */
-    if (theme === "light" && width === 1440) {
-      const zBad = await page.evaluate(() => {
-        const seq = [...document.querySelectorAll(".cs2-screen__grid, .jn, [data-zbreak]")];
-        const out = [];
-        let prev = null;
-        for (const el of seq) {
-          if (!el.classList.contains("cs2-screen__grid")) {
-            prev = null; // a full-width break resets the alternation
-            continue;
+    /* LEADERS DO NOT CROSS (polish pass, Elleta 22 Jul; DESIGN.md
+       section 5 addendum): no annotation leader may cross another
+       leader, and a leader may enter the card body at most once and
+       never exit it again (it lands on its part, it does not
+       traverse). Proven red on the pre-polish corner routing. */
+    const crossBad = await page.evaluate(() => {
+      const out = [];
+      const seg = (a, b, c, d) => {
+        const ccw = (p, q, r) => (r.y - p.y) * (q.x - p.x) - (q.y - p.y) * (r.x - p.x);
+        return ccw(a, c, d) * ccw(b, c, d) < 0 && ccw(a, b, c) * ccw(a, b, d) < 0;
+      };
+      for (const stage of document.querySelectorAll(".spec-stage")) {
+        const svg = stage.querySelector(".ds-leaders");
+        if (!svg) continue;
+        const sr = svg.getBoundingClientRect();
+        if (sr.width < 2) continue;
+        const card = stage.querySelector(".csp-card")?.getBoundingClientRect();
+        const polys = [...stage.querySelectorAll(".ds-leaders path")].map((p) => {
+          const len = p.getTotalLength();
+          const pts = [];
+          for (let t = 0; t <= 1.001; t += 0.05) {
+            const pt = p.getPointAtLength(len * Math.min(1, t));
+            pts.push({ x: sr.left + pt.x, y: sr.top + pt.y });
           }
-          const side = el.classList.contains("cs2-screen__grid--flip") ? "left" : "right";
-          if (prev !== null && prev === side) {
-            out.push(`two consecutive scenes put the visual ${side}`);
+          return { id: p.getAttribute("data-for") ?? "?", pts };
+        });
+        for (let i = 0; i < polys.length; i++) {
+          for (let j = i + 1; j < polys.length; j++) {
+            let crossed = false;
+            for (let a = 0; a < polys[i].pts.length - 1 && !crossed; a++) {
+              for (let b = 0; b < polys[j].pts.length - 1 && !crossed; b++) {
+                if (seg(polys[i].pts[a], polys[i].pts[a + 1], polys[j].pts[b], polys[j].pts[b + 1])) {
+                  crossed = true;
+                }
+              }
+            }
+            if (crossed) out.push(`leaders cross: ${polys[i].id} × ${polys[j].id}`);
           }
-          prev = side;
+          if (card) {
+            let entered = false;
+            for (const pt of polys[i].pts) {
+              const inside = pt.x > card.left && pt.x < card.right && pt.y > card.top && pt.y < card.bottom;
+              if (inside) entered = true;
+              else if (entered) {
+                out.push(`leader ${polys[i].id} traverses the card body`);
+                break;
+              }
+            }
+          }
         }
-        return out;
-      });
-      for (const b of zBad) {
-        fails++;
-        console.error(`VISUAL FAIL z-pattern: ${b}`);
       }
+      return [...new Set(out)];
+    });
+    for (const b of crossBad) {
+      fails++;
+      console.error(`VISUAL FAIL (${theme} ${width}) leader crossing: ${b}`);
+    }
+    /* ── BEAT TEMPLATE LAW (airtight spec, 22 Jul;
+       case-layout-constitution): checked at every swept width/theme.
+       1. headline-shares-column-with-body: the headline's left edge
+          equals the body's left edge; on flipped beats both sit on
+          the flipped side.
+       2. visual-has-no-frame: the visual root paints no border,
+          shadow, or background, and NO ui/Card (trace-host) wraps a
+          visual; the demo specimen is the only card. RECORDED
+          EXCEPTION (pre-merge spec, 23 Jul 2026): the takeaway band
+          (.cs2-takeaway) carries the About statement cards; thesis
+          cards on a case route may live ONLY inside that band,
+          asserted below.
+       3. alternation: consecutive beats flip alternately. */
+    const beatBad = await page.evaluate(() => {
+      const out = [];
+      const beats = [...document.querySelectorAll("section.beat")];
+      let prevFlip = null;
+      for (const beat of beats) {
+        const label = beat.querySelector(".beat-headline")?.textContent?.slice(0, 24) ?? "beat";
+        const h = beat.querySelector(".beat-headline");
+        const body = beat.querySelector(".beat-body");
+        if (h && body) {
+          const hd = Math.abs(h.getBoundingClientRect().left - body.getBoundingClientRect().left);
+          if (hd > 1.5) out.push(`headline detaches from its body (${Math.round(hd)}px): ${label}`);
+        } else {
+          out.push(`beat missing headline or body: ${label}`);
+        }
+        const vis = beat.querySelector(".beat-visual");
+        if (vis) {
+          const cs = getComputedStyle(vis);
+          const framed =
+            !/rgba\(0, 0, 0, 0\)/.test(cs.backgroundColor) ||
+            cs.boxShadow !== "none" ||
+            [cs.borderTopWidth, cs.borderRightWidth, cs.borderBottomWidth, cs.borderLeftWidth].some((w) => parseFloat(w) > 0);
+          if (framed) out.push(`visual root wears a frame: ${label}`);
+          /* ui/Card specifically (its module class), not every
+             trace-recipe consumer (rail steps wear the trace too) */
+          if ([...vis.querySelectorAll(".trace-host")].some((el) => /Card-module/.test(el.className))) {
+            out.push(`a ui/Card wraps the visual (only the demo specimen may be a card): ${label}`);
+          }
+        } else {
+          out.push(`beat missing its visual: ${label}`);
+        }
+        const flip = beat.classList.contains("beat--flip");
+        if (prevFlip !== null && flip === prevFlip) out.push(`two consecutive beats on the same side: ${label}`);
+        prevFlip = flip;
+      }
+      if (!beats.length) out.push("no beat sections found (template not rendering)");
+      /* the takeaway-band card exception, held tight: a thesis card
+         on a case route outside .cs2-takeaway is card creep */
+      for (const t of document.querySelectorAll(".cs2 .thesis-band")) {
+        if (!t.closest(".cs2-takeaway")) {
+          out.push("thesis card outside the takeaway band (the recorded exception is the band only)");
+        }
+      }
+      return out;
+    });
+    for (const b of beatBad) {
+      fails++;
+      console.error(`VISUAL FAIL (${theme} ${width}) beat template: ${b}`);
     }
     await ctx.close();
   }
 }
 await browser.close();
+
+/* ── SHADOW LAW (polish pass, 22 Jul): card surfaces use
+   --shadow-soft; --shadow-orb belongs to spheres and keycaps only.
+   Static sweep of globals: no card/flag/panel selector may reference
+   the orb shadow. ── */
+{
+  const { readFileSync } = await import("node:fs");
+  /* comments stripped: the law judges declarations, not prose */
+  const css = readFileSync("app/globals.css", "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  for (const rule of css.split("}")) {
+    if (!rule.includes("--shadow-orb")) continue;
+    const sel = rule.slice(0, rule.indexOf("{")).trim().split(",").map((x) => x.trim()).join(",");
+    if (!sel) continue;
+    if (/card|flag|panel|layer|tile|frame/i.test(sel) || (/csp-/.test(sel) && !/sphere/.test(sel))) {
+      fails++;
+      console.error(`VISUAL FAIL shadow law: ${sel.slice(0, 60)} uses --shadow-orb`);
+    }
+  }
+}
 
 if (fails > 0) {
   console.error(`visual gate: ${fails} failure(s)`);

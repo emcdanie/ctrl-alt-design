@@ -1,50 +1,85 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import CaseSpecimen, { type FlagState, useResolvedTokens } from "@/components/CaseSpecimen";
+import CaseSpecimen, { useResolvedTokens, type FlagState } from "@/components/CaseSpecimen";
 
 /**
- * Beat 04: the gate check (binding contract _proto/beat4.html), on
- * the SHARED case-card specimen (the site's own component; the
- * proto's keycap subject would be a second visible primary, which
- * audit:controls hard-fails, and the shared-specimen mandate names
- * the case card for all three beats). On run, the thirteen audits
- * sweep in the REAL package.json order; the featured checks
- * highlight the exact part they validate and flip that flag to a
- * green PASS with values read LIVE from the rendered card;
- * audit:tokens fails first (the hardcoded border, a data-quote),
- * fixes at source to --color-border-soft, goes green; the 13-audit
- * rail fills; ends "gate: green (13/13), merged on green".
- * Replayable; reduced motion renders the final green state with the
- * red moment resolved. The run control is the iris run action from
- * the proto, deliberately NOT a keycap.
+ * Beat 03: the gate, with READABLE FEEDBACK (gate-feedback spec,
+ * Elleta 23 Jul 2026; Vitaly's visibility-of-system-status). One
+ * check at a time; as each runs, the ACTIVE annotation flag surfaces
+ * the check name + the concrete value + the verdict, larger and
+ * bolder than the resting flags (value and glyph in strong), using
+ * the beat-01 grammar: the 5 fixed flags whose leaders never cross,
+ * land on the part with a dot, render in front. One feedback flag at
+ * a time; the ring and the chip rail (pending -> checking(info) ->
+ * pass/fail) step as before. Values are REAL where readable live:
+ * the title contrast ratio, the computed title face and size, the
+ * resolved corner radius; the tokens fail is the approved drift
+ * data-quote. The status line sits directly ABOVE the chip rail it
+ * summarizes, a size step up, verdict + count bold.
+ *
+ * Reduced motion settles instantly to the all-green end state with
+ * the final status. The run control lives in CaseBeat's control
+ * slot (runSignal). Checking wears semantic info (the warm warning
+ * hue is constitutionally banned).
  */
 
 const AUDITS = [
   "structure", "fonts", "tokens", "copy", "reuse", "nda", "controls",
   "parity", "agents", "contrast", "axe", "type", "visual",
 ] as const;
+type Audit = (typeof AUDITS)[number];
 
-/* featured checks validate a specimen part (proto map, on the card) */
-const MAP: Record<string, { token: string; zone: string }> = {
-  tokens: { token: "--case-clarity-hi", zone: "sphere" },
-  contrast: { token: "--color-ink", zone: "title" },
-  visual: { token: "--radius-lg", zone: "corner" },
-  controls: { token: "--case-clarity-text", zone: "tag" },
-  axe: { token: "--color-ink-muted", zone: "kicker" },
+/* flag anchors: the five verified positions (leaders never cross) */
+const F = {
+  sphere: "--case-clarity-hi",
+  kicker: "--color-ink-muted",
+  title: "--color-ink",
+  tag: "--case-clarity-text",
+  corner: "--radius-lg",
+} as const;
+
+/* per check: the ring zone + which resting flag carries the feedback */
+const MAP: Record<Audit, { zone: string; flag: string }> = {
+  structure: { zone: "card", flag: F.corner },
+  fonts: { zone: "title", flag: F.title },
+  tokens: { zone: "card", flag: F.corner } /* the BORDER fail moment */,
+  copy: { zone: "kicker", flag: F.kicker },
+  reuse: { zone: "sphere", flag: F.sphere },
+  nda: { zone: "kicker", flag: F.kicker },
+  controls: { zone: "tag", flag: F.tag },
+  parity: { zone: "tag", flag: F.tag },
+  agents: { zone: "sphere", flag: F.sphere },
+  contrast: { zone: "title", flag: F.title },
+  axe: { zone: "kicker", flag: F.kicker },
+  type: { zone: "title", flag: F.title },
+  visual: { zone: "corner", flag: F.corner },
 };
 
+/* pacing: readable, not a blur */
+const STEP_MS = 1000;
+const FAIL_HOLD_MS = 1400;
+const FIX_HOLD_MS = 1200;
+
+type ChipState = "pending" | "checking" | "ok" | "bad";
 type Phase = "idle" | "running" | "fixing" | "done";
 
-export default function GateRun({ text }: { text?: React.ReactNode }) {
-  const hostRef = useRef<HTMLDivElement>(null);
+const GLYPH: Record<ChipState, string> = { pending: "·", checking: "…", ok: "✓", bad: "✗" };
+
+export default function GateRun({ runSignal = 0 }: { runSignal?: number }) {
   const [phase, setPhase] = useState<Phase>("idle");
-  const [okCount, setOkCount] = useState(0);
+  const [chips, setChips] = useState<Record<Audit, ChipState>>(
+    () => Object.fromEntries(AUDITS.map((a) => [a, "pending"])) as Record<Audit, ChipState>
+  );
   const [zone, setZone] = useState<string | null>(null);
+  const [current, setCurrent] = useState<Audit | null>(null);
+  const [failStage, setFailStage] = useState<"fail" | "fix" | null>(null);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const resolved = useResolvedTokens(["--radius-lg", "--color-ink", "--color-ink-muted"]);
   const specRef = useRef<HTMLDivElement>(null);
+  const resolved = useResolvedTokens(["--radius-lg"]);
   const [ratio, setRatio] = useState("…");
+  const [titleFace, setTitleFace] = useState("Geist");
+  const [titlePx, setTitlePx] = useState("…");
 
   const clearTimers = () => {
     timers.current.forEach(clearTimeout);
@@ -52,12 +87,16 @@ export default function GateRun({ text }: { text?: React.ReactNode }) {
   };
   useEffect(() => clearTimers, []);
 
-  /* honest data: the title contrast ratio, read from the rendered card */
+  /* honest data, read from the rendered card: contrast ratio, face,
+     computed title size */
   useEffect(() => {
     const read = () => {
       const title = specRef.current?.querySelector('[data-part="title"]');
       const card = specRef.current?.querySelector('[data-part="card"]');
       if (!title || !card) return;
+      const cs = getComputedStyle(title);
+      setTitleFace(cs.fontFamily.split(",")[0].replace(/["']/g, "").trim());
+      setTitlePx(`${Math.round(parseFloat(cs.fontSize))}px`);
       const lum = (c: number[]) => {
         const f = (v: number) => {
           v /= 255;
@@ -66,7 +105,7 @@ export default function GateRun({ text }: { text?: React.ReactNode }) {
         return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]);
       };
       const parse = (s: string) => (s.match(/\d+/g) ?? ["0", "0", "0"]).slice(0, 3).map(Number);
-      const l1 = lum(parse(getComputedStyle(title).color));
+      const l1 = lum(parse(cs.color));
       const l2 = lum(parse(getComputedStyle(card).backgroundColor));
       setRatio(`${((Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05)).toFixed(1)}:1`);
     };
@@ -76,89 +115,128 @@ export default function GateRun({ text }: { text?: React.ReactNode }) {
     return () => mo.disconnect();
   }, []);
 
+  const setChip = (a: Audit, s: ChipState) => setChips((c) => ({ ...c, [a]: s }));
+
   const run = () => {
     clearTimers();
+    const allGreen = Object.fromEntries(AUDITS.map((a) => [a, "ok"])) as Record<Audit, ChipState>;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setChips(allGreen);
+      setZone(null);
+      setCurrent(null);
+      setFailStage(null);
       setPhase("done");
-      setOkCount(AUDITS.length);
       return;
     }
+    setChips(Object.fromEntries(AUDITS.map((a) => [a, "pending"])) as Record<Audit, ChipState>);
     setPhase("running");
-    setOkCount(0);
     let t = 0;
-    AUDITS.forEach((a, i) => {
-      t += a === "tokens" ? 400 : 300;
+    for (const a of AUDITS) {
+      timers.current.push(
+        setTimeout(() => {
+          setCurrent(a);
+          setZone(MAP[a].zone);
+          setChip(a, "checking");
+          setFailStage(null);
+        }, t)
+      );
       if (a === "tokens") {
-        const at = t;
-        timers.current.push(setTimeout(() => setPhase("fixing"), at));
-        t += 1400; /* the fail + the fix-at-source moment */
-        timers.current.push(setTimeout(() => setPhase("running"), t));
+        /* the real drift moment: fail, fix at source, re-check green */
+        timers.current.push(setTimeout(() => { setChip(a, "bad"); setFailStage("fail"); setPhase("fixing"); }, t + STEP_MS));
+        timers.current.push(setTimeout(() => { setChip(a, "checking"); setFailStage("fix"); setPhase("running"); }, t + STEP_MS + FAIL_HOLD_MS));
+        timers.current.push(setTimeout(() => setChip(a, "ok"), t + STEP_MS + FAIL_HOLD_MS + FIX_HOLD_MS));
+        t += STEP_MS + FAIL_HOLD_MS + FIX_HOLD_MS;
+      } else {
+        timers.current.push(setTimeout(() => setChip(a, "ok"), t + STEP_MS));
+        t += STEP_MS;
       }
-      timers.current.push(setTimeout(() => setOkCount(i + 1), t));
-    });
-    timers.current.push(setTimeout(() => setPhase("done"), t + 400));
+    }
+    timers.current.push(
+      setTimeout(() => {
+        setCurrent(null);
+        setZone(null);
+        setFailStage(null);
+        setPhase("done");
+      }, t + 400)
+    );
   };
 
-  const okSet = new Set(AUDITS.slice(0, okCount));
+  /* the beat's control slot drives the run */
+  useEffect(() => {
+    if (runSignal > 0) run();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [runSignal]);
+
   const fixing = phase === "fixing";
   const done = phase === "done";
+  const okCount = AUDITS.filter((a) => chips[a] === "ok").length;
 
-  /* flag states follow the sweep: featured checks flip their flag */
+  /* the ACTIVE check's feedback flag: name + concrete value +
+     verdict, value and glyph bold. One at a time, on its verified
+     anchor; every other flag rests on its token name. */
   const flagStates: Record<string, FlagState> = {};
-  for (const [audit, m] of Object.entries(MAP)) {
-    if (audit === "tokens" && fixing) {
-      flagStates[m.token] = { label: "FAIL · border hardcoded → --color-border-soft", tone: "fail" };
-    } else if (okSet.has(audit as (typeof AUDITS)[number]) || done) {
-      const label =
-        audit === "contrast"
-          ? `PASS · title ${ratio}`
-          : audit === "visual"
-            ? `PASS · corner ${resolved["--radius-lg"] || ""}`.trim()
-            : audit === "tokens"
-              ? "PASS · border --color-border-soft"
-              : audit === "controls"
-                ? "PASS · tag hit area"
-                : "PASS · meta from token";
-      flagStates[m.token] = { label, tone: "pass" };
-    }
+  if (current) {
+    const label =
+      current === "tokens" ? (
+        failStage === "fix" ? (
+          <>tokens · <strong>→ --color-border-soft ✓</strong></>
+        ) : (
+          <>tokens · <strong>border #c7c7c7 hardcoded ✗</strong>{/* token-waiver: depicted drift value, data not paint */}</>
+        )
+      ) : current === "contrast" ? (
+        <>contrast · title <strong>{ratio} ✓</strong></>
+      ) : current === "fonts" ? (
+        <>fonts · title <strong>{titleFace} ✓</strong></>
+      ) : current === "type" ? (
+        <>type · title <strong>{titlePx} ✓</strong></>
+      ) : current === "visual" ? (
+        <>visual · corner <strong>{resolved["--radius-lg"] || "…"} ✓</strong></>
+      ) : (
+        <>{current} <strong>✓</strong></>
+      );
+    flagStates[MAP[current].flag] = {
+      label,
+      tone: current === "tokens" && failStage === "fail" ? "fail" : "focus",
+    };
   }
 
   return (
-    /* Z-pattern: this beat is visual-LEFT / text-RIGHT (the proto) */
-    <div ref={hostRef} className="cs2-screen__grid cs2-screen__grid--flip gv">
-      <div className="cs2-screen__text">
-        {text}
-        <p className="gv-prog" aria-live="polite">
-          {phase === "idle" && "idle · 13 audits waiting"}
-          {phase === "running" && (
-            <>running · <b>{okCount}/13</b></>
-          )}
-          {fixing && (
-            <>audit:tokens · border #c7c7c7 hardcoded → fixed at source: --color-border-soft{/* token-waiver: depicted drift value, data not paint */}</>
-          )}
-          {done && (
-            <>gate: <b>green (13/13)</b> · merged on green</>
-          )}
-        </p>
-        {/* the run control: the proto's iris run action, NOT a keycap
-            (one primary per view stays the contact action) */}
-        <button type="button" className="gv-run" onClick={run}>
-          {phase === "idle" ? "Run the gate" : "Run it again"}
-        </button>
-      </div>
-      <div className="cs2-screen__visual">
-        <div ref={specRef} data-hl={zone ?? undefined} className="gv-host">
-          <CaseSpecimen flagStates={flagStates} label={done ? "Green, merged" : fixing ? "Red, fixing" : phase === "running" ? "Running" : "The gate"} onZone={setZone} />
-          {/* the 13-audit rail: BELOW the reserved stage zone, never
-              on it (the geometry law caught the in-stage version) */}
-          <div className="gv-rail" role="log" aria-label="The thirteen audits, in gate order">
-            {AUDITS.map((a) => (
-              <i key={a} className={`gv-rail__chip${okSet.has(a) || done ? " ok" : ""}${a === "tokens" && fixing ? " bad" : ""}`}>
-                {a}
-              </i>
-            ))}
-          </div>
-        </div>
+    <div ref={specRef} className="gv scene-vis">
+      {/* the beat-01 annotation grammar: ring + the one feedback flag */}
+      <CaseSpecimen
+        zone={zone}
+        flagStates={flagStates}
+        label={done ? "Green, merged" : fixing ? "Red, fixing" : phase === "running" ? "Running" : "The gate"}
+      />
+      {/* the status line, directly ABOVE the rail it summarizes; the
+          verdict and count carry the weight */}
+      <p className={`gv-prog${done ? " gv-prog--done" : ""}`} aria-live="polite">
+        {phase === "idle" && "idle · 13 audits waiting"}
+        {phase === "running" && current && (
+          <>checking audit:{current} · <b>{okCount}/13</b></>
+        )}
+        {phase === "running" && !current && (
+          <>running · <b>{okCount}/13</b></>
+        )}
+        {fixing && (
+          <>audit:tokens · <b>border #c7c7c7 hardcoded ✗</b> → fixed at source: <b>--color-border-soft</b>{/* token-waiver: depicted drift value, data not paint */}</>
+        )}
+        {done && (
+          <>gate: <b>green (13/13)</b> · merged on green</>
+        )}
+      </p>
+      {/* the 13 audits: label + state glyph, never colour-only */}
+      <div className="gv-rail" role="log" aria-label="The thirteen audits, in gate order">
+        {AUDITS.map((a) => (
+          <i
+            key={a}
+            className={`gv-rail__chip gv-rail__chip--${chips[a]}`}
+            aria-label={`audit ${a}: ${chips[a] === "ok" ? "pass" : chips[a] === "bad" ? "fail" : chips[a]}`}
+          >
+            <span aria-hidden="true" className="gv-rail__glyph">{GLYPH[chips[a]]}</span>
+            {a}
+          </i>
+        ))}
       </div>
     </div>
   );

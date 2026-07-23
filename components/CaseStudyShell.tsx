@@ -185,10 +185,11 @@ export default function CaseStudyShell({
           )}
         </nav>
 
-        {/* Flat case title (flat-headers pass): Heading case tier in the
-            case identity colour; bubbles are parked. */}
+        {/* Flat case title (flat-headers pass): Heading page tier in the
+            case identity colour; bubbles are parked. ("case" is now the
+            smallest display step, type-scale fix 22 Jul 2026.) */}
         <div className="cs-shell__hero">
-          <Heading tier="case" as="h1" style={caseItem ? { color: caseItem.text } : undefined}>
+          <Heading tier="page" as="h1" style={caseItem ? { color: caseItem.text } : undefined}>
             {title}
           </Heading>
         </div>
