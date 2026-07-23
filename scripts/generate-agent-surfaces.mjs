@@ -5,10 +5,9 @@
 import { readFileSync, writeFileSync } from "node:fs";
 
 // extract case registry without a TS runtime: slugs + titles + summaries
-const files = [
-  "chip", "brad-frost", "design-system-transformation",
-  "guardian", "un-operational-dashboard", "filters-decision-support-system",
-];
+// (curation, Elleta 22 Jul 2026: three star cases; archived cases live
+// in content/case-studies/_archive/ and never reach the agent surface)
+const files = ["chip", "brad-frost", "design-system-transformation"];
 const cases = files.map((f) => {
   const src = readFileSync(`content/case-studies/${f}.ts`, "utf8");
   const slug = src.match(/slug: "([^"]+)"/)[1];

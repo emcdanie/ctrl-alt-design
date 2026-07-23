@@ -2263,10 +2263,9 @@ textarea:focus-visible {
 }
 
 /* D1 (Pass D 2026-07-18; amended 21 Jul for the map; ONE GROUND,
-   system-page-v3): every band renders on the page ground; the identity
-   band's low-tint wash is the page's single recorded background moment
-   (Elleta's call). audit:visual asserts no other band ever gains a
-   surface again. */
+   system-page-v3; identity wash DELETED 23 Jul, the DS2 no-wash port
+   from PR 40): every band renders on the page ground, no exceptions.
+   audit:visual asserts no band ever gains a surface again. */
 .ds-band {
   padding-block: var(--spacing-12);
 }
@@ -2410,22 +2409,9 @@ textarea:focus-visible {
   margin: 0 0 var(--spacing-4);
 }
 
-/* identity band: the page's ONE sanctioned background moment (v3 T1);
-   tint stepped up via token until the wash reads at a glance in both
-   themes (v3 review, 22 Jul). Cards stay opaque; the wash lives in
-   the gaps and margins. */
-.ds-band--identity {
-  --identity-wash-tint: 30%;
-  background: linear-gradient(
-    100deg,
-    color-mix(in srgb, var(--case-chip-hi) var(--identity-wash-tint), var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-code-first-hi) var(--identity-wash-tint), var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-drift-hi) var(--identity-wash-tint), var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-guardian-hi) var(--identity-wash-tint), var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-clarity-hi) var(--identity-wash-tint), var(--color-semantic-background))
-  );
-  border-block: 1px solid var(--color-border-soft);
-}
+/* the identity band wash (v3 T1) is deleted (23 Jul): the DS2
+   modeless treatment from PR 40 won the A/B for this section; the
+   identity orbs sit in cards only, on the one ground. */
 
 .ds-band .ds-section {
   margin-top: 0;
@@ -2578,6 +2564,249 @@ textarea:focus-visible {
   color: var(--color-ink-soft);
   max-width: 62ch;
   margin: 0 0 var(--spacing-6);
+}
+
+/* ── AI-readiness explainer (System band, rebuilt from
+   _review/protos/ai-readiness-explainer-v2.html on real tokens:
+   ok = the clarity case pair, warn = the writing case pair, agent =
+   accent iris; all theme-flipping). ONE inline SVG diagram; the
+   route draw-in fires on .in, reduced motion renders settled. ── */
+.air {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  max-width: 900px;
+}
+
+.air-stage {
+  width: 100%;
+  height: auto;
+}
+
+.air-route {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+}
+
+.air.in .air-route {
+  transition: stroke-dashoffset 1.5s ease;
+  stroke-dashoffset: 0;
+}
+
+.air-route--in { stroke: var(--case-clarity-text); }
+.air-route--around { stroke: var(--case-writing-text); }
+
+.air-plabel {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.air-plabel--in { fill: var(--case-clarity-text); }
+.air-plabel--around { fill: var(--case-writing-text); }
+
+.air-node rect {
+  fill: var(--color-card);
+  stroke: var(--color-border-medium);
+  stroke-width: 1.5;
+}
+
+.air-node__title {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--color-ink);
+}
+
+.air-node__sub {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--color-ink-muted);
+}
+
+.air-node--agent rect { stroke: var(--color-accent-ink); }
+.air-node--agent .air-node__title { fill: var(--color-accent-ink); }
+.air-node--ok rect { stroke: var(--case-clarity-hi); }
+.air-node--ok .air-node__title { fill: var(--case-clarity-text); }
+.air-node--warn rect { stroke: var(--case-writing-hi); }
+.air-node--warn .air-node__title { fill: var(--case-writing-text); }
+
+/* outcomes land after the routes draw */
+.air-res { opacity: 0; }
+.air.in .air-res {
+  transition: opacity 0.45s ease 1.4s;
+  opacity: 1;
+}
+
+.air-takeaway {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-lg);
+  font-weight: 600;
+  color: var(--color-ink);
+  max-width: 60ch;
+  border-left: 3px solid var(--case-clarity-hi);
+  padding-left: var(--spacing-4);
+  margin: var(--spacing-2) 0 0;
+}
+
+/* the 5-point framework, hers; renders only when her words land */
+.air-framework {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-4);
+}
+
+.air-framework__list {
+  margin: 0;
+  padding-left: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.air-framework__point {
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  max-width: 62ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .air-route,
+  .air.in .air-route {
+    transition: none;
+    stroke-dashoffset: 0;
+  }
+
+  .air-res,
+  .air.in .air-res {
+    transition: none;
+    opacity: 1;
+  }
+}
+
+/* ── BELLA maturity map (System band, 23 Jul 2026, rebuilt from her
+   bella-maturity-map mockup; copy hers verbatim). Token mapping per
+   the spec: the mockup's mint pair = the clarity case pair (the
+   frontier accent), its warm V1 hue = the writing case pair, Growing
+   = the accent family. Same 900 column as the explainer above so the
+   two bands read as one AI-readiness story. ── */
+.bmm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  max-width: 900px;
+}
+
+/* the honest note wears the frontier accent as a quiet left keyline,
+   the same device as .air-takeaway */
+.bmm-honest {
+  border-left: 3px solid var(--case-clarity-hi);
+  padding-left: var(--spacing-4);
+  max-width: 64ch;
+}
+
+.bmm-scale {
+  color: var(--color-ink-muted);
+}
+
+.bmm-scale strong {
+  color: var(--color-ink);
+}
+
+.bmm-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.bmm-axis {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.bmm-axis__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
+/* stage badges: metadata tier (the tag/pill register), stage colour
+   from semantic families only */
+.bmm-badge {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.bmm-badge--v1 {
+  background: color-mix(in srgb, var(--case-writing-hi) 22%, var(--color-card));
+  color: var(--case-writing-text);
+}
+
+.bmm-badge--growing {
+  background: var(--color-semantic-accent-subtle);
+  color: var(--color-accent-ink);
+}
+
+.bmm-badge--teenage {
+  background: color-mix(in srgb, var(--case-clarity-hi) 30%, var(--color-card));
+  color: var(--case-clarity-text);
+}
+
+/* dark flips clarity-text to clarity-hi (light mint); on the 30% tint
+   it measured 4.44:1, a hair under AA. Step the tint down so the same
+   text clears with margin (measured 6.0:1). */
+[data-theme="dark"] .bmm-badge--teenage {
+  background: color-mix(in srgb, var(--case-clarity-hi) 18%, var(--color-card));
+}
+
+/* the 4-step track; filled = the accent family, the frontier axis
+   fills in the clarity pair. Redundant with the badge text, so the
+   track itself is decorative. */
+.bmm-track {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.bmm-track__step {
+  flex: 1;
+  height: var(--spacing-2);
+  border-radius: var(--radius-full);
+  background: var(--color-border-medium);
+}
+
+.bmm-track__step--on {
+  background: var(--color-accent-ink);
+}
+
+.bmm-track__step--frontier {
+  background: var(--case-clarity-text);
+}
+
+.bmm-foot {
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: var(--spacing-4);
 }
 
 .ds-swatches {
@@ -3009,6 +3238,1162 @@ textarea:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .tok-inspector__key {
+    transition: none;
+  }
+}
+
+/* ── Case shell v2 (case-shell-v2 brief, Elleta 22 Jul 2026; Carmen
+   ADOPT list + Justine scan rules). Code First only for now; chip and
+   drift keep the old cs-shell recipes until their own passes. ── */
+
+/* thin token-coloured reading-progress indicator, case pages only */
+.cs2-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.cs2-progress__bar {
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  background: var(--color-accent-ink);
+}
+
+/* the in-flow head: no sticky side title, no void */
+.cs2-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-4);
+  padding-top: calc(var(--header-height) + var(--spacing-12));
+  max-width: 62ch;
+}
+
+.cs2-subhead {
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  margin: 0;
+}
+
+.cs2-meta {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+/* text BESIDE its visual: the scene grid (beats law, amendment 2) */
+.cs2-screen__grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+@media (min-width: 1024px) {
+  .cs2-screen__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--spacing-12);
+    align-items: center;
+  }
+
+  .cs2-screen__grid--flip .cs2-screen__text {
+    order: 2;
+  }
+
+  .cs2-screen__grid--flip .cs2-screen__visual {
+    order: 1;
+  }
+}
+
+.cs2-screen__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  min-width: 0;
+}
+
+.cs2-screen__head {
+  margin: 0;
+}
+
+.cs2-screen__visual {
+  min-width: 0;
+}
+
+.cs2-body {
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  margin: 0;
+  max-width: 62ch;
+}
+
+.cs2-measure {
+  max-width: 70ch;
+}
+
+/* card rows: 2 / 3 / 4 columns, equal heights, single column narrow */
+.cs2-row {
+  display: grid;
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+  gap: var(--spacing-6);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .cs2-row--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cs2-row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cs2-row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .cs2-row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* the parity readout rows inside the specimen card */
+.cs2-parity {
+  list-style: none;
+  margin: var(--spacing-4) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.cs2-parity__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: var(--spacing-3);
+  align-items: baseline;
+  min-width: 0;
+}
+
+.cs2-parity__state {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+@media (max-width: 479px) {
+  .cs2-parity__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+/* clip bullets ride the shared disc-marker recipe */
+.cs2-bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+/* personality break: her line (TODO slot) + the ONE contact keycap */
+.cs2-personality {
+  align-items: flex-start;
+  gap: var(--spacing-4);
+}
+
+.cs2-next {
+  max-width: 480px;
+}
+
+.cs2-thanks {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+  text-align: center;
+  margin: 0 0 var(--spacing-12);
+}
+
+/* iris emphasis register (brief item 13, the new rule): iris + bold
+   marks scanning words in case narrative. Defined for her voice pass;
+   applied only where she marks words. Case identity colours stay
+   case-scoped; this register is the ACCENT ink, not a case colour. */
+.cs2-em {
+  color: var(--color-accent-ink);
+  font-weight: 700;
+}
+
+/* ── /skills v2 (brief item 15): the readable grouped list ── */
+.sk-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-10);
+}
+
+.sk-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.sk-group__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sk-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr) auto;
+  gap: var(--spacing-4);
+  align-items: baseline;
+  padding-block: var(--spacing-4);
+  border-bottom: 1px solid var(--color-border-soft);
+  min-width: 0;
+}
+
+.sk-row__line {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+.sk-row__proof {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  /* 44px house rule, inline hit-area growth */
+  padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
+}
+
+@media (max-width: 719px) {
+  .sk-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-1);
+  }
+
+  .sk-row__proof {
+    white-space: normal;
+  }
+}
+
+/* ── The case specimen stage (proto-contract rebuild, Elleta 22 Jul
+   2026; contracts _proto/specimen.html + beat1/beat2/beat4.html).
+   The working specimen floats on the page ground; all animation is
+   CSS transitions; reduced motion renders every end state instantly. ── */
+
+.spec-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+  min-width: 0;
+}
+
+.spec-stage {
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+  padding: var(--spacing-16) var(--spacing-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── the case-specimen DEMO register (Elleta's ruling; recorded in
+   DESIGN.md as case-specimen-scoped, leak-asserted in audit:visual).
+   .demo-scope is the flat variant for demo controls outside a stage;
+   same scope law. ── */
+.spec-stage,
+.demo-scope {
+  --demo-surface: #FFFFFF;
+  --demo-ink: #17181C;
+  --demo-muted: #5D6067;
+  --demo-border: #D7D8DC;
+  --demo-primary: #101114;
+  --demo-primary-ink: #FFFFFF;
+  --demo-selected: #3D5A96;
+  --demo-radius: 8px;
+  --demo-touch: 44px;
+}
+
+[data-theme="dark"] .spec-stage,
+[data-theme="dark"] .demo-scope {
+  --demo-surface: #17181C;
+  --demo-ink: #F2F2F4;
+  --demo-muted: #A6A8B0;
+  --demo-border: #3A3C42;
+  --demo-primary: #101114;
+  --demo-primary-ink: #FFFFFF;
+  --demo-selected: #8FACE0;
+}
+
+.spec-stage__tag {
+  position: absolute;
+  left: var(--spacing-4);
+  top: var(--spacing-3);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.spec-stage__demo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+}
+
+.spec-stage--flat {
+  display: block;
+  min-height: 0;
+  padding: var(--spacing-8) 0 var(--spacing-4);
+}
+
+/* ── the shared specimen (contract _proto/specimen.html): a BELLA
+   case card on a CASE identity (clarity mint) so the iris annotation
+   layer never collides. Z-ORDER LAW (Elleta's review fix): card 1,
+   leaders 2, flags 3; the leaders render IN FRONT of the card and
+   the dots/rings sit ON the annotated part. ── */
+
+.csp {
+  position: relative;
+  width: 100%;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.csp-card {
+  position: relative;
+  z-index: 1;
+  width: min(300px, 100%);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-5) var(--spacing-5) var(--spacing-6);
+  box-shadow: var(--shadow-orb);
+}
+
+.csp-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--spacing-5);
+  height: var(--spacing-5);
+  pointer-events: none;
+}
+
+.csp-sphere {
+  display: block;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle at 34% 30%, var(--case-clarity-hi), var(--case-clarity-lo, var(--case-clarity-hi)) 60%, var(--case-clarity-deep));
+  box-shadow: var(--shadow-orb);
+  margin-bottom: var(--spacing-4);
+}
+
+.csp-kicker {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: 0 0 var(--spacing-2);
+}
+
+/* Geist inside the card (the card rule); the recorded card-title step */
+.csp-title {
+  display: block;
+  font-size: var(--font-card-title);
+  color: var(--color-ink);
+  margin: 0 0 var(--spacing-2);
+}
+
+.csp-desc {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.45;
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--spacing-4);
+}
+
+.csp-tag {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  color: var(--case-clarity-text);
+  background: color-mix(in srgb, var(--case-clarity-hi) 26%, var(--color-card));
+  border-radius: var(--radius-full);
+  padding: var(--spacing-2) var(--spacing-3);
+}
+
+/* the leader layer: IN FRONT of the card */
+.csp .ds-leaders {
+  z-index: 2;
+}
+
+.csp .ds-leaders path {
+  stroke: var(--color-accent-ink);
+  stroke-width: 1.5;
+  fill: none;
+  opacity: 0.55;
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.spec-stage.in .csp .ds-leaders path {
+  stroke-dashoffset: 0;
+}
+
+.csp .ds-leaders .dot {
+  fill: var(--color-accent-ink);
+  opacity: 0;
+  transition: opacity 0.3s ease 0.55s;
+}
+
+.csp .ds-leaders .ring {
+  stroke: var(--color-accent-ink);
+  stroke-width: 1.5;
+  fill: none;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.55s;
+}
+
+.spec-stage.in .csp .ds-leaders .dot,
+.spec-stage.in .csp .ds-leaders .ring {
+  opacity: 0.9;
+}
+
+/* the flags: swatch of the ACTUAL value + the real token name */
+.csp-flags {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.csp-flag {
+  position: absolute;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-orb);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-ink);
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.spec-stage.in .csp-flag {
+  opacity: 1;
+  transform: none;
+}
+
+.spec-stage.in .csp-flag:nth-of-type(2) { transition-delay: 0.1s; }
+.spec-stage.in .csp-flag:nth-of-type(3) { transition-delay: 0.2s; }
+.spec-stage.in .csp-flag:nth-of-type(4) { transition-delay: 0.3s; }
+.spec-stage.in .csp-flag:nth-of-type(5) { transition-delay: 0.4s; }
+
+.csp-flag:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.csp-flag__sw {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-medium);
+  flex: none;
+}
+
+.csp-flag__sw--round {
+  border-radius: var(--radius-full);
+}
+
+.csp-flag__rad {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  border: 2px solid var(--color-accent-ink);
+  border-top-left-radius: var(--radius-md);
+  flex: none;
+}
+
+.csp-flag__text {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.csp-flag__part {
+  font-weight: 600;
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.csp-flag__val {
+  font-weight: 600;
+  color: var(--color-accent-ink);
+}
+
+/* tones: iris default; drift = the recorded drift status colour;
+   pass/fail = the recorded readiness pair */
+.csp-flag--drift {
+  border-color: var(--case-writing-text);
+}
+
+.csp-flag--fail {
+  border-color: var(--case-writing-text);
+}
+
+.csp-flag--pass {
+  border-color: color-mix(in srgb, var(--case-clarity-hi) 60%, var(--color-border-medium));
+}
+
+.csp-flag--pass .csp-flag__val {
+  color: var(--case-clarity-text);
+}
+
+/* desktop positions (the specimen contract); the flag rows sit in
+   vertically CLEARED zones above and below the card so no flag can
+   intersect another flag or the card at any column width (asserted
+   in audit:visual, proven red on a seeded overlap first) */
+.csp {
+  /* the two-line flags run ~64px tall: two cleared rows above the
+     card (title row, then tl/tr) and one below; the paddings reserve
+     each zone plus a breathing step */
+  padding-top: calc(var(--spacing-16) * 2 + var(--spacing-3));
+  padding-bottom: calc(var(--spacing-16) + var(--spacing-3));
+}
+
+.csp-flag--t  { left: 50%; transform: translate(-50%, 6px); top: 0; }
+.spec-stage.in .csp-flag--t { transform: translate(-50%, 0); }
+.csp-flag--tl { left: 0; top: calc(var(--spacing-16) + var(--spacing-2)); }
+.csp-flag--tr { right: 0; top: calc(var(--spacing-16) + var(--spacing-2)); }
+.csp-flag--bl { left: 0; bottom: 0; }
+.csp-flag--br { right: 0; bottom: 0; }
+
+/* narrow fallback: the flags become a wrapped lane ABOVE the card;
+   the leaders rest (no clean empty ground to cross at this width) */
+@media (max-width: 719px) {
+  .csp {
+    flex-direction: column;
+    gap: var(--spacing-4);
+    min-height: 0;
+  }
+
+  .csp-flags {
+    position: static;
+    inset: auto;
+    order: -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    justify-content: center;
+    pointer-events: auto;
+  }
+
+  .csp-flag,
+  .csp-flag--t {
+    position: static;
+    transform: none;
+    white-space: normal;
+  }
+
+  .spec-stage.in .csp-flag--t {
+    transform: none;
+  }
+
+  .csp .ds-leaders {
+    display: none;
+  }
+}
+
+/* the one highlight recipe: a flag's zone rings the exact part */
+.spec-stage[data-hl] [data-part],
+.gv-host[data-hl] [data-part] {
+  transition: box-shadow 0.2s ease;
+}
+
+.spec-stage[data-hl="sphere"] [data-part="sphere"],
+.spec-stage[data-hl="kicker"] [data-part="kicker"],
+.spec-stage[data-hl="title"] [data-part="title"],
+.spec-stage[data-hl="tag"] [data-part="tag"],
+.spec-stage[data-hl="corner"] [data-part="corner"],
+.spec-stage[data-hl="card"] [data-part="card"] {
+  box-shadow: 0 0 0 2px var(--color-accent-ink);
+  border-radius: var(--radius-md);
+}
+
+/* ── Beats law (PR 41 amendment 2, Elleta 22 Jul): five beats, one
+   scene each. Spacing by PROXIMITY: tight inside a scene, large
+   between beats. No screen holds two competing voices. ── */
+.cs2-beat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.cs2-beat + .cs2-beat {
+  /* between-beat air: spacing-20+ (the largest recorded step) */
+  margin-top: var(--spacing-20);
+}
+
+.cs2-beat .cs2-screen__grid {
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 1024px) {
+  .cs2-beat .cs2-screen__grid {
+    gap: var(--spacing-10);
+  }
+}
+
+/* the connective line between beats: her voice, renders nothing empty */
+.cs2-beat__link {
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  line-height: 1.6;
+  color: var(--color-ink-muted);
+  max-width: 62ch;
+  margin: var(--spacing-10) 0 0;
+}
+
+/* flat replacements for the killed card chrome (amendment 2 item 2) */
+.cs2-flatlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  max-width: 70ch;
+}
+
+.cs2-kicker-row {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+.cs2-personality {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-4);
+}
+
+/* ── beat 02: the layered journey (contract _proto/beat2.html) ── */
+
+.jn {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: var(--spacing-8);
+  align-items: start;
+  width: 100%;
+}
+
+@media (max-width: 899px) {
+  .jn {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* the rail, reversed; the active layer takes the dark plate with the
+   offset shadow (the proto's signature) */
+.jn-rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+/* the proto dims inactive layers by opacity; opacity fails AA (axe
+   caught it), so the resting layers dim by BORDER and keep AA inks;
+   the dark active plate carries the hierarchy */
+.jn-layer {
+  text-align: left;
+  border: 1px dashed var(--color-border-soft);
+  border-radius: var(--radius-xl);
+  background: var(--color-card);
+  padding: var(--spacing-4) var(--spacing-4);
+  cursor: pointer;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.jn-layer:hover {
+  border-style: solid;
+  border-color: var(--color-border-medium);
+}
+
+.jn-layer[aria-current="true"] {
+  border-style: solid;
+  background: var(--color-semantic-background-inverse);
+  border-color: var(--color-semantic-background-inverse);
+  box-shadow: var(--spacing-2) var(--spacing-2) 0 color-mix(in srgb, var(--color-semantic-background-inverse) 14%, transparent);
+}
+
+.jn-layer:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.jn-layer__n {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.jn-layer__d {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-ink-muted);
+}
+
+.jn-layer[aria-current="true"] .jn-layer__n {
+  color: var(--color-semantic-background);
+}
+
+.jn-layer[aria-current="true"] .jn-layer__d {
+  color: color-mix(in srgb, var(--color-semantic-background) 72%, transparent);
+}
+
+/* the right panel */
+.jn-right {
+  min-width: 0;
+}
+
+.jn-panel {
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-2xl);
+  background: var(--color-card);
+  padding: var(--spacing-6) var(--spacing-6);
+}
+
+.jn-kickerband {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+.jn-kickerband__tag {
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-1) var(--spacing-2);
+  color: var(--color-ink);
+}
+
+.jn-where {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin: var(--spacing-5) 0 var(--spacing-1);
+}
+
+/* GEIST in the panel; Unique never inside a card */
+.jn-paneltitle {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--font-subsection);
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin: 0;
+}
+
+.jn-sub {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-soft);
+  margin: var(--spacing-1) 0 0;
+}
+
+.jn-stagebox {
+  border: 1px dashed var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  min-height: 230px;
+  margin: var(--spacing-5) 0;
+  padding: var(--spacing-5);
+  display: flex;
+  gap: var(--spacing-6);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* the travelling specimen, scaled down inside the panel */
+.jn-mini {
+  flex: none;
+  width: 190px;
+}
+
+.jn-mini .csp-card {
+  width: 100%;
+  padding: var(--spacing-4);
+}
+
+.jn-mini .csp-sphere {
+  width: 32px;
+  height: 32px;
+  margin-bottom: var(--spacing-3);
+}
+
+.jn-mini .csp-title {
+  font-size: var(--typography-font-size-base);
+}
+
+.jn-mini .csp-desc {
+  display: none;
+}
+
+.jn-mini--flagged .csp-card {
+  outline: 2px solid var(--case-writing-text);
+  outline-offset: 2px;
+}
+
+.jn-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.7;
+  min-width: 0;
+}
+
+.jn-detail__line--mut { color: var(--color-ink-muted); }
+.jn-detail__line--ok { color: var(--color-ink); font-weight: 700; }
+
+/* drift TEXT on card surfaces: the drift hue pulled toward ink so it
+   clears AA in both themes (axe caught the raw case colour) */
+.jn-detail__line--err,
+.csp-flag--drift .csp-flag__val,
+.csp-flag--fail .csp-flag__val {
+  color: color-mix(in srgb, var(--case-writing-text) 65%, var(--color-ink));
+  font-weight: 700;
+}
+
+.jn-reveal {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.jn-panel.go .jn-reveal {
+  opacity: 1;
+  transform: none;
+}
+
+.jn-note {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: var(--spacing-3) 0 0;
+}
+
+.jn-recv {
+  border-top: 1px solid var(--color-border-soft);
+  margin-top: var(--spacing-5);
+  padding-top: var(--spacing-4);
+  display: flex;
+}
+
+.jn-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-5);
+}
+
+.jn-dots {
+  display: inline-flex;
+  gap: var(--spacing-2);
+}
+
+.jn-dot {
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--color-ink-muted);
+  border-radius: 2px;
+  display: block;
+  transition: background-color 0.2s ease;
+}
+
+.jn-dot.on {
+  background: var(--color-semantic-background-inverse);
+  border-color: var(--color-semantic-background-inverse);
+}
+
+.jn--static {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.jn-staticrow {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+  gap: var(--spacing-6);
+  align-items: start;
+}
+
+@media (max-width: 719px) {
+  .jn-staticrow {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* beat 03: the system tree */
+.tree {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  width: 100%;
+}
+
+.tree__space {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 640 / 360;
+}
+
+.tree__edges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.tree__edge {
+  stroke: var(--color-border-medium);
+  stroke-width: 1.5;
+  opacity: 0;
+  transition: opacity 0.5s ease, stroke 0.4s ease;
+}
+
+.tree.in .tree__edge--lv0 { opacity: 1; transition-delay: 0.9s; }
+.tree.in .tree__edge--lv1 { opacity: 1; transition-delay: 1.6s; }
+
+.tree__edge.on {
+  stroke: var(--case-writing-text);
+}
+
+.tree__node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-ink);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-full);
+  padding: var(--spacing-1) var(--spacing-3);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.5s ease, border-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.tree.in .tree__node--lv0 { opacity: 1; transition-delay: 0.2s; }
+.tree.in .tree__node--lv1 { opacity: 1; transition-delay: 1.1s; }
+.tree.in .tree__node--lv2 { opacity: 1; transition-delay: 1.8s; }
+
+.tree.in .tree__node.drift {
+  border-color: var(--case-writing-text);
+  color: var(--case-writing-text);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--case-writing-hi) 40%, transparent);
+}
+
+.tree__node:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.tree__kicker {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+/* ── beat 04: the gate check on the specimen (contract
+   _proto/beat4.html) ── */
+
+.gv-host {
+  width: 100%;
+  min-width: 0;
+}
+
+.gv-rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  justify-content: center;
+  margin-top: var(--spacing-6);
+  width: 100%;
+}
+
+.gv-rail__chip {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-muted);
+  border: 1px dashed var(--color-border-soft);
+  border-radius: var(--radius-full);
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-card);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.gv-rail__chip.ok {
+  color: var(--case-clarity-text);
+  border: 1px solid color-mix(in srgb, var(--case-clarity-hi) 60%, var(--color-border-medium));
+}
+
+.gv-rail__chip.bad {
+  color: var(--case-writing-text);
+  border: 1px solid var(--case-writing-text);
+}
+
+.gv-prog {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.6;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+.gv-prog b {
+  color: var(--case-clarity-text);
+}
+
+/* the run control (the proto's iris run action, deliberately NOT a
+   keycap: the one primary per view stays the contact action) */
+.gv-run {
+  align-self: flex-start;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  /* the recorded key-face pair: fixed in both themes so the light
+     label always clears AA (the keycap contract; the control itself
+     stays a run action, not a keycap) */
+  color: var(--key-face-hi);
+  background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
+  padding: var(--spacing-4) var(--spacing-6);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 3px 0 var(--key-fill-edge),
+    0 8px 16px color-mix(in srgb, var(--key-fill-lo) 28%, transparent);
+}
+
+.gv-run:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}
+
+.cs2-driftbeat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  align-items: flex-start;
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .csp-flag,
+  .jn-reveal,
+  .spec-stage.in .csp-flag--t {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .csp-flag--t {
+    transform: translate(-50%, 0);
+  }
+
+  .csp .ds-leaders path {
+    transition: none;
+    stroke-dashoffset: 0;
+  }
+
+  .csp .ds-leaders .dot,
+  .csp .ds-leaders .ring {
+    transition: none;
+    opacity: 0.9;
+  }
+
+  .gv-rail__chip,
+  .jn-dot,
+  .jn-layer {
     transition: none;
   }
 }

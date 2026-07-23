@@ -403,3 +403,47 @@ Single-column forms left-align the submit button with the fields (NN/g
 single-column guidance, settled as the site rule); full-width below
 768px. The contact form is the reference implementation. Forms validate
 on blur per field, and again on submit.
+
+## Case-specimen demo register (PR 41 amendment, Elleta 22 Jul 2026)
+
+The `--demo-*` token set is the neutral product register for CASE SPECIMEN
+STAGES ONLY (her ruling): the specimen reads as "a product", the annotation
+layer (flags, leaders, highlights) stays BELLA iris in both themes. Scope is
+the `.spec-stage` selector in globals.css; the tokens exist nowhere else and
+must never appear in site chrome.
+
+Palette (light / dark): surface #FFFFFF / #17181C · ink #17181C / #F2F2F4 ·
+muted #5D6067 / #A6A8B0 · border #D7D8DC / #3A3C42 · primary #101114 both
+themes (BLACK primary is the ruling; a border keeps it legible on the dark
+surface) · primary ink #FFFFFF · selected #3D5A96 / #8FACE0 (the one
+restrained blue, selected states only) · radius 8px · touch 44px.
+
+Recorded exceptions, deliberate: the demo register uses a pure white surface
+and a black primary INSIDE stages, overriding the site-wide "no pure
+white/black" rule by her ruling; the before-state mess styles (Georgia,
+off-palette colours) are depicted drift, never system UI.
+
+LEAK ASSERTION (audit:visual): on every swept route, `--demo-ink` must
+resolve to EMPTY on both the document root and body. A `--demo-*` token that
+resolves outside a specimen stage fails the gate.
+
+Animation law for stages: CSS transitions on tokens only, no keyframes, no
+motion libraries; `prefers-reduced-motion: reduce` renders everything
+immediately (leaders drawn, flags and console lines visible).
+
+## Data display dialect + status set (PR 41 amendment 2, 22 Jul 2026)
+
+CHIP's display grammar, generalized for case prototypes: every data point
+answers "so what" in one glance (value + verdict + action). Parity states
+render as bars WITH counts (n of total) and a StatusPill verdict beside them;
+divergence is stated as a consequence ("three props behind the code"), never
+a bare number; finding tables carry an Action column so every row ends in a
+verb. The RECORDED status set is: In sync / Drift / Stale / Critical (words,
+never colour-only). No dashboards for decoration; only data the story needs.
+
+Stage geometry law: the component and its flags own a reserved stage zone;
+readouts and consoles start BELOW the zone; leaders may only cross empty
+ground. Asserted in audit:visual (no leader path may intersect the bounding
+box of any text or table node; proven red on the pre-restory parity layout
+before the fix). The `.demo-scope` class is the flat variant of the
+case-specimen register scope (same leak law as `.spec-stage`).

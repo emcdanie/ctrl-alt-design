@@ -1,9 +1,9 @@
 /* Visual assertions gate (system-page-v3, Elleta 21 Jul 2026). Her
  * briefs named audit:visual three times; it now exists. Three checks:
  * 1. ONE GROUND: every /design-system band's computed background
- *    equals the page ground, both themes, EXCEPT the identity band's
- *    recorded low-tint wash (Elleta's call). No band ever gains a
- *    surface again.
+ *    equals the page ground, both themes, NO exceptions (the identity
+ *    wash and its carve-out were deleted 23 Jul with the DS2 no-wash
+ *    port). No band ever gains a surface again.
  * 2. SPECIMEN ALIGNMENT: sibling specimen cards in a row render equal
  *    heights (grid stretch, fixed head slots).
  * 3. COVER PLACEHOLDERS: >= 3:1 large-text against both stops of the
@@ -45,7 +45,6 @@ for (const theme of ["light", "dark"]) {
     const pageBg = getComputedStyle(document.body).backgroundColor;
     const out = [];
     for (const band of document.querySelectorAll(".ds-band")) {
-      if (band.classList.contains("ds-band--identity")) continue;
       const cs = getComputedStyle(band);
       const transparent = /rgba\(0, 0, 0, 0\)/.test(cs.backgroundColor);
       if ((!transparent && cs.backgroundColor !== pageBg) || cs.backgroundImage !== "none") {
@@ -61,7 +60,7 @@ for (const theme of ["light", "dark"]) {
 
   const rowBad = await page.evaluate(() => {
     const out = [];
-    for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-gate, .ds-caseband, .ds-status")) {
+    for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-gate, .ds-caseband, .ds-status, .bmm-list")) {
       const cards = [...grid.children].filter((c) => c.getBoundingClientRect().width > 0);
       /* group siblings by row (same top), assert equal heights */
       const rows = new Map();
@@ -163,6 +162,9 @@ for (const theme of ["light", "dark"]) {
           }
         }
       }
+      /* the maturity map (.bmm-list) is a one-column stack: its cards
+         share a width but not a height (rationale lengths differ), so
+         it rides the row-equality check above, not this one */
       for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-gate, .ds-caseband, .ds-status")) {
         const dims = [...grid.querySelectorAll(":scope > * ")].filter((c) => c.getBoundingClientRect().width > 0)
           .map((c) => { const r = c.getBoundingClientRect(); return Math.round(r.width) + "x" + Math.round(r.height); });
@@ -226,10 +228,206 @@ for (const theme of ["light", "dark"]) {
   }
   await ctx.close();
 }
+
+/* ── DEAD-LINK SWEEP (curation, Elleta 22 Jul 2026): no dead routes,
+   no dead links anywhere. On every route: (a) the archived case route
+   strings must appear nowhere in the rendered DOM, (b) every internal
+   <a href> must resolve below 400. Links are content, one theme
+   suffices. ── */
+{
+  const ARCHIVED = [
+    "/case-studies/guardian",
+    "/case-studies/un-operational-dashboard",
+    "/case-studies/filters-decision-support-system",
+  ];
+  const ROUTES = [
+    "/", "/work", "/work?view=map", "/work?view=table", "/about", "/contact",
+    "/skills", "/design-system", "/design-system/inspector", "/quick",
+    "/case-studies/chip", "/case-studies/brad-frost",
+    "/case-studies/design-system-transformation",
+  ];
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  const internal = new Map(); // path -> first route that links it
+  for (const route of ROUTES) {
+    await page.goto(`http://localhost:3000${route}`, { waitUntil: "networkidle", timeout: 30000 });
+    const found = await page.evaluate((archived) => {
+      const dead = archived.filter((a) => document.documentElement.outerHTML.includes(a));
+      const hrefs = [...document.querySelectorAll("a[href]")]
+        .map((a) => a.getAttribute("href"))
+        .filter((h) => h && (h.startsWith("/") || h.startsWith("#")));
+      /* demo-register leak assertion (DESIGN.md, Elleta's ruling 22
+         Jul): --demo-* may resolve ONLY inside a .spec-stage scope;
+         root and body must resolve it to empty everywhere */
+      const demoLeak =
+        getComputedStyle(document.documentElement).getPropertyValue("--demo-ink").trim() !== "" ||
+        getComputedStyle(document.body).getPropertyValue("--demo-ink").trim() !== "";
+      return { dead, hrefs, demoLeak };
+    }, ARCHIVED);
+    if (found.demoLeak) {
+      fails++;
+      console.error(`VISUAL FAIL demo-register leak: --demo-ink resolves outside a specimen stage on ${route}`);
+    }
+    for (const d of found.dead) {
+      fails++;
+      console.error(`VISUAL FAIL dead-link: archived route ${d} referenced on ${route}`);
+    }
+    for (const h of found.hrefs) {
+      const path = h.split("#")[0];
+      if (path && !internal.has(path)) internal.set(path, route);
+    }
+  }
+  for (const [path, from] of internal) {
+    const res = await page.request.get(`http://localhost:3000${path}`);
+    if (res.status() >= 400) {
+      fails++;
+      console.error(`VISUAL FAIL dead-link: ${path} -> ${res.status()} (linked from ${from})`);
+    }
+  }
+  await ctx.close();
+}
+/* ── STAGE GEOMETRY LAW (PR 41 amendment 2, Elleta 22 Jul): the
+   component and its flags own a reserved stage zone; readouts and
+   consoles start BELOW it. Leaders may only cross empty ground: no
+   leader path may intersect the bounding box of any text or table
+   node (the path's own flag and its anchor target excepted). Swept
+   on the case page, both themes, 1440 and 390. Proven red on the
+   pre-restory parity layout (the --demo-touch leader crossed the
+   readout table) before the fix landed. ── */
+for (const theme of ["light", "dark"]) {
+  for (const width of [1440, 390]) {
+    const ctx = await browser.newContext({ viewport: { width, height: width > 800 ? 900 : 844 } });
+    const page = await ctx.newPage();
+    await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
+    await page.goto("http://localhost:3000/case-studies/brad-frost", { waitUntil: "networkidle", timeout: 30000 });
+    /* walk every stage into view so .in fires and leaders draw */
+    const stageCount = await page.evaluate(() => document.querySelectorAll(".spec-stage").length);
+    for (let i = 0; i < stageCount; i++) {
+      await page.evaluate((idx) => {
+        document.querySelectorAll(".spec-stage")[idx].scrollIntoView({ block: "center" });
+      }, i);
+      await page.waitForTimeout(350);
+    }
+    await page.waitForTimeout(600);
+    /* specimen overlap law (proto-contract rebuild, 22 Jul): no flag
+       box may intersect another flag or the card body; proven red on
+       a seeded overlapping layout before landing */
+    const overlapBad = await page.evaluate(() => {
+      const out = [];
+      const rect = (el) => el.getBoundingClientRect();
+      const hit = (a, b) =>
+        a.left < b.right - 1 && a.right > b.left + 1 && a.top < b.bottom - 1 && a.bottom > b.top + 1;
+      for (const stage of document.querySelectorAll(".spec-stage")) {
+        const flags = [...stage.querySelectorAll(".csp-flag")].filter((f) => rect(f).width > 0);
+        const card = stage.querySelector(".csp-card");
+        for (let i = 0; i < flags.length; i++) {
+          for (let j = i + 1; j < flags.length; j++) {
+            if (hit(rect(flags[i]), rect(flags[j]))) {
+              out.push(`flags overlap: ${flags[i].textContent.trim().slice(0, 18)} × ${flags[j].textContent.trim().slice(0, 18)}`);
+            }
+          }
+          if (card && hit(rect(flags[i]), rect(card))) {
+            out.push(`flag overlaps the card: ${flags[i].textContent.trim().slice(0, 24)}`);
+          }
+        }
+      }
+      return [...new Set(out)];
+    });
+    for (const b of overlapBad) {
+      fails++;
+      console.error(`VISUAL FAIL (${theme} ${width}) specimen overlap: ${b}`);
+    }
+    const geomBad = await page.evaluate(() => {
+      const out = [];
+      for (const stage of document.querySelectorAll(".spec-stage")) {
+        const paths = [...stage.querySelectorAll(".ds-leaders path")];
+        if (!paths.length) continue;
+        const svg = stage.querySelector(".ds-leaders");
+        const sr = svg.getBoundingClientRect();
+        /* leaders deliberately rest below the lane-fallback width
+           (display none); a zero-size svg has no drawn geometry */
+        if (sr.width < 2 || sr.height < 2) continue;
+        /* candidate obstacles: any element in the stage that paints
+           its own text, or a list/table, or ANOTHER flag's box; a
+           path's OWN flag (data-for) and highlightable parts are
+           excepted (leaders must START at their flag and TOUCH their
+           target) */
+        const boxes = [];
+        for (const el of stage.querySelectorAll("*")) {
+          if (el.closest("svg") || el.classList.contains("spec-stage__tag")) continue;
+          if (el.closest("[data-part]")) continue;
+          const flagHost = el.closest(".ds-flag, .csp-flag");
+          if (flagHost && flagHost !== el) continue; // the flag box itself is the obstacle, once
+          const ownText = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim().length > 0);
+          const isFlag = !!flagHost;
+          const isTable = /^(UL|OL|TABLE|DL)$/.test(el.tagName);
+          if (!ownText && !isTable && !isFlag) continue;
+          const r = el.getBoundingClientRect();
+          if (r.width > 0 && r.height > 0) {
+            boxes.push({
+              r,
+              flagToken: isFlag ? el.getAttribute("data-flag-token") : null,
+              label: `${el.tagName}:${(el.textContent || "").trim().slice(0, 24)}`,
+            });
+          }
+        }
+        for (const p of paths) {
+          const own = p.getAttribute("data-for");
+          const len = p.getTotalLength();
+          for (let t = 0.04; t <= 0.96; t += 0.04) {
+            const pt = p.getPointAtLength(len * t);
+            const x = sr.left + pt.x;
+            const y = sr.top + pt.y;
+            const hit = boxes.find(
+              (b) => !(own && b.flagToken === own) && x > b.r.left && x < b.r.right && y > b.r.top && y < b.r.bottom
+            );
+            if (hit) {
+              out.push(`leader ${own ?? ""} crosses ${hit.label}`);
+              break;
+            }
+          }
+        }
+      }
+      return [...new Set(out)];
+    });
+    for (const b of geomBad) {
+      fails++;
+      console.error(`VISUAL FAIL (${theme} ${width}) stage geometry: ${b}`);
+    }
+    /* Z-PATTERN LAW (rebuild brief, 22 Jul): consecutive sided scenes
+       alternate which side the visual sits on; a full-width block
+       (stepper, clip, [data-zbreak]) between them resets the run.
+       Layout law, checked once at 1440. */
+    if (theme === "light" && width === 1440) {
+      const zBad = await page.evaluate(() => {
+        const seq = [...document.querySelectorAll(".cs2-screen__grid, .jn, [data-zbreak]")];
+        const out = [];
+        let prev = null;
+        for (const el of seq) {
+          if (!el.classList.contains("cs2-screen__grid")) {
+            prev = null; // a full-width break resets the alternation
+            continue;
+          }
+          const side = el.classList.contains("cs2-screen__grid--flip") ? "left" : "right";
+          if (prev !== null && prev === side) {
+            out.push(`two consecutive scenes put the visual ${side}`);
+          }
+          prev = side;
+        }
+        return out;
+      });
+      for (const b of zBad) {
+        fails++;
+        console.error(`VISUAL FAIL z-pattern: ${b}`);
+      }
+    }
+    await ctx.close();
+  }
+}
 await browser.close();
 
 if (fails > 0) {
   console.error(`visual gate: ${fails} failure(s)`);
   process.exit(1);
 }
-console.log("visual gate: PASS (one ground, containment, uniform band cards, covers >= 3:1)");
+console.log("visual gate: PASS (one ground, containment, uniform band cards, covers >= 3:1, no dead links)");

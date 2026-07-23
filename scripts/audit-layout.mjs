@@ -30,8 +30,8 @@ const WIDTHS = [
 ];
 const ROUTES = [
   { path: '/', name: 'home' },
-  { path: '/case-studies/guardian', name: 'guardian' },
-  { path: '/case-studies/filters-decision-support-system', name: 'filters' },
+  { path: '/case-studies/chip', name: 'chip' },
+  { path: '/case-studies/design-system-transformation', name: 'drift' },
   { path: '/case-studies/brad-frost', name: 'brad-frost' },
 ];
 

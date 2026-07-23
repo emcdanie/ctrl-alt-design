@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @font-face{font-family:"Unique";src:url("Unique_Bold.woff2") format("woff2");font-weight:700}
+  @font-face{font-family:"Geist";src:url("geist.woff2") format("woff2");font-weight:100 900}
+  :root{
+    --page:#F5F4EF; --surface:#FBFAF7; --ink:#1A1720; --muted:#5C5865; --iris:#5B4BD1; --border:#E4E1D8;
+    --case-hi:#7FC79E; --case-deep:#256B4C; /* one case identity (Operational Clarity mint) so iris annotations don't collide */
+    --card-line:#E7E4DC; --radius-lg:18px;
+  }
+  *{margin:0;box-sizing:border-box}
+  body{background:var(--page);font-family:"Geist",system-ui,sans-serif;color:var(--ink);padding:36px}
+  .stage{position:relative;width:960px;height:560px;margin:0 auto}
+  svg.leaders{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+  svg.leaders path{stroke:var(--iris);stroke-width:1.5;fill:none;opacity:.55;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset .6s ease}
+  svg.leaders .dot{fill:var(--iris);opacity:0;transition:.3s ease .55s}
+  svg.leaders .ring{stroke:var(--iris);fill:none;opacity:0;transition:.3s ease .55s}
+  .stage.in svg.leaders path{stroke-dashoffset:0}
+  .stage.in svg.leaders .dot,.stage.in svg.leaders .ring{opacity:.9}
+
+  /* the specimen: a BELLA case card (Elleta's signature component) */
+  .card{position:absolute;left:330px;top:170px;width:300px;background:var(--surface);border:1px solid var(--card-line);
+    border-radius:var(--radius-lg);padding:22px 22px 24px;box-shadow:0 8px 30px rgba(26,23,32,.08);z-index:2}
+  .card .sphere{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#cfeede,var(--case-hi) 60%,var(--case-deep));box-shadow:0 4px 10px rgba(37,107,76,.25);margin-bottom:16px}
+  .card .kick{font:600 11px/1 "Geist";letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .card h3{font-family:"Geist";font-weight:700;font-size:22px;letter-spacing:-.01em;color:var(--ink);margin-bottom:8px}
+  .card p{font-size:15px;line-height:1.45;color:var(--muted);margin-bottom:16px}
+  .card .tag{display:inline-block;font:600 12px/1 "Geist";letter-spacing:.02em;color:var(--case-deep);
+    background:color-mix(in srgb,var(--case-hi) 26%,var(--surface));border-radius:999px;padding:8px 14px}
+
+  .flag{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:9px;padding:8px 13px;background:var(--surface);
+    border:1px solid var(--border);border-radius:12px;box-shadow:0 2px 8px rgba(26,23,32,.06);
+    font:500 13px/1 ui-monospace,monospace;color:var(--ink);opacity:0;transform:translateY(6px);transition:.4s;white-space:nowrap}
+  .stage.in .flag{opacity:1;transform:none}
+  .stage.in .flag:nth-of-type(2){transition-delay:.1s}.stage.in .flag:nth-of-type(3){transition-delay:.2s}
+  .stage.in .flag:nth-of-type(4){transition-delay:.3s}.stage.in .flag:nth-of-type(5){transition-delay:.4s}
+  .flag .sw{width:16px;height:16px;border-radius:4px;border:1px solid #00000018;flex:none}
+  .flag .sw.round{border-radius:50%}
+  .flag .rad{width:16px;height:16px;border:2px solid var(--iris);border-top-left-radius:9px;flex:none}
+  .flag b{color:var(--iris);font-weight:600}
+</style></head>
+<body>
+<div class="stage" id="stage">
+  <svg class="leaders" viewBox="0 0 960 560" aria-hidden="true">
+    <!-- sphere -->
+    <path d="M215,175 C270,180 320,195 348,205" style="--len:150"/><circle class="ring" cx="352" cy="208" r="26" stroke-width="1.5"/>
+    <!-- kicker/meta -->
+    <path d="M730,150 C640,158 600,232 575,250" style="--len:210"/><circle class="dot" cx="470" cy="252" r="4"/>
+    <!-- title -->
+    <path d="M420,95 C420,140 400,255 388,278" style="--len:200"/><circle class="dot" cx="386" cy="280" r="4"/>
+    <!-- tag -->
+    <path d="M215,430 C280,425 320,390 352,372" style="--len:160"/><circle class="dot" cx="356" cy="372" r="4"/>
+    <!-- corner -->
+    <path d="M735,440 C695,435 660,415 645,400" style="--len:110"/><circle class="ring" cx="638" cy="404" r="12" stroke-width="1.5"/>
+  </svg>
+
+  <div class="flag" style="left:40px;top:150px"><span class="sw round" style="background:#7FC79E"></span>identity · <b>--case-clarity-hi</b></div>
+  <div class="flag" style="left:715px;top:132px"><span class="sw" style="background:#5C5865"></span>meta · <b>--color-ink-muted</b></div>
+  <div class="flag" style="left:330px;top:66px"><span class="sw" style="background:#1A1720"></span>title · <b>--color-ink</b></div>
+  <div class="flag" style="left:40px;top:410px"><span class="sw" style="background:#256B4C"></span>tag · <b>--case-clarity-text</b></div>
+  <div class="flag" style="left:735px;top:420px"><span class="rad"></span>corner · <b>--radius-lg</b></div>
+
+  <div class="card">
+    <div class="sphere"></div>
+    <div class="kick">Design systems · 2024</div>
+    <h3>Operational Clarity</h3>
+    <p>One system, six operational domains, unified in an 8-week contract.</p>
+    <span class="tag">Design Tokens</span>
+  </div>
+</div>
+<script>
+  const stage=document.getElementById('stage');
+  new IntersectionObserver(e=>{if(e[0].isIntersecting)stage.classList.add('in')},{threshold:.25}).observe(stage);
+</script>
+</body></html>

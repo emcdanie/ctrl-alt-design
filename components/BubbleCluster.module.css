@@ -403,3 +403,11 @@
 .dim:focus-visible {
   opacity: 1;
 }
+
+/* topic spheres (curation, Elleta 22 Jul 2026): archived-case
+   identities stay in the hive as colour + label only; decorative,
+   never interactive */
+.topicSphere {
+  cursor: default;
+  pointer-events: none;
+}

@@ -10,9 +10,6 @@ Positioning term: AI-enabled (never "AI-augmented" or "AI-assisted").
 - /case-studies/chip : AI builds whatever your system already is. I built CHIP to see it first.
 - /case-studies/brad-frost : Working code-first changes what you pay attention to. What Building Brad Frost's Component System in Reverse Taught Me About Design
 - /case-studies/design-system-transformation : The system is the set of agreements, not the component library. Rebuilding Design System Thinking in a Scaling SaaS Product
-- /case-studies/guardian : Governance was arriving too late, at the highest possible cost. Designing a Context-Aware Design System Guardian, an AI-enabled concept that detects drift, surfaces contextual guidance, and helps teams make confident system decisions without leaving their workflow.
-- /case-studies/un-operational-dashboard : Six operational domains. One interface. Eight weeks. A Unified ICT Platform Concept for a Complex International Organization
-- /case-studies/filters-decision-support-system : Capability without clarity is just a different kind of friction. Designing decision support for a multi-vertical B2B travel platform.
 
 ## The system
 - /design-system : BELLA inspecting itself, live token values, control taxonomy, the gate.

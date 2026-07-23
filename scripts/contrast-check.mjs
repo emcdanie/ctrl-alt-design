@@ -16,7 +16,7 @@ const parse = (s) => {
 };
 let totalBad = 0;
 
-for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies/design-system-transformation", "http://localhost:3000/work", "http://localhost:3000/about", "http://localhost:3000/contact", "http://localhost:3000/case-studies/guardian", "http://localhost:3000/case-studies/brad-frost", "http://localhost:3000/case-studies/un-operational-dashboard", "http://localhost:3000/case-studies/filters-decision-support-system", "http://localhost:3000/skills", "http://localhost:3000/design-system", "http://localhost:3000/quick"]) {
+for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies/design-system-transformation", "http://localhost:3000/work", "http://localhost:3000/about", "http://localhost:3000/contact", "http://localhost:3000/case-studies/chip", "http://localhost:3000/case-studies/brad-frost", "http://localhost:3000/skills", "http://localhost:3000/design-system", "http://localhost:3000/quick"]) {
   await page.goto(url, { waitUntil: "domcontentloaded" });
   await page.evaluate(() => { document.documentElement.dataset.theme = "dark"; });
   await page.waitForTimeout(1500);

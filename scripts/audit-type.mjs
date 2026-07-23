@@ -8,9 +8,8 @@ import { chromium } from "playwright";
 
 const ROUTES = [
   "/", "/about", "/work", "/contact", "/skills", "/design-system", "/quick",
-  "/case-studies/chip", "/case-studies/brad-frost", "/case-studies/guardian",
-  "/case-studies/design-system-transformation", "/case-studies/un-operational-dashboard",
-  "/case-studies/filters-decision-support-system",
+  "/case-studies/chip", "/case-studies/brad-frost",
+  "/case-studies/design-system-transformation",
 ];
 const CARD_SCOPE = '[class*="card"], [class*="Card"], .thesis-band, .ds-gate__row, [role="dialog"]';
 const META_EXEMPT =

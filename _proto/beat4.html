@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @font-face{font-family:"Unique";src:url("Unique_Bold.woff2") format("woff2");font-weight:700}
+  @font-face{font-family:"Geist";src:url("geist.woff2") format("woff2");font-weight:100 900}
+  :root{
+    --page:#F5F4EF; --surface:#FBFAF7; --ink:#1A1720; --muted:#5C5865; --iris:#5B4BD1; --peri:#A79CE2;
+    --edge:#4A3FB0; --pass:#256B4C; --fail:#B45309; --border:#E4E1D8;
+  }
+  *{margin:0;box-sizing:border-box}
+  body{background:var(--page);font-family:"Geist",system-ui,sans-serif;color:var(--ink);padding:44px}
+  /* Z-pattern: this beat is visual-LEFT / text-RIGHT (beat 01 was text-left) */
+  .wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:center;min-height:80vh}
+  .eyebrow{font:600 12px/1 "Geist";letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  h2{font-family:"Unique";font-weight:700;text-transform:uppercase;font-size:40px;line-height:.98}
+  p{font-size:16px;line-height:1.55;color:var(--muted);margin-top:16px}
+  .run{margin-top:24px;border:0;cursor:pointer;font:600 14px/1 "Geist";letter-spacing:.04em;color:#fff;
+    background:linear-gradient(var(--iris),#5647c9);padding:16px 28px;border-radius:12px;box-shadow:0 3px 0 var(--edge),0 8px 16px rgba(74,63,176,.28)}
+  .prog{margin-top:18px;font:600 12px/1.6 ui-monospace,monospace;color:var(--muted)}
+  .prog b{color:var(--pass)}
+
+  .stage{position:relative;height:460px}
+  svg.leaders{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+  svg.leaders path{stroke:var(--iris);stroke-width:1.5;fill:none;opacity:.5;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset .6s ease}
+  svg.leaders circle{fill:var(--iris);opacity:0;transition:.3s ease .5s}
+  .stage.in svg.leaders path{stroke-dashoffset:0}.stage.in svg.leaders circle{opacity:.9}
+
+  /* the site's OWN component: a real BELLA iris keycap */
+  .keywrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2}
+  .keycap{border:0;cursor:pointer;font:600 16px/1 "Geist";letter-spacing:.02em;color:#fff;padding:22px 44px;border-radius:14px;
+    background:linear-gradient(#6C5CE0,#5B4BD1);box-shadow:0 3px 0 var(--edge),0 10px 20px rgba(74,63,176,.32),inset 0 1px 0 rgba(255,255,255,.35);position:relative}
+  .keycap.hl{outline:3px solid var(--iris);outline-offset:5px;transition:outline-color .2s}
+
+  .chip{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:8px;padding:8px 13px;background:var(--surface);
+    border:1px solid var(--border);border-radius:14px;font:600 12px/1.2 ui-monospace,monospace;color:var(--muted);
+    opacity:0;transform:translateY(6px);transition:.35s;box-shadow:0 2px 8px rgba(26,23,32,.05);white-space:nowrap}
+  .stage.in .chip{opacity:1;transform:none}
+  .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
+  .chip.pass{border-color:#bcd6c8;color:var(--pass)} .chip.pass .dot{background:var(--pass)}
+  .chip.fail{border-color:#e6bfa0;color:var(--fail)} .chip.fail .dot{background:var(--fail)}
+  .chip b{font-weight:700}
+  .c-fill{left:6%;top:52px}.c-label{right:2%;top:52px;flex-direction:row-reverse}
+  .c-radius{left:2%;bottom:56px}.c-touch{right:6%;bottom:56px;flex-direction:row-reverse}
+
+  .rail{position:absolute;left:0;right:0;bottom:-6px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+  .rail i{font:600 10px/1 ui-monospace,monospace;letter-spacing:.06em;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:6px 9px;background:var(--surface)}
+  .rail i.ok{color:var(--pass);border-color:#bcd6c8}
+</style></head>
+<body>
+<div class="wrap">
+  <div class="stage" id="stage">
+    <svg class="leaders" viewBox="0 0 620 460" aria-hidden="true" preserveAspectRatio="none">
+      <path d="M120,86 C150,130 250,168 286,192" style="--len:180"/><circle cx="286" cy="192" r="3.5"/>
+      <path d="M500,86 C470,130 372,168 336,192" style="--len:180"/><circle cx="336" cy="192" r="3.5"/>
+      <path d="M120,374 C150,330 250,290 288,266" style="--len:180"/><circle cx="288" cy="266" r="3.5"/>
+      <path d="M500,374 C470,330 372,290 334,266" style="--len:180"/><circle cx="334" cy="266" r="3.5"/>
+    </svg>
+    <div class="chip c-fill" data-part="fill"><span class="dot"></span><span class="t">fill · --color-accent-iris</span></div>
+    <div class="chip c-label" data-part="label"><span class="dot"></span><span class="t">label · --color-key-face</span></div>
+    <div class="chip c-radius" data-part="radius"><span class="dot"></span><span class="t">radius · --radius-lg</span></div>
+    <div class="chip c-touch" data-part="touch"><span class="dot"></span><span class="t">hit area · --spacing-touch</span></div>
+    <div class="keywrap"><button class="keycap" id="key">Book demo</button></div>
+    <div class="rail" id="rail"></div>
+  </div>
+  <div>
+    <div class="eyebrow">04</div>
+    <h2>Now the system checks itself.</h2>
+    <p>The same discipline runs on this site. The gate reads the tokens straight from the running stylesheet and checks the real component, live. Run it and watch every value get validated.</p>
+    <button class="run" id="run">Run the gate</button>
+    <div class="prog" id="prog">idle · 13 audits waiting</div>
+  </div>
+</div>
+<script>
+  const stage=document.getElementById('stage'),rail=document.getElementById('rail'),key=document.getElementById('key'),prog=document.getElementById('prog');
+  const AUDITS=["structure","fonts","tokens","copy","reuse","nda","controls","parity","agents","contrast","axe","type","visual"];
+  rail.innerHTML=AUDITS.map(a=>`<i data-a="${a}">${a}</i>`).join('');
+  new IntersectionObserver(e=>{if(e[0].isIntersecting)stage.classList.add('in')},{threshold:.3}).observe(stage);
+  const chips={fill:document.querySelector('.c-fill'),label:document.querySelector('.c-label'),radius:document.querySelector('.c-radius'),touch:document.querySelector('.c-touch')};
+  const map={tokens:'fill',contrast:'label',visual:'radius',controls:'touch'};
+  const pass={fill:'PASS · fill from token',label:'PASS · label 5.7:1',radius:'PASS · radius concentric',touch:'PASS · hit area 44px'};
+  function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+  async function runGate(){
+    document.querySelectorAll('.rail i').forEach(i=>i.classList.remove('ok'));
+    Object.values(chips).forEach(c=>{c.className='chip '+c.className.split(' ').filter(x=>x.startsWith('c-')).join(' ');c.querySelector('.t').textContent=c.dataset.part+' · …'});
+    let done=0;
+    for(const a of AUDITS){
+      const part=map[a]; const el=document.querySelector(`.rail i[data-a="${a}"]`);
+      if(part){const c=chips[part];key.classList.add('hl');
+        if(a==='tokens'){c.classList.add('fail');c.querySelector('.t').innerHTML='<b>FAIL</b> · border #c7c7c7 hardcoded';await wait(700);
+          c.querySelector('.t').innerHTML='fixed at source · sem/border/soft';await wait(500);}
+        c.classList.remove('fail');c.classList.add('pass');c.querySelector('.t').textContent=pass[part];
+        await wait(250);key.classList.remove('hl');
+      }
+      el.classList.add('ok');done++;prog.innerHTML=`running · <b>${done}/13</b>`;await wait(140);
+    }
+    prog.innerHTML='gate: <b>green (13/13)</b> · merged on green';
+  }
+  document.getElementById('run').addEventListener('click',runGate);
+</script>
+</body></html>

@@ -109,7 +109,9 @@ export interface CaseStudy {
   scope: string;
   timeline: string;
   liveUrl?: string;
-  heroImage: string;
+  /** optional since the PR 41 amendment (22 Jul): no shell renders a
+      hero image any more; covers live on the library row */
+  heroImage?: string;
   /** Optional separate thumbnail for the listing grid (use when heroImage is an HTML embed) */
   thumbnailImage?: string;
   heroVideo?: string;

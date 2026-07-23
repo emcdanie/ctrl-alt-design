@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BELLA proto: animated annotated specimen (case shell contract)</title>
+<style>
+  /* PROTO CONTRACT for the case specimen recipe. Structure and behaviour
+     are the contract; production uses BELLA tokens for every value. */
+  :root{
+    --page:#F5F4EF; --card:#FBFAF7; --ink:#1A1720; --muted:#5C5865;
+    --iris:#5B4BD1; --peri:#A79CE2; --border:#E4E1D8; --radius:22px;
+  }
+  *{margin:0;box-sizing:border-box}
+  body{background:var(--page);font-family:system-ui,sans-serif;color:var(--ink);padding:56px 24px;display:grid;gap:64px;justify-items:center}
+  .row{display:grid;grid-template-columns:380px 640px;gap:40px;align-items:center;max-width:1100px}
+  .row h2{font-size:28px;line-height:1.15;margin-bottom:12px}
+  .row p{font-size:16px;line-height:1.5;color:var(--muted)}
+  .toggle{margin-top:20px;display:inline-flex;border:1px solid var(--border);border-radius:999px;overflow:hidden}
+  .toggle button{border:0;background:transparent;padding:9px 18px;font:600 13px/1 system-ui;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);cursor:pointer}
+  .toggle button[aria-pressed="true"]{background:var(--iris);color:#fff}
+
+  /* the specimen stage: NO card, no frame. The component floats on the
+     page ground with its annotations; density comes from composition. */
+  .stage{position:relative;padding:110px 24px;min-height:340px;display:flex;align-items:center;justify-content:center}
+  svg.leaders{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  svg.leaders path{stroke:var(--iris);stroke-width:1.5;fill:none;opacity:.6;
+    stroke-dasharray:var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset .7s ease .1s}
+  svg.leaders circle{fill:var(--iris);opacity:0;transition:opacity .3s ease .6s}
+  .stage.in svg.leaders path{stroke-dashoffset:0}
+  .stage.in svg.leaders circle{opacity:.9}
+
+  .flag{position:absolute;display:inline-flex;align-items:center;gap:7px;padding:6px 12px;background:#fff;
+    border:1px solid var(--peri);border-radius:999px;font:500 13px/1 ui-monospace,monospace;color:var(--iris);
+    opacity:0;transform:translateY(6px);transition:opacity .4s ease,transform .4s ease;cursor:default}
+  .flag .dot{width:9px;height:9px;border-radius:50%;background:var(--iris)}
+  .stage.in .flag{opacity:1;transform:none}
+  .stage.in .flag:nth-of-type(2){transition-delay:.25s}.stage.in .flag:nth-of-type(3){transition-delay:.4s}
+  .stage.in .flag:nth-of-type(4){transition-delay:.55s}.stage.in .flag:nth-of-type(5){transition-delay:.7s}
+  .flag:hover{background:var(--iris);color:#fff}
+
+  /* the WORKING demo component (a real select, not a picture) */
+  .demo{display:flex;justify-content:center}
+  .select{display:inline-flex;align-items:center;gap:12px}
+  .select label{font:600 13px/1 ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .select .field{position:relative}
+  .select select{appearance:none;min-height:44px;padding:0 40px 0 16px;font:500 16px/1 system-ui;color:var(--ink);
+    background:#fff;border:1px solid var(--border);border-radius:8px;cursor:pointer}
+  .select select:focus-visible{outline:2px solid var(--iris);outline-offset:2px}
+  .select .chev{position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted)}
+
+  /* highlight pulse when its flag is hovered */
+  [data-zone]{transition:box-shadow .2s ease}
+  .hl-radius select{box-shadow:0 0 0 2px var(--iris)}
+  .hl-height select{box-shadow:inset 0 -3px 0 var(--iris)}
+  .hl-label label{color:var(--iris);text-decoration:underline;text-underline-offset:4px}
+  .hl-focus select{outline:2px dashed var(--iris);outline-offset:2px}
+
+  /* BEFORE state: the honest mess (mixed fonts, off colours, cramped) */
+  .stage.before .select select{font-family:Georgia,serif;border-radius:2px;min-height:34px;border-color:#c96;color:#345}
+  .stage.before .select label{font-family:Georgia,serif;letter-spacing:0;text-transform:none;color:#a63}
+  .stage.before .flag,.stage.before svg.leaders{visibility:hidden}
+  .stage .state-tag{position:absolute;left:20px;top:16px;font:600 11px/1 ui-monospace,monospace;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+
+  @media (prefers-reduced-motion: reduce){
+    svg.leaders path{transition:none;stroke-dashoffset:0}
+    svg.leaders circle,.flag{transition:none;opacity:1;transform:none}
+  }
+  @media (max-width:1080px){.row{grid-template-columns:1fr;max-width:640px}}
+</style>
+</head>
+<body>
+
+<div class="row">
+  <div>
+    <h2>One control, every value accounted for</h2>
+    <p>This is the specimen pattern: a working component, not a screenshot. The annotations draw themselves in, each leader lands on the exact part its token drives, and the toggle shows the before state honestly.</p>
+    <div class="toggle" role="group" aria-label="Specimen state">
+      <button aria-pressed="true" data-state="on">On system</button>
+      <button aria-pressed="false" data-state="before">Before</button>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+    <span class="state-tag" id="stateTag">On system</span>
+    <svg class="leaders" viewBox="0 0 640 380" aria-hidden="true" preserveAspectRatio="none">
+      <path d="M175,66 C185,110 210,150 240,178" style="--len:150"/><circle cx="240" cy="178" r="3"/>
+      <path d="M505,66 C490,110 465,148 448,166" style="--len:140"/><circle cx="448" cy="166" r="3"/>
+      <path d="M170,314 C185,275 210,235 245,205" style="--len:150"/><circle cx="245" cy="205" r="3"/>
+      <path d="M500,314 C488,278 462,232 436,206" style="--len:140"/><circle cx="436" cy="206" r="3"/>
+    </svg>
+
+    <span class="flag" data-hl="hl-label"  style="left:8px;top:34px"><span class="dot"></span>13px --typography-font-size-tag</span>
+    <span class="flag" data-hl="hl-radius" style="right:60px;top:34px"><span class="dot"></span>8px --radius-md</span>
+    <span class="flag" data-hl="hl-height" style="left:16px;bottom:30px"><span class="dot"></span>44px --spacing-touch-target</span>
+    <span class="flag" data-hl="hl-focus"  style="right:24px;bottom:30px"><span class="dot"></span>#5B4BD1 --color-accent-iris</span>
+
+    <div class="demo">
+      <div class="select" data-zone>
+        <label for="s">Sort specimen</label>
+        <span class="field">
+          <select id="s"><option>Year, newest first</option><option>Title A-Z</option></select>
+          <span class="chev">▾</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const stage = document.getElementById('stage');
+  const tag = document.getElementById('stateTag');
+  new IntersectionObserver((e)=>{ if(e[0].isIntersecting) stage.classList.add('in'); },{threshold:.4}).observe(stage);
+  document.querySelectorAll('.toggle button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('.toggle button').forEach(x=>x.setAttribute('aria-pressed', x===b));
+    stage.classList.toggle('before', b.dataset.state==='before');
+    tag.textContent = b.dataset.state==='before' ? 'Before' : 'On system';
+  }));
+  document.querySelectorAll('.flag').forEach(f=>{
+    f.addEventListener('mouseenter',()=>stage.querySelector('.select').classList.add(f.dataset.hl));
+    f.addEventListener('mouseleave',()=>stage.querySelector('.select').classList.remove(f.dataset.hl));
+  });
+</script>
+</body>
+</html>
