@@ -92,11 +92,11 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "code-first",
     medium: "case study",
-    /* Cover = the case's own token-inspector poster (its one in-case UI
-       still; the Command Center imagery left the case entirely, PR 41
-       amendment item 8, 22 Jul). TODO(elleta): swap for a dedicated
-       crop if you want a denser card image. */
-    cover: "/images/case-studies/token-inspector-poster.png",
+    /* Cover = the ONE annotated specimen rendered as its Code First
+       variant (CaseSpecimen identity/copy props), captured static
+       (resolves the cover TODO; the Command Center imagery stays out
+       of the case, PR 41 amendment item 8, 22 Jul). */
+    cover: "/images/case-studies/code-first-specimen.png",
     title: "Code First",
     bubbleLabel: "Code First",
     kicker: "Design Systems · 2024-25",
