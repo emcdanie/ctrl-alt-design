@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
+import Heading from "@/components/ui/Heading";
 import { Button } from "@/components/ui/Button";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import CaseCard from "@/components/CaseCard";
@@ -86,25 +87,27 @@ const PERSONALITY_LINE = "" /* TODO(elleta): the personality-break line, your vo
    empty (the keyline carries the takeaway meanwhile) */
 const IMPACT_LINE = "" /* TODO(elleta): the short impact statement */;
 
-/* beat 04 metric slots (the plan: _review/ai-enablement-case-and-metrics.md).
-   Ladder: BELLA/portfolio numbers are real and yours; client outcomes
-   directional, words only. Empty slots render nothing. */
-const METRICS: { value: string; label: string; takeaway: string }[] = [
+/* beat 04: the takeaway as a 3-card band (pre-merge spec, Elleta
+   23 Jul 2026), the About statement-card treatment adapted (the
+   shared .thesis-band + .card-statement recipes; app/about/page.tsx
+   untouched). Statement/body split is mechanical at the first
+   sentence; every string Elleta-approved and editable. 13/13 is the
+   only metric on the page; no invented numbers. */
+const TAKEAWAY_CARDS: { key: string; statement: string; body: string }[] = [
   {
-    /* the gate: real, yours, running on the page being read */
-    value: "13/13",
-    label: "audits green on every push",
-    takeaway: "The same gate runs on this site. Nothing merges red." /* TODO(elleta): your wording */,
+    key: "number",
+    statement: "13/13.",
+    body: "Audits green on every push. The same gate runs on this site. Nothing merges red.",
   },
   {
-    value: "" /* TODO(elleta): the BELLA workflow-speed number, e.g. "N components, one pass" */,
-    label: "one pass across the library, on BELLA",
-    takeaway: "" /* TODO(elleta): the so-what line */,
+    key: "value",
+    statement: "The highest-value work wasn't in the Figma file.",
+    body: "It was in the alignment between design intent and what actually ships.",
   },
   {
-    value: "" /* TODO(elleta): directional client outcome, words not figures */,
-    label: "",
-    takeaway: "",
+    key: "learning",
+    statement: "Parity isn't a diff you check once.",
+    body: "It's a discipline: read the code, trace the decision, then change the system.",
   },
 ];
 const THANKS_LINE = "Thanks for reading.";
@@ -326,62 +329,58 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
       />
       <BeatLink index={2} />
 
-      <CaseBeat
-        index="04"
-        kicker="The takeaway"
-        headline="What the work walked away with."
-        keyline="The highest-value work isn't in the Figma file, it's in the alignment between design intent and implementation reality."
-        id="cs2-b4"
-        flip
-        body={
-          <>
-            {/* the wall is CUT (template-first fix): the second closing
-                paragraph, the journey list, and the contact CTA are
-                gone; the first closing paragraph holds the beat until
-                IMPACT_LINE lands, then it goes too. The Get-in-touch
-                button was a second CTA on a reading page; the site nav
-                owns Contact. */}
-            {IMPACT_LINE.trim() !== "" ? (
-              <P text={IMPACT_LINE} />
-            ) : (
-              <Scannable
-                text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 0)}
-                keyline="The highest-value work isn't in the Figma file, it's in the alignment between design intent and implementation reality."
-              />
-            )}
-            {PERSONALITY_LINE.trim() !== "" && (
-              <p className="ds-section__note" style={{ margin: 0 }}>{PERSONALITY_LINE}</p>
-            )}
-          </>
-        }
-        visual={
-          <>
-            {/* metric slots, flat (the plan: _review/ai-enablement-case-and-metrics.md);
-                a slot renders only when its value has landed. */}
-            <dl className="beat-metrics">
-              {METRICS.filter((m) => m.value.trim() !== "").map((m) => (
-                <div key={m.label || m.value} className="beat-metric">
-                  <dt className="beat-metric__kicker">{m.label}</dt>
-                  <dd className="beat-metric__value">{m.value}</dd>
-                  {m.takeaway.trim() !== "" && (
-                    <dd className="beat-metric__takeaway">{m.takeaway}</dd>
-                  )}
-                </div>
-              ))}
-            </dl>
-            <div className="scene-foot">
-              <p className="cs2-kicker-row" style={{ margin: 0 }}>
-                {NO_NUMBERS_LINE}
-                {NO_NUMBERS_DETAIL.trim() !== "" && ` ${NO_NUMBERS_DETAIL}`}
-              </p>
-            </div>
-          </>
-        }
-      />
+      {/* beat 04, the takeaway BAND (pre-merge spec): intro (eyebrow,
+          headline, keyline, the closing paragraph) above a 3-card
+          band on the About statement-card treatment. A deliberate,
+          recorded card exception (DESIGN.md + audit:visual: thesis
+          cards on a case page may live ONLY inside .cs2-takeaway).
+          Not a CaseBeat: the band spans the column; the flat metric
+          rows are deleted. */}
+      <section className="cs2-beat cs2-takeaway" aria-labelledby="cs2-b4">
+        <div className="cs2-takeaway__intro">
+          <p className="beat-eyebrow">04 · The takeaway</p>
+          <Heading tier="section" as="h2" className="beat-headline" id="cs2-b4">
+            What the work walked away with.
+          </Heading>
+          <p className="beat-keyline">
+            The highest-value work isn&apos;t in the Figma file, it&apos;s in the alignment between
+            design intent and implementation reality.
+          </p>
+          {IMPACT_LINE.trim() !== "" ? (
+            <P text={IMPACT_LINE} />
+          ) : (
+            <Scannable
+              text={para(cs, (b) => b.kind === "section" && (b as { eyebrow?: string }).eyebrow === "CLOSING", 0)}
+              keyline="The highest-value work isn't in the Figma file, it's in the alignment between design intent and implementation reality."
+            />
+          )}
+          {PERSONALITY_LINE.trim() !== "" && (
+            <p className="ds-section__note" style={{ margin: 0 }}>{PERSONALITY_LINE}</p>
+          )}
+        </div>
+        <div className="cs2-takeaway__grid">
+          {TAKEAWAY_CARDS.map((c) => (
+            <article
+              key={c.key}
+              className="thesis-band trace-host"
+              style={{ "--cc": "var(--case-code-first-text)" } as React.CSSProperties}
+            >
+              <h3 className="card-statement" style={{ margin: "0 0 var(--spacing-4)" }}>{c.statement}</h3>
+              <p className="card-body" style={{ margin: 0, flex: 1 }}>{c.body}</p>
+            </article>
+          ))}
+        </div>
+        <div className="scene-foot">
+          <p className="cs2-kicker-row" style={{ margin: 0 }}>
+            {NO_NUMBERS_LINE}
+            {NO_NUMBERS_DETAIL.trim() !== "" && ` ${NO_NUMBERS_DETAIL}`}
+          </p>
+        </div>
+      </section>
 
       {/* next case: the ONE surviving card, the three stars in a loop */}
       {nextItem && (
-        <section className="cs2-beat" aria-label="Next case">
+        <section className="cs2-beat cs2-nextcase" aria-label="Next case">
           {/* tier "case": the smallest display step, a clear step
               below the beat headlines (type-scale fix, 22 Jul 2026) */}
           <SectionHeader label="Next case" tier="case" title={nextItem.title} className="cs2-screen__head" />

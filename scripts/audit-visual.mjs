@@ -456,7 +456,11 @@ for (const theme of ["light", "dark"]) {
           the flipped side.
        2. visual-has-no-frame: the visual root paints no border,
           shadow, or background, and NO ui/Card (trace-host) wraps a
-          visual; the demo specimen is the only card.
+          visual; the demo specimen is the only card. RECORDED
+          EXCEPTION (pre-merge spec, 23 Jul 2026): the takeaway band
+          (.cs2-takeaway) carries the About statement cards; thesis
+          cards on a case route may live ONLY inside that band,
+          asserted below.
        3. alternation: consecutive beats flip alternately. */
     const beatBad = await page.evaluate(() => {
       const out = [];
@@ -493,6 +497,13 @@ for (const theme of ["light", "dark"]) {
         prevFlip = flip;
       }
       if (!beats.length) out.push("no beat sections found (template not rendering)");
+      /* the takeaway-band card exception, held tight: a thesis card
+         on a case route outside .cs2-takeaway is card creep */
+      for (const t of document.querySelectorAll(".cs2 .thesis-band")) {
+        if (!t.closest(".cs2-takeaway")) {
+          out.push("thesis card outside the takeaway band (the recorded exception is the band only)");
+        }
+      }
       return out;
     });
     for (const b of beatBad) {

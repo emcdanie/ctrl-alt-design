@@ -481,6 +481,15 @@ visual-has-no-frame + no-Card-wrapper, strict alternation), proven RED on
 the carded beat-02 journey before the fix. Future case studies compose
 beats from CaseBeat, never bespoke.
 
+## Takeaway band card exception (pre-merge spec, Elleta 23 Jul 2026)
+
+The Code First takeaway (beat 04) renders as a 3-card band on the About
+statement-card treatment (the shared `.thesis-band` + `.card-statement`
+recipes), a DELIBERATE exception to the case-page "only the demo specimen
+is a card" law. Scope: `.cs2-takeaway` only; `audit:visual` fails any
+thesis card on a case route outside that band. Statement/body split is
+mechanical at the first sentence; 13/13 stays the only metric on the page.
+
 ## Case-page type hierarchy, locked (type-scale fix, 22 Jul 2026)
 
 One scale, one display family, stepped through the Heading primitive's four
