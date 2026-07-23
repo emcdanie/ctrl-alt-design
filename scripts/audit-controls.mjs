@@ -4,6 +4,7 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { chromium } from "playwright";
+import { receipt } from "./lib/receipt.mjs";
 
 const routes = ["/", "/work", "/work?view=map", "/work?view=timeline", "/about", "/contact",
   "/point-of-view", "/case-studies/brad-frost", "/case-studies/chip",
@@ -33,7 +34,7 @@ for (const root of ["app", "components"]) {
     readFileSync(file, "utf8").split("\n").forEach((l, i) => {
       if (DEMO_REGISTER.some((re) => re.test(l))) {
         srcFails++;
-        console.error(`CONTROLS FAIL: ${file}:${i + 1} retired demo register: ${l.trim().slice(0, 60)}`);
+        console.error(receipt("controls", `${file}:${i + 1}`, `the retired demo register (${l.trim().slice(0, 40)})`, "BELLA iris grammar (no .demo-btn / --demo-*)"));
       }
     });
   }
@@ -42,7 +43,8 @@ for (const root of ["app", "components"]) {
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 let fails = srcFails;
-const fail = (m) => { fails++; console.error("CONTROLS FAIL:", m); };
+/* the receipt (A1): offender, actual, expected — one format */
+const fail = (offender, got, expected) => { fails++; console.error(receipt("controls", offender, got, expected)); };
 
 for (const r of routes) {
   await page.goto("http://localhost:3000" + r, { waitUntil: "domcontentloaded" });
@@ -60,9 +62,9 @@ for (const r of routes) {
       (s) => s.querySelectorAll('button[aria-current="true"]').length !== 1);
     return { primaries: primaries.length, chipsNoAria: chipsNoAria.length, segBad: segBad.length };
   });
-  if (res.primaries > 1) fail(`${r}: ${res.primaries} primary keycaps visible (max 1)`);
-  if (res.chipsNoAria) fail(`${r}: ${res.chipsNoAria} filter chips missing aria-pressed`);
-  if (res.segBad) fail(`${r}: segmented control without exactly one aria-current`);
+  if (res.primaries > 1) fail(`${r} .btn-key--primary`, `${res.primaries} visible primaries`, "max 1 per view");
+  if (res.chipsNoAria) fail(`${r} .filter-chip`, `${res.chipsNoAria} chips without aria-pressed`, "aria-pressed on every filter chip");
+  if (res.segBad) fail(`${r} .seg-control`, `${res.segBad} controls without exactly one aria-current`, "exactly one aria-current per control");
 }
 await browser.close();
 console.log(fails === 0 ? "controls gate: PASS" : `controls gate: ${fails} failure(s)`);

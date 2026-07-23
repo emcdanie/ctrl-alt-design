@@ -6,6 +6,7 @@
  * committable because it references these files instead of naming names. */
 import { execSync } from "node:child_process";
 import { readFileSync, existsSync } from "node:fs";
+import { receipt } from "./lib/receipt.mjs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
@@ -56,7 +57,10 @@ const hits = [
 ];
 
 if (hits.length) {
-  for (const h of hits.slice(0, 20)) console.error("NDA FAIL:", h.slice(0, 160));
+  /* the receipt (A1): the git-grep hit (file:line:content) is the
+     offender; the banned term itself stays out of the committed log
+     format (the lists are private by design) */
+  for (const h of hits.slice(0, 20)) console.error(receipt("nda", h.slice(0, 120), "a banned term match", "no banned term anywhere in tracked content"));
   console.error(`nda gate: ${hits.length} match(es)`);
   process.exit(1);
 }

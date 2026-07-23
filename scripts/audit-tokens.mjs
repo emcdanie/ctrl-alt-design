@@ -7,6 +7,7 @@
  * `black`/`white` keywords permitted only inside mask-image hacks. */
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { receipt } from "./lib/receipt.mjs";
 
 const ROOTS = ["app", "components"];
 const EXT = /\.(tsx|ts|css)$/;
@@ -18,9 +19,10 @@ const SPACING_TSX = /(padding|margin|gap|rowGap|columnGap|scrollMargin)[A-Za-z]*
 const RAW_LEN = /\b([4-9]|\d{2,})(?:\.\d+)?px\b|\b\d*\.?\d+rem\b/;
 
 let failures = 0;
-const fail = (f, line, msg) => {
+/* the receipt (A1): offender, actual, expected — one format */
+const fail = (f, line, got, expected) => {
   failures++;
-  console.log(`TOKEN FAIL ${f}:${line} ${msg}`);
+  console.log(receipt("tokens", `${f}:${line}`, got, expected));
 };
 
 const walk = (dir, out = []) => {
@@ -40,14 +42,14 @@ for (const root of ROOTS) {
     lines.forEach((l, i) => {
       const n = i + 1;
       if (/token-waiver:/.test(l)) return; // reviewed exception, reason inline
-      if (COLOUR.test(l)) fail(file, n, `colour literal: ${l.trim().slice(0, 70)}`);
+      if (COLOUR.test(l)) fail(file, n, `colour literal ${l.trim().slice(0, 60)}`, "a token (or an inline token-waiver with a reason)");
       if (isCss) {
         for (const m of l.matchAll(SPACING_CSS)) {
-          if (RAW_LEN.test(m[2])) fail(file, n, `raw spacing: ${m[0].trim().slice(0, 70)}`);
+          if (RAW_LEN.test(m[2])) fail(file, n, `raw spacing ${m[0].trim().slice(0, 60)}`, "a --spacing-* token");
         }
       } else {
         for (const m of l.matchAll(SPACING_TSX)) {
-          if (RAW_LEN.test(m[2])) fail(file, n, `raw spacing: ${m[0].trim().slice(0, 70)}`);
+          if (RAW_LEN.test(m[2])) fail(file, n, `raw spacing ${m[0].trim().slice(0, 60)}`, "a --spacing-* token");
         }
       }
     });

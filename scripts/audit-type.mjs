@@ -5,6 +5,7 @@
  * tier by design (item-1 carve-out) and are exempt via the class list
  * below; the popup's reading text is included by opening a bubble. */
 import { chromium } from "playwright";
+import { receipt } from "./lib/receipt.mjs";
 
 const ROUTES = [
   "/", "/about", "/work", "/contact", "/skills", "/design-system", "/quick",
@@ -45,7 +46,7 @@ for (const route of ROUTES) {
     });
     if (cardTitleSize === null || popupTitleSize === null || cardTitleSize !== popupTitleSize) {
       fails++;
-      console.error(`TYPE FAIL /work: popup title (${popupTitleSize}px) must equal CaseCard title (${cardTitleSize}px)`);
+      console.error(receipt("type", "/work popup title vs CaseCard title", `${popupTitleSize}px vs ${cardTitleSize}px`, "equal sizes (one title recipe)"));
     }
   }
   const bad = await page.evaluate(
@@ -69,7 +70,7 @@ for (const route of ROUTES) {
   );
   for (const b of bad) {
     fails++;
-    console.error(`TYPE FAIL ${route}: ${b}`);
+    console.error(receipt("type", `${route} ${b}`, "reading text below the floor", ">=16px on cards, >=18px card-body"));
   }
   /* ── sitewide reading floor (type-floor sweep, 21 Jul): any P or LI
      whose OWN text runs past ~40 chars is reading text and must
@@ -90,7 +91,7 @@ for (const route of ROUTES) {
   }, META_EXEMPT.source);
   for (const b of floorBad) {
     fails++;
-    console.error(`TYPE FLOOR FAIL ${route}: ${b}`);
+    console.error(receipt("type", `${route} ${b}`, "own text past ~40 chars below 16px", ">=16px computed for reading text"));
   }
   /* Unique never renders inside a Card (runtime leg of the card-voice
      rule; the static file-level check exempts the System page whose
@@ -113,7 +114,7 @@ for (const route of ROUTES) {
   });
   for (const b of uniqueBad) {
     fails++;
-    console.error(`TYPE FAIL ${route}: Unique inside a card scope :: ${b}`);
+    console.error(receipt("type", `${route} "${b}"`, "Unique inside a card scope", "Geist in cards (Unique stays page-tier)"));
   }
 }
 await browser.close();
