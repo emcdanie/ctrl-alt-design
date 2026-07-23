@@ -1,0 +1,468 @@
+{
+  "$description": "The BELLA component contract (lean): how the real components are built, machine-readable. Real components only; variants are DELTAS from the default; tokens are $refs into the token layer, never raw values. Backstopped by audit:contract: an entry for a missing component, an unresolvable $ref, or a prop/variant that does not appear in the source fails the gate.",
+  "components": [
+    {
+      "name": "Button",
+      "source": "components/ui/Button.tsx",
+      "anatomy": [
+        "btn-key"
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "string",
+          "values": [
+            "primary",
+            "secondary"
+          ]
+        },
+        {
+          "name": "href",
+          "type": "string"
+        },
+        {
+          "name": "onClick",
+          "type": "function"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "values": [
+            "button",
+            "submit"
+          ]
+        },
+        {
+          "name": "disabled",
+          "type": "boolean"
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string"
+        }
+      ],
+      "variants": [
+        {
+          "name": "primary",
+          "delta": "the ONE calm filled iris keycap per view (max one); gains btn-key--primary + the shared trace-host travelling border light"
+        }
+      ],
+      "tokens": [
+        "{--color-accent-ink}",
+        "{--btn-key-radius}",
+        "{--spacing-touch-target}",
+        "{--typography-font-size-tag}",
+        "{--tracking-eyebrow}",
+        "{--key-fill-hi}",
+        "{--key-fill-lo}"
+      ]
+    },
+    {
+      "name": "SegmentedControl",
+      "source": "components/ui/SegmentedControl.tsx",
+      "anatomy": [
+        "seg-control",
+        "segment button",
+        "icon (optional, decorative)",
+        "label"
+      ],
+      "props": [
+        {
+          "name": "options",
+          "type": "array of { value, label, icon? }"
+        },
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "onChange",
+          "type": "function"
+        },
+        {
+          "name": "label",
+          "type": "string"
+        }
+      ],
+      "variants": [
+        {
+          "name": "active segment",
+          "delta": "aria-current=true; accent-subtle fill and accent border on the selected segment only"
+        }
+      ],
+      "tokens": [
+        "{--color-accent-ink}",
+        "{--color-border-medium}",
+        "{--color-semantic-accent-subtle}",
+        "{--color-semantic-accent-border}",
+        "{--color-ink-muted}"
+      ]
+    },
+    {
+      "name": "FilterChip",
+      "source": "components/ui/FilterChip.tsx",
+      "anatomy": [
+        "filter-chip"
+      ],
+      "props": [
+        {
+          "name": "pressed",
+          "type": "boolean"
+        },
+        {
+          "name": "onClick",
+          "type": "function"
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string"
+        },
+        {
+          "name": "className",
+          "type": "string"
+        }
+      ],
+      "variants": [
+        {
+          "name": "pressed",
+          "delta": "aria-pressed=true; inverse fill (background-inverse, text-inverse), border unchanged"
+        }
+      ],
+      "tokens": [
+        "{--color-border-medium}",
+        "{--color-ink-soft}",
+        "{--color-semantic-background-inverse}",
+        "{--color-semantic-text-inverse}",
+        "{--color-alpha-ink-6}"
+      ]
+    },
+    {
+      "name": "Select",
+      "source": "components/ui/Select.tsx",
+      "anatomy": [
+        "select-control",
+        "label span",
+        "select-control__field",
+        "native select",
+        "select-control__chevron"
+      ],
+      "props": [
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "onChange",
+          "type": "function"
+        },
+        {
+          "name": "options",
+          "type": "array of { value, label }"
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "{--color-card}",
+        "{--color-border-medium}",
+        "{--color-ink}",
+        "{--color-ink-muted}",
+        "{--font-body}"
+      ]
+    },
+    {
+      "name": "Tag",
+      "source": "components/ui/Tag.tsx",
+      "anatomy": [
+        "tag"
+      ],
+      "props": [
+        {
+          "name": "identity",
+          "type": "boolean"
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties (the --case-tint-* vars for identity)"
+        }
+      ],
+      "variants": [
+        {
+          "name": "identity",
+          "delta": "tag--identity: wears the case's tint via --case-tint-text / --case-tint-hi passed in style"
+        }
+      ],
+      "tokens": [
+        "{--color-supporting-linen}",
+        "{--ink-on-paper}",
+        "{--radius-full}",
+        "{--typography-font-size-tag}",
+        "{--font-body}"
+      ]
+    },
+    {
+      "name": "StatusPill",
+      "source": "components/ui/StatusPill.tsx",
+      "anatomy": [
+        "status-pill"
+      ],
+      "props": [],
+      "variants": [],
+      "tokens": [
+        "{--color-accent-ink}",
+        "{--color-semantic-accent-border}",
+        "{--radius-full}",
+        "{--spacing-2}"
+      ]
+    },
+    {
+      "name": "Heading",
+      "source": "components/ui/Heading.tsx",
+      "anatomy": [
+        "display-heading",
+        "display-heading__accent (optional)"
+      ],
+      "props": [
+        {
+          "name": "tier",
+          "type": "string",
+          "values": [
+            "hero",
+            "page",
+            "section",
+            "case"
+          ]
+        },
+        {
+          "name": "as",
+          "type": "string",
+          "values": [
+            "h1",
+            "h2",
+            "h3"
+          ]
+        },
+        {
+          "name": "accent",
+          "type": "ReactNode"
+        },
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "variants": [
+        {
+          "name": "hero",
+          "delta": "font-size {--font-hero}, line-height 0.9"
+        },
+        {
+          "name": "page",
+          "delta": "font-size {--font-case-display}, line-height 0.9 (page titles + case-study H1s)"
+        },
+        {
+          "name": "case",
+          "delta": "font-size {--font-case-headline} (the smallest display step, next-case pointers)"
+        }
+      ],
+      "tokens": [
+        "{--font-hero-display}",
+        "{--font-section-display}",
+        "{--font-case-display}",
+        "{--font-case-headline}",
+        "{--font-hero}",
+        "{--color-ink}"
+      ]
+    },
+    {
+      "name": "SectionHeader",
+      "source": "components/ui/SectionHeader.tsx",
+      "anatomy": [
+        "layout-header",
+        "section-label (optional)",
+        "Heading",
+        "description (optional)",
+        "actions (optional)"
+      ],
+      "props": [
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "ReactNode"
+        },
+        {
+          "name": "description",
+          "type": "ReactNode"
+        },
+        {
+          "name": "tier",
+          "type": "string",
+          "values": [
+            "section",
+            "hero",
+            "page",
+            "case"
+          ]
+        },
+        {
+          "name": "inverse",
+          "type": "boolean"
+        },
+        {
+          "name": "accent",
+          "type": "ReactNode"
+        },
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "variants": [
+        {
+          "name": "inverse",
+          "delta": "on-dark inks for fixed-dark grounds (display-heading--inverse, ink-on-dark tokens)"
+        }
+      ],
+      "tokens": [
+        "{--color-eyebrow}",
+        "{--color-muted}",
+        "{--ink-on-dark-strong}"
+      ]
+    },
+    {
+      "name": "Card",
+      "source": "components/ui/Card.tsx",
+      "anatomy": [
+        "trace wrapper (trace-host)",
+        "inner glass panel",
+        "media (optional, with token scrim)",
+        "body"
+      ],
+      "props": [
+        {
+          "name": "accent",
+          "type": "string (identity colour token)"
+        },
+        {
+          "name": "variant",
+          "type": "string",
+          "values": [
+            "default",
+            "peek"
+          ]
+        },
+        {
+          "name": "media",
+          "type": "ReactNode"
+        },
+        {
+          "name": "mediaScrim",
+          "type": "boolean"
+        },
+        {
+          "name": "href",
+          "type": "string"
+        },
+        {
+          "name": "onClick",
+          "type": "function"
+        },
+        {
+          "name": "ariaCurrent",
+          "type": "string",
+          "values": [
+            "true",
+            "step"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "name": "peek",
+          "delta": "the fixed always-light reveal panel (--hero-panel-* tokens) for elements floating light on navy"
+        },
+        {
+          "name": "media",
+          "delta": "full-bleed cover above the padded body with the {--scrim-media} token scrim so text stays AA"
+        }
+      ],
+      "tokens": [
+        "{--color-card}",
+        "{--cc}",
+        "{--hero-panel-bg}",
+        "{--scrim-media}",
+        "{--color-semantic-border-strong}"
+      ]
+    },
+    {
+      "name": "CaseBeat",
+      "source": "components/CaseBeat.tsx",
+      "anatomy": [
+        "beat",
+        "beat-grid",
+        "beat-text (eyebrow, headline, keyline, body, control)",
+        "beat-visual (visual, foot)"
+      ],
+      "props": [
+        {
+          "name": "index",
+          "type": "string"
+        },
+        {
+          "name": "kicker",
+          "type": "string"
+        },
+        {
+          "name": "headline",
+          "type": "string"
+        },
+        {
+          "name": "keyline",
+          "type": "string"
+        },
+        {
+          "name": "body",
+          "type": "ReactNode"
+        },
+        {
+          "name": "visual",
+          "type": "ReactNode"
+        },
+        {
+          "name": "control",
+          "type": "ReactNode"
+        },
+        {
+          "name": "foot",
+          "type": "ReactNode"
+        },
+        {
+          "name": "flip",
+          "type": "boolean"
+        },
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "variants": [
+        {
+          "name": "flip",
+          "delta": "beat--flip swaps the grid column order ONLY; the text column's internal order never changes (the alternation law)"
+        }
+      ],
+      "tokens": [
+        "{--spacing-16}",
+        "{--spacing-8}",
+        "{--font-section-display}",
+        "{--color-border-soft}"
+      ]
+    }
+  ]
+}

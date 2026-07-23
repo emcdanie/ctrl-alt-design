@@ -29,7 +29,7 @@ ${cases.map((c) => c.desc && c.desc !== c.title ? `- /case-studies/${c.slug} : $
 
 ## The system
 - /design-system : BELLA inspecting itself, live token values, control taxonomy, the gate.
-- /api/bella.json : machine-readable manifest (tokens, taxonomy, cases, rules). Read-only.
+- /api/bella.json : machine-readable manifest. DTCG-shaped tokens (primitive -> semantic -> component, $ref aliases), the COMPONENT CONTRACT (real components, anatomy, props, variants as deltas, token $refs; audit:contract refuses a contract that lies), taxonomy, cases, rules. Read-only.
 - /skills : skill overlap mapped to the work.
 - /work : the library (curated default, ?explore for map/table/filters).
 

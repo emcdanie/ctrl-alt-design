@@ -68,6 +68,10 @@ const AI_FLOW_KEYLINE =
   "MCP let the model read the actual code, so the answers came from the system, not a guess.";
 const AI_FLOW_CONNECTIVE =
   "The system is built so an agent can work with it safely. Same discipline, every layer, gated on every push.";
+/* the component-contract proof point (bella-component-contract spec).
+   TODO(elleta): reword in your voice. */
+const AGENT_CONTRACT_LINE =
+  "Agents read the components too, not just the tokens: the same contract the system is built on, served machine-readable.";
 
 /* beat 02 footnote: what the recorded clip ACTUALLY shows.
    TODO(elleta): refine in your voice. */
@@ -305,6 +309,7 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
           <>
             <Scannable text={para(cs, (b) => b.kind === "decision" && b.index === "02", 0)} />
             <p className="ds-section__note" style={{ margin: 0 }}>{AI_FLOW_CONNECTIVE}</p>
+            <p className="ds-section__note" style={{ margin: 0 }}>{AGENT_CONTRACT_LINE}</p>
           </>
         }
         control={
