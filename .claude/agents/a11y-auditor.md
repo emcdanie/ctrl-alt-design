@@ -2,7 +2,8 @@
 name: a11y-auditor
 description: >
   Audits a page, component, or screenshot for accessibility, to Elleta's AAA-minded
-  standard, using her employer-DS WCAG method. Checks contrast (both themes, every state),
+  standard, using her WCAG audit method (orientation, reflow, contrast, target size).
+  Checks contrast (both themes, every state),
   tap-target size, text resize / reflow, keyboard + focus, reduced motion, colour not
   used alone for state. Returns ranked findings mapped to WCAG, never fixes.
   Triggers: "a11y audit", "accessibility check", "WCAG check", "is this accessible",
