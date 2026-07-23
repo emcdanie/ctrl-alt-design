@@ -164,6 +164,10 @@ Must pass before any work is "done":
   `token-waiver:` inline comments mark the reviewed proto-exact/artwork exceptions.
 - `audit:parity` — every case-study slug has exactly one `WORK_ITEMS` row and vice versa; side
   tables for case identity (the deleted `EXTRA_CASES` pattern) fail.
+- `audit:contract` — every component in the contract exists, token $refs resolve, no entry for a
+  deleted component (the machine-readable component contract at /api/bella.json). bella.json is
+  GENERATED from source (tokens + `lib/bella/component-contract.json`); patch the source, never
+  the served artifact.
 - `audit:axe` — axe-core over every route in BOTH themes; zero violations to pass (needs-review
   nodes are counted, not failed, and verified by hand when they change).
 - `audit:type` — no Card surface renders reading text below 16px COMPUTED; the shared
