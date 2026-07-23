@@ -1315,6 +1315,21 @@ section[id],
   padding: var(--spacing-8) 0 0;
 }
 
+/* ─── Case pending-visual placeholder (migration kickoff, 23 Jul):
+   the styled "In progress" slot for beats whose visual does not
+   exist yet; warm card surface, token border, never a blank. ─── */
+.case-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  background: var(--color-card);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-8);
+}
+
 /* ─── Decision-led case blocks ──────────────────────────────────── */
 
 .cs-summary-block {
