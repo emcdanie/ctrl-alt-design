@@ -15,14 +15,14 @@ import type { CaseStudy } from "@/lib/content";
  * design-system-transformation.ts restructured into four beats;
  * cited mechanical trims are commented at their site; every NEW word
  * a slot needs is marked TODO(elleta). Visuals are STATIC: the
- * case's recreated embeds and poster still; the outcome beat carries
- * the sanctioned In-progress placeholder until her asset lands.
+ * case's recreated embeds and poster still; the outcome beat now carries
+ * the recreated before/after maturity map (illustrative).
  *
  * Beat map (headlines = her decision titles / outcome statement,
  * keylines = her why lines / lessons lead, all verbatim; kickers and
  * trims approved at the PR 56 review, Elleta 23 Jul):
  * 01 the audit -> 02 the cascade -> 03 the governance -> 04 the foundation.
- * The ONE remaining TODO(elleta) is the beat-04 pending visual.
+ * TODO(elleta): the beat-04 real-outcome line (NEW_OUTCOME) is draft copy.
  */
 
 /* kickers approved (Elleta, 23 Jul, PR 56 review): audit / cascade /
@@ -56,7 +56,20 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
   /* her outcome statement (bold lead) is beat 04's headline; the rest
      of the outcome is body. Markers strip mechanically. */
   const outcomeLead = "A shared language for how the product should look, behave, and grow.";
-  const outcomeRest = (summary?.outcome ?? "").replace(/\*\*/g, "").replace(outcomeLead, "").trim();
+  /* the REAL outcome that closes the impact gap, rendered as the beat-04
+     lead paragraph. NEW draft copy, TODO(elleta): finalise the words.
+     NDA-safe: abstract, no client name, no codename, no figures. */
+  const NEW_OUTCOME =
+    "The audit and the business case won investment for a dedicated design-systems team. The system became the foundation the larger team built on: the surface evolved, the components and the agreements held.";
+  const outcomeRest = (summary?.outcome ?? "")
+    .replace(/\*\*/g, "")
+    .replace(outcomeLead, "")
+    .replace(NEW_OUTCOME, "")
+    .trim();
+  /* beat-04 evidence: the recreated before/after maturity map (static) */
+  const maturity = cs.blocks?.find((b) => b.kind === "embed" && (b as { src?: string }).src?.includes("maturity")) as
+    | { src: string; title: string; designWidth: number; designHeight: number }
+    | undefined;
   /* lessons: first sentence is the keyline, verbatim; the rest is body */
   const lessonsKeyline =
     "Inconsistency is rarely the root problem, it is a symptom of missing structure and undocumented decisions.";
@@ -178,9 +191,9 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
         foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>{d3?.evidence?.title}</p>}
       />
 
-      {/* 04 · the takeaway: her outcome statement leads, lessons close.
-          Visual: the sanctioned In-progress placeholder.
-          TODO(elleta): the outcome/maturity visual for this slot. */}
+      {/* 04 · the takeaway: her outcome statement leads, the real outcome
+          (NEW_OUTCOME, TODO(elleta)) opens the body, lessons close. Visual:
+          the recreated before/after maturity map (static embed). */}
       <CaseBeat
         index="04"
         kicker={KICKERS[3]}
@@ -190,11 +203,24 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
         flip
         body={
           <>
+            <P text={NEW_OUTCOME} />
             <P text={outcomeRest} />
             <Scannable text={lessonsRest} />
           </>
         }
-        visual={<CasePlaceholder />}
+        visual={
+          maturity ? (
+            <ScaledFrame
+              src={maturity.src}
+              title={maturity.title}
+              designWidth={maturity.designWidth}
+              designHeight={maturity.designHeight}
+            />
+          ) : (
+            <CasePlaceholder />
+          )
+        }
+        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated maturity assessment, illustrative</p>}
       />
 
       {/* next case: the ONE surviving card, the three stars in a loop */}

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design system maturity: before and after</title>
+<style>
+  /* Recreated for the From Drift case outcome beat. Extends
+     ds-maturity-scales.html: shows BEFORE and AFTER together (static, no
+     toggle, so it reads inside a pointer-events-off embed) and drops the
+     amber group colour for blue. Illustrative maturity levels only, no
+     client data, no client figures, no real names. Self-contained. */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #FAFAF8;
+    --card: #FFFFFF;
+    --ink: #1A1A1A;
+    --ink-soft: #5E5E5E;
+    --ink-faint: #949088;
+    --line: #E8E4DD;
+    --track: #EEEAE3;
+    --before: #C9C3B8;   /* muted: the starting level */
+    --foundation: #0D9488;
+    --growth: #7C3AED;
+    --roi: #2563EB;      /* blue, not amber */
+  }
+
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    padding: 40px 40px 32px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header { margin-bottom: 20px; }
+  .header .label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--foundation); margin-bottom: 8px;
+  }
+  .header h1 { font-size: 26px; font-weight: 700; line-height: 1.25; }
+  .header p {
+    font-size: 14px; color: var(--ink-soft); margin-top: 8px;
+    max-width: 680px; line-height: 1.6;
+  }
+
+  /* 5-point scale legend */
+  .legend {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+    margin: 18px 0 26px; font-size: 12px; color: var(--ink-soft);
+  }
+  .legend .swatches { display: flex; gap: 4px; }
+  .legend .sw {
+    width: 26px; height: 10px; border-radius: 3px; background: var(--track);
+  }
+  .legend .sw.on { background: var(--foundation); }
+  .legend .ends { font-weight: 600; color: var(--ink); }
+  .legend .mid { color: var(--ink-faint); }
+
+  .group { margin-bottom: 22px; }
+  .group-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .group-icon {
+    width: 26px; height: 26px; border-radius: 7px; color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+  }
+  .group-icon.foundation { background: var(--foundation); }
+  .group-icon.growth { background: var(--growth); }
+  .group-icon.roi { background: var(--roi); }
+  .group-title {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--ink-faint);
+  }
+
+  .rows { display: flex; flex-direction: column; gap: 8px; }
+  .row {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 18px; display: grid;
+    grid-template-columns: 168px 1fr 150px; align-items: center; gap: 18px;
+  }
+  .dim { font-size: 14px; font-weight: 600; color: var(--ink); }
+
+  /* one track, before + gain segments, so the jump reads at a glance */
+  .bar { display: flex; gap: 4px; height: 12px; }
+  .seg { flex: 1; height: 100%; border-radius: 3px; background: var(--track); }
+  .seg.before { background: var(--before); }
+  .seg.gain-foundation { background: var(--foundation); }
+  .seg.gain-growth { background: var(--growth); }
+  .seg.gain-roi { background: var(--roi); }
+
+  .delta { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+  .lvl { font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+  .lvl b { color: var(--ink); font-weight: 700; }
+  .arrow { color: var(--ink-faint); }
+
+  .overall {
+    display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+    padding: 18px 22px; background: #F3EEE6; border-radius: 10px; margin-top: 6px;
+  }
+  .overall .big { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .overall .big .from { color: var(--ink-faint); font-weight: 600; }
+  .divider { width: 1px; height: 30px; background: #D9CBB6; }
+  .gscores { display: flex; gap: 20px; flex-wrap: wrap; }
+  .gscore { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--ink-soft); }
+  .gdot { width: 8px; height: 8px; border-radius: 50%; }
+  .gdot.foundation { background: var(--foundation); }
+  .gdot.growth { background: var(--growth); }
+  .gdot.roi { background: var(--roi); }
+  .gscore b { color: var(--ink); font-weight: 700; }
+
+  .foot {
+    margin-top: 18px; font-size: 12px; color: var(--ink-faint);
+    border-top: 1px solid var(--line); padding-top: 12px;
+  }
+
+  @media (max-width: 620px) {
+    body { padding: 28px 20px; }
+    .row { grid-template-columns: 1fr; gap: 10px; }
+    .delta { justify-content: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="label">Maturity assessment · Illustrative</div>
+  <h1>Design system maturity: before and after</h1>
+  <p>The same nine dimensions scored at the start and after the rebuild, grouped into Foundation, Growth, and ROI. Muted bars are where each dimension started; the coloured extension is the gain. Levels are illustrative, drawn to show shape not client figures.</p>
+</div>
+
+<div class="legend">
+  <div class="swatches">
+    <span class="sw"></span><span class="sw"></span><span class="sw on"></span><span class="sw on"></span><span class="sw on"></span>
+  </div>
+  <span><span class="ends">None</span> <span class="mid">· Emerging · Established · Integrated ·</span> <span class="ends">Leader</span></span>
+</div>
+
+<div id="content"></div>
+<div class="overall" id="overall"></div>
+
+<div class="foot">Illustrative maturity levels for a B2B travel platform. No client data, figures, or names.</div>
+
+<script>
+  var LEVELS = ["None", "Emerging", "Established", "Integrated", "Leader"];
+  var GROUPS = [
+    { name: "Foundation", icon: "F", cls: "foundation", dims: [
+      { name: "Design tokens", before: 1, after: 4 },
+      { name: "Component library", before: 2, after: 4 },
+      { name: "Documentation", before: 1, after: 4 }
+    ] },
+    { name: "Growth", icon: "G", cls: "growth", dims: [
+      { name: "Interoperability", before: 1, after: 3 },
+      { name: "Innovation", before: 2, after: 3 },
+      { name: "Quality assurance", before: 1, after: 4 }
+    ] },
+    { name: "ROI", icon: "R", cls: "roi", dims: [
+      { name: "Governance", before: 0, after: 4 },
+      { name: "Adoption", before: 1, after: 3 },
+      { name: "Culture", before: 1, after: 3 }
+    ] }
+  ];
+
+  function bar(cls, before, after) {
+    var out = "";
+    for (var i = 0; i < 5; i++) {
+      var c = "seg";
+      if (i < before) c += " before";
+      else if (i < after) c += " gain-" + cls;
+      out += '<div class="' + c + '"></div>';
+    }
+    return out;
+  }
+
+  var content = document.getElementById("content");
+  var allBefore = 0, allAfter = 0, n = 0;
+  var groupLine = [];
+
+  GROUPS.forEach(function (g) {
+    var gb = 0, ga = 0;
+    var rows = "";
+    g.dims.forEach(function (d) {
+      gb += d.before; ga += d.after; allBefore += d.before; allAfter += d.after; n++;
+      rows +=
+        '<div class="row">' +
+          '<div class="dim">' + d.name + '</div>' +
+          '<div class="bar">' + bar(g.cls, d.before, d.after) + '</div>' +
+          '<div class="delta"><span class="lvl">' + LEVELS[d.before] +
+            '</span><span class="arrow">&rarr;</span><span class="lvl"><b>' + LEVELS[d.after] + '</b></span></div>' +
+        '</div>';
+    });
+    var el = document.createElement("div");
+    el.className = "group";
+    el.innerHTML =
+      '<div class="group-header"><div class="group-icon ' + g.cls + '">' + g.icon + '</div>' +
+      '<div class="group-title">' + g.name + '</div></div>' +
+      '<div class="rows">' + rows + '</div>';
+    content.appendChild(el);
+    groupLine.push({ name: g.name, cls: g.cls, before: (gb / g.dims.length), after: (ga / g.dims.length) });
+  });
+
+  function fmt(x) { return x.toFixed(1); }
+  var overall = document.getElementById("overall");
+  var gs = groupLine.map(function (g) {
+    return '<div class="gscore"><span class="gdot ' + g.cls + '"></span>' + g.name +
+      ' <span class="from">' + fmt(g.before) + '</span> &rarr; <b>' + fmt(g.after) + '</b></div>';
+  }).join("");
+  overall.innerHTML =
+    '<div class="big">Overall <span class="from">' + fmt(allBefore / n) + '</span> &rarr; ' + fmt(allAfter / n) + ' of 4</div>' +
+    '<div class="divider"></div><div class="gscores">' + gs + '</div>';
+</script>
+
+</body>
+</html>
