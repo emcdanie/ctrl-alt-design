@@ -1,9 +1,9 @@
 /* Visual assertions gate (system-page-v3, Elleta 21 Jul 2026). Her
  * briefs named audit:visual three times; it now exists. Three checks:
  * 1. ONE GROUND: every /design-system band's computed background
- *    equals the page ground, both themes, EXCEPT the identity band's
- *    recorded low-tint wash (Elleta's call). No band ever gains a
- *    surface again.
+ *    equals the page ground, both themes, NO exceptions (the identity
+ *    wash and its carve-out were deleted 23 Jul with the DS2 no-wash
+ *    port). No band ever gains a surface again.
  * 2. SPECIMEN ALIGNMENT: sibling specimen cards in a row render equal
  *    heights (grid stretch, fixed head slots).
  * 3. COVER PLACEHOLDERS: >= 3:1 large-text against both stops of the
@@ -45,7 +45,6 @@ for (const theme of ["light", "dark"]) {
     const pageBg = getComputedStyle(document.body).backgroundColor;
     const out = [];
     for (const band of document.querySelectorAll(".ds-band")) {
-      if (band.classList.contains("ds-band--identity")) continue;
       const cs = getComputedStyle(band);
       const transparent = /rgba\(0, 0, 0, 0\)/.test(cs.backgroundColor);
       if ((!transparent && cs.backgroundColor !== pageBg) || cs.backgroundImage !== "none") {

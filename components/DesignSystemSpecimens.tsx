@@ -104,7 +104,7 @@ const GATE = [
   { name: "audit:agents", line: "The agent surfaces (llms.txt, /api/bella.json) must match the live route registry. An agent surface that lies fails the build." },
   { name: "audit:axe", line: "axe-core against every route in both themes; zero violations to pass. Needs-review nodes are counted and verified by hand." },
   { name: "audit:type", line: "No card surface renders reading text below 16px computed; the shared card body never below 18. Metadata rows are their own tier." },
-  { name: "audit:visual", line: "One ground on the System page (identity wash excepted), sibling specimen cards render equal heights, cover placeholders clear 3:1." },
+  { name: "audit:visual", line: "One ground on the System page, sibling specimen cards render equal heights, cover placeholders clear 3:1." },
   /* the harness itself is part of how the gate works */
   { name: "the CI run", line: "tsc, the production build, and every audit run on each pull request and push to main; merge only on green." },
 ];
@@ -260,8 +260,11 @@ export default function DesignSystemSpecimens() {
 
       {/* ── Case identity: colour IS identity. The one signature 3D
           moment: glossy orbs from the keycap-and-orb world, five case
-          identities named, live token readouts beneath. ── */}
-      <div className="ds-band ds-band--identity">
+          identities named, live token readouts beneath. Cards only,
+          NO band wash: the DS2 modeless treatment ported from PR 40
+          (the one part kept; the wash and its audit exception are
+          deleted, so every band sits on the one ground). ── */}
+      <div className="ds-band">
         <div className="layout-container">
           <section className="ds-section" aria-labelledby="ds-identity">
             <SectionHeader id="ds-identity" title="Case identity" className="ds-section__header" />

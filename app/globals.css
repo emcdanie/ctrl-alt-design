@@ -2263,10 +2263,9 @@ textarea:focus-visible {
 }
 
 /* D1 (Pass D 2026-07-18; amended 21 Jul for the map; ONE GROUND,
-   system-page-v3): every band renders on the page ground; the identity
-   band's low-tint wash is the page's single recorded background moment
-   (Elleta's call). audit:visual asserts no other band ever gains a
-   surface again. */
+   system-page-v3; identity wash DELETED 23 Jul, the DS2 no-wash port
+   from PR 40): every band renders on the page ground, no exceptions.
+   audit:visual asserts no band ever gains a surface again. */
 .ds-band {
   padding-block: var(--spacing-12);
 }
@@ -2410,22 +2409,9 @@ textarea:focus-visible {
   margin: 0 0 var(--spacing-4);
 }
 
-/* identity band: the page's ONE sanctioned background moment (v3 T1);
-   tint stepped up via token until the wash reads at a glance in both
-   themes (v3 review, 22 Jul). Cards stay opaque; the wash lives in
-   the gaps and margins. */
-.ds-band--identity {
-  --identity-wash-tint: 30%;
-  background: linear-gradient(
-    100deg,
-    color-mix(in srgb, var(--case-chip-hi) var(--identity-wash-tint), var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-code-first-hi) var(--identity-wash-tint), var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-drift-hi) var(--identity-wash-tint), var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-guardian-hi) var(--identity-wash-tint), var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-clarity-hi) var(--identity-wash-tint), var(--color-semantic-background))
-  );
-  border-block: 1px solid var(--color-border-soft);
-}
+/* the identity band wash (v3 T1) is deleted (23 Jul): the DS2
+   modeless treatment from PR 40 won the A/B for this section; the
+   identity orbs sit in cards only, on the one ground. */
 
 .ds-band .ds-section {
   margin-top: 0;
