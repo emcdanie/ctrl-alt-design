@@ -55,9 +55,11 @@ const ANCHORS: Record<string, LeaderAnchor> = Object.fromEntries(
 
 /** per-flag display state, driven by the beats */
 export interface FlagState {
-  /** the value line under the part label */
-  label: string;
-  tone?: "iris" | "drift" | "pass" | "fail";
+  /** the value line under the part label; nodes allowed so feedback
+      flags can bold the value + verdict (gate-feedback spec) */
+  label: React.ReactNode;
+  /** focus = the ACTIVE feedback flag: larger, bolder, in front */
+  tone?: "iris" | "drift" | "pass" | "fail" | "focus";
 }
 
 export function useResolvedTokens(tokens: readonly string[]): Record<string, string> {

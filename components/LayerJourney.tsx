@@ -35,15 +35,33 @@ const L = [
 
 function Panel({ i }: { i: number }) {
   const l = L[i];
+  const isGate = l.slug === "gate";
   return (
     <div className="jn-panel">
       <p className="jn-kicker-where">Layer {i + 1} of 7</p>
       <p className="jn-paneltitle">{l.title}</p>
       <p className="jn-sub">{l.sub}</p>
       <div className="jn-stagebox">
-        <div className="jn-mini">
-          <SpecimenCardBody />
-        </div>
+        {/* the gate layer wears the beat-03 check-flag grammar: one
+            clean flag, straight leader, dot on the card, no crossing
+            (gate-feedback spec item 2) */}
+        {isGate && (
+          <div className="jn-gatecol">
+            <div className="jn-checkflag">
+              <span>
+                tokens · <strong>border #c7c7c7 hardcoded ✗</strong> → <strong>--color-border-soft ✓</strong>{/* token-waiver: depicted drift value, data not paint */}
+              </span>
+            </div>
+            <div className="jn-mini">
+              <SpecimenCardBody />
+            </div>
+          </div>
+        )}
+        {!isGate && (
+          <div className="jn-mini">
+            <SpecimenCardBody />
+          </div>
+        )}
       </div>
     </div>
   );

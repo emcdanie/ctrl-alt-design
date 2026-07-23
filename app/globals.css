@@ -3569,6 +3569,24 @@ textarea:focus-visible {
   color: var(--case-clarity-text);
 }
 
+/* the ACTIVE feedback flag (gate-feedback spec): the check's value +
+   verdict, a size step up, value and glyph in strong, in front of
+   the resting flags; checking wears the semantic info border */
+.csp-flag--focus {
+  border-color: var(--color-semantic-info);
+  z-index: 4;
+}
+
+.csp-flag--focus .csp-flag__val {
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-ink);
+}
+
+.csp-flag--focus .csp-flag__val strong,
+.csp-flag--fail .csp-flag__val strong {
+  font-weight: 700;
+}
+
 /* desktop positions (the specimen contract); the flag rows sit in
    vertically CLEARED zones above and below the card so no flag can
    intersect another flag or the card at any column width (asserted
@@ -3662,6 +3680,13 @@ textarea:focus-visible {
   .cs2-beat .cs2-screen__grid {
     gap: var(--spacing-10);
   }
+}
+
+/* beat 02's body reads a step up (gate-feedback spec item 3): the
+   MCP story was marooned at base size beside the tall journey; lg
+   keeps the two-column layout and the 16px floor with room over it */
+section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
+  font-size: var(--typography-font-size-lg);
 }
 
 /* the connective line between beats: her voice, renders nothing empty */
@@ -3831,6 +3856,60 @@ textarea:focus-visible {
   flex-wrap: wrap;
 }
 
+/* the gate layer's flag + card stack (flag above, leader drops
+   straight onto the card) */
+.jn-gatecol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* the gate layer's check flag (gate-feedback spec item 2): the
+   beat-03 feedback grammar in the journey panel. Sits ABOVE the
+   card; the leader is a short straight drop landing on the card's
+   top edge with a dot, in front, crossing nothing by construction. */
+.jn-checkflag {
+  position: relative;
+  align-self: flex-start;
+  display: inline-flex;
+  background: var(--color-card);
+  border: 1px solid var(--color-semantic-info);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: var(--spacing-2) var(--spacing-3);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  color: var(--color-ink);
+  margin-bottom: var(--spacing-6);
+  z-index: 2;
+}
+
+.jn-checkflag strong {
+  font-weight: 700;
+}
+
+.jn-checkflag::after {
+  content: "";
+  position: absolute;
+  left: var(--spacing-6);
+  top: 100%;
+  width: 2px;
+  height: var(--spacing-5);
+  background: var(--color-semantic-info);
+}
+
+.jn-checkflag::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--spacing-6) - 2px);
+  top: calc(100% + var(--spacing-5));
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-semantic-info);
+  z-index: 2;
+}
+
 /* the travelling specimen, scaled down inside the panel */
 .jn-mini {
   flex: none;
@@ -3900,15 +3979,25 @@ textarea:focus-visible {
   min-width: 0;
 }
 
+/* the status line sits directly ABOVE the chip rail it summarizes
+   (gate-feedback spec, 23 Jul 2026): a clear size step up, the
+   verdict + count bold where the eye lands */
 .gv-prog {
   font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
-  line-height: 1.6;
-  color: var(--color-ink-muted);
+  font-size: var(--typography-font-size-lg);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
   margin: 0;
+  text-align: center;
 }
 
 .gv-prog b {
+  font-weight: 700;
+  color: inherit;
+}
+
+/* only the settled verdict wears green */
+.gv-prog--done b {
   color: var(--case-clarity-text);
 }
 
@@ -3976,14 +4065,6 @@ textarea:focus-visible {
   flex-direction: column;
   gap: var(--spacing-3);
   min-width: 0;
-}
-
-/* the status/readout row directly above its visual (not a control) */
-.scene-control {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-3);
-  flex-wrap: wrap;
 }
 
 /* the ONE footnote slot: a quiet row beneath the visual */
