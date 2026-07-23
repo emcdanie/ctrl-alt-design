@@ -19,7 +19,8 @@ import CaseSpecimen from "@/components/CaseSpecimen";
  * State colours are on-system: pass = the clarity pair, fail = the
  * writing pair (both AA both themes, the recorded drift register),
  * checking = a neutral glyph with the BELLA semantic info border
- * (the constitution bans amber; the spec's amber maps to info).
+ * (the warm warning hue is constitutionally banned; the spec's
+ * warning tone maps to info).
  * Reduced motion settles immediately to the final green state.
  * The run control lives in CaseBeat's control slot (runSignal).
  */

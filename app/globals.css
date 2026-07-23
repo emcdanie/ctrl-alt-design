@@ -3916,8 +3916,9 @@ textarea:focus-visible {
    chip steps pending -> checking -> pass/fail with a state GLYPH
    beside the label, never colour-only; labels hold full contrast in
    every state (the axe chip-dimming lesson). Checking wears the
-   BELLA semantic info border with a neutral glyph (no amber, the
-   constitution's hard rule; the spec's amber maps to info); pass and
+   BELLA semantic info border with a neutral glyph (the warm warning
+   hue is constitutionally banned; the spec's warning tone maps to
+   info); pass and
    fail ride the recorded clarity/writing pairs, AA both themes. */
 .gv-rail {
   display: flex;
