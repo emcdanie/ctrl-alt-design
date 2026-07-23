@@ -15,9 +15,8 @@ import { findWorkItemBySlug } from "@/lib/workLibrary";
  * page composition provides as children. A thin token-coloured
  * reading-progress indicator renders on case pages only.
  *
- * Code First renders through this shell; chip and drift keep the old
- * CaseStudyShell until their own passes (brief item 14, old shell
- * code is deleted only when the last case leaves it).
+ * Every case renders through this shell (the migration completed 23
+ * Jul: brad-frost, drift, chip; the old CaseStudyShell is deleted).
  *
  * This file renders Heading and deliberately imports no Card surface
  * (card-voice rule, enforced by audit:reuse); card sections live in

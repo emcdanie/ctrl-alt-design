@@ -1330,75 +1330,8 @@ section[id],
   padding: var(--spacing-8);
 }
 
-/* ─── Decision-led case blocks ──────────────────────────────────── */
-
-.cs-summary-block {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--grid-gap);
-  margin: 0 0 var(--spacing-16);
-}
-
-.cs-summary-block .eyebrow {
-  display: block;
-  margin-bottom: var(--spacing-2);
-}
-
-.cs-decision-block {
-  margin: 0 0 var(--spacing-16);
-}
-
-/* The decision marker rules the header only (Elleta, 20 Jul): the
-   case-tinted rule spans eyebrow + title + why; evidence and children
-   render after the head and read as a plain column. */
-.cs-decision-head {
-  padding-left: var(--spacing-5);
-  border-left: 3px solid var(--case-marker, var(--color-semantic-accent-border));
-  /* the rule spans eyebrow + title + why IDENTICALLY on every
-     decision: no trailing margin extends it past the content */
-  margin-bottom: var(--spacing-5);
-}
-
-.cs-decision-head > :last-child {
-  margin-bottom: 0;
-}
-
-/* The why-line is the visual KEY POINT (readability pass, 20 Jul):
-   one ramp size step at 600 in the case marker colour, the line to
-   remember. Case text tokens are AA-calibrated in both themes. */
-.cs-decision-why {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-lg);
-  font-weight: 600;
-  line-height: var(--typography-line-height-normal);
-  color: var(--case-marker-text, var(--color-ink));
-  max-width: var(--measure-case);
-  margin: 0 0 var(--spacing-5);
-}
-
-/* The takeaway band (readability pass, 20 Jul): "What this changed"
-   sits on ONE quiet case-tinted token surface, the same recipe every
-   case, findable by scroll. */
-.cs-lessons-band {
-  background: color-mix(in srgb, var(--case-marker, var(--color-accent-peri)) 9%, var(--color-card));
-  border: 1px solid color-mix(in srgb, var(--case-marker, var(--color-accent-peri)) 26%, var(--color-card));
-  border-radius: var(--radius-2xl);
-  padding: var(--spacing-8) var(--spacing-8) var(--spacing-2);
-  margin: 0 0 var(--spacing-16);
-}
-
-.cs-lessons-band .cs-section {
-  margin-bottom: 0;
-}
-
-.cs-decision-block .eyebrow {
-  color: var(--case-marker-text, var(--color-eyebrow));
-}
-
-.cs-decision-block .eyebrow {
-  display: block;
-  margin-bottom: var(--spacing-2);
-}
+/* (The decision-led case-block recipes left with the old shell: the
+   chip migration completed the CaseBeat template, one render path.) */
 
 /* ─── Focus states ──────────────────────────────────────────────── */
 
