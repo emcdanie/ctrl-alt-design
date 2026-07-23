@@ -297,7 +297,7 @@ for (const theme of ["light", "dark"]) {
    readout table) before the fix landed. ── */
 /* every case on the CaseBeat template is swept (drift joined at its
    migration, feat/case-migration-drift); add each migrated slug here */
-for (const caseRoute of ["/case-studies/brad-frost", "/case-studies/design-system-transformation"]) {
+for (const caseRoute of ["/case-studies/brad-frost", "/case-studies/design-system-transformation", "/case-studies/chip"]) {
 for (const theme of ["light", "dark"]) {
   for (const width of [1440, 390]) {
     const ctx = await browser.newContext({ viewport: { width, height: width > 800 ? 900 : 844 } });
