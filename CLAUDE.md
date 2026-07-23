@@ -171,8 +171,8 @@ Must pass before any work is "done":
   chars computes >= 16px. Metadata rows (tags/pills/eyebrows/kickers) are a deliberate
   separate tier and exempt.
 - `audit:visual` — one ground on /design-system (band backgrounds equal the page ground,
-  identity wash excepted), sibling specimen cards render equal heights, cover placeholders
-  clear 3:1 against both gradient stops, both themes.
+  no exceptions since the 23 Jul DS2 no-wash port), sibling specimen cards render equal
+  heights, cover placeholders clear 3:1 against both gradient stops, both themes.
 - tsc clean; all routes 200 (light + dark); NDA content-grep clean.
 
 ## 10. How this file was built and stays alive

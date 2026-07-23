@@ -2263,10 +2263,9 @@ textarea:focus-visible {
 }
 
 /* D1 (Pass D 2026-07-18; amended 21 Jul for the map; ONE GROUND,
-   system-page-v3): every band renders on the page ground; the identity
-   band's low-tint wash is the page's single recorded background moment
-   (Elleta's call). audit:visual asserts no other band ever gains a
-   surface again. */
+   system-page-v3; identity wash DELETED 23 Jul, the DS2 no-wash port
+   from PR 40): every band renders on the page ground, no exceptions.
+   audit:visual asserts no band ever gains a surface again. */
 .ds-band {
   padding-block: var(--spacing-12);
 }
@@ -2410,22 +2409,9 @@ textarea:focus-visible {
   margin: 0 0 var(--spacing-4);
 }
 
-/* identity band: the page's ONE sanctioned background moment (v3 T1);
-   tint stepped up via token until the wash reads at a glance in both
-   themes (v3 review, 22 Jul). Cards stay opaque; the wash lives in
-   the gaps and margins. */
-.ds-band--identity {
-  --identity-wash-tint: 30%;
-  background: linear-gradient(
-    100deg,
-    color-mix(in srgb, var(--case-chip-hi) var(--identity-wash-tint), var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-code-first-hi) var(--identity-wash-tint), var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-drift-hi) var(--identity-wash-tint), var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-guardian-hi) var(--identity-wash-tint), var(--color-semantic-background)),
-    color-mix(in srgb, var(--case-clarity-hi) var(--identity-wash-tint), var(--color-semantic-background))
-  );
-  border-block: 1px solid var(--color-border-soft);
-}
+/* the identity band wash (v3 T1) is deleted (23 Jul): the DS2
+   modeless treatment from PR 40 won the A/B for this section; the
+   identity orbs sit in cards only, on the one ground. */
 
 .ds-band .ds-section {
   margin-top: 0;
@@ -2578,6 +2564,249 @@ textarea:focus-visible {
   color: var(--color-ink-soft);
   max-width: 62ch;
   margin: 0 0 var(--spacing-6);
+}
+
+/* ── AI-readiness explainer (System band, rebuilt from
+   _review/protos/ai-readiness-explainer-v2.html on real tokens:
+   ok = the clarity case pair, warn = the writing case pair, agent =
+   accent iris; all theme-flipping). ONE inline SVG diagram; the
+   route draw-in fires on .in, reduced motion renders settled. ── */
+.air {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  max-width: 900px;
+}
+
+.air-stage {
+  width: 100%;
+  height: auto;
+}
+
+.air-route {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+}
+
+.air.in .air-route {
+  transition: stroke-dashoffset 1.5s ease;
+  stroke-dashoffset: 0;
+}
+
+.air-route--in { stroke: var(--case-clarity-text); }
+.air-route--around { stroke: var(--case-writing-text); }
+
+.air-plabel {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.air-plabel--in { fill: var(--case-clarity-text); }
+.air-plabel--around { fill: var(--case-writing-text); }
+
+.air-node rect {
+  fill: var(--color-card);
+  stroke: var(--color-border-medium);
+  stroke-width: 1.5;
+}
+
+.air-node__title {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--color-ink);
+}
+
+.air-node__sub {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--color-ink-muted);
+}
+
+.air-node--agent rect { stroke: var(--color-accent-ink); }
+.air-node--agent .air-node__title { fill: var(--color-accent-ink); }
+.air-node--ok rect { stroke: var(--case-clarity-hi); }
+.air-node--ok .air-node__title { fill: var(--case-clarity-text); }
+.air-node--warn rect { stroke: var(--case-writing-hi); }
+.air-node--warn .air-node__title { fill: var(--case-writing-text); }
+
+/* outcomes land after the routes draw */
+.air-res { opacity: 0; }
+.air.in .air-res {
+  transition: opacity 0.45s ease 1.4s;
+  opacity: 1;
+}
+
+.air-takeaway {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-lg);
+  font-weight: 600;
+  color: var(--color-ink);
+  max-width: 60ch;
+  border-left: 3px solid var(--case-clarity-hi);
+  padding-left: var(--spacing-4);
+  margin: var(--spacing-2) 0 0;
+}
+
+/* the 5-point framework, hers; renders only when her words land */
+.air-framework {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-4);
+}
+
+.air-framework__list {
+  margin: 0;
+  padding-left: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.air-framework__point {
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  max-width: 62ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .air-route,
+  .air.in .air-route {
+    transition: none;
+    stroke-dashoffset: 0;
+  }
+
+  .air-res,
+  .air.in .air-res {
+    transition: none;
+    opacity: 1;
+  }
+}
+
+/* ── BELLA maturity map (System band, 23 Jul 2026, rebuilt from her
+   bella-maturity-map mockup; copy hers verbatim). Token mapping per
+   the spec: the mockup's mint pair = the clarity case pair (the
+   frontier accent), its warm V1 hue = the writing case pair, Growing
+   = the accent family. Same 900 column as the explainer above so the
+   two bands read as one AI-readiness story. ── */
+.bmm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  max-width: 900px;
+}
+
+/* the honest note wears the frontier accent as a quiet left keyline,
+   the same device as .air-takeaway */
+.bmm-honest {
+  border-left: 3px solid var(--case-clarity-hi);
+  padding-left: var(--spacing-4);
+  max-width: 64ch;
+}
+
+.bmm-scale {
+  color: var(--color-ink-muted);
+}
+
+.bmm-scale strong {
+  color: var(--color-ink);
+}
+
+.bmm-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.bmm-axis {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.bmm-axis__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
+/* stage badges: metadata tier (the tag/pill register), stage colour
+   from semantic families only */
+.bmm-badge {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.bmm-badge--v1 {
+  background: color-mix(in srgb, var(--case-writing-hi) 22%, var(--color-card));
+  color: var(--case-writing-text);
+}
+
+.bmm-badge--growing {
+  background: var(--color-semantic-accent-subtle);
+  color: var(--color-accent-ink);
+}
+
+.bmm-badge--teenage {
+  background: color-mix(in srgb, var(--case-clarity-hi) 30%, var(--color-card));
+  color: var(--case-clarity-text);
+}
+
+/* dark flips clarity-text to clarity-hi (light mint); on the 30% tint
+   it measured 4.44:1, a hair under AA. Step the tint down so the same
+   text clears with margin (measured 6.0:1). */
+[data-theme="dark"] .bmm-badge--teenage {
+  background: color-mix(in srgb, var(--case-clarity-hi) 18%, var(--color-card));
+}
+
+/* the 4-step track; filled = the accent family, the frontier axis
+   fills in the clarity pair. Redundant with the badge text, so the
+   track itself is decorative. */
+.bmm-track {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.bmm-track__step {
+  flex: 1;
+  height: var(--spacing-2);
+  border-radius: var(--radius-full);
+  background: var(--color-border-medium);
+}
+
+.bmm-track__step--on {
+  background: var(--color-accent-ink);
+}
+
+.bmm-track__step--frontier {
+  background: var(--case-clarity-text);
+}
+
+.bmm-foot {
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: var(--spacing-4);
 }
 
 .ds-swatches {
