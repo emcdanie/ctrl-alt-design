@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import Heading from "@/components/ui/Heading";
 import { Button } from "@/components/ui/Button";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import CaseCard from "@/components/CaseCard";
@@ -339,9 +338,9 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
       <section className="cs2-beat cs2-takeaway" aria-labelledby="cs2-b4">
         <div className="cs2-takeaway__intro">
           <p className="beat-eyebrow">04 · The takeaway</p>
-          <Heading tier="section" as="h2" className="beat-headline" id="cs2-b4">
-            What the work walked away with.
-          </Heading>
+          {/* SectionHeader, not raw Heading: the card-voice check in
+              audit:reuse (Unique renders outside the cards below) */}
+          <SectionHeader id="cs2-b4" title="What the work walked away with." className="cs2-screen__head" />
           <p className="beat-keyline">
             The highest-value work isn&apos;t in the Figma file, it&apos;s in the alignment between
             design intent and implementation reality.
