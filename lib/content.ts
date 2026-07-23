@@ -75,7 +75,11 @@ export type CaseBlock =
       /** supporting paragraphs moved verbatim under the decision */
       children?: CaseBlock[];
     }
-  | { kind: "lessons"; text: string }
+  /* text = the closing/takeaway display line. offer + body are optional
+     structured slots (CHIP's takeaway leads with an offer keyline over a
+     body paragraph); compositions that don't set them fall back to the
+     single-text form (DriftV2 splits text into keyline + body itself). */
+  | { kind: "lessons"; text: string; offer?: string; body?: string }
   /* upfront NDA disclosure (Pass C): quiet note before the body */
   | { kind: "disclosure"; text: string }
   /* photographic/still evidence attached to a decision (never a gallery);
