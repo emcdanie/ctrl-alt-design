@@ -194,6 +194,19 @@ export default function BubbleCluster({
     };
   }, [placePanel]);
 
+  /* The reveal card is position:fixed and placed once (viewport coords at
+     click time). On scroll it would stay pinned in the viewport and float
+     over the sections below the hero. It is a transient preview, so a
+     scroll gesture dismisses it: it never drifts on scroll and never
+     overlaps content outside the cluster. Attached only while a card is
+     open, so idle scrolling never fires onOpenChange. */
+  useEffect(() => {
+    if (selected === null) return;
+    const onScroll = () => close();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [selected, close]);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close(true);
