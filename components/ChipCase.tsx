@@ -4,14 +4,100 @@
    validation (false positive, every map inside is keyed); rendering
    the composition client-side like the worked reference clears it */
 
+import { useState } from "react";
 import CaseBeat from "@/components/CaseBeat";
 import CaseCard from "@/components/CaseCard";
 import CasePlaceholder from "@/components/CasePlaceholder";
-import ChipReadinessMap from "@/components/ChipReadinessMap";
+import ScaledFrame from "@/components/ScaledFrame";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { P, Scannable } from "@/components/CaseProse";
 import { WORK_ITEMS } from "@/lib/workLibrary";
 import type { CaseStudy } from "@/lib/content";
+
+/* Beat 02 now leads with Elleta's REAL CHIP build (the recreated
+   ChipReadinessMap is retired from render, see the PR): an inline
+   activation facade, poster still + click-to-load the live scaled frame
+   (the same poster-then-load shape Drift keeps for its prototypes; the
+   old PrototypeEmbed renderer was deleted in the migration so the facade
+   lives here, one client component, no new file). The embedded frame
+   keeps its own skin. */
+type ProtoBlock = {
+  src: string;
+  title: string;
+  designWidth?: number;
+  designHeight?: number;
+  poster?: string;
+  posterAlt?: string;
+};
+
+function BridgeEmbed({ proto }: { proto: ProtoBlock }) {
+  const [loaded, setLoaded] = useState(false);
+  const w = proto.designWidth ?? 1280;
+  const h = proto.designHeight ?? 800;
+  if (loaded) {
+    return <ScaledFrame src={proto.src} title={proto.title} designWidth={w} designHeight={h} interactive />;
+  }
+  return (
+    <button
+      type="button"
+      className="chip-proto-facade"
+      onClick={() => setLoaded(true)}
+      aria-label={`Load the live CHIP prototype: ${proto.title}`}
+      style={{
+        position: "relative",
+        display: "block",
+        width: "100%",
+        aspectRatio: `${w} / ${h}`,
+        padding: 0,
+        border: "none",
+        borderRadius: "var(--radius-xl)",
+        overflow: "hidden",
+        cursor: "pointer",
+        background: "var(--color-surface)",
+      }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={proto.poster ?? ""}
+        alt={proto.posterAlt ?? proto.title}
+        loading="lazy"
+        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", display: "block" }}
+      />
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "center",
+          padding: "var(--spacing-5)",
+          background: "linear-gradient(to top, color-mix(in srgb, var(--color-ink) 34%, transparent), transparent 46%)",
+        }}
+      >
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "var(--spacing-2)",
+            padding: "var(--spacing-2) var(--spacing-5)",
+            borderRadius: "var(--radius-full)",
+            border: "1.5px solid var(--color-accent-ink)",
+            background: "var(--color-card)",
+            color: "var(--color-accent-ink)",
+            fontFamily: "var(--font-mono)",
+            fontSize: "var(--typography-font-size-tag)",
+            fontWeight: 600,
+            textTransform: "uppercase",
+            letterSpacing: "var(--tracking-eyebrow)",
+          }}
+        >
+          Load the live prototype
+        </span>
+      </span>
+    </button>
+  );
+}
 
 /**
  * CHIP on the CaseBeat template (case-migration kickoff step 2 of 2,
@@ -21,8 +107,9 @@ import type { CaseStudy } from "@/lib/content";
  * beats; the one mechanical split (the approach paragraph, at her
  * "Then I wired" sentence boundary) is cited below; every NEW word a
  * slot needs is marked TODO(elleta). Visuals: the three evidence
- * figures and the ChipReadinessMap (the kickoff's named reuse; its
- * built-in approve interaction ships as-is, no new gizmos).
+ * figures and, on beat 02, Elleta's REAL CHIP build embedded as a
+ * poster-then-load prototype (the recreated ChipReadinessMap it replaced
+ * is retired and deleted; notes preserved in git history, see the PR).
  *
  * Beat map (headlines = her decision titles / lessons close,
  * keylines = her why lines / lessons lead, all verbatim):
@@ -57,7 +144,7 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
     | undefined;
   const decision = (index: string) =>
     cs.blocks?.find((b) => b.kind === "decision" && (b as { index?: string }).index === index) as
-      | { title: string; why?: string; evidence?: { kind: string; rows?: unknown } }
+      | { title: string; why?: string; evidence?: { kind: string } & Partial<ProtoBlock> }
       | undefined;
   const d1 = decision("01");
   const d2 = decision("02");
@@ -67,9 +154,8 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
   const inboxFig = figure("approve-inbox");
   const systemMapFig = figure("system-map");
   const frictionFig = figure("friction-log");
-  const mapRows = (d1?.evidence?.kind === "readinessMap" ? d1.evidence.rows : undefined) as
-    | Parameters<typeof ChipReadinessMap>[0]["rows"]
-    | undefined;
+  /* beat 02 evidence: Elleta's real CHIP build, a prototype block */
+  const bridgeProto = d2?.evidence?.kind === "prototype" ? (d2.evidence as ProtoBlock) : undefined;
   const paragraphs = (cs.blocks?.filter((b) => b.kind === "paragraph") ?? []) as { text: string }[];
   const constraints = paragraphs.find((p) => p.text.startsWith("Constraints:"))?.text ?? "";
   const credit = paragraphs.find((p) => p.text.startsWith("Credit:"))?.text ?? "";
@@ -116,9 +202,9 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
         foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>{inboxFig?.caption}</p>}
       />
 
-      {/* 02 · my own systems: the inspection pointed inward; the
-          readiness map IS the evidence (kickoff's named reuse, its
-          approve loop intact) */}
+      {/* 02 · my own systems: the inspection pointed inward. The visual
+          is now Elleta's REAL CHIP build, embedded as a poster-then-load
+          prototype (supersedes the recreated ChipReadinessMap). */}
       <CaseBeat
         index="02"
         kicker={KICKERS[1]}
@@ -127,7 +213,20 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
         id="chip-b2"
         flip
         body={<Scannable text={approachOwnSystems} />}
-        visual={mapRows ? <ChipReadinessMap rows={mapRows} /> : <CasePlaceholder />}
+        control={
+          /* §5 SECONDARY: flat iris outline (the .btn-key base), never the
+             primary keycap. Opens the real CHIP build in a new tab. */
+          <a
+            className="btn-key"
+            href="/demos/chip-bridge/index.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open the live CHIP prototype (opens in a new tab)"
+          >
+            Open the live CHIP prototype
+          </a>
+        }
+        visual={bridgeProto ? <BridgeEmbed proto={bridgeProto} /> : <CasePlaceholder />}
       />
 
       {/* 03 · in public: the honest prototype; the friction log kept

@@ -6,10 +6,12 @@ import type { CaseStudy } from "@/lib/content";
  * CHIP changed in her weekly workflow; an optional building-in-public
  * moment; the Loom URL (chip-evidence-0-bridge-hero.png is reserved
  * as its poster and is deliberately not placed yet).
- * TODO(elleta): the library row now claims Accessibility (Pass E task
- * 5a); nothing in this prose backs it yet. One line in your words
- * (e.g. the readiness map's keyboard/aria work), or the claim comes
- * back out. */
+ * ACCESSIBILITY TAG (Pass E task 5a) — RE-OPENED: the backing added in
+ * PR #60 was the interactive ChipReadinessMap's keyboard/aria work, but
+ * that recreation is now RETIRED (beat 02 shows the real CHIP build).
+ * TODO(elleta): the Accessibility claim needs a new backing (a line on
+ * the real CHIP build's a11y, e.g. its Atkinson Hyperlegible type and
+ * keyboard model, in your words) or the tag comes back out. */
 
 /* Conformance (Pass E task 11, honest): decision-led, the template
  * REFERENCE. One summary, three decisions with evidence, lessons.
@@ -72,41 +74,10 @@ const study: CaseStudy = {
       index: "01",
       title: "The agent never moves silently",
       why: "The human stays in the judgment layer: watch, catch, draft, approve, log.",
-      evidence: {
-        kind: "readinessMap",
-        rows: [
-          {
-            id: "design-system",
-            label: "Design system",
-            cells: [
-              { station: "Tokens", status: "green", note: "Every surface resolves from the token layer; no raw values in components." },
-              { station: "Naming", status: "warn", note: "Two legacy aliases still shadow their semantic names; an agent would read the old intent." },
-              { station: "Docs", status: "red", note: "Three components ship without usage notes; an agent consuming them would guess." },
-              { station: "Dark mode", status: "green", note: "Both themes resolve from one flip; the contrast gate checks every route." },
-            ],
-          },
-          {
-            id: "portfolio",
-            label: "Portfolio",
-            cells: [
-              { station: "Tokens", status: "green", note: "Gate-enforced: colour and spacing literals fail the build." },
-              { station: "Naming", status: "green", note: "Tokens renamed to what they are; no lying names left." },
-              { station: "Docs", status: "warn", note: "Two recorded exceptions live only in comments; the agent plan drafts a DESIGN.md entry." },
-              { station: "Dark mode", status: "green", note: "Theme follows the visitor; dark is a first-class contract." },
-            ],
-          },
-          {
-            id: "content-engine",
-            label: "Content engine",
-            cells: [
-              { station: "Tokens", status: "warn", note: "Draft templates carry inline styles; fine for humans, drift fuel for agents." },
-              { station: "Naming", status: "red", note: "Folder names describe when things were made, not what they are." },
-              { station: "Docs", status: "red", note: "The pipeline lives in my head; nothing an agent could read." },
-              { station: "Dark mode", status: "green", note: "Not applicable surfaces are marked, not skipped silently." },
-            ],
-          },
-        ],
-      },
+      /* The recreated ChipReadinessMap (and this readinessMap data) was
+         RETIRED here: beat 02 now shows Elleta's real CHIP build, which
+         supersedes the recreation. The notes live in git history; flagged
+         in the PR to reinstate as a static figure if she wants them. */
     },
     {
       kind: "figure",
@@ -121,6 +92,19 @@ const study: CaseStudy = {
       index: "02",
       title: "Run it on my own systems, not a client's",
       why: "NDA-clean and more honest.",
+      /* Elleta's REAL CHIP build, embedded as a poster-then-load
+         prototype (supersedes the recreated ChipReadinessMap). Served
+         from public/demos/chip-bridge/; illustrative data, own systems. */
+      evidence: {
+        kind: "prototype",
+        src: "/demos/chip-bridge/index.html",
+        title: "CHIP, the bridge for agentic design systems (my real build)",
+        designWidth: 1280,
+        designHeight: 800,
+        poster: "/images/case-studies/chip-bridge-poster.png",
+        posterAlt:
+          "CHIP bridge entry screen: a Morning, Elleta greeting with the day's agenda and an Enter Bridge button, on the BELLA parchment skin",
+      },
     },
     {
       kind: "figure",
