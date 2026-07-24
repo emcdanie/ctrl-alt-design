@@ -134,18 +134,6 @@ const study: CaseStudy = {
       kind: "lessons",
       text: "Inconsistency is rarely the root problem, it is a symptom of missing structure and undocumented decisions. Doing this as a solo designer reinforced something about advocacy: **the audit framework was not just a research method, it was a communication tool.** Framing the problem in terms of business alignment and delivery cost made a different kind of conversation possible about the value of the work.",
     },
-    {
-      /* Outcome-beat evidence (beat 04): recreated before/after maturity
-         map across the 9 dimensions (Foundation, Growth, ROI), static
-         embed. Extends ds-maturity-scales.html. Illustrative levels only,
-         labelled, no client data, figures, or names. */
-      kind: "embed",
-      src: "/demos/case-study-visuals/ds-maturity-before-after.html",
-      title: "Recreated maturity assessment: before and after across 9 dimensions, illustrative",
-      designWidth: 1280,
-      designHeight: 1034,
-      frame: "light",
-    },
   ],
   /* retired narrative kept below until the md lands; blocks render instead
   narrative: [
