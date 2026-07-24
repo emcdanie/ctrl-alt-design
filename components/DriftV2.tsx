@@ -1,4 +1,5 @@
 import CaseBeat from "@/components/CaseBeat";
+import CaseDisplayQuote from "@/components/CaseDisplayQuote";
 import CaseArtifactEmbed from "@/components/CaseArtifactEmbed";
 import DriftFoundationOutcome from "@/components/DriftFoundationOutcome";
 import DriftStatusBoard from "@/components/DriftStatusBoard";
@@ -33,6 +34,7 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
     | { context: string; approach: string; outcome: string }
     | undefined;
   const disclosure = cs.blocks?.find((b) => b.kind === "disclosure") as { text: string } | undefined;
+  const pullQuote = cs.blocks?.find((b) => b.kind === "pullQuote") as { text: string } | undefined;
   const lessons = cs.blocks?.find((b) => b.kind === "lessons") as { text: string } | undefined;
   const decision = (index: string) =>
     cs.blocks?.find((b) => b.kind === "decision" && (b as { index?: string }).index === index) as
@@ -138,6 +140,16 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
         }
         foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated concept, illustrative. A B2B travel platform&apos;s design system, abstracted.</p>}
       />
+
+      {/* the shared pull-quote after beat 02 (case-align), her thesis in the
+          case accent; same slot Code First uses */}
+      {pullQuote && (
+        <CaseDisplayQuote
+          text={pullQuote.text}
+          accent="agreements"
+          accentColor="var(--case-drift-text)"
+        />
+      )}
 
       {/* 03 · the governance: status, not enforcement. The visual is now
           the STATUS BOARD (in-page, tokenised to BELLA, dark-adaptive),

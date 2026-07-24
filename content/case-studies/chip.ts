@@ -52,6 +52,13 @@ const study: CaseStudy = {
   description: "AI builds whatever your system already is. I built CHIP to see it first.",
 
   blocks: [
+    /* the shared pull-quote (case-align pass): her thesis (the first line of
+       the case title), the editorial display moment every case now carries.
+       Rendered after beat 02 by the composition, same slot as Code First. */
+    {
+      kind: "pullQuote",
+      text: "AI builds whatever your system already is.",
+    },
     {
       kind: "summary",
       context:

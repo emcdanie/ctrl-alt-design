@@ -5,6 +5,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { Button } from "@/components/ui/Button";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import CaseBeat from "@/components/CaseBeat";
+import CaseDisplayQuote from "@/components/CaseDisplayQuote";
 import CaseSpecimen, { SPEC_FLAGS, useResolvedTokens, type FlagState } from "@/components/CaseSpecimen";
 import LayerJourney from "@/components/LayerJourney";
 import GateRun from "@/components/GateRun";
@@ -116,28 +117,9 @@ const TAKEAWAY_CARDS: { key: string; statement: string; body: string }[] = [
    pick different words (gate+pullquote spec, 23 Jul 2026). */
 const QUOTE_ACCENT_PHRASE = "the investigation";
 
-/** the pull quote as an editorial display moment: Unique on the page
-    ground (the display treatment rides globals, the sanctioned
-    surface), black ink, her chosen words in the case accent, FLAT,
-    generous air. The quote text is hers, unchanged. */
-function DisplayQuote({ text }: { text: string }) {
-  const i = text.indexOf(QUOTE_ACCENT_PHRASE);
-  return (
-    <figure className="cs2-displayquote">
-      <blockquote className="cs2-displayquote__quote">
-        {i === -1 ? (
-          text
-        ) : (
-          <>
-            {text.slice(0, i)}
-            <span className="cs2-displayquote__accent">{QUOTE_ACCENT_PHRASE}</span>
-            {text.slice(i + QUOTE_ACCENT_PHRASE.length)}
-          </>
-        )}
-      </blockquote>
-    </figure>
-  );
-}
+/* the pull quote renders through the shared CaseDisplayQuote (case-align
+   pass): Unique on the page ground, her words, the accent phrase in the
+   case's identity colour. */
 
 /* ── helpers ── (P / Scannable / para live in components/CaseProse,
    the ONE implementation shared with every CaseBeat composition) */
@@ -278,7 +260,13 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
           </>
         }
       />
-      {pullQuote && <DisplayQuote text={pullQuote.text} />}
+      {pullQuote && (
+        <CaseDisplayQuote
+          text={pullQuote.text}
+          accent={QUOTE_ACCENT_PHRASE}
+          accentColor="var(--case-code-first-text)"
+        />
+      )}
       <BeatLink index={1} />
 
       <CaseBeat
