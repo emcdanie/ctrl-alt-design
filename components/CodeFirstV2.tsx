@@ -4,13 +4,11 @@ import { useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Button } from "@/components/ui/Button";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
-import CaseCard from "@/components/CaseCard";
 import CaseBeat from "@/components/CaseBeat";
 import CaseSpecimen, { SPEC_FLAGS, useResolvedTokens, type FlagState } from "@/components/CaseSpecimen";
 import LayerJourney from "@/components/LayerJourney";
 import GateRun from "@/components/GateRun";
 import { P, Scannable, para } from "@/components/CaseProse";
-import { WORK_ITEMS } from "@/lib/workLibrary";
 import type { CaseStudy } from "@/lib/content";
 
 /**
@@ -112,7 +110,6 @@ const TAKEAWAY_CARDS: { key: string; statement: string; body: string }[] = [
     body: "It's a discipline: read the code, trace the decision, then change the system.",
   },
 ];
-const THANKS_LINE = "Thanks for reading.";
 
 /* the pull quote's accent words, the CASE identity pink (the same
    accent the hero title wears, never iris). Editable: Elleta may
@@ -188,7 +185,6 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
     .find((b) => b.kind === "figure") as
     | { src: string; alt: string; caption?: string; href?: string; linkLabel?: string }
     | undefined;
-  const nextItem = WORK_ITEMS.find((i) => i.id === "drift"); /* the three stars loop: chip -> code-first -> drift -> chip */
 
   /* beat 01 body, mechanically reconciled to the CARD: the two
      button-anecdote sentences and their anaphoric "And this was one
@@ -360,19 +356,8 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
         </div>
       </section>
 
-      {/* next case: the ONE surviving card, the three stars in a loop */}
-      {nextItem && (
-        <section className="cs2-beat cs2-nextcase" aria-label="Next case">
-          {/* tier "case": the smallest display step, a clear step
-              below the beat headlines (type-scale fix, 22 Jul 2026) */}
-          <SectionHeader label="Next case" tier="case" title={nextItem.title} className="cs2-screen__head" />
-          <div className="cs2-next">
-            <CaseCard item={nextItem} />
-          </div>
-        </section>
-      )}
-
-      <p className="cs2-thanks">{THANKS_LINE}</p>
+      {/* next case + the thanks line now render once via CaseShellV2
+          (CaseEndReveal), so this composition ships neither */}
     </div>
   );
 }
