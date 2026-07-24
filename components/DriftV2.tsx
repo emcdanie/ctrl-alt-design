@@ -1,7 +1,7 @@
 import CaseBeat from "@/components/CaseBeat";
 import CaseCard from "@/components/CaseCard";
 import CasePlaceholder from "@/components/CasePlaceholder";
-import DriftAuditBeat from "@/components/DriftAuditBeat";
+import DriftSpecimenEmbed from "@/components/DriftSpecimenEmbed";
 import ScaledFrame from "@/components/ScaledFrame";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { P, Scannable, para } from "@/components/CaseProse";
@@ -99,9 +99,10 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
 
       {/* 01 · the audit: context + the audit decision. The visual is the
           INTERACTIVE recreated client surface (drift specimen), embedded
-          live at the column's real width (see DriftAuditBeat); supersedes
-          the static ds-audit-buttons ScaledFrame. */}
-      <DriftAuditBeat
+          live at the column's real width; it renders revealed and carries
+          its own Before / On system toggle, so the beat has no control
+          slot. The ctrl+travel links now sit under the body copy. */}
+      <CaseBeat
         index="01"
         kicker={KICKERS[0]}
         headline={d1?.title ?? ""}
@@ -113,18 +114,19 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
             <Scannable text={para(cs, (b) => b.kind === "decision" && (b as { index?: string }).index === "01", 0)} />
             {/* her approach summary closes the beat: the upstream pivot */}
             <Scannable text={summary?.approach ?? ""} />
+            {/* the ctrl+travel recreations from the case's demo links,
+                moved under the body copy (Elleta, 24 Jul) */}
+            <div className="drift-audit-links">
+              {cs.demoLinks?.map((l) => (
+                <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="demo-link">
+                  {l.label}
+                </a>
+              ))}
+            </div>
           </>
         }
-        caption="Recreated concept, illustrative. A B2B travel platform, abstracted."
-        footExtra={
-          /* the ctrl+travel recreations from the case's demo links;
-             placement approved (Elleta, 23 Jul, PR 56 review) */
-          cs.demoLinks?.map((l) => (
-            <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="demo-link">
-              {l.label}
-            </a>
-          ))
-        }
+        visual={<DriftSpecimenEmbed />}
+        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated concept, illustrative. A B2B travel platform, abstracted.</p>}
       />
 
       {/* 02 · the cascade: tokens under everything; the poster still

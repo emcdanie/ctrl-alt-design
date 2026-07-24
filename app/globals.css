@@ -4335,14 +4335,14 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin-top: var(--spacing-2);
 }
 
-/* From Drift beat 01: the page controls that drive the drift specimen
-   embed (primary Reveal + secondary Before/On system). BELLA iris, in
-   the one control slot; wrap on narrow columns. */
-.drift-audit-controls {
+/* From Drift beat 01: the ctrl+travel recreation links sit under the
+   body copy (the specimen carries its own toggle, so the beat has no
+   control slot). A quiet row of tertiary demo links. */
+.drift-audit-links {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-4);
   flex-wrap: wrap;
+  gap: var(--spacing-5);
+  margin-top: var(--spacing-4);
 }
 
 /* ── the pull quote as an editorial display moment (gate+pullquote

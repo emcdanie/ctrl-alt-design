@@ -6,107 +6,97 @@
 <title>The drift specimen, beat 01</title>
 <style>
   /* Recreated client surface for the From Drift audit beat, in the
-     CaseSpecimen annotation language: callout flags + curved leaders that
-     draw in and land a dot on each of five parts, Before vs On system.
-     COLOUR: this is the CLIENT's foreign product, so it uses NO iris or
-     periwinkle. Steel and warm neutrals; drift is muted crimson (no
-     amber); agreement is a calm muted green. Theme-adaptive neutrals,
-     foreign accents held constant, AA both themes, min 16px readable, no
-     pure white or black. Recreated and illustrative: no client name,
-     email, or logo. Driven by the page via postMessage; its own controls
-     show only when opened standalone (not with ?embed=1). */
+     CaseSpecimen annotation language: five annotated parts, callout flags
+     + curved leaders that land a dot on each. Renders already revealed;
+     the only control is the Before / On system toggle at the top-left.
+     The surface sits FLAT on the beat ground (transparent body and panel,
+     no card), so the artifact is theme-adaptive: text and accents are AA
+     on the case ground in light (#F5F4EF) and dark (#1B1B40).
+     COLOUR: the CLIENT's foreign product uses NO iris/periwinkle on the
+     surface or annotation. Steel product, muted-crimson drift labels,
+     muted-green agreement labels, graphite leaders, steel dots. Only the
+     toggle (control chrome) is iris. Min 16px readable body, no pure
+     white/black. Recreated and illustrative: no client name/email/logo.
+     Driven by the page via postMessage (theme mirror + height report). */
   :root {
-    --bg: #ECE9E2; --card: #F8F5EF; --callout: #FBF9F4;
-    --ink: #1A1720; --ink-soft: #2E2937; --ink-muted: #4A4652; --ink-faint: #756D82;
-    --line: #E1DCD3;
-    /* foreign product accent: steel/slate-blue */
-    --steel: #2F5C86; --steel-strong: #244A6D; --steel-tint: #E5EBF1; --steel-on-tint: #294F76;
-    /* drift: muted crimson */
-    --flag: #A83A3A; --flag-on-card: #9B3535; --flag-tint: #F4E6E3;
-    /* agreement: calm muted green */
-    --agree: #2A6B4C; --agree-on-card: #256247; --agree-tint: #E1EDE5;
-    --lead: #94929C; --dead: #B4AFA9;
-    --radius: 16px;
+    --ink: #1A1720; --ink-soft: #2E2937; --ink-muted: #453F52; --ink-faint: #5E5769;
+    --field: #FCFBF8; --line: #E1DCD3;
+    --callout-bg: #FBF9F4; --callout-line: #E1DCD3;
+    --steel: #2F5C86; --steel-tint: #E5EBF1; --steel-on-tint: #294F76;
+    --flag: #A83A3A;     /* before labels, muted crimson */
+    --green: #1F5A40;    /* on-system labels, muted green agreement */
+    --lead: #8B93A1;     /* leaders, graphite */
+    --dot: #2F5C86;      /* dots, steel */
+    --dead: #A9A39C;     /* dead grey action icons */
+    --iris: #5B4BD1; --iris-on: #FFFFFF; --iris-tint: #ECE9FB;
     color-scheme: light;
   }
   html[data-theme="dark"] {
-    --bg: #17151C; --card: #221F2A; --callout: #262330;
-    --ink: #F1EDF5; --ink-soft: #D9D4E0; --ink-muted: #B6AFC2; --ink-faint: #8E8799;
-    --line: #383343;
-    --steel: #93B4D6; --steel-strong: #B2CBE6; --steel-tint: #26313F; --steel-on-tint: #A9C5E0;
-    --flag: #E4948C; --flag-on-card: #E4948C; --flag-tint: #3A2523;
-    --agree: #86CCA6; --agree-on-card: #86CCA6; --agree-tint: #21332A;
-    --lead: #6D6A77; --dead: #55505C;
+    --ink: #F1EDF5; --ink-soft: #DAD5E4; --ink-muted: #B9B2C8; --ink-faint: #A29AB6;
+    --field: #232349; --line: #3A3A5C;
+    --callout-bg: #24243F; --callout-line: #3C3C5E;
+    --steel: #9DBBDD; --steel-tint: #2A2F52; --steel-on-tint: #BAD2EA;
+    --flag: #E79A92;
+    --green: #8ED0AA;
+    --lead: #7B7B9A;
+    --dot: #9DBBDD;
+    --dead: #6A6484;
+    --iris: #6B5FD6; --iris-on: #FFFFFF; --iris-tint: #2C2A50;
     color-scheme: dark;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { background: var(--bg); }
+  html, body { background: transparent; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    color: var(--ink); line-height: 1.5; padding: 16px;
+    color: var(--ink); line-height: 1.5; padding: 6px 6px 2px;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 720px; margin: 0 auto; }
 
-  /* standalone controls (hidden when embedded, the page drives it) */
-  .controls { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
-  body.embed .controls { display: none; }
-  .c-btn {
-    font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; border-radius: 10px;
-    padding: 10px 18px; border: 1px solid var(--steel); background: var(--steel); color: #fff;
+  .stage { display: flex; flex-direction: column; }
+
+  /* the ONE control: Before / On system, top-left (iris chrome) */
+  .stage-top { margin-bottom: 18px; }
+  .seg-toggle { display: inline-flex; background: var(--field); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
+  .seg-toggle button {
+    font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; border: none;
+    background: transparent; color: var(--ink-muted); padding: 6px 14px; border-radius: 7px; transition: background .18s ease, color .18s ease;
   }
-  html[data-theme="dark"] .c-btn { color: #17151C; }
-  .c-seg { display: inline-flex; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
-  .c-seg button { font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--ink-muted); padding: 7px 14px; border-radius: 8px; }
-  .c-seg button[aria-pressed="true"] { background: var(--steel); color: #fff; }
-  html[data-theme="dark"] .c-seg button[aria-pressed="true"] { color: #17151C; }
+  .seg-toggle button[aria-pressed="true"] { background: var(--iris); color: var(--iris-on); }
+  .seg-toggle button:focus-visible { outline: 3px solid var(--iris-tint); outline-offset: 2px; }
 
-  /* ---- stage: callouts | panel | callouts, a 3-column grid that fits
-     the ~564px beat column and stacks to one column on mobile ---- */
-  .state-tag { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--ink-muted); margin-bottom: 12px; }
-  body[data-mode="before"] .state-tag { color: var(--flag); }
-  body[data-mode="system"] .state-tag { color: var(--agree); }
-
-  .stage { position: relative; display: grid; grid-template-columns: 132px 1fr 132px; column-gap: 16px; align-items: start; }
+  .grid { position: relative; display: grid; grid-template-columns: 140px 1fr 140px; column-gap: 16px; align-items: start; }
   .col-l, .col-r { display: flex; flex-direction: column; gap: 14px; }
   .col-r { justify-content: flex-end; }
 
   .leaders { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 3; }
   .leaders path {
     fill: none; stroke: var(--lead); stroke-width: 1.6; stroke-linecap: round;
-    stroke-dasharray: var(--len); stroke-dashoffset: var(--len); transition: stroke-dashoffset .55s ease;
+    stroke-dasharray: var(--len); stroke-dashoffset: var(--len); transition: stroke-dashoffset .6s ease;
   }
-  .leaders circle.dot { opacity: 0; transition: opacity .3s ease .45s; }
-  body[data-mode="before"] .leaders circle.dot { fill: var(--flag); }
-  body[data-mode="system"] .leaders circle.dot { fill: var(--agree); }
+  .leaders circle.dot { fill: var(--dot); opacity: 0; transition: opacity .3s ease .5s; }
   body.revealed .leaders path { stroke-dashoffset: 0; }
   body.revealed .leaders circle { opacity: 1; }
 
-  /* the recreated product surface: one representative instance per part */
-  .panel {
-    grid-column: 2; justify-self: center; width: 100%; max-width: 250px;
-    background: var(--card); border-radius: var(--radius);
-    box-shadow: 0 1px 2px rgba(20,18,26,.05), 0 16px 36px -22px rgba(20,18,26,.32);
-    padding: 18px; z-index: 2;
-  }
-  html[data-theme="dark"] .panel { box-shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -20px rgba(0,0,0,.6); }
-  .p-row { margin-bottom: 15px; }
+  /* the recreated product surface: FLAT (transparent, no card, no shadow),
+     enlarged, sitting on the beat ground */
+  .panel { grid-column: 2; justify-self: center; width: 100%; max-width: 300px; background: transparent; padding: 4px 0; z-index: 2; }
+  .p-row { margin-bottom: 16px; }
   .p-row:last-child { margin-bottom: 0; }
-  .p-ey { font-size: 12px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 7px; font-weight: 600; }
+  .p-ey { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 7px; font-weight: 600; }
 
-  /* status badges: BEFORE = a filled tag beside an outline pill (two systems) */
-  .p-badgewrap { display: flex; gap: 9px; align-items: center; }
-  .p-badge { display: inline-block; font-size: 13px; font-weight: 600; padding: 4px 11px; border-radius: 6px; }
+  /* status: BEFORE = a filled tag beside an outline pill (two systems) */
+  .p-badgewrap { display: flex; gap: 9px; align-items: center; flex-wrap: nowrap; }
+  .p-badge { display: inline-block; font-size: 13px; font-weight: 600; padding: 4px 11px; border-radius: 6px; white-space: nowrap; }
   .p-badge.b-a { color: #fff; background: var(--steel); }
   html[data-theme="dark"] .p-badge.b-a { color: #17151C; }
   .p-badge.b-b { background: transparent; color: var(--steel-on-tint); border: 1px solid var(--steel); border-radius: 20px; text-transform: uppercase; font-size: 11px; letter-spacing: .05em; padding: 4px 11px; }
   /* segmented select */
-  .p-seg2 { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; }
-  .p-seg2 span { font-size: 12px; padding: 7px 8px; color: var(--ink-muted); }
-  .p-seg2 .on { background: var(--steel); color: #fff; }
-  html[data-theme="dark"] .p-seg2 .on { color: #17151C; }
-  /* chips: BEFORE = mismatched (one filled with x, one outline pill) */
+  .p-seg { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: var(--field); }
+  .p-seg span { font-size: 13px; padding: 8px 11px; color: var(--ink-muted); white-space: nowrap; }
+  .p-seg .on { background: var(--steel); color: #fff; }
+  html[data-theme="dark"] .p-seg .on { color: #17151C; }
+  /* chips: BEFORE = mismatched */
   .p-chips { display: flex; gap: 8px; }
   .p-chip { font-size: 13px; padding: 6px 11px; border-radius: 7px; background: var(--steel-tint); color: var(--steel-on-tint); display: inline-flex; align-items: center; gap: 6px; }
   .p-chip.x::after { content: "\00d7"; opacity: .6; }
@@ -117,7 +107,7 @@
   .p-ico { font-size: 17px; color: var(--dead); line-height: 1; }
   .act-system { display: none; gap: 18px; align-items: center; }
   .act-system a { color: var(--steel); font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: default; }
-  /* primary button: BEFORE = one of many styles (flat steel, ambiguous) */
+  /* primary button */
   .p-btn { width: 100%; font: inherit; font-size: 15px; font-weight: 650; color: #fff; background: var(--steel); border: none; border-radius: 10px; padding: 12px; cursor: default; }
   html[data-theme="dark"] .p-btn { color: #17151C; }
 
@@ -133,11 +123,10 @@
   }
   body[data-mode="system"] .act-before { display: none; }
   body[data-mode="system"] .act-system { display: inline-flex; }
-  body[data-mode="system"] .p-btn { box-shadow: 0 1px 0 var(--steel-strong); }
 
   /* ---- callouts ---- */
   .callout {
-    width: 100%; background: var(--callout); border: 1px solid var(--line);
+    width: 100%; background: var(--callout-bg); border: 1px solid var(--callout-line);
     border-radius: 12px; padding: 11px 13px; z-index: 4;
     box-shadow: 0 6px 18px -12px rgba(20,18,26,.4);
     opacity: 0; transform: translateY(8px); transition: opacity .4s ease, transform .4s ease;
@@ -148,8 +137,8 @@
   .callout .c-sw.round { border-radius: 50%; background: var(--dead); }
   .callout .c-part { font-size: 12px; letter-spacing: .09em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); }
   .callout .c-val { font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace; font-size: 15px; font-weight: 600; line-height: 1.35; }
-  body[data-mode="before"] .callout .c-val { color: var(--flag-on-card); }
-  body[data-mode="system"] .callout .c-val { color: var(--agree-on-card); }
+  body[data-mode="before"] .callout .c-val { color: var(--flag); }
+  body[data-mode="system"] .callout .c-val { color: var(--green); }
   .callout .c-note { font-size: 13px; color: var(--ink-faint); margin-top: 3px; }
   body[data-mode="system"] .callout .c-note { display: none; }
 
@@ -167,10 +156,8 @@
     margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--line);
     font-size: 14px; letter-spacing: .05em; text-transform: uppercase; font-weight: 600; color: var(--ink-muted);
   }
-  body[data-mode="system"] .foot { color: var(--agree); }
+  body[data-mode="system"] .foot { color: var(--green); }
   .foot .illus { display: block; text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink-faint); margin-top: 6px; font-size: 13px; }
-  /* embedded: the page's beat foot carries the caption, so the artifact
-     keeps only its dynamic state line (no doubled caption) */
   body.embed .foot .illus { display: none; }
 
   @media (prefers-reduced-motion: reduce) {
@@ -187,7 +174,7 @@
   /* mobile: one column, panel first, callouts as a labelled list below;
      leaders don't apply to a stacked layout, so they hide */
   @media (max-width: 480px) {
-    .stage { grid-template-columns: 1fr; row-gap: 12px; }
+    .grid { grid-template-columns: 1fr; row-gap: 12px; }
     .col-l, .col-r { gap: 12px; }
     .panel { grid-column: 1; grid-row: 1; max-width: none; }
     .col-l { grid-column: 1; grid-row: 2; }
@@ -198,17 +185,15 @@
 </style>
 </head>
 <body data-mode="before">
-<div class="wrap">
-  <div class="controls">
-    <button class="c-btn" id="reveal" aria-pressed="false">Reveal the drift</button>
-    <div class="c-seg" role="group" aria-label="View">
+<div class="stage" id="stage">
+  <div class="stage-top">
+    <div class="seg-toggle" role="group" aria-label="Surface state">
       <button id="m-before" aria-pressed="true">Before</button>
       <button id="m-system" aria-pressed="false">On system</button>
     </div>
   </div>
 
-  <div class="state-tag" id="stateTag">Before</div>
-  <div class="stage" id="stage">
+  <div class="grid" id="grid">
     <svg class="leaders" id="leaders" aria-hidden="true"></svg>
 
     <div class="col-l">
@@ -239,7 +224,7 @@
       </div>
       <div class="p-row">
         <div class="p-ey">Trip type</div>
-        <div class="p-seg2"><span class="on" data-part="select">Round trip</span><span>One way</span><span>Multi</span></div>
+        <div class="p-seg"><span class="on" data-part="select">Round trip</span><span>One way</span><span>Multi-city</span></div>
       </div>
       <div class="p-row">
         <div class="p-ey">Filters</div>
@@ -274,24 +259,22 @@
 
 <script>
 (function () {
-  var body = document.body, stage = document.getElementById('stage'),
+  var body = document.body, grid = document.getElementById('grid'),
       svg = document.getElementById('leaders'), panel = document.getElementById('panel'),
-      revealBtn = document.getElementById('reveal'),
       mBefore = document.getElementById('m-before'), mSystem = document.getElementById('m-system'),
-      stateTag = document.getElementById('stateTag'), foot = document.getElementById('foot'),
-      root = document.documentElement;
+      foot = document.getElementById('foot'), root = document.documentElement;
   var SVGNS = 'http://www.w3.org/2000/svg';
   var params = new URLSearchParams(location.search);
   if (params.get('embed') === '1') body.classList.add('embed');
   var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var revealed = false, mode = 'before';
+  if (reduce) body.classList.add('no-motion');
 
   function draw() {
-    var sb = stage.getBoundingClientRect();
+    var sb = grid.getBoundingClientRect();
     if (!sb.width) return;
     svg.setAttribute('viewBox', '0 0 ' + sb.width + ' ' + sb.height);
     var nodes = [];
-    stage.querySelectorAll('.callout').forEach(function (co) {
+    grid.querySelectorAll('.callout').forEach(function (co) {
       var partName = co.getAttribute('data-anchor');
       var part = panel.querySelector('[data-part="' + partName + '"]');
       if (!part) return;
@@ -299,8 +282,8 @@
       var pcx = pr.left + pr.width / 2;
       /* left/right column layout: left callouts land on the part's left
          edge, right callouts on its right edge, at the callout's own y
-         clamped into the part height. One entry, no vertical loops, and
-         because each column keeps to its own side no leader crosses. */
+         clamped into the part height. Each column keeps to its own side,
+         so no leader crosses another or the surface twice. */
       var isLeft = (cr.left + cr.width / 2) < pcx;
       var x1 = (isLeft ? cr.right : cr.left) - sb.left;
       var y1 = cr.top + cr.height / 2 - sb.top;
@@ -321,31 +304,21 @@
   }
 
   function postHeight() {
-    var h = Math.ceil(document.querySelector('.wrap').getBoundingClientRect().height) + 48;
+    var h = Math.ceil(document.querySelector('.stage').getBoundingClientRect().height) + 16;
     try { parent.postMessage({ source: 'drift-specimen', type: 'height', px: h }, '*'); } catch (e) {}
   }
 
   function afterChange() {
-    /* let layout settle, then redraw leaders and report height */
     requestAnimationFrame(function () { draw(); postHeight(); });
     setTimeout(function () { draw(); postHeight(); }, 260);
   }
 
-  function setReveal(on) {
-    revealed = !!on;
-    body.classList.toggle('revealed', revealed);
-    revealBtn.setAttribute('aria-pressed', String(revealed));
-    revealBtn.textContent = revealed ? 'Reset' : 'Reveal the drift';
-    afterChange();
-  }
-
-  function setMode(m) {
-    mode = (m === 'system') ? 'system' : 'before';
+  function setMode(mode) {
+    mode = (mode === 'system') ? 'system' : 'before';
     body.setAttribute('data-mode', mode);
     mBefore.setAttribute('aria-pressed', String(mode === 'before'));
     mSystem.setAttribute('aria-pressed', String(mode === 'system'));
-    stateTag.textContent = (mode === 'before') ? 'Before' : 'On system';
-    stage.querySelectorAll('.c-val').forEach(function (v) {
+    grid.querySelectorAll('.c-val').forEach(function (v) {
       v.textContent = v.getAttribute(mode === 'before' ? 'data-before' : 'data-system');
     });
     foot.childNodes[0].nodeValue = (mode === 'before')
@@ -354,40 +327,26 @@
     afterChange();
   }
 
-  function setTheme(t) {
-    root.setAttribute('data-theme', (t === 'dark') ? 'dark' : 'light');
-    afterChange();
-  }
+  function setTheme(t) { root.setAttribute('data-theme', (t === 'dark') ? 'dark' : 'light'); afterChange(); }
 
-  function setMotion(noMotion) {
-    body.classList.toggle('no-motion', !!noMotion || reduce);
-  }
-
-  /* standalone controls */
-  revealBtn.addEventListener('click', function () { setReveal(!revealed); });
   mBefore.addEventListener('click', function () { setMode('before'); });
   mSystem.addEventListener('click', function () { setMode('system'); });
 
-  /* driven by the page */
   window.addEventListener('message', function (e) {
     var d = e.data || {};
     if (d.target !== 'drift-specimen') return;
-    if (d.type === 'set') {
-      if ('theme' in d) setTheme(d.theme);
-      if ('motion' in d) setMotion(d.motion === 'reduce');
-      if ('mode' in d) setMode(d.mode);
-      if ('reveal' in d) setReveal(d.reveal);
-      postHeight();
-    }
+    if (d.type === 'theme') { setTheme(d.theme); postHeight(); }
   });
 
   var ro = new ResizeObserver(function () { requestAnimationFrame(function () { draw(); postHeight(); }); });
-  ro.observe(document.querySelector('.wrap'));
+  ro.observe(document.querySelector('.stage'));
   window.addEventListener('resize', function () { requestAnimationFrame(function () { draw(); postHeight(); }); });
   window.addEventListener('load', function () { draw(); postHeight(); });
 
-  setMotion(false);
+  setMode('before');
   draw(); postHeight();
+  /* render revealed: one-time draw-in (immediate under reduced motion) */
+  requestAnimationFrame(function () { body.classList.add('revealed'); postHeight(); });
   try { parent.postMessage({ source: 'drift-specimen', type: 'ready' }, '*'); } catch (e) {}
 })();
 </script>
