@@ -2,6 +2,7 @@ import CaseBeat from "@/components/CaseBeat";
 import CaseCard from "@/components/CaseCard";
 import CasePlaceholder from "@/components/CasePlaceholder";
 import CaseArtifactEmbed from "@/components/CaseArtifactEmbed";
+import DriftFoundationOutcome from "@/components/DriftFoundationOutcome";
 import ScaledFrame from "@/components/ScaledFrame";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { P, Scannable, para } from "@/components/CaseProse";
@@ -57,10 +58,6 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
     .replace(outcomeLead, "")
     .replace(NEW_OUTCOME, "")
     .trim();
-  /* beat-04 evidence: the recreated before/after maturity map (static) */
-  const maturity = cs.blocks?.find((b) => b.kind === "embed" && (b as { src?: string }).src?.includes("maturity")) as
-    | { src: string; title: string; designWidth: number; designHeight: number }
-    | undefined;
   /* lessons: first sentence is the keyline, verbatim; the rest is body */
   const lessonsKeyline =
     "Inconsistency is rarely the root problem, it is a symptom of missing structure and undocumented decisions.";
@@ -184,8 +181,10 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
       />
 
       {/* 04 · the takeaway: her outcome statement leads, the real outcome
-          (NEW_OUTCOME, TODO(elleta)) opens the body, lessons close. Visual:
-          the recreated before/after maturity map (static embed). */}
+          (NEW_OUTCOME, TODO(elleta)) opens the body, lessons close. Visual
+          is now the OUTCOME VISUAL (in-page, tokenised to BELLA,
+          dark-adaptive): an outcome hero + a qualitative Before -> After
+          of what changed. Supersedes the static maturity-map embed. */}
       <CaseBeat
         index="04"
         kicker={KICKERS[3]}
@@ -200,19 +199,8 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
             <Scannable text={lessonsRest} />
           </>
         }
-        visual={
-          maturity ? (
-            <ScaledFrame
-              src={maturity.src}
-              title={maturity.title}
-              designWidth={maturity.designWidth}
-              designHeight={maturity.designHeight}
-            />
-          ) : (
-            <CasePlaceholder />
-          )
-        }
-        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated maturity assessment, illustrative</p>}
+        visual={<DriftFoundationOutcome />}
+        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated concept, illustrative. A B2B travel platform, abstracted; no client figures shown.</p>}
       />
 
       {/* next case: the ONE surviving card, the three stars in a loop */}

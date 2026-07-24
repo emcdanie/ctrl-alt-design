@@ -4345,6 +4345,125 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin-top: var(--spacing-4);
 }
 
+/* ── From Drift beat 04 "the foundation": the OUTCOME VISUAL
+   (DriftFoundationOutcome, Elleta 24 Jul). Replaces the maturity-map
+   embed with an outcome hero + a qualitative Before -> After. In-page and
+   tokenised, so it flips to dark from the site theme (no iframe). Palette:
+   steel (--case-filters-text) for the connectors, success green
+   (--case-clarity-text, the settled-verdict pair) for the outcome and the
+   headline win. No iris, no yellow-orange. AA both themes, reading text
+   >= 16px; the low green wash keeps the green label clear on it (axe). ── */
+.fnd-outcome {
+  background: color-mix(in srgb, var(--case-clarity-hi) 16%, var(--color-card));
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-5) var(--spacing-6);
+  margin-bottom: var(--spacing-6);
+}
+
+.fnd-outcome-lbl {
+  margin: 0 0 var(--spacing-2);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--case-clarity-text);
+}
+
+.fnd-outcome-big {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-xl);
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.fnd-outcome-sub {
+  margin: var(--spacing-2) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+}
+
+.fnd-wc-h {
+  margin: 0 0 var(--spacing-3);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* flat, quiet dividers (the demo specimen is the only card); 1px gaps
+   over a border-soft ground read as hairlines between the row cards */
+.fnd-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--color-border-soft);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.fnd-row {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--spacing-3);
+  background: var(--color-card);
+  padding: var(--spacing-3) var(--spacing-4);
+}
+
+.fnd-k {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.fnd-before {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+}
+
+.fnd-arr {
+  color: var(--case-filters-text);
+  font-size: var(--typography-font-size-base);
+}
+
+.fnd-after {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.fnd-after.win {
+  color: var(--case-clarity-text);
+}
+
+/* narrow (the beat stacks below 1024; this catches the 390 column):
+   each row goes single-column, the connector arrow drops out */
+@media (max-width: 560px) {
+  .fnd-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-1);
+  }
+
+  .fnd-arr {
+    display: none;
+  }
+}
+
 /* ── the pull quote as an editorial display moment (gate+pullquote
    spec, Elleta 23 Jul 2026): Unique on the page ground, black ink,
    her chosen words in the CASE identity accent (never iris), FLAT,
