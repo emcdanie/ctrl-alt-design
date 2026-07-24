@@ -66,20 +66,10 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
 
   return (
     <div className="cs2-body-col">
-      {/* the NDA disclosure, her wording verbatim, quiet note before the beats */}
+      {/* the NDA disclosure, her wording verbatim, quiet note before the
+          beats; styling + symmetric spacing live in the .cs2-nda class */}
       {disclosure && (
-        <p
-          role="note"
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--typography-font-size-base)",
-            lineHeight: 1.6,
-            color: "var(--color-ink-soft)",
-            borderLeft: "3px solid var(--color-border-medium)",
-            paddingLeft: "var(--spacing-4)",
-            margin: "0 0 var(--spacing-8)",
-          }}
-        >
+        <p role="note" className="cs2-nda">
           {disclosure.text}
         </p>
       )}
