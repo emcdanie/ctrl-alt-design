@@ -118,16 +118,16 @@ const study: CaseStudy = {
       index: "03",
       title: "Govern with status, not enforcement",
       why: "The hardest problem is not building the system, it is preventing it from fragmenting again.",
-      evidence: {
-        kind: "embed",
-        src: "/demos/case-study-visuals/ds-after-system.html",
-        title: "Recreated system documentation: token chain and component variants",
-        designWidth: 1280,
-        designHeight: 1923,
-        frame: "light",
-      },
+      /* Beat 03's visual is now the in-page STATUS BOARD (components/
+         DriftStatusBoard). The static ds-after-system doc-page embed was
+         removed with the poster wiring (Elleta 24 Jul).
+         TODO(elleta): the body is lightly tightened here (proto), with
+         "already solved" bolded. Keep, or revert to the fuller original
+         ("...component status conventions (stable, in review, experimental,
+         deprecated), and a gradual rollout... found it already solved, the
+         system gained credibility."). Your words. */
       children: [
-        { kind: "paragraph", text: "A low-friction proposal path, component status conventions (stable, in review, experimental, deprecated), and a gradual rollout that let active features pull the system into use. When an engineer reached for an existing pattern and found it already solved, the system gained credibility." },
+        { kind: "paragraph", text: "A low-friction proposal path and clear component status let active features pull the system into use. When an engineer reached for a pattern and found it **already solved**, the system earned its credibility." },
       ],
     },
     {

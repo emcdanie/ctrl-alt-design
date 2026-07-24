@@ -249,6 +249,16 @@ body {
   --case-filters-hi: #AFC9E8;
   --case-filters-lo: #8FB4DC;
   --case-filters-deep: #2A5A8E;
+  /* governance status board (beat 03): clay = experimental, grey =
+     deprecated (stable reuses case-clarity green, in-review case-filters
+     steel). -text flips per theme like the case identities; AA on the 26%
+     tint over the card. Clay is the warm status (a muted terracotta, not the banned yellow-orange). */
+  --gov-clay-hi: #D99A6E;
+  --gov-clay-deep: #8A4726;
+  --gov-clay-text: var(--gov-clay-deep);
+  --gov-grey-hi: #B8B2C2;
+  --gov-grey-deep: #57525F;
+  --gov-grey-text: var(--gov-grey-deep);
   --hub-hi: #CFC7F6;
   --hub-lo: #A99BEC;
   --hub-bright: #6C5CE0;
@@ -349,6 +359,11 @@ body {
   --case-writing-text: color-mix(in srgb, var(--case-writing-hi) 62%, var(--ink-on-dark-strong));
   --case-filters-text: var(--case-filters-hi);
   --case-chip-text: var(--case-chip-hi);
+  /* governance status: the clay/grey text brightens on dark for AA on
+     the 26% tint (the raw -hi sat too close to its own wash, like the
+     case-writing salmon did) */
+  --gov-clay-text: #EDC3A2;
+  --gov-grey-text: #D0CAD8;
   /* thesis cards in dark keep the navy specimen ground (21 Jul
      theme-aware reversal; light values at the :root definition) */
   --thesis-band-ground: #1B1B40;
@@ -4482,6 +4497,85 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
     display: none;
   }
 }
+
+/* From Drift beat 03: the governance STATUS BOARD (in-page, tokenised to
+   BELLA, dark-adaptive via the site theme). Static; foregrounds component
+   status + the proposal path. Steel plus status semantics, no iris, no yellow-orange. */
+.gov-h {
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-eyebrow);
+  font-weight: 600;
+  margin-bottom: var(--spacing-3);
+}
+.gov-board {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--color-border-soft);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.gov-row {
+  display: grid;
+  grid-template-columns: 108px 118px 1fr;
+  align-items: center;
+  gap: var(--spacing-3);
+  background: var(--color-card);
+  padding: var(--spacing-3) var(--spacing-4);
+}
+.gov-row .gov-name {
+  font-weight: 650;
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink);
+}
+.gov-badge {
+  justify-self: start;
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+.gov-badge.stable { color: var(--case-clarity-text); background: color-mix(in srgb, var(--case-clarity-hi) 26%, transparent); }
+.gov-badge.review { color: var(--case-filters-text); background: color-mix(in srgb, var(--case-filters-hi) 26%, transparent); }
+.gov-badge.exp { color: var(--gov-clay-text); background: color-mix(in srgb, var(--gov-clay-hi) 26%, transparent); }
+.gov-badge.dep { color: var(--gov-grey-text); background: color-mix(in srgb, var(--gov-grey-hi) 26%, transparent); }
+.gov-row .gov-asks {
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-ink-muted);
+}
+.gov-path-wrap { margin-top: var(--spacing-6); }
+.gov-path {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex-wrap: wrap;
+}
+.gov-step {
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-soft);
+  color: var(--color-ink-soft);
+}
+.gov-step.on {
+  color: var(--case-clarity-text);
+  background: color-mix(in srgb, var(--case-clarity-hi) 26%, transparent);
+  border-color: transparent;
+}
+.gov-parr { color: var(--color-ink-faint); }
+.gov-note {
+  margin-top: var(--spacing-4);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+  line-height: 1.55;
+}
+.gov-note b { color: var(--color-ink); font-weight: 650; }
 
 /* ── the pull quote as an editorial display moment (gate+pullquote
    spec, Elleta 23 Jul 2026): Unique on the page ground, black ink,
