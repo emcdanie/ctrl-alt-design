@@ -4251,14 +4251,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
      internal order never changes */
   .beat--flip .beat-text { order: 2; }
   .beat--flip .beat-visual { order: 1; }
-
-  /* full-width variant (Elleta, 24 Jul): stay single column even at desk,
-     so the copy reads at the top and the visual spans the full width
-     below it. The copy keeps a readable measure; the visual is full-bleed
-     within the container. */
-  .beat--full .beat-grid { display: flex; flex-direction: column; gap: var(--spacing-8); align-items: stretch; }
-  .beat--full .beat-text { max-width: 68ch; }
-  .beat--full .beat-visual { width: 100%; }
 }
 
 .beat-text {

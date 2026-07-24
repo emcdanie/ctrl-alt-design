@@ -29,7 +29,6 @@ export default function CaseBeat({
   control,
   foot,
   flip = false,
-  full = false,
   id,
 }: {
   /** two-digit beat number, e.g. "01" */
@@ -52,16 +51,11 @@ export default function CaseBeat({
   /** the FOOTNOTE slot: one quiet row beneath the visual */
   foot?: React.ReactNode;
   flip?: boolean;
-  /** full-width variant (Elleta, 24 Jul): copy on top, the visual spans
-      the FULL container width beneath it (not the half visual column).
-      A sanctioned break in the sided rhythm; audit:visual resets the
-      alternation across a .beat--full. Ignores `flip`. */
-  full?: boolean;
   /** anchor id, applied to the headline */
   id?: string;
 }) {
   return (
-    <section className={`beat${full ? " beat--full" : flip ? " beat--flip" : ""}`} aria-labelledby={id}>
+    <section className={`beat${flip ? " beat--flip" : ""}`} aria-labelledby={id}>
       <div className="beat-grid">
         <div className="beat-text">
           <p className="beat-eyebrow">{index} · {kicker}</p>

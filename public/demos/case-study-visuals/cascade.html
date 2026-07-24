@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The cascade, beat 02</title>
 <style>
-  /* Recreated token pipeline for the From Drift cascade beat, matched to
-     the beat-01 specimen: steel (NO iris), the widget in one card that
-     sits on the beat ground, live propagation and the broken-link drift.
-     The beat provides the headline/keyline/body and the NDA caption, so
-     the artifact carries only controls + pipeline + code + the "One
-     source, one pipeline" line. Theme-adaptive, AA both themes, min 16px
-     reading, no pure white/black. Recreated and illustrative: abstract
-     token names, no client data. Driven by the page via postMessage
-     (theme mirror + height report), channel "cascade". */
+  /* Recreated token pipeline for the From Drift cascade beat, in the
+     visual half-column of the two-column beat (NOT full width). A COMPACT
+     horizontal chain (Foundation -> Semantic -> Component) that fits the
+     column, plus three compact code lines below. Matched to beat 01:
+     steel, NO iris/amber. No card: the controls, chain and code sit on the
+     beat ground (the code block keeps its own quiet surface). The beat
+     provides the copy and the NDA caption. Theme-adaptive, AA both themes,
+     min 16px reading, no pure white/black. Recreated and illustrative:
+     abstract token names, no client data. Driven by the page via
+     postMessage (theme mirror + height report), channel "cascade". */
   :root {
     --ink: #1A1720; --ink-soft: #2E2937; --ink-muted: #453F52; --ink-faint: #5E5769;
-    --card: #FBF8F2; --card-line: #E4E0D8;
     --code: #F3F0E9; --code-line: #E4E0D8;
     --field: #FCFBF8; --line: #E1DCD3;
-    --steel: #2F5C86; --steel-tint: #E5EBF1; --steel-on-tint: #294F76;
+    --steel: #2F5C86; --steel-tint: #E5EBF1;
     --flag: #A83A3A; --flag-tint: #F4E6E3;
     --green: #1F5A40; --green-tint: #E1EDE5;
     --brand: #2F5C86; /* the live foundation token, driven by JS */
@@ -27,10 +27,9 @@
   }
   html[data-theme="dark"] {
     --ink: #F1EDF5; --ink-soft: #DAD5E4; --ink-muted: #BCB5CB; --ink-faint: #ADA5C0;
-    --card: #232048; --card-line: #3C3A63;
     --code: #1C1A3A; --code-line: #383660;
     --field: #2A2757; --line: #3E3E63;
-    --steel: #9DBBDD; --steel-tint: #2A2F52; --steel-on-tint: #BAD2EA;
+    --steel: #9DBBDD; --steel-tint: #2A2F52;
     --flag: #E79A92; --flag-tint: #3A2523;
     --green: #8ED0AA; --green-tint: #21332A;
     color-scheme: dark;
@@ -45,68 +44,62 @@
   }
   .mono { font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace; }
 
-  /* no card: controls, pipeline and code sit directly on the beat ground
-     (the code block keeps its own quiet surface) */
-  .card { background: transparent; border: none; border-radius: 0; padding: 0; }
+  .viz { display: flex; flex-direction: column; gap: 0; }
 
-  /* controls row */
-  .ctl { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
-  .ctl-group { display: flex; align-items: center; gap: 10px; }
+  /* controls: wrap within the column */
+  .ctl { display: flex; align-items: center; gap: 14px 16px; flex-wrap: wrap; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  .row1 { display: flex; align-items: center; gap: 12px; }
   .ctl-label { font-size: 12px; letter-spacing: .11em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; }
-  .swatches { display: flex; gap: 8px; }
-  .sw { width: 30px; height: 30px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; padding: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); transition: transform .12s ease; }
+  .swatches { display: flex; gap: 7px; }
+  .sw { width: 28px; height: 28px; border-radius: 7px; border: 2px solid transparent; cursor: pointer; padding: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); transition: transform .12s ease; }
   .sw:hover { transform: translateY(-1px); }
   .sw[aria-pressed="true"] { border-color: var(--ink); }
   .sw:focus-visible { outline: 3px solid var(--steel-tint); outline-offset: 2px; }
-
-  .linktoggle { display: inline-flex; background: var(--field); border: 1px solid var(--line); border-radius: 11px; padding: 3px; }
-  .linktoggle button { font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--ink-muted); padding: 7px 13px; border-radius: 8px; transition: background .18s ease, color .18s ease; }
+  .linktoggle { display: inline-flex; background: var(--field); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
+  .linktoggle button { font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--ink-muted); padding: 6px 12px; border-radius: 7px; transition: background .18s ease, color .18s ease; }
   .linktoggle button[aria-pressed="true"] { background: var(--steel); color: #fff; }
   html[data-theme="dark"] .linktoggle button[aria-pressed="true"] { color: #17151C; }
   .linktoggle button.brk[aria-pressed="true"] { background: var(--flag); color: #fff; }
   html[data-theme="dark"] .linktoggle button.brk[aria-pressed="true"] { color: #17151C; }
   .linktoggle button:focus-visible { outline: 3px solid var(--steel-tint); outline-offset: 2px; }
-
-  .parity { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; padding: 7px 13px; border-radius: 20px; white-space: nowrap; }
+  .parity { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: 20px; white-space: nowrap; }
   .parity.ok { color: var(--green); background: var(--green-tint); }
   .parity.no { color: var(--flag); background: var(--flag-tint); }
   .parity .mk { font-weight: 800; }
 
-  .col-h { font-size: 12px; letter-spacing: .11em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin-bottom: 14px; }
+  .viz-h { font-size: 12px; letter-spacing: .11em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 20px 0 12px; }
 
-  /* horizontal pipeline: Foundation -> Semantic -> Component */
-  .pipeline-row { display: flex; align-items: stretch; gap: 0; margin-bottom: 4px; }
-  .tier-h { display: flex; flex-direction: column; gap: 7px; flex: 1; min-width: 0; padding: 4px 0; }
-  .tier-h .t-role { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; }
-  .tier-h .t-line { display: flex; align-items: center; gap: 10px; }
-  .tier-h .chip { width: 32px; height: 32px; border-radius: 9px; flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,.14); }
-  .tier-h .t-name { font-size: 15px; font-weight: 600; color: var(--ink); }
-  .tier-h .t-ref { font-size: 13px; color: var(--ink-faint); }
-  .conn-h { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 0 14px; color: var(--ink-faint); flex: none; }
-  .conn-h .arrow { font-size: 22px; line-height: 1; }
-  .conn-h .lbl { font-size: 11px; white-space: nowrap; }
-  .conn-h.broken { color: var(--flag); }
-  .conn-h.broken .arrow { opacity: .55; }
+  /* compact horizontal chain: Foundation -> Semantic -> Component */
+  .chain { display: flex; align-items: flex-start; gap: 0; }
+  .node { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
+  .node .n-role { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; }
+  .node .n-line { display: flex; align-items: center; gap: 8px; }
+  .node .chip { width: 30px; height: 30px; border-radius: 8px; flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,.14); }
+  .node .n-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .node .n-sub { font-size: 12px; color: var(--ink-faint); }
+  .node .btn-demo { align-self: flex-start; margin-top: 2px; font: inherit; font-size: 13px; font-weight: 650; color: #fff; background: var(--brand); border: none; border-radius: 8px; padding: 8px 14px; cursor: default; box-shadow: 0 2px 0 rgba(0,0,0,.14); }
+  html[data-theme="dark"] .node .btn-demo { color: #17151C; }
+  .arrow { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--ink-faint); padding: 6px 6px 0; flex: none; }
+  .arrow .a-mk { font-size: 18px; line-height: 1; }
+  .arrow .a-lbl { font-size: 10px; white-space: nowrap; }
+  .arrow.broken { color: var(--flag); }
+  .arrow.broken .a-mk { opacity: .55; }
 
-  .btn-demo { align-self: flex-start; font: inherit; font-size: 15px; font-weight: 650; color: #fff; background: var(--brand); border: none; border-radius: 10px; padding: 10px 18px; cursor: default; box-shadow: 0 2px 0 rgba(0,0,0,.14); }
-
-  .codebox { background: var(--code); border: 1px solid var(--code-line); border-radius: 12px; padding: 15px 17px; font-size: 14px; line-height: 1.8; color: var(--ink-soft); overflow-x: auto; white-space: pre; margin-top: 22px; }
+  .codebox { background: var(--code); border: 1px solid var(--code-line); border-radius: 10px; padding: 13px 15px; margin-top: 6px; font-size: 13px; line-height: 1.85; color: var(--ink-soft); white-space: pre-wrap; overflow-wrap: anywhere; }
   .codebox .cm { color: var(--ink-faint); }
-  .codebox .tok { color: var(--steel); font-weight: 600; }
-  .codebox .val { color: var(--steel); font-weight: 600; }
+  .codebox .tok, .codebox .val { color: var(--steel); font-weight: 600; }
   .codebox .bad { color: var(--flag); font-weight: 600; }
 
-  .cap { margin-top: 20px; font-size: 15px; color: var(--ink-muted); max-width: 64ch; }
+  .cap { margin-top: 18px; font-size: 15px; color: var(--ink-muted); line-height: 1.55; max-width: 64ch; }
   .cap b { color: var(--ink); font-weight: 650; }
-  .foot { margin-top: 12px; font-size: 13px; color: var(--ink-faint); font-style: italic; }
+  .foot { margin-top: 10px; font-size: 13px; color: var(--ink-faint); font-style: italic; }
   body.embed .foot { display: none; }
 
-  /* full-width lets the pipeline read left to right; stack vertical only
-     on mobile (~560px and below) */
-  @media (max-width: 560px) {
-    .pipeline-row { flex-direction: column; align-items: stretch; gap: 4px; }
-    .conn-h { flex-direction: row; align-self: flex-start; gap: 8px; padding: 4px 0 4px 8px; }
-    .conn-h .arrow { transform: rotate(90deg); }
+  /* stack the chain vertical only when the column is narrow (mobile) */
+  @media (max-width: 480px) {
+    .chain { flex-direction: column; align-items: stretch; gap: 4px; }
+    .arrow { flex-direction: row; align-self: flex-start; gap: 8px; padding: 4px 0 4px 6px; }
+    .arrow .a-mk { transform: rotate(90deg); }
   }
 
   @media (prefers-reduced-motion: reduce) { .sw, .linktoggle button { transition: none; } }
@@ -114,9 +107,9 @@
 </style>
 </head>
 <body>
-<div class="card">
+<div class="viz">
   <div class="ctl">
-    <div class="ctl-group">
+    <div class="row1">
       <span class="ctl-label">Foundation</span>
       <div class="swatches" id="swatches">
         <button class="sw" data-hex="#2F5C86" aria-pressed="true" aria-label="Steel" style="background:#2F5C86"></button>
@@ -125,42 +118,40 @@
         <button class="sw" data-hex="#B0603A" aria-pressed="false" aria-label="Clay" style="background:#B0603A"></button>
       </div>
     </div>
-    <div class="ctl-group">
-      <div class="linktoggle" role="group" aria-label="Pipeline link">
-        <button id="m-link" aria-pressed="true">Linked</button>
-        <button id="m-break" class="brk" aria-pressed="false">Break the link</button>
-      </div>
+    <div class="linktoggle" role="group" aria-label="Pipeline link">
+      <button id="m-link" aria-pressed="true">Linked</button>
+      <button id="m-break" class="brk" aria-pressed="false">Break the link</button>
     </div>
     <div class="parity ok" id="parity"><span class="mk">&#10003;</span><span id="parity-text">Design and code in parity</span></div>
   </div>
 
-  <div class="col-h">The pipeline</div>
-  <div class="pipeline-row">
-    <div class="tier-h">
-      <div class="t-role">Foundation</div>
-      <div class="t-line"><span class="chip" id="chip-foundation" style="background:var(--brand)"></span><span class="t-name mono">--brand-600</span></div>
+  <div class="viz-h">The pipeline</div>
+  <div class="chain">
+    <div class="node">
+      <div class="n-role">Foundation</div>
+      <div class="n-line"><span class="chip" id="chip-foundation" style="background:var(--brand)"></span><span class="n-name mono">--brand-600</span></div>
     </div>
-    <div class="conn-h" id="conn1"><span class="arrow">&#8594;</span><span class="lbl">referenced by</span></div>
-    <div class="tier-h">
-      <div class="t-role">Semantic</div>
-      <div class="t-line"><span class="chip" id="chip-semantic" style="background:var(--brand)"></span><span class="t-name mono">--action</span></div>
-      <div class="t-ref mono">= var(--brand-600)</div>
+    <div class="arrow" id="arrow1"><span class="a-mk">&#8594;</span><span class="a-lbl">references</span></div>
+    <div class="node">
+      <div class="n-role">Semantic</div>
+      <div class="n-line"><span class="chip" id="chip-semantic" style="background:var(--brand)"></span><span class="n-name mono">--action</span></div>
+      <div class="n-sub mono">= var(--brand-600)</div>
     </div>
-    <div class="conn-h" id="conn2"><span class="arrow">&#8594;</span><span class="lbl">referenced by</span></div>
-    <div class="tier-h">
-      <div class="t-role">Component</div>
-      <div class="t-line"><span class="t-name mono">.button</span></div>
-      <div class="t-ref mono" id="btnref">background: var(--action)</div>
+    <div class="arrow" id="arrow2"><span class="a-mk">&#8594;</span><span class="a-lbl">references</span></div>
+    <div class="node">
+      <div class="n-role">Component</div>
+      <div class="n-line"><span class="n-name mono">.button</span></div>
+      <div class="n-sub mono" id="btnref">background: var(--action)</div>
       <button class="btn-demo" id="btn" tabindex="-1">Book now</button>
     </div>
   </div>
 
-  <div class="col-h" style="margin-top:24px">The code</div>
+  <div class="viz-h">The code</div>
   <div class="codebox mono" id="code"></div>
-</div>
 
-<p class="cap"><b>One source, one pipeline.</b> Design and code both resolve from the same token, so they cannot disagree. Break the link and the button keeps a value the code no longer explains, the drift nobody sees, because the screen still looks fine.</p>
-<p class="foot">Recreated concept, illustrative. A B2B travel platform's design system, abstracted; no confidential data shown.</p>
+  <p class="cap"><b>One source, one pipeline.</b> Design and code both resolve from the same token, so they cannot disagree. Break the link and the button keeps a value the code no longer explains, the drift nobody sees, because the screen still looks fine.</p>
+  <p class="foot">Recreated concept, illustrative. A B2B travel platform's design system, abstracted; no confidential data shown.</p>
+</div>
 
 <script>
 (function () {
@@ -170,7 +161,7 @@
   var parity = document.getElementById('parity'), parityText = document.getElementById('parity-text');
   var chipS = document.getElementById('chip-semantic');
   var btn = document.getElementById('btn'), btnref = document.getElementById('btnref');
-  var conn2 = document.getElementById('conn2'), code = document.getElementById('code');
+  var arrow2 = document.getElementById('arrow2'), code = document.getElementById('code');
   var params = new URLSearchParams(location.search);
   if (params.get('embed') === '1') body.classList.add('embed');
   if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) body.classList.add('no-motion');
@@ -191,8 +182,8 @@
     var compColor = state.broken ? state.frozen : state.hex;
     btn.style.background = compColor;
     btnref.textContent = state.broken ? 'background: ' + state.frozen + ' (hardcoded)' : 'background: var(--action)';
-    conn2.classList.toggle('broken', state.broken);
-    conn2.querySelector('.lbl').textContent = state.broken ? 'link broken' : 'referenced by';
+    arrow2.classList.toggle('broken', state.broken);
+    arrow2.querySelector('.a-lbl').textContent = state.broken ? 'link broken' : 'references';
     var inParity = !state.broken;
     parity.className = 'parity ' + (inParity ? 'ok' : 'no');
     parity.querySelector('.mk').innerHTML = inParity ? '&#10003;' : '&#10007;';
@@ -211,7 +202,6 @@
   swatches.addEventListener('click', function (e) {
     var b = e.target.closest('.sw'); if (!b) return;
     state.hex = b.getAttribute('data-hex');
-    if (state.broken) state.frozen = state.frozen; /* frozen stays; break holds the value at break time */
     swatches.querySelectorAll('.sw').forEach(function (s) { s.setAttribute('aria-pressed', String(s === b)); });
     render();
   });
