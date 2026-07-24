@@ -3255,13 +3255,17 @@ textarea:focus-visible {
   gap: var(--spacing-4);
   padding-top: calc(var(--header-height) + var(--spacing-12));
   /* the head no longer caps at a body measure: the display title
-     breathes across the content column (two balanced lines max at
-     1440); only the reading-tier subhead keeps a measure below */
+     extends across the full content column and wraps at its edge; only
+     the reading-tier subhead keeps a measure below */
 }
 
 .cs2-head .display-heading {
   max-width: none;
-  text-wrap: balance;
+  /* pretty, not balance: balance packed the title into narrow, evenly
+     split lines; pretty lets it fill the content column and wrap at the
+     edge, only tidying the last line (From Drift + CHIP now extend, Code
+     First stays one line) */
+  text-wrap: pretty;
 }
 
 .cs2-subhead {
@@ -3272,6 +3276,21 @@ textarea:focus-visible {
   /* the reading-tier subhead keeps the measure the head gave up */
   max-width: 62ch;
   margin: 0;
+}
+
+/* NDA disclosure note: a quiet body note with a left rule, rendered only
+   when the case content carries a disclosure block (the recreated cases).
+   Lifted from inline styles (prefer a class). Symmetric top+bottom margin
+   so it clears the chip row above and the first beat below, instead of
+   crowding the chips with a top-0 margin. */
+.cs2-nda {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  border-left: 3px solid var(--color-border-medium);
+  padding-left: var(--spacing-4);
+  margin: var(--spacing-8) 0;
 }
 
 .cs2-meta {
