@@ -67,10 +67,15 @@ const study: CaseStudy = {
     },
     {
       kind: "summary",
+      /* Beat-01 body tightened (Elleta-approved, 24 Jul). The keyline
+         (decision-01 why, "One undocumented decision...") leads; context +
+         the decision-01 paragraph + approach are the three body paragraphs.
+         **bold** spans render as the bold-ink keyline treatment (BoldText).
+         No em dashes. */
       context:
-        "Seventeen buttons that did roughly the same thing, built at different times by different people. A B2B travel platform used across Europe, flights, hotels, rail, car rentals, all evolving in parallel, had outgrown the decisions that were supposed to hold it together.",
+        "Seventeen near-identical buttons, built by different people at different times. Across a B2B travel platform spanning flights, hotels, rail and car rentals, the shared parts had forked until **no one could tell what was clickable.**",
       approach:
-        "The decision: stop redesigning screens and move upstream. Make the drift undeniable with an audit, put semantic tokens under everything so visual decisions propagate instead of fragmenting, and govern with component status rather than enforcement.",
+        "The audit reframed it from \"our UI looks inconsistent\" to **\"this structure creates measurable overhead, here is the evidence.\"** Then it moved upstream: **semantic tokens under everything** so decisions propagate, and **component status, not enforcement.**",
       /* The last two sentences are the REAL outcome, closing the impact
          gap (DriftV2 renders them as the beat-04 lead via NEW_OUTCOME).
          TODO(elleta): draft copy, finalise the words. NDA-safe: abstract,
@@ -86,15 +91,12 @@ const study: CaseStudy = {
          the rest of the old why moved verbatim into the body below.
          Bold markers dropped: the key-line style carries the emphasis. */
       why: "One undocumented decision had created three downstream inconsistencies.",
-      /* Beat 01's visual is now the INTERACTIVE drift specimen (five UI
-         parts, Before vs On system), embedded by DriftAuditBeat. The
-         static ds-audit-buttons embed evidence was removed with it.
-         TODO(elleta): the beat opens on "Seventeen buttons..."; the visual
-         is now components-wide and affordance-led. Broaden that opening
-         line, OR keep it as the origin hook (the BUTTON callout still says
-         "17 styles, none says primary"). Your words, not mine. */
+      /* Beat 01's visual is the INTERACTIVE drift specimen (five UI parts,
+         Before vs On system). The "Seventeen buttons" opening TODO(elleta)
+         is CLOSED: the body copy was tightened and broadened (Elleta 24
+         Jul), affordance-led, keeping the 17-buttons origin hook. */
       children: [
-        { kind: "paragraph", text: "Nobody set out to fragment the system; it accumulated one sprint at a time. The audit mapped duplicated UI decisions across search, results, booking, and forms, and reframed the conversation from 'our UI looks inconsistent' to 'our current structure creates measurable overhead, here is the evidence.'" },
+        { kind: "paragraph", text: "Nobody set out to fragment the system. It accumulated one sprint at a time." },
       ],
     },
     {

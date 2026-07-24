@@ -55,17 +55,12 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* the whole specimen sits in ONE contained figure card (the demo
-     specimen IS the card); the surface panel stays flat inside it */
-  .stage {
-    display: flex; flex-direction: column;
-    background: var(--card); border: 1px solid var(--card-line); border-radius: 22px;
-    padding: 26px 26px 22px;
-    box-shadow: 0 1px 2px rgba(20,18,26,.04), 0 22px 46px -30px rgba(20,18,26,.28);
-  }
-  html[data-theme="dark"] .stage { box-shadow: 0 1px 2px rgba(0,0,0,.4), 0 24px 50px -28px rgba(0,0,0,.6); }
+  /* the stage is transparent: only the recreated product surface is a
+     card; the toggle, callouts and leaders sit OUTSIDE it on the beat
+     ground, with clear space to the surface */
+  .stage { display: flex; flex-direction: column; }
 
-  /* the ONE control: Before / On system, top-left (iris chrome) */
+  /* the ONE control: Before / On system, top-left on the ground (iris chrome) */
   .stage-top { margin-bottom: 22px; }
   .seg-toggle { display: inline-flex; background: var(--field); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
   .seg-toggle button {
@@ -78,7 +73,7 @@
   /* callouts inset from the card edges, wider gap = longer leaders,
      no crowding (the no-cross rule holds: left column lands on the
      part's left edge, right column on its right edge) */
-  .grid { position: relative; display: grid; grid-template-columns: 110px minmax(0, 1fr) 110px; column-gap: 30px; align-items: start; }
+  .grid { position: relative; display: grid; grid-template-columns: 118px minmax(0, 1fr) 118px; column-gap: 28px; align-items: start; }
   .col-l, .col-r { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
   .col-r { justify-content: flex-end; }
 
@@ -91,9 +86,16 @@
   body.revealed .leaders path { stroke-dashoffset: 0; }
   body.revealed .leaders circle { opacity: 1; }
 
-  /* the recreated product surface: FLAT (transparent, no card, no shadow),
-     enlarged, sitting on the beat ground */
-  .panel { grid-column: 2; justify-self: center; width: 100%; max-width: 300px; min-width: 0; background: transparent; padding: 4px 0; z-index: 2; }
+  /* the recreated product surface is THE card: warm bg, 18px radius, soft
+     shadow, generous padding, slightly larger. It sits on the beat ground;
+     the callouts + leaders flank it from outside, dots land on its parts */
+  .panel {
+    grid-column: 2; justify-self: center; width: 100%; max-width: 320px; min-width: 0;
+    background: var(--card); border: 1px solid var(--card-line); border-radius: 18px;
+    box-shadow: 0 1px 2px rgba(20,18,26,.04), 0 18px 40px -24px rgba(20,18,26,.26);
+    padding: 24px; z-index: 2;
+  }
+  html[data-theme="dark"] .panel { box-shadow: 0 1px 2px rgba(0,0,0,.4), 0 20px 44px -22px rgba(0,0,0,.6); }
   .p-row { margin-bottom: 16px; }
   .p-row:last-child { margin-bottom: 0; }
   .p-ey { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 7px; font-weight: 600; }
