@@ -6,12 +6,9 @@
 
 import { useState } from "react";
 import CaseBeat from "@/components/CaseBeat";
-import CaseCard from "@/components/CaseCard";
 import CasePlaceholder from "@/components/CasePlaceholder";
 import ScaledFrame from "@/components/ScaledFrame";
-import SectionHeader from "@/components/ui/SectionHeader";
 import { P, Scannable } from "@/components/CaseProse";
-import { WORK_ITEMS } from "@/lib/workLibrary";
 import type { CaseStudy } from "@/lib/content";
 
 /* Beat 02 now leads with Elleta's REAL CHIP build (the recreated
@@ -167,7 +164,6 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
   const wireAt = approach.indexOf(WIRE_SENTENCE);
   const approachOwnSystems = wireAt >= 0 ? approach.slice(0, wireAt).trim() : approach;
   const approachGoverning = wireAt >= 0 ? approach.slice(wireAt).trim() : "";
-  const nextItem = WORK_ITEMS.find((i) => i.id === "code-first"); /* the three stars loop: chip -> code-first -> drift -> chip */
 
   const fig = (f?: FigureBlock) =>
     f ? (
@@ -267,15 +263,7 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
         foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>{systemMapFig?.caption}</p>}
       />
 
-      {/* next case: the ONE surviving card, the three stars in a loop */}
-      {nextItem && (
-        <section className="cs2-beat cs2-nextcase" aria-label="Next case">
-          <SectionHeader label="Next case" tier="case" title={nextItem.title} className="cs2-screen__head" />
-          <div className="cs2-next">
-            <CaseCard item={nextItem} />
-          </div>
-        </section>
-      )}
+      {/* next case + share now render once via CaseShellV2 (CaseEndReveal) */}
     </div>
   );
 }
