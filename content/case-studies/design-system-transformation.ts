@@ -71,8 +71,12 @@ const study: CaseStudy = {
         "Seventeen buttons that did roughly the same thing, built at different times by different people. A B2B travel platform used across Europe, flights, hotels, rail, car rentals, all evolving in parallel, had outgrown the decisions that were supposed to hold it together.",
       approach:
         "The decision: stop redesigning screens and move upstream. Make the drift undeniable with an audit, put semantic tokens under everything so visual decisions propagate instead of fragmenting, and govern with component status rather than enforcement.",
+      /* The last two sentences are the REAL outcome, closing the impact
+         gap (DriftV2 renders them as the beat-04 lead via NEW_OUTCOME).
+         TODO(elleta): draft copy, finalise the words. NDA-safe: abstract,
+         no client name, no codename, no figures. */
       outcome:
-        "**A shared language for how the product should look, behave, and grow.** Duplicated components consolidated into flexible building blocks; the UI shifted from whatever the last sprint produced to a coherent product language.",
+        "**A shared language for how the product should look, behave, and grow.** Duplicated components consolidated into flexible building blocks; the UI shifted from whatever the last sprint produced to a coherent product language. The audit and the business case won investment for a dedicated design-systems team. The system became the foundation the larger team built on: the surface evolved, the components and the agreements held.",
     },
     {
       kind: "decision",
@@ -137,6 +141,18 @@ const study: CaseStudy = {
     {
       kind: "lessons",
       text: "Inconsistency is rarely the root problem, it is a symptom of missing structure and undocumented decisions. Doing this as a solo designer reinforced something about advocacy: **the audit framework was not just a research method, it was a communication tool.** Framing the problem in terms of business alignment and delivery cost made a different kind of conversation possible about the value of the work.",
+    },
+    {
+      /* Outcome-beat evidence (beat 04): recreated before/after maturity
+         map across the 9 dimensions (Foundation, Growth, ROI), static
+         embed. Extends ds-maturity-scales.html. Illustrative levels only,
+         labelled, no client data, figures, or names. */
+      kind: "embed",
+      src: "/demos/case-study-visuals/ds-maturity-before-after.html",
+      title: "Recreated maturity assessment: before and after across 9 dimensions, illustrative",
+      designWidth: 1280,
+      designHeight: 1034,
+      frame: "light",
     },
   ],
   /* retired narrative kept below until the md lands; blocks render instead
