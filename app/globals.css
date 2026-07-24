@@ -1071,9 +1071,12 @@ li {
 /* ─── Travelling border light — the ONE trace implementation ─────
    (Pass E task 2). Card and any surface that speaks the Card
    interaction language consume this recipe; no second copy exists.
-   Host sets --cc (identity colour), --trace-r (ring radius, default
-   22px) and --trace-w (thickness, default 3px). Invisible at rest;
-   travels on hover/focus; reduced motion shows a static solid ring. */
+   Host sets --cc (identity colour) and --trace-w (thickness, default
+   3px). The ring radius is `border-radius: inherit` on the ::before,
+   so it follows the host's own corner radius by construction (the
+   ::before is inset:0, same box) — no per-host --trace-r to keep in
+   sync. Invisible at rest; travels on hover/focus; reduced motion
+   shows a static solid ring. */
 @property --trace-ang {
   syntax: "<angle>";
   inherits: false;
@@ -1082,7 +1085,6 @@ li {
 
 .trace-host {
   position: relative;
-  --trace-r: 22px;
   --trace-w: 3px;
 }
 
@@ -1090,7 +1092,7 @@ li {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: var(--trace-r);
+  border-radius: inherit;
   padding: var(--trace-w);
   pointer-events: none;
   opacity: 0;
@@ -1190,7 +1192,6 @@ li {
   background: var(--gloss-key), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
   box-shadow: var(--shadow-key-resting);
   transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
-  --trace-r: var(--btn-key-radius);
   --trace-w: 2px;
   --cc: var(--hero-iris-bright);
 }
@@ -2227,7 +2228,6 @@ textarea:focus-visible {
   border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-2xl);
   padding: var(--spacing-10) var(--spacing-8);
-  --trace-r: var(--radius-2xl);
   --trace-w: 3px;
 }
 
@@ -3919,7 +3919,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .jn-step {
   --cc: var(--hero-iris-bright, var(--color-accent-ink));
-  --trace-r: var(--radius-md);
   --trace-w: 2px;
   position: relative;
   display: block;
