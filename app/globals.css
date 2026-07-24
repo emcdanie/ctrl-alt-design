@@ -3298,14 +3298,21 @@ textarea:focus-visible {
    Lifted from inline styles (prefer a class). Symmetric top+bottom margin
    so it clears the chip row above and the first beat below, instead of
    crowding the chips with a top-0 margin. */
-.cs2-nda {
+/* NDA disclosure note, DEMOTED to a quiet footnote (Elleta 24 Jul): it
+   still sets NDA context and justifies the "recreated / illustrative"
+   captions, so it stays, but at the small muted caption/meta tier (the same
+   tier those captions use), grouped directly under the chip row. The -meta
+   suffix keeps it on the metadata type tier (audit:type exempts meta lines;
+   this is context, not body reading text). Left border dropped, it reads
+   lighter as a plain footnote. Theme-adaptive, AA both themes. */
+.cs2-nda-meta {
   font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
-  border-left: 3px solid var(--color-border-medium);
-  padding-left: var(--spacing-4);
-  margin: var(--spacing-8) 0;
+  font-size: var(--typography-font-size-sm);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-muted);
+  max-width: 68ch;
+  margin: var(--spacing-2) 0 var(--spacing-6);
 }
 
 .cs2-meta {

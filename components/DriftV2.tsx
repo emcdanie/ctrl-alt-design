@@ -65,10 +65,10 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
 
   return (
     <div className="cs2-body-col">
-      {/* the NDA disclosure, her wording verbatim, quiet note before the
-          beats; styling + symmetric spacing live in the .cs2-nda class */}
+      {/* the NDA disclosure, her wording verbatim, demoted to a quiet
+          footnote grouped under the chip row (the .cs2-nda-meta tier) */}
       {disclosure && (
-        <p role="note" className="cs2-nda">
+        <p role="note" className="cs2-nda-meta">
           {disclosure.text}
         </p>
       )}
