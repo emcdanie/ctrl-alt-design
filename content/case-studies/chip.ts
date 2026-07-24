@@ -54,8 +54,12 @@ const study: CaseStudy = {
       kind: "summary",
       context:
         "AI industrialises whatever is already there. An agent reads what you wrote, not what you meant, so a human-fine design system can be full of silent drift the moment an agent consumes it: hardcoded values, vague layer names, thin docs. I kept learning how to make systems agent-ready but had no way to see where my own systems were drifting before an agent amplified it.",
+      /* TODO(elleta): proposed shortening. The old governing sentence
+         re-listed watch/catch/draft/approve/log (already in the beat-01
+         keyline) and closed on "never moves silently" (already the beat-01
+         headline). Shorter close proposed, confirm on preview. */
       approach:
-        "I finished the course chapter that treats a design system like a car: a check-engine light and a ten-station inspection. Instead of highlighting and moving on, I pointed the inspection at my own systems: design system, portfolio, content engine, and scored each on agent-readiness. Then I wired the readiness map into CHIP, the OS I built for the hackathon. The governing decision: the agent watches, catches drift, drafts a plan, then waits for approval, logs every action, and never moves silently.",
+        "I finished the course chapter that treats a design system like a car: a check-engine light and a ten-station inspection. Instead of highlighting and moving on, I pointed the inspection at my own systems: design system, portfolio, content engine, and scored each on agent-readiness. Then I wired the readiness map into CHIP, the OS I built for the hackathon. The governing decision: it can draft, but it never acts without me.",
       outcome:
         "CHIP shows both what I'm thinking about and where my own systems are drifting, in one place. Building in public, turning red cells green out loud.",
     },
@@ -130,7 +134,9 @@ const study: CaseStudy = {
       kind: "decision",
       index: "03",
       title: "Build it in public, labelled a prototype",
-      why: "Shipping is the proof, honesty beats polish, no invented numbers.",
+      /* TODO(elleta): the keyline carried three points; lead with one,
+         the other two move into the beat-03 body. Confirm on preview. */
+      why: "Honesty beats polish.",
     },
     {
       kind: "figure",
@@ -141,8 +147,19 @@ const study: CaseStudy = {
       height: 1250,
     },
     {
+      /* Takeaway restructured (Elleta-approved verbatim): leads with the
+         offer, not the reflection. text = display headline, offer = the
+         bold keyline, body = the closing paragraph. The old "best thing I
+         did with a course..." line is removed as redundant.
+         NOTE (her call on preview): the body's last sentence ("CHIP shows
+         both what I'm thinking about and where my own systems are
+         drifting, in one place.") is verbatim in the beat-03 outcome too;
+         trim one if the repetition reads heavy. */
       kind: "lessons",
-      text: "The hard part of agent-ready design systems isn't the tokens, it's keeping a human in control while the machine moves fast. The best thing I did with a course wasn't take notes, it was let it change the machine.",
+      text: "The hard part isn't the tokens. It's keeping a human in control while the machine moves fast.",
+      offer:
+        "That is the work I want to do with a team: the design-system rigor, plus the guardrails that let AI move fast without losing the human call.",
+      body: "I don't want to just take notes on what I learn. I want it to change how my systems run. CHIP shows both what I'm thinking about and where my own systems are drifting, in one place.",
     },
     {
       kind: "paragraph",

@@ -41,12 +41,13 @@ const KICKERS = ["The judgment layer", "My own systems", "In public", "The machi
    changed. */
 const WIRE_SENTENCE = "Then I wired the readiness map into CHIP";
 
-/* lessons: sentence 2 is beat 04's display headline, sentence 1 its
-   keyline, both verbatim */
-const LESSONS_KEYLINE =
-  "The hard part of agent-ready design systems isn't the tokens, it's keeping a human in control while the machine moves fast.";
-const LESSONS_HEADLINE =
-  "The best thing I did with a course wasn't take notes, it was let it change the machine.";
+/* the takeaway (beat 04) now reads from the chip.ts lessons block:
+   text = display headline, offer = bold keyline, body = closing
+   paragraph (Elleta-approved verbatim, leads with the offer). */
+
+/* beat 03: the two points lifted out of the keyline (now "Honesty beats
+   polish.") land here as the body's proof line. TODO(elleta): confirm. */
+const B3_PROOF_LINE = "Shipping is the proof. No invented numbers.";
 
 type FigureBlock = { kind: string; src: string; alt: string; caption?: string };
 
@@ -72,6 +73,9 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
   const paragraphs = (cs.blocks?.filter((b) => b.kind === "paragraph") ?? []) as { text: string }[];
   const constraints = paragraphs.find((p) => p.text.startsWith("Constraints:"))?.text ?? "";
   const credit = paragraphs.find((p) => p.text.startsWith("Credit:"))?.text ?? "";
+  const lessons = cs.blocks?.find((b) => b.kind === "lessons") as
+    | { text: string; offer?: string; body?: string }
+    | undefined;
   /* the cited approach split (WIRE_SENTENCE) */
   const approach = summary?.approach ?? "";
   const wireAt = approach.indexOf(WIRE_SENTENCE);
@@ -137,6 +141,7 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
         body={
           <>
             <Scannable text={summary?.outcome ?? ""} />
+            <P text={B3_PROOF_LINE} />
             <P text={constraints} />
           </>
         }
@@ -144,16 +149,21 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
         foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>{frictionFig?.caption}</p>}
       />
 
-      {/* 04 · the machine: the lessons close over the system map;
-          credit line as the body (the course that changed the machine) */}
+      {/* 04 · the machine: the takeaway leads with the offer (keyline)
+          over the closing paragraph; credit line closes the body */}
       <CaseBeat
         index="04"
         kicker={KICKERS[3]}
-        headline={LESSONS_HEADLINE}
-        keyline={LESSONS_KEYLINE}
+        headline={lessons?.text ?? ""}
+        keyline={lessons?.offer}
         id="chip-b4"
         flip
-        body={<P text={credit} />}
+        body={
+          <>
+            <Scannable text={lessons?.body ?? ""} />
+            <P text={credit} />
+          </>
+        }
         visual={fig(systemMapFig)}
         foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>{systemMapFig?.caption}</p>}
       />
