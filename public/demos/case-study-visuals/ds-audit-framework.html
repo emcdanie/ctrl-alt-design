@@ -370,5 +370,13 @@ function showState(state) {
 render("before");
 </script>
 
+<script>/* dark: follow the site theme (postMessage) or the OS */(function(){var el=document.documentElement,locked=false;function apply(t){el.setAttribute("data-theme",t==="dark"?"dark":"light");}var mq;try{mq=matchMedia("(prefers-color-scheme:dark)");}catch(e){}if(mq){apply(mq.matches?"dark":"light");if(mq.addEventListener)mq.addEventListener("change",function(e){if(!locked)apply(e.matches?"dark":"light");});}addEventListener("message",function(e){var d=e.data||{};if(d&&d.type==="theme"){locked=true;apply(d.theme);}});})();</script><style>/* dark skin (audit:dark) */
+html[data-theme="dark"] body{background:#15151C;color:#F0ECF4}
+html[data-theme="dark"] .header h1,html[data-theme="dark"] .dimension-card h3{color:#F0ECF4}
+html[data-theme="dark"] .header p,html[data-theme="dark"] .dimension-card .question{color:#B0AABE}
+html[data-theme="dark"] .score-label,html[data-theme="dark"] .summary .avg-label{color:#948DA6}
+html[data-theme="dark"] .header .label,html[data-theme="dark"] .dimension-card .number{color:#4FD1C5}
+html[data-theme="dark"] .dimension-card{background:#1F1E29;border-color:#302E3C}
+html[data-theme="dark"] .dimension-card .icon{background:#173A2C}</style>
 </body>
 </html>

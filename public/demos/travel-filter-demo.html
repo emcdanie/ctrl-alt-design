@@ -1162,5 +1162,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
 });
 </script>
 
+<script>/* dark: follow the site theme (postMessage) or the OS */(function(){var el=document.documentElement,locked=false;function apply(t){el.setAttribute("data-theme",t==="dark"?"dark":"light");}var mq;try{mq=matchMedia("(prefers-color-scheme:dark)");}catch(e){}if(mq){apply(mq.matches?"dark":"light");if(mq.addEventListener)mq.addEventListener("change",function(e){if(!locked)apply(e.matches?"dark":"light");});}addEventListener("message",function(e){var d=e.data||{};if(d&&d.type==="theme"){locked=true;apply(d.theme);}});})();</script><style>/* dark skin (audit:dark) */
+html[data-theme="dark"]{--blue:#5B8FE0;--blue-selected:#7AA5E8;--blue-subtle:#1B2C4A;--text-primary:#EDE9F2;--text-secondary:#948DA6;--border-subtle:#2A2833;--border-normal:#4A4658;--surface:#1F1E29;--overlay:rgba(0,0,0,.72);--green:#7FCFA0;--green-subtle:#17301F}
+html[data-theme="dark"] body{background:#141319;color:#EDE9F2}</style>
+<style>/* dark skin patch: inputs */
+html[data-theme="dark"]{--blue-subtle:#1B2C4A}
+html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea{background:#1F1E29;color:#EDE9F2;border-color:#3A3846}
+html[data-theme="dark"] input::placeholder{color:#8A84A0}</style>
 </body>
 </html>

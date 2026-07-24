@@ -25,6 +25,7 @@ export default function ScaledFrame({
   onLoad?: () => void;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<HTMLIFrameElement>(null);
   const [scale, setScale] = useState<number | null>(null);
 
   useEffect(() => {
@@ -37,6 +38,18 @@ export default function ScaledFrame({
     return () => ro.disconnect();
   }, [designWidth]);
 
+  /* mirror the site theme into the embedded artifact so it goes dark with
+     the page (the artifact honours { type: "theme" } on data-theme) */
+  const postTheme = () => {
+    const theme = document.documentElement.getAttribute("data-theme") || "light";
+    frameRef.current?.contentWindow?.postMessage({ type: "theme", theme }, "*");
+  };
+  useEffect(() => {
+    const obs = new MutationObserver(postTheme);
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => obs.disconnect();
+  }, []);
+
   return (
     <div
       ref={wrapRef}
@@ -48,10 +61,11 @@ export default function ScaledFrame({
       }}
     >
       <iframe
+        ref={frameRef}
         src={src}
         title={title}
         loading="lazy"
-        onLoad={onLoad}
+        onLoad={() => { postTheme(); onLoad?.(); }}
         tabIndex={interactive ? undefined : -1}
         style={{
           position: "absolute",

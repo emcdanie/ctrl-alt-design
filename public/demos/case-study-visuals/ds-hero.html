@@ -328,5 +328,25 @@
 
 </div>
 
+<script>/* dark: follow the site theme (postMessage) or the OS */(function(){var el=document.documentElement,locked=false;function apply(t){el.setAttribute("data-theme",t==="dark"?"dark":"light");}var mq;try{mq=matchMedia("(prefers-color-scheme:dark)");}catch(e){}if(mq){apply(mq.matches?"dark":"light");if(mq.addEventListener)mq.addEventListener("change",function(e){if(!locked)apply(e.matches?"dark":"light");});}addEventListener("message",function(e){var d=e.data||{};if(d&&d.type==="theme"){locked=true;apply(d.theme);}});})();</script><style>/* dark skin (audit:dark) */
+html[data-theme="dark"] body{background:#16151C;color:#EDE9F2}
+html[data-theme="dark"] .card-title,html[data-theme="dark"] .hero-header h1,html[data-theme="dark"] .seg.active{color:#EDE9F2}
+html[data-theme="dark"] .hero-header p{color:#B0AABE}
+html[data-theme="dark"] .chip,html[data-theme="dark"] .issue-tag,html[data-theme="dark"] .seg{color:#B0AABE}
+html[data-theme="dark"] .segment-box{background:#232230}
+html[data-theme="dark"] .annotation{background:#3A2320;color:#E79A92}
+html[data-theme="dark"] .issue-tag.x{color:#E79A92}
+/* status/badge tint families -> dark tints, lighter ink */
+html[data-theme="dark"] .badge.confirmed,html[data-theme="dark"] .chip.success{background:#173A2C;color:#8ED0AA;border-color:#2C5C46}
+html[data-theme="dark"] .badge.cancelled,html[data-theme="dark"] .badge.voided{background:#3A2320;color:#E79A92}
+html[data-theme="dark"] .badge.complete{background:#242046;color:#B7B0F0}
+html[data-theme="dark"] .badge.expired,html[data-theme="dark"] .card-status.progress,html[data-theme="dark"] .chip.warn{background:#3A2E15;color:#E7C07A;border-color:#5C4A26}
+html[data-theme="dark"] .badge.in-progress,html[data-theme="dark"] .card-status.review,html[data-theme="dark"] .chip.info{background:#1B2C4A;color:#9DBBDD;border-color:#2C466D}
+html[data-theme="dark"] .badge.voided,html[data-theme="dark"] .card-status.draft{background:#26242F;color:#B0AABE}
+html[data-theme="dark"] .chip.filled,html[data-theme="dark"] .chip.outline{background:transparent;border-color:#4FD1C5;color:#4FD1C5}
+html[data-theme="dark"] .chip.filled{background:#123B36;color:#5FE0D2}
+html[data-theme="dark"] ::-webkit-scrollbar-track{background:#16151C}
+html[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3A3846}
+</style>
 </body>
 </html>
