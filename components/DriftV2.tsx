@@ -1,7 +1,7 @@
 import CaseBeat from "@/components/CaseBeat";
 import CaseCard from "@/components/CaseCard";
 import CasePlaceholder from "@/components/CasePlaceholder";
-import DriftSpecimenEmbed from "@/components/DriftSpecimenEmbed";
+import CaseArtifactEmbed from "@/components/CaseArtifactEmbed";
 import ScaledFrame from "@/components/ScaledFrame";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { P, Scannable, para } from "@/components/CaseProse";
@@ -30,16 +30,6 @@ import type { CaseStudy } from "@/lib/content";
    governance are her words; "The foundation" echoes the case title
    and beat 04's outcome. */
 const KICKERS = ["The audit", "The cascade", "The governance", "The foundation"];
-
-/* her decision-02 paragraph names "the interactive recreation below";
-   the visual is a STILL (kickoff: static only), so that sentence is a
-   cited mechanical trim, accepted (Elleta, 23 Jul, PR 56 review). */
-const CASCADE_TRIM = /\s*The interactive recreation below[^.]*\.\s*/;
-
-/* the poster caption: the content file's prototype title with
-   "Interactive " cut (the still is not interactive; caption accuracy,
-   case-build-check). Accepted (Elleta, 23 Jul, PR 56 review). */
-const CASCADE_CAPTION = "Recreation: token cascade and design-code parity";
 
 export default function DriftV2({ cs }: { cs: CaseStudy }) {
   const summary = cs.blocks?.find((b) => b.kind === "summary") as
@@ -125,13 +115,22 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
             </div>
           </>
         }
-        visual={<DriftSpecimenEmbed />}
+        visual={
+          <CaseArtifactEmbed
+            src="/demos/case-study-visuals/drift-specimen.html?embed=1"
+            title="Recreated client surface: five UI parts in Before and On system states, with an audit annotation layer"
+            channel="drift-specimen"
+          />
+        }
         foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated concept, illustrative. A B2B travel platform, abstracted.</p>}
       />
 
-      {/* 02 · the cascade: tokens under everything; the poster still
-          (static, kickoff rule; the interactive recreation stays in
-          the content file for a later pass) */}
+      {/* 02 · the cascade: tokens under everything. The visual is now the
+          INTERACTIVE token pipeline (foundation -> semantic -> component,
+          live propagation + the broken-link drift), embedded live at the
+          column's real width; supersedes the static poster. Her decision
+          -02 paragraph names "the interactive recreation below", which is
+          now literally true, so the CASCADE_TRIM is gone. */}
       <CaseBeat
         index="02"
         kicker={KICKERS[1]}
@@ -140,20 +139,22 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
         id="drift-b2"
         flip
         body={
-          <Scannable
-            text={para(cs, (b) => b.kind === "decision" && (b as { index?: string }).index === "02", 0).replace(CASCADE_TRIM, " ").trim()}
-          />
+          <>
+            <Scannable
+              text={para(cs, (b) => b.kind === "decision" && (b as { index?: string }).index === "02", 0)}
+            />
+            {/* TODO(elleta): optional affordance hint, her call to keep or cut */}
+            <P text="**Change the foundation and watch it move. Break the link and watch it drift.**" />
+          </>
         }
         visual={
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src="/images/case-studies/token-parity-poster.png"
-            alt="Token cascade recreation: primitive, semantic, and component token tiers connected by arrows, with a design-code parity check panel"
-            loading="lazy"
-            style={{ width: "100%", height: "auto", borderRadius: "var(--radius-xl)", display: "block" }}
+          <CaseArtifactEmbed
+            src="/demos/case-study-visuals/cascade.html?embed=1"
+            title="Recreated token pipeline: foundation, semantic and component tiers with live propagation and a design-code parity check"
+            channel="cascade"
           />
         }
-        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>{CASCADE_CAPTION}</p>}
+        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated concept, illustrative. A B2B travel platform&apos;s design system, abstracted.</p>}
       />
 
       {/* 03 · the governance: status not enforcement; the recreated
