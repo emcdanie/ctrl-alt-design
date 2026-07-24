@@ -411,3 +411,24 @@
   cursor: default;
   pointer-events: none;
 }
+
+/* "Coming soon" badge on the topic spheres (AI UX, Data Dashboard): the
+   piece exists as an idea but has no case yet, so the sphere stays
+   non-interactive and wears this quiet marker instead of pretending to be a
+   link. Steel-tinted (not the sphere's own accent, not iris), muted, over a
+   steel-over-card chip so the steel text keeps AA on either theme. Metadata
+   tier (tag scale), exempt from the 16px reading-text floor. */
+.comingSoon {
+  display: inline-block;
+  margin-top: var(--spacing-1);
+  padding: 2px var(--spacing-2); /* 2px vertical is sub-4px, below the raw-spacing floor */
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 600;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--case-filters-text);
+  background: color-mix(in srgb, var(--case-filters-hi) 22%, var(--color-card));
+  border-radius: var(--radius-full);
+}
