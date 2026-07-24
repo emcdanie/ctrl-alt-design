@@ -32,10 +32,15 @@ const BUBBLES = [...CLUSTER_ITEMS, HUB_ITEM];
 const HUB_I = CLUSTER_ITEMS.length;
 
 /* labels are the retired rows' type fields; colours the recorded case
- * tokens, which stay in the token layer */
+ * tokens, which stay in the token layer. comingSoon marks the two topic
+ * spheres (AI UX, Data Dashboard) with no case yet: they wear a "Coming
+ * soon" badge and stay non-interactive (no route, no dead click), so they
+ * signal "more coming" without pretending to be a live link. Modelled here,
+ * not in WORK_ITEMS, because a non-case WORK_ITEMS row would break the
+ * one-row-per-case audit:parity contract. */
 const TOPIC_SPHERES = [
-  { id: "guardian", label: "AI UX", hi: "var(--case-guardian-hi)", lo: "var(--case-guardian-lo)" },
-  { id: "clarity", label: "Data|Dashboard", hi: "var(--case-clarity-hi)", lo: "var(--case-clarity-lo)" },
+  { id: "guardian", label: "AI UX", hi: "var(--case-guardian-hi)", lo: "var(--case-guardian-lo)", comingSoon: true },
+  { id: "clarity", label: "Data|Dashboard", hi: "var(--case-clarity-hi)", lo: "var(--case-clarity-lo)", comingSoon: true },
 ];
 
 /* connectors by id, resolved through GEOMETRY: the hive keeps its
@@ -323,7 +328,10 @@ export default function BubbleCluster({
                 zIndex: 1,
               }}
             >
-              <BubbleLabel label={t.label} />
+              <span style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <BubbleLabel label={t.label} />
+                {t.comingSoon && <span className={styles.comingSoon}>Coming soon</span>}
+              </span>
             </span>
           );
         })}
