@@ -1,9 +1,8 @@
 import CaseBeat from "@/components/CaseBeat";
 import CaseCard from "@/components/CaseCard";
-import CasePlaceholder from "@/components/CasePlaceholder";
 import CaseArtifactEmbed from "@/components/CaseArtifactEmbed";
 import DriftFoundationOutcome from "@/components/DriftFoundationOutcome";
-import ScaledFrame from "@/components/ScaledFrame";
+import DriftStatusBoard from "@/components/DriftStatusBoard";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { P, Scannable, para } from "@/components/CaseProse";
 import { WORK_ITEMS } from "@/lib/workLibrary";
@@ -154,8 +153,10 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
         foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated concept, illustrative. A B2B travel platform&apos;s design system, abstracted.</p>}
       />
 
-      {/* 03 · the governance: status not enforcement; the recreated
-          system documentation as the visual */}
+      {/* 03 · the governance: status, not enforcement. The visual is now
+          the STATUS BOARD (in-page, tokenised to BELLA, dark-adaptive),
+          which foregrounds component status + the proposal path, the thing
+          the beat argues. Supersedes the static ds-after-system doc page. */}
       <CaseBeat
         index="03"
         kicker={KICKERS[2]}
@@ -165,19 +166,8 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
         body={
           <Scannable text={para(cs, (b) => b.kind === "decision" && (b as { index?: string }).index === "03", 0)} />
         }
-        visual={
-          d3?.evidence ? (
-            <ScaledFrame
-              src={d3.evidence.src}
-              title={d3.evidence.title}
-              designWidth={d3.evidence.designWidth}
-              designHeight={d3.evidence.designHeight}
-            />
-          ) : (
-            <CasePlaceholder />
-          )
-        }
-        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>{d3?.evidence?.title}</p>}
+        visual={<DriftStatusBoard />}
+        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated concept, illustrative. A B2B travel platform&apos;s design system, abstracted.</p>}
       />
 
       {/* 04 · the takeaway: her outcome statement leads, the real outcome
