@@ -1,11 +1,8 @@
 import CaseBeat from "@/components/CaseBeat";
-import CaseCard from "@/components/CaseCard";
 import CaseArtifactEmbed from "@/components/CaseArtifactEmbed";
 import DriftFoundationOutcome from "@/components/DriftFoundationOutcome";
 import DriftStatusBoard from "@/components/DriftStatusBoard";
-import SectionHeader from "@/components/ui/SectionHeader";
 import { P, Scannable, para } from "@/components/CaseProse";
-import { WORK_ITEMS } from "@/lib/workLibrary";
 import type { CaseStudy } from "@/lib/content";
 
 /**
@@ -61,7 +58,6 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
   const lessonsKeyline =
     "Inconsistency is rarely the root problem, it is a symptom of missing structure and undocumented decisions.";
   const lessonsRest = (lessons?.text ?? "").replace(lessonsKeyline, "").trim();
-  const nextItem = WORK_ITEMS.find((i) => i.id === "chip"); /* the three stars loop: chip -> code-first -> drift -> chip */
 
   return (
     <div className="cs2-body-col">
@@ -183,15 +179,7 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
         foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated concept, illustrative. A B2B travel platform, abstracted; no client figures shown.</p>}
       />
 
-      {/* next case: the ONE surviving card, the three stars in a loop */}
-      {nextItem && (
-        <section className="cs2-beat cs2-nextcase" aria-label="Next case">
-          <SectionHeader label="Next case" tier="case" title={nextItem.title} className="cs2-screen__head" />
-          <div className="cs2-next">
-            <CaseCard item={nextItem} />
-          </div>
-        </section>
-      )}
+      {/* next case + share now render once via CaseShellV2 (CaseEndReveal) */}
     </div>
   );
 }

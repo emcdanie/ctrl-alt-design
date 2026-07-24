@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Heading from "@/components/ui/Heading";
 import { Tag } from "@/components/ui/Tag";
+import CaseEndReveal from "@/components/CaseEndReveal";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
 
 /**
@@ -133,6 +134,11 @@ export default function CaseShellV2({
       </header>
 
       {children}
+
+      {/* the end-of-case overlay reveal renders ONCE here for every case
+          (triggers when the end enters view); no composition ships its own
+          next-case section */}
+      <CaseEndReveal slug={slug} />
     </div>
   );
 }
