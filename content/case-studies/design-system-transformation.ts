@@ -86,14 +86,13 @@ const study: CaseStudy = {
          the rest of the old why moved verbatim into the body below.
          Bold markers dropped: the key-line style carries the emphasis. */
       why: "One undocumented decision had created three downstream inconsistencies.",
-      evidence: {
-        kind: "embed",
-        src: "/demos/case-study-visuals/ds-audit-buttons.html",
-        title: "Recreated component audit: 17 button variations across the product",
-        designWidth: 1280,
-        designHeight: 1320,
-        frame: "light",
-      },
+      /* Beat 01's visual is now the INTERACTIVE drift specimen (five UI
+         parts, Before vs On system), embedded by DriftAuditBeat. The
+         static ds-audit-buttons embed evidence was removed with it.
+         TODO(elleta): the beat opens on "Seventeen buttons..."; the visual
+         is now components-wide and affordance-led. Broaden that opening
+         line, OR keep it as the origin hook (the BUTTON callout still says
+         "17 styles, none says primary"). Your words, not mine. */
       children: [
         { kind: "paragraph", text: "Nobody set out to fragment the system; it accumulated one sprint at a time. The audit mapped duplicated UI decisions across search, results, booking, and forms, and reframed the conversation from 'our UI looks inconsistent' to 'our current structure creates measurable overhead, here is the evidence.'" },
       ],

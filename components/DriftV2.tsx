@@ -1,6 +1,7 @@
 import CaseBeat from "@/components/CaseBeat";
 import CaseCard from "@/components/CaseCard";
 import CasePlaceholder from "@/components/CasePlaceholder";
+import DriftAuditBeat from "@/components/DriftAuditBeat";
 import ScaledFrame from "@/components/ScaledFrame";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { P, Scannable, para } from "@/components/CaseProse";
@@ -96,9 +97,11 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
         </p>
       )}
 
-      {/* 01 · the audit: context + the audit decision, the recreated
-          17-button audit as the visual */}
-      <CaseBeat
+      {/* 01 · the audit: context + the audit decision. The visual is the
+          INTERACTIVE recreated client surface (drift specimen), embedded
+          live at the column's real width (see DriftAuditBeat); supersedes
+          the static ds-audit-buttons ScaledFrame. */}
+      <DriftAuditBeat
         index="01"
         kicker={KICKERS[0]}
         headline={d1?.title ?? ""}
@@ -112,29 +115,15 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
             <Scannable text={summary?.approach ?? ""} />
           </>
         }
-        visual={
-          d1?.evidence ? (
-            <ScaledFrame
-              src={d1.evidence.src}
-              title={d1.evidence.title}
-              designWidth={d1.evidence.designWidth}
-              designHeight={d1.evidence.designHeight}
-            />
-          ) : (
-            <CasePlaceholder />
-          )
-        }
-        foot={
-          <>
-            <p className="cs2-kicker-row" style={{ margin: 0 }}>{d1?.evidence?.title}</p>
-            {/* the ctrl+travel recreations from the case's demo links;
-                placement approved (Elleta, 23 Jul, PR 56 review) */}
-            {cs.demoLinks?.map((l) => (
-              <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="demo-link">
-                {l.label}
-              </a>
-            ))}
-          </>
+        caption="Recreated concept, illustrative. A B2B travel platform, abstracted."
+        footExtra={
+          /* the ctrl+travel recreations from the case's demo links;
+             placement approved (Elleta, 23 Jul, PR 56 review) */
+          cs.demoLinks?.map((l) => (
+            <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="demo-link">
+              {l.label}
+            </a>
+          ))
         }
       />
 

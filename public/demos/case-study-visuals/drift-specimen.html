@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The drift specimen, beat 01</title>
+<style>
+  /* Recreated client surface for the From Drift audit beat, in the
+     CaseSpecimen annotation language: callout flags + curved leaders that
+     draw in and land a dot on each of five parts, Before vs On system.
+     COLOUR: this is the CLIENT's foreign product, so it uses NO iris or
+     periwinkle. Steel and warm neutrals; drift is muted crimson (no
+     amber); agreement is a calm muted green. Theme-adaptive neutrals,
+     foreign accents held constant, AA both themes, min 16px readable, no
+     pure white or black. Recreated and illustrative: no client name,
+     email, or logo. Driven by the page via postMessage; its own controls
+     show only when opened standalone (not with ?embed=1). */
+  :root {
+    --bg: #ECE9E2; --card: #F8F5EF; --callout: #FBF9F4;
+    --ink: #1A1720; --ink-soft: #2E2937; --ink-muted: #4A4652; --ink-faint: #756D82;
+    --line: #E1DCD3;
+    /* foreign product accent: steel/slate-blue */
+    --steel: #2F5C86; --steel-strong: #244A6D; --steel-tint: #E5EBF1; --steel-on-tint: #294F76;
+    /* drift: muted crimson */
+    --flag: #A83A3A; --flag-on-card: #9B3535; --flag-tint: #F4E6E3;
+    /* agreement: calm muted green */
+    --agree: #2A6B4C; --agree-on-card: #256247; --agree-tint: #E1EDE5;
+    --lead: #94929C; --dead: #B4AFA9;
+    --radius: 16px;
+    color-scheme: light;
+  }
+  html[data-theme="dark"] {
+    --bg: #17151C; --card: #221F2A; --callout: #262330;
+    --ink: #F1EDF5; --ink-soft: #D9D4E0; --ink-muted: #B6AFC2; --ink-faint: #8E8799;
+    --line: #383343;
+    --steel: #93B4D6; --steel-strong: #B2CBE6; --steel-tint: #26313F; --steel-on-tint: #A9C5E0;
+    --flag: #E4948C; --flag-on-card: #E4948C; --flag-tint: #3A2523;
+    --agree: #86CCA6; --agree-on-card: #86CCA6; --agree-tint: #21332A;
+    --lead: #6D6A77; --dead: #55505C;
+    color-scheme: dark;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--bg); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); line-height: 1.5; padding: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  /* standalone controls (hidden when embedded, the page drives it) */
+  .controls { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
+  body.embed .controls { display: none; }
+  .c-btn {
+    font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; border-radius: 10px;
+    padding: 10px 18px; border: 1px solid var(--steel); background: var(--steel); color: #fff;
+  }
+  html[data-theme="dark"] .c-btn { color: #17151C; }
+  .c-seg { display: inline-flex; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
+  .c-seg button { font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--ink-muted); padding: 7px 14px; border-radius: 8px; }
+  .c-seg button[aria-pressed="true"] { background: var(--steel); color: #fff; }
+  html[data-theme="dark"] .c-seg button[aria-pressed="true"] { color: #17151C; }
+
+  /* ---- stage: callouts | panel | callouts, a 3-column grid that fits
+     the ~564px beat column and stacks to one column on mobile ---- */
+  .state-tag { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--ink-muted); margin-bottom: 12px; }
+  body[data-mode="before"] .state-tag { color: var(--flag); }
+  body[data-mode="system"] .state-tag { color: var(--agree); }
+
+  .stage { position: relative; display: grid; grid-template-columns: 132px 1fr 132px; column-gap: 16px; align-items: start; }
+  .col-l, .col-r { display: flex; flex-direction: column; gap: 14px; }
+  .col-r { justify-content: flex-end; }
+
+  .leaders { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 3; }
+  .leaders path {
+    fill: none; stroke: var(--lead); stroke-width: 1.6; stroke-linecap: round;
+    stroke-dasharray: var(--len); stroke-dashoffset: var(--len); transition: stroke-dashoffset .55s ease;
+  }
+  .leaders circle.dot { opacity: 0; transition: opacity .3s ease .45s; }
+  body[data-mode="before"] .leaders circle.dot { fill: var(--flag); }
+  body[data-mode="system"] .leaders circle.dot { fill: var(--agree); }
+  body.revealed .leaders path { stroke-dashoffset: 0; }
+  body.revealed .leaders circle { opacity: 1; }
+
+  /* the recreated product surface: one representative instance per part */
+  .panel {
+    grid-column: 2; justify-self: center; width: 100%; max-width: 250px;
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: 0 1px 2px rgba(20,18,26,.05), 0 16px 36px -22px rgba(20,18,26,.32);
+    padding: 18px; z-index: 2;
+  }
+  html[data-theme="dark"] .panel { box-shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -20px rgba(0,0,0,.6); }
+  .p-row { margin-bottom: 15px; }
+  .p-row:last-child { margin-bottom: 0; }
+  .p-ey { font-size: 12px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 7px; font-weight: 600; }
+
+  /* status badges: BEFORE = a filled tag beside an outline pill (two systems) */
+  .p-badgewrap { display: flex; gap: 9px; align-items: center; }
+  .p-badge { display: inline-block; font-size: 13px; font-weight: 600; padding: 4px 11px; border-radius: 6px; }
+  .p-badge.b-a { color: #fff; background: var(--steel); }
+  html[data-theme="dark"] .p-badge.b-a { color: #17151C; }
+  .p-badge.b-b { background: transparent; color: var(--steel-on-tint); border: 1px solid var(--steel); border-radius: 20px; text-transform: uppercase; font-size: 11px; letter-spacing: .05em; padding: 4px 11px; }
+  /* segmented select */
+  .p-seg2 { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; }
+  .p-seg2 span { font-size: 12px; padding: 7px 8px; color: var(--ink-muted); }
+  .p-seg2 .on { background: var(--steel); color: #fff; }
+  html[data-theme="dark"] .p-seg2 .on { color: #17151C; }
+  /* chips: BEFORE = mismatched (one filled with x, one outline pill) */
+  .p-chips { display: flex; gap: 8px; }
+  .p-chip { font-size: 13px; padding: 6px 11px; border-radius: 7px; background: var(--steel-tint); color: var(--steel-on-tint); display: inline-flex; align-items: center; gap: 6px; }
+  .p-chip.x::after { content: "\00d7"; opacity: .6; }
+  .p-chip.c-alt { background: transparent; box-shadow: inset 0 0 0 1px var(--steel); border-radius: 16px; }
+  /* actions: BEFORE = dead grey icons; ON SYSTEM = text links */
+  .p-actionrow { display: flex; align-items: center; height: 30px; }
+  .act-before { display: inline-flex; gap: 16px; align-items: center; }
+  .p-ico { font-size: 17px; color: var(--dead); line-height: 1; }
+  .act-system { display: none; gap: 18px; align-items: center; }
+  .act-system a { color: var(--steel); font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: default; }
+  /* primary button: BEFORE = one of many styles (flat steel, ambiguous) */
+  .p-btn { width: 100%; font: inherit; font-size: 15px; font-weight: 650; color: #fff; background: var(--steel); border: none; border-radius: 10px; padding: 12px; cursor: default; }
+  html[data-theme="dark"] .p-btn { color: #17151C; }
+
+  /* ON SYSTEM: the surface RESOLVES to one consistent, legible set */
+  body[data-mode="system"] .p-badge.b-a,
+  body[data-mode="system"] .p-badge.b-b {
+    background: var(--steel-tint); color: var(--steel-on-tint); border: none; border-radius: 6px;
+    text-transform: none; font-size: 13px; letter-spacing: 0; font-weight: 600; padding: 4px 11px;
+  }
+  body[data-mode="system"] .p-chip,
+  body[data-mode="system"] .p-chip.c-alt {
+    background: var(--steel-tint); color: var(--steel-on-tint); box-shadow: none; border-radius: 7px;
+  }
+  body[data-mode="system"] .act-before { display: none; }
+  body[data-mode="system"] .act-system { display: inline-flex; }
+  body[data-mode="system"] .p-btn { box-shadow: 0 1px 0 var(--steel-strong); }
+
+  /* ---- callouts ---- */
+  .callout {
+    width: 100%; background: var(--callout); border: 1px solid var(--line);
+    border-radius: 12px; padding: 11px 13px; z-index: 4;
+    box-shadow: 0 6px 18px -12px rgba(20,18,26,.4);
+    opacity: 0; transform: translateY(8px); transition: opacity .4s ease, transform .4s ease;
+  }
+  body.revealed .callout { opacity: 1; transform: none; }
+  .callout .c-head { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .callout .c-sw { width: 15px; height: 15px; border-radius: 4px; flex: none; background: var(--steel); }
+  .callout .c-sw.round { border-radius: 50%; background: var(--dead); }
+  .callout .c-part { font-size: 12px; letter-spacing: .09em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); }
+  .callout .c-val { font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace; font-size: 15px; font-weight: 600; line-height: 1.35; }
+  body[data-mode="before"] .callout .c-val { color: var(--flag-on-card); }
+  body[data-mode="system"] .callout .c-val { color: var(--agree-on-card); }
+  .callout .c-note { font-size: 13px; color: var(--ink-faint); margin-top: 3px; }
+  body[data-mode="system"] .callout .c-note { display: none; }
+
+  body.revealed .co-badge { transition-delay: .04s; }
+  body.revealed .co-select { transition-delay: .12s; }
+  body.revealed .co-chip { transition-delay: .20s; }
+  body.revealed .co-actions { transition-delay: .28s; }
+  body.revealed .co-button { transition-delay: .36s; }
+  body.revealed [data-lead="select"] { transition-delay: .10s; }
+  body.revealed [data-lead="chip"] { transition-delay: .18s; }
+  body.revealed [data-lead="actions"] { transition-delay: .26s; }
+  body.revealed [data-lead="button"] { transition-delay: .34s; }
+
+  .foot {
+    margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--line);
+    font-size: 14px; letter-spacing: .05em; text-transform: uppercase; font-weight: 600; color: var(--ink-muted);
+  }
+  body[data-mode="system"] .foot { color: var(--agree); }
+  .foot .illus { display: block; text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink-faint); margin-top: 6px; font-size: 13px; }
+  /* embedded: the page's beat foot carries the caption, so the artifact
+     keeps only its dynamic state line (no doubled caption) */
+  body.embed .foot .illus { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .leaders path { transition: none; stroke-dashoffset: 0; }
+    .leaders circle { transition: none; }
+    .callout { transition: none; }
+    body.revealed [data-lead], body.revealed .callout { transition-delay: 0s !important; }
+  }
+  body.no-motion .leaders path { transition: none; stroke-dashoffset: 0; }
+  body.no-motion .leaders circle { transition: none; }
+  body.no-motion .callout { transition: none; }
+  body.no-motion.revealed [data-lead], body.no-motion.revealed .callout { transition-delay: 0s !important; }
+
+  /* mobile: one column, panel first, callouts as a labelled list below;
+     leaders don't apply to a stacked layout, so they hide */
+  @media (max-width: 480px) {
+    .stage { grid-template-columns: 1fr; row-gap: 12px; }
+    .col-l, .col-r { gap: 12px; }
+    .panel { grid-column: 1; grid-row: 1; max-width: none; }
+    .col-l { grid-column: 1; grid-row: 2; }
+    .col-r { grid-column: 1; grid-row: 3; justify-content: flex-start; }
+    .leaders { display: none; }
+    .callout { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body data-mode="before">
+<div class="wrap">
+  <div class="controls">
+    <button class="c-btn" id="reveal" aria-pressed="false">Reveal the drift</button>
+    <div class="c-seg" role="group" aria-label="View">
+      <button id="m-before" aria-pressed="true">Before</button>
+      <button id="m-system" aria-pressed="false">On system</button>
+    </div>
+  </div>
+
+  <div class="state-tag" id="stateTag">Before</div>
+  <div class="stage" id="stage">
+    <svg class="leaders" id="leaders" aria-hidden="true"></svg>
+
+    <div class="col-l">
+      <div class="callout co-badge" data-anchor="badge">
+        <div class="c-head"><span class="c-sw round"></span><span class="c-part">Status</span></div>
+        <div class="c-val" data-before="state, or button?" data-system="--status-tag">state, or button?</div>
+        <div class="c-note">a filled tag beside an outline pill</div>
+      </div>
+      <div class="callout co-select" data-anchor="select">
+        <div class="c-head"><span class="c-sw"></span><span class="c-part">Selected</span></div>
+        <div class="c-val" data-before="selected, or just filled?" data-system="--control-selected">selected, or just filled?</div>
+        <div class="c-note">two controls, two answers</div>
+      </div>
+      <div class="callout co-chip" data-anchor="chip">
+        <div class="c-head"><span class="c-sw"></span><span class="c-part">Chip</span></div>
+        <div class="c-val" data-before="looks clickable, isn't" data-system="--chip-filter">looks clickable, isn't</div>
+        <div class="c-note">filter, or just a tag?</div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel">
+      <div class="p-row">
+        <div class="p-ey">Status</div>
+        <div class="p-badgewrap">
+          <span class="p-badge b-a" data-part="badge">Confirmed</span>
+          <span class="p-badge b-b">In progress</span>
+        </div>
+      </div>
+      <div class="p-row">
+        <div class="p-ey">Trip type</div>
+        <div class="p-seg2"><span class="on" data-part="select">Round trip</span><span>One way</span><span>Multi</span></div>
+      </div>
+      <div class="p-row">
+        <div class="p-ey">Filters</div>
+        <div class="p-chips"><span class="p-chip x" data-part="chip">Direct</span><span class="p-chip c-alt">Refundable</span></div>
+      </div>
+      <div class="p-row">
+        <div class="p-ey">Actions</div>
+        <div class="p-actionrow" data-part="actions"><span class="act-before"><span class="p-ico">&#9993;</span><span class="p-ico">&#9998;</span><span class="p-ico">&#128465;</span></span><span class="act-system"><a>Edit</a><a>Delete</a></span></div>
+      </div>
+      <div class="p-row"><button class="p-btn" data-part="button" tabindex="-1">Search</button></div>
+    </div>
+
+    <div class="col-r">
+      <div class="callout co-actions" data-anchor="actions">
+        <div class="c-head"><span class="c-sw round"></span><span class="c-part">Actions</span></div>
+        <div class="c-val" data-before="icons, no affordance" data-system="--action-link">icons, no affordance</div>
+        <div class="c-note">can you click these?</div>
+      </div>
+      <div class="callout co-button" data-anchor="button">
+        <div class="c-head"><span class="c-sw"></span><span class="c-part">Button</span></div>
+        <div class="c-val" data-before="17 styles, none says primary" data-system="--btn-primary">17 styles, none says primary</div>
+        <div class="c-note">where the audit started</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot" id="foot">
+    Before: parts that do not agree, and no way to tell what is clickable
+    <span class="illus">Recreated concept, illustrative. A B2B travel platform, abstracted; no confidential data shown.</span>
+  </div>
+</div>
+
+<script>
+(function () {
+  var body = document.body, stage = document.getElementById('stage'),
+      svg = document.getElementById('leaders'), panel = document.getElementById('panel'),
+      revealBtn = document.getElementById('reveal'),
+      mBefore = document.getElementById('m-before'), mSystem = document.getElementById('m-system'),
+      stateTag = document.getElementById('stateTag'), foot = document.getElementById('foot'),
+      root = document.documentElement;
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var params = new URLSearchParams(location.search);
+  if (params.get('embed') === '1') body.classList.add('embed');
+  var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var revealed = false, mode = 'before';
+
+  function draw() {
+    var sb = stage.getBoundingClientRect();
+    if (!sb.width) return;
+    svg.setAttribute('viewBox', '0 0 ' + sb.width + ' ' + sb.height);
+    var nodes = [];
+    stage.querySelectorAll('.callout').forEach(function (co) {
+      var partName = co.getAttribute('data-anchor');
+      var part = panel.querySelector('[data-part="' + partName + '"]');
+      if (!part) return;
+      var cr = co.getBoundingClientRect(), pr = part.getBoundingClientRect();
+      var pcx = pr.left + pr.width / 2;
+      /* left/right column layout: left callouts land on the part's left
+         edge, right callouts on its right edge, at the callout's own y
+         clamped into the part height. One entry, no vertical loops, and
+         because each column keeps to its own side no leader crosses. */
+      var isLeft = (cr.left + cr.width / 2) < pcx;
+      var x1 = (isLeft ? cr.right : cr.left) - sb.left;
+      var y1 = cr.top + cr.height / 2 - sb.top;
+      var x2 = (isLeft ? pr.left + 3 : pr.right - 3) - sb.left;
+      var y2 = Math.min(pr.bottom - 4, Math.max(pr.top + 4, cr.top + cr.height / 2)) - sb.top;
+      var bx = (x2 - x1) * 0.5;
+      var path = document.createElementNS(SVGNS, 'path');
+      path.setAttribute('d', 'M' + x1 + ',' + y1 + ' C' + (x1 + bx) + ',' + y1 + ' ' + (x2 - bx) + ',' + y2 + ' ' + x2 + ',' + y2);
+      path.setAttribute('data-lead', partName);
+      var len = Math.ceil(path.getTotalLength());
+      path.style.setProperty('--len', len);
+      nodes.push(path);
+      var dot = document.createElementNS(SVGNS, 'circle');
+      dot.setAttribute('cx', x2); dot.setAttribute('cy', y2); dot.setAttribute('r', '3.5'); dot.setAttribute('class', 'dot');
+      nodes.push(dot);
+    });
+    svg.replaceChildren.apply(svg, nodes);
+  }
+
+  function postHeight() {
+    var h = Math.ceil(document.querySelector('.wrap').getBoundingClientRect().height) + 48;
+    try { parent.postMessage({ source: 'drift-specimen', type: 'height', px: h }, '*'); } catch (e) {}
+  }
+
+  function afterChange() {
+    /* let layout settle, then redraw leaders and report height */
+    requestAnimationFrame(function () { draw(); postHeight(); });
+    setTimeout(function () { draw(); postHeight(); }, 260);
+  }
+
+  function setReveal(on) {
+    revealed = !!on;
+    body.classList.toggle('revealed', revealed);
+    revealBtn.setAttribute('aria-pressed', String(revealed));
+    revealBtn.textContent = revealed ? 'Reset' : 'Reveal the drift';
+    afterChange();
+  }
+
+  function setMode(m) {
+    mode = (m === 'system') ? 'system' : 'before';
+    body.setAttribute('data-mode', mode);
+    mBefore.setAttribute('aria-pressed', String(mode === 'before'));
+    mSystem.setAttribute('aria-pressed', String(mode === 'system'));
+    stateTag.textContent = (mode === 'before') ? 'Before' : 'On system';
+    stage.querySelectorAll('.c-val').forEach(function (v) {
+      v.textContent = v.getAttribute(mode === 'before' ? 'data-before' : 'data-system');
+    });
+    foot.childNodes[0].nodeValue = (mode === 'before')
+      ? 'Before: parts that do not agree, and no way to tell what is clickable '
+      : 'On system: one set of rules, every element says what it does ';
+    afterChange();
+  }
+
+  function setTheme(t) {
+    root.setAttribute('data-theme', (t === 'dark') ? 'dark' : 'light');
+    afterChange();
+  }
+
+  function setMotion(noMotion) {
+    body.classList.toggle('no-motion', !!noMotion || reduce);
+  }
+
+  /* standalone controls */
+  revealBtn.addEventListener('click', function () { setReveal(!revealed); });
+  mBefore.addEventListener('click', function () { setMode('before'); });
+  mSystem.addEventListener('click', function () { setMode('system'); });
+
+  /* driven by the page */
+  window.addEventListener('message', function (e) {
+    var d = e.data || {};
+    if (d.target !== 'drift-specimen') return;
+    if (d.type === 'set') {
+      if ('theme' in d) setTheme(d.theme);
+      if ('motion' in d) setMotion(d.motion === 'reduce');
+      if ('mode' in d) setMode(d.mode);
+      if ('reveal' in d) setReveal(d.reveal);
+      postHeight();
+    }
+  });
+
+  var ro = new ResizeObserver(function () { requestAnimationFrame(function () { draw(); postHeight(); }); });
+  ro.observe(document.querySelector('.wrap'));
+  window.addEventListener('resize', function () { requestAnimationFrame(function () { draw(); postHeight(); }); });
+  window.addEventListener('load', function () { draw(); postHeight(); });
+
+  setMotion(false);
+  draw(); postHeight();
+  try { parent.postMessage({ source: 'drift-specimen', type: 'ready' }, '*'); } catch (e) {}
+})();
+</script>
+</body>
+</html>

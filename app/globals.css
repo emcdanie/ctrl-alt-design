@@ -4335,6 +4335,16 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin-top: var(--spacing-2);
 }
 
+/* From Drift beat 01: the page controls that drive the drift specimen
+   embed (primary Reveal + secondary Before/On system). BELLA iris, in
+   the one control slot; wrap on narrow columns. */
+.drift-audit-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
 /* ── the pull quote as an editorial display moment (gate+pullquote
    spec, Elleta 23 Jul 2026): Unique on the page ground, black ink,
    her chosen words in the CASE identity accent (never iris), FLAT,
