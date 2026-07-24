@@ -61,7 +61,10 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>
-      <body className={`${geist.variable} ${unique.variable} antialiased`}>
+      {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla) inject
+          attributes like cz-shortcut-listen on <body> before hydration; this
+          silences that benign server/client attribute mismatch only */}
+      <body className={`${geist.variable} ${unique.variable} antialiased`} suppressHydrationWarning>
         <a href="#main-content" className="skip-link">Skip to content</a>
         <DevTools />
         <IconProvider>{children}</IconProvider>
