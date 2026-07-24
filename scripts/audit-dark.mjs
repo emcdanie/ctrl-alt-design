@@ -64,11 +64,14 @@ for (const ref of embeds) {
     continue;
   }
   try {
-    await page.goto(BASE + ref, { waitUntil: "networkidle", timeout: 30000 });
+    /* theme the artifact the way ScaledFrame now does: ?theme=dark on the
+       URL (the embed reads it on first paint), then set data-theme on the
+       root for embeds that only ship a data-theme / .dark hook */
+    const url = BASE + ref + (ref.includes("?") ? "&" : "?") + "theme=dark";
+    await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });
   } catch {
     fail(ref, "did not load", "a 200 render"); continue;
   }
-  /* set the site's dark theme the way the site does, on the artifact root */
   await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
   await page.waitForTimeout(250);
   const bg = await page.evaluate(() => {
@@ -82,9 +85,11 @@ for (const ref of embeds) {
     };
     return eff(document.body);
   });
+  /* threshold lowered 0.9 -> 0.75 so a warm parchment / cream background
+     (not just near-white) FAILS in dark; a real dark surface is far below */
   const lum = bgLuminance(bg);
-  if (lum !== null && lum > 0.9) {
-    fail(ref, `a near-white background in dark (${bg}, luminance ${lum.toFixed(2)})`, "a dark background (luminance <= 0.9) or a transparent one");
+  if (lum !== null && lum > 0.75) {
+    fail(ref, `a light background in dark (${bg}, luminance ${lum.toFixed(2)})`, "a dark background (luminance <= 0.75) or a transparent one");
   }
 }
 
