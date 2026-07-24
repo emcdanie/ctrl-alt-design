@@ -4335,6 +4335,16 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin-top: var(--spacing-2);
 }
 
+/* From Drift beat 01: the ctrl+travel recreation links sit under the
+   body copy (the specimen carries its own toggle, so the beat has no
+   control slot). A quiet row of tertiary demo links. */
+.drift-audit-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-5);
+  margin-top: var(--spacing-4);
+}
+
 /* ── the pull quote as an editorial display moment (gate+pullquote
    spec, Elleta 23 Jul 2026): Unique on the page ground, black ink,
    her chosen words in the CASE identity accent (never iris), FLAT,

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The drift specimen, beat 01</title>
+<style>
+  /* Recreated client surface for the From Drift audit beat, in the
+     CaseSpecimen annotation language: five annotated parts, callout flags
+     + curved leaders that land a dot on each. Renders already revealed;
+     the only control is the Before / On system toggle at the top-left.
+     The surface sits FLAT on the beat ground (transparent body and panel,
+     no card), so the artifact is theme-adaptive: text and accents are AA
+     on the case ground in light (#F5F4EF) and dark (#1B1B40).
+     COLOUR: the CLIENT's foreign product uses NO iris/periwinkle on the
+     surface or annotation. Steel product, muted-crimson drift labels,
+     muted-green agreement labels, graphite leaders, steel dots. Only the
+     toggle (control chrome) is iris. Min 16px readable body, no pure
+     white/black. Recreated and illustrative: no client name/email/logo.
+     Driven by the page via postMessage (theme mirror + height report). */
+  :root {
+    --ink: #1A1720; --ink-soft: #2E2937; --ink-muted: #453F52; --ink-faint: #5E5769;
+    --field: #FCFBF8; --line: #E1DCD3;
+    --card: #FBF8F2; --card-line: #E4E0D8;
+    --callout-bg: #FEFDFB; --callout-line: #E4E0D8;
+    --steel: #2F5C86; --steel-tint: #E5EBF1; --steel-on-tint: #294F76;
+    --flag: #A83A3A;     /* before labels, muted crimson */
+    --green: #1F5A40;    /* on-system labels, muted green agreement */
+    --lead: #8B93A1;     /* leaders, graphite */
+    --dot: #2F5C86;      /* dots, steel */
+    --dead: #A9A39C;     /* dead grey action icons */
+    --iris: #5B4BD1; --iris-on: #FFFFFF; --iris-tint: #ECE9FB;
+    color-scheme: light;
+  }
+  html[data-theme="dark"] {
+    --ink: #F1EDF5; --ink-soft: #DAD5E4; --ink-muted: #BCB5CB; --ink-faint: #ADA5C0;
+    --field: #2A2757; --line: #3E3E63;
+    --card: #232048; --card-line: #3C3A63;
+    --callout-bg: #2C2957; --callout-line: #423F6B;
+    --steel: #9DBBDD; --steel-tint: #2A2F52; --steel-on-tint: #BAD2EA;
+    --flag: #E79A92;
+    --green: #8ED0AA;
+    --lead: #7B7B9A;
+    --dot: #9DBBDD;
+    --dead: #6A6484;
+    --iris: #6B5FD6; --iris-on: #FFFFFF; --iris-tint: #2C2A50;
+    color-scheme: dark;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: transparent; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); line-height: 1.5; padding: 4px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* the stage is transparent: only the recreated product surface is a
+     card; the toggle, callouts and leaders sit OUTSIDE it on the beat
+     ground, with clear space to the surface */
+  .stage { display: flex; flex-direction: column; }
+
+  /* the ONE control: Before / On system, top-left on the ground (iris chrome) */
+  .stage-top { margin-bottom: 22px; }
+  .seg-toggle { display: inline-flex; background: var(--field); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
+  .seg-toggle button {
+    font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; border: none;
+    background: transparent; color: var(--ink-muted); padding: 6px 14px; border-radius: 7px; transition: background .18s ease, color .18s ease;
+  }
+  .seg-toggle button[aria-pressed="true"] { background: var(--iris); color: var(--iris-on); }
+  .seg-toggle button:focus-visible { outline: 3px solid var(--iris-tint); outline-offset: 2px; }
+
+  /* callouts inset from the card edges, wider gap = longer leaders,
+     no crowding (the no-cross rule holds: left column lands on the
+     part's left edge, right column on its right edge) */
+  .grid { position: relative; display: grid; grid-template-columns: 118px minmax(0, 1fr) 118px; column-gap: 28px; align-items: start; }
+  .col-l, .col-r { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .col-r { justify-content: flex-end; }
+
+  .leaders { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 3; }
+  .leaders path {
+    fill: none; stroke: var(--lead); stroke-width: 1.6; stroke-linecap: round;
+    stroke-dasharray: var(--len); stroke-dashoffset: var(--len); transition: stroke-dashoffset .6s ease;
+  }
+  .leaders circle.dot { fill: var(--dot); opacity: 0; transition: opacity .3s ease .5s; }
+  body.revealed .leaders path { stroke-dashoffset: 0; }
+  body.revealed .leaders circle { opacity: 1; }
+
+  /* the recreated product surface is THE card: warm bg, 18px radius, soft
+     shadow, generous padding, slightly larger. It sits on the beat ground;
+     the callouts + leaders flank it from outside, dots land on its parts */
+  .panel {
+    grid-column: 2; justify-self: center; width: 100%; max-width: 320px; min-width: 0;
+    background: var(--card); border: 1px solid var(--card-line); border-radius: 18px;
+    box-shadow: 0 1px 2px rgba(20,18,26,.04), 0 18px 40px -24px rgba(20,18,26,.26);
+    padding: 24px; z-index: 2;
+  }
+  html[data-theme="dark"] .panel { box-shadow: 0 1px 2px rgba(0,0,0,.4), 0 20px 44px -22px rgba(0,0,0,.6); }
+  .p-row { margin-bottom: 16px; }
+  .p-row:last-child { margin-bottom: 0; }
+  .p-ey { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 7px; font-weight: 600; }
+
+  /* status: BEFORE = a filled tag beside an outline pill (two systems) */
+  .p-badgewrap { display: flex; gap: 9px; align-items: center; flex-wrap: nowrap; }
+  .p-badge { display: inline-block; font-size: 13px; font-weight: 600; padding: 4px 11px; border-radius: 6px; white-space: nowrap; }
+  .p-badge.b-a { color: #fff; background: var(--steel); }
+  html[data-theme="dark"] .p-badge.b-a { color: #17151C; }
+  .p-badge.b-b { background: transparent; color: var(--steel-on-tint); border: 1px solid var(--steel); border-radius: 20px; text-transform: uppercase; font-size: 11px; letter-spacing: .05em; padding: 4px 11px; }
+  /* segmented select */
+  .p-seg { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: var(--field); max-width: 100%; }
+  .p-seg span { font-size: 12px; padding: 7px 9px; color: var(--ink-muted); white-space: nowrap; }
+  .p-seg .on { background: var(--steel); color: #fff; }
+  html[data-theme="dark"] .p-seg .on { color: #17151C; }
+  /* chips: BEFORE = mismatched */
+  .p-chips { display: flex; gap: 8px; }
+  .p-chip { font-size: 13px; padding: 6px 11px; border-radius: 7px; background: var(--steel-tint); color: var(--steel-on-tint); display: inline-flex; align-items: center; gap: 6px; }
+  .p-chip.x::after { content: "\00d7"; opacity: .6; }
+  .p-chip.c-alt { background: transparent; box-shadow: inset 0 0 0 1px var(--steel); border-radius: 16px; }
+  /* actions: BEFORE = dead grey icons; ON SYSTEM = text links */
+  .p-actionrow { display: flex; align-items: center; height: 30px; }
+  .act-before { display: inline-flex; gap: 16px; align-items: center; }
+  .p-ico { font-size: 17px; color: var(--dead); line-height: 1; }
+  .act-system { display: none; gap: 18px; align-items: center; }
+  .act-system a { color: var(--steel); font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: default; }
+  /* primary button */
+  .p-btn { width: 100%; font: inherit; font-size: 15px; font-weight: 650; color: #fff; background: var(--steel); border: none; border-radius: 10px; padding: 12px; cursor: default; }
+  html[data-theme="dark"] .p-btn { color: #17151C; }
+
+  /* ON SYSTEM: the surface RESOLVES to one consistent, legible set */
+  body[data-mode="system"] .p-badge.b-a,
+  body[data-mode="system"] .p-badge.b-b {
+    background: var(--steel-tint); color: var(--steel-on-tint); border: none; border-radius: 6px;
+    text-transform: none; font-size: 13px; letter-spacing: 0; font-weight: 600; padding: 4px 11px;
+  }
+  body[data-mode="system"] .p-chip,
+  body[data-mode="system"] .p-chip.c-alt {
+    background: var(--steel-tint); color: var(--steel-on-tint); box-shadow: none; border-radius: 7px;
+  }
+  body[data-mode="system"] .act-before { display: none; }
+  body[data-mode="system"] .act-system { display: inline-flex; }
+
+  /* ---- callouts ---- */
+  .callout {
+    width: 100%; background: var(--callout-bg); border: 1px solid var(--callout-line);
+    border-radius: 12px; padding: 11px 13px; z-index: 4;
+    box-shadow: 0 6px 18px -12px rgba(20,18,26,.4);
+    opacity: 0; transform: translateY(8px); transition: opacity .4s ease, transform .4s ease;
+  }
+  body.revealed .callout { opacity: 1; transform: none; }
+  .callout .c-head { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .callout .c-sw { width: 15px; height: 15px; border-radius: 4px; flex: none; background: var(--steel); }
+  .callout .c-sw.round { border-radius: 50%; background: var(--dead); }
+  .callout .c-part { font-size: 12px; letter-spacing: .09em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); }
+  .callout .c-val { font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace; font-size: 15px; font-weight: 600; line-height: 1.35; }
+  body[data-mode="before"] .callout .c-val { color: var(--flag); }
+  body[data-mode="system"] .callout .c-val { color: var(--green); }
+  .callout .c-note { font-size: 13px; color: var(--ink-faint); margin-top: 3px; }
+  body[data-mode="system"] .callout .c-note { display: none; }
+
+  body.revealed .co-badge { transition-delay: .04s; }
+  body.revealed .co-select { transition-delay: .12s; }
+  body.revealed .co-chip { transition-delay: .20s; }
+  body.revealed .co-actions { transition-delay: .28s; }
+  body.revealed .co-button { transition-delay: .36s; }
+  body.revealed [data-lead="select"] { transition-delay: .10s; }
+  body.revealed [data-lead="chip"] { transition-delay: .18s; }
+  body.revealed [data-lead="actions"] { transition-delay: .26s; }
+  body.revealed [data-lead="button"] { transition-delay: .34s; }
+
+  .foot {
+    margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--line);
+    font-size: 14px; letter-spacing: .05em; text-transform: uppercase; font-weight: 600; color: var(--ink-muted);
+  }
+  body[data-mode="system"] .foot { color: var(--green); }
+  .foot .illus { display: block; text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink-faint); margin-top: 6px; font-size: 13px; }
+  body.embed .foot .illus { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .leaders path { transition: none; stroke-dashoffset: 0; }
+    .leaders circle { transition: none; }
+    .callout { transition: none; }
+    body.revealed [data-lead], body.revealed .callout { transition-delay: 0s !important; }
+  }
+  body.no-motion .leaders path { transition: none; stroke-dashoffset: 0; }
+  body.no-motion .leaders circle { transition: none; }
+  body.no-motion .callout { transition: none; }
+  body.no-motion.revealed [data-lead], body.no-motion.revealed .callout { transition-delay: 0s !important; }
+
+  /* mobile: one column, panel first, callouts as a labelled list below;
+     leaders don't apply to a stacked layout, so they hide */
+  @media (max-width: 480px) {
+    .grid { grid-template-columns: 1fr; row-gap: 12px; }
+    .col-l, .col-r { gap: 12px; }
+    .panel { grid-column: 1; grid-row: 1; max-width: none; }
+    .col-l { grid-column: 1; grid-row: 2; }
+    .col-r { grid-column: 1; grid-row: 3; justify-content: flex-start; }
+    .leaders { display: none; }
+    .callout { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body data-mode="before">
+<div class="stage" id="stage">
+  <div class="stage-top">
+    <div class="seg-toggle" role="group" aria-label="Surface state">
+      <button id="m-before" aria-pressed="true">Before</button>
+      <button id="m-system" aria-pressed="false">On system</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid">
+    <svg class="leaders" id="leaders" aria-hidden="true"></svg>
+
+    <div class="col-l">
+      <div class="callout co-badge" data-anchor="badge">
+        <div class="c-head"><span class="c-sw round"></span><span class="c-part">Status</span></div>
+        <div class="c-val" data-before="state, or button?" data-system="--status-tag">state, or button?</div>
+        <div class="c-note">a filled tag beside an outline pill</div>
+      </div>
+      <div class="callout co-select" data-anchor="select">
+        <div class="c-head"><span class="c-sw"></span><span class="c-part">Selected</span></div>
+        <div class="c-val" data-before="selected, or just filled?" data-system="--control-selected">selected, or just filled?</div>
+        <div class="c-note">two controls, two answers</div>
+      </div>
+      <div class="callout co-chip" data-anchor="chip">
+        <div class="c-head"><span class="c-sw"></span><span class="c-part">Chip</span></div>
+        <div class="c-val" data-before="looks clickable, isn't" data-system="--chip-filter">looks clickable, isn't</div>
+        <div class="c-note">filter, or just a tag?</div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel">
+      <div class="p-row">
+        <div class="p-ey">Status</div>
+        <div class="p-badgewrap">
+          <span class="p-badge b-a" data-part="badge">Confirmed</span>
+          <span class="p-badge b-b">In progress</span>
+        </div>
+      </div>
+      <div class="p-row">
+        <div class="p-ey">Trip type</div>
+        <div class="p-seg"><span class="on" data-part="select">Round trip</span><span>One way</span><span>Multi-city</span></div>
+      </div>
+      <div class="p-row">
+        <div class="p-ey">Filters</div>
+        <div class="p-chips"><span class="p-chip x" data-part="chip">Direct</span><span class="p-chip c-alt">Refundable</span></div>
+      </div>
+      <div class="p-row">
+        <div class="p-ey">Actions</div>
+        <div class="p-actionrow" data-part="actions"><span class="act-before"><span class="p-ico">&#9993;</span><span class="p-ico">&#9998;</span><span class="p-ico">&#128465;</span></span><span class="act-system"><a>Edit</a><a>Delete</a></span></div>
+      </div>
+      <div class="p-row"><button class="p-btn" data-part="button" tabindex="-1">Search</button></div>
+    </div>
+
+    <div class="col-r">
+      <div class="callout co-actions" data-anchor="actions">
+        <div class="c-head"><span class="c-sw round"></span><span class="c-part">Actions</span></div>
+        <div class="c-val" data-before="icons, no affordance" data-system="--action-link">icons, no affordance</div>
+        <div class="c-note">can you click these?</div>
+      </div>
+      <div class="callout co-button" data-anchor="button">
+        <div class="c-head"><span class="c-sw"></span><span class="c-part">Button</span></div>
+        <div class="c-val" data-before="17 styles, none says primary" data-system="--btn-primary">17 styles, none says primary</div>
+        <div class="c-note">where the audit started</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot" id="foot">
+    Before: parts that do not agree, and no way to tell what is clickable
+    <span class="illus">Recreated concept, illustrative. A B2B travel platform, abstracted; no confidential data shown.</span>
+  </div>
+</div>
+
+<script>
+(function () {
+  var body = document.body, grid = document.getElementById('grid'),
+      svg = document.getElementById('leaders'), panel = document.getElementById('panel'),
+      mBefore = document.getElementById('m-before'), mSystem = document.getElementById('m-system'),
+      foot = document.getElementById('foot'), root = document.documentElement;
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var params = new URLSearchParams(location.search);
+  if (params.get('embed') === '1') body.classList.add('embed');
+  var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if (reduce) body.classList.add('no-motion');
+
+  function draw() {
+    var sb = grid.getBoundingClientRect();
+    if (!sb.width) return;
+    svg.setAttribute('viewBox', '0 0 ' + sb.width + ' ' + sb.height);
+    var nodes = [];
+    grid.querySelectorAll('.callout').forEach(function (co) {
+      var partName = co.getAttribute('data-anchor');
+      var part = panel.querySelector('[data-part="' + partName + '"]');
+      if (!part) return;
+      var cr = co.getBoundingClientRect(), pr = part.getBoundingClientRect();
+      var pcx = pr.left + pr.width / 2;
+      /* left/right column layout: left callouts land on the part's left
+         edge, right callouts on its right edge, at the callout's own y
+         clamped into the part height. Each column keeps to its own side,
+         so no leader crosses another or the surface twice. */
+      var isLeft = (cr.left + cr.width / 2) < pcx;
+      var x1 = (isLeft ? cr.right : cr.left) - sb.left;
+      var y1 = cr.top + cr.height / 2 - sb.top;
+      var x2 = (isLeft ? pr.left + 3 : pr.right - 3) - sb.left;
+      var y2 = Math.min(pr.bottom - 4, Math.max(pr.top + 4, cr.top + cr.height / 2)) - sb.top;
+      var bx = (x2 - x1) * 0.5;
+      var path = document.createElementNS(SVGNS, 'path');
+      path.setAttribute('d', 'M' + x1 + ',' + y1 + ' C' + (x1 + bx) + ',' + y1 + ' ' + (x2 - bx) + ',' + y2 + ' ' + x2 + ',' + y2);
+      path.setAttribute('data-lead', partName);
+      var len = Math.ceil(path.getTotalLength());
+      path.style.setProperty('--len', len);
+      nodes.push(path);
+      var dot = document.createElementNS(SVGNS, 'circle');
+      dot.setAttribute('cx', x2); dot.setAttribute('cy', y2); dot.setAttribute('r', '3.5'); dot.setAttribute('class', 'dot');
+      nodes.push(dot);
+    });
+    svg.replaceChildren.apply(svg, nodes);
+  }
+
+  function postHeight() {
+    var h = Math.ceil(document.querySelector('.stage').getBoundingClientRect().height) + 16;
+    try { parent.postMessage({ source: 'drift-specimen', type: 'height', px: h }, '*'); } catch (e) {}
+  }
+
+  function afterChange() {
+    requestAnimationFrame(function () { draw(); postHeight(); });
+    setTimeout(function () { draw(); postHeight(); }, 260);
+  }
+
+  function setMode(mode) {
+    mode = (mode === 'system') ? 'system' : 'before';
+    body.setAttribute('data-mode', mode);
+    mBefore.setAttribute('aria-pressed', String(mode === 'before'));
+    mSystem.setAttribute('aria-pressed', String(mode === 'system'));
+    grid.querySelectorAll('.c-val').forEach(function (v) {
+      v.textContent = v.getAttribute(mode === 'before' ? 'data-before' : 'data-system');
+    });
+    foot.childNodes[0].nodeValue = (mode === 'before')
+      ? 'Before: parts that do not agree, and no way to tell what is clickable '
+      : 'On system: one set of rules, every element says what it does ';
+    afterChange();
+  }
+
+  function setTheme(t) { root.setAttribute('data-theme', (t === 'dark') ? 'dark' : 'light'); afterChange(); }
+
+  mBefore.addEventListener('click', function () { setMode('before'); });
+  mSystem.addEventListener('click', function () { setMode('system'); });
+
+  window.addEventListener('message', function (e) {
+    var d = e.data || {};
+    if (d.target !== 'drift-specimen') return;
+    if (d.type === 'theme') { setTheme(d.theme); postHeight(); }
+  });
+
+  var ro = new ResizeObserver(function () { requestAnimationFrame(function () { draw(); postHeight(); }); });
+  ro.observe(document.querySelector('.stage'));
+  window.addEventListener('resize', function () { requestAnimationFrame(function () { draw(); postHeight(); }); });
+  window.addEventListener('load', function () { draw(); postHeight(); });
+
+  setMode('before');
+  draw(); postHeight();
+  /* render revealed: one-time draw-in (immediate under reduced motion) */
+  requestAnimationFrame(function () { body.classList.add('revealed'); postHeight(); });
+  try { parent.postMessage({ source: 'drift-specimen', type: 'ready' }, '*'); } catch (e) {}
+})();
+</script>
+</body>
+</html>
