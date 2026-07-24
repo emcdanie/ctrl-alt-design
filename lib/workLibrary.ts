@@ -116,7 +116,13 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "drift",
     medium: "case study",
-    cover: "/images/thumbnails/ds-audit-thumb.svg",
+    /* Cover = a steel crop of the beat-01 audit specimen (the "everything
+       drifted" surface): near-identical component pills off the baseline,
+       audit markers flagging the drift. Steel (the recreated client's
+       foreign palette, not Elleta's iris) and mid/deep toned so it reads on
+       both card grounds without flaring white in dark. Abstract, no client
+       data. Supersedes ds-audit-thumb.svg (light-only, red marks). */
+    cover: "/images/thumbnails/drift-audit-cover.svg",
     rank: 1,
     title: "From Drift to Foundation",
     bubbleLabel: "Drift to|Foundation",
