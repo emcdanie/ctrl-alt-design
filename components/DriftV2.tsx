@@ -137,7 +137,7 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
         headline={d2?.title ?? ""}
         keyline={d2?.why}
         id="drift-b2"
-        flip
+        full
         body={
           <>
             <Scannable

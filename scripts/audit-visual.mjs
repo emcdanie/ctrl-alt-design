@@ -498,9 +498,16 @@ for (const theme of ["light", "dark"]) {
         } else {
           out.push(`beat missing its visual: ${label}`);
         }
-        const flip = beat.classList.contains("beat--flip");
-        if (prevFlip !== null && flip === prevFlip) out.push(`two consecutive beats on the same side: ${label}`);
-        prevFlip = flip;
+        /* a .beat--full is a sanctioned full-width moment (Elleta, 24 Jul):
+           it has no side, so it RESETS the sided rhythm rather than
+           clashing with its neighbours */
+        if (beat.classList.contains("beat--full")) {
+          prevFlip = null;
+        } else {
+          const flip = beat.classList.contains("beat--flip");
+          if (prevFlip !== null && flip === prevFlip) out.push(`two consecutive beats on the same side: ${label}`);
+          prevFlip = flip;
+        }
       }
       if (!beats.length) out.push("no beat sections found (template not rendering)");
       /* the takeaway-band card exception, held tight: a thesis card

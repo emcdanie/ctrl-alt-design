@@ -45,13 +45,9 @@
   }
   .mono { font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace; }
 
-  /* the whole widget is ONE card on the beat ground */
-  .card {
-    background: var(--card); border: 1px solid var(--card-line); border-radius: 18px;
-    padding: 22px 22px 24px;
-    box-shadow: 0 1px 2px rgba(20,18,26,.04), 0 18px 40px -24px rgba(20,18,26,.26);
-  }
-  html[data-theme="dark"] .card { box-shadow: 0 1px 2px rgba(0,0,0,.4), 0 20px 44px -22px rgba(0,0,0,.6); }
+  /* no card: controls, pipeline and code sit directly on the beat ground
+     (the code block keeps its own quiet surface) */
+  .card { background: transparent; border: none; border-radius: 0; padding: 0; }
 
   /* controls row */
   .ctl { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
@@ -105,8 +101,9 @@
   .foot { margin-top: 12px; font-size: 13px; color: var(--ink-faint); font-style: italic; }
   body.embed .foot { display: none; }
 
-  /* stack vertical on the narrow beat column (and mobile) */
-  @media (max-width: 680px) {
+  /* full-width lets the pipeline read left to right; stack vertical only
+     on mobile (~560px and below) */
+  @media (max-width: 560px) {
     .pipeline-row { flex-direction: column; align-items: stretch; gap: 4px; }
     .conn-h { flex-direction: row; align-self: flex-start; gap: 8px; padding: 4px 0 4px 8px; }
     .conn-h .arrow { transform: rotate(90deg); }
@@ -181,14 +178,12 @@
 
   function renderCode() {
     var compLine = state.broken
-      ? '.button { background: <span class="bad">' + state.frozen + '</span>; } <span class="cm">/* hardcoded */</span>'
-      : '.button { background: <span class="val">var(--action)</span>; }';
+      ? '.button { background: <span class="bad">' + state.frozen + '</span>; } <span class="cm">/* component, hardcoded */</span>'
+      : '.button { background: <span class="val">var(--action)</span>; } <span class="cm">/* component */</span>';
     code.innerHTML =
-      '<span class="cm">/* foundation */</span>\n' +
-      '<span class="tok">--brand-600</span>: <span class="val">' + state.hex + '</span>;\n\n' +
-      '<span class="cm">/* semantic, references the foundation */</span>\n' +
-      '<span class="tok">--action</span>: <span class="val">var(--brand-600)</span>;\n\n' +
-      '<span class="cm">/* component */</span>\n' + compLine;
+      '<span class="tok">--brand-600</span>: <span class="val">' + state.hex + '</span>; <span class="cm">/* foundation */</span>\n' +
+      '<span class="tok">--action</span>: <span class="val">var(--brand-600)</span>; <span class="cm">/* semantic, references the foundation */</span>\n' +
+      compLine;
   }
   function render() {
     root.style.setProperty('--brand', state.hex);
