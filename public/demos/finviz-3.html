@@ -577,5 +577,5 @@ document.getElementById("sysToggle").onclick=()=>{
   sys.style.display=on?"block":"none"; wrap.style.display=on?"none":"grid"; b.classList.toggle("on",on);
 };
 </script>
-</body>
+<script>/* dark: follow the site theme (postMessage) or the OS */(function(){var el=document.documentElement,locked=false;function apply(t){el.setAttribute("data-theme",t==="dark"?"dark":"light");}var mq;try{mq=matchMedia("(prefers-color-scheme:dark)");}catch(e){}if(mq){apply(mq.matches?"dark":"light");if(mq.addEventListener)mq.addEventListener("change",function(e){if(!locked)apply(e.matches?"dark":"light");});}addEventListener("message",function(e){var d=e.data||{};if(d&&d.type==="theme"){locked=true;apply(d.theme);}});})();</script></body>
 </html>

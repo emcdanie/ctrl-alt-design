@@ -389,5 +389,13 @@ function showState(state) {
 render("before");
 </script>
 
+<script>/* dark: follow the site theme (postMessage) or the OS */(function(){var el=document.documentElement,locked=false;function apply(t){el.setAttribute("data-theme",t==="dark"?"dark":"light");}var mq;try{mq=matchMedia("(prefers-color-scheme:dark)");}catch(e){}if(mq){apply(mq.matches?"dark":"light");if(mq.addEventListener)mq.addEventListener("change",function(e){if(!locked)apply(e.matches?"dark":"light");});}addEventListener("message",function(e){var d=e.data||{};if(d&&d.type==="theme"){locked=true;apply(d.theme);}});})();</script><style>/* dark skin (audit:dark) */
+html[data-theme="dark"] body{background:#15151C;color:#F0ECF4}
+html[data-theme="dark"] .header h1{color:#F0ECF4}
+html[data-theme="dark"] .header p,html[data-theme="dark"] .group-score-label{color:#B0AABE}
+html[data-theme="dark"] .group-title,html[data-theme="dark"] .score-label{color:#948DA6}
+html[data-theme="dark"] .header .label{color:#4FD1C5}
+html[data-theme="dark"] .scale-row,html[data-theme="dark"] .toggle-btn{background:#1F1E29;border-color:#302E3C;color:#D6D1E0}
+html[data-theme="dark"] .overall-strip{background:#232230}</style>
 </body>
 </html>

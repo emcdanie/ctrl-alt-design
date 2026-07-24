@@ -210,5 +210,12 @@
     '<div class="divider"></div><div class="gscores">' + gs + '</div>';
 </script>
 
+<script>/* dark: follow the site theme (postMessage) or the OS */(function(){var el=document.documentElement,locked=false;function apply(t){el.setAttribute("data-theme",t==="dark"?"dark":"light");}var mq;try{mq=matchMedia("(prefers-color-scheme:dark)");}catch(e){}if(mq){apply(mq.matches?"dark":"light");if(mq.addEventListener)mq.addEventListener("change",function(e){if(!locked)apply(e.matches?"dark":"light");});}addEventListener("message",function(e){var d=e.data||{};if(d&&d.type==="theme"){locked=true;apply(d.theme);}});})();</script><style>/* dark skin: neutrals flip, accents lift for AA on the dark card */
+html[data-theme="dark"]{
+  --bg:#15151C; --card:#1F1E29; --ink:#F1EDF5; --ink-soft:#BCB6C8; --ink-faint:#948DA6;
+  --line:#34313F; --track:#2A2733; --before:#4C4858;
+  --foundation:#4FD1C5; --growth:#B79BF5; --roi:#7EA8F5;
+}
+</style>
 </body>
 </html>

@@ -635,5 +635,10 @@
             Recreated concept, not actual product UI
         </div>
     </div>
+<script>/* dark: follow the site theme (postMessage) or the OS */(function(){var el=document.documentElement,locked=false;function apply(t){el.setAttribute("data-theme",t==="dark"?"dark":"light");}var mq;try{mq=matchMedia("(prefers-color-scheme:dark)");}catch(e){}if(mq){apply(mq.matches?"dark":"light");if(mq.addEventListener)mq.addEventListener("change",function(e){if(!locked)apply(e.matches?"dark":"light");});}addEventListener("message",function(e){var d=e.data||{};if(d&&d.type==="theme"){locked=true;apply(d.theme);}});})();</script><style>/* dark skin (audit:dark) */
+html[data-theme="dark"] body{background:#141319;color:#EDE9F2}
+html[data-theme="dark"] .filters-panel,html[data-theme="dark"] .flight-card,html[data-theme="dark"] .more-filters-section{background-color:#1F1E29;color:#EDE9F2}
+html[data-theme="dark"] .header h1,html[data-theme="dark"] .filter-label,html[data-theme="dark"] .checkbox-label,html[data-theme="dark"] .sort-control label{color:#EDE9F2}
+html[data-theme="dark"] .header p,html[data-theme="dark"] .detail-label{color:#B0AABE}</style>
 </body>
 </html>

@@ -1504,5 +1504,12 @@ document.addEventListener('DOMContentLoaded',()=>{
   },800);
 });
 </script>
+<script>/* dark: follow the site theme (postMessage) or the OS */(function(){var el=document.documentElement,locked=false;function apply(t){el.setAttribute("data-theme",t==="dark"?"dark":"light");}var mq;try{mq=matchMedia("(prefers-color-scheme:dark)");}catch(e){}if(mq){apply(mq.matches?"dark":"light");if(mq.addEventListener)mq.addEventListener("change",function(e){if(!locked)apply(e.matches?"dark":"light");});}addEventListener("message",function(e){var d=e.data||{};if(d&&d.type==="theme"){locked=true;apply(d.theme);}});})();</script><style>/* dark skin (audit:dark) */
+html[data-theme="dark"]{--bg:#121218;--bg2:#181820;--surface:#1F1E29;--text:#EDE9F2;--text2:#B8B2C4;--text3:#948DA6;--text4:#6E6880;--border:#302E3C;--border2:#3A3846;--green:#7FCFA0;--green-s:#17301F;--amber:#E0B060;--amber-s:#2E2614;--red:#E79A92;--red-s:#331F1D;--purple:#B79BF5;--purple-s:#241F38;--teal:#5FC5D8;--teal-s:#123033;--shadow:0 2px 12px rgba(0,0,0,.45);--shadow-lg:0 8px 32px rgba(0,0,0,.6)}
+html[data-theme="dark"] body{background:#121218;color:#EDE9F2}</style>
+<style>/* dark skin patch: blue tints + inputs */
+html[data-theme="dark"]{--blue:#5B8FE0;--blue-dark:#7AA5E8;--blue-subtle:#1B2C4A;--blue-mid:#2C466D}
+html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea{background:#1F1E29;color:#EDE9F2;border-color:#3A3846}
+html[data-theme="dark"] input::placeholder,html[data-theme="dark"] textarea::placeholder{color:#8A84A0}</style>
 </body>
 </html>

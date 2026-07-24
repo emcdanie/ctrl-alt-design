@@ -1193,5 +1193,8 @@ function showToast(msg) {
 }
 </script>
 
+<script>/* dark: follow the site theme (postMessage) or the OS */(function(){var el=document.documentElement,locked=false;function apply(t){el.setAttribute("data-theme",t==="dark"?"dark":"light");}var mq;try{mq=matchMedia("(prefers-color-scheme:dark)");}catch(e){}if(mq){apply(mq.matches?"dark":"light");if(mq.addEventListener)mq.addEventListener("change",function(e){if(!locked)apply(e.matches?"dark":"light");});}addEventListener("message",function(e){var d=e.data||{};if(d&&d.type==="theme"){locked=true;apply(d.theme);}});})();</script><style>/* dark skin (audit:dark) */
+html[data-theme="dark"]{--canvas-bg:#15151C;--surface:#1F1E29}
+html[data-theme="dark"] body{background:#15151C;color:#E8E6F0}</style>
 </body>
 </html>
