@@ -9,9 +9,10 @@
  * colour with --cc (see Card.tsx `accent`). */
 
 /* The travelling trace ring is the SHARED .trace-host recipe in
-   globals.css (Pass E task 2, one implementation) — the Card only
-   sets its geometry defaults (22px / 3px match the shared defaults)
-   and the identity colour via --cc. */
+   globals.css (Pass E task 2, one implementation) — the ring inherits
+   this card's border-radius, so the 22px below is the single source of
+   the corner. The Card only sets its radius, the 3px ring reserve, and
+   the identity colour via --cc. */
 .card {
   position: relative;
   border-radius: 22px;
