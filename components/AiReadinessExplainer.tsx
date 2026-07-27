@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import SectionHeader from "@/components/ui/SectionHeader";
 
 /**
  * AI-readiness explainer (rebuilt from
@@ -56,13 +55,15 @@ export default function AiReadinessExplainer() {
   const points = AUDIT_POINTS.filter((p) => p.trim() !== "");
 
   return (
-    <section className="ds-section" aria-labelledby="ds-ai-readiness">
-      <SectionHeader
-        label="AI readiness"
-        id="ds-ai-readiness"
-        title="Into your system, or around it?"
-        className="ds-section__header"
-      />
+    /* SUBSECTION, not a landmark (27 Jul): the explainer now lives
+       inside the maturity section as its framework caption. Two nested
+       named <section> landmarks fail axe landmark-unique, and a second
+       display heading would compete with the parent. A div plus the
+       shared .heading-item sub-head is the right tier here. */
+    <div className="ds-subsection">
+      <h3 id="ds-ai-readiness" className="heading-item ds-shelf__subhead">
+        Into your system, or around it?
+      </h3>
       <div ref={ref} className={`air${inView ? " in" : ""}`}>
         <svg
           className="air-stage"
@@ -128,6 +129,6 @@ export default function AiReadinessExplainer() {
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
 }

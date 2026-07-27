@@ -1,4 +1,3 @@
-import Card from "@/components/ui/Card";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 /**
@@ -110,13 +109,23 @@ export default function BellaMaturityMap({ auditCount }: { auditCount: number })
         <ul className="bmm-list">
           {axes(auditCount).map((a) => (
             <li key={a.name} className="bmm-list__item">
-              <Card className="h-full" innerClassName="ds-card__inner bmm-axis">
+              {/* ON THE GROUND, not in a card (spec item 4, 27 Jul):
+                  these rows are prose plus a chart, not an inspectable
+                  specimen, so they lose the card and gain a rule. */}
+              <div className="bmm-axis">
                 <div className="bmm-axis__top">
                   <h3 className="heading-item" style={{ margin: 0 }}>
                     {a.name}
                   </h3>
                   <span className={`bmm-badge bmm-badge--${a.stage}`}>
                     {STAGE_LABELS[a.stage]}
+                  </span>
+                  {/* the explicit you-are-here marker (spec item 4): the
+                      current stage is named in TEXT beside the axis, so
+                      position is never the only signal. It sits on the
+                      section ground, not on a coloured track step. */}
+                  <span className="bmm-track__here">
+                    You are here: stage {a.steps} of {STEPS_TOTAL}
                   </span>
                 </div>
                 <div
@@ -131,6 +140,7 @@ export default function BellaMaturityMap({ auditCount }: { auditCount: number })
                         "bmm-track__step",
                         i < a.steps ? "bmm-track__step--on" : "",
                         i < a.steps && a.frontier ? "bmm-track__step--frontier" : "",
+                        i === a.steps - 1 ? "bmm-track__step--here" : "",
                       ]
                         .filter(Boolean)
                         .join(" ")}
@@ -138,10 +148,10 @@ export default function BellaMaturityMap({ auditCount }: { auditCount: number })
                     />
                   ))}
                 </div>
-                <p className="ds-section__note" style={{ margin: 0 }}>
+                <p className="ds-section__note bmm-axis__why" style={{ margin: 0 }}>
                   {a.rationale}
                 </p>
-              </Card>
+              </div>
             </li>
           ))}
         </ul>

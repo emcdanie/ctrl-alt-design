@@ -16,19 +16,19 @@ import { useEffect, useState } from "react";
    voice; every slot is TODO(elleta) and renders NOTHING while empty.
    COUNT NOTE: the brief said "all ten"; the map has NINE sections.
    The tenth is hers to name if the count was literal. */
+/* SIX-SECTION SPINE (spec system-page-redesign section J, 27 Jul
+   2026). Was eleven entries for eleven bands; the page now reads as
+   six movements in inverted-pyramid order, strongest proof first. The
+   nine retired band ids survive as live anchors on their new parent
+   sections, so every deep link that ever pointed at them still
+   resolves. */
 const SECTIONS = [
-  /* the lead proof leads the map too (spec system-page-redesign) */
+  { id: "ds-open", label: "Overview", desc: "" /* TODO(elleta) */ },
   { id: "ds-pipeline", label: "Pipeline", desc: "" /* TODO(elleta) */ },
-  { id: "ds-identity", label: "Identity", desc: "" /* TODO(elleta) */ },
-  { id: "ds-type", label: "Type", desc: "" /* TODO(elleta) */ },
-  { id: "ds-colour", label: "Colour", desc: "" /* TODO(elleta) */ },
-  { id: "ds-scales", label: "Spacing", desc: "" /* TODO(elleta) */ },
-  { id: "ds-controls", label: "Controls", desc: "" /* TODO(elleta) */ },
-  { id: "ds-ai-readiness", label: "AI readiness", desc: "" /* TODO(elleta) */ },
-  { id: "ds-maturity", label: "Maturity", desc: "" /* TODO(elleta) */ },
-  { id: "ds-agents", label: "Agents", desc: "" /* TODO(elleta) */ },
-  { id: "ds-rules", label: "Rules", desc: "" /* TODO(elleta) */ },
   { id: "ds-gate", label: "Gate", desc: "" /* TODO(elleta) */ },
+  { id: "ds-maturity", label: "Maturity", desc: "" /* TODO(elleta) */ },
+  { id: "ds-specimens", label: "The parts", desc: "" /* TODO(elleta) */ },
+  { id: "ds-close", label: "Rules", desc: "" /* TODO(elleta) */ },
 ] as const;
 
 export default function DesignSystemNav() {

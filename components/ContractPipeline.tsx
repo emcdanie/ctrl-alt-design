@@ -2,38 +2,54 @@
 
 import { useCallback, useEffect, useId, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { StatusPill } from "@/components/ui/StatusPill";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { dtcgToken, contrastRatio, toHex, parseRgb } from "@/lib/bella/dtcg";
 
 /**
- * The governed pipeline (spec system-page-redesign, 27 Jul 2026): the
- * page's LEAD PROOF, and the reason the redesign exists. Three linked
- * stages that a visitor operates rather than reads:
+ * The governed pipeline (spec system-page-redesign; v2 visual pass to
+ * _proto/pipeline-instrument-v2.html, 27 Jul 2026). The page's LEAD
+ * PROOF: three linked stages a visitor OPERATES rather than reads.
  *
  *   SOURCE   nudge a real token, the specimen restyles immediately
  *   MANIFEST the DTCG entry recomputes through dtcgToken(), the SAME
  *            function /api/bella.json runs (lib/bella/dtcg.ts)
  *   REFUSAL  the contrast ratio is computed HERE, in the browser, with
- *            the same relative-luminance maths the gate runs, and
- *            judged against AAA 7:1. When it fails, it really failed.
+ *            the same relative-luminance maths the gate runs, judged
+ *            against AAA 7 to 1. When it fails, it really failed.
  *
- * Nothing here is a recorded string pretending to be live. The two
- * computations that can honestly run in a browser do run; no check that
- * needs the filesystem is shown as having run (design.md 10.3).
+ * v2 adds the glance layer the prose version lacked: a FLOW STRIP that
+ * states the whole pipeline in three words plus a live verdict,
+ * CHEVRONS so the three cards read as one pipeline rather than three
+ * boxes, and a VALUE CHIP in steps 01 and 02 so the same hex is seen
+ * travelling from source into the manifest. Each column leads with a
+ * bold keyline and ONE line of prose; the ratio is the largest thing
+ * in step 03.
  *
- * Degradation: every stage renders its explanation as real text before
- * any interaction and without JavaScript, so a 30-second scanner who
- * never touches the control still gets the argument. Reduced motion
- * removes transitions only. The verdict is announced through a live
+ * Honesty is unchanged: nothing here is a recording. No check that
+ * needs the filesystem is shown as having run.
+ *
+ * Degradation: every stage renders real text before any interaction
+ * and without JavaScript, so a 30-second scanner who never touches the
+ * control still gets the argument. The flow strip is decorative and
+ * aria-hidden; the real verdict is announced from step 03's live
  * region and always carries a text label, never colour alone.
  */
 
-/* how far the ink is allowed to travel toward the ground, as a
-   percentage. 0 is the shipped token; the top of the range is far
-   enough that the ratio genuinely crosses the AAA threshold. */
 const MAX_DRIFT = 80;
 const AAA_NORMAL = 7;
+
+/* decorative stroke glyphs, matching the approved proto. aria-hidden:
+   the strip duplicates text that already lives in the cards. */
+const Glyph = ({ d }: { d: string }) => (
+  <svg className="ds-flow__svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d={d} />
+  </svg>
+);
+const PENCIL = "M4 20l4-1L20 7l-3-3L5 16l-1 4z";
+const BRACES = "M8 4L3 12l5 8M16 4l5 8-5 8";
+const SHIELD = "M12 3l7 3v5c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z";
+const ARROW = "M4 12h15m-5-5l5 5-5 5";
+const CHEVRON = "M8 5l7 7-7 7";
 
 export default function ContractPipeline() {
   const sliderId = useId();
@@ -41,17 +57,13 @@ export default function ContractPipeline() {
   const [ink, setInk] = useState<[number, number, number] | null>(null);
   const [ground, setGround] = useState<[number, number, number] | null>(null);
 
-  /* read the REAL resolved colours off the running stylesheet, and
-     re-read them when the theme flips, so the instrument is measuring
-     the site rather than a copy of it */
   const read = useCallback(() => {
     const probe = document.createElement("span");
     probe.style.display = "none";
     document.body.appendChild(probe);
     const resolve = (token: string): [number, number, number] | null => {
       probe.style.color = `var(${token})`;
-      const v = getComputedStyle(probe).color;
-      return parseRgb(v);
+      return parseRgb(getComputedStyle(probe).color);
     };
     setInk(resolve("--color-ink-soft"));
     setGround(resolve("--color-card"));
@@ -59,10 +71,8 @@ export default function ContractPipeline() {
   }, []);
 
   useEffect(() => {
-    /* the first read is deferred to the next frame rather than run in
-       the effect body: computed styles are only settled after paint,
-       and a synchronous setState here would cascade a render (the
-       react-hooks/set-state-in-effect rule) */
+    /* deferred to the next frame: computed styles settle after paint,
+       and a synchronous setState here would cascade a render */
     const raf = requestAnimationFrame(read);
     const mo = new MutationObserver(read);
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
@@ -72,9 +82,6 @@ export default function ContractPipeline() {
     };
   }, [read]);
 
-  /* the nudged colour: the shipped ink mixed toward the card ground by
-     the slider amount. Computed in JS so the ratio below is measured on
-     the exact colour the specimen is painted with. */
   const mixed: [number, number, number] | null =
     ink && ground
       ? [
@@ -84,37 +91,63 @@ export default function ContractPipeline() {
         ]
       : null;
 
-  const hex = mixed ? toHex(mixed) : null;
+  const hex = mixed ? toHex(mixed).toUpperCase() : null;
   const ratio = mixed && ground ? contrastRatio(mixed, ground) : null;
   const passes = ratio === null ? null : ratio >= AAA_NORMAL;
   const entry = hex ? dtcgToken(hex) : null;
-  const live = ink !== null && ground !== null;
+  const shown = hex ?? "reading";
+  const state = passes === null ? "reading" : passes ? "pass" : "fail";
+  const verdictWord = passes === null ? "Measuring" : passes ? "PASS" : "REFUSED";
+  /* the live value rides a custom property, a token operation, never a
+     literal in the markup */
+  const chipStyle = hex ? ({ "--ds-live-value": hex } as React.CSSProperties) : undefined;
 
   return (
     <section className="ds-section" aria-labelledby="ds-pipeline">
-      <SectionHeader
-        id="ds-pipeline"
-        title="The governed pipeline"
-        className="ds-section__header"
-      />
-      <p className="ds-section__note ds-pipeline__lead">
-        Authoring is human. Enforcement is deterministic. Move the control in the first step and
-        watch the other two follow: the manifest reshapes through the same function the endpoint
-        runs, and the contrast check recomputes and passes judgement. Nothing below is a
-        recording. The maths runs here, in this tab, as you move it.
+      <SectionHeader id="ds-pipeline" title="The governed pipeline" className="ds-section__header" />
+      <p className="ds-section__note ds-pipeline__dek">
+        <strong>Authoring is a human decision. Enforcement is deterministic.</strong> Move the
+        control and watch the value travel: the manifest reshapes, the gate recomputes, all in
+        this tab.
       </p>
 
-      <div className="ds-pipeline">
+      {/* glance layer: the whole pipeline without reading a word */}
+      <div className="ds-flow" aria-hidden="true">
+        <span className="ds-flow__node">
+          <span className="ds-flow__ico"><Glyph d={PENCIL} /></span>
+          <span className="ds-flow__label"><b>You edit</b><span>a token</span></span>
+        </span>
+        <span className="ds-flow__arrow"><Glyph d={ARROW} /></span>
+        <span className="ds-flow__node">
+          <span className="ds-flow__ico"><Glyph d={BRACES} /></span>
+          <span className="ds-flow__label"><b>Manifest</b><span>regenerates</span></span>
+        </span>
+        <span className="ds-flow__arrow"><Glyph d={ARROW} /></span>
+        <span className="ds-flow__node">
+          <span className="ds-flow__ico"><Glyph d={SHIELD} /></span>
+          <span className="ds-flow__label"><b>Gate</b><span>measures</span></span>
+        </span>
+        <span className={`ds-flow__verdict ds-flow__verdict--${state}`}>
+          <span className="ds-flow__dot" />
+          {verdictWord}
+        </span>
+      </div>
+
+      <div className="ds-rail">
         {/* ── 01 SOURCE ── */}
-        <div className="ds-pipeline__step">
-          <p className="ds-section__kicker ds-pipeline__step-kicker">01 Source</p>
-          <p className="ds-section__note">
-            The token is the source. Nudge the body ink toward the card it sits on and the
-            specimen restyles immediately, because the control writes the custom property the
-            page already resolves from.
-          </p>
-          <div className="ds-pipeline__control">
-            <label className="ds-pipeline__label" htmlFor={sliderId}>
+        <div className="ds-rail__cell">
+          <div className="ds-stage">
+            <p className="ds-section__kicker ds-stage__kick"><b>01</b> Source</p>
+            <p className="ds-stage__lead">A human decision.</p>
+            <p className="ds-stage__sub">
+              The control writes the <strong>custom property</strong> the page already resolves
+              from.
+            </p>
+            <span className="ds-valchip" style={chipStyle}>
+              <span className="ds-valchip__sw" aria-hidden="true" />
+              {shown}
+            </span>
+            <label className="ds-stage__ctl" htmlFor={sliderId}>
               Drift the ink toward its background
             </label>
             <input
@@ -126,81 +159,97 @@ export default function ContractPipeline() {
               step={5}
               value={drift}
               onChange={(e) => setDrift(Number(e.target.value))}
-              aria-describedby={`${sliderId}-out`}
+              aria-describedby={`${sliderId}-hint`}
             />
-            <output id={`${sliderId}-out`} className="ds-pipeline__out" htmlFor={sliderId}>
-              {drift === 0 ? "shipped value, no drift" : `${drift}% toward the background`}
-            </output>
-          </div>
-          {/* the nudge writes a CUSTOM PROPERTY on this element, which
-              is a token operation, not a literal: the stylesheet still
-              owns the colour and falls back to the shipped token */}
-          <p
-            className="ds-pipeline__specimen"
-            style={
-              mixed
-                ? ({ "--ds-pipeline-ink": toHex(mixed) } as React.CSSProperties)
-                : undefined
-            }
-          >
-            This sentence is painted with the value you are editing.
-          </p>
-        </div>
-
-        {/* ── 02 MANIFEST ── */}
-        <div className="ds-pipeline__step">
-          <p className="ds-section__kicker ds-pipeline__step-kicker">02 Manifest</p>
-          <p className="ds-section__note">
-            The manifest is generated, never maintained. This entry is shaped by dtcgToken from
-            lib/bella/dtcg.ts, the same function that builds /api/bella.json, so what you see is
-            the endpoint&apos;s own output for the value above.
-          </p>
-          <pre className="ds-pipeline__code">
-            <code>
-              {live && entry
-                ? `"--color-ink-soft": ${JSON.stringify(entry, null, 2)}`
-                : `"--color-ink-soft": {\n  "$value": "reading",\n  "$type": "color"\n}`}
-            </code>
-          </pre>
-        </div>
-
-        {/* ── 03 REFUSAL ── */}
-        <div className="ds-pipeline__step">
-          <p className="ds-section__kicker ds-pipeline__step-kicker">03 Refusal</p>
-          <p className="ds-section__note">
-            The gate does not ask whether the value looks right. It measures. This is the same
-            relative luminance maths audit:contrast runs, judged against the AAA threshold of 7
-            to 1 for normal text.
-          </p>
-          <div className="ds-pipeline__verdict" aria-live="polite">
-            <StatusPill>
-              {passes === null ? "Measuring" : passes ? "Pass" : "Refused"}
-            </StatusPill>
-            <p className="ds-pipeline__ratio">
-              {ratio === null ? "reading" : `${ratio.toFixed(2)} to 1`}
-              <span className="ds-pipeline__threshold"> against 7 to 1 required</span>
+            <p className="ds-stage__hint" id={`${sliderId}-hint`}>
+              {drift === 0
+                ? "Shipped value, no drift."
+                : passes
+                  ? "Drifting, still legible."
+                  : "Too close to its background."}
+            </p>
+            <p className="ds-stage__code ds-stage__code--one">
+              <span className="ds-stage__k">--color-ink-soft</span>
+              {": "}
+              <span className="ds-stage__v">{shown}</span>
             </p>
           </div>
-          <p className="ds-pipeline__receipt">
-            {passes === null
-              ? "audit:contrast is reading the running stylesheet."
-              : passes
-                ? "audit:contrast: --color-ink-soft on --color-card, passing at the AAA threshold."
-                : `audit:contrast: --color-ink-soft on --color-card, got ${ratio?.toFixed(2)} to 1, expected 7 to 1 or better.`}
-          </p>
+        </div>
+
+        <span className="ds-rail__chev" aria-hidden="true"><Glyph d={CHEVRON} /></span>
+
+        {/* ── 02 MANIFEST ── */}
+        <div className="ds-rail__cell">
+          <div className="ds-stage">
+            <p className="ds-section__kicker ds-stage__kick"><b>02</b> Manifest</p>
+            <p className="ds-stage__lead">Generated, never typed.</p>
+            <p className="ds-stage__sub">
+              Shaped by the <em className="ds-stage__hl">same dtcgToken()</em> that builds
+              /api/bella.json.
+            </p>
+            <span className="ds-valchip" style={chipStyle}>
+              <span className="ds-valchip__sw" aria-hidden="true" />
+              {shown}
+            </span>
+            <pre className="ds-stage__code">
+              <code>
+                {entry
+                  ? `"--color-ink-soft": {\n  "$value": "${entry.$value}",\n  "$type": "${entry.$type}"\n}`
+                  : `"--color-ink-soft": {\n  "$value": "reading",\n  "$type": "color"\n}`}
+              </code>
+            </pre>
+          </div>
+        </div>
+
+        <span className="ds-rail__chev" aria-hidden="true"><Glyph d={CHEVRON} /></span>
+
+        {/* ── 03 REFUSAL ── */}
+        <div className="ds-rail__cell">
+          <div className="ds-stage">
+            <p className="ds-section__kicker ds-stage__kick"><b>03</b> Refusal</p>
+            <p className="ds-stage__lead">Measured, not judged by taste.</p>
+            <p className="ds-stage__sub">
+              Real <strong>relative luminance maths</strong>, against the AAA bar of{" "}
+              <strong>7 to 1</strong>.
+            </p>
+            <div className="ds-stage__sample">
+              <p className="ds-pipeline__specimen" style={chipStyle}>
+                The system inspecting itself.
+              </p>
+            </div>
+            <p className="ds-stage__ratio">
+              {ratio === null ? "reading" : ratio.toFixed(2)}
+              <span className="ds-stage__unit"> to 1</span>
+            </p>
+            <div className={`ds-stage__verdict ds-stage__verdict--${state}`} aria-live="polite">
+              <span className="ds-flow__dot" aria-hidden="true" />
+              {verdictWord}
+            </div>
+            <p className="ds-stage__gateline">
+              {passes === null
+                ? "audit:contrast is reading the running stylesheet."
+                : passes
+                  ? `audit:contrast PASS --color-ink-soft on --color-card ${ratio?.toFixed(2)} to 1`
+                  : `audit:contrast FAIL --color-ink-soft on --color-card ${ratio?.toFixed(2)} to 1, AAA needs 7 to 1`}
+            </p>
+          </div>
         </div>
       </div>
 
       <div className="ds-pipeline__foot">
-        {/* the page's ONE primary: this instrument is the real action on
-            this view, so the Controls specimen demotes to secondary */}
+        {/* the page's ONE primary: this instrument is the real action */}
         <Button variant="primary" onClick={() => setDrift(0)} disabled={drift === 0}>
           Restore the token
         </Button>
+        {/* the agents narrative, demoted to its closing line (approved):
+            there is ONE self-governance section on this page */}
         <p className="ds-section__note ds-pipeline__foot-note">
           Authority lives where it can refuse, not where it instructs. The same check runs on
-          every pull request, against every route, in both themes. What agents read is the same
-          artifact: <a className="ds-swatch__case" href="/api/bella.json">/api/bella.json</a>.
+          every pull request, against every route, in both themes. What agents read is this same
+          artifact, <a className="ds-swatch__case" href="/api/bella.json">/api/bella.json</a>,
+          alongside the plain-text route map at{" "}
+          <a className="ds-swatch__case" href="/llms.txt">/llms.txt</a>. The audit:agents check
+          fails the build if either one disagrees with the live registry.
         </p>
       </div>
     </section>
