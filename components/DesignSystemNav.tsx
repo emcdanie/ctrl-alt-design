@@ -28,10 +28,14 @@ import { useEffect, useState } from "react";
    before it is built: they render as quiet, non-linking placeholders so
    a reader can see where the argument is going. */
 const SECTIONS = [
-  { id: "ds-agent", label: "Can an AI build with it?", desc: "" },
-  { id: "ds-pipeline", label: "Author, then enforce", desc: "" },
+  /* SHORT labels (27 Jul): below 1280 this rail renders as a one-line
+     pill bar. Sentence-length labels blew it open to 180px and it sat
+     over the content. Short labels read better in the vertical rail
+     too, so there is one set, not two. */
+  { id: "ds-agent", label: "AI readiness", desc: "" },
+  { id: "ds-pipeline", label: "The pipeline", desc: "" },
   { id: "ds-gate", label: "The gate", desc: "" },
-  { id: "ds-maturity", label: "Where it honestly stands", desc: "" },
+  { id: "ds-maturity", label: "Maturity", desc: "" },
   { id: "ds-close", label: "The rules", desc: "" },
 ] as const;
 

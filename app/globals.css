@@ -2373,6 +2373,13 @@ textarea:focus-visible {
 }
 
 @media (max-width: 1279px) {
+  /* BUG 2 (27 Jul): this pill bar is built for ONE line of short
+     labels. It had grown to 180px, a fifth of an 844px viewport,
+     permanently sticky over the content, because it was carrying long
+     sentence labels plus a block-level "coming beats" heading and list.
+     The labels are short again (see DesignSystemNav), the coming-beats
+     block is hidden here, and the height is capped so the bar can never
+     cover a heading again however many beats are added. */
   .ds-nav {
     position: sticky;
     top: var(--header-height);
@@ -2381,6 +2388,19 @@ textarea:focus-visible {
     border-bottom: 1px solid var(--color-border-soft);
     padding: var(--spacing-3) var(--spacing-6);
     overflow-x: auto;
+    overflow-y: hidden;
+    max-height: calc(var(--spacing-touch-target) + (2 * var(--spacing-3)));
+  }
+
+  /* the coming-beats placeholders are desktop-rail furniture; on the
+     pill bar they are block-level children that blow it open */
+  .ds-nav__soonhead,
+  .ds-nav__list--soon {
+    display: none;
+  }
+
+  .ds-nav__list {
+    flex-wrap: nowrap;
   }
 
   .ds-nav__link {
@@ -4411,8 +4431,40 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    of the text column; alternation swaps grid order only; visuals are
    FLAT; --spacing-* rhythm only. ── */
 
+/* CONTAINER-AWARE (27 Jul 2026). CaseBeat used to set VERTICAL padding
+   only and silently depend on an ancestor for the horizontal gutter. On
+   the case routes the page shell supplies a .layout-container, so it
+   looked fine; the moment BellaSpine rendered a beat outside one, every
+   line of copy ran edge to edge (measured left:0 width:500 at a 500px
+   viewport). Wrapping the beats at the call site would have fixed one
+   page and left the trap armed for the next.
+
+   The beat now carries the container recipe ITSELF, and stands down
+   when it is already inside one, so it is correct wherever it is
+   dropped and never doubles the gutter. */
 .beat {
   padding-block: var(--spacing-16);
+  padding-inline: var(--container-padding);
+  max-width: calc(var(--container-width) + (2 * var(--container-padding)));
+  margin-inline: auto;
+}
+
+/* already contained: the ancestor owns the gutter and the measure */
+.layout-container .beat,
+.cs2 .beat {
+  padding-inline: 0;
+  max-width: none;
+  margin-inline: 0;
+}
+
+/* BUG 3: at --spacing-16 top and bottom, consecutive beats sat 128px
+   apart, which read as dead ground on a small screen (measured 160px
+   between the agent footnote and the next heading). Tightened below the
+   existing 640px breakpoint; the desktop rhythm is unchanged. */
+@media (max-width: 640px) {
+  .beat {
+    padding-block: var(--spacing-10);
+  }
 }
 
 .beat + .beat {
@@ -5644,6 +5696,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 /* ── the spine's full-width beats (the instrument, the maturity map and
    the close are their own compositions, not text-plus-visual pairs) ── */
 .beat--full { margin-block: var(--space-section, var(--spacing-20)); }
+
+@media (max-width: 640px) {
+  .beat--full { margin-block: var(--spacing-12); }
+}
 
 /* rail placeholders: the structure made visible before it is built */
 .ds-nav__soonhead {

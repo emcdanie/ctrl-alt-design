@@ -1,5 +1,5 @@
 {
-  "$description": "The BELLA component contract (lean): how the real components are built, machine-readable. Real components only; variants are DELTAS from the default; tokens are $refs into the token layer, never raw values. Backstopped by audit:contract: an entry for a missing component, an unresolvable $ref, or a prop/variant that does not appear in the source fails the gate.",
+  "$description": "The BELLA component contract (lean): how the real components are built, machine-readable. Real components only; variants are DELTAS from the default; tokens are $refs into the token layer, never raw values. Backstopped by audit:contract: an entry for a missing component, an unresolvable $ref, or a prop/variant that does not appear in the source fails the gate. Entries may declare `requiresContext`: the ancestor a component depends on to render correctly. Added 27 Jul 2026 after CaseBeat shipped a silent dependency on an ancestor container and broke the moment it was relocated; a contract that cannot express required context cannot warn anyone.",
   "components": [
     {
       "name": "Button",
@@ -425,7 +425,11 @@
         "{--spacing-8}",
         "{--font-section-display}",
         "{--color-border-soft}"
-      ]
+      ],
+      "requiresContext": {
+        "ancestor": "none",
+        "note": "Self-contained as of 27 Jul 2026. .beat carries its own inline padding and measure, and stands down inside .layout-container or .cs2 so the gutter is never doubled. It previously required an ancestor container and failed silently without one."
+      }
     }
   ]
 }
