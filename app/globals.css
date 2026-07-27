@@ -203,18 +203,6 @@ body {
    Cover plates for the label-style case cards and the atom hero
    nucleus. Text pairs are AAA on their plates (verified in DESIGN.md). */
 :root {
-  --color-cover-graphite: #221F2C;
-  --color-cover-graphite-ink: #EDE9F4;
-  --color-cover-graphite-kicker: #C9C2E6;
-  --color-cover-peri-hi: #C6BEEF;
-  --color-cover-peri-lo: #B2A8E6;
-  --color-cover-peri-ink: #231D3A;
-  --color-cover-sage-hi: #D2DCC7;
-  --color-cover-sage-lo: #C1CEB1;
-  --color-cover-sage-ink: #242C18;
-  --cover-min-height: 250px;
-  --panel-min-height: 172px;
-  --nucleus-size: 120px;
 }
 
 /* ─── Bubble-hero + keycap-logo tokens (DESIGN.md: recorded additions) ──
@@ -247,7 +235,6 @@ body {
   --case-design-lab-lo: var(--case-filters-lo);
   --case-design-lab-deep: var(--case-filters-deep);
   --case-writing-hi: #F5A79C;
-  --case-writing-lo: #F0796B;
   --case-writing-deep: #B23C30;
   --case-code-first-text: var(--case-code-first-deep);
   --case-drift-text: var(--case-drift-deep);

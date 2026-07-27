@@ -7,6 +7,11 @@
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
 
+/* Declared for audit:debt's dead-selector check (27 Jul 2026). */
+export const TRACKED_SELECTORS = [
+  '[class*="card"]', ".thesis-band", '[role="dialog"]', ".heading-item",
+];
+
 const ROUTES = [
   "/", "/about", "/work", "/contact", "/skills", "/design-system", "/quick",
   "/case-studies/chip", "/case-studies/brad-frost",

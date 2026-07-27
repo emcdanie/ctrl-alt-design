@@ -47,8 +47,19 @@ export function toHex([r, g, b]: [number, number, number]): string {
   return `#${[r, g, b].map((n) => Math.round(n).toString(16).padStart(2, "0")).join("")}`;
 }
 
+/* REFUSES what it cannot interpret (27 Jul 2026, caught by the first
+   unit test in this repo). This used to scrape the first three numbers
+   out of ANY string, so color(srgb 0.29 0.34 0.47) came back as
+   [0.29, 0.34, 0.47] and was read downstream as 0-255, i.e. near black.
+   The contrast instrument would then have shown a confidently wrong
+   ratio, on a page whose whole argument is that the number is real.
+   Only the legacy rgb()/rgba() form is 0-255; every modern colour
+   function uses a different numeric range, so anything else returns
+   null and the caller must refuse rather than compute. */
 export function parseRgb(value: string): [number, number, number] | null {
-  const m = value.match(/-?[\d.]+/g);
-  if (m && m.length >= 3) return [Number(m[0]), Number(m[1]), Number(m[2])];
-  return null;
+  const m = value.trim().match(/^rgba?\(([^)]+)\)$/i);
+  if (!m) return null;
+  const parts = m[1].split(/[,\s/]+/).filter(Boolean).map(Number);
+  if (parts.length < 3 || parts.slice(0, 3).some((n) => !Number.isFinite(n))) return null;
+  return [parts[0], parts[1], parts[2]];
 }

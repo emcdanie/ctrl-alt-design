@@ -26,6 +26,15 @@
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
 
+/* The selectors this audit tracks, DECLARED (spec specs/audit-debt,
+   27 Jul 2026). audit:debt asserts these exist so a tracked selector
+   that stops matching fails loudly instead of passing forever, which
+   is what .ds-gate did after the gate table replaced the card grid. */
+export const TRACKED_SELECTORS = [
+  ".ds-band", ".ds-specimen-row", ".ds-caseband", ".ds-status", ".bmm-list",
+  ".trace-host", ".tok-inspector", ".spec-stage", ".csp-flag", "section.beat",
+];
+
 const browser = await chromium.launch();
 let fails = 0;
 

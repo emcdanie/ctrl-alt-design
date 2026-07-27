@@ -183,6 +183,12 @@ Must pass before any work is "done":
 - `audit:visual` — one ground on /design-system (band backgrounds equal the page ground,
   no exceptions since the 23 Jul DS2 no-wash port), sibling specimen cards render equal
   heights, cover placeholders clear 3:1 against both gradient stops, both themes.
+- `audit:debt` — nothing rots quietly: a doc citing a file that does not exist, a token
+  nothing consumes through a `var()` chain, a gate table describing audits that no longer
+  run, or an audit tracking a selector that matches nothing. Static analysis, about a second.
+- `npm test` runs FIRST in the gate: the pure functions in `lib/bella/dtcg.ts` (vitest). A
+  broken function fails in a second rather than after two minutes of browser work. Tests are
+  not an audit and do not change the derived count.
 - tsc clean; all routes 200 (light + dark); NDA content-grep clean.
 
 **No per-element exemptions (Elleta, 2026-07-27, hard rule).** The gate has no opt-out.
@@ -193,6 +199,14 @@ example, an off-brand artifact), it ships as a PICTURE, a flat `<img>` with a de
 `alt`, so there is nothing for an audit to read and therefore nothing to skip. The only
 allowlists that may exist are the file-level ones already recorded in the audit scripts,
 each with its reason inline; do not extend them to keep new code alive.
+
+**The one allowlist, and why it is not the same hole.** `audit:debt` reads
+`scripts/lib/debt-allowlist.json`. That rule above governs RENDERED OUTPUT: if an element
+cannot pass, it does not get to be live DOM. `audit:debt` judges CODE INVENTORY, where
+"this doc is a dated historical record" is a true fact about intent that no static analysis
+can derive. It is capped so it cannot grow into the hole: every entry needs a written reason
+and a date, the audit prints the count on every run, it FAILS above 15 entries, and it FAILS
+on any entry older than 180 days that has not been re-dated.
 
 ## 10. How this file was built and stays alive
 Like a real steering doc: when something keeps going wrong, research it, fix it, and record the fix HERE
