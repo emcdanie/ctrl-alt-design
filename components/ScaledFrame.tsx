@@ -28,6 +28,19 @@ export default function ScaledFrame({
   const frameRef = useRef<HTMLIFrameElement>(null);
   const [scale, setScale] = useState<number | null>(null);
 
+  /* Carry the CURRENT site theme into the artifact as ?theme=light|dark so it
+     renders in the right theme on its FIRST paint (before any postMessage).
+     The iframe has no src in the markup; we set it imperatively on the client
+     (syncing to the DOM, which is what effects are for), so SSR/first render
+     matches (no hydration mismatch, no double-load). Live theme changes ride
+     postMessage, so the src param only seeds the initial theme. */
+  useEffect(() => {
+    const frame = frameRef.current;
+    if (!frame) return;
+    const theme = document.documentElement.getAttribute("data-theme") || "light";
+    frame.src = src + (src.includes("?") ? "&" : "?") + "theme=" + theme;
+  }, [src]);
+
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
@@ -62,7 +75,6 @@ export default function ScaledFrame({
     >
       <iframe
         ref={frameRef}
-        src={src}
         title={title}
         loading="lazy"
         onLoad={() => { postTheme(); onLoad?.(); }}

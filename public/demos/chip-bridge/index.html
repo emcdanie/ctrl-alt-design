@@ -15,6 +15,23 @@
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="layout.css">
   <link rel="stylesheet" href="components.css">
+  <script>
+    /* Inherit the embedding site's theme. tokens.css already ships a real
+       [data-theme="dark"] palette; this just lets the parent drive it so the
+       prototype goes dark with the page instead of flaring parchment.
+       Reads ?theme on first paint, re-asserts after the app's own init, and
+       honours postMessage({type:"theme",theme}) for live toggles. */
+    (function () {
+      var root = document.documentElement;
+      function apply(t) { if (t === "dark" || t === "light") root.setAttribute("data-theme", t); }
+      function fromUrl() { try { return new URLSearchParams(location.search).get("theme"); } catch (e) { return null; } }
+      apply(fromUrl());
+      window.addEventListener("load", function () { var t = fromUrl(); if (t) apply(t); });
+      window.addEventListener("message", function (e) {
+        if (e && e.data && e.data.type === "theme") apply(e.data.theme);
+      });
+    })();
+  </script>
 </head>
 
 <body data-phase="loaded" data-space="bridge" data-logged-in="false" data-inclusion="pass">
