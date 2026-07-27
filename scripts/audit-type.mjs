@@ -73,8 +73,6 @@ for (const route of ROUTES) {
              buttons, nav links and chips as their own tier, and a
              figcaption is attribution. Same carve-out both passes. */
           if (el.closest("figcaption, footer, button, label, nav")) continue;
-          /* [data-example]: the deliberately ungoverned illustration */
-          if (el.closest("[data-example]")) continue;
           /* a span/code wrapping only other elements is a container,
              not text; measure the node that OWNS the characters */
           const own = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join("").trim();
@@ -111,7 +109,6 @@ for (const route of ROUTES) {
       const text = own.length >= 16 ? own : (el.children.length === 0 ? full : own);
       if (text.length < 16) continue;
       if (exemptRe.test(el.className.toString()) || el.closest("figcaption, footer, button, label, nav")) continue;
-      if (el.closest("[data-example]")) continue;
       if (el.closest('[class*="tok-inspector"]')) continue;
       const size = parseFloat(getComputedStyle(el).fontSize);
       if (size < 16) out.push(`${el.className.toString().split(" ")[0] || el.tagName}@${size}px :: ${text.slice(0, 40)}`);

@@ -145,7 +145,10 @@ for (const route of ROUTES) {
         (v >= 20 && v <= 24) || (v >= 16 && v <= 18);
       document.querySelectorAll('body *').forEach((el) => {
         if (!el.textContent.trim() || el.children.length) return;
-        if (el.closest('[aria-hidden="true"], nextjs-portal, svg')) return;
+        /* no per-element opt-out (constitution section 9, 27 Jul): the
+           aria-hidden skip is gone. nextjs-portal and svg stay because
+           they are not page DOM and have no text nodes to measure. */
+        if (el.closest('nextjs-portal, svg')) return;
         const v = parseFloat(getComputedStyle(el).fontSize);
         if (!ramp.has(Math.round(v)) && !fluidOk(v))
           out.push(['type', `${v}px`, (el.className.toString() || el.tagName).slice(0, 40)]);

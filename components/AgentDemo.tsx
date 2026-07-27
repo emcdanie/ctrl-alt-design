@@ -20,14 +20,22 @@ import { useId, useState } from "react";
  *    counts are DERIVED from the findings list below it, so the number
  *    on screen is always literally what is listed.
  *
- * 2. THE UNGOVERNED ARTIFACT IS AN ILLUSTRATION, and says so. It is
- *    marked data-example="ungoverned" and carries aria-hidden with a
- *    visually-hidden description beside it, because its whole point is
- *    to be off-system: invented colours, a hardcoded type size, failing
- *    contrast. The gate is scoped to skip that subtree by name (see the
- *    [data-example] carve-out in audit:contrast, audit:type and
- *    audit:axe) so it cannot launder a real defect. Everything else on
- *    this page is policed normally.
+ * 2. THE UNGOVERNED SIDE IS A PICTURE, NOT DOM. It renders as a flat
+ *    <img> pointing at a static SVG in public/, with an alt describing
+ *    what it shows. That is the whole trick: a drawing of bad output has
+ *    no colours, no type sizes and no contrast pairs for an audit to
+ *    read, so there is nothing to police and therefore nothing to skip.
+ *
+ *    An earlier pass shipped this side as live rule-violating DOM and
+ *    added a [data-example] carve-out to three audits so the gate would
+ *    look away. That carve-out is gone, and the constitution now forbids
+ *    the whole idea: an audit you can opt out of is not an audit. If
+ *    something cannot pass, it does not get to be live DOM.
+ *
+ *    The GROUNDED side is the opposite and deliberately so: real live
+ *    BELLA surfaces built from tokens, policed by the gate exactly like
+ *    every other element on the site. Bad is a drawing. Good is the
+ *    real thing.
  */
 
 type Finding = { ok: boolean; text: string };
@@ -113,28 +121,17 @@ export default function AgentDemo() {
                 </div>
               </div>
             ) : (
-              /* ILLUSTRATION of ungoverned output. aria-hidden with a
-                 described alternative beside it; the gate skips this
-                 subtree by name so a deliberately bad example can never
-                 launder a real defect. */
-              <>
-                <div
-                  className="agentdemo__art agentdemo__art--bad"
-                  data-example="ungoverned"
-                  aria-hidden="true"
-                >
-                  <span className="agentdemo__art-top" />
-                  <div className="agentdemo__art-body">
-                    <p className="agentdemo__art-h">{s.headline}</p>
-                    <p className="agentdemo__art-p">{s.body}</p>
-                    <p className="agentdemo__art-cta">{s.cta}</p>
-                  </div>
-                </div>
-                <p className="sr-only">
-                  An illustration of ungoverned output: a card in invented colours, with
-                  body text below the readable size and text that fails contrast.
-                </p>
-              </>
+              /* A PICTURE of ungoverned output, not real components. A
+                 flat <img> is genuinely opaque: no audit traverses into
+                 an image, so none has to be told to ignore it. The alt
+                 carries the point for anyone who cannot see it. */
+              <img
+                className="agentdemo__art agentdemo__art--bad"
+                src="/images/ungoverned-output.svg"
+                width={280}
+                height={214}
+                alt="An off-brand card an ungoverned agent produced: clashing magenta and lime colours, cramped spacing, tiny body text, and a call to action whose text fails contrast against its background."
+              />
             )}
           </div>
         </div>

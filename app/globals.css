@@ -5492,9 +5492,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 /* ── BEAT 01: can an AI build with your system? (27 Jul 2026) ──
-   Built to _proto/beat-agent-demo.html. Tokens only on every REAL
-   surface. The one exception is the illustrative ungoverned artifact,
-   marked [data-example] below, whose whole job is to be off-system. */
+   Built to _proto/beat-agent-demo.html. Tokens only, everywhere, with
+   no exceptions: the ungoverned side is a picture rather than DOM, so
+   there is nothing here that needs to break the rules. */
 
 .agentdemo { display: flex; flex-direction: column; gap: var(--spacing-5); }
 
@@ -5605,23 +5605,17 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   padding: var(--spacing-3);
 }
 
-/* ── THE ILLUSTRATIVE UNGOVERNED ARTIFACT ──
-   token-waiver: this node is an ILLUSTRATION of what an agent produces
-   with no contract. Invented colours, a hardcoded body size and failing
-   contrast are the POINT of the example, so it is deliberately off
-   system. It is scoped three ways so it can never launder a real
-   defect: it is marked [data-example="ungoverned"], it is aria-hidden
-   with a described alternative beside it, and audit:contrast,
-   audit:type and audit:axe each skip [data-example] subtrees BY NAME
-   (see the carve-out comment in each script). Nothing else on the page
-   is exempt. app/globals.css is already allowlisted by audit:tokens,
-   so these literals live here rather than in a component. */
-[data-example="ungoverned"] { background: #ff2d9b; border: 3px dashed #b6ff00; }
-[data-example="ungoverned"] .agentdemo__art-top { display: block; height: 70px; background: linear-gradient(45deg, #00e5ff, #b6ff00); }
-[data-example="ungoverned"] .agentdemo__art-body { padding: 10px; }
-[data-example="ungoverned"] .agentdemo__art-h { color: #0b0b0b; font-size: 19px; }
-[data-example="ungoverned"] .agentdemo__art-p { color: #2a2a2a; font-size: 11px; }
-[data-example="ungoverned"] .agentdemo__art-cta { background: #b6ff00; color: #ff2d9b; font-size: 11px; font-weight: 800; padding: 7px; border-radius: 3px; }
+/* The ungoverned side is a PICTURE (public/images/ungoverned-output.svg),
+   not DOM, so it needs no off-system CSS at all. The block that used to
+   live here defined invented colours and a hardcoded body size for a
+   live "bad" card, and three audits carried a [data-example] carve-out
+   so the gate would look away. Both are gone. A drawing has nothing for
+   an audit to read, so nothing has to be excluded. */
+.agentdemo__art--bad {
+  display: block;
+  height: auto;
+  border-radius: var(--radius-lg);
+}
 
 .agentdemo__verdict {
   margin: 0;

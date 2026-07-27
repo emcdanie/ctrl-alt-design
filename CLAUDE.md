@@ -90,7 +90,13 @@ toggles, or sort.
 - **SegmentedControl:** mutually exclusive views (e.g. TABLE/MAP/TIMELINE). Single-select, `aria-current`,
   lighter than a keycap.
 - **FilterChip:** multi-select filters. Flat/outline, `aria-pressed`. Not a keycap.
-- **Select:** dropdowns (e.g. sort). Native styled, not a keycap.
+- **Select:** RETIRED 2026-07-27, pending a real dropdown surface. The primitive had no
+  consumer once the /design-system specimen showcase was retired, and /work sorts through
+  table headers by design, so nothing on the site renders a dropdown. Rather than keep
+  dead code alive with an audit allowlist (see the no-exemptions rule in section 9), the
+  component, its contract entry and its manifest taxonomy line were deleted together.
+  Restore from git the moment a surface genuinely needs one; do not rebuild it from
+  scratch.
 - **Tag:** non-interactive metadata. Visually distinct from FilterChip.
 - **StatusPill:** quiet status (e.g. "current focus"), non-interactive.
 - One light source, upper-left: highlights top-left, shadows down-right (bubbles, keycaps, cards).
@@ -178,6 +184,15 @@ Must pass before any work is "done":
   no exceptions since the 23 Jul DS2 no-wash port), sibling specimen cards render equal
   heights, cover placeholders clear 3:1 against both gradient stops, both themes.
 - tsc clean; all routes 200 (light + dark); NDA content-grep clean.
+
+**No per-element exemptions (Elleta, 2026-07-27, hard rule).** The gate has no opt-out.
+If something cannot pass an audit, it does not get to be live DOM. No `data-example`, no
+skip attributes, no "ignore this node" hooks, ever. **An audit you can opt out of is not
+an audit.** When an illustration genuinely has to show rule-breaking output (a bad
+example, an off-brand artifact), it ships as a PICTURE, a flat `<img>` with a describing
+`alt`, so there is nothing for an audit to read and therefore nothing to skip. The only
+allowlists that may exist are the file-level ones already recorded in the audit scripts,
+each with its reason inline; do not extend them to keep new code alive.
 
 ## 10. How this file was built and stays alive
 Like a real steering doc: when something keeps going wrong, research it, fix it, and record the fix HERE

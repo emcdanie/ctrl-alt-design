@@ -45,12 +45,7 @@ for (const theme of ["light", "dark"]) {
     }
     await page.evaluate(axeSource);
     const res = await page.evaluate(async () => {
-      /* [data-example] carve-out (27 Jul 2026): the agent-demo beat's
-         illustration of ungoverned output is deliberately off-system
-         (invented colours, failing contrast). It is aria-hidden with a
-         described alternative; excluding it keeps the example honest
-         without exempting anything real. */
-      const r = await axe.run({ exclude: [["[data-example]"]] });
+      const r = await axe.run(document);
       return {
         violations: r.violations.map((v) => ({
           id: v.id,

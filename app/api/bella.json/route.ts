@@ -32,7 +32,6 @@ export async function GET() {
       { control: "Button", use: "True actions only; max one primary per view." },
       { control: "SegmentedControl", use: "Mutually exclusive views; single select, aria-current." },
       { control: "FilterChip", use: "Multi-select filters; outline, aria-pressed, hover." },
-      { control: "Select", use: "Dropdowns like sort; native, styled, never a keycap." },
       { control: "Tag", use: "Flat metadata wash, never clickable." },
       { control: "StatusPill", use: "Quiet status, non-interactive." },
     ],
