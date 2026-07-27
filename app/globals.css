@@ -5490,3 +5490,182 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   padding-top: var(--spacing-4);
   border-top: 1px solid var(--color-border-soft);
 }
+
+/* ── BEAT 01: can an AI build with your system? (27 Jul 2026) ──
+   Built to _proto/beat-agent-demo.html. Tokens only on every REAL
+   surface. The one exception is the illustrative ungoverned artifact,
+   marked [data-example] below, whose whole job is to be off-system. */
+
+.agentdemo { display: flex; flex-direction: column; gap: var(--spacing-5); }
+
+.agentdemo__control {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
+.agentdemo__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  background: none;
+  border: 0;
+  padding: var(--spacing-1) 0;
+  cursor: pointer;
+  min-height: var(--spacing-touch-target);
+}
+
+.agentdemo__toggle:focus-visible {
+  outline: 2px solid var(--color-accent-ink);
+  outline-offset: var(--spacing-1);
+  border-radius: var(--radius-md);
+}
+
+.agentdemo__track {
+  width: var(--spacing-12);
+  height: var(--spacing-8);
+  border-radius: var(--radius-full);
+  background: var(--color-border-medium);
+  position: relative;
+  flex: 0 0 auto;
+  transition: background var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.agentdemo__knob {
+  position: absolute;
+  top: var(--spacing-1);
+  left: var(--spacing-1);
+  width: var(--spacing-6);
+  height: var(--spacing-6);
+  border-radius: var(--radius-full);
+  background: var(--color-card);
+  box-shadow: var(--shadow-sm);
+  transition: left var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.agentdemo__toggle[aria-pressed="true"] .agentdemo__track { background: var(--color-accent-ink); }
+.agentdemo__toggle[aria-pressed="true"] .agentdemo__knob { left: calc(100% - var(--spacing-6) - var(--spacing-1)); }
+
+.agentdemo__lab {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-ink);
+  text-align: left;
+}
+
+.agentdemo__state { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-muted); }
+
+.agentdemo__split { display: grid; grid-template-columns: 1fr; gap: var(--spacing-4); align-items: stretch; }
+@media (min-width: 860px) { .agentdemo__split { grid-template-columns: 1.1fr 0.9fr; } }
+
+.agentdemo__pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-5);
+  min-width: 0;
+}
+
+/* reuses the shared kicker recipe (the eyebrow tier); this rule only
+   resets the rhythm the kicker carries elsewhere */
+.agentdemo__panehead { margin: 0; }
+
+.agentdemo__stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-background);
+  padding: var(--spacing-6);
+}
+
+.agentdemo__art { width: 100%; max-width: 18rem; border-radius: var(--radius-lg); overflow: hidden; }
+.agentdemo__art-body { padding: var(--spacing-4); }
+.agentdemo__art-h { margin: 0 0 var(--spacing-1); font-weight: 700; }
+.agentdemo__art-p { margin: 0 0 var(--spacing-3); }
+.agentdemo__art-cta { margin: 0; text-align: center; border-radius: var(--radius-md); }
+
+/* the GROUNDED artifact: real tokens, policed like any other surface */
+.agentdemo__art--good { background: var(--color-card); border: 1px solid var(--color-border-medium); box-shadow: var(--shadow-sm); }
+.agentdemo__art--good .agentdemo__art-top { display: block; height: var(--spacing-16); background: linear-gradient(135deg, var(--hub-hi), var(--hub-lo)); }
+.agentdemo__art--good .agentdemo__art-h { color: var(--color-ink); font-size: var(--typography-font-size-lg); }
+.agentdemo__art--good .agentdemo__art-p { color: var(--color-ink-soft); font-size: var(--typography-font-size-base); }
+.agentdemo__art--good .agentdemo__art-cta {
+  background: var(--color-accent-ink);
+  color: var(--color-key-label, #FFFFFF);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  padding: var(--spacing-3);
+}
+
+/* ── THE ILLUSTRATIVE UNGOVERNED ARTIFACT ──
+   token-waiver: this node is an ILLUSTRATION of what an agent produces
+   with no contract. Invented colours, a hardcoded body size and failing
+   contrast are the POINT of the example, so it is deliberately off
+   system. It is scoped three ways so it can never launder a real
+   defect: it is marked [data-example="ungoverned"], it is aria-hidden
+   with a described alternative beside it, and audit:contrast,
+   audit:type and audit:axe each skip [data-example] subtrees BY NAME
+   (see the carve-out comment in each script). Nothing else on the page
+   is exempt. app/globals.css is already allowlisted by audit:tokens,
+   so these literals live here rather than in a component. */
+[data-example="ungoverned"] { background: #ff2d9b; border: 3px dashed #b6ff00; }
+[data-example="ungoverned"] .agentdemo__art-top { display: block; height: 70px; background: linear-gradient(45deg, #00e5ff, #b6ff00); }
+[data-example="ungoverned"] .agentdemo__art-body { padding: 10px; }
+[data-example="ungoverned"] .agentdemo__art-h { color: #0b0b0b; font-size: 19px; }
+[data-example="ungoverned"] .agentdemo__art-p { color: #2a2a2a; font-size: 11px; }
+[data-example="ungoverned"] .agentdemo__art-cta { background: #b6ff00; color: #ff2d9b; font-size: 11px; font-weight: 800; padding: 7px; border-radius: 3px; }
+
+.agentdemo__verdict {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-xl);
+  font-weight: 700;
+}
+.agentdemo__verdict--pass { color: var(--color-pass-ink); }
+.agentdemo__verdict--fail { color: var(--color-fail-ink); }
+
+.agentdemo__count { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-muted); }
+
+.agentdemo__findings { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--spacing-2); }
+.agentdemo__findings li { display: flex; gap: var(--spacing-2); align-items: flex-start; font-size: var(--typography-font-size-base); }
+.agentdemo__mk { font-family: var(--font-mono); font-weight: 700; flex: 0 0 auto; }
+.agentdemo__findings li.is-ok .agentdemo__mk { color: var(--color-pass-ink); }
+.agentdemo__findings li.is-bad .agentdemo__mk { color: var(--color-fail-ink); }
+
+.agentdemo__caption { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-soft); max-width: 70ch; }
+.agentdemo__foot { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-muted); max-width: 70ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  .agentdemo__track, .agentdemo__knob { transition: none; }
+}
+
+/* ── the spine's full-width beats (the instrument, the maturity map and
+   the close are their own compositions, not text-plus-visual pairs) ── */
+.beat--full { margin-block: var(--space-section, var(--spacing-20)); }
+
+/* rail placeholders: the structure made visible before it is built */
+.ds-nav__soonhead {
+  margin: var(--spacing-6) 0 var(--spacing-2);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.ds-nav__soon {
+  display: block;
+  padding: var(--spacing-2) 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+  opacity: 0.72;
+}

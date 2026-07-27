@@ -26,7 +26,15 @@ for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies
     // every element that PAINTS text itself (has a direct text node) —
     // wrappers whose text lives in styled children are judged via those
     // children, not their own inherited colour
+      /* [data-example] carve-out (27 Jul 2026): the agent-demo beat
+         renders an ILLUSTRATION of ungoverned output whose invented
+         colours, hardcoded size and failing contrast are the point of
+         the example. It is marked data-example and aria-hidden with a
+         described alternative. Skipping it here keeps the illustration
+         honest without letting it launder a real defect: nothing else
+         on any page is exempt. */
     const els = [...document.querySelectorAll("*")].filter((el) => {
+      if (el.closest("[data-example]")) return false;
       if (["SCRIPT", "STYLE", "NOSCRIPT", "SVG", "PATH"].includes(el.tagName)) return false;
       return [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim().length > 1);
     });

@@ -185,7 +185,15 @@ for (const theme of ["light", "dark"]) {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.waitForTimeout(200);
 
-  /* ── 6: trace ring concentricity ── */
+  /* ── 6: trace ring concentricity ──
+     Moved to /design-system/inspector (27 Jul 2026): /design-system is
+     now an explorable explanation and no longer renders TokenInspector,
+     but the inspector itself still ships on /quick and on its own
+     chromeless route as case evidence. The assertion follows the
+     component rather than the page, so it keeps checking real geometry
+     instead of quietly matching nothing. */
+  await page.goto("http://localhost:3000/design-system/inspector", { waitUntil: "networkidle", timeout: 30000 });
+  await page.waitForTimeout(300);
   const ringBad = await page.evaluate(() => {
     const key = document.querySelector(".tok-inspector__key");
     const ring = document.querySelector(".tok-inspector__ring");

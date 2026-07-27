@@ -11,8 +11,17 @@ import { join, basename } from "node:path";
  * its members are legitimately consumed through the barrel.
  * content/case-studies/_archive/: ARCHIVED case content (curation,
  * Elleta 22 Jul 2026) — deliberately unrouted and unimported by
- * design, never a dead-copy failure. */
-const EXEMPT = ["components/VinylPlayer.tsx", "components/motion/", "content/case-studies/_archive/"];
+ * design, never a dead-copy failure.
+ * components/ui/Select.tsx: RECORDED DEBT, 27 Jul 2026. Select is a
+ * member of the constitution's control taxonomy (section 5) and of the
+ * machine-readable component contract, but its only consumer was the
+ * specimen showcase on /design-system, retired when that page became an
+ * explorable explanation. /work sorts through table headers by design,
+ * so there is no dropdown to wire it into. This exemption RECORDS the
+ * debt rather than hiding it: Elleta rules whether Select gets a real
+ * consumer or leaves the taxonomy and the contract together. Do not
+ * quietly extend this list to keep other dead code alive. */
+const EXEMPT = ["components/VinylPlayer.tsx", "components/motion/", "content/case-studies/_archive/", "components/ui/Select.tsx"];
 
 const walk = (dir, exts) => {
   const out = [];

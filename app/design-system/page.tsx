@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import OverlayNav from "@/components/OverlayNav";
 import PageHeader from "@/components/PageHeader";
-import DesignSystemSpecimens from "@/components/DesignSystemSpecimens";
+import BellaSpine from "@/components/BellaSpine";
 import DesignSystemNav from "@/components/DesignSystemNav";
 import { auditCount, spellCount } from "@/lib/bella/gate";
 
 export const metadata: Metadata = {
-  title: "Design system, Elleta McDaniel",
+  title: "BELLA, the system behind this site",
   description:
     "The design system behind elleta.design: tokens, type, controls, and the governance gate, with every value read live from the running stylesheet.",
 };
@@ -35,9 +35,9 @@ export default function DesignSystemPage() {
           <DesignSystemNav />
           <div className="ds-layout__content">
             <div className="layout-container">
-              <PageHeader eyebrow="BELLA, the system behind the site" title="Design system" />
+              <PageHeader eyebrow="An explorable explanation" title="BELLA, the system behind this site" />
             </div>
-            <DesignSystemSpecimens auditCount={audits} auditCountWord={spellCount(audits)} />
+            <BellaSpine auditCount={audits} auditCountWord={spellCount(audits)} />
           </div>
         </div>
       </section>

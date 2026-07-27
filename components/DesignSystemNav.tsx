@@ -22,13 +22,24 @@ import { useEffect, useState } from "react";
    nine retired band ids survive as live anchors on their new parent
    sections, so every deep link that ever pointed at them still
    resolves. */
+/* THE BEAT RAIL (27 Jul 2026). The page is now an explorable
+   explanation on the case-study scroll spine, so the rail lists BEATS,
+   not bands. Entries marked `soon` are the structure made visible
+   before it is built: they render as quiet, non-linking placeholders so
+   a reader can see where the argument is going. */
 const SECTIONS = [
-  { id: "ds-open", label: "Overview", desc: "" /* TODO(elleta) */ },
-  { id: "ds-pipeline", label: "Pipeline", desc: "" /* TODO(elleta) */ },
-  { id: "ds-gate", label: "Gate", desc: "" /* TODO(elleta) */ },
-  { id: "ds-maturity", label: "Maturity", desc: "" /* TODO(elleta) */ },
-  { id: "ds-specimens", label: "The parts", desc: "" /* TODO(elleta) */ },
-  { id: "ds-close", label: "Rules", desc: "" /* TODO(elleta) */ },
+  { id: "ds-agent", label: "Can an AI build with it?", desc: "" },
+  { id: "ds-pipeline", label: "Author, then enforce", desc: "" },
+  { id: "ds-gate", label: "The gate", desc: "" },
+  { id: "ds-maturity", label: "Where it honestly stands", desc: "" },
+  { id: "ds-close", label: "The rules", desc: "" },
+] as const;
+
+/* Beats that are specced but not built. Shown so the spine is legible
+   as a whole; they carry no href and are not scroll-spy targets. */
+const SOON = [
+  "Why a contract: the drift demo",
+  "Ship a mistake: the gate demo",
 ] as const;
 
 export default function DesignSystemNav() {
@@ -78,6 +89,14 @@ export default function DesignSystemNav() {
               <span className="ds-nav__label">{s.label}</span>
               {s.desc.trim() !== "" && <span className="ds-nav__desc">{s.desc}</span>}
             </a>
+          </li>
+        ))}
+      </ul>
+      <p className="ds-nav__soonhead">Coming beats</p>
+      <ul className="ds-nav__list ds-nav__list--soon">
+        {SOON.map((s) => (
+          <li key={s}>
+            <span className="ds-nav__soon">{s}</span>
           </li>
         ))}
       </ul>
