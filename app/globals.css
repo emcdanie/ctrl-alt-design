@@ -5,8 +5,15 @@
 @theme {
   /* Page + surfaces — lush ground (light default; navy dark via [data-theme]) */
   --color-cream: #faf9f5;
-  --color-page: #F5F4EF;
-  --color-card: #FAFAF8; /* warm white, aligned with --surface-paper; pure #fff retired */
+  --color-page: #F1EFE6;
+  /* CARD vs GROUND SEPARATION (defect, 27 Jul): the ground
+     (--color-semantic-background, dropped to #F1EFE6 in bella.css) and
+     the card were about 5 of 255 apart. At that distance a card edge
+     does not read as an edge, so prose cards and specimen cards
+     dissolved into one grey mass and the page lost its hierarchy. The
+     ground drops a step and the card lifts a step, roughly tripling the
+     delta, both staying warm neutrals with no pure white. */
+  --color-card: #FDFCF9; /* warm off-white, pure #fff still retired */
   --color-ink: #1A1720;
   --color-ink-soft: #2E2937;
   --color-ink-muted: #4A4652;
@@ -594,7 +601,11 @@ body {
   --color-muted: #C6C2D4;
   --color-page: #1B1B40;
   --color-cream: #232350;
-  --color-card: #232350;
+  /* dark leg of the same separation fix: ground stays navy #1B1B40,
+     the CARD lifts so its edge reads without a wash. --color-surface is
+     deliberately left alone: lifting it too cost the mint skill chips
+     their AA margin (4.47:1) and the separation never needed it. */
+  --color-card: #28285C;
   --color-surface: #2B2B5C;
   --color-white-pure: #2B2B5C;
   --color-glass: rgba(35, 35, 80, 0.68);
@@ -2807,6 +2818,15 @@ textarea:focus-visible {
   padding-top: var(--spacing-4);
 }
 
+/* DEFECT 2 + 3 (token-card misalignment, ragged columns), 27 Jul.
+   Was: a 180px auto-fill grid of loose flex columns. Long token names
+   wrapped mid-token ("--color-border- / medium"), so name and value
+   rows started at different heights and no two cards shared a baseline.
+   Now: a FIXED internal row grid (plate / name / value) so every card
+   in a row puts its plate, name and value on the same lines, and the
+   name only breaks at hyphen boundaries (a <wbr> per segment in the
+   markup) so it never splits mid-token. The column width stays inside
+   the card content box; widening it broke containment. */
 .ds-swatches {
   list-style: none;
   margin: 0;
@@ -2814,12 +2834,16 @@ textarea:focus-visible {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: var(--spacing-4);
+  align-items: start;
 }
 
 .ds-swatch {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  /* the three rows every swatch shares; name reserves two lines so a
+     one-line and a two-line name still put the value on one baseline */
+  grid-template-rows: auto minmax(2.6em, auto) auto;
   gap: var(--spacing-1);
+  min-width: 0;
 }
 
 .ds-swatch__plate {
@@ -2833,7 +2857,14 @@ textarea:focus-visible {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-sm); /* type-presence: token names were the least legible text on the site */
   color: var(--color-ink);
-  overflow-wrap: anywhere;
+  /* never break mid-token: wrap at the whole name or not at all. The
+     column above is sized so the longest real token name fits. */
+  /* only the <wbr> segment boundaries are break opportunities */
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  min-width: 0;
+  align-self: start;
 }
 
 .ds-swatch__case {
@@ -2869,7 +2900,10 @@ textarea:focus-visible {
   border: 1px solid var(--color-border-soft);
   background: var(--color-surface);
   font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
+  /* the manifest specimen is READING text: engineers read it line by
+     line. It shipped at 14px because the old audit:type never measured
+     <code>. Floor applies (27 Jul hardening, defect 7). */
+  font-size: var(--typography-font-size-base);
   line-height: 1.6;
   color: var(--color-ink-soft);
   margin: 0 0 var(--spacing-4);
@@ -2879,7 +2913,15 @@ textarea:focus-visible {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-sm);
   color: var(--color-ink-muted);
-  overflow-wrap: anywhere;
+  /* DEFECT 2: the value row is the shared baseline across every card
+     in a row, so it never wraps and never breaks mid-value */
+  overflow-wrap: normal;
+  word-break: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  align-self: end;
 }
 
 .ds-type__sample {
@@ -2930,9 +2972,15 @@ textarea:focus-visible {
   min-height: var(--spacing-10);
 }
 
+/* DEFECT 4 (cards that do not fill), 27 Jul: this carried
+   min-height:120px, so a card whose demo was shorter than 120px
+   reserved height its content never filled and the card's shadow
+   floated below a dead zone. Equal heights across a row already come
+   from the grid (grid-auto-rows:1fr + stretch) plus .ds-card__inner
+   height:100%; flex:1 then fills the remaining space to the padding
+   box. The forced floor only ever stranded content. */
 .ds-card__demo {
   flex: 1;
-  min-height: 120px;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
@@ -3118,10 +3166,15 @@ textarea:focus-visible {
   text-transform: uppercase;
   color: var(--key-face-hi);
   background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
+  /* DEFECT 1 (overglow), 27 Jul: this stacked a hard plate edge, a
+     14px/32% coloured BLOOM, and an inset highlight, then the dashed
+     annotation ring and the leader lines landed on top of it. Three
+     shadows plus a ring reads as a halo, not as elevation. Now: the
+     plate edge (the keycap's one-light-source identity) plus ONE
+     restrained token shadow. No large-blur bloom. */
   box-shadow:
-    2px 5px 0 var(--key-fill-edge),
-    6px 9px 14px color-mix(in srgb, var(--key-fill-lo) 32%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    2px 4px 0 var(--key-fill-edge),
+    var(--shadow-sm);
 }
 
 /* the trace ring (Phase 2 rebuild, 22 Jul): ring space reserved IN
@@ -3137,7 +3190,9 @@ textarea:focus-visible {
 .tok-inspector__ring {
   position: absolute;
   inset: 0;
-  border: 2px dashed var(--color-accent-ink);
+  /* DEFECT 1: a single HAIRLINE. At 2px, sitting over the old bloom,
+     the ring read as a second glow rather than an annotation. */
+  border: 1px dashed var(--color-accent-ink);
   border-radius: calc(var(--btn-key-radius) + var(--spacing-2));
   pointer-events: none;
 }
@@ -4683,6 +4738,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 /* From Drift beat 03: the governance STATUS BOARD (in-page, tokenised to
    BELLA, dark-adaptive via the site theme). Static; foregrounds component
    status + the proposal path. Steel plus status semantics, no iris, no yellow-orange. */
+/* .gov-h is the eyebrow recipe (tag size, eyebrow tracking, eyebrow
+   colour, uppercase); it is the metadata tier, exempt in audit:type */
 .gov-h {
   font-size: var(--typography-font-size-tag);
   letter-spacing: var(--tracking-eyebrow);
@@ -4721,12 +4778,21 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-radius: var(--radius-full);
   white-space: nowrap;
 }
-.gov-badge.stable { color: var(--case-clarity-text); background: color-mix(in srgb, var(--case-clarity-hi) 26%, transparent); }
-.gov-badge.review { color: var(--case-filters-text); background: color-mix(in srgb, var(--case-filters-hi) 26%, transparent); }
-.gov-badge.exp { color: var(--gov-clay-text); background: color-mix(in srgb, var(--gov-clay-hi) 26%, transparent); }
-.gov-badge.dep { color: var(--gov-grey-text); background: color-mix(in srgb, var(--gov-grey-hi) 26%, transparent); }
+/* the badge tints composite over --color-card. When the card surface
+   lifted for the card/ground separation fix (27 Jul) the transparent
+   mix rode with it and .review lost AA in dark. Mixing against the card
+   token instead of transparent makes the result deterministic: the
+   badge no longer drifts when the surface beneath it moves. .review
+   also carries LESS tint: its text is the lightest of the four, so a
+   heavier tint lifts the background toward the text and costs AA. */
+.gov-badge.stable { color: var(--case-clarity-text); background: color-mix(in srgb, var(--case-clarity-hi) 26%, var(--color-card)); }
+.gov-badge.review { color: var(--case-filters-text); background: color-mix(in srgb, var(--case-filters-hi) 16%, var(--color-card)); }
+.gov-badge.exp { color: var(--gov-clay-text); background: color-mix(in srgb, var(--gov-clay-hi) 26%, var(--color-card)); }
+.gov-badge.dep { color: var(--gov-grey-text); background: color-mix(in srgb, var(--gov-grey-hi) 26%, var(--color-card)); }
 .gov-row .gov-asks {
-  font-size: var(--typography-font-size-sm);
+  /* reading text in a governance row, not metadata: the type floor
+     applies (audit:type hardening, 27 Jul) */
+  font-size: var(--typography-font-size-base);
   color: var(--color-ink-muted);
 }
 .gov-path-wrap { margin-top: var(--spacing-6); }
@@ -4831,4 +4897,197 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   flex-direction: column;
   gap: var(--spacing-2);
   align-items: flex-start;
+}
+
+/* ── The governed pipeline (spec system-page-redesign, 27 Jul 2026) ──
+   The page's lead proof. Three steps side by side on wide viewports so
+   the whole argument sits in one glance, stacked below. DEFECT 3 and 5:
+   the columns share one row grid so their kickers, prose and specimens
+   land on the same lines, gutters come from the spacing scale, and no
+   step reserves height it cannot fill. */
+.ds-pipeline {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6);
+  margin-top: var(--spacing-6);
+  align-items: stretch;
+}
+
+@media (min-width: 900px) {
+  .ds-pipeline {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-5);
+  }
+}
+
+.ds-pipeline__lead {
+  max-width: 72ch;
+}
+
+/* each step is a real surface, separated from the ground like every
+   other inspectable specimen on this page */
+.ds-pipeline__step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  min-width: 0;
+  padding: var(--spacing-5);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-medium);
+  background: var(--color-card);
+  /* DEFECT 1: ONE restrained elevation, no bloom */
+  box-shadow: var(--shadow-sm);
+}
+
+.ds-pipeline__step-kicker {
+  margin: 0;
+}
+
+.ds-pipeline__control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  margin-top: auto;
+}
+
+.ds-pipeline__label {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.ds-pipeline__slider {
+  width: 100%;
+  accent-color: var(--color-accent-ink);
+  min-height: var(--spacing-touch-target);
+}
+
+.ds-pipeline__slider:focus-visible {
+  outline: 2px solid var(--color-accent-ink);
+  outline-offset: var(--spacing-1);
+}
+
+.ds-pipeline__out {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+}
+
+.ds-pipeline__specimen {
+  margin: 0;
+  /* the instrument writes --ds-pipeline-ink; the shipped token is the
+     fallback, so the resting state is the real value */
+  color: var(--ds-pipeline-ink, var(--color-ink-soft));
+  font-size: var(--typography-font-size-base);
+  line-height: 1.5;
+  transition: color 120ms ease;
+}
+
+.ds-pipeline__code {
+  margin: 0;
+  padding: var(--spacing-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  font-family: var(--font-mono);
+  /* reading text: engineers read this line by line (type floor) */
+  font-size: var(--typography-font-size-base);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ds-pipeline__verdict {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+}
+
+.ds-pipeline__ratio {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.ds-pipeline__threshold {
+  font-weight: 400;
+  color: var(--color-ink-muted);
+}
+
+.ds-pipeline__receipt {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.55;
+  color: var(--color-ink-muted);
+}
+
+.ds-pipeline__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-5);
+  margin-top: var(--spacing-6);
+}
+
+.ds-pipeline__foot-note {
+  flex: 1 1 32ch;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-pipeline__specimen {
+    transition: none;
+  }
+}
+
+/* ── The gate table (spec system-page-redesign): tabular data renders
+   as a table. Replaces the card mosaic. NO status column: the gate runs
+   locally and in CI, not in this tab, so the page states what each
+   check refuses and never asserts a green it cannot evidence. ── */
+.ds-gate-table-wrap {
+  margin-top: var(--spacing-5);
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.ds-gate-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.ds-gate-table th,
+.ds-gate-table td {
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--color-border-soft);
+  vertical-align: top;
+  font-size: var(--typography-font-size-base);
+  line-height: 1.55;
+}
+
+.ds-gate-table thead th {
+  font-family: var(--font-body);
+  font-weight: 700;
+  color: var(--color-ink);
+  border-bottom: 1px solid var(--color-border-medium);
+  white-space: nowrap;
+}
+
+.ds-gate-table tbody th {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+.ds-gate-table td {
+  color: var(--color-ink-soft);
 }

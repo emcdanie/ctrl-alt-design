@@ -524,7 +524,11 @@ export default function AboutPage() {
                           >
                             {pod.title}
                           </span>
+                          {/* byline, the metadata tier: named so the
+                              hardened audit:type reads it as attribution
+                              rather than reading prose */}
                           <span
+                            className="card-meta"
                             style={{
                               display: "block",
                               fontFamily: "var(--font-body)",

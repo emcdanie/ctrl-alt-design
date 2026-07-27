@@ -22,7 +22,10 @@ export default function CtaBanner({
   return (
     <GlassBanner className="flex flex-col gap-[var(--spacing-8)] md:flex-row md:items-center md:justify-between">
       <div>
+        {/* the eyebrow tier, named: it was styled as one but carried no
+            class, so the hardened audit:type read it as reading text */}
         <p
+          className="eyebrow"
           style={{
             fontFamily: "var(--font-body)",
             fontSize: "var(--typography-font-size-tag)",

@@ -3,6 +3,7 @@ import OverlayNav from "@/components/OverlayNav";
 import PageHeader from "@/components/PageHeader";
 import DesignSystemSpecimens from "@/components/DesignSystemSpecimens";
 import DesignSystemNav from "@/components/DesignSystemNav";
+import { auditCount, spellCount } from "@/lib/bella/gate";
 
 export const metadata: Metadata = {
   title: "Design system, Elleta McDaniel",
@@ -14,6 +15,9 @@ export const metadata: Metadata = {
    decision supersedes the four-item cap; IA spec updated). The page is
    the system inspecting itself, live values only. */
 export default function DesignSystemPage() {
+  /* every number this page states is derived at build, never typed:
+     the audit count comes from the gate script itself (defect 6) */
+  const audits = auditCount();
   return (
     <main id="main-content">
       <OverlayNav />
@@ -33,7 +37,7 @@ export default function DesignSystemPage() {
             <div className="layout-container">
               <PageHeader eyebrow="BELLA, the system behind the site" title="Design system" />
             </div>
-            <DesignSystemSpecimens />
+            <DesignSystemSpecimens auditCount={audits} auditCountWord={spellCount(audits)} />
           </div>
         </div>
       </section>

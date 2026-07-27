@@ -17,6 +17,8 @@ import { useEffect, useState } from "react";
    COUNT NOTE: the brief said "all ten"; the map has NINE sections.
    The tenth is hers to name if the count was literal. */
 const SECTIONS = [
+  /* the lead proof leads the map too (spec system-page-redesign) */
+  { id: "ds-pipeline", label: "Pipeline", desc: "" /* TODO(elleta) */ },
   { id: "ds-identity", label: "Identity", desc: "" /* TODO(elleta) */ },
   { id: "ds-type", label: "Type", desc: "" /* TODO(elleta) */ },
   { id: "ds-colour", label: "Colour", desc: "" /* TODO(elleta) */ },

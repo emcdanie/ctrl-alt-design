@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import { Button } from "@/components/ui/Button";
 import { FilterChip } from "@/components/ui/FilterChip";
@@ -14,6 +14,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import Card from "@/components/ui/Card";
 import AiReadinessExplainer from "@/components/AiReadinessExplainer";
 import BellaMaturityMap from "@/components/BellaMaturityMap";
+import ContractPipeline from "@/components/ContractPipeline";
 
 /**
  * §8 /design-system: the site inspecting itself. Every value on this
@@ -103,6 +104,10 @@ const GATE = [
   { name: "audit:reuse", line: "Zero-import components fail. One implementation, no dead copy left rendering." },
   { name: "audit:parity", line: "Every case-study slug has exactly one library row and every case row resolves back to a slug. A case can never be routable but invisible." },
   { name: "audit:agents", line: "The agent surfaces (llms.txt, /api/bella.json) must match the live route registry. An agent surface that lies fails the build." },
+  /* both of these ran in the gate but were missing from this list, so
+     the page under-reported its own governance (27 Jul) */
+  { name: "audit:contract", line: "Every component in the contract exists, every token reference resolves, and every prop and variant appears in the source. A contract that describes code that is not there fails the build." },
+  { name: "audit:dark", line: "Every embedded surface adapts to the dark contract. An iframe that ships one skin fails the build." },
   { name: "audit:axe", line: "axe-core against every route in both themes; zero violations to pass. Needs-review nodes are counted and verified by hand." },
   { name: "audit:type", line: "No card surface renders reading text below 16px computed; the shared card body never below 18. Metadata rows are their own tier." },
   { name: "audit:visual", line: "One ground on the System page, sibling specimen cards render equal heights, cover placeholders clear 3:1." },
@@ -153,6 +158,61 @@ const ALL_TOKENS = [...COLOUR_GROUPS.flatMap((g) => g.tokens), ...SPACING, ...RA
 /* stable per-row flag lists for the Type band ramp */
 const TYPE_FLAGS = TYPE_SPECIMENS.map((t) => [t.token] as const);
 
+const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+/* DEFECT 2: token names used to break mid-token ("--color-border-" /
+   "medium") because the only wrap rule was break-anywhere. Rendering a
+   <wbr> after each hyphen gives the browser break opportunities at
+   SEGMENT boundaries, so a long name wraps between its parts and never
+   through the middle of one. */
+function TokenName({ name }: { name: string }) {
+  const parts = name.split("-");
+  return (
+    <>
+      {parts.map((part, i) => (
+        <Fragment key={`${part}-${i}`}>
+          {i > 0 ? "-" : ""}
+          {part}
+          {i < parts.length - 1 ? <wbr /> : null}
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
+/* DEFECT 2 (27 Jul): computed colour values came back in whatever form
+   the engine chose, so an 8-digit alpha hex rendered raw and ragged beside a plain
+   6-digit one. ONE display form for every value: hex
+   uppercased, alpha split off and shown as a percentage, so the value
+   column reads as a column instead of a jumble. */
+function formatTokenValue(raw: string): string {
+  const v = raw.trim();
+  if (!v) return "reading";
+  const hex8 = v.match(/^#([0-9a-f]{6})([0-9a-f]{2})$/i);
+  if (hex8) {
+    const alpha = Math.round((parseInt(hex8[2], 16) / 255) * 100);
+    return `#${hex8[1].toUpperCase()} ${alpha}%`;
+  }
+  const hex4 = v.match(/^#([0-9a-f]{3})([0-9a-f])$/i);
+  if (hex4) {
+    const alpha = Math.round((parseInt(hex4[2] + hex4[2], 16) / 255) * 100);
+    return `#${hex4[1].toUpperCase()} ${alpha}%`;
+  }
+  if (/^#[0-9a-f]{3,6}$/i.test(v)) return v.toUpperCase();
+  const rgba = v.match(/^rgba?\(([^)]+)\)$/i);
+  if (rgba) {
+    const parts = rgba[1].split(/[,\s/]+/).filter(Boolean).map(Number);
+    if (parts.length >= 3 && parts.slice(0, 3).every((n) => Number.isFinite(n))) {
+      const hex = parts.slice(0, 3).map((n) => Math.round(n).toString(16).padStart(2, "0")).join("");
+      const a = parts[3];
+      return a !== undefined && a < 1
+        ? `#${hex.toUpperCase()} ${Math.round(a * 100)}%`
+        : `#${hex.toUpperCase()}`;
+    }
+  }
+  return v;
+}
+
 /* The ONE specimen card (v3 T2+T5): ui/Card carries every content
    unit; fixed-height head slot so demo areas start level, demo centred
    in the shared body recipe, annotation control pinned to the bottom.
@@ -193,7 +253,15 @@ function SpecimenCard({
   );
 }
 
-export default function DesignSystemSpecimens() {
+export default function DesignSystemSpecimens({
+  auditCount,
+  auditCountWord,
+}: {
+  /* derived from the gate script at build (lib/bella/gate.ts); the
+     page never types the number (defect 6) */
+  auditCount: number;
+  auditCountWord: string;
+}) {
   const [values, setValues] = useState<Record<string, string>>({});
   const [view, setView] = useState("table");
   const [chipOn, setChipOn] = useState(true);
@@ -234,12 +302,17 @@ export default function DesignSystemSpecimens() {
           </p>
           <p className="ds-page__intro">
             It is also how I work with AI: the tokens rein the agent in, an agent can only
-            build with what the system exposes, and the gate keeps it honest. Thirteen audits run
+            build with what the system exposes, and the gate keeps it honest. {capitalise(auditCountWord)} audits run
             before anything ships. Green or it does not merge.
           </p>
           {/* the opening 3D moment: real keycaps, press them */}
           <div className="ds-opening" aria-label="Live keycap specimens, press them">
-            <Button variant="primary">Press me</Button>
+            {/* DEMOTED to secondary (27 Jul): the pipeline instrument is
+                this view's ONE primary, because it is the page's real
+                action. This pair is a picture of the taxonomy, not an
+                action, so it must not spend the primary budget
+                (audit:controls fails on more than one per view). */}
+            <Button variant="secondary">Press me</Button>
             <Button variant="secondary">Or me</Button>
             <span className="ds-section__note" style={{ margin: 0 }}>Real controls, not pictures. The whole page works this way.</span>
           </div>
@@ -256,6 +329,18 @@ export default function DesignSystemSpecimens() {
         </div>
       </div>
 
+        </div>
+      </div>
+
+      {/* ── THE LEAD PROOF (spec system-page-redesign, 27 Jul): the
+          governed pipeline comes FIRST, not 60% down the page. Inverted
+          pyramid: the strongest proof leads, the specimen shelf below
+          recedes. This band replaces the retired ds-contract text
+          columns from spec/system-contract-visible; that branch is
+          closed unmerged, so the two never ship together. ── */}
+      <div className="ds-band">
+        <div className="layout-container">
+          <ContractPipeline />
         </div>
       </div>
 
@@ -362,8 +447,8 @@ export default function DesignSystemSpecimens() {
                 {g.tokens.map((t) => (
                   <li key={t} className="ds-swatch">
                     <span className="ds-swatch__plate" style={{ background: `var(${t})` }} aria-hidden="true" />
-                    <span className="ds-swatch__name">{t}</span>
-                    <span className="ds-swatch__value">{values[t] || "reading"}</span>
+                    <span className="ds-swatch__name"><TokenName name={t} /></span>
+                    <span className="ds-swatch__value">{formatTokenValue(values[t] || "")}</span>
                   </li>
                 ))}
               </ul>
@@ -386,8 +471,8 @@ export default function DesignSystemSpecimens() {
               {SPACING.map((t) => (
                 <li key={t} className="ds-scale__row">
                   <span className="ds-scale__bar" style={{ width: `var(${t})` }} aria-hidden="true" />
-                  <span className="ds-swatch__name">{t}</span>
-                  <span className="ds-swatch__value">{values[t] || "reading"}</span>
+                  <span className="ds-swatch__name"><TokenName name={t} /></span>
+                  <span className="ds-swatch__value">{formatTokenValue(values[t] || "")}</span>
                 </li>
               ))}
             </ul>
@@ -397,8 +482,8 @@ export default function DesignSystemSpecimens() {
               {RADII.map((t) => (
                 <li key={t} className="ds-scale__row">
                   <span className="ds-scale__box" style={{ borderRadius: `var(${t})` }} aria-hidden="true" />
-                  <span className="ds-swatch__name">{t}</span>
-                  <span className="ds-swatch__value">{values[t] || "reading"}</span>
+                  <span className="ds-swatch__name"><TokenName name={t} /></span>
+                  <span className="ds-swatch__value">{formatTokenValue(values[t] || "")}</span>
                 </li>
               ))}
             </ul>
@@ -482,7 +567,7 @@ export default function DesignSystemSpecimens() {
           the honest self-score; the two bands read as one story ── */}
       <div className="ds-band">
         <div className="layout-container">
-          <BellaMaturityMap />
+          <BellaMaturityMap auditCount={auditCount} />
         </div>
       </div>
 
@@ -558,7 +643,7 @@ export default function DesignSystemSpecimens() {
             <ul className="ds-status__list">
               <li>The token layer, both themes</li>
               <li>The control taxonomy, live on every page</li>
-              <li>The gate, thirteen audits and a pre-commit hook</li>
+              <li>The gate, {auditCountWord} audits and a pre-commit hook</li>
               <li>The dark-mode contract, AA on every route</li>
             </ul>
           </SpecimenCard>
@@ -585,34 +670,54 @@ export default function DesignSystemSpecimens() {
       <section className="ds-section" aria-labelledby="ds-gate">
         <SectionHeader id="ds-gate" title="How the gate works" className="ds-section__header" />
         <p className="ds-section__note">
-          Thirteen audits run before anything ships, locally and on every pull request.
-          Green or it does not merge. Last local run: 21 Jul 2026.
+          {capitalise(auditCountWord)} audits run before anything ships, locally and on every pull request.
+          Green or it does not merge.
         </p>
         {GATE_INTRO.trim() !== "" && <p className="ds-section__note">{GATE_INTRO}</p>}
-        {/* one card per audit: what it catches, and where real, the
-            receipt of a slip (v3 T4; no bare grid of green chips) */}
-        <div className="ds-gate">
-          {GATE.map((g) => {
-            const r = GATE_RECEIPTS[g.name];
-            const lines = r ? [r.said, r.missedOrCaught, r.changed] : [];
-            return (
-              <SpecimenCard key={g.name} kicker={g.name} center={false}>
-                <p className="ds-section__note" style={{ margin: 0 }}>{g.line}</p>
-                {lines.some((l) => l.trim() !== "") && (
-                  <div className="ds-gate__receipt">
-                    {lines.map(
-                      (line, i) =>
-                        line.trim() !== "" && (
-                          <p key={RECEIPT_LABELS[i]} className="ds-section__note" style={{ margin: 0 }}>
-                            <strong>{RECEIPT_LABELS[i]}:</strong> {line}
-                          </p>
-                        )
-                    )}
-                  </div>
-                )}
-              </SpecimenCard>
-            );
-          })}
+        {/* TABULAR DATA RENDERS AS A TABLE (spec system-page-redesign,
+            27 Jul): this was a mosaic of card-per-audit, which made a
+            scannable list of checks into fourteen competing surfaces.
+            NO status column: the gate runs locally and in CI, not in
+            this tab, so the page says what each check REFUSES and never
+            asserts a green it cannot evidence. */}
+        <div className="ds-gate-table-wrap">
+          <table className="ds-gate-table">
+            <caption className="sr-only">
+              The checks that run before anything ships, and what each one refuses
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Check</th>
+                <th scope="col">What it refuses</th>
+              </tr>
+            </thead>
+            <tbody>
+              {GATE.map((g) => {
+                const r = GATE_RECEIPTS[g.name];
+                const lines = r ? [r.said, r.missedOrCaught, r.changed] : [];
+                return (
+                  <tr key={g.name}>
+                    <th scope="row">{g.name}</th>
+                    <td>
+                      {g.line}
+                      {lines.some((l) => l.trim() !== "") && (
+                        <span className="ds-gate__receipt">
+                          {lines.map(
+                            (line, i) =>
+                              line.trim() !== "" && (
+                                <span key={RECEIPT_LABELS[i]} style={{ display: "block" }}>
+                                  <strong>{RECEIPT_LABELS[i]}:</strong> {line}
+                                </span>
+                              )
+                          )}
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
         <p className="ds-section__note" style={{ marginTop: "var(--spacing-6)" }}>
           Not covered yet, honestly: hover states are not pixel-snapshotted, and CI skips

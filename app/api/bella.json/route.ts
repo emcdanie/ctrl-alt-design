@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import caseStudies from "@/lib/content";
 import { SKILLS, WORK_ITEMS } from "@/lib/workLibrary";
 import componentContract from "@/lib/bella/component-contract.json";
+import { readTokens } from "@/lib/bella/tokens";
 
 /* FOR AI (2026-07-17): the machine-readable BELLA manifest. Everything
  * here is read from the SAME sources the site renders from (the live
@@ -13,49 +12,10 @@ import componentContract from "@/lib/bella/component-contract.json";
 
 export const dynamic = "force-static";
 
-/* DTCG-shaped tokens (A3, bella-component-contract spec): three
- * tiers read from the SAME stylesheets the site renders from.
- * primitive = BELLA foundations (neutral/alpha scales, typography,
- * spacing, radius), semantic = --color-semantic-*, component =
- * --component-* plus the app layer (globals.css). A value that is
- * exactly var(--x) becomes the DTCG alias "{--x}"; $type is derived
- * where unambiguous. */
-type DtcgToken = { $value: string; $type?: string };
-type DtcgGroup = Record<string, DtcgToken>;
-
-function dtcgToken(raw: string): DtcgToken {
-  const aliasMatch = raw.match(/^var\((--[a-z0-9-]+)\)$/i);
-  const $value = aliasMatch ? `{${aliasMatch[1]}}` : raw;
-  let $type: string | undefined;
-  if (!aliasMatch) {
-    if (/^#[0-9a-f]{3,8}$|^(rgba?|hsla?|color-mix)\(/i.test(raw)) $type = "color";
-    else if (/^-?\d*\.?\d+(px|rem|em)$/.test(raw)) $type = "dimension";
-    else if (/gradient|shadow/i.test(raw)) $type = undefined;
-  }
-  return $type ? { $value, $type } : { $value };
-}
-
-function readTokens(): { primitive: DtcgGroup; semantic: DtcgGroup; component: DtcgGroup } {
-  const primitive: DtcgGroup = {};
-  const semantic: DtcgGroup = {};
-  const component: DtcgGroup = {};
-  const place = (file: string, name: string, value: string) => {
-    /* Tailwind @theme passthroughs (--x: var(--x)) are plumbing, not
-       definitions; the unlayered :root value is the real one */
-    if (value === `var(${name})`) return;
-    const t = dtcgToken(value);
-    if (name.startsWith("--color-semantic-")) semantic[name] ??= t;
-    else if (name.startsWith("--component-") || file === "app/globals.css") component[name] ??= t;
-    else primitive[name] ??= t;
-  };
-  for (const file of ["lib/bella/bella.css", "app/globals.css"]) {
-    const css = readFileSync(join(process.cwd(), file), "utf8");
-    for (const m of css.matchAll(/^\s*(--[a-z0-9-]+):\s*([^;]+);/gim)) {
-      place(file, m[1], m[2].trim());
-    }
-  }
-  return { primitive, semantic, component };
-}
+/* readTokens lives in lib/bella/tokens.ts (2026-07-27, spec
+ * system-page-redesign) so the endpoint, the page counts, and the
+ * pipeline instrument all run ONE reader. Output unchanged by the move,
+ * verified byte-identical. */
 
 export async function GET() {
   const body = {

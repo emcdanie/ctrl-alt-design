@@ -26,13 +26,19 @@ const STEPS_TOTAL = 4;
 
 /* copy verbatim from her mockup; frontier marks the axis that renders
    in the frontier accent (the clarity pair, never a raw hex) */
-const AXES: {
+/* AXES takes the derived audit count (defect 6, 27 Jul): the
+   Governance rationale used to hard-code "a 13-audit gate" while the
+   gate ran fifteen. Elleta approved parameterising this one line; the
+   rest of her mockup copy is untouched. */
+type Axis = {
   name: string;
   stage: Stage;
   steps: number;
   frontier?: boolean;
   rationale: string;
-}[] = [
+};
+
+const axes = (auditCount: number): Axis[] => [
   {
     name: "Foundations",
     stage: "teenage",
@@ -52,7 +58,7 @@ const AXES: {
     stage: "growing",
     steps: 2,
     rationale:
-      "Governance as code: a 13-audit gate that fails the build on drift. Process runs ahead of people here, it is a team of one, which is the honest constraint of a personal system.",
+      `Governance as code: a ${auditCount}-audit gate that fails the build on drift. Process runs ahead of people here, it is a team of one, which is the honest constraint of a personal system.`,
   },
   {
     name: "Adoption",
@@ -78,7 +84,7 @@ const AXES: {
   },
 ];
 
-export default function BellaMaturityMap() {
+export default function BellaMaturityMap({ auditCount }: { auditCount: number }) {
   return (
     <section className="ds-section" aria-labelledby="ds-maturity">
       <SectionHeader
@@ -102,7 +108,7 @@ export default function BellaMaturityMap() {
           <strong>Stages:</strong> V1 → Growing → Teenage → Healthy Product
         </p>
         <ul className="bmm-list">
-          {AXES.map((a) => (
+          {axes(auditCount).map((a) => (
             <li key={a.name} className="bmm-list__item">
               <Card className="h-full" innerClassName="ds-card__inner bmm-axis">
                 <div className="bmm-axis__top">
