@@ -205,9 +205,13 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 # Repo operations (kept from the previous harness file)
 
 ## Before doing anything
-1. Read `claude-progress.md` — current verified state and last session's handoff.
-2. Read `feature_list.json` — pick the highest-priority item not yet passing. One item at a time.
-3. If the task involves a prototype, open its folder README first (e.g. `prototypes/finviz-3/README.md`).
+1. Read the **most recent session record** in `docs/session-*.md` (newest by date). It is the
+   backward record: what shipped, what broke, what was learned, and which decisions are still
+   open. It is committed, so it survives; `claude-progress.md` is local-only and does not.
+   **Start with `docs/session-2026-07-27.md`.**
+2. Read `claude-progress.md` — current verified state and last session's forward handoff.
+3. Read `feature_list.json` — pick the highest-priority item not yet passing. One item at a time.
+4. If the task involves a prototype, open its folder README first (e.g. `prototypes/finviz-3/README.md`).
 
 ## Repo-specific working rules
 - **Prototypes are single-file.** Each lives in `prototypes/<name>/index.html`, self-contained (inline CSS/JS, no build step). A README maps design decisions to their sources.
@@ -219,6 +223,9 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 - **The pre-commit hook false-positives** the Apple Music album id in `components/VinylPlayer.tsx` as a phone number — that file stays uncommitted (see `docs/fixes/`).
 
 ## End of session
+- Write or update the **session record** at `docs/session-<YYYY-MM-DD>.md`: what shipped, what
+  broke and what it taught, open decisions, standing debt. It is committed and it is what the
+  next session reads first. Be honest about what was not verified.
 - Update `claude-progress.md`: what was done, how verified, known risks, next best action.
 - Leave no half-finished prototype states.
 - If git is in use for the change, commit with a descriptive message.
