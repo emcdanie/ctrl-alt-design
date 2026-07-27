@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 
 /**
  * The ONE specimen annotation (Phase 2 rebuild, 22 Jul, per the
@@ -27,14 +27,40 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * fix). One annotation implementation, one leader implementation.
  */
 
-/** deliberate display shortening: cut at the last comma or space
-    before the cap, never inside a value token */
-const DISPLAY_CAP = 32;
+/** Deliberate display shortening, cut at the last comma or space
+    before the cap, never inside a value token.
+    Raised 27 Jul: at 32 a multi-layer shadow value truncated to an
+    ellipsis that told the reader nothing (defect 4). The value now gets
+    a full-width row of its own and wraps at its commas, so it can be
+    read; the cap only guards genuinely pathological lengths. */
+const DISPLAY_CAP = 120;
 function shortenValue(v: string): string {
   if (v.length <= DISPLAY_CAP) return v;
   const head = v.slice(0, DISPLAY_CAP);
   const cut = Math.max(head.lastIndexOf(","), head.lastIndexOf(" "));
   return (cut > 0 ? v.slice(0, cut) : head).trimEnd() + " …";
+}
+
+/** THE token-name renderer (defect 1, 27 Jul). A CSS custom property
+    name is one word to the line breaker, so any wrap fell mid-token
+    ("--color-border-" / "medium"). Rendering a <wbr> after each hyphen
+    gives break opportunities at SEGMENT boundaries only, so a name that
+    must wrap breaks between its parts and never through the middle of
+    one. Exported because the swatch grid needs the same guarantee: ONE
+    implementation of the rule. */
+export function TokenName({ name }: { name: string }) {
+  const parts = name.split("-");
+  return (
+    <>
+      {parts.map((part, i) => (
+        <Fragment key={`${part}-${i}`}>
+          {i > 0 ? "-" : ""}
+          {part}
+          {i < parts.length - 1 ? <wbr /> : null}
+        </Fragment>
+      ))}
+    </>
+  );
 }
 
 export default function TokenAnnotation({
@@ -72,10 +98,15 @@ export default function TokenAnnotation({
       {tokens.map((t) => {
         const v = values[t] || "reading";
         return (
+          /* two rows (defect 1 to 4): the swatch and the value share
+             one baseline, then the FULL token name gets its own line so
+             it never has to compete for width. */
           <span key={t} data-flag-token={t} className="ds-flag">
-            {isColour(v) && <span className="ds-flag__chip" style={{ background: v }} />}
-            <span className="ds-flag__value">{shortenValue(v)}</span>
-            <span className="ds-flag__token">{t}</span>
+            <span className="ds-flag__row">
+              {isColour(v) && <span className="ds-flag__chip" style={{ background: v }} />}
+              <span className="ds-flag__value">{shortenValue(v)}</span>
+            </span>
+            <span className="ds-flag__token"><TokenName name={t} /></span>
           </span>
         );
       })}

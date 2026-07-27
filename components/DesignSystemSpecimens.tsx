@@ -1,13 +1,13 @@
 "use client";
 
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import { Button } from "@/components/ui/Button";
 import { FilterChip } from "@/components/ui/FilterChip";
 import { Tag } from "@/components/ui/Tag";
 import { StatusPill } from "@/components/ui/StatusPill";
 import TokenInspector from "@/components/TokenInspector";
-import TokenAnnotation, { FlagLeaders } from "@/components/TokenAnnotation";
+import TokenAnnotation, { FlagLeaders, TokenName } from "@/components/TokenAnnotation";
 import { Select } from "@/components/ui/Select";
 import Heading from "@/components/ui/Heading";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -160,25 +160,7 @@ const TYPE_FLAGS = TYPE_SPECIMENS.map((t) => [t.token] as const);
 
 const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-/* DEFECT 2: token names used to break mid-token ("--color-border-" /
-   "medium") because the only wrap rule was break-anywhere. Rendering a
-   <wbr> after each hyphen gives the browser break opportunities at
-   SEGMENT boundaries, so a long name wraps between its parts and never
-   through the middle of one. */
-function TokenName({ name }: { name: string }) {
-  const parts = name.split("-");
-  return (
-    <>
-      {parts.map((part, i) => (
-        <Fragment key={`${part}-${i}`}>
-          {i > 0 ? "-" : ""}
-          {part}
-          {i < parts.length - 1 ? <wbr /> : null}
-        </Fragment>
-      ))}
-    </>
-  );
-}
+
 
 /* DEFECT 2 (27 Jul): computed colour values came back in whatever form
    the engine chose, so an 8-digit alpha hex rendered raw and ragged beside a plain
@@ -457,7 +439,9 @@ export default function DesignSystemSpecimens({
                       o.href ? (
                         <a className="ds-swatch__case" href={o.href}>{o.name}</a>
                       ) : (
-                        o.name
+                        /* same type treatment as the linked titles; only
+                           the colour and underline mark a real link */
+                        <span className="ds-casetitle">{o.name}</span>
                       )
                     }
                     tokens={ORB_TOKENS[i]}
