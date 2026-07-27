@@ -60,10 +60,8 @@ export default function AiReadinessExplainer() {
        named <section> landmarks fail axe landmark-unique, and a second
        display heading would compete with the parent. A div plus the
        shared .heading-item sub-head is the right tier here. */
+    /* VISUAL ONLY (27 Jul migration): the beat owns the headline. */
     <div className="ds-subsection">
-      <h3 id="ds-ai-readiness" className="heading-item ds-shelf__subhead">
-        Into your system, or around it?
-      </h3>
       <div ref={ref} className={`air${inView ? " in" : ""}`}>
         <svg
           className="air-stage"

@@ -2296,81 +2296,21 @@ textarea:focus-visible {
 /* ── The System map (Elleta, 21 Jul, spec system-page-v2) ──
    >=1280px: [rail | content] grid, rail sticky under the header.
    Below: the rail collapses to a sticky horizontal pill row. */
-.ds-layout {
-  display: block;
-}
 
-.ds-layout__content {
-  min-width: 0;
-}
 
-.ds-nav__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: var(--spacing-2);
-}
 
-.ds-nav__link {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  font-weight: 600;
-  color: var(--color-ink-soft);
-  text-decoration: none;
-  white-space: nowrap;
-}
 
 @media (min-width: 1280px) {
-  .ds-layout {
-    display: grid;
-    grid-template-columns: 220px minmax(0, 1fr);
-    align-items: start;
-  }
-
+  
   /* rail descriptions (v3 T3): block under the label; layout holds
      with zero or all filled (the link is a column either way) */
-  .ds-nav__link {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-1);
+  
+  
+  
+  
+  
+  
   }
-
-  .ds-nav__desc {
-    font-family: var(--font-body);
-    font-size: var(--typography-font-size-tag);
-    font-weight: 400;
-    color: var(--color-ink-muted);
-    line-height: 1.4;
-    white-space: normal;
-  }
-
-  .ds-nav {
-    position: sticky;
-    top: calc(var(--header-height) + var(--spacing-8));
-    padding: var(--spacing-6);
-  }
-
-  .ds-nav__list {
-    flex-direction: column;
-    gap: var(--spacing-1);
-  }
-
-  .ds-nav__link {
-    padding: var(--spacing-2) var(--spacing-3);
-    border-left: 2px solid transparent;
-  }
-
-  .ds-nav__link:hover {
-    color: var(--color-ink);
-  }
-
-  .ds-nav__link[aria-current="true"] {
-    color: var(--color-accent-ink);
-    border-left-color: var(--color-accent-ink);
-  }
-}
 
 @media (max-width: 1279px) {
   /* BUG 2 (27 Jul): this pill bar is built for ONE line of short
@@ -2380,40 +2320,13 @@ textarea:focus-visible {
      The labels are short again (see DesignSystemNav), the coming-beats
      block is hidden here, and the height is capped so the bar can never
      cover a heading again however many beats are added. */
-  .ds-nav {
-    position: sticky;
-    top: var(--header-height);
-    z-index: 30;
-    background: var(--color-semantic-background);
-    border-bottom: 1px solid var(--color-border-soft);
-    padding: var(--spacing-3) var(--spacing-6);
-    overflow-x: auto;
-    overflow-y: hidden;
-    max-height: calc(var(--spacing-touch-target) + (2 * var(--spacing-3)));
-  }
-
+  
   /* the coming-beats placeholders are desktop-rail furniture; on the
      pill bar they are block-level children that blow it open */
-  .ds-nav__soonhead,
-  .ds-nav__list--soon {
-    display: none;
+  
+  
+  
   }
-
-  .ds-nav__list {
-    flex-wrap: nowrap;
-  }
-
-  .ds-nav__link {
-    padding: var(--spacing-1) var(--spacing-3);
-    border: 1px solid var(--color-border-medium);
-    border-radius: var(--radius-full);
-  }
-
-  .ds-nav__link[aria-current="true"] {
-    color: var(--color-accent-ink);
-    border-color: var(--color-accent-ink);
-  }
-}
 
 /* anchor targets are the section titles; clear the sticky chrome
    (the heads render through the shared SectionHeader since the 21 Jul
@@ -5520,6 +5433,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .bmm-track__here {
+  /* sits directly above its own track, left-aligned with the bars, so
+     the feedback is beside the thing it describes (27 Jul) */
+  margin: 0 0 var(--spacing-1);
   white-space: nowrap;
   font-family: var(--font-body);
   /* a real reading label, not metadata: it states where the axis sits,
@@ -5693,29 +5609,66 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   .agentdemo__track, .agentdemo__knob { transition: none; }
 }
 
-/* ── the spine's full-width beats (the instrument, the maturity map and
-   the close are their own compositions, not text-plus-visual pairs) ── */
-.beat--full { margin-block: var(--space-section, var(--spacing-20)); }
 
 @media (max-width: 640px) {
-  .beat--full { margin-block: var(--spacing-12); }
-}
+  }
 
 /* rail placeholders: the structure made visible before it is built */
-.ds-nav__soonhead {
-  margin: var(--spacing-6) 0 var(--spacing-2);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
+
+
+/* ── the gate, as content in the beat BODY (27 Jul migration) ──
+   A sixteen-row table is content, not a visual, and it used to sit in
+   CaseBeat's visual slot opposite three lines of text. It reads as a
+   definition list now, which works at any column width without the
+   horizontal scroll a table needs. */
+.ds-gate-list {
+  margin: var(--spacing-5) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
 }
 
-.ds-nav__soon {
-  display: block;
-  padding: var(--spacing-2) 0;
-  font-family: var(--font-body);
+.ds-gate-list__row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  padding-top: var(--spacing-3);
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.ds-gate-list dt {
+  font-family: var(--font-mono);
   font-size: var(--typography-font-size-base);
-  color: var(--color-ink-muted);
-  opacity: 0.72;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.ds-gate-list dd {
+  margin: 0;
+  font-size: var(--typography-font-size-base);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+}
+
+/* the beat's visual: the derived count, stated once, large */
+.ds-gate-stat {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.ds-gate-stat__n {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-5xl);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-ink);
+}
+
+.ds-gate-stat__l {
+  font-size: var(--typography-font-size-base);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+  max-width: 28ch;
 }

@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useId, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import SectionHeader from "@/components/ui/SectionHeader";
 import { dtcgToken, contrastRatio, toHex, parseRgb } from "@/lib/bella/dtcg";
 
 /**
@@ -102,14 +101,11 @@ export default function ContractPipeline() {
      literal in the markup */
   const chipStyle = hex ? ({ "--ds-live-value": hex } as React.CSSProperties) : undefined;
 
+  /* VISUAL ONLY (27 Jul migration): the beat supplies the headline and
+     the body. This renders the instrument and nothing else, so it can
+     sit in CaseBeat's visual slot like every other case demo. */
   return (
-    <section className="ds-section" aria-labelledby="ds-pipeline">
-      <SectionHeader id="ds-pipeline" title="The governed pipeline" className="ds-section__header" />
-      <p className="ds-section__note ds-pipeline__dek">
-        <strong>Authoring is a human decision. Enforcement is deterministic.</strong> Move the
-        control and watch the value travel: the manifest reshapes, the gate recomputes, all in
-        this tab.
-      </p>
+    <div className="ds-pipeline-instrument">
 
       {/* glance layer: the whole pipeline without reading a word */}
       <div className="ds-flow" aria-hidden="true">
@@ -252,6 +248,6 @@ export default function ContractPipeline() {
           fails the build if either one disagrees with the live registry.
         </p>
       </div>
-    </section>
+    </div>
   );
 }

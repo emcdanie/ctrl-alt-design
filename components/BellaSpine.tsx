@@ -1,32 +1,25 @@
 "use client";
 
 import CaseBeat from "@/components/CaseBeat";
-import Heading from "@/components/ui/Heading";
 import AgentDemo from "@/components/AgentDemo";
 import ContractPipeline from "@/components/ContractPipeline";
 import BellaMaturityMap from "@/components/BellaMaturityMap";
 import AiReadinessExplainer from "@/components/AiReadinessExplainer";
 
 /**
- * BELLA, the system behind this site (27 Jul 2026).
+ * BELLA, the system behind this site: the COMPOSITION (27 Jul 2026).
  *
- * /design-system is no longer a component showcase. It is an
- * EXPLORABLE EXPLANATION of AI-ready design systems, told on the same
- * scroll spine the case studies use, with BELLA as the running proof.
- * One concept per beat, each beat a demo you operate.
+ * This page is a case study of BELLA and it is now built on the REAL
+ * case-study template, the same one Drift and Code First use. It renders
+ * inside CaseShellV2 and every section is a CaseBeat. There is no page
+ * shell of its own, no left rail, no bespoke section, and no
+ * full-width variant: the template has none, and inventing one is what
+ * produced four different left edges and a CaseBeat with no gutter.
  *
- * REUSE, not a new page type: the beats are CaseBeat, the rail is
- * DesignSystemNav's scroll-spy, the instrument and the maturity map are
- * the components already built. Nothing here invents a second way to
- * lay out a page.
- *
- * WHAT THIS REPLACED (deleted with the old DesignSystemSpecimens):
- * the six control specimen cards, the eight-orb case-identity grid,
- * every orb-in-a-card, and the leader-line annotation UI as page
- * furniture. The .trace-host recipe itself SURVIVES untouched, because
- * it powers the primary button, every ui/Card on the site, and the
- * visual gate's card selector. TokenInspector and TokenAnnotation also
- * survive: /quick and /design-system/inspector still consume them.
+ * The three demo components (AgentDemo, ContractPipeline,
+ * BellaMaturityMap, AiReadinessExplainer) render VISUAL ONLY. The beat
+ * owns the eyebrow, the headline, the keyline and the body, exactly as
+ * it does on every case route.
  */
 
 const GATE = [
@@ -51,16 +44,6 @@ const GATE = [
   { name: "the CI run", line: "tsc, the production build, and every audit run on each pull request and push to main; merge only on green." },
 ];
 
-const RECEIPT_LABELS = ["What the check said", "What it missed, or caught", "What changed"] as const;
-type Receipt = { said: string; missedOrCaught: string; changed: string };
-/* Elleta's voice slots, carried over: every field is TODO(elleta) except
-   the one line her spec supplied verbatim. Empty fields render nothing. */
-const GATE_RECEIPTS: Record<string, Receipt> = {
-  "audit:parity": { said: "", missedOrCaught: "", changed: "" },
-  "audit:axe": { said: "", missedOrCaught: "", changed: "" },
-  "the CI run": { said: "", missedOrCaught: "Caught the Resend bug before merge.", changed: "" },
-};
-
 const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 export default function BellaSpine({
@@ -71,8 +54,8 @@ export default function BellaSpine({
   auditCountWord: string;
 }) {
   return (
-    <div className="ds-page bella-spine">
-      {/* ── BEAT 01, the hook ── */}
+    <>
+      {/* ── 01 ── */}
       <CaseBeat
         index="01"
         id="ds-agent"
@@ -91,91 +74,108 @@ export default function BellaSpine({
         visual={<AgentDemo />}
       />
 
-      {/* ── BEAT 02, author vs enforce: the instrument, reused ── */}
-      {/* a plain wrapper: ContractPipeline owns the
-          <section aria-labelledby="ds-pipeline"> landmark itself, and
-          nesting a second named region fails axe landmark-unique */}
-      <div className="beat--full">
-        <div className="layout-container">
-          <ContractPipeline />
-        </div>
-      </div>
+      {/* ── 02 ── */}
+      <CaseBeat
+        index="02"
+        id="ds-pipeline"
+        kicker="Author, then enforce"
+        headline="Authoring is human. Enforcement is deterministic."
+        keyline="Move the control and watch the value travel."
+        flip
+        body={
+          <>
+            <p>
+              A human decides what the token should be. Nothing after that is a matter of
+              taste: the manifest regenerates from the same source the page renders from,
+              and the gate measures the result.
+            </p>
+            <p>The maths below runs in this tab, as you move it. None of it is a recording.</p>
+          </>
+        }
+        visual={<ContractPipeline />}
+      />
 
-      {/* ── BEAT 03, the gate ── */}
+      {/* ── 03 ── the table lives in the BODY. It is content, not a
+          visual, and it used to sit in the visual slot opposite three
+          lines of text, which read badly at every width. The visual is
+          the derived count, which is a real visual statement. ── */}
       <CaseBeat
         index="03"
         id="ds-gate"
         kicker="Enforcement"
         headline="A system that cannot refuse is a suggestion."
         keyline={`${capitalise(auditCountWord)} checks run before anything ships.`}
-        flip
         body={
           <>
             <p>
-              Green or it does not merge, locally and on every pull request. Each check
-              below names exactly what it refuses, so a failure is self-documenting.
+              Green or it does not merge, locally and on every pull request. Each check names
+              exactly what it refuses, so a failure is self-documenting.
             </p>
+            <dl className="ds-gate-list">
+              {GATE.map((g) => (
+                <div key={g.name} className="ds-gate-list__row">
+                  <dt>{g.name}</dt>
+                  <dd>{g.line}</dd>
+                </div>
+              ))}
+            </dl>
           </>
         }
         visual={
-          <div className="ds-gate-table-wrap">
-                    <table className="ds-gate-table">
-                      <caption className="sr-only">
-                        The checks that run before anything ships, and what each one refuses
-                      </caption>
-                      <thead>
-                        <tr>
-                          <th scope="col">Check</th>
-                          <th scope="col">What it refuses</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {GATE.map((g) => {
-                          const r = GATE_RECEIPTS[g.name];
-                          const lines = r ? [r.said, r.missedOrCaught, r.changed] : [];
-                          return (
-                            <tr key={g.name}>
-                              <th scope="row">{g.name}</th>
-                              <td>
-                                {g.line}
-                                {lines.some((l) => l.trim() !== "") && (
-                                  <span className="ds-gate__receipt">
-                                    {lines.map(
-                                      (line, i) =>
-                                        line.trim() !== "" && (
-                                          <span key={RECEIPT_LABELS[i]} style={{ display: "block" }}>
-                                            <strong>{RECEIPT_LABELS[i]}:</strong> {line}
-                                          </span>
-                                        )
-                                    )}
-                                  </span>
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
+          <p className="ds-gate-stat">
+            <span className="ds-gate-stat__n">{auditCount}</span>
+            <span className="ds-gate-stat__l">
+              checks, every one of them able to stop a merge
+            </span>
+          </p>
         }
       />
 
-      {/* ── CLOSING BEAT, the honest self-score ── */}
-      {/* likewise: BellaMaturityMap owns the ds-maturity landmark */}
-      <div className="beat--full">
-        <div className="layout-container">
-          <AiReadinessExplainer />
-          <BellaMaturityMap auditCount={auditCount} />
-        </div>
-      </div>
+      {/* ── 04 ── */}
+      <CaseBeat
+        index="04"
+        id="ds-ai-readiness"
+        kicker="The frontier axis"
+        headline="Into your system, or around it?"
+        keyline="A mature system makes going through it the easy path."
+        flip
+        body={
+          <p>
+            Agents read the system directly. When the contract is machine-readable they build
+            from it; when it is not, they build around it and the output is guessed rather
+            than grounded.
+          </p>
+        }
+        visual={<AiReadinessExplainer />}
+      />
 
-      {/* ── The close: the rules, and what is next ── */}
-      <section className="beat beat--full" aria-labelledby="ds-close">
-        <div className="layout-container">
-          <Heading tier="section" as="h2" id="ds-close" className="beat-headline">
-            The rules this runs on
-          </Heading>
-          <ol className="ds-rules">
+      {/* ── 05 ── */}
+      <CaseBeat
+        index="05"
+        id="ds-maturity"
+        kicker="Self-assessment"
+        headline="Where the system honestly stands."
+        keyline="Not a scoreboard. Strength in one place, room in another."
+        body={
+          <p>
+            BELLA scored against zeroheight&apos;s six-axis Design System Maturity Model. It is
+            a personal system, so the org-scale axes are early by design while the frontier
+            axes run deep. The honest read is the point.
+          </p>
+        }
+        visual={<BellaMaturityMap auditCount={auditCount} />}
+      />
+
+      {/* ── 06 ── */}
+      <CaseBeat
+        index="06"
+        id="ds-close"
+        kicker="The constitution"
+        headline="The rules this runs on."
+        keyline="Written down, enforced by the gate, not by memory."
+        flip
+        body={
+            <ol className="ds-rules">
             <li>No hardcoded hex or px in components. Reference tokens only.</li>
             <li>One implementation: edit the live component and delete the old one. Never leave old and new both rendering.</li>
             <li>The primary is the one 3D moment per view, max one.</li>
@@ -184,9 +184,10 @@ export default function BellaSpine({
             <li>Unique is display only: never below 24px outside the keycap logo, never in body, UI, or chrome.</li>
             <li>WCAG AA on every text node, both themes.</li>
             <li>The gate must pass before any work is done. Green or it isn&apos;t done.</li>
-          </ol>
-
-          <div className="ds-status" id="ds-status">
+            </ol>
+        }
+        visual={
+          <div className="ds-status">
             <div className="ds-statusgroup">
               <p className="ds-section__kicker" style={{ margin: 0 }}>Available now</p>
               <ul className="ds-status__list">
@@ -203,12 +204,11 @@ export default function BellaSpine({
                 <li>The Figma leg</li>
                 <li>Agent-queryable BELLA Brain (MCP)</li>
                 <li>npx bella init distribution</li>
-                <li>BFW inspection baseline, pending</li>
               </ul>
             </div>
           </div>
-        </div>
-      </section>
-    </div>
+        }
+      />
+    </>
   );
 }

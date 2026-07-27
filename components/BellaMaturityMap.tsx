@@ -1,4 +1,3 @@
-import SectionHeader from "@/components/ui/SectionHeader";
 
 /**
  * BELLA against the maturity model (System band, 23 Jul 2026): her
@@ -85,13 +84,8 @@ const axes = (auditCount: number): Axis[] => [
 
 export default function BellaMaturityMap({ auditCount }: { auditCount: number }) {
   return (
-    <section className="ds-section" aria-labelledby="ds-maturity">
-      <SectionHeader
-        label="AI-enabled design systems · self-assessment"
-        id="ds-maturity"
-        title="BELLA against the maturity model"
-        className="ds-section__header"
-      />
+    /* VISUAL ONLY (27 Jul migration): the beat owns the headline. */
+    <>
       <div className="bmm">
         <p className="ds-section__note" style={{ margin: 0 }}>
           Where my design system stands on zeroheight&apos;s six-axis Design System
@@ -120,14 +114,14 @@ export default function BellaMaturityMap({ auditCount }: { auditCount: number })
                   <span className={`bmm-badge bmm-badge--${a.stage}`}>
                     {STAGE_LABELS[a.stage]}
                   </span>
-                  {/* the explicit you-are-here marker (spec item 4): the
-                      current stage is named in TEXT beside the axis, so
-                      position is never the only signal. It sits on the
-                      section ground, not on a coloured track step. */}
-                  <span className="bmm-track__here">
-                    You are here: stage {a.steps} of {STEPS_TOTAL}
-                  </span>
                 </div>
+                {/* the marker sits WITH the track it describes (27 Jul):
+                    it used to sit at the far right of the header row
+                    while the bars start at the far left, so the feedback
+                    was nowhere near the thing it labelled. */}
+                <p className="bmm-track__here">
+                  You are here: stage {a.steps} of {STEPS_TOTAL}
+                </p>
                 <div
                   className="bmm-track"
                   role="img"
@@ -170,6 +164,6 @@ export default function BellaMaturityMap({ auditCount }: { auditCount: number })
           Elleta McDaniel, ctrl_alt_design.
         </p>
       </div>
-    </section>
+    </>
   );
 }

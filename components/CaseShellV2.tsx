@@ -112,9 +112,15 @@ export default function CaseShellV2({
         {tags.length > 0 && (
           <div className="cs-shell__tags" style={{ margin: 0 }}>
             {tags.map((tag) => (
+              /* identity tinting needs the case's colour pair. Without a
+                 work-library row those custom properties are unset and
+                 the tag falls back to ink on an untinted ground, which
+                 failed AA in dark. The no-registry path (the System
+                 page) gets the plain tag. Found 27 Jul, first consumer
+                 of that path. */
               <Tag
                 key={tag}
-                identity
+                identity={!!caseItem}
                 style={
                   caseItem
                     ? ({ "--case-tint-text": caseItem.text, "--case-tint-hi": caseItem.hi } as React.CSSProperties)
