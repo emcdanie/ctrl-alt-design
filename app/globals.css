@@ -2528,11 +2528,14 @@ textarea:focus-visible {
    ok = the clarity case pair, warn = the writing case pair, agent =
    accent iris; all theme-flipping). ONE inline SVG diagram; the
    route draw-in fires on .in, reduced motion renders settled. ── */
+/* the 900px cap never bit while this sat in half a beat row, and it
+   bites now that the beat is wide: it would hold the diagram at scale
+   1.0 when the container offers 1.38, and every label in a viewBox
+   scales with its box. The drawing takes the width it is given. */
 .air {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-4);
-  max-width: 900px;
 }
 
 .air-stage {

@@ -145,6 +145,14 @@ export default function BellaSpine({
         headline="Into your system, or around it?"
         keyline="A mature system makes going through it the easy path."
         flip
+        /* WIDE (27 Jul, second pass). Not for balance: the diagram is a
+           900-unit viewBox, so every label scales with the column it is
+           given. In half a row its type rendered 6.6px at 1024 and 8.2px
+           at 1440. The container is the widest this beat can be, which
+           is the most legibility the current drawing can have. It is
+           still short of the 16px floor at every width, which needs the
+           labels out of the SVG, not a wider column. */
+        wide
         body={
           <>
             <p>
