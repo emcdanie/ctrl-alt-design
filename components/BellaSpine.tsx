@@ -96,39 +96,44 @@ export default function BellaSpine({
         visual={<ContractPipeline />}
       />
 
-      {/* ── 03 ── the table lives in the BODY. It is content, not a
-          visual, and it used to sit in the visual slot opposite three
-          lines of text, which read badly at every width. The visual is
-          the derived count, which is a real visual statement. ── */}
+      {/* ── 03 ── WIDE (27 Jul). The table is the demo, so it is the
+          VISUAL, and it spans the container in columns. It spent one
+          revision in the body slot opposite an almost empty visual
+          column, which stranded roughly 1900px of dead ground beside
+          it at 1440. The derived count sits with the copy, where it
+          reads as the sentence's subject rather than a lonely number.
+          Membership of this list is asserted against the real gate in
+          BOTH directions by audit:debt, so it cannot drift again. ── */}
       <CaseBeat
         index="03"
         id="ds-gate"
         kicker="Enforcement"
         headline="A system that cannot refuse is a suggestion."
         keyline={`${capitalise(auditCountWord)} checks run before anything ships.`}
+        wide
         body={
           <>
             <p>
               Green or it does not merge, locally and on every pull request. Each check names
               exactly what it refuses, so a failure is self-documenting.
             </p>
-            <dl className="ds-gate-list">
-              {GATE.map((g) => (
-                <div key={g.name} className="ds-gate-list__row">
-                  <dt>{g.name}</dt>
-                  <dd>{g.line}</dd>
-                </div>
-              ))}
-            </dl>
+            <p className="ds-gate-stat">
+              <span className="ds-gate-stat__n">{auditCount}</span>
+              <span className="ds-gate-stat__l">
+                checks, every one of them able to stop a merge
+              </span>
+            </p>
           </>
         }
         visual={
-          <p className="ds-gate-stat">
-            <span className="ds-gate-stat__n">{auditCount}</span>
-            <span className="ds-gate-stat__l">
-              checks, every one of them able to stop a merge
-            </span>
-          </p>
+          <dl className="ds-gate-list">
+            {GATE.map((g) => (
+              <div key={g.name} className="ds-gate-list__row">
+                <dt>{g.name}</dt>
+                <dd>{g.line}</dd>
+              </div>
+            ))}
+          </dl>
         }
       />
 
@@ -141,27 +146,44 @@ export default function BellaSpine({
         keyline="A mature system makes going through it the easy path."
         flip
         body={
-          <p>
-            Agents read the system directly. When the contract is machine-readable they build
-            from it; when it is not, they build around it and the output is guessed rather
-            than grounded.
-          </p>
+          <>
+            <p>
+              Agents read the system directly. When the contract is machine-readable they build
+              from it; when it is not, they build around it and the output is guessed rather
+              than grounded.
+            </p>
+            {/* moved out of AiReadinessExplainer (27 Jul): the diagram
+                carried a takeaway that restated this beat's keyline
+                almost word for word, and a note that belongs with the
+                copy. The beat owns the words, the visual owns the
+                diagram, and the columns balance as a result. */}
+            <p>
+              The newest test of a design system isn&apos;t how well humans read it. It&apos;s
+              the path an AI takes.
+            </p>
+          </>
         }
         visual={<AiReadinessExplainer />}
       />
 
-      {/* ── 05 ── */}
+      {/* ── 05 ── WIDE (27 Jul). Six axes compared on one row template
+          need the container: the map ran 1876px down half a row while
+          the copy beside it ran 241px, which is the emptiest thing on
+          the page in the section that should be the most visual. The
+          org-scale caveat lives here now, once, instead of here AND in
+          the component's own intro notes. ── */}
       <CaseBeat
         index="05"
         id="ds-maturity"
         kicker="Self-assessment"
         headline="Where the system honestly stands."
         keyline="Not a scoreboard. Strength in one place, room in another."
+        wide
         body={
           <p>
             BELLA scored against zeroheight&apos;s six-axis Design System Maturity Model. It is
-            a personal system, so the org-scale axes are early by design while the frontier
-            axes run deep. The honest read is the point.
+            a personal system, so the org-scale axes (adoption, team, measurement) are early by
+            design while the frontier axes run deep. The honest read is the point.
           </p>
         }
         visual={<BellaMaturityMap auditCount={auditCount} />}

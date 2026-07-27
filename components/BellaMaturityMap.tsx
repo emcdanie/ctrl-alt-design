@@ -84,45 +84,61 @@ const axes = (auditCount: number): Axis[] => [
 
 export default function BellaMaturityMap({ auditCount }: { auditCount: number }) {
   return (
-    /* VISUAL ONLY (27 Jul migration): the beat owns the headline. */
-    <>
-      <div className="bmm">
-        <p className="ds-section__note" style={{ margin: 0 }}>
-          Where my design system stands on zeroheight&apos;s six-axis Design System
-          Maturity Model, scored honestly.
-        </p>
-        <p className="ds-section__note bmm-honest" style={{ margin: 0 }}>
-          Not a scoreboard. BELLA is a personal system, so the org-scale axes
-          (adoption, team, measurement) are early by design, while the frontier axes
-          run deep. The point of a six-axis model is exactly this: strength in one
-          place, room in another.
-        </p>
-        <p className="ds-section__note bmm-scale" style={{ margin: 0 }}>
-          <strong>Stages:</strong> V1 → Growing → Teenage → Healthy Product
-        </p>
-        <ul className="bmm-list">
-          {axes(auditCount).map((a) => (
-            <li key={a.name} className="bmm-list__item">
-              {/* ON THE GROUND, not in a card (spec item 4, 27 Jul):
-                  these rows are prose plus a chart, not an inspectable
-                  specimen, so they lose the card and gain a rule. */}
-              <div className="bmm-axis">
-                <div className="bmm-axis__top">
-                  <h3 className="heading-item" style={{ margin: 0 }}>
-                    {a.name}
-                  </h3>
-                  <span className={`bmm-badge bmm-badge--${a.stage}`}>
-                    {STAGE_LABELS[a.stage]}
-                  </span>
-                </div>
-                {/* the marker sits WITH the track it describes (27 Jul):
-                    it used to sit at the far right of the header row
-                    while the bars start at the far left, so the feedback
-                    was nowhere near the thing it labelled. */}
-                <p className="bmm-track__here">
-                  You are here: stage {a.steps} of {STEPS_TOTAL}
-                </p>
-                <div
+    /* VISUAL ONLY (27 Jul migration): the beat owns the headline.
+       COMPARATIVE GRID (27 Jul, finishing pass): every axis is one row
+       on one column template, so the six tracks land in a single
+       column and can actually be compared at a glance. It shipped as a
+       stacked list where each track started at a different height,
+       which is six charts of one bar each, not a map. Measured 1876px
+       tall beside a 241px text column at 1440; the grid is roughly a
+       third of that and the beat is wide, so nothing is stranded.
+
+       The three notes that used to open this component (the intro, the
+       "not a scoreboard" keyline and the stage scale) said what the
+       beat's own keyline and body already say. Duplicated copy is the
+       same defect as a duplicated component, so the beat keeps the
+       words and this keeps the chart. The stage scale survives as the
+       grid's legend, which is where a scale belongs. */
+    <div className="bmm">
+      <p className="bmm-legend">
+        <span className="bmm-legend__label">Stages</span>
+        <span className="bmm-legend__scale">V1 → Growing → Teenage → Healthy Product</span>
+      </p>
+
+      <ul className="bmm-list">
+        {/* the column header is presentation for the grid beneath it,
+            not a row of data; it is hidden from the accessibility tree
+            because each row already names its own values in text. */}
+        <li className="bmm-list__item bmm-list__item--head" aria-hidden="true">
+          <div className="bmm-axis bmm-axis--head">
+            <span className="bmm-axis__name">Axis</span>
+            <span className="bmm-axis__stage">Stage</span>
+            <span className="bmm-axis__progress">Progress</span>
+            {/* one word, like the other three. The sentence version
+                ("Why it sits there") is 17 characters of label at the
+                13px metadata tier, which the hardened audit:type reads
+                as reading text below the floor, correctly. A column
+                header is a label; the answer is the column itself. */}
+            <span className="bmm-axis__why">Why</span>
+          </div>
+        </li>
+
+        {axes(auditCount).map((a) => (
+          <li key={a.name} className="bmm-list__item">
+            {/* ON THE GROUND, not in a card (spec item 4, 27 Jul):
+                these rows are prose plus a chart, not an inspectable
+                specimen, so they lose the card and gain a rule. */}
+            <div className="bmm-axis">
+              {/* the ONE .heading-item recipe (audit:reuse); the axis
+                  class carries grid rhythm only, never its own type */}
+              <h3 className="heading-item bmm-axis__name">{a.name}</h3>
+              <span className="bmm-axis__stage">
+                <span className={`bmm-badge bmm-badge--${a.stage}`}>
+                  {STAGE_LABELS[a.stage]}
+                </span>
+              </span>
+              <span className="bmm-axis__progress">
+                <span
                   className="bmm-track"
                   role="img"
                   aria-label={`Stage ${a.steps} of ${STEPS_TOTAL}`}
@@ -134,36 +150,37 @@ export default function BellaMaturityMap({ auditCount }: { auditCount: number })
                         "bmm-track__step",
                         i < a.steps ? "bmm-track__step--on" : "",
                         i < a.steps && a.frontier ? "bmm-track__step--frontier" : "",
-                        i === a.steps - 1 ? "bmm-track__step--here" : "",
                       ]
                         .filter(Boolean)
                         .join(" ")}
                       aria-hidden="true"
                     />
                   ))}
-                </div>
-                <p className="ds-section__note bmm-axis__why" style={{ margin: 0 }}>
-                  {a.rationale}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <p className="ds-section__note bmm-foot" style={{ margin: 0 }}>
-          Model:{" "}
-          <a
-            className="ds-swatch__case"
-            href="https://zeroheight.com/maturity/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            zeroheight Design System Maturity Model
-          </a>{" "}
-          (six axes: Foundations, Documentation &amp; Knowledge, Governance &amp;
-          Team, Adoption, Measurement &amp; Impact, AI Readiness). Self-assessed by
-          Elleta McDaniel, ctrl_alt_design.
-        </p>
-      </div>
-    </>
+                </span>
+                <span className="bmm-track__count">
+                  {a.steps}/{STEPS_TOTAL}
+                </span>
+              </span>
+              <p className="bmm-axis__why">{a.rationale}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <p className="ds-section__note bmm-foot" style={{ margin: 0 }}>
+        Model:{" "}
+        <a
+          className="ds-swatch__case"
+          href="https://zeroheight.com/maturity/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          zeroheight Design System Maturity Model
+        </a>{" "}
+        (six axes: Foundations, Documentation &amp; Knowledge, Governance &amp;
+        Team, Adoption, Measurement &amp; Impact, AI Readiness). Self-assessed by
+        Elleta McDaniel, ctrl_alt_design.
+      </p>
+    </div>
   );
 }

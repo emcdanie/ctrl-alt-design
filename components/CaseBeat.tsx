@@ -18,6 +18,15 @@ import Heading from "@/components/ui/Heading";
  * the subject). align-items start, --spacing-* rhythm only. All
  * asserted in audit:visual (headline-shares-column-with-body,
  * visual-has-no-frame).
+ *
+ * `wide` (27 Jul 2026): the two-column grid collapses to ONE column,
+ * text above visual, both on the container's full measure. This is not
+ * the "full-width variant" the migration warned about: it does not
+ * introduce a shell, a rail, or a second left edge, and the beat stays
+ * inside the same container. It exists because some demos ARE the
+ * width, a sixteen-row gate table and a six-axis comparative grid, and
+ * pinning those into half a row strands the other half as dead ground.
+ * Prose keeps --measure-case so the copy never runs to 1240.
  */
 export default function CaseBeat({
   index,
@@ -29,6 +38,7 @@ export default function CaseBeat({
   control,
   foot,
   flip = false,
+  wide = false,
   id,
 }: {
   /** two-digit beat number, e.g. "01" */
@@ -51,11 +61,16 @@ export default function CaseBeat({
   /** the FOOTNOTE slot: one quiet row beneath the visual */
   foot?: React.ReactNode;
   flip?: boolean;
+  /** one column, text over visual, when the demo IS the width */
+  wide?: boolean;
   /** anchor id, applied to the headline */
   id?: string;
 }) {
   return (
-    <section className={`beat${flip ? " beat--flip" : ""}`} aria-labelledby={id}>
+    <section
+      className={`beat${flip ? " beat--flip" : ""}${wide ? " beat--wide" : ""}`}
+      aria-labelledby={id}
+    >
       <div className="beat-grid">
         <div className="beat-text">
           <p className="beat-eyebrow">{index} · {kicker}</p>

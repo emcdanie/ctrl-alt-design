@@ -1425,9 +1425,18 @@ textarea:focus-visible {
   line-height: 1.6;
 }
 
+/* Available now / Coming next. The 240px floor let both groups sit side
+   by side inside HALF a beat row, so the two short lists finished 224px
+   above the eight rules opposite them and left the column half empty
+   (measured at 1440, 27 Jul). At a 20rem floor they stack inside a beat
+   column and fill it, and still go side by side wherever the container
+   is genuinely wide. */
 .ds-status {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  /* the two groups hold different numbers of lines; 1fr rows keep them
+     the same size in whichever direction they land. Dropping this is
+     what audit:visual caught at 390 (224 vs 173). */
   grid-auto-rows: 1fr;
   gap: var(--grid-gap);
 }
@@ -2593,16 +2602,9 @@ textarea:focus-visible {
   opacity: 1;
 }
 
-.air-takeaway {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-lg);
-  font-weight: 600;
-  color: var(--color-ink);
-  max-width: 60ch;
-  border-left: 3px solid var(--case-clarity-hi);
-  padding-left: var(--spacing-4);
-  margin: var(--spacing-2) 0 0;
-}
+/* .air-takeaway is deleted with its markup (27 Jul): the takeaway moved
+   into the beat body, and a rule with no element left to paint is the
+   dead copy the constitution forbids. */
 
 /* the 5-point framework, hers; renders only when her words land */
 .air-framework {
@@ -2648,27 +2650,36 @@ textarea:focus-visible {
    frontier accent), its warm V1 hue = the writing case pair, Growing
    = the accent family. Same 900 column as the explainer above so the
    two bands read as one AI-readiness story. ── */
+/* the map is the beat's whole width now (27 Jul finishing pass); the
+   900px cap belonged to the era when it sat in half a row. The row
+   template below is what keeps the prose readable, not an outer cap. */
 .bmm {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-6);
-  max-width: 900px;
+  gap: var(--spacing-5);
 }
 
-/* the honest note wears the frontier accent as a quiet left keyline,
-   the same device as .air-takeaway */
-.bmm-honest {
-  border-left: 3px solid var(--case-clarity-hi);
-  padding-left: var(--spacing-4);
-  max-width: 64ch;
-}
-
-.bmm-scale {
+/* the stage scale, as the grid's legend */
+.bmm-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--spacing-2) var(--spacing-3);
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
   color: var(--color-ink-muted);
 }
 
-.bmm-scale strong {
-  color: var(--color-ink);
+.bmm-legend__label {
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-eyebrow);
+}
+
+.bmm-legend__scale {
+  color: var(--color-ink-soft);
 }
 
 .bmm-list {
@@ -2677,21 +2688,7 @@ textarea:focus-visible {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-4);
-}
-
-.bmm-axis {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-}
-
-.bmm-axis__top {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--spacing-4);
-  flex-wrap: wrap;
+  border-bottom: 1px solid var(--color-border-soft);
 }
 
 /* stage badges: metadata tier (the tag/pill register), stage colour
@@ -2733,32 +2730,12 @@ textarea:focus-visible {
   background: color-mix(in srgb, var(--case-clarity-hi) 18%, var(--color-card));
 }
 
-/* the 4-step track; filled = the accent family, the frontier axis
-   fills in the clarity pair. Redundant with the badge text, so the
-   track itself is decorative. */
-.bmm-track {
-  display: flex;
-  gap: var(--spacing-2);
-}
-
-.bmm-track__step {
-  flex: 1;
-  height: var(--spacing-2);
-  border-radius: var(--radius-full);
-  background: var(--color-border-medium);
-}
-
-.bmm-track__step--on {
-  background: var(--color-accent-ink);
-}
-
-.bmm-track__step--frontier {
-  background: var(--case-clarity-text);
-}
-
+/* the rule that closes the grid belongs to the GRID, not to the
+   attribution under it. On the paragraph it inherited .ds-section__note's
+   62ch cap and stopped halfway across, reading as a broken row; the
+   attribution keeps its measure and the list owns the closing line. */
 .bmm-foot {
-  border-top: 1px solid var(--color-border-soft);
-  padding-top: var(--spacing-4);
+  max-width: 72ch;
 }
 
 /* DEFECT 2 + 3 (token-card misalignment, ragged columns), 27 Jul.
@@ -4389,6 +4366,26 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
      internal order never changes */
   .beat--flip .beat-text { order: 2; }
   .beat--flip .beat-visual { order: 1; }
+
+  /* WIDE (27 Jul 2026): one column, text over visual. For beats whose
+     demo IS the width (the gate table, the maturity grid); a half-row
+     demo there left the other half as dead ground at every width above
+     1024. Order is reset so a wide beat that also alternates does not
+     invert into visual-then-text. */
+  .beat--wide .beat-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-8);
+  }
+  .beat--wide .beat-text,
+  .beat--wide .beat-visual {
+    order: 0;
+  }
+}
+
+/* wide beats span the container; the PROSE inside them must not, or a
+   paragraph runs 1240px wide and stops being readable */
+.beat--wide .beat-body {
+  max-width: var(--measure-case);
 }
 
 .beat-text {
@@ -4610,13 +4607,19 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    navy dome (dark). The sign-off is the site's Unique display (Heading
    tier=case); the heart wears the clay accent. One fade-up on enter (JS
    toggles .is-visible); prefers-reduced-motion renders it static. ── */
+/* The lead-in was margin-top 80 plus padding-top 128, so the sign-off
+   started 208px below the last beat, on top of that beat's own 64px
+   floor: 272px of nothing before the thanks, roughly a third of a
+   1440x900 screen (measured 27 Jul). The dome still needs room to rise
+   behind the type, so the padding carries the space and the margin
+   stops doubling it. */
 .cs2-endreveal {
   --enddome-top: #EDE7F3;   /* peri-tinted cream where the dome crests */
   --enddome-mid: #EBE6DC;
   position: relative;
   overflow: hidden;
-  margin-top: var(--spacing-20);
-  padding: calc(var(--spacing-20) + var(--spacing-12)) var(--spacing-6) var(--spacing-20);
+  margin-top: 0;
+  padding: var(--spacing-16) var(--spacing-6) var(--spacing-20);
   text-align: center;
 }
 [data-theme="dark"] .cs2-endreveal {
@@ -5369,16 +5372,22 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .ds-shelf > .ds-shelf__subhead:first-of-type { margin-top: var(--spacing-6); }
 
-/* ── Maturity map, on the ground and enlarged (spec item 4, 27 Jul) ──
-   The axes were cards; they are prose plus a chart, not inspectable
-   specimens, so they sit on the ground separated by a rule. The map is
-   now the largest visual on the page, and each axis names its current
-   stage in TEXT beside the marker, never by position alone. */
+/* ── Maturity map: ONE comparative row template (27 Jul finishing
+   pass) ── The axes were cards, then a stacked list; they are prose
+   plus a chart, not inspectable specimens, so they sit on the ground
+   separated by a rule. Every axis now renders on the SAME four-column
+   template (name, stage, progress, why), which is what makes the six
+   tracks comparable: they land in one column and you read the shape
+   down the page. Each axis still names its stage in TEXT beside the
+   marker, never by position alone.
+
+   This block is the only .bmm-axis/.bmm-track rule set. There were two,
+   1500 lines apart, and the later silently won every shared property. */
 .bmm-axis {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-3);
-  padding: var(--spacing-6) 0;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4) 0;
   border-top: 1px solid var(--color-border-soft);
 }
 
@@ -5386,20 +5395,47 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-top: 0;
 }
 
-.bmm-axis__why {
-  max-width: 72ch;
+/* the header row is desktop-only: below the grid breakpoint the rows
+   stack and every value already sits next to its own label */
+.bmm-list__item--head {
+  display: none;
 }
 
-/* the track, enlarged: this is the page's one strong chart */
+/* type comes from the shared .heading-item recipe; this only kills the
+   default heading margin so the row template controls the rhythm */
+.bmm-axis__name {
+  margin: 0;
+}
+
+.bmm-axis__stage,
+.bmm-axis__progress {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.bmm-axis__why {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  max-width: 72ch;
+  margin: 0;
+}
+
+/* the 4-step track: filled = the accent family, the frontier axis fills
+   in the clarity pair. Redundant with the badge text and the count, so
+   the bars themselves are decorative. */
 .bmm-track {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-2);
-  align-items: end;
+  align-items: center;
+  flex: 1;
+  min-width: var(--spacing-20);
 }
 
 .bmm-track__step {
-  position: relative;
   height: var(--spacing-3);
   border-radius: var(--radius-full);
   background: var(--color-tag-bg);
@@ -5415,25 +5451,46 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   background: var(--case-clarity-hi, var(--color-semantic-accent-border));
 }
 
-.bmm-track__step--here {
-  height: var(--spacing-5);
-}
-
-.bmm-track__here {
-  /* sits directly above its own track, left-aligned with the bars, so
-     the feedback is beside the thing it describes (27 Jul) */
-  margin: 0 0 var(--spacing-1);
-  white-space: nowrap;
-  font-family: var(--font-body);
-  /* a real reading label, not metadata: it states where the axis sits,
-     so it clears the floor (caught by the hardened audit:type) */
+/* the position in text, so the chart is never the only carrier */
+.bmm-track__count {
+  font-family: var(--font-mono);
   font-size: var(--typography-font-size-base);
-  font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--color-eyebrow);
+  font-weight: 600;
+  color: var(--color-ink-muted);
+  white-space: nowrap;
 }
 
+/* the comparative grid proper: one template for the header and every
+   axis, so the tracks share a column and can be read against each
+   other. Below this the rows stack and read as labelled blocks. */
+@media (min-width: 1024px) {
+  .bmm-list__item--head {
+    display: block;
+  }
+
+  .bmm-axis {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 13rem) minmax(0, 7rem) minmax(0, 12rem) minmax(0, 1fr);
+    align-items: center;
+    column-gap: var(--spacing-6);
+    row-gap: 0;
+  }
+
+  .bmm-axis--head {
+    padding-bottom: var(--spacing-2);
+    border-top: 0;
+  }
+
+  .bmm-axis--head > * {
+    font-family: var(--font-body);
+    font-size: var(--typography-font-size-tag);
+    font-weight: 700;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-eyebrow);
+  }
+}
 
 
 /* status lists on the open ground (spec item 3): a list of facts is
@@ -5603,16 +5660,33 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 /* rail placeholders: the structure made visible before it is built */
 
 
-/* ── the gate, as content in the beat BODY (27 Jul migration) ──
-   A sixteen-row table is content, not a visual, and it used to sit in
-   CaseBeat's visual slot opposite three lines of text. It reads as a
-   definition list now, which works at any column width without the
-   horizontal scroll a table needs. */
+/* ── the gate table: the beat's VISUAL, on the full container (27 Jul
+   finishing pass) ── A sixteen-row list IS the demo here, so it is the
+   visual and the beat is wide. It has now sat in both slots of a
+   two-column beat and stranded the other half either way: first as a
+   visual opposite three lines of copy, then as body copy opposite a
+   lone number, which measured 1975px of text against a 112px visual at
+   1440. In columns across the container it is roughly a third as tall
+   and nothing sits beside a void. Still a definition list, not a table,
+   so it reflows to one column on a phone with no horizontal scroll. */
 .ds-gate-list {
-  margin: var(--spacing-5) 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--spacing-4) var(--spacing-8);
+  align-content: start;
+}
+
+@media (min-width: 768px) {
+  .ds-gate-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1240px) {
+  .ds-gate-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .ds-gate-list__row {
@@ -5637,12 +5711,15 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   color: var(--color-ink-soft);
 }
 
-/* the beat's visual: the derived count, stated once, large */
+/* the derived count, stated once, large, WITH the copy (27 Jul): it was
+   the beat's whole visual column, one number against 1900px of table.
+   It reads as the subject of the sentence beside it now, so it lies
+   down instead of stacking. */
 .ds-gate-stat {
-  margin: 0;
+  margin: var(--spacing-2) 0 0;
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
+  align-items: center;
+  gap: var(--spacing-4);
 }
 
 .ds-gate-stat__n {

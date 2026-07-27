@@ -102,15 +102,11 @@ export default function AiReadinessExplainer() {
           </g>
         </svg>
 
-        {/* the takeaway + foot, straight from the approved proto */}
-        <p className="air-takeaway">
-          A mature system makes going <strong>through</strong> it the easy path. Then the output is
-          grounded, not guessed.
-        </p>
-        <p className="ds-section__note" style={{ margin: 0 }}>
-          The newest test of a design system isn&apos;t how well humans read it. It&apos;s the path
-          an AI takes.
-        </p>
+        {/* the proto's takeaway and foot moved into the beat body (27
+            Jul): the takeaway restated the beat keyline almost word for
+            word, and duplicated copy under a diagram is the same
+            "old and new both rendering" bug in prose. The beat owns the
+            words; this component owns the diagram. */}
 
         {/* the 5-point audit framework, hers; renders only when her
             words land */}
