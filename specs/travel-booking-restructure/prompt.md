@@ -26,9 +26,9 @@ Verify each slug-to-case mapping from the file's title field before editing. Exp
 |---|---|---|
 | Code First | `content/case-studies/brad-frost.ts` | WORKING CODE-FIRST CHANGES WHAT YOU PAY ATTENTION TO. |
 | Guardian | `content/case-studies/guardian.ts` | GOVERNANCE WAS ARRIVING TOO LATE, AT THE HIGHEST POSSIBLE COST. |
-| Travel Booking | `content/case-studies/filters-decision-support-system.ts` | CAPABILITY WITHOUT CLARITY IS JUST A DIFFERENT KIND OF FRICTION. |
+| Travel Booking | `content/case-studies/_archive/filters-decision-support-system.ts` | CAPABILITY WITHOUT CLARITY IS JUST A DIFFERENT KIND OF FRICTION. |
 | From Drift to Foundation | `content/case-studies/design-system-transformation.ts` | THE SYSTEM IS THE SET OF AGREEMENTS, NOT THE COMPONENT LIBRARY. |
-| Operational Clarity | `content/case-studies/un-operational-dashboard.ts` | SIX OPERATIONAL DOMAINS. ONE INTERFACE. EIGHT WEEKS. |
+| Operational Clarity | `content/case-studies/_archive/un-operational-dashboard.ts` | SIX OPERATIONAL DOMAINS. ONE INTERFACE. EIGHT WEEKS. |
 
 CHIP keeps its existing headline. `design-lab.ts` untouched.
 
@@ -36,7 +36,7 @@ For Travel Booking this means the `problem.title` string and the pull quote in t
 
 ## Task 3. Travel Booking full restructure (mapping approved 20 Jul)
 
-File: `content/case-studies/filters-decision-support-system.ts`. Convert from essay to decision-led using CHIP (`chip.ts`) as the structural reference. Every paragraph moves verbatim; sections whose paragraphs move are deleted (no empty shells, no duplicates). Remove the `TODO(elleta): decision blocks` comment once done.
+File: `content/case-studies/_archive/filters-decision-support-system.ts`. Convert from essay to decision-led using CHIP (`chip.ts`) as the structural reference. Every paragraph moves verbatim; sections whose paragraphs move are deleted (no empty shells, no duplicates). Remove the `TODO(elleta): decision blocks` comment once done.
 
 New block order:
 
@@ -51,7 +51,7 @@ New block order:
 9. `lessons` block: unchanged.
 10. REFLECTION section ("What I Would Do Next"): unchanged, stays last.
 
-If the decision block type's shape (fields, evidence kinds) differs from what CHIP uses, follow the actual type in `lib/content` and the Pass E task 11 mechanics; do not invent new block kinds.
+If the decision block type's shape (fields, evidence kinds) differs from what CHIP uses, follow the actual type in `lib/content.ts` and the Pass E task 11 mechanics; do not invent new block kinds.
 
 Eyebrow rule while restructuring: no section eyebrow may repeat a summary label or its own heading.
 

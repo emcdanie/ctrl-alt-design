@@ -90,6 +90,11 @@ export default function ContractPipeline() {
         ]
       : null;
 
+  /* if parseRgb refused a colour it could not interpret, ink/ground are
+     null and everything downstream stays null: the instrument shows
+     "reading" rather than a computed number. A wrong ratio here is far
+     worse than no ratio, because the whole beat argues the number is
+     real (dtcg.ts parseRgb, 27 Jul). */
   const hex = mixed ? toHex(mixed).toUpperCase() : null;
   const ratio = mixed && ground ? contrastRatio(mixed, ground) : null;
   const passes = ratio === null ? null : ratio >= AAA_NORMAL;

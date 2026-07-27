@@ -36,6 +36,7 @@ const GATE = [
   /* both of these ran in the gate but were missing from this list, so
      the page under-reported its own governance (27 Jul) */
   { name: "audit:contract", line: "Every component in the contract exists, every token reference resolves, and every prop and variant appears in the source. A contract that describes code that is not there fails the build." },
+  { name: "audit:debt", line: "Nothing rots quietly: a doc citing a file that does not exist, a token nothing consumes, a gate table describing audits that no longer run, or an audit tracking a selector that matches nothing." },
   { name: "audit:dark", line: "Every embedded surface adapts to the dark contract. An iframe that ships one skin fails the build." },
   { name: "audit:axe", line: "axe-core against every route in both themes; zero violations to pass. Needs-review nodes are counted and verified by hand." },
   { name: "audit:type", line: "No card surface renders reading text below 16px computed; the shared card body never below 18. Metadata rows are their own tier." },

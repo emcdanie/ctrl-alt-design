@@ -44,7 +44,7 @@ jobs:
           done
           echo "server never came up" && exit 1
 
-      - name: Run the gate (ten audits)
+      - name: Run the gate
         run: npm run gate
 
   npm-audit:

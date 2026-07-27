@@ -1,0 +1,22 @@
+{
+  "$description": "THE central allowlist for audit:debt (spec specs/audit-debt, 2026-07-27). One entry per deliberate exception. Every entry REQUIRES a written reason and a date, and the audit prints the count on every run so this file can never be silent or scattered. There are no inline skip comments and no per-element attributes anywhere; CLAUDE.md section 9 bans those and this does not reopen the hole, because it is capped: the audit FAILS above maxEntries, and FAILS on any entry older than staleAfterDays without being re-dated. Growth is self-limiting and stale exemptions surface themselves.",
+  "maxEntries": 15,
+  "staleAfterDays": 180,
+  "entries": [
+    {
+      "id": "refs:docs/CODE-AUDIT.md",
+      "reason": "A DATED historical audit of a codebase state that no longer exists. Its citations (Carousel, CaseStudyHero, WorkSidebar, data/caseStudies.ts and others) were accurate when written and describe components deleted in the case migration. Repointing them would falsify the record; deleting the file would lose it. The document is history, not instruction.",
+      "date": "2026-07-27"
+    },
+    {
+      "id": "refs:docs/briefs/system-annotation-audit.md",
+      "reason": "A dated brief describing the annotation rebuild. It cites components/DesignSystemSpecimens.tsx, retired 27 Jul when /design-system became an explorable explanation. The brief is a record of what was decided then; repointing it would falsify the record.",
+      "date": "2026-07-27"
+    },
+    {
+      "id": "refs:docs/canvas-css-vars-gotcha.md",
+      "reason": "A dated fix note about reading CSS custom properties on canvas. It cites app/command-center/map/SystemMap.tsx from the retired command-center prototype. The gotcha it records is still true and still worth keeping; the file it was found in is gone.",
+      "date": "2026-07-27"
+    }
+  ]
+}
