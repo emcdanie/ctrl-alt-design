@@ -204,10 +204,13 @@ export default function ContractPipeline() {
 
         <span className="ds-rail__chev" aria-hidden="true"><Glyph d={CHEVRON} /></span>
 
-        {/* ── 03 REFUSAL ── */}
+        {/* ── 03 GATE ── the cell was called "Refusal", which named the
+            outcome rather than the stage and disagreed with the flow
+            strip above it, where the same stage is "Gate". The refusal
+            is still the point; it is the verdict word, where it fires. */}
         <div className="ds-rail__cell">
           <div className="ds-stage">
-            <p className="ds-section__kicker ds-stage__kick"><b>03</b> Refusal</p>
+            <p className="ds-section__kicker ds-stage__kick"><b>03</b> Gate</p>
             <p className="ds-stage__lead">Measured, not judged by taste.</p>
             <p className="ds-stage__sub">
               Real <strong>relative luminance maths</strong>, against the AAA bar of{" "}
@@ -243,13 +246,13 @@ export default function ContractPipeline() {
           Restore the token
         </Button>
         {/* the agents narrative, demoted to its closing line (approved):
-            there is ONE self-governance section on this page */}
+            there is ONE self-governance section on this page. Trimmed to
+            the two artifacts and the check that polices them; the
+            rhetoric it opened with repeated the beat's own keyline. */}
         <p className="ds-section__note ds-pipeline__foot-note">
-          Authority lives where it can refuse, not where it instructs. The same check runs on
-          every pull request, against every route, in both themes. What agents read is this same
-          artifact, <a className="ds-swatch__case" href="/api/bella.json">/api/bella.json</a>,
-          alongside the plain-text route map at{" "}
-          <a className="ds-swatch__case" href="/llms.txt">/llms.txt</a>. The audit:agents check
+          Agents read this same artifact,{" "}
+          <a className="ds-swatch__case" href="/api/bella.json">/api/bella.json</a>, alongside the
+          route map at <a className="ds-swatch__case" href="/llms.txt">/llms.txt</a>. audit:agents
           fails the build if either one disagrees with the live registry.
         </p>
       </div>

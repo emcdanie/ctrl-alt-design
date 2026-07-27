@@ -83,15 +83,19 @@ export default function BellaSpine({
         headline="Authoring is human. Enforcement is deterministic."
         keyline="Move the control and watch the value travel."
         flip
+        /* WIDE (27 Jul, craft pass). The rail switches to three columns
+           at a 900px VIEWPORT, but it was living in half a beat row, so
+           at 1440 three cells shared 604px: roughly 15 characters a line
+           and a JSON token broken across four lines. The instrument is
+           the beat, so it gets the container. */
+        wide
         body={
-          <>
-            <p>
-              A human decides what the token should be. Nothing after that is a matter of
-              taste: the manifest regenerates from the same source the page renders from,
-              and the gate measures the result.
-            </p>
-            <p>The maths below runs in this tab, as you move it. None of it is a recording.</p>
-          </>
+          /* the instrument carries the explanation; the copy states the
+             claim once and gets out of its way */
+          <p>
+            A human decides what the token should be; everything after that is measured in
+            this tab as you move it, and none of it is a recording.
+          </p>
         }
         visual={<ContractPipeline />}
       />
@@ -126,14 +130,30 @@ export default function BellaSpine({
           </>
         }
         visual={
-          <dl className="ds-gate-list">
-            {GATE.map((g) => (
-              <div key={g.name} className="ds-gate-list__row">
-                <dt>{g.name}</dt>
-                <dd>{g.line}</dd>
-              </div>
-            ))}
-          </dl>
+          /* a real TABLE (craft pass, 27 Jul). Three columns of
+             definition list was sixteen entries of prose in a shape you
+             read rather than scan; two named columns is the thing it
+             always was, one row per audit, name against refusal. The
+             caption is the table's accessible summary. */
+          <table className="ds-gate-table">
+            <caption className="sr-only">
+              The {auditCountWord} audits in the gate, and what each one refuses.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Audit</th>
+                <th scope="col">What it refuses</th>
+              </tr>
+            </thead>
+            <tbody>
+              {GATE.map((g) => (
+                <tr key={g.name}>
+                  <th scope="row">{g.name}</th>
+                  <td>{g.line}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         }
       />
 

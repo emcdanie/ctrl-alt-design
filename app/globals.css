@@ -2692,6 +2692,187 @@ textarea:focus-visible {
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid var(--color-border-soft);
+  min-width: 0;
+}
+
+/* the chart takes its own ROW, flanked by its scale and its source, and
+   the table runs full width beneath it. The chart shows the SHAPE, the
+   table gives the exact stage and the reason; neither is decoration for
+   the other, so neither is squeezed into a column to sit beside the
+   other. Side by side, the chart's column finished 470px above the
+   table's last row and the reasons wrapped at 40 characters. */
+.bmm-chartrow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: var(--spacing-5);
+  margin-bottom: var(--spacing-8);
+}
+
+@media (min-width: 1024px) {
+  .bmm-chartrow {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 30rem) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--spacing-8);
+  }
+}
+
+/* ── the radar ──
+   A 3x3 ring of HTML labels with the chart in the middle. The labels are
+   NOT SVG text on purpose: text inside a viewBox scales with the box, so
+   it stops being 16px the moment the chart is not exactly its declared
+   size. These stay body-size at every width. */
+.bmm-radar {
+  margin: 0;
+  min-width: 0;
+}
+
+/* side columns take only what a label needs; the chart takes the rest,
+   so the hexagon is the biggest thing in its own column */
+.bmm-radar__ring {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
+  grid-template-rows: auto 1fr 1fr auto;
+  align-items: center;
+  justify-items: center;
+  gap: var(--spacing-2);
+}
+
+.bmm-radar__svg {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+  width: 100%;
+  height: auto;
+}
+
+/* the chart's furniture: its scale on one side, its source on the
+   other, both quiet enough that the hexagon stays the loud thing */
+.bmm-radar__cap {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+  max-width: 34ch;
+  text-align: center;
+}
+
+.bmm-radar__scale {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+@media (min-width: 1024px) {
+  .bmm-radar__scale {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  .bmm-radar__model {
+    text-align: left;
+    justify-self: start;
+  }
+
+  .bmm-radar__scale {
+    justify-self: end;
+  }
+}
+
+.bmm-radar__label {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-ink-soft);
+  text-align: center;
+}
+
+/* clockwise from twelve, the order the axes are declared and the table
+   lists them */
+.bmm-radar__label--0 { grid-column: 2; grid-row: 1; }
+.bmm-radar__label--1 { grid-column: 3; grid-row: 2; text-align: left; }
+.bmm-radar__label--2 { grid-column: 3; grid-row: 3; text-align: left; }
+.bmm-radar__label--3 { grid-column: 2; grid-row: 4; }
+.bmm-radar__label--4 { grid-column: 1; grid-row: 3; text-align: right; }
+.bmm-radar__label--5 { grid-column: 1; grid-row: 2; text-align: right; }
+
+/* the ring holds at 768 and above; below 600 the labels cannot flank the
+   chart without crushing it, so they fall into a row beneath it in the
+   same clockwise order. Same labels, same source, one implementation. */
+.bmm-radar__hint {
+  display: none;
+}
+
+@media (max-width: 599px) {
+  .bmm-radar__ring {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: var(--spacing-1) var(--spacing-3);
+  }
+
+  .bmm-radar__svg {
+    order: -1;
+    flex: 0 0 100%;
+    max-width: 20rem;
+    margin-inline: auto;
+  }
+
+  .bmm-radar__hint {
+    display: block;
+    flex: 0 0 100%;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: var(--typography-font-size-tag);
+    font-weight: 700;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-eyebrow);
+  }
+
+  /* the grid placement is what put them around the chart; in the row it
+     would strand them back into columns */
+  .bmm-radar__label {
+    grid-column: auto;
+    grid-row: auto;
+    text-align: center;
+  }
+
+  .bmm-radar__label + .bmm-radar__label::before {
+    content: "\00b7";
+    margin-right: var(--spacing-3);
+    color: var(--color-ink-muted);
+  }
+}
+
+.bmm-radar__grid {
+  fill: none;
+  stroke: var(--color-border-soft);
+  stroke-width: 1;
+}
+
+.bmm-radar__spoke {
+  stroke: var(--color-border-soft);
+  stroke-width: 1;
+}
+
+.bmm-radar__shape {
+  fill: var(--color-semantic-accent-subtle);
+  stroke: var(--color-accent-ink);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.bmm-radar__dot {
+  fill: var(--color-accent-ink);
+}
+
+/* the frontier axis wears the clarity pair here too, so the deepest
+   vertex reads as the thesis and not just as the biggest number */
+.bmm-radar__dot--frontier {
+  fill: var(--case-clarity-text);
 }
 
 /* stage badges: metadata tier (the tag/pill register), stage colour
@@ -2733,13 +2914,9 @@ textarea:focus-visible {
   background: color-mix(in srgb, var(--case-clarity-hi) 18%, var(--color-card));
 }
 
-/* the rule that closes the grid belongs to the GRID, not to the
-   attribution under it. On the paragraph it inherited .ds-section__note's
-   62ch cap and stopped halfway across, reading as a broken row; the
-   attribution keeps its measure and the list owns the closing line. */
-.bmm-foot {
-  max-width: 72ch;
-}
+/* .bmm-foot is deleted with its markup (craft pass): the attribution
+   moved into the chart's figcaption, where it helps the chart column
+   finish level with the table instead of running under both. */
 
 /* DEFECT 2 + 3 (token-card misalignment, ragged columns), 27 Jul.
    Was: a 180px auto-fill grid of loose flex columns. Long token names
@@ -5087,7 +5264,21 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   .ds-flow__verdict { margin-left: 0; }
 }
 
-/* the rail: three stages bound by chevrons */
+/* the rail: three stages bound by chevrons.
+
+   The breakpoint is a CONTAINER query, not a viewport one, and that is
+   the whole fix (craft pass, 27 Jul). It used to read the viewport, so
+   at 1440 it confidently laid three cells across the 604px it actually
+   had: about 15 characters a line, "--color-ink-soft" broken across
+   four lines inside the JSON. A rail cares how wide the RAIL is. The
+   instrument declares the containment; the query reads it, so the rail
+   is correct wherever it is dropped and cannot be fooled by a wide
+   window again. */
+.ds-pipeline-instrument {
+  container-type: inline-size;
+  container-name: instrument;
+}
+
 .ds-rail {
   display: grid;
   grid-template-columns: 1fr;
@@ -5095,7 +5286,14 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   align-items: stretch;
 }
 
-@media (min-width: 900px) {
+/* Three across ONLY once the rail can seat three generous cells. The
+   threshold is arithmetic, not taste: at 16px body, three cells plus two
+   chevrons need about 1164px before each cell clears 40 characters a
+   line. Anything less and "horizontal" buys a shape at the cost of the
+   reading, which is the trade the old 900px viewport query made. Below
+   this the stages stack and the chevrons turn to point down the column,
+   so it is still one pipeline, read top to bottom. */
+@container instrument (min-width: 72rem) {
   .ds-rail {
     grid-template-columns: 1fr auto 1fr auto 1fr;
     gap: 0;
@@ -5108,11 +5306,13 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   min-width: 0;
 }
 
+/* the chevron is a joint, not a column: every pixel it takes comes
+   straight off the three cells' reading measure */
 .ds-rail__chev {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--spacing-10);
+  width: var(--spacing-6);
   flex: 0 0 auto;
   color: var(--color-accent-ink);
 }
@@ -5123,7 +5323,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   stroke-width: 2;
 }
 
-@media (max-width: 899px) {
+/* stacked: the chevron turns to point down the column. Container query
+   again, so it can never disagree with the rail it belongs to. */
+@container instrument (max-width: 71.999rem) {
   .ds-rail__chev {
     width: 100%;
     height: var(--spacing-8);
@@ -5137,12 +5339,24 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-radius: var(--radius-xl);
   /* DEFECT 1: ONE restrained elevation, no bloom */
   box-shadow: var(--shadow-sm);
-  padding: var(--spacing-5);
+  padding: var(--spacing-4);
   display: flex;
   flex-direction: column;
   flex: 1;
   min-width: 0;
   gap: var(--spacing-2);
+}
+
+/* STACKED, the cell is as wide as the whole instrument, and a line of
+   body at 1024 measured 110 characters. Cap the prose at a measure; the
+   cap is inert once the rail is three across, because a cell is never
+   that wide there. */
+.ds-stage__lead,
+.ds-stage__sub,
+.ds-stage__hint,
+.ds-stage__gateline,
+.ds-stage__ctl {
+  max-width: 62ch;
 }
 
 .ds-stage__kick { margin: 0 0 var(--spacing-1); }
@@ -5229,8 +5443,15 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-size: var(--typography-font-size-base);
   line-height: 1.55;
   color: var(--color-ink);
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+  white-space: pre;
+  /* a token is one word. "anywhere" let the cell shatter
+     "--color-ink-soft" across four lines, which is the opposite of what
+     a manifest is for: you cannot read a name that has been broken. The
+     block scrolls INSIDE itself when it truly cannot fit, which is what
+     every code surface does and never touches the page's own scroll. */
+  overflow-wrap: normal;
+  word-break: normal;
+  overflow-x: auto;
   min-width: 0;
   max-width: 100%;
 }
@@ -5410,8 +5631,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin: 0;
 }
 
-.bmm-axis__stage,
-.bmm-axis__progress {
+.bmm-axis__stage {
   display: flex;
   align-items: center;
   gap: var(--spacing-3);
@@ -5424,34 +5644,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   color: var(--color-ink-soft);
   max-width: 72ch;
   margin: 0;
-}
-
-/* the 4-step track: filled = the accent family, the frontier axis fills
-   in the clarity pair. Redundant with the badge text and the count, so
-   the bars themselves are decorative. */
-.bmm-track {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--spacing-2);
-  align-items: center;
-  flex: 1;
-  min-width: var(--spacing-20);
-}
-
-.bmm-track__step {
-  height: var(--spacing-3);
-  border-radius: var(--radius-full);
-  background: var(--color-tag-bg);
-  border: 1px solid var(--color-border-soft);
-}
-
-.bmm-track__step--on {
-  background: var(--color-semantic-accent-border);
-  border-color: transparent;
-}
-
-.bmm-track__step--frontier {
-  background: var(--case-clarity-hi, var(--color-semantic-accent-border));
 }
 
 /* the position in text, so the chart is never the only carrier */
@@ -5471,10 +5663,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
     display: block;
   }
 
+  /* three columns now, not four: the progress bars are gone, replaced
+     by the radar, which plots the same number once instead of twice */
   .bmm-axis {
     display: grid;
-    grid-template-columns:
-      minmax(0, 13rem) minmax(0, 7rem) minmax(0, 12rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 12rem) minmax(0, 9rem) minmax(0, 1fr);
     align-items: center;
     column-gap: var(--spacing-6);
     row-gap: 0;
@@ -5663,55 +5856,82 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 /* rail placeholders: the structure made visible before it is built */
 
 
-/* ── the gate table: the beat's VISUAL, on the full container (27 Jul
-   finishing pass) ── A sixteen-row list IS the demo here, so it is the
-   visual and the beat is wide. It has now sat in both slots of a
-   two-column beat and stranded the other half either way: first as a
-   visual opposite three lines of copy, then as body copy opposite a
-   lone number, which measured 1975px of text against a 112px visual at
-   1440. In columns across the container it is roughly a third as tall
-   and nothing sits beside a void. Still a definition list, not a table,
-   so it reflows to one column on a phone with no horizontal scroll. */
-.ds-gate-list {
+/* ── the gate table (craft pass, 27 Jul) ── A sixteen-row list IS the
+   demo here, so it is the beat's visual and the beat is wide.
+
+   It has now been a definition list in both slots of a two-column beat
+   and a three-column definition grid, and all three were the same
+   mistake in different shapes: prose you read top to bottom when the
+   question is always "what does X refuse". Two named columns, one row
+   per audit, is what the content was the whole time. The header row
+   states the question so nobody has to infer it, and the caption is the
+   screen-reader summary.
+
+   Deliberately NOT scrollable: the refusal column reflows, and a table
+   you have to drag sideways on a phone is a table nobody reads.
+
+   It stays a NATIVE table at every width: no display:block rows, no
+   display:none header, no ARIA patch-up. Overriding display on table
+   parts is what strips the row and cell roles from the accessibility
+   tree, and a table that has to be re-declared with roles to survive its
+   own stylesheet is worse than one that simply keeps its columns. Both
+   columns just get narrower; the name column is mono and its longest
+   entry ("audit:structure") still fits at 360. */
+.ds-gate-table {
+  width: 100%;
+  border-collapse: collapse;
   margin: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--spacing-4) var(--spacing-8);
-  align-content: start;
+  text-align: left;
 }
 
-@media (min-width: 768px) {
-  .ds-gate-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1240px) {
-  .ds-gate-list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.ds-gate-list__row {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-  padding-top: var(--spacing-3);
+.ds-gate-table th,
+.ds-gate-table td {
+  padding: var(--spacing-3) var(--spacing-4) var(--spacing-3) 0;
   border-top: 1px solid var(--color-border-soft);
+  vertical-align: baseline;
 }
 
-.ds-gate-list dt {
+.ds-gate-table thead th {
+  border-top: 0;
+  padding-top: 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-eyebrow);
+}
+
+.ds-gate-table th[scope="row"] {
+  width: 38%;
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-base);
   font-weight: 600;
   color: var(--color-ink);
 }
 
-.ds-gate-list dd {
-  margin: 0;
+.ds-gate-table td {
+  padding-right: 0;
   font-size: var(--typography-font-size-base);
   line-height: 1.55;
   color: var(--color-ink-soft);
+}
+
+/* past the phone the name column stops taking a share of the width and
+   takes only what a token name needs */
+@media (min-width: 768px) {
+  .ds-gate-table th[scope="row"] {
+    width: 16rem;
+  }
+
+  .ds-gate-table th,
+  .ds-gate-table td {
+    padding-right: var(--spacing-6);
+  }
+
+  .ds-gate-table td {
+    padding-right: 0;
+  }
 }
 
 /* the derived count, stated once, large, WITH the copy (27 Jul): it was
