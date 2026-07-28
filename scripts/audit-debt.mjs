@@ -28,6 +28,7 @@
  * with a reason and a date, capped and staleness-checked. The count
  * prints on every run. */
 import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { join, extname } from "node:path";
 import { receipt } from "./lib/receipt.mjs";
 
@@ -93,6 +94,7 @@ const allowed = new Set();
   /* a path candidate: backticked, contains a slash, no glob/placeholder,
      not a URL, and rooted at a real top-level directory */
   const CAND = /`([^`\s]+\/[^`\s]*)`/g;
+  const misses = [];
   for (const f of files) {
     const src = readFileSync(f, "utf8");
     const seen = new Set();
@@ -110,8 +112,43 @@ const allowed = new Set();
       if (seen.has(p) || existsSync(p)) continue;
       if (allowed.has(`refs:${f}`)) continue;
       seen.add(p);
-      fail(`${f} cites ${p}`, "a path that does not exist", "a real file or directory, or no citation");
+      misses.push([f, p]);
     }
+  }
+
+  /* GITIGNORED PATHS ARE DELIBERATELY ABSENT, NOT ROTTED (28 Jul).
+     This check read the working tree, so it answered differently on a
+     laptop than in CI: local-only material (the proto folder, the
+     prototypes, the ignored IA spec) exists on the machine that wrote
+     the citation and never exists in a clean checkout. It passed here
+     and failed there on the identical commit, which makes the audit a
+     coin toss rather than a check.
+
+     .gitignore is committed, so asking git is the one question both
+     environments answer the same way. A path the repo deliberately does
+     not carry is not rot; a path nothing ignores and nothing provides
+     still is. */
+  const ignored = new Set();
+  if (misses.length) {
+    try {
+      const out = execFileSync("git", ["check-ignore", "--stdin"], {
+        input: misses.map(([, p]) => p).join("\n"),
+        encoding: "utf8",
+      });
+      for (const line of out.split("\n")) if (line.trim()) ignored.add(line.trim());
+    } catch (e) {
+      /* exit 1 means "none of them are ignored", which is not an error.
+         Anything else (no git, no repo) leaves the set empty, so every
+         miss is reported: a check that cannot verify must fail loudly,
+         never pass quietly. */
+      if (e.status !== 1) {
+        console.error("debt: git check-ignore unavailable, reporting every missing citation");
+      }
+    }
+  }
+  for (const [f, p] of misses) {
+    if (ignored.has(p)) continue;
+    fail(`${f} cites ${p}`, "a path that does not exist", "a real file or directory, or no citation");
   }
 }
 

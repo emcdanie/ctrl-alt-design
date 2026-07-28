@@ -61,3 +61,10 @@ prototypes/finviz-3/
 prototypes/finviz-kpi-tree/
 prototypes/linkedin-archive/
 prototypes/linkedin-preview/
+
+# local-only spec. It lived in .git/info/exclude, which is per-clone and
+# never committed, so every other checkout saw CLAUDE.md cite a file that
+# was not there and had no way to know the absence was deliberate. Stated
+# here, the repo carries its own intent. Publish the doc instead by
+# deleting this line and committing the file.
+docs/portfolio-ia-spec.md
