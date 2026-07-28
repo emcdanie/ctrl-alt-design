@@ -138,19 +138,20 @@ export default function BellaMaturityMap({ auditCount }: { auditCount: number })
        same defect as a duplicated component, so the beat keeps the
        words and this keeps the chart. The stage scale survives as the
        grid's legend, which is where a scale belongs. */
-    <div className="bmm">
-      <div className="bmm-chartrow">
-        {/* the chart's two pieces of furniture, one either side of it.
-            Stacked under the chart in a column beside the table, the
-            chart's side ran roughly 470px short of the rows next to it,
-            which is the dead ground this whole pass exists to remove.
-            Holding up the chart's own row, they fill it, and the table
-            below gets the full width for its reasons. */}
-        <p className="bmm-radar__cap bmm-radar__scale">
-          <span className="bmm-legend__label">Stages</span>
-          <span className="bmm-legend__scale">V1 → Growing → Teenage → Healthy Product</span>
-        </p>
+    /* ONE BLOCK (28 Jul, second pass). The chart had its own full-width
+       row with its scale on the left and its source on the right, and
+       three things went wrong with that: the right-aligned scale ended
+       about 30px from the "AI Readiness" axis label and read as tangled
+       with it, the hexagon sat small and marooned between two paragraphs
+       of furniture, and the table below read as a separate object with a
+       90px band of nothing between them.
 
+       Chart and table are now two columns of one grid: the shape on the
+       left with its own scale and source stacked underneath it, the
+       exact stages on the right. Nothing flanks the chart, so nothing
+       can crowd its labels, and the two halves start on the same line. */
+    <div className="bmm">
+      <div className="bmm-body">
         {/* ── the radar: the shape, at a glance ──
             The six axis labels are HTML in a ring around the chart, NOT
             <text> inside it. Text in a viewBox scales with the box, so
@@ -209,25 +210,33 @@ export default function BellaMaturityMap({ auditCount }: { auditCount: number })
             </svg>
           </div>
 
+          {/* the chart's furniture, UNDER the chart rather than beside
+              it: as flanking columns the scale finished a few pixels from
+              the "AI Readiness" axis label and read as colliding with it.
+              Nothing sits beside the ring now, so nothing can crowd it. */}
+          <figcaption className="bmm-radar__cap">
+            <span className="bmm-radar__scale">
+              <span className="bmm-legend__label">Stages</span>
+              <span className="bmm-legend__scale">V1 → Growing → Teenage → Healthy Product</span>
+            </span>
+            {/* trimmed (craft pass): it listed all six axis names, which
+                the table now lists in full, one per row */}
+            <span className="bmm-radar__model">
+              Model:{" "}
+              <a
+                className="ds-swatch__case"
+                href="https://zeroheight.com/maturity/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                zeroheight Design System Maturity Model
+              </a>
+              . Self-assessed by Elleta McDaniel, ctrl_alt_design.
+            </span>
+          </figcaption>
         </figure>
 
-        {/* trimmed (craft pass): it listed all six axis names, which the
-            table now lists in full, one per row */}
-        <p className="bmm-radar__cap bmm-radar__model">
-          Model:{" "}
-          <a
-            className="ds-swatch__case"
-            href="https://zeroheight.com/maturity/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            zeroheight Design System Maturity Model
-          </a>
-          . Self-assessed by Elleta McDaniel, ctrl_alt_design.
-        </p>
-      </div>
-
-      <ul className="bmm-list">
+        <ul className="bmm-list">
           {/* the column header is presentation for the grid beneath it,
               not a row of data; it is hidden from the accessibility tree
               because each row already names its own values in text. */}
@@ -274,8 +283,9 @@ export default function BellaMaturityMap({ auditCount }: { auditCount: number })
                 <p className="bmm-axis__why">{a.rationale}</p>
               </div>
             </li>
-        ))}
-      </ul>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

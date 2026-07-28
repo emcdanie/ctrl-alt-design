@@ -42,6 +42,15 @@ export default function DesignSystemPage() {
           subhead="A design system is only as useful to an AI as it is readable by a machine. This is that argument, demonstrated on the system running the page you are reading."
           readingMinutes={6}
           tags={["Design systems", "AI-enabled design", "Governance"]}
+          /* not reached through /work: System is its own primary nav item
+             (section 1b), so a back-to-Work crumb pointed somewhere the
+             reader had not been. Every real case keeps its crumb. */
+          crumbs={false}
+          /* the clarity pair, which this page ALREADY treats as its
+             identity: the frontier accent on the maturity radar and the
+             Teenage badges. No new colour is invented, and no WORK_ITEMS
+             row is added, which audit:parity would refuse. */
+          identity={{ text: "var(--case-clarity-text)", hi: "var(--case-clarity-hi)" }}
         >
           <BellaSpine
             auditCount={audits}

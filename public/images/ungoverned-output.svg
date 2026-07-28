@@ -1,5 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 214" width="280" height="214" role="img" aria-label="An off-brand card an ungoverned agent produced: clashing magenta and lime colours, cramped spacing, tiny body text, and a call to action whose text fails contrast against its background.">
-  <title>Ungoverned agent output</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 214" width="280" height="214" role="img" aria-label="An off-brand travel booking card an ungoverned agent produced. It reads Book your trip, Fast and easy booking today, and BOOK NOW. Clashing magenta and lime colours, a dashed neon outline, cramped spacing, body text below the readable floor, and a call to action whose lime-on-magenta text fails contrast.">
+  <title>Ungoverned agent output: a travel booking card</title>
+
+  <!-- THE WORDS ARE REAL TEXT HERE, and that is safe, because this file
+       is rendered through a flat <img>. Nothing inside an image enters
+       the page's DOM, so no audit traverses it and none has to be told
+       to look away. That is the whole point of shipping the bad example
+       as a picture: it cannot pass the gate, so it does not get to be
+       live DOM (the no-exemptions rule).
+
+       Deliberately a generic font stack, not the site's faces: an SVG
+       loaded as an image cannot reach the page's webfonts, and an agent
+       that ignored the system would not have reached them either. -->
   <defs>
     <linearGradient id="clash" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#00e5ff"/>
@@ -7,23 +18,27 @@
     </linearGradient>
   </defs>
 
-  <!-- the card: invented colours, a dashed lime border nothing specified -->
+  <!-- the card: an invented magenta, and a dashed neon outline nothing
+       in the system ever specified -->
   <rect x="2" y="2" width="276" height="210" rx="12" fill="#ff2d9b"/>
+
+  <!-- a header band in a gradient off the palette -->
+  <rect x="2" y="2" width="276" height="62" rx="12" fill="url(#clash)"/>
+  <rect x="2" y="46" width="276" height="18" fill="url(#clash)"/>
+
+  <!-- the headline: cramped against the band above it -->
+  <text x="18" y="94" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#0b0b0b">Book your trip</text>
+
+  <!-- body copy at 9px, a size no system would ship -->
+  <text x="18" y="116" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#2a2a2a">Fast and easy booking today</text>
+  <text x="18" y="130" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#2a2a2a">Flights, hotels and cars in one place</text>
+  <text x="18" y="144" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#2a2a2a">No fees, no fuss, book in seconds</text>
+
+  <!-- the call to action: lime ground, magenta label, nowhere near a
+       contrast bar in either direction -->
+  <rect x="18" y="160" width="244" height="34" rx="3" fill="#b6ff00"/>
+  <text x="140" y="182" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1" fill="#ff2d9b">BOOK NOW</text>
+
+  <!-- the dashed outline last, so it sits over the band and the ground -->
   <rect x="3.5" y="3.5" width="273" height="207" rx="11" fill="none" stroke="#b6ff00" stroke-width="3" stroke-dasharray="7 5"/>
-
-  <!-- a header image band in a gradient off the palette -->
-  <rect x="2" y="2" width="276" height="70" rx="12" fill="url(#clash)"/>
-  <rect x="2" y="52" width="276" height="20" fill="url(#clash)"/>
-
-  <!-- the headline, drawn as bars: this is artwork, not text -->
-  <rect x="18" y="88" width="150" height="15" rx="3" fill="#0b0b0b"/>
-
-  <!-- body copy at a size no system would ship, drawn as hairlines -->
-  <rect x="18" y="112" width="220" height="5" rx="2" fill="#2a2a2a"/>
-  <rect x="18" y="122" width="196" height="5" rx="2" fill="#2a2a2a"/>
-  <rect x="18" y="132" width="168" height="5" rx="2" fill="#2a2a2a"/>
-
-  <!-- the call to action: lime on magenta, nowhere near a contrast bar -->
-  <rect x="18" y="152" width="244" height="34" rx="3" fill="#b6ff00"/>
-  <rect x="104" y="165" width="72" height="9" rx="2" fill="#ff2d9b"/>
 </svg>

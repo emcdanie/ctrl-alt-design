@@ -66,6 +66,8 @@ export default function CaseShellV2({
   readingMinutes,
   tags,
   linkOut,
+  crumbs = true,
+  identity,
   children,
 }: {
   slug: string;
@@ -78,9 +80,22 @@ export default function CaseShellV2({
   tags: string[];
   /** link out to the shipped surface where NDA allows */
   linkOut?: { label: string; href: string };
+  /** the back-to-Work breadcrumb. A case study is read FROM the library,
+      so it earns a way back; the System page is a first-class nav item in
+      its own right (section 1b) and is not reached through /work, so its
+      crumb pointed at a place the reader did not come from. */
+  crumbs?: boolean;
+  /** identity colour pair for a page with no work-library row. The System
+      page deliberately has none, because audit:parity requires slugs and
+      WORK_ITEMS rows to be 1:1 and a BELLA row would fail it. Without a
+      pair the head renders flat grey while every real case wears its
+      colour, so the pair can be supplied directly instead. */
+  identity?: { text: string; hi: string };
   children: React.ReactNode;
 }) {
-  const caseItem = findWorkItemBySlug(slug);
+  /* the registry row where there is one, the explicit pair where there is
+     not; everything below reads ONE value either way */
+  const caseItem = findWorkItemBySlug(slug) ?? (identity ? { ...identity, title: undefined } : undefined);
 
   return (
     <div className="cs2">
@@ -88,17 +103,19 @@ export default function CaseShellV2({
 
       {/* in-flow head: no sticky side title (brief item 5) */}
       <header className="cs2-head">
-        <nav aria-label="Breadcrumb" className="cs-shell__crumbs">
-          <Link href="/work" className="cs-shell__backlink">
-            <span aria-hidden="true">←</span> Work
-          </Link>
-          {caseItem?.title && (
-            <>
-              <span aria-hidden="true" className="cs-shell__crumb-sep">/</span>
-              <span className="cs-shell__crumb" aria-current="page">{caseItem.title}</span>
-            </>
-          )}
-        </nav>
+        {crumbs && (
+          <nav aria-label="Breadcrumb" className="cs-shell__crumbs">
+            <Link href="/work" className="cs-shell__backlink">
+              <span aria-hidden="true">←</span> Work
+            </Link>
+            {caseItem?.title && (
+              <>
+                <span aria-hidden="true" className="cs-shell__crumb-sep">/</span>
+                <span className="cs-shell__crumb" aria-current="page">{caseItem.title}</span>
+              </>
+            )}
+          </nav>
+        )}
         <p className="cs-shell__eyebrow" style={caseItem ? { color: caseItem.text, margin: 0 } : { margin: 0 }}>
           {eyebrow}
         </p>

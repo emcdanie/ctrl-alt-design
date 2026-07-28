@@ -2551,25 +2551,32 @@ textarea:focus-visible {
   min-width: 0;
 }
 
-/* the chart takes its own ROW, flanked by its scale and its source, and
-   the table runs full width beneath it. The chart shows the SHAPE, the
-   table gives the exact stage and the reason; neither is decoration for
-   the other, so neither is squeezed into a column to sit beside the
-   other. Side by side, the chart's column finished 470px above the
-   table's last row and the reasons wrapped at 40 characters. */
-.bmm-chartrow {
+/* ONE BLOCK (28 Jul, second pass): the shape on the left, the exact
+   stages on the right, starting on the same line.
+
+   The chart previously took its own full-width row with its scale on one
+   side and its source on the other. That row put the right-aligned scale
+   about 30px from the "AI Readiness" axis label, which read as the two
+   colliding; it left the hexagon small between two blocks of furniture;
+   and it opened a 90px band of nothing before the table, so the two
+   halves read as separate objects. Beside each other with the furniture
+   stacked under the chart, none of those three can happen. */
+.bmm-body {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  justify-items: center;
-  gap: var(--spacing-5);
-  margin-bottom: var(--spacing-8);
+  gap: var(--spacing-8);
+  align-items: start;
 }
 
-@media (min-width: 1024px) {
-  .bmm-chartrow {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 30rem) minmax(0, 1fr);
-    align-items: center;
-    gap: var(--spacing-8);
+/* Side by side only from the container's own width. At 1024 it left the
+   table 504px, the reason column 152px, and the rows wrapped so hard the
+   table ran 629px taller than the chart beside it: the dead band again,
+   turned on its side. Below this the two stack, and the chart takes the
+   whole row, which is the only place it can be big. */
+@media (min-width: 1240px) {
+  .bmm-body {
+    grid-template-columns: minmax(0, 30rem) minmax(0, 1fr);
+    gap: var(--spacing-10);
   }
 }
 
@@ -2584,7 +2591,10 @@ textarea:focus-visible {
 }
 
 /* side columns take only what a label needs; the chart takes the rest,
-   so the hexagon is the biggest thing in its own column */
+   so the hexagon is the biggest thing in its own column. Capped and
+   centred: stacked, the 1fr centre column stretched the whole row and
+   pushed "AI Readiness" and "Governance" out to the page edges, half a
+   screen from the chart they label. */
 .bmm-radar__ring {
   display: grid;
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
@@ -2592,47 +2602,43 @@ textarea:focus-visible {
   align-items: center;
   justify-items: center;
   gap: var(--spacing-2);
+  max-width: 38rem;
+  margin-inline: auto;
 }
 
 .bmm-radar__svg {
   grid-column: 2;
   grid-row: 2 / span 2;
   width: 100%;
+  /* stacked, the figure gets the whole row and the hexagon grew to 743px
+     at 1024, which is a chart eating a page rather than leading one. The
+     cap never binds in the side-by-side layout, where the column is the
+     constraint. */
+  max-width: 22rem;
   height: auto;
+  justify-self: center;
 }
 
-/* the chart's furniture: its scale on one side, its source on the
-   other, both quiet enough that the hexagon stays the loud thing */
+/* the chart's furniture, stacked UNDER the chart and quiet enough that
+   the hexagon stays the loud thing. Under it, not beside it: flanking
+   columns put the scale a few pixels from an axis label. */
 .bmm-radar__cap {
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-5);
+  padding-top: var(--spacing-4);
+  border-top: 1px solid var(--color-border-soft);
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
   line-height: 1.55;
   color: var(--color-ink-soft);
-  max-width: 34ch;
-  text-align: center;
 }
 
 .bmm-radar__scale {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-1);
-}
-
-@media (min-width: 1024px) {
-  .bmm-radar__scale {
-    text-align: right;
-    align-items: flex-end;
-  }
-
-  .bmm-radar__model {
-    text-align: left;
-    justify-self: start;
-  }
-
-  .bmm-radar__scale {
-    justify-self: end;
-  }
 }
 
 .bmm-radar__label {
@@ -5477,6 +5483,19 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   color: var(--color-ink-muted);
   white-space: nowrap;
   text-align: right;
+  /* STACKED there is no column, so there is nothing to share a right
+     edge with: the figure shrank to its own box and sat under its pill.
+     Stretched, it flew to the far side of the row away from the stage it
+     belongs to. The right edge is a grid behaviour and lives with the
+     grid. */
+  align-self: start;
+}
+
+@media (min-width: 1024px) {
+  .bmm-axis__score {
+    align-self: center;
+    justify-self: stretch;
+  }
 }
 
 /* the comparative grid proper: one template for the header and every
@@ -5490,12 +5509,16 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   /* four columns: axis, stage pill, the figure on its own right-aligned
      track, and the reason. The figure shared the pill's cell until the
      28 Jul audit, which meant six numbers starting at six different
-     places depending on how long each pill's word was. */
+     places depending on how long each pill's word was.
+
+     Tighter than it was, because the table now sits BESIDE the chart
+     rather than across the whole container, and the reason column is the
+     one that has to keep a readable measure. */
   .bmm-axis {
     display: grid;
-    grid-template-columns: minmax(0, 12rem) minmax(0, 7rem) minmax(0, 4rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 10rem) minmax(0, 6rem) minmax(0, 3rem) minmax(0, 1fr);
     align-items: center;
-    column-gap: var(--spacing-6);
+    column-gap: var(--spacing-4);
     row-gap: 0;
   }
 

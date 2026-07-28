@@ -128,7 +128,7 @@ export default function AgentDemo() {
                 src="/images/ungoverned-output.svg"
                 width={280}
                 height={214}
-                alt="An off-brand card an ungoverned agent produced: clashing magenta and lime colours, cramped spacing, tiny body text, and a call to action whose text fails contrast against its background."
+                alt="An off-brand travel booking card an ungoverned agent produced. It reads Book your trip, Fast and easy booking today, and BOOK NOW. Clashing magenta and lime colours, a dashed neon outline, cramped spacing, body text below the readable floor, and a call to action whose lime-on-magenta text fails contrast."
               />
             )}
           </div>
