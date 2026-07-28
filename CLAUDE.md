@@ -228,7 +228,7 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 1. Read the **most recent session record** in `docs/session-*.md` (newest by date). It is the
    backward record: what shipped, what broke, what was learned, and which decisions are still
    open. It is committed, so it survives; `claude-progress.md` is local-only and does not.
-   **Start with `docs/session-2026-07-27.md`.**
+   **Start with `docs/session-2026-07-28.md`.**
 2. Read `claude-progress.md` — current verified state and last session's forward handoff.
 3. Read `feature_list.json` — pick the highest-priority item not yet passing. One item at a time.
 4. If the task involves a prototype, open its folder README first (e.g. `prototypes/finviz-3/README.md`).
