@@ -2575,7 +2575,7 @@ textarea:focus-visible {
    whole row, which is the only place it can be big. */
 @media (min-width: 1240px) {
   .bmm-body {
-    grid-template-columns: minmax(0, 30rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
     gap: var(--spacing-10);
   }
 }
@@ -2585,38 +2585,42 @@ textarea:focus-visible {
    NOT SVG text on purpose: text inside a viewBox scales with the box, so
    it stops being 16px the moment the chart is not exactly its declared
    size. These stay body-size at every width. */
+/* the ring asks how wide THE RING is, never how wide the window is.
+   Flanking labels cost about 200px of whatever column the chart is in,
+   which is affordable when the chart owns the row and ruinous when it is
+   sharing one: beside the table the chart column was 30rem, the labels
+   took two thirds of it, and the table opposite was squeezed to a 304px
+   reason column that wrapped every row to three lines. Widening the
+   window past 1240 therefore made the table WORSE, which is the tell
+   that something was reading the viewport when it meant the box. */
 .bmm-radar {
   margin: 0;
   min-width: 0;
+  container-type: inline-size;
+  container-name: radar;
 }
 
-/* side columns take only what a label needs; the chart takes the rest,
-   so the hexagon is the biggest thing in its own column. Capped and
-   centred: stacked, the 1fr centre column stretched the whole row and
-   pushed "AI Readiness" and "Governance" out to the page edges, half a
-   screen from the chart they label. */
+/* DEFAULT: labels in a clockwise row BENEATH the chart, so the chart
+   gets the column's whole width. This is the layout for every ring that
+   is not wide enough to spend 200px on flanking labels, which is a phone
+   and equally the chart's column when it sits beside the table. */
 .bmm-radar__ring {
-  display: grid;
-  grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
-  grid-template-rows: auto 1fr 1fr auto;
-  align-items: center;
-  justify-items: center;
-  gap: var(--spacing-2);
-  max-width: 38rem;
-  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: var(--spacing-1) var(--spacing-3);
 }
 
 .bmm-radar__svg {
-  grid-column: 2;
-  grid-row: 2 / span 2;
+  order: -1;
+  flex: 0 0 100%;
   width: 100%;
-  /* stacked, the figure gets the whole row and the hexagon grew to 743px
-     at 1024, which is a chart eating a page rather than leading one. The
-     cap never binds in the side-by-side layout, where the column is the
-     constraint. */
+  /* the hexagon reached 743px once the figure owned a whole row, which is
+     a chart eating a page rather than leading one */
   max-width: 22rem;
   height: auto;
-  justify-self: center;
+  margin-inline: auto;
 }
 
 /* the chart's furniture, stacked UNDER the chart and quiet enough that
@@ -2650,63 +2654,69 @@ textarea:focus-visible {
   text-align: center;
 }
 
-/* clockwise from twelve, the order the axes are declared and the table
-   lists them */
-.bmm-radar__label--0 { grid-column: 2; grid-row: 1; }
-.bmm-radar__label--1 { grid-column: 3; grid-row: 2; text-align: left; }
-.bmm-radar__label--2 { grid-column: 3; grid-row: 3; text-align: left; }
-.bmm-radar__label--3 { grid-column: 2; grid-row: 4; }
-.bmm-radar__label--4 { grid-column: 1; grid-row: 3; text-align: right; }
-.bmm-radar__label--5 { grid-column: 1; grid-row: 2; text-align: right; }
+/* the row layout names the reading order, because a row cannot show it
+   the way a ring can.
 
-/* the ring holds at 768 and above; below 600 the labels cannot flank the
-   chart without crushing it, so they fall into a row beneath it in the
-   same clockwise order. Same labels, same source, one implementation. */
+   A CAPTION, not an eyebrow. It shipped at the 13px metadata tier and
+   audit:type refused it the moment the row layout reached 1440, which is
+   the right call: twenty-two characters explaining how to read a chart
+   is reading text, whatever tier it is dressed as. Extending the audit's
+   metadata allowlist to cover it would have been keeping new code alive
+   with an exemption, which the constitution forbids. */
 .bmm-radar__hint {
-  display: none;
+  display: block;
+  flex: 0 0 100%;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-ink-muted);
 }
 
-@media (max-width: 599px) {
+.bmm-radar__label + .bmm-radar__label::before {
+  content: "\00b7";
+  margin-right: var(--spacing-3);
+  color: var(--color-ink-muted);
+}
+
+/* FLANKED: only once the ring itself can afford roughly 200px of labels
+   on top of a chart worth looking at. A CONTAINER query, so the ring
+   answers for its own box: beside the table that box is a 24rem column
+   and the labels stay beneath, while stacked it is the whole row and
+   they take their places around the hexagon. */
+@container radar (min-width: 34rem) {
   .bmm-radar__ring {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: baseline;
-    gap: var(--spacing-1) var(--spacing-3);
+    display: grid;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
+    grid-template-rows: auto 1fr 1fr auto;
+    align-items: center;
+    justify-items: center;
+    max-width: 38rem;
+    margin-inline: auto;
+    gap: var(--spacing-2);
   }
 
   .bmm-radar__svg {
-    order: -1;
-    flex: 0 0 100%;
-    max-width: 20rem;
-    margin-inline: auto;
+    order: 0;
+    grid-column: 2;
+    grid-row: 2 / span 2;
+    flex: initial;
+    justify-self: center;
   }
 
-  .bmm-radar__hint {
-    display: block;
-    flex: 0 0 100%;
-    text-align: center;
-    font-family: var(--font-body);
-    font-size: var(--typography-font-size-tag);
-    font-weight: 700;
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--color-eyebrow);
-  }
+  /* clockwise from twelve, the order the axes are declared and the table
+     lists them */
+  .bmm-radar__label--0 { grid-column: 2; grid-row: 1; }
+  .bmm-radar__label--1 { grid-column: 3; grid-row: 2; text-align: left; }
+  .bmm-radar__label--2 { grid-column: 3; grid-row: 3; text-align: left; }
+  .bmm-radar__label--3 { grid-column: 2; grid-row: 4; }
+  .bmm-radar__label--4 { grid-column: 1; grid-row: 3; text-align: right; }
+  .bmm-radar__label--5 { grid-column: 1; grid-row: 2; text-align: right; }
 
-  /* the grid placement is what put them around the chart; in the row it
-     would strand them back into columns */
-  .bmm-radar__label {
-    grid-column: auto;
-    grid-row: auto;
-    text-align: center;
-  }
-
-  .bmm-radar__label + .bmm-radar__label::before {
-    content: "\00b7";
-    margin-right: var(--spacing-3);
-    color: var(--color-ink-muted);
-  }
+  /* the ring shows the order; the row's label and separators would only
+     repeat what the positions already say */
+  .bmm-radar__hint { display: none; }
+  .bmm-radar__label + .bmm-radar__label::before { content: none; }
 }
 
 .bmm-radar__grid {
@@ -5106,7 +5116,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    reading, which is the trade the old 900px viewport query made. Below
    this the stages stack and the chevrons turn to point down the column,
    so it is still one pipeline, read top to bottom. */
-@container instrument (min-width: 72rem) {
+@container instrument (min-width: 900px) {
   .ds-rail {
     grid-template-columns: 1fr auto 1fr auto 1fr;
     gap: 0;
@@ -5138,7 +5148,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 /* stacked: the chevron turns to point down the column. Container query
    again, so it can never disagree with the rail it belongs to. */
-@container instrument (max-width: 71.999rem) {
+@container instrument (max-width: 899.98px) {
   .ds-rail__chev {
     width: 100%;
     height: var(--spacing-8);
