@@ -31,7 +31,7 @@ import { receipt } from "./lib/receipt.mjs";
    that stops matching fails loudly instead of passing forever, which
    is what .ds-gate did after the gate table replaced the card grid. */
 export const TRACKED_SELECTORS = [
-  ".ds-band", ".ds-specimen-row", ".ds-caseband", ".ds-status", ".bmm-list",
+  ".ds-band", ".ds-specimen-row", ".ds-caseband", ".bmm-list", ".gx-grid",
   ".trace-host", ".tok-inspector", ".spec-stage", ".csp-flag", "section.beat",
 ];
 
@@ -70,7 +70,7 @@ for (const theme of ["light", "dark"]) {
 
   const rowBad = await page.evaluate(() => {
     const out = [];
-    for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-gate, .ds-caseband, .ds-status, .bmm-list")) {
+    for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-caseband, .bmm-list")) {
       const cards = [...grid.children].filter((c) => c.getBoundingClientRect().width > 0);
       /* group siblings by row (same top), assert equal heights */
       const rows = new Map();
@@ -175,7 +175,7 @@ for (const theme of ["light", "dark"]) {
       /* the maturity map (.bmm-list) is a one-column stack: its cards
          share a width but not a height (rationale lengths differ), so
          it rides the row-equality check above, not this one */
-      for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-gate, .ds-caseband, .ds-status")) {
+      for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-caseband, .gx-grid")) {
         const dims = [...grid.querySelectorAll(":scope > * ")].filter((c) => c.getBoundingClientRect().width > 0)
           .map((c) => { const r = c.getBoundingClientRect(); return Math.round(r.width) + "x" + Math.round(r.height); });
         if (new Set(dims).size > 1) out.uniform.push(`grid dims differ: ${[...new Set(dims)].join(" vs ")}`);

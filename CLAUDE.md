@@ -66,6 +66,12 @@ override the constitution.
   the shared `.card-statement` recipe (Geist 700 at `--font-card-title`), card titles the shared
   `.heading-item`. Enforced by the Unique-in-card check in `audit:reuse`.
 - Geist = everything else. Eyebrows stay Geist caps with `--tracking-eyebrow`.
+- **Numbers in columns are right-aligned and tabular (Elleta, 2026-07-28, readability
+  audit).** Any figure that sits in a column beside other figures (a table cell, a grid
+  column, a stat row) uses `text-align: right` and `font-variant-numeric: tabular-nums`,
+  so digits share a width and the values share a right edge. A column of numbers that
+  starts wherever the previous word ended is not a column. Prose numbers are unaffected.
+  Enforced by the numeric-alignment check in `audit:structure`.
 
 ## 4. Color & dark mode
 - **Colour affordance rule (refined 2026-07-17):** saturated iris at body scale means INTERACTIVE,

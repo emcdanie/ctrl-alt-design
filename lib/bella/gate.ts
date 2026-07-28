@@ -23,6 +23,25 @@ export function auditCount(): number {
   return auditNames().length;
 }
 
+/* Where each audit LIVES, derived from the same package.json entry that
+ * runs it (28 Jul, the gate explorer). The explorer states the file for
+ * every check, and a typed list of sixteen paths is sixteen chances to
+ * be wrong the next time a script is renamed. Reading the script body
+ * means the page cannot claim a file the gate does not run.
+ *
+ * An audit may run more than one script (audit:agents generates the
+ * surfaces, then checks them), so this returns all of them in order. */
+export function auditFiles(): Record<string, string[]> {
+  const pkg = JSON.parse(readFileSync(join(process.cwd(), "package.json"), "utf8"));
+  const scripts: Record<string, string> = pkg.scripts ?? {};
+  const out: Record<string, string[]> = {};
+  for (const name of auditNames()) {
+    const body = scripts[name] ?? "";
+    out[name] = [...body.matchAll(/scripts\/[A-Za-z0-9._-]+\.mjs/g)].map((m) => m[0]);
+  }
+  return out;
+}
+
 /* Spelled out for prose, so a sentence reads as a sentence. Falls back
  * to the digits past the range we would ever plausibly reach. */
 const WORDS = [

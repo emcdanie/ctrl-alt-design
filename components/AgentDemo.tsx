@@ -58,8 +58,7 @@ const OFF: {
     { ok: false, text: "Contrast fails at the accessibility bar" },
     { ok: false, text: "Restyled the button instead of using the component" },
   ],
-  caption:
-    "Without a machine-readable system, the agent guesses. It invents colours, hardcodes values, and ships things that fail. A design system is only as useful to AI as it is readable by a machine.",
+  caption: "No contract, so it invents what it does not know.",
 };
 
 const ON: typeof OFF = {
@@ -73,8 +72,7 @@ const ON: typeof OFF = {
     { ok: true, text: "Contrast passes at the AAA bar" },
     { ok: true, text: "Hit a missing state and reported the gap instead of faking it" },
   ],
-  caption:
-    "With the contract, the same agent is grounded. It builds from tokens, clears accessibility, and when it hits a real gap it reports it rather than inventing around it. Same model, both runs.",
+  caption: "Same agent, same model. The contract is the only difference.",
 };
 
 export default function AgentDemo() {
@@ -158,10 +156,19 @@ export default function AgentDemo() {
       </div>
 
       <p className="agentdemo__caption">{s.caption}</p>
+      {/* one line, and the source is a link (28 Jul, readability audit):
+          this was a three-line disclaimer restating the caption above it.
+          The claim it qualifies still needs its citation, so the citation
+          became the link it always should have been. */}
       <p className="agentdemo__foot">
-        Illustrative of a documented pattern, not a measurement of this site. The
-        with-contract and without-contract comparison is published in Southleft&apos;s A/B
-        of an agent building against a machine-readable design system.
+        A documented pattern, not a measurement of this site.{" "}
+        <a
+          href="https://southleft.com/insights/design-systems/context-based-design-systems-a-new-model-for-the-ai-driven-product-lifecycle/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Southleft on context-based design systems
+        </a>
       </p>
     </div>
   );

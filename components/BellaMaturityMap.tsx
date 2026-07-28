@@ -4,9 +4,10 @@
  * self-assessment on zeroheight's six-axis Design System Maturity
  * Model, rebuilt from her bella-maturity-map mockup on real BELLA
  * tokens. ALL copy is hers, verbatim from the mockup; the scores are
- * her honest self-scores, not invented numbers. Sits beside the
- * AI-readiness explainer so the two bands read as one story: the
- * explainer is the framework, this map is the honest self-score.
+ * her honest self-scores, not invented numbers. It used to sit beside
+ * an AI-readiness explainer band; that band is cut (28 Jul) and its one
+ * surviving line is the AI Readiness rationale below, which is where
+ * the frontier axis is actually scored.
  * Token mapping (spec system-page-identity-maturity): the mockup's
  * mint pair = the clarity case pair (the frontier accent), its warm
  * V1 hue = the writing case pair, Growing = the accent family.
@@ -47,7 +48,7 @@ const axes = (auditCount: number): Axis[] => [
     stage: "teenage",
     steps: 3,
     rationale:
-      "A three-tier token architecture (primitive → semantic → component), a 4px grid, AAA-minded contrast, and zero hard-coded values. The component library is still building out in matched Figma and Storybook pairs.",
+      "Three token tiers, a 4px grid, AAA-minded contrast, zero hard-coded values.",
   },
   {
     name: "Documentation & Knowledge",
@@ -55,7 +56,7 @@ const axes = (auditCount: number): Axis[] => [
     stage: "growing",
     steps: 2,
     rationale:
-      "Every token carries machine-readable metadata (usage, don't, accessibility), alongside DESIGN.md, a bella.json rollup, and an llms.txt map. A browsable doc site is the next build.",
+      "Every token carries machine-readable metadata, plus DESIGN.md, a bella.json rollup and an llms.txt map.",
   },
   {
     name: "Governance & Team",
@@ -63,7 +64,7 @@ const axes = (auditCount: number): Axis[] => [
     stage: "growing",
     steps: 2,
     rationale:
-      `Governance as code: a ${auditCount}-audit gate that fails the build on drift. Process runs ahead of people here, it is a team of one, which is the honest constraint of a personal system.`,
+      `Governance as code: a ${auditCount}-audit gate that fails the build on drift, run by a team of one.`,
   },
   {
     name: "Adoption",
@@ -71,7 +72,7 @@ const axes = (auditCount: number): Axis[] => [
     stage: "v1",
     steps: 1,
     rationale:
-      "Powers elleta.design today, with CHIP next in line. Few consumers, by design, this is a personal system, not an org rollout.",
+      "Powers elleta.design today with CHIP next, and few consumers by design.",
   },
   {
     name: "Measurement & Impact",
@@ -79,7 +80,7 @@ const axes = (auditCount: number): Axis[] => [
     stage: "v1",
     steps: 1,
     rationale:
-      "Deliberately no vanity metrics. Impact is shown by the working system, not invented numbers. Genuinely early here, and honest about it.",
+      "Deliberately no vanity metrics; the working system is the evidence.",
   },
   {
     name: "AI Readiness",
@@ -88,7 +89,7 @@ const axes = (auditCount: number): Axis[] => [
     steps: 3,
     frontier: true,
     rationale:
-      "The frontier axis, and the thesis. Agents read the system directly over MCP, llms.txt and bella.json expose it in machine form, and the gate stops drift at the source instead of trusting the output. The system defaults agents INTO it, not around it.",
+      "The newest test of a design system is the path an AI takes, and this one defaults agents into it.",
   },
 ];
 
@@ -234,6 +235,7 @@ export default function BellaMaturityMap({ auditCount }: { auditCount: number })
             <div className="bmm-axis bmm-axis--head">
               <span className="bmm-axis__name">Axis</span>
               <span className="bmm-axis__stage">Stage</span>
+              <span className="bmm-axis__score">Of 4</span>
               {/* one word, like the other two. The sentence version
                   ("Why it sits there") is 17 characters of label at the
                   13px metadata tier, which the hardened audit:type reads
@@ -260,9 +262,14 @@ export default function BellaMaturityMap({ auditCount }: { auditCount: number })
                   <span className={`bmm-badge bmm-badge--${a.stage}`}>
                     {STAGE_LABELS[a.stage]}
                   </span>
-                  <span className="bmm-track__count">
-                    {a.steps}/{STEPS_TOTAL}
-                  </span>
+                </span>
+                {/* the figure gets its OWN column so the six of them line
+                    up on one right edge, tabular, which is the standing
+                    rule for numbers in columns (28 Jul). Sharing a cell
+                    with the pill meant it started wherever the pill's
+                    word happened to end. */}
+                <span className="bmm-axis__score">
+                  {a.steps}/{STEPS_TOTAL}
                 </span>
                 <p className="bmm-axis__why">{a.rationale}</p>
               </div>

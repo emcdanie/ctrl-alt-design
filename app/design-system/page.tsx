@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseShellV2 from "@/components/CaseShellV2";
 import BellaSpine from "@/components/BellaSpine";
-import { auditCount, spellCount } from "@/lib/bella/gate";
+import { auditCount, auditFiles, spellCount } from "@/lib/bella/gate";
 
 export const metadata: Metadata = {
   title: "BELLA, the system behind this site",
@@ -43,7 +43,11 @@ export default function DesignSystemPage() {
           readingMinutes={6}
           tags={["Design systems", "AI-enabled design", "Governance"]}
         >
-          <BellaSpine auditCount={audits} auditCountWord={spellCount(audits)} />
+          <BellaSpine
+            auditCount={audits}
+            auditCountWord={spellCount(audits)}
+            auditFiles={auditFiles()}
+          />
         </CaseShellV2>
       </div>
     </CaseStudyLayout>

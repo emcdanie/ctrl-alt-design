@@ -1412,46 +1412,17 @@ textarea:focus-visible {
   outline-offset: 2px;
 }
 
-/* System page: rules + status lists */
-.ds-rules {
-  margin: 0;
-  padding-left: var(--spacing-5);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink-soft);
-  line-height: 1.6;
-}
+/* .ds-rules is deleted with its markup (28 Jul, readability audit P1):
+   the close recapped the eight constitution rules the page had just
+   spent four beats demonstrating. The page proves them; it does not
+   need to also list them. */
 
-/* Available now / Coming next. The 240px floor let both groups sit side
-   by side inside HALF a beat row, so the two short lists finished 224px
-   above the eight rules opposite them and left the column half empty
-   (measured at 1440, 27 Jul). At a 20rem floor they stack inside a beat
-   column and fill it, and still go side by side wherever the container
-   is genuinely wide. */
-.ds-status {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-  /* the two groups hold different numbers of lines; 1fr rows keep them
-     the same size in whichever direction they land. Dropping this is
-     what audit:visual caught at 390 (224 vs 173). */
-  grid-auto-rows: 1fr;
-  gap: var(--grid-gap);
-}
-
-.ds-status__list {
-  margin: 0;
-  padding-left: var(--spacing-5);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink-soft);
-  line-height: 1.6;
-}
+/* .ds-status, .ds-status__list and .ds-statusgroup are deleted with
+   their markup (28 Jul): they were the old close's "Available now /
+   Coming next" pair, and the close is now one action plus its sources.
+   .ds-status is dropped from audit:visual's TRACKED_SELECTORS in the
+   same change, because a tracked selector that matches nothing is the
+   exact failure audit:debt exists to catch. */
 
 /* ─── Demo links: TERTIARY (text link, iris + underline) — demoted
    from bordered pills per the button grammar (two button treatments
@@ -2523,129 +2494,14 @@ textarea:focus-visible {
   margin: 0 0 var(--spacing-6);
 }
 
-/* ── AI-readiness explainer (System band, rebuilt from
-   _review/protos/ai-readiness-explainer-v2.html on real tokens:
-   ok = the clarity case pair, warn = the writing case pair, agent =
-   accent iris; all theme-flipping). ONE inline SVG diagram; the
-   route draw-in fires on .in, reduced motion renders settled. ── */
-/* the 900px cap never bit while this sat in half a beat row, and it
-   bites now that the beat is wide: it would hold the diagram at scale
-   1.0 when the container offers 1.38, and every label in a viewBox
-   scales with its box. The drawing takes the width it is given. */
-.air {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
-}
-
-.air-stage {
-  width: 100%;
-  height: auto;
-}
-
-.air-route {
-  fill: none;
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-dasharray: 1400;
-  stroke-dashoffset: 1400;
-}
-
-.air.in .air-route {
-  transition: stroke-dashoffset 1.5s ease;
-  stroke-dashoffset: 0;
-}
-
-.air-route--in { stroke: var(--case-clarity-text); }
-.air-route--around { stroke: var(--case-writing-text); }
-
-.air-plabel {
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-.air-plabel--in { fill: var(--case-clarity-text); }
-.air-plabel--around { fill: var(--case-writing-text); }
-
-.air-node rect {
-  fill: var(--color-card);
-  stroke: var(--color-border-medium);
-  stroke-width: 1.5;
-}
-
-.air-node__title {
-  font-family: var(--font-body);
-  font-size: 15px;
-  font-weight: 700;
-  fill: var(--color-ink);
-}
-
-.air-node__sub {
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  fill: var(--color-ink-muted);
-}
-
-.air-node--agent rect { stroke: var(--color-accent-ink); }
-.air-node--agent .air-node__title { fill: var(--color-accent-ink); }
-.air-node--ok rect { stroke: var(--case-clarity-hi); }
-.air-node--ok .air-node__title { fill: var(--case-clarity-text); }
-.air-node--warn rect { stroke: var(--case-writing-hi); }
-.air-node--warn .air-node__title { fill: var(--case-writing-text); }
-
-/* outcomes land after the routes draw */
-.air-res { opacity: 0; }
-.air.in .air-res {
-  transition: opacity 0.45s ease 1.4s;
-  opacity: 1;
-}
-
-/* .air-takeaway is deleted with its markup (27 Jul): the takeaway moved
-   into the beat body, and a rule with no element left to paint is the
-   dead copy the constitution forbids. */
-
-/* the 5-point framework, hers; renders only when her words land */
-.air-framework {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  margin-top: var(--spacing-4);
-}
-
-.air-framework__list {
-  margin: 0;
-  padding-left: var(--spacing-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-}
-
-.air-framework__point {
-  font-family: var(--font-body);
-  font-size: var(--font-body-size);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
-  max-width: 62ch;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .air-route,
-  .air.in .air-route {
-    transition: none;
-    stroke-dashoffset: 0;
-  }
-
-  .air-res,
-  .air.in .air-res {
-    transition: none;
-    opacity: 1;
-  }
-}
+/* The AI-readiness explainer is DELETED (28 Jul, readability audit P1).
+   The beat restated beat 01's guessing-versus-grounded point with a loose
+   curved diagram against the crisp card language of every other demo, and
+   its labels lived inside a 900-unit viewBox, so they rendered between
+   3.6px and 9.4px depending on width and no audit could see it. Its one
+   surviving line moved into the AI-readiness row of the maturity table.
+   The rules go with the markup: .air, .air-stage, .air-route, .air-node,
+   .air-plabel, .air-res and .air-framework had nothing left to paint. */
 
 /* ── BELLA maturity map (System band, 23 Jul 2026, rebuilt from her
    bella-maturity-map mockup; copy hers verbatim). Token mapping per
@@ -5150,40 +5006,28 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin-bottom: var(--spacing-6);
 }
 
-.ds-flow {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  flex-wrap: wrap;
-  background: var(--color-card);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-4) var(--spacing-5);
-  margin: 0 0 var(--spacing-6);
-  box-shadow: var(--shadow-sm);
-}
-
-.ds-flow__node {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-3);
-  padding: var(--spacing-1) 0;
-}
-
-.ds-flow__ico {
-  width: var(--spacing-10);
-  height: var(--spacing-10);
+/* The FLOW STRIP is deleted with its markup (28 Jul, readability audit
+   P2): .ds-flow, .ds-flow__node, .ds-flow__label, .ds-flow__arrow and
+   .ds-flow__verdict have nothing left to paint. What survives is the
+   glyph rule and the verdict's colour states, because the cards now
+   carry both: each card heads itself with its own icon, and the verdict
+   sits in the Gate card beside the ratio it judges. */
+.ds-stage__ico {
+  width: var(--spacing-8);
+  height: var(--spacing-8);
   border-radius: var(--radius-md);
-  display: grid;
+  display: inline-grid;
   place-items: center;
   flex: 0 0 auto;
+  margin-right: var(--spacing-2);
+  vertical-align: middle;
   background: var(--color-semantic-accent-subtle);
   color: var(--color-accent-ink);
 }
 
 .ds-flow__svg {
-  width: var(--spacing-5);
-  height: var(--spacing-5);
+  width: var(--spacing-4);
+  height: var(--spacing-4);
   stroke: currentColor;
   fill: none;
   stroke-width: 1.8;
@@ -5191,33 +5035,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   stroke-linejoin: round;
 }
 
-.ds-flow__label b {
-  display: block;
-  color: var(--color-ink);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-.ds-flow__label span {
-  display: block;
-  color: var(--color-ink-muted);
-  font-size: var(--typography-font-size-base);
-}
-
-.ds-flow__arrow {
-  color: var(--color-ink-muted);
-  flex: 0 0 auto;
-  display: inline-flex;
-}
-
-.ds-flow__arrow .ds-flow__svg {
-  width: var(--spacing-6);
-  height: var(--spacing-6);
-  stroke-width: 1.6;
-}
-
-.ds-flow__verdict,
 .ds-stage__verdict {
   display: inline-flex;
   align-items: center;
@@ -5226,12 +5043,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-size: var(--typography-font-size-base);
   font-weight: 600;
   white-space: nowrap;
-}
-
-.ds-flow__verdict {
-  margin-left: auto;
   border-radius: var(--radius-full);
   padding: var(--spacing-2) var(--spacing-4);
+  align-self: flex-start;
 }
 
 .ds-flow__dot {
@@ -5242,26 +5056,19 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   flex: 0 0 auto;
 }
 
-.ds-flow__verdict--pass,
 .ds-stage__verdict--pass {
   background: var(--color-pass-subtle);
   color: var(--color-pass-ink);
 }
 
-.ds-flow__verdict--fail,
 .ds-stage__verdict--fail {
   background: var(--color-fail-subtle);
   color: var(--color-fail-ink);
 }
 
-.ds-flow__verdict--reading,
 .ds-stage__verdict--reading {
   background: var(--color-tag-bg);
   color: var(--color-ink-muted);
-}
-
-@media (max-width: 819px) {
-  .ds-flow__verdict { margin-left: 0; }
 }
 
 /* the rail: three stages bound by chevrons.
@@ -5415,10 +5222,65 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin: var(--spacing-2) 0 0;
 }
 
+/* THE HANDLE (28 Jul, readability audit P1). min-height on the input
+   gave the control a 44px BOX while the native thumb stayed the browser
+   default, about 13px, and on a track that got much longer when the beat
+   went wide it read as a speck. The thumb is now drawn: 24px of visible
+   handle inside a 44px tall track area, so the grab target clears the
+   touch minimum in both axes. Both vendor prefixes, because they cannot
+   be combined in one selector list (an unknown pseudo-element drops the
+   whole rule). */
 .ds-pipeline__slider {
   width: 100%;
   accent-color: var(--color-accent-ink);
   min-height: var(--spacing-touch-target);
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* The track fills the WHOLE 44px control and paints its 8px bar with a
+   centred gradient, rather than being an 8px track inside a 44px box.
+   WebKit does not vertically centre a fixed-height runnable track: it
+   pins it to the top, which put the thumb near the top edge while the
+   middle of the row looked like the handle. Clicking still worked, so
+   the gate and a click test both passed, but DRAGGING from the visible
+   centre of the control did nothing, which is the only interaction this
+   instrument actually asks for. Caught by dragging it, not by looking. */
+.ds-pipeline__slider::-webkit-slider-runnable-track {
+  height: var(--spacing-touch-target);
+  border-radius: var(--radius-full);
+  background: linear-gradient(var(--color-border-medium), var(--color-border-medium))
+    center / 100% var(--spacing-2) no-repeat;
+}
+
+.ds-pipeline__slider::-moz-range-track {
+  height: var(--spacing-2);
+  border-radius: var(--radius-full);
+  background: var(--color-border-medium);
+}
+
+.ds-pipeline__slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--spacing-6);
+  height: var(--spacing-6);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-ink);
+  border: 2px solid var(--color-card);
+  box-shadow: var(--shadow-sm);
+  /* centre the 24px thumb in the 44px track */
+  margin-top: calc((var(--spacing-touch-target) - var(--spacing-6)) / 2);
+}
+
+.ds-pipeline__slider::-moz-range-thumb {
+  width: var(--spacing-6);
+  height: var(--spacing-6);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-ink);
+  border: 2px solid var(--color-card);
+  box-shadow: var(--shadow-sm);
 }
 
 .ds-pipeline__slider:focus-visible {
@@ -5522,55 +5384,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 @media (prefers-reduced-motion: reduce) {
   .ds-pipeline__specimen,
   .ds-valchip__sw,
-  .ds-flow__verdict,
   .ds-stage__verdict {
     transition: none;
   }
 }
 
-/* ── The gate table (spec system-page-redesign): tabular data renders
-   as a table. Replaces the card mosaic. NO status column: the gate runs
-   locally and in CI, not in this tab, so the page states what each
-   check refuses and never asserts a green it cannot evidence. ── */
-.ds-gate-table-wrap {
-  margin-top: var(--spacing-5);
-  overflow-x: auto;
-  max-width: 100%;
-}
-
-.ds-gate-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-}
-
-.ds-gate-table th,
-.ds-gate-table td {
-  padding: var(--spacing-3) var(--spacing-4);
-  border-bottom: 1px solid var(--color-border-soft);
-  vertical-align: top;
-  font-size: var(--typography-font-size-base);
-  line-height: 1.55;
-}
-
-.ds-gate-table thead th {
-  font-family: var(--font-body);
-  font-weight: 700;
-  color: var(--color-ink);
-  border-bottom: 1px solid var(--color-border-medium);
-  white-space: nowrap;
-}
-
-.ds-gate-table tbody th {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  color: var(--color-ink);
-  white-space: nowrap;
-}
-
-.ds-gate-table td {
-  color: var(--color-ink-soft);
-}
 
 /* anchor alias: a retired band id kept alive so deep links resolve.
    Zero-size, no paint, offset so the target clears the fixed header. */
@@ -5646,13 +5464,19 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin: 0;
 }
 
-/* the position in text, so the chart is never the only carrier */
-.bmm-track__count {
+/* the position in text, so the chart is never the only carrier.
+   RIGHT-ALIGNED AND TABULAR (28 Jul, standing rule): six figures in a
+   column read as a column only when they share a right edge and a digit
+   width. font-variant-numeric keeps 1 and 4 the same width so the
+   slashes stack. */
+.bmm-axis__score {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-base);
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   color: var(--color-ink-muted);
   white-space: nowrap;
+  text-align: right;
 }
 
 /* the comparative grid proper: one template for the header and every
@@ -5663,11 +5487,13 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
     display: block;
   }
 
-  /* three columns now, not four: the progress bars are gone, replaced
-     by the radar, which plots the same number once instead of twice */
+  /* four columns: axis, stage pill, the figure on its own right-aligned
+     track, and the reason. The figure shared the pill's cell until the
+     28 Jul audit, which meant six numbers starting at six different
+     places depending on how long each pill's word was. */
   .bmm-axis {
     display: grid;
-    grid-template-columns: minmax(0, 12rem) minmax(0, 9rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 12rem) minmax(0, 7rem) minmax(0, 4rem) minmax(0, 1fr);
     align-items: center;
     column-gap: var(--spacing-6);
     row-gap: 0;
@@ -5688,16 +5514,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   }
 }
 
-
-/* status lists on the open ground (spec item 3): a list of facts is
-   prose, not an inspectable specimen, so it wears no card. */
-.ds-statusgroup {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  padding-top: var(--spacing-4);
-  border-top: 1px solid var(--color-border-soft);
-}
 
 /* ── BEAT 01: can an AI build with your system? (27 Jul 2026) ──
    Built to _proto/beat-agent-demo.html. Tokens only, everywhere, with
@@ -5845,6 +5661,16 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .agentdemo__caption { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-soft); max-width: 70ch; }
 .agentdemo__foot { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-muted); max-width: 70ch; }
 
+/* the citation is a LINK and has to look like one: iris and underlined
+   is the inline-link contract (section 4). It shipped as muted body text
+   for one build and read as a dead sentence. */
+.agentdemo__foot a {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .agentdemo__track, .agentdemo__knob { transition: none; }
 }
@@ -5856,44 +5682,129 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 /* rail placeholders: the structure made visible before it is built */
 
 
-/* ── the gate table (craft pass, 27 Jul) ── A sixteen-row list IS the
-   demo here, so it is the beat's visual and the beat is wide.
+/* The gate TABLE is deleted with its markup (28 Jul, readability audit).
+   It was the fourth shape of the same wall (definition list, definition
+   grid, table) and all four asked the reader to scan sixteen rows for the
+   one they cared about. The explorer below replaces it. Both .ds-gate-table
+   rule sets go: there were two, 350 lines apart, and the later one silently
+   won every shared property. */
 
-   It has now been a definition list in both slots of a two-column beat
-   and a three-column definition grid, and all three were the same
-   mistake in different shapes: prose you read top to bottom when the
-   question is always "what does X refuse". Two named columns, one row
-   per audit, is what the content was the whole time. The header row
-   states the question so nobody has to infer it, and the caption is the
-   screen-reader summary.
+/* ── the gate explorer (28 Jul, readability audit P2) ──
+   Sixteen chips, one panel. It replaces the two-column table, which
+   replaced a three-column definition grid, which replaced a definition
+   list: four shapes of the same wall. The chips are the whole gate at a
+   glance and the panel answers the only question anyone asks of it.
 
-   Deliberately NOT scrollable: the refusal column reflows, and a table
-   you have to drag sideways on a phone is a table nobody reads.
+   The chips are a TABLIST, so they are one tab stop with arrow keys
+   inside, and the panel is a real region of text in the document rather
+   than a card face hidden behind a transform. */
+.gx {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
 
-   It stays a NATIVE table at every width: no display:block rows, no
-   display:none header, no ARIA patch-up. Overriding display on table
-   parts is what strips the row and cell roles from the accessibility
-   tree, and a table that has to be re-declared with roles to survive its
-   own stylesheet is worse than one that simply keeps its columns. Both
-   columns just get narrower; the name column is mono and its longest
-   entry ("audit:structure") still fits at 360. */
-.ds-gate-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 0;
+.gx-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
+  gap: var(--spacing-2);
+}
+
+.gx-chip {
+  /* FILTER-CHIP register, not a keycap: this selects, it does not act
+     (the control taxonomy, section 5). Flat, outline, no elevation. */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: var(--spacing-touch-target);
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-ink-soft);
   text-align: left;
+  cursor: pointer;
+  transition: border-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
 }
 
-.ds-gate-table th,
-.ds-gate-table td {
-  padding: var(--spacing-3) var(--spacing-4) var(--spacing-3) 0;
+.gx-chip:hover {
+  border-color: var(--color-accent-ink);
+  color: var(--color-ink);
+}
+
+.gx-chip:focus-visible {
+  outline: 2px solid var(--color-accent-ink);
+  outline-offset: var(--spacing-1);
+}
+
+/* selected: the iris outline plus a filled ground, never colour alone.
+   aria-selected carries it for anyone who cannot see the border. */
+.gx-chip.is-active {
+  border-color: var(--color-accent-ink);
+  background: var(--color-semantic-accent-subtle);
+  color: var(--color-accent-ink);
+}
+
+.gx-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding: var(--spacing-5);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-xl);
+  background: var(--color-card);
+}
+
+.gx-panel:focus-visible {
+  outline: 2px solid var(--color-accent-ink);
+  outline-offset: var(--spacing-1);
+}
+
+.gx-panel__name {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-lg);
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.gx-panel__line {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+  max-width: 72ch;
+}
+
+.gx-panel__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  margin: 0;
+  padding-top: var(--spacing-3);
   border-top: 1px solid var(--color-border-soft);
-  vertical-align: baseline;
 }
 
-.ds-gate-table thead th {
-  border-top: 0;
-  padding-top: 0;
+.gx-panel__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--spacing-1);
+}
+
+@media (min-width: 768px) {
+  .gx-panel__row {
+    grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+    gap: var(--spacing-4);
+    align-items: baseline;
+  }
+}
+
+.gx-panel__row dt {
   font-family: var(--font-body);
   font-size: var(--typography-font-size-tag);
   font-weight: 700;
@@ -5902,36 +5813,62 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   color: var(--color-eyebrow);
 }
 
-.ds-gate-table th[scope="row"] {
-  width: 38%;
+.gx-panel__row dd {
+  margin: 0;
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-base);
-  font-weight: 600;
   color: var(--color-ink);
 }
 
-.ds-gate-table td {
-  padding-right: 0;
+/* ── the close (28 Jul) ── one action, then what the argument stands on */
+.ds-close {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.ds-close__act {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-4) var(--spacing-6);
+}
+
+.ds-close__alt {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ds-close__cites {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding-top: var(--spacing-5);
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.ds-close__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
   line-height: 1.55;
   color: var(--color-ink-soft);
+  max-width: 72ch;
 }
 
-/* past the phone the name column stops taking a share of the width and
-   takes only what a token name needs */
-@media (min-width: 768px) {
-  .ds-gate-table th[scope="row"] {
-    width: 16rem;
-  }
-
-  .ds-gate-table th,
-  .ds-gate-table td {
-    padding-right: var(--spacing-6);
-  }
-
-  .ds-gate-table td {
-    padding-right: 0;
-  }
+.ds-close__list a {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
 }
 
 /* the derived count, stated once, large, WITH the copy (27 Jul): it was

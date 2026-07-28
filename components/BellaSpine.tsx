@@ -4,7 +4,8 @@ import CaseBeat from "@/components/CaseBeat";
 import AgentDemo from "@/components/AgentDemo";
 import ContractPipeline from "@/components/ContractPipeline";
 import BellaMaturityMap from "@/components/BellaMaturityMap";
-import AiReadinessExplainer from "@/components/AiReadinessExplainer";
+import GateExplorer from "@/components/GateExplorer";
+import { Button } from "@/components/ui/Button";
 
 /**
  * BELLA, the system behind this site: the COMPOSITION (27 Jul 2026).
@@ -50,9 +51,12 @@ const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 export default function BellaSpine({
   auditCount,
   auditCountWord,
+  auditFiles,
 }: {
   auditCount: number;
   auditCountWord: string;
+  /** audit name to its script(s), derived from package.json on the server */
+  auditFiles: Record<string, string[]>;
 }) {
   return (
     <>
@@ -63,15 +67,15 @@ export default function BellaSpine({
         kicker="AI readiness"
         headline="Can an AI build with your system?"
         keyline="The difference is whether your system is machine-readable."
-        body={
-          <>
-            <p>
-              AI tools now assemble interfaces on their own. The question every design
-              system faces is whether the agent builds yours right, or makes it up.
-            </p>
-            <p>Flip the switch and watch the same agent change its mind.</p>
-          </>
-        }
+        /* ONE lead line (28 Jul, readability audit). The beat said the
+           same thing four times: keyline, two paragraphs here, then the
+           demo's own caption under the cards. The demo makes the point
+           by being operated; the copy only has to say what to do.
+           WIDE for the same reason: once the copy is one line, half a
+           row of text against a two-card demo is mostly empty column,
+           and the cards would rather have the width. */
+        wide
+        body={<p>Flip the switch and watch the same agent change its mind.</p>}
         visual={<AgentDemo />}
       />
 
@@ -116,145 +120,104 @@ export default function BellaSpine({
         keyline={`${capitalise(auditCountWord)} checks run before anything ships.`}
         wide
         body={
-          <>
-            <p>
-              Green or it does not merge, locally and on every pull request. Each check names
-              exactly what it refuses, so a failure is self-documenting.
-            </p>
-            <p className="ds-gate-stat">
-              <span className="ds-gate-stat__n">{auditCount}</span>
-              <span className="ds-gate-stat__l">
-                checks, every one of them able to stop a merge
-              </span>
-            </p>
-          </>
+          <p className="ds-gate-stat">
+            <span className="ds-gate-stat__n">{auditCount}</span>
+            <span className="ds-gate-stat__l">
+              checks, every one of them able to stop a merge
+            </span>
+          </p>
         }
-        visual={
-          /* a real TABLE (craft pass, 27 Jul). Three columns of
-             definition list was sixteen entries of prose in a shape you
-             read rather than scan; two named columns is the thing it
-             always was, one row per audit, name against refusal. The
-             caption is the table's accessible summary. */
-          <table className="ds-gate-table">
-            <caption className="sr-only">
-              The {auditCountWord} audits in the gate, and what each one refuses.
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Audit</th>
-                <th scope="col">What it refuses</th>
-              </tr>
-            </thead>
-            <tbody>
-              {GATE.map((g) => (
-                <tr key={g.name}>
-                  <th scope="row">{g.name}</th>
-                  <td>{g.line}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        }
+        visual={<GateExplorer audits={GATE} files={auditFiles} />}
       />
 
-      {/* ── 04 ── */}
+      {/* ── the FRONTIER-AXIS MAP IS CUT (28 Jul, readability audit) ──
+          It restated beat 01's guessing-versus-grounded point with a
+          loose curved diagram against the crisp card language of every
+          other demo, and it was the one visual whose labels could not
+          hold 16px at any width. Its surviving line moved into the
+          AI-readiness row of the maturity table, which is where the
+          frontier axis is actually scored. The beats below renumber. */}
+
+      {/* ── 04 ── WIDE. Six axes compared on one row template need the
+          container: the map ran 1876px down half a row while the copy
+          beside it ran 241px. ── */}
       <CaseBeat
         index="04"
-        id="ds-ai-readiness"
-        kicker="The frontier axis"
-        headline="Into your system, or around it?"
-        keyline="A mature system makes going through it the easy path."
-        flip
-        /* WIDE (27 Jul, second pass). Not for balance: the diagram is a
-           900-unit viewBox, so every label scales with the column it is
-           given. In half a row its type rendered 6.6px at 1024 and 8.2px
-           at 1440. The container is the widest this beat can be, which
-           is the most legibility the current drawing can have. It is
-           still short of the 16px floor at every width, which needs the
-           labels out of the SVG, not a wider column. */
-        wide
-        body={
-          <>
-            <p>
-              Agents read the system directly. When the contract is machine-readable they build
-              from it; when it is not, they build around it and the output is guessed rather
-              than grounded.
-            </p>
-            {/* moved out of AiReadinessExplainer (27 Jul): the diagram
-                carried a takeaway that restated this beat's keyline
-                almost word for word, and a note that belongs with the
-                copy. The beat owns the words, the visual owns the
-                diagram, and the columns balance as a result. */}
-            <p>
-              The newest test of a design system isn&apos;t how well humans read it. It&apos;s
-              the path an AI takes.
-            </p>
-          </>
-        }
-        visual={<AiReadinessExplainer />}
-      />
-
-      {/* ── 05 ── WIDE (27 Jul). Six axes compared on one row template
-          need the container: the map ran 1876px down half a row while
-          the copy beside it ran 241px, which is the emptiest thing on
-          the page in the section that should be the most visual. The
-          org-scale caveat lives here now, once, instead of here AND in
-          the component's own intro notes. ── */}
-      <CaseBeat
-        index="05"
         id="ds-maturity"
         kicker="Self-assessment"
         headline="Where the system honestly stands."
         keyline="Not a scoreboard. Strength in one place, room in another."
+        flip
         wide
         body={
           <p>
-            BELLA scored against zeroheight&apos;s six-axis Design System Maturity Model. It is
-            a personal system, so the org-scale axes (adoption, team, measurement) are early by
-            design while the frontier axes run deep. The honest read is the point.
+            Scored against zeroheight&apos;s six-axis model. The org-scale axes are early by
+            design; the frontier axes run deep.
           </p>
         }
         visual={<BellaMaturityMap auditCount={auditCount} />}
       />
 
-      {/* ── 06 ── */}
+      {/* ── 05 ── the close (28 Jul, readability audit). It recapped the
+          constitution the page had just spent four beats demonstrating,
+          and then stopped: no action, no way out, nothing to check. The
+          rules list is cut. What is left is the thesis stated once as a
+          claim, the artifacts that back it as things you can actually
+          open, and the two published sources this argument stands on. ── */}
       <CaseBeat
-        index="06"
+        index="05"
         id="ds-close"
-        kicker="The constitution"
-        headline="The rules this runs on."
-        keyline="Written down, enforced by the gate, not by memory."
-        flip
+        kicker="The claim"
+        headline="A design system is AI-ready when a machine can build with it correctly."
+        keyline="Every claim on this page is a link you can open."
+        /* NOT wide, and NOT flipped. Beat 04 flips, so this one cannot
+           without putting two beats on the same side, which audit:visual
+           refuses. Two columns also suit it: the claim on the left, the
+           things that back it on the right, both filled. Wide left the
+           right half of the page empty under a closing statement. */
         body={
-            <ol className="ds-rules">
-            <li>No hardcoded hex or px in components. Reference tokens only.</li>
-            <li>One implementation: edit the live component and delete the old one. Never leave old and new both rendering.</li>
-            <li>The primary is the one 3D moment per view, max one.</li>
-            <li>Body min 16px. Never smaller for reading text.</li>
-            <li>No em or en dashes anywhere. Use a period, a comma, or &quot;that&quot;.</li>
-            <li>Unique is display only: never below 24px outside the keycap logo, never in body, UI, or chrome.</li>
-            <li>WCAG AA on every text node, both themes.</li>
-            <li>The gate must pass before any work is done. Green or it isn&apos;t done.</li>
-            </ol>
+          <p>
+            The manifest below is generated from the same source this page renders from. Read it
+            the way an agent would.
+          </p>
         }
         visual={
-          <div className="ds-status">
-            <div className="ds-statusgroup">
-              <p className="ds-section__kicker" style={{ margin: 0 }}>Available now</p>
-              <ul className="ds-status__list">
-                <li>The token layer, both themes</li>
-                <li>The control taxonomy, live on every page</li>
-                <li>The gate, {auditCountWord} audits and a pre-commit hook</li>
-                <li>The dark-mode contract, AA on every route</li>
-              </ul>
+          <div className="ds-close">
+            {/* the page's ONE closing action, and it is real: the live
+                artifact, not a contact form and not a scroll back up */}
+            <div className="ds-close__act">
+              <Button href="/api/bella.json" variant="primary">
+                Open the live manifest
+              </Button>
+              <a className="ds-close__alt" href="/llms.txt">
+                or read the plain-text route map at /llms.txt
+              </a>
             </div>
-            <div className="ds-statusgroup">
-              <p className="ds-section__kicker" style={{ margin: 0 }}>Coming next</p>
-              <ul className="ds-status__list">
-                <li>Storybook, the full component set</li>
-                <li>The Figma leg</li>
-                <li>Agent-queryable BELLA Brain (MCP)</li>
-                <li>npx bella init distribution</li>
+
+            <div className="ds-close__cites">
+              <p className="ds-section__kicker" style={{ margin: 0 }}>What this stands on</p>
+              <ul className="ds-close__list">
+                <li>
+                  <a
+                    href="https://southleft.com/insights/design-systems/context-based-design-systems-a-new-model-for-the-ai-driven-product-lifecycle/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Context-Based Design Systems
+                  </a>
+                  , TJ Pitre, Southleft. Where the with-contract and without-contract comparison
+                  in beat 01 comes from.
+                </li>
+                <li>
+                  <a
+                    href="https://zeroheight.com/maturity/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Design System Maturity Model
+                  </a>
+                  , zeroheight. The six axes BELLA is scored against above.
+                </li>
               </ul>
             </div>
           </div>

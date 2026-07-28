@@ -16,29 +16,32 @@ import { dtcgToken, contrastRatio, toHex, parseRgb } from "@/lib/bella/dtcg";
  *            the same relative-luminance maths the gate runs, judged
  *            against AAA 7 to 1. When it fails, it really failed.
  *
- * v2 adds the glance layer the prose version lacked: a FLOW STRIP that
- * states the whole pipeline in three words plus a live verdict,
- * CHEVRONS so the three cards read as one pipeline rather than three
- * boxes, and a VALUE CHIP in steps 01 and 02 so the same hex is seen
- * travelling from source into the manifest. Each column leads with a
+ * CHEVRONS bind the three cards so they read as one pipeline rather
+ * than three boxes, and a VALUE CHIP in steps 01 and 02 shows the same
+ * hex travelling from source into the manifest. Each column leads with a
  * bold keyline and ONE line of prose; the ratio is the largest thing
  * in step 03.
+ *
+ * The v2 flow strip above the cards is GONE (28 Jul, readability audit):
+ * it restated the three card headings in three more words and floated
+ * the verdict in the top right, three cards away from the number that
+ * verdict is about. Its glyphs are now each card's icon and its verdict
+ * lives in the Gate card.
  *
  * Honesty is unchanged: nothing here is a recording. No check that
  * needs the filesystem is shown as having run.
  *
  * Degradation: every stage renders real text before any interaction
  * and without JavaScript, so a 30-second scanner who never touches the
- * control still gets the argument. The flow strip is decorative and
- * aria-hidden; the real verdict is announced from step 03's live
- * region and always carries a text label, never colour alone.
+ * control still gets the argument. The verdict is announced from step
+ * 03's live region and always carries a text label, never colour alone.
  */
 
 const MAX_DRIFT = 80;
 const AAA_NORMAL = 7;
 
 /* decorative stroke glyphs, matching the approved proto. aria-hidden:
-   the strip duplicates text that already lives in the cards. */
+   each one sits beside a heading that already says the same word. */
 const Glyph = ({ d }: { d: string }) => (
   <svg className="ds-flow__svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
     <path d={d} />
@@ -47,7 +50,6 @@ const Glyph = ({ d }: { d: string }) => (
 const PENCIL = "M4 20l4-1L20 7l-3-3L5 16l-1 4z";
 const BRACES = "M8 4L3 12l5 8M16 4l5 8-5 8";
 const SHIELD = "M12 3l7 3v5c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z";
-const ARROW = "M4 12h15m-5-5l5 5-5 5";
 const CHEVRON = "M8 5l7 7-7 7";
 
 export default function ContractPipeline() {
@@ -112,33 +114,21 @@ export default function ContractPipeline() {
   return (
     <div className="ds-pipeline-instrument">
 
-      {/* glance layer: the whole pipeline without reading a word */}
-      <div className="ds-flow" aria-hidden="true">
-        <span className="ds-flow__node">
-          <span className="ds-flow__ico"><Glyph d={PENCIL} /></span>
-          <span className="ds-flow__label"><b>You edit</b><span>a token</span></span>
-        </span>
-        <span className="ds-flow__arrow"><Glyph d={ARROW} /></span>
-        <span className="ds-flow__node">
-          <span className="ds-flow__ico"><Glyph d={BRACES} /></span>
-          <span className="ds-flow__label"><b>Manifest</b><span>regenerates</span></span>
-        </span>
-        <span className="ds-flow__arrow"><Glyph d={ARROW} /></span>
-        <span className="ds-flow__node">
-          <span className="ds-flow__ico"><Glyph d={SHIELD} /></span>
-          <span className="ds-flow__label"><b>Gate</b><span>measures</span></span>
-        </span>
-        <span className={`ds-flow__verdict ds-flow__verdict--${state}`}>
-          <span className="ds-flow__dot" />
-          {verdictWord}
-        </span>
-      </div>
-
+      {/* THE FLOW STRIP IS MERGED INTO THE CARDS (28 Jul, readability
+          audit P2). It said "You edit, Manifest regenerates, Gate
+          measures" directly above three cards headed Source, Manifest
+          and Gate: the same three words, twice, one on top of the other.
+          Its glyphs survive as each card's own icon, which is where they
+          identify something, and its verdict moved into the Gate card,
+          beside the ratio it is judging. */}
       <div className="ds-rail">
         {/* ── 01 SOURCE ── */}
         <div className="ds-rail__cell">
           <div className="ds-stage">
-            <p className="ds-section__kicker ds-stage__kick"><b>01</b> Source</p>
+            <p className="ds-section__kicker ds-stage__kick">
+              <span className="ds-stage__ico" aria-hidden="true"><Glyph d={PENCIL} /></span>
+              <b>01</b> Source
+            </p>
             <p className="ds-stage__lead">A human decision.</p>
             <p className="ds-stage__sub">
               The control writes the <strong>custom property</strong> the page already resolves
@@ -182,7 +172,10 @@ export default function ContractPipeline() {
         {/* ── 02 MANIFEST ── */}
         <div className="ds-rail__cell">
           <div className="ds-stage">
-            <p className="ds-section__kicker ds-stage__kick"><b>02</b> Manifest</p>
+            <p className="ds-section__kicker ds-stage__kick">
+              <span className="ds-stage__ico" aria-hidden="true"><Glyph d={BRACES} /></span>
+              <b>02</b> Manifest
+            </p>
             <p className="ds-stage__lead">Generated, never typed.</p>
             <p className="ds-stage__sub">
               Shaped by the <em className="ds-stage__hl">same dtcgToken()</em> that builds
@@ -210,7 +203,10 @@ export default function ContractPipeline() {
             is still the point; it is the verdict word, where it fires. */}
         <div className="ds-rail__cell">
           <div className="ds-stage">
-            <p className="ds-section__kicker ds-stage__kick"><b>03</b> Gate</p>
+            <p className="ds-section__kicker ds-stage__kick">
+              <span className="ds-stage__ico" aria-hidden="true"><Glyph d={SHIELD} /></span>
+              <b>03</b> Gate
+            </p>
             <p className="ds-stage__lead">Measured, not judged by taste.</p>
             <p className="ds-stage__sub">
               Real <strong>relative luminance maths</strong>, against the AAA bar of{" "}
@@ -241,8 +237,11 @@ export default function ContractPipeline() {
       </div>
 
       <div className="ds-pipeline__foot">
-        {/* the page's ONE primary: this instrument is the real action */}
-        <Button variant="primary" onClick={() => setDrift(0)} disabled={drift === 0}>
+        {/* SECONDARY (28 Jul): restoring the slider is a utility, not the
+            page's action. The page's one primary moved to the close,
+            where it opens the live manifest, and audit:controls allows
+            exactly one primary per view. */}
+        <Button variant="secondary" onClick={() => setDrift(0)} disabled={drift === 0}>
           Restore the token
         </Button>
         {/* the agents narrative, demoted to its closing line (approved):
