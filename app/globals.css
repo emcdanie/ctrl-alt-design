@@ -2568,17 +2568,13 @@ textarea:focus-visible {
   align-items: start;
 }
 
-/* Side by side only from the container's own width. At 1024 it left the
-   table 504px, the reason column 152px, and the rows wrapped so hard the
-   table ran 629px taller than the chart beside it: the dead band again,
-   turned on its side. Below this the two stack, and the chart takes the
-   whole row, which is the only place it can be big. */
-@media (min-width: 1240px) {
-  .bmm-body {
-    grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
-    gap: var(--spacing-10);
-  }
-}
+/* NEVER side by side (Elleta, 28 Jul). Sharing a row, the two halves
+   compete for the same 1176px and both lose: the chart gives up its
+   flanking axis labels to stay a reasonable size, and the table's reason
+   column drops from 764px to 400px. Stacked, each gets everything it
+   needs. The chart is a figure with its scale and source beneath it, the
+   table runs the full container at one line a row, and the block reads
+   top to bottom as shape then detail. */
 
 /* ── the radar ──
    A 3x3 ring of HTML labels with the chart in the middle. The labels are
@@ -2593,11 +2589,29 @@ textarea:focus-visible {
    reason column that wrapped every row to three lines. Widening the
    window past 1240 therefore made the table WORSE, which is the tell
    that something was reading the viewport when it meant the box. */
+/* The figure STRETCHES; the capping and centring happen inside it.
+
+   Capping this element and centring it with margin-inline:auto collapsed
+   the chart to zero. Auto margins cancel a grid item's stretch, so its
+   inline size falls back to fit-content, and fit-content under
+   inline-size containment resolves to nothing at all, because
+   containment is precisely the promise that contents do not size the
+   box. The container has to be measurable; the figure inside it is what
+   gets a measure. */
 .bmm-radar {
   margin: 0;
   min-width: 0;
   container-type: inline-size;
   container-name: radar;
+}
+
+/* the chart's own measure: a hexagon does not get better past about
+   350px, and its labels want to sit near the shape they name rather than
+   at the far edges of a 1176px row */
+.bmm-radar__ring,
+.bmm-radar__cap {
+  max-width: 38rem;
+  margin-inline: auto;
 }
 
 /* DEFAULT: labels in a clockwise row BENEATH the chart, so the chart
