@@ -1,52 +1,71 @@
-/* BELLA — generated from /tokens/{primitive,semantic.{light,dark},component}.json
+/* BELLA — generated from /tokens/{primitive,semantic/{light,dark},component}.json
  * Light mode is the default. Dark mode activates via [data-theme="dark"] on <html> or <body>.
  * Do not edit by hand. Edit the source JSON and run `python3 tokens/build.py`.
- * [redesign/chip-purple] accent recolored amber #C4956A -> periwinkle #A79CE2
- *   and warm-brown shadow base #2C1810 -> cool #1C1A2E. Sync to token JSON later.
- * [redesign/lush] ground #F5F4EF / ink #1A1720; single iris accent
- *   #5B4BD1 (light) / #A79CE2 (dark); dark mode recolored ink -> navy #1B1B40
- *   with text #F4EFE6. Sync to token JSON later.
  */
 
 :root {
   /* ---- Primitives ---- */
-  --color-brand-ink: #0F1117;
-  --color-brand-parchment: #F7F4EF;
-  --color-brand-amber: #A79CE2;
-  --color-brand-slate: #1A1D27;
-  --color-supporting-steel: #6495C5;
-  --color-supporting-dusk: #7B6E8F;
+  --color-brand-ink: #1A1720;
+  --color-brand-ground: #F5F4EF;
+  --color-brand-navy: #1B1B40;
+  --color-brand-iris: #5B4BD1;
+  --color-brand-periwinkle: #A79CE2;
+  --color-iris-bright: #7A6BE8;
+  --color-iris-hi: #6C5CE0;
+  --color-iris-deep: #4C3EB8;
+  --color-iris-edge: #4A3FB0;
+  --color-iris-logo-hi: #8E7EEC;
+  --color-iris-peri-hover: #B9B0E9;
+  --color-iris-peri-ink: #B4ADE8;
+  --color-neutral-cream: #FAF9F5;
+  --color-neutral-paper: #FAFAF8;
+  --color-neutral-surface: #EDECE4;
+  --color-neutral-border: #E6E4DC;
+  --color-neutral-graphite: #33303B;
+  --color-neutral-ink-soft: #2E2937;
+  --color-neutral-ink-muted: #4A4652;
+  --color-neutral-ink-faint: #6B6678;
+  --color-navy-card: #232350;
+  --color-navy-raised: #2B2B5C;
+  --color-navy-divider: #32325F;
+  --color-navy-ink: #F4EFE6;
+  --color-navy-ink-soft: #E6E1D6;
+  --color-navy-ink-muted: #C6C2D4;
+  --color-navy-text-secondary: #C4BFD4;
+  --color-navy-text-muted: #9994B1;
   --color-supporting-sage: #4A7C6F;
-  --color-supporting-linen: #E8E4DC;
-  --color-neutral-50: #FBFAF7;
-  --color-neutral-100: #F0EDE8;
-  --color-neutral-200: #CCCCCC;
-  --color-neutral-400: #999999;
-  --color-neutral-500: #666666;
-  --color-neutral-600: #525252;
-  --color-neutral-700: #333333;
-  --color-neutral-900: #111111;
-  --color-alpha-amber-15: #A79CE226;
-  --color-alpha-amber-30: #A79CE24D;
-  --color-alpha-steel-15: #6495C526;
-  --color-alpha-steel-30: #6495C54D;
-  --color-alpha-ink-6: #0F111710;
-  --color-alpha-parchment-6: #F7F4EF10;
+  --color-supporting-steel: #6495C5;
+  --color-alpha-iris-12: #5B4BD11F;
+  --color-alpha-iris-20: #5B4BD133;
+  --color-alpha-iris-24: #5B4BD13D;
+  --color-alpha-iris-28: #5B4BD147;
+  --color-alpha-iris-30: #5B4BD14D;
+  --color-alpha-periwinkle-15: #A79CE226;
+  --color-alpha-periwinkle-30: #A79CE24D;
+  --color-alpha-ink-6: #1A172010;
+  --color-alpha-dark-ink-6: #F4EFE610;
+  --color-alpha-dark-ink-10: #F4EFE61A;
+  --color-alpha-dark-ink-14: #F4EFE624;
   --color-alpha-glass-28: #FFFFFF47;
+  --color-alpha-glass-35: #FFFFFF59;
+  --color-alpha-glass-40: #FFFFFF66;
   --color-alpha-glass-48: #FFFFFF7A;
   --color-alpha-glass-55: #FFFFFF8C;
   --color-alpha-glass-68: #FFFFFFAD;
   --color-alpha-glass-72: #FFFFFFB8;
   --color-alpha-glass-82: #FFFFFFD1;
   --color-alpha-glass-90: #FFFFFFE6;
-  --color-alpha-shadow-warm-03: #1C1A2E08;
-  --color-alpha-shadow-warm-04: #1C1A2E0A;
-  --color-alpha-shadow-warm-05: #1C1A2E0D;
-  --color-alpha-shadow-warm-06: #1C1A2E0F;
-  --color-alpha-shadow-warm-08: #1C1A2E14;
-  --color-alpha-slate-60: #1A1D2799;
-  --color-alpha-slate-48: #1A1D277A;
-  --color-alpha-slate-32: #1A1D2752;
+  --color-alpha-shadow-cool-03: #1C1A2E08;
+  --color-alpha-shadow-cool-04: #1C1A2E0A;
+  --color-alpha-shadow-cool-05: #1C1A2E0D;
+  --color-alpha-shadow-cool-06: #1C1A2E0F;
+  --color-alpha-shadow-cool-08: #1C1A2E14;
+  --color-alpha-navy-60: #23235099;
+  --color-alpha-navy-48: #2323507A;
+  --color-alpha-navy-32: #23235052;
+  --color-alpha-steel-15: #6495C526;
+  --color-alpha-steel-30: #6495C54D;
+  --color-alpha-ink-22: #1A172038;
   --spacing-1: 4px;
   --spacing-2: 8px;
   --spacing-3: 12px;
@@ -71,9 +90,9 @@
   --radius-2xl: 20px;
   --radius-3xl: 24px;
   --radius-full: 999px;
-  --typography-font-family-display: Georgia, 'Times New Roman', serif;
-  --typography-font-family-body: Georgia, 'Times New Roman', serif;
-  --typography-font-family-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --typography-font-family-display: Unique, 'Arial Narrow', sans-serif;
+  --typography-font-family-body: Geist, system-ui, sans-serif;
+  --typography-font-family-mono: Geist, system-ui, sans-serif;
   --typography-font-size-tag: 13px;
   --typography-font-size-sm: 14px;
   --typography-font-size-base: 16px;
@@ -83,6 +102,7 @@
   --typography-font-size-3xl: 32px;
   --typography-font-size-4xl: 40px;
   --typography-font-size-5xl: 56px;
+  --typography-font-size-6xl: 88px;
   --typography-font-weight-regular: 400;
   --typography-font-weight-medium: 500;
   --typography-font-weight-bold: 700;
@@ -95,49 +115,66 @@
   --typography-letter-spacing-normal: 0;
   --typography-letter-spacing-wide: 0.08em;
   --typography-letter-spacing-wider: 0.15em;
+  --typography-letter-spacing-hero: 0.04em;
+  --icon-sm: 16px;
+  --icon-md: 20px;
+  --icon-lg: 24px;
+  --icon-stroke: 1.5;
   --motion-duration-fast: 150ms;
   --motion-duration-normal: 250ms;
   --motion-duration-slow: 400ms;
   --motion-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --motion-easing-emphasis: cubic-bezier(0.34, 1.56, 0.64, 1);
   --motion-transform-hover-lift: translateY(-2px);
+  --motion-transform-key-press: translateY(2px);
   --bella-blur-xs: 8px;
   --bella-blur-sm: 14px;
   --bella-blur-md: 16px;
   --bella-blur-lg: 18px;
   --bella-blur-xl: 20px;
-  --shadow-sm: 0 1px 2px rgba(15,17,23,0.06);
-  --shadow-md: 0 4px 12px rgba(15,17,23,0.08);
-  --shadow-lg: 0 12px 32px rgba(15,17,23,0.12);
-  --shadow-hover: 0 8px 24px rgba(15,17,23,0.10);
+  --shadow-sm: 0 1px 2px rgba(28,26,46,0.06);
+  --shadow-md: 0 4px 12px rgba(28,26,46,0.08);
+  --shadow-lg: 0 12px 32px rgba(28,26,46,0.12);
+  --shadow-hover: 0 8px 24px rgba(28,26,46,0.10);
   --shadow-soft: 0 1px 2px #1C1A2E0A, 0 10px 30px #1C1A2E0F, 0 24px 60px #1C1A2E0A;
   --shadow-layered: 0 1px 2px #1C1A2E0D, 0 12px 40px #1C1A2E14, 0 28px 80px #1C1A2E0F, inset 0 1px 0 #FFFFFFE6;
   --shadow-card-default: 0 1px 4px #1C1A2E08, 0 4px 16px #1C1A2E0A, inset 0 1px 0 #FFFFFF8C;
   --shadow-card-elevated: 0 1px 2px #1C1A2E0A, 0 8px 24px #1C1A2E0F, inset 0 1px 0 #FFFFFFAD;
+  --shadow-orb: 13px 22px 44px rgba(0, 0, 0, 0.26), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+  --shadow-orb-raised: 14px 24px 48px rgba(0, 0, 0, 0.26), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+  --shadow-orb-selected: 14px 24px 48px rgba(0, 0, 0, 0.3), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
+  --shadow-switch-track: inset 0 2px 5px rgba(25, 23, 32, 0.22);
+  --shadow-switch-track-dark: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+  --shadow-switch-knob: 3px 5px 8px rgba(25, 23, 32, 0.24);
+  --shadow-switch-knob-dark: 3px 5px 8px rgba(0, 0, 0, 0.4);
+  --shadow-nav-bar: 0 18px 48px rgba(26, 24, 20, 0.08);
+  --shadow-key-resting: 1px 3px 0 #4A3FB0, 3px 6px 10px #5B4BD13D, inset 0 1px 0 #FFFFFF66;
+  --shadow-key-hover: 1px 4px 0 #4A3FB0, 4px 8px 14px #5B4BD147, inset 0 1px 0 #FFFFFF66;
+  --shadow-key-pressed: 0 1px 0 #4A3FB0, 2px 3px 8px #5B4BD133, inset 0 1px 0 #FFFFFF66;
+  --shadow-card-rest: 13px 26px 54px #1A172038;
+  --shadow-card-rest-dark: 13px 26px 54px rgba(0, 0, 0, 0.44);
 
   /* ---- Semantic (light) ---- */
-  /* the page ground. Dropped one step 27 Jul so the card surface
-     (--color-card, lifted in globals.css) reads as a distinct plane;
-     the old pair sat about 5 of 255 apart. Warm neutral, unchanged hue. */
-  --color-semantic-background: #F1EFE6;
+  --color-semantic-background: #F5F4EF;
   --color-semantic-background-inverse: #1A1720;
-  --color-semantic-surface: #F0EDE8;
-  --color-semantic-surface-elevated: #FBFAF7;
-  --color-semantic-surface-inverse: #1A1D27;
+  --color-semantic-surface: #FAFAF8;
+  --color-semantic-surface-elevated: #FAFAF8;
+  --color-semantic-surface-inset: #EDECE4;
+  --color-semantic-surface-inverse: #232350;
   --color-semantic-surface-glass: linear-gradient(180deg, #FFFFFFD1 0%, #FFFFFFAD 100%);
   --color-semantic-surface-glass-elevated: linear-gradient(180deg, #FFFFFFAD 0%, #FFFFFF7A 100%);
   --color-semantic-surface-glass-light: linear-gradient(180deg, #FFFFFF7A 0%, #FFFFFF47 100%);
+  --color-semantic-surface-glass-accent: #A79CE226;
   --color-semantic-border-glass-top: #FFFFFFB8;
   --color-semantic-border-glass-edge: #FFFFFF8C;
   --color-semantic-text-primary: #1A1720;
   --color-semantic-text-secondary: #4A4652;
-  --color-semantic-text-muted: #757085;
+  --color-semantic-text-muted: #6B6678;
   --color-semantic-text-inverse: #F5F4EF;
   --color-semantic-text-accent: #5B4BD1;
-  /* [redesign/lush] single UI accent — iris #5B4BD1 in light mode (AA as
-     text on ground, 5.6:1; white text on it 6.1:1), #A79CE2 in dark. */
   --color-semantic-accent: #5B4BD1;
-  --color-accent-ink: #5B4BD1;
+  --color-semantic-accent-hover: #4C3EB8;
+  --color-semantic-text-on-accent: #F5F4EF;
   --color-semantic-accent-subtle: #5B4BD11F;
   --color-semantic-accent-border: #5B4BD14D;
   --color-semantic-border: #E6E4DC;
@@ -149,37 +186,45 @@
   --color-semantic-info: #6495C5;
   --color-semantic-info-subtle: #6495C526;
   --color-semantic-info-border: #6495C54D;
+  --color-semantic-accent-raised-hi: #5B4BD1;
+  --color-semantic-accent-raised-lo: #4C3EB8;
+  --color-semantic-accent-raised-edge: #4A3FB0;
+  --color-accent-ink: #5B4BD1;
   --shadow-floating: 0 1px 2px #1C1A2E0A, 0 10px 30px #1C1A2E0F, 0 24px 60px #1C1A2E0A;
   --shadow-raised: 0 1px 2px #1C1A2E0D, 0 12px 40px #1C1A2E14, 0 28px 80px #1C1A2E0F, inset 0 1px 0 #FFFFFFE6;
   --bella-blur-surface: 18px;
 
   /* ---- Component ---- */
-  --component-button-primary-background: #5B4BD1;
-  --component-button-primary-background-hover: #4C3EB8;
+  --component-button-primary-fill-hi: #5B4BD1;
+  --component-button-primary-fill-lo: #4C3EB8;
+  --component-button-primary-edge: #4A3FB0;
   --component-button-primary-foreground: #F5F4EF;
-  --component-button-primary-border: #5B4BD1;
-  --component-button-primary-border-radius: 8px;
+  --component-button-primary-trace: #7A6BE8;
+  --component-button-primary-gloss: linear-gradient(color-mix(in srgb, white 18%, transparent), transparent 46%);
+  --component-button-primary-gloss-hover: linear-gradient(color-mix(in srgb, white 26%, transparent), transparent 52%);
+  --component-button-primary-gloss-pressed: linear-gradient(transparent 0 10%, color-mix(in srgb, white 12%, transparent) 10%, transparent 50%);
+  --component-button-primary-border-radius: 12px;
   --component-button-primary-padding-y: 12px;
   --component-button-primary-padding-x: 20px;
-  --component-button-primary-font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --component-button-primary-font-family: Geist, system-ui, sans-serif;
   --component-button-primary-font-size: 13px;
   --component-button-primary-font-weight: 700;
   --component-button-primary-letter-spacing: 0.08em;
   --component-button-primary-min-height: 44px;
   --component-button-secondary-background: transparent;
   --component-button-secondary-background-hover: #5B4BD11F;
-  --component-button-secondary-foreground: #1A1720;
+  --component-button-secondary-background-active: #5B4BD14D;
+  --component-button-secondary-foreground: #5B4BD1;
   --component-button-secondary-border: #5B4BD1;
   --component-button-secondary-border-radius: 8px;
   --component-button-secondary-padding-y: 12px;
   --component-button-secondary-padding-x: 20px;
   --component-button-secondary-min-height: 44px;
-  --component-button-ghost-background: transparent;
-  --component-button-ghost-background-hover: #F0EDE8;
-  --component-button-ghost-foreground: #111111;
-  --component-button-ghost-border: transparent;
-  --component-button-ghost-border-radius: 8px;
-  --component-button-ghost-min-height: 44px;
+  --component-button-tertiary-background: transparent;
+  --component-button-tertiary-foreground: #5B4BD1;
+  --component-button-tertiary-foreground-hover: #5B4BD1;
+  --component-button-tertiary-border-radius: 8px;
+  --component-button-tertiary-min-height: 44px;
   --component-card-default-background: linear-gradient(180deg, #FFFFFF7A 0%, #FFFFFF47 100%);
   --component-card-default-blur: 14px;
   --component-card-default-shadow: 0 1px 4px #1C1A2E08, 0 4px 16px #1C1A2E0A, inset 0 1px 0 #FFFFFF8C;
@@ -189,7 +234,7 @@
   --component-card-default-border-radius: 16px;
   --component-card-default-padding: 20px;
   --component-card-default-gap: 8px;
-  --component-card-default-foreground: #111111;
+  --component-card-default-foreground: #1A1720;
   --component-card-default-transform-hover: translateY(-2px);
   --component-card-default-transition: all 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
   --component-card-elevated-background: linear-gradient(180deg, #FFFFFFAD 0%, #FFFFFF7A 100%);
@@ -200,7 +245,7 @@
   --component-card-elevated-border-width: 1px;
   --component-card-elevated-border-radius: 20px;
   --component-card-elevated-padding: 24px;
-  --component-card-elevated-foreground: #111111;
+  --component-card-elevated-foreground: #1A1720;
   --component-card-glass-background: linear-gradient(180deg, #FFFFFFD1 0%, #FFFFFFAD 100%);
   --component-card-glass-blur: 18px;
   --component-card-glass-shadow: 0 1px 2px #1C1A2E0D, 0 12px 40px #1C1A2E14, 0 28px 80px #1C1A2E0F, inset 0 1px 0 #FFFFFFE6;
@@ -209,70 +254,84 @@
   --component-card-glass-border-width: 1px;
   --component-card-glass-border-radius: 24px;
   --component-card-glass-padding: 32px;
-  --component-card-glass-foreground: #111111;
-  --component-card-featured-background: #FBFAF7;
+  --component-card-glass-foreground: #1A1720;
+  --component-card-featured-background: #FAFAF8;
   --component-card-featured-border-radius: 16px;
   --component-card-featured-padding: 32px;
-  --component-card-featured-shadow: 0 4px 12px rgba(15,17,23,0.08);
-  --component-card-inverse-background: #1A1D27;
-  --component-card-inverse-foreground: #F7F4EF;
-  --component-card-inverse-border: #F7F4EF10;
+  --component-card-featured-shadow: 0 4px 12px rgba(28,26,46,0.08);
+  --component-card-inverse-background: #232350;
+  --component-card-inverse-foreground: #F5F4EF;
+  --component-card-inverse-border: #F4EFE610;
   --component-card-inverse-border-radius: 12px;
   --component-card-inverse-padding: 20px;
-  --component-tag-accent-background: #A79CE226;
-  --component-tag-accent-foreground: #0F1117;
-  --component-tag-accent-border: #A79CE24D;
-  --component-tag-accent-border-width: 1px;
+  --component-tag-default-background: #EDECE4;
+  --component-tag-default-foreground: #4A4652;
+  --component-tag-default-border-radius: 999px;
+  --component-tag-default-padding-y: 4px;
+  --component-tag-default-padding-x: 12px;
+  --component-tag-default-font-family: Geist, system-ui, sans-serif;
+  --component-tag-default-font-size: 13px;
+  --component-tag-default-font-weight: 500;
+  --component-tag-accent-background: #5B4BD11F;
+  --component-tag-accent-foreground: #5B4BD1;
   --component-tag-accent-border-radius: 999px;
   --component-tag-accent-padding-y: 4px;
   --component-tag-accent-padding-x: 12px;
-  --component-tag-accent-font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-  --component-tag-accent-font-size: 13px;
-  --component-tag-accent-font-weight: 500;
-  --component-tag-accent-letter-spacing: 0.08em;
-  --component-tag-accent-text-transform: uppercase;
-  --component-tag-accent-min-height: 44px;
-  --component-tag-info-background: #6495C526;
-  --component-tag-info-foreground: #0F1117;
-  --component-tag-info-border: #6495C54D;
-  --component-tag-info-min-height: 44px;
-  --component-tag-muted-background: #F0EDE8;
-  --component-tag-muted-foreground: #525252;
-  --component-tag-muted-border: #E8E4DC;
-  --component-tag-muted-min-height: 44px;
-  --component-eyebrow-accent-foreground: #111111;
-  --component-eyebrow-accent-font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --component-status-pill-border-radius: 999px;
+  --component-status-pill-font-family: Geist, system-ui, sans-serif;
+  --component-status-pill-font-size: 13px;
+  --component-status-pill-font-weight: 700;
+  --component-filter-chip-border: #E6E4DC;
+  --component-filter-chip-foreground: #4A4652;
+  --component-filter-chip-border-radius: 999px;
+  --component-filter-chip-font-family: Geist, system-ui, sans-serif;
+  --component-filter-chip-font-size: 14px;
+  --component-filter-chip-font-weight: 500;
+  --component-filter-chip-min-height: 44px;
+  --component-segmented-control-border-radius: 12px;
+  --component-segmented-control-font-family: Geist, system-ui, sans-serif;
+  --component-segmented-control-font-size: 13px;
+  --component-segmented-control-font-weight: 700;
+  --component-segmented-control-min-height: 44px;
+  --component-select-border-radius: 8px;
+  --component-select-font-size: 14px;
+  --component-select-min-height: 44px;
+  --component-select-label-font-family: Geist, system-ui, sans-serif;
+  --component-select-label-font-size: 13px;
+  --component-heading-font-family: Unique, 'Arial Narrow', sans-serif;
+  --component-heading-font-weight: 700;
+  --component-heading-letter-spacing: 0.04em;
+  --component-heading-hero-font-size: 88px;
+  --component-heading-page-font-size: 56px;
+  --component-heading-section-font-size: 32px;
+  --component-icon-size-sm: 16px;
+  --component-icon-size-md: 20px;
+  --component-icon-size-lg: 24px;
+  --component-icon-stroke: 1.5;
+  --component-eyebrow-accent-foreground: #5B4BD1;
+  --component-eyebrow-accent-font-family: Geist, system-ui, sans-serif;
   --component-eyebrow-accent-font-size: 13px;
   --component-eyebrow-accent-font-weight: 500;
   --component-eyebrow-accent-letter-spacing: 0.15em;
   --component-eyebrow-accent-text-transform: uppercase;
-  --component-eyebrow-muted-foreground: #525252;
-  --component-eyebrow-muted-font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --component-eyebrow-muted-foreground: #4A4652;
+  --component-eyebrow-muted-font-family: Geist, system-ui, sans-serif;
   --component-eyebrow-muted-font-size: 13px;
   --component-eyebrow-muted-letter-spacing: 0.15em;
   --component-eyebrow-muted-text-transform: uppercase;
-  --component-input-default-background: #F0EDE8;
-  --component-input-default-foreground: #111111;
-  --component-input-default-placeholder: #999999;
-  --component-input-default-border: #E8E4DC;
-  --component-input-default-border-focus: #A79CE2;
-  --component-input-default-border-width: 1px;
-  --component-input-default-border-radius: 8px;
-  --component-input-default-padding-y: 12px;
-  --component-input-default-padding-x: 16px;
-  --component-input-default-font-family: Georgia, 'Times New Roman', serif;
-  --component-input-default-font-size: 16px;
-  --component-input-default-min-height: 44px;
-  --component-link-default-foreground: #111111;
-  --component-link-default-foreground-hover: #111111;
+  --component-input-font-size: 16px;
+  --component-input-border-radius: 8px;
+  --component-input-min-height: 44px;
+  --component-link-default-foreground: #1A1720;
+  --component-link-default-foreground-hover: #5B4BD1;
   --component-link-default-text-decoration: underline;
-  --component-nav-link-default-foreground: #525252;
-  --component-nav-link-default-foreground-hover: #111111;
-  --component-nav-link-default-font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --component-nav-link-default-foreground: #4A4652;
+  --component-nav-link-default-foreground-hover: #1A1720;
+  --component-nav-link-default-font-family: Geist, system-ui, sans-serif;
   --component-nav-link-default-font-size: 13px;
   --component-nav-link-default-letter-spacing: 0.08em;
   --component-nav-link-default-min-height: 44px;
-  --component-nav-link-active-foreground: #111111;
+  --component-nav-link-active-foreground: #1A1720;
   --component-nav-link-active-border-bottom: 2px solid #5B4BD1;
   --component-nav-link-active-min-height: 44px;
   --component-section-default-padding-y: 64px;
@@ -281,46 +340,54 @@
   --component-section-default-max-width: 1200px;
   --component-modal-backdrop-blur: 14px;
 
-  /* ---- v0.1 governance tokens (added manually; sync to JSON in next build) ----
+  /* ---- v0.1 governance tokens (see docs/RULES.md) ----
    * Fixed-context tokens: do NOT flip with [data-theme="dark"]. They name
    * "text on a dark surface" and "focus ring" regardless of the page mode,
    * because dark surfaces appear inside light pages (and vice-versa). */
-  --ink-on-dark-strong: #F7F4EF;   /* parchment — AAA on ink (#0F1117): 18.6:1 */
-  --ink-on-dark-body:   #E2DDD4;   /* warm dim parchment — AAA on ink: ~14.4:1 */
-  --ink-on-dark-muted:  #B8B4AC;   /* dimmer warm grey for placeholders — AAA on ink: 9.13:1 (passes 7:1 body bar) */
+  --ink-on-dark-strong: var(--color-navy-ink);       /* #F4EFE6 — AAA on every dark surface (11.44:1 on raised #2B2B5C, worst; verified 2026-07-21) */
+  --ink-on-dark-body:   var(--color-navy-ink-soft);  /* #E6E1D6 — AAA on every dark surface (10.05:1 on raised, worst) */
+  --ink-on-dark-muted:  var(--color-navy-ink-muted); /* #C6C2D4 — AAA on every dark surface (7.53:1 on raised, worst) */
   --ring-focus-color:   var(--color-semantic-border-strong);
   --ring-focus-width:   2px;
   --ring-focus-offset:  2px;
   --card-min:           280px;     /* responsive card grid floor */
-  /* ---- [icon layer 2026-07-16] Iconoir defaults; sync to JSON later ---- */
-  --icon-sm:            16px;
-  --icon-md:            20px;
-  --icon-lg:            24px;
-  --icon-stroke:        1.5;
   --header-height:      64px;      /* default; consumers should override per-app */
+
+  /* ---- Legacy aliases (pre-0.3 consumer names) ----
+     The portfolio's vendored copy shipped these names; kept as var()
+     aliases so the sync-script swap is drop-in. Remove after the
+     Phase 3 component swaps migrate the references. */
+  --color-alpha-parchment-6: var(--color-alpha-dark-ink-6);
+  --color-alpha-shadow-warm-03: var(--color-alpha-shadow-cool-03);
+  --color-alpha-shadow-warm-04: var(--color-alpha-shadow-cool-04);
+  --color-alpha-shadow-warm-05: var(--color-alpha-shadow-cool-05);
+  --color-alpha-shadow-warm-06: var(--color-alpha-shadow-cool-06);
+  --color-alpha-shadow-warm-08: var(--color-alpha-shadow-cool-08);
+  --color-supporting-linen: var(--color-neutral-border);
 }
 
 [data-theme="dark"] {
-  /* ---- Semantic (dark) overrides — [redesign/lush] navy ---- */
+  /* ---- Semantic (dark) overrides ---- */
   --color-semantic-background: #1B1B40;
   --color-semantic-background-inverse: #F4EFE6;
   --color-semantic-surface: #232350;
   --color-semantic-surface-elevated: #2B2B5C;
-  --color-semantic-surface-inverse: #F0EDE4;
+  --color-semantic-surface-inset: #1B1B40;
+  --color-semantic-surface-inverse: #EDECE4;
   --color-semantic-surface-glass: #23235099;
   --color-semantic-surface-glass-elevated: #2323507A;
   --color-semantic-surface-glass-light: #23235052;
-  --color-semantic-surface-glass-amber: #A79CE226;
+  --color-semantic-surface-glass-accent: #A79CE226;
   --color-semantic-border-glass-top: #F4EFE624;
   --color-semantic-border-glass-edge: #F4EFE61A;
   --color-semantic-text-primary: #F4EFE6;
   --color-semantic-text-secondary: #C4BFD4;
-  --color-semantic-text-muted: #8F8AA8;
+  --color-semantic-text-muted: #9994B1;
   --color-semantic-text-inverse: #1A1720;
   --color-semantic-text-accent: #A79CE2;
-  /* [redesign/lush] iris accent flips to periwinkle on navy */
   --color-semantic-accent: #A79CE2;
-  --color-accent-ink: #B4ADE8;
+  --color-semantic-accent-hover: #B9B0E9;
+  --color-semantic-text-on-accent: #1B1B40;
   --color-semantic-accent-subtle: #A79CE226;
   --color-semantic-accent-border: #A79CE24D;
   --color-semantic-border: #F4EFE610;
@@ -332,17 +399,50 @@
   --color-semantic-info: #6495C5;
   --color-semantic-info-subtle: #6495C526;
   --color-semantic-info-border: #6495C54D;
+  --color-semantic-accent-raised-hi: #B9B0E9;
+  --color-semantic-accent-raised-lo: #A79CE2;
+  --color-semantic-accent-raised-edge: #B4ADE8;
+  --color-accent-ink: #B4ADE8;
 
   /* ---- Component (dark) overrides — accent surfaces flip with the mode ---- */
-  --component-button-primary-background: #A79CE2;
-  --component-button-primary-background-hover: #B9B0E9;
+  --component-button-primary-fill-hi: #B9B0E9;
+  --component-button-primary-fill-lo: #A79CE2;
+  --component-button-primary-edge: #B4ADE8;
   --component-button-primary-foreground: #1B1B40;
-  --component-button-primary-border: #A79CE2;
   --component-button-secondary-background-hover: #A79CE226;
-  --component-button-secondary-foreground: #F4EFE6;
+  --component-button-secondary-background-active: #A79CE24D;
+  --component-button-secondary-foreground: #A79CE2;
   --component-button-secondary-border: #A79CE2;
-  --component-button-ghost-background-hover: #232350;
-  --component-button-ghost-foreground: #F4EFE6;
+  --component-button-tertiary-foreground: #A79CE2;
+  --component-button-tertiary-foreground-hover: #A79CE2;
+  --component-card-default-background: #23235052;
+  --component-card-default-border-top: #F4EFE624;
+  --component-card-default-border: #F4EFE61A;
+  --component-card-default-foreground: #F4EFE6;
+  --component-card-elevated-background: #2323507A;
+  --component-card-elevated-border-top: #F4EFE624;
+  --component-card-elevated-border: #F4EFE61A;
+  --component-card-elevated-foreground: #F4EFE6;
+  --component-card-glass-background: #23235099;
+  --component-card-glass-border-top: #F4EFE624;
+  --component-card-glass-border: #F4EFE61A;
+  --component-card-glass-foreground: #F4EFE6;
+  --component-card-featured-background: #2B2B5C;
+  --component-card-inverse-background: #EDECE4;
+  --component-card-inverse-foreground: #1A1720;
+  --component-tag-default-background: #1B1B40;
+  --component-tag-default-foreground: #C4BFD4;
+  --component-tag-accent-background: #A79CE226;
+  --component-tag-accent-foreground: #A79CE2;
+  --component-filter-chip-border: #F4EFE610;
+  --component-filter-chip-foreground: #C4BFD4;
+  --component-eyebrow-accent-foreground: #A79CE2;
+  --component-eyebrow-muted-foreground: #C4BFD4;
+  --component-link-default-foreground: #F4EFE6;
+  --component-link-default-foreground-hover: #A79CE2;
+  --component-nav-link-default-foreground: #C4BFD4;
+  --component-nav-link-default-foreground-hover: #F4EFE6;
+  --component-nav-link-active-foreground: #F4EFE6;
   --component-nav-link-active-border-bottom: 2px solid #A79CE2;
 }
 

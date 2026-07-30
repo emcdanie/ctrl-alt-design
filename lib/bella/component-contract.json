@@ -300,11 +300,11 @@
     },
     {
       "name": "Card",
-      "source": "components/ui/Card.tsx",
+      "source": "components/bella/Card/Card.tsx",
       "anatomy": [
-        "trace wrapper (trace-host)",
-        "inner glass panel",
-        "media (optional, with token scrim)",
+        "trace wrapper (composes traceHost from bella shared/Trace.module.css)",
+        "inner panel (theme-aware semantic surface, border-box)",
+        "media (optional, with the ink-mix scrim)",
         "body"
       ],
       "props": [
@@ -337,31 +337,35 @@
           "type": "function"
         },
         {
-          "name": "ariaCurrent",
-          "type": "string",
-          "values": [
-            "true",
-            "step"
-          ]
+          "name": "linkComponent",
+          "type": "ElementType",
+          "note": "internal-link renderer; ui/Card binds next/link so call sites do not"
         }
       ],
       "variants": [
         {
           "name": "peek",
-          "delta": "the fixed always-light reveal panel (--hero-panel-* tokens) for elements floating light on navy"
+          "delta": "the one fixed-always-light panel, for elements floating light on navy; re-scopes the semantic ink names so dark cannot render light on light"
         },
         {
           "name": "media",
-          "delta": "full-bleed cover above the padded body with the {--scrim-media} token scrim so text stays AA"
+          "delta": "full-bleed cover above the padded body, with a scrim mixed from {--color-brand-ink} (not black) so text stays AA"
         }
       ],
       "tokens": [
-        "{--color-card}",
+        "{--color-semantic-surface}",
+        "{--color-semantic-surface-inset}",
         "{--cc}",
-        "{--hero-panel-bg}",
-        "{--scrim-media}",
-        "{--color-semantic-border-strong}"
-      ]
+        "{--color-iris-bright}",
+        "{--color-brand-ink}",
+        "{--color-neutral-paper}",
+        "{--radius-3xl}",
+        "{--shadow-card-rest}",
+        "{--shadow-card-rest-dark}",
+        "{--shadow-card-elevated}",
+        "{--ring-focus-color}"
+      ],
+      "vendored": "BELLA, synced by npm run sync:bella. components/ui/Card.tsx is the next/link adapter."
     },
     {
       "name": "CaseBeat",
