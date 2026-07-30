@@ -13,7 +13,12 @@
      dissolved into one grey mass and the page lost its hierarchy. The
      ground drops a step and the card lifts a step, roughly tripling the
      delta, both staying warm neutrals with no pure white. */
-  --color-card: #FDFCF9; /* warm off-white, pure #fff still retired */
+  /* --color-card now DERIVES from --color-semantic-surface, which BELLA's
+     vendored Card paints its panel from. The override that re-points that
+     BELLA name at this repo's separation values cannot live here: @theme is
+     layered and loses to bella.css's unlayered :root. It lives in the APP
+     TOKEN AUTHORITY block below. */
+  --color-card: var(--color-semantic-surface);
   --color-ink: #1A1720;
   --color-ink-soft: #2E2937;
   --color-ink-muted: #4A4652;
@@ -134,6 +139,19 @@ body {
    component borders — do not "fix" it that way.
    Every app token that overrides a BELLA default goes in this block. */
 :root {
+  /* Card surface, light leg (Card swap, 2026-07-30). BELLA's vendored Card
+     paints its inner panel from --color-semantic-surface, so that BELLA name
+     is re-pointed at the 27 Jul separation value instead of inheriting
+     bella.css's #FAFAF8. The dark leg lives on [data-theme="dark"] body with
+     the rest of the dark aliases. Taking BELLA's own values would revert the
+     separation fix (its dark #232350 is the pre-fix value this repo lifted
+     away from), so the consumer overrides the token rather than forking the
+     component. --color-card derives from it in @theme, so the swapped Card
+     and the 50-odd surfaces still named --color-card cannot drift apart.
+     --color-semantic-surface-inset backs the Card's media well. */
+  --color-semantic-surface: #FDFCF9; /* warm off-white, pure #fff still retired */
+  --color-semantic-surface-inset: var(--color-surface);
+
   /* Header offset. All sticky/fixed elements below the nav use this.
      Defined ONLY here (unlayered authority), not in @theme. */
   --header-height: 76px; /* keycap header, measured (BELLA default: 64) */
@@ -268,16 +286,15 @@ body {
   --hero-bub-ink: #141019;
   --hero-panel-bg: #FFFFFF;
   --hero-panel-ink: #1A1720;
-  --hero-panel-ink-soft: #2E2937;
-  --hero-panel-meta: #4A4652;
   --hero-panel-close: #9A948B;
-  /* panel-ground companions: the reveal-card panel is ALWAYS light
-     (white, cream in dark), so surfaces/borders inside it must not
-     flip with the theme (see Card.module.css panel scope) */
-  --hero-panel-surface: #EDECE4;
-  --hero-panel-border-soft: rgba(28, 26, 46, 0.08);
-  --hero-panel-border-medium: rgba(28, 26, 46, 0.12);
-  --hero-panel-accent-ink: #5B4BD1; /* iris as TEXT on the light panel */
+  /* The six panel-ground companions (--hero-panel-ink-soft / -meta /
+     -surface / -border-soft / -border-medium / -accent-ink) were deleted
+     in the Card swap, 2026-07-30. The old ui/Card variant="peek" was
+     their only consumer: it re-scoped this repo's ink names onto the
+     fixed-light panel. BELLA's Card owns that job now and re-scopes its
+     OWN semantic names, so these were left defined and consumed by
+     nothing (caught by audit:debt, not by hand). --hero-panel-bg, -ink
+     and -close stay: BubbleCluster still reads them directly. */
 
   /* Case-card cover placeholder — muted warm, never bright (IA spec) */
   --cover-warm-hi: #E9E2D2;
@@ -600,7 +617,9 @@ body {
      the CARD lifts so its edge reads without a wash. --color-surface is
      deliberately left alone: lifting it too cost the mint skill chips
      their AA margin (4.47:1) and the separation never needed it. */
-  --color-card: #28285C;
+  --color-semantic-surface: #28285C;
+  --color-card: var(--color-semantic-surface);
+  --color-semantic-surface-inset: var(--color-surface);
   --color-surface: #2B2B5C;
   --color-white-pure: #2B2B5C;
   --color-glass: rgba(35, 35, 80, 0.68);

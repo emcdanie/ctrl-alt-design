@@ -1,0 +1,14 @@
+{
+  "bella": {
+    "version": "0.3.0",
+    "commit": "fe907059d55e6fee0886beefe58243c57192fd46",
+    "describe": "v0.3.0-bella-41-gfe90705",
+    "syncedFrom": "https://github.com/emcdanie/bella"
+  },
+  "files": {
+    "lib/bella/bella.css": "cc35c068ff79ce82122ed9043ffe0c5fb28810640b5d2484b997a645f5d4eb87",
+    "components/bella/Card/Card.tsx": "65f0f65768c238a5c9f9e7045eacf3d6ba3d2942f1d411a56a0c70ab0669b47f",
+    "components/bella/Card/Card.module.css": "4baaeb4602fd20e48639917b748bce7d340643844c252ac87e16bf2a06c5dbda",
+    "components/bella/shared/Trace.module.css": "6038ff6b5cf5362d841e1226b2293e22f4477fc4bce2c1dabd1bfe522fa71b1d"
+  }
+}

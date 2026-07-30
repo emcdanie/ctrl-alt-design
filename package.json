@@ -10,7 +10,7 @@
     "audit:layout": "node scripts/audit-layout.mjs",
     "audit:contrast": "node scripts/contrast-check.mjs",
     "audit:structure": "node scripts/audit-structure.mjs",
-    "gate": "npm test && npm run audit:structure && npm run audit:fonts && npm run audit:tokens && npm run audit:copy && npm run audit:reuse && npm run audit:nda && npm run audit:controls && npm run audit:parity && npm run audit:agents && npm run audit:contract && npm run audit:contrast && npm run audit:axe && npm run audit:type && npm run audit:visual && npm run audit:dark && npm run audit:debt",
+    "gate": "npm test && npm run audit:sync && npm run audit:structure && npm run audit:fonts && npm run audit:tokens && npm run audit:copy && npm run audit:reuse && npm run audit:nda && npm run audit:controls && npm run audit:parity && npm run audit:agents && npm run audit:contract && npm run audit:contrast && npm run audit:axe && npm run audit:type && npm run audit:visual && npm run audit:dark && npm run audit:debt",
     "audit:copy": "node scripts/audit-copy.mjs",
     "audit:controls": "node scripts/audit-controls.mjs",
     "audit:nda": "node scripts/audit-nda.mjs",
@@ -26,7 +26,9 @@
     "audit:parity": "node scripts/audit-parity.mjs",
     "audit:contract": "node scripts/audit-contract.mjs",
     "audit:debt": "node scripts/audit-debt.mjs",
-    "test": "vitest run"
+    "test": "vitest run",
+    "sync:bella": "node scripts/sync-bella.mjs",
+    "audit:sync": "node scripts/sync-bella.mjs --check"
   },
   "dependencies": {
     "iconoir-react": "^7.11.1",
