@@ -110,5 +110,40 @@ for (const f of [...appFiles, ...componentFiles]) {
   }
 }
 
+/* 7. NUMERIC ALIGNMENT (Elleta, 2026-07-28, readability audit).
+ *
+ * A figure that sits in a column beside other figures is right-aligned
+ * and tabular, so the values share a right edge and the digits share a
+ * width. A column of numbers starting wherever the previous word ended
+ * is not a column.
+ *
+ * This is a SOURCE check, not a rendered one: it reads the rules that
+ * declare a numeric column and asserts each carries both properties.
+ * The marker is the class name, because that is the only thing static
+ * analysis can honestly recognise as "this cell holds a figure": rules
+ * whose selector ends in a numeric noun (score, count, ratio, figure,
+ * total, num, qty, pct). Naming one of those and then aligning it left
+ * is the drift this catches. */
+{
+  const NUMERIC_RULE = /^\s*\.([a-z0-9_-]*(?:score|count|ratio|figure|total|num|qty|pct))\b[^{]*\{([^}]*)\}/gim;
+  for (const f of [...appFiles, ...componentFiles]) {
+    if (!f.endsWith(".css")) continue;
+    const src = readFileSync(f, "utf8");
+    for (const m of src.matchAll(NUMERIC_RULE)) {
+      const [, cls, body] = m;
+      /* a rule that only sets colour or spacing is not laying the column
+         out; require alignment only where the rule positions its text */
+      if (!/text-align|font-variant-numeric|display\s*:\s*(grid|flex|table)/.test(body)) continue;
+      const line = src.slice(0, m.index).split("\n").length;
+      if (!/text-align\s*:\s*right/.test(body)) {
+        fail(`${f}:${line} .${cls}`, "a numeric column that is not right-aligned", "text-align: right");
+      }
+      if (!/font-variant-numeric\s*:\s*[^;]*tabular-nums/.test(body)) {
+        fail(`${f}:${line} .${cls}`, "a numeric column with proportional digits", "font-variant-numeric: tabular-nums");
+      }
+    }
+  }
+}
+
 console.log(fails === 0 ? "structure gate: PASS" : `structure gate: ${fails} failure(s)`);
 process.exit(fails === 0 ? 0 : 1);

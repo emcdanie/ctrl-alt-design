@@ -7,14 +7,26 @@
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
 
+/* Declared for audit:debt's dead-selector check (27 Jul 2026). */
+export const TRACKED_SELECTORS = [
+  '[class*="card"]', ".thesis-band", '[role="dialog"]', ".heading-item",
+];
+
 const ROUTES = [
   "/", "/about", "/work", "/contact", "/skills", "/design-system", "/quick",
   "/case-studies/chip", "/case-studies/brad-frost",
   "/case-studies/design-system-transformation",
 ];
 const CARD_SCOPE = '[class*="card"], [class*="Card"], .thesis-band, .ds-gate__row, [role="dialog"]';
+/* The metadata tier stays exempt (Elleta's ruling, 2026-07-27): tags,
+   pills, eyebrows, kickers and chips are a deliberate separate tier on
+   --typography-font-size-tag. The 27 Jul hardening widened the TAGS the
+   audit measures, which newly exposed metadata classes that were always
+   in this tier but had never been reached; they are named here rather
+   than silently raised. Everything NOT in this list is reading text and
+   must clear 16px. */
 const META_EXEMPT =
-  /tag|pill|eyebrow|kicker|section-label|sr-only|meta|badge|__pk|period|swatch__name|swatch__value|tok-inspector|tok-annotation__trigger|demo-link|card-meta|ds-flag/;
+  /tag|pill|eyebrow|kicker|section-label|sr-only|meta|badge|__pk|period|swatch__name|swatch__value|tok-inspector|tok-annotation__trigger|demo-link|card-meta|ds-flag|skill|flag__val|glyph|crumb|__count|quote__by|ds-type__sample|gov-h/;
 
 const browser = await chromium.launch();
 const page = await (await browser.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
@@ -53,14 +65,27 @@ for (const route of ROUTES) {
     ({ scope, exempt }) => {
       const exemptRe = new RegExp(exempt);
       const out = [];
+      /* HARDENED (2026-07-27, spec system-page-redesign): the card pass
+         used to query p/li/blockquote/dd only, so a <code> or <pre>
+         specimen at 14px and every table cell rendered UNMEASURED. That
+         is exactly how the code specimen shipped below the floor. The
+         metadata tier (tags, pills, eyebrows, kickers) stays exempt by
+         Elleta's ruling; this widens the TAGS, not the carve-out. */
       for (const card of document.querySelectorAll(scope)) {
-        for (const el of card.querySelectorAll("p, li, blockquote, dd")) {
+        for (const el of card.querySelectorAll("p, li, blockquote, dd, dt, code, pre, td, th, span")) {
           if (exemptRe.test(el.className.toString()) || el.closest('[class*="tok-inspector"]')) continue;
-          if (!el.textContent.trim()) continue;
+          /* chrome, not reading text: the constitution (section 3) names
+             buttons, nav links and chips as their own tier, and a
+             figcaption is attribution. Same carve-out both passes. */
+          if (el.closest("figcaption, footer, button, label, nav")) continue;
+          /* a span/code wrapping only other elements is a container,
+             not text; measure the node that OWNS the characters */
+          const own = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join("").trim();
+          if (!own) continue;
           const size = parseFloat(getComputedStyle(el).fontSize);
           const isBody = /card-body/.test(el.className.toString());
           if (size < 16 || (isBody && size < 18)) {
-            out.push(`${el.className.toString().split(" ")[0] || el.tagName}@${size}px :: ${el.textContent.trim().slice(0, 40)}`);
+            out.push(`${el.className.toString().split(" ")[0] || el.tagName}@${size}px :: ${own.slice(0, 40)}`);
           }
         }
       }
@@ -72,18 +97,24 @@ for (const route of ROUTES) {
     fails++;
     console.error(receipt("type", `${route} ${b}`, "reading text below the floor", ">=16px on cards, >=18px card-body"));
   }
-  /* ── sitewide reading floor (type-floor sweep, 21 Jul): any P or LI
-     whose OWN text runs past ~40 chars is reading text and must
-     compute >= 16px, wherever it lives. Meta tiers allowlisted. ── */
+  /* ── sitewide reading floor (type-floor sweep, 21 Jul; HARDENED
+     2026-07-27, spec system-page-redesign): any element whose OWN text
+     is reading text must compute >= 16px, wherever it lives.
+     Widened two ways: the tag list now covers code/pre/td/th/dt/span
+     alongside p/li, and the length threshold drops from 40 to 16
+     characters so short reading labels stop hiding under it. The
+     metadata tier stays allowlisted by Elleta's ruling: tags, pills,
+     eyebrows and kickers are a deliberate separate tier. ── */
   const floorBad = await page.evaluate((exempt) => {
     const exemptRe = new RegExp(exempt);
     const out = [];
-    for (const el of document.querySelectorAll("p, li")) {
+    for (const el of document.querySelectorAll("p, li, code, pre, td, th, dt, span, blockquote")) {
       const own = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join("").trim();
       const full = el.textContent.trim();
-      const text = own.length >= 40 ? own : (el.children.length === 0 ? full : own);
-      if (text.length < 40) continue;
-      if (exemptRe.test(el.className.toString()) || el.closest("figcaption, footer, dt, dd")) continue;
+      const text = own.length >= 16 ? own : (el.children.length === 0 ? full : own);
+      if (text.length < 16) continue;
+      if (exemptRe.test(el.className.toString()) || el.closest("figcaption, footer, button, label, nav")) continue;
+      if (el.closest('[class*="tok-inspector"]')) continue;
       const size = parseFloat(getComputedStyle(el).fontSize);
       if (size < 16) out.push(`${el.className.toString().split(" ")[0] || el.tagName}@${size}px :: ${text.slice(0, 40)}`);
     }

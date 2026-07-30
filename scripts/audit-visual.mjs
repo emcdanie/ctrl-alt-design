@@ -26,6 +26,15 @@
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
 
+/* The selectors this audit tracks, DECLARED (spec specs/audit-debt,
+   27 Jul 2026). audit:debt asserts these exist so a tracked selector
+   that stops matching fails loudly instead of passing forever, which
+   is what .ds-gate did after the gate table replaced the card grid. */
+export const TRACKED_SELECTORS = [
+  ".ds-band", ".ds-specimen-row", ".ds-caseband", ".bmm-list", ".gx-grid",
+  ".trace-host", ".tok-inspector", ".spec-stage", ".csp-flag", "section.beat",
+];
+
 const browser = await chromium.launch();
 let fails = 0;
 
@@ -61,7 +70,7 @@ for (const theme of ["light", "dark"]) {
 
   const rowBad = await page.evaluate(() => {
     const out = [];
-    for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-gate, .ds-caseband, .ds-status, .bmm-list")) {
+    for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-caseband, .bmm-list")) {
       const cards = [...grid.children].filter((c) => c.getBoundingClientRect().width > 0);
       /* group siblings by row (same top), assert equal heights */
       const rows = new Map();
@@ -166,7 +175,7 @@ for (const theme of ["light", "dark"]) {
       /* the maturity map (.bmm-list) is a one-column stack: its cards
          share a width but not a height (rationale lengths differ), so
          it rides the row-equality check above, not this one */
-      for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-gate, .ds-caseband, .ds-status")) {
+      for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-caseband, .gx-grid")) {
         const dims = [...grid.querySelectorAll(":scope > * ")].filter((c) => c.getBoundingClientRect().width > 0)
           .map((c) => { const r = c.getBoundingClientRect(); return Math.round(r.width) + "x" + Math.round(r.height); });
         if (new Set(dims).size > 1) out.uniform.push(`grid dims differ: ${[...new Set(dims)].join(" vs ")}`);
@@ -185,7 +194,15 @@ for (const theme of ["light", "dark"]) {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.waitForTimeout(200);
 
-  /* ── 6: trace ring concentricity ── */
+  /* ── 6: trace ring concentricity ──
+     Moved to /design-system/inspector (27 Jul 2026): /design-system is
+     now an explorable explanation and no longer renders TokenInspector,
+     but the inspector itself still ships on /quick and on its own
+     chromeless route as case evidence. The assertion follows the
+     component rather than the page, so it keeps checking real geometry
+     instead of quietly matching nothing. */
+  await page.goto("http://localhost:3000/design-system/inspector", { waitUntil: "networkidle", timeout: 30000 });
+  await page.waitForTimeout(300);
   const ringBad = await page.evaluate(() => {
     const key = document.querySelector(".tok-inspector__key");
     const ring = document.querySelector(".tok-inspector__ring");

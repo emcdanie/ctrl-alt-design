@@ -67,7 +67,9 @@
 .systemLine {
   margin-top: var(--spacing-4);
   font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
+  /* reading text, not metadata: the type floor applies (audit:type
+     hardening, 27 Jul) */
+  font-size: var(--typography-font-size-base);
   color: var(--hero-copy-muted, var(--color-muted));
 }
 

@@ -7,7 +7,7 @@ Design System specimens page that documents BELLA live (the "site is the artifac
 rules keep case studies scannable. New rules land as conformance spec §8.
 
 ## 1. BubbleHeading (new primitive, one per page)
-- `components/ui/BubbleHeading.tsx`: the page/case TITLE inside the existing glossy bubble recipe
+- `components/ui/Heading.tsx`: the page/case TITLE inside the existing glossy bubble recipe
   (radial face `circle at 36% 30%` hi->lo, upper-left gloss, down-right shadow), title in Unique 700,
   clamped to fit the bubble (display range narrows inside the circle: clamp(28px, 4vw, 56px); long titles
   wrap up to 3 lines, bubble diameter clamp(280px, 34vw, 420px)).

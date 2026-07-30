@@ -1,5 +1,8 @@
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
+
+/* Declared for audit:debt's dead-selector check (27 Jul 2026). */
+export const TRACKED_SELECTORS = ['[class*="coverPlaceholder"]', ".kbd-logo"];
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 

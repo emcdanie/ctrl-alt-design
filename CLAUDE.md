@@ -66,6 +66,12 @@ override the constitution.
   the shared `.card-statement` recipe (Geist 700 at `--font-card-title`), card titles the shared
   `.heading-item`. Enforced by the Unique-in-card check in `audit:reuse`.
 - Geist = everything else. Eyebrows stay Geist caps with `--tracking-eyebrow`.
+- **Numbers in columns are right-aligned and tabular (Elleta, 2026-07-28, readability
+  audit).** Any figure that sits in a column beside other figures (a table cell, a grid
+  column, a stat row) uses `text-align: right` and `font-variant-numeric: tabular-nums`,
+  so digits share a width and the values share a right edge. A column of numbers that
+  starts wherever the previous word ended is not a column. Prose numbers are unaffected.
+  Enforced by the numeric-alignment check in `audit:structure`.
 
 ## 4. Color & dark mode
 - **Colour affordance rule (refined 2026-07-17):** saturated iris at body scale means INTERACTIVE,
@@ -90,7 +96,13 @@ toggles, or sort.
 - **SegmentedControl:** mutually exclusive views (e.g. TABLE/MAP/TIMELINE). Single-select, `aria-current`,
   lighter than a keycap.
 - **FilterChip:** multi-select filters. Flat/outline, `aria-pressed`. Not a keycap.
-- **Select:** dropdowns (e.g. sort). Native styled, not a keycap.
+- **Select:** RETIRED 2026-07-27, pending a real dropdown surface. The primitive had no
+  consumer once the /design-system specimen showcase was retired, and /work sorts through
+  table headers by design, so nothing on the site renders a dropdown. Rather than keep
+  dead code alive with an audit allowlist (see the no-exemptions rule in section 9), the
+  component, its contract entry and its manifest taxonomy line were deleted together.
+  Restore from git the moment a surface genuinely needs one; do not rebuild it from
+  scratch.
 - **Tag:** non-interactive metadata. Visually distinct from FilterChip.
 - **StatusPill:** quiet status (e.g. "current focus"), non-interactive.
 - One light source, upper-left: highlights top-left, shadows down-right (bubbles, keycaps, cards).
@@ -177,7 +189,30 @@ Must pass before any work is "done":
 - `audit:visual` — one ground on /design-system (band backgrounds equal the page ground,
   no exceptions since the 23 Jul DS2 no-wash port), sibling specimen cards render equal
   heights, cover placeholders clear 3:1 against both gradient stops, both themes.
+- `audit:debt` — nothing rots quietly: a doc citing a file that does not exist, a token
+  nothing consumes through a `var()` chain, a gate table describing audits that no longer
+  run, or an audit tracking a selector that matches nothing. Static analysis, about a second.
+- `npm test` runs FIRST in the gate: the pure functions in `lib/bella/dtcg.ts` (vitest). A
+  broken function fails in a second rather than after two minutes of browser work. Tests are
+  not an audit and do not change the derived count.
 - tsc clean; all routes 200 (light + dark); NDA content-grep clean.
+
+**No per-element exemptions (Elleta, 2026-07-27, hard rule).** The gate has no opt-out.
+If something cannot pass an audit, it does not get to be live DOM. No `data-example`, no
+skip attributes, no "ignore this node" hooks, ever. **An audit you can opt out of is not
+an audit.** When an illustration genuinely has to show rule-breaking output (a bad
+example, an off-brand artifact), it ships as a PICTURE, a flat `<img>` with a describing
+`alt`, so there is nothing for an audit to read and therefore nothing to skip. The only
+allowlists that may exist are the file-level ones already recorded in the audit scripts,
+each with its reason inline; do not extend them to keep new code alive.
+
+**The one allowlist, and why it is not the same hole.** `audit:debt` reads
+`scripts/lib/debt-allowlist.json`. That rule above governs RENDERED OUTPUT: if an element
+cannot pass, it does not get to be live DOM. `audit:debt` judges CODE INVENTORY, where
+"this doc is a dated historical record" is a true fact about intent that no static analysis
+can derive. It is capped so it cannot grow into the hole: every entry needs a written reason
+and a date, the audit prints the count on every run, it FAILS above 15 entries, and it FAILS
+on any entry older than 180 days that has not been re-dated.
 
 ## 10. How this file was built and stays alive
 Like a real steering doc: when something keeps going wrong, research it, fix it, and record the fix HERE
@@ -190,9 +225,13 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 # Repo operations (kept from the previous harness file)
 
 ## Before doing anything
-1. Read `claude-progress.md` — current verified state and last session's handoff.
-2. Read `feature_list.json` — pick the highest-priority item not yet passing. One item at a time.
-3. If the task involves a prototype, open its folder README first (e.g. `prototypes/finviz-3/README.md`).
+1. Read the **most recent session record** in `docs/session-*.md` (newest by date). It is the
+   backward record: what shipped, what broke, what was learned, and which decisions are still
+   open. It is committed, so it survives; `claude-progress.md` is local-only and does not.
+   **Start with `docs/session-2026-07-28.md`.**
+2. Read `claude-progress.md` — current verified state and last session's forward handoff.
+3. Read `feature_list.json` — pick the highest-priority item not yet passing. One item at a time.
+4. If the task involves a prototype, open its folder README first (e.g. `prototypes/finviz-3/README.md`).
 
 ## Repo-specific working rules
 - **Prototypes are single-file.** Each lives in `prototypes/<name>/index.html`, self-contained (inline CSS/JS, no build step). A README maps design decisions to their sources.
@@ -204,6 +243,9 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 - **The pre-commit hook false-positives** the Apple Music album id in `components/VinylPlayer.tsx` as a phone number — that file stays uncommitted (see `docs/fixes/`).
 
 ## End of session
+- Write or update the **session record** at `docs/session-<YYYY-MM-DD>.md`: what shipped, what
+  broke and what it taught, open decisions, standing debt. It is committed and it is what the
+  next session reads first. Be honest about what was not verified.
 - Update `claude-progress.md`: what was done, how verified, known risks, next best action.
 - Leave no half-finished prototype states.
 - If git is in use for the change, commit with a descriptive message.

@@ -5,8 +5,15 @@
 @theme {
   /* Page + surfaces — lush ground (light default; navy dark via [data-theme]) */
   --color-cream: #faf9f5;
-  --color-page: #F5F4EF;
-  --color-card: #FAFAF8; /* warm white, aligned with --surface-paper; pure #fff retired */
+  --color-page: #F1EFE6;
+  /* CARD vs GROUND SEPARATION (defect, 27 Jul): the ground
+     (--color-semantic-background, dropped to #F1EFE6 in bella.css) and
+     the card were about 5 of 255 apart. At that distance a card edge
+     does not read as an edge, so prose cards and specimen cards
+     dissolved into one grey mass and the page lost its hierarchy. The
+     ground drops a step and the card lifts a step, roughly tripling the
+     delta, both staying warm neutrals with no pure white. */
+  --color-card: #FDFCF9; /* warm off-white, pure #fff still retired */
   --color-ink: #1A1720;
   --color-ink-soft: #2E2937;
   --color-ink-muted: #4A4652;
@@ -14,6 +21,14 @@
   --color-white-pure: #fafaf8;
   --color-accent-iris: #5B4BD1;
   --color-accent-peri: #A79CE2;
+
+  /* verdict tokens for the pipeline instrument (27 Jul): a real
+     pass/fail pair. Green and a cool-leaning red; the banned warm
+     warning hue is not used. */
+  --color-pass-ink: #2E6B50;
+  --color-pass-subtle: rgba(46, 107, 80, 0.12);
+  --color-fail-ink: #A32F3D;
+  --color-fail-subtle: rgba(163, 47, 61, 0.12);
 
   --color-border-soft: rgba(28, 26, 46, 0.08);
   --color-border-medium: rgba(28, 26, 46, 0.12);
@@ -188,18 +203,6 @@ body {
    Cover plates for the label-style case cards and the atom hero
    nucleus. Text pairs are AAA on their plates (verified in DESIGN.md). */
 :root {
-  --color-cover-graphite: #221F2C;
-  --color-cover-graphite-ink: #EDE9F4;
-  --color-cover-graphite-kicker: #C9C2E6;
-  --color-cover-peri-hi: #C6BEEF;
-  --color-cover-peri-lo: #B2A8E6;
-  --color-cover-peri-ink: #231D3A;
-  --color-cover-sage-hi: #D2DCC7;
-  --color-cover-sage-lo: #C1CEB1;
-  --color-cover-sage-ink: #242C18;
-  --cover-min-height: 250px;
-  --panel-min-height: 172px;
-  --nucleus-size: 120px;
 }
 
 /* ─── Bubble-hero + keycap-logo tokens (DESIGN.md: recorded additions) ──
@@ -232,7 +235,6 @@ body {
   --case-design-lab-lo: var(--case-filters-lo);
   --case-design-lab-deep: var(--case-filters-deep);
   --case-writing-hi: #F5A79C;
-  --case-writing-lo: #F0796B;
   --case-writing-deep: #B23C30;
   --case-code-first-text: var(--case-code-first-deep);
   --case-drift-text: var(--case-drift-deep);
@@ -594,13 +596,23 @@ body {
   --color-muted: #C6C2D4;
   --color-page: #1B1B40;
   --color-cream: #232350;
-  --color-card: #232350;
+  /* dark leg of the same separation fix: ground stays navy #1B1B40,
+     the CARD lifts so its edge reads without a wash. --color-surface is
+     deliberately left alone: lifting it too cost the mint skill chips
+     their AA margin (4.47:1) and the separation never needed it. */
+  --color-card: #28285C;
   --color-surface: #2B2B5C;
   --color-white-pure: #2B2B5C;
   --color-glass: rgba(35, 35, 80, 0.68);
   --color-glass-strong: rgba(35, 35, 80, 0.82);
   --color-tag-bg: rgba(244, 239, 230, 0.08);
   --color-tag-border: rgba(244, 239, 230, 0.16);
+  /* dark leg of the verdict pair: lifted so both clear AA on the card */
+  --color-pass-ink: #86D6B0;
+  --color-pass-subtle: rgba(134, 214, 176, 0.16);
+  --color-fail-ink: #F2A0AB;
+  --color-fail-subtle: rgba(242, 160, 171, 0.16);
+
   --color-border-soft: rgba(244, 239, 230, 0.1);
   --color-border-medium: rgba(244, 239, 230, 0.16);
   --color-accent-iris: #A79CE2;
@@ -1400,37 +1412,17 @@ textarea:focus-visible {
   outline-offset: 2px;
 }
 
-/* System page: rules + status lists */
-.ds-rules {
-  margin: 0;
-  padding-left: var(--spacing-5);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink-soft);
-  line-height: 1.6;
-}
+/* .ds-rules is deleted with its markup (28 Jul, readability audit P1):
+   the close recapped the eight constitution rules the page had just
+   spent four beats demonstrating. The page proves them; it does not
+   need to also list them. */
 
-.ds-status {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  grid-auto-rows: 1fr;
-  gap: var(--grid-gap);
-}
-
-.ds-status__list {
-  margin: 0;
-  padding-left: var(--spacing-5);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink-soft);
-  line-height: 1.6;
-}
+/* .ds-status, .ds-status__list and .ds-statusgroup are deleted with
+   their markup (28 Jul): they were the old close's "Available now /
+   Coming next" pair, and the close is now one action plus its sources.
+   .ds-status is dropped from audit:visual's TRACKED_SELECTORS in the
+   same change, because a tracked selector that matches nothing is the
+   exact failure audit:debt exists to catch. */
 
 /* ─── Demo links: TERTIARY (text link, iris + underline) — demoted
    from bordered pills per the button grammar (two button treatments
@@ -2271,104 +2263,37 @@ textarea:focus-visible {
 /* ── The System map (Elleta, 21 Jul, spec system-page-v2) ──
    >=1280px: [rail | content] grid, rail sticky under the header.
    Below: the rail collapses to a sticky horizontal pill row. */
-.ds-layout {
-  display: block;
-}
 
-.ds-layout__content {
-  min-width: 0;
-}
 
-.ds-nav__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: var(--spacing-2);
-}
 
-.ds-nav__link {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  font-weight: 600;
-  color: var(--color-ink-soft);
-  text-decoration: none;
-  white-space: nowrap;
-}
 
 @media (min-width: 1280px) {
-  .ds-layout {
-    display: grid;
-    grid-template-columns: 220px minmax(0, 1fr);
-    align-items: start;
-  }
-
+  
   /* rail descriptions (v3 T3): block under the label; layout holds
      with zero or all filled (the link is a column either way) */
-  .ds-nav__link {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-1);
+  
+  
+  
+  
+  
+  
   }
-
-  .ds-nav__desc {
-    font-family: var(--font-body);
-    font-size: var(--typography-font-size-tag);
-    font-weight: 400;
-    color: var(--color-ink-muted);
-    line-height: 1.4;
-    white-space: normal;
-  }
-
-  .ds-nav {
-    position: sticky;
-    top: calc(var(--header-height) + var(--spacing-8));
-    padding: var(--spacing-6);
-  }
-
-  .ds-nav__list {
-    flex-direction: column;
-    gap: var(--spacing-1);
-  }
-
-  .ds-nav__link {
-    padding: var(--spacing-2) var(--spacing-3);
-    border-left: 2px solid transparent;
-  }
-
-  .ds-nav__link:hover {
-    color: var(--color-ink);
-  }
-
-  .ds-nav__link[aria-current="true"] {
-    color: var(--color-accent-ink);
-    border-left-color: var(--color-accent-ink);
-  }
-}
 
 @media (max-width: 1279px) {
-  .ds-nav {
-    position: sticky;
-    top: var(--header-height);
-    z-index: 30;
-    background: var(--color-semantic-background);
-    border-bottom: 1px solid var(--color-border-soft);
-    padding: var(--spacing-3) var(--spacing-6);
-    overflow-x: auto;
+  /* BUG 2 (27 Jul): this pill bar is built for ONE line of short
+     labels. It had grown to 180px, a fifth of an 844px viewport,
+     permanently sticky over the content, because it was carrying long
+     sentence labels plus a block-level "coming beats" heading and list.
+     The labels are short again (see DesignSystemNav), the coming-beats
+     block is hidden here, and the height is capped so the bar can never
+     cover a heading again however many beats are added. */
+  
+  /* the coming-beats placeholders are desktop-rail furniture; on the
+     pill bar they are block-level children that blow it open */
+  
+  
+  
   }
-
-  .ds-nav__link {
-    padding: var(--spacing-1) var(--spacing-3);
-    border: 1px solid var(--color-border-medium);
-    border-radius: var(--radius-full);
-  }
-
-  .ds-nav__link[aria-current="true"] {
-    color: var(--color-accent-ink);
-    border-color: var(--color-accent-ink);
-  }
-}
 
 /* anchor targets are the section titles; clear the sticky chrome
    (the heads render through the shared SectionHeader since the 21 Jul
@@ -2391,7 +2316,12 @@ textarea:focus-visible {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: var(--spacing-12);
-    align-items: center;
+    /* DEFECT (dead band, 27 Jul): centring the two columns floated the
+       shorter intro to the vertical middle of the taller inspector, so
+       roughly 280px of empty ground opened between the page title and
+       the first line of copy. Both columns now start at the top and the
+       copy sits directly under the heading. */
+    align-items: start;
   }
 }
 
@@ -2564,133 +2494,14 @@ textarea:focus-visible {
   margin: 0 0 var(--spacing-6);
 }
 
-/* ── AI-readiness explainer (System band, rebuilt from
-   _review/protos/ai-readiness-explainer-v2.html on real tokens:
-   ok = the clarity case pair, warn = the writing case pair, agent =
-   accent iris; all theme-flipping). ONE inline SVG diagram; the
-   route draw-in fires on .in, reduced motion renders settled. ── */
-.air {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
-  max-width: 900px;
-}
-
-.air-stage {
-  width: 100%;
-  height: auto;
-}
-
-.air-route {
-  fill: none;
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-dasharray: 1400;
-  stroke-dashoffset: 1400;
-}
-
-.air.in .air-route {
-  transition: stroke-dashoffset 1.5s ease;
-  stroke-dashoffset: 0;
-}
-
-.air-route--in { stroke: var(--case-clarity-text); }
-.air-route--around { stroke: var(--case-writing-text); }
-
-.air-plabel {
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-.air-plabel--in { fill: var(--case-clarity-text); }
-.air-plabel--around { fill: var(--case-writing-text); }
-
-.air-node rect {
-  fill: var(--color-card);
-  stroke: var(--color-border-medium);
-  stroke-width: 1.5;
-}
-
-.air-node__title {
-  font-family: var(--font-body);
-  font-size: 15px;
-  font-weight: 700;
-  fill: var(--color-ink);
-}
-
-.air-node__sub {
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  fill: var(--color-ink-muted);
-}
-
-.air-node--agent rect { stroke: var(--color-accent-ink); }
-.air-node--agent .air-node__title { fill: var(--color-accent-ink); }
-.air-node--ok rect { stroke: var(--case-clarity-hi); }
-.air-node--ok .air-node__title { fill: var(--case-clarity-text); }
-.air-node--warn rect { stroke: var(--case-writing-hi); }
-.air-node--warn .air-node__title { fill: var(--case-writing-text); }
-
-/* outcomes land after the routes draw */
-.air-res { opacity: 0; }
-.air.in .air-res {
-  transition: opacity 0.45s ease 1.4s;
-  opacity: 1;
-}
-
-.air-takeaway {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-lg);
-  font-weight: 600;
-  color: var(--color-ink);
-  max-width: 60ch;
-  border-left: 3px solid var(--case-clarity-hi);
-  padding-left: var(--spacing-4);
-  margin: var(--spacing-2) 0 0;
-}
-
-/* the 5-point framework, hers; renders only when her words land */
-.air-framework {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  margin-top: var(--spacing-4);
-}
-
-.air-framework__list {
-  margin: 0;
-  padding-left: var(--spacing-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-}
-
-.air-framework__point {
-  font-family: var(--font-body);
-  font-size: var(--font-body-size);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
-  max-width: 62ch;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .air-route,
-  .air.in .air-route {
-    transition: none;
-    stroke-dashoffset: 0;
-  }
-
-  .air-res,
-  .air.in .air-res {
-    transition: none;
-    opacity: 1;
-  }
-}
+/* The AI-readiness explainer is DELETED (28 Jul, readability audit P1).
+   The beat restated beat 01's guessing-versus-grounded point with a loose
+   curved diagram against the crisp card language of every other demo, and
+   its labels lived inside a 900-unit viewBox, so they rendered between
+   3.6px and 9.4px depending on width and no audit could see it. Its one
+   surviving line moved into the AI-readiness row of the maturity table.
+   The rules go with the markup: .air, .air-stage, .air-route, .air-node,
+   .air-plabel, .air-res and .air-framework had nothing left to paint. */
 
 /* ── BELLA maturity map (System band, 23 Jul 2026, rebuilt from her
    bella-maturity-map mockup; copy hers verbatim). Token mapping per
@@ -2698,27 +2509,36 @@ textarea:focus-visible {
    frontier accent), its warm V1 hue = the writing case pair, Growing
    = the accent family. Same 900 column as the explainer above so the
    two bands read as one AI-readiness story. ── */
+/* the map is the beat's whole width now (27 Jul finishing pass); the
+   900px cap belonged to the era when it sat in half a row. The row
+   template below is what keeps the prose readable, not an outer cap. */
 .bmm {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-6);
-  max-width: 900px;
+  gap: var(--spacing-5);
 }
 
-/* the honest note wears the frontier accent as a quiet left keyline,
-   the same device as .air-takeaway */
-.bmm-honest {
-  border-left: 3px solid var(--case-clarity-hi);
-  padding-left: var(--spacing-4);
-  max-width: 64ch;
-}
-
-.bmm-scale {
+/* the stage scale, as the grid's legend */
+.bmm-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--spacing-2) var(--spacing-3);
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
   color: var(--color-ink-muted);
 }
 
-.bmm-scale strong {
-  color: var(--color-ink);
+.bmm-legend__label {
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-eyebrow);
+}
+
+.bmm-legend__scale {
+  color: var(--color-ink-soft);
 }
 
 .bmm-list {
@@ -2727,21 +2547,218 @@ textarea:focus-visible {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-4);
+  border-bottom: 1px solid var(--color-border-soft);
+  min-width: 0;
 }
 
-.bmm-axis {
+/* ONE BLOCK (28 Jul, second pass): the shape on the left, the exact
+   stages on the right, starting on the same line.
+
+   The chart previously took its own full-width row with its scale on one
+   side and its source on the other. That row put the right-aligned scale
+   about 30px from the "AI Readiness" axis label, which read as the two
+   colliding; it left the hexagon small between two blocks of furniture;
+   and it opened a 90px band of nothing before the table, so the two
+   halves read as separate objects. Beside each other with the furniture
+   stacked under the chart, none of those three can happen. */
+.bmm-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--spacing-8);
+  align-items: start;
+}
+
+/* NEVER side by side (Elleta, 28 Jul). Sharing a row, the two halves
+   compete for the same 1176px and both lose: the chart gives up its
+   flanking axis labels to stay a reasonable size, and the table's reason
+   column drops from 764px to 400px. Stacked, each gets everything it
+   needs. The chart is a figure with its scale and source beneath it, the
+   table runs the full container at one line a row, and the block reads
+   top to bottom as shape then detail. */
+
+/* ── the radar ──
+   A 3x3 ring of HTML labels with the chart in the middle. The labels are
+   NOT SVG text on purpose: text inside a viewBox scales with the box, so
+   it stops being 16px the moment the chart is not exactly its declared
+   size. These stay body-size at every width. */
+/* the ring asks how wide THE RING is, never how wide the window is.
+   Flanking labels cost about 200px of whatever column the chart is in,
+   which is affordable when the chart owns the row and ruinous when it is
+   sharing one: beside the table the chart column was 30rem, the labels
+   took two thirds of it, and the table opposite was squeezed to a 304px
+   reason column that wrapped every row to three lines. Widening the
+   window past 1240 therefore made the table WORSE, which is the tell
+   that something was reading the viewport when it meant the box. */
+/* The figure STRETCHES; the capping and centring happen inside it.
+
+   Capping this element and centring it with margin-inline:auto collapsed
+   the chart to zero. Auto margins cancel a grid item's stretch, so its
+   inline size falls back to fit-content, and fit-content under
+   inline-size containment resolves to nothing at all, because
+   containment is precisely the promise that contents do not size the
+   box. The container has to be measurable; the figure inside it is what
+   gets a measure. */
+.bmm-radar {
+  margin: 0;
+  min-width: 0;
+  container-type: inline-size;
+  container-name: radar;
+}
+
+/* the chart's own measure: a hexagon does not get better past about
+   350px, and its labels want to sit near the shape they name rather than
+   at the far edges of a 1176px row */
+.bmm-radar__ring,
+.bmm-radar__cap {
+  max-width: 38rem;
+  margin-inline: auto;
+}
+
+/* DEFAULT: labels in a clockwise row BENEATH the chart, so the chart
+   gets the column's whole width. This is the layout for every ring that
+   is not wide enough to spend 200px on flanking labels, which is a phone
+   and equally the chart's column when it sits beside the table. */
+.bmm-radar__ring {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: var(--spacing-1) var(--spacing-3);
+}
+
+.bmm-radar__svg {
+  order: -1;
+  flex: 0 0 100%;
+  width: 100%;
+  /* the hexagon reached 743px once the figure owned a whole row, which is
+     a chart eating a page rather than leading one */
+  max-width: 22rem;
+  height: auto;
+  margin-inline: auto;
+}
+
+/* the chart's furniture, stacked UNDER the chart and quiet enough that
+   the hexagon stays the loud thing. Under it, not beside it: flanking
+   columns put the scale a few pixels from an axis label. */
+.bmm-radar__cap {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
+  margin-top: var(--spacing-5);
+  padding-top: var(--spacing-4);
+  border-top: 1px solid var(--color-border-soft);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
 }
 
-.bmm-axis__top {
+.bmm-radar__scale {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--spacing-4);
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.bmm-radar__label {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-ink-soft);
+  text-align: center;
+}
+
+/* the row layout names the reading order, because a row cannot show it
+   the way a ring can.
+
+   A CAPTION, not an eyebrow. It shipped at the 13px metadata tier and
+   audit:type refused it the moment the row layout reached 1440, which is
+   the right call: twenty-two characters explaining how to read a chart
+   is reading text, whatever tier it is dressed as. Extending the audit's
+   metadata allowlist to cover it would have been keeping new code alive
+   with an exemption, which the constitution forbids. */
+.bmm-radar__hint {
+  display: block;
+  flex: 0 0 100%;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-ink-muted);
+}
+
+.bmm-radar__label + .bmm-radar__label::before {
+  content: "\00b7";
+  margin-right: var(--spacing-3);
+  color: var(--color-ink-muted);
+}
+
+/* FLANKED: only once the ring itself can afford roughly 200px of labels
+   on top of a chart worth looking at. A CONTAINER query, so the ring
+   answers for its own box: beside the table that box is a 24rem column
+   and the labels stay beneath, while stacked it is the whole row and
+   they take their places around the hexagon. */
+@container radar (min-width: 34rem) {
+  .bmm-radar__ring {
+    display: grid;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
+    grid-template-rows: auto 1fr 1fr auto;
+    align-items: center;
+    justify-items: center;
+    max-width: 38rem;
+    margin-inline: auto;
+    gap: var(--spacing-2);
+  }
+
+  .bmm-radar__svg {
+    order: 0;
+    grid-column: 2;
+    grid-row: 2 / span 2;
+    flex: initial;
+    justify-self: center;
+  }
+
+  /* clockwise from twelve, the order the axes are declared and the table
+     lists them */
+  .bmm-radar__label--0 { grid-column: 2; grid-row: 1; }
+  .bmm-radar__label--1 { grid-column: 3; grid-row: 2; text-align: left; }
+  .bmm-radar__label--2 { grid-column: 3; grid-row: 3; text-align: left; }
+  .bmm-radar__label--3 { grid-column: 2; grid-row: 4; }
+  .bmm-radar__label--4 { grid-column: 1; grid-row: 3; text-align: right; }
+  .bmm-radar__label--5 { grid-column: 1; grid-row: 2; text-align: right; }
+
+  /* the ring shows the order; the row's label and separators would only
+     repeat what the positions already say */
+  .bmm-radar__hint { display: none; }
+  .bmm-radar__label + .bmm-radar__label::before { content: none; }
+}
+
+.bmm-radar__grid {
+  fill: none;
+  stroke: var(--color-border-soft);
+  stroke-width: 1;
+}
+
+.bmm-radar__spoke {
+  stroke: var(--color-border-soft);
+  stroke-width: 1;
+}
+
+.bmm-radar__shape {
+  fill: var(--color-semantic-accent-subtle);
+  stroke: var(--color-accent-ink);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.bmm-radar__dot {
+  fill: var(--color-accent-ink);
+}
+
+/* the frontier axis wears the clarity pair here too, so the deepest
+   vertex reads as the thesis and not just as the biggest number */
+.bmm-radar__dot--frontier {
+  fill: var(--case-clarity-text);
 }
 
 /* stage badges: metadata tier (the tag/pill register), stage colour
@@ -2757,9 +2774,13 @@ textarea:focus-visible {
   white-space: nowrap;
 }
 
+/* DEFECT 6 (27 Jul): V1 wore a rose hue and read as a FAILURE on the
+   Adoption and Measurement rows. Early is not broken. It now wears the
+   neutral metadata tone; rose is reserved for real failures. */
 .bmm-badge--v1 {
-  background: color-mix(in srgb, var(--case-writing-hi) 22%, var(--color-card));
-  color: var(--case-writing-text);
+  background: var(--color-tag-bg);
+  color: var(--color-ink-muted);
+  border: 1px solid var(--color-border-medium);
 }
 
 .bmm-badge--growing {
@@ -2779,34 +2800,19 @@ textarea:focus-visible {
   background: color-mix(in srgb, var(--case-clarity-hi) 18%, var(--color-card));
 }
 
-/* the 4-step track; filled = the accent family, the frontier axis
-   fills in the clarity pair. Redundant with the badge text, so the
-   track itself is decorative. */
-.bmm-track {
-  display: flex;
-  gap: var(--spacing-2);
-}
+/* .bmm-foot is deleted with its markup (craft pass): the attribution
+   moved into the chart's figcaption, where it helps the chart column
+   finish level with the table instead of running under both. */
 
-.bmm-track__step {
-  flex: 1;
-  height: var(--spacing-2);
-  border-radius: var(--radius-full);
-  background: var(--color-border-medium);
-}
-
-.bmm-track__step--on {
-  background: var(--color-accent-ink);
-}
-
-.bmm-track__step--frontier {
-  background: var(--case-clarity-text);
-}
-
-.bmm-foot {
-  border-top: 1px solid var(--color-border-soft);
-  padding-top: var(--spacing-4);
-}
-
+/* DEFECT 2 + 3 (token-card misalignment, ragged columns), 27 Jul.
+   Was: a 180px auto-fill grid of loose flex columns. Long token names
+   wrapped mid-token ("--color-border- / medium"), so name and value
+   rows started at different heights and no two cards shared a baseline.
+   Now: a FIXED internal row grid (plate / name / value) so every card
+   in a row puts its plate, name and value on the same lines, and the
+   name only breaks at hyphen boundaries (a <wbr> per segment in the
+   markup) so it never splits mid-token. The column width stays inside
+   the card content box; widening it broke containment. */
 .ds-swatches {
   list-style: none;
   margin: 0;
@@ -2814,12 +2820,16 @@ textarea:focus-visible {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: var(--spacing-4);
+  align-items: start;
 }
 
 .ds-swatch {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  /* the three rows every swatch shares; name reserves two lines so a
+     one-line and a two-line name still put the value on one baseline */
+  grid-template-rows: auto minmax(2.6em, auto) auto;
   gap: var(--spacing-1);
+  min-width: 0;
 }
 
 .ds-swatch__plate {
@@ -2833,12 +2843,39 @@ textarea:focus-visible {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-sm); /* type-presence: token names were the least legible text on the site */
   color: var(--color-ink);
-  overflow-wrap: anywhere;
+  /* never break mid-token: wrap at the whole name or not at all. The
+     column above is sized so the longest real token name fits. */
+  /* only the <wbr> segment boundaries are break opportunities */
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  min-width: 0;
+}
+
+/* the start/end alignment belongs to the SWATCH GRID's three-row
+   layout only. Applied globally it dropped the value to the bottom of
+   any other grid that reuses these classes, which is what pushed the
+   radius row's value onto a second baseline (defect 3). */
+.ds-swatch > .ds-swatch__name { align-self: start; }
+.ds-swatch > .ds-swatch__value { align-self: end; }
+
+/* DEFECT 7 (27 Jul): case titles in the identity grid were visually
+   inconsistent, links reading as one thing and unrouted cases as
+   another. Both now share ONE type treatment; only the colour and the
+   underline mark the ones that actually go somewhere. */
+.ds-casetitle {
+  font-family: var(--font-body);
+  /* a case name is reading text, so it clears the floor; the linked
+     variant below matches it exactly so the grid reads as one tier */
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-ink);
+  padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
 }
 
 .ds-swatch__case {
   font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
+  font-size: var(--typography-font-size-base);
   font-weight: 600;
   color: var(--color-accent-ink);
   text-decoration: underline;
@@ -2869,7 +2906,10 @@ textarea:focus-visible {
   border: 1px solid var(--color-border-soft);
   background: var(--color-surface);
   font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm);
+  /* the manifest specimen is READING text: engineers read it line by
+     line. It shipped at 14px because the old audit:type never measured
+     <code>. Floor applies (27 Jul hardening, defect 7). */
+  font-size: var(--typography-font-size-base);
   line-height: 1.6;
   color: var(--color-ink-soft);
   margin: 0 0 var(--spacing-4);
@@ -2879,7 +2919,14 @@ textarea:focus-visible {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-sm);
   color: var(--color-ink-muted);
-  overflow-wrap: anywhere;
+  /* DEFECT 2: the value row is the shared baseline across every card
+     in a row, so it never wraps and never breaks mid-value */
+  overflow-wrap: normal;
+  word-break: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .ds-type__sample {
@@ -2921,18 +2968,32 @@ textarea:focus-visible {
 }
 
 /* containment law item 2 (22 Jul): fixed two-line head min-height so
-   one- and two-line titles align across a row */
+   one- and two-line titles align across a row.
+   Raised 27 Jul (defect 2): at --spacing-10 a genuinely two-line title
+   ('From Drift to Foundation') overflowed the reserved head by 6px and
+   pushed its flag lane below its siblings', so the row read ragged. The
+   reserve now actually fits two lines at the touch-target padding. */
 .ds-card__head {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-1);
   margin-bottom: var(--spacing-3);
-  min-height: var(--spacing-10);
+  /* measured: a one-line title head is 48px, a two-line one 53px at the
+     touch-target padding. The reserve is composed from the scale to
+     clear the taller case, so every card in a row starts its lane on
+     the same line. */
+  min-height: calc(var(--spacing-12) + var(--spacing-2));
 }
 
+/* DEFECT 4 (cards that do not fill), 27 Jul: this carried
+   min-height:120px, so a card whose demo was shorter than 120px
+   reserved height its content never filled and the card's shadow
+   floated below a dead zone. Equal heights across a row already come
+   from the grid (grid-auto-rows:1fr + stretch) plus .ds-card__inner
+   height:100%; flex:1 then fills the remaining space to the padding
+   box. The forced floor only ever stranded content. */
 .ds-card__demo {
   flex: 1;
-  min-height: 120px;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
@@ -2960,11 +3021,20 @@ textarea:focus-visible {
    where they duplicate visible text, never focusable. Values are
    shortened deliberately in TokenAnnotation (never mid-token); token
    names may wrap at their hyphens, never ellipsize. ── */
+/* DEFECT 1 (root cause, 27 Jul): the chip, the value and the token name
+   used to share one flex line, so the name was squeezed and broke
+   mid-token. Now TWO rows: the swatch and the value on one baseline,
+   the FULL name on its own line beneath, with <wbr> segment breaks in
+   the markup so it can only ever break between name parts. Every flag
+   has the same two rows, so sibling cards are the same height
+   (defect 2). */
 .ds-flag {
-  display: inline-flex;
-  align-items: center;
+  display: grid;
+  grid-template-rows: auto auto;
+  justify-items: start;
   gap: var(--spacing-1);
-  padding: var(--spacing-1) var(--spacing-2);
+  max-width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
   background: var(--color-card);
   border: 1px solid var(--color-semantic-accent-border);
   border-radius: var(--radius-md);
@@ -2993,19 +3063,49 @@ textarea:focus-visible {
 
 .ds-flag__token {
   color: var(--color-ink-muted);
+  /* the name owns its line; it breaks only at the <wbr> boundaries */
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* the swatch + value baseline row */
+.ds-flag__row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* DEFECT 4: a multi-layer shadow value is long. It gets the full row
+   width and wraps at its own commas rather than truncating. */
+.ds-flag__value {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 /* the ONE lane, centred like the proto's, with a stable minimum so
-   sibling cards keep uniform rhythm across flag counts */
+   sibling cards keep uniform rhythm across flag counts.
+   DEFECT 3 (ragged columns, 27 Jul): the lane was a free wrap of
+   chips whose heights varied with how their token name wrapped, so
+   sibling cards' specimens started at different vertical positions and
+   the row read as ragged. Now: ONE column of full-width rows, so every
+   chip is the same height and every card's specimen starts on the same
+   line. Gutters come from the scale. */
 .ds-flaglane {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: flex-start;
+  display: grid;
+  grid-auto-rows: auto;
   gap: var(--spacing-2);
+  /* DEFECT 3 (27 Jul): stretched chips ran the full card width with the
+     content hugging the left and an empty right half. Chips now size to
+     their content; the token name row sets the width. */
+  justify-items: start;
+  align-content: start;
   min-width: 0;
-  min-height: var(--spacing-8);
-  margin-bottom: var(--spacing-2);
+  margin-bottom: var(--spacing-3);
 }
 
 /* the in-card leader layer (replaces the fixed-height tick
@@ -3017,6 +3117,14 @@ textarea:focus-visible {
   width: 100%;
   height: 100%;
   pointer-events: none;
+  /* DEFECT 5/7 (27 Jul): the flags live in .ds-flaglane, a SIBLING
+     ABOVE this layer, so a leader's start point is at negative Y in
+     this SVG's coordinate space. An SVG clips at its viewport by
+     default, so everything above y=0 was cut and all that painted was
+     a floating stub below the lane that landed on nothing. Unclipping
+     lets the line run from its source chip to its target's edge, which
+     is what the geometry always computed. */
+  overflow: visible;
 }
 
 .ds-leaders line {
@@ -3118,10 +3226,19 @@ textarea:focus-visible {
   text-transform: uppercase;
   color: var(--key-face-hi);
   background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
+  /* DEFECT 1 (overglow), 27 Jul: this stacked a hard plate edge, a
+     14px/32% coloured BLOOM, and an inset highlight, then the dashed
+     annotation ring and the leader lines landed on top of it. Three
+     shadows plus a ring reads as a halo, not as elevation. Now: the
+     plate edge (the keycap's one-light-source identity) plus ONE
+     restrained token shadow. No large-blur bloom. */
+  /* DEFECT 5, second pass (27 Jul): the plate edge is trimmed and the
+     ambient shadow is the smallest token. One restrained elevation, no
+     bloom; the dashed ring beside it is a hairline in the border tone,
+     not the full accent, so ring and shadow stop compounding. */
   box-shadow:
-    2px 5px 0 var(--key-fill-edge),
-    6px 9px 14px color-mix(in srgb, var(--key-fill-lo) 32%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    1px 2px 0 var(--key-fill-edge),
+    var(--shadow-sm);
 }
 
 /* the trace ring (Phase 2 rebuild, 22 Jul): ring space reserved IN
@@ -3137,7 +3254,10 @@ textarea:focus-visible {
 .tok-inspector__ring {
   position: absolute;
   inset: 0;
-  border: 2px dashed var(--color-accent-ink);
+  /* DEFECT 1 + 5: a single HAIRLINE in the accent BORDER tone, not the
+     saturated accent. At 2px in full accent, over the old bloom, the
+     ring read as a second glow rather than an annotation. */
+  border: 1px dashed var(--color-semantic-accent-border);
   border-radius: calc(var(--btn-key-radius) + var(--spacing-2));
   pointer-events: none;
 }
@@ -4254,8 +4374,40 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    of the text column; alternation swaps grid order only; visuals are
    FLAT; --spacing-* rhythm only. ── */
 
+/* CONTAINER-AWARE (27 Jul 2026). CaseBeat used to set VERTICAL padding
+   only and silently depend on an ancestor for the horizontal gutter. On
+   the case routes the page shell supplies a .layout-container, so it
+   looked fine; the moment BellaSpine rendered a beat outside one, every
+   line of copy ran edge to edge (measured left:0 width:500 at a 500px
+   viewport). Wrapping the beats at the call site would have fixed one
+   page and left the trap armed for the next.
+
+   The beat now carries the container recipe ITSELF, and stands down
+   when it is already inside one, so it is correct wherever it is
+   dropped and never doubles the gutter. */
 .beat {
   padding-block: var(--spacing-16);
+  padding-inline: var(--container-padding);
+  max-width: calc(var(--container-width) + (2 * var(--container-padding)));
+  margin-inline: auto;
+}
+
+/* already contained: the ancestor owns the gutter and the measure */
+.layout-container .beat,
+.cs2 .beat {
+  padding-inline: 0;
+  max-width: none;
+  margin-inline: 0;
+}
+
+/* BUG 3: at --spacing-16 top and bottom, consecutive beats sat 128px
+   apart, which read as dead ground on a small screen (measured 160px
+   between the agent footnote and the next heading). Tightened below the
+   existing 640px breakpoint; the desktop rhythm is unchanged. */
+@media (max-width: 640px) {
+  .beat {
+    padding-block: var(--spacing-10);
+  }
 }
 
 .beat + .beat {
@@ -4280,6 +4432,26 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
      internal order never changes */
   .beat--flip .beat-text { order: 2; }
   .beat--flip .beat-visual { order: 1; }
+
+  /* WIDE (27 Jul 2026): one column, text over visual. For beats whose
+     demo IS the width (the gate table, the maturity grid); a half-row
+     demo there left the other half as dead ground at every width above
+     1024. Order is reset so a wide beat that also alternates does not
+     invert into visual-then-text. */
+  .beat--wide .beat-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-8);
+  }
+  .beat--wide .beat-text,
+  .beat--wide .beat-visual {
+    order: 0;
+  }
+}
+
+/* wide beats span the container; the PROSE inside them must not, or a
+   paragraph runs 1240px wide and stops being readable */
+.beat--wide .beat-body {
+  max-width: var(--measure-case);
 }
 
 .beat-text {
@@ -4501,13 +4673,19 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    navy dome (dark). The sign-off is the site's Unique display (Heading
    tier=case); the heart wears the clay accent. One fade-up on enter (JS
    toggles .is-visible); prefers-reduced-motion renders it static. ── */
+/* The lead-in was margin-top 80 plus padding-top 128, so the sign-off
+   started 208px below the last beat, on top of that beat's own 64px
+   floor: 272px of nothing before the thanks, roughly a third of a
+   1440x900 screen (measured 27 Jul). The dome still needs room to rise
+   behind the type, so the padding carries the space and the margin
+   stops doubling it. */
 .cs2-endreveal {
   --enddome-top: #EDE7F3;   /* peri-tinted cream where the dome crests */
   --enddome-mid: #EBE6DC;
   position: relative;
   overflow: hidden;
-  margin-top: var(--spacing-20);
-  padding: calc(var(--spacing-20) + var(--spacing-12)) var(--spacing-6) var(--spacing-20);
+  margin-top: 0;
+  padding: var(--spacing-16) var(--spacing-6) var(--spacing-20);
   text-align: center;
 }
 [data-theme="dark"] .cs2-endreveal {
@@ -4683,6 +4861,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 /* From Drift beat 03: the governance STATUS BOARD (in-page, tokenised to
    BELLA, dark-adaptive via the site theme). Static; foregrounds component
    status + the proposal path. Steel plus status semantics, no iris, no yellow-orange. */
+/* .gov-h is the eyebrow recipe (tag size, eyebrow tracking, eyebrow
+   colour, uppercase); it is the metadata tier, exempt in audit:type */
 .gov-h {
   font-size: var(--typography-font-size-tag);
   letter-spacing: var(--tracking-eyebrow);
@@ -4721,12 +4901,21 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-radius: var(--radius-full);
   white-space: nowrap;
 }
-.gov-badge.stable { color: var(--case-clarity-text); background: color-mix(in srgb, var(--case-clarity-hi) 26%, transparent); }
-.gov-badge.review { color: var(--case-filters-text); background: color-mix(in srgb, var(--case-filters-hi) 26%, transparent); }
-.gov-badge.exp { color: var(--gov-clay-text); background: color-mix(in srgb, var(--gov-clay-hi) 26%, transparent); }
-.gov-badge.dep { color: var(--gov-grey-text); background: color-mix(in srgb, var(--gov-grey-hi) 26%, transparent); }
+/* the badge tints composite over --color-card. When the card surface
+   lifted for the card/ground separation fix (27 Jul) the transparent
+   mix rode with it and .review lost AA in dark. Mixing against the card
+   token instead of transparent makes the result deterministic: the
+   badge no longer drifts when the surface beneath it moves. .review
+   also carries LESS tint: its text is the lightest of the four, so a
+   heavier tint lifts the background toward the text and costs AA. */
+.gov-badge.stable { color: var(--case-clarity-text); background: color-mix(in srgb, var(--case-clarity-hi) 26%, var(--color-card)); }
+.gov-badge.review { color: var(--case-filters-text); background: color-mix(in srgb, var(--case-filters-hi) 16%, var(--color-card)); }
+.gov-badge.exp { color: var(--gov-clay-text); background: color-mix(in srgb, var(--gov-clay-hi) 26%, var(--color-card)); }
+.gov-badge.dep { color: var(--gov-grey-text); background: color-mix(in srgb, var(--gov-grey-hi) 26%, var(--color-card)); }
 .gov-row .gov-asks {
-  font-size: var(--typography-font-size-sm);
+  /* reading text in a governance row, not metadata: the type floor
+     applies (audit:type hardening, 27 Jul) */
+  font-size: var(--typography-font-size-base);
   color: var(--color-ink-muted);
 }
 .gov-path-wrap { margin-top: var(--spacing-6); }
@@ -4831,4 +5020,926 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   flex-direction: column;
   gap: var(--spacing-2);
   align-items: flex-start;
+}
+
+/* ── The governed pipeline, v2 (approved proto
+   _proto/pipeline-instrument-v2.html, 27 Jul 2026) ──
+   The page's lead proof. A glance strip states the pipeline in three
+   words; chevrons bind the three stages into one rail; a live value
+   chip shows the same hex travelling from source into the manifest.
+   Tokens only. DEFECT 1: one restrained shadow, no bloom. DEFECT 4:
+   the stage's last block takes margin-top:auto so a short column fills
+   to its padding box instead of stranding a dead region. */
+
+.ds-pipeline__dek {
+  max-width: 64ch;
+  margin-bottom: var(--spacing-6);
+}
+
+/* The FLOW STRIP is deleted with its markup (28 Jul, readability audit
+   P2): .ds-flow, .ds-flow__node, .ds-flow__label, .ds-flow__arrow and
+   .ds-flow__verdict have nothing left to paint. What survives is the
+   glyph rule and the verdict's colour states, because the cards now
+   carry both: each card heads itself with its own icon, and the verdict
+   sits in the Gate card beside the ratio it judges. */
+.ds-stage__ico {
+  width: var(--spacing-8);
+  height: var(--spacing-8);
+  border-radius: var(--radius-md);
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  margin-right: var(--spacing-2);
+  vertical-align: middle;
+  background: var(--color-semantic-accent-subtle);
+  color: var(--color-accent-ink);
+}
+
+.ds-flow__svg {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ds-stage__verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  white-space: nowrap;
+  border-radius: var(--radius-full);
+  padding: var(--spacing-2) var(--spacing-4);
+  align-self: flex-start;
+}
+
+.ds-flow__dot {
+  width: var(--spacing-2);
+  height: var(--spacing-2);
+  border-radius: var(--radius-full);
+  background: currentColor;
+  flex: 0 0 auto;
+}
+
+.ds-stage__verdict--pass {
+  background: var(--color-pass-subtle);
+  color: var(--color-pass-ink);
+}
+
+.ds-stage__verdict--fail {
+  background: var(--color-fail-subtle);
+  color: var(--color-fail-ink);
+}
+
+.ds-stage__verdict--reading {
+  background: var(--color-tag-bg);
+  color: var(--color-ink-muted);
+}
+
+/* the rail: three stages bound by chevrons.
+
+   The breakpoint is a CONTAINER query, not a viewport one, and that is
+   the whole fix (craft pass, 27 Jul). It used to read the viewport, so
+   at 1440 it confidently laid three cells across the 604px it actually
+   had: about 15 characters a line, "--color-ink-soft" broken across
+   four lines inside the JSON. A rail cares how wide the RAIL is. The
+   instrument declares the containment; the query reads it, so the rail
+   is correct wherever it is dropped and cannot be fooled by a wide
+   window again. */
+.ds-pipeline-instrument {
+  container-type: inline-size;
+  container-name: instrument;
+}
+
+.ds-rail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-4);
+  align-items: stretch;
+}
+
+/* Three across ONLY once the rail can seat three generous cells. The
+   threshold is arithmetic, not taste: at 16px body, three cells plus two
+   chevrons need about 1164px before each cell clears 40 characters a
+   line. Anything less and "horizontal" buys a shape at the cost of the
+   reading, which is the trade the old 900px viewport query made. Below
+   this the stages stack and the chevrons turn to point down the column,
+   so it is still one pipeline, read top to bottom. */
+@container instrument (min-width: 900px) {
+  .ds-rail {
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 0;
+  }
+}
+
+.ds-rail__cell {
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+}
+
+/* the chevron is a joint, not a column: every pixel it takes comes
+   straight off the three cells' reading measure */
+.ds-rail__chev {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-6);
+  flex: 0 0 auto;
+  color: var(--color-accent-ink);
+}
+
+.ds-rail__chev .ds-flow__svg {
+  width: var(--spacing-5);
+  height: var(--spacing-5);
+  stroke-width: 2;
+}
+
+/* stacked: the chevron turns to point down the column. Container query
+   again, so it can never disagree with the rail it belongs to. */
+@container instrument (max-width: 899.98px) {
+  .ds-rail__chev {
+    width: 100%;
+    height: var(--spacing-8);
+    transform: rotate(90deg);
+  }
+}
+
+.ds-stage {
+  background: var(--color-card);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-xl);
+  /* DEFECT 1: ONE restrained elevation, no bloom */
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: var(--spacing-2);
+}
+
+/* STACKED, the cell is as wide as the whole instrument, and a line of
+   body at 1024 measured 110 characters. Cap the prose at a measure; the
+   cap is inert once the rail is three across, because a cell is never
+   that wide there. */
+.ds-stage__lead,
+.ds-stage__sub,
+.ds-stage__hint,
+.ds-stage__gateline,
+.ds-stage__ctl {
+  max-width: 62ch;
+}
+
+.ds-stage__kick { margin: 0 0 var(--spacing-1); }
+.ds-stage__kick b { color: var(--color-accent-ink); }
+
+.ds-stage__lead {
+  font-size: var(--typography-font-size-xl);
+  line-height: 1.25;
+  color: var(--color-ink);
+  font-weight: 700;
+  margin: 0;
+}
+
+.ds-stage__sub {
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--spacing-2);
+}
+
+.ds-stage__sub strong { color: var(--color-ink); font-weight: 600; }
+.ds-stage__hl {
+  color: var(--color-accent-ink);
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* the live value, seen travelling from 01 into 02 */
+.ds-valchip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink);
+  background: var(--color-semantic-background);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-full);
+  padding: var(--spacing-1) var(--spacing-3);
+  align-self: flex-start;
+}
+
+.ds-valchip__sw {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-medium);
+  background: var(--ds-live-value, var(--color-ink-soft));
+  flex: 0 0 auto;
+}
+
+.ds-stage__ctl {
+  display: block;
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink);
+  font-weight: 600;
+  margin: var(--spacing-2) 0 0;
+}
+
+/* THE HANDLE (28 Jul, readability audit P1). min-height on the input
+   gave the control a 44px BOX while the native thumb stayed the browser
+   default, about 13px, and on a track that got much longer when the beat
+   went wide it read as a speck. The thumb is now drawn: 24px of visible
+   handle inside a 44px tall track area, so the grab target clears the
+   touch minimum in both axes. Both vendor prefixes, because they cannot
+   be combined in one selector list (an unknown pseudo-element drops the
+   whole rule). */
+.ds-pipeline__slider {
+  width: 100%;
+  accent-color: var(--color-accent-ink);
+  min-height: var(--spacing-touch-target);
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* The track fills the WHOLE 44px control and paints its 8px bar with a
+   centred gradient, rather than being an 8px track inside a 44px box.
+   WebKit does not vertically centre a fixed-height runnable track: it
+   pins it to the top, which put the thumb near the top edge while the
+   middle of the row looked like the handle. Clicking still worked, so
+   the gate and a click test both passed, but DRAGGING from the visible
+   centre of the control did nothing, which is the only interaction this
+   instrument actually asks for. Caught by dragging it, not by looking. */
+.ds-pipeline__slider::-webkit-slider-runnable-track {
+  height: var(--spacing-touch-target);
+  border-radius: var(--radius-full);
+  background: linear-gradient(var(--color-border-medium), var(--color-border-medium))
+    center / 100% var(--spacing-2) no-repeat;
+}
+
+.ds-pipeline__slider::-moz-range-track {
+  height: var(--spacing-2);
+  border-radius: var(--radius-full);
+  background: var(--color-border-medium);
+}
+
+.ds-pipeline__slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--spacing-6);
+  height: var(--spacing-6);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-ink);
+  border: 2px solid var(--color-card);
+  box-shadow: var(--shadow-sm);
+  /* centre the 24px thumb in the 44px track */
+  margin-top: calc((var(--spacing-touch-target) - var(--spacing-6)) / 2);
+}
+
+.ds-pipeline__slider::-moz-range-thumb {
+  width: var(--spacing-6);
+  height: var(--spacing-6);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-ink);
+  border: 2px solid var(--color-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.ds-pipeline__slider:focus-visible {
+  outline: 2px solid var(--color-accent-ink);
+  outline-offset: var(--spacing-1);
+}
+
+.ds-stage__hint {
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+.ds-stage__code {
+  margin: auto 0 0;
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-semantic-background);
+  font-family: var(--font-mono);
+  /* reading text: engineers read this line by line */
+  font-size: var(--typography-font-size-base);
+  line-height: 1.55;
+  color: var(--color-ink);
+  white-space: pre;
+  /* a token is one word. "anywhere" let the cell shatter
+     "--color-ink-soft" across four lines, which is the opposite of what
+     a manifest is for: you cannot read a name that has been broken. The
+     block scrolls INSIDE itself when it truly cannot fit, which is what
+     every code surface does and never touches the page's own scroll. */
+  overflow-wrap: normal;
+  word-break: normal;
+  overflow-x: auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ds-stage__k { color: var(--color-ink-muted); }
+.ds-stage__v { color: var(--color-accent-ink); font-weight: 600; }
+
+.ds-stage__sample {
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
+  background: var(--color-semantic-background);
+}
+
+.ds-pipeline__specimen {
+  margin: 0;
+  font-size: var(--typography-font-size-base);
+  line-height: 1.5;
+  /* the instrument writes --ds-live-value; the shipped token is the
+     fallback, so the resting state is the real value */
+  color: var(--ds-live-value, var(--color-ink-soft));
+}
+
+.ds-stage__ratio {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-4xl);
+  font-weight: 600;
+  color: var(--color-ink);
+  line-height: 1;
+  margin: var(--spacing-2) 0 0;
+}
+
+.ds-stage__unit {
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+  font-weight: 400;
+}
+
+.ds-stage__verdict {
+  border-radius: var(--radius-md);
+  padding: var(--spacing-2) var(--spacing-3);
+  align-self: flex-start;
+}
+
+.ds-stage__gateline {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+  margin: var(--spacing-2) 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.ds-pipeline__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-5);
+  margin-top: var(--spacing-6);
+}
+
+.ds-pipeline__foot-note {
+  flex: 1 1 32ch;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-pipeline__specimen,
+  .ds-valchip__sw,
+  .ds-stage__verdict {
+    transition: none;
+  }
+}
+
+
+/* anchor alias: a retired band id kept alive so deep links resolve.
+   Zero-size, no paint, offset so the target clears the fixed header. */
+.ds-anchor {
+  display: block;
+  height: 0;
+  scroll-margin-top: calc(var(--header-height) + var(--spacing-8));
+}
+
+/* the specimen shelf: five former bands, one recessive section. The
+   sub-heads are Geist (Unique stays page tier on the shelf header) and
+   the internal rhythm is tighter than a signature section's. */
+/* the shelf sub-head rides the ONE .heading-item recipe (audit:reuse)
+   and only adds the shelf's rhythm and scale on top */
+.ds-shelf__subhead {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-xl);
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: var(--spacing-12) 0 var(--spacing-3);
+  scroll-margin-top: calc(var(--header-height) + var(--spacing-8));
+}
+
+.ds-shelf > .ds-shelf__subhead:first-of-type { margin-top: var(--spacing-6); }
+
+/* ── Maturity map: ONE comparative row template (27 Jul finishing
+   pass) ── The axes were cards, then a stacked list; they are prose
+   plus a chart, not inspectable specimens, so they sit on the ground
+   separated by a rule. Every axis now renders on the SAME four-column
+   template (name, stage, progress, why), which is what makes the six
+   tracks comparable: they land in one column and you read the shape
+   down the page. Each axis still names its stage in TEXT beside the
+   marker, never by position alone.
+
+   This block is the only .bmm-axis/.bmm-track rule set. There were two,
+   1500 lines apart, and the later silently won every shared property. */
+.bmm-axis {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4) 0;
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.bmm-list > .bmm-list__item:first-child .bmm-axis {
+  border-top: 0;
+}
+
+/* the header row is desktop-only: below the grid breakpoint the rows
+   stack and every value already sits next to its own label */
+.bmm-list__item--head {
+  display: none;
+}
+
+/* type comes from the shared .heading-item recipe; this only kills the
+   default heading margin so the row template controls the rhythm */
+.bmm-axis__name {
+  margin: 0;
+}
+
+.bmm-axis__stage {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.bmm-axis__why {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  max-width: 72ch;
+  margin: 0;
+}
+
+/* the position in text, so the chart is never the only carrier.
+   RIGHT-ALIGNED AND TABULAR (28 Jul, standing rule): six figures in a
+   column read as a column only when they share a right edge and a digit
+   width. font-variant-numeric keeps 1 and 4 the same width so the
+   slashes stack. */
+.bmm-axis__score {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+  text-align: right;
+  /* STACKED there is no column, so there is nothing to share a right
+     edge with: the figure shrank to its own box and sat under its pill.
+     Stretched, it flew to the far side of the row away from the stage it
+     belongs to. The right edge is a grid behaviour and lives with the
+     grid. */
+  align-self: start;
+}
+
+@media (min-width: 1024px) {
+  .bmm-axis__score {
+    align-self: center;
+    justify-self: stretch;
+  }
+}
+
+/* the comparative grid proper: one template for the header and every
+   axis, so the tracks share a column and can be read against each
+   other. Below this the rows stack and read as labelled blocks. */
+@media (min-width: 1024px) {
+  .bmm-list__item--head {
+    display: block;
+  }
+
+  /* four columns: axis, stage pill, the figure on its own right-aligned
+     track, and the reason. The figure shared the pill's cell until the
+     28 Jul audit, which meant six numbers starting at six different
+     places depending on how long each pill's word was.
+
+     Tighter than it was, because the table now sits BESIDE the chart
+     rather than across the whole container, and the reason column is the
+     one that has to keep a readable measure. */
+  .bmm-axis {
+    display: grid;
+    grid-template-columns: minmax(0, 10rem) minmax(0, 6rem) minmax(0, 3rem) minmax(0, 1fr);
+    align-items: center;
+    column-gap: var(--spacing-4);
+    row-gap: 0;
+  }
+
+  .bmm-axis--head {
+    padding-bottom: var(--spacing-2);
+    border-top: 0;
+  }
+
+  .bmm-axis--head > * {
+    font-family: var(--font-body);
+    font-size: var(--typography-font-size-tag);
+    font-weight: 700;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-eyebrow);
+  }
+}
+
+
+/* ── BEAT 01: can an AI build with your system? (27 Jul 2026) ──
+   Built to _proto/beat-agent-demo.html. Tokens only, everywhere, with
+   no exceptions: the ungoverned side is a picture rather than DOM, so
+   there is nothing here that needs to break the rules. */
+
+.agentdemo { display: flex; flex-direction: column; gap: var(--spacing-5); }
+
+.agentdemo__control {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
+.agentdemo__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  background: none;
+  border: 0;
+  padding: var(--spacing-1) 0;
+  cursor: pointer;
+  min-height: var(--spacing-touch-target);
+}
+
+.agentdemo__toggle:focus-visible {
+  outline: 2px solid var(--color-accent-ink);
+  outline-offset: var(--spacing-1);
+  border-radius: var(--radius-md);
+}
+
+.agentdemo__track {
+  width: var(--spacing-12);
+  height: var(--spacing-8);
+  border-radius: var(--radius-full);
+  background: var(--color-border-medium);
+  position: relative;
+  flex: 0 0 auto;
+  transition: background var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.agentdemo__knob {
+  position: absolute;
+  top: var(--spacing-1);
+  left: var(--spacing-1);
+  width: var(--spacing-6);
+  height: var(--spacing-6);
+  border-radius: var(--radius-full);
+  background: var(--color-card);
+  box-shadow: var(--shadow-sm);
+  transition: left var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.agentdemo__toggle[aria-pressed="true"] .agentdemo__track { background: var(--color-accent-ink); }
+.agentdemo__toggle[aria-pressed="true"] .agentdemo__knob { left: calc(100% - var(--spacing-6) - var(--spacing-1)); }
+
+.agentdemo__lab {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-ink);
+  text-align: left;
+}
+
+.agentdemo__state { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-muted); }
+
+.agentdemo__split { display: grid; grid-template-columns: 1fr; gap: var(--spacing-4); align-items: stretch; }
+@media (min-width: 860px) { .agentdemo__split { grid-template-columns: 1.1fr 0.9fr; } }
+
+.agentdemo__pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-5);
+  min-width: 0;
+}
+
+/* reuses the shared kicker recipe (the eyebrow tier); this rule only
+   resets the rhythm the kicker carries elsewhere */
+.agentdemo__panehead { margin: 0; }
+
+.agentdemo__stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-background);
+  padding: var(--spacing-6);
+}
+
+.agentdemo__art { width: 100%; max-width: 18rem; border-radius: var(--radius-lg); overflow: hidden; }
+.agentdemo__art-body { padding: var(--spacing-4); }
+.agentdemo__art-h { margin: 0 0 var(--spacing-1); font-weight: 700; }
+.agentdemo__art-p { margin: 0 0 var(--spacing-3); }
+.agentdemo__art-cta { margin: 0; text-align: center; border-radius: var(--radius-md); }
+
+/* the GROUNDED artifact: real tokens, policed like any other surface */
+.agentdemo__art--good { background: var(--color-card); border: 1px solid var(--color-border-medium); box-shadow: var(--shadow-sm); }
+.agentdemo__art--good .agentdemo__art-top { display: block; height: var(--spacing-16); background: linear-gradient(135deg, var(--hub-hi), var(--hub-lo)); }
+.agentdemo__art--good .agentdemo__art-h { color: var(--color-ink); font-size: var(--typography-font-size-lg); }
+.agentdemo__art--good .agentdemo__art-p { color: var(--color-ink-soft); font-size: var(--typography-font-size-base); }
+.agentdemo__art--good .agentdemo__art-cta {
+  background: var(--color-accent-ink);
+  color: var(--color-key-label, #FFFFFF);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  padding: var(--spacing-3);
+}
+
+/* The ungoverned side is a PICTURE (public/images/ungoverned-output.svg),
+   not DOM, so it needs no off-system CSS at all. The block that used to
+   live here defined invented colours and a hardcoded body size for a
+   live "bad" card, and three audits carried a [data-example] carve-out
+   so the gate would look away. Both are gone. A drawing has nothing for
+   an audit to read, so nothing has to be excluded. */
+.agentdemo__art--bad {
+  display: block;
+  height: auto;
+  border-radius: var(--radius-lg);
+}
+
+.agentdemo__verdict {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-xl);
+  font-weight: 700;
+}
+.agentdemo__verdict--pass { color: var(--color-pass-ink); }
+.agentdemo__verdict--fail { color: var(--color-fail-ink); }
+
+.agentdemo__count { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-muted); }
+
+.agentdemo__findings { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--spacing-2); }
+.agentdemo__findings li { display: flex; gap: var(--spacing-2); align-items: flex-start; font-size: var(--typography-font-size-base); }
+.agentdemo__mk { font-family: var(--font-mono); font-weight: 700; flex: 0 0 auto; }
+.agentdemo__findings li.is-ok .agentdemo__mk { color: var(--color-pass-ink); }
+.agentdemo__findings li.is-bad .agentdemo__mk { color: var(--color-fail-ink); }
+
+.agentdemo__caption { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-soft); max-width: 70ch; }
+.agentdemo__foot { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-muted); max-width: 70ch; }
+
+/* the citation is a LINK and has to look like one: iris and underlined
+   is the inline-link contract (section 4). It shipped as muted body text
+   for one build and read as a dead sentence. */
+.agentdemo__foot a {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agentdemo__track, .agentdemo__knob { transition: none; }
+}
+
+
+@media (max-width: 640px) {
+  }
+
+/* rail placeholders: the structure made visible before it is built */
+
+
+/* The gate TABLE is deleted with its markup (28 Jul, readability audit).
+   It was the fourth shape of the same wall (definition list, definition
+   grid, table) and all four asked the reader to scan sixteen rows for the
+   one they cared about. The explorer below replaces it. Both .ds-gate-table
+   rule sets go: there were two, 350 lines apart, and the later one silently
+   won every shared property. */
+
+/* ── the gate explorer (28 Jul, readability audit P2) ──
+   Sixteen chips, one panel. It replaces the two-column table, which
+   replaced a three-column definition grid, which replaced a definition
+   list: four shapes of the same wall. The chips are the whole gate at a
+   glance and the panel answers the only question anyone asks of it.
+
+   The chips are a TABLIST, so they are one tab stop with arrow keys
+   inside, and the panel is a real region of text in the document rather
+   than a card face hidden behind a transform. */
+.gx {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
+
+.gx-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
+  gap: var(--spacing-2);
+}
+
+.gx-chip {
+  /* FILTER-CHIP register, not a keycap: this selects, it does not act
+     (the control taxonomy, section 5). Flat, outline, no elevation. */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: var(--spacing-touch-target);
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.gx-chip:hover {
+  border-color: var(--color-accent-ink);
+  color: var(--color-ink);
+}
+
+.gx-chip:focus-visible {
+  outline: 2px solid var(--color-accent-ink);
+  outline-offset: var(--spacing-1);
+}
+
+/* selected: the iris outline plus a filled ground, never colour alone.
+   aria-selected carries it for anyone who cannot see the border. */
+.gx-chip.is-active {
+  border-color: var(--color-accent-ink);
+  background: var(--color-semantic-accent-subtle);
+  color: var(--color-accent-ink);
+}
+
+.gx-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding: var(--spacing-5);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-xl);
+  background: var(--color-card);
+}
+
+.gx-panel:focus-visible {
+  outline: 2px solid var(--color-accent-ink);
+  outline-offset: var(--spacing-1);
+}
+
+.gx-panel__name {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-lg);
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.gx-panel__line {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+  max-width: 72ch;
+}
+
+.gx-panel__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  margin: 0;
+  padding-top: var(--spacing-3);
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.gx-panel__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--spacing-1);
+}
+
+@media (min-width: 768px) {
+  .gx-panel__row {
+    grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+    gap: var(--spacing-4);
+    align-items: baseline;
+  }
+}
+
+.gx-panel__row dt {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-eyebrow);
+}
+
+.gx-panel__row dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink);
+}
+
+/* ── the close (28 Jul) ── one action, then what the argument stands on */
+.ds-close {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.ds-close__act {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-4) var(--spacing-6);
+}
+
+.ds-close__alt {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ds-close__cites {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding-top: var(--spacing-5);
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.ds-close__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+  max-width: 72ch;
+}
+
+.ds-close__list a {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+
+/* the derived count, stated once, large, WITH the copy (27 Jul): it was
+   the beat's whole visual column, one number against 1900px of table.
+   It reads as the subject of the sentence beside it now, so it lies
+   down instead of stacking. */
+.ds-gate-stat {
+  margin: var(--spacing-2) 0 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.ds-gate-stat__n {
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-5xl);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-ink);
+}
+
+.ds-gate-stat__l {
+  font-size: var(--typography-font-size-base);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+  max-width: 28ch;
 }
