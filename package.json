@@ -51,7 +51,7 @@
     "vitest": "^4.1.10"
   },
   "optionalDependencies": {
-    "@tailwindcss/oxide-darwin-arm64": "^4.2.1"
+    "@tailwindcss/oxide-darwin-arm64": "^4.3.3"
   },
   "overrides": {
     "sharp": "^0.35.3",
