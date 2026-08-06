@@ -58,6 +58,13 @@ const study: CaseStudy = {
    * prose redistributed into the new shape. Replace with the md content
    * when you drop it. ── */
   blocks: [
+    /* the shared pull-quote (case-align pass): her thesis, restated as the
+       editorial display moment every case now carries. Rendered after beat
+       02 by the composition, same slot as Code First. */
+    {
+      kind: "pullQuote",
+      text: "The system is the set of agreements, not the component library.",
+    },
     /* TODO(elleta): confirm the disclosure wording (pattern from the
        17 Jul brief; industry-not-client, recreated artifacts,
        illustrative data, no metrics) */

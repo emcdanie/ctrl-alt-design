@@ -6,6 +6,7 @@
 
 import { useState } from "react";
 import CaseBeat from "@/components/CaseBeat";
+import CaseDisplayQuote from "@/components/CaseDisplayQuote";
 import CasePlaceholder from "@/components/CasePlaceholder";
 import ScaledFrame from "@/components/ScaledFrame";
 import { P, Scannable } from "@/components/CaseProse";
@@ -146,6 +147,7 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
   const d1 = decision("01");
   const d2 = decision("02");
   const d3 = decision("03");
+  const pullQuote = cs.blocks?.find((b) => b.kind === "pullQuote") as { text: string } | undefined;
   const figures = (cs.blocks?.filter((b) => b.kind === "figure") ?? []) as FigureBlock[];
   const figure = (key: string) => figures.find((f) => f.src.includes(key));
   const inboxFig = figure("approve-inbox");
@@ -224,6 +226,16 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
         }
         visual={bridgeProto ? <BridgeEmbed proto={bridgeProto} /> : <CasePlaceholder />}
       />
+
+      {/* the shared pull-quote after beat 02 (case-align), her thesis in the
+          case accent; same slot Code First uses */}
+      {pullQuote && (
+        <CaseDisplayQuote
+          text={pullQuote.text}
+          accent="your system"
+          accentColor="var(--case-chip-text)"
+        />
+      )}
 
       {/* 03 · in public: the honest prototype; the friction log kept
           in the open */}

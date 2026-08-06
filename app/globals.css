@@ -4997,7 +4997,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .cs2-displayquote__accent {
-  color: var(--case-code-first-text);
+  /* the current case's identity accent, passed as --quote-accent by the
+     shared CaseDisplayQuote; defaults to code-first for older call sites */
+  color: var(--quote-accent, var(--case-code-first-text));
 }
 
 /* ── beat 04, the takeaway band (pre-merge spec, 23 Jul 2026): the
