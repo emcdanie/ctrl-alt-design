@@ -8,9 +8,10 @@ const PAW =
   '<ellipse cx="0" cy="3" rx="5.2" ry="4.4"/><ellipse cx="-5.6" cy="-3.2" rx="1.9" ry="2.5" transform="rotate(-20 -5.6 -3.2)"/><ellipse cx="-2" cy="-6.4" rx="1.9" ry="2.6"/><ellipse cx="2" cy="-6.4" rx="1.9" ry="2.6"/><ellipse cx="5.6" cy="-3.2" rx="1.9" ry="2.5" transform="rotate(20 5.6 -3.2)"/>';
 
 /**
- * Paw trail (About only). Decorative: aria-hidden. Draws at most ten
- * prints along an S-curve across the gap before a section: from under
- * the hero figure to that section's index label, alternating left and
+ * Paw trail (About only). Decorative: aria-hidden. Lives inside a
+ * Section's top padding (absolutely positioned, so it adds no height)
+ * and draws at most ten prints along an S-curve: from under the hero
+ * figure to that section's index label, alternating left and
  * right feet and rotating with the path. Both ends are read from the
  * DOM, so the trail follows the layout at every width. The prints step in one by one the first time
  * the gap is fully in view, then settle to ~30% ink; they never loop.
@@ -30,7 +31,7 @@ export default function PawTrail() {
       const h = el.clientHeight;
       const box = el.getBoundingClientRect();
       const fig = document.querySelector(".about-hi__figure")?.getBoundingClientRect();
-      const label = el.parentElement?.nextElementSibling?.querySelector(".section-row__meta")?.getBoundingClientRect();
+      const label = el.closest("section")?.querySelector(".section-row__meta")?.getBoundingClientRect();
       /* from: under the figure's centre; to: the index label's number */
       const a = fig ? fig.left + fig.width / 2 - box.left : w * 0.86;
       const b = label ? label.left - box.left + 8 : 8;
@@ -85,9 +86,11 @@ export default function PawTrail() {
   }, []);
 
   return (
-    <div className="page-container" aria-hidden="true">
-      <div ref={ref} className="paw-trail">
-        <svg />
+    <div className="section__trail" aria-hidden="true">
+      <div className="container">
+        <div ref={ref} className="paw-trail">
+          <svg />
+        </div>
       </div>
     </div>
   );

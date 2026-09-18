@@ -29,7 +29,7 @@ export default function Hero({ peekOpen = false }: { peekOpen?: boolean }) {
           <Heading tier="hero" className={styles.headline}>
             {WORDS.slice(0, -1).join(" ")}{" "}
             <br />
-            <span className="display-heading__accent">{WORDS[WORDS.length - 1]}.</span>
+            <span className="accent">{WORDS[WORDS.length - 1]}.</span>
           </Heading>
           {/* the H1 states the positioning; the body starts at the how
               (repeat dropped, Elleta 23 Jul) */}

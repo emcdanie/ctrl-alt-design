@@ -84,8 +84,16 @@ export const EXPERIENCE: Row[] = [
   },
 ];
 
-/* "Good company": names as plain text, no logos */
-export const WORKED_WITH = ["Brad Frost Web", "BizAway", "VML", "Mango", "United Nations Geneva"];
+/* "Good company": each org's own mark, painted with the theme ink as a
+   CSS mask at one height. `ratio` = the file's viewBox width / height.
+   The name is the accessible label. */
+export const WORKED_WITH: { name: string; src: string; ratio: number }[] = [
+  { name: "Brad Frost Web", src: "/logos/brad-frost.svg", ratio: 5272 / 2193 },
+  { name: "BizAway", src: "/logos/bizaway.svg", ratio: 499 / 119 },
+  { name: "VML", src: "/logos/vml.svg", ratio: 62 / 19 },
+  { name: "Mango", src: "/logos/mango.svg", ratio: 2000 / 350 },
+  { name: "United Nations Geneva", src: "/logos/un-geneva.svg", ratio: 109 / 91.4 },
+];
 
 const bySlug = (slug: string) => WORK_ITEMS.find((w) => w.href.endsWith(`/${slug}`));
 

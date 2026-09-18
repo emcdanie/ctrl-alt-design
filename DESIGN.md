@@ -28,14 +28,20 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
 | Card shadow, raised/hover | one tier | `--shadow-card-elevated` |
 | Featured/marketing panel | section-scale color block, NOT a card | radius `--radius-3xl` (24px), padding `--spacing-8` (32px), shadow `--shadow-soft` (recorded exception: `.feature-panel` only) |
 | Panel-scale glass wrappers | `.glass-card` (About, featured testimonial) | radius `--radius-2xl` like cards; padding `--spacing-8` (panel tier) |
-| Container | max width + side padding | `--container-width` (1240px, spec §1) + `--container-padding` (32px) via `.layout-container` / `.page-container` |
-| Section vertical padding | desktop | `--space-section` (96px, spec §1) via `.layout-section` |
-| Section vertical padding | ≤640px | `--spacing-16` (64px) |
+| Container | max width + side padding | `--container-max` (1360px) + `--container-pad` (clamp 20 to 48px) via `.container` (aliases `.page-container`, `.layout-container`) |
+| Section vertical padding | every width (fluid) | `--space-section` (clamp 64 to 112px) via `.section` (alias `.layout-section`); hairline via `.section--ruled` |
+| Gaps inside a section | stacks | `--space-stack-sm/md/lg` (12 / 24 / 40px) |
+| Type | every page | `.text-display-1/2/3`, `.text-lead`, `.text-body`, `.text-meta`, `.accent` on `--text-*` tokens; measures `--measure-heading` (14em), `--measure-lead` (42rem), `--measure-body` (65ch) |
 | Grid gap | everywhere | `--grid-gap` = `--spacing-8` (32px) |
 | Touch targets | interactive elements | ≥ `--spacing-touch-target` (44px) |
 
 ## Rules
 
+0. Foundation (18 Sep 2026): one `:root` for tokens at the top of `app/globals.css`; one
+   `.container`; one `.section` rhythm; type only through the text utilities, never a
+   page-specific font size (missing size: add a token). Unique heading widths use
+   `--measure-heading` (em), never `ch`. Headings balance, paragraphs pretty. Every page is
+   Nav, then Sections, then Footer, built from `.container` + `Section`.
 1. Cards share ONE radius: `--radius-2xl`. No 16 / 22 / 24px card corners.
 2. Card body padding is `--spacing-6` on every side, every breakpoint.
 3. One border + shadow tier per context. Interactive cards rest on

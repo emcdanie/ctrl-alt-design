@@ -40,11 +40,11 @@ for (const f of [...appFiles, ...componentFiles]) {
 
 /* 3. every page sits in the container/rhythm system */
 /* hero-landing: the home hero carries its own recorded container
-   (Hero.module.css .hero, max-width var(--container-width)) */
-const pageOk = /layout-container|page-container|layout-section|CaseShellV2|<Hero/;
+   (Hero.module.css .hero, max-width var(--container-max)) */
+const pageOk = /className="[^"]*(?<![\w-])(container|section)(?![\w-])|<Section\b|layout-container|page-container|layout-section|CaseShellV2|<Hero/;
 for (const f of appFiles.filter((f) => f.endsWith("page.tsx"))) {
   const s = readFileSync(f, "utf8");
-  if (!pageOk.test(s)) fail(f, "no container/section marker", "layout-container / page-container / layout-section / CaseShellV2 / Hero");
+  if (!pageOk.test(s)) fail(f, "no container/section marker", "container / section / Section / CaseShellV2 / Hero (layout-container, page-container, layout-section are aliases)");
 }
 
 /* 4. no arbitrary px type in components (recorded proto exceptions excluded) */

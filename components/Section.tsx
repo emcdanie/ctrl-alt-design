@@ -1,17 +1,24 @@
 import type { ReactNode } from "react";
 import Heading from "@/components/ui/Heading";
 import { Tag } from "@/components/ui/Tag";
+import PawTrail from "@/components/PawTrail";
 
 /**
- * The numbered section: index label | heading, lede, body | side slot.
- * About and Work both build their pages from it. Sections are separated
- * by a thin rule, never a card. One column on phones.
+ * The numbered section: index label | heading, lede, body | side slot,
+ * on .container + .section. About and Work build their pages from it.
+ * Sections are separated by a hairline (.section--ruled), never a card.
+ * One column on phones.
+ *
+ * variant="hero": the page opening on the same grid. No index label and
+ * no rule; the h1 and lede span the index + main columns and the side
+ * slot holds the figure. It starts directly under the nav.
  *
  * The heading takes one iris `accent` word; `after` carries whatever
  * follows it, e.g. title="A shared language, not a" accent="rulebook"
- * after=".".
+ * after=".". Sizes come from the text utilities, never from here.
  */
 export default function Section({
+  variant = "row",
   index,
   label,
   title,
@@ -20,39 +27,61 @@ export default function Section({
   lede,
   side,
   wide,
+  trail,
   id,
   children,
 }: {
-  /** "01" */
-  index: string;
-  /** "the short version" */
-  label: string;
+  variant?: "row" | "hero";
+  /** "01" (rows only) */
+  index?: string;
+  /** "the short version" (rows only) */
+  label?: string;
   title: ReactNode;
   accent?: ReactNode;
   after?: ReactNode;
   lede?: ReactNode;
-  /** optional right column: SectionList, SectionTags, or other content */
+  /** optional right column: SectionList, SectionTags, a figure */
   side?: ReactNode;
-  /** main column also takes the side column (only when there is no side) */
+  /** main column also takes the (empty) side column */
   wide?: boolean;
+  /** a paw trail in this section's top padding (adds no height) */
+  trail?: boolean;
   id?: string;
   /** the body copy */
   children?: ReactNode;
 }) {
+  const hero = variant === "hero";
   const headingId = id ? `${id}-title` : undefined;
+  const cls = [
+    "section",
+    "section-row",
+    hero ? "section--hero" : "section--ruled",
+    wide && !side ? "section-row--wide" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
   return (
-    <section id={id} className={wide && !side ? "section-row section-row--wide" : "section-row"} aria-labelledby={headingId}>
-      <div className="page-container">
+    <section id={id} className={cls} aria-labelledby={headingId}>
+      {trail ? <PawTrail /> : null}
+      <div className="container">
         <div className="section-row__grid">
-          <p className="section-row__meta">
-            <span className="section-row__num">{index}</span> / {label}
-          </p>
+          {hero ? null : (
+            <p className="section-row__meta">
+              <span className="section-row__num">{index}</span> / {label}
+            </p>
+          )}
           <div className="section-row__main">
-            <Heading tier="section" as="h2" id={headingId} accent={accent} after={after}>
+            <Heading
+              tier={hero ? "page" : "section"}
+              as={hero ? "h1" : "h2"}
+              id={headingId}
+              accent={accent}
+              after={after}
+            >
               {title}
             </Heading>
-            {lede ? <p className="section-row__lede">{lede}</p> : null}
-            {children ? <div className="section-row__body">{children}</div> : null}
+            {lede ? <p className="text-lead section-row__lede">{lede}</p> : null}
+            {children ? <div className="section-row__body text-body">{children}</div> : null}
           </div>
           {side ? <div className="section-row__side">{side}</div> : null}
         </div>

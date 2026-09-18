@@ -41,10 +41,12 @@ export default function Heading({
   children: ReactNode;
 }) {
   const Tag: ElementType = as ?? (tier === "hero" || tier === "page" ? "h1" : tier === "sub" ? "h3" : "h2");
+  /* the size comes from the shared text utility, not a tier-private rule */
+  const size = tier === "page" ? " text-display-1" : tier === "section" || tier === "case" ? " text-display-2" : "";
   return (
-    <Tag id={id} style={style} className={`display-heading display-heading--${tier} ${className}`.trim()}>
+    <Tag id={id} style={style} className={`display-heading display-heading--${tier}${size} ${className}`.trim()}>
       {children}
-      {accent != null ? <span className="display-heading__accent"> {accent}</span> : null}
+      {accent != null ? <span className="accent"> {accent}</span> : null}
       {after}
     </Tag>
   );

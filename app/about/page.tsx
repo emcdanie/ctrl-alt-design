@@ -5,7 +5,6 @@ import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
 import Heading from "@/components/ui/Heading";
 import Section, { SectionList, SectionTags } from "@/components/Section";
-import PawTrail from "@/components/PawTrail";
 import WorkedWith from "@/components/WorkedWith";
 import ExperienceSection from "@/components/ExperienceSection";
 import ResumeModal from "@/components/ResumeModal";
@@ -19,36 +18,33 @@ export default function AboutPage() {
     <main id="main-content" className="page-shell min-h-screen text-[var(--color-ink-soft)]">
       <OverlayNav />
 
-      {/* Flat hero: starts directly under the nav, no card, no gap */}
-      <section className="about-hi-section">
-        <div className="page-container about-hi">
-          <div className="about-hi__text">
-            <Heading tier="page" as="h1" accent="dog" after=".">
-              Fluent in design, code and
-            </Heading>
-            <p className="about-hi__line">
-              I build design systems that give designers and developers a shared language: tokens,
-              components, and the decisions behind them, written down kindly so everyone can use them.
-            </p>
-          </div>
-          <figure className="about-hi__figure">
+      {/* Hero: the Section hero variant, directly under the nav */}
+      <Section
+        variant="hero"
+        id="about-hero"
+        title="Fluent in design, code and"
+        accent="dog"
+        after="."
+        lede="I build design systems that give designers and developers a shared language: tokens, components, and the decisions behind them, written down kindly so everyone can use them."
+        side={
+          <figure className="section-figure">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              className="about-hi__art"
+              className="section-figure__art"
               src="/images/bella/set/elleta-bella-obi-walk.webp"
               alt="Illustration: Elleta walking her dogs Bella and Obi on leads."
               width={1216}
               height={1095}
             />
-            <figcaption className="about-hi__caption">
+            <figcaption className="text-meta">
               Bella speaks dog, I speak design. We agreed on five words. That&apos;s a design system.
             </figcaption>
           </figure>
-        </div>
-      </section>
+        }
+      />
 
-      <PawTrail />
       <Section
+        trail
         id="short-version"
         index="01"
         label="the short version"
@@ -74,8 +70,8 @@ export default function AboutPage() {
         </p>
       </Section>
 
-      <PawTrail />
       <Section
+        trail
         id="lately"
         index="02"
         label="lately"
@@ -115,13 +111,11 @@ export default function AboutPage() {
         </p>
       </Section>
 
-      <PawTrail />
-      <Section id="worked-with" index="03" label="worked with" title="Good" accent="company" after="." wide>
+      <Section trail id="worked-with" index="03" label="worked with" title="Good" accent="company" after="." wide>
         <WorkedWith />
       </Section>
 
-      <PawTrail />
-      <Section id="cares" index="04" label="what I care about" title="Four things I" accent="care" after=" about.">
+      <Section trail id="cares" index="04" label="what I care about" title="Four things I" accent="care" after=" about.">
         <div className="cares">
           <div>
             <h3 className="heading-item">Kindness</h3>
@@ -149,8 +143,8 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <PawTrail />
       <Section
+        trail
         id="experience"
         index="05"
         label="experience"
@@ -163,9 +157,8 @@ export default function AboutPage() {
       </Section>
       <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
 
-      <PawTrail />
       {/* TODO(elleta): placeholder copy from the build prompt, review */}
-      <Section id="how-i-work" index="06" label="how I work" title="Simple, on" accent="purpose" after=".">
+      <Section trail id="how-i-work" index="06" label="how I work" title="Simple, on" accent="purpose" after=".">
         <ol className="how">
           <li>
             <span className="how__num">01</span>
@@ -194,8 +187,8 @@ export default function AboutPage() {
       {/* Close: one line and a text link. The one contact CTA is the
           footer's Get in touch; until the site footer ships (step 5) the
           link goes to /contact. */}
-      <section className="about-close" aria-labelledby="about-close-title">
-        <div className="page-container">
+      <section className="section section--ruled" aria-labelledby="about-close-title">
+        <div className="container">
           <div className="about-close__row">
             <Heading tier="section" as="h2" id="about-close-title" accent="notes" after=".">
               Let&apos;s compare

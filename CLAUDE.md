@@ -48,8 +48,14 @@ override the constitution.
   safe, defaults keep clean URLs).
 
 ## 2. Layout
-- One centered container, **max-width 1240px**, consistent horizontal padding, every page. Never full-bleed text.
-- Vertical rhythm from the scale (`--space-section` = 96px desktop). No inline/ad-hoc paddings.
+- **One container:** `.container` (`--container-max` 1360px, `--container-pad` clamp 20 to 48px), every
+  page and the nav row. `.page-container` / `.layout-container` are aliases until every page migrates.
+  Never full-bleed text.
+- **One section rhythm:** `.section` pads by `--space-section` (clamp 64 to 112px); `.section--ruled`
+  draws the hairline. Gaps inside a section use `--space-stack-sm/md/lg`. No inline/ad-hoc paddings.
+- **Every page is Nav, then Sections, then Footer**, built from `.container` + `Section` (the hero is
+  `Section variant="hero"`).
+- **One `:root` for tokens**, at the top of `app/globals.css`. New tokens go there, never mid-file.
 - Cards fill the grid evenly (equal heights, consistent gaps).
 
 ## 3. Type
@@ -76,6 +82,10 @@ override the constitution.
   of cards. Applies to new and rebuilt surfaces; existing pages migrate when they are next touched.
 - The site nav doesn't count toward one-primary-per-page.
 - Name the UN as 'United Nations Geneva' (matches the CV).
+- **Type comes from the text utilities** (`.text-display-1/2/3`, `.text-lead`, `.text-body`,
+  `.text-meta`, `.accent`). No page-specific font sizes: if a size is missing, add a token.
+- **Never set heading widths in `ch` for Unique** (condensed, so `ch` wraps early): use
+  `--measure-heading` (14em). Headings `text-wrap: balance`, paragraphs `text-wrap: pretty`.
 - **Numbers in columns are right-aligned and tabular (Elleta, 2026-07-28, readability
   audit).** Any figure that sits in a column beside other figures (a table cell, a grid
   column, a stat row) uses `text-align: right` and `font-variant-numeric: tabular-nums`,

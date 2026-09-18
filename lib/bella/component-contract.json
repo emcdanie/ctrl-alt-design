@@ -186,7 +186,7 @@
       "source": "components/ui/Heading.tsx",
       "anatomy": [
         "display-heading",
-        "display-heading__accent (optional)"
+        "accent (optional, the one iris word)"
       ],
       "props": [
         {

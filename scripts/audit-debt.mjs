@@ -198,7 +198,10 @@ let tokenReport = "";
      class name, not by var(). This check reads var() and cannot see
      that. Judging them would report live design tokens as dead. If the
      check ever learns Tailwind's generation, widen this. */
-  const authoredSrc = readFileSync(AUTHORED, "utf8");
+  /* comments blanked (same length, so indices hold): the word "@theme"
+     inside a comment must not open a theme range and swallow the :root
+     that follows it, which silently skipped the whole token block */
+  const authoredSrc = readFileSync(AUTHORED, "utf8").replace(/\/\*[\s\S]*?\*\//g, (c) => c.replace(/[^\n]/g, " "));
   const themeRanges = [];
   for (const m of authoredSrc.matchAll(/@theme[^{]*\{/g)) {
     let depth = 1, i = m.index + m[0].length;
