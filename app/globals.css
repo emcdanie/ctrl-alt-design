@@ -862,9 +862,8 @@ li {
    headlines, no card grids. */
 :root {
   /* the illustration, fluid 390 to 1440 like the display ladder */
-  --about-art-height: clamp(280px, 280px + 160 * (100vw - 390px) / 1050, 440px);
-  /* one height for every mark in the Worked with row */
-  --logo-row-height: var(--spacing-8);
+  /* hero illustration cap (~330px): no empty band beside the text */
+  --about-art-height: clamp(240px, 240px + 90 * (100vw - 390px) / 1050, 330px);
 }
 
 .about-hi-section {
@@ -904,6 +903,7 @@ li {
   --section-index-width: 180px;
   --section-side-width: 320px;
   --section-lede-size: 19px;
+  --paw-trail-height: 130px;
 }
 
 .section-row__grid {
@@ -1005,63 +1005,304 @@ li {
   padding-top: var(--spacing-2);
 }
 
-/* Worked with: official marks as masks, painted with the theme ink */
+/* Good company: names as plain text in a ruled grid, no logos */
 .worked-with {
   list-style: none;
-  margin: 0;
+  margin: var(--spacing-6) 0 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  column-gap: var(--spacing-12);
-  row-gap: var(--spacing-6);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--color-semantic-border);
 }
 
-.worked-with__item {
-  display: flex;
-  align-items: center;
-  min-height: var(--logo-row-height);
-}
-
-.worked-with__logo {
-  display: block;
-  height: var(--logo-row-height);
-  background: var(--color-ink-soft);
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: contain;
+@media (min-width: 768px) {
+  .worked-with {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .worked-with__name {
+  padding: var(--spacing-5) var(--spacing-4) var(--spacing-5) 0;
+  border-bottom: 1px solid var(--color-semantic-border);
   font-family: var(--font-body);
-  font-size: var(--typography-font-size-xl);
-  font-weight: 700;
-  color: var(--color-ink-soft);
+  font-size: var(--typography-font-size-lg);
+  font-weight: 500;
+  color: var(--color-ink);
 }
 
-/* Experience: plain lines, the company carries the weight */
-.exp-lines {
+/* Experience: expandable rows (native <details>), a rule between rows */
+.xp-list {
+  margin: var(--spacing-6) 0 var(--spacing-8);
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.xp {
+  border-bottom: 1px solid var(--color-semantic-border);
+}
+
+.xp__summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto var(--icon-sm);
+  align-items: center;
+  gap: var(--spacing-4);
+  min-height: var(--spacing-touch-target);
+  padding: var(--spacing-4) 0;
   list-style: none;
-  margin: 0 0 var(--spacing-6);
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
+  cursor: pointer;
 }
 
-.exp-lines__row {
+.xp__summary::-webkit-details-marker {
+  display: none;
+}
+
+.xp__summary:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+  border-radius: var(--radius-md);
+}
+
+.xp__company {
+  display: block;
   font-family: var(--font-body);
-  font-size: var(--font-body-size);
-  line-height: var(--typography-line-height-snug);
-  color: var(--color-ink-soft);
-}
-
-.exp-lines__company {
+  font-size: var(--typography-font-size-lg);
   font-weight: 700;
   color: var(--color-ink);
+}
+
+.xp__current {
+  margin-left: var(--spacing-3);
+  padding: 2px var(--spacing-2);
+  border-radius: var(--radius-full);
+  background: var(--color-semantic-surface-inset);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 500;
+  color: var(--color-ink);
+  vertical-align: 2px;
+}
+
+.xp__role {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-soft);
+}
+
+.xp__dates {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.xp__chev {
+  color: var(--color-ink-muted);
+  transition: transform 250ms ease;
+}
+
+.xp[open] .xp__chev {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 640px) {
+  .xp__summary {
+    grid-template-columns: minmax(0, 1fr) var(--icon-sm);
+    row-gap: var(--spacing-1);
+  }
+
+  .xp__dates {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .xp__chev {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+.xp__body {
+  padding: 0 0 var(--spacing-6);
+}
+
+.xp__label {
+  margin: var(--spacing-4) 0 var(--spacing-2);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-eyebrow);
+}
+
+.xp__related {
+  max-width: var(--section-side-width);
+}
+
+.xp__thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.xp__rel-kicker {
+  margin: 0;
+  font-size: var(--typography-font-size-tag);
+  letter-spacing: 0.06em;
+  color: var(--color-ink-muted);
+}
+
+.xp__rel-title {
+  margin: var(--spacing-1) 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.xp__rel-cta {
+  margin: 0;
+  font-size: var(--typography-font-size-base);
+  font-weight: 500;
+  color: var(--color-accent-ink);
+}
+
+.xp__cv {
+  gap: var(--spacing-2);
+}
+
+/* Four things I care about: a 2x2 grid of plain blocks, no cards */
+.cares {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6) var(--spacing-10);
+  margin-top: var(--spacing-6);
+}
+
+@media (min-width: 768px) {
+  .cares {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cares h3,
+.how h3 {
+  margin: 0 0 var(--spacing-1);
+}
+
+.cares p,
+.how p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+/* How I work: three numbered rows */
+.how {
+  list-style: none;
+  margin: var(--spacing-6) 0 0;
+  padding: 0;
+}
+
+.how li {
+  display: grid;
+  grid-template-columns: var(--spacing-12) minmax(0, 1fr);
+  padding: var(--spacing-4) 0;
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.how__num {
+  padding: 3px var(--spacing-4) 0 0;
+  text-align: right;
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Close: one big line and a text link, a rule above */
+.about-close__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-6);
+  padding: var(--spacing-16) 0 var(--spacing-20);
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+/* Hero caption */
+.about-hi__figure {
+  margin: 0;
+  justify-self: center;
+}
+
+.about-hi__caption {
+  max-width: 34ch;
+  margin-top: var(--spacing-2);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+}
+
+/* Paw trail: decorative, in the gap between sections. Prints pop in one
+   by one when the gap scrolls into view, then settle to ~30% ink. */
+.paw-trail {
+  position: relative;
+  height: var(--paw-trail-height);
+}
+
+.paw-trail svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.paw-trail__paw {
+  fill: var(--color-ink);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.paw-trail--go .paw-trail__paw {
+  animation: paw-step 500ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: calc(var(--i) * 120ms);
+}
+
+.paw-trail--settled .paw-trail__paw {
+  animation: none;
+  opacity: 0.3;
+}
+
+@media (max-width: 640px) {
+  .paw-trail {
+    --paw-trail-height: 100px;
+  }
+}
+
+@keyframes paw-step {
+  0% { opacity: 0; transform: scale(0.4); }
+  55% { opacity: 0.5; transform: scale(1.08); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paw-trail__paw,
+  .paw-trail--go .paw-trail__paw {
+    animation: none;
+    opacity: 0.3;
+  }
+
+  .xp__chev {
+    transition: none;
+  }
 }
 
 /* tertiary action: iris + underlined, a button that reads as a link */
