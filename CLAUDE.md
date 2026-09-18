@@ -197,7 +197,8 @@ Must pass before any work is "done":
 - `audit:type` — no Card surface renders reading text below 16px COMPUTED; the shared
   `.card-body` recipe never computes below 18px; sitewide, any P/LI with own text past ~40
   chars computes >= 16px. Metadata rows (tags/pills/eyebrows/kickers) are a deliberate
-  separate tier and exempt. Every Unique heading tracks >= `--tracking-display` and leads
+  separate tier and exempt. Section index labels count as metadata: short labels only, never
+  sentences. Every Unique heading tracks >= `--tracking-display` and leads
   >= 1.0, and every h2 display head on a page computes one size.
 - `audit:visual` — one ground on /design-system (band backgrounds equal the page ground,
   no exceptions since the 23 Jul DS2 no-wash port), sibling specimen cards render equal

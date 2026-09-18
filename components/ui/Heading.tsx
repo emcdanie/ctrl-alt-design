@@ -12,7 +12,9 @@ export type HeadingTier = "hero" | "page" | "section" | "case" | "sub";
  * 700 at 24-32, never Unique. Tracking and leading come from
  * --tracking-display / --leading-display, never from a consumer.
  * Semantic level is decoupled from the visual tier via `as`. `accent`
- * renders the key word / trailing line in iris. Unique never renders
+ * renders the key word / trailing line in iris; `after` is plain text
+ * that follows it, so the accent can sit mid-sentence ("when AI shows
+ * up.") without the period turning iris. Unique never renders
  * below 24px (gate-enforced) and never in body, UI, card titles,
  * eyebrows, meta, nav, buttons, chips.
  */
@@ -20,6 +22,7 @@ export default function Heading({
   tier = "section",
   as,
   accent,
+  after,
   id,
   className = "",
   style,
@@ -30,6 +33,8 @@ export default function Heading({
   as?: "h1" | "h2" | "h3";
   /** optional accent segment rendered in iris after the main text */
   accent?: ReactNode;
+  /** plain text after the accent word (trailing words, punctuation) */
+  after?: ReactNode;
   id?: string;
   className?: string;
   style?: CSSProperties;
@@ -40,6 +45,7 @@ export default function Heading({
     <Tag id={id} style={style} className={`display-heading display-heading--${tier} ${className}`.trim()}>
       {children}
       {accent != null ? <span className="display-heading__accent"> {accent}</span> : null}
+      {after}
     </Tag>
   );
 }

@@ -867,6 +867,11 @@ li {
   --logo-row-height: var(--spacing-8);
 }
 
+.about-hi-section {
+  padding-top: calc(var(--header-height) + var(--spacing-8));
+  padding-bottom: var(--spacing-12);
+}
+
 .about-hi {
   display: grid;
   grid-template-columns: 1fr;
@@ -877,6 +882,7 @@ li {
 @media (min-width: 768px) {
   .about-hi {
     grid-template-columns: 1fr auto;
+    align-items: start;
   }
 }
 
@@ -889,6 +895,114 @@ li {
   height: var(--about-art-height);
   width: auto;
   justify-self: center;
+}
+
+/* ─── Section: the numbered three-column row (About, Work) ──────────
+   index label | heading, lede, body | side slot. A thin rule above each
+   row, never a card. One column under 768px. */
+:root {
+  --section-index-width: 180px;
+  --section-side-width: 320px;
+  --section-lede-size: 19px;
+}
+
+.section-row__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-4);
+  padding: var(--spacing-6) 0 var(--spacing-10);
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+@media (min-width: 768px) {
+  .section-row__grid {
+    grid-template-columns: var(--section-index-width) minmax(0, 1fr);
+    column-gap: var(--spacing-12);
+    padding-bottom: var(--spacing-12);
+  }
+
+  .section-row__side {
+    grid-column: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-row__grid {
+    grid-template-columns: var(--section-index-width) minmax(0, 1fr) var(--section-side-width);
+  }
+
+  .section-row__side {
+    grid-column: auto;
+  }
+}
+
+/* Metadata tier (14px, short labels only). --color-ink-muted measured
+   7.96:1 on the light ground (#F1EFE6), 9.45:1 on navy (#1B1B40). */
+.section-row__meta {
+  margin: 0;
+  padding-top: var(--spacing-2);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  letter-spacing: 0.02em;
+  color: var(--color-ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.section-row__num {
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.section-row__lede {
+  margin: var(--spacing-4) 0 0;
+  max-width: 34em;
+  font-family: var(--font-body);
+  font-size: var(--section-lede-size);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--color-ink);
+}
+
+.section-row__body {
+  max-width: 34em;
+}
+
+.section-row__body > p {
+  margin: var(--spacing-4) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.7;
+  color: var(--color-ink-soft);
+}
+
+.section-list {
+  margin: 0;
+  padding: var(--spacing-2) 0 0;
+  list-style: none;
+}
+
+.section-list li {
+  position: relative;
+  padding: 0 0 var(--spacing-3) var(--spacing-5);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+.section-list li::before {
+  content: "\203A";
+  position: absolute;
+  left: 2px;
+  font-weight: 700;
+  color: var(--color-accent-ink);
+}
+
+.section-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  padding-top: var(--spacing-2);
 }
 
 /* Worked with: official marks as masks, painted with the theme ink */
