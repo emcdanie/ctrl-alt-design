@@ -500,6 +500,7 @@
 
 @media (max-width: 640px) {
   .curatedGrid {
-    grid-template-columns: 1fr;
+    /* minmax(0, ...): a card's min-content can't push the page sideways */
+    grid-template-columns: minmax(0, 1fr);
   }
 }

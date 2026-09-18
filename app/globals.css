@@ -2184,6 +2184,26 @@ p {
 }
 
 /* hairline divider between segments (markup is ul > li > button) */
+/* reflow (WCAG 1.4.10): at narrow widths the control never exceeds its
+   column; the buttons share the width with tighter padding */
+@media (max-width: 400px) {
+  .seg-control {
+    display: flex;
+    max-width: 100%;
+  }
+
+  .seg-control li {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .seg-control button {
+    width: 100%;
+    justify-content: center;
+    padding: 0 var(--spacing-2);
+  }
+}
+
 .seg-control li + li button {
   box-shadow: -1px 0 0 0 var(--color-border-medium);
 }
@@ -3003,6 +3023,9 @@ textarea:focus-visible {
   align-items: center;
   gap: var(--spacing-2);
   min-width: 0;
+  /* never wider than its column: a long case title ellipsises instead
+     of pushing the page sideways at 320px (reflow, WCAG 1.4.10) */
+  max-width: 100%;
 }
 
 .cs-shell__crumb-sep {
