@@ -139,7 +139,7 @@ ladder below (endpoints 32 / 36 / 40 / 48 / 56 / 72). Body text never below
   Geist semibold (`.heading-item`).
 - Section intros: ONE pattern, the shared `ui/SectionHeader` (Geist caps
   iris eyebrow + the `ui/Heading` section tier, Unique 700 uppercase at
-  `--font-section-title`). No ad-hoc section titles.
+  `--font-display-section`). No ad-hoc section titles.
 - BELLA size tokens map 1:1 to the ramp: `tag` 13, `sm` 14, `base` 16,
   `lg` 18, `xl` 20, `2xl` 24, `3xl` 32, `4xl` 40, `5xl` 56.
 - No arbitrary `text-[Npx]` / inline px font sizes in components — ramp
@@ -156,7 +156,6 @@ ladder below (endpoints 32 / 36 / 40 / 48 / 56 / 72). Body text never below
 | `--font-display-section` | 32 → 48 (tier section: every section head and beat headline) |
 | `--font-display-case` | 32 → 48 (tier case: the case sign-off) |
 | `--font-hero` | `clamp(40px, 5vw, 56px)` (overlay nav links, Geist; not a heading tier) |
-| `--font-section-title` | `clamp(32px, 2.5vw, 40px)` |
 | `--font-subsection` | 24 → 32 (tier sub: h3-level sub-heading, Geist 700, never Unique) |
 
 The display ladder (display-type-scale fix, 18 Sep 2026) follows the

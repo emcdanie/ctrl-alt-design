@@ -1,62 +1,43 @@
-# About rebuild — design
+# About: design
 
-## Why
-About was a bio plus two galleries in flat beige: long, under-coloured, and off-system.
-It becomes a short scannable bio page in the site accent (iris/periwinkle), with the
-galleries rehomed. Source brief: the About rebuild prompt (2026-07-16).
-FLAG: the brief cites portfolio-content-audit §2; that document is not in the repo, so
-the structure is taken from the brief's own §2 list.
+## CONCEPT LOCK, 18 Sep 2026, LOCKED (Elleta, in session)
 
-## Cuts (About is a bio, not a gallery)
-- CtrlAltDesignSection (CTRL_ALT_DESIGN video cards + Interactive product experiments)
-  moves to /work as a Lab section below the library (`/work#design-lab`).
-  Decision: the brief offers "Work / the Design Lab case"; the design-lab case study is
-  deliberately unregistered until Elleta authors its decision blocks (recorded in
-  content/case-studies/design-lab.ts), so the /work section is the placement that ships
-  today without a stub case page. The workLibrary design-lab item repoints from
-  /about#design-lab to /work#design-lab.
-- Guardian's experiment card stays: the Guardian case is live and registered, so no
-  evidence it is retired. Drop it later if she confirms.
-- Testimonials are already on /contact (moved in the earlier About content pass);
-  nothing to do.
-- Dead `timelineEvents` array in about/page.tsx (defined, never rendered): deleted.
+Minimal About. Start small; add pieces back later, one at a time, each its own
+decision. Supersedes every earlier About spec (the July build and the 18 Sep eight-beat
+lock in PR #92, which was stopped before merge). `requirements.md` and `tasks.md` in this
+folder describe the July build and are stale.
 
-## Structure (top to bottom)
-1. Hero: periwinkle BubbleHeading (existing PageHeader variant="bubble") + photo +
-   the bio spine paragraph. ONE accent highlight: "AI-enabled design systems" in
-   accent-ink inside the first line.
-2. The problem space: the second bio paragraph under an iris eyebrow, trimmed of the
-   closing line (which moves to the close).
-3. Stats: MetricsStrip restyled quiet-but-alive: accent-subtle tinted cards, stat in
-   accent-ink, existing card anatomy. No case colours.
-4. How I collaborate: content unchanged; keeps its iris section-label.
-5. Experience: ExperienceSection unchanged structurally (already one clean list,
-   NDA-safe labels); hardcoded #4A4640 replaced with the ink token.
-6. Learning (ONE section): the existing five entries (Brad Frost Maker, Gordeshko,
-   Vitaly x2, IDS 2025+2026). LearningCard goes on-system: accent bar, icon plate, and
-   type chip use accent tokens; hardcoded #6B665D replaced with ink-muted.
-7. Close: one human line in her own words (the "hard problems with people who care"
-   sentence relocated from the bio) + the existing "open to roles" CTA block.
+### Spine
+1. **Hi.** The `elleta-bella-walk` illustration + two short lines in her voice. No
+   eyebrow label, no tagline, no highlighted keyword.
+2. **Worked with.** One row of real logos: Brad Frost Web, the 2024-25 employer, VML,
+   UN Geneva. Monochrome, equal height. Mango as plain text until Elleta confirms her
+   approval covers the logo. Logos are official files only (press/brand page or
+   Wikimedia Commons, SVG preferred) in `public/logos/`, source URL per file listed in
+   the PR. Never drawn or recreated. No official file, or use restricted: the name as
+   text. Names and file paths live in `components/ExperienceSection.tsx` (NDA-exempt).
+3. **Experience.** Five or six plain text lines, company · role · years, then
+   "Full CV →" opening `ResumeModal`. No cards, no accordions.
+4. **Say hi.** Copy email + LinkedIn.
 
-## Colour rules
-About is NOT a case: iris/periwinkle only, never case colours. Eyebrows already render
-accent-ink via .section-label. AA both themes on every change (gate verifies).
+### Cut
+Everything else on About: principles, credentials, education, testimonials, "Where I am
+now", stats, collaborate cards, learning, vinyl and podcasts, the closing banner.
+Credentials and education live in the CV only.
 
-## Type
-Unique 700 = the bubble heading only (PageHeader). Everything else Geist / Geist Mono
-from tokens. No hardcoded px or hex in anything this rebuild touches.
+### Nav
+Contact leaves the nav. A Southleft-style "Get in touch" button on the right opens the
+same two actions (Copy email + LinkedIn). The /contact route itself stays until its own
+PR retires it.
 
-## New gate check (audit:structure)
-- Fails any literal font-family value in app/ or components/ that does not resolve
-  through var(--font-*) (layout.tsx font loader and globals.css token definitions
-  exempt; VinylPlayer frozen-file exemption respected).
-- Fails var(--font-hero-display) / var(--font-unique) usage outside the sanctioned
-  files: app/globals.css, app/layout.tsx, components/Hero.module.css,
-  components/PageHeader.tsx, components/CaseCard.module.css,
-  components/DesignSystemSpecimens.tsx. About cannot drift off-system again.
-  (Below-24px Unique at runtime is already covered by audit:contrast.)
+### Email rule (constitution §6, amended by this lock)
+The address is never in the HTML or the source as one string. It is assembled on click
+and copied to the clipboard.
 
-## Reuse
-No new components. Touched: about/page.tsx, MetricsStrip, ExperienceSection (one hex),
-CtrlAltDesignSection (unchanged, re-mounted on /work), lib/workLibrary.ts (href),
-scripts/audit-structure.mjs.
+### Style rule going forward (constitution §3/§4, amended by this lock)
+No eyebrow label above every heading. No one-purple-word headlines. No card grids unless
+the content really is a set of cards. Applies to new and rebuilt surfaces; existing pages
+migrate when they are next touched.
+
+### Out of scope
+Adding back any cut piece (each returns as its own decision). Retiring /contact.

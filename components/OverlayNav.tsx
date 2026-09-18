@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { social } from "@/lib/social";
 import ThemeSwitch from "@/components/ThemeSwitch";
+import GetInTouch from "@/components/GetInTouch";
+import ContactActions from "@/components/ContactActions";
 
 
 /* Primary IA — visible in the desktop header (NN/g: hidden desktop nav
@@ -15,7 +16,6 @@ const menuItems = [
   { num: "02", label: "System", href: "/design-system" },
   { num: "03", label: "Skills", href: "/skills" },
   { num: "04", label: "About", href: "/about" },
-  { num: "05", label: "Contact", href: "/contact" },
 ];
 
 export default function OverlayNav() {
@@ -106,6 +106,11 @@ export default function OverlayNav() {
           </nav>
 
           <div className="flex items-center gap-4">
+          {/* Contact left the nav (about-rebuild lock, 18 Sep 2026): the
+              ask is a button; below lg it lives in the menu instead */}
+          <div className="hidden lg:block">
+            <GetInTouch />
+          </div>
           <ThemeSwitch />
           <button
             onClick={() => setOpen((o) => !o)}
@@ -218,17 +223,9 @@ export default function OverlayNav() {
                 Theme
               </span>
             </div>
-            {/* no plaintext email anywhere (copy rule, 2026-07-17):
-                the contact form is the channel */}
-            <a
-              href={social.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex w-fit items-center font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.18em] text-[color:var(--color-ink-muted)] transition-colors duration-150 hover:text-[color:var(--color-ink)]"
-              style={{ minHeight: "var(--spacing-touch-target)" }}
-            >
-              LinkedIn
-            </a>
+            {/* Get in touch, the menu's copy of the header button
+                (email assembled on click, §6) */}
+            <ContactActions />
           </div>
         </div>
       </div>

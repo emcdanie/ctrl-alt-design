@@ -16,7 +16,7 @@ import { receipt } from "./lib/receipt.mjs";
 const ROOTS = ["app", "components"];
 const EXT = /\.(tsx|ts|css)$/;
 const TOKEN_LAYER = new Set(["app/globals.css"]);
-const UNIQUE_ALLOWED = new Set(["app/globals.css", "components/Hero.module.css", "app/layout.tsx", "components/TestimonialSection.tsx"]); // TestimonialSection: quote glyph, recorded exception
+const UNIQUE_ALLOWED = new Set(["app/globals.css", "components/Hero.module.css", "app/layout.tsx"]);
 
 const MONO_FAMILY = /geist mono|jetbrains|ui-monospace|\bmonospace\b|chivo|source code|courier/i;
 const OTHER_FAMILY = /\b(fraunces|jakarta|cormorant|georgia)\b/i;

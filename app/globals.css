@@ -217,7 +217,6 @@ body {
   --leading-display: 1.05;
   /* the overlay nav's Geist link size (not a heading tier) */
   --font-hero: clamp(40px, 5vw, 56px);
-  --font-section-title: clamp(32px, 2.5vw, 40px);
   /* sub-heading tier (h3 level): Geist 700, never Unique, 24 to 32 */
   --font-subsection: clamp(24px, 24px + 8 * (100vw - 390px) / 1050, 32px);
   --font-card-title: clamp(20px, 1.4vw, 24px);
@@ -248,7 +247,6 @@ body {
   --case-drift-deep: #6A40AC;
   --case-guardian-hi: #AEBCF5;
   --case-guardian-lo: #8FA2F0;
-  --case-guardian-deep: #3B4FAC;
   --case-clarity-hi: #A6D8BC;
   --case-clarity-lo: #7FC79E;
   --case-clarity-deep: #256B4C;
@@ -264,7 +262,6 @@ body {
   --case-writing-deep: #B23C30;
   --case-code-first-text: var(--case-code-first-deep);
   --case-drift-text: var(--case-drift-deep);
-  --case-guardian-text: var(--case-guardian-deep);
   --case-clarity-text: var(--case-clarity-deep);
   --case-design-lab-text: var(--case-design-lab-deep);
   --case-writing-text: var(--case-writing-deep);
@@ -377,7 +374,6 @@ body {
      calibrated for light cards only) */
   --case-code-first-text: var(--case-code-first-hi);
   --case-drift-text: var(--case-drift-hi);
-  --case-guardian-text: var(--case-guardian-hi);
   --case-clarity-text: var(--case-clarity-hi);
   --case-design-lab-text: var(--case-design-lab-hi);
   /* brightened toward the on-dark ink (a11y, 21 Jul): the raw -hi
@@ -862,6 +858,157 @@ li {
   color: var(--ink-on-dark-strong);
 }
 
+
+/* ─── About, minimal (about-rebuild lock, 18 Sep 2026) ───────────
+   Hi, Worked with, Experience, Say hi. No eyebrows, no accent-word
+   headlines, no card grids. */
+:root {
+  /* the illustration, fluid 390 to 1440 like the display ladder */
+  --about-art-height: clamp(280px, 280px + 160 * (100vw - 390px) / 1050, 440px);
+  /* one height for every mark in the Worked with row */
+  --logo-row-height: var(--spacing-8);
+}
+
+.about-hi {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: var(--spacing-8);
+}
+
+@media (min-width: 768px) {
+  .about-hi {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+.about-hi__line {
+  margin: var(--spacing-4) 0 0;
+  max-width: 34ch;
+}
+
+.about-hi__art {
+  height: var(--about-art-height);
+  width: auto;
+  justify-self: center;
+}
+
+/* Worked with: official marks as masks, painted with the theme ink */
+.worked-with {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--spacing-12);
+  row-gap: var(--spacing-6);
+}
+
+.worked-with__item {
+  display: flex;
+  align-items: center;
+  min-height: var(--logo-row-height);
+}
+
+.worked-with__logo {
+  display: block;
+  height: var(--logo-row-height);
+  background: var(--color-ink-soft);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+
+.worked-with__name {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-xl);
+  font-weight: 700;
+  color: var(--color-ink-soft);
+}
+
+/* Experience: plain lines, the company carries the weight */
+.exp-lines {
+  list-style: none;
+  margin: 0 0 var(--spacing-6);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.exp-lines__row {
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-ink-soft);
+}
+
+.exp-lines__company {
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+/* tertiary action: iris + underlined, a button that reads as a link */
+.text-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.text-action:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* Copy email + LinkedIn (About "Say hi", the nav's Get in touch, the
+   mobile menu) */
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.contact-actions--stack {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.contact-actions .btn-key {
+  white-space: nowrap;
+}
+
+/* Get in touch: a disclosure in the header, panel under the button */
+.get-in-touch {
+  position: relative;
+}
+
+.get-in-touch__panel {
+  position: absolute;
+  top: calc(100% + var(--spacing-2));
+  right: 0;
+  z-index: 1;
+  padding: var(--spacing-4);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-background);
+  box-shadow: var(--shadow-soft);
+}
 
 /* H5 — inline item labels (collaboration cards, role titles…) */
 .heading-item {
@@ -2155,24 +2302,6 @@ textarea:focus-visible {
 /* D2 (Pass D 2026-07-18): About thesis tiles, the stat-tile direction
    with case colours (her 17 Jul brief). Plate = case hue mixed into
    card; static border per the calm-card rule; ink text keeps AA. */
-/* .thesis-tile stays: MetricsStrip consumes this recipe (task 8, her
-   decision stands). The thesis BLOCKS themselves are specimen bands
-   (task-6 winner) below. */
-.thesis-tile {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: var(--spacing-8);
-  border-radius: var(--radius-2xl);
-  background: color-mix(in srgb, var(--thesis-hi) 22%, var(--color-card));
-  border: 1px solid color-mix(in srgb, var(--thesis-hi) 52%, var(--color-card));
-}
-
-[data-theme="dark"] .thesis-tile {
-  background: color-mix(in srgb, var(--thesis-hi) 14%, var(--color-card));
-  border-color: color-mix(in srgb, var(--thesis-hi) 32%, var(--color-card));
-}
-
 /* ─── Statement cards (card-voice, Elleta 21 Jul: Unique never
    renders inside a Card; the Unique specimen treatment is retired) ──
    Geist statements on the ONE shared .card-statement recipe: hierarchy
@@ -2183,26 +2312,6 @@ textarea:focus-visible {
    Speaks the Card interaction language: hover gains the SHARED
    travelling border light, focus-within ring, reduced motion static.
    Body Geist 16px, relaxed line-height. */
-.thesis-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--grid-gap);
-  align-items: stretch;
-}
-
-/* four-up sibling grids (the collab statements) pair instead of
-   thirds; same gap, same stretch, one implementation */
-.thesis-row--pair {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-@media (max-width: 1023px) {
-  .thesis-row,
-  .thesis-row--pair {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* the ONE card statement recipe (card-voice, 21 Jul): Geist, the
    card-ramp step above .heading-item, statement colour = card ink,
    accent word coloured inline */
