@@ -4,58 +4,35 @@ import { useState } from "react";
 import OverlayNav from "@/components/OverlayNav";
 import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/Button";
-import ExperienceSection from "@/components/ExperienceSection";
+import ExperienceSection, { education } from "@/components/ExperienceSection";
 import ResumeModal from "@/components/ResumeModal";
-import MetricsStrip from "@/components/MetricsStrip";
+import ClientsBar from "@/components/ClientsBar";
 import Card from "@/components/ui/Card";
-import DisclosureCard from "@/components/ui/DisclosureCard";
 import SectionHeader from "@/components/ui/SectionHeader";
-import CtaBanner from "@/components/ui/CtaBanner";
 import TestimonialSection from "@/components/TestimonialSection";
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
-import VinylPlayer from "@/components/VinylPlayer";
+import { social } from "@/lib/social";
 
-/* Outside-the-work podcasts (Pass E task 7): her historical list,
- * verbatim, from the pre-lush LearningSection */
-const PODCASTS = [
-  {
-    title: "Honest UX Talks",
-    by: "Wix Studio",
-    href: "https://podcasts.apple.com/es/podcast/honest-ux-talks-by-wix-studio/id1547832809?l=en-GB",
-  },
-  {
-    title: "Patterns Podcast",
-    by: "Design Patterns",
-    href: "https://podcasts.apple.com/es/podcast/patterns-podcast/id1491843793?l=en-GB",
-  },
-  {
-    title: "On Purpose",
-    by: "Jay Shetty",
-    href: "https://podcasts.apple.com/es/podcast/on-purpose-with-jay-shetty/id1450994021?l=en-GB",
-  },
-];
+/* About, rebuilt Southleft-style (specs/about-rebuild/design.md, CONCEPT
+   LOCK 18 Sep 2026). Spine, in order: statement hero, Clients bar, where
+   I am now, principles, credentials, experience + View CV, testimonials,
+   contact. Her copy verbatim wherever it exists; the two lines that are
+   assembled rather than hers (the hero statement, "Where I am now") are
+   marked TODO(elleta) for review. Receipts and missing credentials are
+   TODO(elleta) slots that render NOTHING until she writes them. */
 
-/* ── Data ─────────────────────────────────────────────────────── */
-
-/* Card voice (Elleta, 21 Jul, card-voice): Unique never renders
-   inside a Card. Statements are Geist on the ONE shared
-   .card-statement recipe; both statement sections render through the
-   same StatementCard. Copy verbatim; accent word + colour picks are
-   MINE, flagged for her preview review. Receipts are TODO(elleta)
-   content slots: one concrete moment proving the principle (+ case
-   link where one exists). NEVER invent them; while the text is empty
-   the card renders as a non-interactive statement. */
-
-/* The three How-I-solve-problems theses, her copy verbatim (sentence
-   case; the old all-caps came from the retired Unique specimen CSS) */
-const THESES = [
+/* ── Beat 4: what I won't compromise on ─────────────────────────
+   Her three theses (the former How-I-solve-problems cards), verbatim.
+   Card voice: Geist on the ONE shared .card-statement recipe. */
+const PRINCIPLES = [
   {
     pre: "Systems are ",
     accentWord: "agreements,",
     post: " not component libraries.",
     accent: "var(--case-drift-text)",
     body: "A component library is an artefact. The system is the set of agreements around it: what counts as a pattern, who decides, when to extend versus build. When only the artefact exists, every team renegotiates those agreements ad hoc, and that is where drift starts.",
+    receipt: { text: "" /* TODO(elleta): the one decision it cost or earned */, caseHref: "", caseLabel: "" },
   },
   {
     pre: "",
@@ -63,6 +40,7 @@ const THESES = [
     post: " is what stops the drift.",
     accent: "var(--case-guardian-text)",
     body: "Drift is not a tooling failure; it is a decision-making failure. Naming, token structure, and contribution flow are governance surfaces. The systems that hold are the ones where the cheap path and the correct path are the same path.",
+    receipt: { text: "" /* TODO(elleta): the one decision it cost or earned */, caseHref: "", caseLabel: "" },
   },
   {
     pre: "I read ",
@@ -70,45 +48,11 @@ const THESES = [
     post: " so design and engineering stay honest.",
     accent: "var(--case-code-first-text)",
     body: "Parity between Figma and production is a claim that has to be checked in both directions. Reading the code, tokens, props, rendered output, is how I keep the design side accountable to what actually ships, and vice versa.",
+    receipt: { text: "" /* TODO(elleta): the one decision it cost or earned */, caseHref: "", caseLabel: "" },
+    applied: { href: "/case-studies/design-system-transformation", label: "See it applied: From Drift to Foundation →" },
   },
 ];
 
-const COLLAB_PRINCIPLES = [
-  {
-    pre: "I push back ",
-    accentWord: "respectfully",
-    post: "",
-    accent: "var(--case-chip-text)",
-    body: "If I think a brief is solving the wrong problem, I'll say so, with evidence, not just instinct. I'd rather surface a challenge early than deliver the wrong thing on time.",
-    receipt: { text: "" /* TODO(elleta): the concrete moment */, caseHref: "", caseLabel: "" },
-  },
-  {
-    pre: "I get ",
-    accentWord: "obsessed",
-    post: " with solving complex problems",
-    accent: "var(--case-clarity-text)",
-    body: "Ambiguity doesn't slow me down, it focuses me. I thrive in systems with competing constraints, unclear requirements, and high stakes.",
-    receipt: { text: "" /* TODO(elleta): the concrete moment */, caseHref: "", caseLabel: "" },
-  },
-  {
-    pre: "I ask for ",
-    accentWord: "early",
-    post: " feedback",
-    accent: "var(--case-filters-text)",
-    body: "I share rough work early and often. A scrappy concept that starts a conversation is worth more than a polished direction no one saw coming.",
-    receipt: { text: "" /* TODO(elleta): the concrete moment */, caseHref: "", caseLabel: "" },
-  },
-  {
-    pre: "I advocate for ",
-    accentWord: "both",
-    post: " users and the business",
-    accent: "var(--case-design-lab-text)",
-    body: "Good design solves for both. I don't treat business goals as a compromise, I treat them as part of the design problem.",
-    receipt: { text: "" /* TODO(elleta): the concrete moment */, caseHref: "", caseLabel: "" },
-  },
-];
-
-/* the ONE statement-card renderer for both sections */
 function StatementCard({
   p,
   children,
@@ -129,21 +73,14 @@ function StatementCard({
   );
 }
 
-/* The receipt disclosure: TokenAnnotation pattern language (trigger
-   button, aria-expanded/aria-controls, keyboard native, no animation
-   so reduced motion is safe by construction). Renders ONLY when the
+/* The receipt disclosure (TokenAnnotation pattern: trigger button,
+   aria-expanded/aria-controls, no animation). Renders ONLY when the
    receipt text exists. */
-function CollabReceipt({ receipt, accent, id }: { receipt: { text: string; caseHref?: string; caseLabel?: string }; accent: string; id: string }) {
+function Receipt({ receipt, accent, id }: { receipt: { text: string; caseHref?: string; caseLabel?: string }; accent: string; id: string }) {
   const [open, setOpen] = useState(false);
   return (
     <div style={{ marginTop: "var(--spacing-4)" }}>
-      <button
-        type="button"
-        className="tok-annotation__trigger"
-        aria-expanded={open}
-        aria-controls={id}
-        onClick={() => setOpen(!open)}
-      >
+      <button type="button" className="tok-annotation__trigger" aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>
         Receipt
       </button>
       {open && (
@@ -160,172 +97,65 @@ function CollabReceipt({ receipt, accent, id }: { receipt: { text: string; caseH
   );
 }
 
-interface LearningEntry {
+/* ── Beat 5: credentials ─────────────────────────────────────────
+   Moved up from the learning accordion: named issuers and dates, linked
+   where there is proof on the site. Entries marked `pending` have no
+   source in the repo yet and render nothing. */
+interface Credential {
   title: string;
-  instructor: string;
-  type: "workshop" | "course" | "conference";
+  issuer: string;
+  type: "course" | "workshop" | "conference" | "hackathon";
   year: string;
-  topics: string[];
-  reflection: string;
-  relatedWork?: { label: string; href: string };
-  certificateSrc?: string;
-  /** identity colour for the Card border/trace, so hover accents vary
-      per entry instead of all-iris (case palette + hub tokens) */
-  accent: string;
+  link?: { label: string; href: string };
+  pending?: boolean;
 }
 
-const learningEntries: LearningEntry[] = [
-  {
-    title: "Brad Frost Web Maker Program",
-    accent: "var(--case-code-first-text)",
-    instructor: "Brad Frost",
-    type: "course",
-    year: "2024-2025",
-    topics: ["Atomic Design", "Design Systems", "AI Enablement", "Code-First"],
-    reflection: "Contributing to Brad Frost's own component system, code first. Atomic Design learned from the person who wrote it, and the first real proof for me that AI tooling can accelerate system investigation without replacing design judgement.",
-    relatedWork: { label: "Code First case study", href: "/case-studies/brad-frost" },
-  },
-  {
-    title: "Smart Interface Design Patterns",
-    accent: "var(--case-filters-text)",
-    instructor: "Vitaly Friedman / Smashing Magazine",
-    type: "workshop",
-    year: "2025",
-    topics: ["Complex filtering patterns", "Progressive disclosure", "Cognitive load in UI", "Enterprise navigation"],
-    reflection: "This workshop fundamentally shaped how I think about filtering as a decision-support system rather than a data-exposure mechanism. The pattern vocabulary I developed here directly influenced the search and filtering redesign on a B2B travel platform.",
-    /* relatedWork link removed (curation, 22 Jul 2026): it pointed at
-       the archived filters case; the entry renders without a link */
-  },
-  {
-    title: "Into Design Systems",
-    accent: "var(--hub-bright)",
-    instructor: "Into Design Systems Conference",
-    type: "conference",
-    year: "2025 & 2026",
-    topics: ["Design token architecture", "Multi-brand systems", "Component governance", "Design-engineering handoff"],
-    reflection: "Attending IDS reinforced my conviction that design systems are fundamentally about shared language and governance, not component libraries. The talks on token architecture directly informed how I structured the design system on a B2B travel platform.",
-    relatedWork: { label: "Design System Case Study", href: "/case-studies/design-system-transformation" },
-  },
-  {
-    title: "Design Tokens Course",
-    accent: "var(--case-clarity-text)",
-    instructor: "Romina Kavčič, The Design System Guide",
-    type: "course",
-    year: "2025",
-    topics: ["Design tokens", "Naming and structure", "Token architecture", "Design-code handoff"],
-    reflection: "Where my token thinking got its spine: naming that scales, structure that survives handoff, and tokens as the contract between design and code. The token-first rule in everything I build traces back here.",
-    relatedWork: { label: "From Drift to Foundation", href: "/case-studies/design-system-transformation" },
-  },
-  {
-    title: "Designing Complex UIs in the Age of AI",
-    accent: "var(--case-drift-text)",
-    instructor: "Vitaly Friedman / Smashing Magazine",
-    type: "workshop",
-    year: "2026",
-    topics: ["AI interface patterns", "Design systems as AI infrastructure", "Spec files and token guidance", "Audit-driven AI workflows"],
-    reflection: "One session plus Vitaly's AI-ready design systems piece flipped my question from how do I use AI to can an agent consume my system. Design decisions as infrastructure: spec files, a token layer, audit scripts that catch what a model invents. It is why this site ships llms.txt and a machine-readable token manifest, and why my own gate argues with my prompts. Enrolled in the follow-up, Design Patterns For AI Interfaces, this November.",
-    relatedWork: { label: "See it live: the System page", href: "/design-system" },
-  },
+const CREDENTIALS: Credential[] = [
+  { title: "Brad Frost Web Maker Program", issuer: "Brad Frost", type: "course", year: "2024-2025", link: { label: "Code First case study", href: "/case-studies/brad-frost" } },
+  { title: "Design Tokens Course", issuer: "Romina Kavčič, The Design System Guide", type: "course", year: "2025", link: { label: "From Drift to Foundation", href: "/case-studies/design-system-transformation" } },
+  { title: "Into Design Systems", issuer: "Into Design Systems Conference", type: "conference", year: "2025 & 2026", link: { label: "Design System Case Study", href: "/case-studies/design-system-transformation" } },
+  { title: "Smart Interface Design Patterns", issuer: "Vitaly Friedman / Smashing Magazine", type: "workshop", year: "2025" },
+  { title: "Designing Complex UIs in the Age of AI", issuer: "Vitaly Friedman / Smashing Magazine", type: "workshop", year: "2026", link: { label: "See it live: the System page", href: "/design-system" } },
+  /* from the CHIP case: "Five days, solo, for the Anthropic Claude Code hackathon" */
+  { title: "Claude Code hackathon", issuer: "Anthropic", type: "hackathon", year: "2026", link: { label: "CHIP case study", href: "/case-studies/chip" } },
+  /* TODO(elleta): named in the lock, no source in the repo yet: year,
+     exact title, and a link if one is public. Render once filled. */
+  { title: "SmashingConf", issuer: "Smashing Magazine", type: "conference", year: "", pending: true },
+  { title: "TJ Pitre's Smashing workshop", issuer: "Smashing Magazine", type: "workshop", year: "", pending: true },
 ];
 
-/* ── Components ──────────────────────────────────────────────── */
-
-function TypeIcon({ type }: { type: string }) {
-  if (type === "workshop") return <Icon name="EditPencil" size="md" />;
-  if (type === "conference") return <Icon name="Microphone" size="md" />;
-  return <Icon name="Book" size="md" />;
-}
-
-/* ONE branded treatment per entry TYPE (generic metadata, deliberately
-   NOT case colours): a quiet tint on the icon tile + type badge so the
-   list scans by kind. Ink text keeps AA on every tint in both themes.
-   PROVISIONAL pending Elleta's call: per-type colour vs all-neutral,
-   and real partner logos vs this icon treatment. */
-const TYPE_STYLE: Record<string, { bg: string; fg: string }> = {
-  course: { bg: "var(--color-semantic-accent-subtle)", fg: "var(--color-accent-ink)" },
-  workshop: { bg: "color-mix(in srgb, var(--color-accent-peri) 26%, transparent)", fg: "var(--color-ink)" },
-  conference: { bg: "color-mix(in srgb, var(--color-ink) 8%, transparent)", fg: "var(--color-ink)" },
-};
-
-/* Learning entries render on the shared DisclosureCard; the header is
-   the icon tile + type/year meta, the body is topics + reflection. */
-function LearningEntryCard({ entry }: { entry: LearningEntry }) {
+function CredentialTile({ title, issuer, type, year, link }: { title: string; issuer: string; type?: string; year: string; link?: { label: string; href: string } }) {
   return (
-    <DisclosureCard
-      accent={entry.accent}
-      header={
-        <>
-          <div
-            style={{
-              width: "var(--spacing-10)",
-              height: "var(--spacing-10)",
-              borderRadius: "var(--radius-lg)",
-              background: TYPE_STYLE[entry.type].bg,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: TYPE_STYLE[entry.type].fg,
-              flexShrink: 0,
-            }}
-          >
-            <TypeIcon type={entry.type} />
-          </div>
-          <div className="min-w-0 flex-1">
-            <div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-2)", marginBottom: "var(--spacing-1)" }}>
-              <span
-                className="tag"
-                style={{ textTransform: "uppercase", background: TYPE_STYLE[entry.type].bg, color: "var(--color-ink)" }}
-              >
-                {entry.type}
-              </span>
-              <span style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", color: "var(--color-muted)" }}>
-                {entry.year}
-              </span>
-            </div>
-            <h3 className="heading-item" style={{ marginBottom: "var(--spacing-1)" }}>{entry.title}</h3>
-            <p className="card-meta" style={{ margin: 0 }}>{entry.instructor}</p>
-          </div>
-        </>
-      }
-    >
-      <div style={{ paddingTop: "var(--spacing-4)" }}>
-        <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-ink-muted)", marginBottom: "var(--spacing-2)" }}>
-          Topics covered
-        </p>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--spacing-2)", marginBottom: "var(--spacing-4)" }}>
-          {entry.topics.map((topic) => (
-            <span key={topic} className="tag">{topic}</span>
-          ))}
+    <Card className="h-full">
+      <div className="credential">
+        <div className="credential__meta">
+          {/* education tiles sit under their own label: no type tag */}
+          {type && <span className="tag" style={{ textTransform: "uppercase" }}>{type}</span>}
+          {year && <span className="card-meta">{year}</span>}
         </div>
-
-        <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-tag)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-ink-muted)", marginBottom: "var(--spacing-2)" }}>
-          What I took away
-        </p>
-        <p className="card-body" style={{ margin: 0, marginBottom: entry.relatedWork ? "var(--spacing-3)" : 0 }}>
-          {entry.reflection}
-        </p>
-
-        {entry.relatedWork && (
+        <h3 className="heading-item" style={{ margin: 0 }}>{title}</h3>
+        <p className="card-meta" style={{ margin: 0 }}>{issuer}</p>
+        {link && (
           <Link
-            href={entry.relatedWork.href}
+            href={link.href}
             style={{
               display: "inline-flex",
               alignItems: "center",
               minHeight: "var(--spacing-touch-target)",
-              gap: "var(--spacing-2)",
+              marginTop: "auto",
               fontFamily: "var(--font-body)",
-              fontSize: "var(--typography-font-size-tag)",
+              fontSize: "var(--typography-font-size-sm)",
               fontWeight: 600,
               color: "var(--color-accent-ink)",
               textDecoration: "underline",
               textUnderlineOffset: "3px",
             }}
           >
-            → {entry.relatedWork.label}
+            → {link.label}
           </Link>
         )}
       </div>
-    </DisclosureCard>
+    </Card>
   );
 }
 
@@ -338,30 +168,21 @@ export default function AboutPage() {
       <OverlayNav />
 
       <div className="relative">
-        {/* Hero / Intro: the portrait bubble IS the page device (one per
-            page); title matches the /work flat treatment exactly. */}
+        {/* 1. Statement hero. TODO(elleta): the statement is assembled
+            from her bio line ("so the system stays true on both sides of
+            handoff"); confirm or replace. */}
         <section className="layout-section-tight" style={{ paddingTop: "calc(var(--header-height) + var(--spacing-12))" }}>
           <div className="page-container">
             <div className="grid grid-cols-1 items-center gap-[var(--grid-gap)] lg:grid-cols-[1fr_auto]">
               <div>
-                <PageHeader eyebrow="About" title="Hey, I'm" accent="Elleta" />
-                <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-4)", maxWidth: "640px" }}>
-                  <p className="body-lg">
-                I design{" "}
-                <strong style={{ fontWeight: 600, color: "var(--color-accent-ink)" }}>
-                  AI-enabled design systems
-                </strong>{" "}
-                for complex, multi-role B2B and enterprise products. Tokens, components, and
-                the governance that keeps them from drifting. I read code, trace how components
-                actually behave in production, and work with engineers directly, so the system
-                stays true on both sides of handoff.
-              </p>
-                  <p className="body-lg" style={{ color: "var(--color-muted)" }}>
-                    Most of my work lives where the user journey is rarely linear and the stakes are
-                    high: booking platforms, operational dashboards, data-heavy tools, holding the
-                    tension between user needs, business constraints, and technical reality.
-                  </p>
-                </div>
+                <PageHeader eyebrow="About" title="Design systems that stay true on" accent="both sides of handoff." />
+                <p className="body-lg" style={{ maxWidth: "640px" }}>
+                  I design{" "}
+                  <strong style={{ fontWeight: 600, color: "var(--color-ink)" }}>AI-enabled design systems</strong>{" "}
+                  for complex, multi-role B2B and enterprise products. Tokens, components, and the
+                  governance that keeps them from drifting. I read code, trace how components
+                  actually behave in production, and work with engineers directly.
+                </p>
               </div>
 
               <div className="photo-bubble justify-self-center lg:justify-self-end">
@@ -369,60 +190,44 @@ export default function AboutPage() {
                 <img src="/images/thumbnails/Me.jpeg" alt="Elleta, portrait" />
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* At-a-glance facts */}
-        <section className="layout-section-tight">
-          <div className="page-container">
-            <MetricsStrip />
-          </div>
-        </section>
-
-        {/* Working With Me */}
-        <section className="layout-section-tight">
-          <div className="page-container">
-            <SectionHeader label="Working With Me" title="How I collaborate" />
-            {/* Same card grammar as How-I-solve-problems: ONE shared
-                StatementCard, pair grid; disclosure appears only when a
-                receipt line exists (TODO slots render nothing). */}
-            <div className="thesis-row thesis-row--pair">
-              {COLLAB_PRINCIPLES.map((p, i) => (
-                <StatementCard key={p.accentWord} p={p}>
-                  {p.receipt.text.trim() !== "" && (
-                    <CollabReceipt receipt={p.receipt} accent={p.accent} id={`collab-receipt-${i}`} />
-                  )}
-                </StatementCard>
-              ))}
+            {/* 2. Clients bar */}
+            <div style={{ marginTop: "var(--spacing-12)" }}>
+              <ClientsBar />
             </div>
           </div>
         </section>
 
-        {/* How I solve problems (#how-i-think): the Point of View theses,
-            folded in from the retired /point-of-view route. Her words,
-            condensed; one accent highlight; ends at the proof case. */}
-        <section id="how-i-think" className="layout-section-tight" style={{ scrollMarginTop: "calc(var(--header-height) + var(--spacing-4))" }}>
+        {/* 3. Where I am now. TODO(elleta): assembled from facts on the
+            site (Barcelona, the Brad Frost Web contract, BELLA, CHIP);
+            confirm the wording. */}
+        <section id="now" className="layout-section-tight">
           <div className="page-container">
-            {/* D3 (Pass D): the About mid-page Unique-energy moment,
-                ONE hero-tier header with the iris accent word */}
-            <SectionHeader label="How I Think" title="How I solve" accent="problems." />
-            {/* D2 (Pass D): the three theses as designed tiles, the
-                stat-tile direction. Case colours per her 17 Jul brief
-                (supersedes the older About-is-not-a-case note); tokens
-                only; copy unchanged. */}
+            <SectionHeader label="Now" title="Where I am" accent="now." />
+            <p className="body-lg about-now" style={{ maxWidth: "640px" }}>
+              Based in Barcelona. Right now I&apos;m contracting with Brad Frost Web on his component
+              system, and building{" "}
+              <Link href="/design-system" className="touch-inline">BELLA</Link>, the system behind this
+              site, and <Link href="/case-studies/chip" className="touch-inline">CHIP</Link>, the agent
+              that watches it for drift, in public.
+            </p>
+          </div>
+        </section>
+
+        {/* 4. What I won't compromise on */}
+        <section id="principles" className="layout-section-tight">
+          <div className="page-container">
+            <SectionHeader label="Principles" title="What I won't" accent="compromise on." />
             <div className="thesis-row">
-              {/* Card voice (Elleta, 21 Jul): statements in Geist on
-                  the shared .card-statement recipe; her copy verbatim;
-                  the theme-aware thesis-band surface + trace stays. */}
-              {THESES.map((t, i) => (
-                <StatementCard key={t.accentWord} p={t}>
-                  {i === 2 && (
+              {PRINCIPLES.map((p, i) => (
+                <StatementCard key={p.accentWord} p={p}>
+                  {p.receipt.text.trim() !== "" && <Receipt receipt={p.receipt} accent={p.accent} id={`principle-receipt-${i}`} />}
+                  {p.applied && (
                     <Link
-                      href="/case-studies/design-system-transformation"
+                      href={p.applied.href}
                       style={{
                         display: "inline-flex",
                         alignItems: "center",
-                        gap: "var(--spacing-2)",
                         marginTop: "var(--spacing-4)",
                         fontFamily: "var(--font-body)",
                         fontSize: "var(--typography-font-size-sm)",
@@ -433,7 +238,7 @@ export default function AboutPage() {
                         minHeight: "var(--spacing-touch-target)",
                       }}
                     >
-                      See it applied: From Drift to Foundation →
+                      {p.applied.label}
                     </Link>
                   )}
                 </StatementCard>
@@ -442,125 +247,51 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* THE one learning section (#learning) */}
-        <section id="learning" className="layout-section-tight">
+        {/* 5. Credentials (education folded in) */}
+        <section id="credentials" className="layout-section-tight">
           <div className="page-container">
-            <SectionHeader
-              label="Learning"
-              title="Continuous learning"
-              description="Workshops, courses, and conferences that have shaped how I think about design systems, interaction patterns, and complex interfaces."
-            />
-            <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)" }}>
-              {learningEntries.map((entry) => (
-                <LearningEntryCard key={entry.title} entry={entry} />
+            {/* no label: it would repeat the title word for word (D4 rhythm) */}
+            <SectionHeader title="Credentials" />
+            <div className="credentials-grid">
+              {CREDENTIALS.filter((c) => !c.pending).map((c) => (
+                <CredentialTile key={c.title} {...c} />
+              ))}
+            </div>
+            <p className="section-label" style={{ margin: "var(--spacing-12) 0 var(--spacing-4)" }}>
+              Education
+            </p>
+            <div className="credentials-grid">
+              {education.map((e) => (
+                <CredentialTile key={e.name} title={e.degree} issuer={e.name} year={e.period} />
               ))}
             </div>
           </div>
         </section>
 
+        {/* 6. Experience + View CV */}
         <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
         <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
 
-        {/* Outside the work (Pass E task 7): the music moment returns,
-            rebuilt on the current system. Her historical copy verbatim
-            (em dash swept); vinyl + podcasts on the ONE Card. */}
-        <section id="outside-the-work" className="layout-section-tight">
-          <div className="page-container">
-            <SectionHeader label="Outside the work" title="Learning & Inspiration" />
-            <div className="grid grid-cols-1 items-stretch gap-[var(--grid-gap)] sm:grid-cols-2">
-              <VinylPlayer />
-              <Card className="h-full">
-                <div style={{ padding: "var(--spacing-6)", height: "100%", display: "flex", flexDirection: "column" }}>
-                  <div
-                    style={{
-                      width: "var(--spacing-12)",
-                      height: "var(--spacing-12)",
-                      borderRadius: "var(--radius-lg)",
-                      background: "var(--color-tag-bg)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: "var(--spacing-4)",
-                      color: "var(--color-ink)",
-                    }}
-                  >
-                    <Icon name="Podcast" size="lg" />
-                  </div>
-                  <h3 className="heading-item" style={{ marginBottom: "var(--spacing-2)" }}>Podcasts</h3>
-                  <p className="card-body" style={{ marginBottom: "var(--spacing-4)" }}>
-                    Design thinking, systems, and personal growth, what I listen to between projects.
-                  </p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)", marginTop: "auto" }}>
-                    {PODCASTS.map((pod) => (
-                      <a
-                        key={pod.title}
-                        href={pod.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          gap: "var(--spacing-2)",
-                          padding: "var(--spacing-3) var(--spacing-4)",
-                          borderRadius: "var(--radius-lg)",
-                          background: "var(--color-tag-bg)",
-                          textDecoration: "none",
-                          minHeight: "var(--spacing-touch-target)",
-                        }}
-                      >
-                        <span style={{ minWidth: 0 }}>
-                          <span
-                            style={{
-                              display: "block",
-                              fontFamily: "var(--font-body)",
-                              fontSize: "var(--typography-font-size-base)",
-                              fontWeight: 600,
-                              color: "var(--color-accent-ink)",
-                              textDecoration: "underline",
-                              textUnderlineOffset: "3px",
-                              lineHeight: 1.3,
-                            }}
-                          >
-                            {pod.title}
-                          </span>
-                          {/* byline, the metadata tier: named so the
-                              hardened audit:type reads it as attribution
-                              rather than reading prose */}
-                          <span
-                            className="card-meta"
-                            style={{
-                              display: "block",
-                              fontFamily: "var(--font-body)",
-                              fontSize: "var(--typography-font-size-tag)",
-                              color: "var(--color-muted)",
-                              marginTop: "2px",
-                            }}
-                          >
-                            {pod.by}
-                          </span>
-                        </span>
-                        <Icon name="OpenNewWindow" size="sm" />
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Social proof: the page ends with third-party words, then the ask */}
+        {/* 7. Testimonials (always visible) */}
         <TestimonialSection />
 
-        {/* Close + CTA */}
-        <section className="layout-section-tight">
+        {/* 8. Contact: the page's one ask. Copy email lands with parent
+            spine item 2 (which also retires /contact and redirects here);
+            until then the message form is the channel. */}
+        <section id="contact" className="layout-section-tight">
           <div className="page-container">
-            <p className="body-lg" style={{ maxWidth: "600px", marginBottom: "var(--spacing-8)" }}>
-              I&apos;m at my best on hard problems with people who care about getting
-              them right.
+            <SectionHeader label="Contact" title="Open to full-time roles &" accent="select freelance projects." />
+            <p className="body-lg" style={{ maxWidth: "600px" }}>
+              I&apos;m at my best on hard problems with people who care about getting them right.
             </p>
-            <CtaBanner title={<>Open to full-time roles &<br />select freelance projects.</>} />
+            <div className="about-contact__actions">
+              <Button variant="primary" href="/contact">
+                Send a message <Icon name="ArrowRight" size="sm" />
+              </Button>
+              <Button href={social.linkedin}>
+                LinkedIn <Icon name="OpenNewWindow" size="sm" />
+              </Button>
+            </div>
           </div>
         </section>
       </div>

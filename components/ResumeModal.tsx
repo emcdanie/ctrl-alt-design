@@ -39,11 +39,19 @@ const education = [
   },
 ];
 
-const roles = [
+type CvRole = {
+  period: string;
+  title: string;
+  company: string;
+  highlights: string[];
+  clients?: CvRole[];
+};
+
+const roles: CvRole[] = [
   {
     period: "Oct 2025, Current",
     title: "Product Designer, Design Systems",
-    company: "Brad Frost Web (Maker Program)",
+    company: "Brad Frost Web (Maker Program) · Contract",
     highlights: [
       "Building a scalable Figma component library aligned with Brad Frost's Atomic Design methodology, contributing to a production-ready design system used across client web interfaces.",
       "Defining reusable UI components and interaction patterns to support consistent implementation, with direct input into accessibility standards and usage documentation.",
@@ -51,15 +59,35 @@ const roles = [
       "Working closely with front-end developers to validate feasibility and ensure design decisions.",
     ],
   },
+  /* elleta.design: the same grouping as ExperienceSection (About lock
+     beat 6), so the page and the CV never disagree */
   {
-    period: "Apr 2026, Jul 2026",
-    title: "Design Systems Specialist",
-    company: "Mango (Contract)",
-    highlights: [
-      "Owned cross-platform component governance across Web, iOS, and Android, defining, governing, and releasing reusable components across multiple shared Figma libraries, documented in Zeroheight.",
-      "Established AI-enabled design-system workflows with Claude, Figma MCP, and the Desktop Bridge, enabling automated audits, machine-readable component patterns, and scalable documentation.",
-      "Led design-to-code parity initiatives, bridging Figma and production codebases so the system stays true across design and build.",
-      "Ran accessibility and dark-mode audits across the system, and defined metrics for adoption, coverage, efficiency, and quality.",
+    period: "Oct 2025, Current",
+    title: "Design Systems Consultant",
+    company: "elleta.design",
+    highlights: [],
+    clients: [
+      {
+        period: "Apr 2026, Jul 2026",
+        title: "Design Systems Specialist",
+        company: "Mango",
+        highlights: [
+          "Owned cross-platform component governance across Web, iOS, and Android, defining, governing, and releasing reusable components across multiple shared Figma libraries, documented in Zeroheight.",
+          "Established AI-enabled design-system workflows with Claude, Figma MCP, and the Desktop Bridge, enabling automated audits, machine-readable component patterns, and scalable documentation.",
+          "Led design-to-code parity initiatives, bridging Figma and production codebases so the system stays true across design and build.",
+          "Ran accessibility and dark-mode audits across the system, and defined metrics for adoption, coverage, efficiency, and quality.",
+        ],
+      },
+      {
+        period: "Oct 2025, Dec 2025",
+        title: "Product Designer, Data Dashboard Prototype",
+        company: "UN Office at Geneva (UNOG)" /* TODO(elleta): exact entry wording is yours; the name is restored per _private/nda-employers.txt (Pass E task 9) */,
+        highlights: [
+          "Designed a high-fidelity dashboard prototype supporting operational transparency across multiple UN teams, translating complex organisational workflows into clear data visualisations and interactive analytics interfaces.",
+          "Conducted stakeholder interviews and requirements gathering across technical and non-technical users to define information architecture and layout structure.",
+          "Created modular UI components and scalable layout patterns suited to a high-stakes, multi-role enterprise environment with strict accessibility and usability requirements.",
+        ],
+      },
     ],
   },
   {
@@ -71,16 +99,6 @@ const roles = [
       "Built and implemented the company's first scalable design system from scratch: token architecture, reusable component library, and theme support, with tokens integrated directly into production code.",
       "Re-architected end-to-end booking verticals including search, filtering, sorting, seat selection, and post-booking management, designing consistent interaction patterns across API and edge-case constraints.",
       "Delivered high-fidelity prototypes for executive and investor presentations, contributing to funding that accelerated product development and team expansion.",
-    ],
-  },
-  {
-    period: "Oct 2025, Dec 2025",
-    title: "Product Designer, Data Dashboard Prototype (Contract)",
-    company: "UN Office at Geneva (UNOG) · Contract" /* TODO(elleta): exact entry wording is yours; the name is restored per _private/nda-employers.txt (Pass E task 9) */,
-    highlights: [
-      "Designed a high-fidelity dashboard prototype supporting operational transparency across multiple UN teams, translating complex organisational workflows into clear data visualisations and interactive analytics interfaces.",
-      "Conducted stakeholder interviews and requirements gathering across technical and non-technical users to define information architecture and layout structure.",
-      "Created modular UI components and scalable layout patterns suited to a high-stakes, multi-role enterprise environment with strict accessibility and usability requirements.",
     ],
   },
   {
@@ -305,6 +323,21 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
                         </li>
                       ))}
                     </ul>
+                    {role.clients?.map((c) => (
+                      <div key={c.company} className="mt-4">
+                        <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)] leading-snug">
+                          {c.title}{" "}
+                          <span className="font-normal text-[color:var(--ink-on-paper-soft)]">@ {c.company} · {c.period}</span>
+                        </p>
+                        <ul className="mt-2 space-y-1">
+                          {c.highlights.map((h) => (
+                            <li key={h} className="card-list-item text-[length:var(--typography-font-size-base)] text-[color:var(--ink-on-paper-soft)] leading-relaxed">
+                              <span>{h}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}

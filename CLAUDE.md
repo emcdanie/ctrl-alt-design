@@ -243,7 +243,6 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 - **Evidence before passing.** Update `feature_list.json` only with a note on how it was verified. Never delete or reword entries — only change status and evidence.
 - **Content drafts** (LinkedIn etc.) belong in Notion's Content Lab, not this repo — except `prototypes/linkedin-preview/`.
 - **File locations:** save deliverables into THIS folder — never cloud drives or scratch folders Elleta can't see. NDA-sensitive material goes in `_private/` (gitignored).
-- **The pre-commit hook false-positives** the Apple Music album id in `components/VinylPlayer.tsx` as a phone number — that file stays uncommitted (see `docs/fixes/`).
 
 ## End of session
 - Write or update the **session record** at `docs/session-<YYYY-MM-DD>.md`: what shipped, what

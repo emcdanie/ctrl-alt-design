@@ -1,4 +1,3 @@
-import FadeIn from "@/components/motion/FadeIn";
 import Card from "@/components/ui/Card";
 import SectionHeader from "@/components/ui/SectionHeader";
 
@@ -38,16 +37,13 @@ function QuoteCard({
   quote,
   name,
   role,
-  delay,
 }: {
   quote: string;
   name: string;
   role: string;
-  delay: number;
 }) {
   return (
-    <FadeIn delay={delay} distance={4} className="h-full">
-      <Card className="h-full" innerClassName="flex flex-col gap-[var(--spacing-3)]">
+    <Card className="h-full" innerClassName="flex flex-col gap-[var(--spacing-3)]">
         <figure style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)", flex: 1, margin: 0 }}>
           {/* quote glyph: Unique display at >=24px, soft peri tint.
               Recorded audit:fonts exception (the ONE decorative Unique). */}
@@ -97,7 +93,6 @@ function QuoteCard({
           </figcaption>
         </figure>
       </Card>
-    </FadeIn>
   );
 }
 
@@ -105,19 +100,19 @@ export default function TestimonialSection() {
   return (
     <section className="layout-section-tight">
       <div className="layout-container">
-        <FadeIn distance={4}>
-          <SectionHeader label="Social Proof" title="Trusted by product teams" />
-        </FadeIn>
+        {/* always visible, no fade-in (about-rebuild lock beat 7):
+            proof that waits for a scroll event is proof some visitors
+            never see */}
+        <SectionHeader label="Social Proof" title="Trusted by product teams" />
 
         {/* One uniform grid. Four quotes wrap 2x2 (1-col mobile) so no
             row is left with an orphan card; equal heights via stretch. */}
         <div className="grid grid-cols-1 items-stretch gap-[var(--grid-gap)] sm:grid-cols-2">
-          {quotes.map((q, i) => (
-            <QuoteCard key={q.name + q.role} {...q} delay={60 + i * 60} />
+          {quotes.map((q) => (
+            <QuoteCard key={q.name + q.role} {...q} />
           ))}
         </div>
 
-        <FadeIn delay={340} distance={4}>
           <div style={{ marginTop: "var(--spacing-6)" }}>
             <a
               href={LINKEDIN_RECOMMENDATIONS}
@@ -140,7 +135,6 @@ export default function TestimonialSection() {
               View all recommendations &rarr;
             </a>
           </div>
-        </FadeIn>
       </div>
     </section>
   );

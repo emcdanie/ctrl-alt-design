@@ -217,7 +217,6 @@ body {
   --leading-display: 1.05;
   /* the overlay nav's Geist link size (not a heading tier) */
   --font-hero: clamp(40px, 5vw, 56px);
-  --font-section-title: clamp(32px, 2.5vw, 40px);
   /* sub-heading tier (h3 level): Geist 700, never Unique, 24 to 32 */
   --font-subsection: clamp(24px, 24px + 8 * (100vw - 390px) / 1050, 32px);
   --font-card-title: clamp(20px, 1.4vw, 24px);
@@ -862,6 +861,98 @@ li {
   color: var(--ink-on-dark-strong);
 }
 
+
+/* ─── About (about-rebuild lock, 18 Sep 2026) ─────────────────────
+   The Clients bar: text wordmarks in one hairline-ruled row under the
+   statement hero. Geist, never Unique (not a heading); muted ink so the
+   row reads as proof, not as navigation. */
+.clients-bar {
+  border-block: 1px solid var(--color-border-soft);
+  padding-block: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.clients-bar__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--spacing-10);
+  row-gap: var(--spacing-3);
+}
+
+.clients-bar__name {
+  font-family: var(--font-body);
+  font-size: var(--font-card-title);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-eyebrow);
+  color: var(--color-ink-soft);
+}
+
+/* the elleta.design consultant entry's contract sub-lines */
+.exp-clients {
+  list-style: none;
+  margin: var(--spacing-2) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.exp-clients__row {
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-ink-muted);
+}
+
+.exp-clients__name {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* Credentials: one list of tiles, type + year as metadata */
+.credentials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  gap: var(--grid-gap);
+}
+
+.credential {
+  padding: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  height: 100%;
+}
+
+.credential__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+}
+
+/* "Where I am now": inline links keep the contract (section 4),
+   iris and underlined */
+.about-now a {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+
+/* Contact: the page's one ask */
+.about-contact__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-4);
+  margin-top: var(--spacing-8);
+}
 
 /* H5 — inline item labels (collaboration cards, role titles…) */
 .heading-item {
@@ -2155,24 +2246,6 @@ textarea:focus-visible {
 /* D2 (Pass D 2026-07-18): About thesis tiles, the stat-tile direction
    with case colours (her 17 Jul brief). Plate = case hue mixed into
    card; static border per the calm-card rule; ink text keeps AA. */
-/* .thesis-tile stays: MetricsStrip consumes this recipe (task 8, her
-   decision stands). The thesis BLOCKS themselves are specimen bands
-   (task-6 winner) below. */
-.thesis-tile {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: var(--spacing-8);
-  border-radius: var(--radius-2xl);
-  background: color-mix(in srgb, var(--thesis-hi) 22%, var(--color-card));
-  border: 1px solid color-mix(in srgb, var(--thesis-hi) 52%, var(--color-card));
-}
-
-[data-theme="dark"] .thesis-tile {
-  background: color-mix(in srgb, var(--thesis-hi) 14%, var(--color-card));
-  border-color: color-mix(in srgb, var(--thesis-hi) 32%, var(--color-card));
-}
-
 /* ─── Statement cards (card-voice, Elleta 21 Jul: Unique never
    renders inside a Card; the Unique specimen treatment is retired) ──
    Geist statements on the ONE shared .card-statement recipe: hierarchy
@@ -2190,15 +2263,8 @@ textarea:focus-visible {
   align-items: stretch;
 }
 
-/* four-up sibling grids (the collab statements) pair instead of
-   thirds; same gap, same stretch, one implementation */
-.thesis-row--pair {
-  grid-template-columns: repeat(2, 1fr);
-}
-
 @media (max-width: 1023px) {
-  .thesis-row,
-  .thesis-row--pair {
+  .thesis-row {
     grid-template-columns: 1fr;
   }
 }

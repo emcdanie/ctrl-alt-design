@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import LogoContainer from "@/components/LogoContainer";
 import ExperienceCard from "@/components/ExperienceCard";
-import Card from "@/components/ui/Card";
 import SectionHeader from "@/components/ui/SectionHeader";
 import SectionShell from "@/components/ui/SectionShell";
 import { Button } from "@/components/ui/Button";
@@ -20,12 +18,27 @@ import { Icon } from "@/components/ui/Icon";
    3. bradfrostwebjpeg.jpeg REPLACE (baked-in cream padding; clean PNG)
    4. bizaway mark          NEW (fresh asset from Elleta; add logoSrc then)
    5. UNOG mark             NEW (fresh asset from Elleta; add logoSrc then) */
-const roles = [
+type Role = {
+  title: string;
+  company: string;
+  period: string;
+  isCurrent?: boolean;
+  logoSrc?: string;
+  caseStudySlug?: string;
+  caseStudyLabel?: string;
+  highlights: string[];
+  /** the name this org shows in the About Clients bar (lock beat 2) */
+  wordmark?: string;
+  clients?: Role[];
+};
+
+const roles: Role[] = [
   {
     title: "Product Designer, Design Systems",
-    company: "Brad Frost Web (Maker Program)",
+    company: "Brad Frost Web (Maker Program) · Contract",
     period: "Oct 2025, Present",
     isCurrent: true,
+    wordmark: "Brad Frost",
     logoSrc: "/images/logos/bradfrostwebjpeg.jpeg",
     caseStudySlug: "case-studies/brad-frost",
     caseStudyLabel: "Code First, View case study →",
@@ -36,22 +49,50 @@ const roles = [
       "**Worked code-first**, traced prop structures in Storybook, aligned Figma variant names to code, and closed the token chain from primitive → semantic → component.",
     ],
   },
+  /* elleta.design (Elleta, 18 Sep 2026, About lock beat 6): ONE entry
+     holding the contracts beyond the headline client, each a sub-line
+     with its own role and dates. Brad Frost Web stays its own top entry.
+     Starts Oct 2025, the earliest of its contracts. */
   {
-    title: "Design Systems Specialist",
-    company: "Mango · Contract",
-    period: "Apr 2026, Jul 2026",
-    logoSrc: "/images/logos/mango.png",
-    highlights: [
-      "**Owned cross-platform component governance** across Web, iOS, and Android, defining, governing, and releasing reusable components across multiple shared Figma libraries, documented in Zeroheight.",
-      "**Established AI-enabled design-system workflows** with Claude, Figma MCP, and the Desktop Bridge, enabling automated audits, machine-readable component patterns, and scalable documentation.",
-      "**Led design-to-code parity initiatives**, bridging Figma and production codebases so the system stays true across design and build.",
-      "**Ran accessibility and dark-mode audits** across the system, and defined metrics for adoption, coverage, efficiency, and quality.",
+    title: "Design Systems Consultant",
+    company: "elleta.design",
+    period: "Oct 2025, Present",
+    isCurrent: true,
+    highlights: [],
+    clients: [
+      {
+        title: "Design Systems Specialist",
+        company: "Mango",
+        period: "Apr 2026, Jul 2026",
+        logoSrc: "/images/logos/mango.png",
+        wordmark: "Mango",
+        highlights: [
+          "**Owned cross-platform component governance** across Web, iOS, and Android, defining, governing, and releasing reusable components across multiple shared Figma libraries, documented in Zeroheight.",
+          "**Established AI-enabled design-system workflows** with Claude, Figma MCP, and the Desktop Bridge, enabling automated audits, machine-readable component patterns, and scalable documentation.",
+          "**Led design-to-code parity initiatives**, bridging Figma and production codebases so the system stays true across design and build.",
+          "**Ran accessibility and dark-mode audits** across the system, and defined metrics for adoption, coverage, efficiency, and quality.",
+        ],
+      },
+      {
+        title: "Product Designer, Data Dashboard",
+        company: "UN Office at Geneva (UNOG)" /* TODO(elleta): exact entry wording is yours; the name is restored per _private/nda-employers.txt (Pass E task 9) */,
+        period: "Oct 2025, Dec 2025",
+        /* case link removed (curation, 22 Jul 2026): the clarity case is
+           archived; the entry renders linkless like the other roles */
+        highlights: [
+          "**Designed a high-fidelity operational dashboard** for the UN ICT division, translating complex multi-team workflows into clear data visualisations and role-based analytics interfaces.",
+          "**Delivered within an 8-week contract**, from stakeholder interviews and IA definition through interactive prototype and annotated engineering handoff specs.",
+          "**Mapped 6+ operational domains** into a unified interface, making siloed data accessible and legible to both technical and non-technical users across the organisation.",
+          "**Created reusable component patterns** for a high-stakes enterprise environment with strict accessibility and multi-role usage requirements.",
+        ],
+      },
     ],
   },
   {
     title: "UX/UI Designer, Product & Design Systems",
     company: "BizAway" /* TODO(elleta): exact entry wording is yours; the name is restored per _private/nda-employers.txt (Pass E task 9) */,
     period: "Jul 2024, Feb 2026",
+    wordmark: "BizAway",
     caseStudySlug: "case-studies/design-system-transformation",
     caseStudyLabel: "From Drift to Foundation →",
     highlights: [
@@ -62,22 +103,10 @@ const roles = [
     ],
   },
   {
-    title: "Product Designer, Data Dashboard (Contract)",
-    company: "UN Office at Geneva (UNOG) · Contract" /* TODO(elleta): exact entry wording is yours; the name is restored per _private/nda-employers.txt (Pass E task 9) */,
-    period: "Oct 2025, Dec 2025",
-    /* case link removed (curation, 22 Jul 2026): the clarity case is
-       archived; the entry renders linkless like the other roles */
-    highlights: [
-      "**Designed a high-fidelity operational dashboard** for the UN ICT division, translating complex multi-team workflows into clear data visualisations and role-based analytics interfaces.",
-      "**Delivered within an 8-week contract**, from stakeholder interviews and IA definition through interactive prototype and annotated engineering handoff specs.",
-      "**Mapped 6+ operational domains** into a unified interface, making siloed data accessible and legible to both technical and non-technical users across the organisation.",
-      "**Created reusable component patterns** for a high-stakes enterprise environment with strict accessibility and multi-role usage requirements.",
-    ],
-  },
-  {
     title: "UX/UI Designer",
     company: "VML",
     period: "Feb 2023, Feb 2024",
+    wordmark: "VML",
     logoSrc: "/images/logos/vml.png",
     highlights: [
       "**Designed across multiple industry verticals**, mobile-native apps, digital products, and client-facing platforms from wireframes through production-ready high-fidelity prototypes.",
@@ -121,7 +150,8 @@ const roles = [
   },
 ];
 
-const education = [
+/* Education renders in About > Credentials (lock beat 5) */
+export const education = [
   {
     period: "Nov 2022, Jan 2023",
     name: "Ironhack",
@@ -153,6 +183,13 @@ const education = [
   },
 ];
 
+/* Clients bar names (About lock beat 2), read from this data so the
+   one private-list name stays in this NDA-exempt file: every role and
+   client carrying a wordmark, in timeline order. */
+export const CLIENT_WORDMARKS: string[] = roles.flatMap((r) =>
+  [r, ...(r.clients ?? [])].flatMap((x) => (x.wordmark ? [x.wordmark] : []))
+);
+
 interface ExperienceSectionProps {
   onResumeClick?: () => void;
 }
@@ -167,9 +204,9 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
         title="Experience"
         actions={
           onResumeClick ? (
-            <Button onClick={onResumeClick} variant="primary">
-              Download Resume
-              <Icon name="Download" size="sm" />
+            <Button onClick={onResumeClick}>
+              View CV
+              <Icon name="Page" size="sm" />
             </Button>
           ) : null
         }
@@ -186,34 +223,6 @@ export default function ExperienceSection({ onResumeClick }: ExperienceSectionPr
         ))}
       </div>
 
-      <div style={{ marginTop: "var(--spacing-16)" }}>
-        {/* no label: it duplicated the title word-for-word (D4 rhythm) */}
-        <SectionHeader title="Education" />
-        <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-2)" }}>
-          {education.map((edu) => (
-            <Card key={edu.name} innerClassName="!p-0 overflow-hidden">
-              <div className="flex w-full items-center gap-4 p-6">
-                <LogoContainer src={edu.logo} alt={edu.name} size={48} />
-                <div className="min-w-0 flex-1">
-                  <span className="heading-item" style={{ display: "block" }}>
-                    {edu.name}
-                  </span>
-                  <div className="mt-1 text-[length:var(--typography-font-size-sm)] leading-relaxed text-[color:var(--color-ink-muted)]">
-                    {edu.period ? `${edu.degree} · ${edu.period}` : edu.degree}
-                  </div>
-                </div>
-              </div>
-              {edu.description && (
-                <div className="border-t border-[color:var(--color-border-soft)] px-6 pb-6 pt-4">
-                  <p className="card-body">
-                    {edu.description}
-                  </p>
-                </div>
-              )}
-            </Card>
-          ))}
-        </div>
-      </div>
     </SectionShell>
   );
 }

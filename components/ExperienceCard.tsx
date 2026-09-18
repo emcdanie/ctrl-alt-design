@@ -16,6 +16,17 @@ export interface ExperienceCardProps {
   logoBg?: string;
   caseStudySlug?: string;
   caseStudyLabel?: string;
+  /** Clients bar name; not rendered here */
+  wordmark?: string;
+  /** contracts held under this entry (the elleta.design consultant
+      entry, About lock beat 6): each shows as a sub-line, and its
+      highlights disclose grouped under its name */
+  clients?: {
+    title: string;
+    company: string;
+    period: string;
+    highlights: string[];
+  }[];
   isOpen: boolean;
   onToggle: () => void;
 }
@@ -31,6 +42,7 @@ export default function ExperienceCard({
   logoBg,
   caseStudySlug,
   caseStudyLabel,
+  clients = [],
   isOpen,
   onToggle,
 }: ExperienceCardProps) {
@@ -51,13 +63,24 @@ export default function ExperienceCard({
         <div className="mt-1 text-[length:var(--typography-font-size-sm)] leading-relaxed text-[color:var(--color-ink-muted)]">
           {period ? `${company} · ${period}` : company}
         </div>
+        {clients.length > 0 && (
+          <ul className="exp-clients" aria-label={`Contracts at ${company}`}>
+            {clients.map((c) => (
+              <li key={c.company} className="card-meta exp-clients__row">
+                <span className="exp-clients__name">{c.company}</span>
+                {` · ${c.title} · ${c.period}`}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   );
 
   /* nothing to disclose (TODO(elleta) highlight slots render nothing,
      21 Jul rule): a plain card, no chevron, no dead expander */
-  if (highlights.length === 0 && !caseStudySlug) {
+  const clientHighlights = clients.some((c) => c.highlights.length > 0);
+  if (highlights.length === 0 && !caseStudySlug && !clientHighlights) {
     return (
       <Card innerClassName="!p-0 overflow-hidden">
         <div className="flex w-full items-center gap-4 p-6">{header}</div>
@@ -71,6 +94,23 @@ export default function ExperienceCard({
       onToggle={onToggle}
       header={header}
     >
+      {clients.filter((c) => c.highlights.length > 0).map((c) => (
+        <div key={c.company} className="pt-5">
+          <p className="heading-item" style={{ margin: 0 }}>
+            {c.company}, {c.title}
+          </p>
+          <ul className="flex flex-col gap-3 pt-3">
+            {c.highlights.map((h, i) => (
+              <li key={i} className="card-body card-list-item" style={{ maxWidth: "none" }}>
+                <span>
+                  <BoldText text={h} strongClassName="font-bold text-[color:var(--color-ink)]" />
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      {highlights.length > 0 && (
       <ul className="flex flex-col gap-3 pt-5">
         {highlights.map((h, i) => (
           <li key={i} className="card-body card-list-item" style={{ maxWidth: "none" }}>
@@ -80,6 +120,7 @@ export default function ExperienceCard({
           </li>
         ))}
       </ul>
+      )}
 
       {caseStudySlug && (
         <Link
