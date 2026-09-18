@@ -79,7 +79,7 @@ override the constitution.
   every heading. One iris word per display heading, only the word that matters (use the `accent`
   prop). Never on card titles or body text. No card grids unless the content really is a set
   of cards. Applies to new and rebuilt surfaces; existing pages migrate when they are next touched.
-- The site nav doesn't count toward one-primary-per-page.
+- The site nav and footer are global landmarks and don't count toward one-primary-per-page.
 - Name the UN as 'United Nations Geneva' (matches the CV).
 - **Type comes from the text utilities** (`.text-display-1/2/3`, `.text-lead`, `.text-body`,
   `.text-meta`, `.accent`). No page-specific font sizes: if a size is missing, add a token.

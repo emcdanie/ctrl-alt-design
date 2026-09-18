@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
-import GetInTouch from "@/components/GetInTouch";
-import PawTrail from "@/components/PawTrail";
 import Heading from "@/components/ui/Heading";
 import { Icon } from "@/components/ui/Icon";
 import Section, { SectionList } from "@/components/Section";
@@ -13,7 +11,7 @@ import ExperienceSection from "@/components/ExperienceSection";
 
 /* About: hero, then short lead, track record, the pack, (testimonials
    to come), new tricks and house rules on the shared Section, a paw trail
-   in each gap, and a closing contact card with the one Get in touch.
+   in each gap; the site footer carries the closing contact band.
    Copy is Elleta's, used verbatim. */
 export default function AboutPage() {
   return (
@@ -208,31 +206,6 @@ export default function AboutPage() {
           </Card>
         </div>
       </Section>
-
-      {/* Contact card: the page's one contact CTA (the nav keeps its own) */}
-      <section id="contact" className="section section--ruled" aria-labelledby="contact-title">
-        <PawTrail />
-        <div className="container">
-          <div className="contact-close">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="contact-close__photo" src="/images/thumbnails/Me.jpeg" alt="Elleta McDaniel" width={240} height={240} />
-            <div className="contact-close__text">
-              <Heading tier="section" as="h2" id="contact-title" accent="notes" after=".">
-                Let&apos;s compare
-              </Heading>
-              <p className="text-lead contact-close__lead">
-                Open to full-time roles and select freelance projects, working remotely from near Barcelona.
-              </p>
-              <ul className="text-body contact-close__lines">
-                <li>Straight to me: you talk to the person designing your system.</li>
-                <li>EU working hours, remote-first.</li>
-                <li>We start small: an audit or one component.</li>
-              </ul>
-              <GetInTouch />
-            </div>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

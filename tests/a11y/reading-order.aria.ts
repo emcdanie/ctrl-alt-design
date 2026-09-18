@@ -33,9 +33,6 @@ test.describe("About", () => {
   test("testimonials", async ({ page }) => {
     await expect(page.locator("#word-of-mouth")).toMatchAriaSnapshot(snap("about-testimonials"));
   });
-  test("contact", async ({ page }) => {
-    await expect(page.locator("#contact")).toMatchAriaSnapshot(snap("about-contact"));
-  });
   test("footer", async ({ page }) => {
     await expect(page.getByRole("contentinfo")).toMatchAriaSnapshot(snap("footer"));
   });

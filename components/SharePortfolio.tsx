@@ -7,7 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 
 /* Share my portfolio: the native share sheet where there is one;
    otherwise copy the URL and say so (aria-live) for 2 seconds. */
-export default function SharePortfolio() {
+export default function SharePortfolio({ className = "" }: { className?: string }) {
   const [copied, setCopied] = useState(false);
   useEffect(() => {
     if (!copied) return;
@@ -36,7 +36,7 @@ export default function SharePortfolio() {
 
   return (
     <div className="share-portfolio">
-      <Button onClick={share}>
+      <Button onClick={share} className={className}>
         <Icon name="ShareIos" size="sm" />
         Share my portfolio
       </Button>

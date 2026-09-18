@@ -141,7 +141,7 @@ export default function ContactSection() {
 
   return (
     <footer
-      id="contact"
+      id="contact-form"
       style={{
         paddingBottom: "var(--spacing-12)",
         scrollMarginTop: "calc(var(--header-height) + var(--spacing-4))",

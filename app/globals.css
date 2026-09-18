@@ -162,9 +162,9 @@ body {
   /* Good company grid cells (100px under 700px) */
   --logo-cell: 132px;
   --logo-cell-sm: 100px;
-  /* contact card photo (96px under 700px) */
-  --contact-photo: 120px;
-  --contact-photo-sm: 96px;
+  /* footer contact photo (72px under 700px) */
+  --footer-photo: 6rem;
+  --footer-photo-sm: 4.5rem;
   /* site footer: ELLETA as one word in Unique (96 -> 200px); Bella sits
      on the last A at 0.55x the cap height (Unique's cap is 0.706em) */
   --footer-wordmark-size: clamp(6rem, 14vw, 12.5rem);
@@ -1513,20 +1513,46 @@ p {
   container-type: inline-size;
 }
 
-.site-footer__top {
+/* contact band: photo + "Let's compare notes." + the one Get in touch,
+   beside the Building card (1fr 1fr from 900px); stacked on phones */
+.site-footer__contact {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-stack-lg);
+  align-items: start;
+  scroll-margin-top: calc(var(--header-height) + var(--spacing-4));
 }
 
-.site-footer__cta {
+.site-footer__hello {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
   gap: var(--space-stack-md);
 }
 
-.site-footer__line {
-  margin: 0;
+.site-footer__photo {
+  flex: none;
+  width: var(--footer-photo-sm);
+  height: var(--footer-photo-sm);
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.site-footer__lead {
+  margin: var(--space-stack-sm) 0 0;
+  color: var(--color-navy-ink);
+}
+
+.site-footer__lines {
+  list-style: none;
+  margin: var(--space-stack-sm) 0 0;
+  padding: 0;
+  font-size: var(--typography-font-size-base);
+  line-height: var(--leading-body);
+  color: color-mix(in srgb, var(--color-navy-ink) 70%, transparent);
+}
+
+.site-footer__lines li {
+  color: inherit;
 }
 
 .site-footer__actions {
@@ -1534,27 +1560,47 @@ p {
   flex-wrap: wrap;
   align-items: flex-start;
   gap: var(--space-stack-sm);
+  margin-top: var(--space-stack-md);
+}
+
+/* both footer buttons are pills; the primary is cream on navy */
+.site-footer .btn-pill {
+  border-radius: var(--radius-full);
+}
+
+.site-footer .btn-key--primary {
+  color: var(--color-brand-navy);
+  background: var(--color-navy-ink);
+}
+
+.site-footer .btn-key--primary:hover {
+  background: color-mix(in srgb, var(--color-navy-ink) 88%, var(--color-brand-navy));
 }
 
 .site-footer__cols {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-stack-lg) var(--space-stack-md);
+  margin-top: var(--space-stack-lg);
+}
+
+@media (min-width: 700px) {
+  .site-footer__photo {
+    width: var(--footer-photo);
+    height: var(--footer-photo);
+  }
 }
 
 @media (min-width: 900px) {
-  .site-footer__top {
-    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-    grid-template-areas: "cols cta";
-    align-items: start;
+  .site-footer__contact {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  .site-footer__cta {
-    grid-area: cta;
+  .site-footer__contact .building {
+    justify-self: end;
   }
 
   .site-footer__cols {
-    grid-area: cols;
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
@@ -1636,13 +1682,6 @@ p {
   width: auto;
   max-width: none;
   transform: translateX(-50%);
-}
-
-.site-footer__build {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-stack-sm);
 }
 
 /* Building card: window dots, status, a git-tag readout */
@@ -1825,49 +1864,6 @@ p {
   min-height: var(--spacing-6);
   font-size: var(--text-meta);
   color: inherit;
-}
-
-/* Contact close (not a card: no surface): photo | heading, lead, three lines, the one Get in
-   touch. Stacks (photo first, left-aligned) under 700px. */
-.contact-close {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-stack-md);
-  align-items: start;
-}
-
-@media (min-width: 700px) {
-  .contact-close {
-    grid-template-columns: auto minmax(0, 1fr);
-    column-gap: var(--space-stack-lg);
-  }
-}
-
-.contact-close__photo {
-  display: block;
-  width: var(--contact-photo-sm);
-  height: var(--contact-photo-sm);
-  border-radius: var(--radius-full);
-  object-fit: cover;
-}
-
-@media (min-width: 700px) {
-  .contact-close__photo {
-    width: var(--contact-photo);
-    height: var(--contact-photo);
-  }
-}
-
-.contact-close__lead {
-  margin: var(--space-stack-sm) 0 0;
-  color: var(--color-ink);
-}
-
-.contact-close__lines {
-  list-style: none;
-  margin: var(--space-stack-sm) 0 var(--space-stack-md);
-  padding: 0;
-  color: var(--color-ink-soft);
 }
 
 /* Paw trail: decorative, absolutely placed across the gap between
