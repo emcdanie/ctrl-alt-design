@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { assembleEmail } from "@/lib/social";
 
-/* The footer's email line. The address is never in the HTML (constitution
+/* Copy my email (the footer, and the policy pages). The address is never in the HTML (constitution
    §6): it is assembled only when someone asks to copy it. */
-export default function FooterEmail() {
+export default function FooterEmail({ className = "site-footer__link" }: { className?: string }) {
   const [copied, setCopied] = useState(false);
   useEffect(() => {
     if (!copied) return;
@@ -23,7 +23,7 @@ export default function FooterEmail() {
   };
   return (
     <>
-      <button type="button" className="site-footer__link" onClick={copy}>
+      <button type="button" className={className} onClick={copy}>
         {copied ? "Email copied" : "Copy my email"}
       </button>
       <span role="status" aria-live="polite" className="sr-only">

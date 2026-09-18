@@ -399,3 +399,16 @@ export function ResumeButton() {
     </>
   );
 }
+
+/* "CV" as a small text link (the footer's small print): opens the modal. */
+export function ResumeLink({ className = "" }: { className?: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button type="button" className={className} onClick={() => setOpen(true)}>
+        CV
+      </button>
+      <ResumeModal open={open} onClose={() => setOpen(false)} />
+    </>
+  );
+}

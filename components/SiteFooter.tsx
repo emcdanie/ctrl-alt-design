@@ -4,14 +4,21 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { PawIcon } from "@/components/PawTrail";
 import FooterEmail from "@/components/FooterEmail";
+import SharePortfolio from "@/components/SharePortfolio";
+import { ResumeLink } from "@/components/ResumeModal";
+import { BUILDING } from "@/content/building";
 import { social } from "@/lib/social";
 
 /* Site footer: navy with cream text in both themes. Three link columns
-   and one Get in touch, then ELLETA in Unique filling the container
-   width exactly (container query units), with Bella sitting on the last
+   and one Get in touch, then ELLETA in Unique, sized by height and spread
+   letter by letter across the container, with Bella sitting on the last
    A, then the small print. The wordmark is decorative: the nav carries
    the real one. */
 const version = JSON.parse(readFileSync(join(process.cwd(), "package.json"), "utf8")).version as string;
+/* "v0.1" from "0.1.0" */
+const liveTag = `v${version.split(".").slice(0, 2).join(".")}`;
+
+const MADE_WITH = ["Figma", "Claude Code", "Next.js", "Vercel", "Storybook", "BELLA", "Geist & Unique", "GitHub", "a lot of coffee", "Bella's supervision"];
 
 const external = (href: string, label: string, key: string) => (
   <a key={key} className="site-footer__link" href={href} target="_blank" rel="noopener noreferrer">
@@ -56,6 +63,38 @@ export default function SiteFooter() {
               Design systems, with the lights <span className="accent">on</span>.
             </p>
             <Button href="/contact">Get in touch</Button>
+
+            {/* what is live and what is next */}
+            <div className="building">
+              <p className="building__top">
+                <span className="building__dots" aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
+                </span>
+                <span className="building__status">
+                  <span aria-hidden="true">● </span>Building
+                </span>
+              </p>
+              <p className="building__line">
+                ~/elleta.design $ <b>git tag</b>
+              </p>
+              <p className="building__line">
+                <span className="building__live">{liveTag}</span> ← live
+              </p>
+              <p className="building__line">
+                <span className="building__next">{BUILDING.next}</span> ← in progress
+              </p>
+              <ul className="building__items">
+                {BUILDING.items.map((it) => (
+                  <li key={it}>{it}</li>
+                ))}
+              </ul>
+              <a className="site-footer__link building__details" href={BUILDING.detailsUrl} target="_blank" rel="noopener noreferrer">
+                View details ↗<span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            </div>
+            <SharePortfolio />
           </div>
           <nav className="site-footer__cols" aria-label="Footer">
             {COLUMNS.map((c) => (
@@ -74,9 +113,13 @@ export default function SiteFooter() {
           </nav>
         </div>
 
+        {/* the wordmark: sized by height, one span per letter spread across
+            the container; Bella sits on the last A */}
         <div className="site-footer__mark" aria-hidden="true">
           <span className="site-footer__wordmark">
-            ELLET
+            {"ELLET".split("").map((ch, i) => (
+              <span key={i}>{ch}</span>
+            ))}
             <span className="site-footer__a">
               A
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -85,14 +128,33 @@ export default function SiteFooter() {
           </span>
         </div>
 
-        <p className="text-meta site-footer__small">
+        {/* "Made with": a slow marquee; the loop copy is hidden from AT, and
+            reduced motion shows one static, wrapped line */}
+        <div className="made-with" role="region" tabIndex={0} aria-label="Made with">
+          <div className="made-with__track">
+            <ul className="made-with__list">
+              {MADE_WITH.map((m) => (
+                <li key={m}>Made with {m}</li>
+              ))}
+            </ul>
+            <ul className="made-with__list" aria-hidden="true">
+              {MADE_WITH.map((m) => (
+                <li key={m}>Made with {m}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="text-meta site-footer__small">
           {/* slot: "This page weighs XX KB" (filled by the footprint branch) */}
-          <span>v{version}</span>
-          <span aria-hidden="true">·</span>
-          <span>Built with Next.js + BELLA</span>
-          <span aria-hidden="true">·</span>
-          <span>© 2026 Elleta McDaniel</span>
-        </p>
+          <p>© 2026 Elleta McDaniel · Built with help from AI, reviewed line by line by me.</p>
+          <p className="site-footer__legal">
+            <span>v{version}</span>
+            <Link className="site-footer__link site-footer__link--small" href="/accessibility">Accessibility</Link>
+            <Link className="site-footer__link site-footer__link--small" href="/privacy">Privacy</Link>
+            <ResumeLink className="site-footer__link site-footer__link--small" />
+          </p>
+        </div>
       </div>
     </footer>
   );

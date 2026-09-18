@@ -67,13 +67,13 @@ export default function Section({
       <div className="container">
         <div className={hero ? "section-row__hero" : undefined}>
           <div className="section-row__main">
-            {hero ? null : (
+            {hero || !label ? null : (
               <p className="section-row__meta">
                 <PawIcon />
                 {index ? (
-                  <>
+                  <span aria-hidden="true">
                     <span className="section-row__num">{index}</span> /{" "}
-                  </>
+                  </span>
                 ) : null}
                 {label}
               </p>

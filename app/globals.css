@@ -165,12 +165,10 @@ body {
   /* contact card photo (96px under 700px) */
   --contact-photo: 120px;
   --contact-photo-sm: 96px;
-  /* site footer: the ELLETA wordmark fills the container's inline size.
-     Unique Regular "ELLETA": ink is 0.827em wide (measured on the
-     rendered page), starting 0.015em in;
-     cap height 0.706em. Bella sits on the last A at 0.35x cap height. */
-  --footer-wordmark-ink: 0.827;
-  --footer-wordmark-inset: 0.015em;
+  /* site footer wordmark: sized by height (96 -> 240px), letters
+     spread across the container. Unique's cap height is 0.706em; Bella
+     sits on the last A at 0.35x cap height. */
+  --footer-wordmark-size: clamp(6rem, 16vw, 15rem);
   --footer-bella-height: calc(0.706em * 0.35);
   /* heading measures in em (display-1 18em, the rest 22em) */
   /* STOPGAP override of BELLA's px size ramp, in rem so every size
@@ -1060,6 +1058,21 @@ p {
   margin: 0 auto var(--space-stack-sm);
 }
 
+/* a visible TODO for Elleta on the draft policy pages */
+.todo-note {
+  max-width: var(--measure-body);
+  margin: var(--space-stack-sm) 0 0;
+  padding: var(--spacing-3) var(--spacing-4);
+  border: 1.5px dashed var(--color-accent-ink);
+  border-radius: var(--radius-md);
+  font-size: var(--text-meta);
+  color: var(--color-ink);
+}
+
+.todo-note strong {
+  font-weight: 700;
+}
+
 /* 404: the links back */
 .not-found__links {
   display: flex;
@@ -1477,7 +1490,7 @@ p {
   --ring-focus-color: var(--color-navy-ink);
   background: var(--color-brand-navy);
   color: var(--color-navy-ink);
-  padding-top: var(--space-section);
+  padding-top: calc(var(--space-section) - var(--space-stack-md));
   overflow: hidden;
 }
 
@@ -1568,19 +1581,15 @@ p {
 
 /* the wordmark: ink edge to ink edge = the container's content width */
 .site-footer__mark {
-  margin-top: var(--space-section);
-  overflow-x: clip;
+  margin-top: var(--space-stack-lg);
 }
 
 .site-footer__wordmark {
   display: block;
   font-family: var(--font-hero-display);
   font-weight: 400;
-  font-size: calc(100cqi / var(--footer-wordmark-ink));
+  font-size: var(--footer-wordmark-size);
   line-height: 0.8;
-  letter-spacing: 0;
-  white-space: nowrap;
-  margin-left: calc(-1 * var(--footer-wordmark-inset));
   color: var(--color-navy-ink);
 }
 
@@ -1591,7 +1600,7 @@ p {
 .site-footer__bella {
   position: absolute;
   left: 50%;
-  bottom: calc(100% - 0.03em);
+  bottom: calc(100% - 0.005em);
   height: var(--footer-bella-height);
   width: auto;
   max-width: none;
@@ -1601,8 +1610,8 @@ p {
 .site-footer__small {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
-  column-gap: 0.5em;
+  justify-content: space-between;
+  gap: var(--spacing-2) var(--space-stack-md);
   margin: var(--space-stack-md) 0 0;
   padding-bottom: var(--space-stack-lg);
   color: color-mix(in srgb, var(--color-navy-ink) 70%, transparent);
@@ -1614,6 +1623,8 @@ p {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-stack-md);
+/* one flex item per letter, spread edge to edge; the top padding is
+   Bella's room, so she never sits over the text above */
   align-items: start;
 }
 
@@ -1625,7 +1636,9 @@ p {
 }
 
 .contact-close__photo {
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  padding-top: calc(var(--footer-bella-height) + 0.04em);
   width: var(--contact-photo-sm);
   height: var(--contact-photo-sm);
   border-radius: var(--radius-full);
@@ -1640,6 +1653,159 @@ p {
 }
 
 .contact-close__lead {
+/* Building card: window dots, status, a git-tag readout */
+.building {
+  width: 100%;
+  max-width: 22rem;
+  margin-top: var(--space-stack-sm);
+  padding: var(--space-stack-sm) var(--spacing-5);
+  border-radius: var(--radius-2xl);
+  border: 1px solid color-mix(in srgb, var(--color-navy-ink) 14%, transparent);
+  background: color-mix(in srgb, var(--color-navy-ink) 6%, transparent);
+  box-shadow: var(--shadow-soft);
+  font-family: var(--font-mono); /* Geist: the mono cut is retired */
+  font-size: var(--text-meta);
+  line-height: 1.75;
+  color: var(--ink-on-dark-body);
+}
+
+.building p {
+  margin: 0;
+  color: inherit;
+}
+
+.building__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-2);
+}
+
+.building__dots {
+  display: inline-flex;
+  gap: var(--spacing-1);
+}
+
+.building__dots i {
+  width: var(--spacing-2);
+  height: var(--spacing-2);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-navy-ink) 30%, transparent);
+}
+
+.building__status {
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-navy-ink);
+}
+
+.building__line b {
+  font-weight: 500;
+  color: var(--color-navy-ink);
+}
+
+.building__live,
+.building__next {
+  font-weight: 600;
+  color: var(--color-navy-ink);
+}
+
+.building__items {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 var(--spacing-4);
+}
+
+.building__items li {
+  color: var(--color-navy-ink);
+}
+
+.building__details {
+  min-height: var(--spacing-touch-target);
+  font-size: var(--text-meta);
+}
+
+.share-portfolio {
+  margin-top: var(--space-stack-sm);
+}
+
+.share-portfolio__status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-height: 1.5em;
+  margin: var(--spacing-2) 0 0;
+  font-size: var(--text-meta);
+  color: var(--color-navy-ink);
+}
+
+.share-portfolio__illo {
+  width: 2rem;
+  height: auto;
+}
+
+/* "Made with": a slow marquee, paused on hover and focus; reduced
+   motion shows the one list as a wrapped line */
+.made-with {
+  margin-top: var(--space-stack-lg);
+  padding: var(--space-stack-sm) 0;
+  border-block: 1px solid color-mix(in srgb, var(--color-navy-ink) 14%, transparent);
+  overflow: hidden;
+}
+
+.made-with:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.made-with__track {
+  display: flex;
+  width: max-content;
+  animation: made-with 60s linear infinite;
+}
+
+.made-with:hover .made-with__track,
+.made-with:focus-within .made-with__track {
+  animation-play-state: paused;
+}
+
+.made-with__list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  font-size: var(--text-meta);
+  color: var(--ink-on-dark-body);
+}
+
+.made-with__list li::after {
+  content: "·" / "";
+  margin: 0 1.1em;
+}
+
+@keyframes made-with {
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .made-with__track {
+    width: auto;
+    animation: none;
+  }
+
+  .made-with__list {
+    flex-wrap: wrap;
+    white-space: normal;
+    row-gap: var(--spacing-1);
+  }
+
+  .made-with__list[aria-hidden="true"] {
+    display: none;
+  }
+}
+
   margin: var(--space-stack-sm) 0 0;
   color: var(--color-ink);
 }
@@ -1650,6 +1816,23 @@ p {
   padding: 0;
   color: var(--color-ink-soft);
 }
+.site-footer__small p {
+  margin: 0;
+  color: inherit;
+}
+
+.site-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-stack-md);
+}
+
+.site-footer__link--small {
+  font-size: var(--text-meta);
+  color: inherit;
+}
+
 
 /* Paw trail: decorative, absolutely placed in a section's top padding,
    so it adds no height. Prints pop in one by one when the gap scrolls
