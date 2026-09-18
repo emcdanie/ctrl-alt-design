@@ -11,9 +11,10 @@ import { ResumeLink } from "@/components/ResumeModal";
 import { BUILDING } from "@/content/building";
 import { social } from "@/lib/social";
 
-/* Site footer: navy with cream text in both themes. The contact band
-   (photo, "Let's compare notes.", the one Get in touch, Share) beside the
-   Building card; the link columns; the marquee; then ELLETA in Unique as
+/* Site footer: navy with cream text in both themes. The "Made with"
+   marquee along the top edge; the contact band (photo, "Let's compare
+   notes.", the one Get in touch, Share) beside the Building card; the
+   link columns; then ELLETA in Unique as
    one word with Bella on the last A, and the small print. The wordmark
    is decorative: the nav carries the real one. */
 const version = JSON.parse(readFileSync(join(process.cwd(), "package.json"), "utf8")).version as string;
@@ -58,6 +59,24 @@ export default function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="container site-footer__inner">
+        {/* "Made with": a slow marquee along the footer's top edge; the
+            loop copy is hidden from AT, and reduced motion shows one
+            static, wrapped line */}
+        <div className="made-with" role="region" tabIndex={0} aria-label="Made with">
+          <div className="made-with__track">
+            <ul className="made-with__list">
+              {MADE_WITH.map((m) => (
+                <li key={m}>Made with {m}</li>
+              ))}
+            </ul>
+            <ul className="made-with__list" aria-hidden="true">
+              {MADE_WITH.map((m) => (
+                <li key={m}>Made with {m}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
         {/* contact band: the site's one closing CTA (About's old contact
             card lives here now) */}
         <div className="site-footer__contact" id="contact">
@@ -129,23 +148,6 @@ export default function SiteFooter() {
             </div>
           ))}
         </nav>
-
-        {/* "Made with": a slow marquee; the loop copy is hidden from AT, and
-            reduced motion shows one static, wrapped line */}
-        <div className="made-with" role="region" tabIndex={0} aria-label="Made with">
-          <div className="made-with__track">
-            <ul className="made-with__list">
-              {MADE_WITH.map((m) => (
-                <li key={m}>Made with {m}</li>
-              ))}
-            </ul>
-            <ul className="made-with__list" aria-hidden="true">
-              {MADE_WITH.map((m) => (
-                <li key={m}>Made with {m}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
 
         {/* brand row: ELLETA as one word with Bella on the last A; the
             small print sits right, bottom on the wordmark's baseline */}

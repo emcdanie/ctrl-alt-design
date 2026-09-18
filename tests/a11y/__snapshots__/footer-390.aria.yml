@@ -1,4 +1,16 @@
 - contentinfo:
+  - region "Made with":
+    - list:
+      - listitem: Made with Figma
+      - listitem: Made with Claude Code
+      - listitem: Made with Next.js
+      - listitem: Made with Vercel
+      - listitem: Made with Storybook
+      - listitem: Made with BELLA
+      - listitem: Made with Geist & Unique
+      - listitem: Made with GitHub
+      - listitem: Made with a lot of coffee
+      - listitem: Made with Bella's supervision
   - img "Elleta McDaniel"
   - heading "Let's compare notes." [level=2]
   - paragraph: Open to full-time roles and select freelance projects, working remotely from near Barcelona.
@@ -50,18 +62,6 @@
       - listitem:
         - button "Copy my email"
         - status
-  - region "Made with":
-    - list:
-      - listitem: Made with Figma
-      - listitem: Made with Claude Code
-      - listitem: Made with Next.js
-      - listitem: Made with Vercel
-      - listitem: Made with Storybook
-      - listitem: Made with BELLA
-      - listitem: Made with Geist & Unique
-      - listitem: Made with GitHub
-      - listitem: Made with a lot of coffee
-      - listitem: Made with Bella's supervision
   - paragraph: "© 2026 Elleta McDaniel · Built with help from AI, reviewed line by line by me."
   - paragraph:
     - text: v0.1.0

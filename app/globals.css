@@ -1566,7 +1566,6 @@ p {
   --ring-focus-color: var(--color-navy-ink);
   background: var(--color-brand-navy);
   color: var(--color-navy-ink);
-  padding-top: var(--space-stack-lg);
   overflow: hidden;
 }
 
@@ -1721,7 +1720,7 @@ p {
 }
 
 /* the wordmark reserves Bella's height above it, so she never reaches
-   the marquee; the negative bottom margin puts the box bottom on the
+   the links; the negative bottom margin puts the box bottom on the
    letters' baseline (line-height 0.8 leaves ~0.115em below it), so the
    small print can line up with the letters */
 .site-footer__mark {
@@ -1846,12 +1845,12 @@ p {
   height: auto;
 }
 
-/* "Made with": a slow marquee, paused on hover and focus; reduced
-   motion shows the one list as a wrapped line */
+/* "Made with": a slow marquee on the footer's top edge, paused on
+   hover and focus; reduced motion shows the one list as a wrapped line */
 .made-with {
-  margin-top: var(--space-stack-md);
+  margin-bottom: var(--space-stack-lg);
   padding: var(--space-stack-sm) 0;
-  border-block: 1px solid color-mix(in srgb, var(--color-navy-ink) 14%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy-ink) 14%, transparent);
   overflow: hidden;
 }
 
