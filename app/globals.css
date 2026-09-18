@@ -1036,7 +1036,9 @@ p {
   padding-top: var(--spacing-2);
   font-family: var(--font-body);
   font-size: var(--text-meta);
-  letter-spacing: 0.02em;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--color-ink-muted);
   font-variant-numeric: tabular-nums;
 }

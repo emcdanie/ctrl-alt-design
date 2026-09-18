@@ -40,9 +40,9 @@ export default function AboutPage() {
 
       <Section
         trail
-        id="short-version"
+        id="short-lead"
         index="01"
-        label="the short version"
+        label="The short lead"
         title="A shared language, not a"
         accent="rulebook"
         after="."
@@ -67,9 +67,9 @@ export default function AboutPage() {
 
       <Section
         trail
-        id="lately"
+        id="new-tricks"
         index="02"
-        label="lately"
+        label="New tricks"
         title="Design systems that don't fall apart when"
         accent="AI"
         after=" shows up."
@@ -106,11 +106,11 @@ export default function AboutPage() {
         </p>
       </Section>
 
-      <Section trail id="worked-with" index="03" label="worked with" title="Good" accent="company" after="." wide>
+      <Section trail id="the-pack" index="03" label="The pack" title="Good" accent="company" after="." wide>
         <WorkedWith />
       </Section>
 
-      <Section trail id="cares" index="04" label="what I care about" title="Four things I" accent="care" after=" about.">
+      <Section trail id="house-rules" index="04" label="House rules" title="Four things I" accent="care" after=" about.">
         <div className="cares">
           <div>
             <h3 className="heading-item">Kindness</h3>
@@ -140,9 +140,9 @@ export default function AboutPage() {
 
       <Section
         trail
-        id="experience"
+        id="track-record"
         index="05"
-        label="experience"
+        label="Track record"
         title="Where I've"
         accent="been"
         after="."
@@ -152,7 +152,7 @@ export default function AboutPage() {
       </Section>
 
       {/* TODO(elleta): placeholder copy from the build prompt, review */}
-      <Section trail id="how-i-work" index="06" label="how I work" title="Simple, on" accent="purpose" after=".">
+      <Section trail id="working-together" index="06" label="Working together" title="Simple, on" accent="purpose" after=".">
         <ol className="how">
           <li>
             <span className="how__num">01</span>

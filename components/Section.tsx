@@ -34,7 +34,7 @@ export default function Section({
   variant?: "row" | "hero";
   /** "01" (rows only) */
   index?: string;
-  /** "the short version" (rows only) */
+  /** the section's short name, e.g. "The short lead" (rows only) */
   label?: string;
   title: ReactNode;
   accent?: ReactNode;
