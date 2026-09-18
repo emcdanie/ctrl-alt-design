@@ -54,9 +54,7 @@ export default function AccessibilityPage() {
 
       <Section id="tell-me" title="Tell me if something doesn't work">
         <p>
-          If anything on this site is hard to use, email me with the page and what happened (
-          <FooterEmail className="text-action" />
-          ). I&apos;ll reply within five working days and fix what I can.
+          If anything on this site is hard to use, email me with the page and what happened (<FooterEmail className="text-action" />). I&apos;ll reply within five working days and fix what I can.
         </p>
       </Section>
     </main>
