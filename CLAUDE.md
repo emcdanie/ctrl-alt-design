@@ -55,7 +55,9 @@ override the constitution.
   display headings: home hero headline, page titles, section headers, case-study display headlines,
   and the keycap brand lockup, always all-caps with the established accent-word treatment where the
   design already does that. Every display heading renders through the ONE `ui/Heading` primitive
-  (tiers: hero / page / section / case). Page openings are FLAT (eyebrow + Heading, the Work
+  (tiers: hero / page / section / case, plus `sub`, the Geist 700 h3-level sub-heading;
+  tracking `--tracking-display`, leading `--leading-display`, and no consumer sets its own
+  heading size, tracking or leading). Page openings are FLAT (eyebrow + Heading, the Work
   pattern); bubble page headers are parked (last live at e25eefc, may return in the expression
   pass). The elevation/orb tokens stay: keycaps, the home cluster, and the About portrait still
   consume them.
@@ -185,7 +187,8 @@ Must pass before any work is "done":
 - `audit:type` — no Card surface renders reading text below 16px COMPUTED; the shared
   `.card-body` recipe never computes below 18px; sitewide, any P/LI with own text past ~40
   chars computes >= 16px. Metadata rows (tags/pills/eyebrows/kickers) are a deliberate
-  separate tier and exempt.
+  separate tier and exempt. Every Unique heading tracks >= `--tracking-display` and leads
+  >= 1.0, and every h2 display head on a page computes one size.
 - `audit:visual` — one ground on /design-system (band backgrounds equal the page ground,
   no exceptions since the 23 Jul DS2 no-wash port), sibling specimen cards render equal
   heights, cover placeholders clear 3:1 against both gradient stops, both themes.

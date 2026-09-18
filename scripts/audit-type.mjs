@@ -10,6 +10,7 @@ import { receipt } from "./lib/receipt.mjs";
 /* Declared for audit:debt's dead-selector check (27 Jul 2026). */
 export const TRACKED_SELECTORS = [
   '[class*="card"]', ".thesis-band", '[role="dialog"]', ".heading-item",
+  "h2.display-heading",
 ];
 
 const ROUTES = [
@@ -124,6 +125,41 @@ for (const route of ROUTES) {
     fails++;
     console.error(receipt("type", `${route} ${b}`, "own text past ~40 chars below 16px", ">=16px computed for reading text"));
   }
+  /* ── display type scale (display-type-scale fix, 18 Sep 2026): every
+     Unique heading tracks at >= --tracking-display and leads at >= 1.0,
+     and every section-tier head on a page computes ONE size (the /about
+     72 vs 50.4 split is the counter-example). Read from computed style,
+     so a consumer override fails the same as a bad token. ── */
+  const scaleBad = await page.evaluate(() => {
+    const out = [];
+    const floorEm = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--tracking-display"));
+    if (!Number.isFinite(floorEm)) return [[":root --tracking-display", "undefined", "a number in em"]];
+    for (const el of document.querySelectorAll("h1, h2, h3, h4, h5, h6")) {
+      const cs = getComputedStyle(el);
+      if (!/unique/i.test(cs.fontFamily) || !el.textContent.trim()) continue;
+      const size = parseFloat(cs.fontSize);
+      const trackEm = cs.letterSpacing === "normal" ? 0 : parseFloat(cs.letterSpacing) / size;
+      const lead = cs.lineHeight === "normal" ? 1.2 : parseFloat(cs.lineHeight) / size;
+      const label = el.textContent.trim().slice(0, 40);
+      if (trackEm < floorEm - 0.001) out.push([`"${label}" letter-spacing`, `${trackEm.toFixed(3)}em`, `>= ${floorEm}em (--tracking-display)`]);
+      if (lead < 1 - 0.001) out.push([`"${label}" line-height`, lead.toFixed(2), ">= 1.0"]);
+    }
+    /* every h2 display head is a section head, whatever tier a consumer
+       passed: the /about split was an h2 on tier page, which a
+       tier-class selector would never see */
+    const sizes = new Map();
+    for (const el of document.querySelectorAll("h2.display-heading:not(.display-heading--sub)")) {
+      if (!el.getClientRects().length) continue;
+      const fs = getComputedStyle(el).fontSize;
+      if (!sizes.has(fs)) sizes.set(fs, el.textContent.trim().slice(0, 30));
+    }
+    if (sizes.size > 1) out.push(["section heads", [...sizes].map(([fs, t]) => `${fs} ("${t}")`).join(" vs "), "one size per page"]);
+    return out;
+  });
+  for (const [what, got, expected] of scaleBad) {
+    fails++;
+    console.error(receipt("type", `${route} ${what}`, got, expected));
+  }
   /* Unique never renders inside a Card (runtime leg of the card-voice
      rule; the static file-level check exempts the System page whose
      type specimens are Unique ON THE GROUND by recorded exception) */
@@ -154,4 +190,4 @@ if (fails > 0) {
   console.error(`type gate: ${fails} failure(s)`);
   process.exit(1);
 }
-console.log("type gate: PASS (card reading text >=16px computed, card-body >=18px)");
+console.log("type gate: PASS (card reading text >=16px computed, card-body >=18px, display tracking/leading floors, one section-head size per page)");

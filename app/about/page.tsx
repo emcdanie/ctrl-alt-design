@@ -405,7 +405,7 @@ export default function AboutPage() {
           <div className="page-container">
             {/* D3 (Pass D): the About mid-page Unique-energy moment,
                 ONE hero-tier header with the iris accent word */}
-            <SectionHeader label="How I Think" tier="page" title="How I solve" accent="problems." />
+            <SectionHeader label="How I Think" title="How I solve" accent="problems." />
             {/* D2 (Pass D): the three theses as designed tiles, the
                 stat-tile direction. Case colours per her 17 Jul brief
                 (supersedes the older About-is-not-a-case note); tokens

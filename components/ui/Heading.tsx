@@ -1,19 +1,20 @@
 import type { CSSProperties, ElementType, ReactNode } from "react";
 
-export type HeadingTier = "hero" | "page" | "section" | "case";
+export type HeadingTier = "hero" | "page" | "section" | "case" | "sub";
 
 /**
- * THE display heading primitive (corrective pass 2026-07-17): every
- * display heading renders through this. Unique 700 all-caps at four
- * ramp tiers, each a DISTINCT rendered size (type-scale fix, 22 Jul
- * 2026): page (page + case-study H1s) > hero > section (section
- * heads + case beat headlines) > case (the smallest display step,
- * next-case pointers). Semantic level is decoupled from the visual
- * tier via `as`. `accent` renders the established hero treatment (key word /
- * trailing line in iris). The home hero headline and keycap lockup
- * keep their own shells but consume the same tokens; bubble page
- * headers are parked (last live at e25eefc). Unique never renders below 24px (gate-enforced) and
- * never in body, UI, card titles, eyebrows, meta, nav, buttons, chips.
+ * THE display heading primitive: every display heading renders through
+ * this. Unique 700 all-caps at four tiers, fluid between 390 and 1440
+ * (display-type-scale fix, 18 Sep 2026): hero 40-180 (home headline),
+ * page 40-64 (every page title: /about, case studies, /design-system),
+ * section 32-48 (every section head and beat headline, one size per
+ * page), case 32-48 (the case sign-off). Tier "sub" is the h3-level sub-heading: Geist
+ * 700 at 24-32, never Unique. Tracking and leading come from
+ * --tracking-display / --leading-display, never from a consumer.
+ * Semantic level is decoupled from the visual tier via `as`. `accent`
+ * renders the key word / trailing line in iris. Unique never renders
+ * below 24px (gate-enforced) and never in body, UI, card titles,
+ * eyebrows, meta, nav, buttons, chips.
  */
 export default function Heading({
   tier = "section",
@@ -34,7 +35,7 @@ export default function Heading({
   style?: CSSProperties;
   children: ReactNode;
 }) {
-  const Tag: ElementType = as ?? (tier === "hero" || tier === "page" ? "h1" : "h2");
+  const Tag: ElementType = as ?? (tier === "hero" || tier === "page" ? "h1" : tier === "sub" ? "h3" : "h2");
   return (
     <Tag id={id} style={style} className={`display-heading display-heading--${tier} ${className}`.trim()}>
       {children}

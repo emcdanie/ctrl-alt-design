@@ -10,8 +10,7 @@ interface SectionHeaderProps {
   contentClassName?: string;
   /** fixed-dark grounds (the contact footer): swap to on-dark inks */
   inverse?: boolean;
-  /** display tier; "hero" for a page's ONE deliberate scale moment,
-      "case" for the smallest display step (next-case pointers) */
+  /** display tier; section heads stay "section" (one size per page) */
   tier?: "section" | "hero" | "page" | "case";
   /** accent segment forwarded to Heading (iris accent word) */
   accent?: ReactNode;

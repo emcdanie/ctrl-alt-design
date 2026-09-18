@@ -24,12 +24,9 @@
   margin: 0 0 var(--spacing-4);
 }
 
-/* The Heading primitive supplies face/weight/caps/ink; this shell keeps
-   only the recorded home-hero scale (--font-hero-unique) and the proto's
-   tight leading, so PICK A PIECE stays the page's one scale moment. */
+/* The Heading primitive supplies face, size, tracking and leading
+   (hero tier); this shell keeps only the spacing below it. */
 .headline {
-  font-size: var(--font-hero-unique);
-  line-height: 0.8;
   margin: 0 0 var(--spacing-6);
 }
 

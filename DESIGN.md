@@ -102,9 +102,9 @@ acceptance test.
 
 ## §5. Type ramp (canonical)
 
-Sizes: **13 / 14 / 16 / 18 / 20 / 24 / 32 / 40 / 56** px, plus the hero
-display step (see `--font-hero-unique`). Body text never below 16px. No
-other sizes.
+Sizes: **13 / 14 / 16 / 18 / 20 / 24 / 32 / 40 / 56** px, plus the display
+ladder below (endpoints 32 / 36 / 40 / 48 / 56 / 72). Body text never below
+16px. No other sizes.
 
 - Card titles and subtitles (Elleta, 2026-07-21, via Cowork): BODY font,
   never Unique. Content-card titles (About "Working with me", Learning
@@ -151,12 +151,20 @@ other sizes.
 
 | Token | Pair |
 | --- | --- |
-| `--font-hero-unique` | `clamp(80px, 12.5vw, 184px)` (Unique hero headline only — recorded display-step exception, from `_proto/_hero.html`) |
-| `--font-case-headline` | `clamp(28px, 2.8vw, 42px)` (tier "case": the smallest display step, next-case pointers) |
-| `--font-case-display` | `clamp(40px, 5vw, 96px)` (tier "page": page titles + case-study H1s) |
-| `--font-hero` | `clamp(40px, 5vw, 56px)` |
+| `--font-display-hero` | 40 → 180 (Heading tier hero: the home headline) |
+| `--font-display-page` | 40 → 64 (tier page: every page title, case studies and /design-system included; the case pull quote) |
+| `--font-display-section` | 32 → 48 (tier section: every section head and beat headline) |
+| `--font-display-case` | 32 → 48 (tier case: the case sign-off) |
+| `--font-hero` | `clamp(40px, 5vw, 56px)` (overlay nav links, Geist; not a heading tier) |
 | `--font-section-title` | `clamp(32px, 2.5vw, 40px)` |
-| `--font-subsection` | `clamp(24px, 2.2vw, 32px)` |
+| `--font-subsection` | 24 → 32 (tier sub: h3-level sub-heading, Geist 700, never Unique) |
+
+The display ladder (display-type-scale fix, 18 Sep 2026) follows the
+Southleft scale and is fluid between a 390 and a 1440 viewport:
+`clamp(min, min + (max - min) * (100vw - 390px) / 1050, max)`. Every Unique heading tracks at `--tracking-display` (0.04em) and
+leads at `--leading-display` (1.05, never below 1). `audit:type` fails a
+Unique heading below either floor and two section-tier heads that compute
+different sizes on one page.
 | `--font-card-title` | `clamp(20px, 1.4vw, 24px)` |
 | `--font-body-size` | `clamp(16px, 1.1vw, 18px)` |
 | `--font-small` | `14px` (meta, fixed) |
@@ -505,12 +513,11 @@ mechanical at the first sentence; 13/13 stays the only metric on the page.
 
 ## Case-page type hierarchy, locked (type-scale fix, 22 Jul 2026)
 
-One scale, one display family, stepped through the Heading primitive's four
-tiers, each a DISTINCT rendered size: H1 case title = tier page
-(--font-case-display, 72px at 1440) -> beat headline = tier section
-(--font-section-display, ~50px at 1440; never Geist at display size; the
-22 Jul regression is the counter-example) -> next-case pointer = tier case
-(--font-case-headline, ~40px at 1440, the smallest display step) -> eyebrow
+One scale, one display family, stepped through the Heading primitive
+(revised 18 Sep 2026, display-type-scale fix): H1 case title = tier page
+(--font-display-page, 64px at 1440) -> beat headline = tier section
+(--font-display-section, 48px at 1440; never Geist at display size; the
+22 Jul regression is the counter-example) -> sign-off = tier case -> eyebrow
 = tag tier -> keyline = Geist 600 at lg -> body 16-18px. --font-beat-headline
 and the unused --font-case-title are retired. Media/link controls use the
 BELLA grammar (tertiary .demo-link) in CaseBeat's control slot, right-aligned

@@ -196,7 +196,8 @@
             "hero",
             "page",
             "section",
-            "case"
+            "case",
+            "sub"
           ]
         },
         {
@@ -220,23 +221,30 @@
       "variants": [
         {
           "name": "hero",
-          "delta": "font-size {--font-hero}, line-height 0.9"
+          "delta": "font-size {--font-display-hero} (home headline, 40-180)"
         },
         {
           "name": "page",
-          "delta": "font-size {--font-case-display}, line-height 0.9 (page titles + case-study H1s)"
+          "delta": "font-size {--font-display-page} (every page title incl. case studies and /design-system, 40-64)"
         },
         {
           "name": "case",
-          "delta": "font-size {--font-case-headline} (the smallest display step, next-case pointers)"
+          "delta": "font-size {--font-display-case} (the case sign-off, 32-48)"
+        },
+        {
+          "name": "sub",
+          "delta": "Geist 700, sentence case, font-size {--font-subsection} (h3-level sub-heading, 24-32, never Unique)"
         }
       ],
       "tokens": [
         "{--font-hero-display}",
-        "{--font-section-display}",
-        "{--font-case-display}",
-        "{--font-case-headline}",
-        "{--font-hero}",
+        "{--font-display-hero}",
+        "{--font-display-page}",
+        "{--font-display-section}",
+        "{--font-display-case}",
+        "{--font-subsection}",
+        "{--tracking-display}",
+        "{--leading-display}",
         "{--color-ink}"
       ]
     },
@@ -427,7 +435,7 @@
       "tokens": [
         "{--spacing-16}",
         "{--spacing-8}",
-        "{--font-section-display}",
+        "{--font-display-section}",
         "{--color-border-soft}"
       ],
       "requiresContext": {

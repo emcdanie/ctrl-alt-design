@@ -197,21 +197,29 @@ body {
    Ramp: 13/14/16/18/20/24/32/40/56. One fluid pair per step, endpoints
    on the ramp, defined ONCE here. No other clamp() in components. */
 :root {
-  --font-hero-unique: clamp(80px, 12.5vw, 184px);
-  /* the smallest display step (tier "case": next-case pointers), a
-     clear step below the section tier; floor clears the 24px Unique
-     minimum (type-scale fix, 22 Jul 2026; --font-beat-headline and
-     the unused --font-case-title retired, beat headlines now sit on
-     --font-section-display through the Heading primitive) */
-  --font-case-headline: clamp(28px, 2.8vw, 42px);
-  --font-case-display: clamp(40px, 5vw, 96px);
+  /* Display ladder (display-type-scale fix, 18 Sep 2026; Southleft
+     scale). Every tier is fluid between a 390 and a 1440 viewport:
+     clamp(min, min + (max - min) * (100vw - 390px) / 1050, max).
+     Section and case share one size on purpose: every section head on
+     every page renders the same, and audit:type fails two section
+     heads that compute differently on one page. */
+  /* the home headline keeps its scale moment: ~180 at 1440 */
+  --font-display-hero: clamp(40px, 40px + 140 * (100vw - 390px) / 1050, 180px);
+  /* page titles (/about, case studies, /design-system, every page H1):
+     one size, a clear step above the 48px section heads */
+  --font-display-page: clamp(40px, 40px + 24 * (100vw - 390px) / 1050, 64px);
+  --font-display-section: clamp(32px, 32px + 16 * (100vw - 390px) / 1050, 48px);
+  --font-display-case: clamp(32px, 32px + 16 * (100vw - 390px) / 1050, 48px);
+  /* Unique caps need air: the condensed bold cut collides at the old
+     0.005em / 0.9. Tracking is a floor for every Unique heading and
+     leading never drops below 1 (audit:type enforces both). */
+  --tracking-display: 0.04em;
+  --leading-display: 1.05;
+  /* the overlay nav's Geist link size (not a heading tier) */
   --font-hero: clamp(40px, 5vw, 56px);
   --font-section-title: clamp(32px, 2.5vw, 40px);
-  /* Display-section step (type-presence pass 2026-07-17): condensed
-     Unique needs more size than Geist did in the same slot. Endpoints
-     on the ramp (32/56); page tier stays larger at every width. */
-  --font-section-display: clamp(32px, 3.5vw, 56px);
-  --font-subsection: clamp(24px, 2.2vw, 32px);
+  /* sub-heading tier (h3 level): Geist 700, never Unique, 24 to 32 */
+  --font-subsection: clamp(24px, 24px + 8 * (100vw - 390px) / 1050, 32px);
   --font-card-title: clamp(20px, 1.4vw, 24px);
   --font-body-size: clamp(16px, 1.1vw, 18px);
   --font-small: 14px;
@@ -815,30 +823,35 @@ li {
   font-family: var(--font-hero-display);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.005em;
-  line-height: 0.95;
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-display);
   color: var(--color-ink);
 }
 
 .display-heading--hero {
-  font-size: var(--font-hero);
-  line-height: 0.9;
+  font-size: var(--font-display-hero);
 }
 
 .display-heading--page {
-  font-size: var(--font-case-display);
-  line-height: 0.9;
+  font-size: var(--font-display-page);
 }
 
 .display-heading--section {
-  font-size: var(--font-section-display);
+  font-size: var(--font-display-section);
 }
 
 .display-heading--case {
-  /* the SMALLEST display step (next-case pointers), one clear step
-     below section; case-study H1s render tier page (type-scale fix,
-     22 Jul 2026: no two tiers resolve the same rendered px) */
-  font-size: var(--font-case-headline);
+  /* the case-study display headline */
+  font-size: var(--font-display-case);
+}
+
+/* sub-heading (h3 level): Geist 700, sentence case, never Unique */
+.display-heading--sub {
+  font-family: var(--font-body);
+  text-transform: none;
+  letter-spacing: normal;
+  line-height: var(--typography-line-height-snug);
+  font-size: var(--font-subsection);
 }
 
 .display-heading__accent {
@@ -1349,7 +1362,9 @@ section[id],
    geometry). */
 .home-work-row {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  /* min(): below a 300px column the track shrinks to the container,
+     so a 320 viewport (256px content) never scrolls sideways */
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
   gap: var(--grid-gap);
   align-items: stretch;
   margin-top: var(--spacing-4);
@@ -4986,11 +5001,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-family: var(--font-hero-display);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.005em;
-  line-height: 1.05;
-  /* the thesis dominates (Elleta, 23 Jul): banner tier, a full step
-     ABOVE the beat headlines (--font-section-display), not below */
-  font-size: var(--font-case-display);
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-display);
+  /* the thesis dominates (Elleta, 23 Jul): page tier, a full step
+     ABOVE the beat headlines (--font-display-section), not below */
+  font-size: var(--font-display-page);
   color: var(--color-ink);
   max-width: 44ch;
   text-align: center;
