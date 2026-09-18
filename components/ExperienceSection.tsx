@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Card from "@/components/ui/Card";
 import { ResumeButton } from "@/components/ResumeModal";
 import { Icon } from "@/components/ui/Icon";
@@ -20,7 +21,8 @@ type Row = {
   current?: boolean;
   /** one muted line under the role: the clients behind the work */
   clients?: string;
-  did: string[];
+  /** bullets; <strong> marks the key phrase to scan for */
+  did: ReactNode[];
   /** case-study slugs (the last segment of a WORK_ITEMS href) */
   related?: string[];
 };
@@ -32,9 +34,9 @@ export const EXPERIENCE: Row[] = [
     /* end month unknown yet (Elleta, 18 Sep 2026) */
     dates: "Apr 2026 to 2026",
     did: [
-      "Brought AI into Mango's design-system work for the first time. With Claude, Figma MCP and Code Connect I automated audits and made components machine-readable, so I could ship far more in a few months while keeping Mango's design system up to date.",
-      "Built the tooling and documentation the team needed to adopt Code Connect themselves, so design-to-code parity didn't depend on me.",
-      "Owned cross-platform component governance across web, iOS and Android within Mango's design system, during a leadership transition.",
+      <>Brought AI into Mango&apos;s design-system work for the first time. With <strong>Claude, Figma MCP and Code Connect</strong> I automated audits and made components machine-readable, so I could ship far more in a few months while keeping Mango&apos;s design system up to date.</>,
+      <>Built the tooling and documentation the team needed to <strong>adopt Code Connect themselves</strong>, so design-to-code parity didn&apos;t depend on me.</>,
+      <>Owned cross-platform component governance across <strong>web, iOS and Android</strong> within Mango&apos;s design system, during a leadership transition.</>,
       "Defined, governed and released reusable components across shared Figma libraries, documented in Zeroheight.",
       "Led accessibility and dark-mode audits, and defined design-system metrics for adoption, coverage, efficiency and quality.",
     ],
@@ -57,8 +59,8 @@ export const EXPERIENCE: Row[] = [
     dates: "2024 to 2026",
     clients: "Clients included Air France and WeRoad.",
     did: [
-      "Built the company's first design system from scratch (tokens, components, themes), with AI in mind from day one, and integrated the tokens into production with engineering.",
-      "Wrote the documentation even when I was told it wasn't important, because a system nobody can read is a system nobody uses.",
+      <>Built the company&apos;s <strong>first design system from scratch</strong> (tokens, components, themes), with AI in mind from day one, and integrated the tokens into production with engineering.</>,
+      <><strong>Wrote the documentation</strong> even when I was told it wasn&apos;t important, because a system nobody can read is a system nobody uses.</>,
       "Led the UX transformation of a legacy SaaS travel platform: booking, admin, finance and multi-role dashboards.",
       "Designed and shipped end-to-end booking flows for flights and cars: search, filters, seat maps, upsells and post-booking.",
     ],
@@ -127,8 +129,8 @@ export default function ExperienceSection() {
             <div className="xp__body">
               <p className="xp__label">What I did</p>
               <ul className="section-list">
-                {r.did.map((d) => (
-                  <li key={d}>{d}</li>
+                {r.did.map((d, i) => (
+                  <li key={i}>{d}</li>
                 ))}
               </ul>
               {r.related?.length ? (

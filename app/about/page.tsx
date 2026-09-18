@@ -20,7 +20,12 @@ export default function AboutPage() {
         title="Fluent in design, code and"
         accent="dog"
         after="."
-        lede="I build design systems that give designers and developers a shared language: tokens, components, and the decisions behind them, written down kindly so everyone can use them."
+        lede={
+          <>
+            I build design systems that give designers and developers a <strong>shared language</strong>: tokens,
+            components, and the decisions behind them, written down kindly so everyone can use them.
+          </>
+        }
         side={
           <figure className="section-figure">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -60,8 +65,9 @@ export default function AboutPage() {
       >
         <p>
           Components get duplicated. Decisions get made under sprint pressure and nobody writes them
-          down. The file meant to be the source of truth turns into the one nobody trusts. Digging out
-          the structure underneath, so design and dev can talk again, is the part I&apos;d do for free.
+          down. The file meant to be the <strong>source of truth</strong> turns into the one nobody trusts.
+          Digging out the structure underneath, <strong>so design and dev can talk again</strong>, is the part
+          I&apos;d do for free.
         </p>
       </Section>
 
@@ -87,17 +93,17 @@ export default function AboutPage() {
         }
       >
         <p>
-          I use Claude to synthesise research and audits, draft docs, and check my own work. I&apos;m
+          I use Claude to <strong>synthesise research and audits</strong>, draft docs, and check my own work. I&apos;m
           happy to try a new tool the week it lands: Figma MCP, Code Connect, Storybook. But the tools
-          are the easy part. A system only sticks when the people using it trust it, so I work with
-          teams, not against them: pairing with engineers, bringing designers into the decisions, and
+          are the easy part. A system only sticks when the people using it trust it, so <strong>I work with
+          teams, not against them</strong>: pairing with engineers, bringing designers into the decisions, and
           building the relationships that shape how a company actually uses its system.
         </p>
         <p>
-          At Mango I was the first to bring AI into their design-system work: I used it to audit and
+          At Mango I was <strong>the first to bring AI into their design-system work</strong>: I used it to audit and
           ship faster while updating the system, then built the tools so the team could carry on
-          without me. My most recent example is the site you&apos;re on. It runs on BELLA, my own
-          design system: tokens, components in Storybook, and docs an AI can read.
+          without me. My most recent example is the site you&apos;re on. It runs on <strong>BELLA, my own
+          design system</strong>: tokens, components in Storybook, and docs an AI can read.
         </p>
         <p>
           <Link href="/design-system" className="text-action">
@@ -114,12 +120,12 @@ export default function AboutPage() {
         <div className="cares">
           <div>
             <h3 className="heading-item">Kindness</h3>
-            <p>Docs written for the person reading them at 5pm on a Friday.</p>
+            <p>Docs written for the person reading them at <strong>5pm on a Friday</strong>.</p>
           </div>
           <div>
             <h3 className="heading-item">Respect</h3>
             <p>
-              For the designer&apos;s craft and the engineer&apos;s time. I check it can be built
+              For the designer&apos;s craft and the engineer&apos;s time. <strong>I check it can be built</strong>
               before I design it three ways.
             </p>
           </div>
@@ -127,13 +133,13 @@ export default function AboutPage() {
             <h3 className="heading-item">Sharing</h3>
             <p>
               I learned all of this in public, from Brad Frost, Vitaly Friedman, Nathan Curtis, Romina
-              Kavčić and the Into Design Systems crowd. So I give it back: BELLA is open for anyone to
-              read.
+              Kavčić and the Into Design Systems crowd. So I give it back: <strong>BELLA is open for anyone to
+              read</strong>.
             </p>
           </div>
           <div>
             <h3 className="heading-item">Love of the craft</h3>
-            <p>Naming, tokens, governance. The unglamorous stuff is my favourite stuff.</p>
+            <p>Naming, tokens, governance. <strong>The unglamorous stuff</strong> is my favourite stuff.</p>
           </div>
         </div>
       </Section>
@@ -157,8 +163,8 @@ export default function AboutPage() {
           <li>
             <span className="how__num">01</span>
             <div>
-              <h3 className="heading-item">You work with me</h3>
-              <p>No account managers, no hand-offs. The person you talk to is the person doing the work.</p>
+              <h3 className="heading-item">Straight to me</h3>
+              <p>You talk to the person designing your system, from the first call to the last token.</p>
             </div>
           </li>
           <li>

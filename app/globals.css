@@ -561,6 +561,14 @@ body {
   color: var(--color-ink-muted);
 }
 
+/* key phrases to scan for: a touch heavier and full ink (body text is
+   ink-soft). No accent colour, no italics. */
+.text-lead strong,
+.text-body strong {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
 /* the one iris word in a display heading */
 .accent {
   color: var(--color-accent-ink);
