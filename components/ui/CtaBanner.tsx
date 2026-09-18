@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import GlassBanner from "@/components/ui/GlassBanner";
+import Heading from "@/components/ui/Heading";
 import type { ReactNode } from "react";
 
 /**
@@ -38,18 +39,9 @@ export default function CtaBanner({
         >
           {kicker}
         </p>
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "var(--font-subsection)",
-            fontWeight: "var(--typography-font-weight-bold)",
-            color: "var(--color-ink)",
-            lineHeight: 1.15,
-            textTransform: "uppercase",
-          }}
-        >
+        <Heading tier="sub" as="h2">
           {title}
-        </h2>
+        </Heading>
       </div>
       <Button href={href} className="shrink-0 self-start md:self-auto">
         {label} <Icon name="ArrowRight" size="sm" />

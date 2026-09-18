@@ -10,9 +10,9 @@ this says what MOVES a page must make with them. Pairs with
 1. **Oversized Unique DISPLAY headline on every page open.**
    Each page opens with a display-scale Unique 700 headline — the "PICK A
    PIECE" register, not the 32px section-title register the inner pages
-   used. Scale tokens: `--font-hero-unique` (home), `--font-case-display`
-   `clamp(40px, 5vw, 96px)` (case pages and other page opens). Uppercase,
-   line-height ≤1, letter-spacing 0.005em. Unique appears ONLY at display
+   used. Scale tokens: the display ladder in DESIGN.md §5 (hero 40-72,
+   page 36-56, section and case 32-48). Uppercase, `--leading-display`
+   (1.05, never below 1), `--tracking-display`. Unique appears ONLY at display
    scale (locked type rule); everything below it is Geist.
 
 2. **The glossy sphere is the brand atom.**

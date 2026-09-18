@@ -74,7 +74,7 @@ export default function QuickPage() {
               D3 (Pass D): the page's ONE Unique-energy moment, the same words
               at display scale with the accent treatment. */}
           <section aria-labelledby="quick-matrix" style={{ marginTop: "var(--spacing-16)" }}>
-            <Heading tier="page" as="h2" id="quick-matrix" accent="to the work." className="mb-6">
+            <Heading tier="section" as="h2" id="quick-matrix" accent="to the work." className="mb-6">
               Skills, mapped
             </Heading>
             <MatrixView
