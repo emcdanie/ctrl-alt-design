@@ -27,20 +27,9 @@ type Row = {
   related?: string[];
 };
 
+/* newest first by end date; dates match LinkedIn ("to" stands in for
+   the en dash the copy rule bans) */
 export const EXPERIENCE: Row[] = [
-  {
-    company: "Mango",
-    role: "Design Systems Specialist",
-    /* TODO(elleta): end month, "Apr 2026 to [END]"; until then the year */
-    dates: "Apr 2026 to 2026",
-    did: [
-      <>Brought AI into Mango&apos;s design-system work for the first time. With <strong>Claude, Figma MCP and Code Connect</strong> I automated audits and made components machine-readable, so I could ship far more in a few months while keeping Mango&apos;s design system up to date.</>,
-      <>Built the tooling and documentation the team needed to <strong>adopt Code Connect themselves</strong>, so design-to-code parity didn&apos;t depend on me.</>,
-      <>Owned cross-platform component governance across <strong>web, iOS and Android</strong> within Mango&apos;s design system, during a leadership transition.</>,
-      "Defined, governed and released reusable components across shared Figma libraries, documented in Zeroheight.",
-      "Led accessibility and dark-mode audits, and defined design-system metrics for adoption, coverage, efficiency and quality.",
-    ],
-  },
   {
     company: "Brad Frost Web",
     role: "AI-Assisted Design Systems Engineer · Maker Program",
@@ -54,9 +43,21 @@ export const EXPERIENCE: Row[] = [
     related: ["brad-frost"],
   },
   {
+    company: "Mango",
+    role: "Design Systems Specialist",
+    dates: "Apr to Jul 2026",
+    did: [
+      <>Brought AI into Mango&apos;s design-system work for the first time. With <strong>Claude, Figma MCP and Code Connect</strong> I automated audits and made components machine-readable, so I could ship far more in a few months while keeping Mango&apos;s design system up to date.</>,
+      <>Built the tooling and documentation the team needed to <strong>adopt Code Connect themselves</strong>, so design-to-code parity didn&apos;t depend on me.</>,
+      <>Owned cross-platform component governance across <strong>web, iOS and Android</strong> within Mango&apos;s design system, during a leadership transition.</>,
+      "Defined, governed and released reusable components across shared Figma libraries, documented in Zeroheight.",
+      "Led accessibility and dark-mode audits, and defined design-system metrics for adoption, coverage, efficiency and quality.",
+    ],
+  },
+  {
     company: "BizAway",
     role: "Product & Design Systems Designer",
-    dates: "2024 to 2026",
+    dates: "Jul 2024 to Feb 2026",
     clients: "Clients included Air France and WeRoad.",
     did: [
       <>Built the company&apos;s <strong>first design system from scratch</strong> (tokens, components, themes), with AI in mind from day one, and integrated the tokens into production with engineering.</>,
@@ -68,8 +69,8 @@ export const EXPERIENCE: Row[] = [
   },
   {
     company: "United Nations Geneva",
-    role: "Product & Design Systems Designer",
-    dates: "2025 to 2026",
+    role: "UX / Product Designer",
+    dates: "Oct to Dec 2025",
     did: [
       "Defined user roles, permission structures and dashboard frameworks for a multi-stakeholder institutional platform.",
       "Designed scalable information architecture for operational workflows across departments.",
@@ -79,7 +80,7 @@ export const EXPERIENCE: Row[] = [
   {
     company: "VML",
     role: "UX/UI Designer",
-    dates: "2023 to 2024",
+    dates: "Feb 2023 to Feb 2024",
     clients: "Client: Riyad Bank.",
     did: [
       "Designed enterprise banking and SaaS platform experiences for digital clients.",
