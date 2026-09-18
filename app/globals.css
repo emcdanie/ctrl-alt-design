@@ -1650,7 +1650,6 @@ p {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-stack-lg) var(--space-stack-md);
-  margin-top: var(--space-stack-lg);
 }
 
 @media (min-width: 700px) {
@@ -1660,15 +1659,23 @@ p {
   }
 }
 
-@media (min-width: 900px) {
+/* right column: the Building card, the link columns under it */
+.site-footer__side {
+  display: grid;
+  gap: var(--space-stack-lg);
+  align-content: start;
+}
+
+/* from 720px the right column sits beside the contact card; below it
+   everything stacks under the contact card */
+@media (min-width: 720px) {
   .site-footer__contact {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
+}
 
-  .site-footer__contact .building {
-    justify-self: end;
-  }
-
+/* three link columns once "BELLA on GitHub" fits on one line; 2 + 1 below */
+@media (min-width: 1200px) {
   .site-footer__cols {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }

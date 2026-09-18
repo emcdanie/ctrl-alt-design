@@ -13,8 +13,8 @@ import { social } from "@/lib/social";
 
 /* Site footer: navy with cream text in both themes. The "Made with"
    marquee along the top edge; the contact band (photo, "Let's compare
-   notes.", the one Get in touch, Share) beside the Building card; the
-   link columns; then ELLETA in Unique as
+   notes.", the one Get in touch, Share) beside the Building card with
+   the link columns under it; then ELLETA in Unique as
    one word with Bella on the last A, and the small print. The wordmark
    is decorative: the nav carries the real one. */
 const version = JSON.parse(readFileSync(join(process.cwd(), "package.json"), "utf8")).version as string;
@@ -101,53 +101,56 @@ export default function SiteFooter() {
             </div>
           </div>
 
-          {/* what is live and what is next */}
-          <div className="building">
-            <p className="building__top">
-              <span className="building__dots" aria-hidden="true">
-                <i />
-                <i />
-                <i />
-              </span>
-              <span className="building__status">
-                <span aria-hidden="true">● </span>Building
-              </span>
-            </p>
-            <p className="building__line">
-              ~/elleta.design $ <b>git tag</b>
-            </p>
-            <p className="building__line">
-              <span className="building__live">{liveTag}</span> ← live
-            </p>
-            <p className="building__line">
-              <span className="building__next">{BUILDING.next}</span> ← in progress
-            </p>
-            <ul className="building__items">
-              {BUILDING.items.map((it) => (
-                <li key={it}>{it}</li>
-              ))}
-            </ul>
-            <a className="site-footer__link building__details" href={BUILDING.detailsUrl} target="_blank" rel="noopener noreferrer">
-              View details ↗<span className="sr-only"> (opens in a new tab)</span>
-            </a>
-          </div>
-        </div>
-
-        <nav className="site-footer__cols" aria-label="Footer">
-          {COLUMNS.map((c) => (
-            <div key={c.label}>
-              <p className="site-footer__label">
-                <PawIcon />
-                {c.label}
+          {/* right column: what is live and what is next, then the
+              links, so the band carries them and the footer stays short */}
+          <div className="site-footer__side">
+            <div className="building">
+              <p className="building__top">
+                <span className="building__dots" aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
+                </span>
+                <span className="building__status">
+                  <span aria-hidden="true">● </span>Building
+                </span>
               </p>
-              <ul className="site-footer__list">
-                {c.links.map((l, i) => (
-                  <li key={i}>{l}</li>
+              <p className="building__line">
+                ~/elleta.design $ <b>git tag</b>
+              </p>
+              <p className="building__line">
+                <span className="building__live">{liveTag}</span> ← live
+              </p>
+              <p className="building__line">
+                <span className="building__next">{BUILDING.next}</span> ← in progress
+              </p>
+              <ul className="building__items">
+                {BUILDING.items.map((it) => (
+                  <li key={it}>{it}</li>
                 ))}
               </ul>
+              <a className="site-footer__link building__details" href={BUILDING.detailsUrl} target="_blank" rel="noopener noreferrer">
+                View details ↗<span className="sr-only"> (opens in a new tab)</span>
+              </a>
             </div>
-          ))}
-        </nav>
+
+          <nav className="site-footer__cols" aria-label="Footer">
+            {COLUMNS.map((c) => (
+              <div key={c.label}>
+                <p className="site-footer__label">
+                  <PawIcon />
+                  {c.label}
+                </p>
+                <ul className="site-footer__list">
+                  {c.links.map((l, i) => (
+                    <li key={i}>{l}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            </nav>
+          </div>
+        </div>
 
         {/* brand row: ELLETA as one word with Bella on the last A; the
             small print sits right, bottom on the wordmark's baseline */}
