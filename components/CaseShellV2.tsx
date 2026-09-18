@@ -8,8 +8,8 @@ import CaseEndReveal from "@/components/CaseEndReveal";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
 
 /**
- * Case shell v2 (case-shell-v2 brief, Elleta 22 Jul 2026; Carmen
- * audit ADOPT list + the Justine scan rules). The sticky side title
+ * Case shell v2 (case-shell-v2 brief, Elleta 22 Jul 2026: one idea
+ * per viewport, scannable at a glance). The sticky side title
  * is gone: the case head is a normal in-flow stack (outcome-framed
  * title, one-sentence problem subhead, reading time, tag row, link
  * out where NDA allows), followed by the numbered section spine the

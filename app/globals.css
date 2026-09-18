@@ -4325,9 +4325,10 @@ textarea:focus-visible {
   }
 }
 
-/* ── Case shell v2 (case-shell-v2 brief, Elleta 22 Jul 2026; Carmen
-   ADOPT list + Justine scan rules). Code First only for now; chip and
-   drift keep the old cs-shell recipes until their own passes. ── */
+/* ── Case shell v2 (case-shell-v2 brief, Elleta 22 Jul 2026): an
+   in-flow case head and a numbered section spine, one idea per
+   viewport. Code First only for now; chip and drift keep the old
+   cs-shell recipes until their own passes. ── */
 
 /* thin token-coloured reading-progress indicator, case pages only */
 .cs2-progress {

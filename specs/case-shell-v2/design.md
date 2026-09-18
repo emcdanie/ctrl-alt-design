@@ -3,7 +3,7 @@
 Source brief: Elleta, 22 Jul 2026, via Cowork (approved; two phases, hard STOP
 between them). Precondition met in-session: PR 37 merged to main on her word
 (2dd4b06), PR 40 retargeted to main. Branch feat/case-curation-shell-v2 off main.
-Reference: the Justine talk notes (one idea per viewport, text beside image,
+Reference: talk notes on case-study structure (one idea per viewport, text beside image,
 interactive specimen, theming payoff, short clips only).
 
 ## Phase A: curation sweep
@@ -55,9 +55,9 @@ Bespoke sites that need hands:
 STOP at preview after Phase A. Elleta checks the curated library.
 
 ## Phase B (FINAL brief, 22 Jul, supersedes the stop-and-wait version): case
-## shell v2 on Code First, per the Carmen ADOPT list + Justine scan rules
+## shell v2 on Code First: in-flow head, one idea per viewport
 
-Reference committed: docs/briefs/carmen-structure-audit.md (from _review/).
+Reference: a private structure audit (kept outside the repo).
 
 - In-flow head (sticky side title dead): outcome-framed title (the existing
   thesis), one-sentence problem subhead (the existing summary sentence),

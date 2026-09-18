@@ -8,7 +8,7 @@ import CaseCard from "@/components/CaseCard";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { WORK_ITEMS } from "@/lib/workLibrary";
 
-/* Surface the work (audit P0, Sil + Justine, 2026-07-23): the top three
+/* Surface the work (audit P0, reviewer feedback, 2026-07-23): the top three
  * cases render as one-click cards directly under the hero; the bubble
  * constellation stays, demoted below the work row as the philosophy
  * layer. The hero holds what-you-do + name + portrait. */

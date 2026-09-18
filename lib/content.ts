@@ -61,7 +61,7 @@ export type CaseBlock =
    * Approach / Outcome) and must not equal a word of its own heading.
    * Change or drop the collider. */
   | { kind: "section"; eyebrow: string; heading: string; children: CaseBlock[] }
-  /* decision-led template (Arthur-Kamsky / Justine structure) */
+  /* decision-led template: problem, decision, evidence, outcome */
   | { kind: "summary"; context: string; approach: string; outcome: string }
   | {
       kind: "decision";
