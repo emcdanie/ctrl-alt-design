@@ -18,6 +18,8 @@ type Row = {
   role: string;
   dates: string;
   current?: boolean;
+  /** one muted line under the role: the clients behind the work */
+  clients?: string;
   did: string[];
   /** case-study slugs (the last segment of a WORK_ITEMS href) */
   related?: string[];
@@ -53,12 +55,12 @@ export const EXPERIENCE: Row[] = [
     company: "BizAway",
     role: "Product & Design Systems Designer",
     dates: "2024 to 2026",
+    clients: "Clients included Air France and WeRoad.",
     did: [
       "Built the company's first design system from scratch (tokens, components, themes), with AI in mind from day one, and integrated the tokens into production with engineering.",
       "Wrote the documentation even when I was told it wasn't important, because a system nobody can read is a system nobody uses.",
       "Led the UX transformation of a legacy SaaS travel platform: booking, admin, finance and multi-role dashboards.",
       "Designed and shipped end-to-end booking flows for flights and cars: search, filters, seat maps, upsells and post-booking.",
-      "Ran research with, and shipped features requested by, clients including Air France and WeRoad.",
     ],
     related: ["design-system-transformation"],
   },
@@ -76,41 +78,30 @@ export const EXPERIENCE: Row[] = [
     company: "VML",
     role: "UX/UI Designer",
     dates: "2023 to 2024",
+    clients: "Client: Riyad Bank.",
     did: [
       "Designed enterprise banking and SaaS platform experiences for digital clients.",
       "Ran user research and usability testing to validate complex workflows.",
-      "Designed on the Riyad Bank client team.",
     ],
   },
 ];
 
 /* "Good company": each org's own mark (public/logos/<file>.svg),
-   inlined in currentColor so it takes the theme's muted ink. `scale`
-   corrects a mark that reads too heavy at the shared height. The name
-   is the accessible label. */
-export type Org = { name: string; file: string; scale?: number };
+   inlined in currentColor so it takes the theme's muted ink. Marks fit
+   one box (the grid sets its size); `scale` shrinks a mark that reads
+   too heavy in it. `lockup` sets live text beside an emblem that has no
+   words of its own. The name is the accessible label. */
+export type Org = { name: string; file: string; scale?: number; lockup?: string[] };
 
 export const WORKED_WITH: Org[] = [
   { name: "Brad Frost Web", file: "brad-frost" },
+  { name: "Mango", file: "mango" },
+  { name: "United Nations Geneva", file: "un-geneva", lockup: ["United Nations", "Geneva"] },
+  { name: "Air France", file: "air-france" },
+  { name: "Riyad Bank", file: "riyad-bank" },
+  { name: "WeRoad", file: "weroad" },
   { name: "BizAway", file: "bizaway" },
   { name: "VML", file: "vml", scale: 0.62 },
-  { name: "Mango", file: "mango" },
-  { name: "United Nations Geneva", file: "un-geneva" },
-];
-
-/* sub-rows under the main grid: clients reached through an employer */
-export const WORKED_THROUGH: { label: string; orgs: Org[] }[] = [
-  {
-    label: "Through BizAway: clients I researched with and shipped features for",
-    orgs: [
-      { name: "Air France", file: "air-france" },
-      { name: "WeRoad", file: "weroad" },
-    ],
-  },
-  {
-    label: "Through VML: client team I designed for",
-    orgs: [{ name: "Riyad Bank", file: "riyad-bank" }],
-  },
 ];
 
 const bySlug = (slug: string) => WORK_ITEMS.find((w) => w.href.endsWith(`/${slug}`));
@@ -128,6 +119,7 @@ export default function ExperienceSection() {
                   {r.current ? <span className="xp__current">Current</span> : null}
                 </span>
                 <span className="xp__role">{r.role}</span>
+                {r.clients ? <span className="text-meta xp__clients">{r.clients}</span> : null}
               </span>
               <span className="xp__dates">{r.dates}</span>
               <Icon name="NavArrowDown" size="sm" className="xp__chev" />

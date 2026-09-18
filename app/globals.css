@@ -153,10 +153,9 @@ body {
   --text-body: 16px;
   --leading-body: 1.65;
   --text-meta: 14px;
-  /* one height for every mark in the Good company grid */
-  --logo-height: 32px;
-  --logo-height-sub: 30px;
-  --logo-cell-sub: 104px;
+  /* Good company grid cells (100px under 700px) */
+  --logo-cell: 132px;
+  --logo-cell-sm: 100px;
   /* heading measure in em, never ch: Unique is condensed, so 1ch is a
      narrow "0" and ch widths wrap headlines early */
   --measure-heading: 14em;
@@ -1096,94 +1095,83 @@ p {
   padding-top: var(--spacing-2);
 }
 
-/* Good company: logos left-aligned in ruled cells, marks inline SVG in
-   currentColor (the muted ink). Every cell carries its own bottom rule.
-   Main grid: 5 columns on desktop, 3 on tablet, 2 on phones (a vertical
-   rule between the two; an odd last cell spans the row).
-   Sub-rows (.logo-grid--sub): 104px cells, 30px marks, 2 columns at
-   700px and below; a lone logo keeps its first cell, never stretched. */
+/* Good company: ONE grid, logos left-aligned in ruled cells. Marks are
+   inline SVG in currentColor (the muted ink) and fit one box by their
+   own aspect ratio: 170x44 (130x34 under 700px), times a per-mark
+   --logo-scale. 4 columns from 700px, 2 below with a vertical rule
+   between them. Every cell carries its own bottom rule. */
 .logo-grid {
   list-style: none;
   margin: var(--space-stack-md) 0 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  --logo-box-w: 130px;
+  --logo-box-h: 34px;
 }
 
 .logo-grid__cell {
   display: flex;
   align-items: center;
-  min-height: calc(var(--logo-height) + 2 * var(--spacing-8));
+  min-height: var(--logo-cell-sm);
   padding-right: var(--space-stack-md);
   border-bottom: 1px solid var(--color-semantic-border);
+  color: var(--color-ink-muted);
 }
 
-.logo-grid--sub .logo-grid__cell {
-  min-height: var(--logo-cell-sub);
+.logo-grid__cell:nth-child(odd) {
+  border-right: 1px solid var(--color-semantic-border);
+}
+
+.logo-grid__cell:nth-child(even) {
+  padding-left: var(--space-stack-md);
 }
 
 .logo-grid__logo {
   display: block;
-  height: calc(var(--logo-height) * var(--logo-scale, 1));
-  color: var(--color-ink-muted);
-}
-
-.logo-grid--sub .logo-grid__logo {
-  height: calc(var(--logo-height-sub) * var(--logo-scale, 1));
+  height: calc(min(var(--logo-box-h), var(--logo-box-w) / var(--logo-ratio)) * var(--logo-scale, 1));
+  aspect-ratio: var(--logo-ratio);
 }
 
 .logo-grid__logo svg {
   display: block;
+  width: 100%;
   height: 100%;
-  width: auto;
-  max-width: 100%;
 }
 
-.logo-grid__label {
-  margin: var(--space-stack-lg) 0 0;
+/* an emblem with live two-line text beside it */
+.logo-grid__lockup {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
 }
 
-@media (max-width: 767px) {
-  .logo-grid:not(.logo-grid--sub) .logo-grid__cell:nth-child(odd) {
-    border-right: 1px solid var(--color-semantic-border);
+.logo-grid__lockup-text {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+@media (min-width: 700px) {
+  .logo-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    --logo-box-w: 170px;
+    --logo-box-h: 44px;
   }
 
-  .logo-grid:not(.logo-grid--sub) .logo-grid__cell:nth-child(even) {
-    padding-left: var(--space-stack-md);
+  .logo-grid__cell {
+    min-height: var(--logo-cell);
   }
 
-  .logo-grid:not(.logo-grid--sub) .logo-grid__cell:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
+  .logo-grid__cell:nth-child(odd) {
     border-right: none;
   }
-}
 
-@media (max-width: 700px) {
-  .logo-grid--sub .logo-grid__cell:nth-child(odd):not(:only-child) {
-    border-right: 1px solid var(--color-semantic-border);
-  }
-
-  .logo-grid--sub .logo-grid__cell:nth-child(even) {
-    padding-left: var(--space-stack-md);
-  }
-}
-
-@media (min-width: 701px) {
-  .logo-grid--sub {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 768px) {
-  .logo-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .logo-grid,
-  .logo-grid--sub {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+  .logo-grid__cell:nth-child(even) {
+    padding-left: 0;
   }
 }
 
@@ -1243,6 +1231,12 @@ p {
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
   color: var(--color-ink-soft);
+}
+
+/* the clients behind the work, one muted metadata line */
+.xp__clients {
+  display: block;
+  margin-top: 2px;
 }
 
 .xp__dates {
