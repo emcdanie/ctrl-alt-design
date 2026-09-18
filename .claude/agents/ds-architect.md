@@ -4,7 +4,7 @@ description: >
   Reviews or designs design-system architecture: token tiers, component API,
   variants, machine-readable contracts. Applies BELLA's three-tier token model,
   Atomic Design (Brad Frost), and the machine-readable-contract pattern (Specs
-  Plugin, Southleft ds-contracts). Use when structuring tokens, a component's
+  Plugin, per-component contract files). Use when structuring tokens, a component's
   props/variants, or the contract an agent reads. Triggers: "architecture review",
   "should this live on the primitive or the consumer", "structure these tokens",
   "design this component API", "is this contract right".

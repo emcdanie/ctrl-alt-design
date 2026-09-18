@@ -163,8 +163,8 @@ ladder below (endpoints 32 / 36 / 40 / 48 / 56 / 72). Body text never below
 | `--font-hero` | `clamp(40px, 5vw, 56px)` (overlay nav links, Geist; not a heading tier) |
 | `--font-subsection` | 24 → 32 (tier sub: h3-level sub-heading, Geist 700, never Unique) |
 
-The display ladder (display-type-scale fix, 18 Sep 2026) follows the
-Southleft scale and is fluid between a 390 and a 1440 viewport:
+The display ladder (display-type-scale fix, 18 Sep 2026) is fluid
+between a 390 and a 1440 viewport:
 `clamp(min, min + (max - min) * (100vw - 390px) / 1050, max)`. Every Unique heading tracks at `--tracking-display` (0.04em) and
 leads at `--leading-display` (1.05, never below 1). `audit:type` fails a
 Unique heading below either floor and two section-tier heads that compute
@@ -499,7 +499,7 @@ beats from CaseBeat, never bespoke.
 
 ## The receipt: the gate refuses by name (A1, 23 Jul 2026)
 
-Southleft's rule, adopted: a failing check is never papered over with a
+The rule: a failing check is never papered over with a
 plausible value. Every audit failure prints ONE format via
 `scripts/lib/receipt.mjs`:
 

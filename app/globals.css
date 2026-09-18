@@ -232,8 +232,8 @@ body {
     var(--edge-glass-hi-strong);
 
 
-  /* Display ladder (display-type-scale fix, 18 Sep 2026; Southleft
-     scale). Every tier is fluid between a 390 and a 1440 viewport:
+  /* Display ladder (display-type-scale fix, 18 Sep 2026).
+     Every tier is fluid between a 390 and a 1440 viewport:
      clamp(min, min + (max - min) * (100vw - 390px) / 1050, max).
      Section and case share one size on purpose: every section head on
      every page renders the same, and audit:type fails two section
@@ -245,9 +245,8 @@ body {
   --component-heading-hero-font-size: clamp(2.5rem, -0.75rem + 13.3333vw, 11.25rem);
   --component-heading-page-font-size: clamp(2.5rem, 1.9rem + 2.6vw, 4.5rem);
   --component-heading-section-font-size: clamp(1.75rem, 1.45rem + 1.3vw, 2.75rem);
-  /* Unique caps need air: the condensed bold cut collides at the old
-     0.005em / 0.9. Tracking is a floor for every Unique heading and
-     leading never drops below 1 (audit:type enforces both). */
+  /* Geist headings track slightly tight; leading never drops below 1
+     (audit:type enforces it). */
   --tracking-display: -0.03em;
   --leading-display: 1.05;
   /* the overlay nav's Geist link size (not a heading tier) */
