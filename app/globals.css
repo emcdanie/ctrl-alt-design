@@ -958,6 +958,9 @@ li {
    of the same object. */
 .seg-control {
   display: inline-flex;
+  /* never wider than its column (320 fix, 18 Sep 2026): segments share
+     the width and shrink instead of pushing the page sideways */
+  max-width: 100%;
   list-style: none;
   margin: 0;
   /* concentric radii (pixel pass 2026-07-18): the selected fill's
@@ -987,6 +990,23 @@ li {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-ink-muted);
+}
+
+.seg-control li {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.seg-control li button {
+  width: 100%;
+  justify-content: center;
+}
+
+@media (max-width: 400px) {
+  .seg-control button {
+    padding: 0 var(--spacing-2);
+    letter-spacing: 0.04em;
+  }
 }
 
 /* hairline divider between segments (markup is ul > li > button) */
