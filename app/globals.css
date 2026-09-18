@@ -155,6 +155,8 @@ body {
   --text-meta: 14px;
   /* one height for every mark in the Good company grid */
   --logo-height: 32px;
+  --logo-height-sub: 30px;
+  --logo-cell-sub: 104px;
   /* heading measure in em, never ch: Unique is condensed, so 1ch is a
      narrow "0" and ch widths wrap headlines early */
   --measure-heading: 14em;
@@ -1094,37 +1096,95 @@ p {
   padding-top: var(--spacing-2);
 }
 
-/* Good company: one ruled cell per org, its mark left-aligned at one
-   height and painted with the theme ink. Every cell carries its own
-   bottom rule, so a short last row never leaves a dangling line. */
-.worked-with {
+/* Good company: logos left-aligned in ruled cells, marks inline SVG in
+   currentColor (the muted ink). Every cell carries its own bottom rule.
+   Main grid: 5 columns on desktop, 3 on tablet, 2 on phones (a vertical
+   rule between the two; an odd last cell spans the row).
+   Sub-rows (.logo-grid--sub): 104px cells, 30px marks, 2 columns at
+   700px and below; a lone logo keeps its first cell, never stretched. */
+.logo-grid {
   list-style: none;
   margin: var(--space-stack-md) 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  column-gap: var(--space-stack-md);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.worked-with__cell {
+.logo-grid__cell {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  min-height: calc(var(--logo-height) + 2 * var(--spacing-6));
+  min-height: calc(var(--logo-height) + 2 * var(--spacing-8));
+  padding-right: var(--space-stack-md);
   border-bottom: 1px solid var(--color-semantic-border);
 }
 
-.worked-with__logo {
+.logo-grid--sub .logo-grid__cell {
+  min-height: var(--logo-cell-sub);
+}
+
+.logo-grid__logo {
   display: block;
-  height: var(--logo-height);
+  height: calc(var(--logo-height) * var(--logo-scale, 1));
+  color: var(--color-ink-muted);
+}
+
+.logo-grid--sub .logo-grid__logo {
+  height: calc(var(--logo-height-sub) * var(--logo-scale, 1));
+}
+
+.logo-grid__logo svg {
+  display: block;
+  height: 100%;
+  width: auto;
   max-width: 100%;
-  background: var(--color-ink);
-  mask-repeat: no-repeat;
-  mask-position: left center;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: left center;
-  -webkit-mask-size: contain;
+}
+
+.logo-grid__label {
+  margin: var(--space-stack-lg) 0 0;
+}
+
+@media (max-width: 767px) {
+  .logo-grid:not(.logo-grid--sub) .logo-grid__cell:nth-child(odd) {
+    border-right: 1px solid var(--color-semantic-border);
+  }
+
+  .logo-grid:not(.logo-grid--sub) .logo-grid__cell:nth-child(even) {
+    padding-left: var(--space-stack-md);
+  }
+
+  .logo-grid:not(.logo-grid--sub) .logo-grid__cell:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    border-right: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .logo-grid--sub .logo-grid__cell:nth-child(odd):not(:only-child) {
+    border-right: 1px solid var(--color-semantic-border);
+  }
+
+  .logo-grid--sub .logo-grid__cell:nth-child(even) {
+    padding-left: var(--space-stack-md);
+  }
+}
+
+@media (min-width: 701px) {
+  .logo-grid--sub {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .logo-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .logo-grid,
+  .logo-grid--sub {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
 }
 
 /* Experience: expandable rows (native <details>), a rule between rows */

@@ -1,19 +1,14 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
 import Heading from "@/components/ui/Heading";
 import Section, { SectionList, SectionTags } from "@/components/Section";
 import WorkedWith from "@/components/WorkedWith";
 import ExperienceSection from "@/components/ExperienceSection";
-import ResumeModal from "@/components/ResumeModal";
 
 /* About (step 3, 18 Sep 2026): flat hero, six numbered sections built
    from the shared Section, a paw trail in each gap, and a close that
    hands off to the one contact CTA. Copy is Elleta's, used verbatim. */
 export default function AboutPage() {
-  const [resumeOpen, setResumeOpen] = useState(false);
   return (
     <main id="main-content" className="page-shell min-h-screen text-[var(--color-ink-soft)]">
       <OverlayNav />
@@ -153,9 +148,8 @@ export default function AboutPage() {
         after="."
         side={<SectionTags items={["Figma", "Storybook", "React", "Design tokens", "Accessibility", "Governance"]} />}
       >
-        <ExperienceSection onResumeClick={() => setResumeOpen(true)} />
+        <ExperienceSection />
       </Section>
-      <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
 
       {/* TODO(elleta): placeholder copy from the build prompt, review */}
       <Section trail id="how-i-work" index="06" label="how I work" title="Simple, on" accent="purpose" after=".">

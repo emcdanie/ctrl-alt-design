@@ -1,7 +1,5 @@
-"use client";
-
 import Card from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { ResumeButton } from "@/components/ResumeModal";
 import { Icon } from "@/components/ui/Icon";
 import { WORK_ITEMS } from "@/lib/workLibrary";
 
@@ -60,6 +58,7 @@ export const EXPERIENCE: Row[] = [
       "Wrote the documentation even when I was told it wasn't important, because a system nobody can read is a system nobody uses.",
       "Led the UX transformation of a legacy SaaS travel platform: booking, admin, finance and multi-role dashboards.",
       "Designed and shipped end-to-end booking flows for flights and cars: search, filters, seat maps, upsells and post-booking.",
+      "Ran research with, and shipped features requested by, clients including Air France and WeRoad.",
     ],
     related: ["design-system-transformation"],
   },
@@ -80,24 +79,43 @@ export const EXPERIENCE: Row[] = [
     did: [
       "Designed enterprise banking and SaaS platform experiences for digital clients.",
       "Ran user research and usability testing to validate complex workflows.",
+      "Designed on the Riyad Bank client team.",
     ],
   },
 ];
 
-/* "Good company": each org's own mark, painted with the theme ink as a
-   CSS mask at one height. `ratio` = the file's viewBox width / height.
-   The name is the accessible label. */
-export const WORKED_WITH: { name: string; src: string; ratio: number }[] = [
-  { name: "Brad Frost Web", src: "/logos/brad-frost.svg", ratio: 5272 / 2193 },
-  { name: "BizAway", src: "/logos/bizaway.svg", ratio: 499 / 119 },
-  { name: "VML", src: "/logos/vml.svg", ratio: 62 / 19 },
-  { name: "Mango", src: "/logos/mango.svg", ratio: 2000 / 350 },
-  { name: "United Nations Geneva", src: "/logos/un-geneva.svg", ratio: 109 / 91.4 },
+/* "Good company": each org's own mark (public/logos/<file>.svg),
+   inlined in currentColor so it takes the theme's muted ink. `scale`
+   corrects a mark that reads too heavy at the shared height. The name
+   is the accessible label. */
+export type Org = { name: string; file: string; scale?: number };
+
+export const WORKED_WITH: Org[] = [
+  { name: "Brad Frost Web", file: "brad-frost" },
+  { name: "BizAway", file: "bizaway" },
+  { name: "VML", file: "vml", scale: 0.62 },
+  { name: "Mango", file: "mango" },
+  { name: "United Nations Geneva", file: "un-geneva" },
+];
+
+/* sub-rows under the main grid: clients reached through an employer */
+export const WORKED_THROUGH: { label: string; orgs: Org[] }[] = [
+  {
+    label: "Through BizAway: clients I researched with and shipped features for",
+    orgs: [
+      { name: "Air France", file: "air-france" },
+      { name: "WeRoad", file: "weroad" },
+    ],
+  },
+  {
+    label: "Through VML: client team I designed for",
+    orgs: [{ name: "Riyad Bank", file: "riyad-bank" }],
+  },
 ];
 
 const bySlug = (slug: string) => WORK_ITEMS.find((w) => w.href.endsWith(`/${slug}`));
 
-export default function ExperienceSection({ onResumeClick }: { onResumeClick: () => void }) {
+export default function ExperienceSection() {
   return (
     <>
       <div className="xp-list">
@@ -152,10 +170,7 @@ export default function ExperienceSection({ onResumeClick }: { onResumeClick: ()
           </details>
         ))}
       </div>
-      <Button className="xp__cv" onClick={onResumeClick}>
-        <Icon name="Page" size="sm" />
-        View CV
-      </Button>
+      <ResumeButton />
     </>
   );
 }

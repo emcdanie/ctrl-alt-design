@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { social } from "@/lib/social";
 
 interface ResumeModalProps {
@@ -380,5 +382,20 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
         </div>
       </div>
     </div>
+  );
+}
+
+/* "View CV": the secondary Button that opens this modal. It owns the
+   open state, so the page around it can stay a server component. */
+export function ResumeButton() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button className="xp__cv" onClick={() => setOpen(true)}>
+        <Icon name="Page" size="sm" />
+        View CV
+      </Button>
+      <ResumeModal open={open} onClose={() => setOpen(false)} />
+    </>
   );
 }
