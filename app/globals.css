@@ -149,13 +149,13 @@ body {
   --text-display-2: var(--component-heading-section-font-size);
   --text-display-3: clamp(1.75rem, 1.4714rem + 1.1429vw, 2.5rem);
   /* heading-3: item, card and entry titles (Geist 600) */
-  --text-heading-3: clamp(1.25rem, 1.1107rem + 0.5714vw, 1.625rem);
-  --text-lead: clamp(1.125rem, 1.0321rem + 0.381vw, 1.375rem);
+  --text-heading-3: clamp(1.125rem, 1.05rem + 0.3vw, 1.375rem);
+  --text-lead: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
   --leading-lead: 1.55;
-  --text-body: clamp(1rem, 0.9536rem + 0.1905vw, 1.125rem);
+  --text-body: clamp(1rem, 0.98rem + 0.1vw, 1.0625rem);
   /* nav links and button labels */
-  --text-nav: clamp(1rem, 0.9536rem + 0.1905vw, 1.125rem);
-  --leading-body: 1.65;
+  --text-nav: 1rem;
+  --leading-body: 1.55;
   /* the floor: nothing on the site renders below 14px */
   --text-meta: 0.875rem;
   /* the caption heart: the nearest red in the system (the writing
@@ -242,11 +242,11 @@ body {
      heads that compute differently on one page. */
   /* STOPGAP override of the BELLA --component-heading-* values (this
      unlayered :root wins over the vendored bella.css). TODO: BELLA PR
-     to own these values, then delete this override. Page 48-104, section 36-56;
+     to own these values, then delete this override. Page 48-104, section 32-52;
      the home headline keeps its ~180 moment. Case shares section. */
   --component-heading-hero-font-size: clamp(2.5rem, -0.75rem + 13.3333vw, 11.25rem);
   --component-heading-page-font-size: clamp(3rem, 1.7rem + 5.3333vw, 6.5rem);
-  --component-heading-section-font-size: clamp(2.25rem, 1.7857rem + 1.9048vw, 3.5rem);
+  --component-heading-section-font-size: clamp(2rem, 1.6rem + 1.6vw, 3.25rem);
   /* Unique caps need air: the condensed bold cut collides at the old
      0.005em / 0.9. Tracking is a floor for every Unique heading and
      leading never drops below 1 (audit:type enforces both). */
@@ -952,7 +952,7 @@ p {
   border-radius: var(--radius-full);
   font-family: var(--font-body);
   font-size: var(--text-nav);
-  font-weight: 500;
+  font-weight: 400;
   color: var(--color-ink);
   text-decoration: none;
   transition: color 150ms ease, background-color 150ms ease;
@@ -983,7 +983,7 @@ p {
   cursor: pointer;
   font-family: var(--font-body);
   font-size: var(--text-nav);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-semantic-background);
   background: var(--color-accent-ink);
   transition: background-color 150ms ease;
@@ -1114,13 +1114,12 @@ p {
 /* lede size, leading and measure come from .text-lead */
 .section-row__lede {
   margin: var(--space-stack-sm) 0 0;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--color-ink);
 }
 
 .section--hero .section-row__lede {
   margin-top: var(--space-stack-md);
-  font-weight: 400;
   color: var(--color-ink-soft);
 }
 
@@ -1141,7 +1140,7 @@ p {
   padding: 0 0 var(--spacing-3) var(--spacing-5);
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
-  line-height: 1.5;
+  line-height: var(--leading-body);
   color: var(--color-ink-soft);
 }
 
@@ -1358,8 +1357,6 @@ p {
   font-family: var(--font-body);
   font-size: var(--typography-font-size-tag);
   font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
   color: var(--color-eyebrow);
 }
 
@@ -1422,7 +1419,7 @@ p {
   margin: 0;
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
-  line-height: 1.6;
+  line-height: var(--leading-body);
   color: var(--color-ink-soft);
 }
 
@@ -1716,6 +1713,11 @@ p {
   position: relative;
 }
 
+/* dropdown items: compact padding, still a 44px target */
+.get-in-touch__panel .btn-key {
+  padding: 0 var(--spacing-3);
+}
+
 .get-in-touch__panel {
   position: absolute;
   top: calc(100% + var(--spacing-2));
@@ -1808,7 +1810,7 @@ p {
 .body-lg {
   font-family: var(--font-body);
   font-size: var(--font-body-size);
-  line-height: 1.65;
+  line-height: var(--leading-body);
   letter-spacing: 0.01em;
   color: var(--color-ink-soft);
 }
@@ -2127,7 +2129,8 @@ p {
    one). SECONDARY = flat iris outline, iris text, no fill, no
    elevation — never confusable with a FilterChip (neutral flat,
    aria-pressed) or a Tag (inert). TERTIARY = text link, iris and
-   underlined. Labels stay Geist caps at tag size — NEVER Unique.
+   underlined. Labels are Geist, sentence case, 1rem at 500 — NEVER Unique
+   (only the small section labels are caps).
    Secondary colour rides --color-accent-ink (iris light / periwinkle
    dark; fixed-dark chrome scopes the same token to its peri stop). */
 .btn-key {
@@ -2140,11 +2143,10 @@ p {
   border-radius: var(--btn-key-radius);
   padding: 11px 18px;
   min-height: var(--spacing-touch-target);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-nav);
-  font-weight: 600;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: normal;
   text-decoration: none;
   color: var(--color-accent-ink);
   background: transparent;
