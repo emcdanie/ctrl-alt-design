@@ -1065,7 +1065,7 @@ p {
   padding: var(--spacing-3) var(--spacing-4);
   border: 1.5px dashed var(--color-accent-ink);
   border-radius: var(--radius-md);
-  font-size: var(--text-meta);
+  font-size: var(--text-body);
   color: var(--color-ink);
 }
 
