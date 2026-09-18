@@ -1,6 +1,7 @@
 import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
 import Heading from "@/components/ui/Heading";
+import { Icon } from "@/components/ui/Icon";
 import Section, { SectionList, SectionTags } from "@/components/Section";
 import WorkedWith from "@/components/WorkedWith";
 import ExperienceSection from "@/components/ExperienceSection";
@@ -37,7 +38,13 @@ export default function AboutPage() {
               height={1095}
             />
             <figcaption className="text-meta">
-              Bella speaks dog, I speak design. We agreed on five words. That&apos;s a design system.
+              Bella speaks dog, I speak design. We agreed on five words. That&apos;s a design{" "}
+              <span className="nowrap">
+                system.
+                <span className="caption-heart" aria-hidden="true">
+                  <Icon name="HeartSolid" style={{ width: "0.9em", height: "0.9em" }} />
+                </span>
+              </span>
             </figcaption>
           </figure>
         }

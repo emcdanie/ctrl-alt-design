@@ -153,6 +153,9 @@ body {
   --text-body: 16px;
   --leading-body: 1.65;
   --text-meta: 14px;
+  /* the caption heart: the nearest red in the system (the writing
+     case's text colour, theme-aware). TODO: a BELLA danger token */
+  --color-heart: var(--case-writing-text);
   /* Good company grid cells (100px under 700px) */
   --logo-cell: 132px;
   --logo-cell-sm: 100px;
@@ -567,6 +570,21 @@ body {
 .text-body strong {
   font-weight: 600;
   color: var(--color-ink);
+}
+
+/* keep a word and its trailing mark on one line */
+.nowrap {
+  white-space: nowrap;
+}
+
+/* the caption heart: inline SVG glued to the last word */
+.caption-heart {
+  display: inline-block;
+  margin-left: 0.25em;
+  vertical-align: -0.1em;
+  line-height: 0;
+  color: var(--color-heart);
+  fill: currentColor;
 }
 
 /* the one iris word in a display heading */
