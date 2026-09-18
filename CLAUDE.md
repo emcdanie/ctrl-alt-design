@@ -59,13 +59,12 @@ override the constitution.
 - Cards fill the grid evenly (equal heights, consistent gaps).
 
 ## 3. Type
-- **Exactly two typefaces (revised 2026-07-17, supersedes the hero-only lock).** Unique 700 = ALL
-  display headings: home hero headline, page titles, section headers, case-study display headlines,
-  and the ELLETA wordmark, always all-caps with the established accent-word treatment where the
-  design already does that. Every display heading renders through the ONE `ui/Heading` primitive
-  (tiers: hero / page / section / case, plus `sub`, the Geist 700 h3-level sub-heading;
-  tracking `--tracking-display`, leading `--leading-display`, and no consumer sets its own
-  heading size, tracking or leading). Page openings are FLAT (eyebrow + Heading, the Work
+- **Two typefaces (revised 2026-09-18, Geist headings; supersedes 2026-07-17).** Geist for all
+  text, headings included: Geist 700, sentence case, `--tracking-display` (-0.03em), leading
+  1.05 (display-1) / 1.1 (display-2/3), one iris accent word where the design has one. Unique ONLY
+  on the ELLETA wordmarks (nav + footer) and the BELLA logo. Every display heading renders through
+  the ONE `ui/Heading` primitive (tiers: hero / page / section / case, plus `sub`), and no
+  consumer sets its own heading size, tracking or leading. Page openings are FLAT (eyebrow + Heading, the Work
   pattern); bubble page headers are parked (last live at e25eefc, may return in the expression
   pass). The elevation/orb tokens stay: keycaps, the home cluster, and the About portrait still
   consume them.
@@ -192,8 +191,8 @@ Must pass before any work is "done":
 - `audit:copy` — fails on `—`/`–` and on "AI-augmented" / "AI-assisted".
 - `audit:controls` — keycap used as filter/toggle/sort fails; >1 primary per view fails; filters/toggles
   missing `aria-pressed`/`aria-current` fail.
-- `audit:fonts` — any face other than the Unique/Geist tokens fails; Unique outside the Heading
-  primitive, home hero, or ELLETA wordmark fails; any mono family reference fails.
+- `audit:fonts` — any face other than the Unique/Geist tokens fails; Unique set on anything but
+  the ELLETA wordmarks or the BELLA logo fails; any mono family reference fails.
 - `audit:tokens` — colour literals and raw spacing (>=4px) in `app/**`/`components/**` fail;
   `token-waiver:` inline comments mark the reviewed proto-exact/artwork exceptions.
 - `audit:parity` — every case-study slug has exactly one `WORK_ITEMS` row and vice versa; side
@@ -208,8 +207,8 @@ Must pass before any work is "done":
   `.card-body` recipe never computes below 18px; sitewide, any P/LI with own text past ~40
   chars computes >= 16px. Metadata rows (tags/pills/eyebrows/kickers) are a deliberate
   separate tier and exempt. Section index labels count as metadata: short labels only, never
-  sentences. Every Unique heading tracks >= `--tracking-display` and leads
-  >= 1.0, and every h2 display head on a page computes one size.
+  sentences. Nothing visible renders below 14px. Every heading is Geist (never Unique) and leads
+  >= 1.0; Unique renders only on the wordmarks; every h2 display head on a page computes one size.
 - `audit:visual` — one ground on /design-system (band backgrounds equal the page ground,
   no exceptions since the 23 Jul DS2 no-wash port), sibling specimen cards render equal
   heights, cover placeholders clear 3:1 against both gradient stops, both themes.

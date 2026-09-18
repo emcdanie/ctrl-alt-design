@@ -149,24 +149,28 @@ for (const route of ROUTES) {
     fails++;
     console.error(receipt("type", `${route} ${b}`, "visible text below 14px", ">=14px (--text-meta is the floor)"));
   }
-  /* ── display type scale (display-type-scale fix, 18 Sep 2026): every
-     Unique heading tracks at >= --tracking-display and leads at >= 1.0,
-     and every section-tier head on a page computes ONE size (the /about
-     72 vs 50.4 split is the counter-example). Read from computed style,
-     so a consumer override fails the same as a bad token. ── */
+  /* ── display type (Geist headings, 18 Sep 2026): every heading is
+     Geist, never Unique, and leads at >= 1.0; Unique renders ONLY on the
+     ELLETA wordmarks (nav + footer) and the BELLA logo. Every
+     section-tier head on a page computes ONE size (the /about 72 vs 50.4
+     split is the counter-example). Read from computed style, so a
+     consumer override fails the same as a bad token. ── */
   const scaleBad = await page.evaluate(() => {
     const out = [];
-    const floorEm = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--tracking-display"));
-    if (!Number.isFinite(floorEm)) return [[":root --tracking-display", "undefined", "a number in em"]];
-    for (const el of document.querySelectorAll("h1, h2, h3, h4, h5, h6")) {
+    for (const el of document.querySelectorAll("h1, h2, h3, h4, h5, h6, .display-heading")) {
       const cs = getComputedStyle(el);
-      if (!/unique/i.test(cs.fontFamily) || !el.textContent.trim()) continue;
+      if (!el.textContent.trim()) continue;
       const size = parseFloat(cs.fontSize);
-      const trackEm = cs.letterSpacing === "normal" ? 0 : parseFloat(cs.letterSpacing) / size;
       const lead = cs.lineHeight === "normal" ? 1.2 : parseFloat(cs.lineHeight) / size;
       const label = el.textContent.trim().slice(0, 40);
-      if (trackEm < floorEm - 0.001) out.push([`"${label}" letter-spacing`, `${trackEm.toFixed(3)}em`, `>= ${floorEm}em (--tracking-display)`]);
+      if (/unique/i.test(cs.fontFamily)) out.push([`"${label}" font-family`, "Unique", "Geist (headings are Geist)"]);
       if (lead < 1 - 0.001) out.push([`"${label}" line-height`, lead.toFixed(2), ">= 1.0"]);
+    }
+    for (const el of document.querySelectorAll("body *")) {
+      if (![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
+      if (!/unique/i.test(getComputedStyle(el).fontFamily)) continue;
+      if (el.closest(".nav-wordmark, .site-footer__wordmark, [data-bella-logo]")) continue;
+      out.push([`"${el.textContent.trim().slice(0, 30)}" (${el.className.toString().split(" ")[0] || el.tagName})`, "Unique", "Unique only on the ELLETA wordmarks and the BELLA logo"]);
     }
     /* every h2 display head is a section head, whatever tier a consumer
        passed: the /about split was an h2 on tier page, which a

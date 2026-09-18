@@ -16,7 +16,9 @@ import { receipt } from "./lib/receipt.mjs";
 const ROOTS = ["app", "components"];
 const EXT = /\.(tsx|ts|css)$/;
 const TOKEN_LAYER = new Set(["app/globals.css"]);
-const UNIQUE_ALLOWED = new Set(["app/globals.css", "components/Hero.module.css", "app/layout.tsx"]);
+const UNIQUE_ALLOWED = new Set(["app/globals.css", "app/layout.tsx"]);
+/* in globals.css, Unique may only be SET on these selectors (plus the font tokens) */
+const UNIQUE_SELECTORS = [".nav-wordmark", ".site-footer__wordmark", "[data-bella-logo]"];
 
 const MONO_FAMILY = /geist mono|jetbrains|ui-monospace|\bmonospace\b|chivo|source code|courier/i;
 const OTHER_FAMILY = /\b(fraunces|jakarta|cormorant|georgia)\b/i;
@@ -53,9 +55,21 @@ for (const root of ROOTS) {
       }
       // Unique outside the allowed hero/bubble surfaces
       if (/--font-hero-display|--font-unique|"Unique"|'Unique'/.test(l) && !UNIQUE_ALLOWED.has(file)) {
-        fail(file, n, `a Unique reference (${l.trim().slice(0, 40)})`, "Unique only via the Heading primitive, home hero, or keycap lockup");
+        fail(file, n, `a Unique reference (${l.trim().slice(0, 40)})`, "Unique only on the ELLETA wordmarks and the BELLA logo");
       }
     });
+  }
+}
+
+/* selector-aware leg: in globals.css, a rule that SETS Unique must be
+   one of the wordmark selectors (headings are Geist, 18 Sep 2026) */
+{
+  const css = readFileSync("app/globals.css", "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  for (const m of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    if (!/font-family\s*:\s*var\(--font-(hero-display|unique)\)/.test(m[2])) continue;
+    const sels = m[1].split(",").map((x) => x.trim()).filter(Boolean);
+    const bad = sels.filter((x) => !UNIQUE_SELECTORS.some((ok) => x === ok || x.startsWith(ok + " ") || x.startsWith(ok + ":")));
+    if (bad.length) fail("app/globals.css", 0, `Unique set on ${bad.join(", ")}`, "Unique only on " + UNIQUE_SELECTORS.join(", "));
   }
 }
 

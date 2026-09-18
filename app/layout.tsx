@@ -13,13 +13,12 @@ const geist = Geist({
   subsets: ["latin"],
 });
 
-// redesign/lush — Unique is reserved for the large hero headline ONLY
-// (fails legibility at label sizes). Everything else is Geist.
+// Unique is for the ELLETA wordmarks (nav + footer) and the BELLA logo
+// only, so only its Regular cut loads. Everything else is Geist.
 // Licensed webfonts, free for commercial use; files unmodified.
 const unique = localFont({
   src: [
     { path: "./fonts/unique/Unique-Regular.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/unique/Unique-Bold.woff2", weight: "700", style: "normal" },
   ],
   variable: "--font-unique",
   display: "swap",
