@@ -14,6 +14,7 @@ export function Button({
   className = "",
   children,
   ariaLabel,
+  dataCursor,
 }: {
   variant?: "primary" | "secondary";
   href?: string;
@@ -23,19 +24,21 @@ export function Button({
   className?: string;
   children: React.ReactNode;
   ariaLabel?: string;
+  /** bracket-cursor label override (e.g. "copy", "open") */
+  dataCursor?: string;
 }) {
   /* primary = the calm keycap + the SHARED travelling border light
      (task-2 pick, 20 Jul): trace-host is the one trace implementation */
   const cls = `btn-key${variant === "primary" ? " btn-key--primary trace-host" : ""}${className ? ` ${className}` : ""}`;
   if (href) {
     return (
-      <Link href={href} className={cls} aria-label={ariaLabel}>
+      <Link href={href} className={cls} aria-label={ariaLabel} data-cursor={dataCursor}>
         {children}
       </Link>
     );
   }
   return (
-    <button type={type} onClick={onClick} disabled={disabled} className={cls} aria-label={ariaLabel}>
+    <button type={type} onClick={onClick} disabled={disabled} className={cls} aria-label={ariaLabel} data-cursor={dataCursor}>
       {children}
     </button>
   );

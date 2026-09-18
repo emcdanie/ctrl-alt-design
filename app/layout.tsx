@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BracketCursor from "@/components/BracketCursor";
 import { Geist } from "next/font/google";
 import localFont from "next/font/local";
 import DevTools from "@/components/DevTools";
@@ -68,6 +69,7 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">Skip to content</a>
         <DevTools />
         <IconProvider>{children}</IconProvider>
+        <BracketCursor />
       </body>
     </html>
   );
