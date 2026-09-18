@@ -1045,9 +1045,10 @@ p {
   margin-top: var(--space-stack-md);
 }
 
-/* hero: starts directly under the nav */
+/* hero: clears the sticky nav by one section gap, so the h1 never
+   reads as tucked under the bar (64px on phones, up to 112px wide) */
 .section--hero {
-  padding-top: calc(var(--header-height) + var(--space-stack-lg));
+  padding-top: calc(var(--header-height) + var(--space-section));
 }
 
 /* hero: text left, figure right from 1024px; stacked below */

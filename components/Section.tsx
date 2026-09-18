@@ -12,7 +12,7 @@ import PawTrail, { PawIcon } from "@/components/PawTrail";
  *
  * variant="hero": the page opening. No label and no rule; the h1 and
  * lede sit left and `side` (the figure) sits right from 1024px, stacked
- * below. It starts directly under the nav.
+ * below. It clears the sticky nav by one section gap.
  *
  * The heading takes one iris `accent` word; `after` carries whatever
  * follows it, e.g. title="A shared language, not a" accent="rulebook"

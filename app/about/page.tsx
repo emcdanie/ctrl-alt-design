@@ -18,7 +18,7 @@ export default function AboutPage() {
     <main id="main-content" className="page-shell min-h-screen text-[var(--color-ink-soft)]">
       <OverlayNav />
 
-      {/* Hero: the Section hero variant, directly under the nav */}
+      {/* Hero: the Section hero variant, one section gap under the nav */}
       <Section
         variant="hero"
         id="about-hero"
