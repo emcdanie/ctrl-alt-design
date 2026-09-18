@@ -31,7 +31,7 @@ export const EXPERIENCE: Row[] = [
   {
     company: "Mango",
     role: "Design Systems Specialist",
-    /* end month unknown yet (Elleta, 18 Sep 2026) */
+    /* TODO(elleta): end month, "Apr 2026 to [END]"; until then the year */
     dates: "Apr 2026 to 2026",
     did: [
       <>Brought AI into Mango&apos;s design-system work for the first time. With <strong>Claude, Figma MCP and Code Connect</strong> I automated audits and made components machine-readable, so I could ship far more in a few months while keeping Mango&apos;s design system up to date.</>,
@@ -115,15 +115,15 @@ export default function ExperienceSection() {
         {EXPERIENCE.map((r) => (
           <details key={r.company} className="xp">
             <summary className="xp__summary">
-              <span className="xp__who">
-                <span className="xp__company">
-                  {r.company}
-                  {r.current ? <span className="xp__current">Current</span> : null}
-                </span>
-                <span className="xp__role">{r.role}</span>
-                {r.clients ? <span className="text-meta xp__clients">{r.clients}</span> : null}
+              {/* DOM order is reading order: company, role, dates, clients.
+                  The grid puts the dates in the right-hand column. */}
+              <span className="xp__company">
+                {r.company}
+                {r.current ? <span className="xp__current">Current</span> : null}
               </span>
+              <span className="xp__role">{r.role}</span>
               <span className="xp__dates">{r.dates}</span>
+              {r.clients ? <span className="text-meta xp__clients">{r.clients}</span> : null}
               <Icon name="NavArrowDown" size="sm" className="xp__chev" />
             </summary>
             <div className="xp__body">

@@ -182,7 +182,7 @@ export default function AboutPage() {
               </p>
               <ul className="text-body contact-close__lines">
                 <li>Straight to me: you talk to the person designing your system.</li>
-                <li>EU hours, remote-first.</li>
+                <li>EU working hours, remote-first.</li>
                 <li>We start small: an audit or one component.</li>
               </ul>
               <GetInTouch />

@@ -1239,8 +1239,12 @@ p {
 .xp__summary {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto var(--icon-sm);
+  grid-template-areas:
+    "company dates chev"
+    "role    dates chev"
+    "clients dates chev";
   align-items: center;
-  gap: var(--spacing-4);
+  column-gap: var(--spacing-4);
   min-height: var(--spacing-touch-target);
   padding: var(--spacing-4) 0;
   list-style: none;
@@ -1258,6 +1262,7 @@ p {
 }
 
 .xp__company {
+  grid-area: company;
   display: block;
   font-family: var(--font-body);
   font-size: var(--typography-font-size-lg);
@@ -1277,6 +1282,7 @@ p {
 }
 
 .xp__role {
+  grid-area: role;
   display: block;
   margin-top: 2px;
   font-family: var(--font-body);
@@ -1286,11 +1292,13 @@ p {
 
 /* the clients behind the work, one muted metadata line */
 .xp__clients {
+  grid-area: clients;
   display: block;
   margin-top: 2px;
 }
 
 .xp__dates {
+  grid-area: dates;
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
   color: var(--color-ink-muted);
@@ -1299,6 +1307,7 @@ p {
 }
 
 .xp__chev {
+  grid-area: chev;
   color: var(--color-ink-muted);
   transition: transform 250ms ease;
 }
@@ -1310,17 +1319,15 @@ p {
 @media (max-width: 640px) {
   .xp__summary {
     grid-template-columns: minmax(0, 1fr) var(--icon-sm);
-    row-gap: var(--spacing-1);
+    grid-template-areas:
+      "company chev"
+      "role    chev"
+      "dates   chev"
+      "clients chev";
   }
 
   .xp__dates {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .xp__chev {
-    grid-column: 2;
-    grid-row: 1;
+    margin-top: 2px;
   }
 }
 
