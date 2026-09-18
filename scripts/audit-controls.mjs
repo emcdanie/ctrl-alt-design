@@ -66,6 +66,38 @@ for (const r of routes) {
   if (res.chipsNoAria) fail(`${r} .filter-chip`, `${res.chipsNoAria} chips without aria-pressed`, "aria-pressed on every filter chip");
   if (res.segBad) fail(`${r} .seg-control`, `${res.segBad} controls without exactly one aria-current`, "exactly one aria-current per control");
 }
+
+/* ONE theme toggle (18 Sep 2026): exactly one in the document (the
+   mobile menu carries none), and in the header it sits directly left of
+   the last control: the CTA at lg+, the menu button below lg. */
+for (const [w, lastSel, lastName] of [
+  [1440, ".get-in-touch__trigger", "the Get in touch CTA"],
+  [390, '[aria-controls="overlay-menu"]', "the menu button"],
+]) {
+  await page.setViewportSize({ width: w, height: 900 });
+  for (const r of ["/", "/about", "/work"]) {
+    await page.goto("http://localhost:3000" + r, { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(500);
+    const t = await page.evaluate((lastSel) => {
+      const visible = (el) => {
+        const rect = el.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0 && getComputedStyle(el).visibility !== "hidden";
+      };
+      const toggles = document.querySelectorAll('[data-component="ThemeToggle"]');
+      const bar = document.querySelector(".nav-wordmark")?.parentElement;
+      const controls = bar ? [...bar.querySelectorAll("button, a[href]")].filter(visible) : [];
+      const last = controls[controls.length - 1];
+      const beforeLast = controls[controls.length - 2];
+      return {
+        count: toggles.length,
+        lastOk: !!last && last.matches(lastSel),
+        toggleOk: !!beforeLast && beforeLast.matches('[data-component="ThemeToggle"]'),
+      };
+    }, lastSel);
+    if (t.count !== 1) fail(`${r} @${w} ThemeToggle`, `${t.count} toggles in the document`, "exactly one");
+    if (!t.lastOk || !t.toggleOk) fail(`${r} @${w} ThemeToggle`, "not directly left of " + lastName, `ThemeToggle, then ${lastName}, at the end of the header`);
+  }
+}
 await browser.close();
 console.log(fails === 0 ? "controls gate: PASS" : `controls gate: ${fails} failure(s)`);
 process.exit(fails === 0 ? 0 : 1);

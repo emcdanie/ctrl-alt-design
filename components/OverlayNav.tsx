@@ -99,12 +99,14 @@ export default function OverlayNav() {
           </nav>
 
           <div className="flex items-center gap-4">
+          {/* ONE theme toggle, always directly left of the CTA (lg+) or the
+              menu button (below lg). audit:controls checks both. */}
+          <ThemeToggle />
           {/* Contact left the nav (about-rebuild lock, 18 Sep 2026): the
               ask is a button; below lg it lives in the menu instead */}
           <div className="hidden lg:block">
             <GetInTouch />
           </div>
-          <ThemeToggle />
           <button
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
@@ -211,12 +213,6 @@ export default function OverlayNav() {
           </nav>
 
           <div className="relative z-10 mt-12 flex flex-col gap-3 sm:mt-16">
-            <div className="flex items-center gap-3">
-              <ThemeToggle />
-              <span className="font-[family:var(--font-mono)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.12em] text-[color:var(--color-ink-muted)]">
-                Theme
-              </span>
-            </div>
             {/* Get in touch, the menu's copy of the header button
                 (email assembled on click, §6) */}
             <ContactActions />

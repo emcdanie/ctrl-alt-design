@@ -9,8 +9,8 @@ import styles from "./ThemeToggle.module.css";
  * Moon while light (the way to dark), sun while dark. aria-pressed
  * reports dark mode. The resolved theme follows the OS until the
  * visitor chooses here; the choice persists to localStorage and the
- * layout.tsx pre-paint script defers to it. Renders in the header and
- * the mobile menu; both instances mirror the DOM attribute.
+ * layout.tsx pre-paint script defers to it. Renders once, in the
+ * header, directly left of the CTA or the menu button.
  */
 export default function ThemeToggle() {
   const [dark, setDark] = useState(false);
