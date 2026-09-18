@@ -221,15 +221,15 @@
       "variants": [
         {
           "name": "hero",
-          "delta": "font-size {--font-display-hero} (home headline, 40-180)"
+          "delta": "font-size {--component-heading-hero-font-size} (home headline, 40-180)"
         },
         {
           "name": "page",
-          "delta": "font-size {--font-display-page} (every page title incl. case studies and /design-system, 40-64)"
+          "delta": "font-size {--component-heading-page-font-size} (every page title incl. case studies and /design-system, 48-104, max 20ch)"
         },
         {
           "name": "case",
-          "delta": "font-size {--font-display-case} (the case sign-off, 32-48)"
+          "delta": "font-size {--component-heading-section-font-size} (the case sign-off, one size with section heads, 36-64)"
         },
         {
           "name": "sub",
@@ -238,10 +238,9 @@
       ],
       "tokens": [
         "{--font-hero-display}",
-        "{--font-display-hero}",
-        "{--font-display-page}",
-        "{--font-display-section}",
-        "{--font-display-case}",
+        "{--component-heading-hero-font-size}",
+        "{--component-heading-page-font-size}",
+        "{--component-heading-section-font-size}",
         "{--font-subsection}",
         "{--tracking-display}",
         "{--leading-display}",
@@ -435,7 +434,7 @@
       "tokens": [
         "{--spacing-16}",
         "{--spacing-8}",
-        "{--font-display-section}",
+        "{--component-heading-section-font-size}",
         "{--color-border-soft}"
       ],
       "requiresContext": {

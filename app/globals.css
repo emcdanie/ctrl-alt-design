@@ -69,8 +69,8 @@
   --space-section-lg: 96px;
 
   /* Layout */
-  --container-width: 1240px;
-  --container-padding: 32px;
+  --container-width: 1360px;
+  --container-padding: clamp(20px, 4vw, 48px);
   --grid-gap: 32px;
   --card-padding: 24px;
   --card-radius: 20px;
@@ -207,13 +207,13 @@ body {
      Section and case share one size on purpose: every section head on
      every page renders the same, and audit:type fails two section
      heads that compute differently on one page. */
-  /* the home headline keeps its scale moment: ~180 at 1440 */
-  --font-display-hero: clamp(40px, 40px + 140 * (100vw - 390px) / 1050, 180px);
-  /* page titles (/about, case studies, /design-system, every page H1):
-     one size, a clear step above the 48px section heads */
-  --font-display-page: clamp(40px, 40px + 24 * (100vw - 390px) / 1050, 64px);
-  --font-display-section: clamp(32px, 32px + 16 * (100vw - 390px) / 1050, 48px);
-  --font-display-case: clamp(32px, 32px + 16 * (100vw - 390px) / 1050, 48px);
+  /* ONE heading scale: the BELLA --component-heading-* tokens, set here
+     to the Unique scale (this unlayered :root wins over the vendored
+     bella.css). No site-only duplicates. Page 48-104, section 36-64;
+     the home headline keeps its ~180 moment. Case shares section. */
+  --component-heading-hero-font-size: clamp(40px, 40px + 140 * (100vw - 390px) / 1050, 180px);
+  --component-heading-page-font-size: clamp(48px, 48px + 56 * (100vw - 390px) / 1050, 104px);
+  --component-heading-section-font-size: clamp(36px, 36px + 28 * (100vw - 390px) / 1050, 64px);
   /* Unique caps need air: the condensed bold cut collides at the old
      0.005em / 0.9. Tracking is a floor for every Unique heading and
      leading never drops below 1 (audit:type enforces both). */
@@ -435,7 +435,17 @@ body {
 /* ─── Wordmark (header) ──────────────────────────────────────────
    ELLETA in Unique, live text so it follows the theme ink. 44px, 36px
    under 768px: always above the 24px Unique floor. */
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding-inline: var(--container-padding);
+}
+
 .nav-wordmark {
+  flex: none;
   display: flex;
   align-items: center;
   font-family: var(--font-hero-display);
@@ -761,20 +771,21 @@ li {
 }
 
 .display-heading--hero {
-  font-size: var(--font-display-hero);
+  font-size: var(--component-heading-hero-font-size);
 }
 
 .display-heading--page {
-  font-size: var(--font-display-page);
+  font-size: var(--component-heading-page-font-size);
+  max-width: 20ch;
 }
 
 .display-heading--section {
-  font-size: var(--font-display-section);
+  font-size: var(--component-heading-section-font-size);
 }
 
 .display-heading--case {
-  /* the case-study display headline */
-  font-size: var(--font-display-case);
+  /* the case-study display headline: one size with section heads */
+  font-size: var(--component-heading-section-font-size);
 }
 
 /* sub-heading (h3 level): Geist 700, sentence case, never Unique */
@@ -862,8 +873,8 @@ li {
    headlines, no card grids. */
 :root {
   /* the illustration, fluid 390 to 1440 like the display ladder */
-  /* hero illustration cap (~330px): no empty band beside the text */
-  --about-art-height: clamp(240px, 240px + 90 * (100vw - 390px) / 1050, 330px);
+  /* hero lede: one fluid size, 18 -> 22 */
+  --lede-size: clamp(18px, 1rem + 0.6vw, 22px);
 }
 
 .about-hi-section {
@@ -871,29 +882,44 @@ li {
   padding-bottom: var(--spacing-12);
 }
 
+/* Hero on the Section grid: text spans the index + main columns, the
+   figure takes the side column (>=1024). Stacked below that. */
 .about-hi {
   display: grid;
-  grid-template-columns: 1fr;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--spacing-8);
+  align-items: start;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .about-hi {
-    grid-template-columns: 1fr auto;
-    align-items: start;
+    grid-template-columns: var(--section-index-width) minmax(0, 1fr) var(--section-side-width);
+    column-gap: var(--spacing-12);
+  }
+
+  .about-hi__text {
+    grid-column: 1 / 3;
+  }
+
+  .about-hi__figure {
+    grid-column: 3;
   }
 }
 
 .about-hi__line {
   margin: var(--spacing-4) 0 0;
-  max-width: 34ch;
+  max-width: 42rem;
+  font-family: var(--font-body);
+  font-size: var(--lede-size);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
 }
 
 .about-hi__art {
-  height: var(--about-art-height);
-  width: auto;
-  justify-self: center;
+  display: block;
+  width: 100%;
+  max-width: var(--section-side-width);
+  height: auto;
 }
 
 /* ─── Section: the numbered three-column row (About, Work) ──────────
@@ -933,6 +959,15 @@ li {
 
   .section-row__side {
     grid-column: auto;
+  }
+
+  /* wide: the main column also takes the (empty) side column */
+  .section-row--wide .section-row__main {
+    grid-column: 2 / -1;
+  }
+
+  .section-row--wide .section-row__body {
+    max-width: none;
   }
 }
 
@@ -1005,28 +1040,24 @@ li {
   padding-top: var(--spacing-2);
 }
 
-/* Good company: names as plain text in a ruled grid, no logos */
+/* Good company: names as plain text, no logos. Every cell carries its
+   own bottom rule, so a short last row never leaves a dangling line. */
 .worked-with {
   list-style: none;
   margin: var(--spacing-6) 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-top: 1px solid var(--color-semantic-border);
-}
-
-@media (min-width: 768px) {
-  .worked-with {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  column-gap: var(--spacing-6);
 }
 
 .worked-with__name {
-  padding: var(--spacing-5) var(--spacing-4) var(--spacing-5) 0;
+  padding: var(--spacing-5) 0;
   border-bottom: 1px solid var(--color-semantic-border);
   font-family: var(--font-body);
   font-size: var(--typography-font-size-lg);
   font-weight: 500;
+  white-space: nowrap;
   color: var(--color-ink);
 }
 
@@ -1237,7 +1268,6 @@ li {
 /* Hero caption */
 .about-hi__figure {
   margin: 0;
-  justify-self: center;
 }
 
 .about-hi__caption {
@@ -2199,8 +2229,8 @@ textarea:focus-visible {
 /* ─── Page container ───────────────────────────────────────────── */
 .page-container {
   max-width: var(--container-width);
-  padding-left: var(--spacing-8);
-  padding-right: var(--spacing-8);
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
   margin-left: auto;
   margin-right: auto;
 }
@@ -5531,8 +5561,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   letter-spacing: var(--tracking-display);
   line-height: var(--leading-display);
   /* the thesis dominates (Elleta, 23 Jul): page tier, a full step
-     ABOVE the beat headlines (--font-display-section), not below */
-  font-size: var(--font-display-page);
+     ABOVE the beat headlines (section tier), not below */
+  font-size: var(--component-heading-page-font-size);
   color: var(--color-ink);
   max-width: 44ch;
   text-align: center;

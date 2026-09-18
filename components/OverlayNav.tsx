@@ -71,9 +71,12 @@ export default function OverlayNav() {
       <div
         className="pointer-events-none fixed inset-x-0 top-0 z-[9995]"
       >
-        <div className="flex w-full items-center justify-between border-b border-[color:var(--color-semantic-border-glass-edge)] bg-[var(--color-semantic-background)]/72 px-4 py-3 shadow-[var(--shadow-nav-bar)] backdrop-blur-xl sm:px-6"
+        <div className="w-full border-b border-[color:var(--color-semantic-border-glass-edge)] bg-[var(--color-semantic-background)]/72 py-3 shadow-[var(--shadow-nav-bar)] backdrop-blur-xl"
           style={{ borderTop: "1px solid var(--color-semantic-border-glass-top)" }}
         >
+        {/* the bar stays full width; its row sits on the page container,
+            so the wordmark lines up with the content at every width */}
+        <div className="nav-row">
           <Link
             href="/"
             className="nav-wordmark pointer-events-auto"
@@ -138,6 +141,7 @@ export default function OverlayNav() {
             />
           </button>
           </div>
+        </div>
         </div>
       </div>
 

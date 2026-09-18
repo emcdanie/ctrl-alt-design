@@ -139,7 +139,7 @@ ladder below (endpoints 32 / 36 / 40 / 48 / 56 / 72). Body text never below
   Geist semibold (`.heading-item`).
 - Section intros: ONE pattern, the shared `ui/SectionHeader` (Geist caps
   iris eyebrow + the `ui/Heading` section tier, Unique 700 uppercase at
-  `--font-display-section`). No ad-hoc section titles.
+  `--component-heading-section-font-size`). No ad-hoc section titles.
 - BELLA size tokens map 1:1 to the ramp: `tag` 13, `sm` 14, `base` 16,
   `lg` 18, `xl` 20, `2xl` 24, `3xl` 32, `4xl` 40, `5xl` 56.
 - No arbitrary `text-[Npx]` / inline px font sizes in components — ramp
@@ -151,10 +151,9 @@ ladder below (endpoints 32 / 36 / 40 / 48 / 56 / 72). Body text never below
 
 | Token | Pair |
 | --- | --- |
-| `--font-display-hero` | 40 → 180 (Heading tier hero: the home headline) |
-| `--font-display-page` | 40 → 64 (tier page: every page title, case studies and /design-system included; the case pull quote) |
-| `--font-display-section` | 32 → 48 (tier section: every section head and beat headline) |
-| `--font-display-case` | 32 → 48 (tier case: the case sign-off) |
+| `--component-heading-hero-font-size` | 40 → 180 (Heading tier hero: the home headline) |
+| `--component-heading-page-font-size` | 48 → 104, max-width 20ch (tier page: every page title, case studies and /design-system included; the case pull quote) |
+| `--component-heading-section-font-size` | 36 → 64 (tiers section and case: every section head, beat headline and the case sign-off) |
 | `--font-hero` | `clamp(40px, 5vw, 56px)` (overlay nav links, Geist; not a heading tier) |
 | `--font-subsection` | 24 → 32 (tier sub: h3-level sub-heading, Geist 700, never Unique) |
 
@@ -518,8 +517,8 @@ mechanical at the first sentence; 13/13 stays the only metric on the page.
 
 One scale, one display family, stepped through the Heading primitive
 (revised 18 Sep 2026, display-type-scale fix): H1 case title = tier page
-(--font-display-page, 64px at 1440) -> beat headline = tier section
-(--font-display-section, 48px at 1440; never Geist at display size; the
+(--component-heading-page-font-size, 104px at 1440) -> beat headline = tier section
+(--component-heading-section-font-size, 64px at 1440; never Geist at display size; the
 22 Jul regression is the counter-example) -> sign-off = tier case -> eyebrow
 = tag tier -> keyline = Geist 600 at lg -> body 16-18px. --font-beat-headline
 and the unused --font-case-title are retired. Media/link controls use the

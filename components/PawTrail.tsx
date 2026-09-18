@@ -8,14 +8,15 @@ const PAW =
   '<ellipse cx="0" cy="3" rx="5.2" ry="4.4"/><ellipse cx="-5.6" cy="-3.2" rx="1.9" ry="2.5" transform="rotate(-20 -5.6 -3.2)"/><ellipse cx="-2" cy="-6.4" rx="1.9" ry="2.6"/><ellipse cx="2" cy="-6.4" rx="1.9" ry="2.6"/><ellipse cx="5.6" cy="-3.2" rx="1.9" ry="2.5" transform="rotate(20 5.6 -3.2)"/>';
 
 /**
- * Paw trail (About only). Decorative: aria-hidden. Draws prints along an
- * S-curve across the gap between two sections, from `from` to `to`
- * (fractions of the content width), alternating left and right feet and
- * rotating with the path. The prints step in one by one the first time
+ * Paw trail (About only). Decorative: aria-hidden. Draws at most ten
+ * prints along an S-curve across the gap before a section: from under
+ * the hero figure to that section's index label, alternating left and
+ * right feet and rotating with the path. Both ends are read from the
+ * DOM, so the trail follows the layout at every width. The prints step in one by one the first time
  * the gap is fully in view, then settle to ~30% ink; they never loop.
  * Reduced motion: shown statically (CSS).
  */
-export default function PawTrail({ from, to }: { from: number; to: number }) {
+export default function PawTrail() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,13 +28,18 @@ export default function PawTrail({ from, to }: { from: number; to: number }) {
       svg.innerHTML = "";
       const w = el.clientWidth;
       const h = el.clientHeight;
-      const a = from * w;
-      const b = to * w;
+      const box = el.getBoundingClientRect();
+      const fig = document.querySelector(".about-hi__figure")?.getBoundingClientRect();
+      const label = el.parentElement?.nextElementSibling?.querySelector(".section-row__meta")?.getBoundingClientRect();
+      /* from: under the figure's centre; to: the index label's number */
+      const a = fig ? fig.left + fig.width / 2 - box.left : w * 0.86;
+      const b = label ? label.left - box.left + 8 : 8;
       const path = document.createElementNS(NS, "path");
       path.setAttribute("d", `M${a},0 C${a},${h * 0.95} ${b},${h * 0.05} ${b},${h}`);
       const len = path.getTotalLength();
       const step = w < 600 ? 44 : 62;
-      const n = Math.max(4, Math.floor(len / step));
+      /* ten prints at most (i runs 0..n) */
+      const n = Math.min(9, Math.max(4, Math.floor(len / step)));
       for (let i = 0; i <= n; i++) {
         const s = (i / n) * len;
         const pt = path.getPointAtLength(s);
@@ -76,7 +82,7 @@ export default function PawTrail({ from, to }: { from: number; to: number }) {
       io.disconnect();
       window.clearTimeout(settle);
     };
-  }, [from, to]);
+  }, []);
 
   return (
     <div className="page-container" aria-hidden="true">

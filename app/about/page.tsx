@@ -26,7 +26,7 @@ export default function AboutPage() {
             <Heading tier="page" as="h1" accent="dog" after=".">
               Fluent in design, code and
             </Heading>
-            <p className="body-lg about-hi__line">
+            <p className="about-hi__line">
               I build design systems that give designers and developers a shared language: tokens,
               components, and the decisions behind them, written down kindly so everyone can use them.
             </p>
@@ -35,10 +35,10 @@ export default function AboutPage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="about-hi__art"
-              src="/images/about/elleta-bella-walk.png"
-              alt="Illustration: Elleta walking her dog Bella on a lead."
-              width={628}
-              height={880}
+              src="/images/bella/set/elleta-bella-obi-walk.webp"
+              alt="Illustration: Elleta walking her dogs Bella and Obi on leads."
+              width={1216}
+              height={1095}
             />
             <figcaption className="about-hi__caption">
               Bella speaks dog, I speak design. We agreed on five words. That&apos;s a design system.
@@ -47,7 +47,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <PawTrail from={0.86} to={0.03} />
+      <PawTrail />
       <Section
         id="short-version"
         index="01"
@@ -74,7 +74,7 @@ export default function AboutPage() {
         </p>
       </Section>
 
-      <PawTrail from={0.03} to={0.74} />
+      <PawTrail />
       <Section
         id="lately"
         index="02"
@@ -115,12 +115,12 @@ export default function AboutPage() {
         </p>
       </Section>
 
-      <PawTrail from={0.74} to={0.03} />
-      <Section id="worked-with" index="03" label="worked with" title="Good" accent="company" after=".">
+      <PawTrail />
+      <Section id="worked-with" index="03" label="worked with" title="Good" accent="company" after="." wide>
         <WorkedWith />
       </Section>
 
-      <PawTrail from={0.03} to={0.74} />
+      <PawTrail />
       <Section id="cares" index="04" label="what I care about" title="Four things I" accent="care" after=" about.">
         <div className="cares">
           <div>
@@ -149,7 +149,7 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <PawTrail from={0.74} to={0.03} />
+      <PawTrail />
       <Section
         id="experience"
         index="05"
@@ -163,7 +163,7 @@ export default function AboutPage() {
       </Section>
       <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
 
-      <PawTrail from={0.03} to={0.74} />
+      <PawTrail />
       {/* TODO(elleta): placeholder copy from the build prompt, review */}
       <Section id="how-i-work" index="06" label="how I work" title="Simple, on" accent="purpose" after=".">
         <ol className="how">

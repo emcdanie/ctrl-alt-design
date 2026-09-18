@@ -19,6 +19,7 @@ export default function Section({
   after,
   lede,
   side,
+  wide,
   id,
   children,
 }: {
@@ -32,13 +33,15 @@ export default function Section({
   lede?: ReactNode;
   /** optional right column: SectionList, SectionTags, or other content */
   side?: ReactNode;
+  /** main column also takes the side column (only when there is no side) */
+  wide?: boolean;
   id?: string;
   /** the body copy */
   children?: ReactNode;
 }) {
   const headingId = id ? `${id}-title` : undefined;
   return (
-    <section id={id} className="section-row" aria-labelledby={headingId}>
+    <section id={id} className={wide && !side ? "section-row section-row--wide" : "section-row"} aria-labelledby={headingId}>
       <div className="page-container">
         <div className="section-row__grid">
           <p className="section-row__meta">
