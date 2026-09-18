@@ -197,8 +197,8 @@ body {
    Ramp: 13/14/16/18/20/24/32/40/56. One fluid pair per step, endpoints
    on the ramp, defined ONCE here. No other clamp() in components. */
 :root {
-  /* Display ladder (display-type-scale fix, 18 Sep 2026; Southleft
-     scale). Every tier is fluid between a 390 and a 1440 viewport:
+  /* Display ladder (display-type-scale fix, 18 Sep 2026).
+     Every tier is fluid between a 390 and a 1440 viewport:
      clamp(min, min + (max - min) * (100vw - 390px) / 1050, max).
      Section and case share one size on purpose: every section head on
      every page renders the same, and audit:type fails two section
