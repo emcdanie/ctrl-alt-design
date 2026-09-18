@@ -1,9 +1,9 @@
 - region "Where I've been.":
   - paragraph: Track record
   - heading "Where I've been." [level=2]
-  - group:
-    - text: "Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program Oct 2025 to now"
-    - paragraph: What I did
+  - heading /Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program Oct \d+ to now/ [level=3]:
+    - button /Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program Oct \d+ to now/ [expanded]
+  - region /Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program Oct \d+ to now/:
     - list:
       - listitem: Built a Figma component library aligned with reusable web components and a multi-theme architecture.
       - listitem: Translated an existing code-based design system into production-ready Figma components.
@@ -14,9 +14,9 @@
       - paragraph: Case study
       - paragraph: Code First
       - paragraph: Read it →
-  - group:
-    - text: "Mango Design Systems Specialist Apr to Jul 2026"
-    - paragraph: What I did
+  - heading /Mango Design Systems Specialist Apr to Jul \d+/ [level=3]:
+    - button /Mango Design Systems Specialist Apr to Jul \d+/ [expanded]
+  - region /Mango Design Systems Specialist Apr to Jul \d+/:
     - list:
       - listitem:
         - text: Brought AI into Mango's design-system work for the first time. With
@@ -30,11 +30,10 @@
         - text: Owned cross-platform component governance across
         - strong: web, iOS and Android
         - text: within Mango's design system, during a leadership transition.
-      - listitem: Defined, governed and released reusable components across shared Figma libraries, documented in Zeroheight.
-      - listitem: Led accessibility and dark-mode audits, and defined design-system metrics for adoption, coverage, efficiency and quality.
-  - group:
-    - text: "/^\\S+ Product & Design Systems Designer Jul 2024 to Feb 2026 Clients included Air France and WeRoad\\.$/"
-    - paragraph: What I did
+  - heading /\S+ Product & Design Systems Designer Jul \d+ to Feb \d+/ [level=3]:
+    - button /\S+ Product & Design Systems Designer Jul \d+ to Feb \d+/ [expanded]
+  - region /\S+ Product & Design Systems Designer Jul \d+ to Feb \d+/:
+    - paragraph: Clients included Air France and WeRoad.
     - list:
       - listitem:
         - text: Built the company's
@@ -44,23 +43,23 @@
         - strong: Wrote the documentation
         - text: even when I was told it wasn't important, because a system nobody can read is a system nobody uses.
       - listitem: "Led the UX transformation of a legacy SaaS travel platform: booking, admin, finance and multi-role dashboards."
-      - listitem: "Designed and shipped end-to-end booking flows for flights and cars: search, filters, seat maps, upsells and post-booking."
     - paragraph: Related work
     - link "Case study From Drift to Foundation Read it →":
       - /url: /case-studies/design-system-transformation
       - paragraph: Case study
       - paragraph: From Drift to Foundation
       - paragraph: Read it →
-  - group:
-    - text: "United Nations Geneva UX / Product Designer Oct to Dec 2025"
-    - paragraph: What I did
+  - heading /United Nations Geneva UX \/ Product Designer Oct to Dec \d+/ [level=3]:
+    - button /United Nations Geneva UX \/ Product Designer Oct to Dec \d+/ [expanded]
+  - region /United Nations Geneva UX \/ Product Designer Oct to Dec \d+/:
     - list:
       - listitem: Defined user roles, permission structures and dashboard frameworks for a multi-stakeholder institutional platform.
       - listitem: Designed scalable information architecture for operational workflows across departments.
       - listitem: Delivered interactive prototypes for executive review and funding discussions.
-  - group:
-    - text: "VML UX/UI Designer Feb 2023 to Feb 2024 Client: Riyad Bank."
-    - paragraph: What I did
+  - heading /VML UX\/UI Designer Feb \d+ to Feb \d+/ [level=3]:
+    - button /VML UX\/UI Designer Feb \d+ to Feb \d+/ [expanded]
+  - region /VML UX\/UI Designer Feb \d+ to Feb \d+/:
+    - paragraph: "Client: Riyad Bank."
     - list:
       - listitem: Designed enterprise banking and SaaS platform experiences for digital clients.
       - listitem: Ran user research and usability testing to validate complex workflows.

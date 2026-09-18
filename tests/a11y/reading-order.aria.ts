@@ -18,8 +18,9 @@ const snap = (name: string) => ({ name: `${name}-${test.info().project.name}.ari
 test.describe("About", () => {
   test.beforeEach(async ({ page }) => {
     await open(page, "/about");
-    // every experience entry open, so its bullets are part of the read
-    await page.evaluate(() => document.querySelectorAll("#track-record details").forEach((d) => ((d as HTMLDetailsElement).open = true)));
+    // every experience row open, so its bullets are part of the read
+    const closed = page.locator('#track-record button[aria-expanded="false"]');
+    while ((await closed.count()) > 0) await closed.first().click();
   });
   test("hero", async ({ page }) => {
     await expect(page.locator("#about-hero")).toMatchAriaSnapshot(snap("about-hero"));

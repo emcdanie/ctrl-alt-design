@@ -1256,39 +1256,105 @@ p {
   }
 }
 
-/* Experience: expandable rows (native <details>), a rule between rows */
+/* Accordion (components/ui/Accordion.tsx): a heading-wrapped button,
+   the panel animates grid rows 0fr to 1fr. Closed panels are
+   visibility: hidden, so they leave the tab order and the a11y tree
+   (the visibility flip waits for the collapse to finish). */
+.accordion__heading {
+  margin: 0;
+  font: inherit;
+}
+
+.accordion__trigger {
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.accordion__trigger:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+  border-radius: var(--radius-md);
+}
+
+.accordion__chev {
+  color: var(--color-ink-muted);
+  transition: transform 250ms ease;
+}
+
+.accordion.is-open .accordion__chev {
+  transform: rotate(180deg);
+}
+
+.accordion__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows 250ms ease,
+    visibility 0s linear 250ms;
+}
+
+.accordion.is-open .accordion__panel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition:
+    grid-template-rows 250ms ease,
+    visibility 0s;
+}
+
+/* clipped only while it moves: once open, overflow turns visible so
+   card shadows inside aren't cropped (a discrete transition, delayed
+   until the rows finish growing) */
+.accordion__inner {
+  min-height: 0;
+  overflow: hidden;
+  transition: overflow 0s allow-discrete;
+}
+
+.accordion.is-open .accordion__inner {
+  overflow: visible;
+  transition: overflow 0s 250ms allow-discrete;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion__chev,
+  .accordion__panel,
+  .accordion.is-open .accordion__panel,
+  .accordion__inner,
+  .accordion.is-open .accordion__inner {
+    transition: none;
+  }
+}
+
+/* Experience: one accordion row per role, a visible rule between rows */
 .xp-list {
+  --xp-rule: color-mix(in srgb, var(--color-ink) 20%, transparent);
   margin: var(--spacing-6) 0 var(--spacing-8);
-  border-top: 1px solid var(--color-semantic-border);
+  border-top: 1px solid var(--xp-rule);
 }
 
 .xp {
-  border-bottom: 1px solid var(--color-semantic-border);
+  border-bottom: 1px solid var(--xp-rule);
 }
 
-.xp__summary {
+.xp .accordion__trigger {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto var(--icon-sm);
   grid-template-areas:
     "company dates chev"
-    "role    dates chev"
-    "clients dates chev";
+    "role    dates chev";
   align-items: center;
   column-gap: var(--spacing-4);
   min-height: var(--spacing-touch-target);
-  padding: var(--spacing-4) 0;
-  list-style: none;
-  cursor: pointer;
+  padding: var(--spacing-6) 0;
 }
 
-.xp__summary::-webkit-details-marker {
-  display: none;
-}
-
-.xp__summary:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: var(--ring-focus-offset);
-  border-radius: var(--radius-md);
+.xp .accordion__chev {
+  grid-area: chev;
 }
 
 .xp__company {
@@ -1307,7 +1373,7 @@ p {
   padding: 2px var(--spacing-2);
   border-radius: var(--radius-full);
   background: var(--color-semantic-surface-inset);
-  font-size: var(--typography-font-size-tag);
+  font-size: var(--text-meta);
   font-weight: 500;
   color: var(--color-ink);
   vertical-align: 2px;
@@ -1316,17 +1382,10 @@ p {
 .xp__role {
   grid-area: role;
   display: block;
-  margin-top: 2px;
+  margin-top: var(--spacing-1);
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
   color: var(--color-ink-soft);
-}
-
-/* the clients behind the work, one muted metadata line */
-.xp__clients {
-  grid-area: clients;
-  display: block;
-  margin-top: 2px;
 }
 
 .xp__dates {
@@ -1338,33 +1397,36 @@ p {
   font-variant-numeric: tabular-nums;
 }
 
-.xp__chev {
-  grid-area: chev;
-  color: var(--color-ink-muted);
-  transition: transform 250ms ease;
-}
-
-.xp[open] .xp__chev {
-  transform: rotate(180deg);
-}
-
 @media (max-width: 640px) {
-  .xp__summary {
+  .xp .accordion__trigger {
     grid-template-columns: minmax(0, 1fr) var(--icon-sm);
     grid-template-areas:
       "company chev"
       "role    chev"
-      "dates   chev"
-      "clients chev";
+      "dates   chev";
+    padding: var(--spacing-5) 0;
   }
 
   .xp__dates {
-    margin-top: 2px;
+    margin-top: var(--spacing-1);
   }
 }
 
 .xp__body {
   padding: 0 0 var(--spacing-6);
+}
+
+/* the clients behind the work, first line of the open row */
+.xp__clients {
+  margin: 0 0 var(--spacing-3);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.xp__did {
+  padding-top: 0;
 }
 
 .xp__label {
@@ -1928,10 +1990,6 @@ p {
   .paw-trail--go .paw-trail__paw {
     animation: none;
     opacity: 0.3;
-  }
-
-  .xp__chev {
-    transition: none;
   }
 }
 

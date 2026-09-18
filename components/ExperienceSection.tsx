@@ -1,13 +1,14 @@
 import type { ReactNode } from "react";
 import Card from "@/components/ui/Card";
 import { ResumeButton } from "@/components/ResumeModal";
-import { Icon } from "@/components/ui/Icon";
+import AccordionItem from "@/components/ui/Accordion";
 import { WORK_ITEMS } from "@/lib/workLibrary";
 
-/* Experience on About (step 3, 18 Sep 2026): expandable rows that match
-   the CV. Summary: company, a Current tag, role, dates, a chevron. Open:
-   "What I did", then related case studies. Native <details>, so it
-   works without JS and keyboard/AT get disclosure semantics for free.
+/* Experience on About (step 3, 18 Sep 2026; accordion 18 Sep evening):
+   one AccordionItem per role. Closed: company (heading-3), a Current
+   tag, role, dates on the right, a chevron. Open: the clients line, up
+   to three "What I did" lines from the data below, then related case
+   studies. The current role opens by default.
 
    This file is one of the two NDA-exempt surfaces (constitution §7):
    employer and engagement names live HERE and in ResumeModal only, so
@@ -21,7 +22,8 @@ type Row = {
   current?: boolean;
   /** one muted line under the role: the clients behind the work */
   clients?: string;
-  /** bullets; <strong> marks the key phrase to scan for */
+  /** bullets; <strong> marks the key phrase to scan for. About shows
+   *  the first three, so lead with the strongest */
   did: ReactNode[];
   /** case-study slugs (the last segment of a WORK_ITEMS href) */
   related?: string[];
@@ -114,30 +116,36 @@ export default function ExperienceSection() {
     <>
       <div className="xp-list">
         {EXPERIENCE.map((r) => (
-          <details key={r.company} className="xp">
-            <summary className="xp__summary">
-              {/* DOM order is reading order: company, role, dates, clients.
-                  The grid puts the dates in the right-hand column. */}
-              <span className="xp__company">
-                {r.company}
-                {r.current ? (
-                  <>
-                    <span className="sr-only">, current role</span>{" "}
-                    <span className="xp__current" aria-hidden="true">
-                      Current
-                    </span>
-                  </>
-                ) : null}
-              </span>
-              <span className="xp__role">{r.role}</span>
-              <span className="xp__dates">{r.dates}</span>
-              {r.clients ? <span className="text-meta xp__clients">{r.clients}</span> : null}
-              <Icon name="NavArrowDown" size="sm" className="xp__chev" />
-            </summary>
+          <AccordionItem
+            key={r.company}
+            className="xp"
+            defaultOpen={r.current}
+            heading={
+              <>
+                {/* DOM order is reading order: company, role, dates.
+                    The grid puts the dates in the right-hand column; the
+                    spaces keep the button's name from running words
+                    together. */}
+                <span className="xp__company">
+                  {r.company}
+                  {r.current ? (
+                    <>
+                      <span className="sr-only">, current role</span>{" "}
+                      <span className="xp__current" aria-hidden="true">
+                        Current
+                      </span>
+                    </>
+                  ) : null}
+                </span>{" "}
+                <span className="xp__role">{r.role}</span>{" "}
+                <span className="xp__dates">{r.dates}</span>
+              </>
+            }
+          >
             <div className="xp__body">
-              <p className="xp__label">What I did</p>
-              <ul className="section-list">
-                {r.did.map((d, i) => (
+              {r.clients ? <p className="xp__clients">{r.clients}</p> : null}
+              <ul className="section-list xp__did">
+                {r.did.slice(0, 3).map((d, i) => (
                   <li key={i}>{d}</li>
                 ))}
               </ul>
@@ -169,7 +177,7 @@ export default function ExperienceSection() {
                 </>
               ) : null}
             </div>
-          </details>
+          </AccordionItem>
         ))}
       </div>
       <ResumeButton />
