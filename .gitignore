@@ -68,3 +68,7 @@ prototypes/linkedin-preview/
 # here, the repo carries its own intent. Publish the doc instead by
 # deleting this line and committing the file.
 docs/portfolio-ia-spec.md
+
+# Playwright (audit:order) run output
+/test-results/
+/playwright-report/

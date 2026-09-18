@@ -1145,7 +1145,7 @@ p {
 }
 
 .section-list li::before {
-  content: "\203A";
+  content: "\203A" / ""; /* decorative: empty alt, never read aloud */
   position: absolute;
   left: 2px;
   font-weight: 700;
@@ -1153,6 +1153,8 @@ p {
 }
 
 .section-tags {
+  list-style: none;
+  margin: 0;
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-2);

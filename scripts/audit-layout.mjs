@@ -20,9 +20,9 @@ import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { BASE } from "./lib/base-url.mjs";
 
 const OUT = fileURLToPath(new URL('../_review/audit/', import.meta.url));
-const BASE = process.env.AUDIT_BASE_URL ?? 'http://localhost:3000';
 const WIDTHS = [
   { w: 1440, h: 900 },
   { w: 768, h: 900 },

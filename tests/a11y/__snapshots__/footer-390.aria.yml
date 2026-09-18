@@ -1,0 +1,39 @@
+- contentinfo:
+  - paragraph: Design systems, with the lights on.
+  - link "Get in touch":
+    - /url: /contact
+  - navigation "Footer":
+    - paragraph: Pages
+    - list:
+      - listitem:
+        - link "Work":
+          - /url: /work
+      - listitem:
+        - link "System":
+          - /url: /design-system
+      - listitem:
+        - link "Skills":
+          - /url: /skills
+      - listitem:
+        - link "About":
+          - /url: /about
+    - paragraph: Elsewhere
+    - list:
+      - listitem:
+        - link "LinkedIn ↗ (opens in a new tab)":
+          - /url: https://www.linkedin.com/in/elleta-mcdaniel/
+      - listitem:
+        - link "BELLA on GitHub ↗ (opens in a new tab)":
+          - /url: https://github.com/emcdanie/bella
+      - listitem:
+        - link "Storybook ↗ (opens in a new tab)":
+          - /url: https://emcdanie.github.io/bella/
+    - paragraph: Say hi
+    - list:
+      - listitem:
+        - link "Get in touch":
+          - /url: /contact
+      - listitem:
+        - button "Copy my email"
+        - status
+  - paragraph: "v0.1.0 Built with Next.js + BELLA © 2026 Elleta McDaniel"

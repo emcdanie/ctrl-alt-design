@@ -213,6 +213,9 @@ Must pass before any work is "done":
 - `audit:visual` — one ground on /design-system (band backgrounds equal the page ground,
   no exceptions since the 23 Jul DS2 no-wash port), sibling specimen cards render equal
   heights, cover placeholders clear 3:1 against both gradient stops, both themes.
+- `audit:order` — accessibility-tree snapshots (tests/a11y, Playwright `toMatchAriaSnapshot`, light
+  theme at 1440 and 390) fail when reading order changes; then lists CSS that reorders content
+  visually, for review. Browser audits read `AUDIT_URL` (default `http://localhost:3000`).
 - `audit:debt` — nothing rots quietly: a doc citing a file that does not exist, a token
   nothing consumes through a `var()` chain, a gate table describing audits that no longer
   run, or an audit tracking a selector that matches nothing. Static analysis, about a second.

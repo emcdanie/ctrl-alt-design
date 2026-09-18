@@ -5,6 +5,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
+import { BASE } from "./lib/base-url.mjs";
 
 const routes = ["/", "/work", "/work?view=map", "/work?view=timeline", "/about", "/contact",
   "/point-of-view", "/case-studies/brad-frost", "/case-studies/chip",
@@ -47,7 +48,7 @@ let fails = srcFails;
 const fail = (offender, got, expected) => { fails++; console.error(receipt("controls", offender, got, expected)); };
 
 for (const r of routes) {
-  await page.goto("http://localhost:3000" + r, { waitUntil: "domcontentloaded" });
+  await page.goto(BASE + r, { waitUntil: "domcontentloaded" });
   await page.waitForTimeout(1000);
   const res = await page.evaluate(() => {
     const visible = (el) => {
@@ -76,7 +77,7 @@ for (const [w, lastSel, lastName] of [
 ]) {
   await page.setViewportSize({ width: w, height: 900 });
   for (const r of ["/", "/about", "/work"]) {
-    await page.goto("http://localhost:3000" + r, { waitUntil: "domcontentloaded" });
+    await page.goto(BASE + r, { waitUntil: "domcontentloaded" });
     await page.waitForTimeout(500);
     const t = await page.evaluate((lastSel) => {
       const visible = (el) => {

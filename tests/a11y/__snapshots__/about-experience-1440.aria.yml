@@ -1,0 +1,74 @@
+- region "Where I've been.":
+  - paragraph: Track record
+  - heading "Where I've been." [level=2]
+  - group:
+    - text: "Brad Frost Web Current AI-Assisted Design Systems Engineer · Maker Program Oct 2025 to now"
+    - paragraph: What I did
+    - list:
+      - listitem: Built a Figma component library aligned with reusable web components and a multi-theme architecture.
+      - listitem: Translated an existing code-based design system into production-ready Figma components.
+      - listitem: Explored AI-enabled governance workflows for design-system compliance and automation.
+    - paragraph: Related work
+    - link "Case study Code First Read it →":
+      - /url: /case-studies/brad-frost
+      - paragraph: Case study
+      - paragraph: Code First
+      - paragraph: Read it →
+  - group:
+    - text: "Mango Design Systems Specialist Apr to Jul 2026"
+    - paragraph: What I did
+    - list:
+      - listitem:
+        - text: Brought AI into Mango's design-system work for the first time. With
+        - strong: Claude, Figma MCP and Code Connect
+        - text: I automated audits and made components machine-readable, so I could ship far more in a few months while keeping Mango's design system up to date.
+      - listitem:
+        - text: Built the tooling and documentation the team needed to
+        - strong: adopt Code Connect themselves
+        - text: ", so design-to-code parity didn't depend on me."
+      - listitem:
+        - text: Owned cross-platform component governance across
+        - strong: web, iOS and Android
+        - text: within Mango's design system, during a leadership transition.
+      - listitem: Defined, governed and released reusable components across shared Figma libraries, documented in Zeroheight.
+      - listitem: Led accessibility and dark-mode audits, and defined design-system metrics for adoption, coverage, efficiency and quality.
+  - group:
+    - text: "/.+ Product & Design Systems Designer Jul 2024 to Feb 2026 Clients included Air France and WeRoad\\./"
+    - paragraph: What I did
+    - list:
+      - listitem:
+        - text: Built the company's
+        - strong: first design system from scratch
+        - text: (tokens, components, themes), with AI in mind from day one, and integrated the tokens into production with engineering.
+      - listitem:
+        - strong: Wrote the documentation
+        - text: even when I was told it wasn't important, because a system nobody can read is a system nobody uses.
+      - listitem: "Led the UX transformation of a legacy SaaS travel platform: booking, admin, finance and multi-role dashboards."
+      - listitem: "Designed and shipped end-to-end booking flows for flights and cars: search, filters, seat maps, upsells and post-booking."
+    - paragraph: Related work
+    - link "Case study From Drift to Foundation Read it →":
+      - /url: /case-studies/design-system-transformation
+      - paragraph: Case study
+      - paragraph: From Drift to Foundation
+      - paragraph: Read it →
+  - group:
+    - text: "United Nations Geneva UX / Product Designer Oct to Dec 2025"
+    - paragraph: What I did
+    - list:
+      - listitem: Defined user roles, permission structures and dashboard frameworks for a multi-stakeholder institutional platform.
+      - listitem: Designed scalable information architecture for operational workflows across departments.
+      - listitem: Delivered interactive prototypes for executive review and funding discussions.
+  - group:
+    - text: "VML UX/UI Designer Feb 2023 to Feb 2024 Client: Riyad Bank."
+    - paragraph: What I did
+    - list:
+      - listitem: Designed enterprise banking and SaaS platform experiences for digital clients.
+      - listitem: Ran user research and usability testing to validate complex workflows.
+  - button "View CV"
+  - list:
+    - listitem: Figma
+    - listitem: Storybook
+    - listitem: React
+    - listitem: Design tokens
+    - listitem: Accessibility
+    - listitem: Governance

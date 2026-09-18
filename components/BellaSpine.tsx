@@ -41,6 +41,7 @@ const GATE = [
   { name: "audit:sync", line: "Components vendored from BELLA are hashed against the upstream source. A vendored file edited in place, or left stale, fails the build instead of forking quietly." },
   { name: "audit:dark", line: "Every embedded surface adapts to the dark contract. An iframe that ships one skin fails the build." },
   { name: "audit:axe", line: "axe-core against every route in both themes; zero violations to pass. Needs-review nodes are counted and verified by hand." },
+  { name: "audit:order", line: "Reading order is pinned: accessibility-tree snapshots at 1440 and 390 fail when what a screen reader reads changes, and CSS that reorders content visually is listed for review." },
   { name: "audit:type", line: "No card surface renders reading text below 16px computed; the shared card body never below 18. Metadata rows are their own tier." },
   { name: "audit:visual", line: "One ground on the System page, sibling specimen cards render equal heights, cover placeholders clear 3:1." },
   /* the harness itself is part of how the gate works */

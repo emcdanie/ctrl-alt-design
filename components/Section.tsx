@@ -110,10 +110,12 @@ export function SectionList({ items }: { items: ReactNode[] }) {
 /** Side-slot tags: the existing non-interactive Tag, wrapped. */
 export function SectionTags({ items }: { items: string[] }) {
   return (
-    <div className="section-tags">
+    <ul className="section-tags">
       {items.map((t) => (
-        <Tag key={t}>{t}</Tag>
+        <li key={t}>
+          <Tag>{t}</Tag>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }

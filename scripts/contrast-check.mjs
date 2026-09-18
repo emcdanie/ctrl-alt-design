@@ -1,5 +1,6 @@
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
+import { BASE } from "./lib/base-url.mjs";
 
 /* Declared for audit:debt's dead-selector check (27 Jul 2026). */
 export const TRACKED_SELECTORS = ['[class*="coverPlaceholder"]', ".nav-wordmark"];
@@ -20,7 +21,7 @@ const parse = (s) => {
 };
 let totalBad = 0;
 
-for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies/design-system-transformation", "http://localhost:3000/work", "http://localhost:3000/about", "http://localhost:3000/contact", "http://localhost:3000/case-studies/chip", "http://localhost:3000/case-studies/brad-frost", "http://localhost:3000/skills", "http://localhost:3000/design-system", "http://localhost:3000/quick"]) {
+for (const url of [BASE + "/", BASE + "/case-studies/design-system-transformation", BASE + "/work", BASE + "/about", BASE + "/contact", BASE + "/case-studies/chip", BASE + "/case-studies/brad-frost", BASE + "/skills", BASE + "/design-system", BASE + "/quick"]) {
   await page.goto(url, { waitUntil: "domcontentloaded" });
   await page.evaluate(() => { document.documentElement.dataset.theme = "dark"; });
   await page.waitForTimeout(1500);

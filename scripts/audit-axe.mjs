@@ -8,6 +8,7 @@
 import { readFileSync } from "node:fs";
 import { receipt } from "./lib/receipt.mjs";
 import { chromium } from "playwright";
+import { BASE } from "./lib/base-url.mjs";
 
 const axeSource = readFileSync("node_modules/axe-core/axe.min.js", "utf8");
 
@@ -36,7 +37,7 @@ for (const theme of ["light", "dark"]) {
   const page = await ctx.newPage();
   await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
   for (const route of ROUTES) {
-    await page.goto(`http://localhost:3000${route}`, { waitUntil: "networkidle", timeout: 30000 });
+    await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 30000 });
     /* sweep so FadeIn content is visible to the contrast checks */
     const h = await page.evaluate(() => document.body.scrollHeight);
     for (let y = 0; y < h; y += 800) {

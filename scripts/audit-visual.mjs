@@ -25,6 +25,7 @@
  */
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
+import { BASE } from "./lib/base-url.mjs";
 
 /* The selectors this audit tracks, DECLARED (spec specs/audit-debt,
    27 Jul 2026). audit:debt asserts these exist so a tracked selector
@@ -44,7 +45,7 @@ for (const theme of ["light", "dark"]) {
   await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
 
   /* ── 1 + 2: the System page ── */
-  await page.goto("http://localhost:3000/design-system", { waitUntil: "networkidle", timeout: 30000 });
+  await page.goto(BASE + "/design-system", { waitUntil: "networkidle", timeout: 30000 });
   const h = await page.evaluate(() => document.body.scrollHeight);
   for (let y = 0; y < h; y += 800) {
     await page.evaluate((v) => scrollTo(0, v), y);
@@ -201,7 +202,7 @@ for (const theme of ["light", "dark"]) {
      chromeless route as case evidence. The assertion follows the
      component rather than the page, so it keeps checking real geometry
      instead of quietly matching nothing. */
-  await page.goto("http://localhost:3000/design-system/inspector", { waitUntil: "networkidle", timeout: 30000 });
+  await page.goto(BASE + "/design-system/inspector", { waitUntil: "networkidle", timeout: 30000 });
   await page.waitForTimeout(300);
   const ringBad = await page.evaluate(() => {
     const key = document.querySelector(".tok-inspector__key");
@@ -223,7 +224,7 @@ for (const theme of ["light", "dark"]) {
   }
 
   /* ── 3: cover placeholders on /work ── */
-  await page.goto("http://localhost:3000/work", { waitUntil: "networkidle", timeout: 30000 });
+  await page.goto(BASE + "/work", { waitUntil: "networkidle", timeout: 30000 });
   await page.waitForTimeout(500);
   const worst = await page.evaluate(() => {
     const lum = (m) => { const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }; return 0.2126 * f(m[0]) + 0.7152 * f(m[1]) + 0.0722 * f(m[2]); };
@@ -268,7 +269,7 @@ for (const theme of ["light", "dark"]) {
   const page = await ctx.newPage();
   const internal = new Map(); // path -> first route that links it
   for (const route of ROUTES) {
-    await page.goto(`http://localhost:3000${route}`, { waitUntil: "networkidle", timeout: 30000 });
+    await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 30000 });
     const found = await page.evaluate((archived) => {
       const dead = archived.filter((a) => document.documentElement.outerHTML.includes(a));
       const hrefs = [...document.querySelectorAll("a[href]")]
@@ -296,7 +297,7 @@ for (const theme of ["light", "dark"]) {
     }
   }
   for (const [path, from] of internal) {
-    const res = await page.request.get(`http://localhost:3000${path}`);
+    const res = await page.request.get(`${BASE}${path}`);
     if (res.status() >= 400) {
       fails++;
       console.error(receipt("visual", `${path} (linked from ${from})`, `HTTP ${res.status()}`, "200 for every internal link"));
@@ -320,7 +321,7 @@ for (const theme of ["light", "dark"]) {
     const ctx = await browser.newContext({ viewport: { width, height: width > 800 ? 900 : 844 } });
     const page = await ctx.newPage();
     await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
-    await page.goto(`http://localhost:3000${caseRoute}`, { waitUntil: "networkidle", timeout: 30000 });
+    await page.goto(`${BASE}${caseRoute}`, { waitUntil: "networkidle", timeout: 30000 });
     /* walk every stage into view so .in fires and leaders draw */
     const stageCount = await page.evaluate(() => document.querySelectorAll(".spec-stage").length);
     for (let i = 0; i < stageCount; i++) {

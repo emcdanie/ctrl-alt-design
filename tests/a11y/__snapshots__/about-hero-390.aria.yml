@@ -1,0 +1,9 @@
+- region "Fluent in design, code and dog.":
+  - heading "Fluent in design, code and dog." [level=1]
+  - paragraph:
+    - text: I build design systems that give designers and developers a
+    - strong: shared language
+    - text: ": tokens, components, and the decisions behind them, written down kindly so everyone can use them."
+  - figure "Bella speaks dog, I speak design. We agreed on five words. That's a design system.":
+    - 'img "Illustration: Elleta walking her dogs Bella and Obi on leads."'
+    - text: ""

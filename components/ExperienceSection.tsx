@@ -120,7 +120,12 @@ export default function ExperienceSection() {
                   The grid puts the dates in the right-hand column. */}
               <span className="xp__company">
                 {r.company}
-                {r.current ? <span className="xp__current">Current</span> : null}
+                {r.current ? (
+                  <>
+                    {" "}
+                    <span className="xp__current">Current</span>
+                  </>
+                ) : null}
               </span>
               <span className="xp__role">{r.role}</span>
               <span className="xp__dates">{r.dates}</span>

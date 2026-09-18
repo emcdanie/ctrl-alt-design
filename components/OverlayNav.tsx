@@ -189,7 +189,7 @@ export default function OverlayNav() {
                   onMouseEnter={() => setHovered(item.num)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  <span className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] sm:min-w-20">
+                  <span aria-hidden="true" className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] sm:min-w-20">
                     (_{item.num})
                   </span>
 
