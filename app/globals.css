@@ -165,11 +165,10 @@ body {
   /* contact card photo (96px under 700px) */
   --contact-photo: 120px;
   --contact-photo-sm: 96px;
-  /* site footer wordmark: sized by height (96 -> 240px), letters
-     spread across the container. Unique's cap height is 0.706em; Bella
-     sits on the last A at 0.35x cap height. */
-  --footer-wordmark-size: clamp(6rem, 16vw, 15rem);
-  --footer-bella-height: calc(0.706em * 0.35);
+  /* site footer: ELLETA as one word in Unique (96 -> 200px); Bella sits
+     on the last A at 0.55x the cap height (Unique's cap is 0.706em) */
+  --footer-wordmark-size: clamp(6rem, 14vw, 12.5rem);
+  --footer-bella-height: calc(0.706em * 0.55);
   /* heading measures in em (display-1 18em, the rest 22em) */
   /* STOPGAP override of BELLA's px size ramp, in rem so every size
      follows the reader's font setting; tag rises to the 14px floor and
@@ -218,16 +217,6 @@ body {
   --edge-glass-hi-strong: inset 0 1px 0 rgba(255, 255, 255, 0.4);
   --gloss-press: inset 0 2px 4px rgba(255, 255, 255, 0.6);
   --shadow-nav-bar: 0 18px 48px rgba(26, 24, 20, 0.08);
-  /* keycap specular sheen (button grammar 4b): one light source,
-     upper left, matching the orb gloss. Translucent overlays only, so
-     the per-stop contrast check still judges the real fill stops. */
-  --gloss-key: linear-gradient(color-mix(in srgb, white 18%, transparent), transparent 46%);
-  --gloss-key-hover: linear-gradient(color-mix(in srgb, white 26%, transparent), transparent 52%);
-  --gloss-key-pressed: linear-gradient(transparent 0 10%, color-mix(in srgb, white 12%, transparent) 10%, transparent 50%);
-  --shadow-key-hover:
-    1px 4px 0 var(--key-fill-edge),
-    4px 8px 14px color-mix(in srgb, var(--key-fill-lo) 28%, transparent),
-    var(--edge-glass-hi-strong);
 
 
   /* Display ladder (display-type-scale fix, 18 Sep 2026).
@@ -379,15 +368,6 @@ body {
     var(--edge-glass-hi-strong);
 
 
-  --banner-radius: 30px;
-  --banner-blur: var(--bella-blur-lg);
-  --banner-border: rgba(255, 255, 255, 0.6);
-  --banner-shadow: var(--shadow-soft);
-  --banner-ground: var(--color-glass-strong);
-  --banner-gradient:
-    radial-gradient(120% 140% at 12% 0%, color-mix(in srgb, var(--hub-hi) 52%, transparent), transparent 55%),
-    radial-gradient(110% 120% at 88% 8%, color-mix(in srgb, var(--case-clarity-hi) 38%, transparent), transparent 52%),
-    radial-gradient(140% 150% at 55% 100%, color-mix(in srgb, var(--color-accent-peri) 28%, transparent), transparent 58%);
 
 
 
@@ -462,28 +442,12 @@ body {
   --page-glow: rgba(255, 255, 255, 0.04);
 }
 
-/* ─── GlassBanner surface (DESIGN.md: recorded surface) ─────────────
-   Apple-style frosted gradient panel for end-of-page CTAs. Brand hues
-   only: iris/periwinkle (--hub-*) + mint (--case-clarity-*) + gold
-   periwinkle, low opacity over a light glass base. Dark keeps the same
-   tints over a translucent navy ground: glassy, never a flat block.
-   Text inside uses the NORMAL semantic inks (theme-aware). */
-
 /* Dark overrides live on BODY, not html: var() inside a custom property
    substitutes where the property is DECLARED, and --color-card's dark
    value is declared on [data-theme="dark"] body. Declaring these on
    html would resolve --color-card to the light #fff (the font-token
    lesson, same trap). */
 [data-theme="dark"] body {
-  --gloss-key: linear-gradient(color-mix(in srgb, white 10%, transparent), transparent 46%);
-  --gloss-key-hover: linear-gradient(color-mix(in srgb, white 16%, transparent), transparent 52%);
-  --gloss-key-pressed: linear-gradient(transparent 0 10%, color-mix(in srgb, white 7%, transparent) 10%, transparent 50%);
-  --banner-border: rgba(207, 199, 246, 0.22);
-  --banner-ground: color-mix(in srgb, var(--color-card) 82%, transparent);
-  --banner-gradient:
-    radial-gradient(120% 140% at 12% 0%, color-mix(in srgb, var(--hub-bright) 28%, transparent), transparent 55%),
-    radial-gradient(110% 120% at 88% 8%, color-mix(in srgb, var(--case-clarity-lo) 20%, transparent), transparent 52%),
-    radial-gradient(140% 150% at 55% 100%, color-mix(in srgb, var(--color-accent-peri) 16%, transparent), transparent 58%);
 }
 
 /* ─── Wordmark (header) ──────────────────────────────────────────
@@ -1532,7 +1496,7 @@ p {
   --ring-focus-color: var(--color-navy-ink);
   background: var(--color-brand-navy);
   color: var(--color-navy-ink);
-  padding-top: calc(var(--space-section) - var(--space-stack-md));
+  padding-top: var(--space-stack-lg);
   overflow: hidden;
 }
 
@@ -1565,6 +1529,13 @@ p {
   margin: 0;
 }
 
+.site-footer__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-stack-sm);
+}
+
 .site-footer__cols {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1590,10 +1561,9 @@ p {
 
 .site-footer__list {
   list-style: none;
-  margin: var(--space-stack-sm) 0 0;
+  margin: var(--spacing-2) 0 0;
   padding: 0;
   display: grid;
-  gap: var(--spacing-2);
 }
 
 .site-footer__link {
@@ -1622,16 +1592,30 @@ p {
 }
 
 /* the wordmark: ink edge to ink edge = the container's content width */
-.site-footer__mark {
-  margin-top: var(--space-stack-lg);
+/* brand row: wordmark + Bella left, the Building card right; stacked
+   under 900px */
+.site-footer__brand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-stack-md) var(--space-stack-lg);
+  margin-top: var(--space-stack-sm);
+  padding-bottom: var(--space-stack-lg);
 }
 
-/* one flex item per letter, spread edge to edge; the top padding is
-   Bella's room, so she never sits over the text above */
+/* the wordmark reserves Bella's height above it, so she never reaches
+   the marquee; the negative bottom margin puts the box bottom on the
+   letters' baseline (line-height 0.8 leaves ~0.115em below it), so the
+   small print can line up with the letters */
+.site-footer__mark {
+  line-height: 0.8;
+}
+
 .site-footer__wordmark {
-  display: flex;
-  justify-content: space-between;
+  display: inline-block;
   padding-top: calc(var(--footer-bella-height) + 0.04em);
+  margin-bottom: -0.115em;
   font-family: var(--font-hero-display);
   font-weight: 400;
   font-size: var(--footer-wordmark-size);
@@ -1639,6 +1623,7 @@ p {
   color: var(--color-navy-ink);
 }
 
+/* Bella stands on the A's apex, centred on the letter */
 .site-footer__a {
   position: relative;
 }
@@ -1646,18 +1631,24 @@ p {
 .site-footer__bella {
   position: absolute;
   left: 50%;
-  bottom: calc(100% - 0.005em);
+  bottom: calc(100% - 0.03em);
   height: var(--footer-bella-height);
   width: auto;
   max-width: none;
   transform: translateX(-50%);
 }
 
+.site-footer__build {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-stack-sm);
+}
+
 /* Building card: window dots, status, a git-tag readout */
 .building {
   width: 100%;
   max-width: 22rem;
-  margin-top: var(--space-stack-sm);
   padding: var(--space-stack-sm) var(--spacing-5);
   border-radius: var(--radius-2xl);
   border: 1px solid color-mix(in srgb, var(--color-navy-ink) 14%, transparent);
@@ -1665,7 +1656,7 @@ p {
   box-shadow: var(--shadow-soft);
   font-family: var(--font-mono); /* Geist: the mono cut is retired */
   font-size: var(--text-meta);
-  line-height: 1.75;
+  line-height: 1.5;
   color: var(--ink-on-dark-body);
 }
 
@@ -1721,13 +1712,14 @@ p {
   color: var(--color-navy-ink);
 }
 
+/* small inline links: a 24px target (WCAG 2.2 AA, 2.5.8) */
 .building__details {
-  min-height: var(--spacing-touch-target);
+  min-height: var(--spacing-6);
   font-size: var(--text-meta);
 }
 
 .share-portfolio {
-  margin-top: var(--space-stack-sm);
+  margin: 0;
 }
 
 .share-portfolio__status {
@@ -1748,7 +1740,7 @@ p {
 /* "Made with": a slow marquee, paused on hover and focus; reduced
    motion shows the one list as a wrapped line */
 .made-with {
-  margin-top: var(--space-stack-lg);
+  margin-top: var(--space-stack-md);
   padding: var(--space-stack-sm) 0;
   border-block: 1px solid color-mix(in srgb, var(--color-navy-ink) 14%, transparent);
   overflow: hidden;
@@ -1806,13 +1798,14 @@ p {
   }
 }
 
+/* small print: right-aligned, its bottom on the wordmark's baseline */
 .site-footer__small {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--spacing-2) var(--space-stack-md);
-  margin: var(--space-stack-md) 0 0;
-  padding-bottom: var(--space-stack-lg);
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-1);
+  margin: 0;
+  text-align: right;
   color: color-mix(in srgb, var(--color-navy-ink) 70%, transparent);
 }
 
@@ -1829,6 +1822,7 @@ p {
 }
 
 .site-footer__link--small {
+  min-height: var(--spacing-6);
   font-size: var(--text-meta);
   color: inherit;
 }
@@ -1876,19 +1870,29 @@ p {
   color: var(--color-ink-soft);
 }
 
-/* Paw trail: decorative, absolutely placed in a section's top padding,
-   so it adds no height. Prints pop in one by one when the gap scrolls
+/* Paw trail: decorative, absolutely placed across the gap between
+   sections, so it adds no height. Prints pop in one by one when the gap scrolls
    into view, then settle to ~30% ink. */
+/* centred in the whole gap between two sections (the previous one's
+   bottom padding + this one's top padding), 40px clear at both ends, so
+   a print (about 8px from its centre) keeps >= 32px from the label */
 .section__trail {
   position: absolute;
-  inset: 0 0 auto;
-  height: var(--space-section);
+  left: 0;
+  right: 0;
+  top: calc(var(--space-stack-lg) - var(--space-section));
+  /* 40px clear above, 48px clear below (to the label) */
+  height: calc(2 * var(--space-section) - 2 * var(--space-stack-lg) - var(--spacing-2));
   pointer-events: none;
+}
+
+.section__trail .container {
+  height: 100%;
 }
 
 .paw-trail {
   position: relative;
-  height: var(--space-section);
+  height: 100%;
 }
 
 .paw-trail svg {
@@ -2459,27 +2463,24 @@ p {
    travelling border light via the SHARED .trace-host recipe (Button
    adds the class); focus-visible keeps its real ring independent of
    the trace; reduced motion renders the static accent border. */
+/* PRIMARY: the standard BELLA primary, flat (critique pass, 18 Sep
+   2026): solid fill, no gloss, gradient or shadow, and it never lifts.
+   Hover and press only deepen the fill. */
 .btn-key--primary {
-  color: var(--key-face-hi);
-  border: 1px solid var(--key-fill-edge);
-  background: var(--gloss-key), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
-  box-shadow: var(--shadow-key-resting);
-  transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
-  --trace-w: 2px;
-  --cc: var(--hero-iris-bright);
+  color: var(--component-button-primary-foreground);
+  border: 1px solid transparent;
+  border-radius: var(--component-button-primary-border-radius);
+  background: var(--component-button-primary-fill-hi);
+  box-shadow: none;
+  transition: background 0.15s;
 }
 
-/* hover: the light lifts (sheen brightens, cap rises a hair) */
 .btn-key--primary:hover {
-  transform: translateY(-1px);
-  background: var(--gloss-key-hover), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
-  box-shadow: var(--shadow-key-hover);
+  background: var(--component-button-primary-fill-lo);
 }
 
 .btn-key--primary:active {
-  transform: translateY(2px);
-  background: var(--gloss-key-pressed), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
-  box-shadow: var(--shadow-key-pressed);
+  background: var(--component-button-primary-edge);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2584,13 +2585,6 @@ section[id],
   margin-top: var(--spacing-4);
 }
 
-.philosophy-stage {
-  position: relative;
-  max-width: 720px;
-  margin: 0 auto;
-  padding: var(--spacing-8) 0 0;
-}
-
 /* ─── Case pending-visual placeholder (migration kickoff, 23 Jul):
    the styled "In progress" slot for beats whose visual does not
    exist yet; warm card surface, token border, never a blank. ─── */
@@ -2623,7 +2617,7 @@ button:focus-visible {
 }
 
 /* Contact form fields — stable focus, no flicker, no radius change.
-   Fields sit on the light GlassBanner (light theme) / navy tint (dark);
+   Fields sit on the contact card surface (light theme) / navy card (dark);
    the semantic tokens flip with the theme. */
 .contact-field:focus {
   outline: none;
@@ -3098,14 +3092,8 @@ textarea:focus-visible {
   background: color-mix(in srgb, var(--case-tint-hi, var(--color-supporting-linen)) 18%, var(--color-card));
 }
 
-.cs-shell__eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: var(--typography-letter-spacing-wider);
-  color: var(--color-eyebrow);
-  margin-bottom: 10px;
+.cs2-eyebrow {
+  margin: 0;
 }
 
 /* Title */
@@ -3163,9 +3151,17 @@ textarea:focus-visible {
 /* Tags */
 .cs-shell__tags {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow: hidden;
   gap: 5px;
   margin-bottom: var(--spacing-4);
+}
+
+/* one row: on narrow phones only the first two tags show */
+@media (max-width: 480px) {
+  .cs-shell__tags > :nth-child(n + 3) {
+    display: none;
+  }
 }
 
 /* Links section */
@@ -5675,14 +5671,24 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   min-width: 0;
 }
 
+/* beat label: the site's section label (paw + 14px caps, muted) */
 .beat-eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-ink-muted);
   margin: 0;
+}
+
+.beat-eyebrow .paw-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.4em;
+  vertical-align: -0.12em;
+  fill: currentColor;
 }
 
 /* the beat headline renders through the Heading primitive at the

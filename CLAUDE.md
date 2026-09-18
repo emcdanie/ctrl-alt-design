@@ -108,9 +108,9 @@ override the constitution.
 The raised **keycap** is reserved for TRUE actions only. Do not use it for filters,
 toggles, or sort.
 - **Button (grammar v5 + primary pick, 2026-07-20):** purple means clickable at every tier.
-  PRIMARY = the calm filled iris keycap, the one 3D moment per view (max ONE); hover gains the
-  travelling border light (the SHARED .trace-host recipe, never a copy); focus ring independent of
-  the trace; reduced motion shows the static accent ring. SECONDARY = flat iris outline, iris text,
+  PRIMARY = the standard BELLA primary, a flat iris fill (revised 2026-09-18: no gloss, gradient,
+  shadow or travelling light), max ONE per view; hover and press only deepen the fill, it never
+  lifts; focus ring as every control. SECONDARY = flat iris outline, iris text,
   no fill, no elevation (periwinkle on dark and fixed-dark chrome). TERTIARY = text link, iris +
   underlined. The neutral keycap is retired.
 - **SegmentedControl:** mutually exclusive views (e.g. TABLE/MAP/TIMELINE). Single-select, `aria-current`,

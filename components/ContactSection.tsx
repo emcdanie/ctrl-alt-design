@@ -8,7 +8,7 @@ import { social } from "@/lib/social";
 import { POSITIONING } from "@/lib/copy";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import GlassBanner from "@/components/ui/GlassBanner";
+import Card from "@/components/ui/Card";
 
 interface FormState {
   name: string;
@@ -148,7 +148,8 @@ export default function ContactSection() {
       }}
     >
       <div className="layout-container">
-        <GlassBanner className="mb-16 grid grid-cols-1 gap-[var(--grid-gap)] md:grid-cols-2">
+        {/* the standard card surface (critique pass, 18 Sep 2026: no colour wash) */}
+        <Card className="mb-16" innerClassName="grid grid-cols-1 gap-[var(--grid-gap)] md:grid-cols-2">
           {/* ── Left: the human ── */}
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-5)" }}>
             {/* identity: one aligned group, portrait beside name/title */}
@@ -163,7 +164,7 @@ export default function ContactSection() {
                 </p>
                 <p style={{ ...quietRow, color: "var(--color-muted)", marginTop: "var(--spacing-1)" }}>
                   {/* positioning phrase from the ONE constant (21 Jul) */}
-                  Product Designer specialising in {POSITIONING} and complex platforms.
+                  Design systems engineer: {POSITIONING}.
                 </p>
               </div>
             </div>
@@ -187,10 +188,7 @@ export default function ContactSection() {
             {submitted ? (
               <div
                 className="rounded-2xl border p-6 text-center"
-                style={{
-                  borderColor: "var(--case-clarity-text)",
-                  background: "color-mix(in srgb, var(--case-clarity-hi) 18%, transparent)",
-                }}
+                style={{ borderColor: "var(--color-semantic-border)" }}
                 role="status"
               >
                 <Image
@@ -329,7 +327,7 @@ export default function ContactSection() {
               </form>
             )}
           </div>
-        </GlassBanner>
+        </Card>
 
         {/* Bottom bar */}
         <div className="divider mb-6" style={{ backgroundColor: "var(--color-border-soft)" }} />

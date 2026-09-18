@@ -27,7 +27,7 @@ const study: CaseStudy = {
   heroImage: "/case/chip/chip-cover-motif.svg",
   thumbnailImage: "/case/chip/chip-cover-motif.svg",
   heroVideo: undefined,
-  eyebrow: "DESIGN LAB · AI + DESIGN SYSTEMS · 2026 · CURRENT FOCUS",
+  eyebrow: "Design Lab · AI + design systems · 2026 · Current focus",
   summary: "AI doesn't fix a neglected design system. It sends you the bill.",
   /* canonical sidebar meta (Pass E task 11g): Role, Year, Type or
      Scope, Organisation, Tools; Built kept as this case's extra final

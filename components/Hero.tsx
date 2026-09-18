@@ -19,17 +19,15 @@ const WORDS = POSITIONING.split(" ");
  * the portrait reuses the About .photo-bubble recipe, no new pattern.
  * The .headline shell keeps the proto's recorded hero scale.
  */
-export default function Hero({ peekOpen = false }: { peekOpen?: boolean }) {
+export default function Hero() {
   return (
     <section className="hero-landing">
       <div className={styles.hero}>
         {/* ── Headline ── */}
         <div>
-          <p className={styles.kicker}>Elleta McDaniel, Barcelona</p>
-          <Heading tier="hero" className={styles.headline}>
-            {WORDS.slice(0, -1).join(" ")}{" "}
-            <br />
-            <span className="accent">{WORDS[WORDS.length - 1]}.</span>
+          <p className={`text-meta ${styles.kicker}`}>Elleta McDaniel, Barcelona</p>
+          <Heading tier="page" as="h1" className={styles.headline}>
+            {WORDS.slice(0, -1).join(" ")} <span className="accent">{WORDS[WORDS.length - 1]}</span>.
           </Heading>
           {/* the H1 states the positioning; the body starts at the how
               (repeat dropped, Elleta 23 Jul) */}
@@ -38,14 +36,10 @@ export default function Hero({ peekOpen = false }: { peekOpen?: boolean }) {
             I read code and work with engineers directly.
           </p>
 
-          {/* "Pick a piece." keeps its energy as the eyebrow framing the
-              doors: the cards below, the library, the quick version. */}
-          <p className={`section-label ${styles.pick}`}>Pick a piece.</p>
-
           {/* Two doors, no forced path: explore (the library) or the
               four-minute quick version. ONE primary per view. */}
           <div className={styles.ctaRow} style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--spacing-4)" }}>
-            <Button href="/work" variant={peekOpen ? "secondary" : "primary"}>
+            <Button href="/work" variant="primary">
               Browse the library
               <Icon name="ArrowRight" size="sm" />
             </Button>

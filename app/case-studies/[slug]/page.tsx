@@ -8,6 +8,9 @@ import DriftV2 from "@/components/DriftV2";
 import ChipCase from "@/components/ChipCase";
 import type { CaseStudy } from "@/lib/content";
 
+/* metadata reads in sentence case: "DESIGN SYSTEMS" -> "Design systems" */
+const sentenceCase = (t: string) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
+
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
 }
@@ -73,7 +76,7 @@ export default async function CaseStudyPage({
       <div className="layout-container">
         <CaseShellV2
           slug={slug}
-          eyebrow={cs.eyebrow ?? `${cs.category} · ${cs.year}`}
+          eyebrow={cs.eyebrow ?? `${sentenceCase(cs.category)} · ${cs.year}`}
           title={cs.title}
           subhead={cs.summary ?? cs.description}
           readingMinutes={readingMinutes}

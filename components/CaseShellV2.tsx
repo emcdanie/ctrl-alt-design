@@ -116,19 +116,17 @@ export default function CaseShellV2({
             )}
           </nav>
         )}
-        <p className="cs-shell__eyebrow" style={caseItem ? { color: caseItem.text, margin: 0 } : { margin: 0 }}>
-          {eyebrow}
-        </p>
-        <Heading tier="page" as="h1" style={caseItem ? { color: caseItem.text } : undefined}>
+        {/* metadata in sentence case; the title is ink, no colour and no
+            accent word (critique pass, 18 Sep 2026) */}
+        <p className="text-meta cs2-eyebrow">{eyebrow}</p>
+        <Heading tier="page" as="h1">
           {title}
         </Heading>
         <p className="cs2-subhead">{subhead}</p>
-        <p className="cs2-meta">
-          {readingMinutes} min read
-        </p>
+        {/* one row of tags at most, under the lede */}
         {tags.length > 0 && (
           <div className="cs-shell__tags" style={{ margin: 0 }}>
-            {tags.map((tag) => (
+            {tags.slice(0, 3).map((tag) => (
               /* identity tinting needs the case's colour pair. Without a
                  work-library row those custom properties are unset and
                  the tag falls back to ink on an untinted ground, which
@@ -149,6 +147,9 @@ export default function CaseShellV2({
             ))}
           </div>
         )}
+        <p className="cs2-meta">
+          {readingMinutes} min read
+        </p>
         {linkOut && (
           <a href={linkOut.href} target="_blank" rel="noopener noreferrer" className="demo-link">
             <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span> {linkOut.label}

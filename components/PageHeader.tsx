@@ -8,18 +8,21 @@ export default function PageHeader({
   eyebrow,
   title,
   accent,
+  after,
 }: {
   eyebrow: string;
   title: string;
   /** accent segment in iris after the title */
   accent?: string;
+  /** plain text after the accent (e.g. the full stop) */
+  after?: string;
 }) {
   return (
     <header className="layout-header">
       <p className="eyebrow" style={{ marginBottom: "var(--spacing-4)" }}>
         {eyebrow}
       </p>
-      <Heading tier="page" as="h1" accent={accent}>
+      <Heading tier="page" as="h1" accent={accent} after={after}>
         {title}
       </Heading>
     </header>

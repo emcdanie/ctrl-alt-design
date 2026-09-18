@@ -14,13 +14,8 @@
   width: 100%;
 }
 
+/* the name line: plain metadata, sentence case */
 .kicker {
-  font-family: var(--font-mono);
-  font-size: var(--text-meta);
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-accent-ink);
   margin: 0 0 var(--spacing-4);
 }
 
@@ -51,14 +46,8 @@
   width: clamp(240px, 27vw, 360px) /* token-waiver: hero portrait scale, 1.5x the recorded About bubble */;
 }
 
-/* the demoted "Pick a piece." eyebrow (hierarchy fix, 23 Jul): the
-   shared .section-label recipe, spacing only here */
-.pick {
-  margin: var(--spacing-8) 0 0;
-}
-
 .ctaRow {
-  margin-top: var(--spacing-4);
+  margin-top: var(--spacing-8);
 }
 
 .systemLine {

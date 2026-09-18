@@ -10,9 +10,8 @@ import { BUILDING } from "@/content/building";
 import { social } from "@/lib/social";
 
 /* Site footer: navy with cream text in both themes. Three link columns
-   and one Get in touch, then ELLETA in Unique, sized by height and spread
-   letter by letter across the container, with Bella sitting on the last
-   A, then the small print. The wordmark is decorative: the nav carries
+   and one Get in touch; then ELLETA in Unique as one word with Bella
+   beside it, and the Building card; then the marquee and small print. The wordmark is decorative: the nav carries
    the real one. */
 const version = JSON.parse(readFileSync(join(process.cwd(), "package.json"), "utf8")).version as string;
 /* "v0.1" from "0.1.0" */
@@ -62,8 +61,60 @@ export default function SiteFooter() {
             <p className="text-display-3 site-footer__line">
               Design systems, with the lights <span className="accent">on</span>.
             </p>
-            <Button href="/contact">Get in touch</Button>
+            <div className="site-footer__actions">
+              <Button href="/contact">Get in touch</Button>
+              <SharePortfolio />
+            </div>
+          </div>
+          <nav className="site-footer__cols" aria-label="Footer">
+            {COLUMNS.map((c) => (
+              <div key={c.label}>
+                <p className="site-footer__label">
+                  <PawIcon />
+                  {c.label}
+                </p>
+                <ul className="site-footer__list">
+                  {c.links.map((l, i) => (
+                    <li key={i}>{l}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </nav>
+        </div>
 
+        {/* "Made with": a slow marquee; the loop copy is hidden from AT, and
+            reduced motion shows one static, wrapped line */}
+        <div className="made-with" role="region" tabIndex={0} aria-label="Made with">
+          <div className="made-with__track">
+            <ul className="made-with__list">
+              {MADE_WITH.map((m) => (
+                <li key={m}>Made with {m}</li>
+              ))}
+            </ul>
+            <ul className="made-with__list" aria-hidden="true">
+              {MADE_WITH.map((m) => (
+                <li key={m}>Made with {m}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* brand row: ELLETA as one word with Bella on the last A; the
+            Building card and the small print sit right, the small print
+            bottom-aligned with the wordmark */}
+        <div className="site-footer__brand">
+          <div className="site-footer__mark" aria-hidden="true">
+            <span className="site-footer__wordmark">
+              ELLET
+              <span className="site-footer__a">
+                A
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="site-footer__bella" src="/images/bella/set/bella-portrait.svg" alt="" />
+              </span>
+            </span>
+          </div>
+          <div className="site-footer__build">
             {/* what is live and what is next */}
             <div className="building">
               <p className="building__top">
@@ -94,67 +145,19 @@ export default function SiteFooter() {
                 View details ↗<span className="sr-only"> (opens in a new tab)</span>
               </a>
             </div>
-            <SharePortfolio />
-          </div>
-          <nav className="site-footer__cols" aria-label="Footer">
-            {COLUMNS.map((c) => (
-              <div key={c.label}>
-                <p className="site-footer__label">
-                  <PawIcon />
-                  {c.label}
-                </p>
-                <ul className="site-footer__list">
-                  {c.links.map((l, i) => (
-                    <li key={i}>{l}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </nav>
-        </div>
-
-        {/* the wordmark: sized by height, one span per letter spread across
-            the container; Bella sits on the last A */}
-        <div className="site-footer__mark" aria-hidden="true">
-          <span className="site-footer__wordmark">
-            {"ELLET".split("").map((ch, i) => (
-              <span key={i}>{ch}</span>
-            ))}
-            <span className="site-footer__a">
-              A
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="site-footer__bella" src="/images/bella/set/bella-portrait.svg" alt="" />
-            </span>
-          </span>
-        </div>
-
-        {/* "Made with": a slow marquee; the loop copy is hidden from AT, and
-            reduced motion shows one static, wrapped line */}
-        <div className="made-with" role="region" tabIndex={0} aria-label="Made with">
-          <div className="made-with__track">
-            <ul className="made-with__list">
-              {MADE_WITH.map((m) => (
-                <li key={m}>Made with {m}</li>
-              ))}
-            </ul>
-            <ul className="made-with__list" aria-hidden="true">
-              {MADE_WITH.map((m) => (
-                <li key={m}>Made with {m}</li>
-              ))}
-            </ul>
+            <div className="text-meta site-footer__small">
+              {/* slot: "This page weighs XX KB" (filled by the footprint branch) */}
+              <p>© 2026 Elleta McDaniel · Built with help from AI, reviewed line by line by me.</p>
+              <p className="site-footer__legal">
+                <span>v{version}</span>
+                <Link className="site-footer__link site-footer__link--small" href="/accessibility">Accessibility</Link>
+                <Link className="site-footer__link site-footer__link--small" href="/privacy">Privacy</Link>
+                <ResumeLink className="site-footer__link site-footer__link--small" />
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="text-meta site-footer__small">
-          {/* slot: "This page weighs XX KB" (filled by the footprint branch) */}
-          <p>© 2026 Elleta McDaniel · Built with help from AI, reviewed line by line by me.</p>
-          <p className="site-footer__legal">
-            <span>v{version}</span>
-            <Link className="site-footer__link site-footer__link--small" href="/accessibility">Accessibility</Link>
-            <Link className="site-footer__link site-footer__link--small" href="/privacy">Privacy</Link>
-            <ResumeLink className="site-footer__link site-footer__link--small" />
-          </p>
-        </div>
       </div>
     </footer>
   );

@@ -10,6 +10,7 @@ import LayerJourney from "@/components/LayerJourney";
 import GateRun from "@/components/GateRun";
 import { P, Scannable, para } from "@/components/CaseProse";
 import type { CaseStudy } from "@/lib/content";
+import { PawIcon } from "@/components/PawTrail";
 
 /**
  * AI-FLOW RESTRUCTURE (Elleta-approved 22 Jul 2026, after the Vitaly
@@ -316,7 +317,10 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
           rows are deleted. */}
       <section className="cs2-beat cs2-takeaway" aria-labelledby="cs2-b4">
         <div className="cs2-takeaway__intro">
-          <p className="beat-eyebrow">04 · The takeaway</p>
+          <p className="beat-eyebrow">
+            <PawIcon />
+            The takeaway
+          </p>
           {/* SectionHeader, not raw Heading: the card-voice check in
               audit:reuse (Unique renders outside the cards below) */}
           <SectionHeader id="cs2-b4" title="What the work walked away with." className="cs2-screen__head" />

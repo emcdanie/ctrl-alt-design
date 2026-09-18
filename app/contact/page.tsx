@@ -21,7 +21,7 @@ export default function ContactPage() {
         }}
       >
         <div className="layout-container">
-          <PageHeader eyebrow="Contact" title="Let&apos;s work together." />
+          <PageHeader eyebrow="Contact" title="Let&apos;s work" accent="together" after="." />
         </div>
       </section>
       <ContactSection />
