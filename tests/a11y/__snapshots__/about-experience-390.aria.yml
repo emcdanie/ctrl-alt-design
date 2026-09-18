@@ -33,7 +33,7 @@
       - listitem: Defined, governed and released reusable components across shared Figma libraries, documented in Zeroheight.
       - listitem: Led accessibility and dark-mode audits, and defined design-system metrics for adoption, coverage, efficiency and quality.
   - group:
-    - text: "/.+ Product & Design Systems Designer Jul 2024 to Feb 2026 Clients included Air France and WeRoad\\./"
+    - text: "/^\\S+ Product & Design Systems Designer Jul 2024 to Feb 2026 Clients included Air France and WeRoad\\.$/"
     - paragraph: What I did
     - list:
       - listitem:

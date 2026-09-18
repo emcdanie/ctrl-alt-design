@@ -15,6 +15,6 @@
     - listitem:
       - img "WeRoad"
     - listitem:
-      - img /.+/  # employer name: kept out of committed files (NDA list)
+      - img /^\S+$/  # employer name: kept out of committed files (NDA list)
     - listitem:
       - img "VML"
