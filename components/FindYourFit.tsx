@@ -108,8 +108,8 @@ export default function FindYourFit({ chipRow }: { chipRow?: ReactNode }) {
 
       {ran && result && result.cases.length === 0 && (
         <p style={{ margin: "var(--spacing-4) 0 0", fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-base)", color: "var(--color-muted)" }}>
-          No strong match in the library for that text. The list below covers
-          everything.
+          No strong match in the library for that text. The cards below are
+          the full set.
         </p>
       )}
 

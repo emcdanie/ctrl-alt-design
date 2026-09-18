@@ -37,13 +37,14 @@ override the constitution.
   email + LinkedIn (`GetInTouch` / `ContactActions`; below lg they live in the menu). The /contact
   route stays until its own PR retires it. /design-system is a first-class page (the system inspecting itself);
   the footer "See the system" colophon link stays.
-- **Work page (Elleta, 2026-09-18; supersedes the 2026-07-20 Work toolbar).** Hero, then
-  01 Best in show (the three case studies as equal CaseCards), 02 Off the lead (explorations
-  and prototypes in ONE equal-card grid), 03 Everything (the whole library as numbered rows,
-  newest first), then a close with the one Get in touch. The Cards · Map · Table switcher, the
-  Map view and the featured card are retired. Everything's filters live in the URL (`type`,
-  `skill`; shareable, replaced in place, not pushed to history): type chips first (All, Case studies, Explorations, Prototypes),
-  then the skill chips, under the one Find my fit search.
+- **Work page (Elleta, 2026-09-18; supersedes the 2026-07-20 Work toolbar).** Hero (Find my fit
+  and the filter chips under the lede), then 01 Best in show (the three case studies as equal
+  CaseCards), 02 Off the lead (explorations and prototypes in ONE equal-card grid), then a close
+  with the one Get in touch. The chips (type first: All, Case studies, Explorations,
+  Prototypes; then skills) filter the cards in 01 and 02 through the URL (`type`, `skill`;
+  shareable, replaced in place, not pushed to history). A section whose cards all filter out
+  drops out with its heading. The Cards · Map · Table switcher, the Map view, the featured card
+  and the Everything list are retired.
 
 ## 2. Layout
 - **Sections use Section + SectionHeader. No custom spacing.** (Elleta, 2026-09-18, layout system,

@@ -3,26 +3,19 @@ import { Suspense } from "react";
 import OverlayNav from "@/components/OverlayNav";
 import Heading from "@/components/ui/Heading";
 import Section from "@/components/Section";
-import CaseCard from "@/components/CaseCard";
-import LabGrid from "@/components/LabGrid";
-import WorkLibrary from "@/components/WorkLibrary";
 import GetInTouch from "@/components/GetInTouch";
-import { WORK_ITEMS, type WorkItem } from "@/lib/workLibrary";
+import { WorkSections, WorkSectionsStatic, WorkToolbar } from "@/components/WorkLibrary";
 
 export const metadata: Metadata = {
   title: "Work, Elleta McDaniel",
   description:
-    "Design systems that hold up in real products, and the experiments behind them: three case studies, the lab, and the whole library as one filterable list.",
+    "Case studies from real teams, plus the experiments I run to stay ahead. Each one shows the system underneath, not just the screens.",
 };
 
-/* Best in show order (Elleta, 18 Sep 2026), by WORK_ITEMS id */
-const BEST_IN_SHOW = ["drift", "chip", "code-first"]
-  .map((id) => WORK_ITEMS.find((i) => i.id === id))
-  .filter((i): i is WorkItem => Boolean(i));
-
-/* Work (18 Sep 2026): hero, three numbered Sections and a close, on the
-   Section pattern. Thesis: design systems that hold up in real products,
-   and experiments in public to stay ahead. */
+/* Work (18 Sep 2026): hero with Find my fit and the filter chips, then
+   01 Best in show and 02 Off the lead, filtered from the URL, and a
+   close. Thesis: design systems that hold up in real products, and
+   experiments in public to stay ahead. */
 export default function WorkPage() {
   return (
     <main id="main-content" className="page-shell min-h-screen">
@@ -34,41 +27,21 @@ export default function WorkPage() {
         title="Work that holds its"
         accent="shape"
         after="."
-        lede={
-          <>
-            I build design systems that give designers and developers a <strong>shared language</strong>: tokens,
-            components, and the decisions behind them, written down kindly so everyone can use them.
-          </>
-        }
-      />
-
-      <Section id="best-in-show" index="01" label="Best in show" title="Three" accent="systems" after=", in production." wide>
-        <div className="card-grid">
-          {BEST_IN_SHOW.map((item) => (
-            <CaseCard key={item.id} item={item} cta="Case study →" showFeatured={false} />
-          ))}
+        lede="Case studies from real teams, plus the experiments I run to stay ahead. Each one shows the system underneath, not just the screens."
+      >
+        {/* useSearchParams requires a Suspense boundary */}
+        <div className="page-tools">
+          <Suspense fallback={null}>
+            <WorkToolbar />
+          </Suspense>
         </div>
       </Section>
 
-      <Section
-        id="off-the-lead"
-        index="02"
-        label="Off the lead"
-        title="Experiments in"
-        accent="public"
-        after="."
-        lede="Rapid investigations into complex interaction patterns, system dashboards, and AI-enabled workflows."
-        wide
-      >
-        <LabGrid />
-      </Section>
-
-      <Section id="everything" index="03" label="Everything" title="The whole" accent="library" after="." wide>
-        {/* useSearchParams requires a Suspense boundary */}
-        <Suspense fallback={null}>
-          <WorkLibrary />
-        </Suspense>
-      </Section>
+      {/* the unfiltered sections render on the server (and without JS);
+          the URL-filtered ones take over on the client */}
+      <Suspense fallback={<WorkSectionsStatic />}>
+        <WorkSections />
+      </Suspense>
 
       {/* Close: one display line and the one Get in touch (the site has
           no footer button yet, so nothing is duplicated) */}

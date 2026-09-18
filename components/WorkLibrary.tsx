@@ -1,45 +1,25 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import FindYourFit from "@/components/FindYourFit";
-import VideoModal from "@/components/VideoModal";
+import Section from "@/components/Section";
+import CaseCard from "@/components/CaseCard";
+import LabGrid, { LAB_PROTOTYPES, LAB_VIDEOS } from "@/components/LabGrid";
 import { FilterChip } from "@/components/ui/FilterChip";
-import { Tag } from "@/components/ui/Tag";
 import { SKILLS, SKILL_EVIDENCE, WORK_ITEMS, slugify, type WorkItem } from "@/lib/workLibrary";
-import { LAB_PROTOTYPES, LAB_VIDEOS, type LabVideo } from "@/components/LabGrid";
 import styles from "./WorkLibrary.module.css";
-import { WorkAppliedRow, useWorkFilters } from "@/components/WorkFilters";
+import { useWorkFilters } from "@/components/WorkFilters";
 
-/* Everything (Work, 18 Sep 2026): the whole library as numbered rows,
- * newest first: number, name + one line, tags, year, arrow. Case studies
- * come from WORK_ITEMS, explorations and prototypes from the lab arrays
- * (never retyped). The URL stays the one source of truth for the filters
- * (`type`, `skill`, plus the matrix-set `case`), back/forward safe. The
- * view switcher, map and curated cards are retired (Elleta, 18 Sep). */
+/* Work filtering (18 Sep 2026): Find my fit and the type + skill chips
+ * sit under the hero lede and filter the cards in 01 and 02. The URL is
+ * the one source of truth (`type`, `skill`, plus the matrix-set `case`),
+ * so ?type=prototype deep-links. A section whose cards all filter out
+ * drops out with its heading; if both do, one line offers a reset. */
 
-type RowType = "case-study" | "exploration" | "prototype";
+type WorkType = "case-study" | "exploration" | "prototype";
 
-interface Row {
-  key: string;
-  type: RowType;
-  title: string;
-  line: string;
-  tags: string[];
-  /** filter matching: case skills, or the lab piece's tags */
-  skills: string[];
-  year: string;
-  /** latest year in the range; the primary sort */
-  yearEnd: number;
-  /** case rank, or the lab piece's first-added date; the tie-breaks */
-  rank: number;
-  added: string;
-  caseId?: string;
-  href?: string;
-  video?: LabVideo;
-}
-
-const TYPES: { value: RowType; label: string }[] = [
+const TYPES: { value: WorkType; label: string }[] = [
   { value: "case-study", label: "Case studies" },
   { value: "exploration", label: "Explorations" },
   { value: "prototype", label: "Prototypes" },
@@ -47,140 +27,111 @@ const TYPES: { value: RowType; label: string }[] = [
 
 const SKILLS_VISIBLE = 6;
 
-const lastYear = (year: string) => Math.max(...(year.match(/\d{4}/g) ?? ["0"]).map(Number));
+/* Best in show order (Elleta, 18 Sep 2026), by WORK_ITEMS id */
+const BEST_IN_SHOW = ["drift", "chip", "code-first"]
+  .map((id) => WORK_ITEMS.find((i) => i.id === id))
+  .filter((i): i is WorkItem => Boolean(i));
 
-const ROWS: Row[] = [
-  ...WORK_ITEMS.filter((i) => i.medium === "case study").map<Row>((i) => ({
-    key: i.id,
-    type: "case-study",
-    title: i.title,
-    line: i.impact,
-    tags: i.skills.slice(0, 3),
-    skills: i.skills,
-    year: i.year,
-    yearEnd: lastYear(i.year),
-    rank: i.rank ?? 99,
-    added: "",
-    caseId: i.id,
-    href: i.href,
-  })),
-  ...LAB_VIDEOS.map<Row>((v) => ({
-    key: v.title,
-    type: "exploration",
-    title: v.title,
-    line: v.subtitle,
-    tags: v.tags.slice(0, 3),
-    skills: v.tags,
-    year: v.added.slice(0, 4),
-    yearEnd: Number(v.added.slice(0, 4)),
-    rank: 100,
-    added: v.added,
-    video: v,
-  })),
-  ...LAB_PROTOTYPES.map<Row>((p) => ({
-    key: p.title,
-    type: "prototype",
-    title: p.title,
-    line: p.subtitle,
-    tags: p.tags.slice(0, 3),
-    skills: p.tags,
-    year: p.added.slice(0, 4),
-    yearEnd: Number(p.added.slice(0, 4)),
-    rank: 100,
-    added: p.added,
-    href: p.href,
-  })),
-].sort(
-  (a, b) =>
-    b.yearEnd - a.yearEnd || a.rank - b.rank || b.added.localeCompare(a.added) || a.title.localeCompare(b.title)
-);
+interface Filters {
+  caseFilters: string[];
+  skillFilters: string[];
+  typeFilters: string[];
+}
 
-export default function WorkLibrary() {
-  const { caseFilters, skillFilters, typeFilters, toggleList, clearAll, setFilterParams } =
-    useWorkFilters();
-  const [activeVideo, setActiveVideo] = useState<LabVideo | null>(null);
+const NO_FILTERS: Filters = { caseFilters: [], skillFilters: [], typeFilters: [] };
 
-  const rows = useMemo(() => {
-    let r = ROWS;
-    if (caseFilters.length) r = r.filter((x) => x.caseId && caseFilters.includes(x.caseId));
-    if (skillFilters.length) r = r.filter((x) => x.skills.some((s) => skillFilters.includes(slugify(s))));
-    if (typeFilters.length) r = r.filter((x) => typeFilters.includes(x.type));
-    return r;
-  }, [caseFilters, skillFilters, typeFilters]);
+function applyFilters({ caseFilters, skillFilters, typeFilters }: Filters) {
+  const typeOk = (t: WorkType) => typeFilters.length === 0 || typeFilters.includes(t);
+  const skillOk = (skills: string[]) =>
+    skillFilters.length === 0 || skills.some((s) => skillFilters.includes(slugify(s)));
+  const labOk = caseFilters.length === 0;
+  return {
+    cases: BEST_IN_SHOW.filter(
+      (i) => typeOk("case-study") && skillOk(i.skills) && (caseFilters.length === 0 || caseFilters.includes(i.id))
+    ),
+    videos: LAB_VIDEOS.filter((v) => labOk && typeOk("exploration") && skillOk(v.tags)),
+    prototypes: LAB_PROTOTYPES.filter((p) => labOk && typeOk("prototype") && skillOk(p.tags)),
+  };
+}
 
+/* ── The toolbar under the hero lede ── */
+export function WorkToolbar() {
+  const { skillFilters, typeFilters, toggleList, setFilterParams } = useWorkFilters();
   return (
-    <div className={`section-wide-content ${styles.index}`}>
-      <FindYourFit
-        chipRow={
-          <IndexChips
-            skillFilters={skillFilters}
-            typeFilters={typeFilters}
-            toggleList={toggleList}
-            clearTypes={() => setFilterParams({ type: null })}
-          />
-        }
-      />
-
-      <WorkAppliedRow
-        caseFilters={caseFilters}
-        skillFilters={skillFilters}
-        typeFilters={typeFilters}
-        toggleList={toggleList}
-        clearAll={clearAll}
-        matchCount={rows.length}
-        total={ROWS.length}
-        typeLabels={Object.fromEntries(TYPES.map((t) => [t.value, t.label]))}
-      />
-
-      <ol className={styles.rows}>
-        {rows.map((r, n) => (
-          <li key={r.key} className={styles.row}>
-            <span className={styles.rowNum}>{String(n + 1).padStart(2, "0")}</span>
-            <div className={styles.rowMain}>
-              {r.video ? (
-                <button type="button" className={styles.rowTitle} onClick={() => setActiveVideo(r.video!)}>
-                  {r.title}
-                </button>
-              ) : (
-                <Link href={r.href!} className={styles.rowTitle}>
-                  {r.title}
-                </Link>
-              )}
-              <p className={styles.rowLine}>{r.line}</p>
-            </div>
-            <span className={styles.rowTags}>
-              {r.tags.map((t) => (
-                <Tag key={t}>{t}</Tag>
-              ))}
-            </span>
-            <span className={styles.rowYear}>{r.year}</span>
-            <span className={styles.rowArrow} aria-hidden="true">
-              →
-            </span>
-          </li>
-        ))}
-      </ol>
-
-      {rows.length === 0 && <p className={styles.empty}>No pieces match these filters.</p>}
-
-      {activeVideo && (
-        <VideoModal
-          isOpen={true}
-          onClose={() => setActiveVideo(null)}
-          embedUrl={activeVideo.embed}
-          title={activeVideo.title}
-          description={activeVideo.subtitle}
-          tags={activeVideo.tags}
+    <FindYourFit
+      chipRow={
+        <FilterChips
+          skillFilters={skillFilters}
+          typeFilters={typeFilters}
+          toggleList={toggleList}
+          clearTypes={() => setFilterParams({ type: null })}
         />
-      )}
-    </div>
+      }
+    />
   );
 }
 
-/* The Work chip row: type first (All + the three types), then the skill
-   chips. FilterChips (section 5 taxonomy), URL-synced through the shared
-   hook. The /skills page keeps its own WorkChipRow order. */
-function IndexChips({
+/* ── 01 and 02, filtered from the URL ── */
+export function WorkSections() {
+  const { caseFilters, skillFilters, typeFilters, clearAll } = useWorkFilters();
+  return <WorkSectionsView filters={{ caseFilters, skillFilters, typeFilters }} clearAll={clearAll} />;
+}
+
+/** The unfiltered sections: the server render and the no-JS page. */
+export function WorkSectionsStatic() {
+  return <WorkSectionsView filters={NO_FILTERS} />;
+}
+
+function WorkSectionsView({ filters, clearAll }: { filters: Filters; clearAll?: () => void }) {
+  const { cases, videos, prototypes } = applyFilters(filters);
+  const labCount = videos.length + prototypes.length;
+  return (
+    <>
+      {cases.length > 0 && (
+        <Section id="best-in-show" index="01" label="Best in show" title="Three systems, up" accent="close" after="." wide>
+          <div className="card-grid">
+            {cases.map((item) => (
+              <CaseCard key={item.id} item={item} cta="Case study →" showFeatured={false} />
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {labCount > 0 && (
+        <Section
+          id="off-the-lead"
+          index="02"
+          label="Off the lead"
+          title="Experiments in"
+          accent="public"
+          after="."
+          lede="Where I try ideas out before a client needs them."
+          wide
+        >
+          <LabGrid videos={videos} prototypes={prototypes} />
+        </Section>
+      )}
+
+      {cases.length === 0 && labCount === 0 && (
+        <section className="section section--ruled" aria-live="polite">
+          <div className="container">
+            <p className="text-body">
+              Nothing matches,{" "}
+              <button type="button" className="text-action" onClick={clearAll}>
+                clear filters
+              </button>
+            </p>
+          </div>
+        </section>
+      )}
+    </>
+  );
+}
+
+/* Type first (All + the three types), then the skill chips. FilterChips
+   (section 5 taxonomy), URL-synced through the shared hook. The /skills
+   page keeps its own WorkChipRow order. */
+function FilterChips({
   skillFilters,
   typeFilters,
   toggleList,
@@ -194,7 +145,7 @@ function IndexChips({
   const [skillsExpanded, setSkillsExpanded] = useState(false);
   const visibleSkills = skillsExpanded ? SKILLS : SKILLS.slice(0, SKILLS_VISIBLE);
   return (
-    <div className={styles.filterRow} role="group" aria-label="Filter the list by type or skill">
+    <div className={styles.filterRow} role="group" aria-label="Filter the work by type or skill">
       <FilterChip className="filter-chip--dense" pressed={typeFilters.length === 0} onClick={clearTypes}>
         All
       </FilterChip>

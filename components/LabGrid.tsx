@@ -182,14 +182,22 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
 
 /* Off the lead (Work, 18 Sep 2026): ONE equal-card grid, explorations
    then prototypes. The Work page's Section supplies the heading and lede;
-   this renders the cards and the video modal only. */
-export default function LabGrid() {
+   this renders the cards (all, or the filtered set) and the video modal. */
+export default function LabGrid({
+  videos = LAB_VIDEOS,
+  prototypes = LAB_PROTOTYPES,
+}: {
+  /** the explorations to show (Work filters narrow these) */
+  videos?: LabVideo[];
+  /** the prototypes to show */
+  prototypes?: LabPrototype[];
+}) {
   const [activeVideo, setActiveVideo] = useState<LabVideo | null>(null);
 
   return (
     <>
       <div className="card-grid">
-        {LAB_VIDEOS.map((video) => (
+        {videos.map((video) => (
           <div key={video.title} className="relative h-full">
             <span className="tag pointer-events-none absolute left-3 top-3 z-10">{video.category}</span>
             <VideoCard
@@ -203,7 +211,7 @@ export default function LabGrid() {
             />
           </div>
         ))}
-        {LAB_PROTOTYPES.map((prototype) => (
+        {prototypes.map((prototype) => (
           <PrototypeCard key={prototype.title} prototype={prototype} />
         ))}
       </div>

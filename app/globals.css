@@ -1393,14 +1393,19 @@ p {
   }
 }
 
-/* A Section whose body holds a card grid or the Work list takes the
-   whole container below 1280px (label above the heading), so cards and
-   rows never squeeze into the narrow main column. Scoped by :has() so
-   text-only Sections (About) are untouched. */
+/* A Section whose body holds a card grid takes the whole container
+   below 1280px (label above the heading), so cards never squeeze into
+   the narrow main column. Scoped by :has() so text-only Sections
+   (About) are untouched. */
 @media (min-width: 768px) and (max-width: 1279px) {
-  .section-row__main:has(.card-grid, .section-wide-content) {
+  .section-row__main:has(.card-grid) {
     grid-column: 1 / -1;
   }
+}
+
+/* a page's tools under the hero lede (Work: Find my fit + filters) */
+.page-tools {
+  margin-top: var(--space-stack-md);
 }
 
 /* a page's close row: one display line and one action (Work) */
