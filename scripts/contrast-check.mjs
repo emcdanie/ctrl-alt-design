@@ -2,7 +2,7 @@ import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
 
 /* Declared for audit:debt's dead-selector check (27 Jul 2026). */
-export const TRACKED_SELECTORS = ['[class*="coverPlaceholder"]', ".kbd-logo"];
+export const TRACKED_SELECTORS = ['[class*="coverPlaceholder"]', ".nav-wordmark"];
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 
@@ -63,12 +63,10 @@ for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies
       if (!r.width || !r.height) continue;
       const cs = getComputedStyle(el);
       if (parseFloat(cs.fontSize) < 10) continue;
-      // Unique is display-only: it never renders below 24px. The keycap
-      // logo lockup is the one recorded exception (brand device).
+      // Unique is display-only: it never renders below 24px, no exceptions.
       const uniqueTooSmall =
         /unique/i.test(cs.fontFamily || "") &&
-        parseFloat(cs.fontSize) < 24 &&
-        !el.closest(".kbd-logo");
+        parseFloat(cs.fontSize) < 24;
       out.push({ t: (el.textContent||"").trim().slice(0,32), c: cs.color, bg: bgOf(el), fs: cs.fontSize, tag: el.tagName, uniqueTooSmall });
     }
     return out;

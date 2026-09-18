@@ -55,7 +55,7 @@ override the constitution.
 ## 3. Type
 - **Exactly two typefaces (revised 2026-07-17, supersedes the hero-only lock).** Unique 700 = ALL
   display headings: home hero headline, page titles, section headers, case-study display headlines,
-  and the keycap brand lockup, always all-caps with the established accent-word treatment where the
+  and the ELLETA wordmark, always all-caps with the established accent-word treatment where the
   design already does that. Every display heading renders through the ONE `ui/Heading` primitive
   (tiers: hero / page / section / case, plus `sub`, the Geist 700 h3-level sub-heading;
   tracking `--tracking-display`, leading `--leading-display`, and no consumer sets its own
@@ -63,7 +63,7 @@ override the constitution.
   pattern); bubble page headers are parked (last live at e25eefc, may return in the expression
   pass). The elevation/orb tokens stay: keycaps, the home cluster, and the About portrait still
   consume them.
-- Unique never renders below 24px except the keycap logo (the gate enforces this), and never in
+- Unique never renders below 24px (the gate enforces this; the ELLETA wordmark is 44/36px), and never in
   body, UI, card titles, eyebrows, meta, nav links, buttons, or chips.
 - **Unique never renders inside a Card (Elleta, 2026-07-21, card-voice).** Cards use Geist only;
   Unique stays page-tier (the Heading primitive: section heads and heroes). Card statements use
@@ -71,9 +71,11 @@ override the constitution.
   `.heading-item`. Enforced by the Unique-in-card check in `audit:reuse`.
 - Geist = everything else. Eyebrows stay Geist caps with `--tracking-eyebrow`.
 - **Style rule going forward (Elleta, 2026-09-18, about-rebuild lock).** No eyebrow label above
-  every heading. No one-purple-word headlines (the `accent` prop is for existing pages only). No
-  card grids unless the content really is a set of cards. Applies to new and rebuilt surfaces;
-  existing pages migrate when they are next touched.
+  every heading. One iris word per display heading, only the word that matters (use the `accent`
+  prop). Never on card titles or body text. No card grids unless the content really is a set
+  of cards. Applies to new and rebuilt surfaces; existing pages migrate when they are next touched.
+- The site nav doesn't count toward one-primary-per-page.
+- Name the UN as 'United Nations Geneva' (matches the CV).
 - **Numbers in columns are right-aligned and tabular (Elleta, 2026-07-28, readability
   audit).** Any figure that sits in a column beside other figures (a table cell, a grid
   column, a stat row) uses `text-align: right` and `font-variant-numeric: tabular-nums`,
@@ -91,10 +93,10 @@ override the constitution.
   check in `audit:structure` + the live AA sweep in `audit:contrast`.
 - Every surface/text/border resolves from semantic tokens via `[data-theme="dark"]`. No hardcoded values.
 - Dark mode is a first-class contract on EVERY surface, not an afterthought — case pages included.
-- The dark keycap logo must not bloom a heavy glow on navy; tone the plate/shadow.
+- The ELLETA wordmark is live text in `--color-ink`, so it flips with the theme; no plate, no glow.
 
 ## 5. Controls (one taxonomy — see conformance spec §7)
-The raised **keycap** is reserved for the brand logo and TRUE actions only. Do not use it for filters,
+The raised **keycap** is reserved for TRUE actions only. Do not use it for filters,
 toggles, or sort.
 - **Button (grammar v5 + primary pick, 2026-07-20):** purple means clickable at every tier.
   PRIMARY = the calm filled iris keycap, the one 3D moment per view (max ONE); hover gains the
@@ -176,12 +178,12 @@ Use the `portfolio-spec` skill. For any non-trivial task:
 ## 9. The gate (`npm run gate`) — un-regressable
 Must pass before any work is "done":
 - `audit:structure` — per-case route dirs, container/section system, no arbitrary `text-[Npx]`, no amber.
-- `audit:contrast` — WCAG AA (AAA-minded); Unique below 24px fails outside the keycap logo.
+- `audit:contrast` — WCAG AA (AAA-minded); Unique below 24px fails everywhere, no exceptions.
 - `audit:copy` — fails on `—`/`–` and on "AI-augmented" / "AI-assisted".
 - `audit:controls` — keycap used as filter/toggle/sort fails; >1 primary per view fails; filters/toggles
   missing `aria-pressed`/`aria-current` fail.
 - `audit:fonts` — any face other than the Unique/Geist tokens fails; Unique outside the Heading
-  primitive, home hero, or keycap lockup fails; any mono family reference fails.
+  primitive, home hero, or ELLETA wordmark fails; any mono family reference fails.
 - `audit:tokens` — colour literals and raw spacing (>=4px) in `app/**`/`components/**` fail;
   `token-waiver:` inline comments mark the reviewed proto-exact/artwork exceptions.
 - `audit:parity` — every case-study slug has exactly one `WORK_ITEMS` row and vice versa; side

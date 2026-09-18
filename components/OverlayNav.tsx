@@ -76,15 +76,11 @@ export default function OverlayNav() {
         >
           <Link
             href="/"
-            className="kbd-logo pointer-events-auto"
-            aria-label="ctrl alt design, home"
+            className="nav-wordmark pointer-events-auto"
+            aria-label="Elleta McDaniel, home"
             onClick={() => setOpen(false)}
           >
-            <span className="key">Ctrl</span>
-            <span className="plus" aria-hidden="true">+</span>
-            <span className="key">Alt</span>
-            <span className="plus" aria-hidden="true">+</span>
-            <span className="key key-iris">Design</span>
+            ELLETA
           </Link>
 
           {/* Desktop primary nav, hidden below lg, where the hamburger takes over */}

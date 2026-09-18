@@ -134,8 +134,8 @@ ladder below (endpoints 32 / 36 / 40 / 48 / 56 / 72). Body text never below
   Mono is retired; `--font-mono` is a legacy alias resolving to Geist.
   Enforced by `audit:fonts` + the 24px floor in `audit:contrast`.
 - Unique floor: 24px. Any Unique below 24px fails the gate
-  (`audit:contrast`, `display-font-below-24`); the keycap logo lockup is
-  the recorded exception. Titles below the floor (card/item titles) stay
+  (`audit:contrast`, `display-font-below-24`), with no exceptions; the
+  ELLETA wordmark sits at 44px (36px under 768px). Titles below the floor (card/item titles) stay
   Geist semibold (`.heading-item`).
 - Section intros: ONE pattern, the shared `ui/SectionHeader` (Geist caps
   iris eyebrow + the `ui/Heading` section tier, Unique 700 uppercase at
@@ -186,13 +186,15 @@ Selected atom node fill is `--color-semantic-accent` (periwinkle, fill
 only) with ink text (7.6:1); selection is never colour-only (leading dot
 plus border plus `aria-checked`).
 
-## Recorded token additions (bubble hero + keycap logo, 2026-07-16)
+## Recorded token additions (bubble hero, 2026-07-16; wordmark, 2026-09-18)
 
 From the vetted `_proto/_hero.html`. Per-case bubble gradients
 (`--case-*-hi/-lo`), a deep readable accent per case (`--case-*-deep`,
 AA+ on the white reveal card), the iris hub (`--hub-*`), fixed-context
 reveal-card tokens (`--hero-panel-*` — the card is always light), and
-the keycap logo plates (`--key-*`). Declared in `app/globals.css`.
+the keycap faces (`--key-face-hi`, `--key-fill-*`). The header wordmark
+size is a component token, `--nav-wordmark-size` (44px, 36px under
+768px). Declared in `app/globals.css`.
 
 GlassBanner surface (recorded surface, 2026-07-17): ONE end-of-page CTA
 treatment, `ui/GlassBanner`, replacing every dark background-inverse
@@ -270,9 +272,11 @@ is the ONLY way to render one:
   JSON is next rebuilt).
 - `.cs-shell` case-study shell manages its own two-column padding (uses
   spacing tokens; documented in `app/globals.css`).
-- `.kbd-logo` header lockup: Unique at 28px key caps (20px ≤640px). The
-  logo is a brand mark, not running text — the only sanctioned use of
-  Unique besides the hero headline.
+- `.nav-wordmark` header wordmark: ELLETA in Unique, live text, at
+  `--nav-wordmark-size` (44px, 36px under 768px), line-height 1,
+  letter-spacing 0.04em. A brand mark, not running text: the only
+  sanctioned use of Unique besides the hero headline and the Heading
+  primitive.
 - Hero bubble geometry (sizes 126–196px, cluster positions) is recorded
   data in `components/BubbleCluster.tsx`, from `_proto/_hero.html` — not
   ramp/spacing values.

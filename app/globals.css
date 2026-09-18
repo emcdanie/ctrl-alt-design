@@ -94,7 +94,7 @@
 /* v3: every semantic heading defaults to the Unique display face. Class-level
    font-family still wins. TYPE LOCK: exactly two faces. Unique renders
    only through the display Heading primitive (.display-heading), the
-   home hero headline, and the .kbd-logo brand lockup; labels, body, and
+   home hero headline, and the .nav-wordmark; labels, body, and
    eyebrows are Geist. No mono family exists. Bubble page headers are
    PARKED (last live at e25eefc; may return in the expression pass). */
 h1, h2, h3, h4, h5, h6 {
@@ -154,7 +154,9 @@ body {
 
   /* Header offset. All sticky/fixed elements below the nav use this.
      Defined ONLY here (unlayered authority), not in @theme. */
-  --header-height: 76px; /* keycap header, measured (BELLA default: 64) */
+  --header-height: 76px; /* measured header (BELLA default: 64) */
+  /* ELLETA wordmark: component token, no BELLA size fits 44/36 */
+  --nav-wordmark-size: 44px;
   /* Eyebrow/label tracking: caps + spacing carry the old mono look */
   --tracking-eyebrow: var(--typography-letter-spacing-wider);
 
@@ -186,6 +188,12 @@ body {
 @media (max-width: 640px) {
   :root {
     --header-height: 64px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --nav-wordmark-size: 36px;
   }
 }
 
@@ -315,16 +323,12 @@ body {
   --hero-panel-shadow: rgba(26, 23, 32, 0.22);
   --hero-link: rgba(26, 23, 32, 0.16);
   --key-face-hi: #FFFFFF;
-  --key-face-lo: #ECEAE3;
-  --key-edge: #D7D3CA;
-  --key-iris-edge: #4A3FB0;
   /* Filled-keycap face — FIXED in both themes. White labels need ≥4.5:1
      on every gradient stop: #6C5CE0 4.9:1, #5B4BD1 6.1:1 (the lighter
      #8E7EEC is 3.3:1 — never under a white label). */
   --key-fill-hi: #6C5CE0;
   --key-fill-lo: #5B4BD1;
   --key-fill-edge: #4A3FB0;
-  --key-plus: #B4AFA6;
 
   /* Theme switch (sun/moon keycap-thumb slider, from _proto/_hero.html) */
 
@@ -389,7 +393,6 @@ body {
   --hero-panel-bg: #F4EFE6;
   --hero-panel-shadow: rgba(0, 0, 0, 0.44);
   --hero-link: rgba(244, 239, 230, 0.2);
-  --key-plus: rgba(244, 239, 230, 0.5);
   --modal-backdrop: rgba(0, 0, 0, 0.6);
   --page-glow: rgba(255, 255, 255, 0.04);
 }
@@ -429,70 +432,18 @@ body {
     radial-gradient(140% 150% at 55% 100%, color-mix(in srgb, var(--color-accent-peri) 16%, transparent), transparent 58%);
 }
 
-/* ─── Keycap logo lockup (header) — from _proto/_hero.html ──────────
-   CTRL + ALT + DESIGN as keyboard keys; DESIGN is the iris key.
-   Unique at 28px — recorded §5 exception: the logo is a brand lockup,
-   not running text (see DESIGN.md). */
-.kbd-logo {
-  display: inline-flex;
+/* ─── Wordmark (header) ──────────────────────────────────────────
+   ELLETA in Unique, live text so it follows the theme ink. 44px, 36px
+   under 768px: always above the 24px Unique floor. */
+.nav-wordmark {
+  display: flex;
   align-items: center;
-  gap: 9px;
+  font-family: var(--font-hero-display);
+  font-size: var(--nav-wordmark-size);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--color-ink);
   text-decoration: none;
-  line-height: 1;
-}
-
-.kbd-logo .key {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 11px 16px;
-  border-radius: var(--radius-lg);
-  font-family: var(--font-hero-display);
-  font-weight: 700; /* Unique Bold cut — same as the hero headline */
-  text-transform: uppercase;
-  font-size: 28px;
-  letter-spacing: 0.02em;
-  color: var(--hero-panel-ink);
-  line-height: 1;
-  background: linear-gradient(var(--key-face-hi), var(--key-face-lo));
-  box-shadow:
-    2px 5px 0 var(--key-edge),
-    6px 10px 16px rgba(25, 23, 32, 0.18),
-    inset 0 1px 0 var(--key-face-hi);
-}
-
-.kbd-logo .key-iris {
-  color: var(--key-face-hi); /* fixed white — the face is fixed too */
-  /* fill tokens, not iris-hi: white labels need >=4.5 on every stop
-     (#6C5CE0 4.9, #5B4BD1 6.1; the lighter #8E7EEC was 3.3) */
-  background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
-  box-shadow:
-    2px 5px 0 var(--key-iris-edge),
-    6px 10px 18px color-mix(in srgb, var(--color-accent-ink) 36%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-.kbd-logo .plus {
-  font-family: var(--font-hero-display);
-  font-weight: 700;
-  font-size: 22px;
-  color: var(--key-plus);
-  line-height: 1;
-}
-
-@media (max-width: 640px) {
-  .kbd-logo {
-    gap: 6px;
-  }
-
-  .kbd-logo .key {
-    font-size: 20px;
-    padding: 8px 11px;
-  }
-
-  .kbd-logo .plus {
-    font-size: 16px;
-  }
 }
 
 /* ─── Layout system ────────────────────────────────────────────── */
@@ -845,23 +796,22 @@ li {
 
 
 /* ─── Nav (step 1, 18 Sep 2026) ───────────────────────────────────
-   Links rest muted and take full ink on hover; the current page wears
-   full ink plus the iris underline. "Get in touch" is a filled pill,
-   flat (not the primary keycap: that stays one per view). */
+   Sentence-case Geist links rest soft and take full ink on hover; the
+   current page sits in a soft grey pill, no underline. "Get in touch"
+   is a filled pill, flat (not the primary keycap: that stays one per
+   view). */
 .nav-link {
   display: flex;
   align-items: center;
   min-height: var(--spacing-touch-target);
-  padding: 0 var(--spacing-3);
-  border-radius: var(--radius-md);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
+  padding: 0 var(--spacing-4);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 400;
+  color: var(--color-ink-soft);
   text-decoration: none;
-  transition: color 150ms ease;
+  transition: color 150ms ease, background-color 150ms ease;
 }
 
 .nav-link:hover,
@@ -870,10 +820,7 @@ li {
 }
 
 .nav-link--current {
-  text-decoration: underline;
-  text-decoration-color: var(--color-accent-ink);
-  text-decoration-thickness: 2px;
-  text-underline-offset: var(--spacing-2);
+  background: var(--color-semantic-surface-inset);
 }
 
 .nav-link:focus-visible,
