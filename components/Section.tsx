@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Heading from "@/components/ui/Heading";
 import { Tag } from "@/components/ui/Tag";
-import PawTrail from "@/components/PawTrail";
+import PawTrail, { PawIcon } from "@/components/PawTrail";
 
 /**
  * The numbered section: index label | heading, lede, body | side slot,
@@ -32,7 +32,7 @@ export default function Section({
   children,
 }: {
   variant?: "row" | "hero";
-  /** "01" (rows only) */
+  /** optional "01" before the label (Work numbers its sections; About does not) */
   index?: string;
   /** the section's short name, e.g. "The short lead" (rows only) */
   label?: string;
@@ -67,7 +67,13 @@ export default function Section({
         <div className="section-row__grid">
           {hero ? null : (
             <p className="section-row__meta">
-              <span className="section-row__num">{index}</span> / {label}
+              <PawIcon />
+              {index ? (
+                <>
+                  <span className="section-row__num">{index}</span> /{" "}
+                </>
+              ) : null}
+              {label}
             </p>
           )}
           <div className="section-row__main">

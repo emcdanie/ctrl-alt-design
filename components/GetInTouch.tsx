@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import ContactActions from "@/components/ContactActions";
 
 /* "Get in touch" (about-rebuild lock, 18 Sep 2026): replaces Contact in
@@ -10,6 +10,8 @@ import ContactActions from "@/components/ContactActions";
    never competes with a page's one primary. */
 export default function GetInTouch() {
   const [open, setOpen] = useState(false);
+  /* one id per instance: the nav and a page can both carry the button */
+  const panelId = useId();
   const wrapRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
 
@@ -41,13 +43,13 @@ export default function GetInTouch() {
         className="get-in-touch__trigger"
         data-component="GetInTouch"
         aria-expanded={open}
-        aria-controls="get-in-touch-panel"
+        aria-controls={panelId}
         onClick={() => setOpen((o) => !o)}
       >
         Get in touch
       </button>
       {open && (
-        <div id="get-in-touch-panel" className="get-in-touch__panel">
+        <div id={panelId} className="get-in-touch__panel">
           <ContactActions layout="stack" />
         </div>
       )}

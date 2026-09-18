@@ -1,14 +1,17 @@
 import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
+import GetInTouch from "@/components/GetInTouch";
+import PawTrail from "@/components/PawTrail";
 import Heading from "@/components/ui/Heading";
 import { Icon } from "@/components/ui/Icon";
 import Section, { SectionList, SectionTags } from "@/components/Section";
 import WorkedWith from "@/components/WorkedWith";
 import ExperienceSection from "@/components/ExperienceSection";
 
-/* About (step 3, 18 Sep 2026): flat hero, six numbered sections built
-   from the shared Section, a paw trail in each gap, and a close that
-   hands off to the one contact CTA. Copy is Elleta's, used verbatim. */
+/* About: hero, then short lead, track record, the pack, (testimonials
+   to come), new tricks and house rules on the shared Section, a paw trail
+   in each gap, and a closing contact card with the one Get in touch.
+   Copy is Elleta's, used verbatim. */
 export default function AboutPage() {
   return (
     <main id="main-content" className="page-shell min-h-screen text-[var(--color-ink-soft)]">
@@ -53,7 +56,6 @@ export default function AboutPage() {
       <Section
         trail
         id="short-lead"
-        index="01"
         label="The short lead"
         title="A shared language, not a"
         accent="rulebook"
@@ -80,8 +82,25 @@ export default function AboutPage() {
 
       <Section
         trail
+        id="track-record"
+        label="Track record"
+        title="Where I've"
+        accent="been"
+        after="."
+        side={<SectionTags items={["Figma", "Storybook", "React", "Design tokens", "Accessibility", "Governance"]} />}
+      >
+        <ExperienceSection />
+      </Section>
+
+      <Section trail id="the-pack" label="The pack" title="Good" accent="company" after="." wide>
+        <WorkedWith />
+      </Section>
+
+      {/* Testimonials slot: content coming. */}
+
+      <Section
+        trail
         id="new-tricks"
-        index="02"
         label="New tricks"
         title="Design systems that don't fall apart when"
         accent="AI"
@@ -119,11 +138,7 @@ export default function AboutPage() {
         </p>
       </Section>
 
-      <Section trail id="the-pack" index="03" label="The pack" title="Good" accent="company" after="." wide>
-        <WorkedWith />
-      </Section>
-
-      <Section trail id="house-rules" index="04" label="House rules" title="Four things I" accent="care" after=" about.">
+      <Section trail id="house-rules" label="House rules" title="Four things I" accent="care" after=" about.">
         <div className="cares">
           <div>
             <h3 className="heading-item">Kindness</h3>
@@ -132,7 +147,7 @@ export default function AboutPage() {
           <div>
             <h3 className="heading-item">Respect</h3>
             <p>
-              For the designer&apos;s craft and the engineer&apos;s time. <strong>I check it can be built</strong>
+              For the designer&apos;s craft and the engineer&apos;s time. <strong>I check it can be built</strong>{" "}
               before I design it three ways.
             </p>
           </div>
@@ -151,58 +166,27 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <Section
-        trail
-        id="track-record"
-        index="05"
-        label="Track record"
-        title="Where I've"
-        accent="been"
-        after="."
-        side={<SectionTags items={["Figma", "Storybook", "React", "Design tokens", "Accessibility", "Governance"]} />}
-      >
-        <ExperienceSection />
-      </Section>
-
-      {/* TODO(elleta): placeholder copy from the build prompt, review */}
-      <Section trail id="working-together" index="06" label="Working together" title="Simple, on" accent="purpose" after=".">
-        <ol className="how">
-          <li>
-            <span className="how__num">01</span>
-            <div>
-              <h3 className="heading-item">Straight to me</h3>
-              <p>You talk to the person designing your system, from the first call to the last token.</p>
-            </div>
-          </li>
-          <li>
-            <span className="how__num">02</span>
-            <div>
-              <h3 className="heading-item">Remote, EU hours</h3>
-              <p>Based near Barcelona, working with teams across Europe.</p>
-            </div>
-          </li>
-          <li>
-            <span className="how__num">03</span>
-            <div>
-              <h3 className="heading-item">Small first step</h3>
-              <p>We start with an audit or one component, so you see how I work before committing.</p>
-            </div>
-          </li>
-        </ol>
-      </Section>
-
-      {/* Close: one line and a text link. The one contact CTA is the
-          footer's Get in touch; until the site footer ships (step 5) the
-          link goes to /contact. */}
-      <section className="section section--ruled" aria-labelledby="about-close-title">
+      {/* Contact card: the page's one contact CTA (the nav keeps its own) */}
+      <section id="contact" className="section section--ruled" aria-labelledby="contact-title">
+        <PawTrail />
         <div className="container">
-          <div className="about-close__row">
-            <Heading tier="section" as="h2" id="about-close-title" accent="notes" after=".">
-              Let&apos;s compare
-            </Heading>
-            <Link href="/contact" className="text-action">
-              Start a conversation →
-            </Link>
+          <div className="contact-close">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="contact-close__photo" src="/images/thumbnails/Me.jpeg" alt="Elleta McDaniel" width={240} height={240} />
+            <div className="contact-close__text">
+              <Heading tier="section" as="h2" id="contact-title" accent="notes" after=".">
+                Let&apos;s compare
+              </Heading>
+              <p className="text-lead contact-close__lead">
+                Open to full-time roles and select freelance projects, working remotely from near Barcelona.
+              </p>
+              <ul className="text-body contact-close__lines">
+                <li>Straight to me: you talk to the person designing your system.</li>
+                <li>EU hours, remote-first.</li>
+                <li>We start small: an audit or one component.</li>
+              </ul>
+              <GetInTouch />
+            </div>
           </div>
         </div>
       </section>

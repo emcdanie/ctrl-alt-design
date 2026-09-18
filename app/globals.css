@@ -159,6 +159,9 @@ body {
   /* Good company grid cells (100px under 700px) */
   --logo-cell: 132px;
   --logo-cell-sm: 100px;
+  /* contact card photo (96px under 700px) */
+  --contact-photo: 120px;
+  --contact-photo-sm: 96px;
   /* heading measure in em, never ch: Unique is condensed, so 1ch is a
      narrow "0" and ch widths wrap headlines early */
   --measure-heading: 14em;
@@ -1069,6 +1072,14 @@ p {
   font-variant-numeric: tabular-nums;
 }
 
+.section-row__meta .paw-icon {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.4em;
+  vertical-align: -0.12em;
+  fill: currentColor;
+}
+
 .section-row__num {
   font-weight: 500;
   color: var(--color-ink);
@@ -1366,13 +1377,11 @@ p {
   }
 }
 
-.cares h3,
-.how h3 {
+.cares h3 {
   margin: 0 0 var(--spacing-1);
 }
 
-.cares p,
-.how p {
+.cares p {
   margin: 0;
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
@@ -1380,35 +1389,47 @@ p {
   color: var(--color-ink-soft);
 }
 
-/* How I work: three numbered rows */
-.how {
-  list-style: none;
-  margin: var(--spacing-6) 0 0;
-  padding: 0;
-}
-
-.how li {
+/* Contact close (not a card: no surface): photo | heading, lead, three lines, the one Get in
+   touch. Stacks (photo first, left-aligned) under 700px. */
+.contact-close {
   display: grid;
-  grid-template-columns: var(--spacing-12) minmax(0, 1fr);
-  padding: var(--spacing-4) 0;
-  border-top: 1px solid var(--color-semantic-border);
-}
-
-.how__num {
-  padding: 3px var(--spacing-4) 0 0;
-  text-align: right;
-  font-size: var(--typography-font-size-sm);
-  color: var(--color-ink-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-/* Close: one big line and a text link (rule + rhythm from .section) */
-.about-close__row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
+  grid-template-columns: 1fr;
   gap: var(--space-stack-md);
+  align-items: start;
+}
+
+@media (min-width: 700px) {
+  .contact-close {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--space-stack-lg);
+  }
+}
+
+.contact-close__photo {
+  display: block;
+  width: var(--contact-photo-sm);
+  height: var(--contact-photo-sm);
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+@media (min-width: 700px) {
+  .contact-close__photo {
+    width: var(--contact-photo);
+    height: var(--contact-photo);
+  }
+}
+
+.contact-close__lead {
+  margin: var(--space-stack-sm) 0 0;
+  color: var(--color-ink);
+}
+
+.contact-close__lines {
+  list-style: none;
+  margin: var(--space-stack-sm) 0 var(--space-stack-md);
+  padding: 0;
+  color: var(--color-ink-soft);
 }
 
 /* Paw trail: decorative, absolutely placed in a section's top padding,

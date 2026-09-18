@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 const NS = "http://www.w3.org/2000/svg";
 /* one paw, pointing up, centred on 0,0 */
-const PAW =
+export const PAW =
   '<ellipse cx="0" cy="3" rx="5.2" ry="4.4"/><ellipse cx="-5.6" cy="-3.2" rx="1.9" ry="2.5" transform="rotate(-20 -5.6 -3.2)"/><ellipse cx="-2" cy="-6.4" rx="1.9" ry="2.6"/><ellipse cx="2" cy="-6.4" rx="1.9" ry="2.6"/><ellipse cx="5.6" cy="-3.2" rx="1.9" ry="2.5" transform="rotate(20 5.6 -3.2)"/>';
 
 /**
@@ -17,6 +17,20 @@ const PAW =
  * the gap is fully in view, then settle to ~30% ink; they never loop.
  * Reduced motion: shown statically (CSS).
  */
+/** One paw print (the trail's own glyph) as a 1em inline icon in
+ *  currentColor. Decorative: aria-hidden. */
+export function PawIcon() {
+  return (
+    <svg
+      className="paw-icon"
+      viewBox="-8 -9.5 16 17"
+      aria-hidden="true"
+      focusable="false"
+      dangerouslySetInnerHTML={{ __html: PAW }}
+    />
+  );
+}
+
 export default function PawTrail() {
   const ref = useRef<HTMLDivElement>(null);
 
