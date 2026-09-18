@@ -396,6 +396,7 @@ body {
 
 
   --hero-figure-width: 20rem;
+  --illo-width: 11.25rem;
 
 
   --cursor-bracket: 10px;
@@ -1017,6 +1018,54 @@ p {
 }
 
 .section-row__extra {
+  margin-top: var(--space-stack-md);
+}
+
+/* heading with a small illustration: art right of the heading from
+   768px, under it (above the content) on phones */
+.section-row__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-stack-sm);
+}
+
+@media (min-width: 768px) {
+  .section-row__head {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-stack-lg);
+  }
+}
+
+/* Bella and Obi illustrations: decorative, 160-240px, a 2deg tilt on
+   hover only when motion is allowed */
+.illo {
+  display: block;
+  width: var(--illo-width);
+  height: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .illo {
+    transition: transform 200ms ease;
+  }
+
+  .illo:hover {
+    transform: rotate(2deg);
+  }
+}
+
+.contact-success__illo {
+  --illo-width: 10rem;
+  margin: 0 auto var(--space-stack-sm);
+}
+
+/* 404: the links back */
+.not-found__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-stack-md);
   margin-top: var(--space-stack-md);
 }
 

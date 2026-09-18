@@ -27,6 +27,7 @@ export default function Section({
   after,
   lede,
   side,
+  art,
   trail,
   id,
   children,
@@ -42,6 +43,9 @@ export default function Section({
   lede?: ReactNode;
   /** after the body: a SectionList or other extra content (hero: the figure) */
   side?: ReactNode;
+  /** a small decorative illustration beside the heading (>=768px), above
+   *  the content on phones */
+  art?: ReactNode;
   /** a paw trail in this section's top padding (adds no height) */
   trail?: boolean;
   id?: string;
@@ -74,15 +78,27 @@ export default function Section({
                 {label}
               </p>
             )}
-            <Heading
-              tier={hero ? "page" : "section"}
-              as={hero ? "h1" : "h2"}
-              id={headingId}
-              accent={accent}
-              after={after}
-            >
-              {title}
-            </Heading>
+            {(() => {
+              const heading = (
+                <Heading
+                  tier={hero ? "page" : "section"}
+                  as={hero ? "h1" : "h2"}
+                  id={headingId}
+                  accent={accent}
+                  after={after}
+                >
+                  {title}
+                </Heading>
+              );
+              return art ? (
+                <div className="section-row__head">
+                  {heading}
+                  <div className="section-row__art">{art}</div>
+                </div>
+              ) : (
+                heading
+              );
+            })()}
             {lede ? <p className="text-lead section-row__lede">{lede}</p> : null}
             {children ? <div className="section-row__body text-body">{children}</div> : null}
             {side && !hero ? <div className="section-row__extra">{side}</div> : null}

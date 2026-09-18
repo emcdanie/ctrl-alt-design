@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
 import GetInTouch from "@/components/GetInTouch";
@@ -92,7 +93,15 @@ export default function AboutPage() {
         <ExperienceSection />
       </Section>
 
-      <Section trail id="the-pack" label="The pack" title="Good" accent="company" after=".">
+      <Section
+        trail
+        id="the-pack"
+        label="The pack"
+        title="Good"
+        accent="company"
+        after="."
+        art={<Image className="illo" src="/images/bella/set/bella-and-obi.webp" alt="" width={1040} height={900} />}
+      >
         <WorkedWith />
       </Section>
 

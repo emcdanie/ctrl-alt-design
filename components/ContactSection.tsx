@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 
 import { useEffect, useState } from "react";
@@ -192,20 +193,18 @@ export default function ContactSection() {
                 }}
                 role="status"
               >
-                <div className="text-2xl mb-2" style={{ color: "var(--case-clarity-text)" }}>
-                  ✓
-                </div>
+                <Image
+                  className="illo contact-success__illo"
+                  src="/images/bella/set/bella-happy.webp"
+                  alt=""
+                  width={940}
+                  height={900}
+                />
                 <p
-                  className="text-[length:var(--typography-font-size-sm)] font-medium"
+                  className="text-[length:var(--typography-font-size-base)] font-medium"
                   style={{ color: "var(--color-ink)" }}
                 >
-                  Message sent
-                </p>
-                <p
-                  className="text-[length:var(--typography-font-size-base)] mt-1"
-                  style={{ color: "var(--color-ink-soft)" }}
-                >
-                  Thanks for reaching out. I usually reply within two days.
+                  Message sent. I&apos;ll reply within a few days.
                 </p>
               </div>
             ) : (
