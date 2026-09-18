@@ -29,6 +29,7 @@ export default function Section({
   side,
   art,
   trail,
+  wide,
   id,
   children,
 }: {
@@ -48,6 +49,9 @@ export default function Section({
   art?: ReactNode;
   /** a paw trail in this section's top padding (adds no height) */
   trail?: boolean;
+  /** body prose and list run to --measure-body-wide (70ch), for the
+   *  sections that read as a longer passage */
+  wide?: boolean;
   id?: string;
   /** the body copy */
   children?: ReactNode;
@@ -58,6 +62,7 @@ export default function Section({
     "section",
     "section-row",
     hero ? "section--hero" : "section--ruled",
+    wide ? "section--wide" : null,
   ]
     .filter(Boolean)
     .join(" ");

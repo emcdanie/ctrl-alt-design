@@ -141,6 +141,7 @@ export default function AboutPage() {
 
       <Section
         trail
+        wide
         id="new-tricks"
         label="New tricks"
         title="Design systems that don't fall apart when"

@@ -185,6 +185,7 @@ body {
   --measure-display-1: 18em;
   --measure-lead: 42rem;
   --measure-body: 65ch;
+  --measure-body-wide: 70ch; /* long-read sections (Section wide), still inside 68 to 72ch */
 
   /* Card surface, light leg (Card swap, 2026-07-30). BELLA's vendored Card
      paints its inner panel from --color-semantic-surface, so that BELLA name
@@ -1137,6 +1138,12 @@ p {
   max-width: var(--measure-body);
   margin: var(--space-stack-sm) 0 0;
   color: var(--color-ink-soft);
+}
+
+/* Section wide: prose and its list run to 70ch instead of 65ch */
+.section--wide .section-row__body > p,
+.section--wide .section-list {
+  max-width: var(--measure-body-wide);
 }
 
 .section-list {
