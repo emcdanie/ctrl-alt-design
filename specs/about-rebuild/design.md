@@ -26,7 +26,7 @@ now", stats, collaborate cards, learning, vinyl and podcasts, the closing banner
 Credentials and education live in the CV only.
 
 ### Nav
-Contact leaves the nav. A Southleft-style "Get in touch" button on the right opens the
+Contact leaves the nav. A pill "Get in touch" button on the right opens the
 same two actions (Copy email + LinkedIn). The /contact route itself stays until its own
 PR retires it.
 
