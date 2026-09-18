@@ -2,28 +2,37 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/* The corner-bracket cursor (18 Sep 2026): four rounded
-   lavender corner brackets that trail the pointer with a slight lag and,
-   over any link or button, snap to wrap it 8px outside its edge, with a
-   lavender pill at the bottom right naming the BELLA component.
+/* The corner-bracket cursor (18 Sep 2026; inspector label 18 Sep
+   evening): four iris corner brackets (1.5px) that trail the pointer
+   with a slight lag and, over any link or button, snap to wrap it 8px
+   outside its edge. Under the bottom-right bracket, 8px below and
+   right-aligned with it, a label names the rendered element's tag
+   (<a>, <button>, <input>), the way a browser inspector does.
    An ADDITION to the system cursor, never a replacement: nothing here
    touches `cursor`. Decorative only (aria-hidden, pointer-events none).
 
-   Off entirely on touch / coarse pointers. With prefers-reduced-motion
-   the brackets still wrap targets but jump instead of gliding. Hidden
-   whenever the pointer leaves the window.
-
-   Label: the nearest `data-component` (every interactive BELLA
-   component carries one), shown as <Name>. No attribute, no label: the
-   brackets still wrap. */
+   Off entirely on touch / coarse pointers and with prefers-reduced-
+   motion. Hidden whenever the pointer leaves the window. The label
+   hides while the target's own menu is open (aria-expanded="true", e.g.
+   Get in touch), so it never sits on the dropdown. The box is kept
+   inside the viewport, so all four corners stay visible for targets
+   that touch its edge (the nav). */
 
 const TARGET = 'a[href], button:not([disabled]), [role="button"]';
 const IDLE = 22; // the resting box around the pointer, px
 const PAD = 8; // the brackets sit this far outside a wrapped target, px
 const LAG = 0.22; // share of the remaining distance covered per frame
-function labelFor(el: Element): string {
-  const name = el.closest("[data-component]")?.getAttribute("data-component");
-  return name ? `<${name}>` : "";
+const EDGE = 2; // the box never comes closer than this to the viewport edge, px
+const labelFor = (el: Element) => `<${el.tagName.toLowerCase()}>`;
+
+/* one corner, drawn as a vector stroke: a 1.5px border gets snapped to
+   1px by the browser, a path doesn't. Drawn top-left, mirrored by CSS. */
+function Corner({ at }: { at: "tl" | "tr" | "bl" | "br" }) {
+  return (
+    <svg className={`bracket-cursor__corner bracket-cursor__corner--${at}`} viewBox="0 0 10 10" fill="none">
+      <path d="M0.75 10V3.5A2.75 2.75 0 0 1 3.5 0.75H10" />
+    </svg>
+  );
 }
 
 export default function BracketCursor() {
@@ -33,10 +42,15 @@ export default function BracketCursor() {
 
   useEffect(() => {
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const sync = () => setEnabled(fine.matches);
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setEnabled(fine.matches && !reduced.matches);
     sync();
     fine.addEventListener("change", sync);
-    return () => fine.removeEventListener("change", sync);
+    reduced.addEventListener("change", sync);
+    return () => {
+      fine.removeEventListener("change", sync);
+      reduced.removeEventListener("change", sync);
+    };
   }, []);
 
   useEffect(() => {
@@ -45,7 +59,6 @@ export default function BracketCursor() {
     const label = labelRef.current;
     if (!box || !label) return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const cur = { x: 0, y: 0, w: IDLE, h: IDLE };
     const pointer = { x: 0, y: 0 };
     let target: Element | null = null;
@@ -57,11 +70,18 @@ export default function BracketCursor() {
       let goal;
       if (target && target.isConnected) {
         const r = target.getBoundingClientRect();
-        goal = { x: r.left - PAD, y: r.top - PAD, w: r.width + PAD * 2, h: r.height + PAD * 2 };
+        // inside the viewport, so a target on its edge keeps all four corners
+        const x = Math.max(EDGE, r.left - PAD);
+        const y = Math.max(EDGE, r.top - PAD);
+        const right = Math.min(window.innerWidth - EDGE, r.right + PAD);
+        const bottom = Math.min(window.innerHeight - EDGE, r.bottom + PAD);
+        goal = { x, y, w: right - x, h: bottom - y };
+        // its own menu is open: the label would sit on it
+        box.dataset.menu = target.getAttribute("aria-expanded") === "true" ? "open" : "closed";
       } else {
         goal = { x: pointer.x - IDLE / 2, y: pointer.y - IDLE / 2, w: IDLE, h: IDLE };
       }
-      const k = reduced.matches || !primed ? 1 : LAG;
+      const k = primed ? LAG : 1;
       primed = true;
       cur.x += (goal.x - cur.x) * k;
       cur.y += (goal.y - cur.y) * k;
@@ -117,10 +137,9 @@ export default function BracketCursor() {
   if (!enabled) return null;
   return (
     <div ref={boxRef} className="bracket-cursor" data-visible="false" data-active="false" aria-hidden="true">
-      <span className="bracket-cursor__corner bracket-cursor__corner--tl" />
-      <span className="bracket-cursor__corner bracket-cursor__corner--tr" />
-      <span className="bracket-cursor__corner bracket-cursor__corner--bl" />
-      <span className="bracket-cursor__corner bracket-cursor__corner--br" />
+      {(["tl", "tr", "bl", "br"] as const).map((c) => (
+        <Corner key={c} at={c} />
+      ))}
       <span ref={labelRef} className="bracket-cursor__label" />
     </div>
   );

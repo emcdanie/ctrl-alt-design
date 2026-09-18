@@ -378,7 +378,7 @@ body {
 
 
   --cursor-bracket: 10px;
-  --cursor-stroke: 2px;
+  --cursor-stroke: 1.5px;
 }
 
 @media (max-width: 640px) {
@@ -2111,37 +2111,39 @@ p {
   position: absolute;
   width: var(--cursor-bracket);
   height: var(--cursor-bracket);
-  border: 0 solid var(--color-accent-peri);
+  overflow: visible;
+  stroke: var(--color-accent-peri);
+  stroke-width: var(--cursor-stroke);
+  stroke-linecap: round;
 }
 
-.bracket-cursor__corner--tl { top: 0; left: 0; border-top-width: var(--cursor-stroke); border-left-width: var(--cursor-stroke); border-top-left-radius: var(--radius-sm); }
-.bracket-cursor__corner--tr { top: 0; right: 0; border-top-width: var(--cursor-stroke); border-right-width: var(--cursor-stroke); border-top-right-radius: var(--radius-sm); }
-.bracket-cursor__corner--bl { bottom: 0; left: 0; border-bottom-width: var(--cursor-stroke); border-left-width: var(--cursor-stroke); border-bottom-left-radius: var(--radius-sm); }
-.bracket-cursor__corner--br { bottom: 0; right: 0; border-bottom-width: var(--cursor-stroke); border-right-width: var(--cursor-stroke); border-bottom-right-radius: var(--radius-sm); }
+.bracket-cursor__corner--tl { top: 0; left: 0; }
+.bracket-cursor__corner--tr { top: 0; right: 0; transform: scaleX(-1); }
+.bracket-cursor__corner--bl { bottom: 0; left: 0; transform: scaleY(-1); }
+.bracket-cursor__corner--br { bottom: 0; right: 0; transform: scale(-1); }
 
-/* the label: a small lavender pill at the bottom right naming the
-   BELLA component (from data-component), dark text in both themes */
+/* the inspector label: the element's tag, 8px under the bottom-right
+   bracket and right-aligned with it. Iris text, no fill, no border:
+   --color-accent-ink measured 5.4:1 on the light ground, 7.9:1 on navy. */
 .bracket-cursor__label {
   position: absolute;
-  top: calc(100% + var(--spacing-1));
+  top: calc(100% + var(--spacing-2));
   right: 0;
   display: none;
-  padding: 0 var(--spacing-2);
-  border-radius: var(--radius-full);
   white-space: nowrap;
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  line-height: 1.6;
-  color: var(--ink-on-paper);
-  background: var(--color-accent-peri);
+  font-family: var(--font-mono); /* resolves to Geist: mono is retired (audit:fonts) */
+  font-size: var(--text-meta); /* 14px: the site floor, not 13 */
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--color-accent-ink);
 }
 
-.bracket-cursor[data-active="true"] .bracket-cursor__label:not(:empty) {
+.bracket-cursor[data-active="true"]:not([data-menu="open"]) .bracket-cursor__label:not(:empty) {
   display: block;
 }
 
-@media (hover: none), (pointer: coarse) {
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
   .bracket-cursor {
     display: none;
   }
