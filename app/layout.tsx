@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
 };
 
-// Theme follows the visitor (2026-07-17): a stored ThemeSwitch choice
+// Theme follows the visitor (2026-07-17): a stored ThemeToggle choice
 // wins; otherwise the OS preference applies, live (the matchMedia
 // listener re-runs on OS theme change and defers to a stored choice).
 // Pre-paint inline in <head>: no flash either way.

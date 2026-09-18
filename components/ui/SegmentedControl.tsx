@@ -25,6 +25,7 @@ export function SegmentedControl({
       {options.map((o) => (
         <li key={o.value}>
           <button
+            data-component="SegmentedControl"
             type="button"
             aria-current={value === o.value ? "true" : undefined}
             onClick={() => onChange(o.value)}

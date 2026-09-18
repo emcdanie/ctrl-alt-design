@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/* The corner-bracket cursor (18 Sep 2026): four iris corner
-   brackets that trail the pointer with a slight lag and, over any link
-   or button, snap to wrap it with a tiny label at the bottom right.
+/* The corner-bracket cursor (18 Sep 2026): four rounded
+   lavender corner brackets that trail the pointer with a slight lag and,
+   over any link or button, snap to wrap it 8px outside its edge, with a
+   lavender pill at the bottom right naming the BELLA component.
    An ADDITION to the system cursor, never a replacement: nothing here
    touches `cursor`. Decorative only (aria-hidden, pointer-events none).
 
@@ -12,22 +13,17 @@ import { useEffect, useRef, useState } from "react";
    the brackets still wrap targets but jump instead of gliding. Hidden
    whenever the pointer leaves the window.
 
-   Label: an element's `data-cursor` wins ("copy", "open"); external
-   links read "open"; otherwise the element's accessible text, trimmed
-   to one short line. */
+   Label: the nearest `data-component` (every interactive BELLA
+   component carries one), shown as <Name>. No attribute, no label: the
+   brackets still wrap. */
 
 const TARGET = 'a[href], button:not([disabled]), [role="button"]';
 const IDLE = 22; // the resting box around the pointer, px
-const PAD = 6; // breathing room around a wrapped target, px
+const PAD = 8; // the brackets sit this far outside a wrapped target, px
 const LAG = 0.22; // share of the remaining distance covered per frame
-const MAX_LABEL = 14;
-
 function labelFor(el: Element): string {
-  const explicit = el.getAttribute("data-cursor");
-  if (explicit) return explicit;
-  if (el instanceof HTMLAnchorElement && el.target === "_blank") return "open";
-  const text = (el.getAttribute("aria-label") || el.textContent || "").replace(/\s+/g, " ").trim().toLowerCase();
-  return text.length > MAX_LABEL ? text.slice(0, MAX_LABEL - 1).trimEnd() + "…" : text;
+  const name = el.closest("[data-component]")?.getAttribute("data-component");
+  return name ? `<${name}>` : "";
 }
 
 export default function BracketCursor() {

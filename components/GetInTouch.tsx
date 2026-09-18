@@ -38,7 +38,8 @@ export default function GetInTouch() {
       <button
         ref={triggerRef}
         type="button"
-        className="btn-key get-in-touch__trigger"
+        className="get-in-touch__trigger"
+        data-component="GetInTouch"
         aria-expanded={open}
         aria-controls="get-in-touch-panel"
         onClick={() => setOpen((o) => !o)}

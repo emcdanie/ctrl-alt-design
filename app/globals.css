@@ -168,10 +168,6 @@ body {
   --edge-glass-hi: inset 0 1px 0 rgba(255, 255, 255, 0.35);
   --edge-glass-hi-strong: inset 0 1px 0 rgba(255, 255, 255, 0.4);
   --gloss-press: inset 0 2px 4px rgba(255, 255, 255, 0.6);
-  --shadow-switch-track: inset 0 2px 5px rgba(25, 23, 32, 0.22);
-  --shadow-switch-track-dark: inset 0 2px 6px rgba(0, 0, 0, 0.5);
-  --shadow-switch-knob: 3px 5px 8px rgba(25, 23, 32, 0.24);
-  --shadow-switch-knob-dark: 3px 5px 8px rgba(0, 0, 0, 0.4);
   --shadow-nav-bar: 0 18px 48px rgba(26, 24, 20, 0.08);
   /* keycap specular sheen (button grammar 4b): one light source,
      upper left, matching the orb gloss. Translucent overlays only, so
@@ -321,8 +317,6 @@ body {
   --key-face-hi: #FFFFFF;
   --key-face-lo: #ECEAE3;
   --key-edge: #D7D3CA;
-  --key-iris-hi: #8E7EEC;
-  --key-iris-lo: #6C5CE0;
   --key-iris-edge: #4A3FB0;
   /* Filled-keycap face — FIXED in both themes. White labels need ≥4.5:1
      on every gradient stop: #6C5CE0 4.9:1, #5B4BD1 6.1:1 (the lighter
@@ -333,11 +327,6 @@ body {
   --key-plus: #B4AFA6;
 
   /* Theme switch (sun/moon keycap-thumb slider, from _proto/_hero.html) */
-  --switch-track-hi: #E7E4DB;
-  --switch-track-lo: #D8D4CA;
-  --switch-thumb-edge: #C9C5BC;
-  --switch-icon-sun: #8F8A7F;
-  --switch-icon-moon: #7C776F;
 
   /* Keycap Button tokens — v5 (Pass E task 1): the raised keycap is
      the PRIMARY tier only, the one 3D moment per view. Calm extrusion:
@@ -401,10 +390,6 @@ body {
   --hero-panel-shadow: rgba(0, 0, 0, 0.44);
   --hero-link: rgba(244, 239, 230, 0.2);
   --key-plus: rgba(244, 239, 230, 0.5);
-  --switch-track-hi: #2B2B5C;
-  --switch-track-lo: #20204A;
-  --switch-icon-sun: rgba(244, 239, 230, 0.32);
-  --switch-icon-moon: #CFC7F6;
   --modal-backdrop: rgba(0, 0, 0, 0.6);
   --page-glow: rgba(255, 255, 255, 0.04);
 }
@@ -859,6 +844,72 @@ li {
 }
 
 
+/* ─── Nav (step 1, 18 Sep 2026) ───────────────────────────────────
+   Links rest muted and take full ink on hover; the current page wears
+   full ink plus the iris underline. "Get in touch" is a filled pill,
+   flat (not the primary keycap: that stays one per view). */
+.nav-link {
+  display: flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: 0 var(--spacing-3);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.nav-link:hover,
+.nav-link--current {
+  color: var(--color-ink);
+}
+
+.nav-link--current {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent-ink);
+  text-decoration-thickness: 2px;
+  text-underline-offset: var(--spacing-2);
+}
+
+.nav-link:focus-visible,
+.get-in-touch__trigger:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.get-in-touch__trigger {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: 0 var(--spacing-5);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-sm);
+  font-weight: 600;
+  color: var(--color-semantic-background);
+  background: var(--color-accent-ink);
+  transition: background-color 150ms ease;
+}
+
+.get-in-touch__trigger:hover,
+.get-in-touch__trigger[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--color-accent-ink) 86%, var(--color-ink));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-link,
+  .get-in-touch__trigger {
+    transition: none;
+  }
+}
+
 /* ─── About, minimal (about-rebuild lock, 18 Sep 2026) ───────────
    Hi, Worked with, Experience, Say hi. No eyebrows, no accent-word
    headlines, no card grids. */
@@ -1016,8 +1067,8 @@ li {
    Colour is the accent ink, so it flips with the theme (iris on the
    light ground, periwinkle on navy). */
 :root {
-  --cursor-bracket: 9px;
-  --cursor-stroke: 1.5px;
+  --cursor-bracket: 10px;
+  --cursor-stroke: 2px;
 }
 
 .bracket-cursor {
@@ -1039,30 +1090,30 @@ li {
   position: absolute;
   width: var(--cursor-bracket);
   height: var(--cursor-bracket);
-  border: 0 solid var(--color-accent-ink);
+  border: 0 solid var(--color-accent-peri);
 }
 
-.bracket-cursor__corner--tl { top: 0; left: 0; border-top-width: var(--cursor-stroke); border-left-width: var(--cursor-stroke); }
-.bracket-cursor__corner--tr { top: 0; right: 0; border-top-width: var(--cursor-stroke); border-right-width: var(--cursor-stroke); }
-.bracket-cursor__corner--bl { bottom: 0; left: 0; border-bottom-width: var(--cursor-stroke); border-left-width: var(--cursor-stroke); }
-.bracket-cursor__corner--br { bottom: 0; right: 0; border-bottom-width: var(--cursor-stroke); border-right-width: var(--cursor-stroke); }
+.bracket-cursor__corner--tl { top: 0; left: 0; border-top-width: var(--cursor-stroke); border-left-width: var(--cursor-stroke); border-top-left-radius: var(--radius-sm); }
+.bracket-cursor__corner--tr { top: 0; right: 0; border-top-width: var(--cursor-stroke); border-right-width: var(--cursor-stroke); border-top-right-radius: var(--radius-sm); }
+.bracket-cursor__corner--bl { bottom: 0; left: 0; border-bottom-width: var(--cursor-stroke); border-left-width: var(--cursor-stroke); border-bottom-left-radius: var(--radius-sm); }
+.bracket-cursor__corner--br { bottom: 0; right: 0; border-bottom-width: var(--cursor-stroke); border-right-width: var(--cursor-stroke); border-bottom-right-radius: var(--radius-sm); }
 
-/* the tiny label under the bottom-right corner, only while wrapping */
+/* the label: a small lavender pill at the bottom right naming the
+   BELLA component (from data-component), dark text in both themes */
 .bracket-cursor__label {
   position: absolute;
   top: calc(100% + var(--spacing-1));
   right: 0;
   display: none;
-  padding: 0 var(--spacing-1);
+  padding: 0 var(--spacing-2);
+  border-radius: var(--radius-full);
   white-space: nowrap;
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 600;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  line-height: 1.4;
-  color: var(--color-accent-ink);
-  background: var(--color-semantic-background);
+  line-height: 1.6;
+  color: var(--ink-on-paper);
+  background: var(--color-accent-peri);
 }
 
 .bracket-cursor[data-active="true"] .bracket-cursor__label:not(:empty) {

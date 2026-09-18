@@ -30,11 +30,11 @@ export default function ContactActions({ layout = "row" }: { layout?: "row" | "s
 
   return (
     <div className={`contact-actions contact-actions--${layout}`}>
-      <Button onClick={copyEmail} dataCursor="copy">
+      <Button onClick={copyEmail}>
         <Icon name={copied ? "Check" : "Copy"} size="sm" />
         {copied ? "Email copied" : "Copy email"}
       </Button>
-      <a className="btn-key" href={social.linkedin} target="_blank" rel="noopener noreferrer" data-cursor="open">
+      <a className="btn-key" href={social.linkedin} target="_blank" rel="noopener noreferrer" data-component="Button">
         LinkedIn <Icon name="OpenNewWindow" size="sm" />
         <span className="sr-only"> (opens in a new tab)</span>
       </a>

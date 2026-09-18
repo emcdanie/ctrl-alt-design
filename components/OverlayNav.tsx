@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import ThemeSwitch from "@/components/ThemeSwitch";
+import ThemeToggle from "@/components/ThemeToggle";
 import GetInTouch from "@/components/GetInTouch";
 import ContactActions from "@/components/ContactActions";
 
@@ -94,11 +94,8 @@ export default function OverlayNav() {
                 key={item.num}
                 href={item.href}
                 aria-current={isCurrent(item.href) ? "page" : undefined}
-                className={`flex min-h-[var(--spacing-touch-target)] items-center rounded-[var(--radius-md)] px-3 font-[family:var(--font-mono)] text-[length:var(--typography-font-size-tag)] font-medium uppercase tracking-[0.1em] transition-colors hover:text-[color:var(--color-accent-ink)] ${
-                  isCurrent(item.href)
-                    ? "text-[color:var(--color-accent-ink)] underline underline-offset-8 decoration-2"
-                    : "text-[color:var(--color-ink-soft)]"
-                }`}
+                data-component="NavLink"
+                className={`nav-link ${isCurrent(item.href) ? "nav-link--current" : ""}`}
               >
                 {item.label}
               </Link>
@@ -111,7 +108,7 @@ export default function OverlayNav() {
           <div className="hidden lg:block">
             <GetInTouch />
           </div>
-          <ThemeSwitch />
+          <ThemeToggle />
           <button
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
@@ -204,6 +201,7 @@ export default function OverlayNav() {
                   ) : (
                     <Link
                       href={item.href}
+                      data-component="NavLink"
                       onClick={() => setOpen(false)}
                       aria-current={isCurrent(item.href) ? "page" : undefined}
                       className={`${sharedClasses} ${colorClass} block hover:text-[color:var(--color-ink-soft)]`}
@@ -218,7 +216,7 @@ export default function OverlayNav() {
 
           <div className="relative z-10 mt-12 flex flex-col gap-3 sm:mt-16">
             <div className="flex items-center gap-3">
-              <ThemeSwitch />
+              <ThemeToggle />
               <span className="font-[family:var(--font-mono)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.12em] text-[color:var(--color-ink-muted)]">
                 Theme
               </span>
