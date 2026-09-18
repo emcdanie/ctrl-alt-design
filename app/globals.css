@@ -187,7 +187,7 @@ body {
 
 @media (max-width: 640px) {
   :root {
-    --header-height: 64px;
+    --header-height: 70px; /* measured bar: 12px padding + 44px controls + 12px + 2px borders */
   }
 }
 
