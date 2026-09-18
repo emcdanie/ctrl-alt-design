@@ -1,0 +1,37 @@
+- region "In their own words.":
+  - paragraph: Word of mouth
+  - heading "In their own words." [level=2]
+  - list:
+    - listitem:
+      - blockquote:
+        - paragraph: "Straight up: Elleta is awesome. … She's now with us on the bleeding edge of AI & design systems, embracing new tools and ways of working. … Any team would be lucky to have Elleta join their crew."
+      - paragraph: Brad Frost
+      - paragraph: Author of Atomic Design · Brad Frost Web
+    - listitem:
+      - blockquote:
+        - paragraph: During her time with the team, she introduced valuable AI-driven automations and shared recommendations that helped us explore new ways of working.
+      - paragraph: Xavier Boluda
+      - paragraph: Design System Designer · Mango
+    - listitem:
+      - blockquote:
+        - paragraph: She delivers impeccably organized, developer-friendly design files, proactively communicates her intent, anticipates edge cases, and treats technical constraints as creative opportunities rather than obstacles.
+      - paragraph: Mario Mezini
+      - paragraph: Frontend Tech Lead, B2B travel platform
+    - listitem:
+      - blockquote:
+        - paragraph: Her Figma files were clean, well-structured, and edge cases were already handled, which made implementation feel like a natural extension of the design rather than a negotiation.
+      - paragraph: Davide J. Spiga
+      - paragraph: Frontend Engineer
+    - listitem:
+      - blockquote:
+        - paragraph: While Elleta is very creative and a great design systems person, she’s an even better human being. She brings enthusiasm to the table with care, humor, and respect to top it off.
+      - paragraph: Ian Frost
+      - paragraph: Frontend architect · Brad Frost Web
+    - listitem:
+      - blockquote:
+        - paragraph: The impact of her work as a UX/UI Designer continues to resonate within our banking projects, such as those for Riyad Bank.
+      - paragraph: Roberto Arpón
+      - paragraph: Senior Product Designer · VML
+  - paragraph:
+    - link "Read all 15 on LinkedIn ↗ (opens in a new tab)":
+      - /url: https://www.linkedin.com/in/elleta-mcdaniel/details/recommendations/

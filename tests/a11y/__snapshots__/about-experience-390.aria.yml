@@ -2,7 +2,7 @@
   - paragraph: Track record
   - heading "Where I've been." [level=2]
   - group:
-    - text: "Brad Frost Web Current AI-Assisted Design Systems Engineer · Maker Program Oct 2025 to now"
+    - text: "Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program Oct 2025 to now"
     - paragraph: What I did
     - list:
       - listitem: Built a Figma component library aligned with reusable web components and a multi-theme architecture.

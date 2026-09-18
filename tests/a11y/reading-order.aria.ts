@@ -30,8 +30,8 @@ test.describe("About", () => {
   test("logo grid", async ({ page }) => {
     await expect(page.locator("#the-pack")).toMatchAriaSnapshot(snap("about-logos"));
   });
-  test.fixme("testimonials", async () => {
-    // section not built yet: waiting on the NDA decision for the company names
+  test("testimonials", async ({ page }) => {
+    await expect(page.locator("#word-of-mouth")).toMatchAriaSnapshot(snap("about-testimonials"));
   });
   test("contact", async ({ page }) => {
     await expect(page.locator("#contact")).toMatchAriaSnapshot(snap("about-contact"));

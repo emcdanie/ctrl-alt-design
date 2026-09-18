@@ -1460,6 +1460,48 @@ p {
   height: 100%;
 }
 
+/* Word of mouth: uniform quote cards, 2 columns from 900px. No avatars,
+   no stars, no carousel. */
+.quotes {
+  list-style: none;
+  margin: var(--space-stack-md) 0 var(--space-stack-md);
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-stack-md);
+}
+
+@media (min-width: 900px) {
+  .quotes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.quotes__card {
+  height: 100%;
+}
+
+.quotes__quote {
+  margin: 0;
+}
+
+.quotes__quote p {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-ink);
+}
+
+.quotes__name {
+  margin: var(--space-stack-sm) 0 0;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.quotes__role {
+  margin: 2px 0 0;
+}
+
 @media (min-width: 768px) {
   .cares {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1584,8 +1626,12 @@ p {
   margin-top: var(--space-stack-lg);
 }
 
+/* one flex item per letter, spread edge to edge; the top padding is
+   Bella's room, so she never sits over the text above */
 .site-footer__wordmark {
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  padding-top: calc(var(--footer-bella-height) + 0.04em);
   font-family: var(--font-hero-display);
   font-weight: 400;
   font-size: var(--footer-wordmark-size);
@@ -1607,52 +1653,6 @@ p {
   transform: translateX(-50%);
 }
 
-.site-footer__small {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--spacing-2) var(--space-stack-md);
-  margin: var(--space-stack-md) 0 0;
-  padding-bottom: var(--space-stack-lg);
-  color: color-mix(in srgb, var(--color-navy-ink) 70%, transparent);
-}
-
-/* Contact close (not a card: no surface): photo | heading, lead, three lines, the one Get in
-   touch. Stacks (photo first, left-aligned) under 700px. */
-.contact-close {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-stack-md);
-/* one flex item per letter, spread edge to edge; the top padding is
-   Bella's room, so she never sits over the text above */
-  align-items: start;
-}
-
-@media (min-width: 700px) {
-  .contact-close {
-    grid-template-columns: auto minmax(0, 1fr);
-    column-gap: var(--space-stack-lg);
-  }
-}
-
-.contact-close__photo {
-  display: flex;
-  justify-content: space-between;
-  padding-top: calc(var(--footer-bella-height) + 0.04em);
-  width: var(--contact-photo-sm);
-  height: var(--contact-photo-sm);
-  border-radius: var(--radius-full);
-  object-fit: cover;
-}
-
-@media (min-width: 700px) {
-  .contact-close__photo {
-    width: var(--contact-photo);
-    height: var(--contact-photo);
-  }
-}
-
-.contact-close__lead {
 /* Building card: window dots, status, a git-tag readout */
 .building {
   width: 100%;
@@ -1806,16 +1806,16 @@ p {
   }
 }
 
-  margin: var(--space-stack-sm) 0 0;
-  color: var(--color-ink);
+.site-footer__small {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--spacing-2) var(--space-stack-md);
+  margin: var(--space-stack-md) 0 0;
+  padding-bottom: var(--space-stack-lg);
+  color: color-mix(in srgb, var(--color-navy-ink) 70%, transparent);
 }
 
-.contact-close__lines {
-  list-style: none;
-  margin: var(--space-stack-sm) 0 var(--space-stack-md);
-  padding: 0;
-  color: var(--color-ink-soft);
-}
 .site-footer__small p {
   margin: 0;
   color: inherit;
@@ -1833,6 +1833,48 @@ p {
   color: inherit;
 }
 
+/* Contact close (not a card: no surface): photo | heading, lead, three lines, the one Get in
+   touch. Stacks (photo first, left-aligned) under 700px. */
+.contact-close {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-stack-md);
+  align-items: start;
+}
+
+@media (min-width: 700px) {
+  .contact-close {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--space-stack-lg);
+  }
+}
+
+.contact-close__photo {
+  display: block;
+  width: var(--contact-photo-sm);
+  height: var(--contact-photo-sm);
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+@media (min-width: 700px) {
+  .contact-close__photo {
+    width: var(--contact-photo);
+    height: var(--contact-photo);
+  }
+}
+
+.contact-close__lead {
+  margin: var(--space-stack-sm) 0 0;
+  color: var(--color-ink);
+}
+
+.contact-close__lines {
+  list-style: none;
+  margin: var(--space-stack-sm) 0 var(--space-stack-md);
+  padding: 0;
+  color: var(--color-ink-soft);
+}
 
 /* Paw trail: decorative, absolutely placed in a section's top padding,
    so it adds no height. Prints pop in one by one when the gap scrolls

@@ -7,6 +7,7 @@ import Heading from "@/components/ui/Heading";
 import { Icon } from "@/components/ui/Icon";
 import Section, { SectionList } from "@/components/Section";
 import Card from "@/components/ui/Card";
+import { TESTIMONIALS } from "@/content/testimonials";
 import WorkedWith from "@/components/WorkedWith";
 import ExperienceSection from "@/components/ExperienceSection";
 
@@ -105,7 +106,40 @@ export default function AboutPage() {
         <WorkedWith />
       </Section>
 
-      {/* Testimonials slot: content coming. */}
+      <Section trail id="word-of-mouth" label="Word of mouth" title="In their own" accent="words" after=".">
+        <ul className="quotes">
+          {TESTIMONIALS.map((t) => (
+            <li key={t.name}>
+              <Card className="quotes__card">
+                <blockquote className="quotes__quote">
+                  <p>{t.quote}</p>
+                </blockquote>
+                <p className="quotes__name">
+                  {t.href ? (
+                    <a href={t.href} target="_blank" rel="noopener noreferrer">
+                      {t.name}
+                      <span className="sr-only"> (LinkedIn, opens in a new tab)</span>
+                    </a>
+                  ) : (
+                    t.name
+                  )}
+                </p>
+                <p className="text-meta quotes__role">{[t.role, t.company].filter(Boolean).join(" · ")}</p>
+              </Card>
+            </li>
+          ))}
+        </ul>
+        <p>
+          <a
+            className="text-action"
+            href="https://www.linkedin.com/in/elleta-mcdaniel/details/recommendations/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Read all 15 on LinkedIn ↗<span className="sr-only"> (opens in a new tab)</span>
+          </a>
+        </p>
+      </Section>
 
       <Section
         trail

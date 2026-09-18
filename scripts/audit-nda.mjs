@@ -5,7 +5,7 @@
  * ~/.claude/nda-terms.txt at runtime. The constitution (CLAUDE.md) is
  * committable because it references these files instead of naming names. */
 import { execSync } from "node:child_process";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { receipt } from "./lib/receipt.mjs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -51,10 +51,38 @@ function grepHits(termList, extraExempt = []) {
     .filter((l) => ![...EXEMPT, ...extraExempt].some((x) => l.startsWith(x)));
 }
 
-const hits = [
+/* Every .ts file under content/, read from disk, tracked or NOT (18 Sep 2026): git grep
+   only sees tracked files, and a new data file is exactly where a name
+   slips in before its first commit. Same word-boundary, case-insensitive
+   match as git grep -iw. */
+function contentDiskHits(termList, extraExempt = []) {
+  if (!termList.length) return [];
+  const walkTs = (dir, out = []) => {
+    if (!existsSync(dir)) return out;
+    for (const e of readdirSync(dir)) {
+      const p = join(dir, e);
+      if (statSync(p).isDirectory()) walkTs(p, out);
+      else if (/\.ts$/.test(e)) out.push(p);
+    }
+    return out;
+  };
+  const re = new RegExp(`(?<![A-Za-z0-9_])(?:${termList.map(esc).join("|")})(?![A-Za-z0-9_])`, "i");
+  const out = [];
+  for (const f of walkTs("content")) {
+    if ([...EXEMPT, ...extraExempt].some((x) => f.startsWith(x))) continue;
+    readFileSync(f, "utf8").split("\n").forEach((l, i) => {
+      if (re.test(l)) out.push(`${f}:${i + 1}:${l.trim()}`);
+    });
+  }
+  return out;
+}
+
+const hits = [...new Set([
   ...grepHits(terms),
   ...grepHits(employerTerms, EMPLOYER_OK),
-];
+  ...contentDiskHits(terms),
+  ...contentDiskHits(employerTerms, EMPLOYER_OK),
+])];
 
 if (hits.length) {
   /* the receipt (A1): the git-grep hit (file:line:content) is the

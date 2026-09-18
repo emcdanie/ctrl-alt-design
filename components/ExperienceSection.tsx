@@ -122,8 +122,10 @@ export default function ExperienceSection() {
                 {r.company}
                 {r.current ? (
                   <>
-                    {" "}
-                    <span className="xp__current">Current</span>
+                    <span className="sr-only">, current role</span>{" "}
+                    <span className="xp__current" aria-hidden="true">
+                      Current
+                    </span>
                   </>
                 ) : null}
               </span>
