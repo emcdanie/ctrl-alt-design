@@ -151,10 +151,10 @@ ladder below (endpoints 32 / 36 / 40 / 48 / 56 / 72). Body text never below
 
 | Token | Pair |
 | --- | --- |
-| `--font-display-hero` | 40 → 72 (Heading tier hero: the home headline) |
-| `--font-display-page` | 36 → 56 (tier page: page H1s; the case pull quote) |
+| `--font-display-hero` | 40 → 180 (Heading tier hero: the home headline) |
+| `--font-display-page` | 40 → 64 (tier page: every page title, case studies and /design-system included; the case pull quote) |
 | `--font-display-section` | 32 → 48 (tier section: every section head and beat headline) |
-| `--font-display-case` | 32 → 48 (tier case: the case-study display headline, the sign-off) |
+| `--font-display-case` | 32 → 48 (tier case: the case sign-off) |
 | `--font-hero` | `clamp(40px, 5vw, 56px)` (overlay nav links, Geist; not a heading tier) |
 | `--font-section-title` | `clamp(32px, 2.5vw, 40px)` |
 | `--font-subsection` | 24 → 32 (tier sub: h3-level sub-heading, Geist 700, never Unique) |
@@ -514,8 +514,8 @@ mechanical at the first sentence; 13/13 stays the only metric on the page.
 ## Case-page type hierarchy, locked (type-scale fix, 22 Jul 2026)
 
 One scale, one display family, stepped through the Heading primitive
-(revised 18 Sep 2026, display-type-scale fix): H1 case title = tier case
-(--font-display-case, 48px at 1440) -> beat headline = tier section
+(revised 18 Sep 2026, display-type-scale fix): H1 case title = tier page
+(--font-display-page, 64px at 1440) -> beat headline = tier section
 (--font-display-section, 48px at 1440; never Geist at display size; the
 22 Jul regression is the counter-example) -> sign-off = tier case -> eyebrow
 = tag tier -> keyline = Geist 600 at lg -> body 16-18px. --font-beat-headline

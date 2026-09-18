@@ -203,8 +203,11 @@ body {
      Section and case share one size on purpose: every section head on
      every page renders the same, and audit:type fails two section
      heads that compute differently on one page. */
-  --font-display-hero: clamp(40px, 40px + 32 * (100vw - 390px) / 1050, 72px);
-  --font-display-page: clamp(36px, 36px + 20 * (100vw - 390px) / 1050, 56px);
+  /* the home headline keeps its scale moment: ~180 at 1440 */
+  --font-display-hero: clamp(40px, 40px + 140 * (100vw - 390px) / 1050, 180px);
+  /* page titles (/about, case studies, /design-system, every page H1):
+     one size, a clear step above the 48px section heads */
+  --font-display-page: clamp(40px, 40px + 24 * (100vw - 390px) / 1050, 64px);
   --font-display-section: clamp(32px, 32px + 16 * (100vw - 390px) / 1050, 48px);
   --font-display-case: clamp(32px, 32px + 16 * (100vw - 390px) / 1050, 48px);
   /* Unique caps need air: the condensed bold cut collides at the old
@@ -1359,7 +1362,9 @@ section[id],
    geometry). */
 .home-work-row {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  /* min(): below a 300px column the track shrinks to the container,
+     so a 320 viewport (256px content) never scrolls sideways */
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
   gap: var(--grid-gap);
   align-items: stretch;
   margin-top: var(--spacing-4);

@@ -5,10 +5,10 @@ export type HeadingTier = "hero" | "page" | "section" | "case" | "sub";
 /**
  * THE display heading primitive: every display heading renders through
  * this. Unique 700 all-caps at four tiers, fluid between 390 and 1440
- * (display-type-scale fix, 18 Sep 2026): hero 40-72 (home headline),
- * page 36-56 (page H1s), section 32-48 (every section head and beat
- * headline, one size per page), case 32-48 (the case-study display
- * headline and sign-off). Tier "sub" is the h3-level sub-heading: Geist
+ * (display-type-scale fix, 18 Sep 2026): hero 40-180 (home headline),
+ * page 40-64 (every page title: /about, case studies, /design-system),
+ * section 32-48 (every section head and beat headline, one size per
+ * page), case 32-48 (the case sign-off). Tier "sub" is the h3-level sub-heading: Geist
  * 700 at 24-32, never Unique. Tracking and leading come from
  * --tracking-display / --leading-display, never from a consumer.
  * Semantic level is decoupled from the visual tier via `as`. `accent`

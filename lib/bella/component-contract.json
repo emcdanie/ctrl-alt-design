@@ -221,15 +221,15 @@
       "variants": [
         {
           "name": "hero",
-          "delta": "font-size {--font-display-hero} (home headline, 40-72)"
+          "delta": "font-size {--font-display-hero} (home headline, 40-180)"
         },
         {
           "name": "page",
-          "delta": "font-size {--font-display-page} (page H1s, 36-56)"
+          "delta": "font-size {--font-display-page} (every page title incl. case studies and /design-system, 40-64)"
         },
         {
           "name": "case",
-          "delta": "font-size {--font-display-case} (case-study display headline, 32-48)"
+          "delta": "font-size {--font-display-case} (the case sign-off, 32-48)"
         },
         {
           "name": "sub",

@@ -10,8 +10,8 @@ this says what MOVES a page must make with them. Pairs with
 1. **Oversized Unique DISPLAY headline on every page open.**
    Each page opens with a display-scale Unique 700 headline — the "PICK A
    PIECE" register, not the 32px section-title register the inner pages
-   used. Scale tokens: the display ladder in DESIGN.md §5 (hero 40-72,
-   page 36-56, section and case 32-48). Uppercase, `--leading-display`
+   used. Scale tokens: the display ladder in DESIGN.md §5 (hero 40-180,
+   page 40-64, section and case 32-48). Uppercase, `--leading-display`
    (1.05, never below 1), `--tracking-display`. Unique appears ONLY at display
    scale (locked type rule); everything below it is Geist.
 
