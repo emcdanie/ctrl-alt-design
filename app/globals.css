@@ -135,8 +135,19 @@ body {
      ONE source for container, section rhythm, the type scale and the
      measures. New tokens go in this block, never mid-file. Fluid pairs
      run 390 -> 1440. */
-  --container-max: 1360px;
-  --container-pad: clamp(20px, 4vw, 48px);
+  /* Layout system (18 Sep 2026, specs/layout-system): Container,
+     Section, SectionHeader read these. They move into BELLA later. */
+  --layout-max: 74rem; /* content width, 1184px; gutters sit outside it */
+  --layout-gutter: clamp(1.5rem, 4vw, 3rem);
+  --section-pad-y: 3.2rem;
+  --section-rule-gap: 2rem; /* rule to heading */
+  --section-label-gap: 0.75rem; /* label to rule */
+  --section-lead-gap: 1rem; /* heading to lead, lead to body */
+  --section-content-gap: 3.5rem; /* SectionHeader to the content after it */
+  /* the one container is the layout container: content --layout-max,
+     gutters outside (the nav row and the ruled lines read these too) */
+  --container-max: calc(var(--layout-max) + var(--layout-gutter) * 2);
+  --container-pad: var(--layout-gutter);
   --space-section: clamp(64px, 6vw + 32px, 112px);
   --space-stack-sm: 12px;
   --space-stack-md: 24px;
@@ -507,6 +518,84 @@ body {
   right: max(var(--container-pad), calc((100% - var(--container-max)) / 2 + var(--container-pad)));
   height: 1px;
   background: var(--color-semantic-border);
+}
+
+/* Layout system (specs/layout-system): Section + SectionHeader.
+   Section: padding, then the paw label sitting on the hairline rule,
+   then the header and content. The first section on a page also clears
+   the sticky nav. */
+.l-section {
+  padding-block: var(--section-pad-y);
+}
+
+main .l-section:first-of-type {
+  padding-top: calc(var(--header-height) + var(--section-pad-y) * 2);
+}
+
+/* the label sits on the rule: label, label gap, 1px rule, rule gap */
+.l-section__label {
+  margin: 0 0 var(--section-rule-gap);
+  padding-bottom: var(--section-label-gap);
+  border-bottom: 1px solid var(--color-semantic-border);
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-muted);
+}
+
+.l-section__label .paw-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.4em;
+  vertical-align: -0.12em;
+  fill: currentColor;
+}
+
+/* SectionHeader: heading left (40%), lead and body right (60%, max
+   42rem) from 1024px; stacked below */
+.l-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--section-lead-gap);
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .l-header {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    column-gap: var(--layout-gutter);
+  }
+}
+
+.l-header__side {
+  display: grid;
+  row-gap: var(--section-lead-gap);
+  max-width: 42rem;
+}
+
+.l-header__lead {
+  margin: 0;
+  color: var(--color-ink);
+}
+
+.l-header__body > * {
+  margin: 0;
+}
+
+.l-header__body > * + * {
+  margin-top: var(--section-lead-gap);
+}
+
+.l-header__body > p {
+  color: var(--color-ink-soft);
+}
+
+/* whatever follows the header in a section */
+.l-header + * {
+  margin-top: var(--section-content-gap);
 }
 
 /* ─── Text utilities: use these, never a page-specific font size ─── */
