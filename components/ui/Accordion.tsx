@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useState, type ReactNode } from "react";
 import { Icon } from "@/components/ui/Icon";
 
 /* Accordion item (APG disclosure pattern): a <button> inside a heading,
@@ -9,7 +9,10 @@ import { Icon } from "@/components/ui/Icon";
    it. The chevron is decorative. The panel stays in the DOM so the
    open/close can animate (grid rows 0fr to 1fr); closed, it is
    visibility: hidden, so it leaves the tab order and the a11y tree.
-   Reduced motion drops the transition (globals.css). No names or copy
+   Without JavaScript every panel stays open: the server renders them
+   all open, and only after hydration do the non-default ones collapse.
+   Transitions switch on after that (data-ready), so the collapse on
+   load doesn't animate. Reduced motion drops them (globals.css). No names or copy
    live here: callers pass them in. */
 export default function AccordionItem({
   heading,
@@ -25,11 +28,18 @@ export default function AccordionItem({
   className?: string;
   children: ReactNode;
 }) {
-  const [open, setOpen] = useState(defaultOpen);
+  // server render: open, so the content is there without JavaScript
+  const [open, setOpen] = useState(true);
+  const [ready, setReady] = useState(false);
   const id = useId();
+  useEffect(() => {
+    setOpen(defaultOpen);
+    const raf = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(raf);
+  }, [defaultOpen]);
   const H = `h${level}` as const;
   return (
-    <div className={`accordion ${open ? "is-open" : ""} ${className}`.trim()}>
+    <div className={`accordion ${open ? "is-open" : ""} ${className}`.trim()} data-ready={ready || undefined}>
       <H className="accordion__heading">
         <button
           type="button"

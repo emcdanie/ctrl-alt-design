@@ -64,3 +64,24 @@ test.describe("Nav", () => {
     await expect(page.locator("#overlay-menu")).toMatchAriaSnapshot(snap("nav-mobile-menu"));
   });
 });
+
+/* The experience accordion without JavaScript: the server renders every
+   panel open, so the content is all there. With JavaScript only the
+   current role stays open. */
+test.describe("About experience without JavaScript", () => {
+  test.use({ javaScriptEnabled: false });
+  test("every panel is visible", async ({ page }) => {
+    await page.goto("/about");
+    const panels = page.locator("#track-record .accordion__panel");
+    await expect(panels).toHaveCount(5);
+    for (const p of await panels.all()) await expect(p).toBeVisible();
+  });
+});
+
+test("About experience with JavaScript: only the current role is open", async ({ page }) => {
+  await open(page, "/about");
+  const triggers = page.locator("#track-record .accordion__trigger");
+  await expect(triggers.first()).toHaveAttribute("aria-expanded", "true");
+  for (let i = 1; i < (await triggers.count()); i++) await expect(triggers.nth(i)).toHaveAttribute("aria-expanded", "false");
+  await expect(page.locator("#track-record .accordion__panel").nth(1)).toBeHidden();
+});

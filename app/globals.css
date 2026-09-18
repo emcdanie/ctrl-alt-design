@@ -1289,6 +1289,9 @@ p {
 
 .accordion__chev {
   color: var(--color-ink-muted);
+}
+
+.accordion[data-ready] .accordion__chev {
   transition: transform 250ms ease;
 }
 
@@ -1300,14 +1303,22 @@ p {
   display: grid;
   grid-template-rows: 0fr;
   visibility: hidden;
-  transition:
-    grid-template-rows 250ms ease,
-    visibility 0s linear 250ms;
 }
 
 .accordion.is-open .accordion__panel {
   grid-template-rows: 1fr;
   visibility: visible;
+}
+
+/* transitions only after hydration (data-ready), so the collapse on
+   load is instant */
+.accordion[data-ready] .accordion__panel {
+  transition:
+    grid-template-rows 250ms ease,
+    visibility 0s linear 250ms;
+}
+
+.accordion[data-ready].is-open .accordion__panel {
   transition:
     grid-template-rows 250ms ease,
     visibility 0s;
@@ -1319,20 +1330,26 @@ p {
 .accordion__inner {
   min-height: 0;
   overflow: hidden;
-  transition: overflow 0s allow-discrete;
 }
 
 .accordion.is-open .accordion__inner {
   overflow: visible;
+}
+
+.accordion[data-ready] .accordion__inner {
+  transition: overflow 0s allow-discrete;
+}
+
+.accordion[data-ready].is-open .accordion__inner {
   transition: overflow 0s 250ms allow-discrete;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .accordion__chev,
-  .accordion__panel,
-  .accordion.is-open .accordion__panel,
-  .accordion__inner,
-  .accordion.is-open .accordion__inner {
+  .accordion[data-ready] .accordion__chev,
+  .accordion[data-ready] .accordion__panel,
+  .accordion[data-ready].is-open .accordion__panel,
+  .accordion[data-ready] .accordion__inner,
+  .accordion[data-ready].is-open .accordion__inner {
     transition: none;
   }
 }
