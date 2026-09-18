@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 /**
  * Renders inline **bold** markers in a string as <strong> elements.
  * Single implementation for the pattern previously duplicated as
- * RichBody (case-study page) and BoldLead (ExperienceCard).
+ * RichBody (case-study page) and BoldLead (the retired ExperienceCard).
  */
 export function BoldText({
   text,

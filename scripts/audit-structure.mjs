@@ -49,7 +49,7 @@ for (const f of appFiles.filter((f) => f.endsWith("page.tsx"))) {
 
 /* 4. no arbitrary px type in components (recorded proto exceptions excluded) */
 const EXEMPT = ["Hero.module.css", "BubbleCluster.module.css", "ThemeSwitch.module.css",
-  "WorkSidebar", "VinylPlayer.tsx", "CaseCard.module.css", "WorkLibrary.module.css"];
+  "WorkSidebar", "CaseCard.module.css", "WorkLibrary.module.css"];
 for (const f of [...appFiles, ...componentFiles]) {
   if (EXEMPT.some((e) => f.includes(e))) continue;
   const s = readFileSync(f, "utf8");
@@ -59,8 +59,8 @@ for (const f of [...appFiles, ...componentFiles]) {
 
 /* 5. one type system — no literal font-family in app/components; every
  * fontFamily/font-family must resolve through var(--font-*). Exemptions:
- * globals.css + layout.tsx define the tokens; VinylPlayer is frozen. */
-const FONT_EXEMPT = ["app/globals.css", "app/layout.tsx", "VinylPlayer.tsx"];
+ * globals.css + layout.tsx define the tokens. */
+const FONT_EXEMPT = ["app/globals.css", "app/layout.tsx"];
 for (const f of [...appFiles, ...componentFiles]) {
   if (FONT_EXEMPT.some((e) => f.includes(e))) continue;
   const s = readFileSync(f, "utf8");
@@ -100,8 +100,7 @@ for (const f of [...appFiles, ...componentFiles]) {
 /* 6. Unique stays a display face — its tokens only appear in the
  * sanctioned hero/logo/display files. (Runtime <24px use is caught by
  * audit:contrast; this stops the drift at the source.) */
-const UNIQUE_OK = ["app/globals.css", "app/layout.tsx", "components/Hero.module.css",
-  "components/TestimonialSection.tsx"]; // quote glyph, recorded exception
+const UNIQUE_OK = ["app/globals.css", "app/layout.tsx", "components/Hero.module.css"];
 for (const f of [...appFiles, ...componentFiles]) {
   if (UNIQUE_OK.some((e) => f.includes(e))) continue;
   const s = readFileSync(f, "utf8");

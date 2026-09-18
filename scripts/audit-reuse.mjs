@@ -6,13 +6,10 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { receipt } from "./lib/receipt.mjs";
 import { join, basename } from "node:path";
 
-/* VinylPlayer: frozen (pre-commit hook false-positive, see docs/fixes).
- * components/motion/*: a barrel library re-exported via motion/index.ts;
- * its members are legitimately consumed through the barrel.
- * content/case-studies/_archive/: ARCHIVED case content (curation,
+/* content/case-studies/_archive/: ARCHIVED case content (curation,
  * Elleta 22 Jul 2026) — deliberately unrouted and unimported by
  * design, never a dead-copy failure. */
-const EXEMPT = ["components/VinylPlayer.tsx", "components/motion/", "content/case-studies/_archive/"];
+const EXEMPT = ["content/case-studies/_archive/"];
 
 const walk = (dir, exts) => {
   const out = [];

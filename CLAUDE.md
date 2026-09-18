@@ -32,8 +32,10 @@ override the constitution.
   `:root` that loads AFTER imports so they win.
 
 ## 1b. IA (nav)
-- Primary nav (Elleta, 2026-07-17, supersedes the four-item cap): **Work · System · Skills ·
-  About · Contact**. /design-system is a first-class page (the system inspecting itself);
+- Primary nav (Elleta, 2026-09-18, about-rebuild lock; supersedes 2026-07-17): **Work · System ·
+  Skills · About**, plus a "Get in touch" button on the right (secondary weight) that opens Copy
+  email + LinkedIn (`GetInTouch` / `ContactActions`; below lg they live in the menu). The /contact
+  route stays until its own PR retires it. /design-system is a first-class page (the system inspecting itself);
   the footer "See the system" colophon link stays.
 - **Work toolbar (amended 2026-07-20, Pass E task 3; supersedes the 17 Jul filter-row note).**
   ONE toolbar row above the library: find-your-fit search on the LEFT (always visible), view
@@ -68,6 +70,10 @@ override the constitution.
   the shared `.card-statement` recipe (Geist 700 at `--font-card-title`), card titles the shared
   `.heading-item`. Enforced by the Unique-in-card check in `audit:reuse`.
 - Geist = everything else. Eyebrows stay Geist caps with `--tracking-eyebrow`.
+- **Style rule going forward (Elleta, 2026-09-18, about-rebuild lock).** No eyebrow label above
+  every heading. No one-purple-word headlines (the `accent` prop is for existing pages only). No
+  card grids unless the content really is a set of cards. Applies to new and rebuilt surfaces;
+  existing pages migrate when they are next touched.
 - **Numbers in columns are right-aligned and tabular (Elleta, 2026-07-28, readability
   audit).** Any figure that sits in a column beside other figures (a table cell, a grid
   column, a stat row) uses `text-align: right` and `font-variant-numeric: tabular-nums`,
@@ -80,7 +86,8 @@ override the constitution.
   and only that. Eyebrows/kickers: weight 700, tracked, NEVER iris; on case-scoped surfaces they
   wear that case's identity colour (`--case-*-text`, AA on their ground); on neutral surfaces
   `--color-eyebrow` (ink-soft). Inline body links are iris AND underlined. Decorative purple uses
-  periwinkle tints. Display headings keep their iris accent word. Enforced by the no-iris eyebrow
+  periwinkle tints. Existing display headings keep their iris accent word; new ones do not
+  (style rule, section 3). Enforced by the no-iris eyebrow
   check in `audit:structure` + the live AA sweep in `audit:contrast`.
 - Every surface/text/border resolves from semantic tokens via `[data-theme="dark"]`. No hardcoded values.
 - Dark mode is a first-class contract on EVERY surface, not an afterthought — case pages included.
@@ -113,8 +120,9 @@ toggles, or sort.
 - **Positioning term is "AI-enabled" / "AI enablement".** Never "AI-augmented" or "AI-assisted". Keep the
   phrase in one constant and reference it.
 - **No em or en dashes (—, –) anywhere.** Use a period, a comma, or "that".
-- **No email address rendered anywhere on the site** (2026-07-17: scrapers harvest plaintext;
-  the contact form is the channel, LinkedIn the alternative; the send address lives server-side).
+- **No email address in the HTML or the source as one string** (amended 2026-09-18, about-rebuild
+  lock; was "rendered anywhere", 2026-07-17). `assembleEmail()` in `lib/social.ts` joins it only
+  when someone clicks Copy email; scrapers find nothing to harvest.
 - Decision-led, NDA-safe, honest. No invented metrics or exaggerated outcomes.
 
 ## 7. NDA (hard rule)
@@ -243,7 +251,6 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 - **Evidence before passing.** Update `feature_list.json` only with a note on how it was verified. Never delete or reword entries — only change status and evidence.
 - **Content drafts** (LinkedIn etc.) belong in Notion's Content Lab, not this repo — except `prototypes/linkedin-preview/`.
 - **File locations:** save deliverables into THIS folder — never cloud drives or scratch folders Elleta can't see. NDA-sensitive material goes in `_private/` (gitignored).
-- **The pre-commit hook false-positives** the Apple Music album id in `components/VinylPlayer.tsx` as a phone number — that file stays uncommitted (see `docs/fixes/`).
 
 ## End of session
 - Write or update the **session record** at `docs/session-<YYYY-MM-DD>.md`: what shipped, what
