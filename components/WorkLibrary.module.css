@@ -236,7 +236,7 @@
   display: inline-block;
   margin-left: var(--spacing-2);
   font-family: var(--font-mono);
-  font-size: 11px; /* matches the hub-sub recorded exception */
+  font-size: var(--text-meta);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-accent-ink);

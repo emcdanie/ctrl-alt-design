@@ -125,6 +125,29 @@ for (const route of ROUTES) {
     fails++;
     console.error(receipt("type", `${route} ${b}`, "own text past ~40 chars below 16px", ">=16px computed for reading text"));
   }
+  /* ── the 14px floor (type scale pass, 18 Sep 2026): NOTHING visible
+     renders below 14px, metadata tier included, no exemptions. Any
+     element with its own visible text counts; text that is clipped to a
+     1px box (screen-reader only) is not rendered text, so it is skipped
+     by geometry, not by class. ── */
+  const microBad = await page.evaluate(() => {
+    const out = [];
+    for (const el of document.querySelectorAll("body *")) {
+      const own = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join("").trim();
+      if (!own) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width <= 1 || r.height <= 1) continue;
+      const cs = getComputedStyle(el);
+      if (cs.visibility === "hidden" || cs.display === "none") continue;
+      const size = parseFloat(cs.fontSize);
+      if (size < 14) out.push(`${el.className.toString().split(" ")[0] || el.tagName}@${size}px :: ${own.slice(0, 30)}`);
+    }
+    return [...new Set(out)];
+  });
+  for (const b of microBad) {
+    fails++;
+    console.error(receipt("type", `${route} ${b}`, "visible text below 14px", ">=14px (--text-meta is the floor)"));
+  }
   /* ── display type scale (display-type-scale fix, 18 Sep 2026): every
      Unique heading tracks at >= --tracking-display and leads at >= 1.0,
      and every section-tier head on a page computes ONE size (the /about

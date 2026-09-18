@@ -58,7 +58,7 @@
   left: var(--spacing-3);
   z-index: 1;
   font-family: var(--font-mono);
-  font-size: 11px; /* matches the hub-sub recorded exception */
+  font-size: var(--text-meta);
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;

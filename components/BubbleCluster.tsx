@@ -13,6 +13,7 @@ import styles from "./BubbleCluster.module.css";
  * containment). Label px are recorded §5 exceptions, see DESIGN.md. */
 const DESIGN_W = 620;
 const DESIGN_H = 640;
+/* fontSize in px units of the proto, rendered as rem (÷16) */
 const GEOMETRY: Record<string, { size: number; top: number; left: number; fontSize: number }> = {
   "code-first": { size: 150, top: 0, left: 85, fontSize: 19 },
   drift: { size: 154, top: 13, left: 346, fontSize: 19 },
@@ -244,7 +245,7 @@ export default function BubbleCluster({
       height: g.size,
       top: g.top,
       left: g.left,
-      fontSize: g.fontSize,
+      fontSize: `${g.fontSize / 16}rem`,
       ["--bub-hi" as string]: b.hi,
       ["--bub-lo" as string]: b.lo,
       zIndex: i === HUB_I ? 3 : 2,
@@ -335,7 +336,7 @@ export default function BubbleCluster({
                 height: g.size,
                 top: g.top,
                 left: g.left,
-                fontSize: g.fontSize,
+                fontSize: `${g.fontSize / 16}rem`,
                 ["--bub-hi" as string]: t.hi,
                 ["--bub-lo" as string]: t.lo,
                 zIndex: 1,
