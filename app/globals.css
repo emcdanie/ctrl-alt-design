@@ -1160,6 +1160,8 @@ p {
 
 .logo-grid__cell:nth-child(odd) {
   border-right: 1px solid var(--color-semantic-border);
+  /* the cell is the logo's size container: a mark never outgrows it */
+  container-type: inline-size;
 }
 
 .logo-grid__cell:nth-child(even) {
@@ -1168,7 +1170,7 @@ p {
 
 .logo-grid__logo {
   display: block;
-  height: calc(min(var(--logo-box-h), var(--logo-box-w) / var(--logo-ratio)) * var(--logo-scale, 1));
+  height: calc(min(var(--logo-box-h), min(var(--logo-box-w), 100cqi) / var(--logo-ratio)) * var(--logo-scale, 1));
   aspect-ratio: var(--logo-ratio);
 }
 
