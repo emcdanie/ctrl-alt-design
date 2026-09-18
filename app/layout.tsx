@@ -1,3 +1,4 @@
+import SiteFooter from "@/components/SiteFooter";
 import type { Metadata } from "next";
 import BracketCursor from "@/components/BracketCursor";
 import { Geist } from "next/font/google";
@@ -68,7 +69,10 @@ export default function RootLayout({
       <body className={`${geist.variable} ${unique.variable} antialiased`} suppressHydrationWarning>
         <a href="#main-content" className="skip-link">Skip to content</a>
         <DevTools />
-        <IconProvider>{children}</IconProvider>
+        <IconProvider>
+          {children}
+          <SiteFooter />
+        </IconProvider>
         <BracketCursor />
       </body>
     </html>

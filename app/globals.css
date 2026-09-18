@@ -162,6 +162,13 @@ body {
   /* contact card photo (96px under 700px) */
   --contact-photo: 120px;
   --contact-photo-sm: 96px;
+  /* site footer: the ELLETA wordmark fills the container's inline size.
+     Unique Regular "ELLETA": ink is 0.827em wide (measured on the
+     rendered page), starting 0.015em in;
+     cap height 0.706em. Bella sits on the last A at 0.35x cap height. */
+  --footer-wordmark-ink: 0.827;
+  --footer-wordmark-inset: 0.015em;
+  --footer-bella-height: calc(0.706em * 0.35);
   /* heading measure in em, never ch: Unique is condensed, so 1ch is a
      narrow "0" and ch widths wrap headlines early */
   --measure-heading: 14em;
@@ -1060,7 +1067,8 @@ p {
 
 /* Metadata tier (14px, short labels only). --color-ink-muted measured
    7.96:1 on the light ground (#F1EFE6), 9.45:1 on navy (#1B1B40). */
-.section-row__meta {
+.section-row__meta,
+.site-footer__label {
   margin: 0;
   padding-top: var(--spacing-2);
   font-family: var(--font-body);
@@ -1072,7 +1080,9 @@ p {
   font-variant-numeric: tabular-nums;
 }
 
-.section-row__meta .paw-icon {
+.section-row__meta .paw-icon,
+.site-footer__label .paw-icon {
+  display: inline-block; /* preflight makes every svg a block */
   width: 1em;
   height: 1em;
   margin-right: 0.4em;
@@ -1150,6 +1160,8 @@ p {
 }
 
 .logo-grid__cell {
+  /* the cell is the logo's size container: a mark never outgrows it */
+  container-type: inline-size;
   display: flex;
   align-items: center;
   min-height: var(--logo-cell-sm);
@@ -1160,8 +1172,6 @@ p {
 
 .logo-grid__cell:nth-child(odd) {
   border-right: 1px solid var(--color-semantic-border);
-  /* the cell is the logo's size container: a mark never outgrows it */
-  container-type: inline-size;
 }
 
 .logo-grid__cell:nth-child(even) {
@@ -1389,6 +1399,149 @@ p {
   font-size: var(--typography-font-size-base);
   line-height: 1.6;
   color: var(--color-ink-soft);
+}
+
+/* ─── Site footer: navy + cream in both themes ────────────────────
+   The scope re-points the ink/accent tokens, so utilities, the paw
+   labels and the secondary Button (its outline rides --color-accent-ink)
+   all render cream on navy. The accent word takes periwinkle. */
+.site-footer {
+  --color-ink: var(--color-navy-ink);
+  --color-ink-soft: var(--ink-on-dark-body);
+  --color-ink-muted: var(--ink-on-dark-muted);
+  --color-accent-ink: var(--color-navy-ink);
+  --ring-focus-color: var(--color-navy-ink);
+  background: var(--color-brand-navy);
+  color: var(--color-navy-ink);
+  padding-top: var(--space-section);
+  overflow: hidden;
+}
+
+/* dark mode: the page ground is navy too, so a hairline separates */
+[data-theme="dark"] .site-footer {
+  border-top: 1px solid color-mix(in srgb, var(--color-navy-ink) 10%, transparent);
+}
+
+.site-footer .accent {
+  color: var(--color-brand-periwinkle);
+}
+
+.site-footer__inner {
+  container-type: inline-size;
+}
+
+.site-footer__top {
+  display: grid;
+  gap: var(--space-stack-lg);
+}
+
+.site-footer__cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-stack-md);
+}
+
+.site-footer__line {
+  margin: 0;
+}
+
+.site-footer__cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-stack-lg) var(--space-stack-md);
+}
+
+@media (min-width: 900px) {
+  .site-footer__top {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-areas: "cols cta";
+    align-items: start;
+  }
+
+  .site-footer__cta {
+    grid-area: cta;
+  }
+
+  .site-footer__cols {
+    grid-area: cols;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.site-footer__list {
+  list-style: none;
+  margin: var(--space-stack-sm) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--spacing-2);
+}
+
+.site-footer__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  color: var(--color-navy-ink);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-navy-ink) 35%, transparent);
+  text-underline-offset: 3px;
+}
+
+.site-footer__link:hover {
+  text-decoration-color: currentColor;
+}
+
+.site-footer__link:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+/* the wordmark: ink edge to ink edge = the container's content width */
+.site-footer__mark {
+  margin-top: var(--space-section);
+  overflow-x: clip;
+}
+
+.site-footer__wordmark {
+  display: block;
+  font-family: var(--font-hero-display);
+  font-weight: 400;
+  font-size: calc(100cqi / var(--footer-wordmark-ink));
+  line-height: 0.8;
+  letter-spacing: 0;
+  white-space: nowrap;
+  margin-left: calc(-1 * var(--footer-wordmark-inset));
+  color: var(--color-navy-ink);
+}
+
+.site-footer__a {
+  position: relative;
+}
+
+.site-footer__bella {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - 0.03em);
+  height: var(--footer-bella-height);
+  width: auto;
+  max-width: none;
+  transform: translateX(-50%);
+}
+
+.site-footer__small {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  column-gap: 0.5em;
+  margin: var(--space-stack-md) 0 0;
+  padding-bottom: var(--space-stack-lg);
+  color: color-mix(in srgb, var(--color-navy-ink) 70%, transparent);
 }
 
 /* Contact close (not a card: no surface): photo | heading, lead, three lines, the one Get in
