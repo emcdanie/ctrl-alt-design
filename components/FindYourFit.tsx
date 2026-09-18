@@ -10,13 +10,12 @@ import styles from "./WorkLibrary.module.css";
  * 2026-07-20): the site's one AI touchpoint IS the Work toolbar search.
  * Always visible on the left; the chip row beneath the box is the
  * library's ONE skill/type filter (passed in as `chipRow` — it filters
- * the views, it does not feed this matcher); the view switcher rides
- * the same row on the right (`switcher`). Deterministic trigger
+ * the list, it does not feed this matcher). Deterministic trigger
  * matching is the core and the guaranteed fallback; the /api/fit leg
  * (when configured) re-ranks and phrases the reasons, and the UI says
  * so honestly. Results are the existing CaseCards, re-ranked. */
 
-export default function FindYourFit({ switcher, chipRow }: { switcher?: ReactNode; chipRow?: ReactNode }) {
+export default function FindYourFit({ chipRow }: { chipRow?: ReactNode }) {
   const [jd, setJd] = useState("");
   const [result, setResult] = useState<FitMatch | null>(null);
   const [aiReasons, setAiReasons] = useState<Record<string, string> | null>(null);
@@ -67,7 +66,7 @@ export default function FindYourFit({ switcher, chipRow }: { switcher?: ReactNod
 
   return (
     <section aria-label="Find your fit">
-      {/* ── ONE toolbar row: search left, view switcher right ── */}
+      {/* ── the toolbar: search, chips beneath ── */}
       <div className={styles.toolbar}>
         <div className={styles.toolbarSearch}>
           <div className={styles.searchRow}>
@@ -101,17 +100,16 @@ export default function FindYourFit({ switcher, chipRow }: { switcher?: ReactNod
           {chipRow}
           <noscript>
             <p style={{ margin: 0, fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-sm)", color: "var(--color-ink-soft)" }}>
-              <a href="/work?view=table">Browse the library as a table with filters instead.</a>
+              <a href="#best-in-show">Browse the case studies instead.</a>
             </p>
           </noscript>
         </div>
-        {switcher && <div className={styles.toolbarSwitcher}>{switcher}</div>}
       </div>
 
       {ran && result && result.cases.length === 0 && (
         <p style={{ margin: "var(--spacing-4) 0 0", fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-base)", color: "var(--color-muted)" }}>
-          No strong match in the library for that text. The table and map views cover
-          everything, and the cards below are the full set of case studies.
+          No strong match in the library for that text. The list below covers
+          everything.
         </p>
       )}
 

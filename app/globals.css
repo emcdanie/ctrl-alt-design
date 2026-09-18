@@ -1371,6 +1371,47 @@ p {
   color: var(--color-ink-muted); /* neutral: purple is for accent words, links, focus rings and the primary button */
 }
 
+/* Equal-card grid (Work): 1 column, 2 at 700px, 3 at 1024px. Cells
+   stretch, so every card in a row matches the tallest. */
+.card-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: var(--grid-gap);
+  margin-top: var(--space-stack-md);
+}
+
+@media (min-width: 700px) {
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* A Section whose body holds a card grid or the Work list takes the
+   whole container below 1280px (label above the heading), so cards and
+   rows never squeeze into the narrow main column. Scoped by :has() so
+   text-only Sections (About) are untouched. */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .section-row__main:has(.card-grid, .section-wide-content) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* a page's close row: one display line and one action (Work) */
+.page-close {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-stack-md);
+}
+
 /* Good company: ONE grid, logos left-aligned in ruled cells. Marks are
    inline SVG in currentColor (the muted ink) and fit one box by their
    own aspect ratio: 170x44 (130x34 under 700px), times a per-mark

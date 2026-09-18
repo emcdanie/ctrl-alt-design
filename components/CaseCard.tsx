@@ -11,10 +11,16 @@ import styles from "./CaseCard.module.css";
 export default function CaseCard({
   item,
   coverSrc,
+  cta,
+  showFeatured = true,
 }: {
   item: WorkItem;
   /** override cover (e.g. the featured CHIP still) */
   coverSrc?: string;
+  /** closing affordance line, e.g. "Case study →" (Work grid) */
+  cta?: string;
+  /** the "Current focus" pill on the cover; off where no card is featured */
+  showFeatured?: boolean;
 }) {
   const cover = coverSrc ?? item.cover;
   return (
@@ -33,7 +39,7 @@ export default function CaseCard({
           )}
           {/* the pill rides the cover (Elleta, 20 Jul): it never
               forces the eyebrow to wrap */}
-          {item.featured && <span className={styles.tag}>Current focus</span>}
+          {showFeatured && item.featured && <span className={styles.tag}>Current focus</span>}
         </>
       }
     >
@@ -49,6 +55,7 @@ export default function CaseCard({
           </span>
         ))}
       </span>
+      {cta ? <span className={`tag ${styles.cta}`}>{cta}</span> : null}
     </Card>
   );
 }

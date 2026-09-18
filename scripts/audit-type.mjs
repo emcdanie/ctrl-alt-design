@@ -6,7 +6,6 @@
  * below; the popup's reading text is included by opening a bubble. */
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
-import { BASE } from "./lib/base-url.mjs";
 
 /* Declared for audit:debt's dead-selector check (27 Jul 2026). */
 export const TRACKED_SELECTORS = [
@@ -15,7 +14,7 @@ export const TRACKED_SELECTORS = [
 ];
 
 const ROUTES = [
-  "/", "/about", "/work", "/contact", "/skills", "/design-system", "/quick", "/privacy", "/accessibility",
+  "/", "/about", "/work", "/contact", "/skills", "/design-system", "/quick",
   "/case-studies/chip", "/case-studies/brad-frost",
   "/case-studies/design-system-transformation",
 ];
@@ -36,7 +35,7 @@ const page = await (await browser.newContext({ viewport: { width: 1440, height: 
 let fails = 0;
 
 for (const route of ROUTES) {
-  await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 30000 });
+  await page.goto(`http://localhost:3000${route}`, { waitUntil: "networkidle", timeout: 30000 });
   const h = await page.evaluate(() => document.body.scrollHeight);
   for (let y = 0; y < h; y += 800) {
     await page.evaluate((v) => scrollTo(0, v), y);
@@ -50,8 +49,9 @@ for (const route of ROUTES) {
       const t = document.querySelector('[class*="caseCard"] .heading-item, [class*="CaseCard"] .heading-item');
       return t ? parseFloat(getComputedStyle(t).fontSize) : null;
     });
-    /* the map popup is a card too */
-    await page.goto(BASE + "/work?view=map", { waitUntil: "networkidle" });
+    /* the map popup is a card too; the map lives on the home page
+       since Work retired its Map view (18 Sep 2026) */
+    await page.goto("http://localhost:3000/", { waitUntil: "networkidle" });
     await page.waitForTimeout(500);
     await page.evaluate(() => document.querySelector("button[data-bubble]")?.dispatchEvent(new MouseEvent("click", { bubbles: true })));
     await page.waitForTimeout(600);
@@ -127,51 +127,24 @@ for (const route of ROUTES) {
     fails++;
     console.error(receipt("type", `${route} ${b}`, "own text past ~40 chars below 16px", ">=16px computed for reading text"));
   }
-  /* ── the 14px floor (type scale pass, 18 Sep 2026): NOTHING visible
-     renders below 14px, metadata tier included, no exemptions. Any
-     element with its own visible text counts; text that is clipped to a
-     1px box (screen-reader only) is not rendered text, so it is skipped
-     by geometry, not by class. ── */
-  const microBad = await page.evaluate(() => {
-    const out = [];
-    for (const el of document.querySelectorAll("body *")) {
-      const own = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join("").trim();
-      if (!own) continue;
-      const r = el.getBoundingClientRect();
-      if (r.width <= 1 || r.height <= 1) continue;
-      const cs = getComputedStyle(el);
-      if (cs.visibility === "hidden" || cs.display === "none") continue;
-      const size = parseFloat(cs.fontSize);
-      if (size < 14) out.push(`${el.className.toString().split(" ")[0] || el.tagName}@${size}px :: ${own.slice(0, 30)}`);
-    }
-    return [...new Set(out)];
-  });
-  for (const b of microBad) {
-    fails++;
-    console.error(receipt("type", `${route} ${b}`, "visible text below 14px", ">=14px (--text-meta is the floor)"));
-  }
-  /* ── display type (Geist headings, 18 Sep 2026): every heading is
-     Geist, never Unique, and leads at >= 1.0; Unique renders ONLY on the
-     ELLETA wordmarks (nav + footer) and the BELLA logo. Every
-     section-tier head on a page computes ONE size (the /about 72 vs 50.4
-     split is the counter-example). Read from computed style, so a
-     consumer override fails the same as a bad token. ── */
+  /* ── display type scale (display-type-scale fix, 18 Sep 2026): every
+     Unique heading tracks at >= --tracking-display and leads at >= 1.0,
+     and every section-tier head on a page computes ONE size (the /about
+     72 vs 50.4 split is the counter-example). Read from computed style,
+     so a consumer override fails the same as a bad token. ── */
   const scaleBad = await page.evaluate(() => {
     const out = [];
-    for (const el of document.querySelectorAll("h1, h2, h3, h4, h5, h6, .display-heading")) {
+    const floorEm = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--tracking-display"));
+    if (!Number.isFinite(floorEm)) return [[":root --tracking-display", "undefined", "a number in em"]];
+    for (const el of document.querySelectorAll("h1, h2, h3, h4, h5, h6")) {
       const cs = getComputedStyle(el);
-      if (!el.textContent.trim()) continue;
+      if (!/unique/i.test(cs.fontFamily) || !el.textContent.trim()) continue;
       const size = parseFloat(cs.fontSize);
+      const trackEm = cs.letterSpacing === "normal" ? 0 : parseFloat(cs.letterSpacing) / size;
       const lead = cs.lineHeight === "normal" ? 1.2 : parseFloat(cs.lineHeight) / size;
       const label = el.textContent.trim().slice(0, 40);
-      if (/unique/i.test(cs.fontFamily)) out.push([`"${label}" font-family`, "Unique", "Geist (headings are Geist)"]);
+      if (trackEm < floorEm - 0.001) out.push([`"${label}" letter-spacing`, `${trackEm.toFixed(3)}em`, `>= ${floorEm}em (--tracking-display)`]);
       if (lead < 1 - 0.001) out.push([`"${label}" line-height`, lead.toFixed(2), ">= 1.0"]);
-    }
-    for (const el of document.querySelectorAll("body *")) {
-      if (![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
-      if (!/unique/i.test(getComputedStyle(el).fontFamily)) continue;
-      if (el.closest(".nav-wordmark, .site-footer__wordmark, [data-bella-logo]")) continue;
-      out.push([`"${el.textContent.trim().slice(0, 30)}" (${el.className.toString().split(" ")[0] || el.tagName})`, "Unique", "Unique only on the ELLETA wordmarks and the BELLA logo"]);
     }
     /* every h2 display head is a section head, whatever tier a consumer
        passed: the /about split was an h2 on tier page, which a

@@ -3,8 +3,6 @@
 import { useState } from "react";
 import VideoCard from "./VideoCard";
 import VideoModal from "./VideoModal";
-import SectionShell from "@/components/ui/SectionShell";
-import SectionHeader from "@/components/ui/SectionHeader";
 import Card from "@/components/ui/Card";
 import { StatusPill } from "@/components/ui/StatusPill";
 
@@ -20,7 +18,7 @@ const LAB_CATEGORY_COLORS: Record<string, { bg: string; color: string }> = {
 
 type LabMaturity = "Live" | "Prototype" | "Exploration" | "Concept";
 
-interface LabVideo {
+export interface LabVideo {
   title: string;
   subtitle: string;
   category: string;
@@ -30,9 +28,11 @@ interface LabVideo {
   thumbnailSrc: string;
   /* honest maturity (Elleta, 21 Jul; taxonomy recorded in DESIGN.md) */
   maturity: LabMaturity;
+  /** first added to the site (git history); orders the Work list */
+  added: string;
 }
 
-interface LabPrototype {
+export interface LabPrototype {
   title: string;
   subtitle: string;
   category: string;
@@ -41,9 +41,11 @@ interface LabPrototype {
   gradient: string;
   thumbnailSrc: string | null;
   maturity: LabMaturity;
+  /** first added to the site (git history); orders the Work list */
+  added: string;
 }
 
-const videos: LabVideo[] = [
+export const LAB_VIDEOS: LabVideo[] = [
   {
     title: "AI-Powered EUR-LEX UX + Multimedia Center",
     maturity: "Exploration",
@@ -53,6 +55,7 @@ const videos: LabVideo[] = [
     embed: "https://www.loom.com/embed/685fc54dcb104d51baa15dcec8727da2",
     gradient: "linear-gradient(135deg, #0A1628 0%, #1A3A5C 50%, #0D2040 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/AIPoweredSearch.png",
+    added: "2026-03-20",
   },
   {
     title: "Complex Insurance Forms",
@@ -63,6 +66,7 @@ const videos: LabVideo[] = [
     embed: "https://www.loom.com/embed/1a13cb50b6ac4282952f85efa11f9d7e",
     gradient: "linear-gradient(135deg, #1A0A2E 0%, #3A1860 50%, #120820 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/HealthForm.png",
+    added: "2026-03-20",
   },
   {
     title: "Operational Dashboard, F1 Singapore Grand Prix",
@@ -73,10 +77,11 @@ const videos: LabVideo[] = [
     embed: "https://www.loom.com/embed/f93c664f6668417c81dbb774a2a7a4a3",
     gradient: "linear-gradient(135deg, #0D1B10 0%, #1A3820 50%, #0A1410 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/FormularOne.png",
+    added: "2026-03-20",
   },
 ];
 
-const prototypes: LabPrototype[] = [
+export const LAB_PROTOTYPES: LabPrototype[] = [
   /* Lab cards addendum v2 (Elleta, 20 Jul): the screener card now
      opens the REAL screener concept (prototypes/finviz-3, published to
      /demos/finviz-3.html); the solution canvas gets its own STRATEGY
@@ -91,6 +96,7 @@ const prototypes: LabPrototype[] = [
     href: "/demos/finviz-3.html",
     gradient: "linear-gradient(135deg, #1C0A0A 0%, #3D1010 50%, #140808 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/finviz-3.png",
+    added: "2026-07-20",
   },
   /* Solution Canvas card retired (Elleta, 21 Jul, spec system-page-v2);
      the prototypes/ source stays local. The screener card above stays. */
@@ -103,6 +109,7 @@ const prototypes: LabPrototype[] = [
     href: "/demos/ctrl-travel-v2.html",
     gradient: "linear-gradient(135deg, #0A1628 0%, #132040 60%, #0A1628 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/TRAVEL.png",
+    added: "2026-03-23",
   },
   {
     title: "Brad Frost Command Center",
@@ -113,6 +120,7 @@ const prototypes: LabPrototype[] = [
     href: "/demos/brad-frost-command-center.html",
     gradient: "linear-gradient(135deg, #1A0A2E 0%, #2D1650 50%, #1A0A2E 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/BradFrostCommandCenter.png",
+    added: "2026-03-25",
   },
   {
     title: "Guardian, AI UX Audit Tool",
@@ -123,6 +131,7 @@ const prototypes: LabPrototype[] = [
     href: "/demos/guardian-audit-tool.html",
     gradient: "linear-gradient(135deg, #0F1117 0%, #161822 50%, #0F1117 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/GuardianAuditTool.svg",
+    added: "2026-03-30",
   },
   {
     title: "Pattern Mentor, Design Feedback Plugin",
@@ -133,12 +142,9 @@ const prototypes: LabPrototype[] = [
     href: "/demos/pattern-mentor.html",
     gradient: "linear-gradient(135deg, var(--color-semantic-surface) 0%, #E8E3DB 50%, var(--color-semantic-surface) 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
     thumbnailSrc: "/images/thumbnails/PatternMentor.svg",
+    added: "2026-03-30",
   },
 ];
-
-/* the honest lab count for the /work status line (Elleta, 21 Jul):
-   derived from the SAME arrays this section renders, never a literal */
-export const LAB_PIECE_COUNT = videos.length + prototypes.length;
 
 function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
   return (
@@ -174,59 +180,32 @@ function PrototypeCard({ prototype }: { prototype: LabPrototype }) {
   );
 }
 
-export default function CtrlAltDesignSection() {
+/* Off the lead (Work, 18 Sep 2026): ONE equal-card grid, explorations
+   then prototypes. The Work page's Section supplies the heading and lede;
+   this renders the cards and the video modal only. */
+export default function LabGrid() {
   const [activeVideo, setActiveVideo] = useState<LabVideo | null>(null);
 
   return (
-    <SectionShell id="design-lab" className="bg-[var(--color-semantic-background)]">
-      <SectionHeader
-        label="Design Lab"
-        title="CTRL_ALT_DESIGN"
-        description="Rapid investigations into complex interaction patterns, system dashboards, and AI-enabled workflows."
-        className="mb-6"
-      />
-
-      <div className="mb-10 h-px w-full bg-black/8" />
-
-      {/* Video explorations, fixed 2-col on tablet+ (data is exactly 4 items
-          → 2×2 grid, no orphan). Stacks to single col below 768px.
-          Equal heights via items-stretch (BELLA Rule 2). */}
-      <div className="grid grid-cols-1 items-stretch md:grid-cols-2" style={{ gap: "var(--grid-gap)" }}>
-        {videos.map((video) => {
-          return (
-            <div key={video.title} className="relative h-full">
-              <span className="tag pointer-events-none absolute left-3 top-3 z-10">
-                {video.category}
-              </span>
-              <VideoCard
-                title={video.title}
-                subtitle={video.subtitle}
-                tags={video.tags}
-                gradient={video.gradient}
-                thumbnailSrc={video.thumbnailSrc}
-                maturity={video.maturity}
-                onClick={() => setActiveVideo(video)}
-              />
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Interactive prototypes, same 2-col pattern. Data trimmed to exactly
-          4 items (was 5, F1 Grand Prix Analytics removed; that project is
-          already represented in the Videos grid above). */}
-      <div style={{ marginTop: "var(--spacing-12)" }}>
-        <SectionHeader
-          label="Interactive Work"
-          title="Interactive product experiments"
-          description="Real prototypes exploring complex interaction patterns, system logic, and workflow design."
-          className="mb-10"
-        />
-        <div className="grid grid-cols-1 items-stretch md:grid-cols-2" style={{ gap: "var(--grid-gap)" }}>
-          {prototypes.map((prototype) => (
-            <PrototypeCard key={prototype.title} prototype={prototype} />
-          ))}
-        </div>
+    <>
+      <div className="card-grid">
+        {LAB_VIDEOS.map((video) => (
+          <div key={video.title} className="relative h-full">
+            <span className="tag pointer-events-none absolute left-3 top-3 z-10">{video.category}</span>
+            <VideoCard
+              title={video.title}
+              subtitle={video.subtitle}
+              tags={video.tags}
+              gradient={video.gradient}
+              thumbnailSrc={video.thumbnailSrc}
+              maturity={video.maturity}
+              onClick={() => setActiveVideo(video)}
+            />
+          </div>
+        ))}
+        {LAB_PROTOTYPES.map((prototype) => (
+          <PrototypeCard key={prototype.title} prototype={prototype} />
+        ))}
       </div>
 
       {activeVideo && (
@@ -239,6 +218,6 @@ export default function CtrlAltDesignSection() {
           tags={activeVideo.tags}
         />
       )}
-    </SectionShell>
+    </>
   );
 }

@@ -47,8 +47,8 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
 3. One border + shadow tier per context. Interactive cards rest on
    `--shadow-card-default` and hover/raise to `--shadow-card-elevated`.
    Do not mix in `--shadow-hover`, ad-hoc rgba shadows, or per-card tiers.
-4. Sections use `.layout-section` (or `SectionShell`); content sits in
-   `.layout-container`. No per-section custom vertical padding.
+4. Sections use `Section` (`.section` + `.container`); content sits in
+   `.container`. No per-section custom vertical padding.
 5. Grids use `var(--grid-gap)`. No per-grid gap values.
 6. Never write a raw px/hex where a token exists. A genuinely new value gets a
    named token here first.

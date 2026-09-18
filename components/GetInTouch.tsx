@@ -14,6 +14,8 @@ export default function GetInTouch() {
   const panelId = useId();
   const wrapRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  /* unique per instance: the nav and a page close can both render one */
+  const panelId = useId();
 
   useEffect(() => {
     if (!open) return;

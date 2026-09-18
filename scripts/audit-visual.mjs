@@ -260,7 +260,7 @@ for (const theme of ["light", "dark"]) {
     "/case-studies/filters-decision-support-system",
   ];
   const ROUTES = [
-    "/", "/work", "/work?view=map", "/work?view=table", "/about", "/contact",
+    "/", "/work", "/about", "/contact",
     "/skills", "/design-system", "/design-system/inspector", "/quick",
     "/case-studies/chip", "/case-studies/brad-frost",
     "/case-studies/design-system-transformation",

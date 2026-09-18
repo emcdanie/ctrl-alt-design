@@ -15,8 +15,6 @@ const axeSource = readFileSync("node_modules/axe-core/axe.min.js", "utf8");
 const ROUTES = [
   "/",
   "/work",
-  "/work?view=map",
-  "/work?view=table",
   "/about",
   "/contact",
   "/privacy",

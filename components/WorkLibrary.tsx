@@ -1,264 +1,232 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import BubbleCluster from "./BubbleCluster";
-import CaseCard from "./CaseCard";
 import FindYourFit from "@/components/FindYourFit";
-import { SegmentedControl } from "@/components/ui/SegmentedControl";
+import VideoModal from "@/components/VideoModal";
+import { FilterChip } from "@/components/ui/FilterChip";
 import { Tag } from "@/components/ui/Tag";
-import { StatusPill } from "@/components/ui/StatusPill";
 import { SKILLS, SKILL_EVIDENCE, WORK_ITEMS, slugify, type WorkItem } from "@/lib/workLibrary";
+import { LAB_PROTOTYPES, LAB_VIDEOS, type LabVideo } from "@/components/LabGrid";
 import styles from "./WorkLibrary.module.css";
-import { WorkChipRow, WorkAppliedRow, useWorkFilters } from "@/components/WorkFilters";
-import CtrlAltDesignSection, { LAB_PIECE_COUNT } from "@/components/CtrlAltDesignSection";
+import { WorkAppliedRow, useWorkFilters } from "@/components/WorkFilters";
 
-/* The library (toolbar rebuild 2026-07-18): ONE toolbar row above
- * everything — find-your-fit search on the left, view switcher on the
- * right, both always visible. Cards is the default view and IS the
- * curated composition (featured CHIP, ranked case grid, Explorations);
- * Map and Table carry the filter rows (dense) and sort. The former
- * ?explore hidden state is retired; the view lives in the URL (`view`
- * param, back/forward safe, defaults keep clean URLs). */
+/* Everything (Work, 18 Sep 2026): the whole library as numbered rows,
+ * newest first: number, name + one line, tags, year, arrow. Case studies
+ * come from WORK_ITEMS, explorations and prototypes from the lab arrays
+ * (never retyped). The URL stays the one source of truth for the filters
+ * (`type`, `skill`, plus the matrix-set `case`), back/forward safe. The
+ * view switcher, map and curated cards are retired (Elleta, 18 Sep). */
 
-const VIEWS = ["cards", "map", "table"] as const;
-type View = (typeof VIEWS)[number];
+type RowType = "case-study" | "exploration" | "prototype";
 
-const SORTS = {
-  "year-desc": { label: "Year, newest first", key: "yearStart", dir: -1 },
-  "year-asc": { label: "Year, oldest first", key: "yearStart", dir: 1 },
-  "title-asc": { label: "Title A-Z", key: "title", dir: 1 },
-  "type-asc": { label: "Type A-Z", key: "type", dir: 1 },
-} as const;
-type SortKey = keyof typeof SORTS;
-
-function sortItems(items: WorkItem[], sort: SortKey): WorkItem[] {
-  const { key, dir } = SORTS[sort];
-  return [...items].sort((a, b) => {
-    if (sort === "year-desc") {
-      const ra = a.rank ?? 99;
-      const rb = b.rank ?? 99;
-      if (ra !== rb) return ra - rb;
-      if (!!a.featured !== !!b.featured) return a.featured ? -1 : 1;
-    }
-    const av = a[key as keyof WorkItem] as string | number;
-    const bv = b[key as keyof WorkItem] as string | number;
-    if (av === bv) return a.title.localeCompare(b.title);
-    return (av < bv ? -1 : 1) * dir;
-  });
+interface Row {
+  key: string;
+  type: RowType;
+  title: string;
+  line: string;
+  tags: string[];
+  /** filter matching: case skills, or the lab piece's tags */
+  skills: string[];
+  year: string;
+  /** latest year in the range; the primary sort */
+  yearEnd: number;
+  /** case rank, or the lab piece's first-added date; the tie-breaks */
+  rank: number;
+  added: string;
+  caseId?: string;
+  href?: string;
+  video?: LabVideo;
 }
 
+const TYPES: { value: RowType; label: string }[] = [
+  { value: "case-study", label: "Case studies" },
+  { value: "exploration", label: "Explorations" },
+  { value: "prototype", label: "Prototypes" },
+];
+
+const SKILLS_VISIBLE = 6;
+
+const lastYear = (year: string) => Math.max(...(year.match(/\d{4}/g) ?? ["0"]).map(Number));
+
+const ROWS: Row[] = [
+  ...WORK_ITEMS.filter((i) => i.medium === "case study").map<Row>((i) => ({
+    key: i.id,
+    type: "case-study",
+    title: i.title,
+    line: i.impact,
+    tags: i.skills.slice(0, 3),
+    skills: i.skills,
+    year: i.year,
+    yearEnd: lastYear(i.year),
+    rank: i.rank ?? 99,
+    added: "",
+    caseId: i.id,
+    href: i.href,
+  })),
+  ...LAB_VIDEOS.map<Row>((v) => ({
+    key: v.title,
+    type: "exploration",
+    title: v.title,
+    line: v.subtitle,
+    tags: v.tags.slice(0, 3),
+    skills: v.tags,
+    year: v.added.slice(0, 4),
+    yearEnd: Number(v.added.slice(0, 4)),
+    rank: 100,
+    added: v.added,
+    video: v,
+  })),
+  ...LAB_PROTOTYPES.map<Row>((p) => ({
+    key: p.title,
+    type: "prototype",
+    title: p.title,
+    line: p.subtitle,
+    tags: p.tags.slice(0, 3),
+    skills: p.tags,
+    year: p.added.slice(0, 4),
+    yearEnd: Number(p.added.slice(0, 4)),
+    rank: 100,
+    added: p.added,
+    href: p.href,
+  })),
+].sort(
+  (a, b) =>
+    b.yearEnd - a.yearEnd || a.rank - b.rank || b.added.localeCompare(a.added) || a.title.localeCompare(b.title)
+);
+
 export default function WorkLibrary() {
-  const params = useSearchParams();
   const { caseFilters, skillFilters, typeFilters, toggleList, clearAll, setFilterParams } =
     useWorkFilters();
+  const [activeVideo, setActiveVideo] = useState<LabVideo | null>(null);
 
-  const view: View = (VIEWS as readonly string[]).includes(params.get("view") ?? "")
-    ? (params.get("view") as View)
-    : "cards";
-  const sort: SortKey = params.get("sort") && params.get("sort")! in SORTS
-    ? (params.get("sort") as SortKey)
-    : "year-desc";
-
-  const filtered = useMemo(() => {
-    let items = WORK_ITEMS;
-    if (caseFilters.length) items = items.filter((i) => caseFilters.includes(i.id));
-    if (skillFilters.length)
-      items = items.filter((i) => i.skills.some((s) => skillFilters.includes(slugify(s))));
-    if (typeFilters.length) items = items.filter((i) => typeFilters.includes(slugify(i.medium)));
-    return sortItems(items, sort);
-  }, [caseFilters, skillFilters, typeFilters, sort]);
-
-  const hasFilters = caseFilters.length > 0 || skillFilters.length > 0 || typeFilters.length > 0;
-
-  /* every view renders the same filtered set (Pass E task 3): the
-     curated Cards composition narrows too, it never ignores a chip */
-  const caseItems = filtered.filter((i) => i.medium === "case study");
-  const featured = caseItems.find((i) => i.featured);
-  const rankedRest = caseItems.filter((i) => !i.featured);
-  const showLab = filtered.some((i) => i.medium === "prototype");
-  /* the map renders the cluster (inCluster !== false), not the
-     filtered list; its count line must match (Elleta, 21 Jul) */
-  const clusterItems = WORK_ITEMS.filter((i) => i.inCluster !== false);
-  const clusterCases = clusterItems.filter((i) => i.medium === "case study");
+  const rows = useMemo(() => {
+    let r = ROWS;
+    if (caseFilters.length) r = r.filter((x) => x.caseId && caseFilters.includes(x.caseId));
+    if (skillFilters.length) r = r.filter((x) => x.skills.some((s) => skillFilters.includes(slugify(s))));
+    if (typeFilters.length) r = r.filter((x) => typeFilters.includes(x.type));
+    return r;
+  }, [caseFilters, skillFilters, typeFilters]);
 
   return (
-    <div>
-      {/* ── ONE stable order in every view (Pass E task 3): toolbar
-          (search + chip row | switcher), contextual message, count,
-          content. Nothing jumps when the view changes. ── */}
+    <div className={`section-wide-content ${styles.index}`}>
       <FindYourFit
         chipRow={
-          <WorkChipRow
+          <IndexChips
             skillFilters={skillFilters}
             typeFilters={typeFilters}
             toggleList={toggleList}
-            dense
-          />
-        }
-        switcher={
-          <SegmentedControl
-            label="View mode"
-            options={[
-              { value: "cards", label: "cards", icon: "ViewGrid" },
-              { value: "map", label: "map", icon: "Map" },
-              { value: "table", label: "table", icon: "Table" },
-            ]}
-            value={view}
-            onChange={(v) => setFilterParams({ view: v === "cards" ? null : v }, { push: true })}
+            clearTypes={() => setFilterParams({ type: null })}
           />
         }
       />
 
-      {/* the honest count, identical element in every view; the text
-          reports what the CURRENT view renders (Elleta, 21 Jul) */}
       <WorkAppliedRow
         caseFilters={caseFilters}
         skillFilters={skillFilters}
         typeFilters={typeFilters}
         toggleList={toggleList}
         clearAll={clearAll}
-        matchCount={filtered.length}
-        view={view as "cards" | "table" | "map"}
-        caseCount={caseItems.length}
-        labCount={showLab ? LAB_PIECE_COUNT : 0}
-        mapTotal={clusterCases.length}
-        mapLab={clusterItems.length - clusterCases.length}
-        mapHighlighted={clusterItems.filter((i) => filtered.includes(i)).length}
+        matchCount={rows.length}
+        total={ROWS.length}
+        typeLabels={Object.fromEntries(TYPES.map((t) => [t.value, t.label]))}
       />
 
-      {/* ── Cards: the curated composition, filtered like every view ── */}
-      {view === "cards" && (
-        <div>
-          <div className={styles.curatedGrid}>
-            {featured && (
-              <div className={styles.featuredSlot}>
-                <CaseCard item={featured} coverSrc="/case/chip/chip-evidence-0-bridge-hero.png" />
-              </div>
-            )}
-            {rankedRest.map((i) => (
-              <CaseCard key={i.id} item={i} />
-            ))}
-          </div>
-          {showLab && <CtrlAltDesignSection />}
-        </div>
-      )}
+      <ol className={styles.rows}>
+        {rows.map((r, n) => (
+          <li key={r.key} className={styles.row}>
+            <span className={styles.rowNum}>{String(n + 1).padStart(2, "0")}</span>
+            <div className={styles.rowMain}>
+              {r.video ? (
+                <button type="button" className={styles.rowTitle} onClick={() => setActiveVideo(r.video!)}>
+                  {r.title}
+                </button>
+              ) : (
+                <Link href={r.href!} className={styles.rowTitle}>
+                  {r.title}
+                </Link>
+              )}
+              <p className={styles.rowLine}>{r.line}</p>
+            </div>
+            <span className={styles.rowTags}>
+              {r.tags.map((t) => (
+                <Tag key={t}>{t}</Tag>
+              ))}
+            </span>
+            <span className={styles.rowYear}>{r.year}</span>
+            <span className={styles.rowArrow} aria-hidden="true">
+              →
+            </span>
+          </li>
+        ))}
+      </ol>
 
-      {/* sort renders only where order means something: table headers
-          (aria-sort buttons). The Map is spatial; it sorts nothing. */}
-      {view === "table" && <TableView items={filtered} sort={sort} setParams={setFilterParams} />}
-      {view === "map" && (
-        <div className={styles.mapWrap}>
-          <BubbleCluster highlightIds={hasFilters ? filtered.map((i) => i.id) : null} />
-        </div>
+      {rows.length === 0 && <p className={styles.empty}>No pieces match these filters.</p>}
+
+      {activeVideo && (
+        <VideoModal
+          isOpen={true}
+          onClose={() => setActiveVideo(null)}
+          embedUrl={activeVideo.embed}
+          title={activeVideo.title}
+          description={activeVideo.subtitle}
+          tags={activeVideo.tags}
+        />
       )}
     </div>
   );
 }
 
-/* ── Table: the accessible default. Column headers are the sort input
- * in this view (aria-sort buttons writing the same URL param). ── */
-
-function TableView({
-  items,
-  sort,
-  setParams,
+/* The Work chip row: type first (All + the three types), then the skill
+   chips. FilterChips (section 5 taxonomy), URL-synced through the shared
+   hook. The /skills page keeps its own WorkChipRow order. */
+function IndexChips({
+  skillFilters,
+  typeFilters,
+  toggleList,
+  clearTypes,
 }: {
-  items: WorkItem[];
-  sort: SortKey;
-  setParams: (u: Record<string, string | null>) => void;
+  skillFilters: string[];
+  typeFilters: string[];
+  toggleList: (key: "case" | "skill" | "type", val: string, current: string[]) => void;
+  clearTypes: () => void;
 }) {
-  const sortable: { col: string; asc: SortKey; desc?: SortKey }[] = [
-    { col: "Title", asc: "title-asc" },
-    { col: "Type", asc: "type-asc" },
-    { col: "Year", asc: "year-asc", desc: "year-desc" },
-  ];
-
-  const ariaSort = (col: string): "ascending" | "descending" | undefined => {
-    if (col === "Title" && sort === "title-asc") return "ascending";
-    if (col === "Type" && sort === "type-asc") return "ascending";
-    if (col === "Year" && sort === "year-asc") return "ascending";
-    if (col === "Year" && sort === "year-desc") return "descending";
-    return undefined;
-  };
-
-  const toggle = (col: (typeof sortable)[number]) => {
-    if (col.desc && sort === col.asc) return setParams({ sort: col.desc });
-    if (col.desc && sort === col.desc) return setParams({ sort: col.asc });
-    setParams({ sort: col.asc === "year-desc" ? null : col.asc });
-  };
-
+  const [skillsExpanded, setSkillsExpanded] = useState(false);
+  const visibleSkills = skillsExpanded ? SKILLS : SKILLS.slice(0, SKILLS_VISIBLE);
   return (
-    <div className={styles.tableWrap}>
-      <table className={styles.table}>
-        <caption className="sr-only">
-          Work library: title, type, skills, year, role, and impact for each piece. Column
-          headers with buttons sort the table.
-        </caption>
-        <thead>
-          <tr>
-            {["Title", "Type", "Skills", "Year", "Role", "Impact"].map((col) => {
-              const s = sortable.find((c) => c.col === col);
-              return (
-                <th key={col} scope="col" aria-sort={ariaSort(col)}>
-                  {s ? (
-                    <button type="button" className={styles.thSort} onClick={() => toggle(s)}>
-                      {col}
-                      <span aria-hidden="true">
-                        {ariaSort(col) === "ascending" ? " ↑" : ariaSort(col) === "descending" ? " ↓" : " ↕"}
-                      </span>
-                    </button>
-                  ) : (
-                    col
-                  )}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((i) => (
-            <tr key={i.id}>
-              <th scope="row">
-                <Link href={i.href} className={styles.rowTitle} style={{ color: i.text }}>
-                  {i.title}
-                </Link>
-                {i.featured && <StatusPill>Current focus</StatusPill>}
-              </th>
-              <td>{i.type}</td>
-              <td>
-                <span className={styles.skillList}>
-                  {i.skills.map((s) => (
-                    <Tag key={s}>{s}</Tag>
-                  ))}
-                </span>
-              </td>
-              <td className={styles.nowrap}>{i.year}</td>
-              <td>{i.role}</td>
-              <td className={styles.impactCell}>{i.impact}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Mobile companion: stacked cards (table hides <768px) */}
-      <ul className={styles.stackList}>
-        {items.map((i) => (
-          <li key={i.id} className={styles.stackCard}>
-            <Link href={i.href} className={styles.rowTitle} style={{ color: i.text }}>
-              {i.title}
-            </Link>
-            {i.featured && <StatusPill>Current focus</StatusPill>}
-            <p className={styles.stackMeta}>
-              {i.type} · {i.year} · {i.role}
-            </p>
-            <p className={styles.stackImpact}>{i.impact}</p>
-          </li>
-        ))}
-      </ul>
-
-      {items.length === 0 && <p className={styles.empty}>No pieces match these filters.</p>}
+    <div className={styles.filterRow} role="group" aria-label="Filter the list by type or skill">
+      <FilterChip className="filter-chip--dense" pressed={typeFilters.length === 0} onClick={clearTypes}>
+        All
+      </FilterChip>
+      {TYPES.map((t) => (
+        <FilterChip
+          key={t.value}
+          className="filter-chip--dense"
+          pressed={typeFilters.includes(t.value)}
+          onClick={() => toggleList("type", t.value, typeFilters)}
+        >
+          {t.label}
+        </FilterChip>
+      ))}
+      <span className={styles.chipDivider} aria-hidden="true" />
+      {visibleSkills.map((sk) => (
+        <FilterChip
+          key={sk}
+          className="filter-chip--dense"
+          pressed={skillFilters.includes(slugify(sk))}
+          onClick={() => toggleList("skill", slugify(sk), skillFilters)}
+        >
+          {sk}
+        </FilterChip>
+      ))}
+      <button
+        type="button"
+        className={styles.moreToggle}
+        aria-expanded={skillsExpanded}
+        onClick={() => setSkillsExpanded((e) => !e)}
+      >
+        {skillsExpanded ? "Show fewer" : `+ ${SKILLS.length - SKILLS_VISIBLE} more`}
+      </button>
     </div>
   );
 }

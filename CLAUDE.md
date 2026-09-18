@@ -37,15 +37,13 @@ override the constitution.
   email + LinkedIn (`GetInTouch` / `ContactActions`; below lg they live in the menu). The /contact
   route stays until its own PR retires it. /design-system is a first-class page (the system inspecting itself);
   the footer "See the system" colophon link stays.
-- **Work toolbar (amended 2026-07-20, Pass E task 3; supersedes the 17 Jul filter-row note).**
-  ONE toolbar row above the library: find-your-fit search on the LEFT (always visible), view
-  switcher on the RIGHT (SegmentedControl, Cards · Map · Table, always visible). The chip row
-  beneath the search is the library's ONE skill/type filter, in EVERY view (the former CASE and
-  SKILL rows are deleted); one stable order everywhere: toolbar, chip row, count, content. Cards
-  is the default and IS the curated composition (featured CHIP, ranked case grid, Explorations),
-  and it filters like every view. Sort renders only where order means something: table headers,
-  never the Map. No hidden explore state: the view lives in the URL (`view` param, back/forward
-  safe, defaults keep clean URLs).
+- **Work page (Elleta, 2026-09-18; supersedes the 2026-07-20 Work toolbar).** Hero, then
+  01 Best in show (the three case studies as equal CaseCards), 02 Off the lead (explorations
+  and prototypes in ONE equal-card grid), 03 Everything (the whole library as numbered rows,
+  newest first), then a close with the one Get in touch. The Cards · Map · Table switcher, the
+  Map view and the featured card are retired. Everything's filters live in the URL (`type`,
+  `skill`; shareable, replaced in place, not pushed to history): type chips first (All, Case studies, Explorations, Prototypes),
+  then the skill chips, under the one Find my fit search.
 
 ## 2. Layout
 - **Sections use Section + SectionHeader. No custom spacing.** (Elleta, 2026-09-18, layout system,

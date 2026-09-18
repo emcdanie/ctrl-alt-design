@@ -140,6 +140,8 @@ export function WorkAppliedRow({
   mapTotal = 0,
   mapLab = 0,
   mapHighlighted = 0,
+  total,
+  typeLabels,
 }: {
   caseFilters: string[];
   skillFilters: string[];
@@ -156,6 +158,10 @@ export function WorkAppliedRow({
   mapTotal?: number;
   mapLab?: number;
   mapHighlighted?: number;
+  /** the library size the count reads against (Work's list includes the lab) */
+  total?: number;
+  /** display labels for type slugs outside WORK_ITEMS' mediums */
+  typeLabels?: Record<string, string>;
 }) {
   const hasFilters = caseFilters.length > 0 || skillFilters.length > 0 || typeFilters.length > 0;
 
@@ -172,7 +178,7 @@ export function WorkAppliedRow({
     })),
     ...typeFilters.map((m) => ({
       key: `type:${m}`,
-      label: MEDIUMS.find((x) => slugify(x) === m) ?? m,
+      label: typeLabels?.[m] ?? MEDIUMS.find((x) => slugify(x) === m) ?? m,
       remove: () => toggleList("type", m, typeFilters),
     })),
   ];
@@ -192,7 +198,7 @@ export function WorkAppliedRow({
           : `${plural(mapTotal, "case study", "case studies")}${
               mapLab ? ` · ${plural(mapLab, "lab piece", "lab pieces")}` : ""
             } on the map`
-        : `${matchCount} of ${WORK_ITEMS.length} pieces`;
+        : `${matchCount} of ${total ?? WORK_ITEMS.length} pieces`;
 
   return (
     <div className={styles.appliedRow}>
