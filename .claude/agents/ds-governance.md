@@ -31,7 +31,7 @@ drift can enter and where a human is trusted to remember. Findings + recommendat
 3. **Generate, don't duplicate.** Any artifact that can drift from source (token
    files, docs, contracts) should be generated from the single source of truth with
    build assertions, not hand-maintained. Flag hand-maintained snapshots. (bella.json
-   generated from source; Southleft's tokens.json move.)
+   is generated from source, never edited by hand.)
 
 4. **Context travels with the component.** What a component means, how it behaves,
    when to use it, should move from design to production, not be lost at handoff.
