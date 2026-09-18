@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Heading from "@/components/ui/Heading";
-import PawTrail, { PawIcon } from "@/components/PawTrail";
+import { PawIcon } from "@/components/PawTrail";
 
 /**
  * The section: ONE column on .container + .section, in reading order:
@@ -28,8 +28,6 @@ export default function Section({
   lede,
   side,
   art,
-  trail,
-  wide,
   id,
   children,
 }: {
@@ -47,11 +45,6 @@ export default function Section({
   /** a small decorative illustration beside the heading (>=768px), above
    *  the content on phones */
   art?: ReactNode;
-  /** a paw trail in this section's top padding (adds no height) */
-  trail?: boolean;
-  /** body prose and list run to --measure-body-wide (70ch), for the
-   *  sections that read as a longer passage */
-  wide?: boolean;
   id?: string;
   /** the body copy */
   children?: ReactNode;
@@ -62,13 +55,11 @@ export default function Section({
     "section",
     "section-row",
     hero ? "section--hero" : "section--ruled",
-    wide ? "section--wide" : null,
   ]
     .filter(Boolean)
     .join(" ");
   return (
     <section id={id} className={cls} aria-labelledby={headingId}>
-      {trail ? <PawTrail /> : null}
       <div className="container">
         <div className={hero ? "section-row__hero" : undefined}>
           <div className="section-row__main">
