@@ -48,13 +48,18 @@ override the constitution.
   safe, defaults keep clean URLs).
 
 ## 2. Layout
-- **One container:** `.container` (`--container-max` 1360px, `--container-pad` clamp 20 to 48px), every
-  page and the nav row. `.page-container` / `.layout-container` are aliases until every page migrates.
-  Never full-bleed text.
+- **Sections use Section + SectionHeader. No custom spacing.** (Elleta, 2026-09-18, layout system,
+  `specs/layout-system`.) `components/layout/`: `Container` (content `--layout-max` 74rem plus
+  `--layout-gutter`), `Section.tsx` (section padding, the paw label on the hairline rule), `SectionHeader`
+  (heading left, lead and body right from 1024px). Spacing comes from them and the `--section-*`
+  tokens, never from a page. `audit:layout` enforces it and lists every route.
+- **One container:** `.container` (`--container-max` = `--layout-max` plus two gutters, `--container-pad`
+  = `--layout-gutter`), every page and the nav row. `.page-container` / `.layout-container` are aliases
+  until every page migrates. Never full-bleed text.
 - **One section rhythm:** `.section` pads by `--space-section` (clamp 64 to 112px); `.section--ruled`
   draws the hairline. Gaps inside a section use `--space-stack-sm/md/lg`. No inline/ad-hoc paddings.
-- **Every page is Nav, then Sections, then Footer**, built from `.container` + `Section` (the hero is
-  `Section variant="hero"`).
+- **Every page is Nav, then Sections, then Footer**, built from `Container` + the layout `Section`
+  (pages not yet moved still use the older `components/Section.tsx`, hero variant included).
 - **One `:root` for tokens**, at the top of `app/globals.css`. New tokens go there, never mid-file.
 - Cards fill the grid evenly (equal heights, consistent gaps).
 
@@ -187,6 +192,10 @@ Use the `portfolio-spec` skill. For any non-trivial task:
 ## 9. The gate (`npm run gate`) — un-regressable
 Must pass before any work is "done":
 - `audit:structure` — per-case route dirs, container/section system, no arbitrary `text-[Npx]`, no amber.
+- `audit:layout` — every route is listed; a route on the layout system renders the layout `Section`
+  and no raw `<section>`; no arbitrary margin/padding classes or inline margin/padding in `app/` (and
+  in a sections folder under components, once one exists). Routes not yet moved are allowlisted as pending, special content layouts with
+  a reason.
 - `audit:contrast` — WCAG AA (AAA-minded); Unique below 24px fails everywhere, no exceptions.
 - `audit:copy` — fails on `—`/`–` and on "AI-augmented" / "AI-assisted".
 - `audit:controls` — keycap used as filter/toggle/sort fails; >1 primary per view fails; filters/toggles
