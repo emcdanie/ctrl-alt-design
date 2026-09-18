@@ -4,7 +4,8 @@ import GetInTouch from "@/components/GetInTouch";
 import PawTrail from "@/components/PawTrail";
 import Heading from "@/components/ui/Heading";
 import { Icon } from "@/components/ui/Icon";
-import Section, { SectionList, SectionTags } from "@/components/Section";
+import Section, { SectionList } from "@/components/Section";
+import Card from "@/components/ui/Card";
 import WorkedWith from "@/components/WorkedWith";
 import ExperienceSection from "@/components/ExperienceSection";
 
@@ -87,12 +88,11 @@ export default function AboutPage() {
         title="Where I've"
         accent="been"
         after="."
-        side={<SectionTags items={["Figma", "Storybook", "React", "Design tokens", "Accessibility", "Governance"]} />}
       >
         <ExperienceSection />
       </Section>
 
-      <Section trail id="the-pack" label="The pack" title="Good" accent="company" after="." wide>
+      <Section trail id="the-pack" label="The pack" title="Good" accent="company" after=".">
         <WorkedWith />
       </Section>
 
@@ -140,29 +140,29 @@ export default function AboutPage() {
 
       <Section trail id="house-rules" label="House rules" title="Four things I" accent="care" after=" about.">
         <div className="cares">
-          <div>
+          <Card className="cares__card">
             <h3 className="heading-item">Kindness</h3>
             <p>Docs written for the person reading them at <strong>5pm on a Friday</strong>.</p>
-          </div>
-          <div>
+          </Card>
+          <Card className="cares__card">
             <h3 className="heading-item">Respect</h3>
             <p>
               For the designer&apos;s craft and the engineer&apos;s time. <strong>I check it can be built</strong>{" "}
               before I design it three ways.
             </p>
-          </div>
-          <div>
+          </Card>
+          <Card className="cares__card">
             <h3 className="heading-item">Sharing</h3>
             <p>
               I learned all of this in public, from Brad Frost, Vitaly Friedman, Nathan Curtis, Romina
               Kavčić and the Into Design Systems crowd. So I give it back: <strong>BELLA is open for anyone to
               read</strong>.
             </p>
-          </div>
-          <div>
+          </Card>
+          <Card className="cares__card">
             <h3 className="heading-item">Love of the craft</h3>
             <p>Naming, tokens, governance. <strong>The unglamorous stuff</strong> is my favourite stuff.</p>
-          </div>
+          </Card>
         </div>
       </Section>
 

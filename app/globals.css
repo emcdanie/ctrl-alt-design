@@ -395,8 +395,7 @@ body {
 
 
 
-  --section-index-width: 180px;
-  --section-side-width: 320px;
+  --hero-figure-width: 20rem;
 
 
   --cursor-bracket: 10px;
@@ -1012,63 +1011,32 @@ p {
    index label | heading, lede, body | side slot, on .container +
    .section. Rhythm and the rule come from .section / .section--ruled;
    type sizes come from the text utilities. One column under 768px. */
-.section-row__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-stack-sm);
-  align-items: start;
+/* one column: label -> heading -> lede -> body -> extra content */
+.section-row__main {
+  min-width: 0;
 }
 
-@media (min-width: 768px) {
-  .section-row__grid {
-    grid-template-columns: var(--section-index-width) minmax(0, 1fr);
-    column-gap: var(--spacing-12);
-  }
-
-  .section-row__side {
-    grid-column: 2;
-  }
+.section-row__extra {
+  margin-top: var(--space-stack-md);
 }
 
-@media (min-width: 1024px) {
-  .section-row__grid {
-    grid-template-columns: var(--section-index-width) minmax(0, 1fr) var(--section-side-width);
-  }
-
-  .section-row__side {
-    grid-column: auto;
-  }
-
-  /* wide: the main column also takes the (empty) side column */
-  .section-row--wide .section-row__main {
-    grid-column: 2 / -1;
-  }
-
-  .section-row--wide .section-row__body {
-    max-width: none;
-  }
-}
-
-/* Hero variant: starts directly under the nav; h1 + lede span the index
-   and main columns, the figure takes the side column (>=1024). */
+/* hero: starts directly under the nav */
 .section--hero {
   padding-top: calc(var(--header-height) + var(--space-stack-lg));
 }
 
-@media (min-width: 768px) {
-  .section--hero .section-row__main,
-  .section--hero .section-row__side {
-    grid-column: 1 / -1;
-  }
+/* hero: text left, figure right from 1024px; stacked below */
+.section-row__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-stack-lg);
+  align-items: start;
 }
 
 @media (min-width: 1024px) {
-  .section--hero .section-row__main {
-    grid-column: 1 / 3;
-  }
-
-  .section--hero .section-row__side {
-    grid-column: 3;
+  .section-row__hero {
+    grid-template-columns: minmax(0, 1fr) var(--hero-figure-width);
+    column-gap: var(--spacing-12);
   }
 }
 
@@ -1079,7 +1047,7 @@ p {
 .section-figure__art {
   display: block;
   width: 100%;
-  max-width: var(--section-side-width);
+  max-width: var(--hero-figure-width);
   height: auto;
 }
 
@@ -1093,7 +1061,6 @@ p {
 .section-row__meta,
 .site-footer__label {
   margin: 0;
-  padding-top: var(--spacing-2);
   font-family: var(--font-body);
   font-size: var(--text-meta);
   font-weight: 500;
@@ -1101,6 +1068,10 @@ p {
   letter-spacing: 0.08em;
   color: var(--color-ink-muted);
   font-variant-numeric: tabular-nums;
+}
+
+.section-row__meta {
+  margin-bottom: var(--space-stack-sm);
 }
 
 .section-row__meta .paw-icon,
@@ -1130,13 +1101,20 @@ p {
   color: var(--color-ink-soft);
 }
 
-/* body size, leading and measure come from .text-body */
+/* body size and leading come from .text-body; the body box spans the
+   container (for full-width content), prose and lists keep 65ch */
+.section-row__body {
+  max-width: none;
+}
+
 .section-row__body > p {
+  max-width: var(--measure-body);
   margin: var(--space-stack-sm) 0 0;
   color: var(--color-ink-soft);
 }
 
 .section-list {
+  max-width: var(--measure-body);
   margin: 0;
   padding: var(--spacing-2) 0 0;
   list-style: none;
@@ -1151,21 +1129,23 @@ p {
   color: var(--color-ink-soft);
 }
 
+@media (min-width: 900px) {
+  .section-list--cols {
+    columns: 2;
+    column-gap: var(--space-stack-lg);
+  }
+
+  .section-list--cols li {
+    break-inside: avoid;
+  }
+}
+
 .section-list li::before {
   content: "\203A" / ""; /* decorative: empty alt, never read aloud */
   position: absolute;
   left: 2px;
   font-weight: 700;
   color: var(--color-accent-ink);
-}
-
-.section-tags {
-  list-style: none;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-2);
-  padding-top: var(--spacing-2);
 }
 
 /* Good company: ONE grid, logos left-aligned in ruled cells. Marks are
@@ -1370,7 +1350,7 @@ p {
 }
 
 .xp__related {
-  max-width: var(--section-side-width);
+  max-width: var(--hero-figure-width);
 }
 
 .xp__thumb {
@@ -1406,12 +1386,17 @@ p {
   gap: var(--spacing-2);
 }
 
-/* Four things I care about: a 2x2 grid of plain blocks, no cards */
+/* House rules: four cards (the one Card surface), 2x2 from 768px,
+   equal heights per row */
 .cares {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--spacing-6) var(--spacing-10);
-  margin-top: var(--spacing-6);
+  gap: var(--space-stack-md);
+  margin-top: var(--space-stack-md);
+}
+
+.cares__card {
+  height: 100%;
 }
 
 @media (min-width: 768px) {

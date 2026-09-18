@@ -1,17 +1,18 @@
 import type { ReactNode } from "react";
 import Heading from "@/components/ui/Heading";
-import { Tag } from "@/components/ui/Tag";
 import PawTrail, { PawIcon } from "@/components/PawTrail";
 
 /**
- * The numbered section: index label | heading, lede, body | side slot,
- * on .container + .section. About and Work build their pages from it.
- * Sections are separated by a hairline (.section--ruled), never a card.
- * One column on phones.
+ * The section: ONE column on .container + .section, in reading order:
+ * label (paw + caps) -> heading -> lede -> body -> extra content (a list,
+ * a grid). Reading widths come from the measures (heading 22em, lede
+ * 42rem, body and lists 65ch); full-width content (experience, logo and
+ * card grids) uses the whole container. Sections are separated by a
+ * hairline (.section--ruled), never a card. About and Work use it.
  *
- * variant="hero": the page opening on the same grid. No index label and
- * no rule; the h1 and lede span the index + main columns and the side
- * slot holds the figure. It starts directly under the nav.
+ * variant="hero": the page opening. No label and no rule; the h1 and
+ * lede sit left and `side` (the figure) sits right from 1024px, stacked
+ * below. It starts directly under the nav.
  *
  * The heading takes one iris `accent` word; `after` carries whatever
  * follows it, e.g. title="A shared language, not a" accent="rulebook"
@@ -26,7 +27,6 @@ export default function Section({
   after,
   lede,
   side,
-  wide,
   trail,
   id,
   children,
@@ -40,10 +40,8 @@ export default function Section({
   accent?: ReactNode;
   after?: ReactNode;
   lede?: ReactNode;
-  /** optional right column: SectionList, SectionTags, a figure */
+  /** after the body: a SectionList or other extra content (hero: the figure) */
   side?: ReactNode;
-  /** main column also takes the (empty) side column */
-  wide?: boolean;
   /** a paw trail in this section's top padding (adds no height) */
   trail?: boolean;
   id?: string;
@@ -56,7 +54,6 @@ export default function Section({
     "section",
     "section-row",
     hero ? "section--hero" : "section--ruled",
-    wide && !side ? "section-row--wide" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -64,19 +61,19 @@ export default function Section({
     <section id={id} className={cls} aria-labelledby={headingId}>
       {trail ? <PawTrail /> : null}
       <div className="container">
-        <div className="section-row__grid">
-          {hero ? null : (
-            <p className="section-row__meta">
-              <PawIcon />
-              {index ? (
-                <>
-                  <span className="section-row__num">{index}</span> /{" "}
-                </>
-              ) : null}
-              {label}
-            </p>
-          )}
+        <div className={hero ? "section-row__hero" : undefined}>
           <div className="section-row__main">
+            {hero ? null : (
+              <p className="section-row__meta">
+                <PawIcon />
+                {index ? (
+                  <>
+                    <span className="section-row__num">{index}</span> /{" "}
+                  </>
+                ) : null}
+                {label}
+              </p>
+            )}
             <Heading
               tier={hero ? "page" : "section"}
               as={hero ? "h1" : "h2"}
@@ -88,33 +85,22 @@ export default function Section({
             </Heading>
             {lede ? <p className="text-lead section-row__lede">{lede}</p> : null}
             {children ? <div className="section-row__body text-body">{children}</div> : null}
+            {side && !hero ? <div className="section-row__extra">{side}</div> : null}
           </div>
-          {side ? <div className="section-row__side">{side}</div> : null}
+          {side && hero ? <div className="section-row__figure">{side}</div> : null}
         </div>
       </div>
     </section>
   );
 }
 
-/** Side-slot list with iris › markers (decorative, hidden from AT). */
+/** A list with iris › markers (decorative, not read). Two columns from
+ *  900px when it has more than four items. */
 export function SectionList({ items }: { items: ReactNode[] }) {
   return (
-    <ul className="section-list">
+    <ul className={items.length > 4 ? "section-list section-list--cols" : "section-list"}>
       {items.map((item, i) => (
         <li key={i}>{item}</li>
-      ))}
-    </ul>
-  );
-}
-
-/** Side-slot tags: the existing non-interactive Tag, wrapped. */
-export function SectionTags({ items }: { items: string[] }) {
-  return (
-    <ul className="section-tags">
-      {items.map((t) => (
-        <li key={t}>
-          <Tag>{t}</Tag>
-        </li>
       ))}
     </ul>
   );
