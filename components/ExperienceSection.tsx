@@ -1,14 +1,15 @@
 import type { ReactNode } from "react";
-import Card from "@/components/ui/Card";
+import Link from "next/link";
 import { ResumeButton } from "@/components/ResumeModal";
 import AccordionItem from "@/components/ui/Accordion";
 import { WORK_ITEMS } from "@/lib/workLibrary";
 
 /* Experience on About (step 3, 18 Sep 2026; accordion 18 Sep evening):
-   one AccordionItem per role. Closed: company (heading-3), a Current
-   tag, role, dates on the right, a chevron. Open: the clients line, up
-   to three "What I did" lines from the data below, then related case
-   studies. The current role opens by default.
+   one AccordionItem per role, in one panel. Closed: dates, company
+   (heading-3) with a Current pill, the title, a chevron. Open: the
+   clients line, up to three "What I did" lines from the data below,
+   then a "Case study: <title> →" link. The current role opens by
+   default.
 
    This file is one of the two NDA-exempt surfaces (constitution §7):
    employer and engagement names live HERE and in ResumeModal only, so
@@ -122,10 +123,10 @@ export default function ExperienceSection() {
             defaultOpen={r.current}
             heading={
               <>
-                {/* DOM order is reading order: company, role, dates.
-                    The grid puts the dates in the right-hand column; the
+                {/* DOM order is reading order: dates, company, role. The
                     spaces keep the button's name from running words
                     together. */}
+                <span className="xp__dates">{r.dates}</span>{" "}
                 <span className="xp__company">
                   {r.company}
                   {r.current ? (
@@ -137,8 +138,7 @@ export default function ExperienceSection() {
                     </>
                   ) : null}
                 </span>{" "}
-                <span className="xp__role">{r.role}</span>{" "}
-                <span className="xp__dates">{r.dates}</span>
+                <span className="xp__role">{r.role}</span>
               </>
             }
           >
@@ -149,33 +149,16 @@ export default function ExperienceSection() {
                   <li key={i}>{d}</li>
                 ))}
               </ul>
-              {r.related?.length ? (
-                <>
-                  <p className="xp__label">Related work</p>
-                  <div className="xp__related">
-                    {r.related.map((slug) => {
-                      const w = bySlug(slug);
-                      if (!w) return null;
-                      return (
-                        <Card
-                          key={slug}
-                          href={w.href}
-                          media={
-                            w.cover ? (
-                              /* eslint-disable-next-line @next/next/no-img-element */
-                              <img src={w.cover} alt="" className="xp__thumb" />
-                            ) : undefined
-                          }
-                        >
-                          <p className="xp__rel-kicker">Case study</p>
-                          <p className="xp__rel-title">{w.title}</p>
-                          <p className="xp__rel-cta">Read it →</p>
-                        </Card>
-                      );
-                    })}
-                  </div>
-                </>
-              ) : null}
+              {r.related?.map((slug) => {
+                const w = bySlug(slug);
+                return w ? (
+                  <p key={slug} className="xp__case">
+                    <Link href={w.href} className="text-action">
+                      Case study: {w.title} →
+                    </Link>
+                  </p>
+                ) : null;
+              })}
             </div>
           </AccordionItem>
         ))}

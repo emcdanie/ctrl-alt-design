@@ -135,6 +135,13 @@ body {
      ONE source for container, section rhythm, the type scale and the
      measures. New tokens go in this block, never mid-file. Fluid pairs
      run 390 -> 1440. */
+  /* Surfaces (19 Sep 2026, About build): flat. --surface-card is the
+     page ground pulled 4% toward the ink (darker here; the dark block
+     pulls it toward the cream ink, so lighter on navy). */
+  --surface-card: color-mix(in srgb, var(--color-semantic-background), var(--color-ink) 4%);
+  --border-faint: color-mix(in srgb, var(--color-ink) 10%, transparent);
+  --radius-card: 1rem;
+  --radius-pill: 999px;
   /* Layout system (18 Sep 2026, specs/layout-system): Container,
      Section, SectionHeader read these. They move into BELLA later. */
   --layout-max: 74rem; /* content width, 1184px; gutters sit outside it */
@@ -167,6 +174,7 @@ body {
   --leading-body: 1.55;
   /* the floor: nothing on the site renders below 14px */
   --text-meta: 0.875rem;
+  --text-caption: 0.9375rem; /* 15px: a title under a name (experience rows) */
   /* the caption heart: the nearest red in the system (the writing
      case's text colour, theme-aware). TODO: a BELLA danger token */
   --color-heart: var(--case-writing-text);
@@ -422,6 +430,9 @@ body {
    flip with [data-theme]. */
 
 [data-theme="dark"] {
+  /* surfaces: 4% toward the cream ink, so lighter than navy */
+  --surface-card: color-mix(in srgb, var(--color-semantic-background), var(--color-navy-ink) 4%);
+  --border-faint: color-mix(in srgb, var(--color-navy-ink) 12%, transparent);
   /* case accents as TEXT flip to the bright variant on navy (deep is
      calibrated for light cards only) */
   --case-code-first-text: var(--case-code-first-hi);
@@ -1280,7 +1291,7 @@ p {
   position: absolute;
   left: 2px;
   font-weight: 700;
-  color: var(--color-accent-ink);
+  color: var(--color-ink-muted); /* neutral: purple is for accent words, links, focus rings and the primary button */
 }
 
 /* Good company: ONE grid, logos left-aligned in ruled cells. Marks are
@@ -1456,31 +1467,64 @@ p {
   }
 }
 
-/* Experience: one accordion row per role, a visible rule between rows */
+/* Experience: one --surface-card panel, hairlines between the rows.
+   From 1024px a row is dates | company, Current and title | chevron
+   (11rem 1fr auto); below it the dates sit above the company. The
+   whole row is the button. */
 .xp-list {
-  --xp-rule: color-mix(in srgb, var(--color-ink) 20%, transparent);
-  margin: 0 0 var(--space-stack-lg); /* the View CV button follows */
-  border-top: 1px solid var(--xp-rule);
+  margin-bottom: var(--space-stack-lg); /* the View CV button follows */
+  padding-inline: var(--spacing-6);
+  background: var(--surface-card);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-card);
 }
 
-.xp {
-  border-bottom: 1px solid var(--xp-rule);
+.xp + .xp {
+  border-top: 1px solid var(--border-faint);
 }
 
 .xp .accordion__trigger {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto var(--icon-sm);
+  grid-template-columns: minmax(0, 1fr) var(--icon-sm);
   grid-template-areas:
-    "company dates chev"
-    "role    dates chev";
+    "dates   chev"
+    "company chev"
+    "role    chev";
   align-items: center;
   column-gap: var(--spacing-4);
   min-height: var(--spacing-touch-target);
-  padding: var(--spacing-6) 0;
+  padding: var(--spacing-5) 0;
+}
+
+@media (min-width: 1024px) {
+  .xp .accordion__trigger {
+    grid-template-columns: 11rem minmax(0, 1fr) auto;
+    grid-template-areas:
+      "dates company chev"
+      "dates role    chev";
+    padding: var(--spacing-6) 0;
+  }
+
+  /* the open row lines up with the company column */
+  .xp__body {
+    padding-left: calc(11rem + var(--spacing-4));
+  }
 }
 
 .xp .accordion__chev {
   grid-area: chev;
+}
+
+.xp__dates {
+  grid-area: dates;
+  align-self: start;
+  margin-bottom: var(--spacing-1);
+  font-family: var(--font-mono); /* Geist: the mono cut is retired (audit:fonts) */
+  font-size: var(--text-meta);
+  line-height: 1.6;
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .xp__company {
@@ -1497,7 +1541,7 @@ p {
 .xp__current {
   margin-left: var(--spacing-3);
   padding: 2px var(--spacing-2);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-pill);
   background: var(--color-semantic-surface-inset);
   font-size: var(--text-meta);
   font-weight: 500;
@@ -1510,36 +1554,12 @@ p {
   display: block;
   margin-top: var(--spacing-1);
   font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink-soft);
-}
-
-.xp__dates {
-  grid-area: dates;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
+  font-size: var(--text-caption);
   color: var(--color-ink-muted);
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
-@media (max-width: 640px) {
-  .xp .accordion__trigger {
-    grid-template-columns: minmax(0, 1fr) var(--icon-sm);
-    grid-template-areas:
-      "company chev"
-      "role    chev"
-      "dates   chev";
-    padding: var(--spacing-5) 0;
-  }
-
-  .xp__dates {
-    margin-top: var(--spacing-1);
-  }
 }
 
 .xp__body {
-  padding: 0 0 var(--spacing-6);
+  padding-bottom: var(--spacing-6);
 }
 
 /* the clients behind the work, first line of the open row */
@@ -1555,49 +1575,20 @@ p {
   padding-top: 0;
 }
 
-.xp__label {
-  margin: var(--spacing-4) 0 var(--spacing-2);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 700;
-  color: var(--color-eyebrow);
+.xp__case {
+  margin: var(--spacing-2) 0 0;
 }
 
-.xp__related {
-  max-width: var(--hero-figure-width);
-}
-
-.xp__thumb {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-}
-
-.xp__rel-kicker {
-  margin: 0;
-  font-size: var(--typography-font-size-tag);
-  letter-spacing: 0.06em;
-  color: var(--color-ink-muted);
-}
-
-.xp__rel-title {
-  margin: var(--spacing-1) 0;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
+/* the CV button: a neutral outline (purple is for accent words, links,
+   focus rings and the primary button) */
+.btn-key.xp__cv {
+  gap: var(--spacing-2);
+  border-color: var(--border-faint);
   color: var(--color-ink);
 }
 
-.xp__rel-cta {
-  margin: 0;
-  font-size: var(--typography-font-size-base);
-  font-weight: 500;
-  color: var(--color-accent-ink);
-}
-
-.xp__cv {
-  gap: var(--spacing-2);
+.btn-key.xp__cv:hover {
+  background: color-mix(in srgb, var(--color-ink) 6%, transparent);
 }
 
 /* House rules: four cards (the one Card surface), 2x2 from 768px,

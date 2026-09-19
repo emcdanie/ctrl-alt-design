@@ -1,22 +1,19 @@
 - region "Track record":
   - paragraph: Track record
   - heading "Where I've been." [level=2]
-  - heading /Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program Oct \d+ to now/ [level=3]:
-    - button /Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program Oct \d+ to now/ [expanded]
-  - region /Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program Oct \d+ to now/:
+  - heading /Oct \d+ to now Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program/ [level=3]:
+    - button /Oct \d+ to now Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program/ [expanded]
+  - region /Oct \d+ to now Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program/:
     - list:
       - listitem: Built a Figma component library aligned with reusable web components and a multi-theme architecture.
       - listitem: Translated an existing code-based design system into production-ready Figma components.
       - listitem: Explored AI-enabled governance workflows for design-system compliance and automation.
-    - paragraph: Related work
-    - link "Case study Code First Read it →":
-      - /url: /case-studies/brad-frost
-      - paragraph: Case study
-      - paragraph: Code First
-      - paragraph: Read it →
-  - heading /Mango Design Systems Specialist Apr to Jul \d+/ [level=3]:
-    - button /Mango Design Systems Specialist Apr to Jul \d+/ [expanded]
-  - region /Mango Design Systems Specialist Apr to Jul \d+/:
+    - paragraph:
+      - 'link "Case study: Code First →"':
+        - /url: /case-studies/brad-frost
+  - heading /Apr to Jul \d+ Mango Design Systems Specialist/ [level=3]:
+    - button /Apr to Jul \d+ Mango Design Systems Specialist/ [expanded]
+  - region /Apr to Jul \d+ Mango Design Systems Specialist/:
     - list:
       - listitem:
         - text: Brought AI into Mango's design-system work for the first time. With
@@ -30,9 +27,9 @@
         - text: Owned cross-platform component governance across
         - strong: web, iOS and Android
         - text: within Mango's design system, during a leadership transition.
-  - heading /\S+ Product & Design Systems Designer Jul \d+ to Feb \d+/ [level=3]:
-    - button /\S+ Product & Design Systems Designer Jul \d+ to Feb \d+/ [expanded]
-  - region /\S+ Product & Design Systems Designer Jul \d+ to Feb \d+/:
+  - heading /Jul \d+ to Feb \d+ \S+ Product & Design Systems Designer/ [level=3]:
+    - button /Jul \d+ to Feb \d+ \S+ Product & Design Systems Designer/ [expanded]
+  - region /Jul \d+ to Feb \d+ \S+ Product & Design Systems Designer/:
     - paragraph: Clients included Air France and WeRoad.
     - list:
       - listitem:
@@ -43,22 +40,19 @@
         - strong: Wrote the documentation
         - text: even when I was told it wasn't important, because a system nobody can read is a system nobody uses.
       - listitem: "Led the UX transformation of a legacy SaaS travel platform: booking, admin, finance and multi-role dashboards."
-    - paragraph: Related work
-    - link "Case study From Drift to Foundation Read it →":
-      - /url: /case-studies/design-system-transformation
-      - paragraph: Case study
-      - paragraph: From Drift to Foundation
-      - paragraph: Read it →
-  - heading /United Nations Geneva UX \/ Product Designer Oct to Dec \d+/ [level=3]:
-    - button /United Nations Geneva UX \/ Product Designer Oct to Dec \d+/ [expanded]
-  - region /United Nations Geneva UX \/ Product Designer Oct to Dec \d+/:
+    - paragraph:
+      - 'link "Case study: From Drift to Foundation →"':
+        - /url: /case-studies/design-system-transformation
+  - heading /Oct to Dec \d+ United Nations Geneva UX \/ Product Designer/ [level=3]:
+    - button /Oct to Dec \d+ United Nations Geneva UX \/ Product Designer/ [expanded]
+  - region /Oct to Dec \d+ United Nations Geneva UX \/ Product Designer/:
     - list:
       - listitem: Defined user roles, permission structures and dashboard frameworks for a multi-stakeholder institutional platform.
       - listitem: Designed scalable information architecture for operational workflows across departments.
       - listitem: Delivered interactive prototypes for executive review and funding discussions.
-  - heading /VML UX\/UI Designer Feb \d+ to Feb \d+/ [level=3]:
-    - button /VML UX\/UI Designer Feb \d+ to Feb \d+/ [expanded]
-  - region /VML UX\/UI Designer Feb \d+ to Feb \d+/:
+  - heading /Feb \d+ to Feb \d+ VML UX\/UI Designer/ [level=3]:
+    - button /Feb \d+ to Feb \d+ VML UX\/UI Designer/ [expanded]
+  - region /Feb \d+ to Feb \d+ VML UX\/UI Designer/:
     - paragraph: "Client: Riyad Bank."
     - list:
       - listitem: Designed enterprise banking and SaaS platform experiences for digital clients.
