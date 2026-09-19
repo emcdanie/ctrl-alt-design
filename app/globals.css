@@ -1195,16 +1195,18 @@ li {
      primary on a screen belongs to the content, not the nav */
   border: 1.5px solid var(--color-accent-ink);
   color: var(--color-accent-ink);
-  background: transparent;
+  /* on the page ground, not transparent: the header is glass, and over
+     the navy footer a see-through button put iris on grey (under AA) */
+  background: var(--color-semantic-background);
   transition: background-color var(--dur-fast) var(--ease-out);
 }
 
 .get-in-touch__trigger:hover {
-  background: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
+  background: color-mix(in srgb, var(--color-accent-ink) 10%, var(--color-semantic-background));
 }
 
 .get-in-touch__trigger[aria-expanded="true"] {
-  background: color-mix(in srgb, var(--color-accent-ink) 16%, transparent);
+  background: color-mix(in srgb, var(--color-accent-ink) 16%, var(--color-semantic-background));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2852,7 +2854,6 @@ li {
 
 .filter-chip__count {
   color: inherit;
-  font-variant-numeric: tabular-nums;
   opacity: 0.7;
 }
 

@@ -44,11 +44,27 @@ for (const theme of ["light", "dark"]) {
   await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
   for (const route of ROUTES) {
     await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 30000 });
-    /* sweep so FadeIn content is visible to the contrast checks */
+    /* sweep like a reader so every .reveal enters the viewport, then
+       settle the finite animations (the reveal's fade included) so the
+       contrast checks read the page as it rests. Infinite loops (the
+       marquee) are left running: they never settle. */
     const h = await page.evaluate(() => document.body.scrollHeight);
     for (let y = 0; y < h; y += 800) {
       await page.evaluate((v) => scrollTo(0, v), y);
       await page.waitForTimeout(30);
+    }
+    /* twice: the observer can reveal after the first settle */
+    for (let i = 0; i < 2; i++) {
+      await page.waitForTimeout(300);
+      await page.evaluate(() => {
+        for (const a of document.getAnimations()) {
+          try {
+            if (a.effect?.getTiming().iterations !== Infinity) a.finish();
+          } catch {
+            /* a scroll-driven timeline can't be finished; it rests with the scroll */
+          }
+        }
+      });
     }
     await page.evaluate(axeSource);
     const res = await page.evaluate(async () => {
