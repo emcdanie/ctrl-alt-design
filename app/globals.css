@@ -1186,20 +1186,25 @@ li {
   align-items: center;
   min-height: var(--spacing-touch-target);
   padding: 0 var(--spacing-5);
-  border: none;
   border-radius: var(--radius-full);
   cursor: pointer;
   font-family: var(--font-body);
   font-size: var(--text-nav);
   font-weight: 500;
-  color: var(--color-semantic-background);
-  background: var(--color-accent-ink);
+  /* secondary everywhere (polish pass, 19 Sep 2026): the one filled
+     primary on a screen belongs to the content, not the nav */
+  border: 1.5px solid var(--color-accent-ink);
+  color: var(--color-accent-ink);
+  background: transparent;
   transition: background-color var(--dur-fast) var(--ease-out);
 }
 
-.get-in-touch__trigger:hover,
+.get-in-touch__trigger:hover {
+  background: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
+}
+
 .get-in-touch__trigger[aria-expanded="true"] {
-  background: color-mix(in srgb, var(--color-accent-ink) 86%, var(--color-ink));
+  background: color-mix(in srgb, var(--color-accent-ink) 16%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
