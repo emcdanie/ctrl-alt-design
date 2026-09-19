@@ -249,11 +249,6 @@ body {
      keycap switch, and nav-bar depth values, moved verbatim out of the
      component layer. Do not flatten; the depth IS the system. */
   --shadow-orb: 13px 22px 44px rgba(0, 0, 0, 0.26), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
-  --shadow-orb-raised: 14px 24px 48px rgba(0, 0, 0, 0.26), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
-  --shadow-orb-selected: 14px 24px 48px rgba(0, 0, 0, 0.3), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
-  --gloss-orb: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 72%);
-  --edge-glass-hi-strong: inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  --gloss-press: inset 0 2px 4px rgba(255, 255, 255, 0.6);
   --shadow-nav-bar: 0 18px 48px rgba(26, 24, 20, 0.08);
 
 
@@ -293,8 +288,6 @@ body {
   --case-drift-hi: #D6AFEE;
   --case-drift-lo: #C58AE6;
   --case-drift-deep: #6A40AC;
-  --case-guardian-hi: #AEBCF5;
-  --case-guardian-lo: #8FA2F0;
   --case-clarity-hi: #A6D8BC;
   --case-clarity-lo: #7FC79E;
   --case-clarity-deep: #256B4C;
@@ -334,20 +327,14 @@ body {
   --gov-grey-text: var(--gov-grey-deep);
   --hub-hi: #CFC7F6;
   --hub-lo: #A99BEC;
-  --hub-bright: #6C5CE0;
-  --hub-deep: #5647C4;
-  --hero-bub-ink: #141019;
-  --hero-panel-bg: #FFFFFF;
-  --hero-panel-ink: #1A1720;
-  --hero-panel-close: #9A948B;
   /* The six panel-ground companions (--hero-panel-ink-soft / -meta /
      -surface / -border-soft / -border-medium / -accent-ink) were deleted
      in the Card swap, 2026-07-30. The old ui/Card variant="peek" was
      their only consumer: it re-scoped this repo's ink names onto the
      fixed-light panel. BELLA's Card owns that job now and re-scopes its
      OWN semantic names, so these were left defined and consumed by
-     nothing (caught by audit:debt, not by hand). --hero-panel-bg, -ink
-     and -close stay: BubbleCluster still reads them directly. */
+     nothing (caught by audit:debt, not by hand). The rest of the hero
+     panel, bubble and orb set went with BubbleCluster (19 Sep 2026). */
 
   /* Case-card cover placeholder — muted warm, never bright (IA spec) */
   --cover-warm-hi: #E9E2D2;
@@ -364,8 +351,6 @@ body {
   --modal-backdrop: rgba(26, 23, 32, 0.7);
   /* page-top glow — flips to near-none on navy */
   --page-glow: rgba(255, 255, 255, 0.55);
-  --hero-panel-shadow: rgba(26, 23, 32, 0.22);
-  --hero-link: rgba(26, 23, 32, 0.16);
   --key-face-hi: #FFFFFF;
   /* Filled-keycap face — FIXED in both themes. White labels need ≥4.5:1
      on every gradient stop: #6C5CE0 4.9:1, #5B4BD1 6.1:1 (the lighter
@@ -396,14 +381,6 @@ body {
      ground. Recorded here, never per-instance. */
   --thesis-band-ground: var(--color-card);
   --thesis-band-ink: var(--color-ink);
-  --shadow-key-resting:
-    1px 3px 0 var(--key-fill-edge),
-    3px 6px 10px color-mix(in srgb, var(--key-fill-lo) 24%, transparent),
-    var(--edge-glass-hi-strong);
-  --shadow-key-pressed:
-    0 1px 0 var(--key-fill-edge),
-    2px 3px 8px color-mix(in srgb, var(--key-fill-lo) 20%, transparent),
-    var(--edge-glass-hi-strong);
 
 
 
@@ -480,9 +457,6 @@ body {
   --cover-warm-hi: #3A3428;
   --cover-warm-lo: #2C271E;
   --cover-warm-ink: #E9E2D2;
-  --hero-panel-bg: #F4EFE6;
-  --hero-panel-shadow: rgba(0, 0, 0, 0.44);
-  --hero-link: rgba(244, 239, 230, 0.2);
   --modal-backdrop: rgba(0, 0, 0, 0.6);
   --page-glow: rgba(255, 255, 255, 0.04);
 }
