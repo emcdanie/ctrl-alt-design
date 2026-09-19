@@ -262,8 +262,8 @@ body {
   /* STOPGAP override of the BELLA --component-heading-* values (this
      unlayered :root wins over the vendored bella.css). TODO: BELLA PR
      to own these values, then delete this override. Page 40-72, section 28-44 (Geist 700);
-     the home headline keeps its ~180 moment. Case shares section. */
-  --component-heading-hero-font-size: clamp(2.5rem, -0.75rem + 13.3333vw, 11.25rem);
+     hero (the home headline, 19 Sep 2026) about 42-86. Case shares section. */
+  --component-heading-hero-font-size: clamp(2.6rem, 6vw, 5.4rem);
   --component-heading-page-font-size: clamp(2.5rem, 1.9rem + 2.6vw, 4.5rem);
   --component-heading-section-font-size: clamp(1.75rem, 1.45rem + 1.3vw, 2.75rem);
   /* Geist headings track slightly tight; leading never drops below 1

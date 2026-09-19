@@ -221,7 +221,7 @@
       "variants": [
         {
           "name": "hero",
-          "delta": "font-size {--component-heading-hero-font-size} (home headline, 40-180)"
+          "delta": "font-size {--component-heading-hero-font-size} (home headline, clamp(2.6rem, 6vw, 5.4rem), about 42-86)"
         },
         {
           "name": "page",
