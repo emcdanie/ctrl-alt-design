@@ -106,7 +106,7 @@ export default function CaseEndReveal({ slug }: { slug: string }) {
           </span>
           <span className="cs2-endreveal__meta">
             <span className="cs2-endreveal__title">{next.title}</span>
-            <span className="cs2-endreveal__kicker">{next.kicker}</span>
+            <span className="cs2-endreveal__kicker">{next.kicker.replace(/\b(20\d\d)-(?:20)?(\d\d)\b/, "$1 to $2")}</span>
           </span>
           <span className="cs2-endreveal__arrow" aria-hidden="true">
             &rarr;

@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import OverlayNav from "@/components/OverlayNav";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
+import styles from "@/components/WorkLibrary.module.css";
 import { WorkSections, WorkSectionsStatic, WorkToolbar, WorkToolbarStatic } from "@/components/WorkLibrary";
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default function WorkPage() {
       <OverlayNav />
 
       <Section id="work-hero" labelledBy="work-hero-title">
-        <p className="text-code">{"// the library: case studies from real teams, plus experiments in public"}</p>
+        <p className={`text-code ${styles.metaNote}`}>{"// the library: case studies from real teams, plus experiments in public"}</p>
         <SectionHeader
           as="h1"
           id="work-hero-title"

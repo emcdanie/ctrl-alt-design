@@ -345,7 +345,8 @@
 
 /* ── /work (approved mock, 19 Sep 2026) ── */
 
-.heroNote {
+/* the code-comment note above the h1: metadata tier (CLAUDE.md §3) */
+.metaNote {
   margin: 0 0 var(--section-lead-gap);
 }
 
