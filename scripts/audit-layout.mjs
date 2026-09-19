@@ -6,7 +6,9 @@
  *    listed fails, so a new page can't skip the layout system.
  * 2. A route marked "section" must render layout Section
  *    (components/layout/Section) and must not write a raw <section>.
- * 3. No custom spacing in app/ or components/sections/: arbitrary
+ * 3. SectionHeader takes layout="split" (default) or "stacked", nothing
+ *    else; no page reshapes .l-header with its own grid.
+ * 4. No custom spacing in app/ or components/sections/: arbitrary
  *    Tailwind margin/padding (mt-[, py-[ ...) or inline margin/padding.
  *    Spacing comes from Section, SectionHeader and the tokens.
  *
@@ -73,7 +75,22 @@ for (const file of pages) {
 for (const file of Object.keys(ROUTES))
   if (!existsSync(file)) fail(file, "listed but missing", "delete the entry with the route");
 
-/* 3: custom spacing */
+/* 3: SectionHeader layouts */
+const LAYOUTS = new Set(["split", "stacked"]);
+for (const file of [...walk("app"), ...walk("components")].filter((f) => /\.(tsx|jsx)$/.test(f))) {
+  const src = readFileSync(file, "utf8");
+  for (const m of src.matchAll(/<SectionHeader\b[^>]*?\blayout=(?:"([^"]*)"|\{([^}]*)\})/g)) {
+    const v = m[1] ?? m[2];
+    if (!LAYOUTS.has(v)) fail(file, `SectionHeader layout=${v}`, 'layout="split" or layout="stacked"');
+  }
+}
+/* only the layout CSS in app/globals.css may shape .l-header */
+for (const file of [...walk("app"), ...walk("components")].filter((f) => f.endsWith(".css") && f !== "app/globals.css")) {
+  if (/\.l-header[^{]*\{[^}]*grid-template-columns/.test(readFileSync(file, "utf8")))
+    fail(file, "a stylesheet reshaping .l-header", "SectionHeader's layout prop");
+}
+
+/* 4: custom spacing */
 for (const dir of SPACING_DIRS) {
   if (!existsSync(dir)) continue;
   for (const file of walk(dir).filter((f) => /\.(tsx|ts|jsx)$/.test(f))) {

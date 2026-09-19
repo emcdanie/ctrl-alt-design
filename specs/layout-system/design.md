@@ -29,9 +29,10 @@ the site keeps only the aliases then.
   sitting on the hairline rule, named by that label
   (`aria-labelledby`). Wraps its children in `Container`. The first
   section on a page clears the sticky nav.
-- `SectionHeader`: heading left (about 40%), lead and body right
-  (about 60%, max 42rem) from 1024px; stacked below. Content after it
-  gets `--section-content-gap` above.
+- `SectionHeader`: `layout="split"` (default): heading left (about
+  40%), lead and body right (about 60%, max 42rem) from 1024px; stacked
+  below. `layout="stacked"`: heading above the lead at every width.
+  Content after it gets `--section-content-gap` above.
 
 ## Enforcement
 

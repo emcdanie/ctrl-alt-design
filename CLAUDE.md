@@ -51,7 +51,8 @@ override the constitution.
 - **Sections use Section + SectionHeader. No custom spacing.** (Elleta, 2026-09-18, layout system,
   `specs/layout-system`.) `components/layout/`: `Container` (content `--layout-max` 74rem plus
   `--layout-gutter`), `Section.tsx` (section padding, the paw label on the hairline rule), `SectionHeader`
-  (heading left, lead and body right from 1024px). Spacing comes from them and the `--section-*`
+  (`layout="split"`, the default: heading left, lead and body right from 1024px; `layout="stacked"`:
+  heading above the lead at every width, for openings like Work's two-line h1). Spacing comes from them and the `--section-*`
   tokens, never from a page. `audit:layout` enforces it and lists every route.
 - **One container:** `.container` (`--container-max` = `--layout-max` plus two gutters, `--container-pad`
   = `--layout-gutter`), every page and the nav row. `.page-container` / `.layout-container` are aliases
@@ -203,7 +204,8 @@ Use the `portfolio-spec` skill. For any non-trivial task:
 Must pass before any work is "done":
 - `audit:structure` — per-case route dirs, container/section system, no arbitrary `text-[Npx]`, no amber.
 - `audit:layout` — every route is listed; a route on the layout system renders the layout `Section`
-  and no raw `<section>`; no arbitrary margin/padding classes or inline margin/padding in `app/` (and
+  and no raw `<section>`; `SectionHeader` layout is "split" or "stacked" and no stylesheet reshapes
+  `.l-header`; no arbitrary margin/padding classes or inline margin/padding in `app/` (and
   in a sections folder under components, once one exists). Routes not yet moved are allowlisted as pending, special content layouts with
   a reason.
 - `audit:contrast` — WCAG AA (AAA-minded); Unique below 24px fails everywhere, no exceptions.

@@ -13,9 +13,11 @@ function termName(heading: ReactNode, accent: ReactNode, after: ReactNode): stri
   return `${heading} ${GLOSSARY[id].word}${after ?? ""}`;
 }
 
-/* The section header (specs/layout-system): heading left (about 40%),
-   lead and body right (about 60%, max 42rem) from 1024px, stacked
-   below. Content placed after it gets --section-content-gap above.
+/* The section header (specs/layout-system): layout="split" (default):
+   heading left (about 40%), lead and body right (about 60%, max 42rem)
+   from 1024px, stacked below. layout="stacked": heading above the lead
+   and body at every width (a page opening whose h1 needs the full
+   width, e.g. two lines). Content placed after it gets --section-content-gap above.
    The heading takes one iris `accent` word; `after` carries what
    follows it. `as="h1"` for the page opening. */
 export default function SectionHeader({
@@ -23,6 +25,7 @@ export default function SectionHeader({
   accent,
   after,
   as = "h2",
+  layout = "split",
   id,
   lead,
   children,
@@ -31,6 +34,9 @@ export default function SectionHeader({
   accent?: ReactNode;
   after?: ReactNode;
   as?: "h1" | "h2";
+  /** "split" (default): heading beside the lead from 1024px; "stacked":
+   *  heading above the lead at every width */
+  layout?: "split" | "stacked";
   /** the heading's id (the page opening's Section points at it) */
   id?: string;
   lead?: ReactNode;
@@ -38,7 +44,7 @@ export default function SectionHeader({
   children?: ReactNode;
 }) {
   return (
-    <div className="l-header">
+    <div className={layout === "stacked" ? "l-header l-header--stacked" : "l-header"}>
       <Heading
         tier={as === "h1" ? "page" : "section"}
         as={as}

@@ -603,6 +603,13 @@ main .l-section:first-of-type {
   }
 }
 
+/* layout="stacked": heading above the lead at every width */
+@media (min-width: 1024px) {
+  .l-header--stacked {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .l-header__side {
   display: grid;
   row-gap: var(--section-lead-gap);
