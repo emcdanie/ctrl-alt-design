@@ -448,7 +448,9 @@
   border-radius: var(--radius-full);
   padding: 0 var(--spacing-2);
   color: var(--pill);
-  background: color-mix(in srgb, var(--pill) 12%, transparent);
+  /* tinted over the page ground, not the card: the flat card surface
+     sits a step darker and pulled the pill text under AA */
+  background: color-mix(in srgb, var(--pill) 7%, var(--color-semantic-background));
 }
 
 .pillConcept {

@@ -25,6 +25,7 @@ export default function WorkPage() {
         <p className={`text-code ${styles.heroNote}`}>{"// the library: cases and experiments"}</p>
         <SectionHeader
           as="h1"
+          layout="stacked"
           id="work-hero-title"
           heading="Work that holds its"
           accent="shape"
