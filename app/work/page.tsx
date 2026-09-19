@@ -55,21 +55,28 @@ export default function WorkPage() {
               heading="One problem,"
               accent="worked through"
               after="."
-              lead="Four started as course briefs from Vitaly Friedman's Smart Interface Design Patterns training. The rest are hackathon builds and tools I made for myself."
+              lead={
+                <>
+                  {/* decorative: floats so the lead wraps her silhouette */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className={styles.skate}
+                    src="/images/bella/set/bella-skate.webp"
+                    alt=""
+                    aria-hidden="true"
+                    width={860}
+                    height={980}
+                  />
+                  Four started as course briefs from Vitaly Friedman&apos;s Smart Interface Design Patterns training. The
+                  rest are hackathon builds and tools I made for myself.
+                </>
+              }
             >
               <p>
                 <Link href="/learning" className={styles.more}>
                   Where these came from →
                 </Link>
               </p>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className={`illo ${styles.skate}`}
-                src="/images/bella/set/bella-skate.webp"
-                alt="Illustration of Bella riding a skateboard"
-                width={340}
-                height={340}
-              />
             </SectionHeader>
           </div>
           <StudiesList />

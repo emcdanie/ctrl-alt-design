@@ -161,50 +161,12 @@
   max-width: none;
 }
 
-.chipRow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-2);
-}
 
-.chipLabel {
-  width: 4rem;
-  font-family: var(--font-body);
-  font-size: var(--text-meta);
-  font-weight: 600;
-  color: var(--color-eyebrow);
-}
-
-@media (max-width: 600px) {
-  .chipLabel {
-    width: 100%;
-  }
-}
-
-/* chips are 36px tall at every width (44px on touch, from FilterChip) */
-.chip {
-  min-height: 2.25rem;
-}
-
-/* pressed chips: iris-soft, not the solid inverse fill */
-.page .chip[aria-pressed="true"],
+/* the map list's pressed buttons match the pressed FilterChip */
 .mapListBtn[aria-pressed="true"] {
   background: var(--color-semantic-accent-subtle);
   border-color: var(--color-accent-iris);
   color: var(--color-ink);
-}
-
-.chip:focus-visible {
-  outline-color: var(--color-accent-iris);
-}
-
-/* chip counts (Elleta, 19 Sep 2026): .text-code (14px) at 70% opacity;
-   the colour follows the chip, so it flips when the chip is pressed */
-.chip-meta {
-  color: inherit;
-  font-variant-numeric: tabular-nums;
-  opacity: 0.7;
 }
 
 .toolbar {

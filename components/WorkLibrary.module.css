@@ -260,6 +260,24 @@
   gap: var(--spacing-2);
 }
 
+/* Home's quiet kicker: kind and years, code role, muted */
+.kickerQuiet {
+  display: block;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Home's arrow: there on hover and focus only */
+.hoverArrow {
+  color: var(--color-accent-ink);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.caseCard:hover .hoverArrow,
+.caseCard:focus-visible .hoverArrow {
+  opacity: 1;
+}
+
 /* the years ride the kicker row (metadata tier) */
 .kickerDate {
   font-variant-numeric: tabular-nums;
@@ -324,30 +342,24 @@
   min-width: 0;
 }
 
+/* Bella floats at the end of the lead, which wraps her silhouette (the
+   image's alpha, not its box); a warm glow keeps her dark fur off the
+   dark ground */
 .skate {
-  display: block;
-  width: 7.5rem;
+  float: inline-end;
+  width: clamp(7rem, 22vw, 10rem);
   height: auto;
+  shape-outside: url("/images/bella/set/bella-skate.webp");
+  shape-image-threshold: 0.4;
+  shape-margin: 1rem;
+}
+
+:global([data-theme="dark"]) .skate {
+  filter: drop-shadow(0 0 24px var(--tile));
 }
 
 .studyChips {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-2);
   margin-bottom: var(--spacing-2);
-}
-
-/* chips are 36px tall at every width (44px on touch, from FilterChip) */
-.chip {
-  min-height: 2.25rem;
-}
-
-.chipMeta {
-  margin-left: var(--spacing-1);
-  color: inherit;
-  font-variant-numeric: tabular-nums;
-  opacity: 0.7;
 }
 
 .studyList {

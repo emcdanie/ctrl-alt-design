@@ -171,7 +171,7 @@ export const STUDIES: Study[] = [
     line: "Search and media navigation for a dense EU regulatory site.",
     kind: "Course brief",
     year: "2025",
-    thumb: { src: "/images/studies/legal-search.webp", width: 640, height: 76 },
+    thumb: { src: "/images/studies/legal-search.webp", width: 640, height: 215 },
     page: {
       brief: {
         paragraphs: [

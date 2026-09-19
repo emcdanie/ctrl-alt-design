@@ -16,8 +16,10 @@ import styles from "./WorkLibrary.module.css";
  * problem first, then the project, then a framed crop). The skills
  * matrix below serves /skills and /quick. */
 
-/** A case study card on the ONE Card system: flat until hover. */
-export function CaseStudyCard({ item }: { item: WorkCase }) {
+/** A case study card on the ONE Card system: flat until hover. `quiet`
+ *  (Home): the kicker is the kind and years in the code role, no tags,
+ *  no "Read it"; the title's arrow shows on hover only. */
+export function CaseStudyCard({ item, quiet = false }: { item: WorkCase; quiet?: boolean }) {
   return (
     <Card
       href={item.href}
@@ -31,20 +33,38 @@ export function CaseStudyCard({ item }: { item: WorkCase }) {
         </span>
       }
     >
-      <span className={styles.kicker}>
-        <span className={styles.pill}>Case study</span>
-        <span className={`text-code ${styles.kickerDate}`}>{item.years}</span>
+      {quiet ? (
+        <span className={`text-code ${styles.kickerQuiet}`}>
+          {item.kind} · {item.years}
+        </span>
+      ) : (
+        <span className={styles.kicker}>
+          <span className={styles.pill}>Case study</span>
+          <span className={`text-code ${styles.kickerDate}`}>{item.years}</span>
+        </span>
+      )}
+      <span className={`heading-item ${styles.cardTitle}`}>
+        {item.title}
+        {quiet ? (
+          <span className={styles.hoverArrow} aria-hidden="true">
+            {" "}
+            →
+          </span>
+        ) : null}
       </span>
-      <span className={`heading-item ${styles.cardTitle}`}>{item.title}</span>
       <span className={`card-body ${styles.cardLine}`}>{item.line}</span>
-      <span className={styles.tags}>
-        {item.tags.slice(0, 2).map((t) => (
-          <Tag key={t} outline>
-            {t}
-          </Tag>
-        ))}
-      </span>
-      <span className={styles.cardGo}>Read it →</span>
+      {quiet ? null : (
+        <>
+          <span className={styles.tags}>
+            {item.tags.slice(0, 2).map((t) => (
+              <Tag key={t} outline>
+                {t}
+              </Tag>
+            ))}
+          </span>
+          <span className={styles.cardGo}>Read it →</span>
+        </>
+      )}
     </Card>
   );
 }
@@ -56,13 +76,13 @@ export function StudiesList() {
   const shown = kind ? STUDIES.filter((s) => s.kind === kind) : STUDIES;
   return (
     <div className={styles.studies}>
-      <div className={styles.studyChips} role="group" aria-label="Filter the studies by type">
-        <FilterChip className={styles.chip} pressed={kind === null} onClick={() => setKind(null)}>
-          All <span className={`text-code ${styles.chipMeta}`}>{STUDIES.length}</span>
+      <div className={`filter-chip-row ${styles.studyChips}`} role="group" aria-label="Filter the studies by type">
+        <FilterChip pressed={kind === null} onClick={() => setKind(null)}>
+          All <span className="text-code filter-chip__count">{STUDIES.length}</span>
         </FilterChip>
         {STUDY_KINDS.map((k) => (
-          <FilterChip key={k} className={styles.chip} pressed={kind === k} onClick={() => setKind(kind === k ? null : k)}>
-            {k} <span className={`text-code ${styles.chipMeta}`}>{STUDIES.filter((s) => s.kind === k).length}</span>
+          <FilterChip key={k} pressed={kind === k} onClick={() => setKind(kind === k ? null : k)}>
+            {k} <span className="text-code filter-chip__count">{STUDIES.filter((s) => s.kind === k).length}</span>
           </FilterChip>
         ))}
       </div>

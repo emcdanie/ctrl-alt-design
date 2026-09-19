@@ -110,7 +110,10 @@
       "name": "FilterChip",
       "source": "components/ui/FilterChip.tsx",
       "anatomy": [
-        "filter-chip"
+        "filter-chip-row (optional)",
+        "filter-chip-row__label (optional)",
+        "filter-chip",
+        "filter-chip__count (optional)"
       ],
       "props": [
         {
@@ -133,14 +136,15 @@
       "variants": [
         {
           "name": "pressed",
-          "delta": "aria-pressed=true; inverse fill (background-inverse, text-inverse), border unchanged"
+          "delta": "aria-pressed=true; iris-soft fill (accent-subtle), iris border, ink text"
         }
       ],
       "tokens": [
         "{--color-border-medium}",
         "{--color-ink-soft}",
-        "{--color-semantic-background-inverse}",
-        "{--color-semantic-text-inverse}",
+        "{--color-semantic-accent-subtle}",
+        "{--color-accent-iris}",
+        "{--color-ink}",
         "{--color-alpha-ink-6}"
       ]
     },

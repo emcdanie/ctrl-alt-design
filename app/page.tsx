@@ -1,13 +1,13 @@
 import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
 import Hero from "@/components/Hero";
-import CaseCard from "@/components/CaseCard";
+import { CaseStudyCard } from "@/components/WorkLibrary";
 import WorkedWith from "@/components/WorkedWith";
 import Card from "@/components/ui/Card";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
 import Container from "@/components/layout/Container";
-import { WORK_ITEMS } from "@/lib/workLibrary";
+import { WORK_CASES } from "@/lib/workLibrary";
 import { TESTIMONIALS } from "@/content/testimonials";
 import styles from "@/components/Home.module.css";
 
@@ -15,15 +15,11 @@ import styles from "@/components/Home.module.css";
    cases, three doors into the system, one quote. The shared layout
    renders the closing section and the footer. */
 
-const SELECTED_IDS = ["code-first", "drift", "chip"];
-const SELECTED = SELECTED_IDS.flatMap((id) => WORK_ITEMS.filter((i) => i.id === id));
-
-/* /learning lands with its own branch. */
+/* the doors: the whole card is the link. A Process door ("How a
+   request gets fetched") returns when /process exists. */
 const DOORS = [
-  { kind: "System", title: "BELLA, inspected live", body: "Tokens, components and the docs an AI can read.", go: "Open the system", href: "/design-system" },
-  // TODO process page: point this door at /process once it exists
-  { kind: "Process", title: "How a request gets fetched", body: "From \"we need a new colour\" to shipped, step by step.", go: "See the system", href: "/design-system" },
-  { kind: "Learning", title: "Where I learned it", body: "Courses, certificates and the people I follow.", go: "Browse learning", href: "/learning" },
+  { kind: "System", title: "BELLA, inspected live", body: "Tokens, components and the docs an AI can read.", href: "/design-system" },
+  { kind: "Learning", title: "Where I learned it", body: "Courses, certificates and the people I follow.", href: "/learning" },
 ];
 
 /* the one sentence around the bold phrase, verbatim from the source */
@@ -51,8 +47,8 @@ export default function Home() {
           lead="Three systems, up close: what drifted, what I built, and what changed."
         />
         <div className="home-work-row reveal-group">
-          {SELECTED.map((i) => (
-            <CaseCard key={i.id} item={i} />
+          {WORK_CASES.map((c) => (
+            <CaseStudyCard key={c.id} item={c} quiet />
           ))}
         </div>
       </Section>
@@ -64,15 +60,12 @@ export default function Home() {
           after="."
           lead="This site runs on BELLA, my own design system. Pick a door."
         />
-        <div className="home-work-row reveal-group">
+        <div className={`home-work-row reveal-group ${styles.doors}`}>
           {DOORS.map((d) => (
             <Card key={d.kind} href={d.href}>
               <span className={styles.kicker}>{d.kind}</span>
               <span className={`heading-item ${styles.title}`}>{d.title}</span>
               <span className={`card-body ${styles.body}`}>{d.body}</span>
-              <span className={styles.go}>
-                {d.go} <span aria-hidden="true">→</span>
-              </span>
             </Card>
           ))}
         </div>

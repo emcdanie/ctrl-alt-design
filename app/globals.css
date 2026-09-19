@@ -2783,7 +2783,7 @@ li {
   align-items: center;
   gap: var(--spacing-2);
   cursor: pointer;
-  min-height: 32px;
+  min-height: 2.25rem; /* 36px; 44px below 768px, below */
   padding: 4px var(--spacing-4);
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border-medium);
@@ -2808,10 +2808,12 @@ li {
   background: var(--color-alpha-ink-6);
 }
 
+/* pressed (one style for /learning and /work, 19 Sep 2026): iris-soft,
+   not the solid inverse fill */
 .filter-chip[aria-pressed="true"] {
-  background: var(--color-semantic-background-inverse);
-  border-color: var(--color-semantic-background-inverse);
-  color: var(--color-semantic-text-inverse);
+  background: var(--color-semantic-accent-subtle);
+  border-color: var(--color-accent-iris);
+  color: var(--color-ink);
 }
 
 .filter-chip:focus-visible {
@@ -2823,6 +2825,35 @@ li {
   .filter-chip {
     min-height: var(--spacing-touch-target);
   }
+}
+
+/* the one chip row (Learning and Work): an optional label, the chips,
+   and each chip's count in the code role at 70% */
+.filter-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.filter-chip-row__label {
+  width: 4rem;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--color-eyebrow);
+}
+
+@media (max-width: 600px) {
+  .filter-chip-row__label {
+    width: 100%;
+  }
+}
+
+.filter-chip__count {
+  color: inherit;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
 }
 
 .select-control {

@@ -198,6 +198,8 @@ export function findWorkItemBySlug(
 export interface WorkCase {
   id: string;
   title: string;
+  /** the case's kind in sentence case, "Design systems" (Home's kicker) */
+  kind: string;
   line: string;
   /** "2024 to 2025" */
   years: string;
@@ -214,5 +216,10 @@ const CASE_COPY: Record<string, Pick<WorkCase, "line" | "years" | "tags">> = {
 
 export const WORK_CASES: WorkCase[] = Object.entries(CASE_COPY).map(([id, copy]) => {
   const item = WORK_ITEMS.find((i) => i.id === id)!;
-  return { id, title: item.title, href: item.href, cover: item.cover, ...copy };
+  /* "AI + Design Systems" -> "AI + design systems": AI keeps its capitals */
+  const kind = item.type
+    .split(" ")
+    .map((w, i) => (i === 0 || w === "AI" ? w : w.toLowerCase()))
+    .join(" ");
+  return { id, title: item.title, kind, href: item.href, cover: item.cover, ...copy };
 });

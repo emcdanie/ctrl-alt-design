@@ -195,12 +195,11 @@ export default function LearningLibrary() {
           {TYPES.map((t) => (
             <FilterChip
               key={t}
-              className={styles.chip}
               pressed={typeFilters.includes(slugify(t))}
               onClick={() => toggle("type", slugify(t), typeFilters)}
             >
               {t}
-              <span className={`text-code ${styles["chip-meta"]}`}>
+              <span className="text-code filter-chip__count">
                 {countType(t)}
               </span>
             </FilterChip>
@@ -210,12 +209,11 @@ export default function LearningLibrary() {
           {TOPICS.map((s) => (
             <FilterChip
               key={s}
-              className={styles.chip}
               pressed={topicFilters.includes(slugify(s))}
               onClick={() => toggle("topic", slugify(s), topicFilters)}
             >
               {s}
-              <span className={`text-code ${styles["chip-meta"]}`}>
+              <span className="text-code filter-chip__count">
                 {countTopic(s)}
               </span>
             </FilterChip>
@@ -233,6 +231,7 @@ export default function LearningLibrary() {
             )}
             <SegmentedControl
               label="View"
+              sentence
               options={[
                 { value: "timeline", label: "Timeline" },
                 { value: "table", label: "Table" },
@@ -282,11 +281,11 @@ function ChipRow({
 }) {
   return (
     <div
-      className={styles.chipRow}
+      className="filter-chip-row"
       role="group"
       aria-label={`Filter by ${label.toLowerCase()}`}
     >
-      <span className={styles.chipLabel} aria-hidden="true">
+      <span className="filter-chip-row__label" aria-hidden="true">
         {label}
       </span>
       {children}
