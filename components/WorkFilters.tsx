@@ -2,7 +2,8 @@
 
 import { useCallback, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { SKILLS, WORK_ITEMS, slugify } from "@/lib/workLibrary";
+import { WORK_ITEMS } from "@/lib/workLibrary";
+import { SKILLS, slugify } from "@/content/skills";
 import { FilterChip } from "@/components/ui/FilterChip";
 import styles from "./WorkLibrary.module.css";
 
