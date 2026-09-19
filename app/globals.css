@@ -592,6 +592,23 @@ main .l-section:first-of-type {
   color: var(--color-ink-soft);
 }
 
+/* stacked (below 1024px): the side column spans the container (text
+   keeps its own measure), and illustrations and their captions centre */
+@media (max-width: 1023.98px) {
+  .l-header__side {
+    max-width: none;
+  }
+
+  .l-header__body :is(figure, img, .illo) {
+    margin-inline: auto;
+  }
+
+  .l-header__body figcaption {
+    margin-inline: auto;
+    text-align: center;
+  }
+}
+
 /* whatever follows the header in a section */
 .l-header + * {
   margin-top: var(--section-content-gap);
