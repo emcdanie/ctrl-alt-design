@@ -1972,8 +1972,9 @@ p {
   height: auto;
 }
 
-/* "Made with": a slow marquee on the footer's top edge, paused on
-   hover and focus; reduced motion shows the one list as a wrapped line */
+/* "Made with": a slow marquee on the footer's top edge, full screen
+   width (outside the container), paused on hover and focus; reduced
+   motion shows the one list as a wrapped line inside the gutters */
 .made-with {
   margin-bottom: var(--space-stack-lg);
   padding: var(--space-stack-sm) 0;
@@ -2017,6 +2018,10 @@ p {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .made-with {
+    padding-inline: var(--container-pad);
+  }
+
   .made-with__track {
     width: auto;
     animation: none;
