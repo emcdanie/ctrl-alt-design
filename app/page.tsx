@@ -50,7 +50,7 @@ export default function Home() {
           after="."
           lead="Three systems, up close: what drifted, what I built, and what changed."
         />
-        <div className="home-work-row">
+        <div className="home-work-row reveal-group">
           {SELECTED.map((i) => (
             <CaseCard key={i.id} item={i} />
           ))}
@@ -64,7 +64,7 @@ export default function Home() {
           after="."
           lead="This site runs on BELLA, my own design system. Pick a door."
         />
-        <div className="home-work-row">
+        <div className="home-work-row reveal-group">
           {DOORS.map((d) => (
             <Card key={d.kind} href={d.href}>
               <span className={styles.kicker}>{d.kind}</span>

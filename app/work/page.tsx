@@ -40,7 +40,7 @@ export default function WorkPage() {
           after="."
           lead="Real teams, real drift. What I found, what I built, what changed."
         />
-        <div className="card-grid">
+        <div className="card-grid reveal-group">
           {WORK_CASES.map((c) => (
             <CaseStudyCard key={c.id} item={c} />
           ))}

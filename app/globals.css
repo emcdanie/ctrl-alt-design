@@ -643,6 +643,52 @@ main .l-section:first-of-type {
   margin-top: var(--section-content-gap);
 }
 
+/* Reveal (polish pass, 19 Sep 2026): section heads (.reveal) and the
+   items of a card grid (.reveal-group) fade in with a 24px rise, once,
+   when they enter the viewport (RevealObserver). Row items stagger in
+   60ms steps. It animates `translate`, not `transform`, so a Card's own
+   hover lift keeps its transition. Hidden only under html.js-reveal (a
+   pre-paint script), so no JS means nothing hidden; reduced motion
+   keeps the fade and drops the rise. */
+.reveal,
+.reveal-group > * {
+  --reveal-rise: 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-group > * {
+    --reveal-rise: 0px;
+  }
+}
+
+.js-reveal :is(.reveal, .reveal-group > *):not(.is-revealed) {
+  opacity: 0;
+  translate: 0 var(--reveal-rise);
+}
+
+:is(.reveal, .reveal-group > *).is-revealed {
+  animation: reveal var(--dur-slow) var(--ease-out) var(--reveal-delay, 0ms) both;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    translate: 0 var(--reveal-rise);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.reveal-group > :nth-child(2) { --reveal-delay: 60ms; }
+.reveal-group > :nth-child(3) { --reveal-delay: 120ms; }
+.reveal-group > :nth-child(4) { --reveal-delay: 180ms; }
+.reveal-group > :nth-child(5) { --reveal-delay: 240ms; }
+.reveal-group > :nth-child(6) { --reveal-delay: 300ms; }
+.reveal-group > :nth-child(n + 7) { --reveal-delay: 360ms; }
+
 /* ─── Text utilities: use these, never a page-specific font size ─── */
 /* headings are Geist 700 in sentence case; Unique is for the ELLETA
    wordmarks (and the BELLA logo) only */

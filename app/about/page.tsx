@@ -105,7 +105,7 @@ export default function AboutPage() {
           after="."
           lead="Six of fifteen recommendations, quoted as written."
         />
-        <ul className="quotes">
+        <ul className="quotes reveal-group">
           {TESTIMONIALS.map((t) => {
             const [before, after] = t.quote.split(t.bold);
             return (
@@ -196,7 +196,7 @@ export default function AboutPage() {
 
       <Section id="house-rules" label="House rules">
         <SectionHeader heading="Four things I" accent={<Term id="care" />} after=" about." />
-        <div className="cares">
+        <div className="cares reveal-group">
           <Card className="cares__card">
             <h3 className="heading-item">Kindness</h3>
             <p>Docs written for the person reading them at <strong>5pm on a Friday</strong>.</p>

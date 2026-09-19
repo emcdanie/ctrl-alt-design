@@ -44,7 +44,16 @@ export default function SectionHeader({
   children?: ReactNode;
 }) {
   return (
-    <div className={layout === "stacked" ? "l-header l-header--stacked" : "l-header"}>
+    <div
+      className={[
+        "l-header",
+        layout === "stacked" ? "l-header--stacked" : "",
+        /* section heads reveal; the page opening (h1) is there at once */
+        as === "h1" ? "" : "reveal",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <Heading
         tier={as === "h1" ? "page" : "section"}
         as={as}
