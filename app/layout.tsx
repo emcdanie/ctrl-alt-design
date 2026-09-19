@@ -1,7 +1,7 @@
 import SiteFooter from "@/components/SiteFooter";
 import type { Metadata } from "next";
 import BracketCursor from "@/components/BracketCursor";
-import { Geist } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import DevTools from "@/components/DevTools";
 import IconProvider from "@/components/ui/IconProvider";
@@ -11,6 +11,14 @@ import "./globals.css";
 const geist = Geist({
   variable: "--font-geist",
   subsets: ["latin"],
+});
+
+// The code face (Elleta, 19 Sep 2026): metadata only, through
+// --font-code (CLAUDE.md section 3). font-waiver: the loader names it.
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 // Unique is for the ELLETA wordmarks (nav + footer) and the BELLA logo
@@ -65,7 +73,7 @@ export default function RootLayout({
       {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla) inject
           attributes like cz-shortcut-listen on <body> before hydration; this
           silences that benign server/client attribute mismatch only */}
-      <body className={`${geist.variable} ${unique.variable} antialiased`} suppressHydrationWarning>
+      <body className={`${geist.variable} ${geistMono.variable} ${unique.variable} antialiased`} suppressHydrationWarning>
         <a href="#main-content" className="skip-link">Skip to content</a>
         <DevTools />
         <IconProvider>

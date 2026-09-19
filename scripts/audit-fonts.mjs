@@ -1,6 +1,11 @@
-/* Type lock (2026-07-17): exactly two faces.
- * - No mono family may exist anywhere (Geist Mono retired; --font-mono is
- *   a legacy alias that resolves to Geist in globals.css).
+/* Type lock (2026-07-17, code role 2026-09-19): two faces plus one role.
+ * - The mono cut of Geist exists ONLY as --font-code (Elleta, 19 Sep
+ *   2026): named once in the token layer (the --font-code line in
+ *   app/globals.css) and loaded in app/layout.tsx. Any other mono family
+ *   reference fails. --font-code is for metadata (dates, stat lines,
+ *   code-comment notes, credential IDs, the inspector cursor label, the
+ *   Term popover word line) and fails on headings, body, buttons or nav.
+ *   --font-mono stays a legacy alias that resolves to Geist.
  * - No font-family literal outside the token layer (app/globals.css):
  *   components/pages may only reference var(--font-*) tokens.
  * - Unique (--font-hero-display / --font-unique) renders only through
@@ -20,6 +25,11 @@ const UNIQUE_ALLOWED = new Set(["app/globals.css", "app/layout.tsx"]);
 /* in globals.css, Unique may only be SET on these selectors (plus the font tokens) */
 const UNIQUE_SELECTORS = [".nav-wordmark", ".site-footer__wordmark", "[data-bella-logo]"];
 
+/* the one place a mono family may be named: the --font-code token line */
+const CODE_TOKEN_LINE = /^\s*--font-code\s*:/;
+/* where --font-code must never land (CSS selectors / TSX elements) */
+const CODE_BANNED_SELECTOR = /(^|[\s,>+~(])(h[1-6]|body|button|nav)\b|\.(text-body|text-lead|display-heading|btn[\w-]*|nav[\w-]*|filter-chip|seg-control)\b/;
+const CODE_BANNED_ELEMENT = /<(h[1-6]|button|nav)\b/;
 const MONO_FAMILY = /geist mono|jetbrains|ui-monospace|\bmonospace\b|chivo|source code|courier/i;
 const OTHER_FAMILY = /\b(fraunces|jakarta|cormorant|georgia)\b/i;
 
@@ -45,7 +55,10 @@ for (const root of ROOTS) {
     lines.forEach((l, i) => {
       const n = i + 1;
       if (/font-waiver:/.test(l)) return; // reviewed exception, reason inline
-      if (MONO_FAMILY.test(l)) fail(file, n, `a mono family reference (${l.trim().slice(0, 50)})`, "Geist only, mono is retired");
+      if (MONO_FAMILY.test(l) && !(TOKEN_LAYER.has(file) && CODE_TOKEN_LINE.test(l)))
+        fail(file, n, `a mono family reference (${l.trim().slice(0, 50)})`, "mono only through var(--font-code)");
+      if (/var\(--font-code\)/.test(l) && CODE_BANNED_ELEMENT.test(l))
+        fail(file, n, "--font-code on a heading, button or nav element", "--font-code for metadata only");
       if (OTHER_FAMILY.test(l)) fail(file, n, `a foreign family (${l.trim().slice(0, 50)})`, "the two faces: Unique display, Geist everything else");
       // font-family / fontFamily literals must be var(--font-*) tokens
       const decl = l.match(/font-family\s*:\s*([^;{}]+)|fontFamily\s*:\s*"([^"]+)"/);
@@ -58,6 +71,19 @@ for (const root of ROOTS) {
         fail(file, n, `a Unique reference (${l.trim().slice(0, 40)})`, "Unique only on the ELLETA wordmarks and the BELLA logo");
       }
     });
+  }
+}
+
+/* selector-aware leg: --font-code never lands on a heading, body text,
+   a button or nav, in any stylesheet */
+for (const root of ROOTS) {
+  for (const file of walk(root).filter((f) => f.endsWith(".css"))) {
+    const css = readFileSync(file, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+    for (const m of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+      if (!/font-family\s*:\s*var\(--font-code\)/.test(m[2])) continue;
+      const bad = m[1].split(",").map((x) => x.trim()).filter((x) => CODE_BANNED_SELECTOR.test(x));
+      if (bad.length) fail(file, 0, `--font-code set on ${bad.join(", ")}`, "--font-code for metadata only (never headings, body, buttons, nav)");
+    }
   }
 }
 

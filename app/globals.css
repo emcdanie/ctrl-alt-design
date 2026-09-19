@@ -115,6 +115,11 @@ body {
      rendering; the eyebrow look is caps + tracking, not a third face */
   --font-mono: var(--font-geist, "Geist"), system-ui, sans-serif;
   --font-hero-display: var(--font-unique, "Unique"), "Arial Narrow", sans-serif;
+  /* the code face (Elleta, 19 Sep 2026): Geist's mono cut as ONE role, for
+     metadata only (dates, stat lines, code-comment notes, credential
+     IDs, the inspector cursor label, the Term popover word line).
+     Never headings, body, buttons or nav; audit:fonts enforces it. */
+  --font-code: var(--font-geist-mono, "Geist Mono"), ui-monospace, monospace;
   /* Colour affordance rule (refined 2026-07-17): iris stays banned on
      eyebrows; neutral surfaces use ink-soft (muted lost too much
      presence), case surfaces override with the case identity colour.
@@ -180,6 +185,7 @@ body {
   --leading-body: 1.55;
   /* the floor: nothing on the site renders below 14px */
   --text-meta: 0.875rem;
+  --text-code: 0.8125rem; /* 13px: the code role (.text-code), metadata only */
   --text-caption: 0.9375rem; /* 15px: a title under a name (experience rows) */
   /* the caption heart: the nearest red in the system (the writing
      case's text colour, theme-aware). TODO: a BELLA danger token */
@@ -672,6 +678,17 @@ main .l-section:first-of-type {
   line-height: var(--leading-body);
   text-wrap: pretty;
   max-width: var(--measure-body);
+}
+
+/* the code role (CLAUDE.md §3): metadata in the mono cut, 13px, muted.
+   Dates, stat lines, code-comment notes (// ...), credential IDs. */
+.text-code {
+  font-family: var(--font-code);
+  font-size: var(--text-code);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--color-ink-muted);
 }
 
 .text-meta {
@@ -1526,7 +1543,7 @@ p {
   grid-area: dates;
   align-self: start;
   margin-bottom: var(--spacing-1);
-  font-family: var(--font-code, var(--font-mono)); /* metadata: the --font-code face once that token lands (feat/learning-page), Geist until then */
+  font-family: var(--font-code);
   font-size: var(--text-meta);
   line-height: 1.6;
   color: var(--color-ink-muted);
@@ -1945,7 +1962,7 @@ p {
 /* what is being built: one muted line under the link columns */
 .building-line {
   margin: 0;
-  font-family: var(--font-code, var(--font-mono)); /* metadata: the --font-code face once that token lands (feat/learning-page), Geist until then */
+  font-family: var(--font-code);
   font-size: var(--text-meta);
   line-height: 1.5;
   color: var(--color-ink-muted);
@@ -2206,7 +2223,7 @@ p {
 }
 
 .term-tip__tag {
-  font-family: var(--font-code, var(--font-mono)); /* metadata: the --font-code face once that token lands (feat/learning-page), Geist until then */
+  font-family: var(--font-code);
   font-size: var(--text-meta);
   opacity: 0.8;
 }
@@ -2328,7 +2345,7 @@ p {
   right: 0;
   display: none;
   white-space: nowrap;
-  font-family: var(--font-code, var(--font-mono)); /* metadata: the --font-code face once that token lands (feat/learning-page), Geist until then */
+  font-family: var(--font-code);
   font-size: var(--text-meta); /* 14px: the site floor, not 13 */
   font-weight: 400;
   letter-spacing: 0.02em;

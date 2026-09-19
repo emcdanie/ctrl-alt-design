@@ -80,6 +80,11 @@ override the constitution.
   the shared `.card-statement` recipe (Geist 700 at `--font-card-title`), card titles the shared
   `.heading-item`. Enforced by the Unique-in-card check in `audit:reuse`.
 - Geist = everything else. Eyebrows stay Geist caps with `--tracking-eyebrow`.
+- **Code role (Elleta, 2026-09-19, learning build).** Geist Mono returns as ONE role, not a third
+  face: `--font-code`, for metadata only (dates, stat lines, the inspector cursor label, the Term
+  popover's word line, code-comment notes `// ...`, credential IDs). Never headings, body, buttons
+  or nav. `audit:fonts` allows the mono family only on the `--font-code` token line and fails
+  `--font-code` on heading, body, button or nav selectors and elements.
 - **Style rule going forward (Elleta, 2026-09-18, about-rebuild lock).** No eyebrow label above
   every heading. One iris word per display heading, only the word that matters (use the `accent`
   prop). Never on card titles or body text. No card grids unless the content really is a set
@@ -203,7 +208,8 @@ Must pass before any work is "done":
 - `audit:controls` — keycap used as filter/toggle/sort fails; >1 primary per view fails; filters/toggles
   missing `aria-pressed`/`aria-current` fail.
 - `audit:fonts` — any face other than the Unique/Geist tokens fails; Unique set on anything but
-  the ELLETA wordmarks or the BELLA logo fails; any mono family reference fails.
+  the ELLETA wordmarks or the BELLA logo fails; any mono family reference outside the `--font-code`
+  token fails, and `--font-code` on headings, body, buttons or nav fails.
 - `audit:tokens` — colour literals and raw spacing (>=4px) in `app/**`/`components/**` fail;
   `token-waiver:` inline comments mark the reviewed proto-exact/artwork exceptions.
 - `audit:parity` — every case-study slug has exactly one `WORK_ITEMS` row and vice versa; side
