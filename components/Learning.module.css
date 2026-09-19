@@ -21,16 +21,45 @@
   color: var(--color-ink);
 }
 
+/* one row: the four newest certificates and a "+N more" link. Below
+   900px the row scrolls sideways; it never wraps to a second row. */
 .badges {
   list-style: none;
+  margin: 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
+  min-width: 0;
+  max-width: 100%;
+  /* the containing block for the sr-only text, so the scroller clips it */
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
   gap: var(--spacing-2);
 }
 
+@media (max-width: 899px) {
+  .badges {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(15rem, 1fr) auto;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding-bottom: var(--spacing-2);
+  }
+
+  .badges > li {
+    scroll-snap-align: start;
+  }
+}
+
+.badges > li {
+  display: flex;
+  min-width: 0;
+}
+
 .badge {
-  display: inline-flex;
+  display: flex;
+  flex: 1;
+  min-width: 0;
   align-items: center;
   gap: var(--spacing-3);
   min-height: var(--spacing-touch-target);
@@ -43,6 +72,16 @@
   transition:
     transform var(--motion-duration-normal) var(--motion-easing-standard),
     box-shadow var(--motion-duration-normal) var(--motion-easing-standard);
+}
+
+.badgeMore {
+  padding: var(--spacing-1) var(--spacing-4);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--color-accent-ink);
+  background: var(--color-semantic-accent-subtle);
+  border-color: var(--color-semantic-accent-border);
 }
 
 .badge:hover,
@@ -63,15 +102,23 @@
   width: var(--spacing-8);
   height: var(--spacing-8);
   border-radius: var(--radius-full);
-  background: var(--color-accent-iris);
-  color: var(--color-semantic-background);
+  background: var(--color-semantic-accent-subtle);
+  color: var(--color-accent-ink);
   font-size: var(--text-meta);
   font-weight: 700;
 }
 
 .badgeText {
   display: grid;
+  min-width: 0;
   line-height: 1.25;
+}
+
+.badgeTitle,
+.badgeIssuer {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .badgeTitle {
@@ -85,8 +132,6 @@
 }
 
 .next-up-meta {
-  font-family: var(--font-code);
-  font-size: var(--text-meta);
   color: var(--color-ink-muted);
 }
 
@@ -128,8 +173,6 @@
   font-family: var(--font-body);
   font-size: var(--text-meta);
   font-weight: 600;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
   color: var(--color-eyebrow);
 }
 
@@ -142,6 +185,14 @@
 /* chips are 36px tall at every width (44px on touch, from FilterChip) */
 .chip {
   min-height: 2.25rem;
+}
+
+/* pressed chips: iris-soft, not the solid inverse fill */
+.page .chip[aria-pressed="true"],
+.mapListBtn[aria-pressed="true"] {
+  background: var(--color-semantic-accent-subtle);
+  border-color: var(--color-accent-iris);
+  color: var(--color-ink);
 }
 
 .chip:focus-visible {
@@ -363,6 +414,14 @@
   overflow-x: auto;
 }
 
+/* under 768px the table gives way to Work's stacked rows */
+.stackTitle {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
 .table {
   min-width: 48rem;
 }
@@ -497,8 +556,6 @@
   font-family: var(--font-body);
   font-size: var(--text-meta);
   font-weight: 600;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
   fill: var(--color-ink-muted);
 }
 
@@ -676,14 +733,26 @@
 }
 
 /* key and detail cards float over the map */
+/* the key and the detail card never cover the drawing (Elleta, 19 Sep
+   2026): they sit in a side column from 1024px and below the map under
+   that. */
 .mapSide {
-  position: absolute;
-  inset: var(--spacing-4) var(--spacing-4) auto var(--spacing-4);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--spacing-4);
-  pointer-events: none;
+  display: grid;
+  align-content: start;
+  gap: var(--spacing-3);
+  padding: 0 var(--spacing-4) var(--spacing-4);
+}
+
+@media (min-width: 1024px) {
+  .map:not(.voices) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 18rem;
+    align-items: start;
+  }
+
+  .map:not(.voices) .mapSide {
+    padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) 0;
+  }
 }
 
 .floatCard {
@@ -696,15 +765,11 @@
   padding: var(--spacing-4);
 }
 
-.keyCard {
-  width: 16rem;
-}
-
 .detailCard {
-  width: 20rem;
-  max-height: 34rem;
   overflow: auto;
 }
+
+
 
 .hidden {
   display: none;
@@ -715,8 +780,6 @@
   font-family: var(--font-body);
   font-size: var(--text-meta);
   font-weight: 600;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
   color: var(--color-eyebrow);
 }
 
@@ -820,12 +883,23 @@
   font-size: var(--text-lead);
 }
 
+/* pills: iris-soft fill, ink text, never solid purple (Elleta, 19 Sep
+   2026). The group and skill variants below swap in their own tint. */
 .pill {
   display: inline-flex;
-  padding: var(--spacing-1) var(--spacing-3);
+  align-items: center;
+  padding: 2px var(--spacing-3);
   border-radius: var(--radius-pill);
+  background: var(--color-semantic-accent-subtle);
+  color: var(--color-ink);
   font-size: var(--text-meta);
   font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.pillProgress {
+  box-shadow: inset 0 0 0 1px var(--color-semantic-accent-border);
 }
 
 .pillS,
@@ -876,8 +950,6 @@
   margin: var(--spacing-3) 0 var(--spacing-1);
   font-size: var(--text-meta);
   font-weight: 600;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
   color: var(--color-eyebrow);
 }
 
@@ -932,25 +1004,8 @@
   color: var(--color-ink);
 }
 
-.mapListBtn[aria-pressed="true"] {
-  background: var(--color-semantic-background-inverse);
-  border-color: var(--color-semantic-background-inverse);
-  color: var(--color-semantic-text-inverse);
-}
 
 @media (max-width: 860px) {
-  .mapSide {
-    position: static;
-    display: grid;
-    padding: 0 var(--spacing-3) var(--spacing-3);
-  }
-
-  .keyCard,
-  .detailCard {
-    width: auto;
-    max-height: none;
-  }
-
   .help-meta {
     position: static;
     padding: 0 var(--spacing-3) var(--spacing-3);
@@ -958,7 +1013,8 @@
 }
 
 @media (max-width: 699px) {
-  .mapStage {
+  .mapStage svg,
+  .mapStage .help-meta {
     display: none;
   }
 
@@ -1038,4 +1094,18 @@
   .badge:focus-visible {
     transform: none;
   }
+}
+
+/* ── Sentence case on this page (Elleta, 19 Sep 2026): no all-caps on
+   any label, chip, switcher item or heading. The shared primitives set
+   caps site-wide (the Section label, SegmentedControl, the Work table
+   headers), so this page opts them out here. ── */
+.page :global(.l-section__label),
+.page :global(.seg-control button),
+.page table thead th,
+.page table thead th button,
+.page table tbody th button {
+  text-transform: none;
+  letter-spacing: normal;
+  font-family: var(--font-body);
 }

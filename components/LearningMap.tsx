@@ -2,10 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { LEARNING, OFF_MAP, formatMonth, isCertificate, type LearningEntry } from "@/content/learning";
+import { COUNTS, LEARNING, countTopic, formatMonth, isCertificate, onMap, type LearningEntry } from "@/content/learning";
 import { SKILLS, slugify, type Skill } from "@/content/skills";
 import { WORK_ITEMS } from "@/lib/workLibrary";
-import { Tag } from "@/components/ui/Tag";
 import styles from "./Learning.module.css";
 
 /* The learning map (specs/learning, Component map style): three filled
@@ -24,7 +23,7 @@ const VIEWBOX_W = 1240;
 type NodeKind = "L" | "S" | "W";
 type Pos = { x: number; y: number; a: number };
 
-const LEARNED = LEARNING.filter((e) => !OFF_MAP.includes(e.type) && e.topics.length > 0);
+const LEARNED = LEARNING.filter(onMap);
 const PROJECTS = WORK_ITEMS.filter((w) => w.medium === "case study");
 
 const round = (n: number) => Math.round(n * 100) / 100;
@@ -80,6 +79,7 @@ export default function LearningMap({ visible, topicFilters }: { visible: Set<st
   const [dragging, setDragging] = useState(false);
   const drag = useRef<{ x: number; y: number; px: number; py: number } | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
+  const detailRef = useRef<HTMLDivElement>(null);
 
   const on = useMemo(() => (sel ? pathOf(sel) : null), [sel]);
   const clear = useCallback(() => setSel(null), []);
@@ -235,24 +235,39 @@ export default function LearningMap({ visible, topicFilters }: { visible: Set<st
       <ul className={styles.mapList} aria-label="Skills">
         {SKILLS.map((s) => (
           <li key={s}>
-            <button type="button" className={styles.mapListBtn} aria-pressed={sel === `S:${s}`} onClick={() => pick(`S:${s}`)}>
+            <button type="button" className={styles.mapListBtn} aria-pressed={sel === `S:${s}`} onClick={() => {
+                pick(`S:${s}`);
+                requestAnimationFrame(() => detailRef.current?.scrollIntoView({ block: "nearest" }));
+              }}>
               {s}
-              <span className={`text-code ${styles["chip-meta"]}`}>{LEARNED.filter((e) => e.topics.includes(s)).length}</span>
+              <span className={`text-code ${styles["chip-meta"]}`}>{countTopic(s, LEARNED)}</span>
             </button>
           </li>
         ))}
       </ul>
 
+      {/* the detail card and the key sit beside the drawing (below it
+          under 1024px), never over it: neither may cover a node */}
       <div className={styles.mapSide}>
+        <div ref={detailRef} className={`${styles.floatCard} ${styles.detailCard} ${sel ? "" : styles.hidden}`} aria-live="polite">
+          {sel && (
+            <>
+              <button type="button" className={styles.closeBtn} aria-label="Close" onClick={clear}>
+                ×
+              </button>
+              <Detail k={sel} />
+            </>
+          )}
+        </div>
         <div className={`${styles.floatCard} ${styles.keyCard}`}>
           <p className={styles["card-eyebrow"]}>Learning map</p>
           <p className={styles.keyTitle}>
-            {LEARNED.length} sources, {SKILLS.length} skills, {PROJECTS.length} projects
+            {COUNTS.onMap} sources, {SKILLS.length} skills, {PROJECTS.length} projects
           </p>
           <ul className={styles.keyList}>
             <li className={styles["key-meta"]}>
               <i className={`${styles.keySwatch} ${styles.swL}`} aria-hidden="true" />
-              Learned from <span className={styles.codeNote}>{LEARNED.length}</span>
+              Learned from <span className={styles.codeNote}>{COUNTS.onMap}</span>
             </li>
             <li className={styles["key-meta"]}>
               <i className={`${styles.keySwatch} ${styles.swS}`} aria-hidden="true" />
@@ -275,16 +290,6 @@ export default function LearningMap({ visible, topicFilters }: { visible: Set<st
             </button>
           </div>
         </div>
-        <div className={`${styles.floatCard} ${styles.detailCard} ${sel ? "" : styles.hidden}`} aria-live="polite">
-          {sel && (
-            <>
-              <button type="button" className={styles.closeBtn} aria-label="Close" onClick={clear}>
-                ×
-              </button>
-              <Detail k={sel} />
-            </>
-          )}
-        </div>
       </div>
     </div>
   );
@@ -301,7 +306,7 @@ function Detail({ k }: { k: string }) {
     const e = LEARNED.find((x) => x.id === id) as LearningEntry;
     return (
       <>
-        <Tag>{e.type}</Tag>
+        <span className={styles.pill}>{e.type}</span>
         <h3 className={`heading-item ${styles.detailTitle}`}>{e.title}</h3>
         <p className={styles["detail-meta"]}>
           {e.from} · <span className="text-code">{formatMonth(e.date)}</span>

@@ -17,4 +17,5 @@ test; screenshots at 1280 and 390, light and dark, in `_private/screens/learning
 - [x] T11 Out in the world cards.
 - [x] T12 Aria snapshot + redirect test, gate, screenshots, open [CHECK] list.
 - [x] T13 Rebased onto feat/section-pattern (5c4c578, 4f7621e, d5153fc); own font commit dropped; dates, stats and chip counts use .text-code.
-- [ ] T14 Rebase once more when About finishes.
+- [x] T14 Rebased onto feat/section-pattern at 52cefcd.
+- [x] T15 Review pass (Elleta, 19 Sep): no [CHECK] on the page, one badge row + more link, one counts source, iris-soft pills, sentence case, no empty rows, key and detail beside the map.

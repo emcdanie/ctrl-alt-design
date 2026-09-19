@@ -7,7 +7,7 @@ import SectionHeader from "@/components/layout/SectionHeader";
 import Term from "@/components/ui/Term";
 import LearningLibrary, { DateLabel, TypePill, UsedIn } from "@/components/LearningLibrary";
 import VoicesNetwork from "@/components/VoicesNetwork";
-import { LEARNING, NEXT_UP, isCertificate } from "@/content/learning";
+import { CERTIFICATES, COUNTS, LEARNING, NEXT_UP } from "@/content/learning";
 import styles from "@/components/Learning.module.css";
 
 export const metadata: Metadata = {
@@ -17,27 +17,28 @@ export const metadata: Metadata = {
 };
 
 /* /learning (specs/learning, replaces /skills): the opening, the
-   library, the people I follow, and where I showed up. Stats and badges
-   are computed from content/learning.ts. */
+   library, the people I follow, and where I showed up. Stats, badges and
+   every count read COUNTS in content/learning.ts (one source). The hero
+   shows one row of the four newest certificates plus a link to the rest,
+   filtered in the library. */
 
-const count = (types: string[]) => LEARNING.filter((e) => types.includes(e.type)).length;
-const CERTS = LEARNING.filter(isCertificate);
-const PROJECTS = new Set(LEARNING.flatMap((e) => e.usedIn));
 const STATS = [
-  [CERTS.length, "certificates"],
-  [count(["Course", "Workshop"]), "courses and workshops"],
-  [count(["Conference"]), "conferences"],
-  [count(["Hackathon"]), "hackathons"],
-  [count(["Reading"]), "pieces of reading"],
-  [PROJECTS.size, "projects it shows up in"],
+  [COUNTS.certificates, "certificates"],
+  [COUNTS.coursesAndWorkshops, "courses and workshops"],
+  [COUNTS.conferences, "conferences"],
+  [COUNTS.hackathons, "hackathons"],
+  [COUNTS.reading, "pieces of reading"],
+  [COUNTS.projects, "projects it shows up in"],
 ].filter(([n]) => (n as number) > 0) as [number, string][];
+const BADGES = CERTIFICATES.slice(0, 4);
+const MORE = CERTIFICATES.length - BADGES.length;
 const EVENTS = LEARNING.filter((e) => ["Conference", "Workshop", "Hackathon"].includes(e.type)).sort(
   (a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title)
 );
 
 export default function LearningPage() {
   return (
-    <main id="main-content" className="page-shell min-h-screen">
+    <main id="main-content" className={`page-shell min-h-screen ${styles.page}`}>
       <OverlayNav />
 
       <Section id="learning-hero" labelledBy="learning-hero-title">
@@ -56,29 +57,35 @@ export default function LearningPage() {
               </span>
             ))}
           </p>
-          <ul className={styles.badges} aria-label="Certificates">
-            {CERTS.map((e) => (
-              <li key={e.id}>
-                <Link
-                  className={styles.badge}
-                  href={e.certificateUrl ?? `/learning#entry-${e.id}`}
-                  {...(e.certificateUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                >
-                  <span className={styles.badgeCheck} aria-hidden="true">
-                    ✓
-                  </span>
-                  <span className={styles.badgeText}>
-                    <span className={styles.badgeTitle}>{e.title}</span>
-                    <span className={styles.badgeIssuer}>{e.from}</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <p className={styles["next-up-meta"]}>
-            Next up: <span className={NEXT_UP ? undefined : styles.tbc}>{NEXT_UP ?? "[CHECK]"}</span>
-          </p>
+          {NEXT_UP && <p className={`text-code ${styles["next-up-meta"]}`}>Next up: {NEXT_UP}</p>}
         </SectionHeader>
+        <ul className={styles.badges} aria-label="Certificates">
+          {BADGES.map((e) => (
+            <li key={e.id}>
+              <Link
+                className={styles.badge}
+                title={`${e.title}, ${e.from}`}
+                href={e.certificateUrl ?? `/learning#entry-${e.id}`}
+                {...(e.certificateUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              >
+                <span className={styles.badgeCheck} aria-hidden="true">
+                  ✓
+                </span>
+                <span className={styles.badgeText}>
+                  <span className={styles.badgeTitle}>{e.title}</span>
+                  <span className={styles.badgeIssuer}>{e.from}</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+          {MORE > 0 && (
+            <li>
+              <Link className={`${styles.badge} ${styles.badgeMore}`} href="/learning?type=certificate#library">
+                +{MORE} more<span className="sr-only"> certificates</span>
+              </Link>
+            </li>
+          )}
+        </ul>
       </Section>
 
       <Section id="library" label="The library">

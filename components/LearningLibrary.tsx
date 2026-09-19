@@ -5,17 +5,20 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FilterChip } from "@/components/ui/FilterChip";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
-import { StatusPill } from "@/components/ui/StatusPill";
-import { Tag } from "@/components/ui/Tag";
 import { MatrixView } from "@/components/WorkLibrary";
 import LearningMap from "@/components/LearningMap";
 import {
+  COUNTS,
   LEARNING,
   LEARNING_TYPES,
-  OFF_MAP,
+  countTopic,
+  countType,
   formatMonth,
   isCertificate,
+  matchesType,
+  onMap,
   type LearningEntry,
+  type LearningType,
 } from "@/content/learning";
 import { SKILLS, slugify } from "@/content/skills";
 import { WORK_ITEMS } from "@/lib/workLibrary";
@@ -31,29 +34,49 @@ import styles from "./Learning.module.css";
 
 const VIEWS = ["timeline", "table", "map", "skills"] as const;
 type View = (typeof VIEWS)[number];
-const SORTS = ["date-desc", "date-asc", "type-asc", "type-desc", "title-asc", "title-desc"] as const;
+const SORTS = [
+  "date-desc",
+  "date-asc",
+  "type-asc",
+  "type-desc",
+  "title-asc",
+  "title-desc",
+] as const;
 type Sort = (typeof SORTS)[number];
 
 const parseList = (v: string | null) => (v ? v.split(",").filter(Boolean) : []);
-const TYPES = LEARNING_TYPES.filter((t) => LEARNING.some((e) => e.type === t));
-const TOPICS = SKILLS.filter((s) => LEARNING.some((e) => e.topics.includes(s)));
+/* chips come from the data: a type or topic renders only when it has entries */
+const TYPES = LEARNING_TYPES.filter((t) => countType(t) > 0);
+const TOPICS = SKILLS.filter((s) => countTopic(s) > 0);
 
 export const workById = (id: string) => WORK_ITEMS.find((w) => w.id === id);
 export const hashtag = (s: string) => `#${slugify(s)}`;
 
 export function DateLabel({ entry }: { entry: LearningEntry }) {
   return entry.dateToConfirm ? (
-    <span className={`text-code ${styles["date-meta"]} ${styles.tbc}`} title="Date to confirm">
+    <span
+      className={`text-code ${styles["date-meta"]} ${styles.tbc}`}
+      title="Date to confirm"
+    >
       {formatMonth(entry.date)}
       <span className="sr-only"> (date to confirm)</span>
     </span>
   ) : (
-    <span className={`text-code ${styles["date-meta"]}`}>{formatMonth(entry.date)}</span>
+    <span className={`text-code ${styles["date-meta"]}`}>
+      {formatMonth(entry.date)}
+    </span>
   );
 }
 
+/* pills are iris-soft, never solid purple (Elleta, 19 Sep 2026) */
 export function TypePill({ entry }: { entry: LearningEntry }) {
-  return <Tag>{entry.type}</Tag>;
+  return <span className={styles.pill}>{entry.type}</span>;
+}
+
+export function InProgress() {
+  return (
+    <span className={`${styles.pill} ${styles.pillProgress}`}>In progress</span>
+  );
 }
 
 export function UsedIn({ ids }: { ids: string[] }) {
@@ -61,7 +84,10 @@ export function UsedIn({ ids }: { ids: string[] }) {
   if (!items.length) return null;
   return (
     <span className={styles["used-meta"]}>
-      Used in <span className={styles["arrow-meta"]} aria-hidden="true">→</span>{" "}
+      Used in{" "}
+      <span className={styles["arrow-meta"]} aria-hidden="true">
+        →
+      </span>{" "}
       {items.map((w, i) => (
         <Fragment key={w.id}>
           {i > 0 ? ", " : ""}
@@ -77,10 +103,14 @@ export default function LearningLibrary() {
   const pathname = usePathname();
   const params = useSearchParams();
 
-  const view: View = (VIEWS as readonly string[]).includes(params.get("view") ?? "")
+  const view: View = (VIEWS as readonly string[]).includes(
+    params.get("view") ?? "",
+  )
     ? (params.get("view") as View)
     : "timeline";
-  const sort: Sort = (SORTS as readonly string[]).includes(params.get("sort") ?? "")
+  const sort: Sort = (SORTS as readonly string[]).includes(
+    params.get("sort") ?? "",
+  )
     ? (params.get("sort") as Sort)
     : "date-desc";
   const typeFilters = parseList(params.get("type"));
@@ -102,26 +132,41 @@ export default function LearningLibrary() {
       if (opts?.push) router.push(url, { scroll: false });
       else router.replace(url, { scroll: false });
     },
-    [params, pathname, router]
+    [params, pathname, router],
   );
 
   const toggle = (key: "type" | "topic", val: string, current: string[]) =>
-    setParams({ [key]: (current.includes(val) ? current.filter((v) => v !== val) : [...current, val]).join(",") });
+    setParams({
+      [key]: (current.includes(val)
+        ? current.filter((v) => v !== val)
+        : [...current, val]
+      ).join(","),
+    });
 
   const q = urlQuery.trim().toLowerCase();
   const filtered = useMemo(
     () =>
       LEARNING.filter(
         (e) =>
-          (!typeFilters.length || typeFilters.includes(slugify(e.type))) &&
-          (!topicFilters.length || e.topics.some((t) => topicFilters.includes(slugify(t)))) &&
+          (!typeFilters.length ||
+            TYPES.some(
+              (t) =>
+                typeFilters.includes(slugify(t)) &&
+                matchesType(e, t as LearningType),
+            )) &&
+          (!topicFilters.length ||
+            e.topics.some((t) => topicFilters.includes(slugify(t)))) &&
           (!q ||
-            [e.title, e.from, e.type, ...e.topics, ...(e.items ?? [])].join(" ").toLowerCase().includes(q))
+            [e.title, e.from, e.type, ...e.topics, ...(e.items ?? [])]
+              .join(" ")
+              .toLowerCase()
+              .includes(q)),
       ),
-    [typeFilters, topicFilters, q]
+    [typeFilters, topicFilters, q],
   );
 
-  const hasFilters = typeFilters.length > 0 || topicFilters.length > 0 || q.length > 0;
+  const hasFilters =
+    typeFilters.length > 0 || topicFilters.length > 0 || q.length > 0;
   const clearAll = () => {
     setQuery("");
     setParams({ type: null, topic: null, q: null });
@@ -155,7 +200,9 @@ export default function LearningLibrary() {
               onClick={() => toggle("type", slugify(t), typeFilters)}
             >
               {t}
-              <span className={`text-code ${styles["chip-meta"]}`}>{LEARNING.filter((e) => e.type === t).length}</span>
+              <span className={`text-code ${styles["chip-meta"]}`}>
+                {countType(t)}
+              </span>
             </FilterChip>
           ))}
         </ChipRow>
@@ -168,13 +215,15 @@ export default function LearningLibrary() {
               onClick={() => toggle("topic", slugify(s), topicFilters)}
             >
               {s}
-              <span className={`text-code ${styles["chip-meta"]}`}>{LEARNING.filter((e) => e.topics.includes(s)).length}</span>
+              <span className={`text-code ${styles["chip-meta"]}`}>
+                {countTopic(s)}
+              </span>
             </FilterChip>
           ))}
         </ChipRow>
         <div className={styles.toolbar}>
           <p className={styles["results-meta"]} aria-live="polite">
-            <b>{filtered.length}</b> of {LEARNING.length} entries
+            <b>{filtered.length}</b> of {COUNTS.entries} entries
           </p>
           <div className={styles.toolbarEnd}>
             {hasFilters && (
@@ -199,22 +248,44 @@ export default function LearningLibrary() {
 
       <div className={styles.view}>
         {view === "timeline" && <Timeline entries={filtered} />}
-        {view === "table" && <Table entries={filtered} sort={sort} setSort={(s) => setParams({ sort: s })} />}
+        {view === "table" && (
+          <Table
+            entries={filtered}
+            sort={sort}
+            setSort={(s) => setParams({ sort: s })}
+          />
+        )}
         {view === "map" && (
           <LearningMap
             visible={new Set(filtered.map((e) => e.id))}
             topicFilters={topicFilters}
           />
         )}
-        {view === "skills" && <Skills entries={filtered} topicFilters={topicFilters} toggleTopic={(s) => toggle("topic", s, topicFilters)} />}
+        {view === "skills" && (
+          <Skills
+            entries={filtered}
+            topicFilters={topicFilters}
+            toggleTopic={(s) => toggle("topic", s, topicFilters)}
+          />
+        )}
       </div>
     </div>
   );
 }
 
-function ChipRow({ label, children }: { label: string; children: React.ReactNode }) {
+function ChipRow({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className={styles.chipRow} role="group" aria-label={`Filter by ${label.toLowerCase()}`}>
+    <div
+      className={styles.chipRow}
+      role="group"
+      aria-label={`Filter by ${label.toLowerCase()}`}
+    >
       <span className={styles.chipLabel} aria-hidden="true">
         {label}
       </span>
@@ -224,13 +295,17 @@ function ChipRow({ label, children }: { label: string; children: React.ReactNode
 }
 
 function Empty() {
-  return <p className={styles.empty}>Nothing matches. Try clearing a filter.</p>;
+  return (
+    <p className={styles.empty}>Nothing matches. Try clearing a filter.</p>
+  );
 }
 
 /* ── Timeline: by year, newest first ── */
 function Timeline({ entries }: { entries: LearningEntry[] }) {
   if (!entries.length) return <Empty />;
-  const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
+  const sorted = [...entries].sort(
+    (a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title),
+  );
   const years = [...new Set(sorted.map((e) => e.date.slice(0, 4)))];
   return (
     <div className={styles.timeline}>
@@ -243,7 +318,11 @@ function Timeline({ entries }: { entries: LearningEntry[] }) {
             {sorted
               .filter((e) => e.date.startsWith(y))
               .map((e) => (
-                <li key={e.id} id={`entry-${e.id}`} className={isCertificate(e) ? styles.tlCert : undefined}>
+                <li
+                  key={e.id}
+                  id={`entry-${e.id}`}
+                  className={isCertificate(e) ? styles.tlCert : undefined}
+                >
                   <p className={styles.meta}>
                     <DateLabel entry={e} />
                     <TypePill entry={e} />
@@ -251,7 +330,11 @@ function Timeline({ entries }: { entries: LearningEntry[] }) {
                   </p>
                   <h4 className={`heading-item ${styles.entryTitle}`}>
                     {e.link ? (
-                      <a href={e.link} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={e.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         {e.title} <span aria-hidden="true">↗</span>
                         <span className="sr-only"> (opens in a new tab)</span>
                       </a>
@@ -259,10 +342,12 @@ function Timeline({ entries }: { entries: LearningEntry[] }) {
                       e.title
                     )}
                   </h4>
-                  {e.status === "in-progress" && <StatusPill>In progress</StatusPill>}
+                  {e.status === "in-progress" && <InProgress />}
                   {e.took && (
                     <p className={styles.took}>
-                      <span className={styles.tookLabel}>What I took from it: </span>
+                      <span className={styles.tookLabel}>
+                        What I took from it:{" "}
+                      </span>
                       {e.took}
                     </p>
                   )}
@@ -276,14 +361,16 @@ function Timeline({ entries }: { entries: LearningEntry[] }) {
                       </ul>
                     </details>
                   )}
-                  <p className={styles.tags}>
-                    {e.topics.map((t) => (
-                      <span key={t} className={styles.hashtag}>
-                        {hashtag(t)}
-                      </span>
-                    ))}
-                    <UsedIn ids={e.usedIn} />
-                  </p>
+                  {(e.topics.length > 0 || e.usedIn.length > 0) && (
+                    <p className={styles.tags}>
+                      {e.topics.map((t) => (
+                        <span key={t} className={styles.hashtag}>
+                          {hashtag(t)}
+                        </span>
+                      ))}
+                      <UsedIn ids={e.usedIn} />
+                    </p>
+                  )}
                 </li>
               ))}
           </ul>
@@ -294,12 +381,26 @@ function Timeline({ entries }: { entries: LearningEntry[] }) {
 }
 
 /* ── Table: sortable headers carry aria-sort ── */
-function Table({ entries, sort, setSort }: { entries: LearningEntry[]; sort: Sort; setSort: (s: Sort) => void }) {
-  const [key, dir] = sort.split("-") as ["date" | "type" | "title", "asc" | "desc"];
+function Table({
+  entries,
+  sort,
+  setSort,
+}: {
+  entries: LearningEntry[];
+  sort: Sort;
+  setSort: (s: Sort) => void;
+}) {
+  const [key, dir] = sort.split("-") as [
+    "date" | "type" | "title",
+    "asc" | "desc",
+  ];
   const sorted = [...entries].sort((a, b) => {
     const A = key === "date" ? a.date : key === "type" ? a.type : a.title;
     const B = key === "date" ? b.date : key === "type" ? b.type : b.title;
-    return (A.localeCompare(B) || a.title.localeCompare(b.title)) * (dir === "asc" ? 1 : -1);
+    return (
+      (A.localeCompare(B) || a.title.localeCompare(b.title)) *
+      (dir === "asc" ? 1 : -1)
+    );
   });
   const cols: { k: "date" | "type" | "title"; label: string }[] = [
     { k: "date", label: "Date" },
@@ -309,16 +410,27 @@ function Table({ entries, sort, setSort }: { entries: LearningEntry[]; sort: Sor
   const th = (c: (typeof cols)[number]) => {
     const on = key === c.k;
     return (
-      <th key={c.k} scope="col" aria-sort={on ? (dir === "asc" ? "ascending" : "descending") : "none"} className={c.k === "date" ? styles.num : undefined}>
+      <th
+        key={c.k}
+        scope="col"
+        aria-sort={on ? (dir === "asc" ? "ascending" : "descending") : "none"}
+        className={c.k === "date" ? styles.num : undefined}
+      >
         <button
           type="button"
           className={work.thSort}
           onClick={() =>
-            setSort(on ? (`${c.k}-${dir === "asc" ? "desc" : "asc"}` as Sort) : (`${c.k}-${c.k === "date" ? "desc" : "asc"}` as Sort))
+            setSort(
+              on
+                ? (`${c.k}-${dir === "asc" ? "desc" : "asc"}` as Sort)
+                : (`${c.k}-${c.k === "date" ? "desc" : "asc"}` as Sort),
+            )
           }
         >
           {c.label}
-          <span aria-hidden="true">{on ? (dir === "asc" ? " ↑" : " ↓") : " ↕"}</span>
+          <span aria-hidden="true">
+            {on ? (dir === "asc" ? " ↑" : " ↓") : " ↕"}
+          </span>
         </button>
       </th>
     );
@@ -327,8 +439,9 @@ function Table({ entries, sort, setSort }: { entries: LearningEntry[]; sort: Sor
     <div className={`${work.tableWrap} ${styles.tableWrap}`}>
       <table className={`${work.table} ${styles.table}`}>
         <caption className="sr-only">
-          The learning library: date, type, title, who it was from, topics, and the projects it was used in. Date,
-          Type and Title headers sort the table.
+          The learning library: date, type, title, who it was from, topics, and
+          the projects it was used in. Date, Type and Title headers sort the
+          table.
         </caption>
         <thead>
           <tr>
@@ -349,7 +462,7 @@ function Table({ entries, sort, setSort }: { entries: LearningEntry[]; sort: Sor
               </td>
               <th scope="row" className={styles.rowTitle}>
                 {e.title}
-                {e.status === "in-progress" && <StatusPill>In progress</StatusPill>}
+                {e.status === "in-progress" && <InProgress />}
               </th>
               <td>{e.from}</td>
               <td className={styles["topics-meta"]}>{e.topics.join(", ")}</td>
@@ -364,6 +477,25 @@ function Table({ entries, sort, setSort }: { entries: LearningEntry[]; sort: Sor
           ))}
         </tbody>
       </table>
+      {/* below 768px the Work pattern: stacked rows in the same order */}
+      <ul className={work.stackList}>
+        {sorted.map((e) => (
+          <li key={e.id} className={work.stackCard}>
+            <p className={styles.meta}>
+              <DateLabel entry={e} />
+              <TypePill entry={e} />
+              {e.status === "in-progress" && <InProgress />}
+            </p>
+            <p className={styles.stackTitle}>{e.title}</p>
+            <p className={styles["from-meta"]}>{e.from}</p>
+            {e.usedIn.length > 0 && (
+              <p className={styles.tags}>
+                <UsedIn ids={e.usedIn} />
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
       {!entries.length && <Empty />}
     </div>
   );
@@ -398,7 +530,7 @@ function Skills({
   toggleTopic: (slug: string) => void;
 }) {
   const shown = new Set(entries.map((e) => e.id));
-  const onMap = LEARNING.filter((e) => !OFF_MAP.includes(e.type));
+  const mapped = LEARNING.filter(onMap);
   return (
     <>
       <MatrixView
@@ -406,7 +538,7 @@ function Skills({
         skillFilters={topicFilters}
         toggleSkill={toggleTopic}
         learnedFrom={(skill) =>
-          onMap
+          mapped
             .filter((e) => e.topics.includes(skill))
             .map((e) => ({
               id: e.id,
@@ -418,7 +550,10 @@ function Skills({
       />
       <ul className={styles.key} aria-label="Key">
         <li className={styles["key-meta"]}>
-          <i className={`${styles.keyDot} ${styles.keyDotFilled}`} aria-hidden="true" />
+          <i
+            className={`${styles.keyDot} ${styles.keyDotFilled}`}
+            aria-hidden="true"
+          />
           Certificate
         </li>
         <li className={styles["key-meta"]}>
