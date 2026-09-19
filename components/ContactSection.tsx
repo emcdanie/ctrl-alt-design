@@ -122,7 +122,7 @@ export default function ContactSection() {
     lineHeight: 1.5,
     color: "var(--color-ink)",
     outline: "none",
-    transition: "border-color 150ms ease, box-shadow 150ms ease",
+    transition: "border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out)",
     fontFamily: "var(--font-body)",
   });
 

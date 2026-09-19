@@ -106,7 +106,7 @@
   min-height: var(--spacing-touch-target);
   display: inline-flex;
   align-items: center;
-  transition: color 0.15s;
+  transition: color var(--dur-fast) var(--ease-out);
 }
 
 .mxHead:hover {
@@ -126,7 +126,7 @@
 
 .mxCell {
   text-align: center;
-  transition: opacity 0.15s, background 0.15s;
+  transition: opacity var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
 }
 
 /* marked cell: case tint + dot, never colour-only (sr-only text in TSX) */
@@ -402,7 +402,7 @@
 .studyArrow {
   display: inline-block;
   color: var(--color-accent-ink);
-  transition: transform 0.2s;
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
 .studyRow:hover .studyArrow {
@@ -448,7 +448,7 @@
   height: auto;
   border-radius: calc(var(--radius-sm) * 1.5) 0 0 0;
   box-shadow: var(--shadow-soft);
-  transition: transform 0.3s;
+  transition: transform var(--dur-base) var(--ease-out);
 }
 
 .studyRow:hover .tileImg,
@@ -512,7 +512,7 @@
 .mxLearn {
   min-width: 14rem;
   border-right: 1px solid var(--color-border-soft);
-  transition: opacity 0.15s;
+  transition: opacity var(--dur-fast) var(--ease-out);
 }
 
 .mxDots {

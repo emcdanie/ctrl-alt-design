@@ -114,26 +114,26 @@ export default function OverlayNav() {
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
             onMouseLeave={() => setTriggerHovered(false)}
-            className="lg:hidden pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--color-border-medium)] bg-[color:var(--color-glass)] text-[color:var(--color-ink)] shadow-[var(--shadow-soft)] transition-all duration-200 hover:bg-[color:var(--color-glass-strong)]"
+            className="lg:hidden pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--color-border-medium)] bg-[color:var(--color-glass)] text-[color:var(--color-ink)] shadow-[var(--shadow-soft)] transition-all duration-[var(--dur-fast)] hover:bg-[color:var(--color-glass-strong)]"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="overlay-menu"
           >
             <span
-              className="absolute block h-[2px] rounded-full bg-current transition-all duration-200 ease-out"
+              className="absolute block h-[2px] rounded-full bg-current transition-all duration-[var(--dur-fast)] ease-[var(--ease-out)]"
               style={{
                 width: triggerHovered && !open ? "24px" : "20px",
                 transform: open ? "rotate(45deg)" : "translateY(-4px)",
               }}
             />
             <span
-              className="absolute block h-[2px] w-6 rounded-full bg-current transition-all duration-200 ease-out"
+              className="absolute block h-[2px] w-6 rounded-full bg-current transition-all duration-[var(--dur-fast)] ease-[var(--ease-out)]"
               style={{
                 opacity: open ? 0 : triggerHovered ? 1 : 0,
               }}
             />
             <span
-              className="absolute block h-[2px] rounded-full bg-current transition-all duration-200 ease-out"
+              className="absolute block h-[2px] rounded-full bg-current transition-all duration-[var(--dur-fast)] ease-[var(--ease-out)]"
               style={{
                 width: triggerHovered && !open ? "24px" : "20px",
                 transform: open ? "rotate(-45deg)" : "translateY(4px)",
@@ -149,16 +149,16 @@ export default function OverlayNav() {
         ref={menuRef}
         id="overlay-menu"
         inert={!open}
-        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[color:var(--color-ink)] ease-[cubic-bezier(0.76,0,0.24,1)]"
+        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[color:var(--color-ink)] ease-[var(--ease-in-out)]"
         style={{
           clipPath: open ? "inset(0% 0 0% 0)" : "inset(100% 0 0% 0)",
           /* belt-and-braces with the inert guard: closed-menu content can
              never paint or catch focus. visibility flips instantly on
-             open, and waits for the 300ms clip animation on close. */
+             open, and waits for the clip animation (--dur-base) on close. */
           visibility: open ? "visible" : "hidden",
           transitionProperty: "clip-path, visibility",
-          transitionDuration: "300ms, 0s",
-          transitionDelay: open ? "0s, 0s" : "0s, 300ms",
+          transitionDuration: "var(--dur-base), 0s",
+          transitionDelay: open ? "0s, 0s" : "0s, var(--dur-base)",
         }}
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,var(--color-glass-strong),transparent_36%),radial-gradient(circle_at_bottom_right,var(--color-semantic-accent-subtle),transparent_34%)]" />
@@ -179,7 +179,7 @@ export default function OverlayNav() {
               const dimmed = anyHovered && !isHovered;
 
               const sharedClasses =
-                "font-[family:var(--font-display)] text-[length:var(--font-hero)] font-normal leading-[1.02] tracking-[-0.02em] transition-colors duration-150";
+                "font-[family:var(--font-display)] text-[length:var(--font-hero)] font-normal leading-[1.02] tracking-[-0.02em] transition-colors duration-[var(--dur-fast)]";
               const colorClass = dimmed ? "text-[color:var(--color-ink-muted)]" : "text-[color:var(--color-ink)]";
 
               return (

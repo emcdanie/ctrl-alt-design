@@ -337,6 +337,15 @@ body {
      panel, bubble and orb set went with BubbleCluster (19 Sep 2026). */
 
   /* Case-card cover placeholder — muted warm, never bright (IA spec) */
+  /* Motion (polish pass, 19 Sep 2026): one motion language. fast and
+     ease-out alias BELLA's tokens; base, slow and ease-in-out are
+     site-side until BELLA takes them (its normal is 250ms, slow 400ms). */
+  --dur-fast: var(--motion-duration-fast); /* .15s */
+  --dur-base: 0.3s;
+  --dur-slow: 0.6s;
+  --ease-out: var(--motion-easing-out); /* cubic-bezier(.22,1,.36,1) */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
   /* pattern-study tile (Work, 19 Sep 2026): one ground behind every
      framed crop */
   --tile: #E3DED1;
@@ -949,7 +958,7 @@ p {
 }
 
 .card-hover {
-  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
 }
 
 .divider {
@@ -1098,7 +1107,7 @@ p {
   font-weight: 400;
   color: var(--color-ink);
   text-decoration: none;
-  transition: color 150ms ease, background-color 150ms ease;
+  transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
 }
 
 .nav-link:hover,
@@ -1129,7 +1138,7 @@ p {
   font-weight: 500;
   color: var(--color-semantic-background);
   background: var(--color-accent-ink);
-  transition: background-color 150ms ease;
+  transition: background-color var(--dur-fast) var(--ease-out);
 }
 
 .get-in-touch__trigger:hover,
@@ -1184,7 +1193,7 @@ p {
 
 @media (prefers-reduced-motion: no-preference) {
   .illo {
-    transition: transform 200ms ease;
+    transition: transform var(--dur-fast) var(--ease-out);
   }
 
   .illo:hover {
@@ -1518,7 +1527,7 @@ p {
 }
 
 .accordion[data-ready] .accordion__chev {
-  transition: transform 250ms ease;
+  transition: transform var(--dur-base) var(--ease-out);
 }
 
 .accordion.is-open .accordion__chev {
@@ -1540,13 +1549,13 @@ p {
    load is instant */
 .accordion[data-ready] .accordion__panel {
   transition:
-    grid-template-rows 250ms ease,
+    grid-template-rows var(--dur-base) var(--ease-out),
     visibility 0s linear 250ms;
 }
 
 .accordion[data-ready].is-open .accordion__panel {
   transition:
-    grid-template-rows 250ms ease,
+    grid-template-rows var(--dur-base) var(--ease-out),
     visibility 0s;
 }
 
@@ -1807,7 +1816,7 @@ p {
 
 @media (prefers-reduced-motion: no-preference) {
   .quotes__mark {
-    transition: transform 350ms cubic-bezier(0.3, 1.6, 0.5, 1);
+    transition: transform var(--dur-base) var(--ease-out);
   }
 
   .quotes__item:hover .quotes__mark {
@@ -2161,7 +2170,7 @@ p {
 }
 
 .footer-trail--go .footer-trail__paw {
-  animation: footer-paw 240ms ease-out forwards;
+  animation: footer-paw var(--dur-base) var(--ease-out) forwards;
   animation-delay: calc(var(--i) * 80ms);
 }
 
@@ -2317,7 +2326,7 @@ p {
 }
 
 .term__word.is-bouncing .term__l {
-  animation: term-bounce 0.5s ease both;
+  animation: term-bounce var(--dur-slow) var(--ease-out) both;
   animation-delay: calc(var(--i) * 35ms);
 }
 
@@ -2460,7 +2469,7 @@ p {
   z-index: 10000;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.15s ease;
+  transition: opacity var(--dur-fast) var(--ease-out);
   will-change: transform, width, height;
 }
 
@@ -2830,7 +2839,7 @@ p {
   padding: var(--trace-w);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity var(--dur-fast) var(--ease-out);
   background: conic-gradient(
     from var(--trace-ang),
     var(--cc) 0deg,
@@ -2898,7 +2907,7 @@ p {
   text-decoration: none;
   color: var(--color-accent-ink);
   background: transparent;
-  transition: background 0.15s, color 0.15s;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
 
 .btn-key:hover {
@@ -2929,7 +2938,7 @@ p {
   border-radius: var(--component-button-shape-default);
   background: var(--component-button-primary-fill-hi);
   box-shadow: none;
-  transition: background 0.15s;
+  transition: background var(--dur-fast) var(--ease-out);
 }
 
 .btn-key--primary:hover {
@@ -3138,7 +3147,7 @@ textarea:focus-visible {
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: opacity 0.15s;
+  transition: opacity var(--dur-fast) var(--ease-out);
 }
 
 .demo-link:hover {
@@ -3180,7 +3189,7 @@ textarea:focus-visible {
   text-align: left;
   color: var(--color-ink);
   cursor: pointer;
-  transition: color 150ms ease;
+  transition: color var(--dur-fast) var(--ease-out);
 }
 
 .process-accordion-trigger:hover {
@@ -3217,7 +3226,7 @@ textarea:focus-visible {
   align-items: center;
   justify-content: center;
   color: var(--color-ink-muted);
-  transition: transform 180ms ease-out;
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
 .process-accordion-chevron[data-open="true"] {
@@ -3227,7 +3236,7 @@ textarea:focus-visible {
 .process-accordion-panel {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 180ms ease-out;
+  transition: grid-template-rows var(--dur-fast) var(--ease-out);
 }
 
 .process-accordion-panel[data-open="true"] {
@@ -3270,7 +3279,7 @@ textarea:focus-visible {
   color: var(--color-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: opacity 150ms ease;
+  transition: opacity var(--dur-fast) var(--ease-out);
 }
 
 .process-accordion-link:hover {
@@ -3307,7 +3316,7 @@ textarea:focus-visible {
 
 /* ─── Micro-interactions ───────────────────────────────────────── */
 .card-interactive {
-  transition: transform 0.24s ease, box-shadow 0.24s ease;
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
 }
 
 .card-interactive:hover {
@@ -3323,7 +3332,7 @@ textarea:focus-visible {
 
 /* Smooth expand */
 .expand-transition {
-  transition: max-height 0.35s ease, opacity 0.25s ease;
+  transition: max-height var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
   overflow: hidden;
 }
 
@@ -5417,7 +5426,7 @@ textarea:focus-visible {
   opacity: 0.55;
   stroke-dasharray: var(--len);
   stroke-dashoffset: var(--len);
-  transition: stroke-dashoffset 0.6s ease;
+  transition: stroke-dashoffset var(--dur-slow) var(--ease-out);
 }
 
 .spec-stage.in .csp .ds-leaders path {
@@ -5427,7 +5436,7 @@ textarea:focus-visible {
 .csp .ds-leaders .dot {
   fill: var(--color-accent-ink);
   opacity: 0;
-  transition: opacity 0.3s ease 0.55s;
+  transition: opacity var(--dur-base) var(--ease-out) 0.55s;
 }
 
 .csp .ds-leaders .ring {
@@ -5435,7 +5444,7 @@ textarea:focus-visible {
   stroke-width: 1.5;
   fill: none;
   opacity: 0;
-  transition: opacity 0.3s ease 0.55s;
+  transition: opacity var(--dur-base) var(--ease-out) 0.55s;
 }
 
 .spec-stage.in .csp .ds-leaders .dot,
@@ -5469,7 +5478,7 @@ textarea:focus-visible {
   cursor: pointer;
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.3s ease, color 0.3s ease;
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
 }
 
 .spec-stage.in .csp-flag {
@@ -5620,7 +5629,7 @@ textarea:focus-visible {
 /* the one highlight recipe: a flag's zone rings the exact part */
 .spec-stage[data-hl] [data-part],
 .gv-host[data-hl] [data-part] {
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow var(--dur-fast) var(--ease-out);
 }
 
 .spec-stage[data-hl="sphere"] [data-part="sphere"],
@@ -5963,7 +5972,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-radius: var(--radius-full);
   padding: var(--spacing-1) var(--spacing-2);
   background: var(--color-card);
-  transition: color 0.3s ease, border-color 0.3s ease;
+  transition: color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
 }
 
 .gv-rail__glyph {
@@ -6402,7 +6411,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin: 0 auto;
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
 }
 .cs2-endreveal.is-visible .cs2-endreveal__inner {
   opacity: 1;
@@ -6451,7 +6460,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-radius: var(--radius-2xl);
   padding: var(--spacing-3) var(--spacing-4);
   box-shadow: var(--shadow-md);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
 }
 .cs2-endreveal__next:hover {
   transform: translateY(-2px);
@@ -6519,7 +6528,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-radius: var(--radius-md);
   padding: var(--spacing-2) var(--spacing-5);
   cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
 }
 .cs2-endreveal__share:hover {
   border-color: var(--color-border-medium);
