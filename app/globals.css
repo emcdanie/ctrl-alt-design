@@ -442,7 +442,9 @@ body {
    flip with [data-theme]. */
 
 [data-theme="dark"] {
-  /* surfaces: 4% toward the cream ink, so lighter than navy */
+  /* the dark ground (also set on body below, where the dark inks live) */
+  --color-semantic-background: #110F0D;
+  /* surfaces: 4% toward the cream ink, so lighter than the ground */
   --surface-card: color-mix(in srgb, var(--color-semantic-background), var(--color-navy-ink) 4%);
   --border-faint: color-mix(in srgb, var(--color-navy-ink) 12%, transparent);
   /* case accents as TEXT flip to the bright variant on navy (deep is
@@ -462,9 +464,9 @@ body {
      case-writing salmon did) */
   --gov-clay-text: #EDC3A2;
   --gov-grey-text: #D0CAD8;
-  /* thesis cards in dark keep the navy specimen ground (21 Jul
-     theme-aware reversal; light values at the :root definition) */
-  --thesis-band-ground: #1B1B40;
+  /* thesis cards in dark sit on the dark card surface (was the navy
+     specimen ground; navy left dark mode 19 Sep 2026) */
+  --thesis-band-ground: #1B1916;
   --thesis-band-ink: #F4EFE6;
   /* cover placeholder flips as a SET in dark (cover-contrast fix,
      21 Jul): dark warm plate, parchment-warm ink; >=3:1 large-text on
@@ -807,23 +809,28 @@ body {
 [data-theme="dark"] body {
   --color-ink: #F4EFE6;
   --color-ink-soft: #E6E1D6;
-  /* AAA bump (Pass B 2026-07-18): 7.5:1 on the elevated surface
-     #2B2B5C, 8.4 on card, 9.4 on page (was #B9B4C7, 6.5 on surface) */
-  --color-ink-muted: #C6C2D4;
-  --color-muted: #C6C2D4;
-  --color-page: #1B1B40;
-  --color-cream: #232350;
+  /* muted on the warm dark ground (19 Sep 2026, the About mock): 7.56:1
+     on the ground, 6.93 on the card, 6.19 on the raised surface (AA;
+     AAA only on the ground) */
+  --color-ink-muted: #A8A29A;
+  --color-muted: #A8A29A;
+  /* dark ground (Elleta, 18 Sep 2026): warm near-black #110F0D, not
+     navy. Navy stays for the footer and the light-theme primary only.
+     Surfaces lift from the ground toward the cream ink. */
+  --color-semantic-background: #110F0D;
+  --color-page: #110F0D;
+  --color-cream: #1B1916;
   /* dark leg of the same separation fix: ground stays navy #1B1B40,
      the CARD lifts so its edge reads without a wash. --color-surface is
      deliberately left alone: lifting it too cost the mint skill chips
      their AA margin (4.47:1) and the separation never needed it. */
-  --color-semantic-surface: #28285C;
+  --color-semantic-surface: #1B1916;
   --color-card: var(--color-semantic-surface);
   --color-semantic-surface-inset: var(--color-surface);
-  --color-surface: #2B2B5C;
-  --color-white-pure: #2B2B5C;
-  --color-glass: rgba(35, 35, 80, 0.68);
-  --color-glass-strong: rgba(35, 35, 80, 0.82);
+  --color-surface: #252320;
+  --color-white-pure: #252320;
+  --color-glass: rgba(27, 25, 22, 0.68);
+  --color-glass-strong: rgba(27, 25, 22, 0.82);
   --color-tag-bg: rgba(244, 239, 230, 0.08);
   --color-tag-border: rgba(244, 239, 230, 0.16);
   /* dark leg of the verdict pair: lifted so both clear AA on the card */
@@ -1227,7 +1234,7 @@ p {
 }
 
 /* Metadata tier (14px, short labels only). --color-ink-muted measured
-   7.96:1 on the light ground (#F1EFE6), 9.45:1 on navy (#1B1B40). */
+   7.96:1 on the light ground (#F1EFE6), 7.56:1 on the dark ground (#110F0D). */
 .section-row__meta,
 .site-footer__label {
   margin: 0;
@@ -1755,7 +1762,8 @@ p {
   overflow: hidden;
 }
 
-/* dark mode: the page ground is navy too, so a hairline separates */
+/* dark mode: the navy footer on the near-black ground; a hairline
+   still marks the edge */
 [data-theme="dark"] .site-footer {
   border-top: 1px solid color-mix(in srgb, var(--color-navy-ink) 10%, transparent);
 }
@@ -6210,8 +6218,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   text-align: center;
 }
 [data-theme="dark"] .cs2-endreveal {
-  --enddome-top: #2E2942;   /* lifted plum-navy dome */
-  --enddome-mid: #262238;
+  --enddome-top: #2A2622;   /* lifted warm dome (was plum-navy) */
+  --enddome-mid: #211E1B;
 }
 
 /* the dome is an in-flow background glow rising from the section floor;
