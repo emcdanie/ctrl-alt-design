@@ -22,7 +22,7 @@ const ROUTES = [
   "/privacy",
   "/accessibility",
   "/no-such-page",
-  "/skills",
+  "/learning",
   "/design-system",
   "/design-system/inspector",
   "/quick",

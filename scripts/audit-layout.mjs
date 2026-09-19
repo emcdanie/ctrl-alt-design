@@ -30,7 +30,7 @@ const ROUTES = {
   "app/quick/page.tsx": { allow: PENDING },
   "app/design-system/page.tsx": { allow: PENDING },
   "app/design-system/inspector/page.tsx": { allow: PENDING },
-  "app/skills/page.tsx": { allow: PENDING },
+  "app/learning/page.tsx": "section",
   "app/case-studies/[slug]/page.tsx": { allow: PENDING },
   "app/not-found.tsx": { allow: PENDING },
   "app/privacy/page.tsx": { allow: PENDING },

@@ -21,7 +21,7 @@ const parse = (s) => {
 };
 let totalBad = 0;
 
-for (const url of [BASE + "/", BASE + "/case-studies/design-system-transformation", BASE + "/work", BASE + "/about", BASE + "/contact", BASE + "/case-studies/chip", BASE + "/case-studies/brad-frost", BASE + "/skills", BASE + "/design-system", BASE + "/quick"]) {
+for (const url of [BASE + "/", BASE + "/case-studies/design-system-transformation", BASE + "/work", BASE + "/about", BASE + "/contact", BASE + "/case-studies/chip", BASE + "/case-studies/brad-frost", BASE + "/learning", BASE + "/design-system", BASE + "/quick"]) {
   await page.goto(url, { waitUntil: "domcontentloaded" });
   await page.evaluate(() => { document.documentElement.dataset.theme = "dark"; });
   await page.waitForTimeout(1500);

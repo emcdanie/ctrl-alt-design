@@ -34,7 +34,7 @@ const COLUMNS: { label: string; links: React.ReactNode[] }[] = [
     links: [
       <Link key="work" className="site-footer__link" href="/work">Work</Link>,
       <Link key="system" className="site-footer__link" href="/design-system">System</Link>,
-      <Link key="skills" className="site-footer__link" href="/skills">Skills</Link>,
+      <Link key="learning" className="site-footer__link" href="/learning">Learning</Link>,
       <Link key="about" className="site-footer__link" href="/about">About</Link>,
     ],
   },

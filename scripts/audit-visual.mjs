@@ -261,7 +261,7 @@ for (const theme of ["light", "dark"]) {
   ];
   const ROUTES = [
     "/", "/work", "/work?view=map", "/work?view=table", "/about", "/contact",
-    "/skills", "/design-system", "/design-system/inspector", "/quick",
+    "/learning", "/design-system", "/design-system/inspector", "/quick",
     "/case-studies/chip", "/case-studies/brad-frost",
     "/case-studies/design-system-transformation",
   ];

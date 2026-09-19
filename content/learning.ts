@@ -352,3 +352,7 @@ export const isCertificate = (e: LearningEntry) =>
 
 // [CHECK] Next up: her pick for what she learns next (the hero line).
 export const NEXT_UP: string | null = null;
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+/** "2026-08" -> "Aug 2026" */
+export const formatMonth = (d: string) => `${MONTHS[Number(d.slice(5, 7)) - 1]} ${d.slice(0, 4)}`;
