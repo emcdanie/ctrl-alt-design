@@ -13,27 +13,11 @@
       - link "Atomic Design Certification Course Brad Frost":
         - /url: /learning#entry-atomic-design
     - listitem:
-      - link "Smart Interface Design Patterns Vitaly Friedman":
-        - /url: /learning#entry-smart-interface-design-patterns
-    - listitem:
-      - 'link "Mobile UX Design: The Beginner''s Guide Interaction Design Foundation"':
-        - /url: /learning#entry-ixdf-mobile-ux
-    - listitem:
-      - link "Design for a Better World with Don Norman Interaction Design Foundation, Don Norman":
-        - /url: /learning#entry-ixdf-better-world
-    - listitem:
-      - link "Design for the 21st Century with Don Norman Interaction Design Foundation, Don Norman":
-        - /url: /learning#entry-ixdf-21st-century
-    - listitem:
-      - 'link "User Experience: The Beginner''s Guide Interaction Design Foundation"':
-        - /url: /learning#entry-ixdf-ux-beginners
-    - listitem:
-      - link /Into Design Systems Conference \d+ Into Design Systems, online/:
-        - /url: /learning#entry-ids-conference-2025
-    - listitem:
       - link /Measuring UX Impact Vitaly Friedman, SmashingConf Amsterdam \d+/:
         - /url: /learning#entry-measuring-ux-impact-workshop
     - listitem:
       - link "Into Design Systems AI Hackathon Into Design Systems":
         - /url: /learning#entry-ids-ai-hackathon
-  - paragraph: "Next up: [CHECK]"
+    - listitem:
+      - link "+6 more certificates":
+        - /url: /learning?type=certificate#library

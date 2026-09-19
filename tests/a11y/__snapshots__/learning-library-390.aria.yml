@@ -6,7 +6,7 @@
   - searchbox "Search the library"
   - group "Filter by type":
     - button "Course 3"
-    - button "Certificate 7"
+    - button /Certificate \d+/
     - button "Workshop 5"
     - button "Conference 3"
     - button "Hackathon 2"
@@ -66,10 +66,7 @@
       - heading "AI and Design Systems" [level=4]
       - text: In progress
       - paragraph: "What I took from it: A system an AI can read is a system people can read too."
-      - paragraph:
-        - text: "#ai-enabled-design #design-system-governance #design-systems Used in"
-        - link "CHIP":
-          - /url: /case-studies/chip
+      - paragraph: "#ai-enabled-design #design-system-governance #design-systems"
     - listitem:
       - paragraph: /Apr \d+ Hackathon Anthropic, Cerebral Valley/
       - 'heading "Built with Opus 4.7: a Claude Code hackathon" [level=4]'
