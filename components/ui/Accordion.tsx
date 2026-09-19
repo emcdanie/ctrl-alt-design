@@ -50,7 +50,7 @@ export default function AccordionItem({
           onClick={() => setOpen((o) => !o)}
         >
           {heading}
-          <Icon name="NavArrowDown" size="sm" className="accordion__chev" />
+          <Icon name="NavArrowDown" size="md" className="accordion__chev" />
         </button>
       </H>
       <div id={`${id}-panel`} role="region" aria-labelledby={`${id}-trigger`} className="accordion__panel">

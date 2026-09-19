@@ -5,8 +5,9 @@ import AccordionItem from "@/components/ui/Accordion";
 import { WORK_ITEMS } from "@/lib/workLibrary";
 
 /* Experience on About (step 3, 18 Sep 2026; accordion 18 Sep evening):
-   one AccordionItem per role, in one panel. Closed: dates, company
-   (heading-3) with a Current pill, the title, a chevron. Open: the
+   one AccordionItem per role, in one panel (the About mock). Closed:
+   dates (.text-code), then company (heading-3) with a Current pill
+   and the title under it, a chevron. Open: the
    clients line, up to three "What I did" lines from the data below,
    then a "Case study: <title> →" link. The current role opens by
    default.
@@ -126,19 +127,21 @@ export default function ExperienceSection() {
                 {/* DOM order is reading order: dates, company, role. The
                     spaces keep the button's name from running words
                     together. */}
-                <span className="xp__dates">{r.dates}</span>{" "}
-                <span className="xp__company">
-                  {r.company}
-                  {r.current ? (
-                    <>
-                      <span className="sr-only">, current role</span>{" "}
-                      <span className="xp__current" aria-hidden="true">
-                        Current
-                      </span>
-                    </>
-                  ) : null}
-                </span>{" "}
-                <span className="xp__role">{r.role}</span>
+                <span className="text-code xp__dates">{r.dates}</span>{" "}
+                <span className="xp__who">
+                  <span className="xp__company">
+                    {r.company}
+                    {r.current ? (
+                      <>
+                        <span className="sr-only">, current role</span>{" "}
+                        <span className="xp__current" aria-hidden="true">
+                          Current
+                        </span>
+                      </>
+                    ) : null}
+                  </span>{" "}
+                  <span className="xp__role">{r.role}</span>
+                </span>
               </>
             }
           >

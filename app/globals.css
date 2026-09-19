@@ -141,12 +141,16 @@ body {
      measures. New tokens go in this block, never mid-file. Fluid pairs
      run 390 -> 1440. */
   /* Surfaces (19 Sep 2026, About build): flat. --surface-card is the
-     page ground pulled 4% toward the ink (darker here; the dark block
+     page ground (--color-page) pulled 4% toward the ink (darker here; the dark block
      pulls it toward the cream ink, so lighter on navy). */
-  --surface-card: color-mix(in srgb, var(--color-semantic-background), var(--color-ink) 4%);
+  --surface-card: color-mix(in srgb, var(--color-page), var(--color-ink) 4%);
   --border-faint: color-mix(in srgb, var(--color-ink) 10%, transparent);
   --radius-card: 1rem;
   --radius-pill: 999px;
+  /* a soft iris wash: row hover (10%, the mock); the Current pill takes
+     6% so its iris text clears AA (4.61:1 on the card; 10% gave 4.37) */
+  --iris-soft: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
+  --iris-pill: color-mix(in srgb, var(--color-accent-ink) 6%, transparent);
   --radius-popover: 0.75rem;
   /* Term: the dotted iris underline (thicker, further off in headings) */
   --term-dot: 1.5px;
@@ -447,6 +451,8 @@ body {
   /* surfaces: 4% toward the cream ink, so lighter than the ground */
   --surface-card: color-mix(in srgb, var(--color-semantic-background), var(--color-navy-ink) 4%);
   --border-faint: color-mix(in srgb, var(--color-navy-ink) 12%, transparent);
+  --iris-soft: color-mix(in srgb, var(--color-accent-ink) 14%, transparent);
+  --iris-pill: var(--iris-soft); /* 6.53:1 on the dark card */
   /* case accents as TEXT flip to the bright variant on navy (deep is
      calibrated for light cards only) */
   --case-code-first-text: var(--case-code-first-hi);
@@ -1543,13 +1549,15 @@ p {
   }
 }
 
-/* Experience: one --surface-card panel, hairlines between the rows.
-   From 1024px a row is dates | company, Current and title | chevron
-   (11rem 1fr auto); below it the dates sit above the company. The
-   whole row is the button. */
+/* Experience: one --surface-card panel, hairlines between the rows
+   (the About mock). Phones: dates, then company and title, in column 1;
+   the chevron in column 2 across both rows, centred. From 1024px:
+   11rem 1fr auto, one row. The whole row is the button; it takes a
+   soft iris wash on hover, only where hover exists, so a tap never
+   leaves it stuck. */
 .xp-list {
   margin-bottom: var(--space-stack-lg); /* the View CV button follows */
-  padding-inline: var(--spacing-6);
+  overflow: hidden;
   background: var(--surface-card);
   border: 1px solid var(--border-faint);
   border-radius: var(--radius-card);
@@ -1561,81 +1569,106 @@ p {
 
 .xp .accordion__trigger {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--icon-sm);
-  grid-template-areas:
-    "dates   chev"
-    "company chev"
-    "role    chev";
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--spacing-1) var(--spacing-6);
   align-items: center;
-  column-gap: var(--spacing-4);
   min-height: var(--spacing-touch-target);
-  padding: var(--spacing-5) 0;
+  padding: var(--spacing-5) var(--spacing-6);
+}
+
+.xp__dates {
+  grid-column: 1;
+  grid-row: 1;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.xp__who {
+  grid-column: 1;
+  grid-row: 2;
+  display: block;
+}
+
+.xp .accordion__chev {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
 }
 
 @media (min-width: 1024px) {
   .xp .accordion__trigger {
     grid-template-columns: 11rem minmax(0, 1fr) auto;
-    grid-template-areas:
-      "dates company chev"
-      "dates role    chev";
-    padding: var(--spacing-6) 0;
   }
 
-  /* the open row lines up with the company column */
-  .xp__body {
-    padding-left: calc(11rem + var(--spacing-4));
+  .xp__dates,
+  .xp__who,
+  .xp .accordion__chev {
+    grid-row: 1;
+  }
+
+  .xp__who {
+    grid-column: 2;
+  }
+
+  .xp .accordion__chev {
+    grid-column: 3;
   }
 }
 
-.xp .accordion__chev {
-  grid-area: chev;
+@media (hover: hover) {
+  .xp .accordion__trigger:hover {
+    background: var(--iris-soft);
+  }
 }
 
-.xp__dates {
-  grid-area: dates;
-  align-self: start;
-  margin-bottom: var(--spacing-1);
-  font-family: var(--font-code);
-  font-size: var(--text-meta);
-  line-height: 1.6;
-  color: var(--color-ink-muted);
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
+.xp .accordion__trigger:focus-visible {
+  outline-offset: calc(0px - var(--ring-focus-width));
+  border-radius: 0;
 }
 
 .xp__company {
-  grid-area: company;
   display: block;
   font-family: var(--font-body);
   font-size: var(--text-heading-3);
   font-weight: 600;
   letter-spacing: -0.01em;
-  line-height: 1.25;
+  line-height: 1.2;
   color: var(--color-ink);
 }
 
+/* Current: iris on a soft iris wash, 14px (the floor), 500 */
 .xp__current {
-  margin-left: var(--spacing-3);
-  padding: 2px var(--spacing-2);
+  margin-left: var(--spacing-2);
+  padding: 3px var(--spacing-2);
   border-radius: var(--radius-pill);
-  background: var(--color-semantic-surface-inset);
+  background: var(--iris-pill);
   font-size: var(--text-meta);
   font-weight: 500;
-  color: var(--color-ink);
-  vertical-align: 2px;
+  letter-spacing: 0;
+  line-height: 1.4;
+  color: var(--color-accent-ink);
+  vertical-align: middle;
 }
 
+/* the title: 15px, muted, regular (not the heading's weight) */
 .xp__role {
-  grid-area: role;
   display: block;
-  margin-top: var(--spacing-1);
+  margin-top: 2px;
   font-family: var(--font-body);
   font-size: var(--text-caption);
+  font-weight: 400;
   color: var(--color-ink-muted);
 }
 
 .xp__body {
-  padding-bottom: var(--spacing-6);
+  padding: 0 var(--spacing-6) var(--spacing-6);
+}
+
+@media (min-width: 1024px) {
+  /* the open row lines up with the company column */
+  .xp__body {
+    padding-left: calc(var(--spacing-6) + 11rem + var(--spacing-6));
+  }
 }
 
 /* the clients behind the work, first line of the open row */
@@ -1647,8 +1680,27 @@ p {
   color: var(--color-ink);
 }
 
+/* the open row's lines: plain muted discs (the mock), not the › list */
 .xp__did {
-  padding-top: 0;
+  margin: 0 0 var(--spacing-3);
+  padding: 0 0 0 1.1em;
+  list-style: disc;
+}
+
+.xp__did li {
+  margin: 0.3em 0;
+  padding: 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  max-width: 42rem;
+}
+
+.xp__did li::before {
+  content: none;
+}
+
+.xp__did li::marker {
+  color: var(--color-ink-muted);
 }
 
 .xp__case {
