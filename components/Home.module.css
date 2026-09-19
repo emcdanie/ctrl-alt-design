@@ -9,16 +9,6 @@
   padding-block: var(--spacing-4);
 }
 
-/* Flat until hover, like the rest of the site: the BELLA Card reads
-   its surface and shadows from these properties, so Home sets them on
-   the grid instead of forking the card. */
-.cards {
-  --color-semantic-surface: var(--surface-card);
-  --shadow-card-rest: none;
-  --shadow-card-rest-dark: none;
-  --shadow-card-elevated: var(--shadow-hover);
-}
-
 /* door cards: kicker, title, line, go */
 .kicker {
   display: block;
