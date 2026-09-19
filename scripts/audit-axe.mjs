@@ -27,6 +27,11 @@ const ROUTES = [
   "/case-studies/chip",
   "/case-studies/brad-frost",
   "/case-studies/design-system-transformation",
+  /* the pattern-study brief pages (one template) */
+  "/work/studies/stock-screener",
+  "/work/studies/race-day",
+  "/work/studies/insurance-forms",
+  "/work/studies/legal-search",
 ];
 
 const browser = await chromium.launch();

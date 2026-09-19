@@ -337,6 +337,9 @@ body {
      panel, bubble and orb set went with BubbleCluster (19 Sep 2026). */
 
   /* Case-card cover placeholder — muted warm, never bright (IA spec) */
+  /* pattern-study tile (Work, 19 Sep 2026): one ground behind every
+     framed crop */
+  --tile: #E3DED1;
   --cover-warm-hi: #E9E2D2;
   --cover-warm-lo: #D9CDB9;
   --cover-warm-ink: #4A4030;
@@ -454,6 +457,7 @@ body {
   /* cover placeholder flips as a SET in dark (cover-contrast fix,
      21 Jul): dark warm plate, parchment-warm ink; >=3:1 large-text on
      every stop, scrim-free (the placeholder skips the media scrim) */
+  --tile: #23201C;
   --cover-warm-hi: #3A3428;
   --cover-warm-lo: #2C271E;
   --cover-warm-ink: #E9E2D2;

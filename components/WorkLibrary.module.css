@@ -1,25 +1,8 @@
-/* Work library: the Find my fit toolbar, the /work chips, cards, table
- * and map, and the skills matrix (/skills, /quick). Frames per
- * DESIGN.md: token spacing, ramp type only. */
+/* Work library: the /work case cards and pattern studies, the study
+ * pages, the /skills filter bar and the skills matrix (/skills, /quick).
+ * Frames per DESIGN.md: token spacing, ramp type only. */
 
-/* ── ONE toolbar row (rebuild 2026-07-18): search left, switcher right ── */
-.toolbar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--spacing-6);
-  flex-wrap: wrap;
-  margin-bottom: var(--spacing-6);
-}
-
-.toolbarSearch {
-  flex: 1 1 420px;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-}
-
+/* searchRow and searchInput: /learning's search box reads them */
 .searchRow {
   display: flex;
   align-items: center;
@@ -57,13 +40,6 @@
   align-self: stretch;
   background: var(--color-border-medium);
   margin: 0 var(--spacing-2);
-}
-
-.fitResults {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
-  margin-bottom: var(--spacing-8);
 }
 
 .filterRow {
@@ -146,12 +122,6 @@
   text-underline-offset: 3px;
 }
 
-.empty {
-  font-size: var(--font-body-size);
-  color: var(--color-ink-muted);
-  padding: var(--spacing-8) 0;
-}
-
 /* ── Table ── */
 
 .tableWrap {
@@ -197,20 +167,6 @@
 
 .table tbody tr:hover {
   background: var(--color-semantic-accent-subtle);
-}
-
-.rowTitle {
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: var(--typography-font-size-base);
-  text-decoration: none;
-  /* 44px house rule, inline hit-area growth (no layout shift in the row) */
-  padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
-}
-
-.rowTitle:hover,
-.rowTitle:focus-visible {
-  text-decoration: underline;
 }
 
 /* ── Skills x projects matrix (§8) ── */
@@ -343,153 +299,36 @@
   }
 }
 
-/* ── /work (approved mock, 19 Sep 2026) ── */
+/* ── /work (Elleta, 19 Sep 2026, pattern-studies direction) ── */
 
-/* the code-comment note above the h1 */
+/* the code-comment note above an h1 */
 .heroNote {
   margin: 0 0 var(--section-lead-gap);
 }
 
-.tools :global(section) {
-  display: grid;
-  gap: var(--space-stack-sm);
-}
-
-.filters {
-  display: grid;
-  gap: var(--space-stack-sm);
-}
-
-/* TODO(learning merge): chipRow, chipLabel, chip, chipMeta, countBar
-   and clear mirror /learning's toolbar; keep one copy when they meet */
-.chipRow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-2);
-}
-
-.chipLabel {
-  width: 4rem;
-}
-
-@media (max-width: 600px) {
-  .chipLabel {
-    width: 100%;
-  }
-}
-
-/* chips are 36px tall at every width (44px on touch, from FilterChip) */
-.chip {
-  min-height: 2.25rem;
-}
-
-.chipMeta {
-  margin-left: var(--spacing-1);
-  font-family: var(--font-code);
-  font-size: var(--text-meta);
-  font-variant-numeric: tabular-nums;
-  opacity: 0.7;
-}
-
-.countBar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-3);
-}
-
-.countLine {
-  margin: 0;
-  font-variant-numeric: tabular-nums;
-}
-
-.countEnd {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-3);
-}
-
-.clear {
-  all: unset;
-  cursor: pointer;
-  min-height: var(--spacing-touch-target);
-  display: inline-flex;
-  align-items: center;
-  font-family: var(--font-body);
-  font-size: var(--text-meta);
-  font-weight: 600;
-  color: var(--color-accent-ink);
-  text-decoration: underline;
+.back {
+  color: inherit;
   text-underline-offset: 3px;
 }
 
-.clear:focus-visible {
+.back:focus-visible,
+.more:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: var(--ring-focus-offset);
 }
 
-.viewGap {
-  margin-top: var(--space-stack-md);
-}
-
-/* the type pill: iris for case studies and prototypes, the pink and
-   green case identities for concepts and hackathons (and skills) */
-.pill {
-  --pill: var(--color-accent-ink);
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: var(--text-meta);
+.more {
   font-weight: 500;
-  line-height: 1.5;
-  white-space: nowrap;
-  border-radius: var(--radius-full);
-  padding: 0 var(--spacing-2);
-  color: var(--pill);
-  /* tinted over the page ground, not the card: the flat card surface
-     sits a step darker and pulled the pill text under AA */
-  background: color-mix(in srgb, var(--pill) 7%, var(--color-semantic-background));
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 4px;
 }
 
-.pillConcept {
-  --pill: var(--case-code-first-text);
-}
+/* ── Case cards ── */
 
-.pillHack {
-  --pill: var(--case-clarity-text);
-}
-
-/* ── Cards ── */
-
-.labGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--grid-gap);
-  align-items: stretch;
-}
-
-@media (min-width: 760px) {
-  .labGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.skate {
-  display: block;
-  width: 10.625rem;
-  height: auto;
-}
-
-@media (min-width: 1024px) {
-  .skate {
-    margin-left: auto;
-  }
-}
-
-.workCard:hover .cardTitle,
-.workCard:focus-visible .cardTitle {
+.caseCard:hover .cardTitle,
+.caseCard:focus-visible .cardTitle {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -501,16 +340,31 @@
   background: linear-gradient(160deg, var(--cover-warm-hi), var(--cover-warm-lo));
 }
 
-/* the years ride the kicker row (metadata tier) */
-.kickerDate {
-  font-variant-numeric: tabular-nums;
-}
-
 .kicker {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--spacing-2);
+}
+
+/* the years ride the kicker row (metadata tier) */
+.kickerDate {
+  font-variant-numeric: tabular-nums;
+}
+
+/* the type pill, tinted over the page ground: over the flat card
+   surface the tint pulled the text under AA */
+.pill {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+  border-radius: var(--radius-full);
+  padding: 0 var(--spacing-2);
+  color: var(--color-accent-ink);
+  background: color-mix(in srgb, var(--color-accent-ink) 7%, var(--color-semantic-background));
 }
 
 .cardTitle,
@@ -531,370 +385,191 @@
   color: var(--color-accent-ink);
 }
 
-/* ── Empty state ── */
+/* ── Pattern studies: sticky head left, the list right from 1024px ── */
 
-.emptyState {
+.studiesSplit {
   display: grid;
-  justify-items: center;
-  gap: var(--spacing-2);
-  padding-block: var(--spacing-10);
-  text-align: center;
-  color: var(--color-ink-muted);
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-stack-lg);
 }
 
-.emptyArt {
-  width: 9.375rem;
+@media (min-width: 1024px) {
+  .studiesSplit {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    column-gap: var(--layout-gutter);
+  }
+
+  .studiesHead {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-stack-md));
+    align-self: start;
+  }
+}
+
+/* the list column: a grid child that may shrink */
+.studies {
+  min-width: 0;
+}
+
+.skate {
+  display: block;
+  width: 7.5rem;
   height: auto;
 }
 
-.emptyTitle {
-  margin: 0;
-  font-weight: 600;
-  color: var(--color-ink);
-}
-
-.emptyLine {
-  margin: 0;
-}
-
-/* ── Table ── */
-
-.workTable {
-  min-width: 45rem;
-}
-
-.workTable thead th {
-  font-family: var(--font-body);
-  font-size: var(--text-meta);
-  font-weight: 500;
-  letter-spacing: normal;
-  text-transform: none;
-}
-
-.num {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.rowName {
-  display: block;
-  font-weight: 600;
-  color: var(--color-ink);
-}
-
-.rowLine,
-.rowTopics {
-  color: var(--color-ink-muted);
-}
-
-.rowLine {
-  display: block;
-}
-
-.go,
-.goButton {
-  font-family: var(--font-body);
-  font-weight: 500;
-  color: var(--color-accent-ink);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.goButton {
-  all: unset;
-  cursor: pointer;
-  font-family: var(--font-body);
-  font-weight: 500;
-  color: var(--color-accent-ink);
-  white-space: nowrap;
-}
-
-.go:hover,
-.goButton:hover {
-  text-decoration: underline;
-}
-
-.go:focus-visible,
-.goButton:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: var(--ring-focus-offset);
-}
-
-/* ── Map ── */
-
-.map {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--color-semantic-border-subtle);
-  border-radius: var(--radius-2xl);
-  background: var(--color-card);
-}
-
-.mapSvg {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 47.5rem;
-}
-
-/* decorative layers never take the pointer */
-.mapDecor {
-  pointer-events: none;
-}
-
-.bandPieces {
-  fill: color-mix(in srgb, var(--color-accent-ink) 10%, var(--color-card));
-}
-
-.bandSkills {
-  fill: color-mix(in srgb, var(--case-clarity-text) 12%, var(--color-card));
-}
-
-.bandGround {
-  fill: var(--color-card);
-}
-
-.ringLabel {
-  font-family: var(--font-code);
-  font-size: var(--text-code);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  fill: var(--color-ink-muted);
-}
-
-.mapCentre {
-  font-family: var(--font-body);
-  font-size: var(--text-lead);
-  font-weight: 700;
-  fill: var(--color-accent-ink);
-}
-
-.wire {
-  fill: none;
-  stroke: var(--color-accent-ink);
-  stroke-width: 1.8;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.wireOn {
-  opacity: 0.95;
-}
-
-.node {
-  --node: var(--color-accent-ink);
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.node:focus {
-  outline: none;
-}
-
-.nodeSkill {
-  --node: var(--case-clarity-text);
-}
-
-.nodeExp {
-  --node: var(--case-code-first-text);
-}
-
-.dot {
-  fill: color-mix(in srgb, var(--node) 14%, var(--color-card));
-  stroke: var(--node);
-  stroke-width: 1.5;
-}
-
-.halo {
-  fill: none;
-  stroke: var(--color-accent-ink);
-  stroke-width: 1.5;
-  opacity: 0;
-}
-
-.node:focus-visible .halo,
-.node[aria-pressed="true"] .halo {
-  opacity: 1;
-}
-
-.node text {
-  font-family: var(--font-body);
-  font-size: var(--text-code);
-  font-weight: 500;
-  fill: var(--color-ink);
-}
-
-.nodeSkill text,
-.nodeCase text {
-  font-weight: 600;
-}
-
-.nodeDim {
-  opacity: 0.25;
-}
-
-.mapFocus .node {
-  opacity: 0.22;
-}
-
-.mapFocus .nodeOn {
-  opacity: 1;
-}
-
-.mapCards {
-  position: absolute;
-  inset: var(--spacing-4) var(--spacing-4) auto var(--spacing-4);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--spacing-4);
-  pointer-events: none;
-}
-
-.mapCard {
-  pointer-events: auto;
-  background: var(--color-semantic-background);
-  border: 1px solid var(--color-semantic-border-subtle);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-3) var(--spacing-4);
-  box-shadow: var(--shadow-card-elevated);
-}
-
-.mapKey {
-  width: 15rem;
-}
-
-.mapDetail {
-  width: 18rem;
-}
-
-.mapDetail[hidden] {
-  display: none;
-}
-
-.mapSum {
-  display: block;
-  margin-top: var(--spacing-1);
-  color: var(--color-ink);
-}
-
-.keyList {
-  list-style: none;
-  margin: var(--spacing-2) 0 0;
-  padding: 0;
-  font-size: var(--text-meta);
-}
-
-.keyList li {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-}
-
-.keyCase,
-.keyExp,
-.keySkill {
-  --node: var(--color-accent-ink);
-  width: 0.625rem;
-  height: 0.625rem;
-  border-radius: 50%;
-  border: 1.5px solid var(--node);
-  background: color-mix(in srgb, var(--node) 14%, transparent);
-}
-
-.keyExp {
-  --node: var(--case-code-first-text);
-}
-
-.keySkill {
-  --node: var(--case-clarity-text);
-}
-
-.mapClose {
-  float: right;
-  width: var(--spacing-touch-target);
-  height: var(--spacing-touch-target);
-  margin: calc(var(--spacing-2) * -1) calc(var(--spacing-3) * -1) 0 0;
-  border: 0;
-  border-radius: var(--radius-md);
-  background: none;
-  font-size: var(--text-lead);
-  line-height: 1;
-  color: var(--color-ink);
-  cursor: pointer;
-}
-
-.mapClose:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: var(--ring-focus-offset);
-}
-
-.mapTitle {
-  margin: var(--spacing-2) 0 var(--spacing-1);
-}
-
-.mapLine {
-  margin: 0;
-  font-size: var(--text-meta);
-  color: var(--color-ink-muted);
-}
-
-.mapList {
-  list-style: none;
-  margin: var(--spacing-2) 0 0;
-  padding: 0;
+.studyChips {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-1);
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
 }
 
-.mapList li {
-  font-size: var(--text-meta);
-  border: 1px solid var(--color-semantic-border-subtle);
-  border-radius: var(--radius-full);
-  padding: 0 var(--spacing-2);
+/* chips are 36px tall at every width (44px on touch, from FilterChip) */
+.chip {
+  min-height: 2.25rem;
 }
 
-.mapGo {
-  margin: var(--spacing-3) 0 0;
+.chipMeta {
+  margin-left: var(--spacing-1);
+  color: inherit;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
 }
 
-.mapHelp {
-  position: absolute;
-  bottom: var(--spacing-3);
-  left: 0;
-  right: 0;
+.studyList {
+  list-style: none;
   margin: 0;
-  text-align: center;
+  padding: 0;
 }
 
-/* below 760px the cards stack under the map and the outer labels hide */
-@media (max-width: 760px) {
-  .mapCards {
-    position: static;
-    display: grid;
-    padding: var(--spacing-3);
-  }
+.studyList li + li .studyRow {
+  border-top: 1px solid var(--color-semantic-border-subtle);
+}
 
-  .mapKey,
-  .mapDetail {
-    width: auto;
-  }
+.studyRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 5.5rem;
+  gap: var(--spacing-4);
+  padding-block: var(--spacing-6);
+  color: inherit;
+  text-decoration: none;
+}
 
-  .mapHelp {
-    position: static;
-    padding: 0 var(--spacing-3) var(--spacing-3);
+@media (min-width: 600px) {
+  .studyRow {
+    grid-template-columns: minmax(0, 1fr) 13rem;
+    align-items: start;
   }
+}
 
-  .pieceLabel {
-    display: none;
+.studyRow:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.studyText {
+  display: block;
+}
+
+.studyMeta {
+  display: block;
+}
+
+.studyTitle {
+  margin: var(--spacing-1) 0;
+}
+
+.studyRow:hover .studyTitle {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.studyArrow {
+  display: inline-block;
+  color: var(--color-accent-ink);
+  transition: transform 0.2s;
+}
+
+.studyRow:hover .studyArrow {
+  transform: translateX(4px);
+}
+
+.studyLine {
+  display: block;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-ink-muted);
+}
+
+.studyProject {
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+/* the framed crop: one tile colour; the crop sits in from the top-left
+   and runs off the right and bottom edges */
+.tile {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid var(--color-semantic-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--tile);
+}
+
+@media (min-width: 600px) {
+  .tile {
+    aspect-ratio: 3 / 2;
   }
+}
+
+.tileImg {
+  position: absolute;
+  left: 10%;
+  top: 12%;
+  width: 125%;
+  max-width: none;
+  height: auto;
+  border-radius: calc(var(--radius-sm) * 1.5) 0 0 0;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.3s;
+}
+
+.studyRow:hover .tileImg,
+.studyRow:focus-visible .tileImg {
+  transform: translate(-3px, -3px);
+}
+
+/* ── Brief page ── */
+
+.video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--tile);
+}
+
+.video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wire,
-  .node {
+  .studyArrow,
+  .tileImg {
     transition: none;
+  }
+
+  .studyRow:hover .studyArrow,
+  .studyRow:hover .tileImg,
+  .studyRow:focus-visible .tileImg {
+    transform: none;
   }
 }

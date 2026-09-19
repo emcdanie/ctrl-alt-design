@@ -36,6 +36,7 @@ const ROUTES = {
   "app/privacy/page.tsx": { allow: PENDING },
   "app/accessibility/page.tsx": { allow: PENDING },
   "app/work/page.tsx": "section",
+  "app/work/studies/[slug]/page.tsx": "section",
 };
 
 const SPACING_DIRS = ["app", "components/sections"];

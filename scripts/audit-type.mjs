@@ -15,7 +15,7 @@ export const TRACKED_SELECTORS = [
 ];
 
 const ROUTES = [
-  "/", "/about", "/work", "/contact", "/skills", "/design-system", "/quick",
+  "/", "/about", "/work", "/work/studies/stock-screener", "/contact", "/skills", "/design-system", "/quick",
   "/case-studies/chip", "/case-studies/brad-frost",
   "/case-studies/design-system-transformation",
 ];
