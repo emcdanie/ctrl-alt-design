@@ -24,7 +24,7 @@ export default function AboutPage() {
           as="h1"
           id="about-hero-title"
           heading="Fluent in design, code and"
-          accent="dog"
+          accent="Bella"
           after="."
           lead={
             <>
@@ -60,13 +60,13 @@ export default function AboutPage() {
           heading="A shared language, not a"
           accent="rulebook"
           after="."
-          lead="A product grows faster than the rules holding it together."
+          lead="Teams move fast. A good system helps them move together."
         >
           <p>
             Components get duplicated. Decisions get made under sprint pressure and nobody writes them
-            down. The file meant to be the <strong>source of truth</strong> turns into the one nobody trusts.
-            Digging out the structure underneath, <strong>so design and dev can talk again</strong>, is the part
-            I&apos;d do for free.
+            down. The file meant to be the source of truth turns into the one nobody trusts. I dig out the
+            structure underneath and write it down, <strong>so design and dev can talk again</strong>. Then I hand
+            it over: the system belongs to the team, not to me. It&apos;s the part I&apos;d do for free.
           </p>
           <SectionList
             items={[
@@ -80,7 +80,12 @@ export default function AboutPage() {
       </Section>
 
       <Section id="track-record" label="Track record">
-        <SectionHeader heading="Where I've" accent="been" after="." />
+        <SectionHeader
+          heading="Where I've"
+          accent="been"
+          after="."
+          lead="Five teams, one thread: making the system the thing people trust."
+        />
         <ExperienceSection />
       </Section>
 
@@ -92,7 +97,12 @@ export default function AboutPage() {
       </Section>
 
       <Section id="word-of-mouth" label="Word of mouth">
-        <SectionHeader heading="In their own" accent="words" after="." />
+        <SectionHeader
+          heading="In their own"
+          accent="words"
+          after="."
+          lead="Six of fifteen recommendations, quoted as written."
+        />
         <ul className="quotes">
           {TESTIMONIALS.map((t) => (
             <li key={t.name}>
@@ -135,7 +145,7 @@ export default function AboutPage() {
           lead="AI is part of how I work, not a trick in the deck."
         >
           <p>
-            I use Claude to <strong>synthesise research and audits</strong>, draft docs, and check my own work. I&apos;m
+            I use Claude to synthesise research and audits, draft docs, and check my own work. I&apos;m
             happy to try a new tool the week it lands: Figma MCP, Code Connect, Storybook. But the tools
             are the easy part. A system only sticks when the people using it trust it, so <strong>I work with
             teams, not against them</strong>: pairing with engineers, bringing designers into the decisions, and
@@ -144,8 +154,8 @@ export default function AboutPage() {
           <p>
             At Mango I was <strong>the first to bring AI into their design-system work</strong>: I used it to audit and
             ship faster while updating the system, then built the tools so the team could carry on
-            without me. My most recent example is the site you&apos;re on. It runs on <strong>BELLA, my own
-            design system</strong>: tokens, components in Storybook, and docs an AI can read.
+            without me. My most recent example is the site you&apos;re on. It runs on BELLA, my own
+            design system: tokens, components in Storybook, and docs an AI can read.
           </p>
           <p>
             <Link href="/design-system" className="text-action">
