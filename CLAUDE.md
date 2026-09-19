@@ -85,7 +85,8 @@ override the constitution.
 - **Code role (Elleta, 2026-09-19, learning build).** Geist Mono returns as ONE role, not a third
   face: `--font-code`, for metadata only (dates, stat lines, the inspector cursor label, the Term
   popover's word line, code-comment notes `// ...`, credential IDs). Never headings, body, buttons
-  or nav. `audit:fonts` allows the mono family only on the `--font-code` token line and fails
+  or nav. `.text-code` is 14px, on the floor like every other text (no exception for the code
+  role; counts in chips use it at 70% opacity or are dropped when they crowd at 390px). `audit:fonts` allows the mono family only on the `--font-code` token line and fails
   `--font-code` on heading, body, button or nav selectors and elements.
 - **Style rule going forward (Elleta, 2026-09-18, about-rebuild lock).** No eyebrow label above
   every heading. One iris word per display heading, only the word that matters (use the `accent`
