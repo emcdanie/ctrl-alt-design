@@ -1,6 +1,6 @@
 /* Home opening (home rebuild, 19 Sep 2026). The Section supplies the
  * padding and the container; this file lays out text left and Bella
- * right from 1024px, stacked below, plus the scroll squeeze. */
+ * right from 1024px, stacked below, plus Bella's scroll drift. */
 
 .hero {
   display: grid;
@@ -38,14 +38,11 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--case-clarity-text) 18%, transparent);
 }
 
-/* Size from the hero tier token. Leading is the audit:type floor, 1.0
-   (the mock's 0.98 fails it). */
+/* size, weight, tracking, leading and the squeeze come from the
+   Heading primitive (hero tier, squeeze); this keeps the measure */
 .headline {
   margin: var(--spacing-4) 0 var(--spacing-6);
   max-width: 15ch;
-  line-height: 1;
-  font-weight: 820;
-  letter-spacing: -0.005em;
 }
 
 .lead {
@@ -106,21 +103,9 @@
   }
 }
 
-/* Scroll squeeze: the H1 thins and tightens, Bella drifts up, both on
-   the page's scroll over the first 85vh. Opacity and size never
-   change, so nothing leaves a gap. Static without support or when the
-   reader prefers reduced motion. */
-@keyframes squeeze {
-  from {
-    font-weight: 820;
-    letter-spacing: -0.005em;
-  }
-  to {
-    font-weight: 480;
-    letter-spacing: -0.05em;
-  }
-}
-
+/* Bella drifts up on the same timeline as the H1's squeeze (the
+   Heading primitive's range): static without scroll timelines or when
+   the reader prefers reduced motion. */
 @keyframes drift {
   to {
     transform: translateY(-40px) scale(0.94);
@@ -129,12 +114,6 @@
 
 @supports (animation-timeline: scroll()) {
   @media (prefers-reduced-motion: no-preference) {
-    .headline {
-      animation: squeeze linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 85vh;
-    }
-
     .art {
       animation: drift linear both;
       animation-timeline: scroll(root);

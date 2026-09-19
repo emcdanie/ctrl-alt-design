@@ -13,9 +13,9 @@ const WORDS = POSITIONING.split(" ");
 /**
  * Home opening (home rebuild, 19 Sep 2026): status line, the H1, the
  * lead, one primary and one quiet link, and Bella saying hello. On
- * scroll the H1 thins and tightens and Bella drifts up (CSS scroll
- * timeline, Hero.module.css); static where unsupported or when the
- * reader prefers reduced motion.
+ * scroll the H1 thins and tightens (the Heading squeeze variant) and
+ * Bella drifts up (Hero.module.css); both static where unsupported or
+ * when the reader prefers reduced motion.
  */
 export default function Hero() {
   return (
@@ -32,6 +32,7 @@ export default function Hero() {
           <Heading
             tier="hero"
             as="h1"
+            squeeze
             id="home-hero-title"
             className={styles.headline}
             accent={WORDS[WORDS.length - 1]}
