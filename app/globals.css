@@ -2888,7 +2888,7 @@ p {
 .btn-key--primary {
   color: var(--component-button-primary-foreground);
   border: 1px solid transparent;
-  border-radius: var(--component-button-primary-border-radius);
+  border-radius: var(--component-button-shape-default);
   background: var(--component-button-primary-fill-hi);
   box-shadow: none;
   transition: background 0.15s;
