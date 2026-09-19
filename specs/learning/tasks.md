@@ -4,7 +4,7 @@ Requirements are the brief (Cowork, 2026-09-19) as locked in `design.md`. Gate: 
 audit:controls, audit:nda (content/ included), the /learning aria snapshot, the /skills redirect
 test; screenshots at 1280 and 390, light and dark, in `_private/screens/learning/`.
 
-- [x] T1 `--font-code` (Geist Mono) as the metadata role; audit:fonts + CLAUDE.md section 3.
+- [x] T1 `--font-code` / `.text-code`: landed on feat/section-pattern (About session); this branch uses it.
 - [x] T2 `content/skills.ts` as the one skills list; Work and the matrix import it.
 - [x] T3 `content/learning.ts` from the verified record, `content/voices.ts` (12, verified: false).
 - [x] T4 Route: /learning, /skills redirect, nav + footer label, audits' route lists, llms.txt.
@@ -16,4 +16,5 @@ test; screenshots at 1280 and 390, light and dark, in `_private/screens/learning
 - [x] T10 Who I follow network + detail card + list below 700px.
 - [x] T11 Out in the world cards.
 - [x] T12 Aria snapshot + redirect test, gate, screenshots, open [CHECK] list.
-- [ ] T13 Rebase onto feat/section-pattern when About lands; keep its --font-code commits (5c4c578, 4f7621e), drop 1363e05; chip counts move to .text-code (14px, 70% opacity).
+- [x] T13 Rebased onto feat/section-pattern (5c4c578, 4f7621e, d5153fc); own font commit dropped; dates, stats and chip counts use .text-code.
+- [ ] T14 Rebase once more when About finishes.

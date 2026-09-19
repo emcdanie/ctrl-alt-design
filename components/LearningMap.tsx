@@ -237,7 +237,7 @@ export default function LearningMap({ visible, topicFilters }: { visible: Set<st
           <li key={s}>
             <button type="button" className={styles.mapListBtn} aria-pressed={sel === `S:${s}`} onClick={() => pick(`S:${s}`)}>
               {s}
-              <span className={styles["chip-meta"]}>{LEARNED.filter((e) => e.topics.includes(s)).length}</span>
+              <span className={`text-code ${styles["chip-meta"]}`}>{LEARNED.filter((e) => e.topics.includes(s)).length}</span>
             </button>
           </li>
         ))}
@@ -304,7 +304,7 @@ function Detail({ k }: { k: string }) {
         <Tag>{e.type}</Tag>
         <h3 className={`heading-item ${styles.detailTitle}`}>{e.title}</h3>
         <p className={styles["detail-meta"]}>
-          {e.from} · <span className={styles.codeNote}>{formatMonth(e.date)}</span>
+          {e.from} · <span className="text-code">{formatMonth(e.date)}</span>
         </p>
         {e.took && <p className={styles.detailTook}>{e.took}</p>}
         <p className={styles.detailSub}>Skills</p>

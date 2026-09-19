@@ -43,12 +43,12 @@ export const hashtag = (s: string) => `#${slugify(s)}`;
 
 export function DateLabel({ entry }: { entry: LearningEntry }) {
   return entry.dateToConfirm ? (
-    <span className={`${styles["date-meta"]} ${styles.tbc}`} title="Date to confirm">
+    <span className={`text-code ${styles["date-meta"]} ${styles.tbc}`} title="Date to confirm">
       {formatMonth(entry.date)}
       <span className="sr-only"> (date to confirm)</span>
     </span>
   ) : (
-    <span className={styles["date-meta"]}>{formatMonth(entry.date)}</span>
+    <span className={`text-code ${styles["date-meta"]}`}>{formatMonth(entry.date)}</span>
   );
 }
 
@@ -155,7 +155,7 @@ export default function LearningLibrary() {
               onClick={() => toggle("type", slugify(t), typeFilters)}
             >
               {t}
-              <span className={styles["chip-meta"]}>{LEARNING.filter((e) => e.type === t).length}</span>
+              <span className={`text-code ${styles["chip-meta"]}`}>{LEARNING.filter((e) => e.type === t).length}</span>
             </FilterChip>
           ))}
         </ChipRow>
@@ -168,7 +168,7 @@ export default function LearningLibrary() {
               onClick={() => toggle("topic", slugify(s), topicFilters)}
             >
               {s}
-              <span className={styles["chip-meta"]}>{LEARNING.filter((e) => e.topics.includes(s)).length}</span>
+              <span className={`text-code ${styles["chip-meta"]}`}>{LEARNING.filter((e) => e.topics.includes(s)).length}</span>
             </FilterChip>
           ))}
         </ChipRow>

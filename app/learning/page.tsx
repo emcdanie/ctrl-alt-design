@@ -49,7 +49,7 @@ export default function LearningPage() {
           after=" it."
           lead="Everything I know has a source and a use. Here's both: the courses, workshops and reading behind my work, and the projects where they paid off."
         >
-          <p className={styles.stats}>
+          <p className={`text-code ${styles.stats}`}>
             {STATS.map(([n, label]) => (
               <span key={label} className={styles["stat-meta"]}>
                 <b>{n}</b> {label}
