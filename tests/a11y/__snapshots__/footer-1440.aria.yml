@@ -22,15 +22,6 @@
     - /url: /contact
   - button "Share my portfolio"
   - status
-  - paragraph: Building
-  - paragraph: ~/elleta.design $ git tag
-  - paragraph: v0.1 ← live
-  - paragraph: v0.2 ← in progress
-  - list:
-    - listitem: Learning page
-    - listitem: Footprint pass
-  - link "View details ↗ (opens in a new tab)":
-    - /url: https://github.com/emcdanie/bella/releases
   - navigation "Footer":
     - paragraph: Pages
     - list:
@@ -62,6 +53,15 @@
       - listitem:
         - button "Copy my email"
         - status
+  - paragraph: Building
+  - paragraph: ~/elleta.design $ git tag
+  - paragraph: v0.1 ← live
+  - paragraph: v0.2 ← in progress
+  - list:
+    - listitem: Learning page
+    - listitem: Footprint pass
+  - link "View details ↗ (opens in a new tab)":
+    - /url: https://github.com/emcdanie/bella/releases
   - paragraph: "© 2026 Elleta McDaniel · Built with help from AI, reviewed line by line by me."
   - paragraph:
     - text: v0.1.0

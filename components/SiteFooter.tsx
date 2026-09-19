@@ -101,9 +101,25 @@ export default function SiteFooter() {
             </div>
           </div>
 
-          {/* right column: what is live and what is next, then the
-              links, so the band carries them and the footer stays short */}
+          {/* right column: the link columns, their top on the heading's
+              top; what is live and what is next under them */}
           <div className="site-footer__side">
+            <nav className="site-footer__cols" aria-label="Footer">
+              {COLUMNS.map((c) => (
+                <div key={c.label}>
+                  <p className="site-footer__label">
+                    <PawIcon />
+                    {c.label}
+                  </p>
+                  <ul className="site-footer__list">
+                    {c.links.map((l, i) => (
+                      <li key={i}>{l}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </nav>
+
             <div className="building">
               <p className="building__top">
                 <span className="building__dots" aria-hidden="true">
@@ -133,22 +149,6 @@ export default function SiteFooter() {
                 View details ↗<span className="sr-only"> (opens in a new tab)</span>
               </a>
             </div>
-
-          <nav className="site-footer__cols" aria-label="Footer">
-            {COLUMNS.map((c) => (
-              <div key={c.label}>
-                <p className="site-footer__label">
-                  <PawIcon />
-                  {c.label}
-                </p>
-                <ul className="site-footer__list">
-                  {c.links.map((l, i) => (
-                    <li key={i}>{l}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-            </nav>
           </div>
         </div>
 

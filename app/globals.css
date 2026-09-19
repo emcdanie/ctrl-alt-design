@@ -1779,23 +1779,24 @@ p {
   }
 }
 
-/* right column: the Building card, the link columns under it */
+/* right column: the link columns, then what is being built */
 .site-footer__side {
+  container-type: inline-size;
   display: grid;
   gap: var(--space-stack-lg);
   align-content: start;
 }
 
-/* from 720px the right column sits beside the contact card; below it
-   everything stacks under the contact card */
-@media (min-width: 720px) {
+/* from 1024px the right column sits beside the contact block (1fr 1fr);
+   below that everything stacks under it */
+@media (min-width: 1024px) {
   .site-footer__contact {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 }
 
 /* three link columns once "BELLA on GitHub" fits on one line; 2 + 1 below */
-@media (min-width: 1200px) {
+@container (min-width: 34rem) {
   .site-footer__cols {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
