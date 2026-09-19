@@ -49,6 +49,13 @@
   text-transform: uppercase;
 }
 
+/* the dates: the code role, neutral, beside the case-coloured type */
+.dates {
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-ink-muted);
+}
+
 /* Current-focus badge on the cover (one contract, 20 Jul): a solid
    card ground so it reads on any cover art; the eyebrow row stays one
    line. */

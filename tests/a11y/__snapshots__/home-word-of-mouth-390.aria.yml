@@ -1,0 +1,11 @@
+- region "Word of mouth":
+  - paragraph: Word of mouth
+  - figure "Brad Frost · Author of Atomic Design · More on About":
+    - blockquote:
+      - paragraph:
+        - text: She's now with us on the
+        - strong: bleeding edge of AI & design systems
+        - text: ", embracing new tools and ways of working."
+    - text: ""
+    - link "More on About":
+      - /url: /about#word-of-mouth

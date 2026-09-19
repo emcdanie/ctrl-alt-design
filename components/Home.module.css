@@ -1,0 +1,95 @@
+/* Home sections (home rebuild, 19 Sep 2026): the teams row, the door
+ * cards and the pull quote. Section rhythm comes from Section and
+ * SectionHeader; this file only shapes what sits inside them. */
+
+/* Teams row: the About logo component in its row layout, with its
+   "Worked with" label, between a hairline above and below. */
+.logos {
+  border-block: 1px solid var(--color-semantic-border);
+  padding-block: var(--spacing-4);
+}
+
+/* door cards: kicker, title, line, go */
+.kicker {
+  display: block;
+  margin-bottom: var(--spacing-2);
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-eyebrow);
+}
+
+.title,
+.body {
+  display: block;
+}
+
+.title {
+  margin-bottom: var(--spacing-2);
+}
+
+.go {
+  display: block;
+  margin-top: var(--spacing-3);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 500;
+  color: var(--color-accent-ink);
+}
+
+/* pull quote: the big iris opening mark, then the line */
+.quote {
+  max-width: 52rem;
+  margin: 0;
+}
+
+.mark {
+  display: block;
+  height: 0.5em;
+  font-family: var(--font-body);
+  font-size: 6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-accent-ink);
+  transform: rotate(-8deg);
+  transform-origin: left;
+}
+
+.words {
+  margin: 0;
+}
+
+.words p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-display-3);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  color: var(--color-ink);
+}
+
+.words strong {
+  font-weight: 700;
+}
+
+.cite {
+  margin-top: var(--spacing-4);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+}
+
+.cite b {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.more {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

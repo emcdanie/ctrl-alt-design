@@ -51,6 +51,23 @@ test.describe("Work", () => {
   });
 });
 
+test.describe("Home", () => {
+  test.beforeEach(async ({ page }) => {
+    await open(page, "/");
+  });
+  test("hero", async ({ page }) => {
+    await expect(page.locator("main h1")).toHaveAccessibleName("AI-enabled design systems. Built to stop the drift.");
+    await expect(page.locator('[aria-labelledby="home-hero-title"]')).toMatchAriaSnapshot(snap("home-hero"));
+  });
+  test("teams row", async ({ page }) => {
+    await expect(page.getByRole("group", { name: "Worked with" })).toMatchAriaSnapshot(snap("home-logos"));
+  });
+  for (const id of ["selected-work", "how-i-work", "word-of-mouth"])
+    test(id, async ({ page }) => {
+      await expect(page.locator(`#${id}`)).toMatchAriaSnapshot(snap(`home-${id}`));
+    });
+});
+
 test.describe("Nav", () => {
   test("desktop", async ({ page }) => {
     test.skip(test.info().project.name !== "1440", "desktop bar");

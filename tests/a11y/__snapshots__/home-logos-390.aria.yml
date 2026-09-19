@@ -1,0 +1,19 @@
+- group "Worked with":
+  - paragraph: Worked with
+  - list:
+    - listitem:
+      - img "Brad Frost Web"
+    - listitem:
+      - img "Mango"
+    - listitem:
+      - img "United Nations Geneva"
+    - listitem:
+      - img "Air France"
+    - listitem:
+      - img "Riyad Bank"
+    - listitem:
+      - img "WeRoad"
+    - listitem:
+      - img /^\S+$/  # employer name: kept out of committed files (NDA list)
+    - listitem:
+      - img "VML"

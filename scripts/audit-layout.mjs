@@ -25,7 +25,7 @@ const PENDING = "pending: moves onto Section + SectionHeader in its own commit";
 /* file -> "section" | { allow: reason } */
 const ROUTES = {
   "app/about/page.tsx": "section",
-  "app/page.tsx": { allow: PENDING },
+  "app/page.tsx": "section",
   "app/contact/page.tsx": { allow: PENDING },
   "app/quick/page.tsx": { allow: PENDING },
   "app/design-system/page.tsx": { allow: PENDING },

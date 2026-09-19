@@ -2,6 +2,12 @@ import type { WorkItem } from "@/lib/workLibrary";
 import Card from "@/components/ui/Card";
 import styles from "./CaseCard.module.css";
 
+/* "2024-2025" reads "2024 to 25" (the mock and the Work library) */
+const years = (y: string) => {
+  const [from, to] = y.split("-");
+  return to ? `${from} to ${to.slice(-2)}` : from;
+};
+
 /**
  * THE case card, on the ONE Card system (media variant). Image-led:
  * honest cover art (item.cover) or the muted warm placeholder; then
@@ -38,7 +44,8 @@ export default function CaseCard({
       }
     >
       <span className={styles.kicker} style={{ color: item.text }}>
-        {item.kicker}
+        {item.kicker.split(" · ")[0]} ·{" "}
+        <span className={`text-code ${styles.dates}`}>{years(item.year)}</span>
       </span>
       <span className={`heading-item ${styles.title}`}>{item.title}</span>
       <span className={`card-body ${styles.impact}`}>{item.impact}</span>
