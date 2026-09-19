@@ -1,7 +1,10 @@
 - region "AI-enabled design systems. Built to stop the drift.":
   - paragraph: Open to roles and projects Elleta McDaniel · near Barcelona
   - heading "AI-enabled design systems. Built to stop the drift." [level=1]
-  - paragraph: Tokens, components and the governance that keeps them honest. I work in Figma and in the code, and I build the contracts and gates that let AI move fast without breaking the system.
+  - paragraph:
+    - text: Tokens, components and the governance that keeps them honest. I work in Figma and in the code, and I build the
+    - strong: contracts and gates
+    - text: that let AI move fast without breaking the system.
   - link "See the work":
     - /url: /work
   - link "Short on time? The 4-minute version":

@@ -42,8 +42,8 @@ export default function Hero() {
           </Heading>
           <p className={`text-lead ${styles.lead}`}>
             Tokens, components and the governance that keeps them honest. I work in Figma and in
-            the code, and I build the contracts and gates that let AI move fast without breaking
-            the system.
+            the code, and I build the <strong>contracts and gates</strong> that let AI move fast
+            without breaking the system.
           </p>
           <div className={styles.ctas}>
             <Button href="/work" variant="primary">

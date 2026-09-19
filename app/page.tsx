@@ -18,11 +18,11 @@ import styles from "@/components/Home.module.css";
 const SELECTED_IDS = ["code-first", "drift", "chip"];
 const SELECTED = SELECTED_IDS.flatMap((id) => WORK_ITEMS.filter((i) => i.id === id));
 
-/* /process doesn't exist yet: the process door points at the system
-   page's anchor until it does. /learning lands with its own branch. */
+/* /learning lands with its own branch. */
 const DOORS = [
   { kind: "System", title: "BELLA, inspected live", body: "Tokens, components and the docs an AI can read.", go: "Open the system", href: "/design-system" },
-  { kind: "Process", title: "How a request gets fetched", body: "From \"we need a new colour\" to shipped, step by step.", go: "See the process", href: "/design-system#process" },
+  // TODO process page: point this door at /process once it exists
+  { kind: "Process", title: "How a request gets fetched", body: "From \"we need a new colour\" to shipped, step by step.", go: "See the system", href: "/design-system" },
   { kind: "Learning", title: "Where I learned it", body: "Courses, certificates and the people I follow.", go: "Browse learning", href: "/learning" },
 ];
 
