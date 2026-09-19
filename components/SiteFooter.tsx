@@ -13,13 +13,11 @@ import { social } from "@/lib/social";
 
 /* Site footer: navy with cream text in both themes. The "Made with"
    marquee along the top edge; the contact band (photo, "Let's compare
-   notes.", the one Get in touch, Share) beside the Building card with
-   the link columns under it; then ELLETA in Unique as
+   notes.", the one Get in touch, Share) beside the link columns, with
+   one "building" line under them; then ELLETA in Unique as
    one word with Bella on the last A, and the small print. The wordmark
    is decorative: the nav carries the real one. */
 const version = JSON.parse(readFileSync(join(process.cwd(), "package.json"), "utf8")).version as string;
-/* "v0.1" from "0.1.0" */
-const liveTag = `v${version.split(".").slice(0, 2).join(".")}`;
 
 const MADE_WITH = ["Figma", "Claude Code", "Next.js", "Vercel", "Storybook", "BELLA", "Geist & Unique", "GitHub", "a lot of coffee", "Bella's supervision"];
 
@@ -120,35 +118,14 @@ export default function SiteFooter() {
               ))}
             </nav>
 
-            <div className="building">
-              <p className="building__top">
-                <span className="building__dots" aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
-                </span>
-                <span className="building__status">
-                  <span aria-hidden="true">● </span>Building
-                </span>
-              </p>
-              <p className="building__line">
-                ~/elleta.design $ <b>git tag</b>
-              </p>
-              <p className="building__line">
-                <span className="building__live">{liveTag}</span> ← live
-              </p>
-              <p className="building__line">
-                <span className="building__next">{BUILDING.next}</span> ← in progress
-              </p>
-              <ul className="building__items">
-                {BUILDING.items.map((it) => (
-                  <li key={it}>{it}</li>
-                ))}
-              </ul>
-              <a className="site-footer__link building__details" href={BUILDING.detailsUrl} target="_blank" rel="noopener noreferrer">
-                View details ↗<span className="sr-only"> (opens in a new tab)</span>
+            {/* what is being built, one line from content/building.ts */}
+            <p className="building-line">
+              <span aria-hidden="true">● </span>
+              {BUILDING.next} in progress · {BUILDING.items.join(", ")} ·{" "}
+              <a className="site-footer__link building-line__link" href={BUILDING.detailsUrl} target="_blank" rel="noopener noreferrer">
+                details ↗<span className="sr-only"> (opens in a new tab)</span>
               </a>
-            </div>
+            </p>
           </div>
         </div>
 

@@ -1703,7 +1703,7 @@ p {
 }
 
 /* contact band: photo + "Let's compare notes." + the one Get in touch,
-   beside the Building card (1fr 1fr from 900px); stacked on phones */
+   beside the link columns (1fr 1fr from 1024px); stacked below */
 .site-footer__contact {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -1835,7 +1835,7 @@ p {
 }
 
 /* the wordmark: ink edge to ink edge = the container's content width */
-/* brand row: wordmark + Bella left, the Building card right; stacked
+/* brand row: wordmark + Bella left, the small print right; stacked
    under 900px */
 .site-footer__brand {
   display: flex;
@@ -1881,77 +1881,20 @@ p {
   transform: translateX(-50%);
 }
 
-/* Building card: window dots, status, a git-tag readout */
-.building {
-  width: 100%;
-  max-width: 22rem;
-  padding: var(--space-stack-sm) var(--spacing-5);
-  border-radius: var(--radius-2xl);
-  border: 1px solid color-mix(in srgb, var(--color-navy-ink) 14%, transparent);
-  background: color-mix(in srgb, var(--color-navy-ink) 6%, transparent);
-  box-shadow: var(--shadow-soft);
-  font-family: var(--font-mono); /* Geist: the mono cut is retired */
+/* what is being built: one muted line under the link columns */
+.building-line {
+  margin: 0;
+  font-family: var(--font-mono); /* Geist: the mono cut is retired (audit:fonts) */
   font-size: var(--text-meta);
   line-height: 1.5;
-  color: var(--ink-on-dark-body);
+  color: var(--color-ink-muted);
 }
 
-.building p {
-  margin: 0;
-  color: inherit;
-}
-
-.building__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--spacing-2);
-}
-
-.building__dots {
-  display: inline-flex;
-  gap: var(--spacing-1);
-}
-
-.building__dots i {
-  width: var(--spacing-2);
-  height: var(--spacing-2);
-  border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--color-navy-ink) 30%, transparent);
-}
-
-.building__status {
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-navy-ink);
-}
-
-.building__line b {
-  font-weight: 500;
-  color: var(--color-navy-ink);
-}
-
-.building__live,
-.building__next {
-  font-weight: 600;
-  color: var(--color-navy-ink);
-}
-
-.building__items {
-  list-style: none;
-  margin: 0;
-  padding: 0 0 0 var(--spacing-4);
-}
-
-.building__items li {
-  color: var(--color-navy-ink);
-}
-
-/* small inline links: a 24px target (WCAG 2.2 AA, 2.5.8) */
-.building__details {
+/* the details link keeps its underline; a 24px target (WCAG 2.2 AA, 2.5.8) */
+.building-line__link {
   min-height: var(--spacing-6);
-  font-size: var(--text-meta);
+  font-size: inherit;
+  font-family: inherit;
 }
 
 .share-portfolio {
