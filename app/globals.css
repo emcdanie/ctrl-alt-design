@@ -1526,7 +1526,7 @@ p {
   grid-area: dates;
   align-self: start;
   margin-bottom: var(--spacing-1);
-  font-family: var(--font-mono); /* Geist: the mono cut is retired (audit:fonts) */
+  font-family: var(--font-code, var(--font-mono)); /* metadata: the --font-code face once that token lands (feat/learning-page), Geist until then */
   font-size: var(--text-meta);
   line-height: 1.6;
   color: var(--color-ink-muted);
@@ -1945,7 +1945,7 @@ p {
 /* what is being built: one muted line under the link columns */
 .building-line {
   margin: 0;
-  font-family: var(--font-mono); /* Geist: the mono cut is retired (audit:fonts) */
+  font-family: var(--font-code, var(--font-mono)); /* metadata: the --font-code face once that token lands (feat/learning-page), Geist until then */
   font-size: var(--text-meta);
   line-height: 1.5;
   color: var(--color-ink-muted);
@@ -2206,7 +2206,7 @@ p {
 }
 
 .term-tip__tag {
-  font-family: var(--font-mono); /* Geist: the mono cut is retired (audit:fonts) */
+  font-family: var(--font-code, var(--font-mono)); /* metadata: the --font-code face once that token lands (feat/learning-page), Geist until then */
   font-size: var(--text-meta);
   opacity: 0.8;
 }
@@ -2328,7 +2328,7 @@ p {
   right: 0;
   display: none;
   white-space: nowrap;
-  font-family: var(--font-mono); /* resolves to Geist: mono is retired (audit:fonts) */
+  font-family: var(--font-code, var(--font-mono)); /* metadata: the --font-code face once that token lands (feat/learning-page), Geist until then */
   font-size: var(--text-meta); /* 14px: the site floor, not 13 */
   font-weight: 400;
   letter-spacing: 0.02em;
