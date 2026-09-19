@@ -5,7 +5,6 @@
   - paragraph:
     - link "Where these came from →":
       - /url: /learning
-  - img "Illustration of Bella riding a skateboard"
   - group "Filter the studies by type":
     - button "All 8" [pressed]
     - button "Course brief 4"

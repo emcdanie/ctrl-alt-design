@@ -2,9 +2,7 @@
   - paragraph: How I work
   - heading "The system behind the site." [level=2]
   - paragraph: This site runs on BELLA, my own design system. Pick a door.
-  - link "System BELLA, inspected live Tokens, components and the docs an AI can read. Open the system":
+  - link "System BELLA, inspected live Tokens, components and the docs an AI can read.":
     - /url: /design-system
-  - link "Process How a request gets fetched From \"we need a new colour\" to shipped, step by step. See the system":
-    - /url: /design-system
-  - link "Learning Where I learned it Courses, certificates and the people I follow. Browse learning":
+  - link "Learning Where I learned it Courses, certificates and the people I follow.":
     - /url: /learning
