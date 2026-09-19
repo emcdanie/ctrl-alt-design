@@ -1896,6 +1896,14 @@ p {
   padding-bottom: var(--space-stack-lg);
 }
 
+/* stacked footers: room for the paw trail's lane above the letters
+   (32px clear of text on both sides) */
+@media (max-width: 1023.98px) {
+  .site-footer__brand {
+    margin-top: var(--spacing-12);
+  }
+}
+
 /* the wordmark reserves Bella's height above it, so she never reaches
    the links; the negative bottom margin puts the box bottom on the
    letters' baseline (line-height 0.8 leaves ~0.115em below it), so the
@@ -1967,6 +1975,41 @@ p {
 .share-portfolio__illo {
   width: 2rem;
   height: auto;
+}
+
+/* the footer paw trail (components/FooterTrail.tsx): prints in the
+   footer's accent at 40%, placed by script in the empty band above the
+   letters; they step in one by one (80ms apart) the first time */
+.site-footer {
+  position: relative;
+}
+
+.footer-trail {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.footer-trail__paw {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  fill: var(--color-brand-periwinkle);
+  opacity: 0;
+}
+
+.footer-trail--settled .footer-trail__paw {
+  opacity: 0.4;
+}
+
+.footer-trail--go .footer-trail__paw {
+  animation: footer-paw 240ms ease-out forwards;
+  animation-delay: calc(var(--i) * 80ms);
+}
+
+@keyframes footer-paw {
+  from { opacity: 0; scale: 0.5; }
+  to { opacity: 0.4; scale: 1; }
 }
 
 /* "Made with": a slow marquee on the footer's top edge, full screen

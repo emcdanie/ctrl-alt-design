@@ -7,6 +7,7 @@ import { PawIcon } from "@/components/PawTrail";
 import FooterEmail from "@/components/FooterEmail";
 import SharePortfolio from "@/components/SharePortfolio";
 import FooterCta from "@/components/FooterCta";
+import FooterTrail from "@/components/FooterTrail";
 import { ResumeLink } from "@/components/ResumeModal";
 import { BUILDING } from "@/content/building";
 import { social } from "@/lib/social";
@@ -161,6 +162,7 @@ export default function SiteFooter() {
           </div>
         </div>
       </div>
+      <FooterTrail />
     </footer>
   );
 }
