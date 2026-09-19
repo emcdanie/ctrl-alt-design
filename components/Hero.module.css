@@ -1,84 +1,77 @@
-/* Hero layout — headline column + the portrait bubble (globals.css
- * .photo-bubble, the About recipe). Compact since surface-the-work
- * (2026-07-23): no 100dvh centering, so the selected-work row reaches
- * above the fold on a laptop. */
+/* Home opening (home rebuild, 19 Sep 2026). The Section supplies the
+ * padding and the container; this file lays out text left and Bella
+ * right from 1024px, stacked below, plus the scroll squeeze. */
 
 .hero {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: calc(var(--header-height) + var(--spacing-12)) var(--container-pad) var(--spacing-8);
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: var(--spacing-10);
+  gap: var(--spacing-8);
   align-items: center;
-  width: 100%;
 }
 
-/* the name line: plain metadata, sentence case */
-.kicker {
-  margin: 0 0 var(--spacing-4);
+@media (min-width: 1024px) {
+  .hero {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  }
 }
 
-/* The Heading primitive supplies face, size, tracking and leading
-   (hero tier); this shell keeps only the spacing below it. */
+/* status line: dot + availability, then name and place */
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2) var(--spacing-4);
+  margin: 0;
+}
+
+.dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: var(--spacing-2);
+  border-radius: var(--radius-full);
+  background: var(--case-clarity-text);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--case-clarity-text) 18%, transparent);
+}
+
+/* The hero tier's value for Home. The global token is 40-180px (unused
+   elsewhere); scoped here until the token moves (noted for Elleta).
+   Leading is the audit:type floor, 1.0 (the mock's 0.98 fails it). */
 .headline {
+  --component-heading-hero-font-size: clamp(2.6rem, 6vw, 5.4rem);
+  margin: var(--spacing-4) 0 var(--spacing-6);
+  max-width: 15ch;
+  line-height: 1;
+  font-weight: 820;
+  letter-spacing: -0.005em;
+}
+
+.lead {
   margin: 0 0 var(--spacing-6);
 }
 
-.intro {
-  font-family: var(--font-body);
-  font-size: 1.0625rem;
-  line-height: 1.55;
-  color: var(--color-ink);
-  max-width: 40ch;
-  margin: 0;
-  opacity: 0.9;
-}
-
-.intro b {
-  font-weight: 600;
-}
-
-/* hero-scale portrait (Elleta, 23 Jul): ~1.5x the About bubble so it
-   holds against the H1; the frame recipe stays globals .photo-bubble,
-   only the size is the hero's own. Min 240 clears 390 comfortably. */
-.portrait {
-  width: clamp(240px, 27vw, 360px) /* token-waiver: hero portrait scale, 1.5x the recorded About bubble */;
-}
-
-.ctaRow {
-  margin-top: var(--spacing-8);
-}
-
-.systemLine {
-  margin-top: var(--spacing-4);
-  font-family: var(--font-body);
-  /* reading text, not metadata: the type floor applies (audit:type
-     hardening, 27 Jul) */
-  font-size: var(--typography-font-size-base);
-  color: var(--hero-copy-muted, var(--color-muted));
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3) var(--spacing-6);
 }
 
 .quietLink {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  /* inline-flex so min-height actually applies to the anchor */
   display: inline-flex;
   align-items: center;
   min-height: var(--spacing-touch-target);
-  padding: 0 var(--spacing-2);
   font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  font-weight: var(--typography-font-weight-medium);
-  color: var(--color-ink-muted);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-color: var(--color-semantic-border);
+  text-underline-offset: 4px;
 }
 
 .quietLink:hover,
 .quietLink:focus-visible {
   color: var(--color-accent-ink);
+  text-decoration-color: currentColor;
 }
 
 .quietLink:focus-visible {
@@ -86,11 +79,63 @@
   outline-offset: 2px;
 }
 
+/* Bella: no frame, no ring */
+.art {
+  justify-self: center;
+  width: min(100%, 340px);
+  margin: 0;
+}
 
-@media (max-width: 860px) {
-  .hero {
-    grid-template-columns: 1fr;
-    padding: 88px 22px 56px /* token-waiver: proto-exact mobile hero geometry (recorded; bottom tightened for the work row) */;
-    gap: var(--spacing-6);
+.art img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.art figcaption {
+  margin-top: var(--spacing-2);
+  text-align: center;
+}
+
+@media (max-width: 1023.98px) {
+  .art {
+    width: min(80%, 300px);
+  }
+}
+
+/* Scroll squeeze: the H1 thins and tightens, Bella drifts up, both on
+   the page's scroll over the first 85vh. Opacity and size never
+   change, so nothing leaves a gap. Static without support or when the
+   reader prefers reduced motion. */
+@keyframes squeeze {
+  from {
+    font-weight: 820;
+    letter-spacing: -0.005em;
+  }
+  to {
+    font-weight: 480;
+    letter-spacing: -0.05em;
+  }
+}
+
+@keyframes drift {
+  to {
+    transform: translateY(-40px) scale(0.94);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .headline {
+      animation: squeeze linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 85vh;
+    }
+
+    .art {
+      animation: drift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 85vh;
+    }
   }
 }
