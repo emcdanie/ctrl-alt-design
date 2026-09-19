@@ -37,9 +37,9 @@ export default function Home() {
       <OverlayNav />
       <Hero />
 
-      <div className={styles.logos} aria-label="Teams I've worked with" role="region">
+      <div className={styles.logos}>
         <Container>
-          <WorkedWith />
+          <WorkedWith layout="row" label="Worked with" />
         </Container>
       </div>
 

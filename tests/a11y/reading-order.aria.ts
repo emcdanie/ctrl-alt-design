@@ -60,7 +60,7 @@ test.describe("Home", () => {
     await expect(page.locator('[aria-labelledby="home-hero-title"]')).toMatchAriaSnapshot(snap("home-hero"));
   });
   test("teams row", async ({ page }) => {
-    await expect(page.getByRole("region", { name: "Teams I've worked with" })).toMatchAriaSnapshot(snap("home-logos"));
+    await expect(page.getByRole("group", { name: "Worked with" })).toMatchAriaSnapshot(snap("home-logos"));
   });
   for (const id of ["selected-work", "how-i-work", "word-of-mouth"])
     test(id, async ({ page }) => {
