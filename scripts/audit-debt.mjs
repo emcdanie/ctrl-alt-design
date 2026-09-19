@@ -134,14 +134,28 @@ const allowed = new Set();
       const out = execFileSync("git", ["check-ignore", "--stdin"], {
         input: misses.map(([, p]) => p).join("\n"),
         encoding: "utf8",
+        stdio: ["pipe", "pipe", "ignore"],
       });
       for (const line of out.split("\n")) if (line.trim()) ignored.add(line.trim());
     } catch (e) {
       /* exit 1 means "none of them are ignored", which is not an error.
-         Anything else (no git, no repo) leaves the set empty, so every
-         miss is reported: a check that cannot verify must fail loudly,
-         never pass quietly. */
-      if (e.status !== 1) {
+         Exit 128 is git refusing a path "beyond a symbolic link" (a
+         worktree whose _private is a symlink to the main checkout's):
+         ask per path, and for a refused one ask about its parents, since
+         an ignored parent ignores everything under it. Anything else (no
+         git, no repo) leaves the set empty, so every miss is reported: a
+         check that cannot verify must fail loudly, never pass quietly. */
+      if (e.status === 128) {
+        const isIgnored = (q) => {
+          try {
+            execFileSync("git", ["check-ignore", "-q", q], { stdio: "ignore" });
+            return true;
+          } catch (err) {
+            return err.status === 128 && q.includes("/") ? isIgnored(q.slice(0, q.lastIndexOf("/"))) : false;
+          }
+        };
+        for (const [, q] of misses) if (isIgnored(q)) ignored.add(q);
+      } else if (e.status !== 1) {
         console.error("debt: git check-ignore unavailable, reporting every missing citation");
       }
     }

@@ -4,7 +4,7 @@
   - paragraph: Four started as course briefs from Vitaly Friedman's Smart Interface Design Patterns training. The rest are hackathon builds and tools I made for myself.
   - paragraph:
     - link "Where these came from →":
-      - /url: /skills
+      - /url: /learning
   - img "Illustration of Bella riding a skateboard"
   - group "Filter the studies by type":
     - button "All 8" [pressed]

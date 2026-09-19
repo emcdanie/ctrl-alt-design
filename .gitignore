@@ -46,7 +46,7 @@ client-private/
 
 # Claude Code — local settings only, skills are tracked
 .claude/settings.local.json
-_private/
+_private
 
 # vetted local prototypes (visual source of truth, not shipped)
 _proto/

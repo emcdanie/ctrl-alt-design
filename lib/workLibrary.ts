@@ -47,7 +47,7 @@ export interface WorkItem {
 /* Curation (Elleta, 22 Jul 2026): three star cases + the Design Lab
  * row. Archived cases (guardian, clarity, filters) live with full
  * content in content/case-studies/_archive/; everything downstream
- * (counts, fit corpus, matrix, related rows, bella.json) derives from
+ * (counts, matrix, related rows, bella.json) derives from
  * this array and follows. */
 export const WORK_ITEMS: WorkItem[] = [
   {
@@ -177,8 +177,7 @@ export function relatedWorkItems(slug: string, count = 2): WorkItem[] {
  * One line per case-and-skill pair, in HER words. Where a line exists
  * the matrix cell exposes it on demand (disclosure) with the case
  * link; an absent line means the cell just links. Deterministic data,
- * NO AI labelling — the AI entry point stays find-your-fit, whose
- * why-rows this matrix verifies.
+ * NO AI labelling.
  * TODO(elleta): fill the lines; the structure ships dark until then.
  * Shape: { [itemId]: { [skill]: "one line" } }, e.g.
  *   drift: { Accessibility: "…", "Design Tokens": "…" } */

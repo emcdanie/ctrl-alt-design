@@ -58,9 +58,7 @@ export default function WorkPage() {
               lead="Four started as course briefs from Vitaly Friedman's Smart Interface Design Patterns training. The rest are hackathon builds and tools I made for myself."
             >
               <p>
-                {/* TODO(learning merge): link /learning directly; until
-                    that route lands here, /skills redirects to it there */}
-                <Link href="/skills" className={styles.more}>
+                <Link href="/learning" className={styles.more}>
                   Where these came from →
                 </Link>
               </p>

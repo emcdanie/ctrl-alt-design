@@ -38,14 +38,18 @@ override the constitution.
   email + LinkedIn (`GetInTouch` / `ContactActions`; below lg they live in the menu). The /contact
   route stays until its own PR retires it. /design-system is a first-class page (the system inspecting itself);
   the footer "See the system" colophon link stays.
-- **Work page (Elleta, 2026-09-18; supersedes the 2026-07-20 Work toolbar).** Hero (Find my fit
-  and the filter chips under the lede), then 01 Best in show (the three case studies as equal
-  CaseCards), 02 Off the lead (explorations and prototypes in ONE equal-card grid), then a close
-  with the one Get in touch. The chips (type first: All, Case studies, Explorations,
-  Prototypes; then skills) filter the cards in 01 and 02 through the URL (`type`, `skill`;
-  shareable, replaced in place, not pushed to history). A section whose cards all filter out
-  drops out with its heading. The Cards · Map · Table switcher, the Map view, the featured card
-  and the Everything list are retired.
+- **Work page (Elleta, 2026-09-19, pattern-studies direction; supersedes 2026-09-18).** Hero
+  (the `// the work` note, h1 "Work that holds its shape.", one lead; no search, Find my fit,
+  chips or count). Then Case studies: the three cases as equal Cards, flat until hover, full-year
+  dates in `.text-code`, at most two outline Tags. Then Pattern studies (`#studies`): a sticky
+  head from 1024px (heading, lead crediting the course briefs, "Where these came from" to
+  /learning, bella-skate) beside one row of type chips (All, Course brief, Prototype, Hackathon)
+  and one row per study, problem first, with a framed crop on the `--tile` ground. Rows and the
+  brief pages read `content/studies.ts`. The four course briefs get a page each at
+  `/work/studies/<id>` from one template; empty sections drop out and `draft: true` sections
+  stay hidden until Elleta approves them. Old `/work?skill=` and `?case=` links redirect to
+  `/work#studies` (`proxy.ts`). The Cards · Map · Table switcher, the Table and Map views,
+  Find my fit and the featured card stay retired.
 
 ## 2. Layout
 - **Sections use Section + SectionHeader. No custom spacing.** (Elleta, 2026-09-18, layout system,
@@ -267,6 +271,16 @@ Like a real steering doc: when something keeps going wrong, research it, fix it,
 (or in the paired spec) so it never breaks again. Update this constitution deliberately, not with churn.
 When something breaks more than once, record the fix as a file in `docs/fixes/` and reference it here;
 keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom, check that folder first.
+
+---
+
+## 11. Cowork relay (Elleta, 2026-09-19)
+- **Inbox.** When Elleta types "check inbox", read `_private/inbox/site.md`, do the work it
+  describes, then move it to `_private/inbox/done/site-<YYYY-MM-DD-HHMM>.md`.
+- **Report.** At the end of every task, prepend a report to `_private/reports/site.md`: the date
+  and a one-line summary, the commits, the gate result, the screenshot paths, decisions for
+  Elleta (numbered, each yes/no or pick-one), and any deviations from the prompt.
+- `_private/` is gitignored: never commit an inbox or report file.
 
 ---
 

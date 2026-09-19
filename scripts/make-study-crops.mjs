@@ -3,7 +3,8 @@
  * public/images/studies/<id>.webp. Run once after a source changes:
  *   node scripts/make-study-crops.mjs
  * Boxes are source pixels [left, top, right, bottom]. The legal-search box
- * keeps the presenter's face and the regulator's logo out of frame.
+ * is the example-question chips only: no presenter, no logo, and no
+ * button carrying the regulator's name.
  * Guardian and Pattern Mentor keep their SVGs. Prints each output's size
  * for content/studies.ts. */
 import sharp from "sharp";
@@ -17,7 +18,7 @@ const CROPS = {
   "stock-screener": ["finviz-3.png", [26, 240, 720, 600]],
   "race-day": ["FormularOne.png", [110, 236, 1200, 990]],
   "insurance-forms": ["HealthForm.png", [170, 550, 1000, 960]],
-  "legal-search": ["AIPoweredSearch.png", [490, 640, 2250, 1290]],
+  "legal-search": ["AIPoweredSearch.png", [490, 1080, 2250, 1290]],
   "command-center": ["BradFrostCommandCenter.png", [90, 110, 1500, 760]],
 };
 
