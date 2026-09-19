@@ -23,6 +23,11 @@
   margin: 0;
 }
 
+/* metadata tier, like the line it sits in */
+.metaItem {
+  white-space: nowrap;
+}
+
 .dot {
   display: inline-block;
   width: 0.5rem;

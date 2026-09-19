@@ -24,11 +24,11 @@ export default function Hero() {
         <div>
           {/* TODO text-code: switch to .text-code once it lands */}
           <p className={`text-meta ${styles.status}`}>
-            <span>
+            <span className={styles.metaItem}>
               <span className={styles.dot} aria-hidden="true" />
               Open to roles and projects
             </span>
-            <span>Elleta McDaniel · near Barcelona</span>
+            <span className={styles.metaItem}>Elleta McDaniel · near Barcelona</span>
           </p>
           <Heading
             tier="hero"

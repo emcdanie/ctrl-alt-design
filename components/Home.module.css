@@ -35,8 +35,8 @@
   }
 }
 
-/* door cards: kind, title, line, go */
-.kind {
+/* door cards: kicker, title, line, go */
+.kicker {
   display: block;
   margin-bottom: var(--spacing-2);
   font-family: var(--font-body);

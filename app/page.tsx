@@ -67,10 +67,12 @@ export default function Home() {
         <div className="home-work-row">
           {DOORS.map((d) => (
             <Card key={d.kind} href={d.href}>
-              <span className={styles.kind}>{d.kind}</span>
+              <span className={styles.kicker}>{d.kind}</span>
               <span className={`heading-item ${styles.title}`}>{d.title}</span>
               <span className={`card-body ${styles.body}`}>{d.body}</span>
-              <span className={styles.go}>{d.go} →</span>
+              <span className={styles.go}>
+                {d.go} <span aria-hidden="true">→</span>
+              </span>
             </Card>
           ))}
         </div>
@@ -91,7 +93,7 @@ export default function Home() {
           <figcaption className={styles.cite}>
             <b>{QUOTE.name}</b> · {QUOTE.role} ·{" "}
             <Link href="/about#word-of-mouth" className={styles.more}>
-              More on About →
+              More on About <span aria-hidden="true">→</span>
             </Link>
           </figcaption>
         </figure>
