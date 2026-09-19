@@ -16,4 +16,4 @@ test; screenshots at 1280 and 390, light and dark, in `_private/screens/learning
 - [x] T10 Who I follow network + detail card + list below 700px.
 - [x] T11 Out in the world cards.
 - [x] T12 Aria snapshot + redirect test, gate, screenshots, open [CHECK] list.
-- [ ] T13 Rebase onto feat/section-pattern when About lands; keep its --font-code commit, drop 1363e05.
+- [ ] T13 Rebase onto feat/section-pattern when About lands; keep its --font-code commits (5c4c578, 4f7621e), drop 1363e05; chip counts move to .text-code (14px, 70% opacity).

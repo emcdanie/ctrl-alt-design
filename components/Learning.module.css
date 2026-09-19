@@ -151,11 +151,13 @@
   outline-color: var(--color-accent-iris);
 }
 
+/* chip counts (Elleta, 19 Sep 2026): 14px code face at 70% opacity.
+   After the rebase this reads .text-code from feat/section-pattern. */
 .chip-meta {
   font-family: var(--font-code);
   font-size: var(--text-meta);
   font-variant-numeric: tabular-nums;
-  opacity: 0.75;
+  opacity: 0.7;
 }
 
 .toolbar {
