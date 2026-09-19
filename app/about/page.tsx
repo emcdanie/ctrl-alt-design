@@ -105,26 +105,43 @@ export default function AboutPage() {
           lead="Six of fifteen recommendations, quoted as written."
         />
         <ul className="quotes">
-          {TESTIMONIALS.map((t) => (
-            <li key={t.name}>
-              <Card className="quotes__card">
-                <blockquote className="quotes__quote">
-                  <p>{t.quote}</p>
-                </blockquote>
-                <p className="quotes__name">
-                  {t.href ? (
-                    <a href={t.href} target="_blank" rel="noopener noreferrer">
-                      {t.name}
-                      <span className="sr-only"> (LinkedIn, opens in a new tab)</span>
-                    </a>
-                  ) : (
-                    t.name
-                  )}
-                </p>
-                <p className="text-meta quotes__role">{[t.role, t.company].filter(Boolean).join(" · ")}</p>
-              </Card>
-            </li>
-          ))}
+          {TESTIMONIALS.map((t) => {
+            const [before, after] = t.quote.split(t.bold);
+            return (
+              <li key={t.name} className="quotes__item">
+                <span className="quotes__mark" aria-hidden="true">
+                  “
+                </span>
+                <Card className="quotes__card">
+                  <figure className="quotes__figure">
+                    <blockquote className="quotes__quote">
+                      <p>
+                        {before}
+                        <strong>{t.bold}</strong>
+                        {after}
+                        <span className="quotes__close" aria-hidden="true">
+                          ”
+                        </span>
+                      </p>
+                    </blockquote>
+                    <figcaption>
+                      <span className="quotes__name">
+                        {t.href ? (
+                          <a href={t.href} target="_blank" rel="noopener noreferrer">
+                            {t.name}
+                            <span className="sr-only"> (LinkedIn, opens in a new tab)</span>
+                          </a>
+                        ) : (
+                          t.name
+                        )}
+                      </span>
+                      <span className="text-meta quotes__role">{[t.role, t.company].filter(Boolean).join(" · ")}</span>
+                    </figcaption>
+                  </figure>
+                </Card>
+              </li>
+            );
+          })}
         </ul>
         <p className="quotes__more">
           <a
