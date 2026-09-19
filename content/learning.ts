@@ -189,7 +189,8 @@ const RECORD: LearningEntry[] = [
     date: "2026-05",
     status: "in-progress",
     topics: ["AI-enabled Design", "Design System Governance", "Design Systems"],
-    usedIn: ["chip"],
+    // in progress, not a certificate: no "Used in" until it's finished
+    usedIn: [],
     took: "A system an AI can read is a system people can read too.",
   },
   // [CHECK] Design Tokens Mastery (Romina Kavčić): no trace in Gmail. Other
@@ -350,8 +351,32 @@ export const OFF_MAP: LearningType[] = ["Podcast", "Off the clock"];
 export const isCertificate = (e: LearningEntry) =>
   (e.type === "Certificate" || e.certified === true) && e.status === "done";
 
-// [CHECK] Next up: her pick for what she learns next (the hero line).
+// [CHECK] Next up: her pick for what she learns next. The hero line
+// renders only once this is set; placeholders never reach the page.
 export const NEXT_UP: string | null = null;
+
+/* ── Counts: the ONE source (Elleta, 19 Sep 2026). The hero stats, the
+   Type and Topic chip counts, the result count and the map key all read
+   these, so they can't disagree. The Certificate chip means "earned a
+   certificate", the same set as the badges. ── */
+export const matchesType = (e: LearningEntry, t: LearningType) =>
+  t === "Certificate" ? isCertificate(e) : e.type === t;
+export const onMap = (e: LearningEntry) => !OFF_MAP.includes(e.type) && e.topics.length > 0;
+export const countType = (t: LearningType, list: LearningEntry[] = LEARNING) =>
+  list.filter((e) => matchesType(e, t)).length;
+export const countTopic = (s: Skill, list: LearningEntry[] = LEARNING) =>
+  list.filter((e) => e.topics.includes(s)).length;
+export const CERTIFICATES = LEARNING.filter(isCertificate).sort((a, b) => b.date.localeCompare(a.date));
+export const COUNTS = {
+  entries: LEARNING.length,
+  certificates: CERTIFICATES.length,
+  coursesAndWorkshops: countType("Course") + countType("Workshop"),
+  conferences: countType("Conference"),
+  hackathons: countType("Hackathon"),
+  reading: countType("Reading"),
+  onMap: LEARNING.filter(onMap).length,
+  projects: new Set(LEARNING.flatMap((e) => e.usedIn)).size,
+};
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 /** "2026-08" -> "Aug 2026" */
