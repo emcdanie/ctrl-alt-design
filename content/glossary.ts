@@ -34,8 +34,9 @@ export const GLOSSARY = {
   },
   ai: {
     word: "AI",
-    definition: "To audit, draft and check. A person (me) reviews every line before it ships.",
-    when: "a system needs to be readable by people and by the AI tools they use.",
+    definition:
+      "Claude writes most of the code. I design the rules it works inside: contracts, skills and gates that check accessibility and best practice on every change, drawing on my system and my knowledge base. I make the calls.",
+    when: "a team wants AI speed without dropping its standards.",
   },
   care: {
     word: "care",

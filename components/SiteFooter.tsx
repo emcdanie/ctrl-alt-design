@@ -149,7 +149,7 @@ export default function SiteFooter() {
           </div>
           <div className="text-meta site-footer__small">
             {/* slot: "This page weighs XX KB" (filled by the footprint branch) */}
-            <p>© 2026 Elleta McDaniel · Built with help from AI, reviewed line by line by me.</p>
+            <p>© 2026 Elleta McDaniel · Built with Claude, inside the contracts and gates I designed.</p>
             <p className="site-footer__legal">
               <span>v{version}</span>
               <span aria-hidden="true">·</span>

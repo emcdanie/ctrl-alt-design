@@ -16,7 +16,11 @@ import { GLOSSARY, type TermId } from "@/content/glossary";
    The dotted iris underline is drawn under the word, thicker inside
    headings. Definitions live in content/glossary.ts. */
 
-const GAP = 8; // popover distance from the word, px
+/* the popover opens 28px past the inspector cursor's corner brackets
+   (which sit 8px outside the word), so it never meets the cursor's
+   label (8px under the brackets, about 14px tall) */
+const BRACKETS = 8;
+const GAP = BRACKETS + 28;
 const EDGE = 12; // popover never comes closer than this to the viewport edge, px
 
 export default function Term({ id, children }: { id: TermId; children?: ReactNode }) {
@@ -76,10 +80,10 @@ export default function Term({ id, children }: { id: TermId; children?: ReactNod
     setOpen(true);
   };
   // leaving the word or the popover closes it, unless a tap pinned it;
-  // the short delay lets the pointer cross from the word to the popover
+  // the delay lets the pointer cross the gap from the word to the popover
   const leave = () => {
     if (pinned) return;
-    leaveTimer.current = window.setTimeout(() => setOpen(false), 120);
+    leaveTimer.current = window.setTimeout(() => setOpen(false), 300);
   };
 
   const tip = (
@@ -94,7 +98,6 @@ export default function Term({ id, children }: { id: TermId; children?: ReactNod
       onMouseLeave={leave}
     >
       <span className="term-tip__tag">
-        <span aria-hidden="true">&lt;dfn&gt; </span>
         <dfn>{entry.word}</dfn>
       </span>
       <span className="term-tip__def">{entry.definition}</span>
