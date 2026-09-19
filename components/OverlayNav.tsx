@@ -14,7 +14,7 @@ import ContactActions from "@/components/ContactActions";
 const menuItems = [
   { num: "01", label: "Work", href: "/work" },
   { num: "02", label: "System", href: "/design-system" },
-  { num: "03", label: "Skills", href: "/skills" },
+  { num: "03", label: "Learning", href: "/learning" },
   { num: "04", label: "About", href: "/about" },
 ];
 

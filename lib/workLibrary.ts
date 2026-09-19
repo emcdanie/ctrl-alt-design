@@ -2,28 +2,11 @@
  * library (Map / Table / Timeline). Colours are the recorded --case-*
  * tokens (globals.css); metadata mirrors the case-study content files. */
 
-export const SKILLS = [
-  "Design Systems",
-  "Design Tokens",
-  "Design System Governance",
-  "AI-enabled Design",
-  "Accessibility",
-  "Component Libraries",
-  "Figma ⇄ Code",
-  "Product Design",
-  "UX Research",
-] as const;
+import { SKILLS, slugify, type Skill } from "@/content/skills";
 
-export type Skill = (typeof SKILLS)[number];
-
-/** kebab slug for URL params */
-export function slugify(s: string): string {
-  return s
-    .toLowerCase()
-    .replace(/[⇄]/g, "to")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
+/* the one skills list lives in content/skills.ts; re-exported for the
+   existing importers */
+export { SKILLS, slugify, type Skill };
 
 export interface WorkItem {
   id: string;

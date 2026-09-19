@@ -2,7 +2,8 @@
 
 import { useCallback, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { SKILLS, WORK_ITEMS, slugify } from "@/lib/workLibrary";
+import { WORK_ITEMS } from "@/lib/workLibrary";
+import { SKILLS, slugify } from "@/content/skills";
 import { FilterChip } from "@/components/ui/FilterChip";
 import styles from "./WorkLibrary.module.css";
 
@@ -148,8 +149,8 @@ export function WorkAppliedRow({
   clearAll: () => void;
   matchCount: number;
   /** view-honest counts (Elleta, 21 Jul): the line reports what the
-      CURRENT view renders, never hidden items. Absent view (the /skills
-      bar) keeps the generic library count. */
+      CURRENT view renders, never hidden items. Absent view keeps the
+      generic library count. */
   view?: "cards" | "table" | "map";
   caseCount?: number;
   labCount?: number;
@@ -179,7 +180,7 @@ export function WorkAppliedRow({
 
   /* the line reports what the CURRENT view renders (Elleta, 21 Jul):
      cards = case cards + lab cards on screen; map = cluster bubbles;
-     table (and the /skills bar) = the filtered library rows */
+     table = the filtered library rows */
   const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
   const countLabel =
     view === "cards"
@@ -212,43 +213,5 @@ export function WorkAppliedRow({
         </button>
       )}
     </div>
-  );
-}
-
-/* /skills: the same one row + applied/count, stacked (no search there) */
-export function WorkFilterBar({
-  caseFilters,
-  skillFilters,
-  typeFilters,
-  toggleList,
-  clearAll,
-  matchCount,
-  dense = false,
-}: {
-  caseFilters: string[];
-  skillFilters: string[];
-  typeFilters: string[];
-  toggleList: (key: "case" | "skill" | "type", val: string, current: string[]) => void;
-  clearAll: () => void;
-  matchCount: number;
-  dense?: boolean;
-}) {
-  return (
-    <>
-      <WorkChipRow
-        skillFilters={skillFilters}
-        typeFilters={typeFilters}
-        toggleList={toggleList}
-        dense={dense}
-      />
-      <WorkAppliedRow
-        caseFilters={caseFilters}
-        skillFilters={skillFilters}
-        typeFilters={typeFilters}
-        toggleList={toggleList}
-        clearAll={clearAll}
-        matchCount={matchCount}
-      />
-    </>
   );
 }

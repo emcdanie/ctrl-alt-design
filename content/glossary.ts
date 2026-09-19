@@ -5,8 +5,8 @@ export type GlossaryEntry = {
   /** the word as the popover names it */
   word: string;
   definition: string;
-  /** completes "When: ..." */
-  when: string;
+  /** completes "When: ..."; left out when the definition says it all */
+  when?: string;
 };
 
 export const GLOSSARY = {
@@ -77,6 +77,10 @@ export const GLOSSARY = {
     word: "BELLA",
     definition: "My open design system. This site is built on it.",
     when: "you want to see the tokens and components behind what you're reading.",
+  },
+  used: {
+    word: "used",
+    definition: "Every entry links to the project where it paid off, when there is one.",
   },
 } satisfies Record<string, GlossaryEntry>;
 

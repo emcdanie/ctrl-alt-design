@@ -115,7 +115,7 @@ export default function Term({ id, children }: { id: TermId; children?: ReactNod
         <dfn>{entry.word}</dfn>
       </span>
       <span className="term-tip__def">{entry.definition}</span>
-      <span className="term-tip__when">When: {entry.when}</span>
+      {"when" in entry && entry.when ? <span className="term-tip__when">When: {entry.when}</span> : null}
     </span>
   );
 

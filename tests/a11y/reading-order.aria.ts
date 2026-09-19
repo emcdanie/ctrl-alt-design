@@ -85,3 +85,32 @@ test("About experience with JavaScript: only the current role is open", async ({
   for (let i = 1; i < (await triggers.count()); i++) await expect(triggers.nth(i)).toHaveAttribute("aria-expanded", "false");
   await expect(page.locator("#track-record .accordion__panel").nth(1)).toBeHidden();
 });
+
+test.describe("Learning", () => {
+  test.beforeEach(async ({ page }) => {
+    await open(page, "/learning");
+  });
+  test("hero", async ({ page }) => {
+    await expect(page.locator("#learning-hero")).toMatchAriaSnapshot(snap("learning-hero"));
+  });
+  test("library", async ({ page }) => {
+    await expect(page.locator("#library")).toMatchAriaSnapshot(snap("learning-library"));
+  });
+  test("who I follow", async ({ page }) => {
+    await expect(page.locator("#who-i-follow")).toMatchAriaSnapshot(snap("learning-voices"));
+  });
+  test("out in the world", async ({ page }) => {
+    await expect(page.locator("#out-in-the-world")).toMatchAriaSnapshot(snap("learning-world"));
+  });
+});
+
+/* /skills became a view of /learning (19 Sep 2026): a permanent redirect
+   that lands on the Skills view */
+test("/skills redirects permanently to /learning?view=skills", async ({ page, request }) => {
+  const res = await request.get("/skills", { maxRedirects: 0 });
+  expect(res.status()).toBe(308);
+  expect(res.headers()["location"]).toBe("/learning?view=skills");
+  await open(page, "/skills");
+  await expect(page).toHaveURL(/\/learning\?view=skills$/);
+  await expect(page.getByRole("button", { name: "Skills", exact: true })).toHaveAttribute("aria-current", "true");
+});

@@ -504,3 +504,108 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ── /learning extension (19 Sep 2026): group header row, text column
+   headers, the "Learned from" dot column and its tooltips ── */
+.mxGroups th {
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--color-eyebrow);
+  text-align: left;
+  border-bottom: 0;
+}
+
+.mxGroups th[colspan] {
+  text-align: center;
+}
+
+.mx-meta {
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--color-ink-muted);
+}
+
+.mxLearn {
+  min-width: 14rem;
+  border-right: 1px solid var(--color-border-soft);
+  transition: opacity 0.15s;
+}
+
+.mxDots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+}
+
+.lDotWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+/* the visible dot is 22px; the button is a 32px target around it */
+.lDot {
+  all: unset;
+  box-sizing: border-box;
+  width: var(--spacing-8);
+  height: var(--spacing-8);
+  border-radius: var(--radius-full);
+  cursor: help;
+  position: relative;
+}
+
+.lDot::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-accent-iris);
+  background: var(--color-semantic-accent-subtle);
+}
+
+.lDotCert::before {
+  background: var(--color-accent-iris);
+}
+
+.lDotMuted {
+  opacity: 0.3;
+}
+
+.lDot:focus-visible {
+  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline-offset: 1px;
+}
+
+.l-meta-tip {
+  position: absolute;
+  z-index: 6;
+  top: calc(100% + var(--spacing-1));
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 18rem;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-background-inverse);
+  color: var(--color-semantic-text-inverse);
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  line-height: 1.45;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.lDotWrap:hover .l-meta-tip,
+.lDot:focus-visible + .l-meta-tip,
+.l-meta-tip-on {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mxLearn {
+    transition: none;
+  }
+}

@@ -32,8 +32,9 @@ override the constitution.
   `:root` that loads AFTER imports so they win.
 
 ## 1b. IA (nav)
-- Primary nav (Elleta, 2026-09-18, about-rebuild lock; supersedes 2026-07-17): **Work · System ·
-  Skills · About**, plus a "Get in touch" button on the right (secondary weight) that opens Copy
+- Primary nav (Elleta, 2026-09-18, about-rebuild lock; supersedes 2026-07-17; "Skills" became
+  "Learning" 2026-09-19, /skills redirects to /learning?view=skills): **Work · System ·
+  Learning · About**, plus a "Get in touch" button on the right (secondary weight) that opens Copy
   email + LinkedIn (`GetInTouch` / `ContactActions`; below lg they live in the menu). The /contact
   route stays until its own PR retires it. /design-system is a first-class page (the system inspecting itself);
   the footer "See the system" colophon link stays.

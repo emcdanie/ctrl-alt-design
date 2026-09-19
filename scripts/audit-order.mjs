@@ -34,7 +34,7 @@ for (const f of ["app/globals.css", ...walk("components"), ...walk("app").filter
   });
 }
 
-const routes = ["/", "/about", "/work", "/skills", "/design-system", "/case-studies/chip"];
+const routes = ["/", "/about", "/work", "/learning", "/design-system", "/case-studies/chip"];
 const runtimeHits = new Set();
 const browser = await chromium.launch();
 for (const w of [1440, 390]) {
