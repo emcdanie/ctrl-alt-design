@@ -1843,12 +1843,17 @@ p {
   margin: 0 0 var(--spacing-1);
 }
 
+/* house rules: muted body, the one bold claim in full ink (the mock) */
 .cares p {
   margin: 0;
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
   line-height: var(--leading-body);
-  color: var(--color-ink-soft);
+  color: var(--color-ink-muted);
+}
+
+.cares p strong {
+  color: var(--color-ink);
 }
 
 /* ─── Site footer: navy + cream in both themes ────────────────────
