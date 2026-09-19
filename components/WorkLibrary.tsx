@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useId, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import BubbleCluster from "./BubbleCluster";
@@ -268,20 +268,29 @@ function TableView({
  * skills arrays as everything else. Marked cell = case tint + dot +
  * sr-only text (never colour-only). Row/column headers are buttons that
  * toggle the SAME URL filters as the chips; active filters emphasise
- * matching cells and dim the rest. ── */
+ * matching cells and dim the rest.
+ * /learning (19 Sep 2026) extends it: `learnedFrom` adds a "Learned
+ * from" dot column (filled = certificate, each dot focusable with its
+ * tooltip) under a "Learned from | Used in" header row; without
+ * `toggleCase` the case headers are plain text. ── */
+
+export type LearnedDotData = { id: string; label: string; certificate: boolean; muted: boolean };
 
 export function MatrixView({
   caseFilters,
   skillFilters,
   toggleCase,
   toggleSkill,
+  learnedFrom,
 }: {
   caseFilters: string[];
   skillFilters: string[];
-  toggleCase: (id: string) => void;
+  toggleCase?: (id: string) => void;
   toggleSkill: (slug: string) => void;
+  learnedFrom?: (skill: (typeof SKILLS)[number]) => LearnedDotData[];
 }) {
   const hasFilters = caseFilters.length > 0 || skillFilters.length > 0;
+  const emphasisedRow = (skillSlug: string) => skillFilters.length === 0 || skillFilters.includes(skillSlug);
   const emphasised = (item: WorkItem, skillSlug: string) =>
     !hasFilters ||
     ((caseFilters.length === 0 || caseFilters.includes(item.id)) &&
@@ -291,24 +300,41 @@ export function MatrixView({
     <div className={styles.tableWrap}>
       <table className={`${styles.table} ${styles.matrix}`}>
         <caption className="sr-only">
-          Skills by case study. A dot marks a skill used in that case. Row and column
-          headers are buttons that toggle the matching filter.
+          {learnedFrom
+            ? "Skills: where I learned each one and the case studies I used it in. A filled dot is a certificate. Skill headers are buttons that toggle the topic filter."
+            : "Skills by case study. A dot marks a skill used in that case. Row and column headers are buttons that toggle the matching filter."}
         </caption>
         <thead>
+          {learnedFrom && (
+            <tr className={styles.mxGroups}>
+              <td />
+              <th scope="colgroup">Learned from</th>
+              <th scope="colgroup" colSpan={WORK_ITEMS.length}>
+                Used in
+              </th>
+            </tr>
+          )}
           <tr>
-            <th scope="col">
-              <span className="sr-only">Skill</span>
-            </th>
+            <th scope="col">{learnedFrom ? <span className={styles["mx-meta"]}>Skill</span> : <span className="sr-only">Skill</span>}</th>
+            {learnedFrom && (
+              <th scope="col">
+                <span className={styles["mx-meta"]}>Courses, events, reading</span>
+              </th>
+            )}
             {WORK_ITEMS.map((i) => (
               <th key={i.id} scope="col">
-                <button
-                  type="button"
-                  className={styles.mxHead}
-                  aria-pressed={caseFilters.includes(i.id)}
-                  onClick={() => toggleCase(i.id)}
-                >
-                  {i.title}
-                </button>
+                {toggleCase ? (
+                  <button
+                    type="button"
+                    className={styles.mxHead}
+                    aria-pressed={caseFilters.includes(i.id)}
+                    onClick={() => toggleCase(i.id)}
+                  >
+                    {i.title}
+                  </button>
+                ) : (
+                  <span className={styles["mx-meta"]}>{i.title}</span>
+                )}
               </th>
             ))}
           </tr>
@@ -328,6 +354,15 @@ export function MatrixView({
                     {skill}
                   </button>
                 </th>
+                {learnedFrom && (
+                  <td className={`${styles.mxLearn} ${emphasisedRow(slug) ? "" : styles.mxDim}`}>
+                    <span className={styles.mxDots}>
+                      {learnedFrom(skill).map((d) => (
+                        <LearnedDot key={d.id} dot={d} />
+                      ))}
+                    </span>
+                  </td>
+                )}
                 {WORK_ITEMS.map((i) => {
                   const marked = i.skills.includes(skill);
                   const evidence = SKILL_EVIDENCE[i.id]?.[skill];
@@ -378,5 +413,27 @@ export function MatrixView({
         </tbody>
       </table>
     </div>
+  );
+}
+
+/* a "Learned from" dot: focusable, its tooltip on hover and focus (and
+   pinned on tap) is also its name; filled = certificate */
+function LearnedDot({ dot }: { dot: LearnedDotData }) {
+  const tipId = useId();
+  const [pinned, setPinned] = useState(false);
+  return (
+    <span className={styles.lDotWrap}>
+      <button
+        type="button"
+        className={`${styles.lDot} ${dot.certificate ? styles.lDotCert : ""} ${dot.muted ? styles.lDotMuted : ""}`}
+        aria-labelledby={tipId}
+        onClick={() => setPinned((p) => !p)}
+        onBlur={() => setPinned(false)}
+        onKeyDown={(e) => e.key === "Escape" && setPinned(false)}
+      />
+      <span id={tipId} role="tooltip" className={`${styles["l-meta-tip"]} ${pinned ? styles["l-meta-tip-on"] : ""}`}>
+        {dot.label}
+      </span>
+    </span>
   );
 }
