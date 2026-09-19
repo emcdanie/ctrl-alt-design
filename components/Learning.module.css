@@ -173,14 +173,14 @@
   gap: var(--spacing-3);
 }
 
-.count-meta {
+.results-meta {
   font-family: var(--font-code);
   font-size: var(--text-meta);
   font-variant-numeric: tabular-nums;
   color: var(--color-ink-muted);
 }
 
-.count-meta b {
+.results-meta b {
   font-weight: 500;
   color: var(--color-ink);
 }

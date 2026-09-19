@@ -173,7 +173,7 @@ export default function LearningLibrary() {
           ))}
         </ChipRow>
         <div className={styles.toolbar}>
-          <p className={styles["count-meta"]} aria-live="polite">
+          <p className={styles["results-meta"]} aria-live="polite">
             <b>{filtered.length}</b> of {LEARNING.length} entries
           </p>
           <div className={styles.toolbarEnd}>
@@ -235,7 +235,7 @@ function Timeline({ entries }: { entries: LearningEntry[] }) {
   return (
     <div className={styles.timeline}>
       {years.map((y) => (
-        <section key={y} aria-labelledby={`year-${y}`}>
+        <div key={y}>
           <h3 id={`year-${y}`} className={`heading-item ${styles.year}`}>
             {y}
           </h3>
@@ -287,7 +287,7 @@ function Timeline({ entries }: { entries: LearningEntry[] }) {
                 </li>
               ))}
           </ul>
-        </section>
+        </div>
       ))}
     </div>
   );

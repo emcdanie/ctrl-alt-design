@@ -77,7 +77,7 @@
   margin-bottom: var(--spacing-3);
 }
 
-.count-meta {
+.count {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   letter-spacing: 0.08em;

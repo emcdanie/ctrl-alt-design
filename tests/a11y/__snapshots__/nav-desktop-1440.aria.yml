@@ -6,8 +6,8 @@
     - /url: /work
   - link "System":
     - /url: /design-system
-  - link "Skills":
-    - /url: /skills
+  - link "Learning":
+    - /url: /learning
   - link "About":
     - /url: /about
 - button "Dark mode"
