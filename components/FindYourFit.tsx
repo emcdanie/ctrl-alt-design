@@ -15,8 +15,17 @@ import styles from "./WorkLibrary.module.css";
  * (when configured) re-ranks and phrases the reasons, and the UI says
  * so honestly. Results are the existing CaseCards, re-ranked. */
 
-export default function FindYourFit({ chipRow }: { chipRow?: ReactNode }) {
-  const [jd, setJd] = useState("");
+export default function FindYourFit({
+  chipRow,
+  query = "",
+  onQueryChange,
+}: {
+  chipRow?: ReactNode;
+  /** the live search (Work): typing filters the library as well */
+  query?: string;
+  onQueryChange?: (q: string) => void;
+}) {
+  const [jd, setJd] = useState(query);
   const [result, setResult] = useState<FitMatch | null>(null);
   const [aiReasons, setAiReasons] = useState<Record<string, string> | null>(null);
   const [ran, setRan] = useState(false);
@@ -71,16 +80,17 @@ export default function FindYourFit({ chipRow }: { chipRow?: ReactNode }) {
         <div className={styles.toolbarSearch}>
           <div className={styles.searchRow}>
             <label htmlFor="fit-jd" className="sr-only">
-              Search a skill, or paste the role you are hiring for
+              Search the work, or paste the role you are hiring for
             </label>
             <input
               id="fit-jd"
               type="search"
               value={jd}
-              placeholder="Search a skill, or tell me what you are hiring for"
+              placeholder="Search a skill, or paste the role you're hiring for"
               className={styles.searchInput}
               onChange={(e) => {
                 setJd(e.target.value);
+                onQueryChange?.(e.target.value);
                 if (!e.target.value.trim()) run("");
               }}
               onKeyDown={(e) => {
@@ -100,7 +110,7 @@ export default function FindYourFit({ chipRow }: { chipRow?: ReactNode }) {
           {chipRow}
           <noscript>
             <p style={{ margin: 0, fontFamily: "var(--font-body)", fontSize: "var(--typography-font-size-sm)", color: "var(--color-ink-soft)" }}>
-              <a href="#best-in-show">Browse the case studies instead.</a>
+              <a href="#case-studies">Browse the case studies instead.</a>
             </p>
           </noscript>
         </div>

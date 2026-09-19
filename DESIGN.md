@@ -263,8 +263,8 @@ is the ONLY way to render one:
 - Decorative by default (`aria-hidden`); pass `label` for meaningful
   icons (`role="img"` + `aria-label`). `focusable="false"`.
 - `IconoirProvider` (app layout) carries the same defaults as a backstop.
-- Not icons, not converted: BubbleCluster's connector SVG (diagram),
-  VinylPlayer artwork (fixed-context illustration).
+- Not icons, not converted: VinylPlayer artwork (fixed-context
+  illustration).
 
 ## Recorded exceptions
 
@@ -282,9 +282,6 @@ is the ONLY way to render one:
   letter-spacing 0.04em. A brand mark, not running text: the only
   sanctioned use of Unique besides the hero headline and the Heading
   primitive.
-- Hero bubble geometry (sizes 126–196px, cluster positions) is recorded
-  data in `components/BubbleCluster.tsx`, from `_proto/_hero.html` — not
-  ramp/spacing values.
 - Decision why-lines (Elleta, 2026-07-20): the key-line style
   (`.cs-decision-why`, 18px/600 in the case marker colour) applies
   ONLY when the why is a single short statement of ~160 characters or

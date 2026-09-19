@@ -2,28 +2,11 @@
  * library (Map / Table / Timeline). Colours are the recorded --case-*
  * tokens (globals.css); metadata mirrors the case-study content files. */
 
-export const SKILLS = [
-  "Design Systems",
-  "Design Tokens",
-  "Design System Governance",
-  "AI-enabled Design",
-  "Accessibility",
-  "Component Libraries",
-  "Figma ⇄ Code",
-  "Product Design",
-  "UX Research",
-] as const;
+import { SKILLS, slugify, type Skill } from "@/content/skills";
 
-export type Skill = (typeof SKILLS)[number];
-
-/** kebab slug for URL params */
-export function slugify(s: string): string {
-  return s
-    .toLowerCase()
-    .replace(/[⇄]/g, "to")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
+/* the one skills list lives in content/skills.ts; re-exported for the
+   existing importers */
+export { SKILLS, slugify, type Skill };
 
 export interface WorkItem {
   id: string;
@@ -208,21 +191,160 @@ export function findWorkItemBySlug(
   return WORK_ITEMS.find((i) => i.href.endsWith(`/case-studies/${slug}`));
 }
 
-/** The hub is not a work row — it belongs to the bubble cluster only. */
-export const HUB_ITEM: Omit<WorkItem, "type" | "year" | "yearStart" | "role" | "impact" | "skills" | "medium"> = {
-  id: "hub",
-  title: "How I think about design systems",
-  bubbleLabel: "Design Systems",
-  kicker: "Point of view",
-  ingredients: [
-    "Systems are agreements, not component libraries.",
-    "Governance is what stops the drift.",
-    "I read code, so design and engineering stay honest.",
-  ],
-  href: "/about#how-i-think",
-  cta: "Read my full take",
-  hi: "var(--hub-hi)",
-  lo: "var(--hub-lo)",
-  deep: "var(--hub-deep)",
-  text: "var(--hub-deep)",
+/** Skill names in sentence case for chips and tags ("Design system
+ *  governance"); AI, UX and Figma keep their capitals.
+ *  TODO(learning merge): move beside SKILLS in content/skills.ts so
+ *  /learning and /work share it. */
+export function skillLabel(s: string): string {
+  return s
+    .split(" ")
+    .map((w, i) => (i === 0 || /^(AI|UX|Figma)/.test(w) ? w : w.toLowerCase()))
+    .join(" ");
+}
+
+/* ── The /work library (approved mock, 19 Sep 2026) ───────────────
+ * Eleven pieces: the three case studies (from their WORK_ITEMS rows)
+ * and eight experiments. One shape, so the cards, the table and the
+ * map all read the same list. Titles keep real brand names out. */
+
+export type PieceType = "Case study" | "Concept" | "Hackathon" | "Prototype";
+export const PIECE_TYPES: PieceType[] = ["Case study", "Concept", "Hackathon", "Prototype"];
+
+export interface WorkPiece {
+  id: string;
+  type: PieceType;
+  title: string;
+  /** one line for the card and the table */
+  line: string;
+  /** "2024 to 25" */
+  years: string;
+  /** the skills it shows: the Topic filter and the map */
+  topics: Skill[];
+  /** at most two display tags */
+  tags: string[];
+  /** a page or a demo; absent when the piece is a video */
+  href?: string;
+  /** a video walkthrough (opens in the modal) */
+  embed?: string;
+  /** the longer description the video modal shows */
+  about?: string;
+  cover?: string;
+  /** cover ground behind a thumbnail */
+  gradient?: string;
+}
+
+/* Home order (Elleta, 19 Sep 2026) */
+const CASE_COPY: Record<string, Pick<WorkPiece, "line" | "years" | "tags">> = {
+  "code-first": { line: "Figma and code as one system, not two.", years: "2024 to 25", tags: ["Design tokens", "Figma ⇄ code"] },
+  drift: { line: "A first design system for a product that had outgrown its UI.", years: "2024 to 26", tags: ["Design systems", "Governance"] },
+  chip: { line: "An agent that watches the system and never moves silently.", years: "2026", tags: ["AI-enabled design", "Governance"] },
 };
+
+const CASES: WorkPiece[] = Object.entries(CASE_COPY).map(([id, copy]) => {
+  const item = WORK_ITEMS.find((i) => i.id === id)!;
+  return { id, type: "Case study", title: item.title, topics: item.skills, href: item.href, cover: item.cover, ...copy };
+});
+
+const EXPERIMENTS: WorkPiece[] = [
+  {
+    id: "legal-search",
+    type: "Concept",
+    title: "AI legal search + multimedia centre",
+    line: "Search and media navigation for a complex EU regulatory site.",
+    about: "Exploring AI-enabled legal search and multimedia navigation patterns for complex regulatory systems.",
+    years: "2025",
+    topics: ["AI-enabled Design", "UX Research", "Product Design"],
+    tags: ["AI-enabled design", "Search"],
+    embed: "https://www.loom.com/embed/685fc54dcb104d51baa15dcec8727da2",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #1A3A5C 50%, #0D2040 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
+    cover: "/images/thumbnails/AIPoweredSearch.png",
+  },
+  {
+    id: "insurance-forms",
+    type: "Concept",
+    title: "Complex insurance forms",
+    line: "Multilingual forms with validation and accessible patterns.",
+    about: "Designing scalable form architectures that support multilingual content, validation logic, and accessible interaction patterns.",
+    years: "2025",
+    topics: ["Accessibility", "Product Design", "Component Libraries"],
+    tags: ["Accessibility", "Forms"],
+    embed: "https://www.loom.com/embed/1a13cb50b6ac4282952f85efa11f9d7e",
+    gradient: "linear-gradient(135deg, #1A0A2E 0%, #3A1860 50%, #120820 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
+    cover: "/images/thumbnails/HealthForm.png",
+  },
+  {
+    id: "race-day",
+    type: "Concept",
+    title: "Race-day operations dashboard",
+    line: "A dense control-room dashboard, inspired by F1 telemetry.",
+    about: "Designing a high-density operational dashboard inspired by F1 race telemetry and control room systems.",
+    years: "2025",
+    topics: ["Product Design", "UX Research"],
+    tags: ["Dashboards", "Data viz"],
+    embed: "https://www.loom.com/embed/f93c664f6668417c81dbb774a2a7a4a3",
+    gradient: "linear-gradient(135deg, #0D1B10 0%, #1A3820 50%, #0A1410 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
+    cover: "/images/thumbnails/FormularOne.png",
+  },
+  {
+    id: "stock-screener",
+    type: "Prototype",
+    title: "AI stock screener",
+    line: "Natural-language filters as editable chips, with a reasoning trace.",
+    years: "2026",
+    topics: ["AI-enabled Design", "Product Design"],
+    tags: ["AI-enabled design", "Filtering"],
+    href: "/demos/finviz-3.html",
+    gradient: "linear-gradient(135deg, #1C0A0A 0%, #3D1010 50%, #140808 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
+    cover: "/images/thumbnails/finviz-3.png",
+  },
+  {
+    id: "travel-search",
+    type: "Prototype",
+    title: "Travel search and filters",
+    line: "Unified search, filtering and booking for a B2B travel product.",
+    years: "2025",
+    topics: ["Product Design", "UX Research"],
+    tags: ["Search", "Filtering"],
+    href: "/demos/ctrl-travel-v2.html",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #132040 60%, #0A1628 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
+    cover: "/images/thumbnails/TRAVEL.png",
+  },
+  {
+    id: "command-center",
+    type: "Prototype",
+    title: "Design system command center",
+    line: "Component analysis and governance, in one dashboard.",
+    years: "2026",
+    topics: ["Design Systems", "Design System Governance", "AI-enabled Design"],
+    tags: ["Governance", "Dashboards"],
+    href: "/demos/brad-frost-command-center.html",
+    gradient: "linear-gradient(135deg, #1A0A2E 0%, #2D1650 50%, #1A0A2E 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
+    cover: "/images/thumbnails/BradFrostCommandCenter.png",
+  },
+  {
+    id: "guardian",
+    type: "Hackathon",
+    title: "Guardian, AI UX audit",
+    line: "Heuristics, drift and accessibility checks on a Figma-style canvas.",
+    years: "2026",
+    topics: ["AI-enabled Design", "Accessibility", "Design System Governance"],
+    tags: ["AI-enabled design", "Accessibility"],
+    href: "/demos/guardian-audit-tool.html",
+    gradient: "linear-gradient(135deg, #0F1117 0%, #161822 50%, #0F1117 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
+    cover: "/images/thumbnails/GuardianAuditTool.svg",
+  },
+  {
+    id: "pattern-mentor",
+    type: "Prototype",
+    title: "Pattern Mentor plugin",
+    line: "Design feedback with pattern citations and one-click fixes.",
+    years: "2026",
+    topics: ["AI-enabled Design", "Design Systems"],
+    tags: ["AI-enabled design", "Plugins"],
+    href: "/demos/pattern-mentor.html",
+    gradient: "linear-gradient(135deg, var(--color-semantic-surface) 0%, #E8E3DB 50%, var(--color-semantic-surface) 100%)", // token-waiver: cover artwork gradient (no token equivalent; expression pass later)
+    cover: "/images/thumbnails/PatternMentor.svg",
+  },
+];
+
+export const WORK_PIECES: WorkPiece[] = [...CASES, ...EXPERIMENTS];

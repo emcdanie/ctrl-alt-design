@@ -3,9 +3,10 @@
  * and rem math), and .card-body must compute >= 18px. Metadata rows
  * (tags, pills, eyebrows, kickers, period/meta lines) are a separate
  * tier by design (item-1 carve-out) and are exempt via the class list
- * below; the popup's reading text is included by opening a bubble. */
+ * below. */
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
+import { BASE } from "./lib/base-url.mjs";
 
 /* Declared for audit:debt's dead-selector check (27 Jul 2026). */
 export const TRACKED_SELECTORS = [
@@ -35,34 +36,11 @@ const page = await (await browser.newContext({ viewport: { width: 1440, height: 
 let fails = 0;
 
 for (const route of ROUTES) {
-  await page.goto(`http://localhost:3000${route}`, { waitUntil: "networkidle", timeout: 30000 });
+  await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 30000 });
   const h = await page.evaluate(() => document.body.scrollHeight);
   for (let y = 0; y < h; y += 800) {
     await page.evaluate((v) => scrollTo(0, v), y);
     await page.waitForTimeout(30);
-  }
-  if (route === "/work") {
-    /* computed-equality assertion (card-voice item 1, 21 Jul): the
-       popup title must compute the SAME size as CaseCard titles on
-       Work — no page-tier sizes inside any card or popup */
-    const cardTitleSize = await page.evaluate(() => {
-      const t = document.querySelector('[class*="caseCard"] .heading-item, [class*="CaseCard"] .heading-item');
-      return t ? parseFloat(getComputedStyle(t).fontSize) : null;
-    });
-    /* the map popup is a card too; the map lives on the home page
-       since Work retired its Map view (18 Sep 2026) */
-    await page.goto("http://localhost:3000/", { waitUntil: "networkidle" });
-    await page.waitForTimeout(500);
-    await page.evaluate(() => document.querySelector("button[data-bubble]")?.dispatchEvent(new MouseEvent("click", { bubbles: true })));
-    await page.waitForTimeout(600);
-    const popupTitleSize = await page.evaluate(() => {
-      const t = document.querySelector('[role="dialog"] .heading-item');
-      return t ? parseFloat(getComputedStyle(t).fontSize) : null;
-    });
-    if (cardTitleSize === null || popupTitleSize === null || cardTitleSize !== popupTitleSize) {
-      fails++;
-      console.error(receipt("type", "/work popup title vs CaseCard title", `${popupTitleSize}px vs ${cardTitleSize}px`, "equal sizes (one title recipe)"));
-    }
   }
   const bad = await page.evaluate(
     ({ scope, exempt }) => {

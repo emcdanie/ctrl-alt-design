@@ -48,8 +48,7 @@ for (const f of appFiles.filter((f) => f.endsWith("page.tsx"))) {
 }
 
 /* 4. no arbitrary px type in components (recorded proto exceptions excluded) */
-const EXEMPT = ["Hero.module.css", "BubbleCluster.module.css",
-  "WorkSidebar", "CaseCard.module.css", "WorkLibrary.module.css"];
+const EXEMPT = ["Hero.module.css", "WorkSidebar", "CaseCard.module.css", "WorkLibrary.module.css"];
 for (const f of [...appFiles, ...componentFiles]) {
   if (EXEMPT.some((e) => f.includes(e))) continue;
   const s = readFileSync(f, "utf8");
