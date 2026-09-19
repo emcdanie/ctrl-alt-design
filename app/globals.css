@@ -1989,14 +1989,16 @@ p {
   }
 }
 
-/* small print: right-aligned, its bottom on the wordmark's baseline */
+/* small print: one row under the wordmark, from its left edge; the
+   version and policy links sit right and wrap under on phones */
 .site-footer__small {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--spacing-1);
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-1) var(--space-stack-md);
+  width: 100%;
   margin: 0;
-  text-align: right;
   color: color-mix(in srgb, var(--color-navy-ink) 70%, transparent);
 }
 
@@ -2009,7 +2011,7 @@ p {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-stack-md);
+  gap: var(--spacing-2);
 }
 
 .site-footer__link--small {

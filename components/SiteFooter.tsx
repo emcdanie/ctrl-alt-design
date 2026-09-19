@@ -130,8 +130,9 @@ export default function SiteFooter() {
         </div>
 
         {/* brand row: ELLETA with its letters spread across the container
-            and Bella on the last A, named "Elleta" once; the small print
-            under it */}
+            and Bella on the last A, named "Elleta" once; under it one row
+            of small print from the wordmark's left edge, the version and
+            policy links on the right (wrapping under it on phones) */}
         <div className="site-footer__brand">
           <div className="site-footer__mark" role="img" aria-label="Elleta">
             <span className="site-footer__wordmark" aria-hidden="true">
@@ -150,8 +151,11 @@ export default function SiteFooter() {
             <p>© 2026 Elleta McDaniel · Built with help from AI, reviewed line by line by me.</p>
             <p className="site-footer__legal">
               <span>v{version}</span>
+              <span aria-hidden="true">·</span>
               <Link className="site-footer__link site-footer__link--small" href="/accessibility">Accessibility</Link>
+              <span aria-hidden="true">·</span>
               <Link className="site-footer__link site-footer__link--small" href="/privacy">Privacy</Link>
+              <span aria-hidden="true">·</span>
               <ResumeLink className="site-footer__link site-footer__link--small" />
             </p>
           </div>
