@@ -17,6 +17,11 @@ export type HeadingTier = "hero" | "page" | "section" | "case" | "sub";
  * up.") without the period turning iris. Unique never renders
  * below 24px (gate-enforced) and never in body, UI, card titles,
  * eyebrows, meta, nav, buttons, chips.
+ *
+ * `squeeze` (hero tier, opt-in, 19 Sep 2026): the headline starts at
+ * weight 820 and tracks in as the page scrolls. Scroll-driven CSS only,
+ * inside @supports (animation-timeline: scroll()) and no-preference
+ * motion; everywhere else it stays at 820. Line height 1.0.
  */
 export default function Heading({
   tier = "section",
@@ -27,6 +32,7 @@ export default function Heading({
   className = "",
   style,
   label,
+  squeeze = false,
   children,
 }: {
   tier?: HeadingTier;
@@ -42,13 +48,18 @@ export default function Heading({
   /** explicit accessible name, for headings whose accent is a control
    *  (a Term button pads its name: "Bella ." instead of "Bella.") */
   label?: string;
+  /** hero tier only: the scroll squeeze (weight 820 to 480, tracking
+   *  -0.005em to -0.05em over the first 85vh of scroll). The one
+   *  approved tracking exception, and it lives here, never in a page. */
+  squeeze?: boolean;
   children: ReactNode;
 }) {
   const Tag: ElementType = as ?? (tier === "hero" || tier === "page" ? "h1" : tier === "sub" ? "h3" : "h2");
   /* the size comes from the shared text utility, not a tier-private rule */
   const size = tier === "page" ? " text-display-1" : tier === "section" || tier === "case" ? " text-display-2" : "";
+  const squeezed = squeeze && tier === "hero" ? " display-heading--squeeze" : "";
   return (
-    <Tag id={id} style={style} aria-label={label} className={`display-heading display-heading--${tier}${size} ${className}`.trim()}>
+    <Tag id={id} style={style} aria-label={label} className={`display-heading display-heading--${tier}${size}${squeezed} ${className}`.trim()}>
       {children}
       {accent != null ? <span className="accent"> {accent}</span> : null}
       {after}

@@ -69,7 +69,9 @@ override the constitution.
   1.05 (display-1) / 1.1 (display-2/3), one iris accent word where the design has one. Unique ONLY
   on the ELLETA wordmarks (nav + footer) and the BELLA logo. Every display heading renders through
   the ONE `ui/Heading` primitive (tiers: hero / page / section / case, plus `sub`), and no
-  consumer sets its own heading size, tracking or leading. Page openings are FLAT (eyebrow + Heading, the Work
+  consumer sets its own heading size, tracking or leading. Pages still never set their own tracking
+  or leading; the hero `squeeze` variant (weight 820 to 480, tracking -0.005em to -0.05em on scroll,
+  line height 1.0; Elleta, 2026-09-19) is the one approved exception, and it lives in the primitive. Page openings are FLAT (eyebrow + Heading, the Work
   pattern); bubble page headers are parked (last live at e25eefc, may return in the expression
   pass). The elevation/orb tokens stay: keycaps, the home cluster, and the About portrait still
   consume them.

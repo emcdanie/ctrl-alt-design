@@ -1036,6 +1036,38 @@ p {
   font-size: var(--component-heading-hero-font-size);
 }
 
+/* hero squeeze (Heading squeeze, hero tier only): 820 at rest; with
+   scroll timelines and motion allowed, weight 820 to 480 and tracking
+   -0.005em to -0.05em across the first 85vh of the page's scroll. The
+   one approved tracking exception (CLAUDE.md §3), owned here. */
+.display-heading--squeeze {
+  font-weight: 820;
+  letter-spacing: -0.005em;
+  line-height: 1;
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .display-heading--squeeze {
+      animation: heading-squeeze linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 85vh;
+    }
+  }
+}
+
+@keyframes heading-squeeze {
+  from {
+    font-weight: 820;
+    letter-spacing: -0.005em;
+  }
+
+  to {
+    font-weight: 480;
+    letter-spacing: -0.05em;
+  }
+}
+
 /* page / section / case sizes come from the .text-display-1/2 utilities
    the Heading primitive adds; the page title keeps display-1's leading
    and measure (this rule sits after .display-heading) */
