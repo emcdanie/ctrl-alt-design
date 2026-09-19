@@ -212,7 +212,7 @@ export default function WorkMap({
               {selSkill && (
                 <>
                   <TypePill type="Skill" />
-                  <h3 className={styles.mapTitle}>{skillLabel(selSkill)}</h3>
+                  <h3 className={`heading-item ${styles.mapTitle}`}>{skillLabel(selSkill)}</h3>
                   <span className="text-code">
                     {pieces.filter((w) => w.topics.includes(selSkill as never)).length} pieces
                   </span>
@@ -228,7 +228,7 @@ export default function WorkMap({
               {selPiece && (
                 <>
                   <TypePill type={selPiece.type} />
-                  <h3 className={styles.mapTitle}>{selPiece.title}</h3>
+                  <h3 className={`heading-item ${styles.mapTitle}`}>{selPiece.title}</h3>
                   <p className={styles.mapLine}>{selPiece.line}</p>
                   <ul className={styles.mapList}>
                     {selPiece.topics.map((t) => (

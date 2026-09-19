@@ -11,6 +11,9 @@ import type { CaseStudy } from "@/lib/content";
 /* metadata reads in sentence case: "DESIGN SYSTEMS" -> "Design systems" */
 const sentenceCase = (t: string) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
 
+/* header dates read "2024 to 25", like /work: "2024-2025" -> "2024 to 25" */
+const spans = (t: string) => t.replace(/\b(20\d\d)[-\u2013](?:20)?(\d\d)\b/g, "$1 to $2");
+
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
 }
@@ -64,19 +67,19 @@ export default async function CaseStudyPage({
   if (!Composition) notFound();
 
   /* reading time, mechanical: every narrative string in the content
-     file at 200 wpm, rounded up */
+     file at 220 wpm, rounded up */
   const words = JSON.stringify(cs.blocks ?? [])
     .replace(/[^a-zA-Z\s]/g, " ")
     .split(/\s+/)
     .filter(Boolean).length;
-  const readingMinutes = Math.max(1, Math.ceil(words / 200));
+  const readingMinutes = Math.max(1, Math.ceil(words / 220));
 
   return (
     <CaseStudyLayout>
       <div className="layout-container">
         <CaseShellV2
           slug={slug}
-          eyebrow={cs.eyebrow ?? `${sentenceCase(cs.category)} · ${cs.year}`}
+          eyebrow={spans(cs.eyebrow ?? `${sentenceCase(cs.category)} · ${cs.year}`)}
           title={cs.title}
           subhead={cs.summary ?? cs.description}
           readingMinutes={readingMinutes}

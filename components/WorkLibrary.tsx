@@ -342,7 +342,7 @@ function WorkCard({ piece, onWatch }: { piece: WorkPiece; onWatch: (p: WorkPiece
     <>
       <span className={styles.kicker}>
         <TypePill type={piece.type} />
-        <span className="text-code">{piece.years}</span>
+        <span className={`text-code ${styles.kickerDate}`}>{piece.years}</span>
       </span>
       <span className={`heading-item ${styles.cardTitle}`}>{piece.title}</span>
       <span className={`card-body ${styles.cardLine}`}>{piece.line}</span>

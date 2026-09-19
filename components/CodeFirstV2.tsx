@@ -112,20 +112,32 @@ const TAKEAWAY_CARDS: { key: string; statement: string; body: string }[] = [
   },
 ];
 
-/* the pull quote's accent words, the CASE identity pink (the same
-   accent the hero title wears, never iris). Editable: Elleta may
-   pick different words (gate+pullquote spec, 23 Jul 2026). */
+/* the pull quote's accent words, in ink like every case accent (19 Sep
+   2026). Editable: Elleta may pick different words (gate+pullquote
+   spec, 23 Jul 2026). */
 const QUOTE_ACCENT_PHRASE = "the investigation";
 
 /** the pull quote as an editorial display moment: Unique on the page
     ground (the display treatment rides globals, the sanctioned
     surface), black ink, her chosen words in the case accent, FLAT,
     generous air. The quote text is hers, unchanged. */
-function DisplayQuote({ text }: { text: string }) {
+function DisplayQuote({ text: raw }: { text: string }) {
+  /* curly quotes (19 Sep 2026): the outer straight pair becomes the big
+     ink mark and a curly close; inner straight quotes and apostrophes
+     turn curly. The words are hers, unchanged. */
+  const text = raw
+    .trim()
+    .replace(/^["“]|["”]$/g, "")
+    .replace(/(^|[\s(])"/g, "$1“")
+    .replace(/"/g, "”")
+    .replace(/'/g, "’");
   const i = text.indexOf(QUOTE_ACCENT_PHRASE);
   return (
     <figure className="cs2-displayquote">
       <blockquote className="cs2-displayquote__quote">
+        <span className="cs2-displayquote__mark" aria-hidden="true">
+          “
+        </span>
         {i === -1 ? (
           text
         ) : (
@@ -135,6 +147,7 @@ function DisplayQuote({ text }: { text: string }) {
             {text.slice(i + QUOTE_ACCENT_PHRASE.length)}
           </>
         )}
+        <span className="sr-only">”</span>
       </blockquote>
     </figure>
   );

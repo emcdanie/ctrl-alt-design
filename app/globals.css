@@ -5684,12 +5684,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   max-width: 70ch;
 }
 
+/* case captions: sentence case and muted, never caps (19 Sep 2026) */
 .cs2-kicker-row {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 400;
+  line-height: 1.5;
   color: var(--color-ink-muted);
   margin: 0;
 }
@@ -6409,8 +6409,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   transform: none;
 }
 
-/* the sign-off IS the site's Unique display (Heading tier=case) */
-.cs2-endreveal__thanks.display-heading {
+/* the sign-off is a paragraph, not a heading (19 Sep 2026) */
+.cs2-endreveal__thanks {
+  font-family: var(--font-body);
+  font-size: var(--text-lead);
+  font-weight: 600;
   color: var(--color-ink);
   margin: 0 0 var(--spacing-2);
 }
@@ -6661,8 +6664,17 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   text-align: center;
 }
 
+/* accent words are ink on case pages, no per-case colour (19 Sep
+   2026); the big opening mark is ink too */
 .cs2-displayquote__accent {
-  color: var(--case-code-first-text);
+  color: var(--color-ink);
+}
+
+.cs2-displayquote__mark {
+  display: block;
+  font-size: calc(var(--component-heading-page-font-size) * 2);
+  line-height: 0.6;
+  color: var(--color-ink);
 }
 
 /* ── beat 04, the takeaway band (pre-merge spec, 23 Jul 2026): the

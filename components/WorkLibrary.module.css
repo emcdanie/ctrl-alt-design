@@ -388,7 +388,7 @@
   font-family: var(--font-code);
   font-size: var(--text-meta);
   font-variant-numeric: tabular-nums;
-  opacity: 0.75;
+  opacity: 0.7;
 }
 
 .countBar {
@@ -496,6 +496,11 @@
   inset: 0;
   display: block;
   background: linear-gradient(160deg, var(--cover-warm-hi), var(--cover-warm-lo));
+}
+
+/* the years ride the kicker row (metadata tier) */
+.kickerDate {
+  font-variant-numeric: tabular-nums;
 }
 
 .kicker {
@@ -824,11 +829,6 @@
 
 .mapTitle {
   margin: var(--spacing-2) 0 var(--spacing-1);
-  font-family: var(--font-body);
-  font-size: var(--text-body);
-  font-weight: 600;
-  line-height: 1.25;
-  color: var(--color-ink);
 }
 
 .mapLine {
