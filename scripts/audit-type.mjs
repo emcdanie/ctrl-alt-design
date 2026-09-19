@@ -25,10 +25,11 @@ const CARD_SCOPE = '[class*="card"], [class*="Card"], .thesis-band, .ds-gate__ro
    --typography-font-size-tag. The 27 Jul hardening widened the TAGS the
    audit measures, which newly exposed metadata classes that were always
    in this tier but had never been reached; they are named here rather
-   than silently raised. Everything NOT in this list is reading text and
-   must clear 16px. */
+   than silently raised. .text-code (the code role, 19 Sep 2026) is
+   metadata by definition: 14px, never reading text. Everything NOT in
+   this list is reading text and must clear 16px. */
 const META_EXEMPT =
-  /tag|pill|eyebrow|kicker|section-label|sr-only|meta|badge|__pk|period|swatch__name|swatch__value|tok-inspector|tok-annotation__trigger|demo-link|card-meta|ds-flag|skill|flag__val|glyph|crumb|__count|quote__by|ds-type__sample|gov-h/;
+  /tag|pill|eyebrow|kicker|section-label|sr-only|meta|badge|__pk|period|swatch__name|swatch__value|tok-inspector|tok-annotation__trigger|demo-link|card-meta|ds-flag|skill|flag__val|glyph|crumb|__count|quote__by|ds-type__sample|gov-h|text-code/;
 
 const browser = await chromium.launch();
 const page = await (await browser.newContext({ viewport: { width: 1440, height: 900 } })).newPage();

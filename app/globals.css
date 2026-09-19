@@ -2297,6 +2297,12 @@ p {
   }
 }
 
+/* the help line over the first Terms (TermHelp): .text-code, above
+   the heading */
+.term-help {
+  margin: 0 0 var(--space-stack-sm);
+}
+
 /* the popover: navy with cream text on the light theme, reversed on
    dark; fixed under the word (it closes on scroll) */
 .term-tip {

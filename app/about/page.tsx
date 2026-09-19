@@ -9,7 +9,7 @@ import Card from "@/components/ui/Card";
 import { TESTIMONIALS } from "@/content/testimonials";
 import WorkedWith from "@/components/WorkedWith";
 import ExperienceSection from "@/components/ExperienceSection";
-import Term from "@/components/ui/Term";
+import Term, { TermHelp } from "@/components/ui/Term";
 
 /* About: the opening, then short lead, track record, the pack, word of
    mouth, new tricks and house rules, each one a layout Section +
@@ -21,6 +21,7 @@ export default function AboutPage() {
       <OverlayNav />
 
       <Section id="about-hero" labelledBy="about-hero-title">
+        <TermHelp />
         <SectionHeader
           as="h1"
           id="about-hero-title"
