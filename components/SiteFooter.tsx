@@ -14,9 +14,9 @@ import { social } from "@/lib/social";
 /* Site footer: navy with cream text in both themes. The "Made with"
    marquee along the top edge; the contact band (photo, "Let's compare
    notes.", the one Get in touch, Share) beside the link columns, with
-   one "building" line under them; then ELLETA in Unique as
-   one word with Bella on the last A, and the small print. The wordmark
-   is decorative: the nav carries the real one. */
+   one "building" line under them; then ELLETA in Unique, its
+   letters spread across the container with Bella on the last A (one
+   accessible name, "Elleta"), and the small print. */
 const version = JSON.parse(readFileSync(join(process.cwd(), "package.json"), "utf8")).version as string;
 
 const MADE_WITH = ["Figma", "Claude Code", "Next.js", "Vercel", "Storybook", "BELLA", "Geist & Unique", "GitHub", "a lot of coffee", "Bella's supervision"];
@@ -129,12 +129,15 @@ export default function SiteFooter() {
           </div>
         </div>
 
-        {/* brand row: ELLETA as one word with Bella on the last A; the
-            small print sits right, bottom on the wordmark's baseline */}
+        {/* brand row: ELLETA with its letters spread across the container
+            and Bella on the last A, named "Elleta" once; the small print
+            under it */}
         <div className="site-footer__brand">
-          <div className="site-footer__mark" aria-hidden="true">
-            <span className="site-footer__wordmark">
-              ELLET
+          <div className="site-footer__mark" role="img" aria-label="Elleta">
+            <span className="site-footer__wordmark" aria-hidden="true">
+              {["E", "L", "L", "E", "T"].map((l, i) => (
+                <span key={i}>{l}</span>
+              ))}
               <span className="site-footer__a">
                 A
                 {/* eslint-disable-next-line @next/next/no-img-element */}

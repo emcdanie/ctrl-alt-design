@@ -176,9 +176,12 @@ body {
   /* footer contact photo (72px under 700px) */
   --footer-photo: 6rem;
   --footer-photo-sm: 4.5rem;
-  /* site footer: ELLETA as one word in Unique (96 -> 200px); Bella sits
-     on the last A at 0.55x the cap height (Unique's cap is 0.706em) */
-  --footer-wordmark-size: clamp(6rem, 14vw, 12.5rem);
+  /* site footer: ELLETA in Unique, its letters spread across the
+     container; the letters stand 96 -> 240px tall (Unique's cap is
+     0.706em, so the font size is the cap height / 0.706). Bella sits on
+     the last A at 0.55x the cap height */
+  --footer-wordmark-cap: clamp(6rem, 18vw, 15rem);
+  --footer-wordmark-size: calc(var(--footer-wordmark-cap) / 0.706);
   --footer-bella-height: calc(0.706em * 0.55);
   /* heading measures in em (display-1 18em, the rest 22em) */
   /* STOPGAP override of BELLA's px size ramp, in rem so every size
@@ -1852,11 +1855,15 @@ p {
    letters' baseline (line-height 0.8 leaves ~0.115em below it), so the
    small print can line up with the letters */
 .site-footer__mark {
+  width: 100%;
   line-height: 0.8;
 }
 
+/* one letter per flex item, spread edge to edge of the container */
 .site-footer__wordmark {
-  display: inline-block;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
   padding-top: calc(var(--footer-bella-height) + 0.04em);
   margin-bottom: -0.115em;
   font-family: var(--font-hero-display);
