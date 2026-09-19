@@ -25,5 +25,5 @@ truth for every frame on elleta.design. This skill is the enforcement summary.
 
 1. Never write a raw px or hex where a token exists (BELLA `lib/bella/bella.css` + `app/globals.css` `@theme`).
 2. If a value is genuinely missing, add a named token and record it in `DESIGN.md` BEFORE using it.
-3. New sections: `SectionShell` / `.layout-section` + `.layout-container`. No custom vertical padding.
+3. New sections: `Section` (`.section` + `.container`). No custom vertical padding.
 4. After visual changes, re-check the frames against `DESIGN.md` (radius, padding, border+shadow tier, gap, section rhythm) at 1440/768/390.

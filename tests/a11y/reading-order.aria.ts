@@ -46,8 +46,11 @@ test.describe("Work", () => {
   test("hero", async ({ page }) => {
     await expect(page.locator("main h1").first()).toMatchAriaSnapshot(snap("work-hero"));
   });
-  test("card grid", async ({ page }) => {
-    await expect(page.locator('[class*="curatedGrid"]').first()).toMatchAriaSnapshot(snap("work-grid"));
+  test("case studies", async ({ page }) => {
+    await expect(page.locator("#case-studies")).toMatchAriaSnapshot(snap("work-grid"));
+  });
+  test("pattern studies", async ({ page }) => {
+    await expect(page.locator("#studies")).toMatchAriaSnapshot(snap("work-studies"));
   });
 });
 

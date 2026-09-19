@@ -35,8 +35,8 @@ const ROUTES = {
   "app/not-found.tsx": { allow: PENDING },
   "app/privacy/page.tsx": { allow: PENDING },
   "app/accessibility/page.tsx": { allow: PENDING },
-  // the Work session moves Work over after rebasing feat/work-page
-  "app/work/page.tsx": { allow: PENDING },
+  "app/work/page.tsx": "section",
+  "app/work/studies/[slug]/page.tsx": "section",
 };
 
 const SPACING_DIRS = ["app", "components/sections"];

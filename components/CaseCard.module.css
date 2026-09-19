@@ -109,3 +109,9 @@
   text-overflow: ellipsis;
 }
 
+/* the closing affordance ("Case study →"), pinned to the card foot so a
+   row of equal-height cards lines up */
+.cta {
+  align-self: flex-start;
+  margin-top: auto;
+}

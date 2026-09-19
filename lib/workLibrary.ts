@@ -191,21 +191,29 @@ export function findWorkItemBySlug(
   return WORK_ITEMS.find((i) => i.href.endsWith(`/case-studies/${slug}`));
 }
 
-/** The hub is not a work row — it belongs to the bubble cluster only. */
-export const HUB_ITEM: Omit<WorkItem, "type" | "year" | "yearStart" | "role" | "impact" | "skills" | "medium"> = {
-  id: "hub",
-  title: "How I think about design systems",
-  bubbleLabel: "Design Systems",
-  kicker: "Point of view",
-  ingredients: [
-    "Systems are agreements, not component libraries.",
-    "Governance is what stops the drift.",
-    "I read code, so design and engineering stay honest.",
-  ],
-  href: "/about#how-i-think",
-  cta: "Read my full take",
-  hi: "var(--hub-hi)",
-  lo: "var(--hub-lo)",
-  deep: "var(--hub-deep)",
-  text: "var(--hub-deep)",
+/* ── The /work case studies (Elleta, 19 Sep 2026) ───────────────────
+ * The three cases in Home order, with the Work card copy: one line,
+ * full-year dates, at most two tags. Identity lives on the WORK_ITEMS
+ * rows above; this adds only what the card says. */
+
+export interface WorkCase {
+  id: string;
+  title: string;
+  line: string;
+  /** "2024 to 2025" */
+  years: string;
+  tags: string[];
+  href: string;
+  cover?: string;
+}
+
+const CASE_COPY: Record<string, Pick<WorkCase, "line" | "years" | "tags">> = {
+  "code-first": { line: "Figma and code as one system, not two.", years: "2024 to 2025", tags: ["Design tokens", "Figma ⇄ code"] },
+  drift: { line: "A first design system for a product that had outgrown its UI.", years: "2024 to 2026", tags: ["Design systems", "Governance"] },
+  chip: { line: "An agent that watches the system and never moves silently.", years: "2026", tags: ["AI-enabled design", "Governance"] },
 };
+
+export const WORK_CASES: WorkCase[] = Object.entries(CASE_COPY).map(([id, copy]) => {
+  const item = WORK_ITEMS.find((i) => i.id === id)!;
+  return { id, title: item.title, href: item.href, cover: item.cover, ...copy };
+});

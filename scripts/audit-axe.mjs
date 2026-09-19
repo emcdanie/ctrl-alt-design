@@ -15,8 +15,6 @@ const axeSource = readFileSync("node_modules/axe-core/axe.min.js", "utf8");
 const ROUTES = [
   "/",
   "/work",
-  "/work?view=map",
-  "/work?view=table",
   "/about",
   "/contact",
   "/privacy",
@@ -29,6 +27,11 @@ const ROUTES = [
   "/case-studies/chip",
   "/case-studies/brad-frost",
   "/case-studies/design-system-transformation",
+  /* the pattern-study brief pages (one template) */
+  "/work/studies/stock-screener",
+  "/work/studies/race-day",
+  "/work/studies/insurance-forms",
+  "/work/studies/legal-search",
 ];
 
 const browser = await chromium.launch();

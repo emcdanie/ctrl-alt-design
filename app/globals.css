@@ -249,11 +249,6 @@ body {
      keycap switch, and nav-bar depth values, moved verbatim out of the
      component layer. Do not flatten; the depth IS the system. */
   --shadow-orb: 13px 22px 44px rgba(0, 0, 0, 0.26), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
-  --shadow-orb-raised: 14px 24px 48px rgba(0, 0, 0, 0.26), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
-  --shadow-orb-selected: 14px 24px 48px rgba(0, 0, 0, 0.3), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
-  --gloss-orb: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 72%);
-  --edge-glass-hi-strong: inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  --gloss-press: inset 0 2px 4px rgba(255, 255, 255, 0.6);
   --shadow-nav-bar: 0 18px 48px rgba(26, 24, 20, 0.08);
 
 
@@ -293,8 +288,6 @@ body {
   --case-drift-hi: #D6AFEE;
   --case-drift-lo: #C58AE6;
   --case-drift-deep: #6A40AC;
-  --case-guardian-hi: #AEBCF5;
-  --case-guardian-lo: #8FA2F0;
   --case-clarity-hi: #A6D8BC;
   --case-clarity-lo: #7FC79E;
   --case-clarity-deep: #256B4C;
@@ -334,22 +327,19 @@ body {
   --gov-grey-text: var(--gov-grey-deep);
   --hub-hi: #CFC7F6;
   --hub-lo: #A99BEC;
-  --hub-bright: #6C5CE0;
-  --hub-deep: #5647C4;
-  --hero-bub-ink: #141019;
-  --hero-panel-bg: #FFFFFF;
-  --hero-panel-ink: #1A1720;
-  --hero-panel-close: #9A948B;
   /* The six panel-ground companions (--hero-panel-ink-soft / -meta /
      -surface / -border-soft / -border-medium / -accent-ink) were deleted
      in the Card swap, 2026-07-30. The old ui/Card variant="peek" was
      their only consumer: it re-scoped this repo's ink names onto the
      fixed-light panel. BELLA's Card owns that job now and re-scopes its
      OWN semantic names, so these were left defined and consumed by
-     nothing (caught by audit:debt, not by hand). --hero-panel-bg, -ink
-     and -close stay: BubbleCluster still reads them directly. */
+     nothing (caught by audit:debt, not by hand). The rest of the hero
+     panel, bubble and orb set went with BubbleCluster (19 Sep 2026). */
 
   /* Case-card cover placeholder — muted warm, never bright (IA spec) */
+  /* pattern-study tile (Work, 19 Sep 2026): one ground behind every
+     framed crop */
+  --tile: #E3DED1;
   --cover-warm-hi: #E9E2D2;
   --cover-warm-lo: #D9CDB9;
   --cover-warm-ink: #4A4030;
@@ -364,8 +354,6 @@ body {
   --modal-backdrop: rgba(26, 23, 32, 0.7);
   /* page-top glow — flips to near-none on navy */
   --page-glow: rgba(255, 255, 255, 0.55);
-  --hero-panel-shadow: rgba(26, 23, 32, 0.22);
-  --hero-link: rgba(26, 23, 32, 0.16);
   --key-face-hi: #FFFFFF;
   /* Filled-keycap face — FIXED in both themes. White labels need ≥4.5:1
      on every gradient stop: #6C5CE0 4.9:1, #5B4BD1 6.1:1 (the lighter
@@ -396,14 +384,6 @@ body {
      ground. Recorded here, never per-instance. */
   --thesis-band-ground: var(--color-card);
   --thesis-band-ink: var(--color-ink);
-  --shadow-key-resting:
-    1px 3px 0 var(--key-fill-edge),
-    3px 6px 10px color-mix(in srgb, var(--key-fill-lo) 24%, transparent),
-    var(--edge-glass-hi-strong);
-  --shadow-key-pressed:
-    0 1px 0 var(--key-fill-edge),
-    2px 3px 8px color-mix(in srgb, var(--key-fill-lo) 20%, transparent),
-    var(--edge-glass-hi-strong);
 
 
 
@@ -477,12 +457,10 @@ body {
   /* cover placeholder flips as a SET in dark (cover-contrast fix,
      21 Jul): dark warm plate, parchment-warm ink; >=3:1 large-text on
      every stop, scrim-free (the placeholder skips the media scrim) */
+  --tile: #23201C;
   --cover-warm-hi: #3A3428;
   --cover-warm-lo: #2C271E;
   --cover-warm-ink: #E9E2D2;
-  --hero-panel-bg: #F4EFE6;
-  --hero-panel-shadow: rgba(0, 0, 0, 0.44);
-  --hero-link: rgba(244, 239, 230, 0.2);
   --modal-backdrop: rgba(0, 0, 0, 0.6);
   --page-glow: rgba(255, 255, 255, 0.04);
 }
@@ -1369,6 +1347,52 @@ p {
   left: 2px;
   font-weight: 700;
   color: var(--color-ink-muted); /* neutral: purple is for accent words, links, focus rings and the primary button */
+}
+
+/* Equal-card grid (Work): 1 column, 2 at 700px, 3 at 1024px. Cells
+   stretch, so every card in a row matches the tallest. */
+.card-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: var(--grid-gap);
+  margin-top: var(--space-stack-md);
+}
+
+@media (min-width: 700px) {
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* A Section whose body holds a card grid takes the whole container
+   below 1280px (label above the heading), so cards never squeeze into
+   the narrow main column. Scoped by :has() so text-only Sections
+   (About) are untouched. */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .section-row__main:has(.card-grid) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* a page's tools under the hero lede (Work: Find my fit + filters) */
+.page-tools {
+  margin-top: var(--space-stack-md);
+}
+
+/* a page's close row: one display line and one action (Work) */
+.page-close {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-stack-md);
 }
 
 /* Good company: ONE grid, logos left-aligned in ruled cells. Marks are
@@ -2648,6 +2672,15 @@ p {
   box-shadow: inset 0 0 0 1px var(--color-semantic-accent-border);
 }
 
+/* sentence case (Work, Learning; 19 Sep 2026): Geist, no tracking */
+.seg-control--sentence button {
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
 .seg-control button:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: -3px;
@@ -3509,6 +3542,14 @@ textarea:focus-visible {
 .tag.tag--identity {
   background: color-mix(in srgb, var(--case-tint-hi, var(--color-supporting-linen)) 36%, var(--color-card));
   color: var(--case-tint-text, var(--ink-on-paper));
+}
+
+/* outline (19 Sep 2026): hairline, muted ink, no fill; theme-aware,
+   so it never renders as a cream plate on navy */
+.tag.tag--outline {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--color-border-medium);
+  color: var(--color-ink-muted);
 }
 
 /* dark: keep the tint plate near-navy so the light case text clears AA */
@@ -5643,12 +5684,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   max-width: 70ch;
 }
 
+/* case captions: sentence case and muted, never caps (19 Sep 2026) */
 .cs2-kicker-row {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 400;
+  line-height: 1.5;
   color: var(--color-ink-muted);
   margin: 0;
 }
@@ -6368,8 +6409,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   transform: none;
 }
 
-/* the sign-off IS the site's Unique display (Heading tier=case) */
-.cs2-endreveal__thanks.display-heading {
+/* the sign-off is a paragraph, not a heading (19 Sep 2026) */
+.cs2-endreveal__thanks {
+  font-family: var(--font-body);
+  font-size: var(--text-lead);
+  font-weight: 600;
   color: var(--color-ink);
   margin: 0 0 var(--spacing-2);
 }
@@ -6620,8 +6664,17 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   text-align: center;
 }
 
+/* accent words are ink on case pages, no per-case colour (19 Sep
+   2026); the big opening mark is ink too */
 .cs2-displayquote__accent {
-  color: var(--case-code-first-text);
+  color: var(--color-ink);
+}
+
+.cs2-displayquote__mark {
+  display: block;
+  font-size: calc(var(--component-heading-page-font-size) * 2);
+  line-height: 0.6;
+  color: var(--color-ink);
 }
 
 /* ── beat 04, the takeaway band (pre-merge spec, 23 Jul 2026): the

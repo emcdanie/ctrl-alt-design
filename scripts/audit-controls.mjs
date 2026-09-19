@@ -7,10 +7,10 @@ import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
 import { BASE } from "./lib/base-url.mjs";
 
-const routes = ["/", "/work", "/work?view=map", "/work?view=timeline", "/about", "/contact",
+const routes = ["/", "/work", "/about", "/contact",
   "/point-of-view", "/case-studies/brad-frost", "/case-studies/chip",
   "/case-studies/design-system-transformation",
-  "/learning", "/work?view=cards", "/design-system", "/quick"];
+  "/learning", "/design-system", "/quick"];
 
 /* ── source scan: the retired demo register must not return.
    Matches DECLARATIONS and USAGES (definitions, var() reads, CSS

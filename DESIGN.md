@@ -47,8 +47,8 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
 3. One border + shadow tier per context. Interactive cards rest on
    `--shadow-card-default` and hover/raise to `--shadow-card-elevated`.
    Do not mix in `--shadow-hover`, ad-hoc rgba shadows, or per-card tiers.
-4. Sections use `.layout-section` (or `SectionShell`); content sits in
-   `.layout-container`. No per-section custom vertical padding.
+4. Sections use `Section` (`.section` + `.container`); content sits in
+   `.container`. No per-section custom vertical padding.
 5. Grids use `var(--grid-gap)`. No per-grid gap values.
 6. Never write a raw px/hex where a token exists. A genuinely new value gets a
    named token here first.
@@ -263,8 +263,8 @@ is the ONLY way to render one:
 - Decorative by default (`aria-hidden`); pass `label` for meaningful
   icons (`role="img"` + `aria-label`). `focusable="false"`.
 - `IconoirProvider` (app layout) carries the same defaults as a backstop.
-- Not icons, not converted: BubbleCluster's connector SVG (diagram),
-  VinylPlayer artwork (fixed-context illustration).
+- Not icons, not converted: VinylPlayer artwork (fixed-context
+  illustration).
 
 ## Recorded exceptions
 
@@ -282,9 +282,6 @@ is the ONLY way to render one:
   letter-spacing 0.04em. A brand mark, not running text: the only
   sanctioned use of Unique besides the hero headline and the Heading
   primitive.
-- Hero bubble geometry (sizes 126–196px, cluster positions) is recorded
-  data in `components/BubbleCluster.tsx`, from `_proto/_hero.html` — not
-  ramp/spacing values.
 - Decision why-lines (Elleta, 2026-07-20): the key-line style
   (`.cs-decision-why`, 18px/600 in the case marker colour) applies
   ONLY when the why is a single short statement of ~160 characters or
