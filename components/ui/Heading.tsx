@@ -26,6 +26,7 @@ export default function Heading({
   id,
   className = "",
   style,
+  label,
   children,
 }: {
   tier?: HeadingTier;
@@ -38,13 +39,16 @@ export default function Heading({
   id?: string;
   className?: string;
   style?: CSSProperties;
+  /** explicit accessible name, for headings whose accent is a control
+   *  (a Term button pads its name: "Bella ." instead of "Bella.") */
+  label?: string;
   children: ReactNode;
 }) {
   const Tag: ElementType = as ?? (tier === "hero" || tier === "page" ? "h1" : tier === "sub" ? "h3" : "h2");
   /* the size comes from the shared text utility, not a tier-private rule */
   const size = tier === "page" ? " text-display-1" : tier === "section" || tier === "case" ? " text-display-2" : "";
   return (
-    <Tag id={id} style={style} className={`display-heading display-heading--${tier}${size} ${className}`.trim()}>
+    <Tag id={id} style={style} aria-label={label} className={`display-heading display-heading--${tier}${size} ${className}`.trim()}>
       {children}
       {accent != null ? <span className="accent"> {accent}</span> : null}
       {after}

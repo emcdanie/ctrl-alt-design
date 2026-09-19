@@ -23,7 +23,8 @@ const IDLE = 22; // the resting box around the pointer, px
 const PAD = 8; // the brackets sit this far outside a wrapped target, px
 const LAG = 0.22; // share of the remaining distance covered per frame
 const EDGE = 2; // the box never comes closer than this to the viewport edge, px
-const labelFor = (el: Element) => `<${el.tagName.toLowerCase()}>`;
+// a Term is a <button> doing a <dfn>'s job: the label says what it is
+const labelFor = (el: Element) => (el.hasAttribute("data-term") ? "<dfn>" : `<${el.tagName.toLowerCase()}>`);
 
 /* one corner, drawn as a vector stroke: a 1.5px border gets snapped to
    1px by the browser, a path doesn't. Drawn top-left, mirrored by CSS. */

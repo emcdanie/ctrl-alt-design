@@ -1,5 +1,17 @@
-import type { ReactNode } from "react";
+import { isValidElement, type ReactNode } from "react";
 import Heading from "@/components/ui/Heading";
+import { GLOSSARY, type TermId } from "@/content/glossary";
+
+/* A Term accent is a button, and a button pads the heading's accessible
+   name ("Bella ." for "Bella."). When the accent is a Term, the heading
+   gets its name spelled out: heading, the Term's word, what follows. */
+function termName(heading: ReactNode, accent: ReactNode, after: ReactNode): string | undefined {
+  if (!isValidElement<{ id?: TermId }>(accent)) return undefined;
+  const id = accent.props.id;
+  if (!id || !(id in GLOSSARY) || typeof heading !== "string") return undefined;
+  if (after != null && typeof after !== "string") return undefined;
+  return `${heading} ${GLOSSARY[id].word}${after ?? ""}`;
+}
 
 /* The section header (specs/layout-system): heading left (about 40%),
    lead and body right (about 60%, max 42rem) from 1024px, stacked
@@ -27,7 +39,14 @@ export default function SectionHeader({
 }) {
   return (
     <div className="l-header">
-      <Heading tier={as === "h1" ? "page" : "section"} as={as} id={id} accent={accent} after={after}>
+      <Heading
+        tier={as === "h1" ? "page" : "section"}
+        as={as}
+        id={id}
+        accent={accent}
+        after={after}
+        label={termName(heading, accent, after)}
+      >
         {heading}
       </Heading>
       {lead || children ? (

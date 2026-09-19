@@ -142,6 +142,12 @@ body {
   --border-faint: color-mix(in srgb, var(--color-ink) 10%, transparent);
   --radius-card: 1rem;
   --radius-pill: 999px;
+  --radius-popover: 0.75rem;
+  /* Term: the dotted iris underline (thicker, further off in headings) */
+  --term-dot: 1.5px;
+  --term-offset: 4px;
+  --term-dot-heading: 2px;
+  --term-offset-heading: 6px;
   /* Layout system (18 Sep 2026, specs/layout-system): Container,
      Section, SectionHeader read these. They move into BELLA later. */
   --layout-max: 74rem; /* content width, 1184px; gutters sit outside it */
@@ -2009,6 +2015,117 @@ p {
   min-height: var(--spacing-6);
   font-size: var(--text-meta);
   color: inherit;
+}
+
+/* Term (components/ui/Term.tsx): a word you can tap to learn. It
+   reads as the word it sits in (font, colour), with a dotted iris
+   underline under it; the letters bounce one after another on hover-in
+   and tap. */
+.term {
+  --dot: var(--term-dot);
+  --off: var(--term-offset);
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.display-heading .term {
+  --dot: var(--term-dot-heading);
+  --off: var(--term-offset-heading);
+}
+
+.term::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(0px - var(--off));
+  height: var(--dot);
+  background-image: radial-gradient(circle, var(--color-accent-ink) calc(var(--dot) / 2), transparent calc(var(--dot) / 2 + 0.5px));
+  background-size: calc(var(--dot) * 2.5) var(--dot);
+  background-repeat: repeat-x;
+  pointer-events: none;
+}
+
+.term:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+  border-radius: var(--radius-sm);
+}
+
+.term__l {
+  display: inline-block;
+  transform-origin: bottom;
+}
+
+.term__word.is-bouncing .term__l {
+  animation: term-bounce 0.5s ease both;
+  animation-delay: calc(var(--i) * 35ms);
+}
+
+@keyframes term-bounce {
+  0% { transform: none; }
+  35% { transform: translateY(-0.4em); color: var(--color-accent-ink); }
+  100% { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .term__word.is-bouncing .term__l {
+    animation: none;
+  }
+}
+
+/* the popover: navy with cream text on the light theme, reversed on
+   dark; fixed under the word (it closes on scroll) */
+.term-tip {
+  position: fixed;
+  z-index: 9000;
+  display: grid;
+  gap: var(--spacing-2);
+  max-width: min(20rem, calc(100vw - var(--spacing-6)));
+  padding: var(--spacing-4);
+  border-radius: var(--radius-popover);
+  background: var(--color-brand-navy);
+  color: var(--color-navy-ink);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.45;
+  text-align: left;
+  text-transform: none;
+}
+
+.term-tip[hidden] {
+  display: none;
+}
+
+[data-theme="dark"] .term-tip {
+  background: var(--color-navy-ink);
+  color: var(--color-brand-navy);
+}
+
+.term-tip__tag {
+  font-family: var(--font-mono); /* Geist: the mono cut is retired (audit:fonts) */
+  font-size: var(--text-meta);
+  opacity: 0.8;
+}
+
+.term-tip__tag dfn {
+  font-style: normal;
+  font-weight: 600;
+}
+
+.term-tip__when {
+  opacity: 0.85;
 }
 
 /* tertiary action: iris + underlined, a button that reads as a link */

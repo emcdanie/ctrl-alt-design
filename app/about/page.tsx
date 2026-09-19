@@ -9,6 +9,7 @@ import Card from "@/components/ui/Card";
 import { TESTIMONIALS } from "@/content/testimonials";
 import WorkedWith from "@/components/WorkedWith";
 import ExperienceSection from "@/components/ExperienceSection";
+import Term from "@/components/ui/Term";
 
 /* About: the opening, then short lead, track record, the pack, word of
    mouth, new tricks and house rules, each one a layout Section +
@@ -24,11 +25,11 @@ export default function AboutPage() {
           as="h1"
           id="about-hero-title"
           heading="Fluent in design, code and"
-          accent="Bella"
+          accent={<Term id="bella" />}
           after="."
           lead={
             <>
-              I build design systems that give designers and developers a <strong>shared language</strong>: tokens,
+              I build design systems that give designers and developers a <strong>shared language</strong>: <Term id="tokens" />,
               components, and the decisions behind them, written down kindly so everyone can use them.
             </>
           }
@@ -58,13 +59,13 @@ export default function AboutPage() {
       <Section id="short-lead" label="The short lead">
         <SectionHeader
           heading="A shared language, not a"
-          accent="rulebook"
+          accent={<Term id="rulebook" />}
           after="."
           lead="Teams move fast. A good system helps them move together."
         >
           <p>
             Components get duplicated. Decisions get made under sprint pressure and nobody writes them
-            down. The file meant to be the source of truth turns into the one nobody trusts. I dig out the
+            down. The file meant to be the <Term id="source-of-truth" /> turns into the one nobody trusts. I dig out the
             structure underneath and write it down, <strong>so design and dev can talk again</strong>. Then I hand
             it over: the system belongs to the team, not to me. It&apos;s the part I&apos;d do for free.
           </p>
@@ -82,7 +83,7 @@ export default function AboutPage() {
       <Section id="track-record" label="Track record">
         <SectionHeader
           heading="Where I've"
-          accent="been"
+          accent={<Term id="been" />}
           after="."
           lead="Five teams, one thread: making the system the thing people trust."
         />
@@ -99,7 +100,7 @@ export default function AboutPage() {
       <Section id="word-of-mouth" label="Word of mouth">
         <SectionHeader
           heading="In their own"
-          accent="words"
+          accent={<Term id="words" />}
           after="."
           lead="Six of fifteen recommendations, quoted as written."
         />
@@ -140,13 +141,14 @@ export default function AboutPage() {
       <Section id="new-tricks" label="New tricks">
         <SectionHeader
           heading="Design systems that don't fall apart when"
-          accent="AI"
+          accent={<Term id="ai" />}
           after=" shows up."
           lead="AI is part of how I work, not a trick in the deck."
         >
           <p>
             I use Claude to synthesise research and audits, draft docs, and check my own work. I&apos;m
-            happy to try a new tool the week it lands: Figma MCP, Code Connect, Storybook. But the tools
+            happy to try a new tool the week it lands: <Term id="figma-mcp" />, <Term id="code-connect" />,{" "}
+            <Term id="storybook" />. But the tools
             are the easy part. A system only sticks when the people using it trust it, so <strong>I work with
             teams, not against them</strong>: pairing with engineers, bringing designers into the decisions, and
             building the relationships that shape how a company actually uses its system.
@@ -154,7 +156,7 @@ export default function AboutPage() {
           <p>
             At Mango I was <strong>the first to bring AI into their design-system work</strong>: I used it to audit and
             ship faster while updating the system, then built the tools so the team could carry on
-            without me. My most recent example is the site you&apos;re on. It runs on BELLA, my own
+            without me. My most recent example is the site you&apos;re on. It runs on <Term id="bella-system" />, my own
             design system: tokens, components in Storybook, and docs an AI can read.
           </p>
           <p>
@@ -175,7 +177,7 @@ export default function AboutPage() {
       </Section>
 
       <Section id="house-rules" label="House rules">
-        <SectionHeader heading="Four things I" accent="care" after=" about." />
+        <SectionHeader heading="Four things I" accent={<Term id="care" />} after=" about." />
         <div className="cares">
           <Card className="cares__card">
             <h3 className="heading-item">Kindness</h3>
@@ -198,7 +200,7 @@ export default function AboutPage() {
           </Card>
           <Card className="cares__card">
             <h3 className="heading-item">Love of the craft</h3>
-            <p>Naming, tokens, governance. <strong>The unglamorous stuff</strong> is my favourite stuff.</p>
+            <p>Naming, tokens, <Term id="governance" />. <strong>The unglamorous stuff</strong> is my favourite stuff.</p>
           </Card>
         </div>
       </Section>

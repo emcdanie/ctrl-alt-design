@@ -86,6 +86,8 @@ override the constitution.
   of cards. Applies to new and rebuilt surfaces; existing pages migrate when they are next touched.
 - The site nav and footer are global landmarks and don't count toward one-primary-per-page.
 - Name the UN as 'United Nations Geneva' (matches the CV).
+- **Purple heading word = Term. Dotted underline = tap to learn. Bold = claim. Max one bold per
+  paragraph.** (Elleta, 2026-09-19.) `components/ui/Term.tsx`, definitions in `content/glossary.ts`.
 - **Type comes from the text utilities** (`.text-display-1/2/3`, `.text-lead`, `.text-body`,
   `.text-meta`, `.accent`). No page-specific font sizes: if a size is missing, add a token.
 - **Never set heading widths in `ch` for Unique** (condensed, so `ch` wraps early): use
