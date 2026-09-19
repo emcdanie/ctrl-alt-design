@@ -37,14 +37,16 @@ override the constitution.
   email + LinkedIn (`GetInTouch` / `ContactActions`; below lg they live in the menu). The /contact
   route stays until its own PR retires it. /design-system is a first-class page (the system inspecting itself);
   the footer "See the system" colophon link stays.
-- **Work page (Elleta, 2026-09-18; supersedes the 2026-07-20 Work toolbar).** Hero (Find my fit
-  and the filter chips under the lede), then 01 Best in show (the three case studies as equal
-  CaseCards), 02 Off the lead (explorations and prototypes in ONE equal-card grid), then a close
-  with the one Get in touch. The chips (type first: All, Case studies, Explorations,
-  Prototypes; then skills) filter the cards in 01 and 02 through the URL (`type`, `skill`;
-  shareable, replaced in place, not pushed to history). A section whose cards all filter out
-  drops out with its heading. The Cards · Map · Table switcher, the Map view, the featured card
-  and the Everything list are retired.
+- **Work page (Elleta, 2026-09-19, approved mock; supersedes 2026-09-18).** Hero (the `//`
+  note, heading and lede, then Find my fit, the Type chips (Case study, Concept, Hackathon,
+  Prototype) and the Topic chips (every skill in `content/skills.ts`, sentence case, with
+  counts), the live count and "Clear filters"), then the view. The Cards · Table · Map
+  switcher (SegmentedControl, sentence case) is current: Cards shows Case studies (the three
+  cases, equal cards) and Off the lead (the experiments, two columns); Table lists every piece;
+  Map is the ring map (skills inner, pieces outer, lines only on selection). Filters and view
+  live in the URL (`type`, `topic`, `q`, `view`; view changes push, filters replace). A
+  section whose cards all filter out drops out with its heading; nothing left shows Obi's
+  empty state. No close block: the shared footer carries contact.
 
 ## 2. Layout
 - **Sections use Section + SectionHeader. No custom spacing.** (Elleta, 2026-09-18, layout system,
