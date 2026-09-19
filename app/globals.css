@@ -1439,6 +1439,18 @@ p {
   }
 }
 
+/* layout="row": one row of every mark from 1024px */
+@media (min-width: 1024px) {
+  .logo-grid--row {
+    grid-template-columns: repeat(var(--logo-count), minmax(0, 1fr));
+  }
+}
+
+/* the optional "Worked with" label above the marks */
+.logo-group__label {
+  margin: 0 0 var(--space-stack-sm);
+}
+
 /* Accordion (components/ui/Accordion.tsx): a heading-wrapped button,
    the panel animates grid rows 0fr to 1fr. Closed panels are
    visibility: hidden, so they leave the tab order and the a11y tree

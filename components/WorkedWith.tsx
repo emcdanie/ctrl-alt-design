@@ -1,10 +1,13 @@
+import { useId } from "react";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { WORKED_WITH, type Org } from "@/components/ExperienceSection";
 
 /* "Good company" (server component): one grid of marks inlined from
    public/logos so they paint in currentColor (the muted ink) in both
-   themes. Each mark fits the grid's logo box by its own aspect ratio.
+   themes. layout="grid" (default): 2 per row, 4 from 700px.
+   layout="row": the same, then one row from 1024px. `label` shows a
+   .text-code line ("Worked with") above the marks and names the group. Each mark fits the grid's logo box by its own aspect ratio.
    Any id inside a file (a knockout mask) is suffixed per instance, so
    two copies on one page never share an id. */
 const svgFor = (o: Org, uid: string) => {
@@ -16,9 +19,20 @@ const svgFor = (o: Org, uid: string) => {
   return { html: svg.replace("<svg", '<svg aria-hidden="true" focusable="false"'), ratio: w / h };
 };
 
-export default function WorkedWith() {
-  return (
-    <ul className="logo-grid">
+export default function WorkedWith({
+  layout = "grid",
+  label,
+}: {
+  layout?: "grid" | "row";
+  /** visible label in .text-code, also the group's accessible name */
+  label?: string;
+}) {
+  const labelId = useId();
+  const list = (
+    <ul
+      className={layout === "row" ? "logo-grid logo-grid--row" : "logo-grid"}
+      style={{ "--logo-count": WORKED_WITH.length } as React.CSSProperties}
+    >
       {WORKED_WITH.map((o, i) => {
         const { html, ratio } = svgFor(o, `ww${i}`);
         const style = { "--logo-ratio": ratio, ...(o.scale ? { "--logo-scale": o.scale } : {}) } as React.CSSProperties;
@@ -38,5 +52,14 @@ export default function WorkedWith() {
         );
       })}
     </ul>
+  );
+  if (!label) return list;
+  return (
+    <div role="group" aria-labelledby={labelId} className="logo-group">
+      <p id={labelId} className="text-code logo-group__label">
+        {label}
+      </p>
+      {list}
+    </div>
   );
 }
