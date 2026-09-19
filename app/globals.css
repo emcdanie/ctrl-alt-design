@@ -913,7 +913,16 @@ li {
   color: var(--color-ink-soft);
 }
 
-p {
+/* text wrapping (polish pass, 19 Sep 2026): headings balance their
+   lines, paragraphs and list items avoid orphans */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li {
   text-wrap: pretty;
 }
 
@@ -1084,12 +1093,13 @@ p {
 }
 
 /* hero squeeze (Heading squeeze, hero tier only): 820 at rest; with
-   scroll timelines and motion allowed, weight 820 to 480 and tracking
-   -0.005em to -0.05em across the first 85vh of the page's scroll. The
-   one approved tracking exception (CLAUDE.md §3), owned here. */
+   scroll timelines and motion allowed, weight 820 to 640 and tracking
+   -0.01em to -0.03em across the first 60vh of the page's scroll, line
+   height fixed (gentler, polish pass 19 Sep 2026). The one approved
+   tracking exception (CLAUDE.md §3), owned here. */
 .display-heading--squeeze {
   font-weight: 820;
-  letter-spacing: -0.005em;
+  letter-spacing: -0.01em;
   line-height: 1;
 }
 
@@ -1098,7 +1108,7 @@ p {
     .display-heading--squeeze {
       animation: heading-squeeze linear both;
       animation-timeline: scroll(root);
-      animation-range: 0 85vh;
+      animation-range: 0 60vh;
     }
   }
 }
@@ -1106,12 +1116,12 @@ p {
 @keyframes heading-squeeze {
   from {
     font-weight: 820;
-    letter-spacing: -0.005em;
+    letter-spacing: -0.01em;
   }
 
   to {
-    font-weight: 480;
-    letter-spacing: -0.05em;
+    font-weight: 640;
+    letter-spacing: -0.03em;
   }
 }
 
@@ -1596,7 +1606,7 @@ p {
 .accordion[data-ready] .accordion__panel {
   transition:
     grid-template-rows var(--dur-base) var(--ease-out),
-    visibility 0s linear 250ms;
+    visibility 0s linear var(--dur-base);
 }
 
 .accordion[data-ready].is-open .accordion__panel {
@@ -1622,7 +1632,7 @@ p {
 }
 
 .accordion[data-ready].is-open .accordion__inner {
-  transition: overflow 0s 250ms allow-discrete;
+  transition: overflow 0s var(--dur-base) allow-discrete;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2417,6 +2427,28 @@ p {
 
 .term-tip[hidden] {
   display: none;
+}
+
+/* small motion (polish pass, 19 Sep 2026): the toggletip rises 4px into
+   place as it appears, and `interpolate-size` lets height animate to
+   auto (the About accordion keeps its grid-rows fallback) */
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  .term-tip {
+    transition:
+      opacity var(--dur-fast) var(--ease-out),
+      translate var(--dur-fast) var(--ease-out);
+  }
+
+  @starting-style {
+    .term-tip {
+      opacity: 0;
+      translate: 0 4px;
+    }
+  }
 }
 
 [data-theme="dark"] .term-tip {

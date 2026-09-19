@@ -48,8 +48,8 @@ export default function Heading({
   /** explicit accessible name, for headings whose accent is a control
    *  (a Term button pads its name: "Bella ." instead of "Bella.") */
   label?: string;
-  /** hero tier only: the scroll squeeze (weight 820 to 480, tracking
-   *  -0.005em to -0.05em over the first 85vh of scroll). The one
+  /** hero tier only: the scroll squeeze (weight 820 to 640, tracking
+   *  -0.01em to -0.03em over the first 60vh of scroll). The one
    *  approved tracking exception, and it lives here, never in a page. */
   squeeze?: boolean;
   children: ReactNode;
