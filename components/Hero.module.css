@@ -38,11 +38,9 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--case-clarity-text) 18%, transparent);
 }
 
-/* The hero tier's value for Home. The global token is 40-180px (unused
-   elsewhere); scoped here until the token moves (noted for Elleta).
-   Leading is the audit:type floor, 1.0 (the mock's 0.98 fails it). */
+/* Size from the hero tier token. Leading is the audit:type floor, 1.0
+   (the mock's 0.98 fails it). */
 .headline {
-  --component-heading-hero-font-size: clamp(2.6rem, 6vw, 5.4rem);
   margin: var(--spacing-4) 0 var(--spacing-6);
   max-width: 15ch;
   line-height: 1;

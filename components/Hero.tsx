@@ -22,8 +22,7 @@ export default function Hero() {
     <Section labelledBy="home-hero-title">
       <div className={styles.hero}>
         <div>
-          {/* TODO text-code: switch to .text-code once it lands */}
-          <p className={`text-meta ${styles.status}`}>
+          <p className={`text-code ${styles.status}`}>
             <span className={styles.metaItem}>
               <span className={styles.dot} aria-hidden="true" />
               Open to roles and projects
