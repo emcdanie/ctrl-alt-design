@@ -82,12 +82,20 @@
         {
           "name": "label",
           "type": "string"
+        },
+        {
+          "name": "sentence",
+          "type": "boolean"
         }
       ],
       "variants": [
         {
           "name": "active segment",
           "delta": "aria-current=true; accent-subtle fill and accent border on the selected segment only"
+        },
+        {
+          "name": "sentence",
+          "delta": "seg-control--sentence: labels in sentence case, Geist, no tracking"
         }
       ],
       "tokens": [
@@ -148,6 +156,10 @@
           "type": "boolean"
         },
         {
+          "name": "outline",
+          "type": "boolean"
+        },
+        {
           "name": "style",
           "type": "CSSProperties (the --case-tint-* vars for identity)"
         }
@@ -156,6 +168,10 @@
         {
           "name": "identity",
           "delta": "tag--identity: wears the case's tint via --case-tint-text / --case-tint-hi passed in style"
+        },
+        {
+          "name": "outline",
+          "delta": "tag--outline: hairline border, muted ink, no fill; flips with the theme"
         }
       ],
       "tokens": [
@@ -163,7 +179,9 @@
         "{--ink-on-paper}",
         "{--radius-full}",
         "{--typography-font-size-tag}",
-        "{--font-body}"
+        "{--font-body}",
+        "{--color-border-medium}",
+        "{--color-ink-muted}"
       ]
     },
     {

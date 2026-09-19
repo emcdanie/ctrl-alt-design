@@ -2663,6 +2663,15 @@ p {
   box-shadow: inset 0 0 0 1px var(--color-semantic-accent-border);
 }
 
+/* sentence case (Work, Learning; 19 Sep 2026): Geist, no tracking */
+.seg-control--sentence button {
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
 .seg-control button:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: -3px;
@@ -3524,6 +3533,14 @@ textarea:focus-visible {
 .tag.tag--identity {
   background: color-mix(in srgb, var(--case-tint-hi, var(--color-supporting-linen)) 36%, var(--color-card));
   color: var(--case-tint-text, var(--ink-on-paper));
+}
+
+/* outline (19 Sep 2026): hairline, muted ink, no fill; theme-aware,
+   so it never renders as a cream plate on navy */
+.tag.tag--outline {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--color-border-medium);
+  color: var(--color-ink-muted);
 }
 
 /* dark: keep the tint plate near-navy so the light case text clears AA */

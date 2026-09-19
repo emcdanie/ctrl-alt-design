@@ -22,7 +22,7 @@ export default function WorkPage() {
       <OverlayNav />
 
       <Section id="work-hero" labelledBy="work-hero-title">
-        <p className={`text-code ${styles.metaNote}`}>{"// the library: case studies from real teams, plus experiments in public"}</p>
+        <p className={`text-code ${styles.heroNote}`}>{"// the library: cases and experiments"}</p>
         <SectionHeader
           as="h1"
           id="work-hero-title"

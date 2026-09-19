@@ -184,6 +184,7 @@ function ToolbarView({ state, actions }: { state: WorkState; actions: Actions })
                   )}
                   <SegmentedControl
                     label="View"
+                    sentence
                     options={[
                       { value: "cards", label: "Cards" },
                       { value: "table", label: "Table" },
@@ -348,7 +349,7 @@ function WorkCard({ piece, onWatch }: { piece: WorkPiece; onWatch: (p: WorkPiece
       <span className={`card-body ${styles.cardLine}`}>{piece.line}</span>
       <span className={styles.tags}>
         {piece.tags.slice(0, 2).map((t) => (
-          <Tag key={t}>{t}</Tag>
+          <Tag key={t} outline>{t}</Tag>
         ))}
       </span>
       <span className={styles.cardGo}>{pieceCta(piece)}</span>
