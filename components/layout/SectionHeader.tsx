@@ -48,13 +48,17 @@ export default function SectionHeader({
   /** the heading's id (the page opening's Section points at it) */
   id?: string;
   lead?: ReactNode;
-  /** an illustration beside the text from 900px, centred on it; under
-   *  the text on phones. The caption belongs inside it. */
+  /** an illustration the text WRAPS AROUND from 768px (Elleta, 20 Sep
+   *  2026, Part H): it floats beside the lead and body, with
+   *  shape-outside following the art's own outline, and the heading
+   *  always reads first above it. On phones it stacks, art under the
+   *  text. `figureShape` names the image to cut the shape from when it
+   *  is not the same file as `src` (an SVG, or art with no alpha). */
   figure?: ReactNode;
   /** body: paragraphs, a list, a link, a figure */
   children?: ReactNode;
 }) {
-  const text = (
+  const heading_ = (
     <>
       {kicker ? <p className="text-code l-header__kicker">{kicker}</p> : null}
       <Heading
@@ -67,12 +71,19 @@ export default function SectionHeader({
       >
         {heading}
       </Heading>
-      {lead || children ? (
-        <div className="l-header__side">
-          {lead ? <p className="text-lead l-header__lead">{lead}</p> : null}
-          {children ? <div className="l-header__body text-body">{children}</div> : null}
-        </div>
-      ) : null}
+    </>
+  );
+  const side_ =
+    lead || children ? (
+      <div className="l-header__side">
+        {lead ? <p className="text-lead l-header__lead">{lead}</p> : null}
+        {children ? <div className="l-header__body text-body">{children}</div> : null}
+      </div>
+    ) : null;
+  const text = (
+    <>
+      {heading_}
+      {side_}
     </>
   );
   return (
@@ -87,10 +98,17 @@ export default function SectionHeader({
         .filter(Boolean)
         .join(" ")}
     >
-      {/* with a figure the text gets its own column, so it stays one
-          stacked block beside the illustration */}
-      {figure ? <div className="l-header__text">{text}</div> : text}
-      {figure ? <div className="l-header__figure">{figure}</div> : null}
+      {/* the heading reads first, then the art floats, then the lead and
+          body wrap around it (Part H item 2) */}
+      {figure ? (
+        <>
+          {heading_}
+          <div className="l-header__figure">{figure}</div>
+          {side_}
+        </>
+      ) : (
+        text
+      )}
     </div>
   );
 }

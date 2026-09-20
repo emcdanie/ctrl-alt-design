@@ -57,14 +57,17 @@ export default function LearningPage() {
           after=" it."
           lead="Everything I know has a source and a use. Here's both: the courses, workshops and reading behind my work, and the projects where they paid off."
           figure={
-            <figure className="section-figure">
+            <figure
+              className="section-figure"
+              style={{ "--header-figure-shape": "url(/images/bella/set/bella-reading.webp)", "--header-figure-w": "36%" } as React.CSSProperties}
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="section-figure__art"
-                src="/images/bella/set/bella-curious.webp"
-                alt="Illustration: Bella, head tilted, listening."
-                width={860}
-                height={980}
+                src="/images/bella/set/bella-reading.webp"
+                alt="Bella the papillon reading an open book."
+                width={960}
+                height={900}
               />
             </figure>
           }

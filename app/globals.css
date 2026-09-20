@@ -163,7 +163,12 @@ body {
   --term-offset-heading: 6px;
   /* Layout system (18 Sep 2026, specs/layout-system): Container,
      Section, SectionHeader read these. They move into BELLA later. */
-  --layout-max: 74rem; /* content width, 1184px; gutters sit outside it */
+  /* ONE content width for every section (Elleta, 20 Sep 2026, Part H
+     item 4: "about 76 to 80rem"). 78rem = 1248px. Raised from 74rem so
+     wide screens hug the content a little less; the gutters still sit
+     outside it, and the reading measures (--measure-lead 42rem,
+     --measure-body 65ch) are unchanged, so lines do not get longer. */
+  --layout-max: 78rem;
   --layout-gutter: clamp(1.5rem, 4vw, 3rem);
   --section-pad-y: 3.2rem;
   --section-rule-gap: 2rem; /* rule to heading */
@@ -599,25 +604,49 @@ main .l-section:first-of-type {
   }
 }
 
-/* a head with an illustration (Elleta, 20 Sep 2026): text left, the
-   illustration right and centred on it from 900px. On phones it stacks
-   in reading order, text then image. The text column keeps the stacked
-   rhythm inside its own grid, so heading, lead and body stay together. */
-.l-header__text {
-  display: grid;
-  row-gap: var(--section-lead-gap);
-  align-content: start;
+/* A head with an illustration the text WRAPS AROUND (Elleta, 20 Sep
+   2026, Part H). It was a two-column grid, which left the art marooned
+   on the far right with a gutter of empty ground beside the text. Now
+   the heading reads first at full width, the figure floats, and the
+   lead and body flow around the art's OWN OUTLINE via shape-outside.
+   flow-root on the head clears the float, so nothing leaks into the
+   next section. */
+.l-header--figure {
+  display: flow-root;
 }
 
 .l-header__figure > * {
   margin: 0;
 }
 
-@media (min-width: 900px) {
-  .l-header--figure {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-    column-gap: var(--layout-gutter);
-    align-items: center;
+@media (min-width: 768px) {
+  .l-header--figure .l-header__figure {
+    float: right;
+    width: var(--header-figure-w, 38%);
+    margin: 0 0 var(--space-stack-sm) var(--space-stack-md);
+    /* the art's own silhouette, not its bounding box. Same-origin, and
+       the files carry alpha; the threshold ignores the soft edges. */
+    shape-outside: var(--header-figure-shape, none);
+    shape-image-threshold: 0.2;
+    shape-margin: var(--space-stack-sm);
+  }
+
+  /* the heading is never squeezed by the float: it sits above it */
+  .l-header--figure .display-heading,
+  .l-header--figure .l-header__kicker {
+    clear: both;
+  }
+}
+
+/* phones: no float, the art stacks under the text and stays modest */
+@media (max-width: 767.98px) {
+  .l-header--figure .l-header__figure {
+    margin-top: var(--space-stack-md);
+  }
+
+  .l-header--figure .l-header__figure img {
+    max-width: 60vw;
+    margin-inline: auto;
   }
 }
 
@@ -2066,18 +2095,28 @@ li {
   scroll-margin-top: calc(var(--header-height) + var(--spacing-4));
 }
 
+/* the photo floats and the text wraps round the disc (Part H, 20 Sep
+   2026). It was a flex row, which parked the photo in a column of its
+   own with empty ground under it. flow-root clears the float so nothing
+   leaks into the link columns. */
 .site-footer__hello {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-stack-md);
+  display: flow-root;
 }
 
 .site-footer__photo {
-  flex: none;
+  float: left;
   width: var(--footer-photo-sm);
   height: var(--footer-photo-sm);
+  margin: 0 var(--space-stack-md) var(--space-stack-sm) 0;
   border-radius: var(--radius-full);
   object-fit: cover;
+  shape-outside: circle(50%);
+  shape-margin: var(--space-stack-sm);
+}
+
+/* the heading reads first and is never squeezed by the disc */
+.site-footer__hello-body > .display-heading {
+  margin-top: 0;
 }
 
 .site-footer__lead {

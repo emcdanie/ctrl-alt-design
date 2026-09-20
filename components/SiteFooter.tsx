@@ -79,9 +79,13 @@ export default function SiteFooter() {
         {/* contact band: the site's one closing CTA (About's old contact
             card lives here now) */}
         <div className="site-footer__contact" id="contact">
+          {/* the photo FLOATS and the whole block wraps round it (Part H):
+              it used to sit in its own flex column with empty ground
+              under it. shape-outside: circle() follows the disc, and the
+              lines run full width once they clear it. */}
           <div className="site-footer__hello">
             <Image className="site-footer__photo" src="/images/thumbnails/Me.jpeg" alt="Elleta McDaniel" width={192} height={192} />
-            <div>
+            <div className="site-footer__hello-body">
               <Heading tier="section" as="h2" accent="notes" after=".">
                 Let&apos;s compare
               </Heading>

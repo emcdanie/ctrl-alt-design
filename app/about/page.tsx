@@ -36,7 +36,10 @@ export default function AboutPage() {
             </>
           }
           figure={
-            <figure className="section-figure">
+            <figure
+              className="section-figure"
+              style={{ "--header-figure-shape": "url(/images/bella/set/elleta-bella-obi-walk.webp)", "--header-figure-w": "30%" } as React.CSSProperties}
+            >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="section-figure__art"
