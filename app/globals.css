@@ -143,7 +143,11 @@ body {
   /* Surfaces (19 Sep 2026, About build): flat. --surface-card is the
      page ground (--color-page) pulled 4% toward the ink (darker here; the dark block
      pulls it toward the cream ink, so lighter on navy). */
-  --surface-card: color-mix(in srgb, var(--color-page), var(--color-ink) 4%);
+  /* ONE card surface (Elleta, 20 Sep 2026, Part D item 2). This was a
+     local 4% mix that computed rgb(232,230,222) while the synced BELLA
+     Card painted rgb(236,235,231): two card surfaces on one page. The
+     site now reads BELLA's token, so there is one source. */
+  --surface-card: var(--color-semantic-surface-card);
   --border-faint: color-mix(in srgb, var(--color-ink) 10%, transparent);
   --radius-card: 1rem;
   --radius-pill: 999px;
@@ -438,7 +442,7 @@ body {
   /* the dark ground (also set on body below, where the dark inks live) */
   --color-semantic-background: #110F0D;
   /* surfaces: 4% toward the cream ink, so lighter than the ground */
-  --surface-card: color-mix(in srgb, var(--color-semantic-background), var(--color-navy-ink) 4%);
+  --surface-card: var(--color-semantic-surface-card);
   --border-faint: color-mix(in srgb, var(--color-navy-ink) 12%, transparent);
   --iris-soft: color-mix(in srgb, var(--color-accent-ink) 14%, transparent);
   --iris-pill: var(--iris-soft); /* 6.53:1 on the dark card */
@@ -1569,6 +1573,21 @@ li {
 }
 
 /* layout="row": one row of every mark from 1024px */
+/* the ROW layout (Home's band). Its job is different from About's
+   "Good company" grid: that one is a table of logos, where the rules
+   separate rows and the tall cell keeps the rows even. A band is one
+   line of marks. So in the row layout (Elleta, 20 Sep 2026, Part D
+   item 1) the cells hug their logos, carry no rules at all, and the
+   "Worked with" label sits inline at the left of the row from 1024px.
+   Together with fix pass 2 item 4, Home shows one hairline above the
+   band and none inside it. */
+.logo-grid--row .logo-grid__cell {
+  min-height: 0;
+  padding-block: var(--spacing-2);
+  border-bottom: none;
+  border-right: none;
+}
+
 @media (min-width: 1024px) {
   .logo-grid--row {
     grid-template-columns: repeat(var(--logo-count), minmax(0, 1fr));
@@ -1578,6 +1597,21 @@ li {
 /* the optional "Worked with" label above the marks */
 .logo-group__label {
   margin: 0 0 var(--space-stack-sm);
+}
+
+/* ...and beside them, once the marks are one row */
+@media (min-width: 1024px) {
+  .logo-group:has(.logo-grid--row) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--space-stack-md);
+    align-items: center;
+  }
+
+  .logo-group:has(.logo-grid--row) .logo-group__label {
+    margin: 0;
+    white-space: nowrap;
+  }
 }
 
 /* Accordion (components/ui/Accordion.tsx): a heading-wrapped button,

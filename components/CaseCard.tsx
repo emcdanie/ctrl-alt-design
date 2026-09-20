@@ -2,11 +2,11 @@ import type { WorkItem } from "@/lib/workLibrary";
 import Card from "@/components/ui/Card";
 import styles from "./CaseCard.module.css";
 
-/* "2024-2025" reads "2024 to 25" (the mock and the Work library) */
-const years = (y: string) => {
-  const [from, to] = y.split("-");
-  return to ? `${from} to ${to.slice(-2)}` : from;
-};
+/* FULL years everywhere (Elleta, 19 Sep 2026, Work's card; verified
+   and finished here 20 Sep, Part D item 3): "2024-2025" reads "2024 to
+   2025". /quick was the last surface still abbreviating to "2024 to
+   26". */
+const years = (y: string) => y.replace(/-/, " to ");
 
 /**
  * THE case card, on the ONE Card system (media variant). Image-led:
