@@ -5,19 +5,9 @@
     - text: ""
   - paragraph: "Everything I know has a source and a use. Here's both: the courses, workshops and reading behind my work, and the projects where they paid off."
   - paragraph: /\d+ certificates 8 courses and workshops 3 conferences 2 hackathons 3 projects it shows up in/
-  - list "Certificates":
-    - listitem:
-      - 'link "Subatomic: The Complete Guide to Design Tokens Brad Frost, Ian Frost"':
-        - /url: /learning#entry-subatomic
-    - listitem:
-      - link "Atomic Design Certification Course Brad Frost":
-        - /url: /learning#entry-atomic-design
-    - listitem:
-      - link /Measuring UX Impact Vitaly Friedman, SmashingConf Amsterdam \d+/:
-        - /url: /learning#entry-measuring-ux-impact-workshop
-    - listitem:
-      - link "Into Design Systems AI Hackathon Into Design Systems":
-        - /url: /learning#entry-ids-ai-hackathon
-    - listitem:
-      - link "+6 more certificates":
-        - /url: /learning?type=certificate#library
+  - paragraph:
+    - text: "Certificates: Subatomic · Atomic Design · Measuring UX Impact · IDS AI Hackathon"
+    - link "+6 more certificates":
+      - /url: /learning?type=certificate#library
+  - figure:
+    - 'img "Illustration: Bella, head tilted, listening."'

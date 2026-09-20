@@ -1,7 +1,7 @@
 - region "The library":
   - paragraph: The library
   - heading "Everything, findable." [level=2]
-  - paragraph: Filter by type or topic, then switch the view. The Skills view is the old matrix, now with where I learned each one.
+  - paragraph: Filter by type or topic, then switch the view.
   - text: Search the library
   - searchbox "Search the library"
   - group "Filter by type":
@@ -11,15 +11,15 @@
     - button "Conference 3"
     - button "Hackathon 2"
   - group "Filter by topic":
-    - button "Design Systems 9"
-    - button "Design Tokens 3"
-    - button "Design System Governance 4"
-    - button "AI-enabled Design 9"
+    - button "Design systems 9"
+    - button "Design tokens 3"
+    - button "Design system governance 4"
+    - button "AI-enabled design 9"
     - button "Accessibility 3"
-    - button "Component Libraries 2"
-    - button "Figma ⇄ Code 1"
-    - button /Product Design \d+/
-    - button "UX Research 5"
+    - button "Component libraries 2"
+    - button "Figma ⇄ code 1"
+    - button /Product design \d+/
+    - button "UX research 5"
   - paragraph: /\d+ of \d+ entries/
   - list "View":
     - listitem:

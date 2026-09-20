@@ -7,6 +7,9 @@
  * an embed). Static by design: the deliberate still beat in the rhythm.
  * Steel plus status semantics, no iris, no yellow-orange. Recreated, illustrative,
  * abstract: generic component names, no client data.
+ *
+ * The board and the proposal path carry data-t (Elleta, 20 Sep 2026), so
+ * the case's linked phrases can point at either half of it.
  */
 const STATUS_ROWS = [
   { name: "Button", status: "stable", label: "Stable", asks: "Use freely" },
@@ -20,7 +23,7 @@ export default function DriftStatusBoard() {
   return (
     <div>
       <p className="gov-h">Component status</p>
-      <div className="gov-board">
+      <div className="gov-board" data-t="status">
         {STATUS_ROWS.map((r) => (
           <div className="gov-row" key={r.name}>
             <span className="gov-name">{r.name}</span>
@@ -30,7 +33,7 @@ export default function DriftStatusBoard() {
         ))}
       </div>
 
-      <div className="gov-path-wrap">
+      <div className="gov-path-wrap" data-t="propose">
         <p className="gov-h">The proposal path</p>
         <div className="gov-path">
           <span className="gov-step">Propose</span>

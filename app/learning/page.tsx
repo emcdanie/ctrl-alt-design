@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Suspense } from "react";
+import { Fragment, Suspense } from "react";
 import OverlayNav from "@/components/OverlayNav";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
@@ -79,10 +79,10 @@ export default function LearningPage() {
           <p className={`text-code ${styles.certs}`}>
             Certificates:{" "}
             {SHOWN.map((e, i) => (
-              <span key={e.id}>
-                {i > 0 ? <span aria-hidden="true"> · </span> : null}
+              <Fragment key={e.id}>
+                {i > 0 ? " · " : null}
                 {e.short ?? e.title}
-              </span>
+              </Fragment>
             ))}
             {MORE > 0 && (
               <>

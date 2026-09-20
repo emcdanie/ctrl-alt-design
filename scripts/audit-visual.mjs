@@ -520,7 +520,38 @@ for (const theme of ["light", "dark"]) {
         if (prevFlip !== null && flip === prevFlip) out.push(`two consecutive beats on the same side: ${label}`);
         prevFlip = flip;
       }
-      if (!beats.length) out.push("no beat sections found (template not rendering)");
+      /* ── ARTICLE TEMPLATE LAW (Elleta, 20 Sep 2026, case-study
+         rebuild; approved mock case-study-drift-mock-v4.html). A case on
+         the article pattern renders CaseSection, not CaseBeat, and its
+         laws are different in one way that matters: here the example
+         DOES wear a frame, because ExampleFrame is the frame.
+         1. every section has a text column and one ExampleFrame;
+         2. the frame names what it shows (the bar path) and carries a
+            caption under it;
+         3. alternation: consecutive sections flip sides;
+         4. one idea, one screen: from 900px, where the section is two
+            columns, it is never taller than the viewport. Below 900 it
+            stacks text then figure by design, so two screens is the
+            correct answer there and the law does not apply. */
+      const sections = [...document.querySelectorAll("section.case-section")];
+      let prevArticleFlip = null;
+      for (const sec of sections) {
+        const label = sec.querySelector(".case-section__heading")?.textContent?.slice(0, 24) ?? "section";
+        if (!sec.querySelector(".case-section__text")) out.push(`case section missing its text column: ${label}`);
+        const frames = sec.querySelectorAll(".case-frame");
+        if (frames.length !== 1) out.push(`case section carries ${frames.length} example frames, expected 1: ${label}`);
+        for (const f of frames) {
+          if (!f.querySelector(".case-frame__path")?.textContent?.trim()) out.push(`example frame has no path in its bar: ${label}`);
+          if (!f.querySelector(".case-frame__caption")?.textContent?.trim()) out.push(`example frame has no caption: ${label}`);
+        }
+        const flip = sec.classList.contains("case-section--flip");
+        if (prevArticleFlip !== null && flip === prevArticleFlip) out.push(`two consecutive case sections on the same side: ${label}`);
+        prevArticleFlip = flip;
+        const h = sec.getBoundingClientRect().height;
+        if (window.innerWidth >= 900 && h > window.innerHeight)
+          out.push(`case section is taller than one screen (${Math.round(h)}px > ${window.innerHeight}px): ${label}`);
+      }
+      if (!beats.length && !sections.length) out.push("no beat or case sections found (template not rendering)");
       /* the takeaway-band card exception, held tight: a thesis card
          on a case route outside .cs2-takeaway is card creep */
       for (const t of document.querySelectorAll(".cs2 .thesis-band")) {
@@ -532,7 +563,7 @@ for (const theme of ["light", "dark"]) {
     });
     for (const b of beatBad) {
       fails++;
-      console.error(receipt("visual", `(${theme} ${width} ${caseRoute}) ${b}`, "a beat-template violation", "the CaseBeat law (headline with body, flat visuals, alternation)"));
+      console.error(receipt("visual", `(${theme} ${width} ${caseRoute}) ${b}`, "a beat-template violation", "the case-template law (CaseBeat: headline with body, flat visuals, alternation; CaseSection: text plus one named, captioned ExampleFrame, alternation, one screen)"));
     }
     await ctx.close();
   }

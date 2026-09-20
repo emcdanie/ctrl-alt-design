@@ -1751,9 +1751,13 @@ li {
   background: var(--iris-soft);
 }
 
+/* the deeper accent, not the link iris: on the open row's iris wash the
+   link colour measured 3.36:1, under AA. accent-hover flips per theme,
+   so dark gets the lighter periwinkle for the same reason. */
 .xp.is-open .xp__company,
+.xp.is-open .xp__current,
 .xp.is-open .accordion__chev {
-  color: var(--color-accent-ink);
+  color: var(--color-semantic-accent-hover);
 }
 
 /* the ring is :focus-visible only: a mouse click never draws one */
@@ -3703,11 +3707,9 @@ textarea:focus-visible {
 }
 
 .cs-shell__crumb {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  font-weight: 500;
   color: var(--color-ink-soft);
   margin-bottom: var(--spacing-4);
   white-space: nowrap;
@@ -3720,11 +3722,9 @@ textarea:focus-visible {
   align-items: center;
   gap: var(--spacing-2);
   min-height: var(--spacing-touch-target);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  font-weight: 500;
   text-decoration: none;
   color: var(--color-ink-muted);
   margin-bottom: var(--spacing-4);
@@ -6769,10 +6769,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    status + the proposal path. Steel plus status semantics, no iris, no yellow-orange. */
 /* .gov-h is the eyebrow recipe (tag size, eyebrow tracking, eyebrow
    colour, uppercase); it is the metadata tier, exempt in audit:type */
+/* sentence case: a case page carries no all-caps labels (Elleta,
+   20 Sep 2026, case-study rebuild) */
 .gov-h {
-  font-size: var(--typography-font-size-tag);
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
+  font-size: var(--text-meta);
   color: var(--color-eyebrow);
   font-weight: 600;
   margin-bottom: var(--spacing-3);
@@ -7856,4 +7856,444 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   line-height: 1.5;
   color: var(--color-ink-soft);
   max-width: 28ch;
+}
+
+/* ─── Case study: the Southleft article pattern (Elleta, 20 Sep 2026)
+   Approved mock: _private/specs/case-study/case-study-drift-mock-v4.html.
+   Three components: CaseSection (the alternating split), ExampleFrame
+   (the quiet frame round a visual) and LinkedPhrase (a phrase that
+   points at a part of it). ─────────────────────────────────────── */
+
+/* the hero: kicker, thesis, the facts row, one NDA line */
+.case-hero {
+  padding-block: var(--section-pad-y) var(--space-stack-lg);
+}
+
+.case-hero__kicker {
+  margin: 0 0 var(--spacing-3);
+}
+
+.cs2-head.case-hero {
+  align-items: stretch;
+}
+
+.case-hero__facts {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr));
+  gap: var(--spacing-4) var(--spacing-8);
+  margin: var(--space-stack-md) 0 0;
+  padding-top: var(--spacing-5);
+  border-top: 1px solid var(--border-faint);
+}
+
+.case-hero__facts dt {
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  color: var(--color-ink-muted);
+}
+
+.case-hero__facts dd {
+  margin: var(--spacing-1) 0 0;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.case-hero__nda {
+  max-width: 44rem;
+  margin: var(--space-stack-md) 0 0;
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+}
+
+/* the section: one idea, text one side, one framed example the other */
+.case-section {
+  display: grid;
+  gap: var(--space-stack-md);
+  padding-block: var(--section-pad-y);
+  border-top: 1px solid var(--border-faint);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .case-section {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--layout-gutter);
+  }
+
+  /* every other section flips sides; the text still reads first */
+  .case-section--flip .case-section__text {
+    order: 2;
+  }
+}
+
+.case-section__kicker {
+  margin: 0 0 var(--spacing-2);
+}
+
+.case-section__heading {
+  margin: 0 0 var(--spacing-4);
+  font-family: var(--font-body);
+  font-size: var(--text-display-3);
+  font-weight: 700;
+  letter-spacing: var(--tracking-display);
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+.case-section__text > p {
+  margin: 0;
+  color: var(--color-ink-soft);
+}
+
+.case-section__text > p + p {
+  margin-top: var(--spacing-4);
+}
+
+.case-section__text strong {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* the frame: card surface, one hairline, a slim bar that names the view */
+.case-frame {
+  margin: 0;
+}
+
+.case-frame__shell {
+  overflow: hidden;
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-card);
+  background: var(--surface-card);
+}
+
+.case-frame__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--border-faint);
+}
+
+.case-frame__dots {
+  display: inline-flex;
+  gap: var(--spacing-1);
+}
+
+.case-frame__dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-full);
+  background: var(--border-faint);
+}
+
+.case-frame__path {
+  color: var(--color-ink-muted);
+}
+
+/* container-type: the example sizes to the frame, not the window */
+.case-frame__body {
+  container-type: inline-size;
+  display: grid;
+  gap: var(--spacing-4);
+  max-height: 26rem;
+  overflow: auto;
+  padding: var(--spacing-5);
+}
+
+.case-frame__caption {
+  margin-top: var(--spacing-3);
+  font-size: var(--text-caption);
+  color: var(--color-ink-muted);
+}
+
+/* the linked phrase: the Term affordance, a dotted iris underline */
+.linked-phrase {
+  margin: 0;
+  padding: 0 0.1em;
+  border: 0;
+  border-bottom: 1.5px dotted var(--color-accent-ink);
+  border-radius: var(--radius-sm);
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.linked-phrase__n {
+  margin-left: 0.1em;
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  color: var(--color-accent-ink);
+}
+
+.linked-phrase.is-on,
+.linked-phrase:hover {
+  background: var(--iris-soft);
+  color: var(--color-accent-ink);
+}
+
+.linked-phrase:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+/* what a phrase points at, inside the frame */
+.case-frame__body [data-t] {
+  outline: 3px solid transparent;
+  outline-offset: 3px;
+  border-radius: var(--radius-md);
+  transition: outline-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+.case-frame__body [data-t].is-lit {
+  outline-color: var(--color-accent-ink);
+  box-shadow: 0 0 0 8px var(--iris-soft);
+}
+
+/* the rest of the frame fades back, so the eye lands on the one part */
+.case-frame__body.is-focused [data-t]:not(.is-lit) {
+  opacity: 0.35;
+}
+
+/* the close: what changed, and what it taught */
+.case-close {
+  display: grid;
+  gap: var(--space-stack-md);
+  padding-block: var(--section-pad-y);
+  border-top: 1px solid var(--border-faint);
+}
+
+@media (min-width: 900px) {
+  .case-close {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--layout-gutter);
+  }
+}
+
+.case-close__learned {
+  margin-top: var(--space-stack-sm);
+  color: var(--color-ink-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .linked-phrase,
+  .case-frame__body [data-t] {
+    transition: none;
+  }
+}
+
+/* ─── From Drift to Foundation: the four examples (20 Sep 2026) ───
+   Recreated and illustrative. Steel is the case's neutral brand stand-in
+   (--case-filters-*), never iris: iris means interactive here. */
+
+/* 01 · the button graveyard. A PICTURE (role="img"): the shapes are
+   spans, the radii and weights come from the markup because being
+   inconsistent IS the content. */
+.drift-grave {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(7rem, 100%), 1fr));
+  gap: var(--spacing-2);
+}
+
+.drift-gb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2) var(--spacing-3);
+  font-size: var(--text-meta);
+  color: var(--color-page);
+  background: var(--case-filters-text);
+}
+
+.drift-gb--outline {
+  color: var(--case-filters-text);
+  background: transparent;
+  border: 1px solid var(--case-filters-text);
+}
+
+.drift-gb--bare {
+  color: var(--color-ink);
+  background: transparent;
+  text-decoration: underline;
+}
+
+/* 02 · one decision, three problems */
+.drift-chain {
+  display: grid;
+  gap: var(--spacing-2);
+}
+
+.drift-chain__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  background: var(--color-page);
+}
+
+@container (min-width: 26rem) {
+  .drift-chain__row {
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: var(--spacing-4);
+    align-items: center;
+  }
+}
+
+.drift-chain__label {
+  color: var(--color-ink-muted);
+}
+
+.drift-chain__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+}
+
+/* the specimens carry real sentences ("Nothing found. Clear filters?"),
+   so they sit on the 16px reading floor, not the metadata tier */
+.drift-chain__chip {
+  padding: var(--spacing-1) var(--spacing-3);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-full);
+  background: var(--color-page);
+  font-size: var(--typography-font-size-base);
+}
+
+.drift-chain__link {
+  margin: var(--spacing-2) 0;
+  text-align: center;
+  color: var(--color-ink-muted);
+}
+
+/* 03 · the cascade */
+.drift-cascade {
+  display: grid;
+  gap: var(--spacing-4);
+}
+
+.drift-cascade__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+/* status in WORDS, with a shape; colour is never the only carrier */
+.drift-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  margin: 0;
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-full);
+  font-size: var(--typography-font-size-base);
+  font-weight: 500;
+  color: var(--case-clarity-text);
+  background: color-mix(in srgb, var(--case-clarity-hi) 26%, var(--color-card));
+}
+
+.drift-status--bad {
+  color: var(--gov-clay-text);
+  background: color-mix(in srgb, var(--gov-clay-hi) 26%, var(--color-card));
+}
+
+.drift-pipe {
+  display: grid;
+  gap: var(--spacing-3);
+}
+
+@container (min-width: 30rem) {
+  .drift-pipe {
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: start;
+  }
+}
+
+.drift-tier {
+  display: grid;
+  gap: var(--spacing-1);
+  align-content: start;
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  background: var(--color-page);
+}
+
+.drift-tier__t {
+  font-size: var(--text-meta);
+  font-weight: 600;
+}
+
+.drift-tier__tok {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.drift-sw {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-faint);
+  background: var(--case-filters-text);
+  transition: background var(--dur-base) var(--ease-out);
+}
+
+.drift-pipe__to {
+  align-self: center;
+  justify-self: center;
+  color: var(--color-ink-muted);
+  rotate: 90deg;
+}
+
+@container (min-width: 30rem) {
+  .drift-pipe__to {
+    rotate: none;
+  }
+}
+
+/* the component tier's button is a picture of a button, not a button */
+.drift-book {
+  justify-self: start;
+  width: 7rem;
+  height: var(--spacing-touch-target);
+  border-radius: var(--radius-md);
+  background: var(--case-filters-text);
+  transition: background var(--dur-base) var(--ease-out);
+}
+
+/* broken link: the component keeps a colour nothing explains */
+.drift-pipe--drifted .drift-tier--comp .drift-book {
+  background: var(--case-filters-hi);
+}
+
+.drift-diff {
+  font-size: var(--text-meta);
+  font-weight: 500;
+  color: var(--gov-clay-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drift-sw,
+  .drift-book {
+    transition: none;
+  }
+}
+
+/* the one action a section may carry, left-aligned in the reading column */
+.case-section__action {
+  margin: var(--space-stack-sm) 0 0;
+}
+
+/* the scroll container is focusable, so it needs a visible ring */
+.case-frame__body:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: calc(0px - var(--ring-focus-width));
 }

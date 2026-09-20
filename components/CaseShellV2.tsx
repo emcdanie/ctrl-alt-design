@@ -62,9 +62,13 @@ export default function CaseShellV2({
   slug,
   eyebrow,
   title,
+  accent,
+  after,
   subhead,
   readingMinutes,
   tags,
+  facts,
+  nda,
   linkOut,
   crumbs = true,
   identity,
@@ -74,10 +78,21 @@ export default function CaseShellV2({
   eyebrow: string;
   /** outcome-framed case title (the thesis) */
   title: string;
+  /** the one iris word in the thesis (article mode); `title` is what
+   *  comes before it and `after` what follows, so it can sit mid-line */
+  accent?: string;
+  after?: string;
   /** ONE sentence stating the problem */
   subhead: string;
   readingMinutes: number;
   tags: string[];
+  /** ARTICLE MODE (Elleta, 20 Sep 2026, case-study rebuild): pass the
+   *  facts row and the head becomes the article hero, a code-role
+   *  kicker, the thesis, Role / Team / Timeline / Scope as a dl and one
+   *  NDA line. No tags row, no reading time, no subhead: the sections
+   *  carry the case now. A case migrates by supplying these two. */
+  facts?: { label: string; value: string }[];
+  nda?: string;
   /** link out to the shipped surface where NDA allows */
   linkOut?: { label: string; href: string };
   /** the back-to-Work breadcrumb. A case study is read FROM the library,
@@ -102,7 +117,7 @@ export default function CaseShellV2({
       <ReadingProgress color={caseItem?.text} />
 
       {/* in-flow head: no sticky side title (brief item 5) */}
-      <header className="cs2-head">
+      <header className={facts ? "cs2-head case-hero" : "cs2-head"}>
         {crumbs && (
           <nav aria-label="Breadcrumb" className="cs-shell__crumbs">
             <Link href="/work" className="cs-shell__backlink">
@@ -118,13 +133,14 @@ export default function CaseShellV2({
         )}
         {/* metadata in sentence case; the title is ink, no colour and no
             accent word (critique pass, 18 Sep 2026) */}
-        <p className="text-meta cs2-eyebrow">{eyebrow}</p>
-        <Heading tier="page" as="h1">
+        {facts ? null : <p className="text-meta cs2-eyebrow">{eyebrow}</p>}
+        {facts ? <p className="text-code case-hero__kicker">{eyebrow}</p> : null}
+        <Heading tier="page" as="h1" accent={facts ? accent : undefined} after={facts ? after : undefined}>
           {title}
         </Heading>
-        <p className="cs2-subhead">{subhead}</p>
+        {facts ? null : <p className="cs2-subhead">{subhead}</p>}
         {/* one row of tags at most, under the lede */}
-        {tags.length > 0 && (
+        {!facts && tags.length > 0 && (
           <div className="cs-shell__tags" style={{ margin: 0 }}>
             {tags.slice(0, 3).map((tag) => (
               /* identity tinting needs the case's colour pair. Without a
@@ -147,9 +163,22 @@ export default function CaseShellV2({
             ))}
           </div>
         )}
-        <p className="cs2-meta">
-          {readingMinutes} min read
-        </p>
+        {facts ? null : <p className="cs2-meta">{readingMinutes} min read</p>}
+        {facts && (
+          <dl className="case-hero__facts">
+            {facts.map((f) => (
+              <div key={f.label}>
+                <dt>{f.label}</dt>
+                <dd>{f.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+        {nda && (
+          <p role="note" className="case-hero__nda">
+            {nda}
+          </p>
+        )}
         {linkOut && (
           <a href={linkOut.href} target="_blank" rel="noopener noreferrer" className="demo-link">
             <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span> {linkOut.label}

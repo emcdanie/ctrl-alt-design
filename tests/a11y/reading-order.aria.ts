@@ -124,6 +124,45 @@ test.describe("Learning", () => {
   });
 });
 
+/* The case-study article's linked phrases (Elleta, 20 Sep 2026, Part C
+   item 7). A phrase reached by KEYBOARD has to do the same thing a hover
+   does: light the part of the example it names, and let Escape clear a
+   pin. Reading order is asserted too: the text column comes before its
+   figure, on a flipped section as much as a plain one, so the page reads
+   the same as it is spoken. */
+test.describe("Case study: linked phrases", () => {
+  test.beforeEach(async ({ page }) => {
+    await open(page, "/case-studies/design-system-transformation");
+  });
+
+  test("focus lights its target, Enter pins it, Escape clears the pin", async ({ page }) => {
+    const phrase = page.locator(".linked-phrase").filter({ hasText: "different corners" }).first();
+    const lit = page.locator('[data-t~="corners"].is-lit');
+
+    await expect(lit).toHaveCount(0);
+    await phrase.focus();
+    await expect(lit.first()).toBeVisible();
+    await expect(phrase).toHaveAttribute("aria-pressed", "false");
+
+    await page.keyboard.press("Enter");
+    await expect(phrase).toHaveAttribute("aria-pressed", "true");
+
+    await page.keyboard.press("Escape");
+    await expect(phrase).toHaveAttribute("aria-pressed", "false");
+  });
+
+  test("the text column is read before its figure, flipped or not", async ({ page }) => {
+    for (const section of await page.locator("section.case-section").all()) {
+      const order = await section.evaluate((el) => {
+        const kids = [...el.children];
+        return [kids.findIndex((k) => k.classList.contains("case-section__text")), kids.findIndex((k) => k.classList.contains("case-frame"))];
+      });
+      expect(order[0]).toBeGreaterThanOrEqual(0);
+      expect(order[1]).toBeGreaterThan(order[0]);
+    }
+  });
+});
+
 /* /skills became a view of /learning (19 Sep 2026): a permanent redirect
    that lands on the Skills view */
 test("/skills redirects permanently to /learning?view=skills", async ({ page, request }) => {

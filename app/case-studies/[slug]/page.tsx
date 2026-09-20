@@ -14,6 +14,29 @@ const sentenceCase = (t: string) => t.charAt(0).toUpperCase() + t.slice(1).toLow
 /* header dates read "2024 to 25", like /work: "2024-2025" -> "2024 to 25" */
 const spans = (t: string) => t.replace(/\b(20\d\d)-(?:20)?(\d\d)\b/g, "$1 to $2");
 
+/* the article hero writes FULL years: "2024-2026" -> "2024 to 2026" */
+const fullYears = (t: string) => t.replace(/\b(20\d\d)-(20\d\d)\b/g, "$1 to $2");
+
+/* ── The case-study article (Elleta, 20 Sep 2026, Part C) ───────────
+   A case on the new pattern declares the one iris word of its thesis
+   here; the facts row and the NDA line come from its content file, so
+   nothing is restated. Cases not yet migrated keep the old head. */
+const ARTICLE: Record<string, { title: string; accent: string; after: string }> = {
+  "design-system-transformation": {
+    title: "The system is the set of",
+    accent: "agreements",
+    after: ", not the component library.",
+  },
+};
+
+const facts = (cs: CaseStudy) =>
+  [
+    { label: "Role", value: cs.metrics?.role },
+    { label: "Team", value: cs.metrics?.team },
+    { label: "Timeline", value: cs.metrics?.timeline },
+    { label: "Scope", value: cs.metrics?.scope },
+  ].filter((f): f is { label: string; value: string } => Boolean(f.value));
+
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
 }
@@ -65,6 +88,8 @@ export default async function CaseStudyPage({
   if (!cs) notFound();
   const Composition = COMPOSITIONS[slug];
   if (!Composition) notFound();
+  const article = ARTICLE[slug];
+  const nda = (cs.blocks?.find((b) => b.kind === "disclosure") as { text: string } | undefined)?.text;
 
   /* reading time, mechanical: every narrative string in the content
      file at 220 wpm, rounded up */
@@ -79,11 +104,19 @@ export default async function CaseStudyPage({
       <div className="layout-container">
         <CaseShellV2
           slug={slug}
-          eyebrow={spans(cs.eyebrow ?? `${sentenceCase(cs.category)} · ${cs.year}`)}
-          title={cs.title}
+          eyebrow={
+            article
+              ? `Case study · ${sentenceCase(cs.category)} · ${fullYears(cs.year)}`
+              : spans(cs.eyebrow ?? `${sentenceCase(cs.category)} · ${cs.year}`)
+          }
+          title={article ? article.title : cs.title}
+          accent={article?.accent}
+          after={article?.after}
           subhead={cs.summary ?? cs.description}
           readingMinutes={readingMinutes}
           tags={cs.tags}
+          facts={article ? facts(cs) : undefined}
+          nda={article ? nda : undefined}
         >
           <Composition cs={cs} />
         </CaseShellV2>
