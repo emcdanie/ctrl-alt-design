@@ -9,15 +9,12 @@
   padding-block: var(--spacing-4);
 }
 
-/* door cards: kicker, title, line, go */
+/* door cards: kicker, title, line, go. The kicker is the quiet code
+   role, same as Home's case cards (Elleta, 20 Sep 2026): no caps, no
+   tracking, .text-code carries the face and the size. */
 .kicker {
   display: block;
   margin-bottom: var(--spacing-2);
-  font-family: var(--font-body);
-  font-size: var(--text-meta);
-  font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
   color: var(--color-eyebrow);
 }
 

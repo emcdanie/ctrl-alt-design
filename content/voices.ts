@@ -47,7 +47,7 @@ export const VOICES: Voice[] = [
     connects: ["friedman", "pandya"],
     group: 1,
     shaped: ["chip"],
-    topics: ["Figma ⇄ Code", "AI-enabled Design"],
+    topics: ["Figma ⇄ code", "AI-enabled design"],
     date: "2026-04",
     // [CHECK] real URL
     verified: false,
@@ -62,7 +62,7 @@ export const VOICES: Voice[] = [
     connects: ["curtis", "frost"],
     group: 3,
     shaped: ["chip"],
-    topics: ["AI-enabled Design"],
+    topics: ["AI-enabled design"],
     date: "2026-04",
     // [CHECK] real URL
     verified: false,
@@ -77,7 +77,7 @@ export const VOICES: Voice[] = [
     connects: ["curtis", "pitre"],
     group: 1,
     shaped: ["chip"],
-    topics: ["AI-enabled Design", "Design Tokens"],
+    topics: ["AI-enabled design", "Design tokens"],
     date: "2026-04",
     // [CHECK] real URL
     verified: false,
@@ -92,7 +92,7 @@ export const VOICES: Voice[] = [
     connects: ["kavcic", "friedman"],
     group: 2,
     shaped: ["chip"],
-    topics: ["Design System Governance", "AI-enabled Design"],
+    topics: ["Design system governance", "AI-enabled design"],
     date: "2026-04",
     // [CHECK] real URL
     verified: false,
@@ -107,7 +107,7 @@ export const VOICES: Voice[] = [
     connects: ["frost", "cianfrani"],
     group: 2,
     shaped: ["drift"],
-    topics: ["Design Systems", "Design System Governance"],
+    topics: ["Design systems", "Design system governance"],
     date: "2026-03",
     // [CHECK] real URL
     verified: false,
@@ -122,7 +122,7 @@ export const VOICES: Voice[] = [
     connects: ["pitre", "kavcic"],
     group: 2,
     shaped: ["chip"],
-    topics: ["AI-enabled Design"],
+    topics: ["AI-enabled design"],
     date: "2026-03",
     // [CHECK] real URL
     verified: false,
@@ -139,7 +139,7 @@ export const VOICES: Voice[] = [
     connects: ["cianfrani", "pandya"],
     group: 1,
     shaped: ["code-first"],
-    topics: ["Design Tokens"],
+    topics: ["Design tokens"],
     date: "2026-03",
     // [CHECK] real URL
     verified: false,
@@ -154,7 +154,7 @@ export const VOICES: Voice[] = [
     connects: ["friedman", "frost", "cianfrani"],
     group: 3,
     shaped: ["chip"],
-    topics: ["AI-enabled Design"],
+    topics: ["AI-enabled design"],
     date: "2026-04",
     // [CHECK] real URL
     verified: false,
@@ -169,7 +169,7 @@ export const VOICES: Voice[] = [
     connects: ["pandya", "curtis", "pitre"],
     group: 3,
     shaped: ["chip"],
-    topics: ["AI-enabled Design", "Product Design"],
+    topics: ["AI-enabled design", "Product design"],
     date: "2026-04",
     // [CHECK] real URL
     verified: false,
@@ -184,7 +184,7 @@ export const VOICES: Voice[] = [
     connects: ["frost", "cianfrani"],
     group: 2,
     shaped: ["chip"],
-    topics: ["AI-enabled Design", "Accessibility"],
+    topics: ["AI-enabled design", "Accessibility"],
     date: "2026-04",
     // [CHECK] real URL
     verified: false,
@@ -199,7 +199,7 @@ export const VOICES: Voice[] = [
     connects: ["friedman", "pandya", "curtis"],
     group: 3,
     shaped: [],
-    topics: ["AI-enabled Design"],
+    topics: ["AI-enabled design"],
     date: "2026-04",
     // [CHECK] real URL
     verified: false,
@@ -214,7 +214,7 @@ export const VOICES: Voice[] = [
     connects: ["friedman", "kavcic", "pitre"],
     group: 3,
     shaped: [],
-    topics: ["AI-enabled Design", "Product Design"],
+    topics: ["AI-enabled design", "Product design"],
     date: "2026-03",
     // [CHECK] real URL
     verified: false,

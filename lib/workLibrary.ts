@@ -66,7 +66,7 @@ export const WORK_ITEMS: WorkItem[] = [
     yearStart: 2026,
     role: "Designer and builder (solo)",
     impact: "The agent watches, catches drift, drafts, and waits for approval; my own systems scored in public",
-    skills: ["AI-enabled Design", "Design System Governance", "Design Systems", "Accessibility"],
+    skills: ["AI-enabled design", "Design system governance", "Design systems", "Accessibility"],
     hi: "var(--case-chip-hi)",
     lo: "var(--case-chip-lo)",
     deep: "var(--case-chip-deep)",
@@ -90,7 +90,7 @@ export const WORK_ITEMS: WorkItem[] = [
     yearStart: 2024,
     role: "Design System Collaborator",
     impact: "Figma ⇄ Storybook parity; tokens aligned across the stack",
-    skills: ["Design Systems", "Design Tokens", "Component Libraries", "Figma ⇄ Code", "Accessibility"],
+    skills: ["Design systems", "Design tokens", "Component libraries", "Figma ⇄ code", "Accessibility"],
     hi: "var(--case-code-first-hi)",
     lo: "var(--case-code-first-lo)",
     deep: "var(--case-code-first-deep)",
@@ -118,13 +118,13 @@ export const WORK_ITEMS: WorkItem[] = [
     role: "Lead Product Designer, Design Systems",
     impact: "First design system from zero; tokens wired to production across 5+ verticals",
     skills: [
-      "Design Systems",
-      "Design Tokens",
+      "Design systems",
+      "Design tokens",
       /* mid-array: a structural claim for this case (Pass E task 5a) */
       "Accessibility",
-      "Design System Governance",
-      "Component Libraries",
-      "Product Design",
+      "Design system governance",
+      "Component libraries",
+      "Product design",
     ],
     hi: "var(--case-drift-hi)",
     lo: "var(--case-drift-lo)",
@@ -144,7 +144,7 @@ export const WORK_ITEMS: WorkItem[] = [
     yearStart: 2026,
     role: "Designer-builder",
     impact: "CHIP: AI-enabled design workflows, built and documented in public",
-    skills: ["AI-enabled Design", "Design Systems", "Product Design"],
+    skills: ["AI-enabled design", "Design systems", "Product design"],
     hi: "var(--case-design-lab-hi)",
     lo: "var(--case-design-lab-lo)",
     deep: "var(--case-design-lab-deep)",
@@ -180,7 +180,7 @@ export function relatedWorkItems(slug: string, count = 2): WorkItem[] {
  * NO AI labelling.
  * TODO(elleta): fill the lines; the structure ships dark until then.
  * Shape: { [itemId]: { [skill]: "one line" } }, e.g.
- *   drift: { Accessibility: "…", "Design Tokens": "…" } */
+ *   drift: { Accessibility: "…", "Design tokens": "…" } */
 export const SKILL_EVIDENCE: Record<string, Partial<Record<Skill, string>>> = {};
 
 /** Case tokens for a case-study slug (sphere, accents). */

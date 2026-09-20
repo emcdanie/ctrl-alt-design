@@ -3,15 +3,15 @@
  * renamed here moves everywhere at once. */
 
 export const SKILLS = [
-  "Design Systems",
-  "Design Tokens",
-  "Design System Governance",
-  "AI-enabled Design",
+  "Design systems",
+  "Design tokens",
+  "Design system governance",
+  "AI-enabled design",
   "Accessibility",
-  "Component Libraries",
-  "Figma ⇄ Code",
-  "Product Design",
-  "UX Research",
+  "Component libraries",
+  "Figma ⇄ code",
+  "Product design",
+  "UX research",
 ] as const;
 
 export type Skill = (typeof SKILLS)[number];

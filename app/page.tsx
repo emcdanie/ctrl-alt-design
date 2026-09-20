@@ -63,7 +63,7 @@ export default function Home() {
         <div className={`home-work-row reveal-group ${styles.doors}`}>
           {DOORS.map((d) => (
             <Card key={d.kind} href={d.href}>
-              <span className={styles.kicker}>{d.kind}</span>
+              <span className={`text-code ${styles.kicker}`}>{d.kind}</span>
               <span className={`heading-item ${styles.title}`}>{d.title}</span>
               <span className={`card-body ${styles.body}`}>{d.body}</span>
             </Card>
