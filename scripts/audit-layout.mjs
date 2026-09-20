@@ -6,7 +6,7 @@
  *    listed fails, so a new page can't skip the layout system.
  * 2. A route marked "section" must render layout Section
  *    (components/layout/Section) and must not write a raw <section>.
- * 3. SectionHeader takes layout="split" (default) or "stacked", nothing
+ * 3. SectionHeader takes layout="stacked" (default) or "split", nothing
  *    else; no page reshapes .l-header with its own grid.
  * 4. No custom spacing in app/ or components/sections/: arbitrary
  *    Tailwind margin/padding (mt-[, py-[ ...) or inline margin/padding.

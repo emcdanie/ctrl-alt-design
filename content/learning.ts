@@ -47,12 +47,16 @@ export type LearningEntry = {
   certified?: boolean;
   /** grouped entries: the titles inside */
   items?: string[];
+  /** a short name for tight rows, e.g. the hero's certificates line.
+   *  Falls back to `title` when there is nothing to shorten. */
+  short?: string;
 };
 
 const RECORD: LearningEntry[] = [
   /* ── Certificates (earned) ── */
   {
     id: "subatomic",
+    short: "Subatomic",
     type: "Certificate",
     title: "Subatomic: The Complete Guide to Design Tokens",
     from: "Brad Frost, Ian Frost",
@@ -65,6 +69,7 @@ const RECORD: LearningEntry[] = [
   },
   {
     id: "atomic-design",
+    short: "Atomic Design",
     type: "Certificate",
     title: "Atomic Design Certification Course",
     from: "Brad Frost",
@@ -78,6 +83,7 @@ const RECORD: LearningEntry[] = [
   },
   {
     id: "smart-interface-design-patterns",
+    short: "Interface Design Patterns",
     type: "Certificate",
     title: "Smart Interface Design Patterns",
     from: "Vitaly Friedman",
@@ -90,6 +96,7 @@ const RECORD: LearningEntry[] = [
   },
   {
     id: "ixdf-mobile-ux",
+    short: "Mobile UX Design",
     type: "Certificate",
     title: "Mobile UX Design: The Beginner's Guide",
     from: "Interaction Design Foundation",
@@ -101,6 +108,7 @@ const RECORD: LearningEntry[] = [
   },
   {
     id: "ixdf-better-world",
+    short: "Design for a Better World",
     type: "Certificate",
     title: "Design for a Better World with Don Norman",
     from: "Interaction Design Foundation, Don Norman",
@@ -112,6 +120,7 @@ const RECORD: LearningEntry[] = [
   },
   {
     id: "ixdf-21st-century",
+    short: "Design for the 21st Century",
     type: "Certificate",
     title: "Design for the 21st Century with Don Norman",
     from: "Interaction Design Foundation, Don Norman",
@@ -123,6 +132,7 @@ const RECORD: LearningEntry[] = [
   },
   {
     id: "ixdf-ux-beginners",
+    short: "User Experience",
     type: "Certificate",
     title: "User Experience: The Beginner's Guide",
     from: "Interaction Design Foundation",
@@ -201,6 +211,7 @@ const RECORD: LearningEntry[] = [
   /* ── Conferences ── */
   {
     id: "ids-conference-2025",
+    short: "IDS Conference 2025",
     type: "Conference",
     title: "Into Design Systems Conference 2025",
     from: "Into Design Systems, online",
@@ -272,6 +283,7 @@ const RECORD: LearningEntry[] = [
   },
   {
     id: "measuring-ux-impact-workshop",
+    short: "Measuring UX Impact",
     type: "Workshop",
     title: "Measuring UX Impact",
     from: "Vitaly Friedman, SmashingConf Amsterdam 2026",
@@ -299,6 +311,7 @@ const RECORD: LearningEntry[] = [
   /* ── Hackathons ── */
   {
     id: "ids-ai-hackathon",
+    short: "IDS AI Hackathon",
     type: "Hackathon",
     title: "Into Design Systems AI Hackathon",
     from: "Into Design Systems",

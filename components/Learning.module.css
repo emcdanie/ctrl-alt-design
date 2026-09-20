@@ -21,114 +21,18 @@
   color: var(--color-ink);
 }
 
-/* one row: the four newest certificates and a "+N more" link. Below
-   900px the row scrolls sideways; it never wraps to a second row. */
-.badges {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  min-width: 0;
-  max-width: 100%;
-  /* the containing block for the sr-only text, so the scroller clips it */
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
-  gap: var(--spacing-2);
-}
-
-@media (max-width: 899px) {
-  .badges {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(15rem, 1fr) auto;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-    padding-bottom: var(--spacing-2);
-  }
-
-  .badges > li {
-    scroll-snap-align: start;
-  }
-}
-
-.badges > li {
-  display: flex;
-  min-width: 0;
-}
-
-.badge {
-  display: flex;
-  flex: 1;
-  min-width: 0;
-  align-items: center;
-  gap: var(--spacing-3);
-  min-height: var(--spacing-touch-target);
-  padding: var(--spacing-1) var(--spacing-4) var(--spacing-1) var(--spacing-1);
-  border: 1px solid var(--border-faint);
-  border-radius: var(--radius-pill);
-  background: var(--surface-card);
-  color: var(--color-ink);
-  text-decoration: none;
-  transition:
-    transform var(--motion-duration-normal) var(--motion-easing-standard),
-    box-shadow var(--motion-duration-normal) var(--motion-easing-standard);
-}
-
-.badgeMore {
-  padding: var(--spacing-1) var(--spacing-4);
-  font-size: var(--text-meta);
-  font-weight: 600;
-  white-space: nowrap;
-  color: var(--color-accent-ink);
-  background: var(--color-semantic-accent-subtle);
-  border-color: var(--color-semantic-accent-border);
-}
-
-.badge:hover,
-.badge:focus-visible {
-  transform: var(--motion-transform-hover-lift);
-  box-shadow: var(--shadow-soft);
-}
-
-.badge:focus-visible {
-  outline: var(--ring-focus-width) solid var(--color-accent-iris);
-  outline-offset: 2px;
-}
-
-.badgeCheck {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: var(--spacing-8);
-  height: var(--spacing-8);
-  border-radius: var(--radius-full);
-  background: var(--color-semantic-accent-subtle);
-  color: var(--color-accent-ink);
-  font-size: var(--text-meta);
-  font-weight: 700;
-}
-
-.badgeText {
-  display: grid;
-  min-width: 0;
-  line-height: 1.25;
-}
-
-.badgeTitle,
-.badgeIssuer {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.badgeTitle {
-  font-size: var(--text-meta);
-  font-weight: 600;
-}
-
-.badgeIssuer {
-  font-size: var(--text-meta);
+/* ONE quiet line of certificates under the stats (Elleta, 20 Sep
+   2026): short names, no pills, no truncation, and the only link in it
+   is the "+N →" that filters the library. */
+.certs {
   color: var(--color-ink-muted);
+  text-wrap: pretty;
+}
+
+.certsMore {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .next-up-meta {
@@ -1039,16 +943,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .badge,
   .zoomLayer,
   .node,
   .voiceWires path {
     transition: none;
-  }
-
-  .badge:hover,
-  .badge:focus-visible {
-    transform: none;
   }
 }
 

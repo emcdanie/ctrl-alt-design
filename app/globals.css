@@ -574,8 +574,9 @@ main .l-section:first-of-type {
   fill: currentColor;
 }
 
-/* SectionHeader: heading left (40%), lead and body right (60%, max
-   42rem) from 1024px; stacked below */
+/* SectionHeader: ONE column. The heading, then the lead and body under
+   it (Elleta, 20 Sep 2026). layout="split" opts back into heading left
+   (40%), lead and body right (60%) from 1024px; nothing uses it. */
 .l-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -584,16 +585,31 @@ main .l-section:first-of-type {
 }
 
 @media (min-width: 1024px) {
-  .l-header {
+  .l-header--split {
     grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
     column-gap: var(--layout-gutter);
   }
 }
 
-/* layout="stacked": heading above the lead at every width */
-@media (min-width: 1024px) {
-  .l-header--stacked {
-    grid-template-columns: minmax(0, 1fr);
+/* a head with an illustration (Elleta, 20 Sep 2026): text left, the
+   illustration right and centred on it from 900px. On phones it stacks
+   in reading order, text then image. The text column keeps the stacked
+   rhythm inside its own grid, so heading, lead and body stay together. */
+.l-header__text {
+  display: grid;
+  row-gap: var(--section-lead-gap);
+  align-content: start;
+}
+
+.l-header__figure > * {
+  margin: 0;
+}
+
+@media (min-width: 900px) {
+  .l-header--figure {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    column-gap: var(--layout-gutter);
+    align-items: center;
   }
 }
 
@@ -620,8 +636,8 @@ main .l-section:first-of-type {
   color: var(--color-ink-soft);
 }
 
-/* stacked (below 1024px): the side column spans the container (text
-   keeps its own measure), and illustrations and their captions centre */
+/* below 1024px: the side column spans the container (text keeps its
+   own measure), and illustrations and their captions centre */
 @media (max-width: 1023.98px) {
   .l-header__side {
     max-width: none;

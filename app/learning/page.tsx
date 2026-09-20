@@ -17,10 +17,15 @@ export const metadata: Metadata = {
 };
 
 /* /learning (specs/learning, replaces /skills): the opening, the
-   library, the people I follow, and where I showed up. Stats, badges and
-   every count read COUNTS in content/learning.ts (one source). The hero
-   shows one row of the four newest certificates plus a link to the rest,
-   filtered in the library. */
+   library, the people I follow, and where I showed up. Stats and every
+   count read COUNTS in content/learning.ts (one source).
+
+   The hero (Elleta, 20 Sep 2026): text left, bella-curious right and
+   centred on it. Under the h1 sit the lead, the stats line, what is
+   next, and ONE quiet line of certificates in the code role. The four
+   pill badges it replaces looked like buttons, were not, and truncated
+   their titles; the line uses each certificate's short name and ends in
+   a real link, "+6 →", that filters the library to Certificate. */
 
 const STATS = [
   [COUNTS.certificates, "certificates"],
@@ -30,8 +35,9 @@ const STATS = [
   [COUNTS.reading, "pieces of reading"],
   [COUNTS.projects, "projects it shows up in"],
 ].filter(([n]) => (n as number) > 0) as [number, string][];
-const BADGES = CERTIFICATES.slice(0, 4);
-const MORE = CERTIFICATES.length - BADGES.length;
+/* the newest four by short name, then a link to the rest */
+const SHOWN = CERTIFICATES.slice(0, 4);
+const MORE = CERTIFICATES.length - SHOWN.length;
 const EVENTS = LEARNING.filter((e) => ["Conference", "Workshop", "Hackathon"].includes(e.type)).sort(
   (a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title)
 );
@@ -49,6 +55,18 @@ export default function LearningPage() {
           accent={<Term id="used" />}
           after=" it."
           lead="Everything I know has a source and a use. Here's both: the courses, workshops and reading behind my work, and the projects where they paid off."
+          figure={
+            <figure className="section-figure">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="section-figure__art"
+                src="/images/bella/set/bella-curious.webp"
+                alt="Illustration: Bella, head tilted, listening."
+                width={860}
+                height={980}
+              />
+            </figure>
+          }
         >
           <p className={`text-code ${styles.stats}`}>
             {STATS.map(([n, label]) => (
@@ -58,34 +76,24 @@ export default function LearningPage() {
             ))}
           </p>
           {NEXT_UP && <p className={`text-code ${styles["next-up-meta"]}`}>Next up: {NEXT_UP}</p>}
+          <p className={`text-code ${styles.certs}`}>
+            Certificates:{" "}
+            {SHOWN.map((e, i) => (
+              <span key={e.id}>
+                {i > 0 ? <span aria-hidden="true"> · </span> : null}
+                {e.short ?? e.title}
+              </span>
+            ))}
+            {MORE > 0 && (
+              <>
+                <span aria-hidden="true"> · </span>
+                <Link className={styles.certsMore} href="/learning?type=certificate#library">
+                  +{MORE}<span className="sr-only"> more certificates</span> <span aria-hidden="true">→</span>
+                </Link>
+              </>
+            )}
+          </p>
         </SectionHeader>
-        <ul className={styles.badges} aria-label="Certificates">
-          {BADGES.map((e) => (
-            <li key={e.id}>
-              <Link
-                className={styles.badge}
-                title={`${e.title}, ${e.from}`}
-                href={e.certificateUrl ?? `/learning#entry-${e.id}`}
-                {...(e.certificateUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              >
-                <span className={styles.badgeCheck} aria-hidden="true">
-                  ✓
-                </span>
-                <span className={styles.badgeText}>
-                  <span className={styles.badgeTitle}>{e.title}</span>
-                  <span className={styles.badgeIssuer}>{e.from}</span>
-                </span>
-              </Link>
-            </li>
-          ))}
-          {MORE > 0 && (
-            <li>
-              <Link className={`${styles.badge} ${styles.badgeMore}`} href="/learning?type=certificate#library">
-                +{MORE} more<span className="sr-only"> certificates</span>
-              </Link>
-            </li>
-          )}
-        </ul>
       </Section>
 
       <Section id="library" label="The library">
@@ -93,7 +101,7 @@ export default function LearningPage() {
           heading="Everything,"
           accent="findable"
           after="."
-          lead="Filter by type or topic, then switch the view. The Skills view is the old matrix, now with where I learned each one."
+          lead="Filter by type or topic, then switch the view."
         />
         {/* useSearchParams requires a Suspense boundary */}
         <Suspense fallback={null}>

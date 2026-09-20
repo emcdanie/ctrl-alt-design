@@ -51,7 +51,6 @@ export default function WorkPage() {
         <div className={styles.studiesSplit}>
           <div className={styles.studiesHead}>
             <SectionHeader
-              layout="stacked"
               heading="One problem,"
               accent="worked through"
               after="."

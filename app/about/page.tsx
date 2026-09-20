@@ -34,8 +34,8 @@ export default function AboutPage() {
               components, and the decisions behind them, written down kindly so everyone can use them.
             </>
           }
-        >
-          <figure className="section-figure">
+          figure={
+            <figure className="section-figure">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="section-figure__art"
@@ -53,8 +53,9 @@ export default function AboutPage() {
                 </span>
               </span>
             </figcaption>
-          </figure>
-        </SectionHeader>
+            </figure>
+          }
+        />
       </Section>
 
       <Section id="short-lead" label="The short lead">

@@ -13,11 +13,13 @@ function termName(heading: ReactNode, accent: ReactNode, after: ReactNode): stri
   return `${heading} ${GLOSSARY[id].word}${after ?? ""}`;
 }
 
-/* The section header (specs/layout-system): layout="split" (default):
-   heading left (about 40%), lead and body right (about 60%, max 42rem)
-   from 1024px, stacked below. layout="stacked": heading above the lead
-   and body at every width (a page opening whose h1 needs the full
-   width, e.g. two lines). Content placed after it gets --section-content-gap above.
+/* The section header (specs/layout-system): layout="stacked" (the
+   default since 20 Sep 2026, Elleta: "the body text has moved above the
+   image, that was not the idea, put it back under the heading"): label,
+   heading, then the lead and body under it, left-aligned, the text
+   column capped at 42rem. layout="split" puts the lead beside the
+   heading from 1024px; it is kept as an option and used nowhere.
+   Content placed after it gets --section-content-gap above.
    The heading takes one iris `accent` word; `after` carries what
    follows it. `as="h1"` for the page opening. */
 export default function SectionHeader({
@@ -25,35 +27,30 @@ export default function SectionHeader({
   accent,
   after,
   as = "h2",
-  layout = "split",
+  layout = "stacked",
   id,
   lead,
+  figure,
   children,
 }: {
   heading: ReactNode;
   accent?: ReactNode;
   after?: ReactNode;
   as?: "h1" | "h2";
-  /** "split" (default): heading beside the lead from 1024px; "stacked":
-   *  heading above the lead at every width */
+  /** "stacked" (default): heading above the lead at every width;
+   *  "split": heading beside the lead from 1024px */
   layout?: "split" | "stacked";
   /** the heading's id (the page opening's Section points at it) */
   id?: string;
   lead?: ReactNode;
+  /** an illustration beside the text from 900px, centred on it; under
+   *  the text on phones. The caption belongs inside it. */
+  figure?: ReactNode;
   /** body: paragraphs, a list, a link, a figure */
   children?: ReactNode;
 }) {
-  return (
-    <div
-      className={[
-        "l-header",
-        layout === "stacked" ? "l-header--stacked" : "",
-        /* section heads reveal; the page opening (h1) is there at once */
-        as === "h1" ? "" : "reveal",
-      ]
-        .filter(Boolean)
-        .join(" ")}
-    >
+  const text = (
+    <>
       <Heading
         tier={as === "h1" ? "page" : "section"}
         as={as}
@@ -70,6 +67,24 @@ export default function SectionHeader({
           {children ? <div className="l-header__body text-body">{children}</div> : null}
         </div>
       ) : null}
+    </>
+  );
+  return (
+    <div
+      className={[
+        "l-header",
+        layout === "split" ? "l-header--split" : "",
+        figure ? "l-header--figure" : "",
+        /* section heads reveal; the page opening (h1) is there at once */
+        as === "h1" ? "" : "reveal",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
+      {/* with a figure the text gets its own column, so it stays one
+          stacked block beside the illustration */}
+      {figure ? <div className="l-header__text">{text}</div> : text}
+      {figure ? <div className="l-header__figure">{figure}</div> : null}
     </div>
   );
 }
