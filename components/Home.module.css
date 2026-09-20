@@ -12,7 +12,11 @@
    in the logo component (globals.css .logo-grid--row) rather than
    overridden here. */
 .logos {
-  border-block: 1px solid var(--color-semantic-border);
+  /* ONE hairline, above (Elleta's checklist, 20 Sep 2026). The band
+     used to close itself with a second full-bleed rule, and the next
+     section's label rule sits right under that, so the eye read two
+     lines between the marks and Selected work. */
+  border-top: 1px solid var(--color-semantic-border);
   padding-block: var(--spacing-4);
 }
 
