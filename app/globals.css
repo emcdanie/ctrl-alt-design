@@ -2160,6 +2160,23 @@ li {
   color: var(--color-navy-ink);
 }
 
+/* Trim the reserve where the band has slack (Elleta, 20 Sep 2026).
+   Bella's full height was reserved above the letters at every width,
+   and at desktop widths most of that band sat empty. It is not only
+   her reserve though: FooterTrail walks its prints along it and needs
+   about 94px of clear lane or it renders nothing. From 1280px the lane
+   measures 137px and up, so the reserve gives 40px of it back and the
+   trail keeps its floor. Below 1280 the lane is already near that
+   floor (129px at 1200, 99px at 390), so the reserve stays. Measured,
+   not guessed: at 1200 a 40px trim drops the lane to 89 and the trail
+   stops rendering. Bella still stands on the
+   A, about 60px clear of the "in progress" line. */
+@media (min-width: 1280px) {
+  .site-footer__wordmark {
+    padding-top: calc(var(--footer-bella-height) + 0.04em - var(--spacing-10));
+  }
+}
+
 /* Bella stands on the A's apex, centred on the letter */
 .site-footer__a {
   position: relative;
