@@ -295,8 +295,25 @@ export default function LearningMap({ visible, topicFilters }: { visible: Set<st
   );
 }
 
-function List({ items }: { items: ReactNode[] }) {
-  return <ul className={styles.detailList}>{items.length ? items.map((t, i) => <li key={i} className={styles.listPill}>{t}</li>) : <li className={styles.listPill}>Not yet</li>}</ul>;
+/* Pills only for links (Elleta, 20 Sep 2026): a pill says "press me",
+   so a list of plain words wears none. `plain` is the list of names;
+   the default is the list of links. */
+function List({ items, plain = false }: { items: ReactNode[]; plain?: boolean }) {
+  const cls = plain ? styles.listName : styles.listPill;
+  return (
+    <ul className={plain ? `${styles.detailList} ${styles.detailList_plain}` : styles.detailList}>
+      {items.length ? items.map((t, i) => <li key={i} className={cls}>{t}</li>) : <li className={cls}>Not yet</li>}
+    </ul>
+  );
+}
+
+/* a source, linked to its entry in the timeline */
+function EntryLink(e: LearningEntry) {
+  return (
+    <Link href={`/learning?view=timeline#entry-${e.id}`} className={styles.inlineLink}>
+      {e.short ?? e.title}
+    </Link>
+  );
 }
 
 function Detail({ k }: { k: string }) {
@@ -313,7 +330,7 @@ function Detail({ k }: { k: string }) {
         </p>
         {e.took && <p className={styles.detailTook}>{e.took}</p>}
         <p className={styles.detailSub}>Skills</p>
-        <List items={e.topics} />
+        <List items={e.topics} plain />
         <p className={styles.detailSub}>Used in</p>
         <List items={e.usedIn.map((u) => WorkLink(u))} />
       </>
@@ -331,8 +348,14 @@ function Detail({ k }: { k: string }) {
           {src.length} sources · {used.length} projects
         </p>
         <p className={styles.detailSub}>Learned from</p>
-        <List items={src.slice(0, 8).map((e) => e.title)} />
-        {src.length > 8 && <p className={styles.codeNote}>+ {src.length - 8} more in the Timeline</p>}
+        <List items={src.slice(0, 8).map((e) => EntryLink(e))} plain />
+        {src.length > 8 && (
+          <p className={styles.detailMore}>
+            <Link href={`/learning?view=timeline&topic=${slugify(skill)}#library`} className={styles.inlineLink}>
+              {src.length - 8} more in the Timeline
+            </Link>
+          </p>
+        )}
         <p className={styles.detailSub}>Used in</p>
         <List items={used.map((w) => WorkLink(w.id))} />
       </>
@@ -345,7 +368,7 @@ function Detail({ k }: { k: string }) {
       <h3 className={`heading-item ${styles.detailTitle}`}>{w.title}</h3>
       <p className={styles["detail-meta"]}>{w.skills.length} skills in play</p>
       <p className={styles.detailSub}>Skills</p>
-      <List items={w.skills} />
+      <List items={w.skills} plain />
       <p className={styles.detailLink}>
         <Link href={w.href}>
           Read the case study <span aria-hidden="true">→</span>

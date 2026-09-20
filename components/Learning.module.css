@@ -837,6 +837,27 @@
   color: var(--color-ink-soft);
 }
 
+/* the plain list (Elleta, 20 Sep 2026): names, not pills. It reads down
+   one per line, because a row of bare words with no shape between them
+   is a sentence, not a list. */
+.detailList_plain {
+  display: block;
+}
+
+.detailList .listName {
+  font-size: var(--text-meta);
+  color: var(--color-ink-soft);
+}
+
+.detailList .listName + .listName {
+  margin-top: var(--spacing-1);
+}
+
+.detailMore {
+  margin: var(--spacing-2) 0 0;
+  font-size: var(--text-meta);
+}
+
 .detailLink {
   margin: var(--spacing-3) 0 0;
   font-size: var(--text-body);

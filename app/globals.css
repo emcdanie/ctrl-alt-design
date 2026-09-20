@@ -1743,6 +1743,20 @@ li {
   }
 }
 
+/* An open row STAYS purple (Elleta, 20 Sep 2026): the wash is the open
+   state, not a hover that fades when the pointer leaves. The company
+   name and the chevron go iris with it, and the body underneath keeps
+   the card surface, so the row reads as header and content. */
+.xp.is-open .accordion__trigger {
+  background: var(--iris-soft);
+}
+
+.xp.is-open .xp__company,
+.xp.is-open .accordion__chev {
+  color: var(--color-accent-ink);
+}
+
+/* the ring is :focus-visible only: a mouse click never draws one */
 .xp .accordion__trigger:focus-visible {
   outline-offset: calc(0px - var(--ring-focus-width));
   border-radius: 0;
