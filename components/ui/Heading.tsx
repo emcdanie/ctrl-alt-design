@@ -55,13 +55,20 @@ export default function Heading({
   children: ReactNode;
 }) {
   const Tag: ElementType = as ?? (tier === "hero" || tier === "page" ? "h1" : tier === "sub" ? "h3" : "h2");
+  /* ONE iris word per PAGE, on the h1 (Elleta, 20 Sep 2026, the calm
+     pass). Every h2 on every page was colouring a word, which made the
+     accent mean "a heading" rather than "the one idea". Below the h1 the
+     accent still marks the word, it just wears ink. A Term passed as an
+     accent keeps its own dotted underline and iris: that is the
+     interactive affordance, not the accent colour. */
+  const irisAccent = Tag === "h1";
   /* the size comes from the shared text utility, not a tier-private rule */
   const size = tier === "page" ? " text-display-1" : tier === "section" || tier === "case" ? " text-display-2" : "";
   const squeezed = squeeze && tier === "hero" ? " display-heading--squeeze" : "";
   return (
     <Tag id={id} style={style} aria-label={label} className={`display-heading display-heading--${tier}${size}${squeezed} ${className}`.trim()}>
       {children}
-      {accent != null ? <span className="accent"> {accent}</span> : null}
+      {accent != null ? <span className={irisAccent ? "accent" : undefined}> {accent}</span> : null}
       {after}
     </Tag>
   );
