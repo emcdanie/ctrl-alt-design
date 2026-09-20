@@ -21,13 +21,39 @@ const fullYears = (t: string) => t.replace(/\b(20\d\d)-(20\d\d)\b/g, "$1 to $2")
    A case on the new pattern declares the one iris word of its thesis
    here; the facts row and the NDA line come from its content file, so
    nothing is restated. Cases not yet migrated keep the old head. */
-const ARTICLE: Record<string, { title: string; accent: string; after: string }> = {
+const ARTICLE: Record<
+  string,
+  { title: string; accent: string; after: string; facts?: { label: string; value: string }[] }
+> = {
   "design-system-transformation": {
     title: "The system is the set of",
     accent: "agreements",
     after: ", not the component library.",
   },
+  "brad-frost": {
+    title: "Working",
+    accent: "code-first",
+    after: " changes what you pay attention to.",
+  },
+  chip: {
+    title: "AI builds whatever your system already is. I built CHIP to",
+    accent: "see it first",
+    after: ".",
+    /* CHIP keeps a metadata list rather than the metrics block, and its
+       four facts are the mock's shortenings of those entries */
+    facts: [
+      { label: "Role", value: "Designer and builder, solo" },
+      { label: "Built", value: "5 days, Claude Code hackathon, Apr 2026" },
+      { label: "Tools", value: "Claude Code, MCP, BELLA tokens" },
+      { label: "Status", value: "Honest prototype, CHIP 2.0 in progress" },
+    ],
+  },
 };
+
+/* house style for a span: "Oct 2024 - Jan 2025" reads "... to ...".
+   The DATES themselves are untouched (Part N item 4); this is only the
+   separator, which is ours and never a dash (CLAUDE.md section 6). */
+const toSpan = (v: string) => v.replace(/\s+-\s+/g, " to ");
 
 const facts = (cs: CaseStudy) =>
   [
@@ -35,7 +61,9 @@ const facts = (cs: CaseStudy) =>
     { label: "Team", value: cs.metrics?.team },
     { label: "Timeline", value: cs.metrics?.timeline },
     { label: "Scope", value: cs.metrics?.scope },
-  ].filter((f): f is { label: string; value: string } => Boolean(f.value));
+  ]
+    .filter((f): f is { label: string; value: string } => Boolean(f.value))
+    .map((f) => ({ ...f, value: toSpan(f.value) }));
 
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -115,7 +143,7 @@ export default async function CaseStudyPage({
           subhead={cs.summary ?? cs.description}
           readingMinutes={readingMinutes}
           tags={cs.tags}
-          facts={article ? facts(cs) : undefined}
+          facts={article ? article.facts ?? facts(cs) : undefined}
           nda={article ? nda : undefined}
         >
           <Composition cs={cs} />

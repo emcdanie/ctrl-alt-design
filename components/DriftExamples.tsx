@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
+import { StatusPill } from "@/components/ui/StatusPill";
 
 /* The four examples of "From Drift to Foundation" (Elleta, 20 Sep 2026,
    case-study rebuild). They live in the page, not in an iframe, because
@@ -106,35 +107,35 @@ export function TokenCascade() {
             { value: "broken", label: "Break the link" },
           ]}
         />
-        <p className={`drift-status${linked ? "" : " drift-status--bad"}`} role="status">
-          <span aria-hidden="true">{linked ? "✓" : "!"}</span>{" "}
+        <StatusPill tone={linked ? "ok" : "warn"} live>
+          <span aria-hidden="true">{linked ? "✓" : "!"}</span>
           {linked ? "Design and code in parity" : "Drift: the button keeps a colour no token explains"}
-        </p>
+        </StatusPill>
       </div>
 
-      <div className={`drift-pipe${linked ? "" : " drift-pipe--drifted"}`}>
-        <div className="drift-tier" data-t="found">
-          <span className="drift-tier__t">Foundation</span>
-          <span className="text-code drift-tier__tok">
-            <span className="drift-sw" aria-hidden="true" /> --brand-600
+      <div className={`case-pipe${linked ? "" : " case-pipe--drifted"}`}>
+        <div className="case-tier" data-t="found">
+          <span className="case-tier__t">Foundation</span>
+          <span className="text-code case-tier__tok">
+            <span className="case-sw" aria-hidden="true" /> --brand-600
           </span>
           <span className="text-code">{RAW}</span>
         </div>
-        <span className="text-code drift-pipe__to" aria-hidden="true">
+        <span className="text-code case-pipe__to" aria-hidden="true">
           →
         </span>
-        <div className="drift-tier" data-t="sem">
-          <span className="drift-tier__t">Semantic</span>
-          <span className="text-code drift-tier__tok">
-            <span className="drift-sw" aria-hidden="true" /> --action
+        <div className="case-tier" data-t="sem">
+          <span className="case-tier__t">Semantic</span>
+          <span className="text-code case-tier__tok">
+            <span className="case-sw" aria-hidden="true" /> --action
           </span>
           <span className="text-code">→ brand-600</span>
         </div>
-        <span className="text-code drift-pipe__to" aria-hidden="true">
+        <span className="text-code case-pipe__to" aria-hidden="true">
           →
         </span>
-        <div className="drift-tier drift-tier--comp" data-t="comp">
-          <span className="drift-tier__t">Component</span>
+        <div className="case-tier case-tier--comp" data-t="comp">
+          <span className="case-tier__t">Component</span>
           <span className="drift-book" role="img" aria-label="A Book now button" />
           {!linked && <span className="drift-diff">Hard-coded, no token</span>}
         </div>

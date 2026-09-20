@@ -203,13 +203,37 @@
       "anatomy": [
         "status-pill"
       ],
-      "props": [],
-      "variants": [],
+      "props": [
+        {
+          "name": "tone",
+          "type": "string",
+          "values": [
+            "neutral",
+            "ok",
+            "warn"
+          ]
+        },
+        {
+          "name": "live",
+          "type": "boolean"
+        }
+      ],
+      "variants": [
+        {
+          "name": "ok",
+          "delta": "the status ramp's positive tint; the words still carry the state"
+        },
+        {
+          "name": "warn",
+          "delta": "the status ramp's caution tint; the words still carry the state"
+        }
+      ],
       "tokens": [
         "{--color-accent-ink}",
         "{--color-semantic-accent-border}",
         "{--radius-full}",
-        "{--spacing-2}"
+        "{--case-clarity-hi}",
+        "{--gov-clay-hi}"
       ]
     },
     {

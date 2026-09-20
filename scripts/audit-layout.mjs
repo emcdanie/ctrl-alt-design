@@ -8,6 +8,10 @@
  *    (components/layout/Section) and must not write a raw <section>.
  * 3. SectionHeader takes layout="stacked" (default) or "split", nothing
  *    else; no page reshapes .l-header with its own grid.
+ *
+ * A route is allowlisted for one of two reasons, and the reason string
+ * says which: "pending" means it has not moved yet, "article" means it
+ * is on the case-study article system instead and audit:visual owns it.
  * 4. No custom spacing in app/ or components/sections/: arbitrary
  *    Tailwind margin/padding (mt-[, py-[ ...) or inline margin/padding.
  *    Spacing comes from Section, SectionHeader and the tokens.
@@ -21,6 +25,13 @@ import { join } from "node:path";
 import { receipt } from "./lib/receipt.mjs";
 
 const PENDING = "pending: moves onto Section + SectionHeader in its own commit";
+/* The case-study route is an ARTICLE, not a page of Sections: hero, then
+   CaseSections, then the close. It is on a system, just a different one,
+   and audit:visual polices that one (the article template law: a text
+   column plus exactly one named, captioned ExampleFrame, alternation,
+   one screen per section). Elleta, 20 Sep 2026, once all three cases
+   moved over. */
+const ARTICLE = "article: CaseSection + ExampleFrame, enforced by audit:visual";
 
 /* file -> "section" | { allow: reason } */
 const ROUTES = {
@@ -31,7 +42,7 @@ const ROUTES = {
   "app/design-system/page.tsx": { allow: PENDING },
   "app/design-system/inspector/page.tsx": { allow: PENDING },
   "app/learning/page.tsx": "section",
-  "app/case-studies/[slug]/page.tsx": { allow: PENDING },
+  "app/case-studies/[slug]/page.tsx": { allow: ARTICLE },
   "app/not-found.tsx": "section",
   "app/privacy/page.tsx": "section",
   "app/accessibility/page.tsx": "section",
@@ -104,9 +115,10 @@ for (const dir of SPACING_DIRS) {
   }
 }
 
-const pending = Object.values(ROUTES).filter((e) => e !== "section").length;
+const pending = Object.values(ROUTES).filter((e) => typeof e === "object" && e.allow === PENDING).length;
+const article = Object.values(ROUTES).filter((e) => typeof e === "object" && e.allow === ARTICLE).length;
 if (fails) {
   console.error(`layout gate: ${fails} failure(s)`);
   process.exit(1);
 }
-console.log(`layout gate: PASS (${pages.length} routes, ${pages.length - pending} on the system, ${pending} allowlisted)`);
+console.log(`layout gate: PASS (${pages.length} routes, ${pages.length - pending - article} on the Section system, ${article} on the article system, ${pending} still pending)`);
