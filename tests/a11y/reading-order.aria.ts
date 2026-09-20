@@ -151,6 +151,18 @@ test.describe("Case study: linked phrases", () => {
     await expect(phrase).toHaveAttribute("aria-pressed", "false");
   });
 
+  /* Highlight, never fade (Elleta, 20 Sep 2026). An annotation adds
+     emphasis; it never dims or hides what it is not pointing at. */
+  test("nothing is dimmed while a phrase is lit", async ({ page }) => {
+    const phrase = page.locator(".linked-phrase").filter({ hasText: "different corners" }).first();
+    await phrase.focus();
+    await expect(page.locator('[data-t~="corners"].is-lit').first()).toBeVisible();
+    const faded = await page.locator("[data-t]").evaluateAll((els) =>
+      els.filter((e) => parseFloat(getComputedStyle(e).opacity) < 1).length
+    );
+    expect(faded).toBe(0);
+  });
+
   test("the text column is read before its figure, flipped or not", async ({ page }) => {
     for (const section of await page.locator("section.case-section").all()) {
       const order = await section.evaluate((el) => {

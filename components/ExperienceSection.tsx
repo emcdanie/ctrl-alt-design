@@ -100,6 +100,11 @@ export const EXPERIENCE: Row[] = [
    words of its own. The name is the accessible label. */
 export type Org = { name: string; file: string; scale?: number; lockup?: string[] };
 
+/* NDA (Elleta, 20 Sep 2026): the B2B travel platform is NOT in this row.
+   The engagement may appear as an industry descriptor only, so its mark
+   is gone and its file with it. The employment entry below stays: this
+   file and ResumeModal are the two surfaces where employment history is
+   allowed to name an employer (CLAUDE.md section 7). Seven marks. */
 export const WORKED_WITH: Org[] = [
   { name: "Brad Frost Web", file: "brad-frost" },
   { name: "Mango", file: "mango" },
@@ -107,7 +112,6 @@ export const WORKED_WITH: Org[] = [
   { name: "Air France", file: "air-france" },
   { name: "Riyad Bank", file: "riyad-bank" },
   { name: "WeRoad", file: "weroad" },
-  { name: "BizAway", file: "bizaway" },
   { name: "VML", file: "vml", scale: 0.62 },
 ];
 

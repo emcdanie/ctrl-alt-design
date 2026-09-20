@@ -5,17 +5,20 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 /* CaseSection (Elleta, 20 Sep 2026, case-study rebuild, approved mock
    _private/specs/case-study/case-study-drift-mock-v4.html).
 
-   Southleft's case-study article: one idea per section, a short text
+   The article pattern: one idea per section, a short text
    column on one side and one framed example on the other, alternating
    sides down the page, a hairline between sections. Two columns from
    900px (text 5fr, figure 6fr); on phones it stacks, text then figure.
 
    It also owns the linked-phrase state for its own subtree. A
    LinkedPhrase names a key; every element inside this section carrying
-   data-t="<key>" gets .is-lit, everything else with a data-t inside the
-   same frame fades back, and the first lit element scrolls into view
-   inside its frame (never the page). Hover and focus light it;
-   a click pins it; a second click, or Escape, clears. */
+   data-t="<key>" gets .is-lit, and the first lit element scrolls into
+   view inside its frame (never the page). Hover and focus light it;
+   a click pins it; a second click, or Escape, clears.
+
+   HIGHLIGHT, NEVER FADE (Elleta, 20 Sep 2026, standing rule): the
+   targets gain the ring and the soft fill, and everything else stays at
+   full opacity. Nothing in an annotation is dimmed or hidden. */
 
 type Ctx = {
   /** the key currently lit, pinned or hovered */
@@ -87,12 +90,10 @@ export default function CaseSection({
     const root = ref.current;
     if (!root) return;
     const marked = Array.from(root.querySelectorAll<HTMLElement>("[data-t]"));
-    const frames = Array.from(root.querySelectorAll<HTMLElement>(".case-frame__body"));
     for (const el of marked) {
       const keys = (el.dataset.t ?? "").split(/\s+/);
       el.classList.toggle("is-lit", active !== null && keys.includes(active));
     }
-    for (const f of frames) f.classList.toggle("is-focused", active !== null);
     if (active === null) return;
     const first = root.querySelector<HTMLElement>("[data-t].is-lit");
     if (!first) return;

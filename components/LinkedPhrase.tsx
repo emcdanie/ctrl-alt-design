@@ -12,10 +12,10 @@ import { useCaseSection } from "@/components/CaseSection";
    prose.
 
    Hover, focus or tap lights every element in the section marked
-   data-t="<key>" and fades the rest of that frame back. A click pins
-   it (aria-pressed), a second click or Escape clears it. The example
-   still reads with nothing lit: the highlight adds emphasis, it never
-   supplies meaning that is missing without it. */
+   data-t="<key>". Nothing else is dimmed: the highlight adds emphasis,
+   it never takes it away (Elleta's standing rule, 20 Sep 2026). A click
+   pins it (aria-pressed), a second click or Escape clears it. The
+   example still reads with nothing lit. */
 export default function LinkedPhrase({ k, children }: { k: string; children: ReactNode }) {
   const ctx = useCaseSection();
   /* outside a CaseSection there is nothing to point at, so it is text */

@@ -341,14 +341,18 @@ body {
      panel, bubble and orb set went with BubbleCluster (19 Sep 2026). */
 
   /* Case-card cover placeholder — muted warm, never bright (IA spec) */
-  /* Motion (polish pass, 19 Sep 2026): one motion language. fast and
-     ease-out alias BELLA's tokens; base, slow and ease-in-out are
-     site-side until BELLA takes them (its normal is 250ms, slow 400ms). */
+  /* Motion (polish pass, 19 Sep 2026; retuned to BELLA 20 Sep 2026).
+     ONE ramp, and it is BELLA's. --dur-base was a site-only 300ms that
+     sat one step from BELLA's normal (250ms), close enough that a
+     consumer would guess wrong; Elleta's call was to retune rather than
+     ship the near-duplicate upstream, so base now IS normal. slow and
+     ease-in-out stay local aliases until the BELLA PR lands
+     (feat/motion-tokens: duration.slower, easing.in-out). */
   --dur-fast: var(--motion-duration-fast); /* .15s */
-  --dur-base: 0.3s;
-  --dur-slow: 0.6s;
+  --dur-base: var(--motion-duration-normal); /* .25s */
+  --dur-slow: 0.6s; /* BELLA duration.slower, pending the PR */
   --ease-out: var(--motion-easing-out); /* cubic-bezier(.22,1,.36,1) */
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* BELLA easing.in-out, pending */
 
   /* pattern-study tile (Work, 19 Sep 2026): one ground behind every
      framed crop */
@@ -7892,7 +7896,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   max-width: 28ch;
 }
 
-/* ─── Case study: the Southleft article pattern (Elleta, 20 Sep 2026)
+/* ─── Case study: the article pattern (Elleta, 20 Sep 2026)
    Approved mock: _private/specs/case-study/case-study-drift-mock-v4.html.
    Three components: CaseSection (the alternating split), ExampleFrame
    (the quiet frame round a visual) and LinkedPhrase (a phrase that
@@ -8081,18 +8085,16 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   outline: 3px solid transparent;
   outline-offset: 3px;
   border-radius: var(--radius-md);
-  transition: outline-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out),
-    opacity var(--dur-fast) var(--ease-out);
+  transition: outline-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
 }
 
+/* HIGHLIGHT, NEVER FADE (Elleta, 20 Sep 2026): the target gains the
+   ring and the soft fill. Nothing else moves, dims or hides. */
 .case-frame__body [data-t].is-lit {
   outline-color: var(--color-accent-ink);
+  background-color: var(--iris-soft);
   box-shadow: 0 0 0 8px var(--iris-soft);
-}
-
-/* the rest of the frame fades back, so the eye lands on the one part */
-.case-frame__body.is-focused [data-t]:not(.is-lit) {
-  opacity: 0.35;
 }
 
 /* the close: what changed, and what it taught */

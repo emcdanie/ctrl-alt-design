@@ -10,7 +10,7 @@ import type { CaseStudy } from "@/lib/content";
  * From Drift to Foundation, on the case-study article pattern (Elleta,
  * 20 Sep 2026; approved mock case-study-drift-mock-v4.html).
  *
- * Southleft's shape: four sections, one idea each, a short text column
+ * The article shape: four sections, one idea each, a short text column
  * beside one framed example, alternating sides, then the close. Every
  * claim is her existing approved copy from
  * content/case-studies/design-system-transformation.ts, shortened to
