@@ -27,6 +27,7 @@ export default function SectionHeader({
   accent,
   after,
   as = "h2",
+  kicker,
   layout = "stacked",
   id,
   lead,
@@ -37,6 +38,10 @@ export default function SectionHeader({
   accent?: ReactNode;
   after?: ReactNode;
   as?: "h1" | "h2";
+  /** the page label above an h1: code role, sentence case, muted
+   *  (Elleta, 20 Sep 2026, Part G). A page two levels deep passes its
+   *  Breadcrumb here instead, which replaces the label. */
+  kicker?: ReactNode;
   /** "stacked" (default): heading above the lead at every width;
    *  "split": heading beside the lead from 1024px */
   layout?: "split" | "stacked";
@@ -51,6 +56,7 @@ export default function SectionHeader({
 }) {
   const text = (
     <>
+      {kicker ? <p className="text-code l-header__kicker">{kicker}</p> : null}
       <Heading
         tier={as === "h1" ? "page" : "section"}
         as={as}

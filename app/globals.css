@@ -3740,68 +3740,6 @@ textarea:focus-visible {
 
 
 /* Eyebrow — mono, same treatment as home sections */
-/* Breadcrumb (Elleta, 21 Jul): "← Work / <Case name>". The link keeps
-   the backlink recipe; the current name is inert, same tier, ink-soft
-   so the link still reads as the interactive part. */
-.cs-shell__crumbs {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  min-width: 0;
-  /* never wider than its column: a long case title ellipsises instead
-     of pushing the page sideways at 320px (reflow, WCAG 1.4.10) */
-  max-width: 100%;
-}
-
-.cs-shell__crumb-sep {
-  color: var(--color-ink-muted);
-  margin-bottom: var(--spacing-4);
-}
-
-.cs-shell__crumb {
-  font-family: var(--font-code);
-  font-size: var(--text-meta);
-  font-weight: 500;
-  color: var(--color-ink-soft);
-  margin-bottom: var(--spacing-4);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cs-shell__backlink {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  min-height: var(--spacing-touch-target);
-  font-family: var(--font-code);
-  font-size: var(--text-meta);
-  font-weight: 500;
-  text-decoration: none;
-  color: var(--color-ink-muted);
-  margin-bottom: var(--spacing-4);
-}
-
-.cs-shell__backlink:hover,
-.cs-shell__backlink:focus-visible {
-  color: var(--color-accent-ink);
-}
-
-/* the right-column copy only shows when the left panel is hidden.
-   The WHOLE mobile breadcrumb nav leaves the tree at desktop (a11y,
-   21 Jul): two nav[aria-label="Breadcrumb"] landmarks failed
-   axe landmark-unique, and the crumb spans leaked visually. */
-.cs-shell__backlink--mobile {
-  margin-bottom: var(--spacing-2);
-}
-
-@media (min-width: 1080px) {
-  .cs-shell__crumbs--mobile {
-    display: none;
-  }
-}
-
-
 /* §8: the case title device wrapper */
 
 
@@ -3828,7 +3766,15 @@ textarea:focus-visible {
 }
 
 .cs2-eyebrow {
-  margin: 0;
+  /* the same page label as every other h1 (Part G): code role, sentence
+     case, muted. It used to be a caps meta line. */
+  margin: 0 0 var(--section-label-gap);
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--color-ink-muted);
 }
 
 /* Title */
@@ -7916,9 +7862,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    (the quiet frame round a visual) and LinkedPhrase (a phrase that
    points at a part of it). ─────────────────────────────────────── */
 
-/* the hero: kicker, thesis, the facts row, one NDA line */
+/* the hero: breadcrumb, thesis, the facts row, one NDA line. It must
+   still clear the fixed nav the way .cs2-head does: setting padding-block
+   here overrode that, and the breadcrumb ended up behind the bar. */
 .case-hero {
-  padding-block: var(--section-pad-y) var(--space-stack-lg);
+  padding-block: calc(var(--header-height) + var(--section-pad-y)) var(--space-stack-lg);
 }
 
 .case-hero__kicker {
@@ -8560,4 +8508,51 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
     height: 1rem;
     transform: translate(-25%, -25%);
   }
+}
+
+/* the page label above an h1 (Part G): code role, sentence case, muted,
+   .75rem of air under it. Same line on every page, and on a page two
+   levels deep the breadcrumb takes its place. */
+.l-header__kicker {
+  margin: 0 0 var(--section-label-gap);
+  color: var(--color-ink-muted);
+}
+
+/* Breadcrumb (Part G): two levels deep only, in the page label's place */
+.crumbs {
+  margin-bottom: var(--section-label-gap);
+}
+
+.crumbs__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: var(--color-ink-muted);
+}
+
+.crumbs__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-width: 0;
+}
+
+.crumbs__sep {
+  color: var(--color-ink-muted);
+}
+
+.crumbs__link {
+  color: var(--color-ink-muted);
+  text-decoration: none;
+}
+
+.crumbs__link:hover,
+.crumbs__link:focus-visible {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

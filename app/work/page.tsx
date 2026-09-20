@@ -22,10 +22,10 @@ export default function WorkPage() {
       <OverlayNav />
 
       <Section id="work-hero" labelledBy="work-hero-title">
-        <p className={`text-code ${styles.heroNote}`}>{"// the work"}</p>
         <SectionHeader
           as="h1"
           id="work-hero-title"
+          kicker="Work"
           heading="Work that holds its"
           accent="shape"
           after="."

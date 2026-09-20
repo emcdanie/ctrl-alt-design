@@ -37,7 +37,7 @@ export default function DesignSystemPage() {
       <div className="layout-container">
         <CaseShellV2
           slug={SLUG}
-          eyebrow="An explorable explanation"
+          eyebrow="System"
           title="BELLA, the system behind this site"
           subhead="A design system is only as useful to an AI as it is readable by a machine. This is that argument, demonstrated on the system running the page you are reading."
           readingMinutes={6}

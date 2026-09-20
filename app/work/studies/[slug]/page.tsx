@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import OverlayNav from "@/components/OverlayNav";
+import Breadcrumb from "@/components/Breadcrumb";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { BRIEF_CREDIT, STUDIES, findStudy, type StudyBrief, type StudySection } from "@/content/studies";
@@ -44,13 +44,26 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
       <OverlayNav />
 
       <Section id="study-hero" labelledBy="study-hero-title">
-        <p className={`text-code ${styles.heroNote}`}>
-          <Link href="/work#studies" className={styles.back}>
-            ← Pattern studies
-          </Link>{" "}
-          · {study.year} / {study.kind}
-        </p>
-        <SectionHeader as="h1" id="study-hero-title" heading={study.title} lead={`${study.project}. ${study.line}`}>
+        {/* three levels deep, so a breadcrumb rather than a page label
+            (Part G): Work / Pattern studies / this brief */}
+        <Breadcrumb
+          trail={[
+            { label: "Work", href: "/work" },
+            { label: "Pattern studies", href: "/work#studies" },
+            { label: study.title },
+          ]}
+        />
+        <SectionHeader
+          as="h1"
+          id="study-hero-title"
+          heading={study.title}
+          lead={`${study.project}. ${study.line}`}
+        >
+          {/* Part G: the breadcrumb is the label, so the year and kind
+              sit under the lead rather than stacking above the h1 */}
+          <p className="text-code">
+            {study.year} / {study.kind}
+          </p>
           {study.demo ? (
             <p>
               <a href={study.demo} className={styles.more}>

@@ -37,6 +37,7 @@ export default function QuickPage() {
         <SectionHeader
           as="h1"
           id="quick-title"
+          kicker="The quick version"
           heading="Four minutes"
           lead={
             <>

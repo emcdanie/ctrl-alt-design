@@ -143,7 +143,14 @@ export default async function CaseStudyPage({
           subhead={cs.summary ?? cs.description}
           readingMinutes={readingMinutes}
           tags={cs.tags}
-          facts={article ? article.facts ?? facts(cs) : undefined}
+          facts={
+            article
+              ? [
+                  { label: "Case", value: `${sentenceCase(cs.category)} · ${fullYears(cs.year)}` },
+                  ...(article.facts ?? facts(cs)),
+                ]
+              : undefined
+          }
           nda={article ? nda : undefined}
         >
           <Composition cs={cs} />

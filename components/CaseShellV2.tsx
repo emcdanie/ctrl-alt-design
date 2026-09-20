@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import Breadcrumb from "@/components/Breadcrumb";
 import Heading from "@/components/ui/Heading";
 import { Tag } from "@/components/ui/Tag";
 import CaseEndReveal from "@/components/CaseEndReveal";
@@ -118,23 +118,17 @@ export default function CaseShellV2({
 
       {/* in-flow head: no sticky side title (brief item 5) */}
       <header className={facts ? "cs2-head case-hero" : "cs2-head"}>
-        {crumbs && (
-          <nav aria-label="Breadcrumb" className="cs-shell__crumbs">
-            <Link href="/work" className="cs-shell__backlink">
-              <span aria-hidden="true">←</span> Work
-            </Link>
-            {caseItem?.title && (
-              <>
-                <span aria-hidden="true" className="cs-shell__crumb-sep">/</span>
-                <span className="cs-shell__crumb" aria-current="page">{caseItem.title}</span>
-              </>
-            )}
-          </nav>
+        {/* two levels deep, so the breadcrumb REPLACES the page label
+            (Part G): one nav > ol, with BreadcrumbList JSON-LD */}
+        {crumbs && caseItem?.title && (
+          <Breadcrumb trail={[{ label: "Work", href: "/work" }, { label: caseItem.title }]} />
         )}
         {/* metadata in sentence case; the title is ink, no colour and no
             accent word (critique pass, 18 Sep 2026) */}
         {facts ? null : <p className="text-meta cs2-eyebrow">{eyebrow}</p>}
-        {facts ? <p className="text-code case-hero__kicker">{eyebrow}</p> : null}
+        {/* Part G: on a page two levels deep the breadcrumb IS the label,
+            so the case's own line does not stack under it. Its topic and
+            years move into the facts row below, where nothing is lost. */}
         <Heading tier="page" as="h1" accent={facts ? accent : undefined} after={facts ? after : undefined}>
           {title}
         </Heading>

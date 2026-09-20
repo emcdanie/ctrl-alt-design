@@ -16,7 +16,7 @@ export default function ContactPage() {
     <main id="main-content">
       <OverlayNav />
       <Section id="contact" labelledBy="contact-title">
-        <SectionHeader as="h1" id="contact-title" heading="Let&apos;s work" accent="together" after="." />
+        <SectionHeader as="h1" id="contact-title" kicker="Contact" heading="Let&apos;s work" accent="together" after="." />
       </Section>
       <ContactSection />
     </main>

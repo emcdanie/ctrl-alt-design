@@ -51,6 +51,7 @@ export default function LearningPage() {
         <SectionHeader
           as="h1"
           id="learning-hero-title"
+          kicker="Learning"
           heading="Where I learned it, where I"
           accent={<Term id="used" />}
           after=" it."

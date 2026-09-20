@@ -25,6 +25,7 @@ export default function AboutPage() {
         <SectionHeader
           as="h1"
           id="about-hero-title"
+          kicker="About"
           heading="Fluent in design, code and"
           accent={<Term id="bella" />}
           after="."

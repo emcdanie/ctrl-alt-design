@@ -214,11 +214,6 @@
 
 /* ── /work (Elleta, 19 Sep 2026, pattern-studies direction) ── */
 
-/* the code-comment note above an h1 */
-.heroNote {
-  margin: 0 0 var(--section-lead-gap);
-}
-
 .back {
   color: inherit;
   text-underline-offset: 3px;
