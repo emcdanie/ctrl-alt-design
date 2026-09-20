@@ -3,10 +3,26 @@
  * SectionHeader; this file only shapes what sits inside them. */
 
 /* Teams row: the About logo component in its row layout, with its
-   "Worked with" label, between a hairline above and below. */
+   "Worked with" label, between a hairline above and below.
+
+   ONE line, never two (Elleta, 20 Sep 2026, fix pass 2): the band draws
+   its own two full-bleed rules, so the grid's ruled cells were painting
+   a second, container-inset line directly under the marks at every
+   width. The ruled cell belongs to About's "Good company" grid, where
+   the rules separate rows of a table. Here the band is the frame, so
+   the cells inside it carry no rules at all. */
 .logos {
   border-block: 1px solid var(--color-semantic-border);
   padding-block: var(--spacing-4);
+}
+
+.logos :global(.logo-grid__cell) {
+  border-bottom: none;
+  border-right: none;
+}
+
+.logos :global(.logo-grid) {
+  row-gap: var(--spacing-4);
 }
 
 /* door cards: kicker, title, line, go. The kicker is the quiet code
@@ -25,13 +41,6 @@
 
 .title {
   margin-bottom: var(--spacing-2);
-}
-
-/* two wider doors from 768px */
-@media (min-width: 768px) {
-  .doors {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 /* pull quote: the big iris opening mark, then the line */

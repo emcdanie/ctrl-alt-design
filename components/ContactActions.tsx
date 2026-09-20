@@ -34,10 +34,10 @@ export default function ContactActions({ layout = "row" }: { layout?: "row" | "s
         <Icon name={copied ? "Check" : "Copy"} size="sm" />
         {copied ? "Email copied" : "Copy email"}
       </Button>
-      <a className="btn-key" href={social.linkedin} target="_blank" rel="noopener noreferrer" data-component="Button">
+      <Button href={social.linkedin}>
         LinkedIn <Icon name="OpenNewWindow" size="sm" />
         <span className="sr-only"> (opens in a new tab)</span>
-      </a>
+      </Button>
       <span role="status" aria-live="polite" className="sr-only">
         {copied ? "Email address copied to the clipboard" : ""}
       </span>

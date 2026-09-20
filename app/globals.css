@@ -797,11 +797,14 @@ main .l-section:first-of-type {
 }
 
 .layout-grid-3 {
-  /* BELLA v0.1 Rule 5: auto-fill so trailing rows fill left-aligned.
-   * Class name kept for backwards compat — behaviour is now responsive
-   * not strictly 3-column. Override --card-min per-grid as needed. */
+  /* Class name kept for backwards compat: behaviour is responsive, not
+   * strictly 3-column. Override --card-min per-grid as needed.
+   * auto-FIT (Elleta, 20 Sep 2026, fix pass 2): a row with fewer cards
+   * than tracks stretches to the container instead of leaving an empty
+   * column. Multi-row grids are unaffected, a track is only collapsed
+   * when it is empty in every row. */
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--card-min, 280px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--card-min, 18rem), 100%), 1fr));
   gap: var(--grid-gap);
   align-items: stretch;
 }
@@ -2693,9 +2696,10 @@ li {
 
 /* ─── §7 Control taxonomy — flat controls (keycap = actions only) ──── */
 
-/* §8: ONE connected control. Segments touch; hairline dividers between
-   inactive neighbours, no gaps, active segment reads as a filled section
-   of the same object. */
+/* §8: ONE connected control. Segments touch, no gaps, and the ONLY mark
+   inside the control is the selected segment's fill (Elleta, 20 Sep 2026,
+   fix pass 2): unselected segments carry no border and no divider, so
+   two-option and three-option controls read the same. */
 .seg-control {
   display: inline-flex;
   list-style: none;
@@ -2729,7 +2733,6 @@ li {
   color: var(--color-ink-muted);
 }
 
-/* hairline divider between segments (markup is ul > li > button) */
 /* reflow (WCAG 1.4.10): at narrow widths the control never exceeds its
    column; the buttons share the width with tighter padding */
 @media (max-width: 400px) {
@@ -2748,16 +2751,6 @@ li {
     justify-content: center;
     padding: 0 var(--spacing-2);
   }
-}
-
-.seg-control li + li button {
-  box-shadow: -1px 0 0 0 var(--color-border-medium);
-}
-
-/* no divider against the selected fill: the seam dies on the trailing
-   side too (the selected button's own ring already replaces its side) */
-.seg-control li:has(button[aria-current="true"]) + li button {
-  box-shadow: none;
 }
 
 .seg-control button[aria-current="true"] {
@@ -3029,6 +3022,43 @@ li {
   background: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
 }
 
+/* THE LABEL ROLL (BELLA #44, ported 20 Sep 2026). The window clips to
+   one line; the label and its aria-hidden copy stack in it. The button's
+   own gap moves onto the two rolling spans, so an icon still sits beside
+   its text. */
+.btn-key__roll {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.btn-key__label,
+.btn-key__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  transition: transform var(--component-button-motion-roll-duration) var(--component-button-motion-roll-easing);
+}
+
+.btn-key__copy {
+  position: absolute;
+  inset: 0;
+  transform: translateY(100%);
+  /* selecting or copying the label yields it once */
+  user-select: none;
+}
+
+.btn-key:hover:not(:disabled) .btn-key__label,
+.btn-key:focus-visible .btn-key__label {
+  transform: translateY(-100%);
+}
+
+.btn-key:hover:not(:disabled) .btn-key__copy,
+.btn-key:focus-visible .btn-key__copy {
+  transform: translateY(0);
+}
+
+
 .btn-key:active {
   background: color-mix(in srgb, var(--color-accent-ink) 16%, transparent);
 }
@@ -3066,8 +3096,21 @@ li {
 
 @media (prefers-reduced-motion: reduce) {
   .btn-key,
-  .btn-key--primary {
+  .btn-key--primary,
+  .btn-key__label,
+  .btn-key__copy {
     transition: none;
+  }
+
+  /* no roll: the label stays put and the copy stays out of the window */
+  .btn-key:hover:not(:disabled) .btn-key__label,
+  .btn-key:focus-visible .btn-key__label {
+    transform: none;
+  }
+
+  .btn-key:hover:not(:disabled) .btn-key__copy,
+  .btn-key:focus-visible .btn-key__copy {
+    transform: translateY(100%);
   }
 }
 
@@ -3158,9 +3201,13 @@ section[id],
    geometry). */
 .home-work-row {
   display: grid;
-  /* min(): below a 300px column the track shrinks to the container,
-     so a 320 viewport (256px content) never scrolls sideways */
-  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  /* auto-FIT, not auto-fill (Elleta, 20 Sep 2026, fix pass 2): three
+     cards in a container that fits four tracks left an empty fourth
+     column at 1280. auto-fit collapses the empty tracks so the cards
+     stretch to the container at every width. min(): below an 18rem
+     column the track shrinks to the container, so a 320 viewport
+     (256px content) never scrolls sideways */
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
   gap: var(--grid-gap);
   align-items: stretch;
   margin-top: var(--spacing-4);
@@ -4616,7 +4663,7 @@ textarea:focus-visible {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
   gap: var(--spacing-4);
   align-items: start;
 }
@@ -4979,7 +5026,7 @@ textarea:focus-visible {
   display: grid;
   grid-auto-rows: 1fr;
   align-items: stretch;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
   gap: var(--spacing-4);
 }
 

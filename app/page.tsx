@@ -60,7 +60,7 @@ export default function Home() {
           after="."
           lead="This site runs on BELLA, my own design system. Pick a door."
         />
-        <div className={`home-work-row reveal-group ${styles.doors}`}>
+        <div className="home-work-row reveal-group">
           {DOORS.map((d) => (
             <Card key={d.kind} href={d.href}>
               <span className={`text-code ${styles.kicker}`}>{d.kind}</span>

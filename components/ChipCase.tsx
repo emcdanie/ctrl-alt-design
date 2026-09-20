@@ -8,6 +8,7 @@ import { useState } from "react";
 import CaseBeat from "@/components/CaseBeat";
 import CasePlaceholder from "@/components/CasePlaceholder";
 import ScaledFrame from "@/components/ScaledFrame";
+import { Button } from "@/components/ui/Button";
 import { P, Scannable } from "@/components/CaseProse";
 import type { CaseStudy } from "@/lib/content";
 
@@ -212,15 +213,13 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
         control={
           /* §5 SECONDARY: flat iris outline (the .btn-key base), never the
              primary keycap. Opens the real CHIP build in a new tab. */
-          <a
-            className="btn-key"
+          <Button
             href="/demos/chip-bridge/index.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Open the live CHIP prototype (opens in a new tab)"
+            newTab
+            ariaLabel="Open the live CHIP prototype (opens in a new tab)"
           >
             Open the live CHIP prototype
-          </a>
+          </Button>
         }
         visual={bridgeProto ? <BridgeEmbed proto={bridgeProto} /> : <CasePlaceholder />}
       />

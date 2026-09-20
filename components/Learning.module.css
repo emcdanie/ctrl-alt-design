@@ -998,16 +998,10 @@
   gap: var(--grid-gap, var(--spacing-4));
 }
 
-@media (min-width: 720px) {
-  .events {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .events {
-    grid-template-columns: repeat(3, 1fr);
-  }
+/* auto-fit, so a row with fewer events than tracks still stretches to
+   the container (Elleta, 20 Sep 2026, fix pass 2) */
+.events {
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
 }
 
 .events > li {
