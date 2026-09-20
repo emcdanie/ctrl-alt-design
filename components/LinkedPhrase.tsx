@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useCaseSection } from "@/components/CaseSection";
+import { useSpotlight } from "@/components/Spotlight";
 
 /* LinkedPhrase (Elleta, 20 Sep 2026, case-study rebuild): a phrase in
    the text that points at a part of the example beside it. It extends
@@ -17,8 +17,8 @@ import { useCaseSection } from "@/components/CaseSection";
    pins it (aria-pressed), a second click or Escape clears it. The
    example still reads with nothing lit. */
 export default function LinkedPhrase({ k, children }: { k: string; children: ReactNode }) {
-  const ctx = useCaseSection();
-  /* outside a CaseSection there is nothing to point at, so it is text */
+  const ctx = useSpotlight();
+  /* outside a Spotlight there is nothing to point at, so it is text */
   if (!ctx) return <>{children}</>;
   const n = ctx.numberOf(k);
   const on = ctx.active === k;

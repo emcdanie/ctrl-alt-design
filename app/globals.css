@@ -1469,12 +1469,20 @@ li {
   }
 }
 
+/* A CHEVRON ONLY APPEARS ON SOMETHING YOU CAN CLICK (Elleta, 20 Sep
+   2026, Part I item 3: "these icons feel clickable to me"). These list
+   items are plain text, so the marker is a quiet round dot, aligned to
+   the first line's x-height, not a "›" that reads as a link. */
 .section-list li::before {
-  content: "\203A" / ""; /* decorative: empty alt, never read aloud */
+  content: "";
   position: absolute;
   left: 2px;
-  font-weight: 700;
-  color: var(--color-ink-muted); /* neutral: purple is for accent words, links, focus rings and the primary button */
+  top: calc(var(--leading-body) * 0.5em - 3px);
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-ink);
+  opacity: 0.6;
 }
 
 /* Equal-card grid (Work): 1 column, 2 at 700px, 3 at 1024px. Cells
@@ -8594,4 +8602,108 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   color: var(--color-accent-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+/* ─── Scan and read (Elleta, 20 Sep 2026, Part J item 2) ─────────────
+   A text-heavy section read two ways: the scan points on the left, the
+   paragraphs on the right, pointing at either one lighting the other.
+   Nothing is ever dimmed. Under 860px it stacks: points, then prose. */
+.scan-read {
+  display: grid;
+  gap: var(--space-stack-md);
+  margin-top: var(--space-stack-md);
+}
+
+@media (min-width: 860px) {
+  .scan-read {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--layout-gutter);
+    align-items: start;
+  }
+}
+
+.scan {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--spacing-1);
+}
+
+.scan__point {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-3);
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: none;
+  font: inherit;
+  font-size: var(--typography-font-size-base);
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.scan__dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-ink);
+  opacity: 0.6;
+  transform: translateY(-0.2em);
+  transition: opacity var(--dur-fast) var(--ease-out), scale var(--dur-fast) var(--ease-out);
+}
+
+.scan__point.is-on {
+  background: var(--iris-soft);
+}
+
+.scan__point.is-on .scan__dot {
+  opacity: 1;
+  scale: 1.3;
+}
+
+.scan__point:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.scan__point b,
+.scan__point strong {
+  font-weight: 600;
+}
+
+/* the phrase is a TARGET, not a control, so no underline at rest: the
+   dotted underline belongs to Term, which opens a definition */
+.scan__phrase {
+  padding: 0 0.12em;
+  margin: 0 -0.12em;
+  border-radius: var(--radius-sm);
+  transition: background var(--dur-base) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.scan__phrase.is-lit {
+  background: var(--iris-soft);
+  color: var(--color-semantic-accent-hover);
+}
+
+.scan-read__prose > p {
+  max-width: 36rem;
+  margin: 0 0 var(--section-lead-gap);
+}
+
+.scan-read__prose > p:last-child {
+  margin-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scan__point,
+  .scan__dot,
+  .scan__phrase {
+    transition: none;
+  }
 }

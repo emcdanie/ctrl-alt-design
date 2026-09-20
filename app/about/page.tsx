@@ -4,6 +4,8 @@ import OverlayNav from "@/components/OverlayNav";
 import { Icon } from "@/components/ui/Icon";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
+import Spotlight from "@/components/Spotlight";
+import { ScanPhrase, ScanPoint, ScanRead } from "@/components/ScanRead";
 import SectionList from "@/components/ui/SectionList";
 import Card from "@/components/ui/Card";
 import { TESTIMONIALS } from "@/content/testimonials";
@@ -167,36 +169,65 @@ export default function AboutPage() {
           accent={<Term id="ai" />}
           after=" shows up."
           lead="AI is part of how I work, not a trick in the deck."
-        >
-          <p>
-            I use Claude to synthesise research and audits, draft docs, and check my own work. I&apos;m
-            happy to try a new tool the week it lands: <span className="nowrap"><Term id="figma-mcp" />,</span>{" "}<span className="nowrap"><Term id="code-connect" />,</span>{" "}
-            <span className="nowrap"><Term id="storybook" />.</span> But the tools
-            are the easy part. A system only sticks when the people using it trust it, so <strong>I work with
-            teams, not against them</strong>: pairing with engineers, bringing designers into the decisions, and
-            building the relationships that shape how a company actually uses its system.
-          </p>
-          <p>
-            At Mango I was <strong>the first to bring AI into their design-system work</strong>: I used it to audit and
-            ship faster while updating the system, then built the tools so the team could carry on
-            without me. My most recent example is the site you&apos;re on. It runs on <span className="nowrap"><Term id="bella-system" />,</span> my own
-            design system: tokens, components in Storybook, and docs an AI can read.
-          </p>
-          <p>
-            <Link href="/design-system" className="text-action">
-              See how this site is built →
-            </Link>
-          </p>
-          <SectionList
-            items={[
-              "Claude for synthesis and audits",
-              "Figma MCP and Code Connect",
-              "Storybook as the source of truth",
-              "Pairing with engineers",
-              "Decisions written down, together",
-            ]}
-          />
-        </SectionHeader>
+        />
+        {/* scan on the left, read on the right (Part J item 2). The
+            paragraph text is hers, unchanged; the point wording was
+            matched to the words the paragraphs already use, so a point
+            and its phrase light each other. */}
+        <Spotlight keys={["claude", "tools", "teams", "mango", "bella"]}>
+          <ScanRead
+            points={
+              <>
+                <ScanPoint k="claude">
+                  <b>Claude</b> for research and audits
+                </ScanPoint>
+                <ScanPoint k="tools">
+                  <b>Figma MCP</b>, Code Connect, Storybook
+                </ScanPoint>
+                <ScanPoint k="teams">
+                  Working <b>with teams</b>, not against them
+                </ScanPoint>
+                <ScanPoint k="mango">
+                  <b>First to bring AI</b> into a design-system team
+                </ScanPoint>
+                <ScanPoint k="bella">
+                  This site runs on <b>BELLA</b>
+                </ScanPoint>
+              </>
+            }
+          >
+            <p>
+              <ScanPhrase k="claude">I use Claude to synthesise research and audits</ScanPhrase>, draft
+              docs, and check my own work. I&apos;m happy to try a new tool the week it lands:{" "}
+              <ScanPhrase k="tools">
+                <span className="nowrap"><Term id="figma-mcp" />,</span>{" "}<span className="nowrap"><Term id="code-connect" />,</span>{" "}
+                <span className="nowrap"><Term id="storybook" /></span>
+              </ScanPhrase>
+              .
+            </p>
+            <p>
+              But the tools are the easy part. A system only sticks when the people using it trust
+              it, so <ScanPhrase k="teams">I work with teams, not against them</ScanPhrase>: pairing
+              with engineers, bringing designers into the decisions, and building the relationships
+              that shape how a company actually uses its system.
+            </p>
+            <p>
+              At Mango I was{" "}
+              <ScanPhrase k="mango">the first to bring AI into their design-system work</ScanPhrase>:
+              I used it to audit and ship faster while updating the system, then built the tools so
+              the team could carry on without me. My most recent example is the site you&apos;re on.{" "}
+              <ScanPhrase k="bella">
+                It runs on <span className="nowrap"><Term id="bella-system" /></span>
+              </ScanPhrase>
+              , my own design system: tokens, components in Storybook, and docs an AI can read.
+            </p>
+            <p>
+              <Link href="/design-system" className="text-action">
+                See how this site is built <span aria-hidden="true">→</span>
+              </Link>
+            </p>
+          </ScanRead>
+        </Spotlight>
       </Section>
 
       <Section id="house-rules" label="House rules">
