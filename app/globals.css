@@ -8331,3 +8331,47 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: calc(0px - var(--ring-focus-width));
 }
+
+/* ─── Prose pages (Elleta, 20 Sep 2026, Part E) ─────────────────────
+   Privacy, Accessibility and the 404 are reading pages: a section is a
+   heading and paragraphs, nothing else. The layout Section does not cap
+   prose (its consumers are card grids and figures), so a prose page
+   asks for the body measure explicitly. One class, not a per-page
+   override: that is what Part E is removing. */
+.l-section--prose :is(p, li, dd) {
+  max-width: var(--measure-body);
+}
+
+.l-section--prose > .container > :is(p, ul, ol, dl) + :is(p, ul, ol, dl, .todo-note) {
+  margin-top: var(--section-lead-gap);
+}
+
+/* /quick: the two notes that sit beside or under a block (Part E) */
+.quick-proof-note {
+  margin: var(--space-stack-sm) 0 0;
+  color: var(--color-ink-muted);
+}
+
+.quick-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-4);
+  margin: 0;
+}
+
+.quick-cta__note {
+  color: var(--color-ink-muted);
+}
+
+/* Inline links in a section's own prose (CLAUDE.md §4: body links are
+   iris AND underlined). The layout Section's consumers used to reach
+   for .text-action per link; on a reading section it is the default. */
+.l-header__lead a:not([class]),
+.l-header__body a:not([class]),
+.l-section--prose p a:not([class]),
+.l-section--prose li a:not([class]) {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

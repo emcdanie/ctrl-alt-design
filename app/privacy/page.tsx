@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import OverlayNav from "@/components/OverlayNav";
-import Section, { SectionList } from "@/components/Section";
+import Section from "@/components/layout/Section";
+import SectionHeader from "@/components/layout/SectionHeader";
 import TodoNote from "@/components/TodoNote";
 import FooterEmail from "@/components/FooterEmail";
 
@@ -12,23 +13,26 @@ export default function PrivacyPage() {
   return (
     <main id="main-content" className="page-shell min-h-screen text-[var(--color-ink-soft)]">
       <OverlayNav />
-      <Section
-        variant="hero"
-        id="privacy"
-        title="Privacy"
-        lede="No ads, no analytics, no tracking cookies. The only personal data this site handles is what you choose to send me."
-      >
+      <Section prose id="privacy" labelledBy="privacy-title">
+        <SectionHeader
+          as="h1"
+          id="privacy-title"
+          heading="Privacy"
+          lead="No ads, no analytics, no tracking cookies. The only personal data this site handles is what you choose to send me."
+        />
         <TodoNote>Last updated: the date of publishing.</TodoNote>
       </Section>
 
-      <Section id="who-i-am" title="Who I am">
+      <Section prose id="who-i-am" labelledBy="who-i-am-title">
+        <SectionHeader id="who-i-am-title" heading="Who I am" />
         <p>
           Elleta McDaniel, freelance design systems designer based near Barcelona, Spain. I&apos;m responsible for
           the personal data described here. Contact: <FooterEmail className="text-action" />
         </p>
       </Section>
 
-      <Section id="what-i-collect" title="What I collect and why">
+      <Section prose id="what-i-collect" labelledBy="what-i-collect-title">
+        <SectionHeader id="what-i-collect-title" heading="What I collect and why" />
         <p>
           <strong>1. The contact form.</strong> Your name, email address and message. They&apos;re emailed to me
           through Resend, an email delivery service, so I can reply to you. I use them only for that conversation:
@@ -59,10 +63,13 @@ export default function PrivacyPage() {
         </p>
       </Section>
 
-      <Section id="who-else" title="Who else handles data">
-        <SectionList
-          items={["Vercel Inc. (hosting, USA)", "Resend (email delivery, USA)", "Anthropic PBC (Find my fit, USA)"]}
-        />
+      <Section prose id="who-else" labelledBy="who-else-title">
+        <SectionHeader id="who-else-title" heading="Who else handles data" />
+        <ul className="section-list">
+          {["Vercel Inc. (hosting, USA)", "Resend (email delivery, USA)", "Anthropic PBC (Find my fit, USA)"].map((i) => (
+            <li key={i}>{i}</li>
+          ))}
+        </ul>
         <p>
           Transfers to the USA rely on the EU-US Data Privacy Framework or the European Commission&apos;s standard
           contractual clauses in each provider&apos;s data processing terms.
@@ -70,7 +77,8 @@ export default function PrivacyPage() {
         <TodoNote>Confirm each provider&apos;s DPA covers this.</TodoNote>
       </Section>
 
-      <Section id="your-rights" title="Your rights">
+      <Section prose id="your-rights" labelledBy="your-rights-title">
+        <SectionHeader id="your-rights-title" heading="Your rights" />
         <p>
           You can ask me to see, correct or delete the data I hold about you, to restrict or object to how I use it,
           or to receive a copy. Email me (<FooterEmail className="text-action" />) and I&apos;ll reply within one
@@ -79,7 +87,8 @@ export default function PrivacyPage() {
         </p>
       </Section>
 
-      <Section id="changes" title="Changes">
+      <Section prose id="changes" labelledBy="changes-title">
+        <SectionHeader id="changes-title" heading="Changes" />
         <p>If this page changes, the date at the top changes too.</p>
       </Section>
     </main>

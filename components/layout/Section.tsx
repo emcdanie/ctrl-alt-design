@@ -12,6 +12,7 @@ export default function Section({
   id,
   label,
   labelledBy,
+  prose = false,
   children,
 }: {
   id?: string;
@@ -19,11 +20,14 @@ export default function Section({
   label?: string;
   /** no label (the page opening): the id of the heading that names it */
   labelledBy?: string;
+  /** a reading section (Privacy, Accessibility, 404): its paragraphs and
+   *  lists keep the body measure instead of running the full container */
+  prose?: boolean;
   children: ReactNode;
 }) {
   const labelId = label && id ? `${id}-label` : undefined;
   return (
-    <section id={id} className="l-section" aria-labelledby={labelId ?? labelledBy}>
+    <section id={id} className={prose ? "l-section l-section--prose" : "l-section"} aria-labelledby={labelId ?? labelledBy}>
       <Container>
         {label ? (
           <p id={labelId} className="l-section__label">

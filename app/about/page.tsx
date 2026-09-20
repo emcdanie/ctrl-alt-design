@@ -4,7 +4,7 @@ import OverlayNav from "@/components/OverlayNav";
 import { Icon } from "@/components/ui/Icon";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { SectionList } from "@/components/Section";
+import SectionList from "@/components/ui/SectionList";
 import Card from "@/components/ui/Card";
 import { TESTIMONIALS } from "@/content/testimonials";
 import WorkedWith from "@/components/WorkedWith";

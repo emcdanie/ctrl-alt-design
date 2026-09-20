@@ -65,8 +65,11 @@ override the constitution.
   until every page migrates. Never full-bleed text.
 - **One section rhythm:** `.section` pads by `--space-section` (clamp 64 to 112px); `.section--ruled`
   draws the hairline. Gaps inside a section use `--space-stack-sm/md/lg`. No inline/ad-hoc paddings.
-- **Every page is Nav, then Sections, then Footer**, built from `Container` + the layout `Section`
-  (pages not yet moved still use the older `components/Section.tsx`, hero variant included).
+- **Every page is Nav, then Sections, then Footer**, built from `Container` + the layout `Section`.
+  (Elleta, 2026-09-20, Part E: /quick, /contact, the 404, /privacy and /accessibility moved over and the
+  older section component was deleted; its `SectionList` lives at `components/ui/SectionList.tsx`.
+  `prose` on a layout `Section` keeps its paragraphs on the body measure, for reading pages.
+  Still allowlisted as pending: /design-system, /design-system/inspector, and the case-study route.)
 - **One `:root` for tokens**, at the top of `app/globals.css`. New tokens go there, never mid-file.
 - Cards fill the grid evenly (equal heights, consistent gaps).
 
