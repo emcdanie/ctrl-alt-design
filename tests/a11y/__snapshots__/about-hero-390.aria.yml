@@ -5,9 +5,6 @@
     - text: ""
     - button "Bella"
     - text: ""
-  - figure "Bella speaks dog, I speak design. We agreed on five words. That's a design system.":
-    - 'img "Illustration: Elleta walking her dogs Bella and Obi on leads."'
-    - text: ""
   - paragraph:
     - text: I build design systems that give designers and developers a
     - strong: shared language
