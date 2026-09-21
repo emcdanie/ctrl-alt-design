@@ -163,27 +163,33 @@ export default function CaseShellV2({
             </div>
           )}
           {facts ? null : <p className="text-meta">{readingMinutes} min read</p>}
-          {facts && (
-            <dl className="case-hero__facts">
-              {facts.map((f) => (
-                <div key={f.label}>
-                  <dt>{f.label}</dt>
-                  <dd>{f.value}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
-          {nda && (
-            <p role="note" className="case-hero__nda">
-              {nda}
-            </p>
-          )}
           {linkOut && (
             <a href={linkOut.href} target="_blank" rel="noopener noreferrer" className="demo-link">
               <span aria-hidden="true">↗</span> {linkOut.label}
             </a>
           )}
         </SectionHeader>
+        {/* the facts row spans the container, one row like the mocks; in
+            the 42rem lead column it wrapped to two (audit, 21 Sep) */}
+        {(facts || nda) && (
+          <div className="case-hero__meta">
+            {facts && (
+              <dl className="case-hero__facts">
+                {facts.map((f) => (
+                  <div key={f.label}>
+                    <dt>{f.label}</dt>
+                    <dd>{f.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+            {nda && (
+              <p role="note" className="case-hero__nda">
+                {nda}
+              </p>
+            )}
+          </div>
+        )}
       </Section>
 
       {children}

@@ -1202,6 +1202,12 @@ li {
 /* page / section / case sizes come from the .text-display-1/2 utilities
    the Heading primitive adds; the page title keeps display-1's leading
    and measure (this rule sits after .display-heading) */
+/* the iris word never splits across lines ("code-first" broke at its
+   hyphen, audit 21 Sep) */
+.display-heading .accent {
+  white-space: nowrap;
+}
+
 .display-heading--page {
   line-height: 1.05;
   max-inline-size: var(--measure-title);
@@ -2145,6 +2151,15 @@ li {
 .site-footer__lead {
   margin: var(--space-stack-sm) 0 0;
   color: var(--color-navy-ink);
+}
+
+/* phones: the photo and the heading share a row, then the lead starts
+   under both at full width; wrapping round the disc gave it an odd
+   indent at 390 (Elleta, 21 Sep) */
+@media (max-width: 699.98px) {
+  .site-footer__lead {
+    clear: left;
+  }
 }
 
 .site-footer__lines {
@@ -7781,6 +7796,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    Three components: CaseSection (the alternating split), ExampleFrame
    (the quiet frame round a visual) and LinkedPhrase (a phrase that
    points at a part of it). ─────────────────────────────────────── */
+
+/* the hero meta follows the header directly: the facts row carries its
+   own rule and gap, not the section's content gap */
+.l-section .l-header + .case-hero__meta {
+  margin-top: 0;
+}
 
 .case-hero__facts {
   display: grid;
