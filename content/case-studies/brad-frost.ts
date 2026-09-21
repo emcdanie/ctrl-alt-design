@@ -10,7 +10,7 @@ const study: CaseStudy = {
   /* Statement headline (Elleta, 18 Jul, verbatim): the case THESIS is
    * the display headline; the case NAME (Code First) lives in the
    * library, sidebar, and breadcrumb surfaces. CSS sets it all-caps. */
-  title: "Working code-first changes what you pay attention to.",
+  title: "Working code-first changes what you notice.",
   category: "DESIGN SYSTEMS",
   year: "2024-2025",
   scope: "Component Architecture, Token Alignment, Figma-Storybook Integration",

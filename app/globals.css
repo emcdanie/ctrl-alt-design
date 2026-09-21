@@ -229,7 +229,11 @@ body {
   --typography-font-size-4xl: 2.5rem;
   --typography-font-size-5xl: 3.5rem;
   --measure-heading: 22em;
-  --measure-display-1: 18em;
+  /* the page-title measure: ONE token on every h1, so a title can never
+     run full width (Elleta via Cowork, 21 Sep). The mocks wrap titles at
+     ~550px in three lines; in Unique caps 20ch is 940px, so the measure
+     is em, like every heading measure (DESIGN.md) */
+  --measure-title: 8.5em;
   --measure-lead: 42rem;
   --measure-body: 65ch;
 
@@ -760,7 +764,7 @@ main .l-section:first-of-type {
 .text-display-1 {
   font-size: var(--text-display-1);
   line-height: 1.05;
-  max-width: var(--measure-display-1);
+  max-inline-size: var(--measure-title);
 }
 .text-display-2 { font-size: var(--text-display-2); }
 .text-display-3 { font-size: var(--text-display-3); }
@@ -1186,7 +1190,7 @@ li {
    and measure (this rule sits after .display-heading) */
 .display-heading--page {
   line-height: 1.05;
-  max-width: var(--measure-display-1);
+  max-inline-size: var(--measure-title);
 }
 
 /* sub-heading (h3 level): Geist 700, sentence case, never Unique */
@@ -5327,18 +5331,14 @@ textarea:focus-visible {
   align-items: flex-start;
   gap: var(--spacing-4);
   padding-top: calc(var(--header-height) + var(--spacing-12));
-  /* the head no longer caps at a body measure: the display title
-     extends across the full content column and wraps at its edge; only
-     the reading-tier subhead keeps a measure below */
+  /* the title caps at --measure-title like every h1; the reading-tier
+     subhead keeps its own measure below */
 }
 
+/* the case title keeps the page measure like every other h1 (21 Sep);
+   balance evens its three lines */
 .cs2-head .display-heading {
-  max-width: none;
-  /* pretty, not balance: balance packed the title into narrow, evenly
-     split lines; pretty lets it fill the content column and wrap at the
-     edge, only tidying the last line (From Drift + CHIP now extend, Code
-     First stays one line) */
-  text-wrap: pretty;
+  text-wrap: balance;
 }
 
 .cs2-subhead {

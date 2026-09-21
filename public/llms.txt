@@ -7,9 +7,9 @@ system (BELLA): tokens, one control taxonomy, and a governance gate.
 Positioning term: AI-enabled (never "AI-augmented" or "AI-assisted").
 
 ## Case studies
-- /case-studies/chip : AI builds whatever your system already is. I built CHIP to see it first.
-- /case-studies/brad-frost : Working code-first changes what you pay attention to. What Building Brad Frost's Component System in Reverse Taught Me About Design
-- /case-studies/design-system-transformation : The system is the set of agreements, not the component library. Rebuilding Design System Thinking in a Scaling SaaS Product
+- /case-studies/chip : AI builds what your system is. CHIP sees it first.
+- /case-studies/brad-frost : Working code-first changes what you notice. What Building Brad Frost's Component System in Reverse Taught Me About Design
+- /case-studies/design-system-transformation : The system is the agreements, not the library. Rebuilding Design System Thinking in a Scaling SaaS Product
 
 ## The system
 - /design-system : BELLA inspecting itself, live token values, control taxonomy, the gate.

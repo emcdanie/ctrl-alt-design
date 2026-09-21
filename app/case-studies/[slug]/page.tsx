@@ -33,20 +33,20 @@ const ARTICLE: Record<
   }
 > = {
   "design-system-transformation": {
-    title: "The system is the set of",
+    title: "The system is the",
     accent: "agreements",
-    after: ", not the component library.",
+    after: ", not the library.",
     note: "Under NDA. The client appears as an industry only. Artifacts are recreated and the data is illustrative.",
   },
   "brad-frost": {
     title: "Working",
     accent: "code-first",
-    after: " changes what you pay attention to.",
+    after: " changes what you notice.",
     note: "Brad Frost's own system. Examples are recreated and simplified.",
   },
   chip: {
-    title: "AI builds whatever your system already is. I built CHIP to",
-    accent: "see it first",
+    title: "AI builds what your system is. CHIP",
+    accent: "sees it first",
     after: ".",
     note: "A personal project on my own systems. Data is illustrative; nothing comes from a client.",
     /* CHIP keeps a metadata list rather than the metrics block, and its

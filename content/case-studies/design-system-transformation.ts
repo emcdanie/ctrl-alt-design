@@ -13,7 +13,7 @@ const study: CaseStudy = {
    * the display headline; the case NAME (From Drift to Foundation)
    * lives in the library, sidebar, and breadcrumb surfaces. CSS sets
    * it all-caps. */
-  title: "The system is the set of agreements, not the component library.",
+  title: "The system is the agreements, not the library.",
   category: "DESIGN SYSTEMS",
   year: "2024-2026",
   scope: "Design Systems, Token Architecture, Component Library, Governance",

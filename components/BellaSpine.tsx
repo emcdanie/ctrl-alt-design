@@ -171,7 +171,7 @@ export default function BellaSpine({
         index="05"
         id="ds-close"
         kicker="The claim"
-        headline="A design system is AI-ready when a machine can build with it correctly."
+        headline="AI-ready means a machine builds with it correctly."
         keyline="Every claim on this page is a link you can open."
         /* NOT wide, and NOT flipped. Beat 04 flips, so this one cannot
            without putting two beats on the same side, which audit:visual

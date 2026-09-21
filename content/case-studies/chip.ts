@@ -18,7 +18,7 @@ import type { CaseStudy } from "@/lib/content";
  * No disclosure needed (own work, no client). */
 const study: CaseStudy = {
   slug: "chip",
-  title: "AI builds whatever your system already is. I built CHIP to see it first.",
+  title: "AI builds what your system is. CHIP sees it first.",
   category: "DESIGN LAB",
   year: "2026",
   scope: "Agent governance, AI-readiness inspection, design-system health metrics, building in public",
@@ -49,7 +49,7 @@ const study: CaseStudy = {
   ],
   images: [],
   tags: ["AI-enabled Design", "Design System Governance", "Building in Public", "Claude Code"],
-  description: "AI builds whatever your system already is. I built CHIP to see it first.",
+  description: "AI builds what your system is. CHIP sees it first.",
 
   blocks: [
     {

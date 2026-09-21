@@ -165,7 +165,7 @@ export default function AboutPage() {
 
       <Section id="new-tricks" label="New tricks">
         <SectionHeader
-          heading="Design systems that don't fall apart when"
+          heading="Design systems that hold up when"
           accent={<Term id="ai" />}
           after=" shows up."
           lead="AI is part of how I work, not a trick in the deck."
