@@ -7901,9 +7901,20 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   container-type: inline-size;
   display: grid;
   gap: var(--spacing-4);
-  max-height: 26rem;
+  /* 34rem, up from the mock's 26: Drift 05's five-step chain clipped its
+     last row with no sign it scrolled (Part P). A section still fits one
+     screen, which audit:visual holds. */
+  max-height: 34rem;
   overflow: auto;
   padding: var(--spacing-5);
+}
+
+/* stacked (below 900px) the section is two screens by design, so the
+   example shows whole rather than scrolling inside its frame */
+@media (max-width: 899.98px) {
+  .case-frame__body {
+    max-height: none;
+  }
 }
 
 .case-frame__caption {

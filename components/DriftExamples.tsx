@@ -67,12 +67,14 @@ const AUDIT: ChainRow[] = [
   { k: "empty", label: "Empty state", items: ["No results", "Nothing found. Clear filters?"] },
 ];
 
-/* recreated; the developer is a role, never a name (NDA) */
+/* recreated; people are roles, never names (NDA). Rows carry the keys
+   of the phrases that point at them; Proposed and Shared are context. */
 const ROLLOUT: ChainRow[] = [
-  { k: "pair", label: "Pair", items: ["1 designer", "+ 1 developer"], link: "then" },
-  { k: "train", label: "Train", items: ["Figma basics", "Token naming", "Reading a spec"], link: "then" },
-  { k: "build", label: "Build", items: ["color/action/default", "=", "var(--action)"], link: "then" },
-  { k: "pitch", label: "Pitch", items: ["Design + engineering, one ask", "→ a funded team"] },
+  { k: "proposed", label: "Proposed", items: ["\u201cnot necessary\u201d"], link: "then" },
+  { k: "built", label: "Built", items: ["for myself", "across 6 teams"], link: "then" },
+  { k: "dev build", label: "Paired", items: ["1 designer + 1 developer", "Figma library → tokens"], link: "then" },
+  { k: "cto", label: "Showed", items: ["the CTO", "→ a funded team"], link: "then" },
+  { k: "shared", label: "Shared", items: ["every product team", "approved changes only"] },
 ];
 
 function Chain({ rows }: { rows: ChainRow[] }) {

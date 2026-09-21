@@ -21,7 +21,7 @@ import type { CaseStudy } from "@/lib/content";
  * labels, the reading-progress chrome around the beats, and the second
  * prototype button. The four beats keep their order and their meaning:
  * 01 the drift, 02 the audit, 03 tokens, 04 governance, and 05 how it
- * got built (mock v4, plus one line from her 21 Sep note).
+ * got built (Elleta's corrected copy, Part P, 21 Sep).
  */
 export default function DriftV2({ cs }: { cs: CaseStudy }) {
   const lessons = cs.blocks?.find((b) => b.kind === "lessons") as { text: string } | undefined;
@@ -149,33 +149,36 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
       <CaseSection
         index="05"
         kicker="How it got built"
-        heading="It started with one developer."
-        phrases={["pair", "train", "build", "pitch"]}
+        heading="Nobody asked for a system."
+        phrases={["built", "dev", "build", "cto"]}
         figure={
           <ExampleFrame
-            path="rollout / how it started"
-            caption="How the system went from one pair to a funded team. Recreated."
+            path="rollout / how it happened"
+            caption="How the system went from one designer's side project to every team's. Recreated."
           >
             <RolloutChain />
           </ExampleFrame>
         }
       >
         <p>
-          Before there was a team, there was{" "}
-          <LinkedPhrase k="pair">a front-end developer who was curious about design</LinkedPhrase>. I
-          asked to work with him directly.{" "}
-          <LinkedPhrase k="train">I taught him Figma and walked him through the tokens</LinkedPhrase>,
-          and <LinkedPhrase k="build">we built the first components together</LinkedPhrase>, with the
-          Figma variable and the code token side by side.
+          When I proposed one, the answer was that it wasn&apos;t necessary. Docs and changelogs
+          weren&apos;t either. I was working across six teams on the new platform while fixing the
+          legacy one, so <LinkedPhrase k="built">I built it for myself</LinkedPhrase>.
         </p>
         <p>
-          Then <LinkedPhrase k="pitch">I pitched it to management with him as my champion</LinkedPhrase>:
-          a designer and an engineer asking for it together.
+          I had <LinkedPhrase k="dev">one developer from the start</LinkedPhrase>. He was already
+          looking after the Figma library, so the system was a natural next step for him. I taught
+          him the tokens and <LinkedPhrase k="build">we built the first components together</LinkedPhrase>.
+        </p>
+        <p>
+          Around November I showed the work and was asked to{" "}
+          <LinkedPhrase k="cto">present it to the CTO</LinkedPhrase>. After that I had a team.
         </p>
         <p>
           <strong>
-            He grew his design skills. I got a partner I could work with closely and train, and the
-            system had a voice in engineering from day one.
+            Not everyone was sold. It got easier with senior developers who wanted to build it with
+            me. Later the system moved to every product team, and only approved changes reached
+            code.
           </strong>
         </p>
       </CaseSection>
@@ -199,6 +202,10 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
             <p className="case-close__learned">
               What I learned: {lessons?.text?.split(/(?<=\.)\s/)[0] ??
                 "inconsistency is rarely the root problem, it is a symptom of missing structure and undocumented decisions."}
+            </p>
+            <p className="case-close__learned">
+              Next time: build the team first, name every component together, and get senior
+              developers on board before building.
             </p>
           </div>
         </Container>
