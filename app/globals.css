@@ -7908,6 +7908,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 /* the linked phrase: the Term affordance, a dotted iris underline */
 .linked-phrase {
+  /* inline, so a long phrase wraps with its sentence; each line keeps
+     its underline and padding */
+  display: inline;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
   margin: 0;
   padding: 0 0.1em;
   border: 0;
