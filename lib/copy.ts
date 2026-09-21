@@ -3,4 +3,4 @@
 export const POSITIONING = "AI-enabled design systems";
 export const POSITIONING_SHORT = "AI-enabled";
 /* the home H1's second sentence, after POSITIONING */
-export const HOME_TAGLINE = "Built to stop the drift.";
+export const HOME_TAGLINE = "Built to stop drift.";
