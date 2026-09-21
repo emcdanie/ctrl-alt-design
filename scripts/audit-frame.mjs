@@ -1,6 +1,6 @@
-/* The frame gate (Elleta, 21 Sep 2026: "do what Southleft does and make a
- * gate"). audit:layout reads the code; this reads the PIXELS. Every route,
- * one case of each slug, at 1440, 1024 and 390, against the few frame
+/* The frame gate (Elleta, 21 Sep 2026: "make a gate", after a reference
+ * site's published frame). audit:layout reads the code; this reads the
+ * PIXELS. Every route, one case of each slug, at 1440, 1024 and 390, against the few frame
  * tokens every page shares:
  *
  * 1. One content edge: the h1 and the first section's content start at the

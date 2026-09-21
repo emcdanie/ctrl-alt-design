@@ -38,8 +38,8 @@ export function readTokens(): { primitive: DtcgGroup; semantic: DtcgGroup; compo
   return { primitive, semantic, component };
 }
 
-/* The frame tokens every page shares (O.10, 21 Sep 2026, after
- * southleft.com/tokens.json): the numbers audit:frame holds every route
+/* The frame tokens every page shares (O.10, 21 Sep 2026, published like
+ * a reference site's tokens.json): the numbers audit:frame holds every route
  * to, read from the same stylesheets, so the published frame is the
  * enforced one. */
 const FRAME = {
