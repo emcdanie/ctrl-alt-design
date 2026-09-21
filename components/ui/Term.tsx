@@ -22,16 +22,6 @@ import { GLOSSARY, type TermId } from "@/content/glossary";
 const BRACKETS = 8;
 const GAP = BRACKETS + 28;
 const EDGE = 12; // popover never comes closer than this to the viewport edge, px
-const OPENED = "term-opened"; // sessionStorage: a Term has been opened this visit
-const OPEN_EVENT = "term:open";
-
-/* the first open of any Term retires the help line (TermHelp) */
-function markOpened() {
-  try {
-    sessionStorage.setItem(OPENED, "1");
-  } catch {}
-  window.dispatchEvent(new Event(OPEN_EVENT));
-}
 
 export default function Term({ id, children }: { id: TermId; children?: ReactNode }) {
   const entry = GLOSSARY[id];
@@ -67,10 +57,6 @@ export default function Term({ id, children }: { id: TermId; children?: ReactNod
       top: below ? b.bottom + GAP : Math.max(EDGE, b.top - GAP - h),
       left: Math.min(Math.max(EDGE, b.left), window.innerWidth - w - EDGE),
     });
-  }, [open]);
-
-  useEffect(() => {
-    if (open) markOpened();
   }, [open]);
 
   // Esc and scroll close it
@@ -163,32 +149,14 @@ export default function Term({ id, children }: { id: TermId; children?: ReactNod
   );
 }
 
-/* The help line above a page's first Terms: "// hover or tap a dotted
-   word ...", in .text-code. It shows until someone opens a Term for the
-   first time this visit (sessionStorage), then stays gone. It needs
-   JavaScript, like the Terms, so it only appears after hydration. The
-   visible line is aria-hidden; screen readers always get the
-   instruction from the sr-only sentence instead. */
+/* The instruction for a page's Terms, for screen readers only. The
+   visible "// hover or tap a dotted word" line left the About hero
+   (O.8, 21 Sep 2026); the dotted underline carries it for sighted
+   readers. */
 export function TermHelp() {
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    let opened = false;
-    try {
-      opened = sessionStorage.getItem(OPENED) === "1";
-    } catch {}
-    setShow(!opened);
-    const hide = () => setShow(false);
-    window.addEventListener(OPEN_EVENT, hide);
-    return () => window.removeEventListener(OPEN_EVENT, hide);
-  }, []);
   return (
-    <>
-      <p className="sr-only">Words with a dotted underline are buttons: focus or press one to hear what it means and when it matters.</p>
-      {show ? (
-        <p className="text-code term-help" aria-hidden="true">
-          {"// hover or tap a dotted word: the cursor shows the tag and a short \"what + when\""}
-        </p>
-      ) : null}
-    </>
+    <p className="sr-only">
+      Words with a dotted underline are buttons: focus or press one to hear what it means and when it matters.
+    </p>
   );
 }

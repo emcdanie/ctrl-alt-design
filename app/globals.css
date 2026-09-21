@@ -2553,12 +2553,6 @@ li {
   }
 }
 
-/* the help line over the first Terms (TermHelp): .text-code, above
-   the heading */
-.term-help {
-  margin: 0 0 var(--space-stack-sm);
-}
-
 /* the popover: navy with cream text on the light theme, reversed on
    dark; fixed under the word (it closes on scroll) */
 .term-tip {
@@ -8304,6 +8298,13 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   text-align: left;
   padding: var(--spacing-2);
   border-bottom: 1px solid var(--border-faint);
+}
+
+/* the first column takes its content width, so "Size · Large" never
+   wraps at 390 (O.8) */
+.cf-table :is(th, td):first-child {
+  width: 1%;
+  white-space: nowrap;
 }
 
 .cf-table th {
