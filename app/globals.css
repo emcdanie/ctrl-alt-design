@@ -631,6 +631,12 @@ main.embed-page .l-section:first-of-type {
   margin: 0;
 }
 
+/* flow-root drops the grid's row-gap: the heading-to-lead gap has to be
+   a margin here, or the lead sits on the h1's descenders */
+.l-header--figure .l-header__side {
+  margin-top: var(--section-lead-gap);
+}
+
 @media (min-width: 768px) {
   .l-header--figure .l-header__figure {
     float: right;
