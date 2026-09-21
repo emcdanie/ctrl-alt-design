@@ -28,6 +28,7 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
 | Panel-scale glass wrappers | `.glass-card` (About, featured testimonial) | radius `--radius-card` like cards; padding `--spacing-8` (panel tier) |
 | Container | content width + side padding | `--layout-max` (78rem = 1248px content) + `--layout-gutter` (clamp 24 to 48px) each side = `--container-max`, via `Container` / `.container` (aliases `.page-container`, `.layout-container`) |
 | Section vertical padding | every section, every route | `--section-pad-y` (clamp 4 to 8rem, Part Q) via layout `Section` (`.l-section`); the first section adds the nav height; hairline via the Section label or `.section--ruled`. The only rhythm token (O.9, 21 Sep 2026) |
+| Dot grid (recorded addition, Part V, 21 Sep 2026) | behind every page opening, once on `main` | `--dot-grid-color` (ink 14% light, cream 10% dark), `--dot-grid-size` (24px), `--dot-grid-height` (min 100vh, 900px); fades out, no motion |
 | Gaps inside a section | stacks | `--space-stack-sm/md/lg` (12 / 24 / 40px) |
 | Type | every page | `.text-display-1/2/3`, `.text-lead`, `.text-body`, `.text-meta`, `.accent` on `--text-*` tokens; measures `--measure-title` (15em, every page h1), `--measure-hero` (13em, the Home hero), `--measure-hero-lead` (34em), `--measure-heading` (22em), `--measure-lead` (42rem), `--measure-body` (65ch) |
 | Grid gap | everywhere | `--grid-gap` = `--spacing-8` (32px) |

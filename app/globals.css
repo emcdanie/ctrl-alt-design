@@ -148,6 +148,12 @@ body {
      Card painted rgb(236,235,231): two card surfaces on one page. The
      site now reads BELLA's token, so there is one source. */
   --surface-card: var(--color-semantic-surface-card);
+  /* the dot grid behind every page opening (Part V, Elleta, 21 Sep
+     2026: a quiet Figma-style frame now the hero art is gone). Recorded
+     addition in DESIGN.md. Faint enough to leave text contrast alone. */
+  --dot-grid-color: rgb(20 20 40 / 0.14);
+  --dot-grid-size: 24px;
+  --dot-grid-height: min(100vh, 900px);
   --border-faint: color-mix(in srgb, var(--color-ink) 10%, transparent);
   --radius-card: 1rem;
   --radius-pill: 999px;
@@ -461,6 +467,7 @@ body {
 
 [data-theme="dark"] {
   /* the dark ground (also set on body below, where the dark inks live) */
+  --dot-grid-color: rgb(255 255 255 / 0.1);
   --color-semantic-background: #110F0D;
   /* surfaces: 4% toward the cream ink, so lighter than the ground */
   --surface-card: var(--color-semantic-surface-card);
@@ -1038,6 +1045,28 @@ li {
 
 .page-shell {
   background-color: var(--color-page);
+}
+
+/* the dot grid (Part V): once, on main, so every route gets the same
+   frame behind its opening. It sits under the content (an isolated
+   stacking context), fades out down the first screen, and never moves. */
+main {
+  position: relative;
+  isolation: isolate;
+}
+
+main::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: var(--dot-grid-height);
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(circle at 1px 1px, var(--dot-grid-color) 1px, transparent 1.5px);
+  background-size: var(--dot-grid-size) var(--dot-grid-size);
+  background-position: center top;
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent);
 }
 
 
