@@ -119,7 +119,7 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
         lead={
           <>
             The same search had to work for flights, stays, trains and cars, each supplier sending
-            different data. Before is the legacy stays search, after is the flights search I shipped.{" "}
+            different data. Before is the legacy flights search, after is the flights search I shipped.{" "}
             <Link href="/case-studies/search-experts" className="trv-link">
               The full story is its own case study.
             </Link>
@@ -131,14 +131,14 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
           path="search / before and after"
           caption={
             <>
-              Legacy stays search and the flights search I shipped. De-branded.{" "}
+              Legacy flights search and the flights search I shipped. De-branded.{" "}
               <a href="/demos/travel/booking-search.html" target="_blank" rel="noopener noreferrer" className="trv-link">
                 Open full screen ↗<span className="sr-only"> (opens in a new tab)</span>
               </a>
             </>
           }
         >
-          <FrameDemo src="/demos/travel/booking-search.html" title="Search, before and after, with four notes" heights={[710, 635, 990, 990]} />
+          <FrameDemo src="/demos/travel/booking-search.html" title="Flights search, before, after and the ticket card, with four notes" heights={[790, 790, 1160, 1160]} />
         </ExampleFrame>
       </Part>
 
@@ -161,7 +161,7 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
             </>
           }
         >
-          <FrameDemo src="/demos/travel/booking-trips.html" title="Trips, before and after, with three notes" heights={[710, 710, 950, 950]} />
+          <FrameDemo src="/demos/travel/booking-trips.html" title="Trips, before and after, with three notes" heights={[420, 420, 660, 775]} />
         </ExampleFrame>
       </Part>
 

@@ -57,7 +57,7 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "booking",
     medium: "case study",
-    cover: "/images/case-studies/travel/booking-search-5.webp",
+    cover: "/images/case-studies/travel/flights-after.webp",
     rank: -1,
     title: "B2B travel platform",
     bubbleLabel: "B2B travel|platform",
