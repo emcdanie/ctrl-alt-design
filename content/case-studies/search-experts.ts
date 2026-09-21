@@ -13,8 +13,8 @@ const study: CaseStudy = {
   timeline: "2024 to 2026",
   images: [],
   tags: ["Product design", "Search", "Prototyping"],
-  description: "Our users booked travel every day. I shipped a results page that kept their search in view and put filters behind one button.",
-  summary: "Our users booked travel every day. They knew the route, the fare and the policy. I shipped a results page that kept their search in view and put filters behind one button. This is that page, and the version I'd build with the time for every micro-interaction.",
+  description: "The people booking used it every day. I shipped a results page that kept their search in view and put filters behind one button.",
+  summary: "The people booking used it every day. They knew the route, the fare and the policy. I shipped a results page that kept their search in view and put filters behind one button. This is that page, and the version I'd build with the time for every micro-interaction.",
 };
 
 export default study;
