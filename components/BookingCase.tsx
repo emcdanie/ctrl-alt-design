@@ -10,8 +10,8 @@ import type { CaseStudy } from "@/lib/content";
  * The travel platform, the umbrella case (Elleta, 21 Sep 2026; approved
  * mock case-study-booking-mock.html). Six sections and the close, the
  * mock's copy as written, with the 21 Sep corrections: the developer line
- * matches Drift 05, and the close's h2 is cut to the 50-character title
- * rule. The before/after screens are working demos in public/demos/travel;
+ * matches Drift 05, and the close's h2 is Elleta's line, fitted to the
+ * 50-character title rule (21 Sep). The before/after screens are working demos in public/demos/travel;
  * everything else is page-native. NDA: industry only, screens de-branded.
  */
 
@@ -254,7 +254,7 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
           <div>
             <p className="text-code case-section__kicker">What changed</p>
             <h2 id="case-close-heading" className="case-section__heading">
-              From a redesign that never shipped to a live one.
+              From redesign that never shipped to one that did.
             </h2>
           </div>
           <div>
