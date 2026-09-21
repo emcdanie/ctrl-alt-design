@@ -2869,7 +2869,8 @@ li {
   cursor: pointer;
   min-height: 38px;
   padding: 0 var(--spacing-4);
-  border-radius: calc(var(--radius-lg) - var(--seg-inset));
+  /* inner corner from the radius set, not derived (O.10 radii) */
+  border-radius: var(--radius-md);
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 600;
@@ -5128,9 +5129,9 @@ textarea:focus-visible {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-4);
-  padding: var(--spacing-8);
+  padding: var(--spacing-6);
   border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-card);
   background: var(--color-card);
   overflow: hidden;
 }
@@ -5192,7 +5193,7 @@ textarea:focus-visible {
      saturated accent. At 2px in full accent, over the old bloom, the
      ring read as a second glow rather than an annotation. */
   border: 1px dashed var(--color-semantic-accent-border);
-  border-radius: calc(var(--btn-key-radius) + var(--spacing-2));
+  border-radius: var(--radius-card);
   pointer-events: none;
 }
 
@@ -6610,7 +6611,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   text-decoration: none;
   background: var(--color-card);
   border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-card);
   padding: var(--spacing-3) var(--spacing-4);
   box-shadow: var(--shadow-md);
   transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
@@ -6718,7 +6719,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-collapse: separate;
   border-spacing: 0;
   border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--color-card);
 }
@@ -6999,10 +7000,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .ds-stage {
   background: var(--color-card);
   border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-card);
   /* DEFECT 1: ONE restrained elevation, no bloom */
-  box-shadow: var(--shadow-sm);
-  padding: var(--spacing-4);
+  padding: var(--spacing-6);
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -7153,7 +7153,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .ds-stage__code {
   margin: auto 0 0;
   padding: var(--spacing-3) var(--spacing-4);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   border: 1px solid var(--color-border-soft);
   background: var(--color-semantic-background);
   font-family: var(--font-mono);
@@ -7179,7 +7179,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .ds-stage__sample {
   border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   padding: var(--spacing-4);
   background: var(--color-semantic-background);
 }
@@ -7366,7 +7366,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
      one that has to keep a readable measure. */
   .bmm-axis {
     display: grid;
-    grid-template-columns: minmax(0, 10rem) minmax(0, 6rem) minmax(0, 3rem) minmax(0, 1fr);
+    /* the stage track fits its widest pill: at 6rem Growing and
+       Teenage ran 7 to 11px past it (O.7, 21 Sep) */
+    grid-template-columns: minmax(0, 10rem) max-content minmax(0, 3rem) minmax(0, 1fr);
     align-items: center;
     column-gap: var(--spacing-4);
     row-gap: 0;
@@ -7463,9 +7465,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   gap: var(--spacing-3);
   background: var(--color-card);
   border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-sm);
-  padding: var(--spacing-5);
+  border-radius: var(--radius-card);
+  padding: var(--spacing-6);
   min-width: 0;
 }
 
@@ -7478,19 +7479,19 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   background: var(--color-semantic-background);
   padding: var(--spacing-6);
 }
 
-.agentdemo__art { width: 100%; max-width: 18rem; border-radius: var(--radius-lg); overflow: hidden; }
+.agentdemo__art { width: 100%; max-width: 18rem; border-radius: var(--radius-card); overflow: hidden; }
 .agentdemo__art-body { padding: var(--spacing-4); }
 .agentdemo__art-h { margin: 0 0 var(--spacing-1); font-weight: 700; }
 .agentdemo__art-p { margin: 0 0 var(--spacing-3); }
 .agentdemo__art-cta { margin: 0; text-align: center; border-radius: var(--radius-md); }
 
 /* the GROUNDED artifact: real tokens, policed like any other surface */
-.agentdemo__art--good { background: var(--color-card); border: 1px solid var(--color-border-medium); box-shadow: var(--shadow-sm); }
+.agentdemo__art--good { background: var(--color-card); border: 1px solid var(--color-border-medium); }
 .agentdemo__art--good .agentdemo__art-top { display: block; height: var(--spacing-16); background: linear-gradient(135deg, var(--hub-hi), var(--hub-lo)); }
 .agentdemo__art--good .agentdemo__art-h { color: var(--color-ink); font-size: var(--typography-font-size-lg); }
 .agentdemo__art--good .agentdemo__art-p { color: var(--color-ink-soft); font-size: var(--typography-font-size-base); }
@@ -7626,9 +7627,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
-  padding: var(--spacing-5);
+  padding: var(--spacing-6);
   border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-card);
   background: var(--color-card);
 }
 

@@ -21,13 +21,11 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
 
 | Frame | Rule | Token |
 | --- | --- | --- |
-| Card corner radius | ONE value everywhere | `--radius-2xl` (20px) |
-| Card padding | all card bodies | `--spacing-6` (24px) |
-| Card border | one per context, reused | glass edge: `1px solid var(--color-semantic-border-glass-edge)` + top `--color-semantic-border-glass-top`; opaque: `1px solid var(--color-semantic-border-subtle)` |
-| Card shadow, resting | one tier | `--shadow-card-default` |
-| Card shadow, raised/hover | one tier | `--shadow-card-elevated` |
+| Content card | ONE recipe everywhere (O.7, 21 Sep 2026) | radius `--radius-card` (16px), padding `--spacing-6` (24px), `1px` line border, NO shadow |
+| Shadows | only on things that float | popovers, menus, the next-case card; never a resting content card |
+| Radii | from the set only | `--radius-sm` 4 (marks, swatches), `--radius-md` 8 (insets inside a card), `--radius-lg` 12 (BELLA controls), `--radius-card` 16, `--radius-pill`. A deliberate exception wears `data-frame-exempt="<reason>"` and is listed by audit:frame |
 | Featured/marketing panel | section-scale color block, NOT a card | radius `--radius-3xl` (24px), padding `--spacing-8` (32px), shadow `--shadow-soft` (recorded exception: `.feature-panel` only) |
-| Panel-scale glass wrappers | `.glass-card` (About, featured testimonial) | radius `--radius-2xl` like cards; padding `--spacing-8` (panel tier) |
+| Panel-scale glass wrappers | `.glass-card` (About, featured testimonial) | radius `--radius-card` like cards; padding `--spacing-8` (panel tier) |
 | Container | content width + side padding | `--layout-max` (78rem = 1248px content) + `--layout-gutter` (clamp 24 to 48px) each side = `--container-max`, via `Container` / `.container` (aliases `.page-container`, `.layout-container`) |
 | Section vertical padding | every section, every route | `--section-pad-y` (3.2rem) via layout `Section` (`.l-section`); the first section adds the nav height; hairline via the Section label or `.section--ruled`. The only rhythm token (O.9, 21 Sep 2026) |
 | Gaps inside a section | stacks | `--space-stack-sm/md/lg` (12 / 24 / 40px) |
@@ -42,11 +40,11 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
    page-specific font size (missing size: add a token). Unique heading widths use
    `--measure-heading` (em), never `ch`. Headings balance, paragraphs pretty. Every page is
    Nav, then Sections, then Footer, built from `.container` + `Section`.
-1. Cards share ONE radius: `--radius-2xl`. No 16 / 22 / 24px card corners.
+1. Content cards share ONE radius: `--radius-card` (16px). Max two card
+   signatures per route: the content card and ExampleFrame (audit:frame).
 2. Card body padding is `--spacing-6` on every side, every breakpoint.
-3. One border + shadow tier per context. Interactive cards rest on
-   `--shadow-card-default` and hover/raise to `--shadow-card-elevated`.
-   Do not mix in `--shadow-hover`, ad-hoc rgba shadows, or per-card tiers.
+3. A content card has a 1px line border and no shadow. Shadows belong to
+   things that float (popovers, menus, the next-case card).
 4. Sections use the layout `Section` (`.l-section` + `Container`); content sits in
    the Container. No per-section custom vertical padding. The case shell's sections
    (CaseSection, CaseBeat, the close) are `.l-section`s with their grid inside the

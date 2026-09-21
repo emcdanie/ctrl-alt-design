@@ -44,7 +44,7 @@
   position: relative;
   overflow-x: auto;
   border: 1px solid var(--color-semantic-border-subtle);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-card);
   background: var(--color-card);
 }
 
@@ -453,7 +453,7 @@
   width: 125%;
   max-width: none;
   height: auto;
-  border-radius: calc(var(--radius-sm) * 1.5) 0 0 0;
+  border-radius: var(--radius-sm) 0 0 0;
   box-shadow: var(--shadow-soft);
   transition: transform var(--dur-base) var(--ease-out);
 }
