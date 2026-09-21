@@ -162,8 +162,9 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
       >
         <p>
           When I proposed one, the answer was that it wasn&apos;t necessary. Docs and changelogs
-          weren&apos;t either. I was working across six teams on the new platform while fixing the
-          legacy one, so <LinkedPhrase k="built">I built it for myself</LinkedPhrase>.
+          weren&apos;t either. I was the only designer, working with every squad, one per product,
+          plus admin and invoicing, on the new platform while fixing the legacy one, so{" "}
+          <LinkedPhrase k="built">I built it for myself</LinkedPhrase>.
         </p>
         <p>
           I had <LinkedPhrase k="dev">one developer from the start</LinkedPhrase>. He was already
