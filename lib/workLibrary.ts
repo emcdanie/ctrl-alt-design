@@ -82,12 +82,12 @@ export const WORK_ITEMS: WorkItem[] = [
     cover: "/images/case-studies/code-first-specimen.png",
     title: "Code First",
     bubbleLabel: "Code First",
-    kicker: "Design Systems · 2024-25",
+    kicker: "Design Systems · 2025-26",
     ingredients: ["Figma → code parity", "Primitive → semantic tokens", "Component governance"],
     href: "/case-studies/brad-frost",
     type: "Design Systems",
-    year: "2024-2025",
-    yearStart: 2024,
+    year: "2025-2026",
+    yearStart: 2025,
     role: "Design System Collaborator",
     impact: "Figma ⇄ Storybook parity; tokens aligned across the stack",
     skills: ["Design systems", "Design tokens", "Component libraries", "Figma ⇄ code", "Accessibility"],
@@ -209,7 +209,7 @@ export interface WorkCase {
 }
 
 const CASE_COPY: Record<string, Pick<WorkCase, "line" | "years" | "tags">> = {
-  "code-first": { line: "Figma and code as one system, not two.", years: "2024 to 2025", tags: ["Design tokens", "Figma ⇄ code"] },
+  "code-first": { line: "Figma and code as one system, not two.", years: "2025 to 2026", tags: ["Design tokens", "Figma ⇄ code"] },
   drift: { line: "A first design system for a product that had outgrown its UI.", years: "2024 to 2026", tags: ["Design systems", "Governance"] },
   chip: { line: "An agent that watches the system and never moves silently.", years: "2026", tags: ["AI-enabled design", "Governance"] },
 };
