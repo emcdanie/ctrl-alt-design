@@ -153,7 +153,6 @@ body {
      addition in DESIGN.md. Faint enough to leave text contrast alone. */
   --dot-grid-color: rgb(20 20 40 / 0.14);
   --dot-grid-size: 24px;
-  --dot-grid-height: min(100vh, 900px);
   --border-faint: color-mix(in srgb, var(--color-ink) 10%, transparent);
   --radius-card: 1rem;
   --radius-pill: 999px;
@@ -1047,19 +1046,22 @@ li {
   background-color: var(--color-page);
 }
 
-/* the dot grid (Part V): once, on main, so every route gets the same
-   frame behind its opening. It sits under the content (an isolated
-   stacking context), fades out down the first screen, and never moves. */
-main {
+/* the dot grid (Part V): one rule, on every page's opening section, so
+   every route gets the same frame. It lives on the opening, not a fixed
+   900px of main, so it has always faded out by the time the next section
+   starts (audit, 21 Sep: a 900px layer still showed under the next
+   section's words on 102 of 168 route/width/theme runs). It sits under
+   the content (an isolated stacking context), takes no clicks and never
+   moves. Chromeless embeds stay plain. */
+main:not(.embed-page) .l-section:first-of-type {
   position: relative;
   isolation: isolate;
 }
 
-main::before {
+main:not(.embed-page) .l-section:first-of-type::before {
   content: "";
   position: absolute;
-  inset: 0 0 auto 0;
-  height: var(--dot-grid-height);
+  inset: 0;
   z-index: -1;
   pointer-events: none;
   background-image: radial-gradient(circle at 1px 1px, var(--dot-grid-color) 1px, transparent 1.5px);
