@@ -148,6 +148,11 @@ body {
      Card painted rgb(236,235,231): two card surfaces on one page. The
      site now reads BELLA's token, so there is one source. */
   --surface-card: var(--color-semantic-surface-card);
+  /* the dot grid behind every page opening (Part V, Elleta, 21 Sep
+     2026: a quiet Figma-style frame now the hero art is gone). Recorded
+     addition in DESIGN.md. Faint enough to leave text contrast alone. */
+  --dot-grid-color: rgb(20 20 40 / 0.14);
+  --dot-grid-size: 24px;
   --border-faint: color-mix(in srgb, var(--color-ink) 10%, transparent);
   --radius-card: 1rem;
   --radius-pill: 999px;
@@ -461,6 +466,7 @@ body {
 
 [data-theme="dark"] {
   /* the dark ground (also set on body below, where the dark inks live) */
+  --dot-grid-color: rgb(255 255 255 / 0.1);
   --color-semantic-background: #110F0D;
   /* surfaces: 4% toward the cream ink, so lighter than the ground */
   --surface-card: var(--color-semantic-surface-card);
@@ -1038,6 +1044,31 @@ li {
 
 .page-shell {
   background-color: var(--color-page);
+}
+
+/* the dot grid (Part V): one rule, on every page's opening section, so
+   every route gets the same frame. It lives on the opening, not a fixed
+   900px of main, so it has always faded out by the time the next section
+   starts (audit, 21 Sep: a 900px layer still showed under the next
+   section's words on 102 of 168 route/width/theme runs). It sits under
+   the content (an isolated stacking context), takes no clicks and never
+   moves. Chromeless embeds stay plain. */
+main:not(.embed-page) .l-section:first-of-type {
+  position: relative;
+  isolation: isolate;
+}
+
+main:not(.embed-page) .l-section:first-of-type::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(circle at 1px 1px, var(--dot-grid-color) 1px, transparent 1.5px);
+  background-size: var(--dot-grid-size) var(--dot-grid-size);
+  background-position: center top;
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent);
 }
 
 

@@ -4,8 +4,8 @@ import type { CaseStudy } from "@/lib/content";
  * PENDING ELLETA (omitted, the case reads complete without them):
  * a personal line on what was hard in the five days; a line on what
  * CHIP changed in her weekly workflow; an optional building-in-public
- * moment; the Loom URL (chip-evidence-0-bridge-hero.png is reserved
- * as its poster and is deliberately not placed yet).
+ * moment. (No video: the Loom walkthroughs left the site, Part V,
+ * 21 Sep 2026.)
  * ACCESSIBILITY TAG (Pass E task 5a) — RE-OPENED: the backing added in
  * PR #60 was the interactive ChipReadinessMap's keyboard/aria work, but
  * that recreation is now RETIRED (beat 02 shows the real CHIP build).

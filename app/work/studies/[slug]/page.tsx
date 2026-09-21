@@ -11,7 +11,7 @@ import styles from "@/components/WorkLibrary.module.css";
    in a fixed order and drop out when empty; a draft section stays hidden
    until Elleta approves it. Never a placeholder. */
 
-const ORDER: { key: Exclude<keyof StudyBrief, "walkthrough">; heading: string }[] = [
+const ORDER: { key: keyof StudyBrief; heading: string }[] = [
   { key: "brief", heading: "The brief" },
   { key: "constraints", heading: "Constraints" },
   { key: "framing", heading: "How I framed it" },
@@ -85,22 +85,6 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
         </Section>
       ))}
 
-      {page.walkthrough ? (
-        <Section id="study-walkthrough" labelledBy="study-walkthrough-title">
-          <SectionHeader id="study-walkthrough-title" heading="Walkthrough">
-            <div className={styles.video}>
-              <iframe
-                src={page.walkthrough.embed}
-                title={`Walkthrough: ${study.project}`}
-                loading="lazy"
-                allow="fullscreen"
-                allowFullScreen
-              />
-            </div>
-            <p>{page.walkthrough.about}</p>
-          </SectionHeader>
-        </Section>
-      ) : null}
     </main>
   );
 }
