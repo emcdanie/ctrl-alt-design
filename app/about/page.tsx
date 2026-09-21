@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
-import { Icon } from "@/components/ui/Icon";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
 import Spotlight from "@/components/Spotlight";
@@ -36,30 +35,6 @@ export default function AboutPage() {
               I build design systems that give designers and developers a <strong>shared language</strong>: <span className="nowrap"><Term id="tokens" />,</span>{" "}
               components, and the decisions behind them, written down kindly so everyone can use them.
             </>
-          }
-          figure={
-            <figure
-              className="section-figure"
-              style={{ "--header-figure-shape": "url(/images/bella/set/elleta-bella-obi-walk.webp)", "--header-figure-w": "30%" } as React.CSSProperties}
-            >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className="section-figure__art"
-              src="/images/bella/set/elleta-bella-obi-walk.webp"
-              alt="Illustration: Elleta walking her dogs Bella and Obi on leads."
-              width={1216}
-              height={1095}
-            />
-            <figcaption className="text-meta">
-              Bella speaks dog, I speak design. We agreed on five words. That&apos;s a design{" "}
-              <span className="nowrap">
-                system.
-                <span className="caption-heart" aria-hidden="true">
-                  <Icon name="HeartSolid" style={{ width: "0.9em", height: "0.9em" }} />
-                </span>
-              </span>
-            </figcaption>
-            </figure>
           }
         />
       </Section>

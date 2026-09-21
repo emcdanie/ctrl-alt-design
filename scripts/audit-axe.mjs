@@ -46,8 +46,8 @@ for (const theme of ["light", "dark"]) {
     await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 30000 });
     /* sweep like a reader so every .reveal enters the viewport, then
        settle the finite animations (the reveal's fade included) so the
-       contrast checks read the page as it rests. Infinite loops (the
-       marquee) are left running: they never settle. */
+       contrast checks read the page as it rests. Infinite loops are left
+       running: they never settle. */
     const h = await page.evaluate(() => document.body.scrollHeight);
     for (let y = 0; y < h; y += 800) {
       await page.evaluate((v) => scrollTo(0, v), y);

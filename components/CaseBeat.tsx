@@ -1,7 +1,6 @@
 "use client";
 
 import Heading from "@/components/ui/Heading";
-import { PawIcon } from "@/components/PawTrail";
 import Container from "@/components/layout/Container";
 
 /**
@@ -77,12 +76,9 @@ export default function CaseBeat({
     >
       <Container className="beat-grid">
         <div className="beat-text">
-          {/* the section label: paw + caps, no number (the index stays
-              in the props for ordering, not for reading) */}
-          <p className="beat-eyebrow">
-            <PawIcon />
-            {kicker}
-          </p>
+          {/* the section label: the plain mono label every Section wears,
+              no number (the index stays in the props for ordering) */}
+          <p className="beat-eyebrow">{kicker}</p>
           {/* the beat headline is the page's section tier, through
               THE Heading primitive (type-scale fix, 22 Jul 2026);
               .beat-headline keeps only rhythm + scroll anchoring */}

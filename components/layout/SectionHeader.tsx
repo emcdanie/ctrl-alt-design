@@ -90,6 +90,8 @@ export default function SectionHeader({
     <div
       className={[
         "l-header",
+        /* the page opening: the hero lead recipe (Part Q) */
+        as === "h1" ? "l-header--page" : "",
         layout === "split" ? "l-header--split" : "",
         figure ? "l-header--figure" : "",
         /* section heads reveal; the page opening (h1) is there at once */

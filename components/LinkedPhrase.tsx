@@ -4,9 +4,8 @@ import type { ReactNode } from "react";
 import { useSpotlight } from "@/components/Spotlight";
 
 /* LinkedPhrase (Elleta, 20 Sep 2026, case-study rebuild): a phrase in
-   the text that points at a part of the example beside it. It extends
-   the Term pattern, so the affordance is the one the site already
-   teaches: a dotted iris underline means "this does something". The
+   the text that points at a part of the example beside it. A thin solid
+   iris underline marks it (dotted belongs to Term alone, Part Q). The
    small superscript number is in the code role, and it comes from the
    section's `phrases` order, so the numbering cannot drift from the
    prose.

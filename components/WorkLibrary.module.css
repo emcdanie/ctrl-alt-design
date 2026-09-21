@@ -229,7 +229,6 @@
   font-weight: 500;
   color: var(--color-accent-ink);
   text-decoration: underline;
-  text-decoration-style: dotted;
   text-underline-offset: 4px;
 }
 

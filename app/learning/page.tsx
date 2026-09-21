@@ -20,8 +20,8 @@ export const metadata: Metadata = {
    library, the people I follow, and where I showed up. Stats and every
    count read COUNTS in content/learning.ts (one source).
 
-   The hero (Elleta, 20 Sep 2026): text left, bella-curious right and
-   centred on it. Under the h1 sit the lead, the stats line, what is
+   The hero (Elleta, 20 Sep 2026; text only since Part Q, 21 Sep).
+   Under the h1 sit the lead, the stats line, what is
    next, and ONE quiet line of certificates in the code role. The four
    pill badges it replaces looked like buttons, were not, and truncated
    their titles; the line uses each certificate's short name and ends in
@@ -56,21 +56,6 @@ export default function LearningPage() {
           accent={<Term id="used" />}
           after=" it."
           lead="Everything I know has a source and a use. Here's both: the courses, workshops and reading behind my work, and the projects where they paid off."
-          figure={
-            <figure
-              className="section-figure"
-              style={{ "--header-figure-shape": "url(/images/bella/set/bella-reading.webp)", "--header-figure-w": "36%" } as React.CSSProperties}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className="section-figure__art"
-                src="/images/bella/set/bella-reading.webp"
-                alt="Bella the papillon reading an open book."
-                width={960}
-                height={900}
-              />
-            </figure>
-          }
         >
           <p className={`text-code ${styles.stats}`}>
             {STATS.map(([n, label]) => (

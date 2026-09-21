@@ -11,17 +11,15 @@ import styles from "./Hero.module.css";
 const WORDS = POSITIONING.split(" ");
 
 /**
- * Home opening (home rebuild, 19 Sep 2026): status line, the H1, the
- * lead, one primary and one quiet link, and Bella saying hello. On
- * scroll the H1 thins and tightens (the Heading squeeze variant) and
- * Bella drifts up (Hero.module.css); both static where unsupported or
- * when the reader prefers reduced motion.
+ * Home opening (home rebuild, 19 Sep 2026; text only since Part Q,
+ * 21 Sep): status line, the H1, the lead, one primary and one quiet
+ * link. On scroll the H1 thins and tightens (the Heading squeeze
+ * variant), static where unsupported or under reduced motion.
  */
 export default function Hero() {
   return (
     <Section labelledBy="home-hero-title">
       <div className={styles.hero}>
-        <div>
           <p className={`text-code ${styles.status}`}>
             <span className={styles.metaItem}>
               <span className={styles.dot} aria-hidden="true" />
@@ -54,21 +52,6 @@ export default function Hero() {
               Short on time? The 4-minute version
             </Link>
           </div>
-        </div>
-
-        <figure className={styles.art}>
-          <picture>
-            <source srcSet="/images/bella/set/bella-hello.webp" type="image/webp" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/bella/set/bella-hello.svg"
-              alt="Illustration of Bella, a black and white papillon, lifting a paw to say hello."
-              width={800}
-              height={900}
-            />
-          </picture>
-          <figcaption className="text-meta">Bella says hi. Head of quality assurance.</figcaption>
-        </figure>
       </div>
     </Section>
   );

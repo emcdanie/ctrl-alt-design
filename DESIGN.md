@@ -27,9 +27,9 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
 | Featured/marketing panel | section-scale color block, NOT a card | radius `--radius-3xl` (24px), padding `--spacing-8` (32px), shadow `--shadow-soft` (recorded exception: `.feature-panel` only) |
 | Panel-scale glass wrappers | `.glass-card` (About, featured testimonial) | radius `--radius-card` like cards; padding `--spacing-8` (panel tier) |
 | Container | content width + side padding | `--layout-max` (78rem = 1248px content) + `--layout-gutter` (clamp 24 to 48px) each side = `--container-max`, via `Container` / `.container` (aliases `.page-container`, `.layout-container`) |
-| Section vertical padding | every section, every route | `--section-pad-y` (3.2rem) via layout `Section` (`.l-section`); the first section adds the nav height; hairline via the Section label or `.section--ruled`. The only rhythm token (O.9, 21 Sep 2026) |
+| Section vertical padding | every section, every route | `--section-pad-y` (clamp 4 to 8rem, Part Q) via layout `Section` (`.l-section`); the first section adds the nav height; hairline via the Section label or `.section--ruled`. The only rhythm token (O.9, 21 Sep 2026) |
 | Gaps inside a section | stacks | `--space-stack-sm/md/lg` (12 / 24 / 40px) |
-| Type | every page | `.text-display-1/2/3`, `.text-lead`, `.text-body`, `.text-meta`, `.accent` on `--text-*` tokens; measures `--measure-title` (8.5em, every page h1), `--measure-heading` (22em), `--measure-lead` (42rem), `--measure-body` (65ch) |
+| Type | every page | `.text-display-1/2/3`, `.text-lead`, `.text-body`, `.text-meta`, `.accent` on `--text-*` tokens; measures `--measure-title` (15em, every page h1), `--measure-hero` (13em, the Home hero), `--measure-hero-lead` (34em), `--measure-heading` (22em), `--measure-lead` (42rem), `--measure-body` (65ch) |
 | Grid gap | everywhere | `--grid-gap` = `--spacing-8` (32px) |
 | Touch targets | interactive elements | ≥ `--spacing-touch-target` (44px) |
 

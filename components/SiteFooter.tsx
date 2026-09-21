@@ -12,15 +12,12 @@ import { ResumeLink } from "@/components/ResumeModal";
 import { BUILDING } from "@/content/building";
 import { social } from "@/lib/social";
 
-/* Site footer: navy with cream text in both themes. The "Made with"
-   marquee along the top edge; the contact band (photo, "Let's compare
+/* Site footer: navy with cream text in both themes. The contact band (photo, "Let's compare
    notes.", the one Get in touch, Share) beside the link columns, with
    one "building" line under them; then ELLETA in Unique, its
    letters spread across the container with Bella on the last A (one
    accessible name, "Elleta"), and the small print. */
 const version = JSON.parse(readFileSync(join(process.cwd(), "package.json"), "utf8")).version as string;
-
-const MADE_WITH = ["Figma", "Claude Code", "Next.js", "Vercel", "Storybook", "BELLA", "Geist & Unique", "GitHub", "a lot of coffee", "Bella's supervision"];
 
 const external = (href: string, label: string, key: string) => (
   <a key={key} className="site-footer__link" href={href} target="_blank" rel="noopener noreferrer">
@@ -57,24 +54,6 @@ const COLUMNS: { label: string; links: React.ReactNode[] }[] = [
 export default function SiteFooter() {
   return (
     <footer className="site-footer">
-      {/* "Made with": a slow marquee along the footer's top edge, edge to
-          edge of the screen (outside the container); the loop copy is
-          hidden from AT, and reduced motion shows one static, wrapped line */}
-      <div className="made-with" role="region" tabIndex={0} aria-label="Made with">
-        <div className="made-with__track">
-          <ul className="made-with__list">
-            {MADE_WITH.map((m) => (
-              <li key={m}>Made with {m}</li>
-            ))}
-          </ul>
-          <ul className="made-with__list" aria-hidden="true">
-            {MADE_WITH.map((m) => (
-              <li key={m}>Made with {m}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
       <div className="container site-footer__inner">
         {/* contact band: the site's one closing CTA (About's old contact
             card lives here now) */}

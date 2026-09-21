@@ -1,17 +1,9 @@
 /* Home opening (home rebuild, 19 Sep 2026). The Section supplies the
- * padding and the container; this file lays out text left and Bella
- * right from 1024px, stacked below, plus Bella's scroll drift. */
+ * padding and the container; one text column since Part Q (21 Sep):
+ * the hero art and its scroll drift are gone. */
 
 .hero {
   display: grid;
-  gap: var(--spacing-8);
-  align-items: center;
-}
-
-@media (min-width: 1024px) {
-  .hero {
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
-  }
 }
 
 /* status line: dot + availability, then name and place */
@@ -38,15 +30,18 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--case-clarity-text) 18%, transparent);
 }
 
-/* size, weight, tracking, leading and the squeeze come from the
-   Heading primitive (hero tier, squeeze); this keeps the measure */
+/* size, measure, weight, tracking, leading and the squeeze come from
+   the Heading primitive (hero tier, squeeze) */
 .headline {
-  margin: var(--spacing-4) 0 var(--spacing-6);
-  max-width: 15ch;
+  margin: var(--spacing-4) 0 var(--hero-lead-gap);
 }
 
+/* the hero lead recipe, the same as every page opening (Part Q) */
 .lead {
   margin: 0 0 var(--spacing-6);
+  max-width: var(--measure-hero-lead);
+  font-size: var(--text-hero-lead);
+  line-height: 1.55;
 }
 
 .ctas {
@@ -77,47 +72,4 @@
 .quietLink:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 2px;
-}
-
-/* Bella: no frame, no ring */
-.art {
-  justify-self: center;
-  width: min(100%, 340px);
-  margin: 0;
-}
-
-.art img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.art figcaption {
-  margin-top: var(--spacing-2);
-  text-align: center;
-}
-
-@media (max-width: 1023.98px) {
-  .art {
-    width: min(80%, 300px);
-  }
-}
-
-/* Bella drifts up on the same timeline as the H1's squeeze (the
-   Heading primitive's range): static without scroll timelines or when
-   the reader prefers reduced motion. */
-@keyframes drift {
-  to {
-    transform: translateY(-40px) scale(0.94);
-  }
-}
-
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .art {
-      animation: drift linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 85vh;
-    }
-  }
 }

@@ -1,9 +1,8 @@
 import type { ReactNode } from "react";
 import Container from "@/components/layout/Container";
-import { PawIcon } from "@/components/PawTrail";
 
 /* A page section (specs/layout-system): the section padding, then the
-   paw label sitting on the hairline rule, then the children (a
+   plain mono label sitting on the hairline rule (no paw since Part Q), then the children (a
    SectionHeader and whatever follows it), all inside Container. The
    label names the region. The page opening has no label: pass
    `labelledBy` with its h1's id instead. The first section on a page
@@ -31,7 +30,6 @@ export default function Section({
       <Container>
         {label ? (
           <p id={labelId} className="l-section__label">
-            <PawIcon />
             {label}
           </p>
         ) : null}

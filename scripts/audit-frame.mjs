@@ -9,7 +9,7 @@
  *    else). An h1 renders one of their two sizes and is never wider than
  *    its measure. Every h1 and h2 in main is 50 characters or fewer.
  * 3. One section rhythm: every top-level section pads by --section-pad-y
- *    (the first adds the nav height, twice the pad, like every page).
+ *    (the first adds the nav height, like every page).
  * 4. Radii from the set: --radius-sm/md/lg/card or a pill. A deliberate
  *    exception carries data-frame-exempt="<reason>" and is listed below,
  *    never a silent allowlist.
@@ -140,8 +140,8 @@ for (const width of WIDTHS) {
         const c = getComputedStyle(s);
         const top = px(c.paddingTop);
         const bottom = px(c.paddingBottom);
-        const wantTop = i === 0 && !embed ? header + padY * 2 : padY;
-        if (Math.abs(top - wantTop) > 1) F(s, `padding-top ${top}px`, `${i === 0 && !embed ? "nav + 2 × " : ""}--section-pad-y, ${wantTop}px`);
+        const wantTop = i === 0 && !embed ? header + padY : padY;
+        if (Math.abs(top - wantTop) > 1) F(s, `padding-top ${top}px`, `${i === 0 && !embed ? "nav + " : ""}--section-pad-y, ${wantTop}px`);
         if (Math.abs(bottom - padY) > 1) F(s, `padding-bottom ${bottom}px`, `--section-pad-y, ${padY}px`);
       });
 

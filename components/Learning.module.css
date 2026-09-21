@@ -40,9 +40,10 @@
   color: var(--color-ink-muted);
 }
 
-/* unconfirmed: a dotted underline (tap for the title on hover) */
+/* unconfirmed: a quiet solid underline (tap for the title on hover);
+   dotted belongs to Term alone (Part Q) */
 .tbc {
-  text-decoration: underline dotted;
+  text-decoration: underline;
   text-decoration-color: var(--color-ink-muted);
   text-underline-offset: 3px;
 }

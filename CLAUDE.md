@@ -54,7 +54,7 @@ override the constitution.
 ## 2. Layout
 - **Sections use Section + SectionHeader. No custom spacing.** (Elleta, 2026-09-18, layout system,
   `specs/layout-system`.) `components/layout/`: `Container` (content `--layout-max` 78rem plus
-  `--layout-gutter`), `Section.tsx` (section padding, the paw label on the hairline rule), `SectionHeader`
+  `--layout-gutter`), `Section.tsx` (section padding, the plain mono label on the hairline rule; no paw since Part Q, 2026-09-21), `SectionHeader`
   (`layout="stacked"`, the default since 2026-09-20: label, heading, then the lead and body under it,
   left-aligned, the text column capped at 42rem. Elleta: "the body text has moved above the image,
   that was not the idea, put it back under the heading". `layout="split"` puts the lead beside the
@@ -110,7 +110,7 @@ override the constitution.
 - **Type comes from the text utilities** (`.text-display-1/2/3`, `.text-lead`, `.text-body`,
   `.text-meta`, `.accent`). No page-specific font sizes: if a size is missing, add a token.
 - **Never set heading widths in `ch` for Unique** (condensed, so `ch` wraps early): use
-  `--measure-heading` (22em); every page h1 caps at `--measure-title` (8.5em). Headings `text-wrap: balance`, paragraphs `text-wrap: pretty`.
+  `--measure-heading` (22em); every page h1 caps at `--measure-title` (15em), the Home hero at `--measure-hero` (13em) (Part Q, 2026-09-21: heroes are text only, titles bigger and wider, the hero lead on `--text-hero-lead`). Headings `text-wrap: balance`, paragraphs `text-wrap: pretty`.
 - **Numbers in columns are right-aligned and tabular (Elleta, 2026-07-28, readability
   audit).** Any figure that sits in a column beside other figures (a table cell, a grid
   column, a stat row) uses `text-align: right` and `font-variant-numeric: tabular-nums`,
