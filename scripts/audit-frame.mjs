@@ -17,6 +17,8 @@
  *    A card with a shadow floats: it is allowed only on floating things
  *    (the next-case card, popovers, dialogs) and is not counted.
  * 6. Reading measure: no paragraph in main is wider than --measure-body.
+ * 0. No sideways scroll: the page is never wider than the window (Part U:
+ *    four routes overflowed at 390 while every check above passed).
  * 7. The receipt: route, width, element, measured, expected; one line per
  *    route on a pass.
  *
@@ -85,6 +87,15 @@ for (const width of WIDTHS) {
       const pageSize = px(probe({ fontSize: "var(--text-display-1)" }, "fontSize"));
       const displaySize = px(probe({ fontSize: "var(--component-heading-hero-font-size)" }, "fontSize"));
       const out = { fails: [], exempt: [], cards: [], edge: null };
+      /* 0. no sideways scroll, and the element that causes it */
+      const docW = document.documentElement.scrollWidth;
+      if (docW > innerWidth + 1) {
+        const wide = [...document.querySelectorAll("body *")].find((e) => {
+          const r = e.getBoundingClientRect();
+          return r.right > innerWidth + 1 && r.width > 0 && !e.closest("[data-frame-exempt]");
+        });
+        out.fails.push([`the page${wide ? ` (first past the edge: ${wide.tagName.toLowerCase()}.${String(wide.className).split(" ")[0]} "${(wide.textContent || "").trim().slice(0, 24)}")` : ""}`, `scrollWidth ${docW}px`, `at most the window, ${innerWidth}px`]);
+      }
       const F = (el, got, exp) => {
         const name = el.tagName.toLowerCase() + (el.id ? "#" + el.id : "") + (typeof el.className === "string" && el.className ? "." + el.className.trim().split(/\s+/)[0] : "");
         const text = (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 32);

@@ -279,8 +279,10 @@ body {
      hero (the home headline, 19 Sep 2026) about 42-86. Case shares section. */
   /* bigger, wider titles (Part Q, Elleta, 21 Sep: "calmer, more
      confident, grown-up") */
-  --component-heading-hero-font-size: clamp(3.25rem, 1.5rem + 5.6vw, 6.75rem);
-  --component-heading-page-font-size: clamp(3rem, 1.6rem + 4.2vw, 5.25rem);
+  /* the minimums dropped so the longest word fits a 342px phone column
+     (Part U); from about 480px up the sizes are Part Q's */
+  --component-heading-hero-font-size: clamp(2.75rem, 1.5rem + 5.6vw, 6.75rem);
+  --component-heading-page-font-size: clamp(2.5rem, 1.6rem + 4.2vw, 5.25rem);
   --tracking-title: -0.035em;
   --leading-title: 1.02;
   --component-heading-section-font-size: clamp(1.75rem, 1.45rem + 1.3vw, 2.75rem);
@@ -1212,9 +1214,12 @@ li {
    the Heading primitive adds; the page title keeps display-1's leading
    and measure (this rule sits after .display-heading) */
 /* the iris word never splits across lines ("code-first" broke at its
-   hyphen, audit 21 Sep) */
-.display-heading .accent {
-  white-space: nowrap;
+   hyphen, audit 21 Sep), from 600px up. On a phone a whole accent word
+   can be wider than the screen, so there it may wrap (Part U) */
+@media (min-width: 600px) {
+  .display-heading .accent {
+    white-space: nowrap;
+  }
 }
 
 .display-heading--page {
@@ -7659,6 +7664,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 @media (min-width: 700px) {
   .case-demo {
     height: var(--embed-h-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .case-demo {
+    height: var(--embed-h-mdhi);
   }
 }
 
