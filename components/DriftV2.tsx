@@ -3,14 +3,14 @@ import ExampleFrame from "@/components/ExampleFrame";
 import LinkedPhrase from "@/components/LinkedPhrase";
 import DriftStatusBoard from "@/components/DriftStatusBoard";
 import { Button } from "@/components/ui/Button";
-import { AuditChain, ButtonGrave, TokenCascade } from "@/components/DriftExamples";
+import { AuditChain, ButtonGrave, RolloutChain, TokenCascade } from "@/components/DriftExamples";
 import type { CaseStudy } from "@/lib/content";
 
 /**
  * From Drift to Foundation, on the case-study article pattern (Elleta,
  * 20 Sep 2026; approved mock case-study-drift-mock-v4.html).
  *
- * The article shape: four sections, one idea each, a short text column
+ * The article shape: five sections, one idea each, a short text column
  * beside one framed example, alternating sides, then the close. Every
  * claim is her existing approved copy from
  * content/case-studies/design-system-transformation.ts, shortened to
@@ -19,7 +19,8 @@ import type { CaseStudy } from "@/lib/content";
  * What left with the rebuild (Part C item 6): the layer nav, the caps
  * labels, the reading-progress chrome around the beats, and the second
  * prototype button. The four beats keep their order and their meaning:
- * 01 the drift, 02 the audit, 03 tokens, 04 governance.
+ * 01 the drift, 02 the audit, 03 tokens, 04 governance, and 05 how it
+ * got built (mock v4, plus one line from her 21 Sep note).
  */
 export default function DriftV2({ cs }: { cs: CaseStudy }) {
   const lessons = cs.blocks?.find((b) => b.kind === "lessons") as { text: string } | undefined;
@@ -141,6 +142,40 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
         <p>
           When an engineer reached for a pattern and found it <strong>already solved</strong>, the
           system earned its credibility.
+        </p>
+      </CaseSection>
+
+      <CaseSection
+        index="05"
+        kicker="How it got built"
+        heading="It started with one developer."
+        phrases={["pair", "train", "build", "pitch"]}
+        figure={
+          <ExampleFrame
+            path="rollout / how it started"
+            caption="How the system went from one pair to a funded team. Recreated."
+          >
+            <RolloutChain />
+          </ExampleFrame>
+        }
+      >
+        <p>
+          Before there was a team, there was{" "}
+          <LinkedPhrase k="pair">a front-end developer who was curious about design</LinkedPhrase>. I
+          asked to work with him directly.{" "}
+          <LinkedPhrase k="train">I taught him Figma and walked him through the tokens</LinkedPhrase>,
+          and <LinkedPhrase k="build">we built the first components together</LinkedPhrase>, with the
+          Figma variable and the code token side by side.
+        </p>
+        <p>
+          Then <LinkedPhrase k="pitch">I pitched it to management with him as my champion</LinkedPhrase>:
+          a designer and an engineer asking for it together.
+        </p>
+        <p>
+          <strong>
+            He grew his design skills. I got a partner I could work with closely and train, and the
+            system had a voice in engineering from day one.
+          </strong>
         </p>
       </CaseSection>
 

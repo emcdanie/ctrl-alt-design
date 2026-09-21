@@ -55,17 +55,29 @@ export function ButtonGrave() {
   );
 }
 
-/* ── 02 · the audit ──────────────────────────────────────────────── */
-const CHAIN = [
+/* ── 02 · the audit, and 05 · how it got built ─────────────────────
+   One chain picture for both: labelled rows of chips, a linking word
+   between them. Each row carries data-t so its phrase can light it. */
+type ChainRow = { k: string; label: string; items: string[]; link?: string };
+
+const AUDIT: ChainRow[] = [
   { k: "chip", label: "Filter chip", items: ["⌕ Direct", "Direct", "✓ Direct", "Direct ×"], link: "forces" },
   { k: "sort", label: "Sort control", items: ["Sort: price ▾", "↑↓ Price"], link: "breaks" },
   { k: "empty", label: "Empty state", items: ["No results", "Nothing found. Clear filters?"] },
 ];
 
-export function AuditChain() {
+/* recreated; the developer is a role, never a name (NDA) */
+const ROLLOUT: ChainRow[] = [
+  { k: "pair", label: "Pair", items: ["1 designer", "+ 1 developer"], link: "then" },
+  { k: "train", label: "Train", items: ["Figma basics", "Token naming", "Reading a spec"], link: "then" },
+  { k: "build", label: "Build", items: ["color/action/default", "=", "var(--action)"], link: "then" },
+  { k: "pitch", label: "Pitch", items: ["Design + engineering, one ask", "→ a funded team"] },
+];
+
+function Chain({ rows }: { rows: ChainRow[] }) {
   return (
     <div className="drift-chain">
-      {CHAIN.map((row) => (
+      {rows.map((row) => (
         <div key={row.k}>
           <div className="drift-chain__row" data-t={row.k}>
             <span className="text-code drift-chain__label">{row.label}</span>
@@ -87,6 +99,9 @@ export function AuditChain() {
     </div>
   );
 }
+
+export const AuditChain = () => <Chain rows={AUDIT} />;
+export const RolloutChain = () => <Chain rows={ROLLOUT} />;
 
 /* ── 03 · tokens under everything ─────────────────────────────────
    The cascade, on the shared SegmentedControl. "Break the link" leaves
