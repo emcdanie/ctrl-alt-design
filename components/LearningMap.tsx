@@ -240,7 +240,7 @@ export default function LearningMap({ visible, topicFilters }: { visible: Set<st
                 requestAnimationFrame(() => detailRef.current?.scrollIntoView({ block: "nearest" }));
               }}>
               {s}
-              <span className={`text-code ${styles["chip-meta"]}`}>{countTopic(s, LEARNED)}</span>
+              <span className="text-code">{countTopic(s, LEARNED)}</span>
             </button>
           </li>
         ))}

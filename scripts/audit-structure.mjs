@@ -143,5 +143,32 @@ for (const f of [...appFiles, ...componentFiles]) {
   }
 }
 
+/* N. no ghost module classes: every `x.name` / `x["name"]` read off a CSS
+ * module import must exist in that module. An undefined class renders as
+ * no class at all, silently (the Learning table's stack list, 21 Sep). */
+{
+  const { dirname, resolve } = await import("node:path");
+  const { existsSync } = await import("node:fs");
+  const IMPORT = /import\s+(\w+)\s+from\s+["']([^"']+\.module\.css)["']/g;
+  for (const f of [...appFiles, ...componentFiles]) {
+    if (!f.endsWith(".tsx")) continue;
+    const src = readFileSync(f, "utf8");
+    for (const [, name, spec] of src.matchAll(IMPORT)) {
+      const cssPath = spec.startsWith("@/") ? spec.slice(2) : resolve(dirname(f), spec);
+      if (!existsSync(cssPath)) { fail(`${f} ${spec}`, "a missing CSS module", "an existing file"); continue; }
+      const css = readFileSync(cssPath, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+      const defined = new Set([...css.matchAll(/\.(-?[A-Za-z_][\w-]*)/g)].map((m) => m[1]));
+      const USE = new RegExp(`\\b${name}(?:\\.([A-Za-z_]\\w*)|\\[["']([\\w-]+)["']\\])`, "g");
+      for (const m of src.matchAll(USE)) {
+        const cls = m[1] ?? m[2];
+        if (!defined.has(cls)) {
+          const line = src.slice(0, m.index).split("\n").length;
+          fail(`${f}:${line} ${name}.${cls}`, "a class not defined in " + spec, "a class the module defines");
+        }
+      }
+    }
+  }
+}
+
 console.log(fails === 0 ? "structure gate: PASS" : `structure gate: ${fails} failure(s)`);
 process.exit(fails === 0 ? 0 : 1);

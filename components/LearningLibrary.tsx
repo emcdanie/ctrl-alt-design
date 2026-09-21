@@ -417,7 +417,7 @@ function Table({
       >
         <button
           type="button"
-          className={work.thSort}
+          className={styles.thSort}
           onClick={() =>
             setSort(
               on
@@ -476,10 +476,10 @@ function Table({
           ))}
         </tbody>
       </table>
-      {/* below 768px the Work pattern: stacked rows in the same order */}
-      <ul className={work.stackList}>
+      {/* below 768px: stacked rows in the same order */}
+      <ul className={styles.stackList}>
         {sorted.map((e) => (
-          <li key={e.id} className={work.stackCard}>
+          <li key={e.id} className={styles.stackCard}>
             <p className={styles.meta}>
               <DateLabel entry={e} />
               <TypePill entry={e} />
