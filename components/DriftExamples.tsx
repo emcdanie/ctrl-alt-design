@@ -25,6 +25,7 @@ const CORNERS = [0, 7, 12, 15];
 const HEAVY = [1, 2, 11];
 
 const RAW = "#2F5C86"; /* token-waiver: the raw value the foundation tier HOLDS, shown as the specimen. Text on the page, not a colour this file paints with. */
+const DRIFTED = "#3A6FA0"; /* token-waiver: the hard-coded value the broken button carries, shown as code text. Not a colour this file paints with. */
 
 export function ButtonGrave() {
   return (
@@ -158,6 +159,14 @@ export function TokenCascade() {
           {!linked && <span className="drift-diff">Hard-coded, no token</span>}
         </div>
       </div>
+
+      {/* the same cascade as code (mock v4): linked, the button reads the
+          semantic token; broken, it holds a value no token explains */}
+      <pre className="ds-stage__code">
+        <code>
+          {`--brand-600: ${RAW};\n--action: var(--brand-600);\n.button { background: ${linked ? "var(--action)" : DRIFTED}; }${linked ? "" : " /* no token */"}`}
+        </code>
+      </pre>
     </div>
   );
 }
