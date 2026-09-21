@@ -4,8 +4,9 @@
  *
  * Brief-page sections render in a fixed order and drop out when empty.
  * A section marked `draft: true` is hidden on the site until Elleta
- * approves it (drafted from what the demo and the Loom about text show,
- * nothing more). Flip `draft` off, or delete the flag, to publish. */
+ * approves it (drafted from what the demo shows, nothing more). The
+ * Loom walkthroughs were removed (Part V, 21 Sep 2026). Flip `draft` off,
+ * or delete the flag, to publish. */
 
 export type StudyKind = "Course brief" | "Prototype" | "Hackathon";
 export const STUDY_KINDS: StudyKind[] = ["Course brief", "Prototype", "Hackathon"];
@@ -24,7 +25,6 @@ export interface StudyBrief {
   skipped?: StudySection;
   ai?: StudySection;
   next?: StudySection;
-  walkthrough?: { embed: string; about: string };
 }
 
 export interface Study {
@@ -126,10 +126,6 @@ export const STUDIES: Study[] = [
           "A high-density operational dashboard that borrows from race telemetry and control-room systems.",
         ],
       },
-      walkthrough: {
-        embed: "https://www.loom.com/embed/f93c664f6668417c81dbb774a2a7a4a3",
-        about: "Designing a high-density operational dashboard inspired by F1 race telemetry and control room systems.",
-      },
     },
   },
   {
@@ -158,10 +154,6 @@ export const STUDIES: Study[] = [
           "A form architecture that scales: multilingual content, validation logic and accessible interaction patterns as parts of one system, not fixes to one form.",
         ],
       },
-      walkthrough: {
-        embed: "https://www.loom.com/embed/1a13cb50b6ac4282952f85efa11f9d7e",
-        about: "Designing scalable form architectures that support multilingual content, validation logic, and accessible interaction patterns.",
-      },
     },
   },
   {
@@ -187,10 +179,6 @@ export const STUDIES: Study[] = [
       framing: {
         draft: true,
         paragraphs: ["AI-enabled search and multimedia navigation, as patterns for a complex regulatory system."],
-      },
-      walkthrough: {
-        embed: "https://www.loom.com/embed/685fc54dcb104d51baa15dcec8727da2",
-        about: "Exploring AI-enabled legal search and multimedia navigation patterns for complex regulatory systems.",
       },
     },
   },
