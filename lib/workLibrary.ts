@@ -50,6 +50,73 @@ export interface WorkItem {
  * (counts, matrix, related rows, bella.json) derives from
  * this array and follows. */
 export const WORK_ITEMS: WorkItem[] = [
+  /* The travel platform set (Elleta, 21 Sep 2026): the umbrella leads
+     /work and Home; Search and Checkout are two of its four stories. They
+     wear the identity pairs already recorded (the umbrella shares Drift's,
+     the same product), so no new colour is invented. */
+  {
+    id: "booking",
+    medium: "case study",
+    cover: "/images/case-studies/travel/booking-search-5.webp",
+    rank: -1,
+    title: "B2B travel platform",
+    bubbleLabel: "B2B travel|platform",
+    kicker: "B2B travel · 2024-26",
+    ingredients: ["Research that got a team funded", "A system in code", "Six product areas shipped"],
+    href: "/case-studies/booking-platform",
+    type: "Product design",
+    year: "2024-2026",
+    yearStart: 2024,
+    role: "Lead product designer, design systems",
+    impact: "A redesign that had not shipped in two years became a platform that did",
+    skills: ["Product design", "Design systems", "UX research", "Design system governance"],
+    hi: "var(--case-drift-hi)",
+    lo: "var(--case-drift-lo)",
+    deep: "var(--case-drift-deep)",
+    text: "var(--case-drift-text)",
+  },
+  {
+    id: "search-experts",
+    medium: "case study",
+    cover: "/images/case-studies/travel/search-results-1.webp",
+    rank: 2,
+    title: "Search for experts",
+    bubbleLabel: "Search for|experts",
+    kicker: "B2B travel · 2024-26",
+    ingredients: ["Filters in one drawer", "A search that stays in view", "A ticket card"],
+    href: "/case-studies/search-experts",
+    type: "Product design",
+    year: "2024-2026",
+    yearStart: 2024,
+    role: "Lead product designer",
+    impact: "A results page that keeps the search in view and puts filters behind one button",
+    skills: ["Product design", "Design systems"],
+    hi: "var(--case-filters-hi)",
+    lo: "var(--case-filters-lo)",
+    deep: "var(--case-filters-deep)",
+    text: "var(--case-filters-text)",
+  },
+  {
+    id: "checkout",
+    medium: "case study",
+    cover: "/images/case-studies/travel/checkout-2.webp",
+    rank: 3,
+    title: "Forms and checkout",
+    bubbleLabel: "Forms and|checkout",
+    kicker: "B2B travel · 2024-26",
+    ingredients: ["One checkout for every product", "Rules as fewer choices", "Built from blocks"],
+    href: "/case-studies/checkout",
+    type: "Product design",
+    year: "2024-2026",
+    yearStart: 2024,
+    role: "Lead product designer",
+    impact: "One checkout, built from blocks, for cars, flights, stays and trains",
+    skills: ["Product design", "Design systems", "Component libraries"],
+    hi: "var(--case-clarity-hi)",
+    lo: "var(--case-clarity-lo)",
+    deep: "var(--case-clarity-deep)",
+    text: "var(--case-clarity-text)",
+  },
   {
     id: "chip",
     medium: "case study",
@@ -209,6 +276,8 @@ export interface WorkCase {
 }
 
 const CASE_COPY: Record<string, Pick<WorkCase, "line" | "years" | "tags">> = {
+  /* the lead case on /work and Home (Part S, 21 Sep 2026) */
+  booking: { line: "A redesign that had not shipped in two years, rebuilt into a platform that did.", years: "2024 to 2026", tags: ["Product design", "Design systems"] },
   "code-first": { line: "Figma and code as one system, not two.", years: "2025 to 2026", tags: ["Design tokens", "Figma ⇄ code"] },
   drift: { line: "A first design system for a product that had outgrown its UI.", years: "2024 to 2026", tags: ["Design systems", "Governance"] },
   chip: { line: "An agent that watches the system and never moves silently.", years: "2026", tags: ["AI-enabled design", "Governance"] },

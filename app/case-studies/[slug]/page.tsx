@@ -6,6 +6,9 @@ import CaseShellV2 from "@/components/CaseShellV2";
 import CodeFirstV2 from "@/components/CodeFirstV2";
 import DriftV2 from "@/components/DriftV2";
 import ChipCase from "@/components/ChipCase";
+import BookingCase from "@/components/BookingCase";
+import SearchCase from "@/components/SearchCase";
+import CheckoutCase from "@/components/CheckoutCase";
 import type { CaseStudy } from "@/lib/content";
 
 /* metadata reads in sentence case: "DESIGN SYSTEMS" -> "Design systems" */
@@ -26,10 +29,14 @@ const ARTICLE: Record<
   string,
   {
     title: string;
-    accent: string;
-    after: string;
-    note: string;
+    accent?: string;
+    after?: string;
+    note?: string;
     facts?: { label: string; value: string }[];
+    /** no facts row: the hero opens on this lead instead (the mock does) */
+    lead?: string;
+    /** false when the facts already carry the years (the umbrella) */
+    caseFact?: boolean;
   }
 > = {
   "design-system-transformation": {
@@ -43,6 +50,28 @@ const ARTICLE: Record<
     accent: "code-first",
     after: " changes what you notice.",
     note: "Brad Frost's own system. Examples are recreated and simplified.",
+  },
+  /* the travel platform set (Part S, 21 Sep 2026): the mocks' copy */
+  "booking-platform": {
+    title: "A booking platform, rebuilt",
+    accent: "mid-flight",
+    after: ".",
+    note: "Under NDA: a B2B travel platform. Screens are de-branded; names and codes are blurred.",
+    caseFact: false,
+    facts: [
+      { label: "Role", value: "Lead product designer, design systems" },
+      { label: "Team", value: "My squads: engineering and product" },
+      { label: "Years", value: "2024 to 2026" },
+      { label: "Shipped", value: "System, search, flights, cars, checkout, admin" },
+    ],
+  },
+  "search-experts": {
+    title: "Search for people who know what they want.",
+    lead: "Our users booked travel every day. They knew the route, the fare and the policy. I shipped a results page that kept their search in view and put filters behind one button. This is that page, and the version I'd build with the time for every micro-interaction.",
+  },
+  checkout: {
+    title: "A checkout that knows who's paying.",
+    lead: "Company travel has rules: who you book for, what your role allows, which cards you may see. I designed the checkout and payment step once, for every product, so those rules show up as fewer choices instead of more forms.",
   },
   chip: {
     title: "AI builds what your system is. CHIP",
@@ -114,6 +143,9 @@ const COMPOSITIONS: Record<string, React.ComponentType<{ cs: CaseStudy }>> = {
   "brad-frost": CodeFirstV2,
   "design-system-transformation": DriftV2,
   chip: ChipCase,
+  "booking-platform": BookingCase,
+  "search-experts": SearchCase,
+  checkout: CheckoutCase,
 };
 
 export default async function CaseStudyPage({
@@ -152,13 +184,16 @@ export default async function CaseStudyPage({
         readingMinutes={readingMinutes}
         tags={cs.tags}
         facts={
-          article
+          article && !article.lead
             ? [
-                { label: "Case", value: `${sentenceCase(cs.category)} · ${fullYears(cs.year)}` },
+                ...(article.caseFact === false
+                  ? []
+                  : [{ label: "Case", value: `${sentenceCase(cs.category)} · ${fullYears(cs.year)}` }]),
                 ...(article.facts ?? facts(cs)),
               ]
             : undefined
         }
+        lead={article?.lead}
         nda={article?.note}
       >
         <Composition cs={cs} />

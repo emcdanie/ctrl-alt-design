@@ -264,6 +264,7 @@ for (const theme of ["light", "dark"]) {
     "/learning", "/design-system", "/design-system/inspector", "/quick",
     "/case-studies/chip", "/case-studies/brad-frost",
     "/case-studies/design-system-transformation",
+    "/case-studies/booking-platform", "/case-studies/search-experts", "/case-studies/checkout",
   ];
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();

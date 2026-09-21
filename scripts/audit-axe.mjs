@@ -27,6 +27,9 @@ const ROUTES = [
   "/case-studies/chip",
   "/case-studies/brad-frost",
   "/case-studies/design-system-transformation",
+  "/case-studies/booking-platform",
+  "/case-studies/search-experts",
+  "/case-studies/checkout",
   /* the pattern-study brief pages (one template) */
   "/work/studies/stock-screener",
   "/work/studies/race-day",

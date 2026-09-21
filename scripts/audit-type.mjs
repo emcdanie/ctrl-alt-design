@@ -18,6 +18,7 @@ const ROUTES = [
   "/", "/about", "/work", "/work/studies/stock-screener", "/contact", "/learning", "/design-system", "/quick", "/privacy", "/accessibility",
   "/case-studies/chip", "/case-studies/brad-frost",
   "/case-studies/design-system-transformation",
+  "/case-studies/booking-platform", "/case-studies/search-experts", "/case-studies/checkout",
 ];
 const CARD_SCOPE = '[class*="card"], [class*="Card"], .thesis-band, .ds-gate__row, [role="dialog"]';
 /* The metadata tier stays exempt (Elleta's ruling, 2026-07-27): tags,
