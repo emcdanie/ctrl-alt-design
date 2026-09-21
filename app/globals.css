@@ -2321,6 +2321,9 @@ main:not(.embed-page) .l-section:first-of-type::before {
 .site-footer__mark {
   width: 100%;
   line-height: 0.8;
+  /* decoration only: the letters and Bella take no clicks, so the "A"
+     never covers the CV button under it at 1024 and wider (Part W7) */
+  pointer-events: none;
 }
 
 /* one letter per flex item, spread edge to edge of the container */
