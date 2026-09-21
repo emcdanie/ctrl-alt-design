@@ -56,16 +56,6 @@ export default function WorkPage() {
               after="."
               lead={
                 <>
-                  {/* decorative: floats so the lead wraps her silhouette */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    className={styles.skate}
-                    src="/images/bella/set/bella-skate.webp"
-                    alt=""
-                    aria-hidden="true"
-                    width={860}
-                    height={980}
-                  />
                   Four started as course briefs from Vitaly Friedman&apos;s Smart Interface Design Patterns training. The
                   rest are hackathon builds and tools I made for myself.
                 </>

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 import { useEffect, useState } from "react";
@@ -191,13 +190,6 @@ export default function ContactSection() {
                 style={{ borderColor: "var(--color-semantic-border)" }}
                 role="status"
               >
-                <Image
-                  className="illo contact-success__illo"
-                  src="/images/bella/set/bella-happy.webp"
-                  alt=""
-                  width={940}
-                  height={900}
-                />
                 <p
                   className="text-[length:var(--typography-font-size-base)] font-medium"
                   style={{ color: "var(--color-ink)" }}

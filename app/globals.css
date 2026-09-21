@@ -1354,11 +1354,6 @@ li {
   }
 }
 
-.contact-success__illo {
-  --illo-width: 10rem;
-  margin: 0 auto var(--space-stack-sm);
-}
-
 /* a visible TODO for Elleta on the draft policy pages */
 .todo-note {
   max-width: var(--measure-body);
@@ -2366,11 +2361,6 @@ li {
   margin: var(--spacing-2) 0 0;
   font-size: var(--text-meta);
   color: var(--color-navy-ink);
-}
-
-.share-portfolio__illo {
-  width: 2rem;
-  height: auto;
 }
 
 /* the footer paw trail (components/FooterTrail.tsx): prints in the

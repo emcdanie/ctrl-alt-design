@@ -336,22 +336,6 @@
   min-width: 0;
 }
 
-/* Bella floats at the end of the lead, which wraps her silhouette (the
-   image's alpha, not its box); a warm glow keeps her dark fur off the
-   dark ground */
-.skate {
-  float: inline-end;
-  width: clamp(7rem, 22vw, 10rem);
-  height: auto;
-  shape-outside: url("/images/bella/set/bella-skate.webp");
-  shape-image-threshold: 0.4;
-  shape-margin: 1rem;
-}
-
-:global([data-theme="dark"]) .skate {
-  filter: drop-shadow(0 0 24px var(--tile));
-}
-
 .studyChips {
   margin-bottom: var(--spacing-2);
 }

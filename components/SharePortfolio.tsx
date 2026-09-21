@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 
@@ -42,10 +41,7 @@ export default function SharePortfolio({ className = "" }: { className?: string 
       </Button>
       <p className="share-portfolio__status" role="status" aria-live="polite">
         {copied ? (
-          <>
-            <Image className="share-portfolio__illo" src="/images/bella/set/bella-happy.webp" alt="" width={940} height={900} />
-            Link copied
-          </>
+"Link copied"
         ) : null}
       </p>
     </div>
