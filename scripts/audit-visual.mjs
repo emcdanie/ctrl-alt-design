@@ -32,7 +32,7 @@ import { BASE } from "./lib/base-url.mjs";
    that stops matching fails loudly instead of passing forever, which
    is what .ds-gate did after the gate table replaced the card grid. */
 export const TRACKED_SELECTORS = [
-  ".ds-band", ".ds-specimen-row", ".ds-caseband", ".bmm-list", ".gx-grid",
+  ".ds-band", ".ds-specimen-row", ".ds-caseband", ".bmm-list",
   ".trace-host", ".tok-inspector", ".spec-stage", ".csp-flag", "section.beat",
 ];
 
@@ -176,7 +176,7 @@ for (const theme of ["light", "dark"]) {
       /* the maturity map (.bmm-list) is a one-column stack: its cards
          share a width but not a height (rationale lengths differ), so
          it rides the row-equality check above, not this one */
-      for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-caseband, .gx-grid")) {
+      for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-caseband")) {
         const dims = [...grid.querySelectorAll(":scope > * ")].filter((c) => c.getBoundingClientRect().width > 0)
           .map((c) => { const r = c.getBoundingClientRect(); return Math.round(r.width) + "x" + Math.round(r.height); });
         if (new Set(dims).size > 1) out.uniform.push(`grid dims differ: ${[...new Set(dims)].join(" vs ")}`);

@@ -74,6 +74,7 @@ export default function CaseShellV2({
   linkOut,
   crumbs = true,
   identity,
+  endReveal = true,
   children,
 }: {
   slug: string;
@@ -111,6 +112,8 @@ export default function CaseShellV2({
       pair the head renders flat grey while every real case wears its
       colour, so the pair can be supplied directly instead. */
   identity?: { text: string; hi: string };
+  /** the thanks-and-next-case close; the System page ends on its claim */
+  endReveal?: boolean;
   children: React.ReactNode;
 }) {
   /* the registry row where there is one, the explicit pair where there is
@@ -138,7 +141,7 @@ export default function CaseShellV2({
         <SectionHeader
           as="h1"
           id="page-title"
-          kicker={article ? undefined : eyebrow}
+          kicker={crumbs && caseItem?.title ? undefined : eyebrow}
           heading={title}
           accent={article ? accent : undefined}
           after={article ? after : undefined}
@@ -203,7 +206,7 @@ export default function CaseShellV2({
       {/* the end-of-case overlay reveal renders ONCE here for every case
           (triggers when the end enters view); no composition ships its own
           next-case section */}
-      <CaseEndReveal slug={slug} />
+      {endReveal ? <CaseEndReveal slug={slug} /> : null}
     </div>
   );
 }

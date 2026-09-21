@@ -4399,29 +4399,6 @@ textarea:focus-visible {
   gap: var(--spacing-5);
 }
 
-/* the stage scale, as the grid's legend */
-.bmm-legend {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--spacing-2) var(--spacing-3);
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink-muted);
-}
-
-.bmm-legend__label {
-  font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--color-eyebrow);
-}
-
-.bmm-legend__scale {
-  color: var(--color-ink-soft);
-}
-
 .bmm-list {
   list-style: none;
   margin: 0;
@@ -4432,214 +4409,20 @@ textarea:focus-visible {
   min-width: 0;
 }
 
-/* ONE BLOCK (28 Jul, second pass): the shape on the left, the exact
-   stages on the right, starting on the same line.
-
-   The chart previously took its own full-width row with its scale on one
-   side and its source on the other. That row put the right-aligned scale
-   about 30px from the "AI Readiness" axis label, which read as the two
-   colliding; it left the hexagon small between two blocks of furniture;
-   and it opened a 90px band of nothing before the table, so the two
-   halves read as separate objects. Beside each other with the furniture
-   stacked under the chart, none of those three can happen. */
-.bmm-body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--spacing-8);
-  align-items: start;
-}
-
-/* NEVER side by side (Elleta, 28 Jul). Sharing a row, the two halves
-   compete for the same 1176px and both lose: the chart gives up its
-   flanking axis labels to stay a reasonable size, and the table's reason
-   column drops from 764px to 400px. Stacked, each gets everything it
-   needs. The chart is a figure with its scale and source beneath it, the
-   table runs the full container at one line a row, and the block reads
-   top to bottom as shape then detail. */
-
-/* ── the radar ──
-   A 3x3 ring of HTML labels with the chart in the middle. The labels are
-   NOT SVG text on purpose: text inside a viewBox scales with the box, so
-   it stops being 16px the moment the chart is not exactly its declared
-   size. These stay body-size at every width. */
-/* the ring asks how wide THE RING is, never how wide the window is.
-   Flanking labels cost about 200px of whatever column the chart is in,
-   which is affordable when the chart owns the row and ruinous when it is
-   sharing one: beside the table the chart column was 30rem, the labels
-   took two thirds of it, and the table opposite was squeezed to a 304px
-   reason column that wrapped every row to three lines. Widening the
-   window past 1240 therefore made the table WORSE, which is the tell
-   that something was reading the viewport when it meant the box. */
-/* The figure STRETCHES; the capping and centring happen inside it.
-
-   Capping this element and centring it with margin-inline:auto collapsed
-   the chart to zero. Auto margins cancel a grid item's stretch, so its
-   inline size falls back to fit-content, and fit-content under
-   inline-size containment resolves to nothing at all, because
-   containment is precisely the promise that contents do not size the
-   box. The container has to be measurable; the figure inside it is what
-   gets a measure. */
-.bmm-radar {
+/* the stage scale and the model's credit, one line under the table
+   (the radar and its caption left in Part R) */
+.bmm-note {
   margin: 0;
-  min-width: 0;
-  container-type: inline-size;
-  container-name: radar;
-}
-
-/* the chart's own measure: a hexagon does not get better past about
-   350px, and its labels want to sit near the shape they name rather than
-   at the far edges of a 1176px row */
-.bmm-radar__ring,
-.bmm-radar__cap {
-  max-width: 38rem;
-  margin-inline: auto;
-}
-
-/* DEFAULT: labels in a clockwise row BENEATH the chart, so the chart
-   gets the column's whole width. This is the layout for every ring that
-   is not wide enough to spend 200px on flanking labels, which is a phone
-   and equally the chart's column when it sits beside the table. */
-.bmm-radar__ring {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: baseline;
-  gap: var(--spacing-1) var(--spacing-3);
-}
-
-.bmm-radar__svg {
-  order: -1;
-  flex: 0 0 100%;
-  width: 100%;
-  /* the hexagon reached 743px once the figure owned a whole row, which is
-     a chart eating a page rather than leading one */
-  max-width: 22rem;
-  height: auto;
-  margin-inline: auto;
-}
-
-/* the chart's furniture, stacked UNDER the chart and quiet enough that
-   the hexagon stays the loud thing. Under it, not beside it: flanking
-   columns put the scale a few pixels from an axis label. */
-.bmm-radar__cap {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  margin-top: var(--spacing-5);
-  padding-top: var(--spacing-4);
-  border-top: 1px solid var(--color-border-soft);
-  font-family: var(--font-body);
+  max-width: var(--measure-body);
+  /* a sentence, so the reading floor, not the metadata tier */
   font-size: var(--typography-font-size-base);
-  line-height: 1.55;
-  color: var(--color-ink-soft);
-}
-
-.bmm-radar__scale {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-}
-
-.bmm-radar__label {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
-  line-height: var(--typography-line-height-snug);
-  color: var(--color-ink-soft);
-  text-align: center;
-}
-
-/* the row layout names the reading order, because a row cannot show it
-   the way a ring can.
-
-   A CAPTION, not an eyebrow. It shipped at the 13px metadata tier and
-   audit:type refused it the moment the row layout reached 1440, which is
-   the right call: twenty-two characters explaining how to read a chart
-   is reading text, whatever tier it is dressed as. Extending the audit's
-   metadata allowlist to cover it would have been keeping new code alive
-   with an exemption, which the constitution forbids. */
-.bmm-radar__hint {
-  display: block;
-  flex: 0 0 100%;
-  text-align: center;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
   color: var(--color-ink-muted);
 }
 
-.bmm-radar__label + .bmm-radar__label::before {
-  content: "\00b7";
-  margin-right: var(--spacing-3);
-  color: var(--color-ink-muted);
-}
-
-/* FLANKED: only once the ring itself can afford roughly 200px of labels
-   on top of a chart worth looking at. A CONTAINER query, so the ring
-   answers for its own box: beside the table that box is a 24rem column
-   and the labels stay beneath, while stacked it is the whole row and
-   they take their places around the hexagon. */
-@container radar (min-width: 34rem) {
-  .bmm-radar__ring {
-    display: grid;
-    grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
-    grid-template-rows: auto 1fr 1fr auto;
-    align-items: center;
-    justify-items: center;
-    max-width: 38rem;
-    margin-inline: auto;
-    gap: var(--spacing-2);
-  }
-
-  .bmm-radar__svg {
-    order: 0;
-    grid-column: 2;
-    grid-row: 2 / span 2;
-    flex: initial;
-    justify-self: center;
-  }
-
-  /* clockwise from twelve, the order the axes are declared and the table
-     lists them */
-  .bmm-radar__label--0 { grid-column: 2; grid-row: 1; }
-  .bmm-radar__label--1 { grid-column: 3; grid-row: 2; text-align: left; }
-  .bmm-radar__label--2 { grid-column: 3; grid-row: 3; text-align: left; }
-  .bmm-radar__label--3 { grid-column: 2; grid-row: 4; }
-  .bmm-radar__label--4 { grid-column: 1; grid-row: 3; text-align: right; }
-  .bmm-radar__label--5 { grid-column: 1; grid-row: 2; text-align: right; }
-
-  /* the ring shows the order; the row's label and separators would only
-     repeat what the positions already say */
-  .bmm-radar__hint { display: none; }
-  .bmm-radar__label + .bmm-radar__label::before { content: none; }
-}
-
-.bmm-radar__grid {
-  fill: none;
-  stroke: var(--color-border-soft);
-  stroke-width: 1;
-}
-
-.bmm-radar__spoke {
-  stroke: var(--color-border-soft);
-  stroke-width: 1;
-}
-
-.bmm-radar__shape {
-  fill: var(--color-semantic-accent-subtle);
-  stroke: var(--color-accent-ink);
-  stroke-width: 2;
-  stroke-linejoin: round;
-}
-
-.bmm-radar__dot {
-  fill: var(--color-accent-ink);
-}
-
-/* the frontier axis wears the clarity pair here too, so the deepest
-   vertex reads as the thesis and not just as the biggest number */
-.bmm-radar__dot--frontier {
-  fill: var(--case-clarity-text);
+.bmm-note a {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* stage badges: metadata tier (the tag/pill register), stage colour
@@ -5053,17 +4836,6 @@ textarea:focus-visible {
   height: 44px;
   border: 2px solid var(--color-accent-ink);
   justify-self: start;
-}
-
-/* the gate as a scannable status-card grid (Elleta, 21 Jul, spec
-   system-page-v2): one card per audit, name + PASS chip + one line */
-.ds-gate {
-  margin: 0;
-  display: grid;
-  grid-auto-rows: 1fr;
-  align-items: stretch;
-  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
-  gap: var(--spacing-4);
 }
 
 /* ── Token inspector ── */
@@ -7505,186 +7277,69 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    rule sets go: there were two, 350 lines apart, and the later one silently
    won every shared property. */
 
-/* ── the gate explorer (28 Jul, readability audit P2) ──
-   Sixteen chips, one panel. It replaces the two-column table, which
-   replaced a three-column definition grid, which replaced a definition
-   list: four shapes of the same wall. The chips are the whole gate at a
-   glance and the panel answers the only question anyone asks of it.
-
-   The chips are a TABLIST, so they are one tab stop with arrow keys
-   inside, and the panel is a real region of text in the document rather
-   than a card face hidden behind a transform. */
-.gx {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-5);
-}
-
-.gx-grid {
+/* ── the gate list (Part R, 21 Sep 2026): five audits and what each
+   stops, a plain list on hairlines; the rest behind one disclosure ── */
+.ds-gate {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
-  gap: var(--spacing-2);
+  gap: var(--space-stack-md);
 }
 
-.gx-chip {
-  /* FILTER-CHIP register, not a keycap: this selects, it does not act
-     (the control taxonomy, section 5). Flat, outline, no elevation. */
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: var(--spacing-touch-target);
-  padding: var(--spacing-2) var(--spacing-3);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-md);
-  background: var(--color-card);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
-  color: var(--color-ink-soft);
-  text-align: left;
-  cursor: pointer;
-  transition: border-color var(--motion-duration-fast) var(--motion-easing-standard),
-    color var(--motion-duration-fast) var(--motion-easing-standard);
-}
-
-.gx-chip:hover {
-  border-color: var(--color-accent-ink);
-  color: var(--color-ink);
-}
-
-.gx-chip:focus-visible {
-  outline: 2px solid var(--color-accent-ink);
-  outline-offset: var(--spacing-1);
-}
-
-/* selected: the iris outline plus a filled ground, never colour alone.
-   aria-selected carries it for anyone who cannot see the border. */
-.gx-chip.is-active {
-  border-color: var(--color-accent-ink);
-  background: var(--color-semantic-accent-subtle);
-  color: var(--color-accent-ink);
-}
-
-.gx-panel {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  padding: var(--spacing-6);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-card);
-  background: var(--color-card);
-}
-
-.gx-panel:focus-visible {
-  outline: 2px solid var(--color-accent-ink);
-  outline-offset: var(--spacing-1);
-}
-
-.gx-panel__name {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-lg);
-  font-weight: 700;
-  color: var(--color-ink);
-}
-
-.gx-panel__line {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: 1.55;
-  color: var(--color-ink-soft);
-  max-width: var(--measure-body);
-}
-
-.gx-panel__meta {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  margin: 0;
-  padding-top: var(--spacing-3);
-  border-top: 1px solid var(--color-border-soft);
-}
-
-.gx-panel__row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--spacing-1);
-}
-
-@media (min-width: 768px) {
-  .gx-panel__row {
-    grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
-    gap: var(--spacing-4);
-    align-items: baseline;
-  }
-}
-
-.gx-panel__row dt {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--color-eyebrow);
-}
-
-.gx-panel__row dd {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink);
-}
-
-/* ── the close (28 Jul) ── one action, then what the argument stands on */
-.ds-close {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-8);
-}
-
-.ds-close__act {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-4) var(--spacing-6);
-}
-
-.ds-close__alt {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-accent-ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.ds-close__cites {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  padding-top: var(--spacing-5);
-  border-top: 1px solid var(--color-border-soft);
-}
-
-.ds-close__list {
+.ds-gate__list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: 1.55;
-  color: var(--color-ink-soft);
-  max-width: var(--measure-body);
+  border-top: 1px solid var(--color-semantic-border);
 }
 
-.ds-close__list a {
+.ds-gate__list li {
+  display: grid;
+  grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+  gap: var(--spacing-2) var(--layout-gutter);
+  padding: var(--space-stack-sm) 0;
+  border-bottom: 1px solid var(--color-semantic-border);
+  color: var(--color-ink-soft);
+}
+
+.ds-gate__name {
+  color: var(--color-ink);
+}
+
+@media (max-width: 699.98px) {
+  .ds-gate__list li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.ds-gate__more summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  cursor: pointer;
   color: var(--color-accent-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
-  font-weight: 600;
+}
+
+.ds-gate__more summary:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.ds-gate__more[open] summary {
+  margin-bottom: var(--space-stack-sm);
+}
+
+/* the claim: the page's last line, then its one action */
+.ds-claim .container {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-stack-md);
+}
+
+.ds-claim__line {
+  margin: 0;
+  font-size: var(--text-display-2);
+  max-inline-size: 20em;
 }
 
 /* the derived count, stated once, large, WITH the copy (27 Jul): it was

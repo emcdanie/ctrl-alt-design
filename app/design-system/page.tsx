@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseShellV2 from "@/components/CaseShellV2";
 import BellaSpine from "@/components/BellaSpine";
-import { auditCount, auditFiles, spellCount } from "@/lib/bella/gate";
+import { auditCount, spellCount } from "@/lib/bella/gate";
 
 export const metadata: Metadata = {
   title: "BELLA, the system behind this site",
@@ -39,8 +39,13 @@ export default function DesignSystemPage() {
         eyebrow="System"
         title="BELLA, the system behind this site"
         subhead="A design system is only as useful to an AI as it is readable by a machine. This is that argument, demonstrated on the system running the page you are reading."
+        /* Part R (21 Sep 2026): the hero is the h1 and its lead, no chips
+           row, no reading time; and the page ends on its claim, not on a
+           next-case card */
+        lead="A design system is only as useful to an AI as it is readable by a machine. This is that argument, demonstrated on the system running the page you are reading."
         readingMinutes={6}
-        tags={["Design systems", "AI-enabled design", "Governance"]}
+        tags={[]}
+        endReveal={false}
         /* not reached through /work: System is its own primary nav item
            (section 1b), so a back-to-Work crumb pointed somewhere the
            reader had not been. Every real case keeps its crumb. */
@@ -51,11 +56,7 @@ export default function DesignSystemPage() {
            row is added, which audit:parity would refuse. */
         identity={{ text: "var(--case-clarity-text)", hi: "var(--case-clarity-hi)" }}
       >
-        <BellaSpine
-          auditCount={audits}
-          auditCountWord={spellCount(audits)}
-          auditFiles={auditFiles()}
-        />
+        <BellaSpine auditCount={audits} auditCountWord={spellCount(audits)} />
       </CaseShellV2>
     </CaseStudyLayout>
   );
