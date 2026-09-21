@@ -19,26 +19,36 @@ const fullYears = (t: string) => t.replace(/\b(20\d\d)-(20\d\d)\b/g, "$1 to $2")
 
 /* ── The case-study article (Elleta, 20 Sep 2026, Part C) ───────────
    A case on the new pattern declares the one iris word of its thesis
-   here; the facts row and the NDA line come from its content file, so
-   nothing is restated. Cases not yet migrated keep the old head. */
+   here, and the one-line context note under its facts (mock v4, restored
+   21 Sep). The facts row comes from its content file. Cases not yet
+   migrated keep the old head. */
 const ARTICLE: Record<
   string,
-  { title: string; accent: string; after: string; facts?: { label: string; value: string }[] }
+  {
+    title: string;
+    accent: string;
+    after: string;
+    note: string;
+    facts?: { label: string; value: string }[];
+  }
 > = {
   "design-system-transformation": {
     title: "The system is the set of",
     accent: "agreements",
     after: ", not the component library.",
+    note: "Under NDA. The client appears as an industry only. Artifacts are recreated and the data is illustrative.",
   },
   "brad-frost": {
     title: "Working",
     accent: "code-first",
     after: " changes what you pay attention to.",
+    note: "Brad Frost's own system. Examples are recreated and simplified.",
   },
   chip: {
     title: "AI builds whatever your system already is. I built CHIP to",
     accent: "see it first",
     after: ".",
+    note: "A personal project on my own systems. Data is illustrative; nothing comes from a client.",
     /* CHIP keeps a metadata list rather than the metrics block, and its
        four facts are the mock's shortenings of those entries */
     facts: [
@@ -117,7 +127,6 @@ export default async function CaseStudyPage({
   const Composition = COMPOSITIONS[slug];
   if (!Composition) notFound();
   const article = ARTICLE[slug];
-  const nda = (cs.blocks?.find((b) => b.kind === "disclosure") as { text: string } | undefined)?.text;
 
   /* reading time, mechanical: every narrative string in the content
      file at 220 wpm, rounded up */
@@ -151,7 +160,7 @@ export default async function CaseStudyPage({
                 ]
               : undefined
           }
-          nda={article ? nda : undefined}
+          nda={article?.note}
         >
           <Composition cs={cs} />
         </CaseShellV2>

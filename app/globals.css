@@ -8089,6 +8089,13 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   }
 }
 
+/* the close's h2 is the landing line, a step up from the section h2s
+   (mock v4: 1.8 to 2.6rem); the section tier, not a new size */
+.case-close .case-section__heading {
+  font-size: var(--text-display-2);
+  line-height: 1.08;
+}
+
 .case-close__learned {
   margin-top: var(--space-stack-sm);
   color: var(--color-ink-muted);
