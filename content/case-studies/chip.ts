@@ -18,7 +18,7 @@ import type { CaseStudy } from "@/lib/content";
  * No disclosure needed (own work, no client). */
 const study: CaseStudy = {
   slug: "chip",
-  title: "AI builds whatever your system already is. I built CHIP to see it first.",
+  title: "AI builds what your system is. CHIP sees it first.",
   category: "DESIGN LAB",
   year: "2026",
   scope: "Agent governance, AI-readiness inspection, design-system health metrics, building in public",
@@ -27,7 +27,7 @@ const study: CaseStudy = {
   heroImage: "/case/chip/chip-cover-motif.svg",
   thumbnailImage: "/case/chip/chip-cover-motif.svg",
   heroVideo: undefined,
-  eyebrow: "DESIGN LAB · AI + DESIGN SYSTEMS · 2026 · CURRENT FOCUS",
+  eyebrow: "Design Lab · AI + design systems · 2026 · Current focus",
   summary: "AI doesn't fix a neglected design system. It sends you the bill.",
   /* canonical sidebar meta (Pass E task 11g): Role, Year, Type or
      Scope, Organisation, Tools; Built kept as this case's extra final
@@ -49,7 +49,7 @@ const study: CaseStudy = {
   ],
   images: [],
   tags: ["AI-enabled Design", "Design System Governance", "Building in Public", "Claude Code"],
-  description: "AI builds whatever your system already is. I built CHIP to see it first.",
+  description: "AI builds what your system is. CHIP sees it first.",
 
   blocks: [
     {

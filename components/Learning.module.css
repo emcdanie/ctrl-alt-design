@@ -1,0 +1,1036 @@
+/* /learning (specs/learning). Tokens only. Colour roles: learned from =
+ * iris tint, skills and group 1 = the CHIP identity tint, projects and
+ * group 2 = the Code First tint, group 3 = iris. Focus rings are iris.
+ * Reduced motion turns off every transition and lift. */
+
+/* ── Hero ── */
+/* the face, size and colour come from .text-code (the code role) */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2) var(--spacing-6);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-meta {
+  white-space: nowrap;
+}
+
+.stats b {
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+/* ONE quiet line of certificates under the stats (Elleta, 20 Sep
+   2026): short names, no pills, no truncation, and the only link in it
+   is the "+N →" that filters the library. */
+.certs {
+  max-width: var(--measure-body);
+  color: var(--color-ink-muted);
+  text-wrap: pretty;
+}
+
+.certsMore {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.next-up-meta {
+  color: var(--color-ink-muted);
+}
+
+/* unconfirmed: a quiet solid underline (tap for the title on hover);
+   dotted belongs to Term alone (Part Q) */
+.tbc {
+  text-decoration: underline;
+  text-decoration-color: var(--color-ink-muted);
+  text-underline-offset: 3px;
+}
+
+.date-meta {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Library: filters ── */
+.library {
+  display: grid;
+  gap: var(--space-stack-md);
+}
+
+.filters {
+  display: grid;
+  gap: var(--space-stack-sm);
+}
+
+.search {
+  max-width: none;
+}
+
+
+/* the map list's pressed buttons match the pressed FilterChip */
+.mapListBtn[aria-pressed="true"] {
+  background: var(--color-semantic-accent-subtle);
+  border-color: var(--color-accent-iris);
+  color: var(--color-ink);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+}
+
+.toolbarEnd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.results-meta {
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-muted);
+}
+
+.results-meta b {
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.clear {
+  all: unset;
+  cursor: pointer;
+  min-height: var(--spacing-touch-target);
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.clear:focus-visible {
+  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline-offset: 2px;
+}
+
+.view {
+  min-width: 0;
+}
+
+.empty {
+  padding: var(--spacing-10) var(--spacing-4);
+  text-align: center;
+  color: var(--color-ink-muted);
+}
+
+/* ── Timeline ── */
+.timeline {
+  display: grid;
+  gap: var(--space-stack-lg);
+}
+
+.year {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.year::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-faint);
+}
+
+.tl {
+  list-style: none;
+  margin: var(--spacing-2) 0 0;
+  padding: 0 0 0 var(--spacing-6);
+  border-left: 1.5px solid var(--border-faint);
+}
+
+.tl > li {
+  position: relative;
+  padding: var(--spacing-3) 0 var(--spacing-5) var(--spacing-4);
+  scroll-margin-top: calc(var(--header-height) + var(--spacing-4));
+}
+
+.tl > li::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--spacing-6) - 7px);
+  top: var(--spacing-5);
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-full);
+  background: var(--color-semantic-background);
+  border: 1.5px solid var(--color-accent-iris);
+}
+
+.tl > li.tlCert::before {
+  background: var(--color-accent-iris);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-1) var(--spacing-3);
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  color: var(--color-ink-muted);
+}
+
+.entryTitle {
+  margin: var(--spacing-1) 0 0;
+  text-wrap: balance;
+}
+
+.entryTitle a {
+  color: var(--color-accent-ink);
+}
+
+.took {
+  margin: var(--spacing-2) 0 0;
+  max-width: var(--measure-body, 44rem);
+  font-size: var(--text-body);
+  color: var(--color-ink-soft);
+  text-wrap: pretty;
+}
+
+.tookLabel {
+  color: var(--color-ink-muted);
+}
+
+.items {
+  margin: var(--spacing-2) 0 0;
+  font-size: var(--text-body);
+  color: var(--color-ink-soft);
+}
+
+.items summary {
+  cursor: pointer;
+  min-height: var(--spacing-touch-target);
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  color: var(--color-accent-ink);
+}
+
+.items summary:focus-visible {
+  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline-offset: 2px;
+}
+
+.items ul {
+  margin: 0;
+  padding-left: var(--spacing-5);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-1) var(--spacing-3);
+  margin: var(--spacing-2) 0 0;
+  font-size: var(--text-meta);
+  color: var(--color-ink-muted);
+}
+
+.from-meta,
+.hashtag {
+  color: var(--color-ink-muted);
+}
+
+.arrow-meta {
+  display: inline;
+}
+
+.used-meta {
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+
+.used-meta a,
+.inlineLink,
+.detailLink a {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.used-meta a:focus-visible,
+.inlineLink:focus-visible,
+.detailLink a:focus-visible,
+.entryTitle a:focus-visible {
+  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Table ── */
+.tableWrap {
+  overflow-x: auto;
+}
+
+/* under 768px the table gives way to stacked rows, in the same order;
+   at 768px and up only the table shows */
+.stackList {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 767px) {
+  .table {
+    display: none;
+  }
+
+  .stackList {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.stackCard {
+  padding: var(--spacing-5);
+  border-bottom: 1px solid var(--color-semantic-border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  align-items: flex-start;
+}
+
+.stackCard:last-child {
+  border-bottom: none;
+}
+
+.stackTitle {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.table {
+  min-width: 48rem;
+}
+
+.table td,
+.table th {
+  height: var(--spacing-touch-target);
+}
+
+.thSort {
+  all: unset;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  min-height: var(--spacing-touch-target);
+  display: inline-flex;
+  align-items: center;
+}
+
+.thSort:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.table .num {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.rowTitle {
+  font-weight: 600;
+  color: var(--color-ink);
+  text-align: left;
+}
+
+.topics-meta {
+  font-size: var(--text-meta);
+  color: var(--color-ink-muted);
+}
+
+.notYet {
+  color: var(--color-ink-muted);
+}
+
+/* ── Skills key ── */
+.key {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-3) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2) var(--spacing-5);
+  font-size: var(--text-meta);
+  color: var(--color-ink-muted);
+}
+
+.key .key-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.keyDot {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-accent-iris);
+  background: var(--color-semantic-accent-subtle);
+}
+
+.keyDotFilled {
+  background: var(--color-accent-iris);
+}
+
+.keyCell {
+  width: 18px;
+  height: 14px;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--case-chip-hi) 36%, var(--color-card));
+}
+
+/* ── Maps (learning map + voices): stage, floating cards, list ── */
+.map {
+  position: relative;
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-card);
+  background: var(--surface-card);
+  overflow: hidden;
+}
+
+.mapStage {
+  position: relative;
+}
+
+.mapStage svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 54rem;
+  touch-action: none;
+  user-select: none;
+}
+
+.map:not(.voices) .mapStage svg {
+  cursor: grab;
+}
+
+.mapStage svg.grabbing {
+  cursor: grabbing;
+}
+
+.zoomLayer {
+  transition: transform var(--motion-duration-normal) var(--motion-easing-standard);
+}
+
+.zoomLayerNow {
+  transition: none;
+}
+
+.bands,
+.wires,
+.voiceRing,
+.voiceWires,
+.ringLabel,
+.halo {
+  pointer-events: none;
+}
+
+.bandGround {
+  fill: var(--surface-card);
+}
+
+.bandL {
+  fill: var(--color-semantic-accent-subtle);
+}
+
+.bandS {
+  fill: color-mix(in srgb, var(--case-chip-hi) 26%, transparent);
+}
+
+.bandW {
+  fill: color-mix(in srgb, var(--case-code-first-hi) 30%, transparent);
+}
+
+.ringLabel {
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  fill: var(--color-ink-muted);
+}
+
+.centre {
+  fill: var(--color-semantic-background);
+  stroke: var(--border-faint);
+}
+
+.centreText {
+  font-family: var(--font-body);
+  font-size: var(--text-lead);
+  font-weight: 700;
+  fill: var(--color-accent-ink);
+}
+
+.wires path {
+  fill: none;
+  stroke: var(--color-accent-iris);
+  stroke-width: 1.8;
+  stroke-opacity: 0.95;
+}
+
+.node {
+  cursor: pointer;
+  outline: none;
+  transition: opacity var(--motion-duration-fast);
+}
+
+.node text {
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  fill: var(--color-ink-muted);
+}
+
+.dot {
+  stroke-width: 1.5;
+}
+
+.node:hover .dot {
+  stroke-width: 2.5;
+}
+
+.halo {
+  fill: none;
+  stroke: var(--color-accent-iris);
+  stroke-width: 2;
+  opacity: 0;
+}
+
+.node:focus-visible .halo,
+.node.sel .halo {
+  opacity: 1;
+}
+
+.nodeL .dot {
+  fill: var(--color-semantic-background);
+  stroke: var(--color-accent-iris);
+}
+
+.nodeL.cert .dot {
+  fill: var(--color-accent-iris);
+}
+
+.nodeS .dot,
+.g1 .dot {
+  fill: color-mix(in srgb, var(--case-chip-hi) 40%, var(--color-semantic-background));
+  stroke: var(--case-chip-text);
+}
+
+.nodeW .dot,
+.g2 .dot {
+  fill: color-mix(in srgb, var(--case-code-first-hi) 40%, var(--color-semantic-background));
+  stroke: var(--case-code-first-text);
+}
+
+.g3 .dot {
+  fill: color-mix(in srgb, var(--color-accent-iris) 22%, var(--color-semantic-background));
+  stroke: var(--color-accent-iris);
+}
+
+.nodeS text,
+.nodeV text {
+  font-size: var(--text-caption);
+  font-weight: 600;
+  fill: var(--color-ink);
+}
+
+.nodeW text {
+  font-size: var(--text-body);
+  font-weight: 700;
+  fill: var(--color-ink);
+}
+
+.fade {
+  opacity: 0.18;
+}
+
+.focus .node {
+  opacity: 0.22;
+}
+
+.focus .node.on {
+  opacity: 1;
+}
+
+.focus .node.on text {
+  fill: var(--color-ink);
+}
+
+/* voices: the ring and the wires stay (the mock, as it is); the key
+   and detail cards sit in a side column, not over the drawing */
+.voiceRing {
+  fill: none;
+  stroke: var(--border-faint);
+  stroke-opacity: 0.5;
+  stroke-width: 54;
+}
+
+.voices {
+  display: grid;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+}
+
+.voices .mapSide {
+  position: static;
+  display: grid;
+  align-content: start;
+  gap: var(--spacing-3);
+}
+
+.voices .keyCard,
+.voices .detailCard {
+  width: auto;
+  max-height: none;
+}
+
+.voices .help-meta {
+  position: static;
+}
+
+@media (min-width: 1024px) {
+  .voices {
+    grid-template-columns: 1fr 20rem;
+    align-items: start;
+  }
+}
+
+.voiceWires path {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-opacity: 0.14;
+  stroke-width: 1;
+  transition: stroke-opacity var(--motion-duration-fast);
+}
+
+.voiceWires path.wireOn {
+  stroke: var(--color-accent-iris);
+  stroke-opacity: 0.95;
+  stroke-width: 1.8;
+}
+
+.help-meta {
+  position: absolute;
+  bottom: var(--spacing-3);
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  color: var(--color-ink-muted);
+  pointer-events: none;
+}
+
+/* key and detail cards float over the map */
+/* the key and the detail card never cover the drawing (Elleta, 19 Sep
+   2026): they sit in a side column from 1024px and below the map under
+   that. */
+.mapSide {
+  display: grid;
+  align-content: start;
+  gap: var(--spacing-3);
+  padding: 0 var(--spacing-4) var(--spacing-4);
+}
+
+@media (min-width: 1024px) {
+  .map:not(.voices) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 18rem;
+    align-items: start;
+  }
+
+  .map:not(.voices) .mapSide {
+    padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) 0;
+  }
+}
+
+.floatCard {
+  pointer-events: auto;
+  position: relative;
+  background: var(--color-semantic-background);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-popover);
+  box-shadow: var(--shadow-soft);
+  padding: var(--spacing-4);
+}
+
+.detailCard {
+  overflow: auto;
+}
+
+
+
+.hidden {
+  display: none;
+}
+
+.card-eyebrow {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--color-eyebrow);
+}
+
+.keyTitle {
+  margin: var(--spacing-1) 0 var(--spacing-2);
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.keyList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--spacing-3);
+  display: grid;
+  gap: var(--spacing-1);
+  font-size: var(--text-meta);
+  color: var(--color-ink-soft);
+}
+
+.keyList .key-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.keySwatch {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid;
+}
+
+.swL,
+.sw3 {
+  border-color: var(--color-accent-iris);
+  background: var(--color-semantic-accent-subtle);
+}
+
+.swS,
+.sw1 {
+  border-color: var(--case-chip-text);
+  background: color-mix(in srgb, var(--case-chip-hi) 40%, transparent);
+}
+
+.swW,
+.sw2 {
+  border-color: var(--case-code-first-text);
+  background: color-mix(in srgb, var(--case-code-first-hi) 40%, transparent);
+}
+
+.codeNote {
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-muted);
+}
+
+.mapCtl {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.ctlBtn,
+.closeBtn {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-grid;
+  place-items: center;
+  min-width: var(--spacing-touch-target);
+  min-height: var(--spacing-touch-target);
+  padding: 0 var(--spacing-3);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.ctlBtn:hover,
+.closeBtn:hover {
+  border-color: var(--color-accent-iris);
+}
+
+.ctlBtn:focus-visible,
+.closeBtn:focus-visible,
+.mapListBtn:focus-visible {
+  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline-offset: 2px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: var(--spacing-2);
+  right: var(--spacing-2);
+  padding: 0;
+  font-size: var(--text-lead);
+}
+
+/* pills: iris-soft fill, ink text, never solid purple (Elleta, 19 Sep
+   2026). The group and skill variants below swap in their own tint. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--spacing-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-accent-subtle);
+  color: var(--color-ink);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.pillProgress {
+  box-shadow: inset 0 0 0 1px var(--color-semantic-accent-border);
+}
+
+.pillS,
+.pill1 {
+  background: color-mix(in srgb, var(--case-chip-hi) 30%, var(--color-semantic-background));
+  color: var(--case-chip-text);
+}
+
+.pillW,
+.pill2 {
+  background: color-mix(in srgb, var(--case-code-first-hi) 30%, var(--color-semantic-background));
+  color: var(--case-code-first-text);
+}
+
+.pill3 {
+  background: var(--color-semantic-accent-subtle);
+  color: var(--color-accent-ink);
+}
+
+.detailTitle {
+  margin: var(--spacing-2) var(--spacing-10) var(--spacing-1) 0;
+}
+
+.detail-meta {
+  margin: 0 0 var(--spacing-2);
+  font-size: var(--text-meta);
+  color: var(--color-ink-muted);
+}
+
+.detailTook {
+  margin: 0 0 var(--spacing-2);
+  font-size: var(--text-body);
+  color: var(--color-ink-soft);
+}
+
+.quote {
+  margin: 0 0 var(--spacing-2);
+}
+
+.quote p {
+  margin: 0;
+  font-size: var(--text-body);
+  font-style: italic;
+  color: var(--color-ink);
+}
+
+.detailSub {
+  margin: var(--spacing-3) 0 var(--spacing-1);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--color-eyebrow);
+}
+
+.detailList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+}
+
+.detailList .listPill {
+  padding: 2px var(--spacing-2);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-pill);
+  background: var(--surface-card);
+  font-size: var(--text-meta);
+  color: var(--color-ink-soft);
+}
+
+/* the plain list (Elleta, 20 Sep 2026): names, not pills. It reads down
+   one per line, because a row of bare words with no shape between them
+   is a sentence, not a list. */
+.detailList_plain {
+  display: block;
+}
+
+.detailList .listName {
+  font-size: var(--text-meta);
+  color: var(--color-ink-soft);
+}
+
+.detailList .listName + .listName {
+  margin-top: var(--spacing-1);
+}
+
+.detailMore {
+  margin: var(--spacing-2) 0 0;
+  font-size: var(--text-meta);
+}
+
+.detailLink {
+  margin: var(--spacing-3) 0 0;
+  font-size: var(--text-body);
+  font-weight: 600;
+}
+
+/* the list alternative (below 700px) */
+.mapList {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: var(--spacing-3);
+  gap: var(--spacing-2);
+  flex-wrap: wrap;
+}
+
+.mapListBtn {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-height: var(--spacing-touch-target);
+  padding: 0 var(--spacing-4);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+
+@media (max-width: 860px) {
+  .help-meta {
+    position: static;
+    padding: 0 var(--spacing-3) var(--spacing-3);
+  }
+}
+
+@media (max-width: 699px) {
+  .mapStage svg,
+  .mapStage .help-meta {
+    display: none;
+  }
+
+  .mapList {
+    display: flex;
+  }
+
+  .mapCtl {
+    display: none;
+  }
+}
+
+/* ── Out in the world ── */
+.events {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--grid-gap, var(--spacing-4));
+}
+
+/* auto-fit, so a row with fewer events than tracks still stretches to
+   the container (Elleta, 20 Sep 2026, fix pass 2) */
+.events {
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+}
+
+.events > li {
+  display: grid;
+}
+
+/* the flat card surface: no resting shadow, no lift (not a link) */
+.eventCard {
+  height: 100%;
+  padding: var(--spacing-6);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-card);
+  background: var(--surface-card);
+}
+
+.eventTitle {
+  margin: var(--spacing-2) 0 var(--spacing-1);
+}
+
+.event-meta {
+  margin: 0;
+  font-size: var(--text-meta);
+  color: var(--color-ink-muted);
+}
+
+.eventTook {
+  margin: var(--spacing-2) 0 0;
+  font-size: var(--text-body);
+  color: var(--color-ink-soft);
+}
+
+.eventUsed {
+  margin: var(--spacing-2) 0 0;
+  font-size: var(--text-meta);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zoomLayer,
+  .node,
+  .voiceWires path {
+    transition: none;
+  }
+}
+
+/* ── Sentence case on this page (Elleta, 19 Sep 2026): no all-caps on
+   any chip, switcher item or heading. The shared primitives set caps
+   site-wide (SegmentedControl, the Work table headers), so this page
+   opts them out here. The Section label is NOT opted out: it matches
+   every other page's label (Elleta, 21 Sep 2026). ── */
+.page :global(.seg-control button),
+.page table thead th,
+.page table thead th button,
+.page table tbody th button {
+  text-transform: none;
+  letter-spacing: normal;
+  font-family: var(--font-body);
+}

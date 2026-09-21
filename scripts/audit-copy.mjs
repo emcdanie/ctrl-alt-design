@@ -19,13 +19,11 @@ let fails = 0;
 const fail = (offender, got, expected) => { fails++; console.error(receipt("copy", offender, got, expected)); };
 const isComment = (l) => /^\s*(\/\/|\*|\/\*)/.test(l);
 
-/* VinylPlayer is frozen: the pre-commit hook false-positives its Apple
- * Music album id, so the file cannot be committed (see claude-progress).
- * chip-bridge/index.html is Elleta's REAL CHIP product embedded as a demo
+/* chip-bridge/index.html is Elleta's REAL CHIP product embedded as a demo
  * ("the embedded frame keeps its own skin/voice", not portfolio-authored
  * chrome); the site dash rule governs the case chrome, not the artifact.
  * NDA is NOT relaxed: audit:nda still scans it whole. */
-const EXEMPT = ["components/VinylPlayer.tsx", "public/demos/chip-bridge/index.html"];
+const EXEMPT = ["public/demos/chip-bridge/index.html"];
 for (const f of [...walk("app"), ...walk("components"), ...walk("content/case-studies"), ...walk("lib"), ...walk("public/demos")]) {
   if (EXEMPT.some((e) => f.endsWith(e))) continue;
   const lines = readFileSync(f, "utf8").split("\n");

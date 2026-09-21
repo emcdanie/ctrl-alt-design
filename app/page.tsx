@@ -1,58 +1,96 @@
-"use client";
-
-import { useState } from "react";
+import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
 import Hero from "@/components/Hero";
-import BubbleCluster from "@/components/BubbleCluster";
-import CaseCard from "@/components/CaseCard";
-import SectionHeader from "@/components/ui/SectionHeader";
-import { WORK_ITEMS } from "@/lib/workLibrary";
+import { CaseStudyCard } from "@/components/WorkLibrary";
+import WorkedWith from "@/components/WorkedWith";
+import Card from "@/components/ui/Card";
+import Section from "@/components/layout/Section";
+import SectionHeader from "@/components/layout/SectionHeader";
+import Container from "@/components/layout/Container";
+import { WORK_CASES } from "@/lib/workLibrary";
+import { TESTIMONIALS } from "@/content/testimonials";
+import styles from "@/components/Home.module.css";
 
-/* Surface the work (audit P0, Sil + Justine, 2026-07-23): the top three
- * cases render as one-click cards directly under the hero; the bubble
- * constellation stays, demoted below the work row as the philosophy
- * layer. The hero holds what-you-do + name + portrait. */
+/* Home (home rebuild, 19 Sep 2026): hero, the teams row, the three
+   cases, three doors into the system, one quote. The shared layout
+   renders the closing section and the footer. */
 
-const SELECTED_IDS = ["code-first", "drift", "chip"];
-const SELECTED = SELECTED_IDS.flatMap((id) => WORK_ITEMS.filter((i) => i.id === id));
+/* the doors: the whole card is the link. A Process door ("How a
+   request gets fetched") returns when /process exists. */
+const DOORS = [
+  { kind: "System", title: "BELLA, inspected live", body: "Tokens, components and the docs an AI can read.", href: "/design-system" },
+  { kind: "Learning", title: "Where I learned it", body: "Courses, certificates and the people I follow.", href: "/learning" },
+];
+
+/* the one sentence around the bold phrase, verbatim from the source */
+const QUOTE = TESTIMONIALS[0];
+const SENTENCE = QUOTE.quote.split(" … ").find((s) => s.includes(QUOTE.bold)) ?? QUOTE.quote;
+const [BEFORE, AFTER] = SENTENCE.split(QUOTE.bold);
 
 export default function Home() {
-  // §7: max one primary per view. While the constellation's reveal card
-  // (peek) is open it owns the primary, so the hero CTA demotes to
-  // secondary; the state lives here because hero and cluster are now
-  // separate sections.
-  const [peekOpen, setPeekOpen] = useState(false);
   return (
     <main id="main-content">
       <OverlayNav />
-      <Hero peekOpen={peekOpen} />
+      <Hero />
 
-      {/* ── Selected work: the primary path, one click per case ── */}
-      <section className="layout-section-tight">
-        <div className="page-container">
-          <SectionHeader label="Selected Work" title="Start with the" accent="work." />
-          <div className="home-work-row">
-            {SELECTED.map((i) => (
-              <CaseCard key={i.id} item={i} />
-            ))}
-          </div>
-        </div>
-      </section>
+      <div className={styles.logos}>
+        <Container>
+          <WorkedWith layout="row" label="Worked with" />
+        </Container>
+      </div>
 
-      {/* ── Philosophy: the constellation, how the pieces connect ── */}
-      <section className="layout-section-tight">
-        <div className="page-container">
-          <SectionHeader
-            label="How I Think"
-            title="How the pieces"
-            accent="connect."
-            description="The constellation behind the cases. Pick a bubble to peek at a piece."
-          />
-          <div className="philosophy-stage">
-            <BubbleCluster onOpenChange={setPeekOpen} />
-          </div>
+      <Section id="selected-work" label="Selected work">
+        <SectionHeader
+          heading="Start with the"
+          accent="work"
+          after="."
+          lead="Three systems, up close: what drifted, what I built, and what changed."
+        />
+        <div className="home-work-row reveal-group">
+          {WORK_CASES.map((c) => (
+            <CaseStudyCard key={c.id} item={c} quiet />
+          ))}
         </div>
-      </section>
+      </Section>
+
+      <Section id="how-i-work" label="How I work">
+        <SectionHeader
+          heading="The system behind the"
+          accent="site"
+          after="."
+          lead="This site runs on BELLA, my own design system. Pick a door."
+        />
+        <div className="home-work-row reveal-group">
+          {DOORS.map((d) => (
+            <Card key={d.kind} href={d.href}>
+              <span className={`text-code ${styles.kicker}`}>{d.kind}</span>
+              <span className={`heading-item ${styles.title}`}>{d.title}</span>
+              <span className={`card-body ${styles.body}`}>{d.body}</span>
+            </Card>
+          ))}
+        </div>
+      </Section>
+
+      <Section id="word-of-mouth" label="Word of mouth">
+        <figure className={styles.quote}>
+          <span className={styles.mark} aria-hidden="true">
+            “
+          </span>
+          <blockquote className={styles.words}>
+            <p>
+              {BEFORE}
+              <strong>{QUOTE.bold}</strong>
+              {AFTER}
+            </p>
+          </blockquote>
+          <figcaption className={styles.cite}>
+            <b>{QUOTE.name}</b> · {QUOTE.role} ·{" "}
+            <Link href="/about#word-of-mouth" className={styles.more}>
+              More on About <span aria-hidden="true">→</span>
+            </Link>
+          </figcaption>
+        </figure>
+      </Section>
     </main>
   );
 }

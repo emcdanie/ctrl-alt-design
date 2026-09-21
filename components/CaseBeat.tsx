@@ -1,6 +1,7 @@
 "use client";
 
 import Heading from "@/components/ui/Heading";
+import Container from "@/components/layout/Container";
 
 /**
  * THE case-study beat template (airtight spec, Elleta 22 Jul 2026;
@@ -67,13 +68,17 @@ export default function CaseBeat({
   id?: string;
 }) {
   return (
+    /* the page frame (O.6, 21 Sep): Section rhythm, hairline at the
+       container's width, the beat grid inside the one Container */
     <section
-      className={`beat${flip ? " beat--flip" : ""}${wide ? " beat--wide" : ""}`}
+      className={`l-section section--ruled beat${flip ? " beat--flip" : ""}${wide ? " beat--wide" : ""}`}
       aria-labelledby={id}
     >
-      <div className="beat-grid">
+      <Container className="beat-grid">
         <div className="beat-text">
-          <p className="beat-eyebrow">{index} · {kicker}</p>
+          {/* the section label: the plain mono label every Section wears,
+              no number (the index stays in the props for ordering) */}
+          <p className="beat-eyebrow">{kicker}</p>
           {/* the beat headline is the page's section tier, through
               THE Heading primitive (type-scale fix, 22 Jul 2026);
               .beat-headline keeps only rhythm + scroll anchoring */}
@@ -86,7 +91,7 @@ export default function CaseBeat({
           {visual}
           {foot && <div className="beat-foot">{foot}</div>}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

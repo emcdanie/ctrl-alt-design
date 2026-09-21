@@ -20,6 +20,7 @@ export function FilterChip({
 }) {
   return (
     <button
+      data-component="FilterChip"
       type="button"
       className={className ? `filter-chip ${className}` : "filter-chip"}
       aria-pressed={pressed}

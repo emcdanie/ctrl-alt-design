@@ -2,7 +2,7 @@
 name: case-study-editor
 description: >
   Reviews and structures a portfolio case study against Elleta's case standards
-  and the reviewer feedback she trusts (Justine, Sil). Use when writing, editing,
+  and the reviewer feedback she trusts. Use when writing, editing,
   or structuring a case study, or deciding what to cut. Checks: problem defined
   visually first, work surfaced early, scannable in 30 seconds, short clips not
   long video, honest outcomes, NDA-safe, personality not lost to the machine.
@@ -24,7 +24,7 @@ not prose.
 1. **Define the problem visually before words.** The broken/before state, annotated,
    should land before a paragraph is read. Flag cases that open with prose.
 
-2. **Surface the work early; reduce clicks.** (Sil + Justine.) The case and its
+2. **Surface the work early; reduce clicks.** (reviewer feedback.) The case and its
    substance should be reachable fast, not buried behind a hero, a button, or a
    search. Flag anything that makes the work hard to find.
 
@@ -35,12 +35,12 @@ not prose.
 4. **Short clips, never long video.** A 4+ minute walkthrough loses almost everyone.
    Clips show where the solution landed. Flag any long video as the primary format.
 
-5. **Don't over-design the case.** (Justine + the Code First lesson.) Personality on
+5. **Don't over-design the case.** (reviewer feedback + the Code First lesson.) Personality on
    the site, discipline in the case. A case that becomes five little interactive
    apps is over-built. Flag interaction that doesn't earn its place; prefer a strong
    still.
 
-6. **Don't lose the human to the machine.** (Justine.) The AI thesis supports; the
+6. **Don't lose the human to the machine.** (reviewer feedback.) The AI thesis supports; the
    person leads. Flag copy that reads as "too AI-driven and designed."
 
 7. **Honest outcomes only.** No invented metrics. Real (hers/BELLA) or directional,

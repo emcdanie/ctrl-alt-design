@@ -1,107 +1,75 @@
-/* Hero layout — headline column + the portrait bubble (globals.css
- * .photo-bubble, the About recipe). Compact since surface-the-work
- * (2026-07-23): no 100dvh centering, so the selected-work row reaches
- * above the fold on a laptop. */
+/* Home opening (home rebuild, 19 Sep 2026). The Section supplies the
+ * padding and the container; one text column since Part Q (21 Sep):
+ * the hero art and its scroll drift are gone. */
 
 .hero {
-  max-width: var(--container-width);
-  margin: 0 auto;
-  padding: calc(var(--header-height) + var(--spacing-12)) var(--container-padding) var(--spacing-8);
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: var(--spacing-10);
+}
+
+/* status line: dot + availability, then name and place */
+.status {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  width: 100%;
-}
-
-.kicker {
-  font-family: var(--font-mono);
-  font-size: 13.5px; /* proto-exact (recorded exception) */
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-accent-ink);
-  margin: 0 0 var(--spacing-4);
-}
-
-/* The Heading primitive supplies face, size, tracking and leading
-   (hero tier); this shell keeps only the spacing below it. */
-.headline {
-  margin: 0 0 var(--spacing-6);
-}
-
-.intro {
-  font-family: var(--font-body);
-  font-size: 17px; /* proto-exact (recorded exception) */
-  line-height: 1.55;
-  color: var(--color-ink);
-  max-width: 40ch;
+  gap: var(--spacing-2) var(--spacing-4);
   margin: 0;
-  opacity: 0.9;
 }
 
-.intro b {
-  font-weight: 600;
+/* metadata tier, like the line it sits in */
+.metaItem {
+  white-space: nowrap;
 }
 
-/* hero-scale portrait (Elleta, 23 Jul): ~1.5x the About bubble so it
-   holds against the H1; the frame recipe stays globals .photo-bubble,
-   only the size is the hero's own. Min 240 clears 390 comfortably. */
-.portrait {
-  width: clamp(240px, 27vw, 360px) /* token-waiver: hero portrait scale, 1.5x the recorded About bubble */;
+.dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: var(--spacing-2);
+  border-radius: var(--radius-full);
+  background: var(--case-clarity-text);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--case-clarity-text) 18%, transparent);
 }
 
-/* the demoted "Pick a piece." eyebrow (hierarchy fix, 23 Jul): the
-   shared .section-label recipe, spacing only here */
-.pick {
-  margin: var(--spacing-8) 0 0;
+/* size, measure, weight, tracking, leading and the squeeze come from
+   the Heading primitive (hero tier, squeeze) */
+.headline {
+  margin: var(--spacing-4) 0 var(--hero-lead-gap);
 }
 
-.ctaRow {
-  margin-top: var(--spacing-4);
+/* the hero lead recipe, the same as every page opening (Part Q) */
+.lead {
+  margin: 0 0 var(--spacing-6);
+  max-width: var(--measure-hero-lead);
+  font-size: var(--text-hero-lead);
+  line-height: 1.55;
 }
 
-.systemLine {
-  margin-top: var(--spacing-4);
-  font-family: var(--font-body);
-  /* reading text, not metadata: the type floor applies (audit:type
-     hardening, 27 Jul) */
-  font-size: var(--typography-font-size-base);
-  color: var(--hero-copy-muted, var(--color-muted));
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3) var(--spacing-6);
 }
 
 .quietLink {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  /* inline-flex so min-height actually applies to the anchor */
   display: inline-flex;
   align-items: center;
   min-height: var(--spacing-touch-target);
-  padding: 0 var(--spacing-2);
   font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  font-weight: var(--typography-font-weight-medium);
-  color: var(--color-ink-muted);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-color: var(--color-semantic-border);
+  text-underline-offset: 4px;
 }
 
 .quietLink:hover,
 .quietLink:focus-visible {
   color: var(--color-accent-ink);
+  text-decoration-color: currentColor;
 }
 
 .quietLink:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 2px;
-}
-
-
-@media (max-width: 860px) {
-  .hero {
-    grid-template-columns: 1fr;
-    padding: 88px 22px 56px /* token-waiver: proto-exact mobile hero geometry (recorded; bottom tightened for the work row) */;
-    gap: var(--spacing-6);
-  }
 }

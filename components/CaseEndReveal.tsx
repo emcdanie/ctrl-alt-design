@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Heading from "@/components/ui/Heading";
 import { WORK_ITEMS } from "@/lib/workLibrary";
 
 /**
@@ -18,9 +17,9 @@ import { WORK_ITEMS } from "@/lib/workLibrary";
  * renders it static).
  *
  * Ours, not pink: a warm cream/steel dome (light), navy dome (dark). The
- * "Thanks for reading" sign-off renders in the SITE's Unique display via
- * Heading tier="case" (no script font, no new font); the heart wears the
- * clay accent. The next-case thumb is a circle with an iris ring holding a
+ * "Thanks for reading" sign-off is a paragraph, not a heading (19 Sep
+ * 2026), followed by the next-case link; the heart wears the clay
+ * accent. The next-case thumb is a circle with an iris ring holding a
  * simple per-case emblem in steel, never a screenshot, never the live embed.
  *
  * The next case is DYNAMIC: the case studies in workLibrary order, wrapping
@@ -91,12 +90,12 @@ export default function CaseEndReveal({ slug }: { slug: string }) {
     >
       <div className="cs2-endreveal__dome" aria-hidden="true" />
       <div className="cs2-endreveal__inner">
-        <Heading tier="case" as="h2" className="cs2-endreveal__thanks">
+        <p className="cs2-endreveal__thanks">
           Thanks for reading{" "}
           <span className="cs2-endreveal__heart" aria-hidden="true">
             {"♥"}
           </span>
-        </Heading>
+        </p>
 
         <span className="cs2-endreveal__rule" aria-hidden="true" />
         <p className="cs2-endreveal__label">Next case</p>
@@ -107,7 +106,7 @@ export default function CaseEndReveal({ slug }: { slug: string }) {
           </span>
           <span className="cs2-endreveal__meta">
             <span className="cs2-endreveal__title">{next.title}</span>
-            <span className="cs2-endreveal__kicker">{next.kicker}</span>
+            <span className="cs2-endreveal__kicker">{next.kicker.replace(/\b(20\d\d)-(?:20)?(\d\d)\b/, "$1 to $2")}</span>
           </span>
           <span className="cs2-endreveal__arrow" aria-hidden="true">
             &rarr;

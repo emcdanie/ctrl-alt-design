@@ -38,6 +38,31 @@ export function readTokens(): { primitive: DtcgGroup; semantic: DtcgGroup; compo
   return { primitive, semantic, component };
 }
 
+/* The frame tokens every page shares (O.10, 21 Sep 2026, published like
+ * a reference site's tokens.json): the numbers audit:frame holds every route
+ * to, read from the same stylesheets, so the published frame is the
+ * enforced one. */
+const FRAME = {
+  container: "--layout-max",
+  gutter: "--layout-gutter",
+  sectionRhythm: "--section-pad-y",
+  titleMeasure: "--measure-title",
+  proseMeasure: "--measure-body",
+  radii: { small: "--radius-sm", inset: "--radius-md", control: "--radius-lg", card: "--radius-card", pill: "--radius-pill" },
+} as const;
+
+export function readFrame() {
+  const { primitive, semantic, component } = readTokens();
+  const all = { ...primitive, ...semantic, ...component };
+  const pick = (name: string) => ({ token: name, ...all[name] });
+  const { radii, ...rest } = FRAME;
+  return {
+    ...Object.fromEntries(Object.entries(rest).map(([k, n]) => [k, pick(n)])),
+    radii: Object.fromEntries(Object.entries(radii).map(([k, n]) => [k, pick(n)])),
+    enforcedBy: "audit:frame",
+  };
+}
+
 /* The counts the System page renders. Derived, never typed: the beat
  * describes the pipeline, so its numbers must come out of the pipeline. */
 export function tokenCounts() {

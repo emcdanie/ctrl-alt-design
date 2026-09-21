@@ -1,0 +1,13 @@
+- region "Fluent in design, code and Bella.":
+  - paragraph: "Words with a dotted underline are buttons: focus or press one to hear what it means and when it matters."
+  - paragraph: About
+  - heading "Fluent in design, code and Bella." [level=1]:
+    - text: ""
+    - button "Bella"
+    - text: ""
+  - paragraph:
+    - text: I build design systems that give designers and developers a
+    - strong: shared language
+    - text: ":"
+    - button "tokens"
+    - text: ", components, and the decisions behind them, written down kindly so everyone can use them."

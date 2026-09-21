@@ -1,0 +1,10 @@
+- region "Case studies":
+  - paragraph: Case studies
+  - heading "Three systems, up close." [level=2]
+  - paragraph: Real teams, real drift. What I found, what I built, what changed.
+  - link /Case study \d+ to \d+ Code First Figma and code as one system, not two\. Design tokens Figma ⇄ code Read it →/:
+    - /url: /case-studies/brad-frost
+  - link /Case study \d+ to \d+ From Drift to Foundation A first design system for a product that had outgrown its UI\. Design systems Governance Read it →/:
+    - /url: /case-studies/design-system-transformation
+  - link /Case study \d+ CHIP An agent that watches the system and never moves silently\. AI-enabled design Governance Read it →/:
+    - /url: /case-studies/chip

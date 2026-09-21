@@ -1,0 +1,72 @@
+- region "Out in the world":
+  - paragraph: Out in the world
+  - heading "Where I showed up." [level=2]
+  - paragraph: "Conferences, workshops and hackathons: the rooms where the reading turned into conversations."
+  - list:
+    - listitem:
+      - article:
+        - paragraph: /Workshop Sep \d+/
+        - heading "Building Context-Based Design Systems" [level=3]
+        - paragraph: /TJ Pitre, SmashingConf Freiburg \d+/
+        - paragraph: Tokens as the primary contract for AI tools.
+        - paragraph:
+          - text: Used in
+          - link "CHIP":
+            - /url: /case-studies/chip
+    - listitem:
+      - article:
+        - paragraph: /Hackathon Apr \d+/
+        - 'heading "Built with Opus 4.7: a Claude Code hackathon" [level=3]'
+        - paragraph: Anthropic, Cerebral Valley
+        - paragraph: The human stays in the judgment layer. The agent never moves silently.
+        - paragraph:
+          - text: Used in
+          - link "CHIP":
+            - /url: /case-studies/chip
+    - listitem:
+      - article:
+        - paragraph: /Workshop Apr \d+/
+        - heading "Measuring UX Impact" [level=3]
+        - paragraph: /Vitaly Friedman, SmashingConf Amsterdam \d+/
+    - listitem:
+      - article:
+        - paragraph: /Conference Apr \d+/
+        - heading /SmashingConf Amsterdam \d+/ [level=3]
+        - paragraph: Smashing, Amsterdam
+        - paragraph: Everyone is solving the same drift problem, just with different tools.
+    - listitem:
+      - article:
+        - paragraph: /Conference Mar \d+/
+        - heading /Into Design Systems AI Conference \d+/ [level=3]
+        - paragraph: Into Design Systems, online
+    - listitem:
+      - article:
+        - paragraph: /Hackathon Feb \d+/
+        - heading "Into Design Systems AI Hackathon" [level=3]
+        - paragraph: Into Design Systems
+    - listitem:
+      - article:
+        - paragraph: /Workshop Jan \d+/
+        - heading /Designing For Complex UIs in \d+/ [level=3]
+        - paragraph: Vitaly Friedman, live session
+        - paragraph: "Verifiability beats transparency: let people check the output."
+    - listitem:
+      - article:
+        - paragraph: /Workshop Oct \d+/
+        - heading /Design Patterns For AI in \d+/ [level=3]
+        - paragraph: Vitaly Friedman, live session
+    - listitem:
+      - article:
+        - paragraph: /Workshop Sep \d+/
+        - heading "Advanced Design Systems" [level=3]
+        - paragraph: /Brad Frost, SmashingConf Freiburg \d+/
+    - listitem:
+      - article:
+        - paragraph: /Conference May \d+/
+        - heading /Into Design Systems Conference \d+/ [level=3]
+        - paragraph: Into Design Systems, online
+        - paragraph: Governance is a people problem wearing a process costume.
+        - paragraph:
+          - text: Used in
+          - link "From Drift to Foundation":
+            - /url: /case-studies/design-system-transformation

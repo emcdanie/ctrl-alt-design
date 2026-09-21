@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { social } from "@/lib/social";
-import ThemeSwitch from "@/components/ThemeSwitch";
+import ThemeToggle from "@/components/ThemeToggle";
+import GetInTouch from "@/components/GetInTouch";
+import ContactActions from "@/components/ContactActions";
 
 
 /* Primary IA — visible in the desktop header (NN/g: hidden desktop nav
@@ -13,9 +14,8 @@ import ThemeSwitch from "@/components/ThemeSwitch";
 const menuItems = [
   { num: "01", label: "Work", href: "/work" },
   { num: "02", label: "System", href: "/design-system" },
-  { num: "03", label: "Skills", href: "/skills" },
+  { num: "03", label: "Learning", href: "/learning" },
   { num: "04", label: "About", href: "/about" },
-  { num: "05", label: "Contact", href: "/contact" },
 ];
 
 export default function OverlayNav() {
@@ -71,20 +71,19 @@ export default function OverlayNav() {
       <div
         className="pointer-events-none fixed inset-x-0 top-0 z-[9995]"
       >
-        <div className="flex w-full items-center justify-between border-b border-[color:var(--color-semantic-border-glass-edge)] bg-[var(--color-semantic-background)]/72 px-4 py-3 shadow-[var(--shadow-nav-bar)] backdrop-blur-xl sm:px-6"
+        <div className="w-full border-b border-[color:var(--color-semantic-border-glass-edge)] bg-[var(--color-semantic-background)]/72 py-3 shadow-[var(--shadow-nav-bar)] backdrop-blur-xl"
           style={{ borderTop: "1px solid var(--color-semantic-border-glass-top)" }}
         >
+        {/* the bar stays full width; its row sits on the page container,
+            so the wordmark lines up with the content at every width */}
+        <div className="nav-row">
           <Link
             href="/"
-            className="kbd-logo pointer-events-auto"
-            aria-label="ctrl alt design, home"
+            className="nav-wordmark pointer-events-auto"
+            aria-label="Elleta McDaniel, home"
             onClick={() => setOpen(false)}
           >
-            <span className="key">Ctrl</span>
-            <span className="plus" aria-hidden="true">+</span>
-            <span className="key">Alt</span>
-            <span className="plus" aria-hidden="true">+</span>
-            <span className="key key-iris">Design</span>
+            ELLETA
           </Link>
 
           {/* Desktop primary nav, hidden below lg, where the hamburger takes over */}
@@ -94,11 +93,8 @@ export default function OverlayNav() {
                 key={item.num}
                 href={item.href}
                 aria-current={isCurrent(item.href) ? "page" : undefined}
-                className={`flex min-h-[var(--spacing-touch-target)] items-center rounded-[var(--radius-md)] px-3 font-[family:var(--font-mono)] text-[length:var(--typography-font-size-tag)] font-medium uppercase tracking-[0.1em] transition-colors hover:text-[color:var(--color-accent-ink)] ${
-                  isCurrent(item.href)
-                    ? "text-[color:var(--color-accent-ink)] underline underline-offset-8 decoration-2"
-                    : "text-[color:var(--color-ink-soft)]"
-                }`}
+                data-component="NavLink"
+                className={`nav-link ${isCurrent(item.href) ? "nav-link--current" : ""}`}
               >
                 {item.label}
               </Link>
@@ -106,31 +102,38 @@ export default function OverlayNav() {
           </nav>
 
           <div className="flex items-center gap-4">
-          <ThemeSwitch />
+          {/* ONE theme toggle, always directly left of the CTA (lg+) or the
+              menu button (below lg). audit:controls checks both. */}
+          <ThemeToggle />
+          {/* Contact left the nav (about-rebuild lock, 18 Sep 2026): the
+              ask is a button; below lg it lives in the menu instead */}
+          <div className="hidden lg:block">
+            <GetInTouch />
+          </div>
           <button
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
             onMouseLeave={() => setTriggerHovered(false)}
-            className="lg:hidden pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--color-border-medium)] bg-[color:var(--color-glass)] text-[color:var(--color-ink)] shadow-[var(--shadow-soft)] transition-all duration-200 hover:bg-[color:var(--color-glass-strong)]"
+            className="lg:hidden pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--color-border-medium)] bg-[color:var(--color-glass)] text-[color:var(--color-ink)] shadow-[var(--shadow-soft)] transition-all duration-[var(--dur-fast)] hover:bg-[color:var(--color-glass-strong)]"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="overlay-menu"
           >
             <span
-              className="absolute block h-[2px] rounded-full bg-current transition-all duration-200 ease-out"
+              className="absolute block h-[2px] rounded-full bg-current transition-all duration-[var(--dur-fast)] ease-[var(--ease-out)]"
               style={{
                 width: triggerHovered && !open ? "24px" : "20px",
                 transform: open ? "rotate(45deg)" : "translateY(-4px)",
               }}
             />
             <span
-              className="absolute block h-[2px] w-6 rounded-full bg-current transition-all duration-200 ease-out"
+              className="absolute block h-[2px] w-6 rounded-full bg-current transition-all duration-[var(--dur-fast)] ease-[var(--ease-out)]"
               style={{
                 opacity: open ? 0 : triggerHovered ? 1 : 0,
               }}
             />
             <span
-              className="absolute block h-[2px] rounded-full bg-current transition-all duration-200 ease-out"
+              className="absolute block h-[2px] rounded-full bg-current transition-all duration-[var(--dur-fast)] ease-[var(--ease-out)]"
               style={{
                 width: triggerHovered && !open ? "24px" : "20px",
                 transform: open ? "rotate(-45deg)" : "translateY(4px)",
@@ -139,22 +142,23 @@ export default function OverlayNav() {
           </button>
           </div>
         </div>
+        </div>
       </div>
 
       <div
         ref={menuRef}
         id="overlay-menu"
         inert={!open}
-        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[color:var(--color-ink)] ease-[cubic-bezier(0.76,0,0.24,1)]"
+        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[color:var(--color-ink)] ease-[var(--ease-in-out)]"
         style={{
           clipPath: open ? "inset(0% 0 0% 0)" : "inset(100% 0 0% 0)",
           /* belt-and-braces with the inert guard: closed-menu content can
              never paint or catch focus. visibility flips instantly on
-             open, and waits for the 300ms clip animation on close. */
+             open, and waits for the clip animation (--dur-base) on close. */
           visibility: open ? "visible" : "hidden",
           transitionProperty: "clip-path, visibility",
-          transitionDuration: "300ms, 0s",
-          transitionDelay: open ? "0s, 0s" : "0s, 300ms",
+          transitionDuration: "var(--dur-base), 0s",
+          transitionDelay: open ? "0s, 0s" : "0s, var(--dur-base)",
         }}
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,var(--color-glass-strong),transparent_36%),radial-gradient(circle_at_bottom_right,var(--color-semantic-accent-subtle),transparent_34%)]" />
@@ -175,7 +179,7 @@ export default function OverlayNav() {
               const dimmed = anyHovered && !isHovered;
 
               const sharedClasses =
-                "font-[family:var(--font-display)] text-[length:var(--font-hero)] font-normal leading-[1.02] tracking-[-0.02em] transition-colors duration-150";
+                "font-[family:var(--font-display)] text-[length:var(--font-hero)] font-normal leading-[1.02] tracking-[-0.02em] transition-colors duration-[var(--dur-fast)]";
               const colorClass = dimmed ? "text-[color:var(--color-ink-muted)]" : "text-[color:var(--color-ink)]";
 
               return (
@@ -185,7 +189,7 @@ export default function OverlayNav() {
                   onMouseEnter={() => setHovered(item.num)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  <span className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] sm:min-w-20">
+                  <span aria-hidden="true" className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] sm:min-w-20">
                     (_{item.num})
                   </span>
 
@@ -199,6 +203,7 @@ export default function OverlayNav() {
                   ) : (
                     <Link
                       href={item.href}
+                      data-component="NavLink"
                       onClick={() => setOpen(false)}
                       aria-current={isCurrent(item.href) ? "page" : undefined}
                       className={`${sharedClasses} ${colorClass} block hover:text-[color:var(--color-ink-soft)]`}
@@ -212,23 +217,9 @@ export default function OverlayNav() {
           </nav>
 
           <div className="relative z-10 mt-12 flex flex-col gap-3 sm:mt-16">
-            <div className="flex items-center gap-3">
-              <ThemeSwitch />
-              <span className="font-[family:var(--font-mono)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.12em] text-[color:var(--color-ink-muted)]">
-                Theme
-              </span>
-            </div>
-            {/* no plaintext email anywhere (copy rule, 2026-07-17):
-                the contact form is the channel */}
-            <a
-              href={social.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex w-fit items-center font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.18em] text-[color:var(--color-ink-muted)] transition-colors duration-150 hover:text-[color:var(--color-ink)]"
-              style={{ minHeight: "var(--spacing-touch-target)" }}
-            >
-              LinkedIn
-            </a>
+            {/* Get in touch, the menu's copy of the header button
+                (email assembled on click, §6) */}
+            <ContactActions />
           </div>
         </div>
       </div>

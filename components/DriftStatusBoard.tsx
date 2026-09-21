@@ -7,43 +7,50 @@
  * an embed). Static by design: the deliberate still beat in the rhythm.
  * Steel plus status semantics, no iris, no yellow-orange. Recreated, illustrative,
  * abstract: generic component names, no client data.
+ *
+ * The board and the proposal line carry data-t (Elleta, 20 Sep 2026), so
+ * the case's linked phrases can point at either half of it.
  */
+/* mock v4 rows (21 Sep): the shape carries the status with the word,
+   so it never rests on colour alone */
 const STATUS_ROWS = [
-  { name: "Button", status: "stable", label: "Stable", asks: "Use freely" },
-  { name: "Input", status: "stable", label: "Stable", asks: "Use freely" },
-  { name: "Select", status: "review", label: "In review", asks: "Usable, may still change" },
-  { name: "Date field", status: "exp", label: "Experimental", asks: "Opt in, expect change" },
-  { name: "Legacy modal", status: "dep", label: "Deprecated", asks: "Migrate to Modal" },
+  { name: "Button", status: "stable", shape: "●", label: "Stable" },
+  { name: "Filter chip", status: "review", shape: "◐", label: "In review" },
+  { name: "Date range", status: "exp", shape: "◌", label: "Experimental" },
+  { name: "Legacy tabs", status: "dep", shape: "×", label: "Deprecated" },
 ];
 
 export default function DriftStatusBoard() {
   return (
     <div>
-      <p className="gov-h">Component status</p>
-      <div className="gov-board">
-        {STATUS_ROWS.map((r) => (
-          <div className="gov-row" key={r.name}>
-            <span className="gov-name">{r.name}</span>
-            <span className={`gov-badge ${r.status}`}>{r.label}</span>
-            <span className="gov-asks">{r.asks}</span>
-          </div>
-        ))}
-      </div>
+      <table className="gov-board">
+        <caption className="sr-only">Component status</caption>
+        <thead>
+          <tr>
+            <th scope="col">Component</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody data-t="status">
+          {STATUS_ROWS.map((r) => (
+            <tr key={r.name}>
+              <th scope="row" className="gov-name">
+                {r.name}
+              </th>
+              <td>
+                <span className={`gov-badge ${r.status}`}>
+                  <span aria-hidden="true">{r.shape}</span> {r.label}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-      <div className="gov-path-wrap">
-        <p className="gov-h">The proposal path</p>
-        <div className="gov-path">
-          <span className="gov-step">Propose</span>
-          <span className="gov-parr" aria-hidden>&rarr;</span>
-          <span className="gov-step">In review</span>
-          <span className="gov-parr" aria-hidden>&rarr;</span>
-          <span className="gov-step on">Stable</span>
-        </div>
-        <p className="gov-note">
-          <b>Status signals maturity, it does not block.</b> Anyone can propose; adoption is what
-          promotes a pattern. Nothing is enforced, so nothing gets worked around.
-        </p>
-      </div>
+      <p className="gov-note" data-t="propose">
+        <span className="text-code">Propose a change →</span> one form, checked against the five
+        audit questions.
+      </p>
     </div>
   );
 }

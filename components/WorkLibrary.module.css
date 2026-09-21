@@ -1,28 +1,9 @@
-/* Work library — Map / Table / Timeline. Frames per DESIGN.md: one card
- * radius, token spacing, §5 ramp type only. */
+/* Work library: the /work case cards and pattern studies, the study
+ * pages, the search box /learning reads, and the skills matrix
+ * (/learning, /quick).
+ * Frames per DESIGN.md: token spacing, ramp type only. */
 
-/* ── ONE toolbar row (rebuild 2026-07-18): search left, switcher right ── */
-.toolbar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--spacing-6);
-  flex-wrap: wrap;
-  margin-bottom: var(--spacing-6);
-}
-
-.toolbarSearch {
-  flex: 1 1 420px;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-}
-
-.toolbarSwitcher {
-  flex: 0 0 auto;
-}
-
+/* searchRow and searchInput: /learning's search box reads them */
 .searchRow {
   display: flex;
   align-items: center;
@@ -54,107 +35,6 @@
   outline-offset: var(--ring-focus-offset);
 }
 
-/* separates the skill chips from the TYPE chips in the ONE row */
-.chipDivider {
-  width: 1px;
-  align-self: stretch;
-  background: var(--color-border-medium);
-  margin: 0 var(--spacing-2);
-}
-
-.fitResults {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
-  margin-bottom: var(--spacing-8);
-}
-
-.filterRow {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--spacing-2);
-  margin-bottom: var(--spacing-3);
-}
-
-.count {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  letter-spacing: 0.08em;
-  color: var(--color-ink-muted);
-  margin: 0;
-}
-
-.moreToggle {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  min-height: 32px;
-  padding: var(--spacing-1) var(--spacing-3);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  font-weight: var(--typography-font-weight-medium);
-  color: var(--color-accent-ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.moreToggle:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
-}
-
-/* applied filters live ABOVE the results; min-height keeps layout stable */
-.appliedRow {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--spacing-2);
-  min-height: 44px;
-  margin: var(--spacing-3) 0 var(--spacing-4);
-}
-
-.appliedChip {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  cursor: pointer;
-  min-height: var(--spacing-touch-target);
-  padding: var(--spacing-1) var(--spacing-3);
-  border: none;
-  border-radius: var(--radius-full);
-  background: var(--color-semantic-accent-subtle);
-  color: var(--color-accent-ink);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  font-weight: var(--typography-font-weight-medium);
-}
-
-.appliedChip:focus-visible,
-.clearAll:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
-}
-
-.clearAll {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  min-height: 32px;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  font-weight: var(--typography-font-weight-medium);
-  color: var(--color-ink-muted);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.empty {
-  font-size: var(--font-body-size);
-  color: var(--color-ink-muted);
-  padding: var(--spacing-8) 0;
-}
-
 /* ── Table ── */
 
 .tableWrap {
@@ -164,7 +44,7 @@
   position: relative;
   overflow-x: auto;
   border: 1px solid var(--color-semantic-border-subtle);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-card);
   background: var(--color-card);
 }
 
@@ -202,147 +82,6 @@
   background: var(--color-semantic-accent-subtle);
 }
 
-.thSort {
-  all: unset;
-  cursor: pointer;
-  font: inherit;
-  letter-spacing: inherit;
-  color: inherit;
-  min-height: var(--spacing-touch-target);
-  display: inline-flex;
-  align-items: center;
-}
-
-.thSort:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: var(--ring-focus-offset);
-}
-
-.rowTitle {
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: var(--typography-font-size-base);
-  text-decoration: none;
-  /* 44px house rule, inline hit-area growth (no layout shift in the row) */
-  padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
-}
-
-.rowTitle:hover,
-.rowTitle:focus-visible {
-  text-decoration: underline;
-}
-
-.focusTag {
-  display: inline-block;
-  margin-left: var(--spacing-2);
-  font-family: var(--font-mono);
-  font-size: 11px; /* matches the hub-sub recorded exception */
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-accent-ink);
-  border: 1px solid var(--color-semantic-accent-border);
-  border-radius: var(--radius-full);
-  padding: 2px var(--spacing-2);
-  white-space: nowrap;
-}
-
-.skillList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-1);
-  max-width: 260px;
-}
-
-.skillTag {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  color: var(--color-ink-muted);
-  background: var(--color-surface);
-  border-radius: var(--radius-sm);
-  padding: 2px var(--spacing-2);
-  white-space: nowrap;
-}
-
-.nowrap {
-  white-space: nowrap;
-}
-
-.impactCell {
-  min-width: 220px;
-}
-
-/* ── Mobile: stacked cards replace the table below 768px ── */
-.stackList {
-  display: none;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-@media (max-width: 767px) {
-  .table {
-    display: none;
-  }
-
-  /* the matrix is real 2-axis data: it stays a table and scrolls in its
-     own container instead of stacking */
-  .table.matrix {
-    display: table;
-  }
-
-  .stackList {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .stackCard {
-    padding: var(--spacing-5);
-    border-bottom: 1px solid var(--color-semantic-border-subtle);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-2);
-    align-items: flex-start;
-  }
-
-  .stackCard:last-child {
-    border-bottom: none;
-  }
-
-  .stackMeta {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: var(--typography-font-size-tag);
-    letter-spacing: 0.06em;
-    color: var(--color-ink-muted);
-  }
-
-  .stackImpact {
-    margin: 0;
-    font-size: var(--typography-font-size-base);
-    line-height: 1.55;
-    color: var(--color-ink-soft);
-  }
-}
-
-/* ── Map ── */
-
-.mapWrap {
-  position: relative;
-  max-width: 720px;
-  margin: 0 auto;
-  padding: var(--spacing-8) 0 var(--spacing-16);
-}
-
-/* ── Timeline ── */
-
-
-
-
-/* Reduced motion: the timeline flattens to a vertical list; no snap, no
- * horizontal scroll, no parallax (JS is also gated). */
-@media (prefers-reduced-motion: reduce) {
-}
-
 /* ── Skills x projects matrix (§8) ── */
 
 .matrix th,
@@ -367,7 +106,7 @@
   min-height: var(--spacing-touch-target);
   display: inline-flex;
   align-items: center;
-  transition: color 0.15s;
+  transition: color var(--dur-fast) var(--ease-out);
 }
 
 .mxHead:hover {
@@ -387,7 +126,7 @@
 
 .mxCell {
   text-align: center;
-  transition: opacity 0.15s, background 0.15s;
+  transition: opacity var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
 }
 
 /* marked cell: case tint + dot, never colour-only (sr-only text in TSX) */
@@ -473,33 +212,372 @@
   }
 }
 
-/* ── Cards view: CaseCard grid ── */
+/* ── /work (Elleta, 19 Sep 2026, pattern-studies direction) ── */
 
-.cardsGrid {
+.back {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+.back:focus-visible,
+.more:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.more {
+  font-weight: 500;
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ── Case cards ── */
+
+.caseCard:hover .cardTitle,
+.caseCard:focus-visible .cardTitle {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cover {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: linear-gradient(160deg, var(--cover-warm-hi), var(--cover-warm-lo));
+}
+
+.kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+/* Home's quiet kicker: kind and years, code role, muted */
+.kickerQuiet {
+  display: block;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Home's arrow: there on hover and focus only */
+.hoverArrow {
+  color: var(--color-accent-ink);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.caseCard:hover .hoverArrow,
+.caseCard:focus-visible .hoverArrow {
+  opacity: 1;
+}
+
+/* the years ride the kicker row (metadata tier) */
+.kickerDate {
+  font-variant-numeric: tabular-nums;
+}
+
+/* the type pill, tinted over the page ground: over the flat card
+   surface the tint pulled the text under AA */
+.pill {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+  border-radius: var(--radius-full);
+  padding: 0 var(--spacing-2);
+  color: var(--color-accent-ink);
+  background: color-mix(in srgb, var(--color-accent-ink) 7%, var(--color-semantic-background));
+}
+
+.cardTitle,
+.cardLine {
+  display: block;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+  margin-top: auto;
+}
+
+.cardGo {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--color-accent-ink);
+}
+
+/* ── Pattern studies: sticky head left, the list right from 1024px ── */
+
+.studiesSplit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-stack-lg);
+}
+
+@media (min-width: 1024px) {
+  .studiesSplit {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    column-gap: var(--layout-gutter);
+  }
+
+  .studiesHead {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-stack-md));
+    align-self: start;
+  }
+}
+
+/* the list column: a grid child that may shrink */
+.studies {
+  min-width: 0;
+}
+
+.studyChips {
+  margin-bottom: var(--spacing-2);
+}
+
+.studyList {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.studyList li + li .studyRow {
+  border-top: 1px solid var(--color-semantic-border-subtle);
+}
+
+.studyRow {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: var(--grid-gap, var(--spacing-6));
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1fr) 5.5rem;
+  gap: var(--spacing-4);
+  padding-block: var(--spacing-6);
+  color: inherit;
+  text-decoration: none;
 }
 
-/* ── Curated default (IA hybrid 2026-07-17) ─────────────────────── */
-.curatedGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: var(--grid-gap);
-  align-items: stretch;
-  margin-top: var(--spacing-4);
+@media (min-width: 600px) {
+  .studyRow {
+    grid-template-columns: minmax(0, 1fr) 13rem;
+    align-items: start;
+  }
 }
 
-.featuredSlot {
-  grid-column: 1 / -1;
+.studyRow:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
 }
 
-@media (max-width: 640px) {
-  .curatedGrid {
-    grid-template-columns: 1fr;
+.studyText {
+  display: block;
+}
+
+.studyMeta {
+  display: block;
+}
+
+.studyTitle {
+  margin: var(--spacing-1) 0;
+}
+
+.studyRow:hover .studyTitle {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.studyArrow {
+  display: inline-block;
+  color: var(--color-accent-ink);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.studyRow:hover .studyArrow {
+  transform: translateX(4px);
+}
+
+.studyLine {
+  display: block;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-ink-muted);
+}
+
+.studyProject {
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+/* the framed crop: one tile colour; the crop sits in from the top-left
+   and runs off the right and bottom edges */
+.tile {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid var(--color-semantic-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--tile);
+}
+
+@media (min-width: 600px) {
+  .tile {
+    aspect-ratio: 3 / 2;
+  }
+}
+
+.tileImg {
+  position: absolute;
+  left: 10%;
+  top: 12%;
+  width: 125%;
+  max-width: none;
+  height: auto;
+  border-radius: var(--radius-sm) 0 0 0;
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.studyRow:hover .tileImg,
+.studyRow:focus-visible .tileImg {
+  transform: translate(-3px, -3px);
+}
+
+/* ── Brief page ── */
+
+.video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--tile);
+}
+
+.video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .studyArrow,
+  .tileImg {
+    transition: none;
+  }
+
+  .studyRow:hover .studyArrow,
+  .studyRow:hover .tileImg,
+  .studyRow:focus-visible .tileImg {
+    transform: none;
+  }
+}
+
+/* ── /learning extension (19 Sep 2026): group header row, text column
+   headers, the "Learned from" dot column and its tooltips ── */
+.mxGroups th {
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--color-eyebrow);
+  text-align: left;
+  border-bottom: 0;
+}
+
+.mxGroups th[colspan] {
+  text-align: center;
+}
+
+.mx-meta {
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--color-ink-muted);
+}
+
+.mxLearn {
+  min-width: 14rem;
+  border-right: 1px solid var(--color-border-soft);
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.mxDots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+}
+
+.lDotWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+/* the visible dot is 22px; the button is a 32px target around it */
+.lDot {
+  all: unset;
+  box-sizing: border-box;
+  width: var(--spacing-8);
+  height: var(--spacing-8);
+  border-radius: var(--radius-full);
+  cursor: help;
+  position: relative;
+}
+
+.lDot::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-accent-iris);
+  background: var(--color-semantic-accent-subtle);
+}
+
+.lDotCert::before {
+  background: var(--color-accent-iris);
+}
+
+.lDotMuted {
+  opacity: 0.3;
+}
+
+.lDot:focus-visible {
+  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline-offset: 1px;
+}
+
+.l-meta-tip {
+  position: absolute;
+  z-index: 6;
+  top: calc(100% + var(--spacing-1));
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 18rem;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-background-inverse);
+  color: var(--color-semantic-text-inverse);
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  line-height: 1.45;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.lDotWrap:hover .l-meta-tip,
+.lDot:focus-visible + .l-meta-tip,
+.l-meta-tip-on {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mxLearn {
+    transition: none;
   }
 }

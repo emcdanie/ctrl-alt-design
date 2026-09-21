@@ -1,0 +1,148 @@
+- region "The library":
+  - paragraph: The library
+  - heading "Everything, findable." [level=2]
+  - paragraph: Filter by type or topic, then switch the view.
+  - text: Search the library
+  - searchbox "Search the library"
+  - group "Filter by type":
+    - button "Course 3"
+    - button /Certificate \d+/
+    - button "Workshop 5"
+    - button "Conference 3"
+    - button "Hackathon 2"
+  - group "Filter by topic":
+    - button "Design systems 9"
+    - button "Design tokens 3"
+    - button "Design system governance 4"
+    - button "AI-enabled design 9"
+    - button "Accessibility 3"
+    - button "Component libraries 2"
+    - button "Figma ⇄ code 1"
+    - button /Product design \d+/
+    - button "UX research 5"
+  - paragraph: /\d+ of \d+ entries/
+  - list "View":
+    - listitem:
+      - button "Timeline"
+    - listitem:
+      - button "Table"
+    - listitem:
+      - button "Map"
+    - listitem:
+      - button "Skills"
+  - heading /\d+/ [level=3]
+  - list:
+    - listitem:
+      - paragraph: /Sep \d+ Workshop TJ Pitre, SmashingConf Freiburg \d+/
+      - heading "Building Context-Based Design Systems" [level=4]
+      - paragraph: "What I took from it: Tokens as the primary contract for AI tools."
+      - paragraph:
+        - text: "#design-tokens #ai-enabled-design Used in"
+        - link "CHIP":
+          - /url: /case-studies/chip
+    - listitem:
+      - paragraph: /Aug \d+ Course Vitaly Friedman/
+      - heading "How To Measure UX & Design Impact" [level=4]
+      - paragraph: "What I took from it: Set the baseline before you promise the lift."
+      - paragraph: "#ux-research #product-design"
+    - listitem:
+      - paragraph: /Aug \d+ Certificate Brad Frost, Ian Frost/
+      - 'heading "Subatomic: The Complete Guide to Design Tokens" [level=4]'
+      - paragraph: "What I took from it: Tokens are the contract between Figma and code."
+      - paragraph:
+        - text: "#design-tokens #figma-to-code Used in"
+        - link "Code First":
+          - /url: /case-studies/brad-frost
+    - listitem:
+      - paragraph: /Jul \d+ Certificate Brad Frost/
+      - heading "Atomic Design Certification Course" [level=4]
+      - paragraph: "What I took from it: Start small, compose up, and name every level."
+      - paragraph:
+        - text: "#design-systems #component-libraries Used in"
+        - link "From Drift to Foundation":
+          - /url: /case-studies/design-system-transformation
+    - listitem:
+      - paragraph: /May \d+ Course Brad Frost, Ian Frost, TJ Pitre/
+      - heading "AI and Design Systems" [level=4]
+      - text: In progress
+      - paragraph: "What I took from it: A system an AI can read is a system people can read too."
+      - paragraph: "#ai-enabled-design #design-system-governance #design-systems"
+    - listitem:
+      - paragraph: /Apr \d+ Hackathon Anthropic, Cerebral Valley/
+      - 'heading "Built with Opus 4.7: a Claude Code hackathon" [level=4]'
+      - paragraph: "What I took from it: The human stays in the judgment layer. The agent never moves silently."
+      - paragraph:
+        - text: "#ai-enabled-design #design-system-governance #design-systems Used in"
+        - link "CHIP":
+          - /url: /case-studies/chip
+    - listitem:
+      - paragraph: /Apr \d+ Workshop Vitaly Friedman, SmashingConf Amsterdam \d+/
+      - heading "Measuring UX Impact" [level=4]
+      - paragraph: "#ux-research #product-design"
+    - listitem:
+      - paragraph: /Apr \d+ Conference Smashing, Amsterdam/
+      - heading /SmashingConf Amsterdam \d+/ [level=4]
+      - paragraph: "What I took from it: Everyone is solving the same drift problem, just with different tools."
+      - paragraph: "#design-systems #accessibility #ai-enabled-design"
+    - listitem:
+      - paragraph: /Mar \d+ Conference Into Design Systems, online/
+      - heading /Into Design Systems AI Conference \d+/ [level=4]
+      - paragraph: "#ai-enabled-design #design-systems"
+    - listitem:
+      - paragraph: /Feb \d+ Hackathon Into Design Systems/
+      - heading "Into Design Systems AI Hackathon" [level=4]
+      - paragraph: "#ai-enabled-design #design-systems"
+    - listitem:
+      - paragraph: /Jan \d+ Workshop Vitaly Friedman, live session/
+      - heading /Designing For Complex UIs in \d+/ [level=4]
+      - paragraph: "What I took from it: Verifiability beats transparency: let people check the output."
+      - paragraph: "#ai-enabled-design #product-design"
+    - listitem:
+      - paragraph: /Jan \d+ Certificate Vitaly Friedman/
+      - heading "Smart Interface Design Patterns" [level=4]
+      - paragraph: "What I took from it: Judge the pattern against the task before judging the pixels."
+      - paragraph:
+        - text: "#product-design #accessibility Used in"
+        - link "From Drift to Foundation":
+          - /url: /case-studies/design-system-transformation
+  - heading /\d+/ [level=3]
+  - list:
+    - listitem:
+      - paragraph: /Oct \d+ Workshop Vitaly Friedman, live session/
+      - heading /Design Patterns For AI in \d+/ [level=4]
+      - paragraph: "#ai-enabled-design #product-design"
+    - listitem:
+      - paragraph: /Sep \d+ Workshop Brad Frost, SmashingConf Freiburg \d+/
+      - heading "Advanced Design Systems" [level=4]
+      - paragraph: "#design-systems #component-libraries #design-system-governance"
+    - listitem:
+      - paragraph: /Sep \d+ Course Interaction Design Foundation/
+      - heading "Master Classes" [level=4]
+      - group: /\d+ classes/
+      - paragraph: "#design-systems #design-tokens #accessibility #ai-enabled-design #ux-research #product-design"
+    - listitem:
+      - paragraph: /May \d+ Conference Into Design Systems, online/
+      - heading /Into Design Systems Conference \d+/ [level=4]
+      - paragraph: "What I took from it: Governance is a people problem wearing a process costume."
+      - paragraph:
+        - text: "#design-systems #design-system-governance Used in"
+        - link "From Drift to Foundation":
+          - /url: /case-studies/design-system-transformation
+  - heading /\d+/ [level=3]
+  - list:
+    - listitem:
+      - paragraph: /Jun \d+ Certificate Interaction Design Foundation/
+      - 'heading "Mobile UX Design: The Beginner''s Guide" [level=4]'
+      - paragraph: "#product-design #ux-research"
+    - listitem:
+      - paragraph: /Apr \d+ Certificate Interaction Design Foundation, Don Norman/
+      - heading "Design for a Better World with Don Norman" [level=4]
+      - paragraph: "#product-design"
+    - listitem:
+      - paragraph: /Apr \d+ Certificate Interaction Design Foundation, Don Norman/
+      - heading "Design for the 21st Century with Don Norman" [level=4]
+      - paragraph: "#product-design"
+    - listitem:
+      - paragraph: /Jan \d+ \(date to confirm\) Certificate Interaction Design Foundation/
+      - 'heading "User Experience: The Beginner''s Guide" [level=4]'
+      - paragraph: "#product-design #ux-research"

@@ -21,28 +21,34 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
 
 | Frame | Rule | Token |
 | --- | --- | --- |
-| Card corner radius | ONE value everywhere | `--radius-2xl` (20px) |
-| Card padding | all card bodies | `--spacing-6` (24px) |
-| Card border | one per context, reused | glass edge: `1px solid var(--color-semantic-border-glass-edge)` + top `--color-semantic-border-glass-top`; opaque: `1px solid var(--color-semantic-border-subtle)` |
-| Card shadow, resting | one tier | `--shadow-card-default` |
-| Card shadow, raised/hover | one tier | `--shadow-card-elevated` |
+| Content card | ONE recipe everywhere (O.7, 21 Sep 2026) | radius `--radius-card` (16px), padding `--spacing-6` (24px), `1px` line border, NO shadow |
+| Shadows | only on things that float | popovers, menus, the next-case card; never a resting content card |
+| Radii | from the set only | `--radius-sm` 4 (marks, swatches), `--radius-md` 8 (insets inside a card), `--radius-lg` 12 (BELLA controls), `--radius-card` 16, `--radius-pill`. A deliberate exception wears `data-frame-exempt="<reason>"` and is listed by audit:frame |
 | Featured/marketing panel | section-scale color block, NOT a card | radius `--radius-3xl` (24px), padding `--spacing-8` (32px), shadow `--shadow-soft` (recorded exception: `.feature-panel` only) |
-| Panel-scale glass wrappers | `.glass-card` (About, featured testimonial) | radius `--radius-2xl` like cards; padding `--spacing-8` (panel tier) |
-| Container | max width + side padding | `--container-width` (1240px, spec §1) + `--container-padding` (32px) via `.layout-container` / `.page-container` |
-| Section vertical padding | desktop | `--space-section` (96px, spec §1) via `.layout-section` |
-| Section vertical padding | ≤640px | `--spacing-16` (64px) |
+| Panel-scale glass wrappers | `.glass-card` (About, featured testimonial) | radius `--radius-card` like cards; padding `--spacing-8` (panel tier) |
+| Container | content width + side padding | `--layout-max` (78rem = 1248px content) + `--layout-gutter` (clamp 24 to 48px) each side = `--container-max`, via `Container` / `.container` (aliases `.page-container`, `.layout-container`) |
+| Section vertical padding | every section, every route | `--section-pad-y` (clamp 4 to 8rem, Part Q) via layout `Section` (`.l-section`); the first section adds the nav height; hairline via the Section label or `.section--ruled`. The only rhythm token (O.9, 21 Sep 2026) |
+| Gaps inside a section | stacks | `--space-stack-sm/md/lg` (12 / 24 / 40px) |
+| Type | every page | `.text-display-1/2/3`, `.text-lead`, `.text-body`, `.text-meta`, `.accent` on `--text-*` tokens; measures `--measure-title` (15em, every page h1), `--measure-hero` (13em, the Home hero), `--measure-hero-lead` (34em), `--measure-heading` (22em), `--measure-lead` (42rem), `--measure-body` (65ch) |
 | Grid gap | everywhere | `--grid-gap` = `--spacing-8` (32px) |
 | Touch targets | interactive elements | ≥ `--spacing-touch-target` (44px) |
 
 ## Rules
 
-1. Cards share ONE radius: `--radius-2xl`. No 16 / 22 / 24px card corners.
+0. Foundation (18 Sep 2026): one `:root` for tokens at the top of `app/globals.css`; one
+   `.container`; one section rhythm (`--section-pad-y`); type only through the text utilities, never a
+   page-specific font size (missing size: add a token). Unique heading widths use
+   `--measure-heading` (em), never `ch`. Headings balance, paragraphs pretty. Every page is
+   Nav, then Sections, then Footer, built from `.container` + `Section`.
+1. Content cards share ONE radius: `--radius-card` (16px). Max two card
+   signatures per route: the content card and ExampleFrame (audit:frame).
 2. Card body padding is `--spacing-6` on every side, every breakpoint.
-3. One border + shadow tier per context. Interactive cards rest on
-   `--shadow-card-default` and hover/raise to `--shadow-card-elevated`.
-   Do not mix in `--shadow-hover`, ad-hoc rgba shadows, or per-card tiers.
-4. Sections use `.layout-section` (or `SectionShell`); content sits in
-   `.layout-container`. No per-section custom vertical padding.
+3. A content card has a 1px line border and no shadow. Shadows belong to
+   things that float (popovers, menus, the next-case card).
+4. Sections use the layout `Section` (`.l-section` + `Container`); content sits in
+   the Container. No per-section custom vertical padding. The case shell's sections
+   (CaseSection, CaseBeat, the close) are `.l-section`s with their grid inside the
+   Container.
 5. Grids use `var(--grid-gap)`. No per-grid gap values.
 6. Never write a raw px/hex where a token exists. A genuinely new value gets a
    named token here first.
@@ -62,7 +68,7 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
    `app/case-studies/[slug]` + CaseStudyShell from its
    `content/case-studies/*.ts` data (ordered `blocks`). NEVER add a
    per-case route file — extend the block schema instead.
-3. **Layout:** centered 1240px container, token spacing (`--space-*` /
+3. **Layout:** centered 1248px content container (`--layout-max`), token spacing (`--space-*` /
    `--spacing-*`), body ≥16px, NO arbitrary `text-[Npx]`, NO hardcoded
    hex in components (fixed-context surfaces use their recorded tokens).
 4. **Gates (un-regressable):** `npm run gate` = `audit:structure`
@@ -134,12 +140,12 @@ ladder below (endpoints 32 / 36 / 40 / 48 / 56 / 72). Body text never below
   Mono is retired; `--font-mono` is a legacy alias resolving to Geist.
   Enforced by `audit:fonts` + the 24px floor in `audit:contrast`.
 - Unique floor: 24px. Any Unique below 24px fails the gate
-  (`audit:contrast`, `display-font-below-24`); the keycap logo lockup is
-  the recorded exception. Titles below the floor (card/item titles) stay
+  (`audit:contrast`, `display-font-below-24`), with no exceptions; the
+  ELLETA wordmark sits at 44px (36px under 768px). Titles below the floor (card/item titles) stay
   Geist semibold (`.heading-item`).
 - Section intros: ONE pattern, the shared `ui/SectionHeader` (Geist caps
   iris eyebrow + the `ui/Heading` section tier, Unique 700 uppercase at
-  `--font-section-title`). No ad-hoc section titles.
+  `--component-heading-section-font-size`). No ad-hoc section titles.
 - BELLA size tokens map 1:1 to the ramp: `tag` 13, `sm` 14, `base` 16,
   `lg` 18, `xl` 20, `2xl` 24, `3xl` 32, `4xl` 40, `5xl` 56.
 - No arbitrary `text-[Npx]` / inline px font sizes in components — ramp
@@ -151,12 +157,10 @@ ladder below (endpoints 32 / 36 / 40 / 48 / 56 / 72). Body text never below
 
 | Token | Pair |
 | --- | --- |
-| `--font-display-hero` | 40 → 180 (Heading tier hero: the home headline) |
-| `--font-display-page` | 40 → 64 (tier page: every page title, case studies and /design-system included; the case pull quote) |
-| `--font-display-section` | 32 → 48 (tier section: every section head and beat headline) |
-| `--font-display-case` | 32 → 48 (tier case: the case sign-off) |
+| `--component-heading-hero-font-size` | 40 → 180 (Heading tier hero: the home headline) |
+| `--component-heading-page-font-size` | 48 → 104, max-width 20ch (tier page: every page title, case studies and /design-system included; the case pull quote) |
+| `--component-heading-section-font-size` | 36 → 64 (tiers section and case: every section head, beat headline and the case sign-off) |
 | `--font-hero` | `clamp(40px, 5vw, 56px)` (overlay nav links, Geist; not a heading tier) |
-| `--font-section-title` | `clamp(32px, 2.5vw, 40px)` |
 | `--font-subsection` | 24 → 32 (tier sub: h3-level sub-heading, Geist 700, never Unique) |
 
 The display ladder (display-type-scale fix, 18 Sep 2026) is fluid
@@ -187,13 +191,15 @@ Selected atom node fill is `--color-semantic-accent` (periwinkle, fill
 only) with ink text (7.6:1); selection is never colour-only (leading dot
 plus border plus `aria-checked`).
 
-## Recorded token additions (bubble hero + keycap logo, 2026-07-16)
+## Recorded token additions (bubble hero, 2026-07-16; wordmark, 2026-09-18)
 
 From the vetted `_proto/_hero.html`. Per-case bubble gradients
 (`--case-*-hi/-lo`), a deep readable accent per case (`--case-*-deep`,
 AA+ on the white reveal card), the iris hub (`--hub-*`), fixed-context
 reveal-card tokens (`--hero-panel-*` — the card is always light), and
-the keycap logo plates (`--key-*`). Declared in `app/globals.css`.
+the keycap faces (`--key-face-hi`, `--key-fill-*`). The header wordmark
+size is a component token, `--nav-wordmark-size` (44px, 36px under
+768px). Declared in `app/globals.css`.
 
 GlassBanner surface (recorded surface, 2026-07-17): ONE end-of-page CTA
 treatment, `ui/GlassBanner`, replacing every dark background-inverse
@@ -257,8 +263,8 @@ is the ONLY way to render one:
 - Decorative by default (`aria-hidden`); pass `label` for meaningful
   icons (`role="img"` + `aria-label`). `focusable="false"`.
 - `IconoirProvider` (app layout) carries the same defaults as a backstop.
-- Not icons, not converted: BubbleCluster's connector SVG (diagram),
-  VinylPlayer artwork (fixed-context illustration).
+- Not icons, not converted: VinylPlayer artwork (fixed-context
+  illustration).
 
 ## Recorded exceptions
 
@@ -271,12 +277,11 @@ is the ONLY way to render one:
   JSON is next rebuilt).
 - `.cs-shell` case-study shell manages its own two-column padding (uses
   spacing tokens; documented in `app/globals.css`).
-- `.kbd-logo` header lockup: Unique at 28px key caps (20px ≤640px). The
-  logo is a brand mark, not running text — the only sanctioned use of
-  Unique besides the hero headline.
-- Hero bubble geometry (sizes 126–196px, cluster positions) is recorded
-  data in `components/BubbleCluster.tsx`, from `_proto/_hero.html` — not
-  ramp/spacing values.
+- `.nav-wordmark` header wordmark: ELLETA in Unique, live text, at
+  `--nav-wordmark-size` (44px, 36px under 768px), line-height 1,
+  letter-spacing 0.04em. A brand mark, not running text: the only
+  sanctioned use of Unique besides the hero headline and the Heading
+  primitive.
 - Decision why-lines (Elleta, 2026-07-20): the key-line style
   (`.cs-decision-why`, 18px/600 in the case marker colour) applies
   ONLY when the why is a single short statement of ~160 characters or
@@ -515,8 +520,8 @@ mechanical at the first sentence; 13/13 stays the only metric on the page.
 
 One scale, one display family, stepped through the Heading primitive
 (revised 18 Sep 2026, display-type-scale fix): H1 case title = tier page
-(--font-display-page, 64px at 1440) -> beat headline = tier section
-(--font-display-section, 48px at 1440; never Geist at display size; the
+(--component-heading-page-font-size, 104px at 1440) -> beat headline = tier section
+(--component-heading-section-font-size, 64px at 1440; never Geist at display size; the
 22 Jul regression is the counter-example) -> sign-off = tier case -> eyebrow
 = tag tier -> keyline = Geist 600 at lg -> body 16-18px. --font-beat-headline
 and the unused --font-case-title are retired. Media/link controls use the

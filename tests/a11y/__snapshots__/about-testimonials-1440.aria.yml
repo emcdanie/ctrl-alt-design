@@ -1,0 +1,59 @@
+- region "Word of mouth":
+  - paragraph: Word of mouth
+  - heading "In their own words." [level=2]:
+    - text: ""
+    - button "words"
+    - text: ""
+  - paragraph: Six of fifteen recommendations, quoted as written.
+  - list:
+    - listitem:
+      - figure "Brad Frost Author of Atomic Design · Brad Frost Web":
+        - blockquote:
+          - paragraph:
+            - text: "Straight up: Elleta is awesome. … She's now with us on the"
+            - strong: bleeding edge of AI & design systems
+            - text: ", embracing new tools and ways of working. … Any team would be lucky to have Elleta join their crew."
+        - text: ""
+    - listitem:
+      - figure "Xavier Boluda Design System Designer · Mango":
+        - blockquote:
+          - paragraph:
+            - text: During her time with the team, she introduced valuable
+            - strong: AI-driven automations
+            - text: and shared recommendations that helped us explore new ways of working.
+        - text: ""
+    - listitem:
+      - figure "Mario Mezini Frontend Tech Lead, B2B travel platform":
+        - blockquote:
+          - paragraph:
+            - text: She delivers impeccably organized,
+            - strong: developer-friendly design files
+            - text: ", proactively communicates her intent, anticipates edge cases, and treats technical constraints as creative opportunities rather than obstacles."
+        - text: ""
+    - listitem:
+      - figure "Davide J. Spiga Frontend Engineer":
+        - blockquote:
+          - paragraph:
+            - text: Her Figma files were clean, well-structured, and
+            - strong: edge cases were already handled
+            - text: ", which made implementation feel like a natural extension of the design rather than a negotiation."
+        - text: ""
+    - listitem:
+      - figure "Ian Frost Frontend architect · Brad Frost Web":
+        - blockquote:
+          - paragraph:
+            - text: While Elleta is very creative and a great design systems person, she’s
+            - strong: an even better human being
+            - text: . She brings enthusiasm to the table with care, humor, and respect to top it off.
+        - text: ""
+    - listitem:
+      - figure "Roberto Arpón Senior Product Designer · VML":
+        - blockquote:
+          - paragraph:
+            - text: The impact of her work as a UX/UI Designer
+            - strong: continues to resonate
+            - text: within our banking projects, such as those for Riyad Bank.
+        - text: ""
+  - paragraph:
+    - link "Read all 15 on LinkedIn ↗ (opens in a new tab)":
+      - /url: https://www.linkedin.com/in/elleta-mcdaniel/details/recommendations/

@@ -1,177 +1,129 @@
-/**
- * Layout-contract audit (see DESIGN.md).
+/* Layout-system gate (specs/layout-system, 18 Sep 2026). Static, no
+ * browser. Replaces the old per-route drift capture (not in the gate,
+ * failing since July, checking a retired type ramp).
  *
- * For every route below, at 1440 / 768 / 390:
- *   1. captures per-section screenshots into _review/audit/
- *   2. runs the computed drift check against the contract:
- *      card radius --radius-2xl, card padding --spacing-6 (panels
- *      --spacing-8), grid gap --grid-gap, section rhythm, container,
- *      and the §5 type ramp (13/14/16/18/20/24/32/40/56 plus the
- *      fluid-pair ranges; aria-hidden decorative art is exempt).
+ * 1. Every route is listed in ROUTES below. A page file that isn't
+ *    listed fails, so a new page can't skip the layout system.
+ * 2. A route marked "section" must render layout Section
+ *    (components/layout/Section) and must not write a raw <section>.
+ * 3. SectionHeader takes layout="stacked" (default) or "split", nothing
+ *    else; no page reshapes .l-header with its own grid.
  *
- * Run: npm run audit:layout   (dev server must be up on :3000)
- * Exit code 1 if any route drifts, so it can gate CI later.
- *
- * Capture notes (repo-specific): the home page's nested scroll
- * containers are flattened, and the page is swept before capture
- * because FadeIn latches on first intersection.
+ * A route marked "shell" renders CaseShellV2 (the cases, /design-system)
+ * and the shell's files must build their sections from the layout
+ * primitives. Nothing is allowlisted (O.9, 21 Sep 2026).
+ * 4. No custom spacing in app/ or components/sections/: arbitrary
+ *    Tailwind margin/padding (mt-[, py-[ ...) or inline margin/padding.
+ *    Spacing comes from Section, SectionHeader and the tokens.
  */
-import { chromium } from 'playwright';
-import { mkdirSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
+import { receipt } from "./lib/receipt.mjs";
 
-const OUT = fileURLToPath(new URL('../_review/audit/', import.meta.url));
-const BASE = process.env.AUDIT_BASE_URL ?? 'http://localhost:3000';
-const WIDTHS = [
-  { w: 1440, h: 900 },
-  { w: 768, h: 900 },
-  { w: 390, h: 844 },
-];
-const ROUTES = [
-  { path: '/', name: 'home' },
-  { path: '/case-studies/chip', name: 'chip' },
-  { path: '/case-studies/design-system-transformation', name: 'drift' },
-  { path: '/case-studies/brad-frost', name: 'brad-frost' },
-];
+/* The case shell: the case route and /design-system render through
+   CaseShellV2, whose hero is a layout Section and whose sections
+   (CaseSection, CaseBeat, the case close) are l-sections with their grid
+   inside the one Container (O.6/O.9, 21 Sep 2026). The route file itself
+   renders the shell, so the check follows the shell's files. */
+const SHELL = "shell";
+const SHELL_FILES = {
+  "components/CaseShellV2.tsx": "@/components/layout/Section",
+  "components/CaseSection.tsx": "@/components/layout/Container",
+  "components/CaseBeat.tsx": "@/components/layout/Container",
+};
 
-mkdirSync(OUT, { recursive: true });
+/* file -> "section" | "shell" */
+const ROUTES = {
+  "app/about/page.tsx": "section",
+  "app/page.tsx": "section",
+  "app/contact/page.tsx": "section",
+  "app/quick/page.tsx": "section",
+  "app/design-system/page.tsx": SHELL,
+  "app/design-system/inspector/page.tsx": "section",
+  "app/learning/page.tsx": "section",
+  "app/case-studies/[slug]/page.tsx": SHELL,
+  "app/not-found.tsx": "section",
+  "app/privacy/page.tsx": "section",
+  "app/accessibility/page.tsx": "section",
+  "app/work/page.tsx": "section",
+  "app/work/studies/[slug]/page.tsx": "section",
+};
 
-const browser = await chromium.launch();
-let drifted = false;
+const SPACING_DIRS = ["app", "components/sections"];
+const ARBITRARY = /(?<![\w-])-?(?:m|p)[trblxyse]?-\[/;
+const INLINE = /style=\{\{[^}]*\b(?:margin|padding)\w*\s*:/;
 
-for (const route of ROUTES) {
-  for (const { w, h } of WIDTHS) {
-    const page = await browser.newPage({ viewport: { width: w, height: h } });
-    await page.goto(BASE + route.path, { waitUntil: 'load' });
-    await page.addStyleTag({
-      content: `
-        .snap-shell{height:auto!important;overflow:visible!important}
-        .view-landing{overflow:visible!important}
-        .view-dashboard{height:auto!important;overflow:visible!important}
-        .dashboard-panel{overflow:visible!important}
-        .dashboard-sidebar{display:none!important}
-        .cs-shell__sticky{position:static!important}
-        nextjs-portal{display:none!important}
-        html,body,*{scroll-behavior:auto!important}
-        [style*="opacity"]{opacity:1!important;transform:none!important;transition:none!important}
-      `,
-    });
+let fails = 0;
+const fail = (offender, got, expected) => {
+  fails++;
+  console.error(receipt("layout", offender, got, expected));
+};
 
-    await page.evaluate(async () => {
-      for (let y = 0; y <= document.body.scrollHeight; y += 700) {
-        window.scrollTo(0, y);
-        await new Promise((r) => setTimeout(r, 30));
-      }
-      window.scrollTo(0, 0);
-    });
-    await page.waitForTimeout(800);
+const walk = (dir) =>
+  readdirSync(dir).flatMap((f) => {
+    const p = join(dir, f);
+    return statSync(p).isDirectory() ? walk(p) : [p];
+  });
 
-    // ── capture ──
-    const sections = await page.evaluate(() => {
-      const list = [];
-      const landing = document.querySelector('.view-landing');
-      if (landing) {
-        list.push(['hero', landing]);
-        document
-          .querySelectorAll('.dashboard-panel > section, .dashboard-panel > div > section')
-          .forEach((s, i) => list.push([s.id || `section-${i}`, s]));
-        const contact = document.getElementById('contact');
-        if (contact && !list.some(([, el]) => el === contact)) list.push(['contact', contact]);
-      } else {
-        const shell = document.querySelector('.cs-shell');
-        if (shell) {
-          list.push(['shell-top', shell]);
-          document.querySelectorAll('.cs-section').forEach((s, i) => list.push([`cs-${i}`, s]));
-          const cta = document.querySelector('.cs-shell__bottom-cta');
-          if (cta) list.push(['bottom-cta', cta]);
-        }
-      }
-      return list
-        .filter(([, el]) => el)
-        .map(([name, el]) => {
-          const r = el.getBoundingClientRect();
-          return { name, y: r.top + window.scrollY, height: r.height };
-        });
-    });
 
-    const pageH = await page.evaluate(() => document.body.scrollHeight);
-    for (const s of sections) {
-      const clipH = Math.max(200, Math.min(s.height, 1400));
-      const y = Math.max(0, Math.min(s.y, pageH - clipH));
-      await page.screenshot({
-        path: path.join(OUT, `${route.name}-${s.name}-${w}.png`),
-        fullPage: true,
-        clip: { x: 0, y, width: w, height: clipH },
+/* 1 + 2: routes */
+const pages = [...walk("app").filter((f) => f.endsWith("/page.tsx")), "app/not-found.tsx"];
+for (const file of pages) {
+  const entry = ROUTES[file];
+  if (!entry) {
+    fail(file, "a route audit:layout doesn't list", 'an entry in ROUTES ("section" or "shell")');
+    continue;
+  }
+  const src = readFileSync(file, "utf8");
+  if (entry === SHELL) {
+    if (!/<CaseShellV2\b/.test(src)) fail(file, "a shell route without CaseShellV2", "the case shell");
+    if (/<section\b/.test(src)) fail(file, "a raw <section>", "sections from the shell");
+    continue;
+  }
+  if (!src.includes('from "@/components/layout/Section"'))
+    fail(file, "no layout Section", "sections built with components/layout/Section");
+  const raw = src.match(/<section\b/g)?.length ?? 0;
+  if (raw) fail(file, `${raw} raw <section>`, "<Section> from components/layout");
+}
+for (const file of Object.keys(ROUTES))
+  if (!existsSync(file)) fail(file, "listed but missing", "delete the entry with the route");
+/* the shell's own frame: its sections come from the layout primitives */
+for (const [file, dep] of Object.entries(SHELL_FILES)) {
+  const src = readFileSync(file, "utf8");
+  if (!src.includes(`from "${dep}"`)) fail(file, `no ${dep.split("/").pop()}`, "the shell's sections on the layout frame");
+}
+
+/* 3: SectionHeader layouts */
+const LAYOUTS = new Set(["split", "stacked"]);
+for (const file of [...walk("app"), ...walk("components")].filter((f) => /\.(tsx|jsx)$/.test(f))) {
+  const src = readFileSync(file, "utf8");
+  for (const m of src.matchAll(/<SectionHeader\b[^>]*?\blayout=(?:"([^"]*)"|\{([^}]*)\})/g)) {
+    const v = m[1] ?? m[2];
+    if (!LAYOUTS.has(v)) fail(file, `SectionHeader layout=${v}`, 'layout="split" or layout="stacked"');
+  }
+}
+/* only the layout CSS in app/globals.css may shape .l-header */
+for (const file of [...walk("app"), ...walk("components")].filter((f) => f.endsWith(".css") && f !== "app/globals.css")) {
+  if (/\.l-header[^{]*\{[^}]*grid-template-columns/.test(readFileSync(file, "utf8")))
+    fail(file, "a stylesheet reshaping .l-header", "SectionHeader's layout prop");
+}
+
+/* 4: custom spacing */
+for (const dir of SPACING_DIRS) {
+  if (!existsSync(dir)) continue;
+  for (const file of walk(dir).filter((f) => /\.(tsx|ts|jsx)$/.test(f))) {
+    readFileSync(file, "utf8")
+      .split("\n")
+      .forEach((line, i) => {
+        if (ARBITRARY.test(line)) fail(`${file}:${i + 1}`, "an arbitrary margin/padding class", "spacing from Section, SectionHeader and the tokens");
+        if (INLINE.test(line)) fail(`${file}:${i + 1}`, "inline margin/padding", "spacing from Section, SectionHeader and the tokens");
       });
-    }
-
-    // ── drift check ──
-    const issues = await page.evaluate(() => {
-      const out = [];
-      const frameSel =
-        '.glass-card, .card-elevated, .card-default, .cs-shell__hero-frame, [class*="__card"]';
-      document.querySelectorAll(frameSel).forEach((el) => {
-        const cs = getComputedStyle(el);
-        const cls = el.className.toString();
-        if (cs.borderTopLeftRadius !== '20px' && cs.borderTopLeftRadius !== '999px')
-          out.push(['radius', cs.borderTopLeftRadius, cls.slice(0, 40)]);
-        if (cls.includes('hero-frame')) return; // media frame has no padding contract
-        const want = cls.includes('glass-card') ? '32px' : '24px';
-        const pads = [cs.paddingTop, cs.paddingRight, cs.paddingBottom, cs.paddingLeft];
-        if (pads.some((p) => p !== want && p !== '0px'))
-          out.push(['padding', pads.join(' '), cls.slice(0, 40)]);
-      });
-      document.querySelectorAll('*').forEach((el) => {
-        const cs = getComputedStyle(el);
-        if (
-          cs.display === 'grid' &&
-          cs.columnGap !== '32px' &&
-          cs.columnGap !== 'normal' &&
-          cs.columnGap !== '0px'
-        )
-          out.push(['grid-gap', cs.columnGap, el.className.toString().slice(0, 40)]);
-      });
-      document.querySelectorAll('section.layout-section').forEach((el) => {
-        const cs = getComputedStyle(el);
-        const want = innerWidth <= 640 ? '64px' : '80px';
-        if (cs.paddingTop !== want || cs.paddingBottom !== want)
-          out.push(['section-pad', `${cs.paddingTop}/${cs.paddingBottom}`, el.id || 'sec']);
-      });
-      // §5 type ramp — leaf text nodes; aria-hidden decorative art exempt
-      const ramp = new Set([13, 14, 16, 18, 20, 24, 32, 40, 56]);
-      const fluidOk = (v) =>
-        (v >= 40 && v <= 56) || (v >= 32 && v <= 40) || (v >= 24 && v <= 32) ||
-        (v >= 20 && v <= 24) || (v >= 16 && v <= 18);
-      document.querySelectorAll('body *').forEach((el) => {
-        if (!el.textContent.trim() || el.children.length) return;
-        /* no per-element opt-out (constitution section 9, 27 Jul): the
-           aria-hidden skip is gone. nextjs-portal and svg stay because
-           they are not page DOM and have no text nodes to measure. */
-        if (el.closest('nextjs-portal, svg')) return;
-        const v = parseFloat(getComputedStyle(el).fontSize);
-        if (!ramp.has(Math.round(v)) && !fluidOk(v))
-          out.push(['type', `${v}px`, (el.className.toString() || el.tagName).slice(0, 40)]);
-      });
-      const seen = new Set();
-      return out.filter((i) => {
-        const k = i.join('|');
-        if (seen.has(k)) return false;
-        seen.add(k);
-        return true;
-      });
-    });
-
-    if (issues.length) {
-      drifted = true;
-      console.log(`✗ ${route.name} @ ${w}: ${issues.length} drift`);
-      issues.slice(0, 8).forEach((i) => console.log('   ', i.join(' | ')));
-    } else {
-      console.log(`✓ ${route.name} @ ${w}: zero drift`);
-    }
-    await page.close();
   }
 }
 
-await browser.close();
-process.exit(drifted ? 1 : 0);
+const shell = Object.values(ROUTES).filter((e) => e === SHELL).length;
+if (fails) {
+  console.error(`layout gate: ${fails} failure(s)`);
+  process.exit(1);
+}
+console.log(`layout gate: PASS (${pages.length} routes, ${pages.length - shell} on Section, ${shell} through the case shell, none allowlisted)`);

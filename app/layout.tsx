@@ -1,5 +1,8 @@
+import RevealObserver from "@/components/RevealObserver";
+import SiteFooter from "@/components/SiteFooter";
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import BracketCursor from "@/components/BracketCursor";
+import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import DevTools from "@/components/DevTools";
 import IconProvider from "@/components/ui/IconProvider";
@@ -11,13 +14,20 @@ const geist = Geist({
   subsets: ["latin"],
 });
 
-// redesign/lush — Unique is reserved for the large hero headline ONLY
-// (fails legibility at label sizes). Everything else is Geist.
+// The code face (Elleta, 19 Sep 2026): metadata only, through
+// --font-code (CLAUDE.md section 3). font-waiver: the loader names it.
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+});
+
+// Unique is for the ELLETA wordmarks (nav + footer) and the BELLA logo
+// only, so only its Regular cut loads. Everything else is Geist.
 // Licensed webfonts, free for commercial use; files unmodified.
 const unique = localFont({
   src: [
     { path: "./fonts/unique/Unique-Regular.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/unique/Unique-Bold.woff2", weight: "700", style: "normal" },
   ],
   variable: "--font-unique",
   display: "swap",
@@ -45,11 +55,15 @@ export const metadata: Metadata = {
   },
 };
 
-// Theme follows the visitor (2026-07-17): a stored ThemeSwitch choice
+// Theme follows the visitor (2026-07-17): a stored ThemeToggle choice
 // wins; otherwise the OS preference applies, live (the matchMedia
 // listener re-runs on OS theme change and defers to a stored choice).
 // Pre-paint inline in <head>: no flash either way.
 const themeInit = `try{var d=document.documentElement,m=matchMedia("(prefers-color-scheme: dark)"),a=function(){var s=null;try{s=localStorage.getItem("theme")}catch(e){}d.dataset.theme=s||(m.matches?"dark":"light")};a();m.addEventListener("change",a)}catch(e){document.documentElement.dataset.theme="light"}`;
+
+// Reveal (polish pass, 19 Sep 2026): the hidden-until-seen state only
+// exists once this runs, so without JS nothing is ever hidden.
+const revealInit = `document.documentElement.classList.add("js-reveal")`;
 
 export default function RootLayout({
   children,
@@ -60,14 +74,20 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
+        <script dangerouslySetInnerHTML={{ __html: revealInit }} />
       </head>
       {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla) inject
           attributes like cz-shortcut-listen on <body> before hydration; this
           silences that benign server/client attribute mismatch only */}
-      <body className={`${geist.variable} ${unique.variable} antialiased`} suppressHydrationWarning>
+      <body className={`${geist.variable} ${geistMono.variable} ${unique.variable} antialiased`} suppressHydrationWarning>
         <a href="#main-content" className="skip-link">Skip to content</a>
         <DevTools />
-        <IconProvider>{children}</IconProvider>
+        <IconProvider>
+          {children}
+          <SiteFooter />
+        </IconProvider>
+        <BracketCursor />
+        <RevealObserver />
       </body>
     </html>
   );

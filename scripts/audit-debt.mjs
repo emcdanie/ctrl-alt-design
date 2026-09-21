@@ -134,14 +134,28 @@ const allowed = new Set();
       const out = execFileSync("git", ["check-ignore", "--stdin"], {
         input: misses.map(([, p]) => p).join("\n"),
         encoding: "utf8",
+        stdio: ["pipe", "pipe", "ignore"],
       });
       for (const line of out.split("\n")) if (line.trim()) ignored.add(line.trim());
     } catch (e) {
       /* exit 1 means "none of them are ignored", which is not an error.
-         Anything else (no git, no repo) leaves the set empty, so every
-         miss is reported: a check that cannot verify must fail loudly,
-         never pass quietly. */
-      if (e.status !== 1) {
+         Exit 128 is git refusing a path "beyond a symbolic link" (a
+         worktree whose _private is a symlink to the main checkout's):
+         ask per path, and for a refused one ask about its parents, since
+         an ignored parent ignores everything under it. Anything else (no
+         git, no repo) leaves the set empty, so every miss is reported: a
+         check that cannot verify must fail loudly, never pass quietly. */
+      if (e.status === 128) {
+        const isIgnored = (q) => {
+          try {
+            execFileSync("git", ["check-ignore", "-q", q], { stdio: "ignore" });
+            return true;
+          } catch (err) {
+            return err.status === 128 && q.includes("/") ? isIgnored(q.slice(0, q.lastIndexOf("/"))) : false;
+          }
+        };
+        for (const [, q] of misses) if (isIgnored(q)) ignored.add(q);
+      } else if (e.status !== 1) {
         console.error("debt: git check-ignore unavailable, reporting every missing citation");
       }
     }
@@ -198,7 +212,10 @@ let tokenReport = "";
      class name, not by var(). This check reads var() and cannot see
      that. Judging them would report live design tokens as dead. If the
      check ever learns Tailwind's generation, widen this. */
-  const authoredSrc = readFileSync(AUTHORED, "utf8");
+  /* comments blanked (same length, so indices hold): the word "@theme"
+     inside a comment must not open a theme range and swallow the :root
+     that follows it, which silently skipped the whole token block */
+  const authoredSrc = readFileSync(AUTHORED, "utf8").replace(/\/\*[\s\S]*?\*\//g, (c) => c.replace(/[^\n]/g, " "));
   const themeRanges = [];
   for (const m of authoredSrc.matchAll(/@theme[^{]*\{/g)) {
     let depth = 1, i = m.index + m[0].length;

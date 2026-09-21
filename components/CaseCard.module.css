@@ -49,6 +49,13 @@
   text-transform: uppercase;
 }
 
+/* the dates: the code role, neutral, beside the case-coloured type */
+.dates {
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-ink-muted);
+}
+
 /* Current-focus badge on the cover (one contract, 20 Jul): a solid
    card ground so it reads on any cover art; the eyebrow row stays one
    line. */
@@ -58,7 +65,7 @@
   left: var(--spacing-3);
   z-index: 1;
   font-family: var(--font-mono);
-  font-size: 11px; /* matches the hub-sub recorded exception */
+  font-size: var(--text-meta);
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -102,3 +109,9 @@
   text-overflow: ellipsis;
 }
 
+/* the closing affordance ("Case study →"), pinned to the card foot so a
+   row of equal-height cards lines up */
+.cta {
+  align-self: flex-start;
+  margin-top: auto;
+}

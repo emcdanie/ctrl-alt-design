@@ -6,13 +6,10 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { receipt } from "./lib/receipt.mjs";
 import { join, basename } from "node:path";
 
-/* VinylPlayer: frozen (pre-commit hook false-positive, see docs/fixes).
- * components/motion/*: a barrel library re-exported via motion/index.ts;
- * its members are legitimately consumed through the barrel.
- * content/case-studies/_archive/: ARCHIVED case content (curation,
+/* content/case-studies/_archive/: ARCHIVED case content (curation,
  * Elleta 22 Jul 2026) — deliberately unrouted and unimported by
  * design, never a dead-copy failure. */
-const EXEMPT = ["components/VinylPlayer.tsx", "components/motion/", "content/case-studies/_archive/"];
+const EXEMPT = ["content/case-studies/_archive/"];
 
 const walk = (dir, exts) => {
   const out = [];
@@ -64,21 +61,10 @@ for (const { f, s: src } of sources) {
     fails++;
     console.error(receipt("reuse", f, `a local title recipe "${m.slice(0, 50)}"`, "the ONE .heading-item recipe"));
   }
-  /* Unique never renders inside a Card (Elleta, 21 Jul, card-voice):
-     a file that renders card surfaces (direct ui/Card or DisclosureCard
-     import, or the .thesis-band statement surface) must not render the
-     display Heading primitive; Unique stays page-tier. SectionHeader
-     is fine: it renders outside the cards it introduces. */
-  /* DesignSystemSpecimens: recorded exception (v3 T2) — the TYPE
-     display specimens are Unique BY DEFINITION and render on the
-     ground, outside every card; the runtime check in audit:type
-     asserts no Unique computes inside a card scope. */
-  const UNIQUE_IN_CARD_EXEMPT = ["components/DesignSystemSpecimens.tsx"];
-  const rendersCards = /from "@\/components\/ui\/(?:Card|DisclosureCard)"|className="thesis-band/.test(src);
-  if (!UNIQUE_IN_CARD_EXEMPT.some((e) => f.endsWith(e)) && rendersCards && /<Heading[\s>]/.test(src)) {
-    fails++;
-    console.error(receipt("reuse", f, "<Heading> beside Card surfaces", "SectionHeader (Unique never renders inside a Card)"));
-  }
+  /* (Retired 18 Sep 2026: the static "no <Heading> beside a Card" proxy.
+     Headings are Geist now, so a Heading beside cards can't put Unique
+     in a card. The runtime rule in audit:type is the real check: Unique
+     renders only on the ELLETA wordmarks.) */
 }
 
 console.log(fails === 0 ? "reuse gate: PASS" : `reuse gate: ${fails} failure(s)`);

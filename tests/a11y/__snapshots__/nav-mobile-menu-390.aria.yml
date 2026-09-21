@@ -1,0 +1,13 @@
+- navigation:
+  - link "Work":
+    - /url: /work
+  - link "System":
+    - /url: /design-system
+  - link "Learning":
+    - /url: /learning
+  - link "About":
+    - /url: /about
+- button "Copy email"
+- link "LinkedIn (opens in a new tab)":
+  - /url: https://www.linkedin.com/in/elleta-mcdaniel/
+- status

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import caseStudies from "@/lib/content";
 import { SKILLS, WORK_ITEMS } from "@/lib/workLibrary";
 import componentContract from "@/lib/bella/component-contract.json";
-import { readTokens } from "@/lib/bella/tokens";
+import { readFrame, readTokens } from "@/lib/bella/tokens";
 
 /* FOR AI (2026-07-17): the machine-readable BELLA manifest. Everything
  * here is read from the SAME sources the site renders from (the live
@@ -25,6 +25,8 @@ export async function GET() {
     positioning: "AI-enabled design systems",
     generatedFrom: ["app/globals.css", "lib/bella/bella.css", "lib/bella/component-contract.json", "lib/content.ts", "lib/workLibrary.ts"],
     tokens: readTokens(),
+    /* the frame every page shares, the numbers audit:frame enforces */
+    frame: readFrame(),
     /* the component contract (lean): real components only, variants
        as deltas, token $refs; audit:contract refuses a lying entry */
     components: componentContract.components,

@@ -2,6 +2,12 @@ import type { WorkItem } from "@/lib/workLibrary";
 import Card from "@/components/ui/Card";
 import styles from "./CaseCard.module.css";
 
+/* FULL years everywhere (Elleta, 19 Sep 2026, Work's card; verified
+   and finished here 20 Sep, Part D item 3): "2024-2025" reads "2024 to
+   2025". /quick was the last surface still abbreviating to "2024 to
+   26". */
+const years = (y: string) => y.replace(/-/, " to ");
+
 /**
  * THE case card, on the ONE Card system (media variant). Image-led:
  * honest cover art (item.cover) or the muted warm placeholder; then
@@ -11,10 +17,16 @@ import styles from "./CaseCard.module.css";
 export default function CaseCard({
   item,
   coverSrc,
+  cta,
+  showFeatured = true,
 }: {
   item: WorkItem;
   /** override cover (e.g. the featured CHIP still) */
   coverSrc?: string;
+  /** closing affordance line, e.g. "Case study →" (Work grid) */
+  cta?: string;
+  /** the "Current focus" pill on the cover; off where no card is featured */
+  showFeatured?: boolean;
 }) {
   const cover = coverSrc ?? item.cover;
   return (
@@ -33,12 +45,13 @@ export default function CaseCard({
           )}
           {/* the pill rides the cover (Elleta, 20 Jul): it never
               forces the eyebrow to wrap */}
-          {item.featured && <span className={styles.tag}>Current focus</span>}
+          {showFeatured && item.featured && <span className={styles.tag}>Current focus</span>}
         </>
       }
     >
       <span className={styles.kicker} style={{ color: item.text }}>
-        {item.kicker}
+        {item.kicker.split(" · ")[0]} ·{" "}
+        <span className={`text-code ${styles.dates}`}>{years(item.year)}</span>
       </span>
       <span className={`heading-item ${styles.title}`}>{item.title}</span>
       <span className={`card-body ${styles.impact}`}>{item.impact}</span>
@@ -49,6 +62,7 @@ export default function CaseCard({
           </span>
         ))}
       </span>
+      {cta ? <span className={`tag ${styles.cta}`}>{cta}</span> : null}
     </Card>
   );
 }

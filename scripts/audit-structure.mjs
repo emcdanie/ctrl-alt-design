@@ -40,16 +40,15 @@ for (const f of [...appFiles, ...componentFiles]) {
 
 /* 3. every page sits in the container/rhythm system */
 /* hero-landing: the home hero carries its own recorded container
-   (Hero.module.css .hero, max-width var(--container-width)) */
-const pageOk = /layout-container|page-container|layout-section|CaseShellV2|<Hero/;
+   (Hero.module.css .hero, max-width var(--container-max)) */
+const pageOk = /className="[^"]*(?<![\w-])(container|section)(?![\w-])|<Section\b|layout-container|page-container|layout-section|CaseShellV2|<Hero/;
 for (const f of appFiles.filter((f) => f.endsWith("page.tsx"))) {
   const s = readFileSync(f, "utf8");
-  if (!pageOk.test(s)) fail(f, "no container/section marker", "layout-container / page-container / layout-section / CaseShellV2 / Hero");
+  if (!pageOk.test(s)) fail(f, "no container/section marker", "container / section / Section / CaseShellV2 / Hero (layout-container, page-container, layout-section are aliases)");
 }
 
 /* 4. no arbitrary px type in components (recorded proto exceptions excluded) */
-const EXEMPT = ["Hero.module.css", "BubbleCluster.module.css", "ThemeSwitch.module.css",
-  "WorkSidebar", "VinylPlayer.tsx", "CaseCard.module.css", "WorkLibrary.module.css"];
+const EXEMPT = ["Hero.module.css", "WorkSidebar", "CaseCard.module.css", "WorkLibrary.module.css"];
 for (const f of [...appFiles, ...componentFiles]) {
   if (EXEMPT.some((e) => f.includes(e))) continue;
   const s = readFileSync(f, "utf8");
@@ -59,8 +58,8 @@ for (const f of [...appFiles, ...componentFiles]) {
 
 /* 5. one type system — no literal font-family in app/components; every
  * fontFamily/font-family must resolve through var(--font-*). Exemptions:
- * globals.css + layout.tsx define the tokens; VinylPlayer is frozen. */
-const FONT_EXEMPT = ["app/globals.css", "app/layout.tsx", "VinylPlayer.tsx"];
+ * globals.css + layout.tsx define the tokens. */
+const FONT_EXEMPT = ["app/globals.css", "app/layout.tsx"];
 for (const f of [...appFiles, ...componentFiles]) {
   if (FONT_EXEMPT.some((e) => f.includes(e))) continue;
   const s = readFileSync(f, "utf8");
@@ -100,8 +99,7 @@ for (const f of [...appFiles, ...componentFiles]) {
 /* 6. Unique stays a display face — its tokens only appear in the
  * sanctioned hero/logo/display files. (Runtime <24px use is caught by
  * audit:contrast; this stops the drift at the source.) */
-const UNIQUE_OK = ["app/globals.css", "app/layout.tsx", "components/Hero.module.css",
-  "components/TestimonialSection.tsx"]; // quote glyph, recorded exception
+const UNIQUE_OK = ["app/globals.css", "app/layout.tsx", "components/Hero.module.css"];
 for (const f of [...appFiles, ...componentFiles]) {
   if (UNIQUE_OK.some((e) => f.includes(e))) continue;
   const s = readFileSync(f, "utf8");
@@ -140,6 +138,33 @@ for (const f of [...appFiles, ...componentFiles]) {
       }
       if (!/font-variant-numeric\s*:\s*[^;]*tabular-nums/.test(body)) {
         fail(`${f}:${line} .${cls}`, "a numeric column with proportional digits", "font-variant-numeric: tabular-nums");
+      }
+    }
+  }
+}
+
+/* N. no ghost module classes: every `x.name` / `x["name"]` read off a CSS
+ * module import must exist in that module. An undefined class renders as
+ * no class at all, silently (the Learning table's stack list, 21 Sep). */
+{
+  const { dirname, resolve } = await import("node:path");
+  const { existsSync } = await import("node:fs");
+  const IMPORT = /import\s+(\w+)\s+from\s+["']([^"']+\.module\.css)["']/g;
+  for (const f of [...appFiles, ...componentFiles]) {
+    if (!f.endsWith(".tsx")) continue;
+    const src = readFileSync(f, "utf8");
+    for (const [, name, spec] of src.matchAll(IMPORT)) {
+      const cssPath = spec.startsWith("@/") ? spec.slice(2) : resolve(dirname(f), spec);
+      if (!existsSync(cssPath)) { fail(`${f} ${spec}`, "a missing CSS module", "an existing file"); continue; }
+      const css = readFileSync(cssPath, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+      const defined = new Set([...css.matchAll(/\.(-?[A-Za-z_][\w-]*)/g)].map((m) => m[1]));
+      const USE = new RegExp(`\\b${name}(?:\\.([A-Za-z_]\\w*)|\\[["']([\\w-]+)["']\\])`, "g");
+      for (const m of src.matchAll(USE)) {
+        const cls = m[1] ?? m[2];
+        if (!defined.has(cls)) {
+          const line = src.slice(0, m.index).split("\n").length;
+          fail(`${f}:${line} ${name}.${cls}`, "a class not defined in " + spec, "a class the module defines");
+        }
       }
     }
   }

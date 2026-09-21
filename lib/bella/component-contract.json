@@ -5,7 +5,10 @@
       "name": "Button",
       "source": "components/ui/Button.tsx",
       "anatomy": [
-        "btn-key"
+        "btn-key",
+        "btn-key__roll",
+        "btn-key__label",
+        "btn-key__copy"
       ],
       "props": [
         {
@@ -39,6 +42,10 @@
         {
           "name": "ariaLabel",
           "type": "string"
+        },
+        {
+          "name": "newTab",
+          "type": "boolean"
         }
       ],
       "variants": [
@@ -54,7 +61,9 @@
         "{--typography-font-size-tag}",
         "{--tracking-eyebrow}",
         "{--key-fill-hi}",
-        "{--key-fill-lo}"
+        "{--key-fill-lo}",
+        "{--component-button-motion-roll-duration}",
+        "{--component-button-motion-roll-easing}"
       ]
     },
     {
@@ -82,12 +91,20 @@
         {
           "name": "label",
           "type": "string"
+        },
+        {
+          "name": "sentence",
+          "type": "boolean"
         }
       ],
       "variants": [
         {
           "name": "active segment",
           "delta": "aria-current=true; accent-subtle fill and accent border on the selected segment only"
+        },
+        {
+          "name": "sentence",
+          "delta": "seg-control--sentence: labels in sentence case, Geist, no tracking"
         }
       ],
       "tokens": [
@@ -102,7 +119,10 @@
       "name": "FilterChip",
       "source": "components/ui/FilterChip.tsx",
       "anatomy": [
-        "filter-chip"
+        "filter-chip-row (optional)",
+        "filter-chip-row__label (optional)",
+        "filter-chip",
+        "filter-chip__count (optional)"
       ],
       "props": [
         {
@@ -125,14 +145,15 @@
       "variants": [
         {
           "name": "pressed",
-          "delta": "aria-pressed=true; inverse fill (background-inverse, text-inverse), border unchanged"
+          "delta": "aria-pressed=true; iris-soft fill (accent-subtle), iris border, ink text"
         }
       ],
       "tokens": [
         "{--color-border-medium}",
         "{--color-ink-soft}",
-        "{--color-semantic-background-inverse}",
-        "{--color-semantic-text-inverse}",
+        "{--color-semantic-accent-subtle}",
+        "{--color-accent-iris}",
+        "{--color-ink}",
         "{--color-alpha-ink-6}"
       ]
     },
@@ -148,6 +169,10 @@
           "type": "boolean"
         },
         {
+          "name": "outline",
+          "type": "boolean"
+        },
+        {
           "name": "style",
           "type": "CSSProperties (the --case-tint-* vars for identity)"
         }
@@ -156,6 +181,10 @@
         {
           "name": "identity",
           "delta": "tag--identity: wears the case's tint via --case-tint-text / --case-tint-hi passed in style"
+        },
+        {
+          "name": "outline",
+          "delta": "tag--outline: hairline border, muted ink, no fill; flips with the theme"
         }
       ],
       "tokens": [
@@ -163,7 +192,9 @@
         "{--ink-on-paper}",
         "{--radius-full}",
         "{--typography-font-size-tag}",
-        "{--font-body}"
+        "{--font-body}",
+        "{--color-border-medium}",
+        "{--color-ink-muted}"
       ]
     },
     {
@@ -172,13 +203,37 @@
       "anatomy": [
         "status-pill"
       ],
-      "props": [],
-      "variants": [],
+      "props": [
+        {
+          "name": "tone",
+          "type": "string",
+          "values": [
+            "neutral",
+            "ok",
+            "warn"
+          ]
+        },
+        {
+          "name": "live",
+          "type": "boolean"
+        }
+      ],
+      "variants": [
+        {
+          "name": "ok",
+          "delta": "the status ramp's positive tint; the words still carry the state"
+        },
+        {
+          "name": "warn",
+          "delta": "the status ramp's caution tint; the words still carry the state"
+        }
+      ],
       "tokens": [
         "{--color-accent-ink}",
         "{--color-semantic-accent-border}",
         "{--radius-full}",
-        "{--spacing-2}"
+        "{--case-clarity-hi}",
+        "{--gov-clay-hi}"
       ]
     },
     {
@@ -186,7 +241,7 @@
       "source": "components/ui/Heading.tsx",
       "anatomy": [
         "display-heading",
-        "display-heading__accent (optional)"
+        "accent (optional, the one iris word)"
       ],
       "props": [
         {
@@ -221,15 +276,15 @@
       "variants": [
         {
           "name": "hero",
-          "delta": "font-size {--font-display-hero} (home headline, 40-180)"
+          "delta": "font-size {--component-heading-hero-font-size} (home headline, clamp(2.6rem, 6vw, 5.4rem), about 42-86)"
         },
         {
           "name": "page",
-          "delta": "font-size {--font-display-page} (every page title incl. case studies and /design-system, 40-64)"
+          "delta": "font-size {--component-heading-page-font-size} (every page title incl. case studies and /design-system, 48-104, max 20ch)"
         },
         {
           "name": "case",
-          "delta": "font-size {--font-display-case} (the case sign-off, 32-48)"
+          "delta": "font-size {--component-heading-section-font-size} (the case sign-off, one size with section heads, 36-64)"
         },
         {
           "name": "sub",
@@ -238,10 +293,9 @@
       ],
       "tokens": [
         "{--font-hero-display}",
-        "{--font-display-hero}",
-        "{--font-display-page}",
-        "{--font-display-section}",
-        "{--font-display-case}",
+        "{--component-heading-hero-font-size}",
+        "{--component-heading-page-font-size}",
+        "{--component-heading-section-font-size}",
         "{--font-subsection}",
         "{--tracking-display}",
         "{--leading-display}",
@@ -435,13 +489,119 @@
       "tokens": [
         "{--spacing-16}",
         "{--spacing-8}",
-        "{--font-display-section}",
+        "{--component-heading-section-font-size}",
         "{--color-border-soft}"
       ],
       "requiresContext": {
         "ancestor": "none",
         "note": "Self-contained as of 27 Jul 2026. .beat carries its own inline padding and measure, and stands down inside .layout-container or .cs2 so the gutter is never doubled. It previously required an ancestor container and failed silently without one."
       }
+    },
+    {
+      "name": "CaseSection",
+      "source": "components/CaseSection.tsx",
+      "anatomy": [
+        "case-section",
+        "case-section__text",
+        "case-section__kicker",
+        "case-section__heading"
+      ],
+      "props": [
+        {
+          "name": "index",
+          "type": "string"
+        },
+        {
+          "name": "kicker",
+          "type": "string"
+        },
+        {
+          "name": "heading",
+          "type": "node"
+        },
+        {
+          "name": "flip",
+          "type": "boolean"
+        },
+        {
+          "name": "phrases",
+          "type": "array"
+        },
+        {
+          "name": "figure",
+          "type": "node"
+        }
+      ],
+      "variants": [
+        {
+          "name": "flip",
+          "delta": "the figure moves to the other side; the text column still reads first"
+        }
+      ],
+      "tokens": [
+        "{--section-pad-y}",
+        "{--layout-gutter}",
+        "{--border-faint}",
+        "{--text-display-3}",
+        "{--tracking-display}"
+      ]
+    },
+    {
+      "name": "ExampleFrame",
+      "source": "components/ExampleFrame.tsx",
+      "anatomy": [
+        "case-frame",
+        "case-frame__shell",
+        "case-frame__bar",
+        "case-frame__path",
+        "case-frame__body",
+        "case-frame__caption"
+      ],
+      "props": [
+        {
+          "name": "path",
+          "type": "string"
+        },
+        {
+          "name": "caption",
+          "type": "node"
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "{--surface-card}",
+        "{--border-faint}",
+        "{--radius-card}",
+        "{--text-caption}",
+        "{--color-ink-muted}"
+      ]
+    },
+    {
+      "name": "LinkedPhrase",
+      "source": "components/LinkedPhrase.tsx",
+      "anatomy": [
+        "linked-phrase",
+        "linked-phrase__n"
+      ],
+      "props": [
+        {
+          "name": "k",
+          "type": "string"
+        }
+      ],
+      "variants": [
+        {
+          "name": "pinned",
+          "delta": "aria-pressed=true; the highlight survives the pointer leaving, Escape clears it"
+        }
+      ],
+      "tokens": [
+        "{--color-accent-ink}",
+        "{--iris-soft}",
+        "{--font-code}",
+        "{--text-meta}",
+        "{--radius-sm}"
+      ]
     }
   ]
 }

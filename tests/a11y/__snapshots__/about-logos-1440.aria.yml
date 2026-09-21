@@ -1,0 +1,18 @@
+- region "The pack":
+  - paragraph: The pack
+  - heading "Good company." [level=2]
+  - list:
+    - listitem:
+      - img "Brad Frost Web"
+    - listitem:
+      - img "Mango"
+    - listitem:
+      - img "United Nations Geneva"
+    - listitem:
+      - img "Air France"
+    - listitem:
+      - img "Riyad Bank"
+    - listitem:
+      - img "WeRoad"
+    - listitem:
+      - img "VML"

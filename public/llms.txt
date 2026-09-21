@@ -7,14 +7,17 @@ system (BELLA): tokens, one control taxonomy, and a governance gate.
 Positioning term: AI-enabled (never "AI-augmented" or "AI-assisted").
 
 ## Case studies
-- /case-studies/chip : AI builds whatever your system already is. I built CHIP to see it first.
-- /case-studies/brad-frost : Working code-first changes what you pay attention to. What Building Brad Frost's Component System in Reverse Taught Me About Design
-- /case-studies/design-system-transformation : The system is the set of agreements, not the component library. Rebuilding Design System Thinking in a Scaling SaaS Product
+- /case-studies/booking-platform : A booking platform, rebuilt mid-flight. A redesign that had not shipped in two years became a platform that did: a system in code, a funded team and six product areas live.
+- /case-studies/search-experts : Search for people who know what they want. Our users booked travel every day. I shipped a results page that kept their search in view and put filters behind one button.
+- /case-studies/checkout : A checkout that knows who's paying. I designed the checkout and payment step once, for every product, so company rules show up as fewer choices instead of more forms.
+- /case-studies/chip : AI builds what your system is. CHIP sees it first.
+- /case-studies/brad-frost : Working code-first changes what you notice. What Building Brad Frost's Component System in Reverse Taught Me About Design
+- /case-studies/design-system-transformation : The system is the agreements, not the library. Rebuilding Design System Thinking in a Scaling SaaS Product
 
 ## The system
 - /design-system : BELLA inspecting itself, live token values, control taxonomy, the gate.
 - /api/bella.json : machine-readable manifest. DTCG-shaped tokens (primitive -> semantic -> component, $ref aliases), the COMPONENT CONTRACT (real components, anatomy, props, variants as deltas, token $refs; audit:contract refuses a contract that lies), taxonomy, cases, rules. Read-only.
-- /skills : skill overlap mapped to the work.
+- /learning : where I learned each skill and where I used it (courses, certificates, workshops, the skills matrix).
 - /work : the library (curated default, ?explore for map/table/filters).
 
 ## Contact

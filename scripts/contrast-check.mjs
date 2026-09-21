@@ -1,8 +1,9 @@
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
+import { BASE } from "./lib/base-url.mjs";
 
 /* Declared for audit:debt's dead-selector check (27 Jul 2026). */
-export const TRACKED_SELECTORS = ['[class*="coverPlaceholder"]', ".kbd-logo"];
+export const TRACKED_SELECTORS = ['[class*="coverPlaceholder"]', ".nav-wordmark"];
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 
@@ -20,7 +21,7 @@ const parse = (s) => {
 };
 let totalBad = 0;
 
-for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies/design-system-transformation", "http://localhost:3000/work", "http://localhost:3000/about", "http://localhost:3000/contact", "http://localhost:3000/case-studies/chip", "http://localhost:3000/case-studies/brad-frost", "http://localhost:3000/skills", "http://localhost:3000/design-system", "http://localhost:3000/quick"]) {
+for (const url of [BASE + "/", BASE + "/case-studies/design-system-transformation", BASE + "/work", BASE + "/about", BASE + "/contact", BASE + "/case-studies/chip", BASE + "/case-studies/brad-frost", BASE + "/learning", BASE + "/design-system", BASE + "/quick", BASE + "/case-studies/booking-platform", BASE + "/case-studies/search-experts", BASE + "/case-studies/checkout"]) {
   await page.goto(url, { waitUntil: "domcontentloaded" });
   await page.evaluate(() => { document.documentElement.dataset.theme = "dark"; });
   await page.waitForTimeout(1500);
@@ -63,12 +64,10 @@ for (const url of ["http://localhost:3000/", "http://localhost:3000/case-studies
       if (!r.width || !r.height) continue;
       const cs = getComputedStyle(el);
       if (parseFloat(cs.fontSize) < 10) continue;
-      // Unique is display-only: it never renders below 24px. The keycap
-      // logo lockup is the one recorded exception (brand device).
+      // Unique is display-only: it never renders below 24px, no exceptions.
       const uniqueTooSmall =
         /unique/i.test(cs.fontFamily || "") &&
-        parseFloat(cs.fontSize) < 24 &&
-        !el.closest(".kbd-logo");
+        parseFloat(cs.fontSize) < 24;
       out.push({ t: (el.textContent||"").trim().slice(0,32), c: cs.color, bg: bgOf(el), fs: cs.fontSize, tag: el.tagName, uniqueTooSmall });
     }
     return out;

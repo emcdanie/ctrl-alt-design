@@ -1,0 +1,10 @@
+- region "Selected work":
+  - paragraph: Selected work
+  - heading "Start with the work." [level=2]
+  - paragraph: "Three systems, up close: what drifted, what I built, and what changed."
+  - link /Design systems · \d+ to \d+ Code First Figma and code as one system, not two\./:
+    - /url: /case-studies/brad-frost
+  - link /Design systems · \d+ to \d+ From Drift to Foundation A first design system for a product that had outgrown its UI\./:
+    - /url: /case-studies/design-system-transformation
+  - link /AI \+ design systems · \d+ CHIP An agent that watches the system and never moves silently\./:
+    - /url: /case-studies/chip

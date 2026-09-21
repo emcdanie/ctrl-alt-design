@@ -1,185 +1,216 @@
-import CaseBeat from "@/components/CaseBeat";
-import CaseArtifactEmbed from "@/components/CaseArtifactEmbed";
-import DriftFoundationOutcome from "@/components/DriftFoundationOutcome";
+import CaseSection from "@/components/CaseSection";
+import Container from "@/components/layout/Container";
+import ExampleFrame from "@/components/ExampleFrame";
+import LinkedPhrase from "@/components/LinkedPhrase";
 import DriftStatusBoard from "@/components/DriftStatusBoard";
-import { P, Scannable, para } from "@/components/CaseProse";
+import { Button } from "@/components/ui/Button";
+import { AuditChain, ButtonGrave, RolloutChain, TokenCascade } from "@/components/DriftExamples";
 import type { CaseStudy } from "@/lib/content";
 
 /**
- * From Drift to Foundation on the CaseBeat template (case-migration
- * kickoff, Elleta 23 Jul; the worked reference is CodeFirstV2).
- * STRUCTURAL MIGRATION, NOT A REWRITE: every rendered sentence is her
- * existing approved copy from content/case-studies/
- * design-system-transformation.ts restructured into four beats;
- * cited mechanical trims are commented at their site; every NEW word
- * a slot needs is marked TODO(elleta). Visuals are STATIC: the
- * case's recreated embeds and poster still; the outcome beat now carries
- * the recreated before/after maturity map (illustrative).
+ * From Drift to Foundation, on the case-study article pattern (Elleta,
+ * 20 Sep 2026; approved mock case-study-drift-mock-v4.html).
  *
- * Beat map (headlines = her decision titles / outcome statement,
- * keylines = her why lines / lessons lead, all verbatim; kickers and
- * trims approved at the PR 56 review, Elleta 23 Jul):
- * 01 the audit -> 02 the cascade -> 03 the governance -> 04 the foundation.
- * TODO(elleta): the beat-04 real-outcome line (NEW_OUTCOME) is draft copy.
+ * The article shape: five sections, one idea each, a short text column
+ * beside one framed example, alternating sides, then the close. Every
+ * claim is her existing approved copy from
+ * content/case-studies/design-system-transformation.ts, shortened to
+ * two or three paragraphs a section. Nothing new is asserted.
+ *
+ * What left with the rebuild (Part C item 6): the layer nav, the caps
+ * labels, the reading-progress chrome around the beats, and the second
+ * prototype button. The four beats keep their order and their meaning:
+ * 01 the drift, 02 the audit, 03 tokens, 04 governance, and 05 how it
+ * got built (Elleta's corrected copy, Part P, 21 Sep).
  */
-
-/* kickers approved (Elleta, 23 Jul, PR 56 review): audit / cascade /
-   governance are her words; "The foundation" echoes the case title
-   and beat 04's outcome. */
-const KICKERS = ["The audit", "The cascade", "The governance", "The foundation"];
-
 export default function DriftV2({ cs }: { cs: CaseStudy }) {
-  const summary = cs.blocks?.find((b) => b.kind === "summary") as
-    | { context: string; approach: string; outcome: string }
-    | undefined;
-  const disclosure = cs.blocks?.find((b) => b.kind === "disclosure") as { text: string } | undefined;
   const lessons = cs.blocks?.find((b) => b.kind === "lessons") as { text: string } | undefined;
-  const decision = (index: string) =>
-    cs.blocks?.find((b) => b.kind === "decision" && (b as { index?: string }).index === index) as
-      | { title: string; why?: string; evidence?: { src: string; title: string; designWidth: number; designHeight: number } }
-      | undefined;
-  const d1 = decision("01");
-  const d2 = decision("02");
-  const d3 = decision("03");
-  /* her outcome statement (bold lead) is beat 04's headline; the rest
-     of the outcome is body. Markers strip mechanically. */
-  const outcomeLead = "A shared language for how the product should look, behave, and grow.";
-  /* the REAL outcome that closes the impact gap, rendered as the beat-04
-     lead paragraph. NEW draft copy, TODO(elleta): finalise the words.
-     NDA-safe: abstract, no client name, no codename, no figures. */
-  const NEW_OUTCOME =
-    "The audit and the business case won investment for a dedicated design-systems team. The system became the foundation the larger team built on: the surface evolved, the components and the agreements held.";
-  const outcomeRest = (summary?.outcome ?? "")
-    .replace(/\*\*/g, "")
-    .replace(outcomeLead, "")
-    .replace(NEW_OUTCOME, "")
-    .trim();
-  /* lessons: first sentence is the keyline, verbatim; the rest is body */
-  const lessonsKeyline =
-    "Inconsistency is rarely the root problem, it is a symptom of missing structure and undocumented decisions.";
-  const lessonsRest = (lessons?.text ?? "").replace(lessonsKeyline, "").trim();
+  const proto = cs.demoLinks?.at(-1);
 
   return (
-    <div className="cs2-body-col">
-      {/* the NDA disclosure, her wording verbatim, demoted to a quiet
-          footnote grouped under the chip row (the .cs2-nda-meta tier) */}
-      {disclosure && (
-        <p role="note" className="cs2-nda-meta">
-          {disclosure.text}
-        </p>
-      )}
-
-      {/* 01 · the audit: context + the audit decision. The visual is the
-          INTERACTIVE recreated client surface (drift specimen), embedded
-          live at the column's real width; it renders revealed and carries
-          its own Before / On system toggle, so the beat has no control
-          slot. The ctrl+travel links now sit under the body copy. */}
-      <CaseBeat
+    <>
+      <CaseSection
         index="01"
-        kicker={KICKERS[0]}
-        headline={d1?.title ?? ""}
-        keyline={d1?.why}
-        id="drift-b1"
-        body={
-          <>
-            <Scannable text={summary?.context ?? ""} />
-            <Scannable text={para(cs, (b) => b.kind === "decision" && (b as { index?: string }).index === "01", 0)} />
-            {/* her approach summary closes the beat: the upstream pivot */}
-            <Scannable text={summary?.approach ?? ""} />
-            {/* the ctrl+travel recreations from the case's demo links,
-                moved under the body copy (Elleta, 24 Jul) */}
-            <div className="drift-audit-links">
-              {cs.demoLinks?.map((l) => (
-                <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="demo-link">
-                  {l.label}
-                </a>
-              ))}
-            </div>
-          </>
+        kicker="The drift"
+        heading="Seventeen buttons that all did the same job."
+        phrases={["corners", "weights", "click"]}
+        figure={
+          <ExampleFrame
+            path="audit / buttons"
+            caption="17 near-identical buttons from one product, side by side. Recreated."
+          >
+            <ButtonGrave />
+          </ExampleFrame>
         }
-        visual={
-          <CaseArtifactEmbed
-            src="/demos/case-study-visuals/drift-specimen.html?embed=1"
-            title="Recreated client surface: five UI parts in Before and On system states, with an audit annotation layer"
-            channel="drift-specimen"
-          />
-        }
-        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated concept, illustrative. A B2B travel platform, abstracted.</p>}
-      />
+      >
+        <p>
+          A B2B travel platform: flights, hotels, rail and car rental, all growing at once. Every
+          sprint added one more local fix.
+        </p>
+        <p>
+          They had <LinkedPhrase k="corners">different corners</LinkedPhrase>,{" "}
+          <LinkedPhrase k="weights">different weights</LinkedPhrase>, and in the end{" "}
+          <LinkedPhrase k="click">no one could tell what was clickable</LinkedPhrase>.
+        </p>
+        {/* ONE prototype action, directly after the paragraph it belongs
+            to (Part C item 6). The case carried two links to the same
+            recreation, v1 and v2; the newest one stands for both. */}
+        {proto && (
+          <p className="case-section__action">
+            <Button href={proto.href} newTab ariaLabel="Open the live prototype (opens in a new tab)">
+              Open the live prototype
+            </Button>
+          </p>
+        )}
+      </CaseSection>
 
-      {/* 02 · the cascade: tokens under everything. The visual is now the
-          INTERACTIVE token pipeline (foundation -> semantic -> component,
-          live propagation + the broken-link drift), embedded live at the
-          column's real width; supersedes the static poster. Her decision
-          -02 paragraph names "the interactive recreation below", which is
-          now literally true, so the CASCADE_TRIM is gone. */}
-      <CaseBeat
+      <CaseSection
         index="02"
-        kicker={KICKERS[1]}
-        headline={d2?.title ?? ""}
-        keyline={d2?.why}
-        id="drift-b2"
+        kicker="The audit"
+        heading="One undocumented decision, three problems."
         flip
-        body={
-          <>
-            <Scannable
-              text={para(cs, (b) => b.kind === "decision" && (b as { index?: string }).index === "02", 0)}
-            />
-            {/* TODO(elleta): optional affordance hint, her call to keep or cut */}
-            <P text="**Change the foundation and watch it move. Break the link and watch it drift.**" />
-          </>
+        phrases={["chip", "sort", "empty"]}
+        figure={
+          <ExampleFrame
+            path="audit / search flow"
+            caption="One decision nobody wrote down, rippling into three places. Recreated."
+          >
+            <AuditChain />
+          </ExampleFrame>
         }
-        visual={
-          <CaseArtifactEmbed
-            src="/demos/case-study-visuals/cascade.html?embed=1"
-            title="Recreated token pipeline: foundation, semantic and component tiers with live propagation and a design-code parity check"
-            channel="cascade"
-          />
-        }
-        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated concept, illustrative. A B2B travel platform&apos;s design system, abstracted.</p>}
-      />
+      >
+        <p>
+          I audited search, results, booking and forms, looking for the same need solved different
+          ways.
+        </p>
+        <p>
+          The <LinkedPhrase k="chip">filter chip existed four ways</LinkedPhrase>. That forced{" "}
+          <LinkedPhrase k="sort">different sort positions</LinkedPhrase>, which broke the{" "}
+          <LinkedPhrase k="empty">empty states</LinkedPhrase>.
+        </p>
+        <p>
+          The audit turned <strong>&quot;it looks inconsistent&quot; into &quot;this costs us time, here is the evidence&quot;</strong>.
+        </p>
+      </CaseSection>
 
-      {/* 03 · the governance: status, not enforcement. The visual is now
-          the STATUS BOARD (in-page, tokenised to BELLA, dark-adaptive),
-          which foregrounds component status + the proposal path, the thing
-          the beat argues. Supersedes the static ds-after-system doc page. */}
-      <CaseBeat
+      <CaseSection
         index="03"
-        kicker={KICKERS[2]}
-        headline={d3?.title ?? ""}
-        keyline={d3?.why}
-        id="drift-b3"
-        body={
-          <Scannable text={para(cs, (b) => b.kind === "decision" && (b as { index?: string }).index === "03", 0)} />
+        kicker="Tokens under everything"
+        heading="Decide once, and let it travel."
+        phrases={["found", "sem", "comp"]}
+        figure={
+          <ExampleFrame path="tokens / cascade" caption="Recreated concept of the token cascade.">
+            <TokenCascade />
+          </ExampleFrame>
         }
-        visual={<DriftStatusBoard />}
-        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated concept, illustrative. A B2B travel platform&apos;s design system, abstracted.</p>}
-      />
+      >
+        <p>
+          Instead of a button holding a hard-coded colour, it points at a named decision that says
+          what the colour is <strong>for</strong>.
+        </p>
+        <p>
+          The <LinkedPhrase k="found">foundation holds the raw value</LinkedPhrase>, the{" "}
+          <LinkedPhrase k="sem">semantic layer says what it is for</LinkedPhrase>, and the{" "}
+          <LinkedPhrase k="comp">component only reads the meaning</LinkedPhrase>.
+        </p>
+        <p>
+          Try Break the link: the button keeps a colour the code no longer explains. Nobody notices,
+          because the screen still looks fine.
+        </p>
+      </CaseSection>
 
-      {/* 04 · the takeaway: her outcome statement leads, the real outcome
-          (NEW_OUTCOME, TODO(elleta)) opens the body, lessons close. Visual
-          is now the OUTCOME VISUAL (in-page, tokenised to BELLA,
-          dark-adaptive): an outcome hero + a qualitative Before -> After
-          of what changed. Supersedes the static maturity-map embed. */}
-      <CaseBeat
+      <CaseSection
         index="04"
-        kicker={KICKERS[3]}
-        headline={outcomeLead}
-        keyline={lessonsKeyline}
-        id="drift-b4"
+        kicker="Governance"
+        heading="Status, not enforcement."
         flip
-        body={
-          <>
-            <P text={NEW_OUTCOME} />
-            <P text={outcomeRest} />
-            <Scannable text={lessonsRest} />
-          </>
+        phrases={["status", "propose"]}
+        figure={
+          <ExampleFrame
+            path="system hub / status"
+            caption="Status in words and a shape, never colour alone. Recreated."
+          >
+            <DriftStatusBoard />
+          </ExampleFrame>
         }
-        visual={<DriftFoundationOutcome />}
-        foot={<p className="cs2-kicker-row" style={{ margin: 0 }}>Recreated concept, illustrative. A B2B travel platform, abstracted; no client figures shown.</p>}
-      />
+      >
+        <p>
+          The hard part is not building the system, it is stopping it from splitting again. Every
+          component carried a <LinkedPhrase k="status">status anyone could read</LinkedPhrase>, and
+          there was a{" "}
+          <LinkedPhrase k="propose">low-friction way to propose changes</LinkedPhrase>.
+        </p>
+        <p>
+          When an engineer reached for a pattern and found it <strong>already solved</strong>, the
+          system earned its credibility.
+        </p>
+      </CaseSection>
 
-      {/* next case + share now render once via CaseShellV2 (CaseEndReveal) */}
-    </div>
+      <CaseSection
+        index="05"
+        kicker="How it got built"
+        heading="Nobody asked for a system."
+        phrases={["built", "dev", "build", "cto"]}
+        figure={
+          <ExampleFrame
+            path="rollout / how it happened"
+            caption="How the system went from one designer's side project to every team's. Recreated."
+          >
+            <RolloutChain />
+          </ExampleFrame>
+        }
+      >
+        <p>
+          When I proposed one, the answer was that it wasn&apos;t necessary. Docs and changelogs
+          weren&apos;t either. I was the only designer, working with every squad, one per product,
+          plus admin and invoicing, on the new platform while fixing the legacy one, so{" "}
+          <LinkedPhrase k="built">I built it for myself</LinkedPhrase>.
+        </p>
+        <p>
+          I had <LinkedPhrase k="dev">one developer from the start</LinkedPhrase>. He was already
+          looking after the Figma library, so the system was a natural next step for him. I taught
+          him the tokens and <LinkedPhrase k="build">we built the first components together</LinkedPhrase>.
+        </p>
+        <p>
+          Around November I showed the work and was asked to{" "}
+          <LinkedPhrase k="cto">present it to the CTO</LinkedPhrase>. After that I had a team.
+        </p>
+        <p>
+          <strong>
+            Not everyone was sold. It got easier with senior developers who wanted to build it with
+            me. Later the system moved to every product team, and only approved changes reached
+            code.
+          </strong>
+        </p>
+      </CaseSection>
+
+      <section className="l-section section--ruled case-close" aria-labelledby="case-close-heading">
+        <Container className="case-close__grid">
+          <div>
+            <p className="text-code case-section__kicker">What changed</p>
+            <h2 id="case-close-heading" className="case-section__heading">
+              A shared language, not a cleanup.
+            </h2>
+          </div>
+          <div>
+            <p>
+              Duplicated components became a smaller set of flexible building blocks, and the UI
+              stopped being whatever the last sprint produced.{" "}
+              <strong>
+                The audit and the business case won investment for a dedicated design-systems team.
+              </strong>
+            </p>
+            <p className="case-close__learned">
+              What I learned: {lessons?.text?.split(/(?<=\.)\s/)[0] ??
+                "inconsistency is rarely the root problem, it is a symptom of missing structure and undocumented decisions."}
+            </p>
+            <p className="case-close__learned">
+              Next time: build the team first, name every component together, and get senior
+              developers on board before building.
+            </p>
+          </div>
+        </Container>
+      </section>
+    </>
   );
 }

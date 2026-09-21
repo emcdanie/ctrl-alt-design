@@ -8,23 +8,33 @@
 import { readFileSync } from "node:fs";
 import { receipt } from "./lib/receipt.mjs";
 import { chromium } from "playwright";
+import { BASE } from "./lib/base-url.mjs";
 
 const axeSource = readFileSync("node_modules/axe-core/axe.min.js", "utf8");
 
 const ROUTES = [
   "/",
   "/work",
-  "/work?view=map",
-  "/work?view=table",
   "/about",
   "/contact",
-  "/skills",
+  "/privacy",
+  "/accessibility",
+  "/no-such-page",
+  "/learning",
   "/design-system",
   "/design-system/inspector",
   "/quick",
   "/case-studies/chip",
   "/case-studies/brad-frost",
   "/case-studies/design-system-transformation",
+  "/case-studies/booking-platform",
+  "/case-studies/search-experts",
+  "/case-studies/checkout",
+  /* the pattern-study brief pages (one template) */
+  "/work/studies/stock-screener",
+  "/work/studies/race-day",
+  "/work/studies/insurance-forms",
+  "/work/studies/legal-search",
 ];
 
 const browser = await chromium.launch();
@@ -36,12 +46,28 @@ for (const theme of ["light", "dark"]) {
   const page = await ctx.newPage();
   await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
   for (const route of ROUTES) {
-    await page.goto(`http://localhost:3000${route}`, { waitUntil: "networkidle", timeout: 30000 });
-    /* sweep so FadeIn content is visible to the contrast checks */
+    await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 30000 });
+    /* sweep like a reader so every .reveal enters the viewport, then
+       settle the finite animations (the reveal's fade included) so the
+       contrast checks read the page as it rests. Infinite loops are left
+       running: they never settle. */
     const h = await page.evaluate(() => document.body.scrollHeight);
     for (let y = 0; y < h; y += 800) {
       await page.evaluate((v) => scrollTo(0, v), y);
       await page.waitForTimeout(30);
+    }
+    /* twice: the observer can reveal after the first settle */
+    for (let i = 0; i < 2; i++) {
+      await page.waitForTimeout(300);
+      await page.evaluate(() => {
+        for (const a of document.getAnimations()) {
+          try {
+            if (a.effect?.getTiming().iterations !== Infinity) a.finish();
+          } catch {
+            /* a scroll-driven timeline can't be finished; it rests with the scroll */
+          }
+        }
+      });
     }
     await page.evaluate(axeSource);
     const res = await page.evaluate(async () => {

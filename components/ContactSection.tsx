@@ -7,7 +7,7 @@ import { social } from "@/lib/social";
 import { POSITIONING } from "@/lib/copy";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import GlassBanner from "@/components/ui/GlassBanner";
+import Card from "@/components/ui/Card";
 
 interface FormState {
   name: string;
@@ -121,7 +121,7 @@ export default function ContactSection() {
     lineHeight: 1.5,
     color: "var(--color-ink)",
     outline: "none",
-    transition: "border-color 150ms ease, box-shadow 150ms ease",
+    transition: "border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out)",
     fontFamily: "var(--font-body)",
   });
 
@@ -140,14 +140,15 @@ export default function ContactSection() {
 
   return (
     <footer
-      id="contact"
+      id="contact-form"
       style={{
         paddingBottom: "var(--spacing-12)",
         scrollMarginTop: "calc(var(--header-height) + var(--spacing-4))",
       }}
     >
       <div className="layout-container">
-        <GlassBanner className="mb-16 grid grid-cols-1 gap-[var(--grid-gap)] md:grid-cols-2">
+        {/* the standard card surface (critique pass, 18 Sep 2026: no colour wash) */}
+        <Card className="mb-16" innerClassName="grid grid-cols-1 gap-[var(--grid-gap)] md:grid-cols-2">
           {/* ── Left: the human ── */}
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-5)" }}>
             {/* identity: one aligned group, portrait beside name/title */}
@@ -162,7 +163,7 @@ export default function ContactSection() {
                 </p>
                 <p style={{ ...quietRow, color: "var(--color-muted)", marginTop: "var(--spacing-1)" }}>
                   {/* positioning phrase from the ONE constant (21 Jul) */}
-                  Product Designer specialising in {POSITIONING} and complex platforms.
+                  Design systems engineer: {POSITIONING}.
                 </p>
               </div>
             </div>
@@ -186,26 +187,14 @@ export default function ContactSection() {
             {submitted ? (
               <div
                 className="rounded-2xl border p-6 text-center"
-                style={{
-                  borderColor: "var(--case-clarity-text)",
-                  background: "color-mix(in srgb, var(--case-clarity-hi) 18%, transparent)",
-                }}
+                style={{ borderColor: "var(--color-semantic-border)" }}
                 role="status"
               >
-                <div className="text-2xl mb-2" style={{ color: "var(--case-clarity-text)" }}>
-                  ✓
-                </div>
                 <p
-                  className="text-[length:var(--typography-font-size-sm)] font-medium"
+                  className="text-[length:var(--typography-font-size-base)] font-medium"
                   style={{ color: "var(--color-ink)" }}
                 >
-                  Message sent
-                </p>
-                <p
-                  className="text-[length:var(--typography-font-size-base)] mt-1"
-                  style={{ color: "var(--color-ink-soft)" }}
-                >
-                  Thanks for reaching out. I usually reply within two days.
+                  Message sent. I&apos;ll reply within a few days.
                 </p>
               </div>
             ) : (
@@ -330,7 +319,7 @@ export default function ContactSection() {
               </form>
             )}
           </div>
-        </GlassBanner>
+        </Card>
 
         {/* Bottom bar */}
         <div className="divider mb-6" style={{ backgroundColor: "var(--color-border-soft)" }} />
@@ -342,7 +331,7 @@ export default function ContactSection() {
             </span>{" "}
             Elleta McDaniel. All rights reserved.
           </p>
-          <p className="text-[length:var(--typography-font-size-tag)]" style={{ color: "var(--color-muted)" }}>
+          <p className="text-[length:var(--typography-font-size-tag)] max-w-[var(--measure-body)]" style={{ color: "var(--color-muted)" }}>
             This site is its own small design system. I built and ship it in Next.js: tokens, components, and a governance gate that won’t let it drift. The proof is the thing you’re looking at.{" "}
             <Link href="/design-system" className="footer-nav-link" style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>
               See the system

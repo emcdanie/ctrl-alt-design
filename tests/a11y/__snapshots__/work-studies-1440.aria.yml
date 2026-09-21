@@ -1,0 +1,61 @@
+- region "Pattern studies":
+  - paragraph: Pattern studies
+  - heading "One problem, worked through." [level=2]
+  - paragraph: Four started as course briefs from Vitaly Friedman's Smart Interface Design Patterns training. The rest are hackathon builds and tools I made for myself.
+  - paragraph:
+    - link "Where these came from →":
+      - /url: /learning
+  - group "Filter the studies by type":
+    - button "All 8" [pressed]
+    - button "Course brief 4"
+    - button "Prototype 3"
+    - button "Hackathon 1"
+  - list:
+    - listitem:
+      - link /\d+ \/ Prototype Sort and filter at scale Travel search\. Search, filters and booking in one flow for a B2B travel product\./:
+        - /url: /demos/ctrl-travel-v2.html
+        - text: ""
+        - heading "Sort and filter at scale" [level=3]
+        - text: ""
+    - listitem:
+      - link /\d+ \/ Course brief Filters you can talk to AI stock screener\. Natural-language filters become editable chips, with a reasoning trace\./:
+        - /url: /work/studies/stock-screener
+        - text: ""
+        - heading "Filters you can talk to" [level=3]
+        - text: ""
+    - listitem:
+      - link /\d+ \/ Course brief Dense data, read at a glance Race-day operations dashboard\. A control-room dashboard inspired by F1 telemetry\./:
+        - /url: /work/studies/race-day
+        - text: ""
+        - heading "Dense data, read at a glance" [level=3]
+        - text: ""
+    - listitem:
+      - link /\d+ \/ Course brief Long forms that don't lose people Insurance forms\. Multilingual forms with inline validation and accessible patterns\./:
+        - /url: /work/studies/insurance-forms
+        - text: ""
+        - heading "Long forms that don't lose people" [level=3]
+        - text: ""
+    - listitem:
+      - link /\d+ \/ Course brief Search through regulation AI legal search \+ multimedia centre\. Search and media navigation for a dense EU regulatory site\./:
+        - /url: /work/studies/legal-search
+        - text: ""
+        - heading "Search through regulation" [level=3]
+        - text: ""
+    - listitem:
+      - link /\d+ \/ Prototype A design system you can inspect Design system command center\. Component analysis and governance in one dashboard\./:
+        - /url: /demos/brad-frost-command-center.html
+        - text: ""
+        - heading "A design system you can inspect" [level=3]
+        - text: ""
+    - listitem:
+      - link /\d+ \/ Prototype Pattern feedback, with sources Pattern Mentor plugin\. Design feedback that cites the pattern, with one-click fixes\./:
+        - /url: /demos/pattern-mentor.html
+        - text: ""
+        - heading "Pattern feedback, with sources" [level=3]
+        - text: ""
+    - listitem:
+      - link /\d+ \/ Hackathon An audit on the canvas Guardian\. Heuristics, drift and accessibility checks on a Figma-style canvas\./:
+        - /url: /demos/guardian-audit-tool.html
+        - text: ""
+        - heading "An audit on the canvas" [level=3]
+        - text: ""

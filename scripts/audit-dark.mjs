@@ -11,8 +11,8 @@ import { chromium } from "playwright";
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { receipt } from "./lib/receipt.mjs";
+import { BASE } from "./lib/base-url.mjs";
 
-const BASE = "http://localhost:3000";
 
 const walk = (dir) => {
   const out = [];

@@ -4,7 +4,7 @@ import CaseBeat from "@/components/CaseBeat";
 import AgentDemo from "@/components/AgentDemo";
 import ContractPipeline from "@/components/ContractPipeline";
 import BellaMaturityMap from "@/components/BellaMaturityMap";
-import GateExplorer from "@/components/GateExplorer";
+import Container from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 
 /**
@@ -24,7 +24,9 @@ import { Button } from "@/components/ui/Button";
  */
 
 const GATE = [
-  { name: "audit:structure", line: "One route tree per case, the 1240 container everywhere, no arbitrary pixel classes, nothing off palette." },
+  { name: "audit:structure", line: "One route tree per case, the one container everywhere, no arbitrary pixel classes, nothing off palette." },
+  { name: "audit:layout", line: "Every route is listed and built from Section and SectionHeader. No page sets its own spacing." },
+  { name: "audit:frame", line: "Reads the pixels at three widths: one content edge, two title sizes, one section rhythm, radii from the set, two card styles at most, no line past the reading measure." },
   { name: "audit:contrast", line: "WCAG AA on every text node, both themes, worst gradient stop included. Unique below 24px fails outside the keycap logo." },
   { name: "audit:copy", line: "No em or en dashes, and one positioning term only." },
   { name: "audit:controls", line: "Keycaps are actions only, max one primary per view, filters and view switches carry their ARIA state." },
@@ -41,6 +43,7 @@ const GATE = [
   { name: "audit:sync", line: "Components vendored from BELLA are hashed against the upstream source. A vendored file edited in place, or left stale, fails the build instead of forking quietly." },
   { name: "audit:dark", line: "Every embedded surface adapts to the dark contract. An iframe that ships one skin fails the build." },
   { name: "audit:axe", line: "axe-core against every route in both themes; zero violations to pass. Needs-review nodes are counted and verified by hand." },
+  { name: "audit:order", line: "Reading order is pinned: accessibility-tree snapshots at 1440 and 390 fail when what a screen reader reads changes, and CSS that reorders content visually is listed for review." },
   { name: "audit:type", line: "No card surface renders reading text below 16px computed; the shared card body never below 18. Metadata rows are their own tier." },
   { name: "audit:visual", line: "One ground on the System page, sibling specimen cards render equal heights, cover placeholders clear 3:1." },
   /* the harness itself is part of how the gate works */
@@ -49,15 +52,23 @@ const GATE = [
 
 const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
+/* the five audits that matter most, each with what it stops (Part R,
+   21 Sep 2026); the rest sit behind one disclosure, from GATE above */
+const TOP: { name: string; stops: string }[] = [
+  { name: "audit:frame", stops: "A page off the frame: a second content edge, a stray title size, a third card style." },
+  { name: "audit:contrast", stops: "Any text under WCAG AA, in either theme." },
+  { name: "audit:axe", stops: "Any axe violation, on any route, in either theme." },
+  { name: "audit:tokens", stops: "A raw colour or spacing value in the code." },
+  { name: "audit:nda", stops: "A client or employer name, anywhere in the tree." },
+];
+const REST = GATE.filter((g) => !TOP.some((t) => t.name === g.name));
+
 export default function BellaSpine({
   auditCount,
   auditCountWord,
-  auditFiles,
 }: {
   auditCount: number;
   auditCountWord: string;
-  /** audit name to its script(s), derived from package.json on the server */
-  auditFiles: Record<string, string[]>;
 }) {
   return (
     <>
@@ -128,7 +139,31 @@ export default function BellaSpine({
             </span>
           </p>
         }
-        visual={<GateExplorer audits={GATE} files={auditFiles} />}
+        visual={
+          /* a plain list, not a grid of twenty buttons (Part R): the five
+             that matter most, then the rest behind one disclosure */
+          <div className="ds-gate">
+            <ul className="ds-gate__list">
+              {TOP.map((a) => (
+                <li key={a.name}>
+                  <span className="text-code ds-gate__name">{a.name}</span>
+                  <span>{a.stops}</span>
+                </li>
+              ))}
+            </ul>
+            <details className="ds-gate__more">
+              <summary>and {auditCount - TOP.length} more</summary>
+              <ul className="ds-gate__list">
+                {REST.map((a) => (
+                  <li key={a.name}>
+                    <span className="text-code ds-gate__name">{a.name}</span>
+                    <span>{a.line}</span>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </div>
+        }
       />
 
       {/* ── the FRONTIER-AXIS MAP IS CUT (28 Jul, readability audit) ──
@@ -159,71 +194,20 @@ export default function BellaSpine({
         visual={<BellaMaturityMap auditCount={auditCount} />}
       />
 
-      {/* ── 05 ── the close (28 Jul, readability audit). It recapped the
-          constitution the page had just spent four beats demonstrating,
-          and then stopped: no action, no way out, nothing to check. The
-          rules list is cut. What is left is the thesis stated once as a
-          claim, the artifacts that back it as things you can actually
-          open, and the two published sources this argument stands on. ── */}
-      <CaseBeat
-        index="05"
-        id="ds-close"
-        kicker="The claim"
-        headline="A design system is AI-ready when a machine can build with it correctly."
-        keyline="Every claim on this page is a link you can open."
-        /* NOT wide, and NOT flipped. Beat 04 flips, so this one cannot
-           without putting two beats on the same side, which audit:visual
-           refuses. Two columns also suit it: the claim on the left, the
-           things that back it on the right, both filled. Wide left the
-           right half of the page empty under a closing statement. */
-        body={
-          <p>
-            The manifest below is generated from the same source this page renders from. Read it
-            the way an agent would.
-          </p>
-        }
-        visual={
-          <div className="ds-close">
-            {/* the page's ONE closing action, and it is real: the live
-                artifact, not a contact form and not a scroll back up */}
-            <div className="ds-close__act">
-              <Button href="/api/bella.json" variant="primary">
-                Open the live manifest
-              </Button>
-              <a className="ds-close__alt" href="/llms.txt">
-                or read the plain-text route map at /llms.txt
-              </a>
-            </div>
-
-            <div className="ds-close__cites">
-              <p className="ds-section__kicker" style={{ margin: 0 }}>What this stands on</p>
-              <ul className="ds-close__list">
-                <li>
-                  <a
-                    href="https://southleft.com/insights/design-systems/context-based-design-systems-a-new-model-for-the-ai-driven-product-lifecycle/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Context-Based Design Systems
-                  </a>
-                  , TJ Pitre, Southleft. Where the with-contract and without-contract comparison
-                  in beat 01 comes from.
-                </li>
-                <li>
-                  <a
-                    href="https://zeroheight.com/maturity/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Design System Maturity Model
-                  </a>
-                  , zeroheight. The six axes BELLA is scored against above.
-                </li>
-              </ul>
-            </div>
-          </div>
-        }
-      />
+      {/* ── the close (Part R, 21 Sep 2026): the claim as the page's last
+          line, with its one action, the live manifest. No section of its
+          own and no sources list: the two sources are linked where their
+          claims are made (beat 01, and the maturity table's note). ── */}
+      <section className="l-section section--ruled ds-claim" aria-labelledby="ds-claim-heading">
+        <Container>
+          <h2 id="ds-claim-heading" className="case-section__heading ds-claim__line">
+            AI-ready means a machine builds with it correctly.
+          </h2>
+          <Button href="/api/bella.json" variant="primary">
+            Open the live manifest
+          </Button>
+        </Container>
+      </section>
     </>
   );
 }

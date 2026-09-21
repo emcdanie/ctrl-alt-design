@@ -2,28 +2,11 @@
  * library (Map / Table / Timeline). Colours are the recorded --case-*
  * tokens (globals.css); metadata mirrors the case-study content files. */
 
-export const SKILLS = [
-  "Design Systems",
-  "Design Tokens",
-  "Design System Governance",
-  "AI-enabled Design",
-  "Accessibility",
-  "Component Libraries",
-  "Figma ⇄ Code",
-  "Product Design",
-  "UX Research",
-] as const;
+import { SKILLS, slugify, type Skill } from "@/content/skills";
 
-export type Skill = (typeof SKILLS)[number];
-
-/** kebab slug for URL params */
-export function slugify(s: string): string {
-  return s
-    .toLowerCase()
-    .replace(/[⇄]/g, "to")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
+/* the one skills list lives in content/skills.ts; re-exported for the
+   existing importers */
+export { SKILLS, slugify, type Skill };
 
 export interface WorkItem {
   id: string;
@@ -64,9 +47,76 @@ export interface WorkItem {
 /* Curation (Elleta, 22 Jul 2026): three star cases + the Design Lab
  * row. Archived cases (guardian, clarity, filters) live with full
  * content in content/case-studies/_archive/; everything downstream
- * (counts, fit corpus, matrix, related rows, bella.json) derives from
+ * (counts, matrix, related rows, bella.json) derives from
  * this array and follows. */
 export const WORK_ITEMS: WorkItem[] = [
+  /* The travel platform set (Elleta, 21 Sep 2026): the umbrella leads
+     /work and Home; Search and Checkout are two of its four stories. They
+     wear the identity pairs already recorded (the umbrella shares Drift's,
+     the same product), so no new colour is invented. */
+  {
+    id: "booking",
+    medium: "case study",
+    cover: "/images/case-studies/travel/booking-search-5.webp",
+    rank: -1,
+    title: "B2B travel platform",
+    bubbleLabel: "B2B travel|platform",
+    kicker: "B2B travel · 2024-26",
+    ingredients: ["Research that got a team funded", "A system in code", "Six product areas shipped"],
+    href: "/case-studies/booking-platform",
+    type: "Product design",
+    year: "2024-2026",
+    yearStart: 2024,
+    role: "Lead product designer, design systems",
+    impact: "A redesign that had not shipped in two years became a platform that did",
+    skills: ["Product design", "Design systems", "UX research", "Design system governance"],
+    hi: "var(--case-drift-hi)",
+    lo: "var(--case-drift-lo)",
+    deep: "var(--case-drift-deep)",
+    text: "var(--case-drift-text)",
+  },
+  {
+    id: "search-experts",
+    medium: "case study",
+    cover: "/images/case-studies/travel/search-results-1.webp",
+    rank: 2,
+    title: "Search for experts",
+    bubbleLabel: "Search for|experts",
+    kicker: "B2B travel · 2024-26",
+    ingredients: ["Filters in one drawer", "A search that stays in view", "A ticket card"],
+    href: "/case-studies/search-experts",
+    type: "Product design",
+    year: "2024-2026",
+    yearStart: 2024,
+    role: "Lead product designer",
+    impact: "A results page that keeps the search in view and puts filters behind one button",
+    skills: ["Product design", "Design systems"],
+    hi: "var(--case-filters-hi)",
+    lo: "var(--case-filters-lo)",
+    deep: "var(--case-filters-deep)",
+    text: "var(--case-filters-text)",
+  },
+  {
+    id: "checkout",
+    medium: "case study",
+    cover: "/images/case-studies/travel/checkout-2.webp",
+    rank: 3,
+    title: "Forms and checkout",
+    bubbleLabel: "Forms and|checkout",
+    kicker: "B2B travel · 2024-26",
+    ingredients: ["One checkout for every product", "Rules as fewer choices", "Built from blocks"],
+    href: "/case-studies/checkout",
+    type: "Product design",
+    year: "2024-2026",
+    yearStart: 2024,
+    role: "Lead product designer",
+    impact: "One checkout, built from blocks, for cars, flights, stays and trains",
+    skills: ["Product design", "Design systems", "Component libraries"],
+    hi: "var(--case-clarity-hi)",
+    lo: "var(--case-clarity-lo)",
+    deep: "var(--case-clarity-deep)",
+    text: "var(--case-clarity-text)",
+  },
   {
     id: "chip",
     medium: "case study",
@@ -83,7 +133,7 @@ export const WORK_ITEMS: WorkItem[] = [
     yearStart: 2026,
     role: "Designer and builder (solo)",
     impact: "The agent watches, catches drift, drafts, and waits for approval; my own systems scored in public",
-    skills: ["AI-enabled Design", "Design System Governance", "Design Systems", "Accessibility"],
+    skills: ["AI-enabled design", "Design system governance", "Design systems", "Accessibility"],
     hi: "var(--case-chip-hi)",
     lo: "var(--case-chip-lo)",
     deep: "var(--case-chip-deep)",
@@ -99,15 +149,15 @@ export const WORK_ITEMS: WorkItem[] = [
     cover: "/images/case-studies/code-first-specimen.png",
     title: "Code First",
     bubbleLabel: "Code First",
-    kicker: "Design Systems · 2024-25",
+    kicker: "Design Systems · 2025-26",
     ingredients: ["Figma → code parity", "Primitive → semantic tokens", "Component governance"],
     href: "/case-studies/brad-frost",
     type: "Design Systems",
-    year: "2024-2025",
-    yearStart: 2024,
+    year: "2025-2026",
+    yearStart: 2025,
     role: "Design System Collaborator",
     impact: "Figma ⇄ Storybook parity; tokens aligned across the stack",
-    skills: ["Design Systems", "Design Tokens", "Component Libraries", "Figma ⇄ Code", "Accessibility"],
+    skills: ["Design systems", "Design tokens", "Component libraries", "Figma ⇄ code", "Accessibility"],
     hi: "var(--case-code-first-hi)",
     lo: "var(--case-code-first-lo)",
     deep: "var(--case-code-first-deep)",
@@ -135,13 +185,13 @@ export const WORK_ITEMS: WorkItem[] = [
     role: "Lead Product Designer, Design Systems",
     impact: "First design system from zero; tokens wired to production across 5+ verticals",
     skills: [
-      "Design Systems",
-      "Design Tokens",
+      "Design systems",
+      "Design tokens",
       /* mid-array: a structural claim for this case (Pass E task 5a) */
       "Accessibility",
-      "Design System Governance",
-      "Component Libraries",
-      "Product Design",
+      "Design system governance",
+      "Component libraries",
+      "Product design",
     ],
     hi: "var(--case-drift-hi)",
     lo: "var(--case-drift-lo)",
@@ -161,7 +211,7 @@ export const WORK_ITEMS: WorkItem[] = [
     yearStart: 2026,
     role: "Designer-builder",
     impact: "CHIP: AI-enabled design workflows, built and documented in public",
-    skills: ["AI-enabled Design", "Design Systems", "Product Design"],
+    skills: ["AI-enabled design", "Design systems", "Product design"],
     hi: "var(--case-design-lab-hi)",
     lo: "var(--case-design-lab-lo)",
     deep: "var(--case-design-lab-deep)",
@@ -194,11 +244,10 @@ export function relatedWorkItems(slug: string, count = 2): WorkItem[] {
  * One line per case-and-skill pair, in HER words. Where a line exists
  * the matrix cell exposes it on demand (disclosure) with the case
  * link; an absent line means the cell just links. Deterministic data,
- * NO AI labelling — the AI entry point stays find-your-fit, whose
- * why-rows this matrix verifies.
+ * NO AI labelling.
  * TODO(elleta): fill the lines; the structure ships dark until then.
  * Shape: { [itemId]: { [skill]: "one line" } }, e.g.
- *   drift: { Accessibility: "…", "Design Tokens": "…" } */
+ *   drift: { Accessibility: "…", "Design tokens": "…" } */
 export const SKILL_EVIDENCE: Record<string, Partial<Record<Skill, string>>> = {};
 
 /** Case tokens for a case-study slug (sphere, accents). */
@@ -208,21 +257,38 @@ export function findWorkItemBySlug(
   return WORK_ITEMS.find((i) => i.href.endsWith(`/case-studies/${slug}`));
 }
 
-/** The hub is not a work row — it belongs to the bubble cluster only. */
-export const HUB_ITEM: Omit<WorkItem, "type" | "year" | "yearStart" | "role" | "impact" | "skills" | "medium"> = {
-  id: "hub",
-  title: "How I think about design systems",
-  bubbleLabel: "Design Systems",
-  kicker: "Point of view",
-  ingredients: [
-    "Systems are agreements, not component libraries.",
-    "Governance is what stops the drift.",
-    "I read code, so design and engineering stay honest.",
-  ],
-  href: "/about#how-i-think",
-  cta: "Read my full take",
-  hi: "var(--hub-hi)",
-  lo: "var(--hub-lo)",
-  deep: "var(--hub-deep)",
-  text: "var(--hub-deep)",
+/* ── The /work case studies (Elleta, 19 Sep 2026) ───────────────────
+ * The three cases in Home order, with the Work card copy: one line,
+ * full-year dates, at most two tags. Identity lives on the WORK_ITEMS
+ * rows above; this adds only what the card says. */
+
+export interface WorkCase {
+  id: string;
+  title: string;
+  /** the case's kind in sentence case, "Design systems" (Home's kicker) */
+  kind: string;
+  line: string;
+  /** "2024 to 2025" */
+  years: string;
+  tags: string[];
+  href: string;
+  cover?: string;
+}
+
+const CASE_COPY: Record<string, Pick<WorkCase, "line" | "years" | "tags">> = {
+  /* the lead case on /work and Home (Part S, 21 Sep 2026) */
+  booking: { line: "A redesign that had not shipped in two years, rebuilt into a platform that did.", years: "2024 to 2026", tags: ["Product design", "Design systems"] },
+  "code-first": { line: "Figma and code as one system, not two.", years: "2025 to 2026", tags: ["Design tokens", "Figma ⇄ code"] },
+  drift: { line: "A first design system for a product that had outgrown its UI.", years: "2024 to 2026", tags: ["Design systems", "Governance"] },
+  chip: { line: "An agent that watches the system and never moves silently.", years: "2026", tags: ["AI-enabled design", "Governance"] },
 };
+
+export const WORK_CASES: WorkCase[] = Object.entries(CASE_COPY).map(([id, copy]) => {
+  const item = WORK_ITEMS.find((i) => i.id === id)!;
+  /* "AI + Design Systems" -> "AI + design systems": AI keeps its capitals */
+  const kind = item.type
+    .split(" ")
+    .map((w, i) => (i === 0 || w === "AI" ? w : w.toLowerCase()))
+    .join(" ");
+  return { id, title: item.title, kind, href: item.href, cover: item.cover, ...copy };
+});

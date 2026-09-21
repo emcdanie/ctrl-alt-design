@@ -32,42 +32,85 @@ override the constitution.
   `:root` that loads AFTER imports so they win.
 
 ## 1b. IA (nav)
-- Primary nav (Elleta, 2026-07-17, supersedes the four-item cap): **Work · System · Skills ·
-  About · Contact**. /design-system is a first-class page (the system inspecting itself);
+- Primary nav (Elleta, 2026-09-18, about-rebuild lock; supersedes 2026-07-17; "Skills" became
+  "Learning" 2026-09-19, /skills redirects to /learning?view=skills): **Work · System ·
+  Learning · About**, plus a "Get in touch" button on the right (secondary weight) that opens Copy
+  email + LinkedIn (`GetInTouch` / `ContactActions`; below lg they live in the menu). The /contact
+  route stays until its own PR retires it. /design-system is a first-class page (the system inspecting itself);
   the footer "See the system" colophon link stays.
-- **Work toolbar (amended 2026-07-20, Pass E task 3; supersedes the 17 Jul filter-row note).**
-  ONE toolbar row above the library: find-your-fit search on the LEFT (always visible), view
-  switcher on the RIGHT (SegmentedControl, Cards · Map · Table, always visible). The chip row
-  beneath the search is the library's ONE skill/type filter, in EVERY view (the former CASE and
-  SKILL rows are deleted); one stable order everywhere: toolbar, chip row, count, content. Cards
-  is the default and IS the curated composition (featured CHIP, ranked case grid, Explorations),
-  and it filters like every view. Sort renders only where order means something: table headers,
-  never the Map. No hidden explore state: the view lives in the URL (`view` param, back/forward
-  safe, defaults keep clean URLs).
+- **Work page (Elleta, 2026-09-19, pattern-studies direction; supersedes 2026-09-18).** Hero
+  (the `// the work` note, h1 "Work that holds its shape.", one lead; no search, Find my fit,
+  chips or count). Then Case studies: the three cases as equal Cards, flat until hover, full-year
+  dates in `.text-code`, at most two outline Tags. Then Pattern studies (`#studies`): a sticky
+  head from 1024px (heading, lead crediting the course briefs, "Where these came from" to
+  /learning, bella-skate) beside one row of type chips (All, Course brief, Prototype, Hackathon)
+  and one row per study, problem first, with a framed crop on the `--tile` ground. Rows and the
+  brief pages read `content/studies.ts`. The four course briefs get a page each at
+  `/work/studies/<id>` from one template; empty sections drop out and `draft: true` sections
+  stay hidden until Elleta approves them. Old `/work?skill=` and `?case=` links redirect to
+  `/work#studies` (`proxy.ts`). The Cards · Map · Table switcher, the Table and Map views,
+  Find my fit and the featured card stay retired.
 
 ## 2. Layout
-- One centered container, **max-width 1240px**, consistent horizontal padding, every page. Never full-bleed text.
-- Vertical rhythm from the scale (`--space-section` = 96px desktop). No inline/ad-hoc paddings.
+- **Sections use Section + SectionHeader. No custom spacing.** (Elleta, 2026-09-18, layout system,
+  `specs/layout-system`.) `components/layout/`: `Container` (content `--layout-max` 78rem plus
+  `--layout-gutter`), `Section.tsx` (section padding, the plain mono label on the hairline rule; no paw since Part Q, 2026-09-21), `SectionHeader`
+  (`layout="stacked"`, the default since 2026-09-20: label, heading, then the lead and body under it,
+  left-aligned, the text column capped at 42rem. Elleta: "the body text has moved above the image,
+  that was not the idea, put it back under the heading". `layout="split"` puts the lead beside the
+  heading from 1024px; it is kept as an option and used nowhere). Spacing comes from them and the `--section-*`
+  tokens, never from a page. `audit:layout` enforces it and lists every route.
+- **One container:** `.container` (`--container-max` = `--layout-max` plus two gutters, `--container-pad`
+  = `--layout-gutter`), every page and the nav row. `.page-container` / `.layout-container` are aliases
+  until every page migrates. Never full-bleed text.
+- **One section rhythm:** every section pads by `--section-pad-y` (layout `Section`, `.l-section`);
+  `.section--ruled` draws the hairline. `--space-section` is deleted (21 Sep 2026). Gaps inside a section use `--space-stack-sm/md/lg`. No inline/ad-hoc paddings.
+- **Every page is Nav, then Sections, then Footer**, built from `Container` + the layout `Section`.
+  (Elleta, 2026-09-20, Part E: /quick, /contact, the 404, /privacy and /accessibility moved over and the
+  older section component was deleted; its `SectionList` lives at `components/ui/SectionList.tsx`.
+  `prose` on a layout `Section` keeps its paragraphs on the body measure, for reading pages.
+  The case route and /design-system render through CaseShellV2, whose hero and sections are on the
+  same frame; audit:layout checks the shell's files. Nothing is allowlisted (21 Sep 2026).)
+- **One `:root` for tokens**, at the top of `app/globals.css`. New tokens go there, never mid-file.
 - Cards fill the grid evenly (equal heights, consistent gaps).
 
 ## 3. Type
-- **Exactly two typefaces (revised 2026-07-17, supersedes the hero-only lock).** Unique 700 = ALL
-  display headings: home hero headline, page titles, section headers, case-study display headlines,
-  and the keycap brand lockup, always all-caps with the established accent-word treatment where the
-  design already does that. Every display heading renders through the ONE `ui/Heading` primitive
-  (tiers: hero / page / section / case, plus `sub`, the Geist 700 h3-level sub-heading;
-  tracking `--tracking-display`, leading `--leading-display`, and no consumer sets its own
-  heading size, tracking or leading). Page openings are FLAT (eyebrow + Heading, the Work
+- **Two typefaces (revised 2026-09-18, Geist headings; supersedes 2026-07-17).** Geist for all
+  text, headings included: Geist 700, sentence case, `--tracking-display` (-0.03em), leading
+  1.05 (display-1) / 1.1 (display-2/3), one iris accent word where the design has one. Unique ONLY
+  on the ELLETA wordmarks (nav + footer) and the BELLA logo. Every display heading renders through
+  the ONE `ui/Heading` primitive (tiers: hero / page / section / case, plus `sub`), and no
+  consumer sets its own heading size, tracking or leading. Pages still never set their own tracking
+  or leading; the hero `squeeze` variant (weight 820 to 640, tracking -0.01em to -0.03em over the first
+  60vh of scroll, line height 1.0; Elleta, 2026-09-19, gentler in the polish pass) is the one approved exception, and it lives in the primitive. Page openings are FLAT (eyebrow + Heading, the Work
   pattern); bubble page headers are parked (last live at e25eefc, may return in the expression
   pass). The elevation/orb tokens stay: keycaps, the home cluster, and the About portrait still
   consume them.
-- Unique never renders below 24px except the keycap logo (the gate enforces this), and never in
+- Unique never renders below 24px (the gate enforces this; the ELLETA wordmark is 44/36px), and never in
   body, UI, card titles, eyebrows, meta, nav links, buttons, or chips.
 - **Unique never renders inside a Card (Elleta, 2026-07-21, card-voice).** Cards use Geist only;
   Unique stays page-tier (the Heading primitive: section heads and heroes). Card statements use
   the shared `.card-statement` recipe (Geist 700 at `--font-card-title`), card titles the shared
   `.heading-item`. Enforced by the Unique-in-card check in `audit:reuse`.
 - Geist = everything else. Eyebrows stay Geist caps with `--tracking-eyebrow`.
+- **Code role (Elleta, 2026-09-19, learning build).** Geist Mono returns as ONE role, not a third
+  face: `--font-code`, for metadata only (dates, stat lines, the inspector cursor label, the Term
+  popover's word line, code-comment notes `// ...`, credential IDs). Never headings, body, buttons
+  or nav. `.text-code` is 14px, on the floor like every other text (no exception for the code
+  role; counts in chips use it at 70% opacity or are dropped when they crowd at 390px). `audit:fonts` allows the mono family only on the `--font-code` token line and fails
+  `--font-code` on heading, body, button or nav selectors and elements.
+- **Style rule going forward (Elleta, 2026-09-18, about-rebuild lock).** No eyebrow label above
+  every heading. One iris word per display heading, only the word that matters (use the `accent`
+  prop). Never on card titles or body text. No card grids unless the content really is a set
+  of cards. Applies to new and rebuilt surfaces; existing pages migrate when they are next touched.
+- The site nav and footer are global landmarks and don't count toward one-primary-per-page.
+- Name the UN as 'United Nations Geneva' (matches the CV).
+- **Purple heading word = Term. Dotted underline = tap to learn. Bold = claim. Max one bold per
+  paragraph.** (Elleta, 2026-09-19.) `components/ui/Term.tsx`, definitions in `content/glossary.ts`.
+- **Type comes from the text utilities** (`.text-display-1/2/3`, `.text-lead`, `.text-body`,
+  `.text-meta`, `.accent`). No page-specific font sizes: if a size is missing, add a token.
+- **Never set heading widths in `ch` for Unique** (condensed, so `ch` wraps early): use
+  `--measure-heading` (22em); every page h1 caps at `--measure-title` (15em), the Home hero at `--measure-hero` (13em) (Part Q, 2026-09-21: heroes are text only, titles bigger and wider, the hero lead on `--text-hero-lead`). Headings `text-wrap: balance`, paragraphs `text-wrap: pretty`.
 - **Numbers in columns are right-aligned and tabular (Elleta, 2026-07-28, readability
   audit).** Any figure that sits in a column beside other figures (a table cell, a grid
   column, a stat row) uses `text-align: right` and `font-variant-numeric: tabular-nums`,
@@ -80,19 +123,20 @@ override the constitution.
   and only that. Eyebrows/kickers: weight 700, tracked, NEVER iris; on case-scoped surfaces they
   wear that case's identity colour (`--case-*-text`, AA on their ground); on neutral surfaces
   `--color-eyebrow` (ink-soft). Inline body links are iris AND underlined. Decorative purple uses
-  periwinkle tints. Display headings keep their iris accent word. Enforced by the no-iris eyebrow
+  periwinkle tints. Existing display headings keep their iris accent word; new ones do not
+  (style rule, section 3). Enforced by the no-iris eyebrow
   check in `audit:structure` + the live AA sweep in `audit:contrast`.
 - Every surface/text/border resolves from semantic tokens via `[data-theme="dark"]`. No hardcoded values.
 - Dark mode is a first-class contract on EVERY surface, not an afterthought — case pages included.
-- The dark keycap logo must not bloom a heavy glow on navy; tone the plate/shadow.
+- The ELLETA wordmark is live text in `--color-ink`, so it flips with the theme; no plate, no glow.
 
 ## 5. Controls (one taxonomy — see conformance spec §7)
-The raised **keycap** is reserved for the brand logo and TRUE actions only. Do not use it for filters,
+The raised **keycap** is reserved for TRUE actions only. Do not use it for filters,
 toggles, or sort.
 - **Button (grammar v5 + primary pick, 2026-07-20):** purple means clickable at every tier.
-  PRIMARY = the calm filled iris keycap, the one 3D moment per view (max ONE); hover gains the
-  travelling border light (the SHARED .trace-host recipe, never a copy); focus ring independent of
-  the trace; reduced motion shows the static accent ring. SECONDARY = flat iris outline, iris text,
+  PRIMARY = the standard BELLA primary, a flat iris fill (revised 2026-09-18: no gloss, gradient,
+  shadow or travelling light), max ONE per view; hover and press only deepen the fill, it never
+  lifts; focus ring as every control. SECONDARY = flat iris outline, iris text,
   no fill, no elevation (periwinkle on dark and fixed-dark chrome). TERTIARY = text link, iris +
   underlined. The neutral keycap is retired.
 - **SegmentedControl:** mutually exclusive views (e.g. TABLE/MAP/TIMELINE). Single-select, `aria-current`,
@@ -113,8 +157,9 @@ toggles, or sort.
 - **Positioning term is "AI-enabled" / "AI enablement".** Never "AI-augmented" or "AI-assisted". Keep the
   phrase in one constant and reference it.
 - **No em or en dashes (—, –) anywhere.** Use a period, a comma, or "that".
-- **No email address rendered anywhere on the site** (2026-07-17: scrapers harvest plaintext;
-  the contact form is the channel, LinkedIn the alternative; the send address lives server-side).
+- **No email address in the HTML or the source as one string** (amended 2026-09-18, about-rebuild
+  lock; was "rendered anywhere", 2026-07-17). `assembleEmail()` in `lib/social.ts` joins it only
+  when someone clicks Copy email; scrapers find nothing to harvest.
 - Decision-led, NDA-safe, honest. No invented metrics or exaggerated outcomes.
 
 ## 7. NDA (hard rule)
@@ -168,12 +213,25 @@ Use the `portfolio-spec` skill. For any non-trivial task:
 ## 9. The gate (`npm run gate`) — un-regressable
 Must pass before any work is "done":
 - `audit:structure` — per-case route dirs, container/section system, no arbitrary `text-[Npx]`, no amber.
-- `audit:contrast` — WCAG AA (AAA-minded); Unique below 24px fails outside the keycap logo.
+- `audit:layout` — every route is listed; a route on the layout system renders the layout `Section`
+  and no raw `<section>`; `SectionHeader` layout is "stacked" (default) or "split" and no stylesheet reshapes
+  `.l-header`; no arbitrary margin/padding classes or inline margin/padding in `app/` (and
+  in a sections folder under components, once one exists). Routes not yet moved are allowlisted as pending, special content layouts with
+  a reason.
+- `audit:frame` — the rendered frame (Playwright, `AUDIT_URL`), every route plus each case at 1440,
+  1024 and 390: one content edge; two h1 recipes (display on Home, page everywhere else) at their
+  size and within `--measure-title`; h1 and h2 50 characters or fewer; every top-level section
+  pads by `--section-pad-y`; radii from the set (`--radius-sm/md/lg/card`, pill); at most 2 card
+  signatures per route; no line wider than `--measure-body`. A deliberate exception carries
+  `data-frame-exempt="<reason>"` and is printed on every run. The frame tokens are published in
+  `/api/bella.json` (`frame`).
+- `audit:contrast` — WCAG AA (AAA-minded); Unique below 24px fails everywhere, no exceptions.
 - `audit:copy` — fails on `—`/`–` and on "AI-augmented" / "AI-assisted".
 - `audit:controls` — keycap used as filter/toggle/sort fails; >1 primary per view fails; filters/toggles
   missing `aria-pressed`/`aria-current` fail.
-- `audit:fonts` — any face other than the Unique/Geist tokens fails; Unique outside the Heading
-  primitive, home hero, or keycap lockup fails; any mono family reference fails.
+- `audit:fonts` — any face other than the Unique/Geist tokens fails; Unique set on anything but
+  the ELLETA wordmarks or the BELLA logo fails; any mono family reference outside the `--font-code`
+  token fails, and `--font-code` on headings, body, buttons or nav fails.
 - `audit:tokens` — colour literals and raw spacing (>=4px) in `app/**`/`components/**` fail;
   `token-waiver:` inline comments mark the reviewed proto-exact/artwork exceptions.
 - `audit:parity` — every case-study slug has exactly one `WORK_ITEMS` row and vice versa; side
@@ -187,11 +245,15 @@ Must pass before any work is "done":
 - `audit:type` — no Card surface renders reading text below 16px COMPUTED; the shared
   `.card-body` recipe never computes below 18px; sitewide, any P/LI with own text past ~40
   chars computes >= 16px. Metadata rows (tags/pills/eyebrows/kickers) are a deliberate
-  separate tier and exempt. Every Unique heading tracks >= `--tracking-display` and leads
-  >= 1.0, and every h2 display head on a page computes one size.
+  separate tier and exempt. Section index labels count as metadata: short labels only, never
+  sentences. Nothing visible renders below 14px. Every heading is Geist (never Unique) and leads
+  >= 1.0; Unique renders only on the wordmarks; every h2 display head on a page computes one size.
 - `audit:visual` — one ground on /design-system (band backgrounds equal the page ground,
   no exceptions since the 23 Jul DS2 no-wash port), sibling specimen cards render equal
   heights, cover placeholders clear 3:1 against both gradient stops, both themes.
+- `audit:order` — accessibility-tree snapshots (tests/a11y, Playwright `toMatchAriaSnapshot`, light
+  theme at 1440 and 390) fail when reading order changes; then lists CSS that reorders content
+  visually, for review. Browser audits read `AUDIT_URL` (default `http://localhost:3000`).
 - `audit:debt` — nothing rots quietly: a doc citing a file that does not exist, a token
   nothing consumes through a `var()` chain, a gate table describing audits that no longer
   run, or an audit tracking a selector that matches nothing. Static analysis, about a second.
@@ -225,13 +287,23 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 
 ---
 
+## 11. Cowork relay (Elleta, 2026-09-19)
+- **Inbox.** When Elleta types "check inbox", read `_private/inbox/site.md`, do the work it
+  describes, then move it to `_private/inbox/done/site-<YYYY-MM-DD-HHMM>.md`.
+- **Report.** At the end of every task, prepend a report to `_private/reports/site.md`: the date
+  and a one-line summary, the commits, the gate result, the screenshot paths, decisions for
+  Elleta (numbered, each yes/no or pick-one), and any deviations from the prompt.
+- `_private/` is gitignored: never commit an inbox or report file.
+
+---
+
 # Repo operations (kept from the previous harness file)
 
 ## Before doing anything
 1. Read the **most recent session record** in `docs/session-*.md` (newest by date). It is the
    backward record: what shipped, what broke, what was learned, and which decisions are still
    open. It is committed, so it survives; `claude-progress.md` is local-only and does not.
-   **Start with `docs/session-2026-07-28.md`.**
+   **Start with `_private/docs/session-2026-09-18.md`** (local only; the private session record).
 2. Read `claude-progress.md` — current verified state and last session's forward handoff.
 3. Read `feature_list.json` — pick the highest-priority item not yet passing. One item at a time.
 4. If the task involves a prototype, open its folder README first (e.g. `prototypes/finviz-3/README.md`).
@@ -243,7 +315,6 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 - **Evidence before passing.** Update `feature_list.json` only with a note on how it was verified. Never delete or reword entries — only change status and evidence.
 - **Content drafts** (LinkedIn etc.) belong in Notion's Content Lab, not this repo — except `prototypes/linkedin-preview/`.
 - **File locations:** save deliverables into THIS folder — never cloud drives or scratch folders Elleta can't see. NDA-sensitive material goes in `_private/` (gitignored).
-- **The pre-commit hook false-positives** the Apple Music album id in `components/VinylPlayer.tsx` as a phone number — that file stays uncommitted (see `docs/fixes/`).
 
 ## End of session
 - Write or update the **session record** at `docs/session-<YYYY-MM-DD>.md`: what shipped, what

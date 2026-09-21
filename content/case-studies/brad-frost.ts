@@ -10,18 +10,18 @@ const study: CaseStudy = {
   /* Statement headline (Elleta, 18 Jul, verbatim): the case THESIS is
    * the display headline; the case NAME (Code First) lives in the
    * library, sidebar, and breadcrumb surfaces. CSS sets it all-caps. */
-  title: "Working code-first changes what you pay attention to.",
+  title: "Working code-first changes what you notice.",
   category: "DESIGN SYSTEMS",
-  year: "2024-2025",
+  year: "2025-2026",
   scope: "Component Architecture, Token Alignment, Figma-Storybook Integration",
-  timeline: "Oct 2024 - Jan 2025",
+  timeline: "Oct 2025 - Jan 2026",
   /* heroImage removed (PR 41 amendment item 8, Elleta 22 Jul): the
      Command Center imagery leaves the case entirely; it remains a
      Design Lab piece only */
   metrics: {
     role: "Design System Collaborator",
     team: "Brad Frost Web Maker Program",
-    timeline: "Oct 2024 - Jan 2025",
+    timeline: "Oct 2025 - Jan 2026",
     scope: "Component Architecture, Token Alignment, Figma-Storybook Integration, MCP",
   },
   overview: {
@@ -36,7 +36,7 @@ const study: CaseStudy = {
   outcomes: {
     title: "Aligned, Documented, Maintainable",
     body: "Figma and Storybook components aligned across the system. Token layer documented with explicit primitive → semantic → component chain. MCP workflow established for ongoing system investigation.",
-    completionTag: "PROJECT COMPLETE · 2025",
+    completionTag: "PROJECT COMPLETE · 2026",
   },
   tags: ["Design Systems", "Atomic Design", "Code-First", "AI Tooling"],
   clientLogo: "/images/logos/bradfrostwebjpeg.jpeg",
@@ -44,14 +44,14 @@ const study: CaseStudy = {
   description: "What Building Brad Frost's Component System in Reverse Taught Me About Design",
   /* ── The ONE render path — ordered blocks (migrated from the former
    * hand-built page, 1:1) ── */
-  eyebrow: "Design System Collaboration · 2024-2025",
+  eyebrow: "Design System Collaboration · 2025-2026",
   summary:
     "What building Brad Frost's component system in reverse taught me about design, and why working code-first changes everything you pay attention to.",
   /* canonical sidebar meta (Pass E task 11g): Role, Year, Type or
      Scope, Organisation, Tools where applicable; omit empty rows */
   metadata: [
     { label: "Role", value: "Design System Collaborator" },
-    { label: "Year", value: "2024-2025" },
+    { label: "Year", value: "2025-2026" },
     { label: "Scope", value: "Component Architecture · Token Alignment · Figma-Storybook Integration · MCP" },
     { label: "Organisation", value: "Brad Frost Web, Maker Program" },
   ],

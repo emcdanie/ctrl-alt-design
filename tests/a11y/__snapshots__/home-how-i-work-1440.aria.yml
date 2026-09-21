@@ -1,0 +1,8 @@
+- region "How I work":
+  - paragraph: How I work
+  - heading "The system behind the site." [level=2]
+  - paragraph: This site runs on BELLA, my own design system. Pick a door.
+  - link "System BELLA, inspected live Tokens, components and the docs an AI can read.":
+    - /url: /design-system
+  - link "Learning Where I learned it Courses, certificates and the people I follow.":
+    - /url: /learning

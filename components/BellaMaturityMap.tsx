@@ -93,34 +93,8 @@ const axes = (auditCount: number): Axis[] => [
   },
 ];
 
-/* ── the radar geometry ──
-   Six axes, 60 degrees apart, first axis at twelve o'clock and running
-   clockwise in the order the axes are declared, which is the order the
-   table lists them. Radius is (stage / 4) of the full spoke, so the
-   plotted area IS the shape of the self-assessment: deep where the
-   frontier axes are, shallow where the org-scale ones are. */
-const R = 82;
-const CENTRE = 100;
-const angle = (i: number) => ((-90 + i * 60) * Math.PI) / 180;
-const point = (i: number, r: number) =>
-  `${(CENTRE + r * Math.cos(angle(i))).toFixed(2)},${(CENTRE + r * Math.sin(angle(i))).toFixed(2)}`;
-const ring = (r: number) => [0, 1, 2, 3, 4, 5].map((i) => point(i, r)).join(" ");
-
 export default function BellaMaturityMap({ auditCount }: { auditCount: number }) {
   const rows = axes(auditCount);
-  const shape = rows.map((a, i) => point(i, (R * a.steps) / STEPS_TOTAL)).join(" ");
-
-  /* the chart's text equivalent, built from the same data it draws, so
-     it can never describe a shape the chart is not showing. The exact
-     stage of every axis is in the table; this states the SHAPE, which
-     is the thing the chart adds and the table cannot. */
-  const deep = rows.filter((a) => a.steps === Math.max(...rows.map((x) => x.steps)));
-  const shallow = rows.filter((a) => a.steps === Math.min(...rows.map((x) => x.steps)));
-  const shapeLabel =
-    `Maturity shape across six axes, each scored 1 to ${STEPS_TOTAL}. ` +
-    `Deepest on ${deep.map((a) => a.name).join(" and ")} at stage ${deep[0].steps}. ` +
-    `Shallowest on ${shallow.map((a) => a.name).join(" and ")} at stage ${shallow[0].steps}. ` +
-    `Every axis and its exact stage is listed in the table that follows.`;
 
   return (
     /* VISUAL ONLY (27 Jul migration): the beat owns the headline.
@@ -150,92 +124,10 @@ export default function BellaMaturityMap({ auditCount }: { auditCount: number })
        left with its own scale and source stacked underneath it, the
        exact stages on the right. Nothing flanks the chart, so nothing
        can crowd its labels, and the two halves start on the same line. */
+    /* TABLE ONLY (Part R, 21 Sep 2026): the radar said what the table
+       says, less readably, so it went. The stage scale and the model's
+       credit sit under the table as one line. */
     <div className="bmm">
-      <div className="bmm-body">
-        {/* ── the radar: the shape, at a glance ──
-            The six axis labels are HTML in a ring around the chart, NOT
-            <text> inside it. Text in a viewBox scales with the box, so
-            the labels on the AI-readiness diagram in beat 04 render
-            between 3.6px and 9.4px depending on width, and no audit can
-            see it because computed font-size reports the declared user
-            unit. These labels are real DOM at the body size and cannot
-            fall below the floor at any width. The SVG is therefore pure
-            geometry, and carries its meaning as one aria-label. */}
-        <figure className="bmm-radar">
-          <div className="bmm-radar__ring">
-            {/* on a phone the ring cannot hold six labels AND a chart:
-                two side labels plus their gaps left the hexagon about
-                70px wide at 360. Below that width the labels fall into a
-                row beneath the chart, in the same clockwise order, and
-                this names that order so the list still says which vertex
-                is which. It is the ONE set of labels either way. */}
-            <span className="bmm-radar__hint">Clockwise from the top</span>
-            {rows.map((a, i) => (
-              <span key={a.name} className={`bmm-radar__label bmm-radar__label--${i}`}>
-                {a.short}
-              </span>
-            ))}
-            <svg
-              className="bmm-radar__svg"
-              viewBox="0 0 200 200"
-              role="img"
-              aria-label={shapeLabel}
-            >
-              {[1, 2, 3, 4].map((k) => (
-                <polygon key={k} className="bmm-radar__grid" points={ring((R * k) / STEPS_TOTAL)} />
-              ))}
-              {rows.map((a, i) => (
-                <line
-                  key={a.name}
-                  className="bmm-radar__spoke"
-                  x1={CENTRE}
-                  y1={CENTRE}
-                  x2={point(i, R).split(",")[0]}
-                  y2={point(i, R).split(",")[1]}
-                />
-              ))}
-              <polygon className="bmm-radar__shape" points={shape} />
-              {rows.map((a, i) => {
-                const [cx, cy] = point(i, (R * a.steps) / STEPS_TOTAL).split(",");
-                return (
-                  <circle
-                    key={a.name}
-                    className={`bmm-radar__dot${a.frontier ? " bmm-radar__dot--frontier" : ""}`}
-                    cx={cx}
-                    cy={cy}
-                    r={3.5}
-                  />
-                );
-              })}
-            </svg>
-          </div>
-
-          {/* the chart's furniture, UNDER the chart rather than beside
-              it: as flanking columns the scale finished a few pixels from
-              the "AI Readiness" axis label and read as colliding with it.
-              Nothing sits beside the ring now, so nothing can crowd it. */}
-          <figcaption className="bmm-radar__cap">
-            <span className="bmm-radar__scale">
-              <span className="bmm-legend__label">Stages</span>
-              <span className="bmm-legend__scale">V1 → Growing → Teenage → Healthy Product</span>
-            </span>
-            {/* trimmed (craft pass): it listed all six axis names, which
-                the table now lists in full, one per row */}
-            <span className="bmm-radar__model">
-              Model:{" "}
-              <a
-                className="ds-swatch__case"
-                href="https://zeroheight.com/maturity/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                zeroheight Design System Maturity Model
-              </a>
-              . Self-assessed by Elleta McDaniel, ctrl_alt_design.
-            </span>
-          </figcaption>
-        </figure>
-
         <ul className="bmm-list">
           {/* the column header is presentation for the grid beneath it,
               not a row of data; it is hidden from the accessibility tree
@@ -285,7 +177,14 @@ export default function BellaMaturityMap({ auditCount }: { auditCount: number })
             </li>
           ))}
         </ul>
-      </div>
+        <p className="bmm-note">
+          Stages: V1 → Growing → Teenage → Healthy Product. Model:{" "}
+          <a href="https://zeroheight.com/maturity/" target="_blank" rel="noopener noreferrer">
+            zeroheight Design System Maturity Model
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
+          . Self-assessed by Elleta McDaniel.
+        </p>
     </div>
   );
 }

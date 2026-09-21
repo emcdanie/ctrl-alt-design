@@ -3,9 +3,10 @@
  * and rem math), and .card-body must compute >= 18px. Metadata rows
  * (tags, pills, eyebrows, kickers, period/meta lines) are a separate
  * tier by design (item-1 carve-out) and are exempt via the class list
- * below; the popup's reading text is included by opening a bubble. */
+ * below. */
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
+import { BASE } from "./lib/base-url.mjs";
 
 /* Declared for audit:debt's dead-selector check (27 Jul 2026). */
 export const TRACKED_SELECTORS = [
@@ -14,9 +15,10 @@ export const TRACKED_SELECTORS = [
 ];
 
 const ROUTES = [
-  "/", "/about", "/work", "/contact", "/skills", "/design-system", "/quick",
+  "/", "/about", "/work", "/work/studies/stock-screener", "/contact", "/learning", "/design-system", "/quick", "/privacy", "/accessibility",
   "/case-studies/chip", "/case-studies/brad-frost",
   "/case-studies/design-system-transformation",
+  "/case-studies/booking-platform", "/case-studies/search-experts", "/case-studies/checkout",
 ];
 const CARD_SCOPE = '[class*="card"], [class*="Card"], .thesis-band, .ds-gate__row, [role="dialog"]';
 /* The metadata tier stays exempt (Elleta's ruling, 2026-07-27): tags,
@@ -24,43 +26,24 @@ const CARD_SCOPE = '[class*="card"], [class*="Card"], .thesis-band, .ds-gate__ro
    --typography-font-size-tag. The 27 Jul hardening widened the TAGS the
    audit measures, which newly exposed metadata classes that were always
    in this tier but had never been reached; they are named here rather
-   than silently raised. Everything NOT in this list is reading text and
-   must clear 16px. */
+   than silently raised. .text-code (the code role, 19 Sep 2026) is
+   metadata by definition: 14px, never reading text. l-section__label is
+   the layout Section's paw label (specs/layout-system), the same section
+   index tier as .section-label. Everything NOT in this list is reading
+   text and must clear 16px. */
 const META_EXEMPT =
-  /tag|pill|eyebrow|kicker|section-label|sr-only|meta|badge|__pk|period|swatch__name|swatch__value|tok-inspector|tok-annotation__trigger|demo-link|card-meta|ds-flag|skill|flag__val|glyph|crumb|__count|quote__by|ds-type__sample|gov-h/;
+  /tag|pill|eyebrow|kicker|section-label|l-section__label|sr-only|meta|badge|__pk|period|swatch__name|swatch__value|tok-inspector|tok-annotation__trigger|demo-link|card-meta|ds-flag|skill|flag__val|glyph|crumb|__count|quote__by|ds-type__sample|gov-h|text-code/;
 
 const browser = await chromium.launch();
 const page = await (await browser.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
 let fails = 0;
 
 for (const route of ROUTES) {
-  await page.goto(`http://localhost:3000${route}`, { waitUntil: "networkidle", timeout: 30000 });
+  await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 30000 });
   const h = await page.evaluate(() => document.body.scrollHeight);
   for (let y = 0; y < h; y += 800) {
     await page.evaluate((v) => scrollTo(0, v), y);
     await page.waitForTimeout(30);
-  }
-  if (route === "/work") {
-    /* computed-equality assertion (card-voice item 1, 21 Jul): the
-       popup title must compute the SAME size as CaseCard titles on
-       Work — no page-tier sizes inside any card or popup */
-    const cardTitleSize = await page.evaluate(() => {
-      const t = document.querySelector('[class*="caseCard"] .heading-item, [class*="CaseCard"] .heading-item');
-      return t ? parseFloat(getComputedStyle(t).fontSize) : null;
-    });
-    /* the map popup is a card too */
-    await page.goto("http://localhost:3000/work?view=map", { waitUntil: "networkidle" });
-    await page.waitForTimeout(500);
-    await page.evaluate(() => document.querySelector("button[data-bubble]")?.dispatchEvent(new MouseEvent("click", { bubbles: true })));
-    await page.waitForTimeout(600);
-    const popupTitleSize = await page.evaluate(() => {
-      const t = document.querySelector('[role="dialog"] .heading-item');
-      return t ? parseFloat(getComputedStyle(t).fontSize) : null;
-    });
-    if (cardTitleSize === null || popupTitleSize === null || cardTitleSize !== popupTitleSize) {
-      fails++;
-      console.error(receipt("type", "/work popup title vs CaseCard title", `${popupTitleSize}px vs ${cardTitleSize}px`, "equal sizes (one title recipe)"));
-    }
   }
   const bad = await page.evaluate(
     ({ scope, exempt }) => {

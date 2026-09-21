@@ -65,12 +65,9 @@
   --space-lg: 40px;
   --space-xl: 64px;
   --space-2xl: 96px;
-  --space-section: 96px;
   --space-section-lg: 96px;
 
   /* Layout */
-  --container-width: 1240px;
-  --container-padding: 32px;
   --grid-gap: 32px;
   --card-padding: 24px;
   --card-radius: 20px;
@@ -91,12 +88,10 @@
   --font-hero-display: var(--font-hero-display);
 }
 
-/* v3: every semantic heading defaults to the Unique display face. Class-level
-   font-family still wins. TYPE LOCK: exactly two faces. Unique renders
-   only through the display Heading primitive (.display-heading), the
-   home hero headline, and the .kbd-logo brand lockup; labels, body, and
-   eyebrows are Geist. No mono family exists. Bubble page headers are
-   PARKED (last live at e25eefc; may return in the expression pass). */
+/* Every heading is Geist (--font-display resolves to Geist). TYPE LOCK:
+   two faces. Unique renders only on the ELLETA wordmarks (.nav-wordmark,
+   .site-footer__wordmark) and the BELLA logo; everything else, headings
+   included, is Geist. No mono family exists. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
 }
@@ -120,9 +115,11 @@ body {
      rendering; the eyebrow look is caps + tracking, not a third face */
   --font-mono: var(--font-geist, "Geist"), system-ui, sans-serif;
   --font-hero-display: var(--font-unique, "Unique"), "Arial Narrow", sans-serif;
-  --typography-font-family-display: var(--font-display);
-  --typography-font-family-body: var(--font-body);
-  --typography-font-family-mono: var(--font-mono);
+  /* the code face (Elleta, 19 Sep 2026): Geist's mono cut as ONE role, for
+     metadata only (dates, stat lines, code-comment notes, credential
+     IDs, the inspector cursor label, the Term popover word line).
+     Never headings, body, buttons or nav; audit:fonts enforces it. */
+  --font-code: var(--font-geist-mono, "Geist Mono"), ui-monospace, monospace;
   /* Colour affordance rule (refined 2026-07-17): iris stays banned on
      eyebrows; neutral surfaces use ink-soft (muted lost too much
      presence), case surfaces override with the case identity colour.
@@ -139,6 +136,109 @@ body {
    component borders — do not "fix" it that way.
    Every app token that overrides a BELLA default goes in this block. */
 :root {
+  /* ─── Layout + type foundation (18 Sep 2026) ─────────────────────
+     ONE source for container, section rhythm, the type scale and the
+     measures. New tokens go in this block, never mid-file. Fluid pairs
+     run 390 -> 1440. */
+  /* Surfaces (19 Sep 2026, About build): flat. --surface-card is the
+     page ground (--color-page) pulled 4% toward the ink (darker here; the dark block
+     pulls it toward the cream ink, so lighter on navy). */
+  /* ONE card surface (Elleta, 20 Sep 2026, Part D item 2). This was a
+     local 4% mix that computed rgb(232,230,222) while the synced BELLA
+     Card painted rgb(236,235,231): two card surfaces on one page. The
+     site now reads BELLA's token, so there is one source. */
+  --surface-card: var(--color-semantic-surface-card);
+  --border-faint: color-mix(in srgb, var(--color-ink) 10%, transparent);
+  --radius-card: 1rem;
+  --radius-pill: 999px;
+  /* a soft iris wash: row hover (10%, the mock); the Current pill takes
+     6% so its iris text clears AA (4.61:1 on the card; 10% gave 4.37) */
+  --iris-soft: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
+  --iris-pill: color-mix(in srgb, var(--color-accent-ink) 6%, transparent);
+  --radius-popover: 0.75rem;
+  /* Term: the dotted iris underline (thicker, further off in headings) */
+  --term-dot: 1.5px;
+  --term-offset: 4px;
+  --term-dot-heading: 2px;
+  --term-offset-heading: 6px;
+  /* Layout system (18 Sep 2026, specs/layout-system): Container,
+     Section, SectionHeader read these. They move into BELLA later. */
+  /* ONE content width for every section (Elleta, 20 Sep 2026, Part H
+     item 4: "about 76 to 80rem"). 78rem = 1248px. Raised from 74rem so
+     wide screens hug the content a little less; the gutters still sit
+     outside it, and the reading measures (--measure-lead 42rem,
+     --measure-body 65ch) are unchanged, so lines do not get longer. */
+  --layout-max: 78rem;
+  --layout-gutter: clamp(1.5rem, 4vw, 3rem);
+  /* more air between sections (Part Q): ~64px at 390, ~118px at 1440 */
+  --section-pad-y: clamp(4rem, 2rem + 6vw, 8rem);
+  --section-rule-gap: 2rem; /* rule to heading */
+  --section-label-gap: 0.75rem; /* label to rule */
+  --section-lead-gap: 1rem; /* heading to lead, lead to body */
+  --section-content-gap: 3.5rem; /* SectionHeader to the content after it */
+  /* the one container is the layout container: content --layout-max,
+     gutters outside (the nav row and the ruled lines read these too) */
+  --container-max: calc(var(--layout-max) + var(--layout-gutter) * 2);
+  --container-pad: var(--layout-gutter);
+  --space-stack-sm: 12px;
+  --space-stack-md: 24px;
+  --space-stack-lg: 40px;
+  /* display tokens alias the BELLA heading scale (set below; TODO: move
+     the values into BELLA component.heading.* and delete the override) */
+  --text-display-1: var(--component-heading-page-font-size);
+  --text-display-2: var(--component-heading-section-font-size);
+  --text-display-3: clamp(1.375rem, 1.2rem + 0.75vw, 2rem);
+  /* heading-3: item, card and entry titles (Geist 600) */
+  --text-heading-3: clamp(1.125rem, 1.05rem + 0.3vw, 1.375rem);
+  --text-lead: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
+  --leading-lead: 1.55;
+  --text-body: clamp(1rem, 0.98rem + 0.1vw, 1.0625rem);
+  /* nav links and button labels */
+  --text-nav: 1rem;
+  --leading-body: 1.55;
+  /* the floor: nothing on the site renders below 14px */
+  --text-meta: 0.875rem;
+  --text-code: var(--text-meta); /* 14px: the code role (.text-code) sits on the floor, never under it (Elleta, 19 Sep 2026) */
+  --text-caption: 0.9375rem; /* 15px: a title under a name (experience rows) */
+  /* Good company grid cells (100px under 700px) */
+  --logo-cell: 132px;
+  --logo-cell-sm: 100px;
+  /* footer contact photo (72px under 700px) */
+  --footer-photo: 6rem;
+  --footer-photo-sm: 4.5rem;
+  /* site footer: ELLETA in Unique, its letters spread across the
+     container; the letters stand 96 -> 240px tall (Unique's cap is
+     0.706em, so the font size is the cap height / 0.706). Bella sits on
+     the last A at 0.55x the cap height */
+  --footer-wordmark-cap: clamp(6rem, 18vw, 15rem);
+  --footer-wordmark-size: calc(var(--footer-wordmark-cap) / 0.706);
+  --footer-bella-height: calc(0.706em * 0.55);
+  /* heading measures in em (display-1 18em, the rest 22em) */
+  /* STOPGAP override of BELLA's px size ramp, in rem so every size
+     follows the reader's font setting; tag rises to the 14px floor and
+     base follows the fluid body size. TODO: move into BELLA. */
+  --typography-font-size-tag: var(--text-meta);
+  --typography-font-size-sm: 0.875rem;
+  --typography-font-size-base: var(--text-body);
+  --typography-font-size-lg: 1.125rem;
+  --typography-font-size-xl: 1.25rem;
+  --typography-font-size-2xl: 1.5rem;
+  --typography-font-size-4xl: 2.5rem;
+  --typography-font-size-5xl: 3.5rem;
+  --measure-heading: 22em;
+  /* the title measures: ONE token for every page h1 and one for the
+     Home hero, so a title can never run full width. Part Q (21 Sep)
+     widened them from 8.5em, which made every hero look timid. em, like
+     every heading measure (DESIGN.md) */
+  --measure-title: 15em;
+  --measure-hero: 13em;
+  /* the hero lead (Part Q): bigger, 1.5rem under the h1, 34em max */
+  --text-hero-lead: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);
+  --measure-hero-lead: 34em;
+  --hero-lead-gap: 1.5rem;
+  --measure-lead: 42rem;
+  --measure-body: 65ch;
+
   /* Card surface, light leg (Card swap, 2026-07-30). BELLA's vendored Card
      paints its inner panel from --color-semantic-surface, so that BELLA name
      is re-pointed at the 27 Jul separation value instead of inheriting
@@ -154,7 +254,9 @@ body {
 
   /* Header offset. All sticky/fixed elements below the nav use this.
      Defined ONLY here (unlayered authority), not in @theme. */
-  --header-height: 76px; /* keycap header, measured (BELLA default: 64) */
+  --header-height: 76px; /* measured header (BELLA default: 64) */
+  /* ELLETA wordmark: component token, no BELLA size fits 44/36 */
+  --nav-wordmark-size: 2.75rem;
   /* Eyebrow/label tracking: caps + spacing carry the old mono look */
   --tracking-eyebrow: var(--typography-letter-spacing-wider);
 
@@ -162,82 +264,43 @@ body {
      keycap switch, and nav-bar depth values, moved verbatim out of the
      component layer. Do not flatten; the depth IS the system. */
   --shadow-orb: 13px 22px 44px rgba(0, 0, 0, 0.26), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
-  --shadow-orb-raised: 14px 24px 48px rgba(0, 0, 0, 0.26), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
-  --shadow-orb-selected: 14px 24px 48px rgba(0, 0, 0, 0.3), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
-  --gloss-orb: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 72%);
-  --edge-glass-hi: inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  --edge-glass-hi-strong: inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  --gloss-press: inset 0 2px 4px rgba(255, 255, 255, 0.6);
-  --shadow-switch-track: inset 0 2px 5px rgba(25, 23, 32, 0.22);
-  --shadow-switch-track-dark: inset 0 2px 6px rgba(0, 0, 0, 0.5);
-  --shadow-switch-knob: 3px 5px 8px rgba(25, 23, 32, 0.24);
-  --shadow-switch-knob-dark: 3px 5px 8px rgba(0, 0, 0, 0.4);
   --shadow-nav-bar: 0 18px 48px rgba(26, 24, 20, 0.08);
-  /* keycap specular sheen (button grammar 4b): one light source,
-     upper left, matching the orb gloss. Translucent overlays only, so
-     the per-stop contrast check still judges the real fill stops. */
-  --gloss-key: linear-gradient(color-mix(in srgb, white 18%, transparent), transparent 46%);
-  --gloss-key-hover: linear-gradient(color-mix(in srgb, white 26%, transparent), transparent 52%);
-  --gloss-key-pressed: linear-gradient(transparent 0 10%, color-mix(in srgb, white 12%, transparent) 10%, transparent 50%);
-  --shadow-key-hover:
-    1px 4px 0 var(--key-fill-edge),
-    4px 8px 14px color-mix(in srgb, var(--key-fill-lo) 28%, transparent),
-    var(--edge-glass-hi-strong);
-  /* media scrim (one card system): text over cover media stays AA */
-  --scrim-media: linear-gradient(to top, color-mix(in srgb, black 46%, transparent), color-mix(in srgb, black 10%, transparent) 42%, transparent 68%);
-}
 
-@media (max-width: 640px) {
-  :root {
-    --header-height: 64px;
-  }
-}
 
-/* ─── Fluid typography scale — DESIGN.md §5 ─────────────────────
-   Ramp: 13/14/16/18/20/24/32/40/56. One fluid pair per step, endpoints
-   on the ramp, defined ONCE here. No other clamp() in components. */
-:root {
   /* Display ladder (display-type-scale fix, 18 Sep 2026).
      Every tier is fluid between a 390 and a 1440 viewport:
      clamp(min, min + (max - min) * (100vw - 390px) / 1050, max).
      Section and case share one size on purpose: every section head on
      every page renders the same, and audit:type fails two section
      heads that compute differently on one page. */
-  /* the home headline keeps its scale moment: ~180 at 1440 */
-  --font-display-hero: clamp(40px, 40px + 140 * (100vw - 390px) / 1050, 180px);
-  /* page titles (/about, case studies, /design-system, every page H1):
-     one size, a clear step above the 48px section heads */
-  --font-display-page: clamp(40px, 40px + 24 * (100vw - 390px) / 1050, 64px);
-  --font-display-section: clamp(32px, 32px + 16 * (100vw - 390px) / 1050, 48px);
-  --font-display-case: clamp(32px, 32px + 16 * (100vw - 390px) / 1050, 48px);
-  /* Unique caps need air: the condensed bold cut collides at the old
-     0.005em / 0.9. Tracking is a floor for every Unique heading and
-     leading never drops below 1 (audit:type enforces both). */
-  --tracking-display: 0.04em;
+  /* STOPGAP override of the BELLA --component-heading-* values (this
+     unlayered :root wins over the vendored bella.css). TODO: BELLA PR
+     to own these values, then delete this override. Page 40-72, section 28-44 (Geist 700);
+     hero (the home headline, 19 Sep 2026) about 42-86. Case shares section. */
+  /* bigger, wider titles (Part Q, Elleta, 21 Sep: "calmer, more
+     confident, grown-up") */
+  /* the minimums dropped so the longest word fits a 342px phone column
+     (Part U); from about 480px up the sizes are Part Q's */
+  --component-heading-hero-font-size: clamp(2.75rem, 1.5rem + 5.6vw, 6.75rem);
+  --component-heading-page-font-size: clamp(2.5rem, 1.6rem + 4.2vw, 5.25rem);
+  --tracking-title: -0.035em;
+  --leading-title: 1.02;
+  --component-heading-section-font-size: clamp(1.75rem, 1.45rem + 1.3vw, 2.75rem);
+  /* Geist headings track slightly tight; leading never drops below 1
+     (audit:type enforces it). */
+  --tracking-display: -0.03em;
   --leading-display: 1.05;
   /* the overlay nav's Geist link size (not a heading tier) */
-  --font-hero: clamp(40px, 5vw, 56px);
-  --font-section-title: clamp(32px, 2.5vw, 40px);
+  --font-hero: clamp(2.5rem, 5vw, 3.5rem);
   /* sub-heading tier (h3 level): Geist 700, never Unique, 24 to 32 */
-  --font-subsection: clamp(24px, 24px + 8 * (100vw - 390px) / 1050, 32px);
-  --font-card-title: clamp(20px, 1.4vw, 24px);
-  --font-body-size: clamp(16px, 1.1vw, 18px);
+  --font-subsection: clamp(1.5rem, 1.3143rem + 0.7619vw, 2rem);
+  --font-card-title: clamp(1.25rem, 1.4vw, 1.5rem);
+  --font-body-size: var(--text-body);
   --font-small: 14px;
-}
 
-/* ─── Case-cover + atom tokens (DESIGN.md: recorded additions) ────
-   Cover plates for the label-style case cards and the atom hero
-   nucleus. Text pairs are AAA on their plates (verified in DESIGN.md). */
-:root {
-}
 
-/* ─── Bubble-hero + keycap-logo tokens (DESIGN.md: recorded additions) ──
-   From the vetted _proto/_hero.html (2026-07-16). Per-case bubble
-   gradients (hi/lo), a deep readable accent per case (AA+ on the white
-   reveal card), the iris hub, and the keycap logo plates. The reveal
-   card is ALWAYS a light card — its ink is fixed-context, it does not
-   flip with [data-theme]. */
-:root {
+
+
   --hero-iris-bright: #7A6BE8;
   --peri: #A79CE2; /* fixed periwinkle (proto --peri) */
   --case-code-first-hi: #F6BBD6;
@@ -246,9 +309,6 @@ body {
   --case-drift-hi: #D6AFEE;
   --case-drift-lo: #C58AE6;
   --case-drift-deep: #6A40AC;
-  --case-guardian-hi: #AEBCF5;
-  --case-guardian-lo: #8FA2F0;
-  --case-guardian-deep: #3B4FAC;
   --case-clarity-hi: #A6D8BC;
   --case-clarity-lo: #7FC79E;
   --case-clarity-deep: #256B4C;
@@ -264,7 +324,6 @@ body {
   --case-writing-deep: #B23C30;
   --case-code-first-text: var(--case-code-first-deep);
   --case-drift-text: var(--case-drift-deep);
-  --case-guardian-text: var(--case-guardian-deep);
   --case-clarity-text: var(--case-clarity-deep);
   --case-design-lab-text: var(--case-design-lab-deep);
   --case-writing-text: var(--case-writing-deep);
@@ -289,22 +348,32 @@ body {
   --gov-grey-text: var(--gov-grey-deep);
   --hub-hi: #CFC7F6;
   --hub-lo: #A99BEC;
-  --hub-bright: #6C5CE0;
-  --hub-deep: #5647C4;
-  --hero-bub-ink: #141019;
-  --hero-panel-bg: #FFFFFF;
-  --hero-panel-ink: #1A1720;
-  --hero-panel-close: #9A948B;
   /* The six panel-ground companions (--hero-panel-ink-soft / -meta /
      -surface / -border-soft / -border-medium / -accent-ink) were deleted
      in the Card swap, 2026-07-30. The old ui/Card variant="peek" was
      their only consumer: it re-scoped this repo's ink names onto the
      fixed-light panel. BELLA's Card owns that job now and re-scopes its
      OWN semantic names, so these were left defined and consumed by
-     nothing (caught by audit:debt, not by hand). --hero-panel-bg, -ink
-     and -close stay: BubbleCluster still reads them directly. */
+     nothing (caught by audit:debt, not by hand). The rest of the hero
+     panel, bubble and orb set went with BubbleCluster (19 Sep 2026). */
 
   /* Case-card cover placeholder — muted warm, never bright (IA spec) */
+  /* Motion (polish pass, 19 Sep 2026; retuned to BELLA 20 Sep 2026).
+     ONE ramp, and it is BELLA's. --dur-base was a site-only 300ms that
+     sat one step from BELLA's normal (250ms), close enough that a
+     consumer would guess wrong; Elleta's call was to retune rather than
+     ship the near-duplicate upstream, so base now IS normal. slow and
+     ease-in-out stay local aliases until the BELLA PR lands
+     (feat/motion-tokens: duration.slower, easing.in-out). */
+  --dur-fast: var(--motion-duration-fast); /* .15s */
+  --dur-base: var(--motion-duration-normal); /* .25s */
+  --dur-slow: 0.6s; /* BELLA duration.slower, pending the PR */
+  --ease-out: var(--motion-easing-out); /* cubic-bezier(.22,1,.36,1) */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* BELLA easing.in-out, pending */
+
+  /* pattern-study tile (Work, 19 Sep 2026): one ground behind every
+     framed crop */
+  --tile: #E3DED1;
   --cover-warm-hi: #E9E2D2;
   --cover-warm-lo: #D9CDB9;
   --cover-warm-ink: #4A4030;
@@ -319,28 +388,15 @@ body {
   --modal-backdrop: rgba(26, 23, 32, 0.7);
   /* page-top glow — flips to near-none on navy */
   --page-glow: rgba(255, 255, 255, 0.55);
-  --hero-panel-shadow: rgba(26, 23, 32, 0.22);
-  --hero-link: rgba(26, 23, 32, 0.16);
   --key-face-hi: #FFFFFF;
-  --key-face-lo: #ECEAE3;
-  --key-edge: #D7D3CA;
-  --key-iris-hi: #8E7EEC;
-  --key-iris-lo: #6C5CE0;
-  --key-iris-edge: #4A3FB0;
   /* Filled-keycap face — FIXED in both themes. White labels need ≥4.5:1
      on every gradient stop: #6C5CE0 4.9:1, #5B4BD1 6.1:1 (the lighter
      #8E7EEC is 3.3:1 — never under a white label). */
   --key-fill-hi: #6C5CE0;
   --key-fill-lo: #5B4BD1;
   --key-fill-edge: #4A3FB0;
-  --key-plus: #B4AFA6;
 
   /* Theme switch (sun/moon keycap-thumb slider, from _proto/_hero.html) */
-  --switch-track-hi: #E7E4DB;
-  --switch-track-lo: #D8D4CA;
-  --switch-thumb-edge: #C9C5BC;
-  --switch-icon-sun: #8F8A7F;
-  --switch-icon-moon: #7C776F;
 
   /* Keycap Button tokens — v5 (Pass E task 1): the raised keycap is
      the PRIMARY tier only, the one 3D moment per view. Calm extrusion:
@@ -362,22 +418,59 @@ body {
      ground. Recorded here, never per-instance. */
   --thesis-band-ground: var(--color-card);
   --thesis-band-ink: var(--color-ink);
-  --shadow-key-resting:
-    1px 3px 0 var(--key-fill-edge),
-    3px 6px 10px color-mix(in srgb, var(--key-fill-lo) 24%, transparent),
-    var(--edge-glass-hi-strong);
-  --shadow-key-pressed:
-    0 1px 0 var(--key-fill-edge),
-    2px 3px 8px color-mix(in srgb, var(--key-fill-lo) 20%, transparent),
-    var(--edge-glass-hi-strong);
+
+
+
+
+
+
+  --hero-figure-width: 20rem;
+  --illo-width: 11.25rem;
+
+
+  --cursor-bracket: 10px;
+  --cursor-stroke: 1.5px;
 }
 
+@media (max-width: 640px) {
+  :root {
+    --header-height: 70px; /* measured bar: 12px padding + 44px controls + 12px + 2px borders */
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --nav-wordmark-size: 2.25rem;
+  }
+}
+
+/* ─── Fluid typography scale — DESIGN.md §5 ─────────────────────
+   Ramp: 13/14/16/18/20/24/32/40/56. One fluid pair per step, endpoints
+   on the ramp, defined ONCE here. No other clamp() in components. */
+
+/* ─── Case-cover + atom tokens (DESIGN.md: recorded additions) ────
+   Cover plates for the label-style case cards and the atom hero
+   nucleus. Text pairs are AAA on their plates (verified in DESIGN.md). */
+
+/* ─── Bubble-hero + keycap-logo tokens (DESIGN.md: recorded additions) ──
+   From the vetted _proto/_hero.html (2026-07-16). Per-case bubble
+   gradients (hi/lo), a deep readable accent per case (AA+ on the white
+   reveal card), the iris hub, and the keycap logo plates. The reveal
+   card is ALWAYS a light card — its ink is fixed-context, it does not
+   flip with [data-theme]. */
+
 [data-theme="dark"] {
+  /* the dark ground (also set on body below, where the dark inks live) */
+  --color-semantic-background: #110F0D;
+  /* surfaces: 4% toward the cream ink, so lighter than the ground */
+  --surface-card: var(--color-semantic-surface-card);
+  --border-faint: color-mix(in srgb, var(--color-navy-ink) 12%, transparent);
+  --iris-soft: color-mix(in srgb, var(--color-accent-ink) 14%, transparent);
+  --iris-pill: var(--iris-soft); /* 6.53:1 on the dark card */
   /* case accents as TEXT flip to the bright variant on navy (deep is
      calibrated for light cards only) */
   --case-code-first-text: var(--case-code-first-hi);
   --case-drift-text: var(--case-drift-hi);
-  --case-guardian-text: var(--case-guardian-hi);
   --case-clarity-text: var(--case-clarity-hi);
   --case-design-lab-text: var(--case-design-lab-hi);
   /* brightened toward the on-dark ink (a11y, 21 Jul): the raw -hi
@@ -391,44 +484,19 @@ body {
      case-writing salmon did) */
   --gov-clay-text: #EDC3A2;
   --gov-grey-text: #D0CAD8;
-  /* thesis cards in dark keep the navy specimen ground (21 Jul
-     theme-aware reversal; light values at the :root definition) */
-  --thesis-band-ground: #1B1B40;
+  /* thesis cards in dark sit on the dark card surface (was the navy
+     specimen ground; navy left dark mode 19 Sep 2026) */
+  --thesis-band-ground: #1B1916;
   --thesis-band-ink: #F4EFE6;
   /* cover placeholder flips as a SET in dark (cover-contrast fix,
      21 Jul): dark warm plate, parchment-warm ink; >=3:1 large-text on
      every stop, scrim-free (the placeholder skips the media scrim) */
+  --tile: #23201C;
   --cover-warm-hi: #3A3428;
   --cover-warm-lo: #2C271E;
   --cover-warm-ink: #E9E2D2;
-  --hero-panel-bg: #F4EFE6;
-  --hero-panel-shadow: rgba(0, 0, 0, 0.44);
-  --hero-link: rgba(244, 239, 230, 0.2);
-  --key-plus: rgba(244, 239, 230, 0.5);
-  --switch-track-hi: #2B2B5C;
-  --switch-track-lo: #20204A;
-  --switch-icon-sun: rgba(244, 239, 230, 0.32);
-  --switch-icon-moon: #CFC7F6;
   --modal-backdrop: rgba(0, 0, 0, 0.6);
   --page-glow: rgba(255, 255, 255, 0.04);
-}
-
-/* ─── GlassBanner surface (DESIGN.md: recorded surface) ─────────────
-   Apple-style frosted gradient panel for end-of-page CTAs. Brand hues
-   only: iris/periwinkle (--hub-*) + mint (--case-clarity-*) + gold
-   periwinkle, low opacity over a light glass base. Dark keeps the same
-   tints over a translucent navy ground: glassy, never a flat block.
-   Text inside uses the NORMAL semantic inks (theme-aware). */
-:root {
-  --banner-radius: 30px;
-  --banner-blur: var(--bella-blur-lg);
-  --banner-border: rgba(255, 255, 255, 0.6);
-  --banner-shadow: var(--shadow-soft);
-  --banner-ground: var(--color-glass-strong);
-  --banner-gradient:
-    radial-gradient(120% 140% at 12% 0%, color-mix(in srgb, var(--hub-hi) 52%, transparent), transparent 55%),
-    radial-gradient(110% 120% at 88% 8%, color-mix(in srgb, var(--case-clarity-hi) 38%, transparent), transparent 52%),
-    radial-gradient(140% 150% at 55% 100%, color-mix(in srgb, var(--color-accent-peri) 28%, transparent), transparent 58%);
 }
 
 /* Dark overrides live on BODY, not html: var() inside a custom property
@@ -437,97 +505,355 @@ body {
    html would resolve --color-card to the light #fff (the font-token
    lesson, same trap). */
 [data-theme="dark"] body {
-  --gloss-key: linear-gradient(color-mix(in srgb, white 10%, transparent), transparent 46%);
-  --gloss-key-hover: linear-gradient(color-mix(in srgb, white 16%, transparent), transparent 52%);
-  --gloss-key-pressed: linear-gradient(transparent 0 10%, color-mix(in srgb, white 7%, transparent) 10%, transparent 50%);
-  --banner-border: rgba(207, 199, 246, 0.22);
-  --banner-ground: color-mix(in srgb, var(--color-card) 82%, transparent);
-  --banner-gradient:
-    radial-gradient(120% 140% at 12% 0%, color-mix(in srgb, var(--hub-bright) 28%, transparent), transparent 55%),
-    radial-gradient(110% 120% at 88% 8%, color-mix(in srgb, var(--case-clarity-lo) 20%, transparent), transparent 52%),
-    radial-gradient(140% 150% at 55% 100%, color-mix(in srgb, var(--color-accent-peri) 16%, transparent), transparent 58%);
 }
 
-/* ─── Keycap logo lockup (header) — from _proto/_hero.html ──────────
-   CTRL + ALT + DESIGN as keyboard keys; DESIGN is the iris key.
-   Unique at 28px — recorded §5 exception: the logo is a brand lockup,
-   not running text (see DESIGN.md). */
-.kbd-logo {
-  display: inline-flex;
+/* ─── Wordmark (header) ──────────────────────────────────────────
+   ELLETA in Unique, live text so it follows the theme ink. 44px, 36px
+   under 768px: always above the 24px Unique floor. */
+.nav-row {
+  display: flex;
   align-items: center;
-  gap: 9px;
+  justify-content: space-between;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding-inline: var(--container-pad);
+}
+
+.nav-wordmark {
+  flex: none;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-hero-display);
+  font-size: var(--nav-wordmark-size);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--color-ink);
   text-decoration: none;
-  line-height: 1;
-}
-
-.kbd-logo .key {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 11px 16px;
-  border-radius: var(--radius-lg);
-  font-family: var(--font-hero-display);
-  font-weight: 700; /* Unique Bold cut — same as the hero headline */
-  text-transform: uppercase;
-  font-size: 28px;
-  letter-spacing: 0.02em;
-  color: var(--hero-panel-ink);
-  line-height: 1;
-  background: linear-gradient(var(--key-face-hi), var(--key-face-lo));
-  box-shadow:
-    2px 5px 0 var(--key-edge),
-    6px 10px 16px rgba(25, 23, 32, 0.18),
-    inset 0 1px 0 var(--key-face-hi);
-}
-
-.kbd-logo .key-iris {
-  color: var(--key-face-hi); /* fixed white — the face is fixed too */
-  /* fill tokens, not iris-hi: white labels need >=4.5 on every stop
-     (#6C5CE0 4.9, #5B4BD1 6.1; the lighter #8E7EEC was 3.3) */
-  background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
-  box-shadow:
-    2px 5px 0 var(--key-iris-edge),
-    6px 10px 18px color-mix(in srgb, var(--color-accent-ink) 36%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-.kbd-logo .plus {
-  font-family: var(--font-hero-display);
-  font-weight: 700;
-  font-size: 22px;
-  color: var(--key-plus);
-  line-height: 1;
-}
-
-@media (max-width: 640px) {
-  .kbd-logo {
-    gap: 6px;
-  }
-
-  .kbd-logo .key {
-    font-size: 20px;
-    padding: 8px 11px;
-  }
-
-  .kbd-logo .plus {
-    font-size: 16px;
-  }
 }
 
 /* ─── Layout system ────────────────────────────────────────────── */
 
+/* ONE container. .page-container and .layout-container are aliases
+   until every page has migrated to .container. */
+.container,
+.page-container,
 .layout-container {
-  max-width: var(--container-width);
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: var(--container-padding);
-  padding-right: var(--container-padding);
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
 }
 
-/* Section rhythm — one scale (4-based --spacing-*), one value per tier */
-.layout-section {
-  padding-top: var(--space-section);
-  padding-bottom: var(--space-section);
+/* ONE section rhythm: every section pads by --section-pad-y (.l-section
+   below; the old --space-section rhythm is gone, O.9, 21 Sep 2026).
+   .section--ruled draws the hairline at the top, at the container's
+   content width. */
+.section--ruled {
+  position: relative;
+}
+
+.section--ruled::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: max(var(--container-pad), calc((100% - var(--container-max)) / 2 + var(--container-pad)));
+  right: max(var(--container-pad), calc((100% - var(--container-max)) / 2 + var(--container-pad)));
+  height: 1px;
+  background: var(--color-semantic-border);
+}
+
+/* Layout system (specs/layout-system): Section + SectionHeader.
+   Section: padding, then the paw label sitting on the hairline rule,
+   then the header and content. The first section on a page also clears
+   the sticky nav. */
+.l-section {
+  padding-block: var(--section-pad-y);
+}
+
+/* the page opening clears the nav, then one section pad (twice the pad
+   was right at 3.2rem; at the Part Q rhythm it pushed the h1 a third of
+   the way down the screen) */
+main .l-section:first-of-type {
+  padding-top: calc(var(--header-height) + var(--section-pad-y));
+}
+
+/* a chromeless embed (the token inspector): one Section, centred, and
+   no nav to clear */
+.embed-page {
+  min-height: 100dvh;
+  display: grid;
+  align-items: center;
+  background: var(--color-semantic-background);
+}
+
+main.embed-page .l-section:first-of-type {
+  padding-top: var(--section-pad-y);
+}
+
+/* the label sits on the rule: label, label gap, 1px rule, rule gap */
+.l-section__label {
+  margin: 0 0 var(--section-rule-gap);
+  padding-bottom: var(--section-label-gap);
+  border-bottom: 1px solid var(--color-semantic-border);
+  /* a plain mono label in the code role (Part Q, 21 Sep: no paw) */
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-muted);
+}
+
+/* SectionHeader: ONE column. The heading, then the lead and body under
+   it (Elleta, 20 Sep 2026). layout="split" opts back into heading left
+   (40%), lead and body right (60%) from 1024px; nothing uses it. */
+.l-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--section-lead-gap);
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .l-header--split {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    column-gap: var(--layout-gutter);
+  }
+}
+
+/* A head with an illustration the text WRAPS AROUND (Elleta, 20 Sep
+   2026, Part H). It was a two-column grid, which left the art marooned
+   on the far right with a gutter of empty ground beside the text. Now
+   the heading reads first at full width, the figure floats, and the
+   lead and body flow around the art's OWN OUTLINE via shape-outside.
+   flow-root on the head clears the float, so nothing leaks into the
+   next section. */
+.l-header--figure {
+  display: flow-root;
+}
+
+.l-header__figure > * {
+  margin: 0;
+}
+
+/* flow-root drops the grid's row-gap: the heading-to-lead gap has to be
+   a margin here, or the lead sits on the h1's descenders */
+.l-header--figure .l-header__side {
+  margin-top: var(--section-lead-gap);
+}
+
+@media (min-width: 768px) {
+  .l-header--figure .l-header__figure {
+    float: right;
+    width: var(--header-figure-w, 38%);
+    margin: 0 0 var(--space-stack-sm) var(--space-stack-md);
+    /* the art's own silhouette, not its bounding box. Same-origin, and
+       the files carry alpha; the threshold ignores the soft edges. */
+    shape-outside: var(--header-figure-shape, none);
+    shape-image-threshold: 0.2;
+    shape-margin: var(--space-stack-sm);
+  }
+
+  /* the heading is never squeezed by the float: it sits above it */
+  .l-header--figure .display-heading,
+  .l-header--figure .l-header__kicker {
+    clear: both;
+  }
+}
+
+/* phones: no float, the art stacks under the text and stays modest */
+@media (max-width: 767.98px) {
+  .l-header--figure .l-header__figure {
+    margin-top: var(--space-stack-md);
+  }
+
+  .l-header--figure .l-header__figure img {
+    max-width: 60vw;
+    margin-inline: auto;
+  }
+}
+
+.l-header__side {
+  display: grid;
+  row-gap: var(--section-lead-gap);
+  max-width: 42rem;
+}
+
+.l-header__lead {
+  margin: 0;
+  color: var(--color-ink);
+}
+
+/* the page opening's lead (Part Q): bigger, on its own measure, 1.5rem
+   under the h1 */
+.l-header--page .l-header__side {
+  max-width: none;
+}
+
+.l-header--page > .l-header__side {
+  margin-top: calc(var(--hero-lead-gap) - var(--section-lead-gap));
+}
+
+.l-header--page .l-header__lead {
+  max-width: var(--measure-hero-lead);
+  font-size: var(--text-hero-lead);
+  line-height: 1.55;
+}
+
+.l-header__body > * {
+  margin: 0;
+}
+
+.l-header__body > * + * {
+  margin-top: var(--section-lead-gap);
+}
+
+.l-header__body > p {
+  color: var(--color-ink-soft);
+}
+
+/* below 1024px: the side column spans the container (text keeps its
+   own measure), and illustrations and their captions centre */
+@media (max-width: 1023.98px) {
+  .l-header__side {
+    max-width: none;
+  }
+
+  .l-header__body :is(figure, img, .illo) {
+    margin-inline: auto;
+  }
+
+  .l-header__body figcaption {
+    margin-inline: auto;
+    text-align: center;
+  }
+}
+
+/* whatever follows the header in a section (two classes, so a content
+   block's own `margin: 0` can't cancel it) */
+.l-section .l-header + * {
+  margin-top: var(--section-content-gap);
+}
+
+/* Reveal (polish pass, 19 Sep 2026): section heads (.reveal) and the
+   items of a card grid (.reveal-group) fade in with a 24px rise, once,
+   when they enter the viewport (RevealObserver). Row items stagger in
+   60ms steps. It animates `translate`, not `transform`, so a Card's own
+   hover lift keeps its transition. Hidden only under html.js-reveal (a
+   pre-paint script), so no JS means nothing hidden; reduced motion
+   keeps the fade and drops the rise. */
+.reveal,
+.reveal-group > * {
+  --reveal-rise: 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-group > * {
+    --reveal-rise: 0px;
+  }
+}
+
+.js-reveal :is(.reveal, .reveal-group > *):not(.is-revealed) {
+  opacity: 0;
+  translate: 0 var(--reveal-rise);
+}
+
+:is(.reveal, .reveal-group > *).is-revealed {
+  animation: reveal var(--dur-slow) var(--ease-out) var(--reveal-delay, 0ms) both;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    translate: 0 var(--reveal-rise);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.reveal-group > :nth-child(2) { --reveal-delay: 60ms; }
+.reveal-group > :nth-child(3) { --reveal-delay: 120ms; }
+.reveal-group > :nth-child(4) { --reveal-delay: 180ms; }
+.reveal-group > :nth-child(5) { --reveal-delay: 240ms; }
+.reveal-group > :nth-child(6) { --reveal-delay: 300ms; }
+.reveal-group > :nth-child(n + 7) { --reveal-delay: 360ms; }
+
+/* ─── Text utilities: use these, never a page-specific font size ─── */
+/* headings are Geist 700 in sentence case; Unique is for the ELLETA
+   wordmarks (and the BELLA logo) only */
+.text-display-1,
+.text-display-2,
+.text-display-3 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: var(--tracking-display);
+  line-height: 1.1;
+  text-wrap: balance;
+  max-width: var(--measure-heading);
+  color: var(--color-ink);
+}
+
+.text-display-1 {
+  font-size: var(--text-display-1);
+  line-height: var(--leading-title);
+  max-inline-size: var(--measure-title);
+}
+.text-display-2 { font-size: var(--text-display-2); }
+.text-display-3 { font-size: var(--text-display-3); }
+
+.text-lead {
+  font-family: var(--font-body);
+  font-size: var(--text-lead);
+  line-height: var(--leading-lead);
+  text-wrap: pretty;
+  max-width: var(--measure-lead);
+}
+
+.text-body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  text-wrap: pretty;
+  max-width: var(--measure-body);
+}
+
+/* the code role (CLAUDE.md §3): metadata in the mono cut, 14px (the
+   floor, no exception), muted.
+   Dates, stat lines, code-comment notes (// ...), credential IDs. */
+.text-code {
+  font-family: var(--font-code);
+  font-size: var(--text-code);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--color-ink-muted);
+}
+
+.text-meta {
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+}
+
+/* key phrases to scan for: a touch heavier and full ink (body text is
+   ink-soft). No accent colour, no italics. */
+.text-lead strong,
+.text-body strong {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* keep a word and its trailing mark on one line */
+.nowrap {
+  white-space: nowrap;
+}
+
+/* the one iris word in a display heading */
+.accent {
+  color: var(--color-accent-ink);
 }
 
 .layout-section-tight {
@@ -535,12 +861,8 @@ body {
   padding-bottom: var(--spacing-16);
 }
 
-/* Tighter mobile rhythm — desktop values unchanged */
+/* Tighter mobile rhythm for the tight tier */
 @media (max-width: 640px) {
-  .layout-section {
-    padding-top: var(--spacing-16);
-    padding-bottom: var(--spacing-16);
-  }
 
   .layout-section-tight {
     padding-top: var(--spacing-12);
@@ -556,11 +878,14 @@ body {
 }
 
 .layout-grid-3 {
-  /* BELLA v0.1 Rule 5: auto-fill so trailing rows fill left-aligned.
-   * Class name kept for backwards compat — behaviour is now responsive
-   * not strictly 3-column. Override --card-min per-grid as needed. */
+  /* Class name kept for backwards compat: behaviour is responsive, not
+   * strictly 3-column. Override --card-min per-grid as needed.
+   * auto-FIT (Elleta, 20 Sep 2026, fix pass 2): a row with fewer cards
+   * than tracks stretches to the container instead of leaving an empty
+   * column. Multi-row grids are unaffected, a track is only collapsed
+   * when it is empty in every row. */
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--card-min, 280px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--card-min, 18rem), 100%), 1fr));
   gap: var(--grid-gap);
   align-items: stretch;
 }
@@ -615,23 +940,28 @@ body {
 [data-theme="dark"] body {
   --color-ink: #F4EFE6;
   --color-ink-soft: #E6E1D6;
-  /* AAA bump (Pass B 2026-07-18): 7.5:1 on the elevated surface
-     #2B2B5C, 8.4 on card, 9.4 on page (was #B9B4C7, 6.5 on surface) */
-  --color-ink-muted: #C6C2D4;
-  --color-muted: #C6C2D4;
-  --color-page: #1B1B40;
-  --color-cream: #232350;
+  /* muted on the warm dark ground (19 Sep 2026, the About mock): 7.56:1
+     on the ground, 6.93 on the card, 6.19 on the raised surface (AA;
+     AAA only on the ground) */
+  --color-ink-muted: #A8A29A;
+  --color-muted: #A8A29A;
+  /* dark ground (Elleta, 18 Sep 2026): warm near-black #110F0D, not
+     navy. Navy stays for the footer and the light-theme primary only.
+     Surfaces lift from the ground toward the cream ink. */
+  --color-semantic-background: #110F0D;
+  --color-page: #110F0D;
+  --color-cream: #1B1916;
   /* dark leg of the same separation fix: ground stays navy #1B1B40,
      the CARD lifts so its edge reads without a wash. --color-surface is
      deliberately left alone: lifting it too cost the mint skill chips
      their AA margin (4.47:1) and the separation never needed it. */
-  --color-semantic-surface: #28285C;
+  --color-semantic-surface: #1B1916;
   --color-card: var(--color-semantic-surface);
   --color-semantic-surface-inset: var(--color-surface);
-  --color-surface: #2B2B5C;
-  --color-white-pure: #2B2B5C;
-  --color-glass: rgba(35, 35, 80, 0.68);
-  --color-glass-strong: rgba(35, 35, 80, 0.82);
+  --color-surface: #252320;
+  --color-white-pure: #252320;
+  --color-glass: rgba(27, 25, 22, 0.68);
+  --color-glass-strong: rgba(27, 25, 22, 0.82);
   --color-tag-bg: rgba(244, 239, 230, 0.08);
   --color-tag-border: rgba(244, 239, 230, 0.16);
   /* dark leg of the verdict pair: lifted so both clear AA on the card */
@@ -665,6 +995,19 @@ h6 {
 p,
 li {
   color: var(--color-ink-soft);
+}
+
+/* text wrapping (polish pass, 19 Sep 2026): headings balance their
+   lines, paragraphs and list items avoid orphans */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li {
+  text-wrap: pretty;
 }
 
 ::selection {
@@ -754,7 +1097,7 @@ li {
 }
 
 .card-hover {
-  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
 }
 
 .divider {
@@ -820,29 +1163,69 @@ li {
    home hero headline, and keycap lockup share the tokens through
    their own shells. */
 .display-heading {
-  font-family: var(--font-hero-display);
+  font-family: var(--font-body);
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: var(--tracking-display);
-  line-height: var(--leading-display);
+  line-height: 1.1;
+  text-wrap: balance;
+  max-width: var(--measure-heading);
   color: var(--color-ink);
 }
 
 .display-heading--hero {
-  font-size: var(--font-display-hero);
+  font-size: var(--component-heading-hero-font-size);
+  max-inline-size: var(--measure-hero);
+}
+
+/* hero squeeze (Heading squeeze, hero tier only): 820 at rest; with
+   scroll timelines and motion allowed, weight 820 to 640 and tracking
+   -0.01em to -0.03em across the first 60vh of the page's scroll, line
+   height fixed (gentler, polish pass 19 Sep 2026). The one approved
+   tracking exception (CLAUDE.md §3), owned here. */
+.display-heading--squeeze {
+  font-weight: 820;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .display-heading--squeeze {
+      animation: heading-squeeze linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 60vh;
+    }
+  }
+}
+
+@keyframes heading-squeeze {
+  from {
+    font-weight: 820;
+    letter-spacing: -0.01em;
+  }
+
+  to {
+    font-weight: 640;
+    letter-spacing: -0.03em;
+  }
+}
+
+/* page / section / case sizes come from the .text-display-1/2 utilities
+   the Heading primitive adds; the page title keeps display-1's leading
+   and measure (this rule sits after .display-heading) */
+/* the iris word never splits across lines ("code-first" broke at its
+   hyphen, audit 21 Sep), from 600px up. On a phone a whole accent word
+   can be wider than the screen, so there it may wrap (Part U) */
+@media (min-width: 600px) {
+  .display-heading .accent {
+    white-space: nowrap;
+  }
 }
 
 .display-heading--page {
-  font-size: var(--font-display-page);
-}
-
-.display-heading--section {
-  font-size: var(--font-display-section);
-}
-
-.display-heading--case {
-  /* the case-study display headline */
-  font-size: var(--font-display-case);
+  line-height: var(--leading-title);
+  letter-spacing: var(--tracking-title);
+  max-inline-size: var(--measure-title);
 }
 
 /* sub-heading (h3 level): Geist 700, sentence case, never Unique */
@@ -854,27 +1237,1473 @@ li {
   font-size: var(--font-subsection);
 }
 
-.display-heading__accent {
-  color: var(--color-accent-ink);
-}
-
 .display-heading--inverse {
   color: var(--ink-on-dark-strong);
 }
 
 
-/* H5 — inline item labels (collaboration cards, role titles…) */
-.heading-item {
-  /* item/card titles stay Geist (Unique is display-only and illegible
-     at label sizes). Micro-heading presence (Pass E task 10, Elleta
-     18 Jul): ONE deliberate tier above body text — a ramp size step
-     (18px) at 700 — so card sub-heads no longer sit flush against
-     16px body copy. One change here, no per-card overrides. */
+/* ─── Nav (step 1, 18 Sep 2026) ───────────────────────────────────
+   Sentence-case Geist links rest soft and take full ink on hover; the
+   current page sits in a soft grey pill, no underline. "Get in touch"
+   is a filled pill, flat (not the primary keycap: that stays one per
+   view). */
+.nav-link {
+  display: flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: 0 var(--spacing-4);
+  border-radius: var(--radius-full);
   font-family: var(--font-body);
-  font-size: var(--typography-font-size-lg);
+  font-size: var(--text-nav);
+  font-weight: 400;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+}
+
+.nav-link:hover,
+.nav-link--current {
+  color: var(--color-ink);
+}
+
+.nav-link--current {
+  background: var(--color-semantic-surface-inset);
+}
+
+.nav-link:focus-visible,
+.get-in-touch__trigger:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.get-in-touch__trigger {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: 0 var(--spacing-5);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-nav);
+  font-weight: 500;
+  /* secondary everywhere (polish pass, 19 Sep 2026): the one filled
+     primary on a screen belongs to the content, not the nav */
+  border: 1.5px solid var(--color-accent-ink);
+  color: var(--color-accent-ink);
+  /* on the page ground, not transparent: the header is glass, and over
+     the navy footer a see-through button put iris on grey (under AA) */
+  background: var(--color-semantic-background);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.get-in-touch__trigger:hover {
+  background: color-mix(in srgb, var(--color-accent-ink) 10%, var(--color-semantic-background));
+}
+
+.get-in-touch__trigger[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--color-accent-ink) 16%, var(--color-semantic-background));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-link,
+  .get-in-touch__trigger {
+    transition: none;
+  }
+}
+
+/* ─── Section: the numbered three-column row (About, Work) ──────────
+   index label | heading, lede, body | side slot, on .container +
+   .section. Rhythm and the rule come from .section / .section--ruled;
+   type sizes come from the text utilities. One column under 768px. */
+/* one column: label -> heading -> lede -> body -> extra content */
+.section-row__main {
+  min-width: 0;
+}
+
+.section-row__extra {
+  margin-top: var(--space-stack-md);
+}
+
+/* heading with a small illustration: art right of the heading from
+   768px, under it (above the content) on phones */
+.section-row__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-stack-sm);
+}
+
+@media (min-width: 768px) {
+  .section-row__head {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-stack-lg);
+  }
+}
+
+/* Bella and Obi illustrations: decorative, 160-240px, a 2deg tilt on
+   hover only when motion is allowed */
+.illo {
+  display: block;
+  width: var(--illo-width);
+  height: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .illo {
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+
+  .illo:hover {
+    transform: rotate(2deg);
+  }
+}
+
+/* a visible TODO for Elleta on the draft policy pages */
+.todo-note {
+  max-width: var(--measure-body);
+  margin: var(--space-stack-sm) 0 0;
+  padding: var(--spacing-3) var(--spacing-4);
+  border: 1.5px dashed var(--color-accent-ink);
+  border-radius: var(--radius-md);
+  font-size: var(--text-body);
+  color: var(--color-ink);
+}
+
+.todo-note strong {
   font-weight: 700;
-  letter-spacing: -0.005em;
-  line-height: var(--typography-line-height-snug);
+}
+
+/* 404: the links back */
+.not-found__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-stack-md);
+  margin-top: var(--space-stack-md);
+}
+
+/* hero: clears the sticky nav by one section gap, so the h1 never
+   reads as tucked under the bar (64px on phones, up to 112px wide) */
+
+/* hero: text left, figure right from 1024px; stacked below */
+.section-row__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-stack-lg);
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .section-row__hero {
+    grid-template-columns: minmax(0, 1fr) var(--hero-figure-width);
+    column-gap: var(--spacing-12);
+  }
+}
+
+/* Metadata tier (14px, short labels only). --color-ink-muted measured
+   7.96:1 on the light ground (#F1EFE6), 7.56:1 on the dark ground (#110F0D). */
+.section-row__meta,
+.site-footer__label {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.section-row__meta {
+  margin-bottom: var(--space-stack-sm);
+}
+
+.section-row__meta .paw-icon,
+.site-footer__label .paw-icon {
+  display: inline-block; /* preflight makes every svg a block */
+  width: 1em;
+  height: 1em;
+  margin-right: 0.4em;
+  vertical-align: -0.12em;
+  fill: currentColor;
+}
+
+.section-row__num {
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+/* lede size, leading and measure come from .text-lead */
+.section-row__lede {
+  margin: var(--space-stack-sm) 0 0;
+  font-weight: 400;
+  color: var(--color-ink);
+}
+
+.section--hero .section-row__lede {
+  margin-top: var(--space-stack-md);
+  color: var(--color-ink-soft);
+}
+
+/* body size and leading come from .text-body; the body box spans the
+   container (for full-width content), prose and lists keep 65ch */
+.section-row__body {
+  max-width: none;
+}
+
+.section-row__body > p {
+  max-width: var(--measure-body);
+  margin: var(--space-stack-sm) 0 0;
+  color: var(--color-ink-soft);
+}
+
+.section-list {
+  max-width: var(--measure-body);
+  margin: 0;
+  padding: var(--spacing-2) 0 0;
+  list-style: none;
+}
+
+.section-list li {
+  position: relative;
+  padding: 0 0 var(--spacing-3) var(--spacing-5);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: var(--leading-body);
+  color: var(--color-ink-soft);
+}
+
+@media (min-width: 900px) {
+  .section-list--cols {
+    columns: 2;
+    column-gap: var(--space-stack-lg);
+  }
+
+  .section-list--cols li {
+    break-inside: avoid;
+  }
+}
+
+/* A CHEVRON ONLY APPEARS ON SOMETHING YOU CAN CLICK (Elleta, 20 Sep
+   2026, Part I item 3: "these icons feel clickable to me"). These list
+   items are plain text, so the marker is a quiet round dot, aligned to
+   the first line's x-height, not a "›" that reads as a link. */
+.section-list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: calc(var(--leading-body) * 0.5em - 3px);
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-ink);
+  opacity: 0.6;
+}
+
+/* Equal-card grid (Work): 1 column, 2 at 700px, 3 at 1024px. Cells
+   stretch, so every card in a row matches the tallest. */
+.card-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: var(--grid-gap);
+  margin-top: var(--space-stack-md);
+}
+
+@media (min-width: 700px) {
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* A Section whose body holds a card grid takes the whole container
+   below 1280px (label above the heading), so cards never squeeze into
+   the narrow main column. Scoped by :has() so text-only Sections
+   (About) are untouched. */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .section-row__main:has(.card-grid) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* a page's tools under the hero lede (Work: Find my fit + filters) */
+.page-tools {
+  margin-top: var(--space-stack-md);
+}
+
+/* a page's close row: one display line and one action (Work) */
+.page-close {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-stack-md);
+}
+
+/* Good company: ONE grid, logos left-aligned in ruled cells. Marks are
+   inline SVG in currentColor (the muted ink) and fit one box by their
+   own aspect ratio: 170x44 (130x34 under 700px), times a per-mark
+   --logo-scale. 4 columns from 700px, 2 below with a vertical rule
+   between them. Every cell carries its own bottom rule. */
+.logo-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  --logo-box-w: 130px;
+  --logo-box-h: 34px;
+}
+
+.logo-grid__cell {
+  /* the cell is the logo's size container: a mark never outgrows it */
+  container-type: inline-size;
+  display: flex;
+  align-items: center;
+  min-height: var(--logo-cell-sm);
+  padding-right: var(--space-stack-md);
+  border-bottom: 1px solid var(--color-semantic-border);
+  color: var(--color-ink-muted);
+}
+
+.logo-grid__cell:nth-child(odd) {
+  border-right: 1px solid var(--color-semantic-border);
+}
+
+.logo-grid__cell:nth-child(even) {
+  padding-left: var(--space-stack-md);
+}
+
+.logo-grid__logo {
+  display: block;
+  height: calc(min(var(--logo-box-h), min(var(--logo-box-w), 100cqi) / var(--logo-ratio)) * var(--logo-scale, 1));
+  aspect-ratio: var(--logo-ratio);
+}
+
+.logo-grid__logo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* an emblem with live two-line text beside it */
+.logo-grid__lockup {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.logo-grid__lockup-text {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+@media (min-width: 700px) {
+  .logo-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    --logo-box-w: 170px;
+    --logo-box-h: 44px;
+  }
+
+  .logo-grid__cell {
+    min-height: var(--logo-cell);
+  }
+
+  .logo-grid__cell:nth-child(odd) {
+    border-right: none;
+  }
+
+  .logo-grid__cell:nth-child(even) {
+    padding-left: 0;
+  }
+}
+
+/* layout="row": one row of every mark from 1024px */
+/* the ROW layout (Home's band). Its job is different from About's
+   "Good company" grid: that one is a table of logos, where the rules
+   separate rows and the tall cell keeps the rows even. A band is one
+   line of marks. So in the row layout (Elleta, 20 Sep 2026, Part D
+   item 1) the cells hug their logos, carry no rules at all, and the
+   "Worked with" label sits inline at the left of the row from 1024px.
+   Together with fix pass 2 item 4, Home shows one hairline above the
+   band and none inside it. */
+.logo-grid--row .logo-grid__cell {
+  min-height: 0;
+  padding-block: var(--spacing-2);
+  border-bottom: none;
+  border-right: none;
+}
+
+@media (min-width: 1024px) {
+  .logo-grid--row {
+    grid-template-columns: repeat(var(--logo-count), minmax(0, 1fr));
+  }
+}
+
+/* the optional "Worked with" label above the marks */
+.logo-group__label {
+  margin: 0 0 var(--space-stack-sm);
+}
+
+/* ...and beside them, once the marks are one row */
+@media (min-width: 1024px) {
+  .logo-group:has(.logo-grid--row) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--space-stack-md);
+    align-items: center;
+  }
+
+  .logo-group:has(.logo-grid--row) .logo-group__label {
+    margin: 0;
+    white-space: nowrap;
+  }
+}
+
+/* Accordion (components/ui/Accordion.tsx): a heading-wrapped button,
+   the panel animates grid rows 0fr to 1fr. Closed panels are
+   visibility: hidden, so they leave the tab order and the a11y tree
+   (the visibility flip waits for the collapse to finish). */
+.accordion__heading {
+  margin: 0;
+  font: inherit;
+}
+
+.accordion__trigger {
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.accordion__trigger:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+  border-radius: var(--radius-md);
+}
+
+.accordion__chev {
+  color: var(--color-ink-muted);
+}
+
+.accordion[data-ready] .accordion__chev {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.accordion.is-open .accordion__chev {
+  transform: rotate(180deg);
+}
+
+.accordion__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+}
+
+.accordion.is-open .accordion__panel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+
+/* transitions only after hydration (data-ready), so the collapse on
+   load is instant */
+.accordion[data-ready] .accordion__panel {
+  transition:
+    grid-template-rows var(--dur-base) var(--ease-out),
+    visibility 0s linear var(--dur-base);
+}
+
+.accordion[data-ready].is-open .accordion__panel {
+  transition:
+    grid-template-rows var(--dur-base) var(--ease-out),
+    visibility 0s;
+}
+
+/* clipped only while it moves: once open, overflow turns visible so
+   card shadows inside aren't cropped (a discrete transition, delayed
+   until the rows finish growing) */
+.accordion__inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.accordion.is-open .accordion__inner {
+  overflow: visible;
+}
+
+.accordion[data-ready] .accordion__inner {
+  transition: overflow 0s allow-discrete;
+}
+
+.accordion[data-ready].is-open .accordion__inner {
+  transition: overflow 0s var(--dur-base) allow-discrete;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion[data-ready] .accordion__chev,
+  .accordion[data-ready] .accordion__panel,
+  .accordion[data-ready].is-open .accordion__panel,
+  .accordion[data-ready] .accordion__inner,
+  .accordion[data-ready].is-open .accordion__inner {
+    transition: none;
+  }
+}
+
+/* Experience: one --surface-card panel, hairlines between the rows
+   (the About mock). Phones: dates, then company and title, in column 1;
+   the chevron in column 2 across both rows, centred. From 1024px:
+   11rem 1fr auto, one row. The whole row is the button; it takes a
+   soft iris wash on hover, only where hover exists, so a tap never
+   leaves it stuck. */
+.xp-list {
+  margin-bottom: var(--space-stack-lg); /* the View CV button follows */
+  overflow: hidden;
+  background: var(--surface-card);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-card);
+}
+
+.xp + .xp {
+  border-top: 1px solid var(--border-faint);
+}
+
+.xp .accordion__trigger {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--spacing-1) var(--spacing-6);
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: var(--spacing-5) var(--spacing-6);
+}
+
+.xp__dates {
+  grid-column: 1;
+  grid-row: 1;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.xp__who {
+  grid-column: 1;
+  grid-row: 2;
+  display: block;
+}
+
+.xp .accordion__chev {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+@media (min-width: 1024px) {
+  .xp .accordion__trigger {
+    grid-template-columns: 11rem minmax(0, 1fr) auto;
+  }
+
+  .xp__dates,
+  .xp__who,
+  .xp .accordion__chev {
+    grid-row: 1;
+  }
+
+  .xp__who {
+    grid-column: 2;
+  }
+
+  .xp .accordion__chev {
+    grid-column: 3;
+  }
+}
+
+@media (hover: hover) {
+  .xp .accordion__trigger:hover {
+    background: var(--iris-soft);
+  }
+}
+
+/* An open row STAYS purple (Elleta, 20 Sep 2026): the wash is the open
+   state, not a hover that fades when the pointer leaves. The company
+   name and the chevron go iris with it, and the body underneath keeps
+   the card surface, so the row reads as header and content. */
+.xp.is-open .accordion__trigger {
+  background: var(--iris-soft);
+}
+
+/* the deeper accent, not the link iris: on the open row's iris wash the
+   link colour measured 3.36:1, under AA. accent-hover flips per theme,
+   so dark gets the lighter periwinkle for the same reason. */
+.xp.is-open .xp__company,
+.xp.is-open .xp__current,
+.xp.is-open .accordion__chev {
+  color: var(--color-semantic-accent-hover);
+}
+
+/* the ring is :focus-visible only: a mouse click never draws one */
+.xp .accordion__trigger:focus-visible {
+  outline-offset: calc(0px - var(--ring-focus-width));
+  border-radius: 0;
+}
+
+.xp__company {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--text-heading-3);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+
+/* Current: iris on a soft iris wash, 14px (the floor), 500 */
+.xp__current {
+  margin-left: var(--spacing-2);
+  padding: 3px var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--iris-pill);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.4;
+  color: var(--color-accent-ink);
+  vertical-align: middle;
+}
+
+/* the title: 15px, muted, regular (not the heading's weight) */
+.xp__role {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-body);
+  font-size: var(--text-caption);
+  font-weight: 400;
+  color: var(--color-ink-muted);
+}
+
+.xp__body {
+  padding: 0 var(--spacing-6) var(--spacing-6);
+}
+
+@media (min-width: 1024px) {
+  /* the open row lines up with the company column */
+  .xp__body {
+    padding-left: calc(var(--spacing-6) + 11rem + var(--spacing-6));
+  }
+}
+
+/* the clients behind the work, first line of the open row */
+.xp__clients {
+  margin: 0 0 var(--spacing-3);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+/* the open row's lines: plain muted discs (the mock), not the › list */
+.xp__did {
+  margin: 0 0 var(--spacing-3);
+  padding: 0 0 0 1.1em;
+  list-style: disc;
+}
+
+.xp__did li {
+  margin: 0.3em 0;
+  padding: 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  max-width: 42rem;
+}
+
+.xp__did li::before {
+  content: none;
+}
+
+.xp__did li::marker {
+  color: var(--color-ink-muted);
+}
+
+.xp__case {
+  margin: var(--spacing-2) 0 0;
+}
+
+/* the CV button: a neutral outline (purple is for accent words, links,
+   focus rings and the primary button) */
+.btn-key.xp__cv {
+  gap: var(--spacing-2);
+  border-color: var(--border-faint);
+  color: var(--color-ink);
+}
+
+.btn-key.xp__cv:hover {
+  background: color-mix(in srgb, var(--color-ink) 6%, transparent);
+}
+
+/* House rules: four cards (the one Card surface), 2x2 from 768px,
+   equal heights per row */
+.cares {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-stack-md);
+}
+
+.cares__card {
+  height: 100%;
+}
+
+/* Word of mouth: uniform quote cards, 2 columns from 900px. No avatars,
+   no stars, no carousel. */
+/* "Read all 15 on LinkedIn" under the quotes */
+.quotes__more {
+  margin: var(--space-stack-md) 0 0;
+}
+
+.quotes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-stack-lg) var(--space-stack-md); /* rows clear the hanging marks */
+}
+
+@media (min-width: 900px) {
+  .quotes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* each quote: a big iris opening mark hanging over the card's top-left
+   edge (it springs on card hover; the card itself stays put) and a
+   small closing mark at the end. Both are aria-hidden. */
+.quotes__item {
+  position: relative;
+}
+
+.quotes__mark {
+  position: absolute;
+  z-index: 1;
+  top: -1.875rem;
+  left: 0.875rem;
+  font-family: var(--font-body);
+  font-size: 5.5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-accent-ink);
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .quotes__mark {
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  .quotes__item:hover .quotes__mark {
+    transform: translateY(-4px) rotate(4deg) scale(1.08);
+  }
+}
+
+.quotes__card {
+  height: 100%;
+}
+
+.quotes__figure {
+  margin: 0;
+}
+
+.quotes__quote {
+  margin: 0;
+}
+
+.quotes__quote p {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-ink);
+}
+
+.quotes__close {
+  margin-left: 0.1em;
+  font-size: 1.3em;
+  font-weight: 800;
+  line-height: 0;
+  color: var(--color-accent-ink);
+}
+
+.quotes__quote + figcaption {
+  margin-top: var(--space-stack-sm);
+}
+
+.quotes__name {
+  display: block;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.quotes__role {
+  display: block;
+  margin-top: 2px;
+}
+
+@media (min-width: 768px) {
+  .cares {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cares h3 {
+  margin: 0 0 var(--spacing-1);
+}
+
+/* house rules: muted body, the one bold claim in full ink (the mock) */
+.cares p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  line-height: var(--leading-body);
+  color: var(--color-ink-muted);
+}
+
+.cares p strong {
+  color: var(--color-ink);
+}
+
+/* ─── Site footer: navy + cream in both themes ────────────────────
+   The scope re-points the ink/accent tokens, so utilities, the paw
+   labels and the secondary Button (its outline rides --color-accent-ink)
+   all render cream on navy. The accent word takes periwinkle. */
+.site-footer {
+  --color-ink: var(--color-navy-ink);
+  --color-ink-soft: var(--ink-on-dark-body);
+  --color-ink-muted: var(--ink-on-dark-muted);
+  --color-accent-ink: var(--color-navy-ink);
+  --ring-focus-color: var(--color-navy-ink);
+  background: var(--color-brand-navy);
+  color: var(--color-navy-ink);
+  overflow: hidden;
+}
+
+/* dark mode: the navy footer on the near-black ground; a hairline
+   still marks the edge */
+[data-theme="dark"] .site-footer {
+  border-top: 1px solid color-mix(in srgb, var(--color-navy-ink) 10%, transparent);
+}
+
+.site-footer .accent {
+  color: var(--color-brand-periwinkle);
+}
+
+.site-footer__inner {
+  container-type: inline-size;
+  /* the footer opens on the section rhythm; the Made with marquee used
+     to hold this space (Part Q) */
+  padding-top: var(--section-pad-y);
+}
+
+/* contact band: photo + "Let's compare notes." + the one Get in touch,
+   beside the link columns (1fr 1fr from 1024px); stacked below */
+.site-footer__contact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-stack-lg);
+  align-items: start;
+  scroll-margin-top: calc(var(--header-height) + var(--spacing-4));
+}
+
+/* the photo floats and the text wraps round the disc (Part H, 20 Sep
+   2026). It was a flex row, which parked the photo in a column of its
+   own with empty ground under it. flow-root clears the float so nothing
+   leaks into the link columns. */
+.site-footer__hello {
+  display: flow-root;
+}
+
+.site-footer__photo {
+  float: left;
+  width: var(--footer-photo-sm);
+  height: var(--footer-photo-sm);
+  margin: 0 var(--space-stack-md) var(--space-stack-sm) 0;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  shape-outside: circle(50%);
+  shape-margin: var(--space-stack-sm);
+}
+
+/* the heading reads first and is never squeezed by the disc */
+.site-footer__hello-body > .display-heading {
+  margin-top: 0;
+}
+
+.site-footer__lead {
+  margin: var(--space-stack-sm) 0 0;
+  color: var(--color-navy-ink);
+}
+
+/* phones: the photo and the heading share a row, then the lead starts
+   under both at full width; wrapping round the disc gave it an odd
+   indent at 390 (Elleta, 21 Sep) */
+@media (max-width: 699.98px) {
+  .site-footer__lead {
+    clear: left;
+  }
+}
+
+.site-footer__lines {
+  list-style: none;
+  margin: var(--space-stack-sm) 0 0;
+  padding: 0;
+  font-size: var(--typography-font-size-base);
+  line-height: var(--leading-body);
+  color: color-mix(in srgb, var(--color-navy-ink) 70%, transparent);
+}
+
+.site-footer__lines li {
+  color: inherit;
+}
+
+.site-footer__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-stack-sm);
+  margin-top: var(--space-stack-md);
+}
+
+/* both footer buttons are pills; the primary is cream on navy */
+.site-footer .btn-pill {
+  border-radius: var(--radius-full);
+}
+
+.site-footer .btn-key--primary {
+  color: var(--color-brand-navy);
+  background: var(--color-navy-ink);
+}
+
+.site-footer .btn-key--primary:hover {
+  background: color-mix(in srgb, var(--color-navy-ink) 88%, var(--color-brand-navy));
+}
+
+.site-footer__cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-stack-lg) var(--space-stack-md);
+}
+
+@media (min-width: 700px) {
+  .site-footer__photo {
+    width: var(--footer-photo);
+    height: var(--footer-photo);
+  }
+}
+
+/* right column: the link columns, then what is being built */
+.site-footer__side {
+  container-type: inline-size;
+  display: grid;
+  gap: var(--space-stack-lg);
+  align-content: start;
+}
+
+/* from 1024px the right column sits beside the contact block (1fr 1fr);
+   below that everything stacks under it */
+@media (min-width: 1024px) {
+  .site-footer__contact {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* three link columns once "BELLA on GitHub" fits on one line; 2 + 1 below */
+@container (min-width: 34rem) {
+  .site-footer__cols {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.site-footer__list {
+  list-style: none;
+  margin: var(--spacing-2) 0 0;
+  padding: 0;
+  display: grid;
+}
+
+.site-footer__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  color: var(--color-navy-ink);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-navy-ink) 35%, transparent);
+  text-underline-offset: 3px;
+}
+
+.site-footer__link:hover {
+  text-decoration-color: currentColor;
+}
+
+.site-footer__link:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+/* the wordmark: ink edge to ink edge = the container's content width */
+/* brand row: wordmark + Bella left, the small print right; stacked
+   under 900px */
+.site-footer__brand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-stack-md) var(--space-stack-lg);
+  margin-top: var(--space-stack-sm);
+  padding-bottom: var(--space-stack-lg);
+}
+
+/* stacked footers: room for the paw trail's lane above the letters
+   (32px clear of text on both sides) */
+@media (max-width: 1023.98px) {
+  .site-footer__brand {
+    margin-top: var(--spacing-12);
+  }
+}
+
+/* the wordmark reserves Bella's height above it, so she never reaches
+   the links; the negative bottom margin puts the box bottom on the
+   letters' baseline (line-height 0.8 leaves ~0.115em below it), so the
+   small print can line up with the letters */
+.site-footer__mark {
+  width: 100%;
+  line-height: 0.8;
+}
+
+/* one letter per flex item, spread edge to edge of the container */
+.site-footer__wordmark {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: calc(var(--footer-bella-height) + 0.04em);
+  margin-bottom: -0.115em;
+  font-family: var(--font-hero-display);
+  font-weight: 400;
+  font-size: var(--footer-wordmark-size);
+  line-height: 0.8;
+  color: var(--color-navy-ink);
+}
+
+/* Trim the reserve where the band has slack (Elleta, 20 Sep 2026).
+   Bella's full height was reserved above the letters at every width,
+   and at desktop widths most of that band sat empty. It is not only
+   her reserve though: FooterTrail walks its prints along it and needs
+   about 94px of clear lane or it renders nothing. From 1280px the lane
+   measures 137px and up, so the reserve gives 40px of it back and the
+   trail keeps its floor. Below 1280 the lane is already near that
+   floor (129px at 1200, 99px at 390), so the reserve stays. Measured,
+   not guessed: at 1200 a 40px trim drops the lane to 89 and the trail
+   stops rendering. Bella still stands on the
+   A, about 60px clear of the "in progress" line. */
+@media (min-width: 1280px) {
+  .site-footer__wordmark {
+    padding-top: calc(var(--footer-bella-height) + 0.04em - var(--spacing-10));
+  }
+}
+
+/* Bella stands on the A's apex, centred on the letter */
+.site-footer__a {
+  position: relative;
+}
+
+.site-footer__bella {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - 0.03em);
+  height: var(--footer-bella-height);
+  width: auto;
+  max-width: none;
+  transform: translateX(-50%);
+}
+
+/* what is being built: one muted line under the link columns */
+.building-line {
+  margin: 0;
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+}
+
+/* the details link keeps its underline; a 24px target (WCAG 2.2 AA, 2.5.8) */
+.building-line__link {
+  min-height: var(--spacing-6);
+  font-size: inherit;
+  font-family: inherit;
+}
+
+.share-portfolio {
+  margin: 0;
+}
+
+.share-portfolio__status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-height: 1.5em;
+  margin: var(--spacing-2) 0 0;
+  font-size: var(--text-meta);
+  color: var(--color-navy-ink);
+}
+
+/* the footer paw trail (components/FooterTrail.tsx): prints in the
+   footer's accent at 40%, placed by script in the empty band above the
+   letters; they step in one by one (80ms apart) the first time */
+.site-footer {
+  position: relative;
+}
+
+.footer-trail {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.footer-trail__paw {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  fill: var(--color-brand-periwinkle);
+  opacity: 0;
+}
+
+.footer-trail--settled .footer-trail__paw {
+  opacity: 0.4;
+}
+
+.footer-trail--go .footer-trail__paw {
+  animation: footer-paw var(--dur-base) var(--ease-out) forwards;
+  animation-delay: calc(var(--i) * 80ms);
+}
+
+@keyframes footer-paw {
+  from { opacity: 0; scale: 0.5; }
+  to { opacity: 0.4; scale: 1; }
+}
+
+/* small print: one row under the wordmark, from its left edge; the
+   version and policy links sit right and wrap under on phones */
+.site-footer__small {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-1) var(--space-stack-md);
+  width: 100%;
+  margin: 0;
+  color: color-mix(in srgb, var(--color-navy-ink) 70%, transparent);
+}
+
+.site-footer__small p {
+  margin: 0;
+  color: inherit;
+}
+
+.site-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.site-footer__link--small {
+  min-height: var(--spacing-6);
+  font-size: var(--text-meta);
+  color: inherit;
+}
+
+/* Term (components/ui/Term.tsx): a word you can tap to learn. It
+   reads as the word it sits in (font, colour), with a dotted iris
+   underline under it; the letters bounce one after another on hover-in
+   and tap. */
+.term {
+  --dot: var(--term-dot);
+  --off: var(--term-offset);
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.display-heading .term {
+  --dot: var(--term-dot-heading);
+  --off: var(--term-offset-heading);
+}
+
+.term::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(0px - var(--off));
+  height: var(--dot);
+  background-image: radial-gradient(circle, var(--color-accent-ink) calc(var(--dot) / 2), transparent calc(var(--dot) / 2 + 0.5px));
+  background-size: calc(var(--dot) * 2.5) var(--dot);
+  background-repeat: repeat-x;
+  pointer-events: none;
+}
+
+.term:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+  border-radius: var(--radius-sm);
+}
+
+.term__l {
+  display: inline-block;
+  transform-origin: bottom;
+}
+
+.term__word.is-bouncing .term__l {
+  animation: term-bounce var(--dur-slow) var(--ease-out) both;
+  animation-delay: calc(var(--i) * 35ms);
+}
+
+@keyframes term-bounce {
+  0% { transform: none; }
+  35% { transform: translateY(-0.4em); color: var(--color-accent-ink); }
+  100% { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .term__word.is-bouncing .term__l {
+    animation: none;
+  }
+}
+
+/* the popover: navy with cream text on the light theme, reversed on
+   dark; fixed under the word (it closes on scroll) */
+.term-tip {
+  position: fixed;
+  z-index: 9000;
+  display: grid;
+  gap: var(--spacing-2);
+  max-width: min(20rem, calc(100vw - var(--spacing-6)));
+  padding: var(--spacing-4);
+  border-radius: var(--radius-popover);
+  background: var(--color-brand-navy);
+  color: var(--color-navy-ink);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.45;
+  text-align: left;
+  text-transform: none;
+}
+
+.term-tip[hidden] {
+  display: none;
+}
+
+/* small motion (polish pass, 19 Sep 2026): the toggletip rises 4px into
+   place as it appears, and `interpolate-size` lets height animate to
+   auto (the About accordion keeps its grid-rows fallback) */
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  .term-tip {
+    transition:
+      opacity var(--dur-fast) var(--ease-out),
+      translate var(--dur-fast) var(--ease-out);
+  }
+
+  @starting-style {
+    .term-tip {
+      opacity: 0;
+      translate: 0 4px;
+    }
+  }
+}
+
+[data-theme="dark"] .term-tip {
+  background: var(--color-navy-ink);
+  color: var(--color-brand-navy);
+}
+
+.term-tip__tag {
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  opacity: 0.8;
+}
+
+.term-tip__tag dfn {
+  font-style: normal;
+  font-weight: 600;
+}
+
+.term-tip__when {
+  opacity: 0.85;
+}
+
+/* tertiary action: iris + underlined, a button that reads as a link */
+.text-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.text-action:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* Copy email + LinkedIn (About "Say hi", the nav's Get in touch, the
+   mobile menu) */
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.contact-actions--stack {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.contact-actions .btn-key {
+  white-space: nowrap;
+}
+
+/* Get in touch: a disclosure in the header, panel under the button */
+.get-in-touch {
+  position: relative;
+}
+
+/* dropdown items: compact padding, still a 44px target */
+.get-in-touch__panel .btn-key {
+  padding: 0 var(--spacing-3);
+}
+
+.get-in-touch__panel {
+  position: absolute;
+  top: calc(100% + var(--spacing-2));
+  right: 0;
+  z-index: 1;
+  padding: var(--spacing-4);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-background);
+  box-shadow: var(--shadow-soft);
+}
+
+/* ─── Corner-bracket cursor (18 Sep 2026) ───────────────────────
+   Four iris corners that trail the pointer and wrap links/buttons.
+   Decorative, pointer-events none, never replaces the system cursor.
+   Colour is the accent ink, so it flips with the theme (iris on the
+   light ground, periwinkle on navy). */
+
+.bracket-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+  will-change: transform, width, height;
+}
+
+.bracket-cursor[data-visible="true"] {
+  opacity: 1;
+}
+
+.bracket-cursor__corner {
+  position: absolute;
+  width: var(--cursor-bracket);
+  height: var(--cursor-bracket);
+  overflow: visible;
+  stroke: var(--color-accent-peri);
+  stroke-width: var(--cursor-stroke);
+  stroke-linecap: round;
+}
+
+.bracket-cursor__corner--tl { top: 0; left: 0; }
+.bracket-cursor__corner--tr { top: 0; right: 0; transform: scaleX(-1); }
+.bracket-cursor__corner--bl { bottom: 0; left: 0; transform: scaleY(-1); }
+.bracket-cursor__corner--br { bottom: 0; right: 0; transform: scale(-1); }
+
+/* the inspector label: the element's tag, 8px under the bottom-right
+   bracket and right-aligned with it. Iris text, no fill, no border:
+   --color-accent-ink measured 5.4:1 on the light ground, 7.9:1 on navy. */
+.bracket-cursor__label {
+  position: absolute;
+  top: calc(100% + var(--spacing-2));
+  right: 0;
+  display: none;
+  white-space: nowrap;
+  font-family: var(--font-code);
+  font-size: var(--text-meta); /* 14px: the site floor, not 13 */
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--color-accent-ink);
+}
+
+.bracket-cursor[data-active="true"]:not([data-menu="open"]) .bracket-cursor__label:not(:empty) {
+  display: block;
+}
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .bracket-cursor {
+    display: none;
+  }
+}
+
+/* H5 — inline item labels (collaboration cards, role titles…) */
+.text-heading-3,
+.heading-item {
+  /* heading-3: item, card and entry titles. Geist (Unique is display
+     only), one tier above body text. .heading-item is the older name
+     for the same recipe. */
+  font-family: var(--font-body);
+  font-size: var(--text-heading-3);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
   color: var(--color-ink);
 }
 
@@ -883,7 +2712,7 @@ li {
 .body-lg {
   font-family: var(--font-body);
   font-size: var(--font-body-size);
-  line-height: 1.65;
+  line-height: var(--leading-body);
   letter-spacing: 0.01em;
   color: var(--color-ink-soft);
 }
@@ -953,9 +2782,10 @@ li {
 
 /* ─── §7 Control taxonomy — flat controls (keycap = actions only) ──── */
 
-/* §8: ONE connected control. Segments touch; hairline dividers between
-   inactive neighbours, no gaps, active segment reads as a filled section
-   of the same object. */
+/* §8: ONE connected control. Segments touch, no gaps, and the ONLY mark
+   inside the control is the selected segment's fill (Elleta, 20 Sep 2026,
+   fix pass 2): unselected segments carry no border and no divider, so
+   two-option and three-option controls read the same. */
 .seg-control {
   display: inline-flex;
   list-style: none;
@@ -980,7 +2810,8 @@ li {
   cursor: pointer;
   min-height: 38px;
   padding: 0 var(--spacing-4);
-  border-radius: calc(var(--radius-lg) - var(--seg-inset));
+  /* inner corner from the radius set, not derived (O.10 radii) */
+  border-radius: var(--radius-md);
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
   font-weight: 600;
@@ -989,21 +2820,39 @@ li {
   color: var(--color-ink-muted);
 }
 
-/* hairline divider between segments (markup is ul > li > button) */
-.seg-control li + li button {
-  box-shadow: -1px 0 0 0 var(--color-border-medium);
-}
+/* reflow (WCAG 1.4.10): at narrow widths the control never exceeds its
+   column; the buttons share the width with tighter padding */
+@media (max-width: 400px) {
+  .seg-control {
+    display: flex;
+    max-width: 100%;
+  }
 
-/* no divider against the selected fill: the seam dies on the trailing
-   side too (the selected button's own ring already replaces its side) */
-.seg-control li:has(button[aria-current="true"]) + li button {
-  box-shadow: none;
+  .seg-control li {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .seg-control button {
+    width: 100%;
+    justify-content: center;
+    padding: 0 var(--spacing-2);
+  }
 }
 
 .seg-control button[aria-current="true"] {
   background: var(--color-semantic-accent-subtle);
   color: var(--color-accent-ink);
   box-shadow: inset 0 0 0 1px var(--color-semantic-accent-border);
+}
+
+/* sentence case (Work, Learning; 19 Sep 2026): Geist, no tracking */
+.seg-control--sentence button {
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .seg-control button:focus-visible {
@@ -1016,7 +2865,7 @@ li {
   align-items: center;
   gap: var(--spacing-2);
   cursor: pointer;
-  min-height: 32px;
+  min-height: 2.25rem; /* 36px; 44px below 768px, below */
   padding: 4px var(--spacing-4);
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border-medium);
@@ -1041,10 +2890,12 @@ li {
   background: var(--color-alpha-ink-6);
 }
 
+/* pressed (one style for /learning and /work, 19 Sep 2026): iris-soft,
+   not the solid inverse fill */
 .filter-chip[aria-pressed="true"] {
-  background: var(--color-semantic-background-inverse);
-  border-color: var(--color-semantic-background-inverse);
-  color: var(--color-semantic-text-inverse);
+  background: var(--color-semantic-accent-subtle);
+  border-color: var(--color-accent-iris);
+  color: var(--color-ink);
 }
 
 .filter-chip:focus-visible {
@@ -1056,6 +2907,34 @@ li {
   .filter-chip {
     min-height: var(--spacing-touch-target);
   }
+}
+
+/* the one chip row (Learning and Work): an optional label, the chips,
+   and each chip's count in the code role at 70% */
+.filter-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.filter-chip-row__label {
+  width: 4rem;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--color-eyebrow);
+}
+
+@media (max-width: 600px) {
+  .filter-chip-row__label {
+    width: 100%;
+  }
+}
+
+.filter-chip__count {
+  color: inherit;
+  opacity: 0.7;
 }
 
 .select-control {
@@ -1112,19 +2991,33 @@ li {
   color: var(--color-ink-muted);
 }
 
+/* ONE status pill (Elleta, 20 Sep 2026). Sentence case, not caps: a
+   case page carries no all-caps labels, and the case studies had grown
+   a second sentence-case pill of their own. The state is always in
+   WORDS; tone only reinforces it. */
 .status-pill {
   display: inline-flex;
   align-items: center;
-  font-family: var(--font-mono);
-  font-size: 11px; /* matches the hub-sub recorded exception */
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-accent-ink);
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-3);
   border: 1px solid var(--color-semantic-accent-border);
   border-radius: var(--radius-full);
-  padding: 2px var(--spacing-2);
+  font-size: var(--typography-font-size-base);
+  font-weight: 500;
+  color: var(--color-accent-ink);
   white-space: nowrap;
+}
+
+.status-pill--ok {
+  border-color: transparent;
+  color: var(--case-clarity-text);
+  background: color-mix(in srgb, var(--case-clarity-hi) 26%, var(--color-card));
+}
+
+.status-pill--warn {
+  border-color: transparent;
+  color: var(--gov-clay-text);
+  background: color-mix(in srgb, var(--gov-clay-hi) 26%, var(--color-card));
 }
 
 /* ─── Travelling border light — the ONE trace implementation ─────
@@ -1155,7 +3048,7 @@ li {
   padding: var(--trace-w);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity var(--dur-fast) var(--ease-out);
   background: conic-gradient(
     from var(--trace-ang),
     var(--cc) 0deg,
@@ -1202,7 +3095,8 @@ li {
    one). SECONDARY = flat iris outline, iris text, no fill, no
    elevation — never confusable with a FilterChip (neutral flat,
    aria-pressed) or a Tag (inert). TERTIARY = text link, iris and
-   underlined. Labels stay Geist caps at tag size — NEVER Unique.
+   underlined. Labels are Geist, sentence case, 1rem at 500 — NEVER Unique
+   (only the small section labels are caps).
    Secondary colour rides --color-accent-ink (iris light / periwinkle
    dark; fixed-dark chrome scopes the same token to its peri stop). */
 .btn-key {
@@ -1215,20 +3109,56 @@ li {
   border-radius: var(--btn-key-radius);
   padding: 11px 18px;
   min-height: var(--spacing-touch-target);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-size: var(--text-nav);
+  font-weight: 500;
+  letter-spacing: normal;
   text-decoration: none;
   color: var(--color-accent-ink);
   background: transparent;
-  transition: background 0.15s, color 0.15s;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
 
 .btn-key:hover {
   background: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
 }
+
+/* THE LABEL ROLL (BELLA #44, ported 20 Sep 2026). The window clips to
+   one line; the label and its aria-hidden copy stack in it. The button's
+   own gap moves onto the two rolling spans, so an icon still sits beside
+   its text. */
+.btn-key__roll {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.btn-key__label,
+.btn-key__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  transition: transform var(--component-button-motion-roll-duration) var(--component-button-motion-roll-easing);
+}
+
+.btn-key__copy {
+  position: absolute;
+  inset: 0;
+  transform: translateY(100%);
+  /* selecting or copying the label yields it once */
+  user-select: none;
+}
+
+.btn-key:hover:not(:disabled) .btn-key__label,
+.btn-key:focus-visible .btn-key__label {
+  transform: translateY(-100%);
+}
+
+.btn-key:hover:not(:disabled) .btn-key__copy,
+.btn-key:focus-visible .btn-key__copy {
+  transform: translateY(0);
+}
+
 
 .btn-key:active {
   background: color-mix(in srgb, var(--color-accent-ink) 16%, transparent);
@@ -1245,33 +3175,43 @@ li {
    travelling border light via the SHARED .trace-host recipe (Button
    adds the class); focus-visible keeps its real ring independent of
    the trace; reduced motion renders the static accent border. */
+/* PRIMARY: the standard BELLA primary, flat (critique pass, 18 Sep
+   2026): solid fill, no gloss, gradient or shadow, and it never lifts.
+   Hover and press only deepen the fill. */
 .btn-key--primary {
-  color: var(--key-face-hi);
-  border: 1px solid var(--key-fill-edge);
-  background: var(--gloss-key), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
-  box-shadow: var(--shadow-key-resting);
-  transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
-  --trace-w: 2px;
-  --cc: var(--hero-iris-bright);
+  color: var(--component-button-primary-foreground);
+  border: 1px solid transparent;
+  border-radius: var(--component-button-shape-default);
+  background: var(--component-button-primary-fill-hi);
+  box-shadow: none;
+  transition: background var(--dur-fast) var(--ease-out);
 }
 
-/* hover: the light lifts (sheen brightens, cap rises a hair) */
 .btn-key--primary:hover {
-  transform: translateY(-1px);
-  background: var(--gloss-key-hover), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
-  box-shadow: var(--shadow-key-hover);
+  background: var(--component-button-primary-fill-lo);
 }
 
 .btn-key--primary:active {
-  transform: translateY(2px);
-  background: var(--gloss-key-pressed), linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
-  box-shadow: var(--shadow-key-pressed);
+  background: var(--component-button-primary-edge);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .btn-key,
-  .btn-key--primary {
+  .btn-key--primary,
+  .btn-key__label,
+  .btn-key__copy {
     transition: none;
+  }
+
+  /* no roll: the label stays put and the copy stays out of the window */
+  .btn-key:hover:not(:disabled) .btn-key__label,
+  .btn-key:focus-visible .btn-key__label {
+    transform: none;
+  }
+
+  .btn-key:hover:not(:disabled) .btn-key__copy,
+  .btn-key:focus-visible .btn-key__copy {
+    transform: translateY(100%);
   }
 }
 
@@ -1362,19 +3302,16 @@ section[id],
    geometry). */
 .home-work-row {
   display: grid;
-  /* min(): below a 300px column the track shrinks to the container,
-     so a 320 viewport (256px content) never scrolls sideways */
-  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  /* auto-FIT, not auto-fill (Elleta, 20 Sep 2026, fix pass 2): three
+     cards in a container that fits four tracks left an empty fourth
+     column at 1280. auto-fit collapses the empty tracks so the cards
+     stretch to the container at every width. min(): below an 18rem
+     column the track shrinks to the container, so a 320 viewport
+     (256px content) never scrolls sideways */
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
   gap: var(--grid-gap);
   align-items: stretch;
   margin-top: var(--spacing-4);
-}
-
-.philosophy-stage {
-  position: relative;
-  max-width: 720px;
-  margin: 0 auto;
-  padding: var(--spacing-8) 0 0;
 }
 
 /* ─── Case pending-visual placeholder (migration kickoff, 23 Jul):
@@ -1409,7 +3346,7 @@ button:focus-visible {
 }
 
 /* Contact form fields — stable focus, no flicker, no radius change.
-   Fields sit on the light GlassBanner (light theme) / navy tint (dark);
+   Fields sit on the contact card surface (light theme) / navy card (dark);
    the semantic tokens flip with the theme. */
 .contact-field:focus {
   outline: none;
@@ -1473,7 +3410,7 @@ textarea:focus-visible {
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: opacity 0.15s;
+  transition: opacity var(--dur-fast) var(--ease-out);
 }
 
 .demo-link:hover {
@@ -1515,7 +3452,7 @@ textarea:focus-visible {
   text-align: left;
   color: var(--color-ink);
   cursor: pointer;
-  transition: color 150ms ease;
+  transition: color var(--dur-fast) var(--ease-out);
 }
 
 .process-accordion-trigger:hover {
@@ -1552,7 +3489,7 @@ textarea:focus-visible {
   align-items: center;
   justify-content: center;
   color: var(--color-ink-muted);
-  transition: transform 180ms ease-out;
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
 .process-accordion-chevron[data-open="true"] {
@@ -1562,7 +3499,7 @@ textarea:focus-visible {
 .process-accordion-panel {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 180ms ease-out;
+  transition: grid-template-rows var(--dur-fast) var(--ease-out);
 }
 
 .process-accordion-panel[data-open="true"] {
@@ -1605,7 +3542,7 @@ textarea:focus-visible {
   color: var(--color-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: opacity 150ms ease;
+  transition: opacity var(--dur-fast) var(--ease-out);
 }
 
 .process-accordion-link:hover {
@@ -1633,16 +3570,16 @@ textarea:focus-visible {
 
 /* ─── Page container ───────────────────────────────────────────── */
 .page-container {
-  max-width: var(--container-width);
-  padding-left: var(--spacing-8);
-  padding-right: var(--spacing-8);
+  max-width: var(--container-max);
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
   margin-left: auto;
   margin-right: auto;
 }
 
 /* ─── Micro-interactions ───────────────────────────────────────── */
 .card-interactive {
-  transition: transform 0.24s ease, box-shadow 0.24s ease;
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
 }
 
 .card-interactive:hover {
@@ -1658,7 +3595,7 @@ textarea:focus-visible {
 
 /* Smooth expand */
 .expand-transition {
-  transition: max-height 0.35s ease, opacity 0.25s ease;
+  transition: max-height var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
   overflow: hidden;
 }
 
@@ -1777,9 +3714,9 @@ textarea:focus-visible {
 .cs-shell {
   display: flex;
   flex-direction: column;
-  max-width: var(--container-width);
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: var(--space-8) var(--container-padding) 0;
+  padding: var(--space-8) var(--container-pad) 0;
   min-height: 100vh;
 }
 
@@ -1801,69 +3738,6 @@ textarea:focus-visible {
 
 
 /* Eyebrow — mono, same treatment as home sections */
-/* Breadcrumb (Elleta, 21 Jul): "← Work / <Case name>". The link keeps
-   the backlink recipe; the current name is inert, same tier, ink-soft
-   so the link still reads as the interactive part. */
-.cs-shell__crumbs {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  min-width: 0;
-}
-
-.cs-shell__crumb-sep {
-  color: var(--color-ink-muted);
-  margin-bottom: var(--spacing-4);
-}
-
-.cs-shell__crumb {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-ink-soft);
-  margin-bottom: var(--spacing-4);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cs-shell__backlink {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  min-height: var(--spacing-touch-target);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--color-ink-muted);
-  margin-bottom: var(--spacing-4);
-}
-
-.cs-shell__backlink:hover,
-.cs-shell__backlink:focus-visible {
-  color: var(--color-accent-ink);
-}
-
-/* the right-column copy only shows when the left panel is hidden.
-   The WHOLE mobile breadcrumb nav leaves the tree at desktop (a11y,
-   21 Jul): two nav[aria-label="Breadcrumb"] landmarks failed
-   axe landmark-unique, and the crumb spans leaked visually. */
-.cs-shell__backlink--mobile {
-  margin-bottom: var(--spacing-2);
-}
-
-@media (min-width: 1080px) {
-  .cs-shell__crumbs--mobile {
-    display: none;
-  }
-}
-
-
 /* §8: the case title device wrapper */
 
 
@@ -1876,19 +3750,17 @@ textarea:focus-visible {
   color: var(--case-tint-text, var(--ink-on-paper));
 }
 
+/* outline (19 Sep 2026): hairline, muted ink, no fill; theme-aware,
+   so it never renders as a cream plate on navy */
+.tag.tag--outline {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--color-border-medium);
+  color: var(--color-ink-muted);
+}
+
 /* dark: keep the tint plate near-navy so the light case text clears AA */
 [data-theme="dark"] .tag.tag--identity {
   background: color-mix(in srgb, var(--case-tint-hi, var(--color-supporting-linen)) 18%, var(--color-card));
-}
-
-.cs-shell__eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: var(--typography-letter-spacing-wider);
-  color: var(--color-eyebrow);
-  margin-bottom: 10px;
 }
 
 /* Title */
@@ -1946,9 +3818,17 @@ textarea:focus-visible {
 /* Tags */
 .cs-shell__tags {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow: hidden;
   gap: 5px;
   margin-bottom: var(--spacing-4);
+}
+
+/* one row: on narrow phones only the first two tags show */
+@media (max-width: 480px) {
+  .cs-shell__tags > :nth-child(n + 3) {
+    display: none;
+  }
 }
 
 /* Links section */
@@ -2155,24 +4035,6 @@ textarea:focus-visible {
 /* D2 (Pass D 2026-07-18): About thesis tiles, the stat-tile direction
    with case colours (her 17 Jul brief). Plate = case hue mixed into
    card; static border per the calm-card rule; ink text keeps AA. */
-/* .thesis-tile stays: MetricsStrip consumes this recipe (task 8, her
-   decision stands). The thesis BLOCKS themselves are specimen bands
-   (task-6 winner) below. */
-.thesis-tile {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: var(--spacing-8);
-  border-radius: var(--radius-2xl);
-  background: color-mix(in srgb, var(--thesis-hi) 22%, var(--color-card));
-  border: 1px solid color-mix(in srgb, var(--thesis-hi) 52%, var(--color-card));
-}
-
-[data-theme="dark"] .thesis-tile {
-  background: color-mix(in srgb, var(--thesis-hi) 14%, var(--color-card));
-  border-color: color-mix(in srgb, var(--thesis-hi) 32%, var(--color-card));
-}
-
 /* ─── Statement cards (card-voice, Elleta 21 Jul: Unique never
    renders inside a Card; the Unique specimen treatment is retired) ──
    Geist statements on the ONE shared .card-statement recipe: hierarchy
@@ -2183,26 +4045,6 @@ textarea:focus-visible {
    Speaks the Card interaction language: hover gains the SHARED
    travelling border light, focus-within ring, reduced motion static.
    Body Geist 16px, relaxed line-height. */
-.thesis-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--grid-gap);
-  align-items: stretch;
-}
-
-/* four-up sibling grids (the collab statements) pair instead of
-   thirds; same gap, same stretch, one implementation */
-.thesis-row--pair {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-@media (max-width: 1023px) {
-  .thesis-row,
-  .thesis-row--pair {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* the ONE card statement recipe (card-voice, 21 Jul): Geist, the
    card-ramp step above .heading-item, statement colour = card ink,
    accent word coloured inline */
@@ -2552,29 +4394,6 @@ textarea:focus-visible {
   gap: var(--spacing-5);
 }
 
-/* the stage scale, as the grid's legend */
-.bmm-legend {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--spacing-2) var(--spacing-3);
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink-muted);
-}
-
-.bmm-legend__label {
-  font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--color-eyebrow);
-}
-
-.bmm-legend__scale {
-  color: var(--color-ink-soft);
-}
-
 .bmm-list {
   list-style: none;
   margin: 0;
@@ -2585,214 +4404,20 @@ textarea:focus-visible {
   min-width: 0;
 }
 
-/* ONE BLOCK (28 Jul, second pass): the shape on the left, the exact
-   stages on the right, starting on the same line.
-
-   The chart previously took its own full-width row with its scale on one
-   side and its source on the other. That row put the right-aligned scale
-   about 30px from the "AI Readiness" axis label, which read as the two
-   colliding; it left the hexagon small between two blocks of furniture;
-   and it opened a 90px band of nothing before the table, so the two
-   halves read as separate objects. Beside each other with the furniture
-   stacked under the chart, none of those three can happen. */
-.bmm-body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--spacing-8);
-  align-items: start;
-}
-
-/* NEVER side by side (Elleta, 28 Jul). Sharing a row, the two halves
-   compete for the same 1176px and both lose: the chart gives up its
-   flanking axis labels to stay a reasonable size, and the table's reason
-   column drops from 764px to 400px. Stacked, each gets everything it
-   needs. The chart is a figure with its scale and source beneath it, the
-   table runs the full container at one line a row, and the block reads
-   top to bottom as shape then detail. */
-
-/* ── the radar ──
-   A 3x3 ring of HTML labels with the chart in the middle. The labels are
-   NOT SVG text on purpose: text inside a viewBox scales with the box, so
-   it stops being 16px the moment the chart is not exactly its declared
-   size. These stay body-size at every width. */
-/* the ring asks how wide THE RING is, never how wide the window is.
-   Flanking labels cost about 200px of whatever column the chart is in,
-   which is affordable when the chart owns the row and ruinous when it is
-   sharing one: beside the table the chart column was 30rem, the labels
-   took two thirds of it, and the table opposite was squeezed to a 304px
-   reason column that wrapped every row to three lines. Widening the
-   window past 1240 therefore made the table WORSE, which is the tell
-   that something was reading the viewport when it meant the box. */
-/* The figure STRETCHES; the capping and centring happen inside it.
-
-   Capping this element and centring it with margin-inline:auto collapsed
-   the chart to zero. Auto margins cancel a grid item's stretch, so its
-   inline size falls back to fit-content, and fit-content under
-   inline-size containment resolves to nothing at all, because
-   containment is precisely the promise that contents do not size the
-   box. The container has to be measurable; the figure inside it is what
-   gets a measure. */
-.bmm-radar {
+/* the stage scale and the model's credit, one line under the table
+   (the radar and its caption left in Part R) */
+.bmm-note {
   margin: 0;
-  min-width: 0;
-  container-type: inline-size;
-  container-name: radar;
-}
-
-/* the chart's own measure: a hexagon does not get better past about
-   350px, and its labels want to sit near the shape they name rather than
-   at the far edges of a 1176px row */
-.bmm-radar__ring,
-.bmm-radar__cap {
-  max-width: 38rem;
-  margin-inline: auto;
-}
-
-/* DEFAULT: labels in a clockwise row BENEATH the chart, so the chart
-   gets the column's whole width. This is the layout for every ring that
-   is not wide enough to spend 200px on flanking labels, which is a phone
-   and equally the chart's column when it sits beside the table. */
-.bmm-radar__ring {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: baseline;
-  gap: var(--spacing-1) var(--spacing-3);
-}
-
-.bmm-radar__svg {
-  order: -1;
-  flex: 0 0 100%;
-  width: 100%;
-  /* the hexagon reached 743px once the figure owned a whole row, which is
-     a chart eating a page rather than leading one */
-  max-width: 22rem;
-  height: auto;
-  margin-inline: auto;
-}
-
-/* the chart's furniture, stacked UNDER the chart and quiet enough that
-   the hexagon stays the loud thing. Under it, not beside it: flanking
-   columns put the scale a few pixels from an axis label. */
-.bmm-radar__cap {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  margin-top: var(--spacing-5);
-  padding-top: var(--spacing-4);
-  border-top: 1px solid var(--color-border-soft);
-  font-family: var(--font-body);
+  max-width: var(--measure-body);
+  /* a sentence, so the reading floor, not the metadata tier */
   font-size: var(--typography-font-size-base);
-  line-height: 1.55;
-  color: var(--color-ink-soft);
-}
-
-.bmm-radar__scale {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-}
-
-.bmm-radar__label {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
-  line-height: var(--typography-line-height-snug);
-  color: var(--color-ink-soft);
-  text-align: center;
-}
-
-/* the row layout names the reading order, because a row cannot show it
-   the way a ring can.
-
-   A CAPTION, not an eyebrow. It shipped at the 13px metadata tier and
-   audit:type refused it the moment the row layout reached 1440, which is
-   the right call: twenty-two characters explaining how to read a chart
-   is reading text, whatever tier it is dressed as. Extending the audit's
-   metadata allowlist to cover it would have been keeping new code alive
-   with an exemption, which the constitution forbids. */
-.bmm-radar__hint {
-  display: block;
-  flex: 0 0 100%;
-  text-align: center;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
   color: var(--color-ink-muted);
 }
 
-.bmm-radar__label + .bmm-radar__label::before {
-  content: "\00b7";
-  margin-right: var(--spacing-3);
-  color: var(--color-ink-muted);
-}
-
-/* FLANKED: only once the ring itself can afford roughly 200px of labels
-   on top of a chart worth looking at. A CONTAINER query, so the ring
-   answers for its own box: beside the table that box is a 24rem column
-   and the labels stay beneath, while stacked it is the whole row and
-   they take their places around the hexagon. */
-@container radar (min-width: 34rem) {
-  .bmm-radar__ring {
-    display: grid;
-    grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
-    grid-template-rows: auto 1fr 1fr auto;
-    align-items: center;
-    justify-items: center;
-    max-width: 38rem;
-    margin-inline: auto;
-    gap: var(--spacing-2);
-  }
-
-  .bmm-radar__svg {
-    order: 0;
-    grid-column: 2;
-    grid-row: 2 / span 2;
-    flex: initial;
-    justify-self: center;
-  }
-
-  /* clockwise from twelve, the order the axes are declared and the table
-     lists them */
-  .bmm-radar__label--0 { grid-column: 2; grid-row: 1; }
-  .bmm-radar__label--1 { grid-column: 3; grid-row: 2; text-align: left; }
-  .bmm-radar__label--2 { grid-column: 3; grid-row: 3; text-align: left; }
-  .bmm-radar__label--3 { grid-column: 2; grid-row: 4; }
-  .bmm-radar__label--4 { grid-column: 1; grid-row: 3; text-align: right; }
-  .bmm-radar__label--5 { grid-column: 1; grid-row: 2; text-align: right; }
-
-  /* the ring shows the order; the row's label and separators would only
-     repeat what the positions already say */
-  .bmm-radar__hint { display: none; }
-  .bmm-radar__label + .bmm-radar__label::before { content: none; }
-}
-
-.bmm-radar__grid {
-  fill: none;
-  stroke: var(--color-border-soft);
-  stroke-width: 1;
-}
-
-.bmm-radar__spoke {
-  stroke: var(--color-border-soft);
-  stroke-width: 1;
-}
-
-.bmm-radar__shape {
-  fill: var(--color-semantic-accent-subtle);
-  stroke: var(--color-accent-ink);
-  stroke-width: 2;
-  stroke-linejoin: round;
-}
-
-.bmm-radar__dot {
-  fill: var(--color-accent-ink);
-}
-
-/* the frontier axis wears the clarity pair here too, so the deepest
-   vertex reads as the thesis and not just as the biggest number */
-.bmm-radar__dot--frontier {
-  fill: var(--case-clarity-text);
+.bmm-note a {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* stage badges: metadata tier (the tag/pill register), stage colour
@@ -2852,7 +4477,7 @@ textarea:focus-visible {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
   gap: var(--spacing-4);
   align-items: start;
 }
@@ -3208,17 +4833,6 @@ textarea:focus-visible {
   justify-self: start;
 }
 
-/* the gate as a scannable status-card grid (Elleta, 21 Jul, spec
-   system-page-v2): one card per audit, name + PASS chip + one line */
-.ds-gate {
-  margin: 0;
-  display: grid;
-  grid-auto-rows: 1fr;
-  align-items: stretch;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--spacing-4);
-}
-
 /* ── Token inspector ── */
 
 .tok-inspector {
@@ -3228,9 +4842,9 @@ textarea:focus-visible {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-4);
-  padding: var(--spacing-8);
+  padding: var(--spacing-6);
   border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-card);
   background: var(--color-card);
   overflow: hidden;
 }
@@ -3292,7 +4906,7 @@ textarea:focus-visible {
      saturated accent. At 2px in full accent, over the old bloom, the
      ring read as a second glow rather than an annotation. */
   border: 1px dashed var(--color-semantic-accent-border);
-  border-radius: calc(var(--btn-key-radius) + var(--spacing-2));
+  border-radius: var(--radius-card);
   pointer-events: none;
 }
 
@@ -3380,6 +4994,7 @@ textarea:focus-visible {
   color: var(--color-ink-soft);
   margin: 0 0 var(--spacing-4);
   min-height: 3.2em;
+  max-width: var(--measure-body);
 }
 
 @media (max-width: 720px) {
@@ -3394,9 +5009,10 @@ textarea:focus-visible {
   }
 }
 
-/* ── Case shell v2 (case-shell-v2 brief, Elleta 22 Jul 2026; Carmen
-   ADOPT list + Justine scan rules). Code First only for now; chip and
-   drift keep the old cs-shell recipes until their own passes. ── */
+/* ── Case shell v2 (case-shell-v2 brief, Elleta 22 Jul 2026): an
+   in-flow case head and a numbered section spine, one idea per
+   viewport. Code First only for now; chip and drift keep the old
+   cs-shell recipes until their own passes. ── */
 
 /* thin token-coloured reading-progress indicator, case pages only */
 .cs2-progress {
@@ -3414,69 +5030,6 @@ textarea:focus-visible {
   width: 100%;
   transform-origin: left;
   background: var(--color-accent-ink);
-}
-
-/* the in-flow head: no sticky side title, no void */
-.cs2-head {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--spacing-4);
-  padding-top: calc(var(--header-height) + var(--spacing-12));
-  /* the head no longer caps at a body measure: the display title
-     extends across the full content column and wraps at its edge; only
-     the reading-tier subhead keeps a measure below */
-}
-
-.cs2-head .display-heading {
-  max-width: none;
-  /* pretty, not balance: balance packed the title into narrow, evenly
-     split lines; pretty lets it fill the content column and wrap at the
-     edge, only tidying the last line (From Drift + CHIP now extend, Code
-     First stays one line) */
-  text-wrap: pretty;
-}
-
-.cs2-subhead {
-  font-family: var(--font-body);
-  font-size: var(--font-body-size);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
-  /* the reading-tier subhead keeps the measure the head gave up */
-  max-width: 62ch;
-  margin: 0;
-}
-
-/* NDA disclosure note: a quiet body note with a left rule, rendered only
-   when the case content carries a disclosure block (the recreated cases).
-   Lifted from inline styles (prefer a class). Symmetric top+bottom margin
-   so it clears the chip row above and the first beat below, instead of
-   crowding the chips with a top-0 margin. */
-/* NDA disclosure note, DEMOTED to a quiet footnote (Elleta 24 Jul): it
-   still sets NDA context and justifies the "recreated / illustrative"
-   captions, so it stays, but at the small muted caption/meta tier (the same
-   tier those captions use), grouped directly under the chip row. The -meta
-   suffix keeps it on the metadata type tier (audit:type exempts meta lines;
-   this is context, not body reading text). Left border dropped, it reads
-   lighter as a plain footnote. Theme-adaptive, AA both themes. */
-.cs2-nda-meta {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  font-weight: 400;
-  line-height: 1.5;
-  color: var(--color-muted);
-  max-width: 68ch;
-  margin: var(--spacing-2) 0 var(--spacing-6);
-}
-
-.cs2-meta {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-  margin: 0;
 }
 
 /* text BESIDE its visual: the scene grid (beats law, amendment 2) */
@@ -3776,7 +5329,7 @@ textarea:focus-visible {
   opacity: 0.55;
   stroke-dasharray: var(--len);
   stroke-dashoffset: var(--len);
-  transition: stroke-dashoffset 0.6s ease;
+  transition: stroke-dashoffset var(--dur-slow) var(--ease-out);
 }
 
 .spec-stage.in .csp .ds-leaders path {
@@ -3786,7 +5339,7 @@ textarea:focus-visible {
 .csp .ds-leaders .dot {
   fill: var(--color-accent-ink);
   opacity: 0;
-  transition: opacity 0.3s ease 0.55s;
+  transition: opacity var(--dur-base) var(--ease-out) 0.55s;
 }
 
 .csp .ds-leaders .ring {
@@ -3794,7 +5347,7 @@ textarea:focus-visible {
   stroke-width: 1.5;
   fill: none;
   opacity: 0;
-  transition: opacity 0.3s ease 0.55s;
+  transition: opacity var(--dur-base) var(--ease-out) 0.55s;
 }
 
 .spec-stage.in .csp .ds-leaders .dot,
@@ -3828,7 +5381,7 @@ textarea:focus-visible {
   cursor: pointer;
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.3s ease, color 0.3s ease;
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
 }
 
 .spec-stage.in .csp-flag {
@@ -3979,7 +5532,7 @@ textarea:focus-visible {
 /* the one highlight recipe: a flag's zone rings the exact part */
 .spec-stage[data-hl] [data-part],
 .gv-host[data-hl] [data-part] {
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow var(--dur-fast) var(--ease-out);
 }
 
 .spec-stage[data-hl="sphere"] [data-part="sphere"],
@@ -4043,12 +5596,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   max-width: 70ch;
 }
 
+/* case captions: sentence case and muted, never caps (19 Sep 2026) */
 .cs2-kicker-row {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  font-weight: 400;
+  line-height: 1.5;
   color: var(--color-ink-muted);
   margin: 0;
 }
@@ -4322,7 +5875,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-radius: var(--radius-full);
   padding: var(--spacing-1) var(--spacing-2);
   background: var(--color-card);
-  transition: color 0.3s ease, border-color 0.3s ease;
+  transition: color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
 }
 
 .gv-rail__glyph {
@@ -4408,45 +5961,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    of the text column; alternation swaps grid order only; visuals are
    FLAT; --spacing-* rhythm only. ── */
 
-/* CONTAINER-AWARE (27 Jul 2026). CaseBeat used to set VERTICAL padding
-   only and silently depend on an ancestor for the horizontal gutter. On
-   the case routes the page shell supplies a .layout-container, so it
-   looked fine; the moment BellaSpine rendered a beat outside one, every
-   line of copy ran edge to edge (measured left:0 width:500 at a 500px
-   viewport). Wrapping the beats at the call site would have fixed one
-   page and left the trap armed for the next.
-
-   The beat now carries the container recipe ITSELF, and stands down
-   when it is already inside one, so it is correct wherever it is
-   dropped and never doubles the gutter. */
-.beat {
-  padding-block: var(--spacing-16);
-  padding-inline: var(--container-padding);
-  max-width: calc(var(--container-width) + (2 * var(--container-padding)));
-  margin-inline: auto;
-}
-
-/* already contained: the ancestor owns the gutter and the measure */
-.layout-container .beat,
-.cs2 .beat {
-  padding-inline: 0;
-  max-width: none;
-  margin-inline: 0;
-}
-
-/* BUG 3: at --spacing-16 top and bottom, consecutive beats sat 128px
-   apart, which read as dead ground on a small screen (measured 160px
-   between the agent footnote and the next heading). Tightened below the
-   existing 640px breakpoint; the desktop rhythm is unchanged. */
-@media (max-width: 640px) {
-  .beat {
-    padding-block: var(--spacing-10);
-  }
-}
-
-.beat + .beat {
-  border-top: 1px solid var(--color-border-soft);
-}
+/* the beat is a page Section (O.6, 21 Sep): .l-section pads it,
+   .section--ruled draws its hairline, and the grid is its own Container,
+   so it is correct wherever it is dropped and never doubles the gutter */
 
 .beat-grid {
   display: flex;
@@ -4495,11 +6012,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   min-width: 0;
 }
 
+/* beat label: the site's section label (plain mono, Part Q) */
 .beat-eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  font-weight: 400;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-ink-muted);
   margin: 0;
@@ -4522,6 +6040,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   color: var(--color-ink);
   max-width: var(--measure-case);
   margin: 0;
+}
+
+.beat-body > p {
+  max-width: var(--measure-body);
 }
 
 .beat-body {
@@ -4719,12 +6241,13 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   position: relative;
   overflow: hidden;
   margin-top: 0;
-  padding: var(--spacing-16) var(--spacing-6) var(--spacing-20);
+  /* the section rhythm like every section (O.10) */
+  padding: var(--section-pad-y) var(--spacing-6);
   text-align: center;
 }
 [data-theme="dark"] .cs2-endreveal {
-  --enddome-top: #2E2942;   /* lifted plum-navy dome */
-  --enddome-mid: #262238;
+  --enddome-top: #2A2622;   /* lifted warm dome (was plum-navy) */
+  --enddome-mid: #211E1B;
 }
 
 /* the dome is an in-flow background glow rising from the section floor;
@@ -4751,15 +6274,18 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin: 0 auto;
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
 }
 .cs2-endreveal.is-visible .cs2-endreveal__inner {
   opacity: 1;
   transform: none;
 }
 
-/* the sign-off IS the site's Unique display (Heading tier=case) */
-.cs2-endreveal__thanks.display-heading {
+/* the sign-off is a paragraph, not a heading (19 Sep 2026) */
+.cs2-endreveal__thanks {
+  font-family: var(--font-body);
+  font-size: var(--text-lead);
+  font-weight: 600;
   color: var(--color-ink);
   margin: 0 0 var(--spacing-2);
 }
@@ -4794,10 +6320,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   text-decoration: none;
   background: var(--color-card);
   border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-card);
   padding: var(--spacing-3) var(--spacing-4);
   box-shadow: var(--shadow-md);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
 }
 .cs2-endreveal__next:hover {
   transform: translateY(-2px);
@@ -4865,7 +6391,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-radius: var(--radius-md);
   padding: var(--spacing-2) var(--spacing-5);
   cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
 }
 .cs2-endreveal__share:hover {
   border-color: var(--color-border-medium);
@@ -4892,43 +6418,40 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 
-/* From Drift beat 03: the governance STATUS BOARD (in-page, tokenised to
-   BELLA, dark-adaptive via the site theme). Static; foregrounds component
-   status + the proposal path. Steel plus status semantics, no iris, no yellow-orange. */
-/* .gov-h is the eyebrow recipe (tag size, eyebrow tracking, eyebrow
-   colour, uppercase); it is the metadata tier, exempt in audit:type */
-.gov-h {
-  font-size: var(--typography-font-size-tag);
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--color-eyebrow);
-  font-weight: 600;
-  margin-bottom: var(--spacing-3);
-}
+/* From Drift section 04: the governance STATUS BOARD (in-page, tokenised
+   to BELLA, dark-adaptive via the site theme). Static; component status
+   plus the proposal line. Sentence case, no iris, no yellow-orange. */
+/* two columns at every width (mock v4): the name, then the status. No
+   third column, so nothing wraps to three lines at 390 */
 .gov-board {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  background: var(--color-border-soft);
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
   border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
-}
-.gov-row {
-  display: grid;
-  grid-template-columns: 108px 118px 1fr;
-  align-items: center;
-  gap: var(--spacing-3);
   background: var(--color-card);
-  padding: var(--spacing-3) var(--spacing-4);
 }
-.gov-row .gov-name {
+.gov-board th,
+.gov-board td {
+  text-align: left;
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+.gov-board tbody tr:last-child > * { border-bottom: none; }
+.gov-board thead th {
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--color-eyebrow);
+}
+.gov-board .gov-name {
   font-weight: 650;
   font-size: var(--typography-font-size-base);
   color: var(--color-ink);
 }
 .gov-badge {
-  justify-self: start;
+  display: inline-flex;
+  gap: var(--spacing-1);
   font-size: var(--typography-font-size-tag);
   font-weight: 600;
   padding: var(--spacing-1) var(--spacing-3);
@@ -4946,41 +6469,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .gov-badge.review { color: var(--case-filters-text); background: color-mix(in srgb, var(--case-filters-hi) 16%, var(--color-card)); }
 .gov-badge.exp { color: var(--gov-clay-text); background: color-mix(in srgb, var(--gov-clay-hi) 26%, var(--color-card)); }
 .gov-badge.dep { color: var(--gov-grey-text); background: color-mix(in srgb, var(--gov-grey-hi) 26%, var(--color-card)); }
-.gov-row .gov-asks {
-  /* reading text in a governance row, not metadata: the type floor
-     applies (audit:type hardening, 27 Jul) */
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink-muted);
-}
-.gov-path-wrap { margin-top: var(--spacing-6); }
-.gov-path {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  flex-wrap: wrap;
-}
-.gov-step {
-  font-size: var(--typography-font-size-sm);
-  font-weight: 600;
-  padding: var(--spacing-2) var(--spacing-4);
-  border-radius: var(--radius-md);
-  background: var(--color-card);
-  border: 1px solid var(--color-border-soft);
-  color: var(--color-ink-soft);
-}
-.gov-step.on {
-  color: var(--case-clarity-text);
-  background: color-mix(in srgb, var(--case-clarity-hi) 26%, transparent);
-  border-color: transparent;
-}
-.gov-parr { color: var(--color-ink-faint); }
 .gov-note {
   margin-top: var(--spacing-4);
   font-size: var(--typography-font-size-base);
   color: var(--color-ink-muted);
   line-height: 1.55;
 }
-.gov-note b { color: var(--color-ink); font-weight: 650; }
 
 /* ── the pull quote as an editorial display moment (gate+pullquote
    spec, Elleta 23 Jul 2026): Unique on the page ground, black ink,
@@ -4998,21 +6492,29 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .cs2-displayquote__quote {
   margin: 0;
-  font-family: var(--font-hero-display);
+  font-family: var(--font-body);
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: var(--tracking-display);
   line-height: var(--leading-display);
   /* the thesis dominates (Elleta, 23 Jul): page tier, a full step
-     ABOVE the beat headlines (--font-display-section), not below */
-  font-size: var(--font-display-page);
+     ABOVE the beat headlines (section tier), not below */
+  font-size: var(--component-heading-page-font-size);
   color: var(--color-ink);
   max-width: 44ch;
   text-align: center;
 }
 
+/* accent words are ink on case pages, no per-case colour (19 Sep
+   2026); the big opening mark is ink too */
 .cs2-displayquote__accent {
-  color: var(--case-code-first-text);
+  color: var(--color-ink);
+}
+
+.cs2-displayquote__mark {
+  display: block;
+  font-size: calc(var(--component-heading-page-font-size) * 2);
+  line-height: 0.6;
+  color: var(--color-ink);
 }
 
 /* ── beat 04, the takeaway band (pre-merge spec, 23 Jul 2026): the
@@ -5207,10 +6709,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .ds-stage {
   background: var(--color-card);
   border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-card);
   /* DEFECT 1: ONE restrained elevation, no bloom */
-  box-shadow: var(--shadow-sm);
-  padding: var(--spacing-4);
+  padding: var(--spacing-6);
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -5361,7 +6862,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .ds-stage__code {
   margin: auto 0 0;
   padding: var(--spacing-3) var(--spacing-4);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   border: 1px solid var(--color-border-soft);
   background: var(--color-semantic-background);
   font-family: var(--font-mono);
@@ -5387,7 +6888,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .ds-stage__sample {
   border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   padding: var(--spacing-4);
   background: var(--color-semantic-background);
 }
@@ -5524,7 +7025,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-size: var(--typography-font-size-base);
   line-height: 1.6;
   color: var(--color-ink-soft);
-  max-width: 72ch;
+  max-width: var(--measure-body);
   margin: 0;
 }
 
@@ -5574,7 +7075,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
      one that has to keep a readable measure. */
   .bmm-axis {
     display: grid;
-    grid-template-columns: minmax(0, 10rem) minmax(0, 6rem) minmax(0, 3rem) minmax(0, 1fr);
+    /* the stage track fits its widest pill: at 6rem Growing and
+       Teenage ran 7 to 11px past it (O.7, 21 Sep) */
+    grid-template-columns: minmax(0, 10rem) max-content minmax(0, 3rem) minmax(0, 1fr);
     align-items: center;
     column-gap: var(--spacing-4);
     row-gap: 0;
@@ -5671,9 +7174,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   gap: var(--spacing-3);
   background: var(--color-card);
   border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-sm);
-  padding: var(--spacing-5);
+  border-radius: var(--radius-card);
+  padding: var(--spacing-6);
   min-width: 0;
 }
 
@@ -5686,19 +7188,19 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   background: var(--color-semantic-background);
   padding: var(--spacing-6);
 }
 
-.agentdemo__art { width: 100%; max-width: 18rem; border-radius: var(--radius-lg); overflow: hidden; }
+.agentdemo__art { width: 100%; max-width: 18rem; border-radius: var(--radius-card); overflow: hidden; }
 .agentdemo__art-body { padding: var(--spacing-4); }
 .agentdemo__art-h { margin: 0 0 var(--spacing-1); font-weight: 700; }
 .agentdemo__art-p { margin: 0 0 var(--spacing-3); }
 .agentdemo__art-cta { margin: 0; text-align: center; border-radius: var(--radius-md); }
 
 /* the GROUNDED artifact: real tokens, policed like any other surface */
-.agentdemo__art--good { background: var(--color-card); border: 1px solid var(--color-border-medium); box-shadow: var(--shadow-sm); }
+.agentdemo__art--good { background: var(--color-card); border: 1px solid var(--color-border-medium); }
 .agentdemo__art--good .agentdemo__art-top { display: block; height: var(--spacing-16); background: linear-gradient(135deg, var(--hub-hi), var(--hub-lo)); }
 .agentdemo__art--good .agentdemo__art-h { color: var(--color-ink); font-size: var(--typography-font-size-lg); }
 .agentdemo__art--good .agentdemo__art-p { color: var(--color-ink-soft); font-size: var(--typography-font-size-base); }
@@ -5770,186 +7272,69 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    rule sets go: there were two, 350 lines apart, and the later one silently
    won every shared property. */
 
-/* ── the gate explorer (28 Jul, readability audit P2) ──
-   Sixteen chips, one panel. It replaces the two-column table, which
-   replaced a three-column definition grid, which replaced a definition
-   list: four shapes of the same wall. The chips are the whole gate at a
-   glance and the panel answers the only question anyone asks of it.
-
-   The chips are a TABLIST, so they are one tab stop with arrow keys
-   inside, and the panel is a real region of text in the document rather
-   than a card face hidden behind a transform. */
-.gx {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-5);
-}
-
-.gx-grid {
+/* ── the gate list (Part R, 21 Sep 2026): five audits and what each
+   stops, a plain list on hairlines; the rest behind one disclosure ── */
+.ds-gate {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
-  gap: var(--spacing-2);
+  gap: var(--space-stack-md);
 }
 
-.gx-chip {
-  /* FILTER-CHIP register, not a keycap: this selects, it does not act
-     (the control taxonomy, section 5). Flat, outline, no elevation. */
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: var(--spacing-touch-target);
-  padding: var(--spacing-2) var(--spacing-3);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-md);
-  background: var(--color-card);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
-  color: var(--color-ink-soft);
-  text-align: left;
-  cursor: pointer;
-  transition: border-color var(--motion-duration-fast) var(--motion-easing-standard),
-    color var(--motion-duration-fast) var(--motion-easing-standard);
-}
-
-.gx-chip:hover {
-  border-color: var(--color-accent-ink);
-  color: var(--color-ink);
-}
-
-.gx-chip:focus-visible {
-  outline: 2px solid var(--color-accent-ink);
-  outline-offset: var(--spacing-1);
-}
-
-/* selected: the iris outline plus a filled ground, never colour alone.
-   aria-selected carries it for anyone who cannot see the border. */
-.gx-chip.is-active {
-  border-color: var(--color-accent-ink);
-  background: var(--color-semantic-accent-subtle);
-  color: var(--color-accent-ink);
-}
-
-.gx-panel {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  padding: var(--spacing-5);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-xl);
-  background: var(--color-card);
-}
-
-.gx-panel:focus-visible {
-  outline: 2px solid var(--color-accent-ink);
-  outline-offset: var(--spacing-1);
-}
-
-.gx-panel__name {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-lg);
-  font-weight: 700;
-  color: var(--color-ink);
-}
-
-.gx-panel__line {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: 1.55;
-  color: var(--color-ink-soft);
-  max-width: 72ch;
-}
-
-.gx-panel__meta {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  margin: 0;
-  padding-top: var(--spacing-3);
-  border-top: 1px solid var(--color-border-soft);
-}
-
-.gx-panel__row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--spacing-1);
-}
-
-@media (min-width: 768px) {
-  .gx-panel__row {
-    grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
-    gap: var(--spacing-4);
-    align-items: baseline;
-  }
-}
-
-.gx-panel__row dt {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--color-eyebrow);
-}
-
-.gx-panel__row dd {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink);
-}
-
-/* ── the close (28 Jul) ── one action, then what the argument stands on */
-.ds-close {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-8);
-}
-
-.ds-close__act {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-4) var(--spacing-6);
-}
-
-.ds-close__alt {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-accent-ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.ds-close__cites {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  padding-top: var(--spacing-5);
-  border-top: 1px solid var(--color-border-soft);
-}
-
-.ds-close__list {
+.ds-gate__list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: 1.55;
-  color: var(--color-ink-soft);
-  max-width: 72ch;
+  border-top: 1px solid var(--color-semantic-border);
 }
 
-.ds-close__list a {
+.ds-gate__list li {
+  display: grid;
+  grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+  gap: var(--spacing-2) var(--layout-gutter);
+  padding: var(--space-stack-sm) 0;
+  border-bottom: 1px solid var(--color-semantic-border);
+  color: var(--color-ink-soft);
+}
+
+.ds-gate__name {
+  color: var(--color-ink);
+}
+
+@media (max-width: 699.98px) {
+  .ds-gate__list li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.ds-gate__more summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  cursor: pointer;
   color: var(--color-accent-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
-  font-weight: 600;
+}
+
+.ds-gate__more summary:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.ds-gate__more[open] summary {
+  margin-bottom: var(--space-stack-sm);
+}
+
+/* the claim: the page's last line, then its one action */
+.ds-claim .container {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-stack-md);
+}
+
+.ds-claim__line {
+  margin: 0;
+  font-size: var(--text-display-2);
+  max-inline-size: 20em;
 }
 
 /* the derived count, stated once, large, WITH the copy (27 Jul): it was
@@ -5976,4 +7361,1006 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   line-height: 1.5;
   color: var(--color-ink-soft);
   max-width: 28ch;
+}
+
+/* ─── Case study: the article pattern (Elleta, 20 Sep 2026)
+   Approved mock: _private/specs/case-study/case-study-drift-mock-v4.html.
+   Three components: CaseSection (the alternating split), ExampleFrame
+   (the quiet frame round a visual) and LinkedPhrase (a phrase that
+   points at a part of it). ─────────────────────────────────────── */
+
+/* the hero meta follows the header directly: the facts row carries its
+   own rule and gap, not the section's content gap */
+.l-section .l-header + .case-hero__meta {
+  margin-top: 0;
+}
+
+.case-hero__facts {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr));
+  gap: var(--spacing-4) var(--spacing-8);
+  margin: var(--space-stack-md) 0 0;
+  padding-top: var(--spacing-5);
+  border-top: 1px solid var(--border-faint);
+}
+
+.case-hero__facts dt {
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  color: var(--color-ink-muted);
+}
+
+.case-hero__facts dd {
+  margin: var(--spacing-1) 0 0;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.case-hero__nda {
+  max-width: 44rem;
+  margin: var(--space-stack-md) 0 0;
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+}
+
+/* the section: one idea, text one side, one framed example the other.
+   The padding and the hairline are the page frame's (.l-section,
+   .section--ruled); only the split lives here, inside the Container */
+.case-section__grid {
+  display: grid;
+  gap: var(--space-stack-md);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .case-section__grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--layout-gutter);
+  }
+
+  /* every other section flips sides; the text still reads first */
+  .case-section--flip .case-section__text {
+    order: 2;
+  }
+}
+
+.case-section__kicker {
+  margin: 0 0 var(--spacing-2);
+}
+
+.case-section__heading {
+  margin: 0 0 var(--spacing-4);
+  font-family: var(--font-body);
+  font-size: var(--text-display-3);
+  font-weight: 700;
+  letter-spacing: var(--tracking-display);
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+.case-section__text > p {
+  margin: 0;
+  color: var(--color-ink-soft);
+}
+
+.case-section__text > p + p {
+  margin-top: var(--spacing-4);
+}
+
+.case-section__text strong {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* the frame: card surface, one hairline, a slim bar that names the view */
+.case-frame {
+  margin: 0;
+}
+
+.case-frame__shell {
+  overflow: hidden;
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-card);
+  background: var(--surface-card);
+}
+
+.case-frame__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--border-faint);
+}
+
+.case-frame__dots {
+  display: inline-flex;
+  gap: var(--spacing-1);
+}
+
+.case-frame__dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-full);
+  background: var(--border-faint);
+}
+
+.case-frame__path {
+  color: var(--color-ink-muted);
+}
+
+/* container-type: the example sizes to the frame, not the window */
+.case-frame__body {
+  container-type: inline-size;
+  display: grid;
+  gap: var(--spacing-4);
+  /* 34rem, up from the mock's 26: Drift 05's five-step chain clipped its
+     last row with no sign it scrolled (Part P). A section still fits one
+     screen, which audit:visual holds. */
+  max-height: 34rem;
+  overflow: auto;
+  padding: var(--spacing-5);
+}
+
+/* ── The travel platform set (Part S, 21 Sep 2026): the umbrella's
+   page-native blocks. Cards are the one content card (radius 16,
+   padding 24, a line border, no shadow). ── */
+.trv-link {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.trv-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+  gap: var(--space-stack-md) var(--layout-gutter);
+  margin: 0;
+}
+
+.trv-stats > div {
+  padding-top: var(--space-stack-sm);
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.trv-stats__v {
+  font-size: var(--text-display-2);
+  font-weight: 700;
+  letter-spacing: var(--tracking-display);
+  line-height: 1.1;
+  color: var(--color-ink);
+}
+
+.trv-stats dd {
+  margin: var(--spacing-2) 0 0;
+  color: var(--color-ink-soft);
+}
+
+.trv-source {
+  max-width: var(--measure-body);
+  margin: var(--space-stack-md) 0 0;
+  color: var(--color-ink-muted);
+}
+
+.trv-ship {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.trv-ship li {
+  display: grid;
+  grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) auto;
+  gap: var(--spacing-2) var(--layout-gutter);
+  align-items: center;
+  padding: var(--space-stack-sm) 0;
+  border-bottom: 1px solid var(--color-semantic-border);
+}
+
+.trv-ship__name {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.trv-ship__line {
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 699.98px) {
+  .trv-ship li {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .trv-ship__line {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+.trv-stories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  gap: var(--grid-gap);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.trv-stories > li {
+  display: grid;
+}
+
+.trv-card {
+  display: grid;
+  align-content: start;
+  gap: var(--spacing-2);
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-card);
+  color: var(--color-ink-soft);
+}
+
+.trv-card > * {
+  margin: 0;
+}
+
+.trv-card ul {
+  margin: 0;
+  padding-left: 1.1em;
+  display: grid;
+  gap: var(--spacing-2);
+}
+
+.trv-card--link {
+  text-decoration: none;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.trv-card--link:hover {
+  border-color: var(--color-accent-iris);
+}
+
+.trv-card--link:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.trv-card--link .heading-item {
+  color: var(--color-accent-ink);
+}
+
+.trv-stories__legacy {
+  color: var(--color-ink-muted);
+}
+
+.trv-card .status-pill {
+  justify-self: start;
+}
+
+.trv-two {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  gap: var(--grid-gap);
+}
+
+/* a frame holding a working demo: the demo is the body, edge to edge,
+   at the height measured for each breakpoint (FrameDemo) */
+.case-frame--demo .case-frame__body {
+  max-height: none;
+  overflow: visible;
+  padding: 0;
+}
+
+.case-demo {
+  display: block;
+  width: 100%;
+  height: var(--embed-h-sm);
+  border: 0;
+  background: transparent;
+}
+
+@media (min-width: 700px) {
+  .case-demo {
+    height: var(--embed-h-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .case-demo {
+    height: var(--embed-h-mdhi);
+  }
+}
+
+@media (min-width: 1100px) {
+  .case-demo {
+    height: var(--embed-h-lg);
+  }
+}
+
+/* stacked (below 900px) the section is two screens by design, so the
+   example shows whole rather than scrolling inside its frame */
+@media (max-width: 899.98px) {
+  .case-frame__body {
+    max-height: none;
+  }
+}
+
+.case-frame__caption {
+  margin-top: var(--spacing-3);
+  font-size: var(--text-caption);
+  color: var(--color-ink-muted);
+}
+
+/* the linked phrase: a thin solid iris underline. Dotted belongs to
+   Term alone, which opens a definition (Part Q, 21 Sep) */
+.linked-phrase {
+  /* inline, so a long phrase wraps with its sentence; each line keeps
+     its underline and padding */
+  display: inline;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  margin: 0;
+  padding: 0 0.1em;
+  border: 0;
+  border-bottom: 1px solid var(--color-accent-ink);
+  border-radius: var(--radius-sm);
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.linked-phrase__n {
+  margin-left: 0.1em;
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  color: var(--color-accent-ink);
+}
+
+.linked-phrase.is-on,
+.linked-phrase:hover {
+  background: var(--iris-soft);
+  color: var(--color-accent-ink);
+}
+
+.linked-phrase:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+/* what a phrase points at, inside the frame */
+.case-frame__body [data-t] {
+  outline: 3px solid transparent;
+  outline-offset: 3px;
+  border-radius: var(--radius-md);
+  transition: outline-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+/* HIGHLIGHT, NEVER FADE (Elleta, 20 Sep 2026): the target gains the
+   ring and the soft fill. Nothing else moves, dims or hides. */
+.case-frame__body [data-t].is-lit {
+  outline-color: var(--color-accent-ink);
+  background-color: var(--iris-soft);
+  box-shadow: 0 0 0 8px var(--iris-soft);
+}
+
+/* the close: what changed, and what it taught (frame as above) */
+.case-close__grid {
+  display: grid;
+  gap: var(--space-stack-md);
+}
+
+@media (min-width: 900px) {
+  .case-close__grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--layout-gutter);
+  }
+}
+
+/* the close's h2 is the landing line, a step up from the section h2s
+   (mock v4: 1.8 to 2.6rem); the section tier, not a new size */
+.case-close .case-section__heading {
+  font-size: var(--text-display-2);
+  line-height: 1.08;
+}
+
+.case-close__learned {
+  margin-top: var(--space-stack-sm);
+  color: var(--color-ink-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .linked-phrase,
+  .case-frame__body [data-t] {
+    transition: none;
+  }
+}
+
+/* ─── From Drift to Foundation: the four examples (20 Sep 2026) ───
+   Recreated and illustrative. Steel is the case's neutral brand stand-in
+   (--case-filters-*), never iris: iris means interactive here. */
+
+/* 01 · the button graveyard. A PICTURE (role="img"): the shapes are
+   spans, the radii and weights come from the markup because being
+   inconsistent IS the content. */
+.drift-grave {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(7rem, 100%), 1fr));
+  gap: var(--spacing-2);
+}
+
+.drift-gb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2) var(--spacing-3);
+  font-size: var(--text-meta);
+  color: var(--color-page);
+  background: var(--case-filters-text);
+}
+
+.drift-gb--outline {
+  color: var(--case-filters-text);
+  background: transparent;
+  border: 1px solid var(--case-filters-text);
+}
+
+.drift-gb--bare {
+  color: var(--color-ink);
+  background: transparent;
+  text-decoration: underline;
+}
+
+/* 02 · one decision, three problems */
+.drift-chain {
+  display: grid;
+  gap: var(--spacing-2);
+}
+
+.drift-chain__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  background: var(--color-page);
+}
+
+@container (min-width: 26rem) {
+  .drift-chain__row {
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: var(--spacing-4);
+    align-items: center;
+  }
+}
+
+.drift-chain__label {
+  color: var(--color-ink-muted);
+}
+
+.drift-chain__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+}
+
+/* the specimens carry real sentences ("Nothing found. Clear filters?"),
+   so they sit on the 16px reading floor, not the metadata tier */
+.drift-chain__chip {
+  padding: var(--spacing-1) var(--spacing-3);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-full);
+  background: var(--color-page);
+  font-size: var(--typography-font-size-base);
+}
+
+.drift-chain__link {
+  margin: var(--spacing-2) 0;
+  text-align: center;
+  color: var(--color-ink-muted);
+}
+
+/* The case-study example kit: the pipe of tiers, a swatch and a status
+   pill in words. Shared, so a second case does not grow a second copy. */
+.drift-cascade {
+  display: grid;
+  gap: var(--spacing-4);
+}
+
+.drift-cascade__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.case-pipe {
+  display: grid;
+  gap: var(--spacing-3);
+}
+
+@container (min-width: 26rem) {
+  .case-pipe {
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: start;
+  }
+}
+
+.case-tier {
+  display: grid;
+  gap: var(--spacing-1);
+  align-content: start;
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  background: var(--color-page);
+}
+
+.case-tier__t {
+  font-size: var(--text-meta);
+  font-weight: 600;
+}
+
+.case-tier__tok {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.case-sw {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-faint);
+  background: var(--case-filters-text);
+  transition: background var(--dur-base) var(--ease-out);
+}
+
+.case-pipe__to {
+  align-self: center;
+  justify-self: center;
+  color: var(--color-ink-muted);
+  rotate: 90deg;
+}
+
+@container (min-width: 26rem) {
+  .case-pipe__to {
+    rotate: none;
+  }
+}
+
+/* the component tier's button is a picture of a button, not a button */
+.drift-book {
+  justify-self: start;
+  width: 7rem;
+  height: var(--spacing-touch-target);
+  border-radius: var(--radius-md);
+  background: var(--case-filters-text);
+  transition: background var(--dur-base) var(--ease-out);
+}
+
+/* broken link: the component keeps a colour nothing explains */
+.case-pipe--drifted .case-tier--comp .drift-book {
+  background: var(--case-filters-hi);
+}
+
+.drift-diff {
+  font-size: var(--text-meta);
+  font-weight: 500;
+  color: var(--gov-clay-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-sw,
+  .drift-book {
+    transition: none;
+  }
+}
+
+/* the one action a section may carry, left-aligned in the reading column */
+.case-section__action {
+  margin: var(--space-stack-sm) 0 0;
+}
+
+/* the scroll container is focusable, so it needs a visible ring */
+.case-frame__body:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: calc(0px - var(--ring-focus-width));
+}
+
+/* ─── Prose pages (Elleta, 20 Sep 2026, Part E) ─────────────────────
+   Privacy, Accessibility and the 404 are reading pages: a section is a
+   heading and paragraphs, nothing else. The layout Section does not cap
+   prose (its consumers are card grids and figures), so a prose page
+   asks for the body measure explicitly. One class, not a per-page
+   override: that is what Part E is removing. */
+.l-section--prose :is(p, li, dd) {
+  max-width: var(--measure-body);
+}
+
+.l-section--prose > .container > :is(p, ul, ol, dl) + :is(p, ul, ol, dl, .todo-note) {
+  margin-top: var(--section-lead-gap);
+}
+
+/* /quick: the two notes that sit beside or under a block (Part E) */
+.quick-proof-note {
+  margin: var(--space-stack-sm) 0 0;
+  color: var(--color-ink-muted);
+}
+
+.quick-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-4);
+  margin: 0;
+}
+
+.quick-cta__note {
+  color: var(--color-ink-muted);
+}
+
+/* Inline links in a section's own prose (CLAUDE.md §4: body links are
+   iris AND underlined). The layout Section's consumers used to reach
+   for .text-action per link; on a reading section it is the default. */
+.l-header__lead a:not([class]),
+.l-header__body a:not([class]),
+.l-section--prose p a:not([class]),
+.l-section--prose li a:not([class]) {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ─── Code First: the four examples (20 Sep 2026) ────────────────────
+   Recreated and simplified from the real Button. No client data. */
+
+.cf-stack {
+  display: grid;
+  gap: var(--spacing-4);
+}
+
+.cf-pair {
+  display: grid;
+  gap: var(--spacing-3);
+}
+
+@container (min-width: 26rem) {
+  .cf-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cf-panel {
+  display: grid;
+  gap: var(--spacing-2);
+  align-content: start;
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  background: var(--color-page);
+}
+
+/* the panel's name is a heading for what follows, not metadata, so it
+   sits on the 16px reading floor */
+.cf-panel__t {
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+}
+
+.cf-kv {
+  display: grid;
+  gap: var(--spacing-1);
+  margin: 0;
+}
+
+.cf-kv > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  font-size: var(--typography-font-size-base);
+}
+
+.cf-kv dt {
+  color: var(--color-ink-muted);
+}
+
+.cf-kv dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* the count that names the drift, in words */
+.cf-diff {
+  margin: 0;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-md);
+  background: var(--color-page);
+  font-size: var(--typography-font-size-base);
+  color: var(--gov-clay-text);
+}
+
+.cf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--typography-font-size-base);
+}
+
+.cf-table :is(th, td) {
+  text-align: left;
+  padding: var(--spacing-2);
+  border-bottom: 1px solid var(--border-faint);
+}
+
+/* the first column takes its content width, so "Size · Large" never
+   wraps at 390 (O.8) */
+.cf-table :is(th, td):first-child {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.cf-table th {
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  color: var(--color-ink-muted);
+}
+
+.cf-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-3);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-full);
+  font-size: var(--text-meta);
+  font-weight: 500;
+}
+
+/* the transcript: a question, then what the codebase could answer */
+.cf-chat {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--spacing-2);
+}
+
+.cf-chat__q,
+.cf-chat__a {
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  font-size: var(--typography-font-size-base);
+}
+
+.cf-chat__q {
+  background: var(--color-page);
+  font-weight: 500;
+}
+
+.cf-chat__a {
+  display: grid;
+  gap: var(--spacing-1);
+  margin-left: var(--spacing-6);
+  background: var(--iris-soft);
+}
+
+/* the one it would not answer: the point of the section */
+.cf-chat__a--flag {
+  background: color-mix(in srgb, var(--gov-clay-hi) 26%, var(--color-card));
+  color: var(--gov-clay-text);
+}
+
+.cf-chat__meta {
+  color: var(--color-ink-muted);
+}
+
+/* ─── CHIP: zones over a cropped screenshot (20 Sep 2026) ────────────
+   The one case that annotates a raster image. Every zone wears its
+   number at all times, so the picture reads as annotated before anyone
+   touches a phrase; lighting one adds the ring and the fill, and
+   nothing anywhere fades. */
+.shot {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.shot__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.shot__zone {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+/* the permanent index: a small iris chip on the zone's top-left corner */
+.shot__n {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 var(--spacing-1);
+  transform: translate(-35%, -35%);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-ink);
+  color: var(--color-page);
+  font-family: var(--font-code);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* at phone width the chips crowd, so they shrink rather than hide */
+@container (max-width: 22rem) {
+  .shot__n {
+    min-width: 1rem;
+    height: 1rem;
+    transform: translate(-25%, -25%);
+  }
+}
+
+/* the page label above an h1 (Part G): code role, sentence case, muted,
+   .75rem of air under it. Same line on every page, and on a page two
+   levels deep the breadcrumb takes its place. */
+.l-header__kicker {
+  margin: 0 0 var(--section-label-gap);
+  color: var(--color-ink-muted);
+}
+
+/* Breadcrumb (Part G): two levels deep only, in the page label's place */
+.crumbs {
+  margin-bottom: var(--section-label-gap);
+}
+
+.crumbs__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: var(--color-ink-muted);
+}
+
+.crumbs__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-width: 0;
+}
+
+.crumbs__sep {
+  color: var(--color-ink-muted);
+}
+
+.crumbs__link {
+  color: var(--color-ink-muted);
+  text-decoration: none;
+}
+
+.crumbs__link:hover,
+.crumbs__link:focus-visible {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ─── Scan and read (Elleta, 20 Sep 2026, Part J item 2) ─────────────
+   A text-heavy section read two ways: the scan points on the left, the
+   paragraphs on the right, pointing at either one lighting the other.
+   Nothing is ever dimmed. Under 860px it stacks: points, then prose. */
+.scan-read {
+  display: grid;
+  gap: var(--space-stack-md);
+  margin-top: var(--space-stack-md);
+}
+
+@media (min-width: 860px) {
+  .scan-read {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--layout-gutter);
+    align-items: start;
+  }
+}
+
+.scan {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--spacing-1);
+}
+
+.scan__point {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-3);
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: none;
+  font: inherit;
+  font-size: var(--typography-font-size-base);
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.scan__dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-ink);
+  opacity: 0.6;
+  transform: translateY(-0.2em);
+  transition: opacity var(--dur-fast) var(--ease-out), scale var(--dur-fast) var(--ease-out);
+}
+
+.scan__point.is-on {
+  background: var(--iris-soft);
+}
+
+.scan__point.is-on .scan__dot {
+  opacity: 1;
+  scale: 1.3;
+}
+
+.scan__point:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.scan__point b,
+.scan__point strong {
+  font-weight: 600;
+}
+
+/* the phrase is a TARGET, not a control, so no underline at rest: the
+   dotted underline belongs to Term, which opens a definition */
+.scan__phrase {
+  padding: 0 0.12em;
+  margin: 0 -0.12em;
+  border-radius: var(--radius-sm);
+  transition: background var(--dur-base) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.scan__phrase.is-lit {
+  background: var(--iris-soft);
+  color: var(--color-semantic-accent-hover);
+}
+
+.scan-read__prose > p {
+  max-width: 36rem;
+  margin: 0 0 var(--section-lead-gap);
+}
+
+.scan-read__prose > p:last-child {
+  margin-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scan__point,
+  .scan__dot,
+  .scan__phrase {
+    transition: none;
+  }
 }

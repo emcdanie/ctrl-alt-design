@@ -25,13 +25,14 @@
  */
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
+import { BASE } from "./lib/base-url.mjs";
 
 /* The selectors this audit tracks, DECLARED (spec specs/audit-debt,
    27 Jul 2026). audit:debt asserts these exist so a tracked selector
    that stops matching fails loudly instead of passing forever, which
    is what .ds-gate did after the gate table replaced the card grid. */
 export const TRACKED_SELECTORS = [
-  ".ds-band", ".ds-specimen-row", ".ds-caseband", ".bmm-list", ".gx-grid",
+  ".ds-band", ".ds-specimen-row", ".ds-caseband", ".bmm-list",
   ".trace-host", ".tok-inspector", ".spec-stage", ".csp-flag", "section.beat",
 ];
 
@@ -44,7 +45,7 @@ for (const theme of ["light", "dark"]) {
   await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
 
   /* ── 1 + 2: the System page ── */
-  await page.goto("http://localhost:3000/design-system", { waitUntil: "networkidle", timeout: 30000 });
+  await page.goto(BASE + "/design-system", { waitUntil: "networkidle", timeout: 30000 });
   const h = await page.evaluate(() => document.body.scrollHeight);
   for (let y = 0; y < h; y += 800) {
     await page.evaluate((v) => scrollTo(0, v), y);
@@ -175,7 +176,7 @@ for (const theme of ["light", "dark"]) {
       /* the maturity map (.bmm-list) is a one-column stack: its cards
          share a width but not a height (rationale lengths differ), so
          it rides the row-equality check above, not this one */
-      for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-caseband, .gx-grid")) {
+      for (const grid of document.querySelectorAll(".ds-specimen-row, .ds-caseband")) {
         const dims = [...grid.querySelectorAll(":scope > * ")].filter((c) => c.getBoundingClientRect().width > 0)
           .map((c) => { const r = c.getBoundingClientRect(); return Math.round(r.width) + "x" + Math.round(r.height); });
         if (new Set(dims).size > 1) out.uniform.push(`grid dims differ: ${[...new Set(dims)].join(" vs ")}`);
@@ -201,7 +202,7 @@ for (const theme of ["light", "dark"]) {
      chromeless route as case evidence. The assertion follows the
      component rather than the page, so it keeps checking real geometry
      instead of quietly matching nothing. */
-  await page.goto("http://localhost:3000/design-system/inspector", { waitUntil: "networkidle", timeout: 30000 });
+  await page.goto(BASE + "/design-system/inspector", { waitUntil: "networkidle", timeout: 30000 });
   await page.waitForTimeout(300);
   const ringBad = await page.evaluate(() => {
     const key = document.querySelector(".tok-inspector__key");
@@ -223,7 +224,7 @@ for (const theme of ["light", "dark"]) {
   }
 
   /* ── 3: cover placeholders on /work ── */
-  await page.goto("http://localhost:3000/work", { waitUntil: "networkidle", timeout: 30000 });
+  await page.goto(BASE + "/work", { waitUntil: "networkidle", timeout: 30000 });
   await page.waitForTimeout(500);
   const worst = await page.evaluate(() => {
     const lum = (m) => { const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }; return 0.2126 * f(m[0]) + 0.7152 * f(m[1]) + 0.0722 * f(m[2]); };
@@ -259,16 +260,17 @@ for (const theme of ["light", "dark"]) {
     "/case-studies/filters-decision-support-system",
   ];
   const ROUTES = [
-    "/", "/work", "/work?view=map", "/work?view=table", "/about", "/contact",
-    "/skills", "/design-system", "/design-system/inspector", "/quick",
+    "/", "/work", "/about", "/contact",
+    "/learning", "/design-system", "/design-system/inspector", "/quick",
     "/case-studies/chip", "/case-studies/brad-frost",
     "/case-studies/design-system-transformation",
+    "/case-studies/booking-platform", "/case-studies/search-experts", "/case-studies/checkout",
   ];
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
   const internal = new Map(); // path -> first route that links it
   for (const route of ROUTES) {
-    await page.goto(`http://localhost:3000${route}`, { waitUntil: "networkidle", timeout: 30000 });
+    await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 30000 });
     const found = await page.evaluate((archived) => {
       const dead = archived.filter((a) => document.documentElement.outerHTML.includes(a));
       const hrefs = [...document.querySelectorAll("a[href]")]
@@ -296,7 +298,7 @@ for (const theme of ["light", "dark"]) {
     }
   }
   for (const [path, from] of internal) {
-    const res = await page.request.get(`http://localhost:3000${path}`);
+    const res = await page.request.get(`${BASE}${path}`);
     if (res.status() >= 400) {
       fails++;
       console.error(receipt("visual", `${path} (linked from ${from})`, `HTTP ${res.status()}`, "200 for every internal link"));
@@ -320,7 +322,7 @@ for (const theme of ["light", "dark"]) {
     const ctx = await browser.newContext({ viewport: { width, height: width > 800 ? 900 : 844 } });
     const page = await ctx.newPage();
     await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
-    await page.goto(`http://localhost:3000${caseRoute}`, { waitUntil: "networkidle", timeout: 30000 });
+    await page.goto(`${BASE}${caseRoute}`, { waitUntil: "networkidle", timeout: 30000 });
     /* walk every stage into view so .in fires and leaders draw */
     const stageCount = await page.evaluate(() => document.querySelectorAll(".spec-stage").length);
     for (let i = 0; i < stageCount; i++) {
@@ -519,7 +521,38 @@ for (const theme of ["light", "dark"]) {
         if (prevFlip !== null && flip === prevFlip) out.push(`two consecutive beats on the same side: ${label}`);
         prevFlip = flip;
       }
-      if (!beats.length) out.push("no beat sections found (template not rendering)");
+      /* ── ARTICLE TEMPLATE LAW (Elleta, 20 Sep 2026, case-study
+         rebuild; approved mock case-study-drift-mock-v4.html). A case on
+         the article pattern renders CaseSection, not CaseBeat, and its
+         laws are different in one way that matters: here the example
+         DOES wear a frame, because ExampleFrame is the frame.
+         1. every section has a text column and one ExampleFrame;
+         2. the frame names what it shows (the bar path) and carries a
+            caption under it;
+         3. alternation: consecutive sections flip sides;
+         4. one idea, one screen: from 900px, where the section is two
+            columns, it is never taller than the viewport. Below 900 it
+            stacks text then figure by design, so two screens is the
+            correct answer there and the law does not apply. */
+      const sections = [...document.querySelectorAll("section.case-section")];
+      let prevArticleFlip = null;
+      for (const sec of sections) {
+        const label = sec.querySelector(".case-section__heading")?.textContent?.slice(0, 24) ?? "section";
+        if (!sec.querySelector(".case-section__text")) out.push(`case section missing its text column: ${label}`);
+        const frames = sec.querySelectorAll(".case-frame");
+        if (frames.length !== 1) out.push(`case section carries ${frames.length} example frames, expected 1: ${label}`);
+        for (const f of frames) {
+          if (!f.querySelector(".case-frame__path")?.textContent?.trim()) out.push(`example frame has no path in its bar: ${label}`);
+          if (!f.querySelector(".case-frame__caption")?.textContent?.trim()) out.push(`example frame has no caption: ${label}`);
+        }
+        const flip = sec.classList.contains("case-section--flip");
+        if (prevArticleFlip !== null && flip === prevArticleFlip) out.push(`two consecutive case sections on the same side: ${label}`);
+        prevArticleFlip = flip;
+        const h = sec.getBoundingClientRect().height;
+        if (window.innerWidth >= 900 && h > window.innerHeight)
+          out.push(`case section is taller than one screen (${Math.round(h)}px > ${window.innerHeight}px): ${label}`);
+      }
+      if (!beats.length && !sections.length) out.push("no beat or case sections found (template not rendering)");
       /* the takeaway-band card exception, held tight: a thesis card
          on a case route outside .cs2-takeaway is card creep */
       for (const t of document.querySelectorAll(".cs2 .thesis-band")) {
@@ -531,7 +564,7 @@ for (const theme of ["light", "dark"]) {
     });
     for (const b of beatBad) {
       fails++;
-      console.error(receipt("visual", `(${theme} ${width} ${caseRoute}) ${b}`, "a beat-template violation", "the CaseBeat law (headline with body, flat visuals, alternation)"));
+      console.error(receipt("visual", `(${theme} ${width} ${caseRoute}) ${b}`, "a beat-template violation", "the case-template law (CaseBeat: headline with body, flat visuals, alternation; CaseSection: text plus one named, captioned ExampleFrame, alternation, one screen)"));
     }
     await ctx.close();
   }

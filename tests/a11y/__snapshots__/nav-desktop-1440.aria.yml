@@ -1,0 +1,14 @@
+- link "Elleta McDaniel, home":
+  - /url: /
+  - text: ELLETA
+- navigation "Primary":
+  - link "Work":
+    - /url: /work
+  - link "System":
+    - /url: /design-system
+  - link "Learning":
+    - /url: /learning
+  - link "About":
+    - /url: /about
+- button "Dark mode"
+- button "Get in touch"

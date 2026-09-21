@@ -1,0 +1,98 @@
+/* Home sections (home rebuild, 19 Sep 2026): the teams row, the door
+ * cards and the pull quote. Section rhythm comes from Section and
+ * SectionHeader; this file only shapes what sits inside them. */
+
+/* Teams row: the About logo component in its row layout, with its
+   "Worked with" label, between a hairline above and below.
+
+   ONE line, never two (Elleta, 20 Sep 2026, fix pass 2): the band draws
+   its own two full-bleed rules. The grid's ruled cells were painting a
+   second, container-inset line directly under the marks; that rule now
+   belongs to the grid layout only, not the row layout, so it is fixed
+   in the logo component (globals.css .logo-grid--row) rather than
+   overridden here. */
+.logos {
+  /* ONE hairline, above (Elleta's checklist, 20 Sep 2026). The band
+     used to close itself with a second full-bleed rule, and the next
+     section's label rule sits right under that, so the eye read two
+     lines between the marks and Selected work. */
+  border-top: 1px solid var(--color-semantic-border);
+  padding-block: var(--spacing-4);
+}
+
+.logos :global(.logo-grid) {
+  row-gap: var(--spacing-4);
+}
+
+/* door cards: kicker, title, line, go. The kicker is the quiet code
+   role, same as Home's case cards (Elleta, 20 Sep 2026): no caps, no
+   tracking, .text-code carries the face and the size. */
+.kicker {
+  display: block;
+  margin-bottom: var(--spacing-2);
+  color: var(--color-eyebrow);
+}
+
+.title,
+.body {
+  display: block;
+}
+
+.title {
+  margin-bottom: var(--spacing-2);
+}
+
+/* pull quote: the big iris opening mark, then the line */
+.quote {
+  max-width: 52rem;
+  margin: 0;
+}
+
+.mark {
+  display: block;
+  height: 0.5em;
+  font-family: var(--font-body);
+  font-size: 6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-accent-ink);
+  transform: rotate(-8deg);
+  transform-origin: left;
+}
+
+.words {
+  margin: 0;
+}
+
+.words p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-display-3);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  color: var(--color-ink);
+}
+
+.words strong {
+  font-weight: 700;
+}
+
+.cite {
+  margin-top: var(--spacing-4);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+}
+
+.cite b {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.more {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

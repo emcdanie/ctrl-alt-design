@@ -1,0 +1,35 @@
+- region "Who I follow":
+  - paragraph: Who I follow
+  - heading "The people I learn from." [level=2]
+  - paragraph: Twelve voices I read closely, and how their ideas connect. Click a name for the piece, the line that stuck, and where it shaped my work.
+  - list "The people I learn from":
+    - listitem:
+      - button "Nathan Curtis"
+    - listitem:
+      - button "Hardik Pandya"
+    - listitem:
+      - button "TJ Pitre"
+    - listitem:
+      - button "Brad Frost"
+    - listitem:
+      - button "Romina Kavčić"
+    - listitem:
+      - button "Mark Cianfrani"
+    - listitem:
+      - button "Projects by IF"
+    - listitem:
+      - button "Vitaly Friedman"
+    - listitem:
+      - button "Maggie Appleton"
+    - listitem:
+      - button "Emily Campbell"
+    - listitem:
+      - button "Amelia Wattenberger"
+    - listitem:
+      - button "Luke Wroblewski"
+  - paragraph: Voices
+  - paragraph: /\d+ people, 3 conversations/
+  - list:
+    - listitem: Specs and tokens
+    - listitem: Rules and governance
+    - listitem: AI experience

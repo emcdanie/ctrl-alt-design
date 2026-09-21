@@ -1,0 +1,17 @@
+- group "Worked with":
+  - paragraph: Worked with
+  - list:
+    - listitem:
+      - img "Brad Frost Web"
+    - listitem:
+      - img "Mango"
+    - listitem:
+      - img "United Nations Geneva"
+    - listitem:
+      - img "Air France"
+    - listitem:
+      - img "Riyad Bank"
+    - listitem:
+      - img "WeRoad"
+    - listitem:
+      - img "VML"
