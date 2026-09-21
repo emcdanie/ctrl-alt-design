@@ -470,6 +470,12 @@ html,body{background:transparent}
 .stage,.kstage{background:none;border:0;padding:0;min-width:0}
 /* the control row wraps at phone width instead of pushing the frame wide */
 .stage-top{flex-wrap:wrap;row-gap:8px}
+/* the booking before/afters: screen left, notes right from a 1024px page
+   (a 900px frame), stacked below that (Part U) */
+.cs2{padding:0;border:0}
+@media (min-width:900px){.cs2 .grid{grid-template-columns:minmax(0,8fr) minmax(0,4fr);align-items:start}}
+/* the blocks captions sit on the frame's inner padding (Part U) */
+.kstage{padding:0 20px 20px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 </head>

@@ -138,7 +138,7 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
             </>
           }
         >
-          <FrameDemo src="/demos/travel/booking-search.html" title="Search, before and after, with four notes" heights={[850, 960, 970]} />
+          <FrameDemo src="/demos/travel/booking-search.html" title="Search, before and after, with four notes" heights={[710, 635, 990, 990]} />
         </ExampleFrame>
       </Part>
 
@@ -161,7 +161,7 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
             </>
           }
         >
-          <FrameDemo src="/demos/travel/booking-trips.html" title="Trips, before and after, with three notes" heights={[640, 700, 780]} />
+          <FrameDemo src="/demos/travel/booking-trips.html" title="Trips, before and after, with three notes" heights={[710, 710, 950, 950]} />
         </ExampleFrame>
       </Part>
 
@@ -232,7 +232,7 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
             <h3 className="heading-item">Cost, risk and what it unlocks</h3>
             <ul>
               <li>“It feels complicated” became numbers: 37% of the support team had lost a booking to it.</li>
-              <li>The system pitched as speed and savings, with a rollout plan and a clear ask.</li>
+              <li>The system pitched with a rollout plan and a clear ask.</li>
               <li>Result: funding for an engineering team and two more designers.</li>
             </ul>
           </div>

@@ -61,17 +61,25 @@ export function FrameDemo({
 }: {
   src: string;
   title: string;
-  /** px at 1100px and up, 700 to 1099px, and below 700px */
-  heights: [number, number, number];
+  /** px at 1100px and up, 1024 to 1099px, 700 to 1023px, below 700px:
+   *  demos change layout at different widths, so each band is measured */
+  heights: [number, number, number, number];
 }) {
-  const [lg, md, sm] = heights;
+  const [lg, mdHi, md, sm] = heights;
   return (
     <iframe
       className="case-demo"
       src={src}
       title={title}
       loading="lazy"
-      style={{ "--embed-h-lg": `${lg}px`, "--embed-h-md": `${md}px`, "--embed-h-sm": `${sm}px` } as CSSProperties}
+      style={
+        {
+          "--embed-h-lg": `${lg}px`,
+          "--embed-h-mdhi": `${mdHi}px`,
+          "--embed-h-md": `${md}px`,
+          "--embed-h-sm": `${sm}px`,
+        } as CSSProperties
+      }
     />
   );
 }

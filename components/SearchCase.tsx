@@ -32,7 +32,7 @@ export default function SearchCase({ cs }: { cs: CaseStudy }) {
           </>
         }
       >
-        <FrameDemo src="/demos/travel/search-results.html" title="Flight results prototype, shipped and refined, with six notes" heights={[790, 1330, 1590]} />
+        <FrameDemo src="/demos/travel/search-results.html" title="Flight results prototype, shipped and refined, with six notes" heights={[790, 1240, 1330, 1590]} />
       </ExampleFrame>
     </Section>
   );

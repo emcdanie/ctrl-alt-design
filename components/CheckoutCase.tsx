@@ -34,7 +34,7 @@ export default function CheckoutCase({ cs }: { cs: CaseStudy }) {
             </>
           }
         >
-          <FrameDemo src="/demos/travel/checkout.html" title="Checkout prototype, before and after, traveller or travel manager, with five notes" heights={[790, 1260, 1500]} />
+          <FrameDemo src="/demos/travel/checkout.html" title="Checkout prototype, before and after, traveller or travel manager, with five notes" heights={[790, 1175, 1260, 1500]} />
         </ExampleFrame>
       </Section>
 
@@ -64,7 +64,7 @@ export default function CheckoutCase({ cs }: { cs: CaseStudy }) {
             </>
           }
         >
-          <FrameDemo src="/demos/travel/checkout-blocks.html" title="The checkout blocks for cars, flights, stays and trains" heights={[630, 630, 680]} />
+          <FrameDemo src="/demos/travel/checkout-blocks.html" title="The checkout blocks for cars, flights, stays and trains" heights={[650, 650, 650, 710]} />
         </ExampleFrame>
       </Section>
 
