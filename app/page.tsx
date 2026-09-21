@@ -44,7 +44,7 @@ export default function Home() {
           heading="Start with the"
           accent="work"
           after="."
-          lead="Three systems, up close: what drifted, what I built, and what changed."
+          lead="Four cases, up close: what drifted, what I built, and what changed."
         />
         <div className="home-work-row reveal-group">
           {WORK_CASES.map((c) => (
