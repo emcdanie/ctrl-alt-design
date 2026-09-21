@@ -166,7 +166,7 @@ test.describe("Case study: linked phrases", () => {
   test("the text column is read before its figure, flipped or not", async ({ page }) => {
     for (const section of await page.locator("section.case-section").all()) {
       const order = await section.evaluate((el) => {
-        const kids = [...el.children];
+        const kids = [...(el.querySelector(".case-section__grid")?.children ?? [])];
         return [kids.findIndex((k) => k.classList.contains("case-section__text")), kids.findIndex((k) => k.classList.contains("case-frame"))];
       });
       expect(order[0]).toBeGreaterThanOrEqual(0);

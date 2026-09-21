@@ -1,4 +1,5 @@
 import CaseSection from "@/components/CaseSection";
+import Container from "@/components/layout/Container";
 import ExampleFrame from "@/components/ExampleFrame";
 import LinkedPhrase from "@/components/LinkedPhrase";
 import DriftStatusBoard from "@/components/DriftStatusBoard";
@@ -179,26 +180,28 @@ export default function DriftV2({ cs }: { cs: CaseStudy }) {
         </p>
       </CaseSection>
 
-      <section className="case-close" aria-labelledby="case-close-heading">
-        <div>
-          <p className="text-code case-section__kicker">What changed</p>
-          <h2 id="case-close-heading" className="case-section__heading">
-            A shared language, not a cleanup.
-          </h2>
-        </div>
-        <div>
-          <p>
-            Duplicated components became a smaller set of flexible building blocks, and the UI
-            stopped being whatever the last sprint produced.{" "}
-            <strong>
-              The audit and the business case won investment for a dedicated design-systems team.
-            </strong>
-          </p>
-          <p className="case-close__learned">
-            What I learned: {lessons?.text?.split(/(?<=\.)\s/)[0] ??
-              "inconsistency is rarely the root problem, it is a symptom of missing structure and undocumented decisions."}
-          </p>
-        </div>
+      <section className="l-section section--ruled case-close" aria-labelledby="case-close-heading">
+        <Container className="case-close__grid">
+          <div>
+            <p className="text-code case-section__kicker">What changed</p>
+            <h2 id="case-close-heading" className="case-section__heading">
+              A shared language, not a cleanup.
+            </h2>
+          </div>
+          <div>
+            <p>
+              Duplicated components became a smaller set of flexible building blocks, and the UI
+              stopped being whatever the last sprint produced.{" "}
+              <strong>
+                The audit and the business case won investment for a dedicated design-systems team.
+              </strong>
+            </p>
+            <p className="case-close__learned">
+              What I learned: {lessons?.text?.split(/(?<=\.)\s/)[0] ??
+                "inconsistency is rarely the root problem, it is a symptom of missing structure and undocumented decisions."}
+            </p>
+          </div>
+        </Container>
       </section>
     </>
   );

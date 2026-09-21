@@ -14,7 +14,7 @@ export const metadata: Metadata = {
    This page is a case study of BELLA, so it renders through the SAME
    path every case route uses:
 
-     CaseStudyLayout -> .layout-container -> CaseShellV2 -> CaseBeats
+     CaseStudyLayout -> CaseShellV2 -> CaseBeats, each a Section in its own Container
 
    It used to use the case COMPONENTS inside a bespoke page shell with
    its own rail and its own bands, which is why CaseBeat had no gutter,
@@ -34,31 +34,29 @@ export default function DesignSystemPage() {
 
   return (
     <CaseStudyLayout>
-      <div className="layout-container">
-        <CaseShellV2
-          slug={SLUG}
-          eyebrow="System"
-          title="BELLA, the system behind this site"
-          subhead="A design system is only as useful to an AI as it is readable by a machine. This is that argument, demonstrated on the system running the page you are reading."
-          readingMinutes={6}
-          tags={["Design systems", "AI-enabled design", "Governance"]}
-          /* not reached through /work: System is its own primary nav item
-             (section 1b), so a back-to-Work crumb pointed somewhere the
-             reader had not been. Every real case keeps its crumb. */
-          crumbs={false}
-          /* the clarity pair, which this page ALREADY treats as its
-             identity: the frontier accent on the maturity radar and the
-             Teenage badges. No new colour is invented, and no WORK_ITEMS
-             row is added, which audit:parity would refuse. */
-          identity={{ text: "var(--case-clarity-text)", hi: "var(--case-clarity-hi)" }}
-        >
-          <BellaSpine
-            auditCount={audits}
-            auditCountWord={spellCount(audits)}
-            auditFiles={auditFiles()}
-          />
-        </CaseShellV2>
-      </div>
+      <CaseShellV2
+        slug={SLUG}
+        eyebrow="System"
+        title="BELLA, the system behind this site"
+        subhead="A design system is only as useful to an AI as it is readable by a machine. This is that argument, demonstrated on the system running the page you are reading."
+        readingMinutes={6}
+        tags={["Design systems", "AI-enabled design", "Governance"]}
+        /* not reached through /work: System is its own primary nav item
+           (section 1b), so a back-to-Work crumb pointed somewhere the
+           reader had not been. Every real case keeps its crumb. */
+        crumbs={false}
+        /* the clarity pair, which this page ALREADY treats as its
+           identity: the frontier accent on the maturity radar and the
+           Teenage badges. No new colour is invented, and no WORK_ITEMS
+           row is added, which audit:parity would refuse. */
+        identity={{ text: "var(--case-clarity-text)", hi: "var(--case-clarity-hi)" }}
+      >
+        <BellaSpine
+          auditCount={audits}
+          auditCountWord={spellCount(audits)}
+          auditFiles={auditFiles()}
+        />
+      </CaseShellV2>
     </CaseStudyLayout>
   );
 }

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Spotlight from "@/components/Spotlight";
+import Container from "@/components/layout/Container";
 
 /* CaseSection (Elleta, 20 Sep 2026, case-study rebuild, approved mock
    _private/specs/case-study/case-study-drift-mock-v4.html).
@@ -10,7 +11,11 @@ import Spotlight from "@/components/Spotlight";
    figure 6fr); on phones it stacks, text then figure.
 
    The linked-phrase behaviour is Spotlight's, shared with Part J's
-   scan-and-read sections; this only supplies the shell and the keys. */
+   scan-and-read sections; this only supplies the shell and the keys.
+
+   The outer frame is every page's (O.6, 21 Sep): the Section rhythm,
+   the hairline at the container's width, and the article grid INSIDE
+   the one Container. */
 export default function CaseSection({
   index,
   kicker,
@@ -39,20 +44,22 @@ export default function CaseSection({
       as="section"
       keys={phrases}
       scrollIntoView
-      className={`case-section${flip ? " case-section--flip" : ""}`}
+      className={`l-section section--ruled case-section${flip ? " case-section--flip" : ""}`}
       data-component="CaseSection"
       aria-labelledby={`case-section-${index}`}
     >
-      <div className="case-section__text">
-        <p className="text-code case-section__kicker">
-          {index} · {kicker}
-        </p>
-        <h2 id={`case-section-${index}`} className="case-section__heading">
-          {heading}
-        </h2>
-        {children}
-      </div>
-      {figure}
+      <Container className="case-section__grid">
+        <div className="case-section__text">
+          <p className="text-code case-section__kicker">
+            {index} · {kicker}
+          </p>
+          <h2 id={`case-section-${index}`} className="case-section__heading">
+            {heading}
+          </h2>
+          {children}
+        </div>
+        {figure}
+      </Container>
     </Spotlight>
   );
 }

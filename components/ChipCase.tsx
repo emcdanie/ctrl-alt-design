@@ -1,4 +1,5 @@
 import CaseSection from "@/components/CaseSection";
+import Container from "@/components/layout/Container";
 import ExampleFrame from "@/components/ExampleFrame";
 import LinkedPhrase from "@/components/LinkedPhrase";
 import ShotZones, { type Zone } from "@/components/ShotZones";
@@ -135,23 +136,25 @@ export default function ChipCase({ cs }: { cs: CaseStudy }) {
         </p>
       </CaseSection>
 
-      <section className="case-close" aria-labelledby="case-close-heading">
-        <div>
-          <p className="text-code case-section__kicker">What changed</p>
-          <h2 id="case-close-heading" className="case-section__heading">
-            A human in control while the machine moves fast.
-          </h2>
-        </div>
-        <div>
-          <p>
-            The hard part is not the tokens. <strong>That is the work I want to do with a team:</strong>{" "}
-            design-system rigour, plus the guardrails that let AI move fast without losing the human
-            call.
-          </p>
-          <p className="case-close__learned">
-            Credit: the AI and design systems course by Brad Frost, Ian Frost and TJ Pitre.
-          </p>
-        </div>
+      <section className="l-section section--ruled case-close" aria-labelledby="case-close-heading">
+        <Container className="case-close__grid">
+          <div>
+            <p className="text-code case-section__kicker">What changed</p>
+            <h2 id="case-close-heading" className="case-section__heading">
+              A human in control while the machine moves fast.
+            </h2>
+          </div>
+          <div>
+            <p>
+              The hard part is not the tokens. <strong>That is the work I want to do with a team:</strong>{" "}
+              design-system rigour, plus the guardrails that let AI move fast without losing the human
+              call.
+            </p>
+            <p className="case-close__learned">
+              Credit: the AI and design systems course by Brad Frost, Ian Frost and TJ Pitre.
+            </p>
+          </div>
+        </Container>
       </section>
     </>
   );

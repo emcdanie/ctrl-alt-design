@@ -138,33 +138,31 @@ export default async function CaseStudyPage({
 
   return (
     <CaseStudyLayout>
-      <div className="layout-container">
-        <CaseShellV2
-          slug={slug}
-          eyebrow={
-            article
-              ? `Case study · ${sentenceCase(cs.category)} · ${fullYears(cs.year)}`
-              : spans(cs.eyebrow ?? `${sentenceCase(cs.category)} · ${cs.year}`)
-          }
-          title={article ? article.title : cs.title}
-          accent={article?.accent}
-          after={article?.after}
-          subhead={cs.summary ?? cs.description}
-          readingMinutes={readingMinutes}
-          tags={cs.tags}
-          facts={
-            article
-              ? [
-                  { label: "Case", value: `${sentenceCase(cs.category)} · ${fullYears(cs.year)}` },
-                  ...(article.facts ?? facts(cs)),
-                ]
-              : undefined
-          }
-          nda={article?.note}
-        >
-          <Composition cs={cs} />
-        </CaseShellV2>
-      </div>
+      <CaseShellV2
+        slug={slug}
+        eyebrow={
+          article
+            ? `Case study · ${sentenceCase(cs.category)} · ${fullYears(cs.year)}`
+            : spans(cs.eyebrow ?? `${sentenceCase(cs.category)} · ${cs.year}`)
+        }
+        title={article ? article.title : cs.title}
+        accent={article?.accent}
+        after={article?.after}
+        subhead={cs.summary ?? cs.description}
+        readingMinutes={readingMinutes}
+        tags={cs.tags}
+        facts={
+          article
+            ? [
+                { label: "Case", value: `${sentenceCase(cs.category)} · ${fullYears(cs.year)}` },
+                ...(article.facts ?? facts(cs)),
+              ]
+            : undefined
+        }
+        nda={article?.note}
+      >
+        <Composition cs={cs} />
+      </CaseShellV2>
     </CaseStudyLayout>
   );
 }

@@ -1,4 +1,5 @@
 import CaseSection from "@/components/CaseSection";
+import Container from "@/components/layout/Container";
 import ExampleFrame from "@/components/ExampleFrame";
 import LinkedPhrase from "@/components/LinkedPhrase";
 import { Button } from "@/components/ui/Button";
@@ -119,23 +120,25 @@ export default function CodeFirstV2({ cs }: { cs: CaseStudy }) {
         </p>
       </CaseSection>
 
-      <section className="case-close" aria-labelledby="case-close-heading">
-        <div>
-          <p className="text-code case-section__kicker">What changed</p>
-          <h2 id="case-close-heading" className="case-section__heading">
-            Aligned, documented, maintainable.
-          </h2>
-        </div>
-        <div>
-          <p>
-            Figma and Storybook match across the system. The token chain is written down, primitive
-            to semantic to component. <strong>MCP became part of how I investigate a system.</strong>
-          </p>
-          <p className="case-close__learned">
-            What I learned: reading code for design intent is a design skill. Drift is the default;
-            alignment is a habit.
-          </p>
-        </div>
+      <section className="l-section section--ruled case-close" aria-labelledby="case-close-heading">
+        <Container className="case-close__grid">
+          <div>
+            <p className="text-code case-section__kicker">What changed</p>
+            <h2 id="case-close-heading" className="case-section__heading">
+              Aligned, documented, maintainable.
+            </h2>
+          </div>
+          <div>
+            <p>
+              Figma and Storybook match across the system. The token chain is written down, primitive
+              to semantic to component. <strong>MCP became part of how I investigate a system.</strong>
+            </p>
+            <p className="case-close__learned">
+              What I learned: reading code for design intent is a design skill. Drift is the default;
+              alignment is a habit.
+            </p>
+          </div>
+        </Container>
       </section>
     </>
   );

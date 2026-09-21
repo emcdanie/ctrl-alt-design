@@ -3816,18 +3816,6 @@ textarea:focus-visible {
   background: color-mix(in srgb, var(--case-tint-hi, var(--color-supporting-linen)) 18%, var(--color-card));
 }
 
-.cs2-eyebrow {
-  /* the same page label as every other h1 (Part G): code role, sentence
-     case, muted. It used to be a caps meta line. */
-  margin: 0 0 var(--section-label-gap);
-  font-family: var(--font-code);
-  font-size: var(--text-meta);
-  font-weight: 400;
-  letter-spacing: normal;
-  text-transform: none;
-  color: var(--color-ink-muted);
-}
-
 /* Title */
 /* Summary */
 .cs-shell__summary {
@@ -5324,65 +5312,6 @@ textarea:focus-visible {
   background: var(--color-accent-ink);
 }
 
-/* the in-flow head: no sticky side title, no void */
-.cs2-head {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--spacing-4);
-  padding-top: calc(var(--header-height) + var(--spacing-12));
-  /* the title caps at --measure-title like every h1; the reading-tier
-     subhead keeps its own measure below */
-}
-
-/* the case title keeps the page measure like every other h1 (21 Sep);
-   balance evens its three lines */
-.cs2-head .display-heading {
-  text-wrap: balance;
-}
-
-.cs2-subhead {
-  font-family: var(--font-body);
-  font-size: var(--font-body-size);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
-  /* the reading-tier subhead keeps the measure the head gave up */
-  max-width: 62ch;
-  margin: 0;
-}
-
-/* NDA disclosure note: a quiet body note with a left rule, rendered only
-   when the case content carries a disclosure block (the recreated cases).
-   Lifted from inline styles (prefer a class). Symmetric top+bottom margin
-   so it clears the chip row above and the first beat below, instead of
-   crowding the chips with a top-0 margin. */
-/* NDA disclosure note, DEMOTED to a quiet footnote (Elleta 24 Jul): it
-   still sets NDA context and justifies the "recreated / illustrative"
-   captions, so it stays, but at the small muted caption/meta tier (the same
-   tier those captions use), grouped directly under the chip row. The -meta
-   suffix keeps it on the metadata type tier (audit:type exempts meta lines;
-   this is context, not body reading text). Left border dropped, it reads
-   lighter as a plain footnote. Theme-adaptive, AA both themes. */
-.cs2-nda-meta {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  font-weight: 400;
-  line-height: 1.5;
-  color: var(--color-muted);
-  max-width: 68ch;
-  margin: var(--spacing-2) 0 var(--spacing-6);
-}
-
-.cs2-meta {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-  margin: 0;
-}
-
 /* text BESIDE its visual: the scene grid (beats law, amendment 2) */
 .cs2-screen__grid {
   display: flex;
@@ -6312,45 +6241,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    of the text column; alternation swaps grid order only; visuals are
    FLAT; --spacing-* rhythm only. ── */
 
-/* CONTAINER-AWARE (27 Jul 2026). CaseBeat used to set VERTICAL padding
-   only and silently depend on an ancestor for the horizontal gutter. On
-   the case routes the page shell supplies a .layout-container, so it
-   looked fine; the moment BellaSpine rendered a beat outside one, every
-   line of copy ran edge to edge (measured left:0 width:500 at a 500px
-   viewport). Wrapping the beats at the call site would have fixed one
-   page and left the trap armed for the next.
-
-   The beat now carries the container recipe ITSELF, and stands down
-   when it is already inside one, so it is correct wherever it is
-   dropped and never doubles the gutter. */
-.beat {
-  padding-block: var(--spacing-16);
-  padding-inline: var(--container-pad);
-  max-width: calc(var(--container-max) + (2 * var(--container-pad)));
-  margin-inline: auto;
-}
-
-/* already contained: the ancestor owns the gutter and the measure */
-.layout-container .beat,
-.cs2 .beat {
-  padding-inline: 0;
-  max-width: none;
-  margin-inline: 0;
-}
-
-/* BUG 3: at --spacing-16 top and bottom, consecutive beats sat 128px
-   apart, which read as dead ground on a small screen (measured 160px
-   between the agent footnote and the next heading). Tightened below the
-   existing 640px breakpoint; the desktop rhythm is unchanged. */
-@media (max-width: 640px) {
-  .beat {
-    padding-block: var(--spacing-10);
-  }
-}
-
-.beat + .beat {
-  border-top: 1px solid var(--color-border-soft);
-}
+/* the beat is a page Section (O.6, 21 Sep): .l-section pads it,
+   .section--ruled draws its hairline, and the grid is its own Container,
+   so it is correct wherever it is dropped and never doubles the gutter */
 
 .beat-grid {
   display: flex;
@@ -6633,7 +6526,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   position: relative;
   overflow: hidden;
   margin-top: 0;
-  padding: var(--spacing-16) var(--spacing-6) var(--spacing-20);
+  /* the section rhythm like every section (O.10) */
+  padding: var(--section-pad-y) var(--spacing-6);
   text-align: center;
 }
 [data-theme="dark"] .cs2-endreveal {
@@ -7877,21 +7771,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    (the quiet frame round a visual) and LinkedPhrase (a phrase that
    points at a part of it). ─────────────────────────────────────── */
 
-/* the hero: breadcrumb, thesis, the facts row, one NDA line. It must
-   still clear the fixed nav the way .cs2-head does: setting padding-block
-   here overrode that, and the breadcrumb ended up behind the bar. */
-.case-hero {
-  padding-block: calc(var(--header-height) + var(--section-pad-y)) var(--space-stack-lg);
-}
-
-.case-hero__kicker {
-  margin: 0 0 var(--spacing-3);
-}
-
-.cs2-head.case-hero {
-  align-items: stretch;
-}
-
 .case-hero__facts {
   display: grid;
   width: 100%;
@@ -7921,17 +7800,17 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   color: var(--color-ink-muted);
 }
 
-/* the section: one idea, text one side, one framed example the other */
-.case-section {
+/* the section: one idea, text one side, one framed example the other.
+   The padding and the hairline are the page frame's (.l-section,
+   .section--ruled); only the split lives here, inside the Container */
+.case-section__grid {
   display: grid;
   gap: var(--space-stack-md);
-  padding-block: var(--section-pad-y);
-  border-top: 1px solid var(--border-faint);
   align-items: center;
 }
 
 @media (min-width: 900px) {
-  .case-section {
+  .case-section__grid {
     grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
     gap: var(--layout-gutter);
   }
@@ -8074,16 +7953,14 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   box-shadow: 0 0 0 8px var(--iris-soft);
 }
 
-/* the close: what changed, and what it taught */
-.case-close {
+/* the close: what changed, and what it taught (frame as above) */
+.case-close__grid {
   display: grid;
   gap: var(--space-stack-md);
-  padding-block: var(--section-pad-y);
-  border-top: 1px solid var(--border-faint);
 }
 
 @media (min-width: 900px) {
-  .case-close {
+  .case-close__grid {
     grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
     gap: var(--layout-gutter);
   }

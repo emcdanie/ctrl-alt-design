@@ -2,6 +2,7 @@
 
 import Heading from "@/components/ui/Heading";
 import { PawIcon } from "@/components/PawTrail";
+import Container from "@/components/layout/Container";
 
 /**
  * THE case-study beat template (airtight spec, Elleta 22 Jul 2026;
@@ -68,11 +69,13 @@ export default function CaseBeat({
   id?: string;
 }) {
   return (
+    /* the page frame (O.6, 21 Sep): Section rhythm, hairline at the
+       container's width, the beat grid inside the one Container */
     <section
-      className={`beat${flip ? " beat--flip" : ""}${wide ? " beat--wide" : ""}`}
+      className={`l-section section--ruled beat${flip ? " beat--flip" : ""}${wide ? " beat--wide" : ""}`}
       aria-labelledby={id}
     >
-      <div className="beat-grid">
+      <Container className="beat-grid">
         <div className="beat-text">
           {/* the section label: paw + caps, no number (the index stays
               in the props for ordering, not for reading) */}
@@ -92,7 +95,7 @@ export default function CaseBeat({
           {visual}
           {foot && <div className="beat-foot">{foot}</div>}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
-import Heading from "@/components/ui/Heading";
+import Section from "@/components/layout/Section";
+import SectionHeader from "@/components/layout/SectionHeader";
 import { Tag } from "@/components/ui/Tag";
 import CaseEndReveal from "@/components/CaseEndReveal";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
@@ -19,7 +20,7 @@ import { findWorkItemBySlug } from "@/lib/workLibrary";
  * Every case renders through this shell (the migration completed 23
  * Jul: brad-frost, drift, chip; the old CaseStudyShell is deleted).
  *
- * This file renders Heading and deliberately imports no Card surface
+ * This file renders SectionHeader and deliberately imports no Card surface
  * (card-voice rule, enforced by audit:reuse); card sections live in
  * the page composition.
  */
@@ -116,69 +117,74 @@ export default function CaseShellV2({
     <div className="cs2">
       <ReadingProgress color={caseItem?.text} />
 
-      {/* in-flow head: no sticky side title (brief item 5) */}
-      <header className={facts ? "cs2-head case-hero" : "cs2-head"}>
+      {/* the page opening, on the same frame as every other page
+          (Elleta via Cowork, 21 Sep, O.6): Section, then the breadcrumb
+          or the page label, the h1 at the title measure, and the lead
+          column under it. The composition's sections follow, each one a
+          Section-rhythm block in its own Container. */}
+      <Section labelledBy="page-title">
         {/* two levels deep, so the breadcrumb REPLACES the page label
-            (Part G): one nav > ol, with BreadcrumbList JSON-LD */}
+            (Part G): one nav > ol, with BreadcrumbList JSON-LD. Its
+            topic and years sit in the facts row, where nothing is lost. */}
         {crumbs && caseItem?.title && (
           <Breadcrumb trail={[{ label: "Work", href: "/work" }, { label: caseItem.title }]} />
         )}
-        {/* metadata in sentence case; the title is ink, no colour and no
-            accent word (critique pass, 18 Sep 2026) */}
-        {facts ? null : <p className="text-meta cs2-eyebrow">{eyebrow}</p>}
-        {/* Part G: on a page two levels deep the breadcrumb IS the label,
-            so the case's own line does not stack under it. Its topic and
-            years move into the facts row below, where nothing is lost. */}
-        <Heading tier="page" as="h1" accent={facts ? accent : undefined} after={facts ? after : undefined}>
-          {title}
-        </Heading>
-        {facts ? null : <p className="cs2-subhead">{subhead}</p>}
-        {/* one row of tags at most, under the lede */}
-        {!facts && tags.length > 0 && (
-          <div className="cs-shell__tags" style={{ margin: 0 }}>
-            {tags.slice(0, 3).map((tag) => (
-              /* identity tinting needs the case's colour pair. Without a
-                 work-library row those custom properties are unset and
-                 the tag falls back to ink on an untinted ground, which
-                 failed AA in dark. The no-registry path (the System
-                 page) gets the plain tag. Found 27 Jul, first consumer
-                 of that path. */
-              <Tag
-                key={tag}
-                identity={!!caseItem}
-                style={
-                  caseItem
-                    ? ({ "--case-tint-text": caseItem.text, "--case-tint-hi": caseItem.hi } as React.CSSProperties)
-                    : undefined
-                }
-              >
-                {tag}
-              </Tag>
-            ))}
-          </div>
-        )}
-        {facts ? null : <p className="cs2-meta">{readingMinutes} min read</p>}
-        {facts && (
-          <dl className="case-hero__facts">
-            {facts.map((f) => (
-              <div key={f.label}>
-                <dt>{f.label}</dt>
-                <dd>{f.value}</dd>
-              </div>
-            ))}
-          </dl>
-        )}
-        {nda && (
-          <p role="note" className="case-hero__nda">
-            {nda}
-          </p>
-        )}
-        {linkOut && (
-          <a href={linkOut.href} target="_blank" rel="noopener noreferrer" className="demo-link">
-            <span style={{ fontSize: "var(--typography-font-size-sm)" }}>↗</span> {linkOut.label}
-          </a>
-        )}
-      </header>
+        <SectionHeader
+          as="h1"
+          id="page-title"
+          kicker={facts ? undefined : eyebrow}
+          heading={title}
+          accent={facts ? accent : undefined}
+          after={facts ? after : undefined}
+          lead={facts ? undefined : subhead}
+        >
+          {/* one row of tags at most, under the lede */}
+          {!facts && tags.length > 0 && (
+            <div className="cs-shell__tags">
+              {tags.slice(0, 3).map((tag) => (
+                /* identity tinting needs the case's colour pair. Without a
+                   work-library row those custom properties are unset and
+                   the tag falls back to ink on an untinted ground, which
+                   failed AA in dark. The no-registry path (the System
+                   page) gets the plain tag. Found 27 Jul, first consumer
+                   of that path. */
+                <Tag
+                  key={tag}
+                  identity={!!caseItem}
+                  style={
+                    caseItem
+                      ? ({ "--case-tint-text": caseItem.text, "--case-tint-hi": caseItem.hi } as React.CSSProperties)
+                      : undefined
+                  }
+                >
+                  {tag}
+                </Tag>
+              ))}
+            </div>
+          )}
+          {facts ? null : <p className="text-meta">{readingMinutes} min read</p>}
+          {facts && (
+            <dl className="case-hero__facts">
+              {facts.map((f) => (
+                <div key={f.label}>
+                  <dt>{f.label}</dt>
+                  <dd>{f.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+          {nda && (
+            <p role="note" className="case-hero__nda">
+              {nda}
+            </p>
+          )}
+          {linkOut && (
+            <a href={linkOut.href} target="_blank" rel="noopener noreferrer" className="demo-link">
+              <span aria-hidden="true">↗</span> {linkOut.label}
+            </a>
+          )}
+        </SectionHeader>
+      </Section>
 
       {children}
 
