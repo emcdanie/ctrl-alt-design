@@ -2106,6 +2106,9 @@ li {
 
 .site-footer__inner {
   container-type: inline-size;
+  /* the footer opens on the section rhythm; the Made with marquee used
+     to hold this space (Part Q) */
+  padding-top: var(--section-pad-y);
 }
 
 /* contact band: photo + "Let's compare notes." + the one Get in touch,
