@@ -28,17 +28,17 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
 | Card shadow, raised/hover | one tier | `--shadow-card-elevated` |
 | Featured/marketing panel | section-scale color block, NOT a card | radius `--radius-3xl` (24px), padding `--spacing-8` (32px), shadow `--shadow-soft` (recorded exception: `.feature-panel` only) |
 | Panel-scale glass wrappers | `.glass-card` (About, featured testimonial) | radius `--radius-2xl` like cards; padding `--spacing-8` (panel tier) |
-| Container | max width + side padding | `--container-max` (1360px) + `--container-pad` (clamp 20 to 48px) via `.container` (aliases `.page-container`, `.layout-container`) |
-| Section vertical padding | every width (fluid) | `--space-section` (clamp 64 to 112px) via `.section` (alias `.layout-section`); hairline via `.section--ruled` |
+| Container | content width + side padding | `--layout-max` (78rem = 1248px content) + `--layout-gutter` (clamp 24 to 48px) each side = `--container-max`, via `Container` / `.container` (aliases `.page-container`, `.layout-container`) |
+| Section vertical padding | every section, every route | `--section-pad-y` (3.2rem) via layout `Section` (`.l-section`); the first section adds the nav height; hairline via the Section label or `.section--ruled`. The only rhythm token (O.9, 21 Sep 2026) |
 | Gaps inside a section | stacks | `--space-stack-sm/md/lg` (12 / 24 / 40px) |
-| Type | every page | `.text-display-1/2/3`, `.text-lead`, `.text-body`, `.text-meta`, `.accent` on `--text-*` tokens; measures `--measure-heading` (14em), `--measure-lead` (42rem), `--measure-body` (65ch) |
+| Type | every page | `.text-display-1/2/3`, `.text-lead`, `.text-body`, `.text-meta`, `.accent` on `--text-*` tokens; measures `--measure-title` (8.5em, every page h1), `--measure-heading` (22em), `--measure-lead` (42rem), `--measure-body` (65ch) |
 | Grid gap | everywhere | `--grid-gap` = `--spacing-8` (32px) |
 | Touch targets | interactive elements | ≥ `--spacing-touch-target` (44px) |
 
 ## Rules
 
 0. Foundation (18 Sep 2026): one `:root` for tokens at the top of `app/globals.css`; one
-   `.container`; one `.section` rhythm; type only through the text utilities, never a
+   `.container`; one section rhythm (`--section-pad-y`); type only through the text utilities, never a
    page-specific font size (missing size: add a token). Unique heading widths use
    `--measure-heading` (em), never `ch`. Headings balance, paragraphs pretty. Every page is
    Nav, then Sections, then Footer, built from `.container` + `Section`.
@@ -47,8 +47,10 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
 3. One border + shadow tier per context. Interactive cards rest on
    `--shadow-card-default` and hover/raise to `--shadow-card-elevated`.
    Do not mix in `--shadow-hover`, ad-hoc rgba shadows, or per-card tiers.
-4. Sections use `Section` (`.section` + `.container`); content sits in
-   `.container`. No per-section custom vertical padding.
+4. Sections use the layout `Section` (`.l-section` + `Container`); content sits in
+   the Container. No per-section custom vertical padding. The case shell's sections
+   (CaseSection, CaseBeat, the close) are `.l-section`s with their grid inside the
+   Container.
 5. Grids use `var(--grid-gap)`. No per-grid gap values.
 6. Never write a raw px/hex where a token exists. A genuinely new value gets a
    named token here first.
@@ -68,7 +70,7 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
    `app/case-studies/[slug]` + CaseStudyShell from its
    `content/case-studies/*.ts` data (ordered `blocks`). NEVER add a
    per-case route file — extend the block schema instead.
-3. **Layout:** centered 1240px container, token spacing (`--space-*` /
+3. **Layout:** centered 1248px content container (`--layout-max`), token spacing (`--space-*` /
    `--spacing-*`), body ≥16px, NO arbitrary `text-[Npx]`, NO hardcoded
    hex in components (fixed-context surfaces use their recorded tokens).
 4. **Gates (un-regressable):** `npm run gate` = `audit:structure`

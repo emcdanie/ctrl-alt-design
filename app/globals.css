@@ -179,7 +179,6 @@ body {
      gutters outside (the nav row and the ruled lines read these too) */
   --container-max: calc(var(--layout-max) + var(--layout-gutter) * 2);
   --container-pad: var(--layout-gutter);
-  --space-section: clamp(64px, 6vw + 32px, 112px);
   --space-stack-sm: 12px;
   --space-stack-md: 24px;
   --space-stack-lg: 40px;
@@ -535,14 +534,10 @@ body {
   padding-inline: var(--container-pad);
 }
 
-/* ONE section rhythm: every section pads by --space-section (fluid, so
-   no per-breakpoint overrides). .section--ruled draws the hairline at
-   the top, at the container's content width. */
-.section,
-.layout-section {
-  padding-block: var(--space-section);
-}
-
+/* ONE section rhythm: every section pads by --section-pad-y (.l-section
+   below; the old --space-section rhythm is gone, O.9, 21 Sep 2026).
+   .section--ruled draws the hairline at the top, at the container's
+   content width. */
 .section--ruled {
   position: relative;
 }
@@ -567,6 +562,19 @@ body {
 
 main .l-section:first-of-type {
   padding-top: calc(var(--header-height) + var(--section-pad-y) * 2);
+}
+
+/* a chromeless embed (the token inspector): one Section, centred, and
+   no nav to clear */
+.embed-page {
+  min-height: 100dvh;
+  display: grid;
+  align-items: center;
+  background: var(--color-semantic-background);
+}
+
+main.embed-page .l-section:first-of-type {
+  padding-top: var(--section-pad-y);
 }
 
 /* the label sits on the rule: label, label gap, 1px rule, rule gap */
@@ -1354,9 +1362,6 @@ li {
 
 /* hero: clears the sticky nav by one section gap, so the h1 never
    reads as tucked under the bar (64px on phones, up to 112px wide) */
-.section--hero {
-  padding-top: calc(var(--header-height) + var(--space-section));
-}
 
 /* hero: text left, figure right from 1024px; stacked below */
 .section-row__hero {

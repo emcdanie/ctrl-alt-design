@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Section from "@/components/layout/Section";
 import TokenInspector from "@/components/TokenInspector";
 
 export const metadata: Metadata = {
@@ -7,24 +8,19 @@ export const metadata: Metadata = {
 };
 
 /* Chromeless: exists to be embedded as case evidence (Code First) via the
-   one embed render path. The full page is /design-system. */
+   one embed render path. The full page is /design-system. One layout
+   Section, centred in the frame; no nav, so it does not clear one. */
 export default function InspectorEmbedPage() {
   return (
-    <main
-      id="main-content"
-      className="layout-container"
-      style={{
-        minHeight: "100dvh",
-        display: "grid",
-        alignItems: "center",
-        padding: "var(--spacing-6)",
-        background: "var(--color-semantic-background)",
-      }}
-    >
-      {/* chromeless embed still needs a page heading (axe
-          page-has-heading-one); visually silent */}
-      <h1 className="sr-only">Token inspector</h1>
-      <TokenInspector />
+    <main id="main-content" className="embed-page">
+      <Section labelledBy="inspector-title">
+        {/* chromeless embed still needs a page heading (axe
+            page-has-heading-one); visually silent */}
+        <h1 id="inspector-title" className="sr-only">
+          Token inspector
+        </h1>
+        <TokenInspector />
+      </Section>
     </main>
   );
 }

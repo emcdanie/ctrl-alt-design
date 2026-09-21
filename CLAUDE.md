@@ -53,7 +53,7 @@ override the constitution.
 
 ## 2. Layout
 - **Sections use Section + SectionHeader. No custom spacing.** (Elleta, 2026-09-18, layout system,
-  `specs/layout-system`.) `components/layout/`: `Container` (content `--layout-max` 74rem plus
+  `specs/layout-system`.) `components/layout/`: `Container` (content `--layout-max` 78rem plus
   `--layout-gutter`), `Section.tsx` (section padding, the paw label on the hairline rule), `SectionHeader`
   (`layout="stacked"`, the default since 2026-09-20: label, heading, then the lead and body under it,
   left-aligned, the text column capped at 42rem. Elleta: "the body text has moved above the image,
@@ -63,13 +63,14 @@ override the constitution.
 - **One container:** `.container` (`--container-max` = `--layout-max` plus two gutters, `--container-pad`
   = `--layout-gutter`), every page and the nav row. `.page-container` / `.layout-container` are aliases
   until every page migrates. Never full-bleed text.
-- **One section rhythm:** `.section` pads by `--space-section` (clamp 64 to 112px); `.section--ruled`
-  draws the hairline. Gaps inside a section use `--space-stack-sm/md/lg`. No inline/ad-hoc paddings.
+- **One section rhythm:** every section pads by `--section-pad-y` (layout `Section`, `.l-section`);
+  `.section--ruled` draws the hairline. `--space-section` is deleted (21 Sep 2026). Gaps inside a section use `--space-stack-sm/md/lg`. No inline/ad-hoc paddings.
 - **Every page is Nav, then Sections, then Footer**, built from `Container` + the layout `Section`.
   (Elleta, 2026-09-20, Part E: /quick, /contact, the 404, /privacy and /accessibility moved over and the
   older section component was deleted; its `SectionList` lives at `components/ui/SectionList.tsx`.
   `prose` on a layout `Section` keeps its paragraphs on the body measure, for reading pages.
-  Still allowlisted as pending: /design-system, /design-system/inspector, and the case-study route.)
+  The case route and /design-system render through CaseShellV2, whose hero and sections are on the
+  same frame; audit:layout checks the shell's files. Nothing is allowlisted (21 Sep 2026).)
 - **One `:root` for tokens**, at the top of `app/globals.css`. New tokens go there, never mid-file.
 - Cards fill the grid evenly (equal heights, consistent gaps).
 
@@ -109,7 +110,7 @@ override the constitution.
 - **Type comes from the text utilities** (`.text-display-1/2/3`, `.text-lead`, `.text-body`,
   `.text-meta`, `.accent`). No page-specific font sizes: if a size is missing, add a token.
 - **Never set heading widths in `ch` for Unique** (condensed, so `ch` wraps early): use
-  `--measure-heading` (14em). Headings `text-wrap: balance`, paragraphs `text-wrap: pretty`.
+  `--measure-heading` (22em); every page h1 caps at `--measure-title` (8.5em). Headings `text-wrap: balance`, paragraphs `text-wrap: pretty`.
 - **Numbers in columns are right-aligned and tabular (Elleta, 2026-07-28, readability
   audit).** Any figure that sits in a column beside other figures (a table cell, a grid
   column, a stat row) uses `text-align: right` and `font-variant-numeric: tabular-nums`,
