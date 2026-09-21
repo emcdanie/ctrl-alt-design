@@ -1021,10 +1021,10 @@
 }
 
 /* ── Sentence case on this page (Elleta, 19 Sep 2026): no all-caps on
-   any label, chip, switcher item or heading. The shared primitives set
-   caps site-wide (the Section label, SegmentedControl, the Work table
-   headers), so this page opts them out here. ── */
-.page :global(.l-section__label),
+   any chip, switcher item or heading. The shared primitives set caps
+   site-wide (SegmentedControl, the Work table headers), so this page
+   opts them out here. The Section label is NOT opted out: it matches
+   every other page's label (Elleta, 21 Sep 2026). ── */
 .page :global(.seg-control button),
 .page table thead th,
 .page table thead th button,
