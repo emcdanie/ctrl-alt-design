@@ -201,7 +201,8 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
                 <h3 className="heading-item">{s.title}</h3>
                 <p>{s.line}</p>
                 <p className="text-code trv-stories__legacy">{s.legacy}</p>
-                {s.href ? null : <StatusPill tone="neutral">Coming soon</StatusPill>}
+                {/* no page yet: a plain note, not a pill, and not dimmed (W3) */}
+                {s.href ? null : <p className="text-code">Case study coming</p>}
               </>
             );
             return (
