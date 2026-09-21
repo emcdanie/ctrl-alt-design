@@ -254,7 +254,7 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
           <div>
             <p className="text-code case-section__kicker">What changed</p>
             <h2 id="case-close-heading" className="case-section__heading">
-              From redesign that never shipped to one that did.
+              From a redesign that stalled to one that shipped.
             </h2>
           </div>
           <div>
