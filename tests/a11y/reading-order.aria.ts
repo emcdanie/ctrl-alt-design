@@ -59,7 +59,7 @@ test.describe("Home", () => {
     await open(page, "/");
   });
   test("hero", async ({ page }) => {
-    await expect(page.locator("main h1")).toHaveAccessibleName("AI-enabled design systems. Built to stop the drift.");
+    await expect(page.locator("main h1")).toHaveAccessibleName("AI-enabled design systems. Built to stop drift.");
     await expect(page.locator('[aria-labelledby="home-hero-title"]')).toMatchAriaSnapshot(snap("home-hero"));
   });
   test("teams row", async ({ page }) => {
