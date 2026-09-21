@@ -5275,6 +5275,7 @@ textarea:focus-visible {
   color: var(--color-ink-soft);
   margin: 0 0 var(--spacing-4);
   min-height: 3.2em;
+  max-width: var(--measure-body);
 }
 
 @media (max-width: 720px) {
@@ -6331,6 +6332,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin: 0;
 }
 
+.beat-body > p {
+  max-width: var(--measure-body);
+}
+
 .beat-body {
   display: flex;
   flex-direction: column;
@@ -7310,7 +7315,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-size: var(--typography-font-size-base);
   line-height: 1.6;
   color: var(--color-ink-soft);
-  max-width: 72ch;
+  max-width: var(--measure-body);
   margin: 0;
 }
 
@@ -7646,7 +7651,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-size: var(--typography-font-size-base);
   line-height: 1.55;
   color: var(--color-ink-soft);
-  max-width: 72ch;
+  max-width: var(--measure-body);
 }
 
 .gx-panel__meta {
@@ -7729,7 +7734,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-size: var(--typography-font-size-base);
   line-height: 1.55;
   color: var(--color-ink-soft);
-  max-width: 72ch;
+  max-width: var(--measure-body);
 }
 
 .ds-close__list a {

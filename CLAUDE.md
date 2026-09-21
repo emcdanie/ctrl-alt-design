@@ -218,6 +218,13 @@ Must pass before any work is "done":
   `.l-header`; no arbitrary margin/padding classes or inline margin/padding in `app/` (and
   in a sections folder under components, once one exists). Routes not yet moved are allowlisted as pending, special content layouts with
   a reason.
+- `audit:frame` — the rendered frame (Playwright, `AUDIT_URL`), every route plus each case at 1440,
+  1024 and 390: one content edge; two h1 recipes (display on Home, page everywhere else) at their
+  size and within `--measure-title`; h1 and h2 50 characters or fewer; every top-level section
+  pads by `--section-pad-y`; radii from the set (`--radius-sm/md/lg/card`, pill); at most 2 card
+  signatures per route; no line wider than `--measure-body`. A deliberate exception carries
+  `data-frame-exempt="<reason>"` and is printed on every run. The frame tokens are published in
+  `/api/bella.json` (`frame`).
 - `audit:contrast` — WCAG AA (AAA-minded); Unique below 24px fails everywhere, no exceptions.
 - `audit:copy` — fails on `—`/`–` and on "AI-augmented" / "AI-assisted".
 - `audit:controls` — keycap used as filter/toggle/sort fails; >1 primary per view fails; filters/toggles

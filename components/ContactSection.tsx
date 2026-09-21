@@ -339,7 +339,7 @@ export default function ContactSection() {
             </span>{" "}
             Elleta McDaniel. All rights reserved.
           </p>
-          <p className="text-[length:var(--typography-font-size-tag)]" style={{ color: "var(--color-muted)" }}>
+          <p className="text-[length:var(--typography-font-size-tag)] max-w-[var(--measure-body)]" style={{ color: "var(--color-muted)" }}>
             This site is its own small design system. I built and ship it in Next.js: tokens, components, and a governance gate that won’t let it drift. The proof is the thing you’re looking at.{" "}
             <Link href="/design-system" className="footer-nav-link" style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>
               See the system

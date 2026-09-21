@@ -25,6 +25,7 @@
    2026): short names, no pills, no truncation, and the only link in it
    is the "+N →" that filters the library. */
 .certs {
+  max-width: var(--measure-body);
   color: var(--color-ink-muted);
   text-wrap: pretty;
 }

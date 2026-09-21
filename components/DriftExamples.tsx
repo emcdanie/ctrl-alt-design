@@ -30,6 +30,7 @@ export function ButtonGrave() {
   return (
     <div
       className="drift-grave"
+      data-frame-exempt="the drift picture: seventeen deliberately different radii are its content"
       role="img"
       aria-label="Seventeen near-identical buttons from one product, side by side: different corner radii, different weights, and some with no fill at all."
     >
