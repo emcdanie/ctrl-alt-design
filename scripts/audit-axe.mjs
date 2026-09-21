@@ -56,6 +56,14 @@ for (const theme of ["light", "dark"]) {
       await page.evaluate((v) => scrollTo(0, v), y);
       await page.waitForTimeout(30);
     }
+    /* end on the very bottom, and let the end-of-case reveal (a fade-in
+       triggered on sight) actually arrive: on a slow CI runner it fired
+       after the settle below and axe read its text mid-fade (Part W, PR
+       #97). Its settled state is what a reader sees. */
+    await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
+    await page
+      .waitForFunction(() => { const r = document.querySelector(".cs2-endreveal"); return !r || r.classList.contains("is-visible"); }, null, { timeout: 5000 })
+      .catch(() => {});
     /* twice: the observer can reveal after the first settle */
     for (let i = 0; i < 2; i++) {
       await page.waitForTimeout(300);
