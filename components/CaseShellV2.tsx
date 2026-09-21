@@ -69,6 +69,7 @@ export default function CaseShellV2({
   readingMinutes,
   tags,
   facts,
+  lead,
   nda,
   linkOut,
   crumbs = true,
@@ -93,6 +94,9 @@ export default function CaseShellV2({
    *  NDA line. No tags row, no reading time, no subhead: the sections
    *  carry the case now. A case migrates by supplying these two. */
   facts?: { label: string; value: string }[];
+  /** article mode with a lead and no facts row (Search, Checkout: the
+   *  mocks open on a paragraph, 21 Sep 2026) */
+  lead?: string;
   nda?: string;
   /** link out to the shipped surface where NDA allows */
   linkOut?: { label: string; href: string };
@@ -112,6 +116,8 @@ export default function CaseShellV2({
   /* the registry row where there is one, the explicit pair where there is
      not; everything below reads ONE value either way */
   const caseItem = findWorkItemBySlug(slug) ?? (identity ? { ...identity, title: undefined } : undefined);
+  /* the article hero: a facts row, or a lead in its place */
+  const article = Boolean(facts || lead);
 
   return (
     <div className="cs2">
@@ -132,14 +138,14 @@ export default function CaseShellV2({
         <SectionHeader
           as="h1"
           id="page-title"
-          kicker={facts ? undefined : eyebrow}
+          kicker={article ? undefined : eyebrow}
           heading={title}
-          accent={facts ? accent : undefined}
-          after={facts ? after : undefined}
-          lead={facts ? undefined : subhead}
+          accent={article ? accent : undefined}
+          after={article ? after : undefined}
+          lead={article ? lead : subhead}
         >
           {/* one row of tags at most, under the lede */}
-          {!facts && tags.length > 0 && (
+          {!article && tags.length > 0 && (
             <div className="cs-shell__tags">
               {tags.slice(0, 3).map((tag) => (
                 /* identity tinting needs the case's colour pair. Without a
@@ -162,7 +168,7 @@ export default function CaseShellV2({
               ))}
             </div>
           )}
-          {facts ? null : <p className="text-meta">{readingMinutes} min read</p>}
+          {article ? null : <p className="text-meta">{readingMinutes} min read</p>}
           {linkOut && (
             <a href={linkOut.href} target="_blank" rel="noopener noreferrer" className="demo-link">
               <span aria-hidden="true">↗</span> {linkOut.label}

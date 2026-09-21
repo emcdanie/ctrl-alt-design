@@ -12,6 +12,7 @@ export default function Section({
   label,
   labelledBy,
   prose = false,
+  ruled = false,
   children,
 }: {
   id?: string;
@@ -22,11 +23,17 @@ export default function Section({
   /** a reading section (Privacy, Accessibility, 404): its paragraphs and
    *  lists keep the body measure instead of running the full container */
   prose?: boolean;
+  /** a hairline at the top with no label (a case page's sections) */
+  ruled?: boolean;
   children: ReactNode;
 }) {
   const labelId = label && id ? `${id}-label` : undefined;
   return (
-    <section id={id} className={prose ? "l-section l-section--prose" : "l-section"} aria-labelledby={labelId ?? labelledBy}>
+    <section
+      id={id}
+      className={["l-section", prose ? "l-section--prose" : "", ruled ? "section--ruled" : ""].filter(Boolean).join(" ")}
+      aria-labelledby={labelId ?? labelledBy}
+    >
       <Container>
         {label ? (
           <p id={labelId} className="l-section__label">

@@ -14,6 +14,8 @@
  *    exception carries data-frame-exempt="<reason>" and is listed below,
  *    never a silent allowlist.
  * 5. Cards: at most 2 card signatures per route (content card + frame).
+ *    A card with a shadow floats: it is allowed only on floating things
+ *    (the next-case card, popovers, dialogs) and is not counted.
  * 6. Reading measure: no paragraph in main is wider than --measure-body.
  * 7. The receipt: route, width, element, measured, expected; one line per
  *    route on a pass.
@@ -168,6 +170,13 @@ for (const width of WIDTHS) {
         if (!bordered || r < 12 || r >= Math.min(rc.width, rc.height) / 2 || rc.height < 60 || el.matches(CONTROL)) continue;
         if (el.parentElement.closest("[data-card]")) continue;
         el.setAttribute("data-card", "");
+        /* a shadow means it floats: allowed only on floating things (the
+           next-case card, popovers, dialogs), and not a content card */
+        if (c.boxShadow !== "none") {
+          if (!el.closest(".cs2-endreveal, [popover], [role=dialog], [role=tooltip]"))
+            F(el, "a resting card with a shadow", "no shadow: shadows are for floating things only");
+          continue;
+        }
         const kid = el.firstElementChild;
         const pad = px(c.paddingTop) || (kid && el.children.length === 1 ? px(getComputedStyle(kid).paddingTop) : 0);
         out.cards.push(`r${r} p${pad} ${c.boxShadow === "none" ? "flat" : "shadow"}`);

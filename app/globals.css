@@ -7852,6 +7852,177 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   padding: var(--spacing-5);
 }
 
+/* ── The travel platform set (Part S, 21 Sep 2026): the umbrella's
+   page-native blocks. Cards are the one content card (radius 16,
+   padding 24, a line border, no shadow). ── */
+.trv-link {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.trv-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+  gap: var(--space-stack-md) var(--layout-gutter);
+  margin: 0;
+}
+
+.trv-stats > div {
+  padding-top: var(--space-stack-sm);
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.trv-stats__v {
+  font-size: var(--text-display-2);
+  font-weight: 700;
+  letter-spacing: var(--tracking-display);
+  line-height: 1.1;
+  color: var(--color-ink);
+}
+
+.trv-stats dd {
+  margin: var(--spacing-2) 0 0;
+  color: var(--color-ink-soft);
+}
+
+.trv-source {
+  max-width: var(--measure-body);
+  margin: var(--space-stack-md) 0 0;
+  color: var(--color-ink-muted);
+}
+
+.trv-ship {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.trv-ship li {
+  display: grid;
+  grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) auto;
+  gap: var(--spacing-2) var(--layout-gutter);
+  align-items: center;
+  padding: var(--space-stack-sm) 0;
+  border-bottom: 1px solid var(--color-semantic-border);
+}
+
+.trv-ship__name {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.trv-ship__line {
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 699.98px) {
+  .trv-ship li {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .trv-ship__line {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+.trv-stories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  gap: var(--grid-gap);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.trv-stories > li {
+  display: grid;
+}
+
+.trv-card {
+  display: grid;
+  align-content: start;
+  gap: var(--spacing-2);
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-card);
+  color: var(--color-ink-soft);
+}
+
+.trv-card > * {
+  margin: 0;
+}
+
+.trv-card ul {
+  margin: 0;
+  padding-left: 1.1em;
+  display: grid;
+  gap: var(--spacing-2);
+}
+
+.trv-card--link {
+  text-decoration: none;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.trv-card--link:hover {
+  border-color: var(--color-accent-iris);
+}
+
+.trv-card--link:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+.trv-card--link .heading-item {
+  color: var(--color-accent-ink);
+}
+
+.trv-stories__legacy {
+  color: var(--color-ink-muted);
+}
+
+.trv-card .status-pill {
+  justify-self: start;
+}
+
+.trv-two {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  gap: var(--grid-gap);
+}
+
+/* a frame holding a working demo: the demo is the body, edge to edge,
+   at the height measured for each breakpoint (FrameDemo) */
+.case-frame--demo .case-frame__body {
+  max-height: none;
+  overflow: visible;
+  padding: 0;
+}
+
+.case-demo {
+  display: block;
+  width: 100%;
+  height: var(--embed-h-sm);
+  border: 0;
+  background: transparent;
+}
+
+@media (min-width: 700px) {
+  .case-demo {
+    height: var(--embed-h-md);
+  }
+}
+
+@media (min-width: 1100px) {
+  .case-demo {
+    height: var(--embed-h-lg);
+  }
+}
+
 /* stacked (below 900px) the section is two screens by design, so the
    example shows whole rather than scrolling inside its frame */
 @media (max-width: 899.98px) {
