@@ -225,6 +225,9 @@ Must pass before any work is "done":
   signatures per route; no line wider than `--measure-body`. A deliberate exception carries
   `data-frame-exempt="<reason>"` and is printed on every run. The frame tokens are published in
   `/api/bella.json` (`frame`).
+- `audit:sharp` — every raster image on every route, and inside its demo iframes (every tab
+  of a before/after too), renders at most half its natural pixel width at 1440 and 390, on a 2x
+  screen: nothing is stretched soft. No 2x source? Cap the display width, never upscale.
 - `audit:contrast` — WCAG AA (AAA-minded); Unique below 24px fails everywhere, no exceptions.
 - `audit:copy` — fails on `—`/`–` and on "AI-augmented" / "AI-assisted".
 - `audit:controls` — keycap used as filter/toggle/sort fails; >1 primary per view fails; filters/toggles

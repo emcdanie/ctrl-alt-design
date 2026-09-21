@@ -7685,6 +7685,16 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   justify-self: start;
 }
 
+/* a still screenshot in a frame: never wider than half its pixel width
+   (the sharpness rule, Part W5), centred */
+.trv-shot {
+  display: block;
+  width: 100%;
+  max-width: 940px;
+  height: auto;
+  margin-inline: auto;
+}
+
 .trv-two {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
@@ -8217,6 +8227,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .shot {
   position: relative;
   width: 100%;
+  margin-inline: auto;
   border-radius: var(--radius-md);
   overflow: hidden;
 }

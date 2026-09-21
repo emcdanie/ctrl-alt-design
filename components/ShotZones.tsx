@@ -40,7 +40,8 @@ export default function ShotZones({
   zones: Zone[];
 }) {
   return (
-    <div className="shot" style={{ aspectRatio: `${width} / ${height}` } as CSSProperties}>
+    /* never wider than half its pixels, so it stays sharp at 2x (Part W5) */
+    <div className="shot" style={{ aspectRatio: `${width} / ${height}`, maxWidth: `${width / 2}px` } as CSSProperties}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img className="shot__img" src={src} alt={alt} width={width} height={height} />
       {zones.map((z) => (
