@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import ThemeToggle from "@/components/ThemeToggle";
 import GetInTouch from "@/components/GetInTouch";
 import ContactActions from "@/components/ContactActions";
+import BrandWordmark from "@/components/bella/BrandWordmark/BrandWordmark";
 
 
 /* Primary IA — visible in the desktop header (NN/g: hidden desktop nav
@@ -83,7 +84,7 @@ export default function OverlayNav() {
             aria-label="Elleta McDaniel, home"
             onClick={() => setOpen(false)}
           >
-            ELLETA
+            <BrandWordmark size="nav" />
           </Link>
 
           {/* Desktop primary nav, hidden below lg, where the hamburger takes over */}
