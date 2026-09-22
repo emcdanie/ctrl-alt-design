@@ -485,6 +485,7 @@
   padding: calc(var(--pd) * 0.55) calc(var(--pd) * 1.1);
   border-radius: var(--r);
   background: var(--a);
+  border: 1px solid var(--ae, var(--a)); /* the edge the gate measures */
   color: var(--on);
   font-weight: 500;
   font-size: 0.9375rem;

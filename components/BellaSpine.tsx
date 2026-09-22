@@ -424,6 +424,11 @@ const ratio = (a: string, b: string) => {
 };
 /* the contrast maths needs real values, so the playground's brand swatches
    and the two grounds it checks against are literals, each reviewed */
+/* an accent's edge on the card: BELLA's ochre draws ochre-deep in light and ochre in dark
+   (the focus-ring rule); the other swatches have no edge colour, so the fill is the edge */
+const EDGE: Record<string, { light: string; dark: string }> = {
+  ochre: { light: "#b97a14", dark: "#e8a83e" }, // token-waiver: BELLA ochre-deep and ochre, for the contrast maths
+};
 const ACC: [string, string][] = [
   ["ochre", "#e8a83e"], // token-waiver: a brand swatch the visitor tries
   ["sea", "#1f5f7a"], // token-waiver: a brand swatch the visitor tries
@@ -449,10 +454,11 @@ function Playground() {
 
   const a = ACC[st.a][1];
   const g = GROUND[MOD[st.m]];
+  const edge = EDGE[ACC[st.a][0]]?.[MOD[st.m]] ?? a;
   const on = ratio("#ffffff", a) >= ratio("#121212", a) ? "#ffffff" : "#121212"; // token-waiver: the two label candidates
   const rows: [string, number, boolean][] = [
     ["button label on accent", ratio(on, a), false],
-    ["accent against the card", ratio(a, g.bg), true],
+    ["accent edge against the card", ratio(edge, g.bg), true],
     ["body text", ratio(g.ink, g.bg), false],
     ["muted text", ratio(g.mu, g.bg), false],
   ];
@@ -463,7 +469,7 @@ function Playground() {
     return { name, r, grade };
   });
   const vars = {
-    "--a": a, "--on": on, "--r": RAD[st.r][1], "--pd": DEN[st.d][1],
+    "--a": a, "--ae": edge, "--on": on, "--r": RAD[st.r][1], "--pd": DEN[st.d][1],
     "--lbg": g.bg, "--link": g.ink, "--lm": g.mu, "--lline": g.line, "--lp": g.panel,
   } as React.CSSProperties;
 
