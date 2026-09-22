@@ -72,5 +72,5 @@
 
 .quietLink:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  outline-offset: var(--ring-focus-offset);
 }

@@ -1892,7 +1892,9 @@ h1.display-heading {
   color: var(--color-ink);
 }
 
-/* the ring is :focus-visible only: a mouse click never draws one */
+/* the ring is :focus-visible only: a mouse click never draws one. Inset,
+   the one exception to the 3px offset (item 4, 22 Sep 2026): .xp-list
+   clips its overflow for the rounded card, so an outward ring is cut off. */
 .xp .accordion__trigger:focus-visible {
   outline-offset: calc(0px - var(--ring-focus-width));
   border-radius: 0;
@@ -2646,7 +2648,7 @@ h1.display-heading {
 
 .seg-control button:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: -3px;
+  outline-offset: var(--ring-focus-offset);
 }
 
 .filter-chip {
@@ -2689,7 +2691,7 @@ h1.display-heading {
 
 .filter-chip:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  outline-offset: var(--ring-focus-offset);
 }
 
 @media (max-width: 767px) {
@@ -2768,7 +2770,7 @@ h1.display-heading {
 
 .select-control select:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  outline-offset: var(--ring-focus-offset);
 }
 
 .select-control__chevron {
@@ -3018,7 +3020,7 @@ h1.display-heading {
 
 .vinyl-disc:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 3px;
+  outline-offset: var(--ring-focus-offset);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3130,27 +3132,27 @@ section[id],
 /* ─── Focus states ──────────────────────────────────────────────── */
 
 :focus-visible {
-  outline: 2px solid rgba(28, 26, 46, 0.45);
-  outline-offset: 3px;
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
 }
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--color-semantic-border-strong);
-  outline-offset: 3px;
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
 }
 
 /* Contact form fields — stable focus, no flicker, no radius change.
    Fields sit on the contact card surface (light theme) / navy card (dark);
    the semantic tokens flip with the theme. */
 .contact-field:focus {
-  outline: none;
   border-color: var(--color-accent-ink) !important;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent-ink) 25%, transparent);
 }
 
+/* the one ring (item 4, 22 Sep 2026): no halo, the ring alone */
 .contact-field:focus-visible {
-  outline: none;
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
 }
 
 .contact-field::placeholder {
@@ -3174,8 +3176,8 @@ button:focus-visible {
 /* Generic form focus fallback for non-contact forms */
 input:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid rgba(237, 232, 223, 0.6);
-  outline-offset: 2px;
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
 }
 
 /* .ds-rules is deleted with its markup (28 Jul, readability audit P1):
@@ -4732,7 +4734,7 @@ textarea:focus-visible {
 
 .tok-inspector__zone:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  outline-offset: var(--ring-focus-offset);
 }
 
 /* ── The shared specimen annotation (21 Jul, spec system-page-v2):
@@ -4768,7 +4770,7 @@ textarea:focus-visible {
 
 .tok-annotation__trigger:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  outline-offset: var(--ring-focus-offset);
 }
 
 .tok-annotation__panel {
@@ -5188,7 +5190,7 @@ textarea:focus-visible {
 
 .csp-flag:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  outline-offset: var(--ring-focus-offset);
 }
 
 .csp-flag__sw {
@@ -5478,7 +5480,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .jn-step:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  outline-offset: var(--ring-focus-offset);
 }
 
 .jn-caption-slot {
@@ -6644,8 +6646,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .ds-pipeline__slider:focus-visible {
-  outline: 2px solid var(--color-accent-ink);
-  outline-offset: var(--spacing-1);
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
 }
 
 .ds-stage__hint {
@@ -6921,8 +6923,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .agentdemo__toggle:focus-visible {
-  outline: 2px solid var(--color-accent-ink);
-  outline-offset: var(--spacing-1);
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
   border-radius: var(--radius-md);
 }
 
@@ -8249,8 +8251,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .exhibit__replay:focus-visible,
 .exhibit button:focus-visible,
 .exhibit [tabindex]:focus-visible {
-  outline: 2px solid var(--color-semantic-focus-ring, var(--color-accent-ink));
-  outline-offset: 3px;
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
 }
 
 /* the diagram vocabulary: stroke, fill, and three Mono text roles */
@@ -8424,7 +8426,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .dfc-mark.is-on::before,
 .dfc-mark:hover::before,
 .dfc-mark:focus-visible::before { color: var(--color-chip-text); }
-.dfc-mark:focus-visible { outline: 2px solid var(--color-semantic-focus-ring); outline-offset: 2px; }
+.dfc-mark:focus-visible { outline: var(--ring-focus-width) solid var(--ring-focus-color); outline-offset: var(--ring-focus-offset); }
 .dfc-ztabs { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: 2.25rem; }
 .dfc-ztabs button {
   padding: 0.375rem 0.875rem;
@@ -8439,7 +8441,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 .dfc-ztabs button:hover { color: var(--color-ink); }
 .dfc-ztabs button[aria-selected="true"] { border-color: var(--color-ink); color: var(--color-ink); }
-.dfc-ztabs button:focus-visible { outline: 2px solid var(--color-semantic-focus-ring); outline-offset: 2px; }
+.dfc-ztabs button:focus-visible { outline: var(--ring-focus-width) solid var(--ring-focus-color); outline-offset: var(--ring-focus-offset); }
 .exhibit.dfc-zfig { margin-top: 1rem; }
 .dfc-zwrap { position: relative; }
 .dfc-zstack { display: grid; gap: 1.5rem; }
@@ -8482,7 +8484,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .dfc-pin.is-after { background: var(--color-chip-c1); }
 .dfc-pin:hover { transform: translate(-50%, -50%) scale(1.15); }
 .dfc-pin[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--color-semantic-surface), 0 0 0 4px var(--color-ink); }
-.dfc-pin:focus-visible { outline: 2px solid var(--color-semantic-focus-ring); outline-offset: 3px; }
+.dfc-pin:focus-visible { outline: var(--ring-focus-width) solid var(--ring-focus-color); outline-offset: var(--ring-focus-offset); }
 .dfc-zpop {
   position: relative;
   max-width: 620px;
@@ -8532,7 +8534,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   cursor: pointer;
 }
 .dfc-zpop__nav button:hover { color: var(--color-ink); background: var(--color-semantic-surface); }
-.dfc-zpop__nav button:focus-visible { outline: 2px solid var(--color-semantic-focus-ring); outline-offset: 1px; }
+.dfc-zpop__nav button:focus-visible { outline: var(--ring-focus-width) solid var(--ring-focus-color); outline-offset: var(--ring-focus-offset); }
 .dfc-zpop p { margin: 0.375rem 0 0; color: var(--color-ink-muted); }
 .dfc-zpop__k {
   margin-right: 2px;

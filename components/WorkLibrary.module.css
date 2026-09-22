@@ -163,7 +163,7 @@
 
 .mxLink:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  outline-offset: var(--ring-focus-offset);
   border-radius: var(--radius-full);
 }
 
@@ -300,7 +300,7 @@
 
 .lDot:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 1px;
+  outline-offset: var(--ring-focus-offset);
 }
 
 .l-meta-tip {
@@ -359,8 +359,8 @@
 }
 .row:hover { transform: translateY(-2px); }
 .row:focus-visible {
-  outline: 2px solid var(--color-semantic-focus-ring);
-  outline-offset: 4px;
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
   border-radius: var(--radius-sm);
 }
 .thumb {
