@@ -171,7 +171,7 @@
   width: max-content;
   height: auto;
 }
-.sv21 i { position: relative; border-radius: 2px; background: var(--line); transition: background 0.25s; }
+.sv21 i { position: relative; border-radius: var(--radius-sm); background: var(--line); transition: background 0.25s; }
 .sv21 i::after {
   content: "";
   position: absolute;
