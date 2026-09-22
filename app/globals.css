@@ -211,9 +211,6 @@ body {
   /* Good company grid cells (100px under 700px) */
   --logo-cell: 132px;
   --logo-cell-sm: 100px;
-  /* footer contact photo (72px under 700px) */
-  --footer-photo: 6rem;
-  --footer-photo-sm: 4.5rem;
   /* heading measures in em (display-1 18em, the rest 22em) */
   /* STOPGAP override of BELLA's px size ramp, in rem so every size
      follows the reader's font setting; tag rises to the 14px floor and
@@ -1422,8 +1419,7 @@ h1.display-heading {
   margin-bottom: var(--space-stack-sm);
 }
 
-.section-row__meta .paw-icon,
-.site-footer__label .paw-icon {
+.section-row__meta .paw-icon {
   display: inline-block; /* preflight makes every svg a block */
   width: 1em;
   height: 1em;
@@ -2082,183 +2078,75 @@ h1.display-heading {
   color: var(--color-ink);
 }
 
-/* ─── Site footer: the neutral dark surface in both themes ─────────
-   (Geist refresh, Elleta 22 Sep 2026: navy retired.) The scope re-points
-   the ink/accent tokens, so utilities, the paw labels and the secondary
-   Button render the dark ink on #161616. The accent word is the muted
-   half-line. */
+/* ─── Site footer (footer-mock.html, Elleta 22 Sep 2026) ───────────
+   The panel ground in both themes under a hairline; the heading, a row of
+   the lead + the one Let's talk beside the pages and elsewhere columns,
+   one small-print row, then the pattern ELLETA across the window, 16px
+   from each edge, flush with the bottom of the page. */
 .site-footer {
-  --color-ink: var(--color-dark-ink);
-  --color-ink-soft: var(--color-dark-ink);
-  --color-ink-muted: var(--color-dark-muted);
-  --color-accent-ink: var(--color-dark-ink);
-  --ring-focus-color: var(--color-brand-ochre);
-  background: var(--color-dark-surface);
-  color: var(--color-dark-ink);
-  overflow: hidden;
-}
-
-/* dark mode: the dark footer on the near-black ground; a hairline
-   still marks the edge */
-[data-theme="dark"] .site-footer {
-  border-top: 1px solid color-mix(in srgb, var(--color-dark-ink) 10%, transparent);
+  padding-top: var(--spacing-16);
+  border-top: 1px solid var(--color-semantic-border);
+  background: var(--color-semantic-surface);
+  color: var(--color-ink);
 }
 
 .site-footer .accent {
-  color: var(--color-dark-muted);
+  color: var(--color-ink-muted);
 }
 
-.site-footer__inner {
-  container-type: inline-size;
-  /* the footer opens on the section rhythm; the Made with marquee used
-     to hold this space (Part Q) */
-  padding-top: var(--section-pad-y);
-}
-
-/* contact band: photo + "Let's compare notes." + the one Get in touch,
-   beside the link columns (1fr 1fr from 1024px); stacked below */
-.site-footer__contact {
+.site-footer__row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-stack-lg);
-  align-items: start;
-  scroll-margin-top: calc(var(--header-height) + var(--spacing-4));
+  gap: var(--spacing-8);
+  margin-top: var(--spacing-10);
 }
 
-/* the photo floats and the text wraps round the disc (Part H, 20 Sep
-   2026). It was a flex row, which parked the photo in a column of its
-   own with empty ground under it. flow-root clears the float so nothing
-   leaks into the link columns. */
-.site-footer__hello {
-  display: flow-root;
-}
-
-.site-footer__photo {
-  float: left;
-  width: var(--footer-photo-sm);
-  height: var(--footer-photo-sm);
-  margin: 0 var(--space-stack-md) var(--space-stack-sm) 0;
-  border-radius: var(--radius-full);
-  object-fit: cover;
-  shape-outside: circle(50%);
-  shape-margin: var(--space-stack-sm);
-}
-
-/* the heading reads first and is never squeezed by the disc */
-.site-footer__hello-body > .display-heading {
-  margin-top: 0;
+@media (min-width: 44rem) {
+  .site-footer__row {
+    grid-template-columns: 1.3fr 1fr 1fr;
+  }
 }
 
 .site-footer__lead {
-  margin: var(--space-stack-sm) 0 0;
-  color: var(--color-dark-ink);
+  max-width: var(--measure-body);
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: 1.6;
+  color: var(--color-ink-muted);
 }
 
-/* phones: the photo and the heading share a row, then the lead starts
-   under both at full width; wrapping round the disc gave it an odd
-   indent at 390 (Elleta, 21 Sep) */
-@media (max-width: 699.98px) {
-  .site-footer__lead {
-    clear: left;
-  }
+.site-footer__label {
+  margin-bottom: var(--spacing-2);
 }
 
-.site-footer__lines {
-  list-style: none;
-  margin: var(--space-stack-sm) 0 0;
-  padding: 0;
-  font-size: var(--typography-font-size-base);
-  line-height: var(--leading-body);
-  color: color-mix(in srgb, var(--color-dark-ink) 70%, transparent);
-}
-
-.site-footer__lines li {
-  color: inherit;
-}
-
-.site-footer__actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: var(--space-stack-sm);
-  margin-top: var(--space-stack-md);
-}
-
-/* both footer buttons are pills; the primary is light ink on the dark surface */
-.site-footer .btn-pill {
-  border-radius: var(--radius-full);
-}
-
+/* the one closing CTA: the ink fill at rest, the focus ring only on focus (Elleta, 22 Sep 2026) */
 .site-footer .btn-key--primary {
-  color: var(--color-dark-surface);
-  background: var(--color-dark-ink);
-}
-
-.site-footer .btn-key--primary:hover {
-  background: color-mix(in srgb, var(--color-dark-ink) 88%, var(--color-dark-surface));
-}
-
-.site-footer__cols {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-stack-lg) var(--space-stack-md);
-}
-
-@media (min-width: 700px) {
-  .site-footer__photo {
-    width: var(--footer-photo);
-    height: var(--footer-photo);
-  }
-}
-
-/* right column: the link columns, then what is being built */
-.site-footer__side {
-  container-type: inline-size;
-  display: grid;
-  gap: var(--space-stack-lg);
-  align-content: start;
-}
-
-/* from 1024px the right column sits beside the contact block (1fr 1fr);
-   below that everything stacks under it */
-@media (min-width: 1024px) {
-  .site-footer__contact {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-}
-
-/* three link columns once "BELLA on GitHub" fits on one line; 2 + 1 below */
-@container (min-width: 34rem) {
-  .site-footer__cols {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  margin-top: var(--spacing-4);
 }
 
 .site-footer__list {
-  list-style: none;
-  margin: var(--spacing-2) 0 0;
-  padding: 0;
   display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .site-footer__link {
   display: inline-flex;
   align-items: center;
-  min-height: var(--spacing-touch-target);
+  min-height: var(--spacing-6);
   padding: 0;
   border: 0;
   background: none;
-  cursor: pointer;
-  font-family: var(--font-body);
+  font: inherit;
   font-size: var(--text-body);
-  color: var(--color-dark-ink);
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--color-dark-ink) 35%, transparent);
-  text-underline-offset: 3px;
+  color: var(--color-ink);
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .site-footer__link:hover {
-  text-decoration-color: currentColor;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .site-footer__link:focus-visible {
@@ -2266,100 +2154,36 @@ h1.display-heading {
   outline-offset: var(--ring-focus-offset);
 }
 
-/* the wordmark: ink edge to ink edge = the container's content width */
-/* brand row: wordmark + Bella left, the small print right; stacked
-   under 900px */
-.site-footer__brand {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--space-stack-md) var(--space-stack-lg);
-  margin-top: var(--space-stack-sm);
-  padding-bottom: var(--space-stack-lg);
-}
-
-/* stacked footers: room for the paw trail's lane above the letters
-   (32px clear of text on both sides) */
-@media (max-width: 1023.98px) {
-  .site-footer__brand {
-    margin-top: var(--spacing-12);
-  }
-}
-
-/* the wordmark reserves Bella's height above it, so she never reaches
-   the links; the negative bottom margin puts the box bottom on the
-   letters' baseline (line-height 0.8 leaves ~0.115em below it), so the
-   small print can line up with the letters */
-.site-footer__mark {
-  width: 100%;
-  line-height: 0.8;
-  /* decoration only: the letters and Bella take no clicks, so the "A"
-     never covers the CV button under it at 1024 and wider (Part W7) */
-  pointer-events: none;
-}
-
-/* what is being built: one muted line under the link columns */
-.building-line {
-  margin: 0;
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  line-height: 1.5;
-  color: var(--color-ink-muted);
-  letter-spacing: var(--tracking-mono);
-  font-feature-settings: var(--mono-feature);
-}
-
-/* the details link keeps its underline; a 24px target (WCAG 2.2 AA, 2.5.8) */
-.building-line__link {
-  min-height: var(--spacing-6);
-  font-size: inherit;
-  font-family: inherit;
-}
-
-.share-portfolio {
-  margin: 0;
-}
-
-.share-portfolio__status {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  min-height: 1.5em;
-  margin: var(--spacing-2) 0 0;
-  font-size: var(--text-meta);
-  color: var(--color-dark-ink);
-}
-
-/* small print: one row under the wordmark, from its left edge; the
-   version and policy links sit right and wrap under on phones */
-.site-footer__small {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--spacing-1) var(--space-stack-md);
-  width: 100%;
-  margin: 0;
-  color: color-mix(in srgb, var(--color-dark-ink) 70%, transparent);
-}
-
-.site-footer__small p {
-  margin: 0;
-  color: inherit;
-}
-
 .site-footer__legal {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-2);
+  justify-content: space-between;
+  gap: var(--spacing-2) var(--spacing-6);
+  margin-top: var(--spacing-12);
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-feature-settings: var(--mono-feature);
+  color: var(--color-ink-muted);
+}
+
+.site-footer__legal p {
+  margin: 0;
 }
 
 .site-footer__link--small {
-  min-height: var(--spacing-6);
-  font-size: var(--text-meta);
+  font-size: inherit;
   color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* the wordmark: the window's width less 16px a side, 40px under the
+   small print, and nothing under it */
+.site-footer__mark {
+  width: calc(100% - 2 * var(--spacing-4));
+  margin: var(--spacing-10) auto 0;
+  line-height: 0;
+  pointer-events: none;
 }
 
 /* Term (components/ui/Term.tsx): a word you can tap to learn. It
