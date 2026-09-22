@@ -1222,13 +1222,11 @@ main:not(.embed-page) .l-section:first-of-type::before {
 /* page / section / case sizes come from the .text-display-1/2 utilities
    the Heading primitive adds; the page title keeps display-1's leading
    and measure (this rule sits after .display-heading) */
-/* the iris word never splits across lines ("code-first" broke at its
-   hyphen, audit 21 Sep), from 600px up. On a phone a whole accent word
-   can be wider than the screen, so there it may wrap (Part U) */
-@media (min-width: 600px) {
-  .display-heading .accent {
-    white-space: nowrap;
-  }
+/* the accent half-line WRAPS (live audit, 22 Sep 2026): the old nowrap
+   clipped "systems." on Home and "used it." on Learning at the right
+   edge between 1100 and 1280. h1s balance their lines instead. */
+h1.display-heading {
+  text-wrap: balance;
 }
 
 .display-heading--page {
@@ -8292,6 +8290,14 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   text-decoration: none;
 }
 
+/* one hero offset (live audit, 22 Sep 2026): the back link sits in the
+   section's top padding, so a case h1 starts where every page h1 does */
+.case-back--top {
+  display: flex;
+  inline-size: fit-content;
+  margin-top: calc(-1 * (var(--spacing-6) + var(--section-label-gap)));
+}
+
 .case-back:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -8875,7 +8881,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .dfc-stats__l { margin: 0; font-size: 1rem; /* the mock's 15px, raised to the 16px reading floor */ color: var(--color-ink-muted); }
 /* the mock hero: lead 20px muted at 40ch */
 .cs2--mock .l-header .text-lead,
-.cs2--mock .l-header > p {
+.cs2--mock .l-header > p:not(.l-header__kicker) {
   max-width: 40ch;
   font-size: 1.25rem;
   color: var(--color-ink-muted);

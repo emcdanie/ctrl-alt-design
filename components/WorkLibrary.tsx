@@ -1,89 +1,13 @@
 "use client";
 
-import { Fragment, useId, useMemo, useState } from "react";
+import { useId, useState } from "react";
 import Link from "next/link";
-import Card from "@/components/ui/Card";
-import { Tag } from "@/components/ui/Tag";
-import { SKILL_EVIDENCE, WORK_INDEX, WORK_ITEMS, type WorkCase, type WorkItem } from "@/lib/workLibrary";
-import { WORK_THUMBS } from "@/components/diagrams/workThumbs";
+import { SKILL_EVIDENCE, WORK_ITEMS, type WorkItem } from "@/lib/workLibrary";
 import { SKILLS, slugify } from "@/content/skills";
 import styles from "./WorkLibrary.module.css";
 
-/* /work (Elleta, 19 Sep 2026): the case cards. The pattern studies list
- * left /work on 22 Sep 2026 (W1 release); the study pages stay live.
- * The skills matrix below serves /skills and /quick. */
-
-/** A case study card on the ONE Card system: flat until hover. `quiet`
- *  (Home): the kicker is the kind and years in the code role, no tags,
- *  no "Read it"; the title's arrow shows on hover only. */
-export function CaseStudyCard({ item, quiet = false }: { item: WorkCase; quiet?: boolean }) {
-  const card = (
-    <Card
-      href={item.href}
-      className={`h-full ${styles.caseCard}`}
-      media={
-        <span className={styles.cover}>
-          {item.cover ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={item.cover} alt="" loading="lazy" />
-          ) : null}
-        </span>
-      }
-    >
-      {quiet ? (
-        <span className={`text-code ${styles.kickerQuiet}`}>
-          {item.kind} · {item.years}
-        </span>
-      ) : (
-        <span className={styles.kicker}>
-          <span className={styles.pill}>Case study</span>
-          <span className={`text-code ${styles.kickerDate}`}>{item.years}</span>
-        </span>
-      )}
-      <span className={`heading-item ${styles.cardTitle}`}>
-        {item.title}
-        {quiet ? (
-          <span className={styles.hoverArrow} aria-hidden="true">
-            {" "}
-            →
-          </span>
-        ) : null}
-      </span>
-      <span className={`card-body ${styles.cardLine}`}>{item.line}</span>
-      {quiet ? null : (
-        <>
-          <span className={styles.tags}>
-            {item.tags.slice(0, 2).map((t) => (
-              <Tag key={t} outline>
-                {t}
-              </Tag>
-            ))}
-          </span>
-          <span className={styles.cardGo}>Read it →</span>
-        </>
-      )}
-    </Card>
-  );
-  /* the other studies from the same work, under the card: the card is
-     one link, so these sit outside it (Part W3) */
-  if (quiet || !item.also?.length) return card;
-  return (
-    <div className={styles.caseWithAlso}>
-      {card}
-      <p className={`text-code ${styles.also}`}>
-        Also from this platform:{" "}
-        {item.also.map((a, i) => (
-          <Fragment key={a.href}>
-            {i > 0 ? " · " : null}
-            <Link href={a.href} className={styles.alsoLink}>
-              {a.label}
-            </Link>
-          </Fragment>
-        ))}
-      </p>
-    </div>
-  );
-}
+/* The skills matrix: /learning and /quick. The /work case rows moved
+ * to components/CaseRow.tsx (W1 release, 22 Sep 2026). */
 
 /* ── Skills x projects matrix (§8): a real table driven from the same
  * skills arrays as everything else. Marked cell = case tint + dot +
@@ -256,40 +180,5 @@ function LearnedDot({ dot }: { dot: LearnedDotData }) {
         {dot.label}
       </span>
     </span>
-  );
-}
-
-/** The /work index (Geist refresh, 22 Sep 2026; mock Part A): one ruled
- *  row per case, the whole row one link. A line thumbnail on the panel,
- *  the Mono meta line, the claim, the signal tags. Hover lifts the row,
- *  underlines the title and eases the drawing up. */
-export function WorkIndex() {
-  return (
-    <ul className={styles.index} role="list">
-      {WORK_INDEX.map((row) => (
-        <li key={row.id}>
-          <Link href={row.href} className={styles.row}>
-            <span className={styles.thumb}>
-              <svg viewBox="0 0 300 180" aria-hidden="true" data-bella-diagram dangerouslySetInnerHTML={{ __html: WORK_THUMBS[row.id] }} />
-            </span>
-            <span className={styles.rowBody}>
-              <span className={styles.metaLine}>
-                {row.n} · {row.meta}
-                {row.lead ? <> · {row.lead}</> : null}
-              </span>
-              <span className={styles.rowTitle}>{row.title}</span>
-              <span className={styles.rowClaim}>{row.claim}</span>
-              <span className={styles.rowTags}>
-                {row.tags.map((t) => (
-                  <Tag key={t.text} tone={t.tone} outline={t.outline}>
-                    {t.text}
-                  </Tag>
-                ))}
-              </span>
-            </span>
-          </Link>
-        </li>
-      ))}
-    </ul>
   );
 }

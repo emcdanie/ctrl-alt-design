@@ -1,13 +1,13 @@
 import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
 import Hero from "@/components/Hero";
-import { CaseStudyCard } from "@/components/WorkLibrary";
+import { CaseRowList } from "@/components/CaseRow";
 import WorkedWith from "@/components/WorkedWith";
 import Card from "@/components/ui/Card";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
 import Container from "@/components/layout/Container";
-import { WORK_CASES } from "@/lib/workLibrary";
+import { HOME_CASES } from "@/content/cases";
 import { TESTIMONIALS } from "@/content/testimonials";
 import styles from "@/components/Home.module.css";
 
@@ -44,13 +44,15 @@ export default function Home() {
           heading="Start with the"
           accent="work"
           after="."
-          lead="Four cases, up close: what drifted, what I built, and what changed."
+          lead="Three cases, up close: what drifted, what I built, and what changed."
         />
-        <div className="home-work-row reveal-group">
-          {WORK_CASES.map((c) => (
-            <CaseStudyCard key={c.id} item={c} quiet />
-          ))}
-        </div>
+        {/* the SAME row as /work (W1 release, 22 Sep 2026), the first three */}
+        <CaseRowList rows={HOME_CASES} />
+        <p>
+          <Link href="/work" className={styles.more}>
+            See all work <span aria-hidden="true">→</span>
+          </Link>
+        </p>
       </Section>
 
       <Section id="how-i-work" label="How I work">

@@ -12,7 +12,8 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--spacing-2) var(--spacing-4);
-  margin: 0;
+  /* one hero offset: the h1 starts where every page h1 does */
+  margin: 0 0 var(--spacing-3);
 }
 
 /* metadata tier, like the line it sits in */

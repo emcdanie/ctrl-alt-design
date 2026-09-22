@@ -47,10 +47,11 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
         {/* "← All work" (W1 release, 22 Sep 2026): the study pages are
             unlinked from /work now, so the way back is one link, not a
             three-level breadcrumb */}
-        <CaseBackLink />
+        <CaseBackLink className="case-back--top" />
         <SectionHeader
           as="h1"
           id="study-hero-title"
+          kicker={`Study · ${study.kind}`}
           heading={study.title}
           lead={`${study.project}. ${study.line}`}
         >

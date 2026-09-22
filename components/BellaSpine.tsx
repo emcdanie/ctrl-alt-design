@@ -624,14 +624,14 @@ function Pipeline({ auditCount }: { auditCount: number }) {
           A change travels through write, build, generate, check and ship. The check step runs {auditCount} audits and passes only
           when all of them do.
         </p>
-        <button type="button" className={`${s.chip} ${s.replay}`} onClick={play}>
+        <button type="button" className={s.chip} onClick={play}>
           replay
         </button>
       </div>
       <div className={s.pipe} aria-hidden="true">
         <span className={s.pipeLine} />
         {NODES.map(([t1, t2], i) => (
-          <div key={t1} className={`${s.nd} ${lit === i && !(i === 3 && pass) ? s.lit : ""} ${(i === 3 && pass) || (i < lit && i !== 3) || (i === 4 && lit === 4) ? s.pass : ""}`}>
+          <div key={t1} className={`${s.nd} ${lit === i && !(i === 3 && pass) ? s.lit : ""} ${i === 3 && pass ? s.pass : ""}`}>
             <b>{t1}</b>
             <span>{t2}</span>
             {i === 3 && <i className={`${s.tick} ${pass ? s.tickOn : ""}`}>✓</i>}
@@ -653,7 +653,7 @@ function Pipeline({ auditCount }: { auditCount: number }) {
           >
             <span className={s.dot} aria-hidden="true" />
             <b>{g.name.replace("audit:", "")}</b>
-            {String(i + 1).padStart(2, "0")}
+            <span className="text-code">{String(i + 1).padStart(2, "0")}</span>
           </button>
         ))}
       </div>
@@ -1035,7 +1035,7 @@ export default function BellaSpine({ auditCount, auditCountWord }: { auditCount:
           <p>This is how I&apos;d start with your system: an audit, one component through the whole lifecycle, and a gate your team owns.</p>
           <div className={s.ctaB}>
             <Button href="/contact" variant="primary">
-              Let&apos;s compare notes
+              Let&apos;s talk
             </Button>
             <a className={s.chip} href="https://emcdanie.github.io/bella" target="_blank" rel="noopener noreferrer">
               Storybook ↗

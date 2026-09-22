@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import OverlayNav from "@/components/OverlayNav";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { WorkIndex } from "@/components/WorkLibrary";
+import { CaseRowList } from "@/components/CaseRow";
+import { CASES } from "@/content/cases";
 import { WorkScrollMemory } from "@/components/CaseBackLink";
 
 export const metadata: Metadata = {
@@ -30,7 +31,7 @@ export default function WorkPage() {
           heading="Selected work."
           lead="Each one says what I claimed, what proves it, and what changed. Tags show the signals it's evidence for."
         />
-        <WorkIndex />
+        <CaseRowList rows={CASES} />
       </Section>
 
       <WorkScrollMemory />

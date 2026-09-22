@@ -143,7 +143,7 @@ export default function CaseShellV2({
         {/* "← All work" above the page label (W1 release, 22 Sep 2026;
             replaces the Work / title breadcrumb). The System page opts out:
             it is a nav item of its own, not reached through /work. */}
-        {crumbs && <CaseBackLink />}
+        {crumbs && <CaseBackLink className="case-back--top" />}
         <SectionHeader
           as="h1"
           id="page-title"

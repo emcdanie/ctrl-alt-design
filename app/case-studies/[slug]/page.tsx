@@ -229,7 +229,7 @@ export default async function CaseStudyPage({
           article?.mock
             ? article.mock.eyebrow
             : article
-            ? `Case study · ${sentenceCase(cs.category)} · ${fullYears(cs.year)}`
+            ? `Case · ${sentenceCase(cs.category)} · ${fullYears(cs.year)}`
             : spans(cs.eyebrow ?? `${sentenceCase(cs.category)} · ${cs.year}`)
         }
         title={article ? article.title : cs.title}
