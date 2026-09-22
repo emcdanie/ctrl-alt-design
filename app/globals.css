@@ -173,7 +173,7 @@ body {
      wide screens hug the content a little less; the gutters still sit
      outside it, and the reading measures (--measure-lead 42rem,
      --measure-body 65ch) are unchanged, so lines do not get longer. */
-  --layout-max: 78rem;
+  --layout-max: 66rem;
   --layout-gutter: clamp(1.5rem, 4vw, 3rem);
   /* more air between sections (Part Q): ~64px at 390, ~118px at 1440 */
   --section-pad-y: clamp(4rem, 2rem + 6vw, 8rem);
