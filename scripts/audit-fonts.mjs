@@ -49,6 +49,16 @@ const walk = (dir, out = []) => {
   return out;
 };
 
+/* A BELLA component font token (var(--component-*-font-family)) passes only
+   when lib/bella/bella.css resolves it to a Geist stack; any other value
+   still fails (Elleta, 22 Sep 2026: the vendored Button). */
+const BELLA_FONT_TOKENS = new Map(
+  [...readFileSync("lib/bella/bella.css", "utf8").matchAll(/(--component-[a-z0-9-]+-font-family):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()])
+);
+const isBellaGeistToken = (v) => {
+  const t = v.match(/^var\((--component-[a-z0-9-]+-font-family)\)$/)?.[1];
+  return !!t && /^Geist\b/.test(BELLA_FONT_TOKENS.get(t) ?? "");
+};
 for (const root of ROOTS) {
   for (const file of walk(root)) {
     const lines = readFileSync(file, "utf8").split("\n");
@@ -64,7 +74,7 @@ for (const root of ROOTS) {
       const decl = l.match(/font-family\s*:\s*([^;{}]+)|fontFamily\s*:\s*"([^"]+)"/);
       if (decl && !TOKEN_LAYER.has(file)) {
         const val = (decl[1] ?? decl[2] ?? "").trim();
-        if (!val.startsWith("var(--font-")) fail(file, n, `font-family literal "${val.slice(0, 40)}"`, "a var(--font-*) token");
+        if (!val.startsWith("var(--font-") && !isBellaGeistToken(val)) fail(file, n, `font-family literal "${val.slice(0, 40)}"`, "a var(--font-*) token");
       }
       // Unique outside the allowed hero/bubble surfaces
       if (/--font-hero-display|--font-unique|"Unique"|'Unique'/.test(l) && !UNIQUE_ALLOWED.has(file)) {
