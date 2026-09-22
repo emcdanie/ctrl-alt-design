@@ -84,7 +84,7 @@ export default function QuickPage() {
       <Section id="quick-cta" label="Work together">
         <p className="quick-cta">
           <Button href="/contact" variant="primary">
-            Get in touch
+            Let&rsquo;s talk
             <span aria-hidden="true">&rarr;</span>
           </Button>
           <span className="quick-cta__note">Open to full-time roles and select freelance projects.</span>

@@ -10,7 +10,7 @@ export default function FooterCta() {
   const onContact = usePathname() === "/contact";
   return (
     <Button href="/contact" variant={onContact ? "secondary" : "primary"} className="btn-pill">
-      Get in touch
+      Let&rsquo;s talk
     </Button>
   );
 }
