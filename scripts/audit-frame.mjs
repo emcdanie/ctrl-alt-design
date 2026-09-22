@@ -19,6 +19,8 @@
  * 6. Reading measure: no paragraph in main is wider than --measure-body.
  * 0. No sideways scroll: the page is never wider than the window (Part U:
  *    four routes overflowed at 390 while every check above passed).
+ * 0b. No runaway height: at 1440 no page is taller than 20,000px (22 Sep
+ *    2026: Drift shipped at 79,429px when unsized SVGs lost their CSS).
  * 7. The receipt: route, width, element, measured, expected; one line per
  *    route on a pass.
  *
@@ -87,6 +89,14 @@ for (const width of WIDTHS) {
       const pageSize = px(probe({ fontSize: "var(--text-display-1)" }, "fontSize"));
       const displaySize = px(probe({ fontSize: "var(--component-heading-hero-font-size)" }, "fontSize"));
       const out = { fails: [], exempt: [], cards: [], edge: null };
+      /* 0b. no runaway height at 1440, and the tallest leaf-ish culprit */
+      const docH = document.documentElement.scrollHeight;
+      if (innerWidth === 1440 && docH > 20000) {
+        const tall = [...document.querySelectorAll("main *")]
+          .filter((e) => e.children.length === 0 || e.tagName === "svg")
+          .sort((a, b) => b.getBoundingClientRect().height - a.getBoundingClientRect().height)[0];
+        out.fails.push([`the page${tall ? ` (tallest: ${tall.tagName.toLowerCase()}.${String(tall.className?.baseVal ?? tall.className).split(" ")[0]} ${Math.round(tall.getBoundingClientRect().height)}px)` : ""}`, `scrollHeight ${docH}px`, "at most 20000px at 1440"]);
+      }
       /* 0. no sideways scroll, and the element that causes it */
       const docW = document.documentElement.scrollWidth;
       if (docW > innerWidth + 1) {
