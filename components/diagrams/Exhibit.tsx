@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 
 /**
  * Exhibit (Geist refresh, 22 Sep 2026): the frame every case-study
@@ -28,15 +28,25 @@ export default function Exhibit({
   children: ReactNode;
 }) {
   const ref = useRef<HTMLElement>(null);
-  const [state, setState] = useState<"idle" | "playing" | "final">("idle");
+  const reduce = useSyncExternalStore(
+    (cb) => {
+      const m = window.matchMedia("(prefers-reduced-motion: reduce)");
+      m.addEventListener("change", cb);
+      return () => m.removeEventListener("change", cb);
+    },
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () => false,
+  );
+  const [played, setPlayed] = useState<"idle" | "playing">("idle");
+  const state = reduce ? "final" : played;
   const [run, setRun] = useState(0);
 
   const play = useCallback(() => {
-    setState("idle");
+    setPlayed("idle");
     /* two frames, so removing and re-adding the class restarts CSS animations */
     requestAnimationFrame(() =>
       requestAnimationFrame(() => {
-        setState("playing");
+        setPlayed("playing");
         setRun((r) => r + 1);
       }),
     );
@@ -44,11 +54,7 @@ export default function Exhibit({
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setState("final");
-      return;
-    }
+    if (!el || reduce) return;
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
@@ -60,7 +66,7 @@ export default function Exhibit({
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [play]);
+  }, [play, reduce]);
 
   useEffect(() => {
     if (run > 0) onPlay?.();

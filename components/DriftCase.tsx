@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import Section from "@/components/layout/Section";
 import Exhibit from "@/components/diagrams/Exhibit";
 import { buttonGrave, SCENES, DECISIONS } from "@/components/diagrams/driftScenes";
@@ -20,16 +20,10 @@ import type { CaseStudy } from "@/lib/content";
 function usePlayOnce<T extends HTMLElement>(threshold = 0.4) {
   const ref = useRef<T>(null);
   const [run, setRun] = useState(0);
-  const [reduce, setReduce] = useState(false);
+  const reduce = useReduce();
   useEffect(() => {
-    const r = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setReduce(r);
     const el = ref.current;
     if (!el) return;
-    if (r) {
-      setRun(1);
-      return;
-    }
     const io = new IntersectionObserver(
       (es) => {
         if (es.some((e) => e.isIntersecting)) {
@@ -46,17 +40,20 @@ function usePlayOnce<T extends HTMLElement>(threshold = 0.4) {
   return { ref, run, reduce, replay };
 }
 
-function useNarrow() {
-  const [narrow, setNarrow] = useState(false);
-  useEffect(() => {
-    const m = window.matchMedia("(max-width: 640px)");
-    const on = () => setNarrow(m.matches);
-    on();
-    m.addEventListener("change", on);
-    return () => m.removeEventListener("change", on);
-  }, []);
-  return narrow;
+/* a media query as external state: false on the server, live after */
+function useMedia(query: string) {
+  return useSyncExternalStore(
+    (cb) => {
+      const m = window.matchMedia(query);
+      m.addEventListener("change", cb);
+      return () => m.removeEventListener("change", cb);
+    },
+    () => window.matchMedia(query).matches,
+    () => false,
+  );
 }
+const useNarrow = () => useMedia("(max-width: 640px)");
+const useReduce = () => useMedia("(prefers-reduced-motion: reduce)");
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return <p className="eyebrow dfc-eyebrow">{children}</p>;
@@ -96,12 +93,16 @@ function PeopleRow({ v, k, run, reduce, label }: { v: number; k: number; run: nu
     if (!run) return;
     const target = Array.from({ length: 10 }, (_, i) => Math.max(0, Math.min(1, v / 10 - i)));
     if (reduce) {
-      setN(v);
-      setFill(target);
-      return;
+      const f = requestAnimationFrame(() => {
+        setN(v);
+        setFill(target);
+      });
+      return () => cancelAnimationFrame(f);
     }
-    setN(0);
-    setFill(Array(10).fill(0));
+    const reset = requestAnimationFrame(() => {
+      setN(0);
+      setFill(Array(10).fill(0));
+    });
     const timers = target.map((p, i) => window.setTimeout(() => setFill((f) => f.map((x, j) => (j === i ? p : x))), k * 250 + i * 90));
     const t0 = performance.now() + k * 250;
     let raf = 0;
@@ -114,6 +115,7 @@ function PeopleRow({ v, k, run, reduce, label }: { v: number; k: number; run: nu
     return () => {
       timers.forEach(clearTimeout);
       cancelAnimationFrame(raf);
+      cancelAnimationFrame(reset);
     };
   }, [run, reduce, v, k]);
   return (
@@ -169,13 +171,11 @@ function Zoom() {
   const [act, setAct] = useState<number | null>(null);
   const [lc, setLc] = useState(false);
   const [arrow, setArrow] = useState(50);
-  const [reduce, setReduce] = useState(false);
+  const reduce = useReduce();
   const worldRef = useRef<HTMLDivElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const narrow = useNarrow();
   const tabIds = useId().replace(/:/g, "");
-
-  useEffect(() => setReduce(window.matchMedia("(prefers-reduced-motion: reduce)").matches), []);
 
   const show = useCallback(
     (i: number) => {
@@ -613,7 +613,8 @@ function Turnaround() {
 }
 
 /* ── the page ──────────────────────────────────────────────────── */
-export default function DriftCase({ cs: _cs }: { cs: CaseStudy }) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function DriftCase(_props: { cs: CaseStudy }) {
   return (
     <div className="dfc">
       <Section ruled>
