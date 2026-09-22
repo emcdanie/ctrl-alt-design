@@ -7,7 +7,8 @@ import Card from "@/components/ui/Card";
 import { FilterChip } from "@/components/ui/FilterChip";
 import { Tag } from "@/components/ui/Tag";
 import { STUDIES, STUDY_KINDS, studyHref, type Study, type StudyKind } from "@/content/studies";
-import { SKILL_EVIDENCE, WORK_ITEMS, type WorkCase, type WorkItem } from "@/lib/workLibrary";
+import { SKILL_EVIDENCE, WORK_INDEX, WORK_ITEMS, type WorkCase, type WorkItem } from "@/lib/workLibrary";
+import { WORK_THUMBS } from "@/components/diagrams/workThumbs";
 import { SKILLS, slugify } from "@/content/skills";
 import styles from "./WorkLibrary.module.css";
 
@@ -330,5 +331,40 @@ function LearnedDot({ dot }: { dot: LearnedDotData }) {
         {dot.label}
       </span>
     </span>
+  );
+}
+
+/** The /work index (Geist refresh, 22 Sep 2026; mock Part A): one ruled
+ *  row per case, the whole row one link. A line thumbnail on the panel,
+ *  the Mono meta line, the claim, the signal tags. Hover lifts the row,
+ *  underlines the title and eases the drawing up. */
+export function WorkIndex() {
+  return (
+    <ul className={styles.index} role="list">
+      {WORK_INDEX.map((row) => (
+        <li key={row.id}>
+          <Link href={row.href} className={styles.row}>
+            <span className={styles.thumb}>
+              <svg viewBox="0 0 300 180" aria-hidden="true" data-bella-diagram dangerouslySetInnerHTML={{ __html: WORK_THUMBS[row.id] }} />
+            </span>
+            <span className={styles.rowBody}>
+              <span className={styles.metaLine}>
+                {row.n} · {row.meta}
+                {row.lead ? <> · {row.lead}</> : null}
+              </span>
+              <span className={styles.rowTitle}>{row.title}</span>
+              <span className={styles.rowClaim}>{row.claim}</span>
+              <span className={styles.rowTags}>
+                {row.tags.map((t) => (
+                  <Tag key={t.text} tone={t.tone} outline={t.outline}>
+                    {t.text}
+                  </Tag>
+                ))}
+              </span>
+            </span>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }

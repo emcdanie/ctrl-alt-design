@@ -552,7 +552,23 @@ for (const theme of ["light", "dark"]) {
         if (window.innerWidth >= 900 && h > window.innerHeight)
           out.push(`case section is taller than one screen (${Math.round(h)}px > ${window.innerHeight}px): ${label}`);
       }
-      if (!beats.length && !sections.length) out.push("no beat or case sections found (template not rendering)");
+      /* ── MOCK TEMPLATE LAW (Elleta, 22 Sep 2026, Geist refresh;
+         case-study-mock.html Part B, theming-case-study.html). A case on
+         the mock layout (.cs2--mock) renders ruled Sections, each opening
+         on a Mono eyebrow and an h2, and every Exhibit names what it
+         shows in a caption. Motion lives in the Exhibit (plays once,
+         replay, reduced motion shows the final frame). */
+      const mock = document.querySelector(".cs2--mock");
+      const mockSections = mock ? [...mock.querySelectorAll(":scope > section.section--ruled")] : [];
+      for (const sec of mockSections) {
+        const label = sec.querySelector("h2")?.textContent?.slice(0, 24) ?? "section";
+        if (!sec.querySelector("h2")) out.push(`mock section has no h2: ${label}`);
+        if (!sec.querySelector(".eyebrow, .l-header__kicker, [class*='kicker']")) out.push(`mock section has no eyebrow: ${label}`);
+        for (const ex of sec.querySelectorAll("figure.exhibit")) {
+          if (!ex.querySelector(".exhibit__caption")?.textContent?.trim()) out.push(`exhibit has no caption: ${label}`);
+        }
+      }
+      if (!beats.length && !sections.length && !mockSections.length) out.push("no beat, case or mock sections found (template not rendering)");
       /* the takeaway-band card exception, held tight: a thesis card
          on a case route outside .cs2-takeaway is card creep */
       for (const t of document.querySelectorAll(".cs2 .thesis-band")) {
@@ -564,7 +580,7 @@ for (const theme of ["light", "dark"]) {
     });
     for (const b of beatBad) {
       fails++;
-      console.error(receipt("visual", `(${theme} ${width} ${caseRoute}) ${b}`, "a beat-template violation", "the case-template law (CaseBeat: headline with body, flat visuals, alternation; CaseSection: text plus one named, captioned ExampleFrame, alternation, one screen)"));
+      console.error(receipt("visual", `(${theme} ${width} ${caseRoute}) ${b}`, "a beat-template violation", "the case-template law (CaseBeat: headline with body, flat visuals, alternation; CaseSection: text plus one named, captioned ExampleFrame, alternation, one screen; mock: ruled sections with an eyebrow and h2, captioned exhibits)"));
     }
     await ctx.close();
   }

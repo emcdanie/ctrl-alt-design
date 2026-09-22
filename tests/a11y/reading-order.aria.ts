@@ -46,8 +46,9 @@ test.describe("Work", () => {
   test("hero", async ({ page }) => {
     await expect(page.locator("main h1").first()).toMatchAriaSnapshot(snap("work-hero"));
   });
+  /* the index rows (Geist refresh, 22 Sep 2026): the whole row is one link */
   test("case studies", async ({ page }) => {
-    await expect(page.locator("#case-studies")).toMatchAriaSnapshot(snap("work-grid"));
+    await expect(page.locator("#work-hero")).toMatchAriaSnapshot(snap("work-grid"));
   });
   test("pattern studies", async ({ page }) => {
     await expect(page.locator("#studies")).toMatchAriaSnapshot(snap("work-studies"));
@@ -124,54 +125,39 @@ test.describe("Learning", () => {
   });
 });
 
-/* The case-study article's linked phrases (Elleta, 20 Sep 2026, Part C
-   item 7). A phrase reached by KEYBOARD has to do the same thing a hover
-   does: light the part of the example it names, and let Escape clear a
-   pin. Reading order is asserted too: the text column comes before its
-   figure, on a flipped section as much as a plain one, so the page reads
-   the same as it is spoken. */
-test.describe("Case study: linked phrases", () => {
+/* The Drift case's zoom story (Geist refresh, 22 Sep 2026). A phrase
+   reached by KEYBOARD does what a hover does: it lights its phrase and
+   switches the picture to its zoom level. The tabs are a tablist with
+   arrow keys; the users & roles pins are buttons that open the decision
+   under the picture, and Escape closes it. */
+test.describe("Case study: zoom story", () => {
   test.beforeEach(async ({ page }) => {
     await open(page, "/case-studies/design-system-transformation");
   });
 
-  test("focus lights its target, Enter pins it, Escape clears the pin", async ({ page }) => {
-    const phrase = page.locator(".linked-phrase").filter({ hasText: "different corners" }).first();
-    const lit = page.locator('[data-t~="corners"].is-lit');
-
-    await expect(lit).toHaveCount(0);
+  test("focusing a phrase selects its zoom level", async ({ page }) => {
+    const phrase = page.locator(".dfc-mark").filter({ hasText: "the same field was built five ways" });
     await phrase.focus();
-    await expect(lit.first()).toBeVisible();
-    await expect(phrase).toHaveAttribute("aria-pressed", "false");
+    await expect(phrase).toHaveClass(/is-on/);
+    await expect(page.getByRole("tab", { name: "02 one field" })).toHaveAttribute("aria-selected", "true");
+  });
 
+  test("arrow keys move along the tabs", async ({ page }) => {
+    await page.getByRole("tab", { name: "01 the file" }).focus();
+    await page.keyboard.press("ArrowRight");
+    await expect(page.getByRole("tab", { name: "02 one field" })).toBeFocused();
+    await expect(page.getByRole("tab", { name: "02 one field" })).toHaveAttribute("aria-selected", "true");
+  });
+
+  test("a pin opens its decision under the picture, Escape closes it", async ({ page }) => {
+    await page.getByRole("tab", { name: "04 in the product" }).click();
+    const pin = page.getByRole("button", { name: /Decision 2: Badges stop looking like buttons\. \(the fix, after\)/ });
+    await pin.focus();
     await page.keyboard.press("Enter");
-    await expect(phrase).toHaveAttribute("aria-pressed", "true");
-
+    await expect(pin).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("status").filter({ hasText: "Badges stop looking like buttons." })).toBeVisible();
     await page.keyboard.press("Escape");
-    await expect(phrase).toHaveAttribute("aria-pressed", "false");
-  });
-
-  /* Highlight, never fade (Elleta, 20 Sep 2026). An annotation adds
-     emphasis; it never dims or hides what it is not pointing at. */
-  test("nothing is dimmed while a phrase is lit", async ({ page }) => {
-    const phrase = page.locator(".linked-phrase").filter({ hasText: "different corners" }).first();
-    await phrase.focus();
-    await expect(page.locator('[data-t~="corners"].is-lit').first()).toBeVisible();
-    const faded = await page.locator("[data-t]").evaluateAll((els) =>
-      els.filter((e) => parseFloat(getComputedStyle(e).opacity) < 1).length
-    );
-    expect(faded).toBe(0);
-  });
-
-  test("the text column is read before its figure, flipped or not", async ({ page }) => {
-    for (const section of await page.locator("section.case-section").all()) {
-      const order = await section.evaluate((el) => {
-        const kids = [...(el.querySelector(".case-section__grid")?.children ?? [])];
-        return [kids.findIndex((k) => k.classList.contains("case-section__text")), kids.findIndex((k) => k.classList.contains("case-frame"))];
-      });
-      expect(order[0]).toBeGreaterThanOrEqual(0);
-      expect(order[1]).toBeGreaterThan(order[0]);
-    }
+    await expect(pin).toHaveAttribute("aria-pressed", "false");
   });
 });
 

@@ -16,3 +16,4 @@ export { default as checkout } from "./checkout";
 export { default as designSystemTransformation } from "./design-system-transformation";
 export { default as bradFrost } from "./brad-frost";
 export { default as chip } from "./chip";
+export { default as theming } from "./theming";

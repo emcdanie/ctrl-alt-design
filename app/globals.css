@@ -4,8 +4,8 @@
 /* ─── Design tokens ─────────────────────────────────────────────── */
 @theme {
   /* Page + surfaces — lush ground (light default; navy dark via [data-theme]) */
-  --color-cream: #faf9f5;
-  --color-page: #F1EFE6;
+  --color-cream: var(--color-light-panel);
+  --color-page: var(--color-light-bg);
   /* CARD vs GROUND SEPARATION (defect, 27 Jul): the ground
      (--color-semantic-background, dropped to #F1EFE6 in bella.css) and
      the card were about 5 of 255 apart. At that distance a card edge
@@ -19,11 +19,11 @@
      layered and loses to bella.css's unlayered :root. It lives in the APP
      TOKEN AUTHORITY block below. */
   --color-card: var(--color-semantic-surface);
-  --color-ink: #1A1720;
-  --color-ink-soft: #2E2937;
-  --color-ink-muted: #4A4652;
-  --color-surface: #EDECE4;
-  --color-white-pure: #fafaf8;
+  --color-ink: var(--color-light-ink);
+  --color-ink-soft: var(--color-light-ink);
+  --color-ink-muted: var(--color-light-muted);
+  --color-surface: var(--color-light-panel);
+  --color-white-pure: var(--color-light-panel);
   --color-accent-iris: #5B4BD1;
   --color-accent-peri: #A79CE2;
 
@@ -35,13 +35,13 @@
   --color-fail-ink: #A32F3D;
   --color-fail-subtle: rgba(163, 47, 61, 0.12);
 
-  --color-border-soft: rgba(28, 26, 46, 0.08);
-  --color-border-medium: rgba(28, 26, 46, 0.12);
+  --color-border-soft: var(--color-light-line);
+  --color-border-medium: var(--color-light-line);
   --color-glass: rgba(255, 255, 255, 0.68);
   --color-glass-strong: rgba(255, 255, 255, 0.82);
   --color-tag-bg: rgba(255, 255, 255, 0.72);
   --color-tag-border: rgba(28, 26, 46, 0.1);
-  --color-muted: #4A4652;
+  --color-muted: var(--color-light-muted);
 
   --shadow-soft: 0 1px 2px rgba(28, 26, 46, 0.04), 0 10px 30px rgba(28, 26, 46, 0.06),
     0 24px 60px rgba(28, 26, 46, 0.04);
@@ -124,7 +124,7 @@ body {
      eyebrows; neutral surfaces use ink-soft (muted lost too much
      presence), case surfaces override with the case identity colour.
      Declared on BODY, not :root (the font-token substitution lesson). */
-  --color-eyebrow: var(--color-ink-soft);
+  --color-eyebrow: var(--color-ink-muted);
 }
 
 /* ─── APP TOKEN AUTHORITY (unlayered — MUST stay unlayered) ─────────
@@ -153,7 +153,7 @@ body {
      addition in DESIGN.md. Faint enough to leave text contrast alone. */
   --dot-grid-color: rgb(20 20 40 / 0.14);
   --dot-grid-size: 24px;
-  --border-faint: color-mix(in srgb, var(--color-ink) 10%, transparent);
+  --border-faint: var(--color-semantic-border);
   --radius-card: 1rem;
   --radius-pill: 999px;
   /* a soft iris wash: row hover (10%, the mock); the Current pill takes
@@ -197,13 +197,18 @@ body {
   --text-heading-3: clamp(1.125rem, 1.05rem + 0.3vw, 1.375rem);
   --text-lead: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
   --leading-lead: 1.55;
-  --text-body: clamp(1rem, 0.98rem + 0.1vw, 1.0625rem);
+  --text-body: var(--typography-font-size-body); /* 17px (Geist refresh) */
   /* nav links and button labels */
   --text-nav: 1rem;
   --leading-body: 1.55;
   /* the floor: nothing on the site renders below 14px */
   --text-meta: 0.875rem;
-  --text-code: var(--text-meta); /* 14px: the code role (.text-code) sits on the floor, never under it (Elleta, 19 Sep 2026) */
+  /* Geist refresh (Elleta, 22 Sep 2026): eyebrows, labels and meta are
+     the code face at 13px with ss09, no caps, no tracking. BELLA's floor for
+     Mono is 13px; nothing renders below it. */
+  --text-mono: var(--typography-font-size-mono);
+  --tracking-mono: var(--typography-letter-spacing-mono);
+  --mono-feature: var(--typography-font-feature-mono);
   --text-caption: 0.9375rem; /* 15px: a title under a name (experience rows) */
   /* Good company grid cells (100px under 700px) */
   --logo-cell: 132px;
@@ -254,7 +259,7 @@ body {
      component. --color-card derives from it in @theme, so the swapped Card
      and the 50-odd surfaces still named --color-card cannot drift apart.
      --color-semantic-surface-inset backs the Card's media well. */
-  --color-semantic-surface: #FDFCF9; /* warm off-white, pure #fff still retired */
+  --color-semantic-surface: var(--color-light-panel); /* Geist refresh (22 Sep 2026): the neutral panel; pure white is the page ground only */
   --color-semantic-surface-inset: var(--color-surface);
 
   /* Header offset. All sticky/fixed elements below the nav use this.
@@ -263,7 +268,6 @@ body {
   /* ELLETA wordmark: component token, no BELLA size fits 44/36 */
   --nav-wordmark-size: 2.75rem;
   /* Eyebrow/label tracking: caps + spacing carry the old mono look */
-  --tracking-eyebrow: var(--typography-letter-spacing-wider);
 
   /* 3D language elevation tokens (token lock 2026-07-17): the orb,
      keycap switch, and nav-bar depth values, moved verbatim out of the
@@ -288,18 +292,22 @@ body {
      (Part U); from about 480px up the sizes are Part Q's */
   --component-heading-hero-font-size: clamp(2.75rem, 1.5rem + 5.6vw, 6.75rem);
   --component-heading-page-font-size: clamp(2.5rem, 1.6rem + 4.2vw, 5.25rem);
-  --tracking-title: -0.035em;
-  --leading-title: 1.02;
+  --tracking-title: var(--typography-letter-spacing-display);
+  --leading-title: var(--typography-line-height-heading, 1.08);
   --component-heading-section-font-size: clamp(1.75rem, 1.45rem + 1.3vw, 2.75rem);
   /* Geist headings track slightly tight; leading never drops below 1
      (audit:type enforces it). */
-  --tracking-display: -0.03em;
-  --leading-display: 1.05;
+  /* Geist refresh (22 Sep 2026): Geist 300, display -0.035em, h2
+     -0.03em, titles 500 at 20px -0.015em (BELLA ae6eb70). */
+  --tracking-display: var(--typography-letter-spacing-display);
+  --tracking-h2: var(--typography-letter-spacing-h2);
+  --tracking-title-item: var(--typography-letter-spacing-title);
+  --leading-display: 1.08;
   /* the overlay nav's Geist link size (not a heading tier) */
   --font-hero: clamp(2.5rem, 5vw, 3.5rem);
   /* sub-heading tier (h3 level): Geist 700, never Unique, 24 to 32 */
   --font-subsection: clamp(1.5rem, 1.3143rem + 0.7619vw, 2rem);
-  --font-card-title: clamp(1.25rem, 1.4vw, 1.5rem);
+  --font-card-title: 1.25rem; /* titles: 20px (Geist refresh) */
   --font-body-size: var(--text-body);
   --font-small: 14px;
 
@@ -325,19 +333,17 @@ body {
   --case-design-lab-hi: var(--case-filters-hi);
   --case-design-lab-lo: var(--case-filters-lo);
   --case-design-lab-deep: var(--case-filters-deep);
-  --case-writing-hi: #F5A79C;
-  --case-writing-deep: #B23C30;
-  --case-code-first-text: var(--case-code-first-deep);
-  --case-drift-text: var(--case-drift-deep);
-  --case-clarity-text: var(--case-clarity-deep);
-  --case-design-lab-text: var(--case-design-lab-deep);
-  --case-writing-text: var(--case-writing-deep);
-  --case-filters-text: var(--case-filters-deep);
+  --case-code-first-text: var(--color-ink-muted);
+  --case-drift-text: var(--color-ink-muted);
+  --case-clarity-text: var(--color-ink-muted);
+  --case-design-lab-text: var(--color-ink-muted);
+  --case-writing-text: var(--color-ink-muted);
+  --case-filters-text: var(--color-ink-muted);
   /* CHIP (2026): teal identity, AA as text on light (deep) and navy (hi) */
   --case-chip-hi: #9ED9D2;
   --case-chip-lo: #79C6BC;
   --case-chip-deep: #1D6A61;
-  --case-chip-text: var(--case-chip-deep);
+  --case-chip-text: var(--color-ink-muted);
   --case-filters-hi: #AFC9E8;
   --case-filters-lo: #8FB4DC;
   --case-filters-deep: #2A5A8E;
@@ -348,9 +354,6 @@ body {
   --gov-clay-hi: #D99A6E;
   --gov-clay-deep: #8A4726;
   --gov-clay-text: var(--gov-clay-deep);
-  --gov-grey-hi: #B8B2C2;
-  --gov-grey-deep: #57525F;
-  --gov-grey-text: var(--gov-grey-deep);
   --hub-hi: #CFC7F6;
   --hub-lo: #A99BEC;
   /* The six panel-ground companions (--hero-panel-ink-soft / -meta /
@@ -378,10 +381,10 @@ body {
 
   /* pattern-study tile (Work, 19 Sep 2026): one ground behind every
      framed crop */
-  --tile: #E3DED1;
-  --cover-warm-hi: #E9E2D2;
-  --cover-warm-lo: #D9CDB9;
-  --cover-warm-ink: #4A4030;
+  --tile: var(--color-light-panel);
+  --cover-warm-hi: var(--color-light-panel);
+  --cover-warm-lo: var(--color-light-line);
+  --cover-warm-ink: var(--color-light-muted);
 
   /* Fixed-context "paper" tokens — surfaces that stay light in BOTH
      modes (reveal card, resume modal). Never flip these. */
@@ -467,40 +470,39 @@ body {
 [data-theme="dark"] {
   /* the dark ground (also set on body below, where the dark inks live) */
   --dot-grid-color: rgb(255 255 255 / 0.1);
-  --color-semantic-background: #110F0D;
+  --color-semantic-background: var(--color-dark-bg);
   /* surfaces: 4% toward the cream ink, so lighter than the ground */
   --surface-card: var(--color-semantic-surface-card);
-  --border-faint: color-mix(in srgb, var(--color-navy-ink) 12%, transparent);
+  --border-faint: var(--color-semantic-border);
   --iris-soft: color-mix(in srgb, var(--color-accent-ink) 14%, transparent);
   --iris-pill: var(--iris-soft); /* 6.53:1 on the dark card */
   /* case accents as TEXT flip to the bright variant on navy (deep is
      calibrated for light cards only) */
-  --case-code-first-text: var(--case-code-first-hi);
-  --case-drift-text: var(--case-drift-hi);
-  --case-clarity-text: var(--case-clarity-hi);
-  --case-design-lab-text: var(--case-design-lab-hi);
+  --case-code-first-text: var(--color-dark-muted);
+  --case-drift-text: var(--color-dark-muted);
+  --case-clarity-text: var(--color-dark-muted);
+  --case-design-lab-text: var(--color-dark-muted);
   /* brightened toward the on-dark ink (a11y, 21 Jul): the raw -hi
      salmon sat under 4.5:1 on its own 26% wash (chip readiness map);
      still hue-true, now AA on every ground it renders on */
-  --case-writing-text: color-mix(in srgb, var(--case-writing-hi) 62%, var(--ink-on-dark-strong));
-  --case-filters-text: var(--case-filters-hi);
-  --case-chip-text: var(--case-chip-hi);
+  --case-writing-text: var(--color-dark-muted);
+  --case-filters-text: var(--color-dark-muted);
+  --case-chip-text: var(--color-dark-muted);
   /* governance status: the clay/grey text brightens on dark for AA on
      the 26% tint (the raw -hi sat too close to its own wash, like the
      case-writing salmon did) */
   --gov-clay-text: #EDC3A2;
-  --gov-grey-text: #D0CAD8;
   /* thesis cards in dark sit on the dark card surface (was the navy
      specimen ground; navy left dark mode 19 Sep 2026) */
-  --thesis-band-ground: #1B1916;
-  --thesis-band-ink: #F4EFE6;
+  --thesis-band-ground: var(--color-dark-surface);
+  --thesis-band-ink: var(--color-dark-ink);
   /* cover placeholder flips as a SET in dark (cover-contrast fix,
      21 Jul): dark warm plate, parchment-warm ink; >=3:1 large-text on
      every stop, scrim-free (the placeholder skips the media scrim) */
-  --tile: #23201C;
-  --cover-warm-hi: #3A3428;
-  --cover-warm-lo: #2C271E;
-  --cover-warm-ink: #E9E2D2;
+  --tile: var(--color-dark-surface);
+  --cover-warm-hi: #1f1f1f;
+  --cover-warm-lo: var(--color-dark-surface);
+  --cover-warm-ink: var(--color-dark-muted);
   --modal-backdrop: rgba(0, 0, 0, 0.6);
   --page-glow: rgba(255, 255, 255, 0.04);
 }
@@ -602,11 +604,11 @@ main.embed-page .l-section:first-of-type {
   border-bottom: 1px solid var(--color-semantic-border);
   /* a plain mono label in the code role (Part Q, 21 Sep: no paw) */
   font-family: var(--font-code);
-  font-size: var(--text-meta);
+  font-size: var(--text-mono);
   font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
+  font-feature-settings: var(--mono-feature);
 }
 
 /* SectionHeader: ONE column. The heading, then the lead and body under
@@ -793,9 +795,9 @@ main.embed-page .l-section:first-of-type {
 .text-display-2,
 .text-display-3 {
   font-family: var(--font-body);
-  font-weight: 700;
-  letter-spacing: var(--tracking-display);
-  line-height: 1.1;
+  font-weight: var(--typography-font-weight-light);
+  letter-spacing: var(--tracking-h2);
+  line-height: var(--leading-display);
   text-wrap: balance;
   max-width: var(--measure-heading);
   color: var(--color-ink);
@@ -803,6 +805,7 @@ main.embed-page .l-section:first-of-type {
 
 .text-display-1 {
   font-size: var(--text-display-1);
+  letter-spacing: var(--tracking-display);
   line-height: var(--leading-title);
   max-inline-size: var(--measure-title);
 }
@@ -830,16 +833,19 @@ main.embed-page .l-section:first-of-type {
    Dates, stat lines, code-comment notes (// ...), credential IDs. */
 .text-code {
   font-family: var(--font-code);
-  font-size: var(--text-code);
+  font-size: var(--text-mono);
   font-weight: 400;
   line-height: 1.5;
-  letter-spacing: 0.01em;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
+  font-feature-settings: var(--mono-feature);
 }
 
 .text-meta {
-  font-family: var(--font-body);
-  font-size: var(--text-meta);
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
   line-height: 1.5;
   color: var(--color-ink-muted);
 }
@@ -857,9 +863,10 @@ main.embed-page .l-section:first-of-type {
   white-space: nowrap;
 }
 
-/* the one iris word in a display heading */
+/* the accent in a display heading is the muted half-line (Geist
+   refresh, 22 Sep 2026): colour lives in fills, never in heading text */
 .accent {
-  color: var(--color-accent-ink);
+  color: var(--color-ink-muted);
 }
 
 .layout-section-tight {
@@ -927,9 +934,9 @@ html {
 
 body {
   font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: 1.65;
-  letter-spacing: 0.01em;
+  font-size: var(--text-body);
+  line-height: 1.6;
+  letter-spacing: var(--typography-letter-spacing-body);
   background:
     radial-gradient(circle at top, var(--page-glow), transparent 36%),
     var(--color-semantic-background);
@@ -944,40 +951,40 @@ body {
    per-component hex). Components must consume THESE tokens, never raw
    grounds/inks — see DESIGN.md "Global theming contract". */
 [data-theme="dark"] body {
-  --color-ink: #F4EFE6;
-  --color-ink-soft: #E6E1D6;
+  --color-ink: var(--color-dark-ink);
+  --color-ink-soft: var(--color-dark-ink);
   /* muted on the warm dark ground (19 Sep 2026, the About mock): 7.56:1
      on the ground, 6.93 on the card, 6.19 on the raised surface (AA;
      AAA only on the ground) */
-  --color-ink-muted: #A8A29A;
-  --color-muted: #A8A29A;
+  --color-ink-muted: var(--color-dark-muted);
+  --color-muted: var(--color-dark-muted);
   /* dark ground (Elleta, 18 Sep 2026): warm near-black #110F0D, not
      navy. Navy stays for the footer and the light-theme primary only.
      Surfaces lift from the ground toward the cream ink. */
-  --color-semantic-background: #110F0D;
-  --color-page: #110F0D;
-  --color-cream: #1B1916;
+  --color-semantic-background: var(--color-dark-bg);
+  --color-page: var(--color-dark-bg);
+  --color-cream: var(--color-dark-surface);
   /* dark leg of the same separation fix: ground stays navy #1B1B40,
      the CARD lifts so its edge reads without a wash. --color-surface is
      deliberately left alone: lifting it too cost the mint skill chips
      their AA margin (4.47:1) and the separation never needed it. */
-  --color-semantic-surface: #1B1916;
+  --color-semantic-surface: var(--color-dark-surface);
   --color-card: var(--color-semantic-surface);
   --color-semantic-surface-inset: var(--color-surface);
-  --color-surface: #252320;
-  --color-white-pure: #252320;
-  --color-glass: rgba(27, 25, 22, 0.68);
-  --color-glass-strong: rgba(27, 25, 22, 0.82);
-  --color-tag-bg: rgba(244, 239, 230, 0.08);
-  --color-tag-border: rgba(244, 239, 230, 0.16);
+  --color-surface: #1f1f1f;
+  --color-white-pure: #1f1f1f;
+  --color-glass: rgba(22, 22, 22, 0.68);
+  --color-glass-strong: rgba(22, 22, 22, 0.82);
+  --color-tag-bg: rgba(237, 237, 237, 0.08);
+  --color-tag-border: var(--color-dark-line);
   /* dark leg of the verdict pair: lifted so both clear AA on the card */
   --color-pass-ink: #86D6B0;
   --color-pass-subtle: rgba(134, 214, 176, 0.16);
   --color-fail-ink: #F2A0AB;
   --color-fail-subtle: rgba(242, 160, 171, 0.16);
 
-  --color-border-soft: rgba(244, 239, 230, 0.1);
-  --color-border-medium: rgba(244, 239, 230, 0.16);
+  --color-border-soft: var(--color-dark-line);
+  --color-border-medium: var(--color-dark-line);
   --color-accent-iris: #A79CE2;
   background: var(--color-semantic-background);
 }
@@ -986,9 +993,8 @@ h1,
 h2 {
   font-family: var(--font-display);
   color: var(--color-ink);
-  /* v3: headings render Unique (condensed). Negative tracking makes its
-     glyphs COLLIDE; Unique display sizes always track >= 0. */
-  letter-spacing: 0.01em;
+  font-weight: var(--typography-font-weight-light);
+  letter-spacing: var(--tracking-h2);
 }
 
 h3,
@@ -1076,17 +1082,16 @@ main:not(.embed-page) .l-section:first-of-type::before {
 
 .eyebrow,
 .section-label {
-  /* Eyebrows are Geist, uppercase, tracked (--tracking-eyebrow).
-     Presence pass 2026-07-17: 700 weight; case surfaces use the case
-     identity colour (-text flips), neutral surfaces ink-soft. */
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-sm); /* one ramp step up: 13 -> 14 (eyebrows read too quiet under the display heads) */
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-eyebrow);
+  /* Eyebrows are the Mono label role (Geist refresh, 22 Sep 2026):
+     13px, 400, ss09, no caps, muted. */
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   /* wayfinding, not action: eyebrows never wear the interactive iris */
   color: var(--color-eyebrow);
   line-height: 1.35;
+  font-feature-settings: var(--mono-feature);
 }
 
 /* Inline text links in case-study prose — iris accent, ≥4.5:1 on cream */
@@ -1117,14 +1122,17 @@ main:not(.embed-page) .l-section:first-of-type::before {
   border-radius: var(--radius-full);
   border: none; /* section 5 contract: Tag = flat wash, never chip-like */
   cursor: default;
-  background: var(--color-supporting-linen);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: var(--typography-font-weight-medium);
-  color: var(--ink-on-paper);
+  /* Geist refresh (22 Sep 2026): a Mono label on a chip fill, chip ink
+     fixed in both themes (BELLA Tag) */
+  background: var(--color-chip-c1);
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  font-feature-settings: var(--mono-feature);
+  color: var(--color-chip-text);
   white-space: nowrap;
   line-height: var(--typography-line-height-normal);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tracking-mono);
 }
 
 .card-hover {
@@ -1195,9 +1203,9 @@ main:not(.embed-page) .l-section:first-of-type::before {
    their own shells. */
 .display-heading {
   font-family: var(--font-body);
-  font-weight: 700;
-  letter-spacing: var(--tracking-display);
-  line-height: 1.1;
+  font-weight: var(--typography-font-weight-light);
+  letter-spacing: var(--tracking-h2);
+  line-height: var(--leading-display);
   text-wrap: balance;
   max-width: var(--measure-heading);
   color: var(--color-ink);
@@ -1205,40 +1213,14 @@ main:not(.embed-page) .l-section:first-of-type::before {
 
 .display-heading--hero {
   font-size: var(--component-heading-hero-font-size);
+  letter-spacing: var(--tracking-display);
   max-inline-size: var(--measure-hero);
 }
 
-/* hero squeeze (Heading squeeze, hero tier only): 820 at rest; with
-   scroll timelines and motion allowed, weight 820 to 640 and tracking
-   -0.01em to -0.03em across the first 60vh of the page's scroll, line
-   height fixed (gentler, polish pass 19 Sep 2026). The one approved
-   tracking exception (CLAUDE.md §3), owned here. */
+/* hero squeeze retired (Geist refresh, 22 Sep 2026): the headline is
+   Geist 300 and holds still. The prop stays so no consumer breaks. */
 .display-heading--squeeze {
-  font-weight: 820;
-  letter-spacing: -0.01em;
-  line-height: 1;
-}
-
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .display-heading--squeeze {
-      animation: heading-squeeze linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 60vh;
-    }
-  }
-}
-
-@keyframes heading-squeeze {
-  from {
-    font-weight: 820;
-    letter-spacing: -0.01em;
-  }
-
-  to {
-    font-weight: 640;
-    letter-spacing: -0.03em;
-  }
+  line-height: var(--leading-display);
 }
 
 /* page / section / case sizes come from the .text-display-1/2 utilities
@@ -1259,13 +1241,14 @@ main:not(.embed-page) .l-section:first-of-type::before {
   max-inline-size: var(--measure-title);
 }
 
-/* sub-heading (h3 level): Geist 700, sentence case, never Unique */
+/* sub-heading (h3 level) is a title: Geist 500 at 20px (Geist refresh) */
 .display-heading--sub {
   font-family: var(--font-body);
   text-transform: none;
-  letter-spacing: normal;
-  line-height: var(--typography-line-height-snug);
-  font-size: var(--font-subsection);
+  font-weight: var(--typography-font-weight-medium);
+  letter-spacing: var(--tracking-title-item);
+  line-height: 1.3;
+  font-size: var(--font-card-title);
 }
 
 .display-heading--inverse {
@@ -1436,13 +1419,13 @@ main:not(.embed-page) .l-section:first-of-type::before {
 .section-row__meta,
 .site-footer__label {
   margin: 0;
-  font-family: var(--font-body);
-  font-size: var(--text-meta);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
   font-variant-numeric: tabular-nums;
+  font-feature-settings: var(--mono-feature);
 }
 
 .section-row__meta {
@@ -1891,7 +1874,7 @@ main:not(.embed-page) .l-section:first-of-type::before {
   display: block;
   font-family: var(--font-body);
   font-size: var(--text-heading-3);
-  font-weight: 600;
+  font-weight: var(--typography-font-weight-medium);
   letter-spacing: -0.01em;
   line-height: 1.2;
   color: var(--color-ink);
@@ -1907,7 +1890,7 @@ main:not(.embed-page) .l-section:first-of-type::before {
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.4;
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   vertical-align: middle;
 }
 
@@ -2030,7 +2013,7 @@ main:not(.embed-page) .l-section:first-of-type::before {
   font-size: 5.5rem;
   font-weight: 800;
   line-height: 1;
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   transform: rotate(-8deg);
   pointer-events: none;
 }
@@ -2069,7 +2052,7 @@ main:not(.embed-page) .l-section:first-of-type::before {
   font-size: 1.3em;
   font-weight: 800;
   line-height: 0;
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
 }
 
 .quotes__quote + figcaption {
@@ -2110,29 +2093,30 @@ main:not(.embed-page) .l-section:first-of-type::before {
   color: var(--color-ink);
 }
 
-/* ─── Site footer: navy + cream in both themes ────────────────────
-   The scope re-points the ink/accent tokens, so utilities, the paw
-   labels and the secondary Button (its outline rides --color-accent-ink)
-   all render cream on navy. The accent word takes periwinkle. */
+/* ─── Site footer: the neutral dark surface in both themes ─────────
+   (Geist refresh, Elleta 22 Sep 2026: navy retired.) The scope re-points
+   the ink/accent tokens, so utilities, the paw labels and the secondary
+   Button render the dark ink on #161616. The accent word is the muted
+   half-line. */
 .site-footer {
-  --color-ink: var(--color-navy-ink);
-  --color-ink-soft: var(--ink-on-dark-body);
-  --color-ink-muted: var(--ink-on-dark-muted);
-  --color-accent-ink: var(--color-navy-ink);
-  --ring-focus-color: var(--color-navy-ink);
-  background: var(--color-brand-navy);
-  color: var(--color-navy-ink);
+  --color-ink: var(--color-dark-ink);
+  --color-ink-soft: var(--color-dark-ink);
+  --color-ink-muted: var(--color-dark-muted);
+  --color-accent-ink: var(--color-dark-ink);
+  --ring-focus-color: var(--color-dark-ink);
+  background: var(--color-dark-surface);
+  color: var(--color-dark-ink);
   overflow: hidden;
 }
 
-/* dark mode: the navy footer on the near-black ground; a hairline
+/* dark mode: the dark footer on the near-black ground; a hairline
    still marks the edge */
 [data-theme="dark"] .site-footer {
-  border-top: 1px solid color-mix(in srgb, var(--color-navy-ink) 10%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--color-dark-ink) 10%, transparent);
 }
 
 .site-footer .accent {
-  color: var(--color-brand-periwinkle);
+  color: var(--color-dark-muted);
 }
 
 .site-footer__inner {
@@ -2178,7 +2162,7 @@ main:not(.embed-page) .l-section:first-of-type::before {
 
 .site-footer__lead {
   margin: var(--space-stack-sm) 0 0;
-  color: var(--color-navy-ink);
+  color: var(--color-dark-ink);
 }
 
 /* phones: the photo and the heading share a row, then the lead starts
@@ -2196,7 +2180,7 @@ main:not(.embed-page) .l-section:first-of-type::before {
   padding: 0;
   font-size: var(--typography-font-size-base);
   line-height: var(--leading-body);
-  color: color-mix(in srgb, var(--color-navy-ink) 70%, transparent);
+  color: color-mix(in srgb, var(--color-dark-ink) 70%, transparent);
 }
 
 .site-footer__lines li {
@@ -2211,18 +2195,18 @@ main:not(.embed-page) .l-section:first-of-type::before {
   margin-top: var(--space-stack-md);
 }
 
-/* both footer buttons are pills; the primary is cream on navy */
+/* both footer buttons are pills; the primary is light ink on the dark surface */
 .site-footer .btn-pill {
   border-radius: var(--radius-full);
 }
 
 .site-footer .btn-key--primary {
-  color: var(--color-brand-navy);
-  background: var(--color-navy-ink);
+  color: var(--color-dark-surface);
+  background: var(--color-dark-ink);
 }
 
 .site-footer .btn-key--primary:hover {
-  background: color-mix(in srgb, var(--color-navy-ink) 88%, var(--color-brand-navy));
+  background: color-mix(in srgb, var(--color-dark-ink) 88%, var(--color-dark-surface));
 }
 
 .site-footer__cols {
@@ -2278,9 +2262,9 @@ main:not(.embed-page) .l-section:first-of-type::before {
   cursor: pointer;
   font-family: var(--font-body);
   font-size: var(--text-body);
-  color: var(--color-navy-ink);
+  color: var(--color-dark-ink);
   text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--color-navy-ink) 35%, transparent);
+  text-decoration-color: color-mix(in srgb, var(--color-dark-ink) 35%, transparent);
   text-underline-offset: 3px;
 }
 
@@ -2337,7 +2321,7 @@ main:not(.embed-page) .l-section:first-of-type::before {
   font-weight: 400;
   font-size: var(--footer-wordmark-size);
   line-height: 0.8;
-  color: var(--color-navy-ink);
+  color: var(--color-dark-ink);
 }
 
 /* Trim the reserve where the band has slack (Elleta, 20 Sep 2026).
@@ -2376,9 +2360,11 @@ main:not(.embed-page) .l-section:first-of-type::before {
 .building-line {
   margin: 0;
   font-family: var(--font-code);
-  font-size: var(--text-meta);
+  font-size: var(--text-mono);
   line-height: 1.5;
   color: var(--color-ink-muted);
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
 }
 
 /* the details link keeps its underline; a 24px target (WCAG 2.2 AA, 2.5.8) */
@@ -2399,7 +2385,7 @@ main:not(.embed-page) .l-section:first-of-type::before {
   min-height: 1.5em;
   margin: var(--spacing-2) 0 0;
   font-size: var(--text-meta);
-  color: var(--color-navy-ink);
+  color: var(--color-dark-ink);
 }
 
 /* the footer paw trail (components/FooterTrail.tsx): prints in the
@@ -2447,7 +2433,7 @@ main:not(.embed-page) .l-section:first-of-type::before {
   gap: var(--spacing-1) var(--space-stack-md);
   width: 100%;
   margin: 0;
-  color: color-mix(in srgb, var(--color-navy-ink) 70%, transparent);
+  color: color-mix(in srgb, var(--color-dark-ink) 70%, transparent);
 }
 
 .site-footer__small p {
@@ -2544,8 +2530,8 @@ main:not(.embed-page) .l-section:first-of-type::before {
   max-width: min(20rem, calc(100vw - var(--spacing-6)));
   padding: var(--spacing-4);
   border-radius: var(--radius-popover);
-  background: var(--color-brand-navy);
-  color: var(--color-navy-ink);
+  background: var(--color-dark-surface);
+  color: var(--color-dark-ink);
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
   font-weight: 400;
@@ -2582,14 +2568,16 @@ main:not(.embed-page) .l-section:first-of-type::before {
 }
 
 [data-theme="dark"] .term-tip {
-  background: var(--color-navy-ink);
-  color: var(--color-brand-navy);
+  background: var(--color-dark-ink);
+  color: var(--color-dark-surface);
 }
 
 .term-tip__tag {
   font-family: var(--font-code);
-  font-size: var(--text-meta);
+  font-size: var(--text-mono);
   opacity: 0.8;
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
 }
 
 .term-tip__tag dfn {
@@ -2734,10 +2722,10 @@ main:not(.embed-page) .l-section:first-of-type::before {
      only), one tier above body text. .heading-item is the older name
      for the same recipe. */
   font-family: var(--font-body);
-  font-size: var(--text-heading-3);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.25;
+  font-size: var(--font-card-title);
+  font-weight: var(--typography-font-weight-medium);
+  letter-spacing: var(--tracking-title-item);
+  line-height: 1.3;
   color: var(--color-ink);
 }
 
@@ -2769,14 +2757,6 @@ main:not(.embed-page) .l-section:first-of-type::before {
   color: var(--color-muted);
 }
 
-/* Meta / timestamps / secondary labels */
-.text-meta {
-  font-family: var(--font-body);
-  font-size: var(--font-small);
-  font-weight: var(--typography-font-weight-medium);
-  letter-spacing: 0.01em;
-  color: var(--color-ink-muted);
-}
 
 
 
@@ -3034,24 +3014,30 @@ main:not(.embed-page) .l-section:first-of-type::before {
   align-items: center;
   gap: var(--spacing-1);
   padding: var(--spacing-1) var(--spacing-3);
-  border: 1px solid var(--color-semantic-accent-border);
+  border: 1px solid var(--color-semantic-border);
   border-radius: var(--radius-full);
-  font-size: var(--typography-font-size-base);
-  font-weight: 500;
-  color: var(--color-accent-ink);
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
+  color: var(--color-ink);
   white-space: nowrap;
 }
 
+/* status wears a chip fill with the fixed chip ink (Geist refresh,
+   BELLA: colour in fills, chip text #17191a in both themes); the
+   label and icon carry the state, never the fill alone */
 .status-pill--ok {
   border-color: transparent;
-  color: var(--case-clarity-text);
-  background: color-mix(in srgb, var(--case-clarity-hi) 26%, var(--color-card));
+  color: var(--color-chip-text);
+  background: var(--color-chip-c3);
 }
 
 .status-pill--warn {
   border-color: transparent;
-  color: var(--gov-clay-text);
-  background: color-mix(in srgb, var(--gov-clay-hi) 26%, var(--color-card));
+  color: var(--color-chip-text);
+  background: var(--color-chip-c2);
 }
 
 /* ─── Travelling border light — the ONE trace implementation ─────
@@ -3780,22 +3766,19 @@ textarea:focus-visible {
 /* §8 colour-as-identity: tags ON a case's own page wear its tint.
    Shared tags everywhere else stay neutral linen. */
 .tag.tag--identity {
-  background: color-mix(in srgb, var(--case-tint-hi, var(--color-supporting-linen)) 36%, var(--color-card));
-  color: var(--case-tint-text, var(--ink-on-paper));
+  background: var(--color-chip-c3);
+  color: var(--color-chip-text);
 }
 
 /* outline (19 Sep 2026): hairline, muted ink, no fill; theme-aware,
    so it never renders as a cream plate on navy */
 .tag.tag--outline {
   background: transparent;
-  box-shadow: inset 0 0 0 1px var(--color-border-medium);
-  color: var(--color-ink-muted);
+  box-shadow: inset 0 0 0 1px var(--color-semantic-border);
+  color: var(--color-ink);
 }
 
-/* dark: keep the tint plate near-navy so the light case text clears AA */
-[data-theme="dark"] .tag.tag--identity {
-  background: color-mix(in srgb, var(--case-tint-hi, var(--color-supporting-linen)) 18%, var(--color-card));
-}
+
 
 /* Title */
 /* Summary */
@@ -3831,13 +3814,13 @@ textarea:focus-visible {
 }
 
 .cs-shell__meta-row dt {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
   flex-shrink: 0;
+  font-feature-settings: var(--mono-feature);
 }
 
 .cs-shell__meta-row dd {
@@ -4085,9 +4068,9 @@ textarea:focus-visible {
 .card-statement {
   font-family: var(--font-body);
   font-size: var(--font-card-title);
-  font-weight: 700;
-  line-height: var(--typography-line-height-snug);
-  letter-spacing: -0.005em;
+  font-weight: var(--typography-font-weight-medium);
+  line-height: 1.3;
+  letter-spacing: var(--tracking-title-item);
   color: var(--thesis-band-ink);
 }
 
@@ -4386,13 +4369,13 @@ textarea:focus-visible {
    page heads render through the ONE shared SectionHeader */
 
 .ds-section__kicker {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
   margin: var(--spacing-6) 0 var(--spacing-3);
+  font-feature-settings: var(--mono-feature);
 }
 
 .ds-section__note {
@@ -4457,14 +4440,14 @@ textarea:focus-visible {
 /* stage badges: metadata tier (the tag/pill register), stage colour
    from semantic families only */
 .bmm-badge {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   padding: var(--spacing-1) var(--spacing-3);
   border-radius: var(--radius-full);
   white-space: nowrap;
+  font-feature-settings: var(--mono-feature);
 }
 
 /* DEFECT 6 (27 Jul): V1 wore a rose hue and read as a FAILURE on the
@@ -4478,7 +4461,7 @@ textarea:focus-visible {
 
 .bmm-badge--growing {
   background: var(--color-semantic-accent-subtle);
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
 }
 
 .bmm-badge--teenage {
@@ -4561,7 +4544,7 @@ textarea:focus-visible {
   /* a case name is reading text, so it clears the floor; the linked
      variant below matches it exactly so the grid reads as one tier */
   font-size: var(--typography-font-size-base);
-  font-weight: 600;
+  font-weight: var(--typography-font-weight-medium);
   color: var(--color-ink);
   padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
 }
@@ -4570,7 +4553,7 @@ textarea:focus-visible {
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
   font-weight: 600;
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
   /* 44px house rule, inline hit-area growth */
@@ -4733,7 +4716,7 @@ textarea:focus-visible {
   border-radius: var(--radius-md);
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   max-width: 100%;
   min-width: 0;
 }
@@ -4901,11 +4884,10 @@ textarea:focus-visible {
   padding: 18px 34px;
   min-height: var(--spacing-touch-target);
   border-radius: var(--btn-key-radius);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--key-face-hi);
   background: linear-gradient(var(--key-fill-hi), var(--key-fill-lo));
   /* DEFECT 1 (overglow), 27 Jul: this stacked a hard plate edge, a
@@ -4921,6 +4903,7 @@ textarea:focus-visible {
   box-shadow:
     1px 2px 0 var(--key-fill-edge),
     var(--shadow-sm);
+  font-feature-settings: var(--mono-feature);
 }
 
 /* the trace ring (Phase 2 rebuild, 22 Jul): ring space reserved IN
@@ -4958,12 +4941,12 @@ textarea:focus-visible {
   border: 1px solid var(--color-border-medium);
   border-radius: var(--radius-full);
   background: transparent;
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
+  font-feature-settings: var(--mono-feature);
 }
 
 .tok-inspector__zone[aria-pressed="true"] {
@@ -4989,12 +4972,12 @@ textarea:focus-visible {
   border: 1px solid var(--color-border-medium);
   border-radius: var(--radius-full);
   background: transparent;
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
+  font-feature-settings: var(--mono-feature);
 }
 
 .tok-annotation__trigger:hover {
@@ -5158,12 +5141,12 @@ textarea:focus-visible {
 }
 
 .cs2-parity__state {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink);
+  font-feature-settings: var(--mono-feature);
 }
 
 @media (max-width: 479px) {
@@ -5193,7 +5176,7 @@ textarea:focus-visible {
    applied only where she marks words. Case identity colours stay
    case-scoped; this register is the ACCENT ink, not a case colour. */
 .cs2-em {
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   font-weight: 700;
 }
 
@@ -5229,12 +5212,12 @@ textarea:focus-visible {
   position: absolute;
   left: var(--spacing-4);
   top: var(--spacing-3);
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
+  font-feature-settings: var(--mono-feature);
 }
 
 .spec-stage__demo {
@@ -5315,13 +5298,13 @@ textarea:focus-visible {
 }
 
 .csp-kicker {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
   margin: 0 0 var(--spacing-2);
+  font-feature-settings: var(--mono-feature);
 }
 
 /* Geist inside the card (the card rule); the recorded card-title step */
@@ -5461,16 +5444,17 @@ textarea:focus-visible {
 }
 
 .csp-flag__part {
-  font-weight: 600;
-  font-size: var(--typography-font-size-tag);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-weight: 400;
+  font-size: var(--text-mono);
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
+  font-family: var(--font-code);
+  font-feature-settings: var(--mono-feature);
 }
 
 .csp-flag__val {
   font-weight: 600;
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
 }
 
 /* tones: iris default; drift = the recorded drift status colour;
@@ -5736,19 +5720,19 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .jn-kicker-where {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
   margin: var(--spacing-5) 0 var(--spacing-1);
+  font-feature-settings: var(--mono-feature);
 }
 
 /* GEIST in the panel; Unique never inside a card */
 .jn-paneltitle {
   font-family: var(--font-body);
-  font-weight: 700;
+  font-weight: var(--typography-font-weight-medium);
   font-size: var(--font-subsection);
   letter-spacing: -0.01em;
   color: var(--color-ink);
@@ -6049,12 +6033,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 /* beat label: the site's section label (plain mono, Part Q) */
 .beat-eyebrow {
   font-family: var(--font-code);
-  font-size: var(--text-meta);
+  font-size: var(--text-mono);
   font-weight: 400;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
   margin: 0;
+  font-feature-settings: var(--mono-feature);
 }
 
 /* the beat headline renders through the Heading primitive at the
@@ -6069,7 +6053,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .beat-keyline {
   font-family: var(--font-body);
   font-size: var(--typography-font-size-lg);
-  font-weight: 600;
+  font-weight: var(--typography-font-weight-medium);
   line-height: var(--typography-line-height-normal);
   color: var(--color-ink);
   max-width: var(--measure-case);
@@ -6154,21 +6138,21 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .fnd-outcome-lbl {
   margin: 0 0 var(--spacing-2);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--case-clarity-text);
+  font-feature-settings: var(--mono-feature);
 }
 
 .fnd-outcome-big {
   margin: 0;
   font-family: var(--font-body);
   font-size: var(--typography-font-size-xl);
-  font-weight: 700;
+  font-weight: var(--typography-font-weight-light);
   line-height: 1.28;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--tracking-h2);
   color: var(--color-ink);
 }
 
@@ -6182,12 +6166,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .fnd-wc-h {
   margin: 0 0 var(--spacing-3);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-muted);
+  font-feature-settings: var(--mono-feature);
 }
 
 /* flat, quiet dividers (the demo specimen is the only card); 1px gaps
@@ -6212,12 +6196,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .fnd-k {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-muted);
+  font-feature-settings: var(--mono-feature);
 }
 
 .fnd-before {
@@ -6336,13 +6320,13 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .cs2-endreveal__label {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-muted);
   margin: 0 0 var(--spacing-3);
+  font-feature-settings: var(--mono-feature);
 }
 
 /* the next-case unit: one link to the case */
@@ -6376,7 +6360,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   align-items: center;
   justify-content: center;
   font-family: var(--font-body);
-  font-weight: 700;
+  font-weight: var(--typography-font-weight-medium);
   font-size: var(--typography-font-size-xl);
   color: var(--color-card);
   background: radial-gradient(120% 120% at 30% 22%, var(--case-filters-hi), var(--peri) 60%, var(--case-filters-deep));
@@ -6395,7 +6379,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .cs2-endreveal__title {
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
-  font-weight: 700;
+  font-weight: var(--typography-font-weight-medium);
   line-height: 1.2;
   color: var(--color-ink);
 }
@@ -6499,10 +6483,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    badge no longer drifts when the surface beneath it moves. .review
    also carries LESS tint: its text is the lightest of the four, so a
    heavier tint lifts the background toward the text and costs AA. */
-.gov-badge.stable { color: var(--case-clarity-text); background: color-mix(in srgb, var(--case-clarity-hi) 26%, var(--color-card)); }
-.gov-badge.review { color: var(--case-filters-text); background: color-mix(in srgb, var(--case-filters-hi) 16%, var(--color-card)); }
-.gov-badge.exp { color: var(--gov-clay-text); background: color-mix(in srgb, var(--gov-clay-hi) 26%, var(--color-card)); }
-.gov-badge.dep { color: var(--gov-grey-text); background: color-mix(in srgb, var(--gov-grey-hi) 26%, var(--color-card)); }
+/* Geist refresh: status lives in chip fills with the fixed chip ink; the
+   shape glyph and the word carry the state, never the fill alone */
+.gov-badge.stable { color: var(--color-chip-text); background: var(--color-chip-c3); }
+.gov-badge.review { color: var(--color-chip-text); background: var(--color-chip-c1); }
+.gov-badge.exp { color: var(--color-chip-text); background: var(--color-chip-c2); }
+.gov-badge.dep { color: var(--color-ink); background: transparent; box-shadow: inset 0 0 0 1px var(--color-semantic-border-strong); }
 .gov-note {
   margin-top: var(--spacing-4);
   font-size: var(--typography-font-size-base);
@@ -6527,8 +6513,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .cs2-displayquote__quote {
   margin: 0;
   font-family: var(--font-body);
-  font-weight: 700;
-  letter-spacing: var(--tracking-display);
+  font-weight: var(--typography-font-weight-light);
+  letter-spacing: var(--tracking-h2);
   line-height: var(--leading-display);
   /* the thesis dominates (Elleta, 23 Jul): page tier, a full step
      ABOVE the beat headlines (section tier), not below */
@@ -6766,13 +6752,13 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .ds-stage__kick { margin: 0 0 var(--spacing-1); }
-.ds-stage__kick b { color: var(--color-accent-ink); }
+.ds-stage__kick b { color: var(--color-ink); }
 
 .ds-stage__lead {
   font-size: var(--typography-font-size-xl);
   line-height: 1.25;
   color: var(--color-ink);
-  font-weight: 700;
+  font-weight: var(--typography-font-weight-medium);
   margin: 0;
 }
 
@@ -6784,7 +6770,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .ds-stage__sub strong { color: var(--color-ink); font-weight: 600; }
 .ds-stage__hl {
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   font-weight: 600;
   font-style: normal;
 }
@@ -6918,7 +6904,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .ds-stage__k { color: var(--color-ink-muted); }
-.ds-stage__v { color: var(--color-accent-ink); font-weight: 600; }
+.ds-stage__v { color: var(--color-ink); font-weight: 600; }
 
 .ds-stage__sample {
   border: 1px solid var(--color-border-soft);
@@ -6939,10 +6925,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .ds-stage__ratio {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-4xl);
-  font-weight: 600;
+  font-weight: var(--typography-font-weight-light);
   color: var(--color-ink);
   line-height: 1;
   margin: var(--spacing-2) 0 0;
+  letter-spacing: var(--tracking-h2);
 }
 
 .ds-stage__unit {
@@ -7005,7 +6992,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .ds-shelf__subhead {
   font-family: var(--font-body);
   font-size: var(--typography-font-size-xl);
-  font-weight: 700;
+  font-weight: var(--typography-font-weight-medium);
   color: var(--color-ink);
   margin: var(--spacing-12) 0 var(--spacing-3);
   scroll-margin-top: calc(var(--header-height) + var(--spacing-8));
@@ -7123,13 +7110,13 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   }
 
   .bmm-axis--head > * {
-    font-family: var(--font-body);
-    font-size: var(--typography-font-size-tag);
-    font-weight: 700;
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
+    font-family: var(--font-code);
+    font-size: var(--text-mono);
+    font-weight: 400;
+    letter-spacing: var(--tracking-mono);
     color: var(--color-eyebrow);
-  }
+    font-feature-settings: var(--mono-feature);
+}
 }
 
 
@@ -7229,7 +7216,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .agentdemo__art { width: 100%; max-width: 18rem; border-radius: var(--radius-card); overflow: hidden; }
 .agentdemo__art-body { padding: var(--spacing-4); }
-.agentdemo__art-h { margin: 0 0 var(--spacing-1); font-weight: 700; }
+.agentdemo__art-h { margin: 0 0 var(--spacing-1); font-weight: var(--typography-font-weight-medium); }
 .agentdemo__art-p { margin: 0 0 var(--spacing-3); }
 .agentdemo__art-cta { margin: 0; text-align: center; border-radius: var(--radius-md); }
 
@@ -7262,7 +7249,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin: 0;
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-xl);
-  font-weight: 700;
+  font-weight: var(--typography-font-weight-medium);
 }
 .agentdemo__verdict--pass { color: var(--color-pass-ink); }
 .agentdemo__verdict--fail { color: var(--color-fail-ink); }
@@ -7276,7 +7263,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .agentdemo__findings li.is-bad .agentdemo__mk { color: var(--color-fail-ink); }
 
 .agentdemo__caption { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-soft); max-width: 70ch; }
-.agentdemo__foot { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-muted); max-width: 70ch; }
+.agentdemo__foot { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-muted); max-width: var(--measure-body); }
 
 /* the citation is a LINK and has to look like one: iris and underlined
    is the inline-link contract (section 4). It shipped as muted body text
@@ -7385,9 +7372,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .ds-gate-stat__n {
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-5xl);
-  font-weight: 600;
+  font-weight: var(--typography-font-weight-light);
   line-height: 1;
   color: var(--color-ink);
+  letter-spacing: var(--tracking-h2);
 }
 
 .ds-gate-stat__l {
@@ -7421,8 +7409,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .case-hero__facts dt {
   font-family: var(--font-code);
-  font-size: var(--text-meta);
+  font-size: var(--text-mono);
   color: var(--color-ink-muted);
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
 }
 
 .case-hero__facts dd {
@@ -7467,8 +7457,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin: 0 0 var(--spacing-4);
   font-family: var(--font-body);
   font-size: var(--text-display-3);
-  font-weight: 700;
-  letter-spacing: var(--tracking-display);
+  font-weight: var(--typography-font-weight-light);
+  letter-spacing: var(--tracking-h2);
   line-height: 1.15;
   color: var(--color-ink);
 }
@@ -7559,8 +7549,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .trv-stats__v {
   font-size: var(--text-display-2);
-  font-weight: 700;
-  letter-spacing: var(--tracking-display);
+  font-weight: var(--typography-font-weight-light);
+  letter-spacing: var(--tracking-h2);
   line-height: 1.1;
   color: var(--color-ink);
 }
@@ -7776,9 +7766,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .linked-phrase__n {
   margin-left: 0.1em;
   font-family: var(--font-code);
-  font-size: var(--text-meta);
-  font-weight: 500;
+  font-size: var(--text-mono);
+  font-weight: 400;
   color: var(--color-accent-ink);
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
 }
 
 .linked-phrase.is-on,
@@ -7962,7 +7954,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .case-tier__t {
   font-size: var(--text-meta);
-  font-weight: 600;
+  font-weight: var(--typography-font-weight-medium);
 }
 
 .case-tier__tok {
@@ -8109,7 +8101,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    sits on the 16px reading floor */
 .cf-panel__t {
   font-size: var(--typography-font-size-base);
-  font-weight: 600;
+  font-weight: var(--typography-font-weight-medium);
 }
 
 .cf-kv {
@@ -8165,9 +8157,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .cf-table th {
   font-family: var(--font-code);
-  font-size: var(--text-meta);
-  font-weight: 500;
+  font-size: var(--text-mono);
+  font-weight: 400;
   color: var(--color-ink-muted);
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
 }
 
 .cf-pill {
@@ -8259,9 +8253,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   background: var(--color-accent-ink);
   color: var(--color-page);
   font-family: var(--font-code);
-  font-size: var(--text-meta);
-  font-weight: 500;
+  font-size: var(--text-mono);
+  font-weight: 400;
   line-height: 1;
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
 }
 
 /* at phone width the chips crowd, so they shrink rather than hide */
@@ -8423,3 +8419,483 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
     transition: none;
   }
 }
+
+/* ─── Exhibit: the case-study diagram frame (Geist refresh, 22 Sep 2026) ───
+   components/diagrams/Exhibit.tsx. A panel, an inline-SVG drawing, a Mono
+   caption, a replay chip. Drawings play once (.is-playing) and hold;
+   reduced motion shows the finished frame (.is-final). 1px ink strokes,
+   colour in the chip fills only, Mono labels at the 13px floor. */
+.exhibit {
+  position: relative;
+  margin: var(--space-stack-lg) 0 0;
+  padding: 2rem 1.25rem 1.25rem;
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+.exhibit svg[data-bella-diagram] {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.exhibit__caption {
+  margin-top: 1rem;
+  text-align: center;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
+  color: var(--color-ink-muted);
+}
+.exhibit__replay {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  padding: 0.1875rem 0.625rem;
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-body); /* buttons stay Geist (BELLA) */
+  font-size: var(--text-mono);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+.exhibit__replay:hover { border-color: var(--color-ink); }
+.exhibit__replay:focus-visible,
+.exhibit button:focus-visible,
+.exhibit [tabindex]:focus-visible {
+  outline: 2px solid var(--color-semantic-focus-ring, var(--color-accent-ink));
+  outline-offset: 3px;
+}
+
+/* the diagram vocabulary: stroke, fill, and three Mono text roles */
+[data-bella-diagram] .s { fill: none; stroke: var(--color-ink); stroke-width: 1; }
+[data-bella-diagram] .f { fill: var(--color-semantic-border); }
+[data-bella-diagram] .fill-ink { fill: var(--color-ink); }
+[data-bella-diagram] .t,
+[data-bella-diagram] .ti,
+[data-bella-diagram] .tk {
+  font-family: var(--font-code);
+  font-size: 13px; /* SVG user units: the Mono floor at the drawing's 1:1 scale */
+  font-feature-settings: var(--mono-feature);
+}
+[data-bella-diagram] .t { fill: var(--color-ink-muted); }
+[data-bella-diagram] .ti { fill: var(--color-ink); }
+[data-bella-diagram] .tk { fill: var(--color-chip-text); }
+[data-bella-diagram] .c1 { fill: var(--color-chip-c1); }
+[data-bella-diagram] .c2 { fill: var(--color-chip-c2); }
+[data-bella-diagram] .c3 { fill: var(--color-chip-c3); }
+
+@keyframes ex-draw { to { stroke-dashoffset: 0; } }
+@keyframes ex-pop { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+@keyframes ex-rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes ex-fade { to { opacity: 1; } }
+
+/* ─── The mock case layout (Geist refresh, 22 Sep 2026) ──────────────
+   Part B of case-study-mock.html: a 1000px content column (the mock's
+   1080 wrap less its 40px gutters) and 88px section padding, set by
+   re-pointing the frame tokens on this page only. */
+/* (the mock's 1000px column, 88px sections and 76px h1 gave way to the
+   site frame so audit:frame holds: one content edge, one rhythm, one h1) */
+.case-hero__facts--glance {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin-top: 3rem;
+  padding-top: 0;
+  border-top: 1px solid var(--color-semantic-border);
+}
+@media (min-width: 768px) {
+  .case-hero__facts--glance { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.case-hero__facts--glance > div {
+  padding: 1.125rem 1.25rem 1.125rem 0;
+  border-bottom: 1px solid var(--color-semantic-border);
+}
+.case-hero__facts--glance dt { margin-bottom: 0.25rem; }
+.case-hero__facts--glance dd { margin: 0; font-weight: 400; }
+.case-hero__signals {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+.case-hero__signals-meta {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
+  color: var(--color-ink-muted);
+}
+.case-hero__tags { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+.cs2--mock .case-hero__nda {
+  max-width: var(--measure-body);
+  margin-top: 1.25rem;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
+}
+.tag.tag--c2 { background: var(--color-chip-c2); }
+.tag.tag--c3 { background: var(--color-chip-c3); }
+
+/* sections: eyebrow, h2, then the section's own content */
+.dfc-eyebrow { margin: 0 0 1rem; }
+.dfc-h2 { margin: 0; max-width: none; }
+.dfc-lead {
+  margin: 1.5rem 0 0;
+  max-width: 40ch;
+  font-size: 1.25rem;
+  color: var(--color-ink-muted);
+}
+
+/* claim / evidence / so what */
+.dfc-cee {
+  display: grid;
+  margin-top: var(--space-stack-lg);
+  border-top: 1px solid var(--color-semantic-border);
+}
+@media (min-width: 900px) { .dfc-cee { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.dfc-cee > div { padding: 1.25rem 1.5rem 1.25rem 0; border-bottom: 1px solid var(--color-semantic-border); }
+.dfc-cee__k {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-feature-settings: var(--mono-feature);
+  color: var(--color-ink-muted);
+}
+.dfc-cee__k i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+.dfc-cee__v { margin: 0; font-size: 1rem; color: var(--color-ink); }
+
+/* 01 people rows */
+.dfc-ppl { display: grid; margin-top: var(--space-stack-lg); border-top: 1px solid var(--color-semantic-border); }
+@media (min-width: 768px) { .dfc-ppl { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.dfc-pc { padding: 1.25rem 1.25rem 1.25rem 0; border-bottom: 1px solid var(--color-semantic-border); }
+.dfc-pc__n {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: var(--typography-font-weight-light);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+}
+.dfc-pc__row { display: flex; gap: 3px; margin: 0.875rem 0 0.625rem; }
+.dfc-pc__row svg { width: 18px; height: 26px; flex: none; overflow: visible; }
+.dfc-pc__o { fill: none; stroke: var(--color-ink); stroke-width: 1.2; }
+.dfc-pc__fl { fill: var(--color-chip-c2); }
+.dfc-pc__l { margin: 0; font-size: 1rem; /* the mock's 15px, raised to the 16px reading floor */ color: var(--color-ink-muted); }
+.dfc-src-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-top: 0.75rem; }
+.dfc-src {
+  max-width: var(--measure-body);
+  margin: 0;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-feature-settings: var(--mono-feature);
+  color: var(--color-ink-muted);
+}
+.exhibit__replay.dfc-inline-replay { position: static; flex: none; }
+
+/* shared figure text: the mock's 11-12px labels sit at 13 */
+.exhibit [data-bella-diagram] .on-ink { fill: var(--color-semantic-background); }
+.exhibit [data-bella-diagram] .x { stroke: var(--color-ink); stroke-width: 1; }
+.exhibit [data-bella-diagram] .dash { fill: none; stroke: var(--color-ink); stroke-width: 1; stroke-dasharray: 4 4; }
+
+/* 01b the zoom story */
+.dfc-zl { max-width: 44ch; }
+.dfc-mark {
+  display: inline;
+  padding: 0 2px;
+  border: 0;
+  border-bottom: 1px solid var(--color-ink-muted);
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  cursor: pointer;
+  transition: background var(--dur-base) var(--ease-out);
+}
+.dfc-mark::before {
+  content: attr(data-k);
+  margin-right: 2px;
+  vertical-align: super;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  line-height: 0;
+  color: var(--color-ink-muted);
+}
+.dfc-mark.is-on,
+.dfc-mark:hover,
+.dfc-mark:focus-visible {
+  background: var(--color-chip-c1);
+  color: var(--color-chip-text);
+  border-color: transparent;
+}
+.dfc-mark.is-on::before,
+.dfc-mark:hover::before,
+.dfc-mark:focus-visible::before { color: var(--color-chip-text); }
+.dfc-mark:focus-visible { outline: 2px solid var(--color-semantic-focus-ring); outline-offset: 2px; }
+.dfc-ztabs { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: 2.25rem; }
+.dfc-ztabs button {
+  padding: 0.375rem 0.875rem;
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-ink-muted);
+  font-family: var(--font-body); /* buttons stay Geist (BELLA) */
+  font-size: var(--text-mono);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.dfc-ztabs button:hover { color: var(--color-ink); }
+.dfc-ztabs button[aria-selected="true"] { border-color: var(--color-ink); color: var(--color-ink); }
+.dfc-ztabs button:focus-visible { outline: 2px solid var(--color-semantic-focus-ring); outline-offset: 2px; }
+.exhibit.dfc-zfig { margin-top: 1rem; }
+.dfc-zwrap { position: relative; }
+.dfc-zstack { display: grid; gap: 1.5rem; }
+.dfc-zsvg { transition: opacity 0.25s ease, transform 0.45s cubic-bezier(0.65, 0, 0.35, 1); }
+.dfc-zsvg.is-out { opacity: 0; transform: scale(0.97); }
+.dfc-zsvg .hlr { fill: var(--color-chip-c1); opacity: 0; transition: opacity 0.3s; }
+.dfc-zsvg.hl1 .k1 .hlr { opacity: 0.8 !important; }
+.dfc-zsvg.hl2 .k2 .hlr,
+.dfc-zsvg.hl3 .k3 .hlr,
+.dfc-zsvg.hl4 .k4 .hlr,
+.dfc-zsvg.hl4 .p1 .hlr,
+.dfc-zsvg.dh1 .p1 .hlr,
+.dfc-zsvg.dh2 .p2 .hlr,
+.dfc-zsvg.dh3 .p3 .hlr,
+.dfc-zsvg.dh4 .p4 .hlr,
+.dfc-zsvg.dh5 .p5 .hlr { opacity: 0.55; }
+.dfc-zsvg.lcon .lc .hlr { opacity: 0.6; }
+.dfc-zsvg .pop { transform-box: fill-box; animation: ex-rise 0.5s cubic-bezier(0.34, 1.4, 0.64, 1) both; }
+.exhibit .exhibit__replay.dfc-lcbtn { top: 0.625rem; right: 0.75rem; }
+.dfc-lcbtn[aria-pressed="true"] { background: var(--color-ink); color: var(--color-semantic-background); border-color: var(--color-ink); }
+.dfc-pins { position: absolute; inset: 0; pointer-events: none; }
+.dfc-pin {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  border: 1px solid var(--color-ink);
+  border-radius: 50%;
+  color: var(--color-chip-text);
+  font-family: var(--font-body); /* buttons stay Geist (BELLA) */
+  font-size: var(--text-mono);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.dfc-pin.is-before { background: var(--color-chip-c2); }
+.dfc-pin.is-after { background: var(--color-chip-c1); }
+.dfc-pin:hover { transform: translate(-50%, -50%) scale(1.15); }
+.dfc-pin[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--color-semantic-surface), 0 0 0 4px var(--color-ink); }
+.dfc-pin:focus-visible { outline: 2px solid var(--color-semantic-focus-ring); outline-offset: 3px; }
+.dfc-zpop {
+  position: relative;
+  max-width: 620px;
+  margin: 0.875rem auto 0;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-background);
+  font-size: 1rem; /* the mock's 15px, raised to the 16px reading floor */
+  animation: ex-rise 0.25s ease both;
+}
+.dfc-zpop__arrow {
+  position: absolute;
+  top: -7px;
+  left: var(--ax, 50%);
+  width: 12px;
+  height: 12px;
+  transform: translateX(-50%) rotate(45deg);
+  border-top: 1px solid var(--color-semantic-border);
+  border-left: 1px solid var(--color-semantic-border);
+  background: var(--color-semantic-background);
+  transition: left 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.dfc-zpop__head { display: flex; align-items: center; gap: 0.625rem; }
+.dfc-zpop__head b { flex: 1; font-weight: var(--typography-font-weight-medium); color: var(--color-ink); }
+.dfc-zpop__n {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-chip-c1);
+  color: var(--color-chip-text);
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+}
+.dfc-zpop__nav { display: flex; gap: 2px; }
+.dfc-zpop__nav button {
+  padding: 2px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--color-ink-muted);
+  font-family: var(--font-body); /* buttons stay Geist (BELLA) */
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.dfc-zpop__nav button:hover { color: var(--color-ink); background: var(--color-semantic-surface); }
+.dfc-zpop__nav button:focus-visible { outline: 2px solid var(--color-semantic-focus-ring); outline-offset: 1px; }
+.dfc-zpop p { margin: 0.375rem 0 0; color: var(--color-ink-muted); }
+.dfc-zpop__k {
+  margin-right: 2px;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  color: var(--color-ink);
+}
+.dfc-hint {
+  margin: 0.875rem 0 0;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-feature-settings: var(--mono-feature);
+  color: var(--color-ink-muted);
+}
+@media (max-width: 640px) {
+  .dfc-pin { width: 22px; height: 22px; }
+  .exhibit .exhibit__replay.dfc-lcbtn { position: static; display: block; margin: 0 0 0.75rem auto; }
+}
+
+/* 02 token cascade */
+.dfc-cas .fr,
+.dfc-cas .wr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.dfc-cas .sw { fill: var(--color-chip-c1); }
+.dfc-cas .ck,
+.dfc-cas .tx,
+.dfc-cas .tv { opacity: 0; }
+.dfc-cas .ck { transform-box: fill-box; transform-origin: center; }
+.dfc-cas .tv { fill: var(--color-chip-c1); stroke: var(--color-ink); stroke-width: 1; }
+.dfc-cas.is-playing .fr { animation: ex-draw 0.9s var(--motion-easing-draw) forwards; }
+.dfc-cas.is-playing .f2 { animation-delay: 0.12s; }
+.dfc-cas.is-playing .f3 { animation-delay: 0.24s; }
+.dfc-cas.is-playing .k1 { animation: ex-pop 0.45s var(--motion-easing-pop) forwards 0.9s; }
+.dfc-cas.is-playing .x1 { animation: ex-rise 0.4s ease forwards 1s; }
+.dfc-cas.is-playing .w1 { animation: ex-draw 0.5s ease forwards 1.4s; }
+.dfc-cas.is-playing .v1 { animation: dfc-hop60 0.7s var(--motion-easing-draw) forwards 1.4s; }
+.dfc-cas.is-playing .k2 { animation: ex-pop 0.45s var(--motion-easing-pop) forwards 2s; }
+.dfc-cas.is-playing .x2 { animation: ex-rise 0.4s ease forwards 2.05s; }
+.dfc-cas.is-playing .w2 { animation: ex-draw 0.5s ease forwards 2.5s; }
+.dfc-cas.is-playing .v2 { animation: dfc-hop60 0.7s var(--motion-easing-draw) forwards 2.5s; }
+.dfc-cas.is-playing .k3 { animation: ex-pop 0.45s var(--motion-easing-pop) forwards 3.1s; }
+.dfc-cas.is-playing .x3 { animation: ex-rise 0.4s ease forwards 3.15s; }
+.dfc-cas.is-playing .x4 { animation: ex-rise 0.5s ease forwards 4.4s; }
+.dfc-cas.is-playing .sw { animation: dfc-retint 1.2s ease forwards 3.9s; }
+.dfc-cas.is-final .fr,
+.dfc-cas.is-final .wr { stroke-dashoffset: 0; }
+.dfc-cas.is-final .ck,
+.dfc-cas.is-final .tx { opacity: 1; }
+.dfc-cas.is-final .sw { fill: var(--color-chip-c3); }
+@keyframes dfc-hop60 { 0% { opacity: 0; transform: translateX(0); } 15%, 85% { opacity: 1; } 100% { opacity: 0; transform: translateX(60px); } }
+@keyframes dfc-retint { 0% { fill: var(--color-chip-c1); } 40%, 100% { fill: var(--color-chip-c3); } }
+
+/* 03 rollout timeline */
+.dfc-tl .track { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.dfc-tl .node,
+.dfc-tl .lbl { opacity: 0; }
+.dfc-tl .node { transform-box: fill-box; transform-origin: center; }
+.dfc-tl .funded { transform-box: fill-box; transform-origin: left center; transform: scaleX(0); }
+.dfc-tl .ring { fill: var(--color-chip-c1); opacity: 0; transform-box: fill-box; transform-origin: center; }
+.dfc-tl__disc { fill: var(--color-semantic-surface); stroke: var(--color-ink); stroke-width: 1; }
+.dfc-tl.is-playing .track { animation: ex-draw 2.6s cubic-bezier(0.45, 0, 0.25, 1) forwards; }
+.dfc-tl.is-playing .node { animation: ex-pop 0.45s var(--motion-easing-pop) forwards; }
+.dfc-tl.is-playing .lbl { animation: ex-rise 0.5s ease forwards; }
+.dfc-tl.is-playing .ring { animation: dfc-ring 1.1s ease-out forwards; }
+.dfc-tl.is-playing .funded { animation: dfc-grow 0.9s var(--motion-easing-draw) forwards 2.35s; }
+.dfc-tl.is-final .track { stroke-dashoffset: 0; }
+.dfc-tl.is-final .node,
+.dfc-tl.is-final .lbl { opacity: 1; }
+.dfc-tl.is-final .funded { transform: none; }
+@keyframes dfc-ring { 0% { opacity: 0.7; transform: scale(1); } 100% { opacity: 0; transform: scale(3.2); } }
+@keyframes dfc-grow { to { transform: scaleX(1); } }
+
+/* 04 turnaround */
+.dfc-turn__base { stroke: var(--color-semantic-border); stroke-width: 1; }
+.dfc-turn .flat,
+.dfc-turn .rise { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.dfc-turn .sys,
+.dfc-turn .ship,
+.dfc-turn .tt { opacity: 0; }
+.dfc-turn .sys { transform-box: fill-box; transform-origin: center; }
+.dfc-turn.is-playing .flat { animation: ex-draw 1.6s linear forwards; }
+.dfc-turn.is-playing .t0 { animation: ex-rise 0.4s ease forwards 0.3s; }
+.dfc-turn.is-playing .sys { animation: ex-pop 0.5s var(--motion-easing-pop) forwards 1.7s; }
+.dfc-turn.is-playing .rise { animation: ex-draw 2.4s cubic-bezier(0.45, 0, 0.25, 1) forwards 2.2s; }
+.dfc-turn.is-playing .ship { animation: ex-rise 0.4s ease forwards; }
+.dfc-turn.is-final .flat,
+.dfc-turn.is-final .rise { stroke-dashoffset: 0; }
+.dfc-turn.is-final .sys,
+.dfc-turn.is-final .ship,
+.dfc-turn.is-final .tt { opacity: 1; }
+
+/* phones: the drawings keep their shapes, the labels move to a Mono
+   list under them (the 13px floor holds; the caption carries the rest) */
+.dfc-legend { display: none; }
+@media (max-width: 640px) {
+  .exhibit [data-bella-diagram] .opt { display: none; }
+  .dfc-legend {
+    display: grid;
+    gap: 0.25rem;
+    margin: 1rem 0 0;
+    padding-left: 1.25rem;
+    font-family: var(--font-code);
+    font-size: var(--text-mono);
+    font-feature-settings: var(--mono-feature);
+    color: var(--color-ink-muted);
+  }
+  .dfc-legend b { font-weight: 400; color: var(--color-ink); }
+}
+
+/* 03 / 05 the two panels */
+.dfc-two { display: grid; gap: 1.5rem; margin-top: var(--space-stack-lg); }
+@media (min-width: 768px) { .dfc-two { grid-template-columns: 1fr 1fr; } }
+.dfc-two > div { padding: 1.5rem; border-radius: var(--radius-card); background: var(--color-semantic-surface); }
+.dfc-two ul { margin: 0.625rem 0 0; padding-left: 1.125rem; font-size: 1rem; /* the mock's 15px, raised to the 16px reading floor */ list-style: disc; }
+.dfc-two li { color: var(--color-ink-muted); }
+.dfc-two li + li { margin-top: 0.375rem; }
+
+/* 04 stats */
+.dfc-stats { display: grid; margin-top: var(--space-stack-lg); border-top: 1px solid var(--color-semantic-border); }
+@media (min-width: 768px) { .dfc-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.dfc-stats > div { padding: 1.25rem 1.25rem 1.25rem 0; border-bottom: 1px solid var(--color-semantic-border); }
+.dfc-stats__n {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: var(--typography-font-weight-light);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+}
+.dfc-stats__l { margin: 0; font-size: 1rem; /* the mock's 15px, raised to the 16px reading floor */ color: var(--color-ink-muted); }
+/* the mock hero: lead 20px muted at 40ch */
+.cs2--mock .l-header .text-lead,
+.cs2--mock .l-header > p {
+  max-width: 40ch;
+  font-size: 1.25rem;
+  color: var(--color-ink-muted);
+}
+.exhibit svg.dfc-zsvg { overflow: hidden; }
+.dfc-mark { display: inline; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+/* phones: the zoom pictures and the button grave scale to about a third,
+   so their words would fall under the 13px floor; the pictures keep
+   their shapes and the caption and popover carry the words */
+@media (max-width: 640px) {
+  .exhibit svg.dfc-zsvg text,
+  .exhibit svg.dfc-grave text { display: none; }
+}
+/* /work index hero lead: muted, 40ch (mock Part A) */
+#work-hero .l-header__lead { max-width: 40ch; color: var(--color-ink-muted); }
+.case-hero__signals--bare { margin-top: 1.5rem; padding: 0; background: none; }

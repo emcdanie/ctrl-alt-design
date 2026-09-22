@@ -13,6 +13,7 @@ Positioning term: AI-enabled (never "AI-augmented" or "AI-assisted").
 - /case-studies/chip : AI builds what your system is. CHIP sees it first.
 - /case-studies/brad-frost : Working code-first changes what you notice. What Building Brad Frost's Component System in Reverse Taught Me About Design
 - /case-studies/design-system-transformation : The system is the agreements, not the library. Rebuilding Design System Thinking in a Scaling SaaS Product
+- /case-studies/theming : One system, many faces. Themes in BELLA swap the values, never the components.
 
 ## The system
 - /design-system : BELLA inspecting itself, live token values, control taxonomy, the gate.

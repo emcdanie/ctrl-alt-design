@@ -75,6 +75,9 @@ export default function CaseShellV2({
   crumbs = true,
   identity,
   endReveal = true,
+  glance = false,
+  heroExtra,
+  className,
   children,
 }: {
   slug: string;
@@ -114,6 +117,11 @@ export default function CaseShellV2({
   identity?: { text: string; hi: string };
   /** the thanks-and-next-case close; the System page ends on its claim */
   endReveal?: boolean;
+  /** the facts as the mock's at-a-glance strip: four ruled cells (Geist refresh) */
+  glance?: boolean;
+  /** hero content between the facts and the NDA note (the signal tags) */
+  heroExtra?: React.ReactNode;
+  className?: string;
   children: React.ReactNode;
 }) {
   /* the registry row where there is one, the explicit pair where there is
@@ -123,7 +131,7 @@ export default function CaseShellV2({
   const article = Boolean(facts || lead);
 
   return (
-    <div className="cs2">
+    <div className={["cs2", className].filter(Boolean).join(" ")}>
       <ReadingProgress color={caseItem?.text} />
 
       {/* the page opening, on the same frame as every other page
@@ -180,10 +188,10 @@ export default function CaseShellV2({
         </SectionHeader>
         {/* the facts row spans the container, one row like the mocks; in
             the 42rem lead column it wrapped to two (audit, 21 Sep) */}
-        {(facts || nda) && (
+        {(facts || nda || heroExtra) && (
           <div className="case-hero__meta">
             {facts && (
-              <dl className="case-hero__facts">
+              <dl className={glance ? "case-hero__facts case-hero__facts--glance" : "case-hero__facts"}>
                 {facts.map((f) => (
                   <div key={f.label}>
                     <dt>{f.label}</dt>
@@ -192,8 +200,9 @@ export default function CaseShellV2({
                 ))}
               </dl>
             )}
+            {heroExtra}
             {nda && (
-              <p role="note" className="case-hero__nda">
+              <p role="note" className={glance ? "case-hero__nda text-meta" : "case-hero__nda"}>
                 {nda}
               </p>
             )}
