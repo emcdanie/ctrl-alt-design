@@ -148,6 +148,8 @@ body {
      Card painted rgb(236,235,231): two card surfaces on one page. The
      site now reads BELLA's token, so there is one source. */
   --surface-card: var(--color-semantic-surface-card);
+  /* the quiet section field (PatternField brief, 22 Sep 2026) */
+  --section-field-opacity: 0.04;
   /* the dot grid behind every page opening (Part V, Elleta, 21 Sep
      2026: a quiet Figma-style frame now the hero art is gone). Recorded
      addition in DESIGN.md. Faint enough to leave text contrast alone. */
@@ -454,6 +456,7 @@ body {
 [data-theme="dark"] {
   /* the dark ground (also set on body below, where the dark inks live) */
   --color-semantic-background: var(--color-dark-bg);
+  --section-field-opacity: 0.035;
   /* surfaces: 4% toward the cream ink, so lighter than the ground */
   --surface-card: var(--color-semantic-surface-card);
   --border-faint: var(--color-semantic-border);
@@ -1046,8 +1049,11 @@ main:not(.embed-page) .l-section:first-of-type {
   isolation: isolate;
 }
 
-/* the hero ground: PatternField from the root layout, pinned to the top of
-   the page under everything (brand refresh, 22 Sep 2026; was a dot grid) */
+/* the hero ground: BELLA's pattern from RouteField, seeded per route and
+   pinned to the top of the page under everything (brand refresh, 22 Sep
+   2026; was a dot grid). PatternField's treatment, drawn as a background
+   so the page carries no pattern paths: greyscale at the BELLA opacity,
+   fading out radially from the upper right. */
 .hero-field {
   position: absolute;
   top: 0;
@@ -1057,6 +1063,43 @@ main:not(.embed-page) .l-section:first-of-type {
   height: min(100svh, 56.25rem);
   overflow: hidden;
   pointer-events: none;
+  background: var(--hero-field) center / cover no-repeat;
+  filter: grayscale(1) contrast(0.9);
+  opacity: var(--component-pattern-field-opacity);
+  -webkit-mask-image: radial-gradient(ellipse at 75% 30%, black 10%, transparent 70%);
+  mask-image: radial-gradient(ellipse at 75% 30%, black 10%, transparent 70%);
+}
+[data-theme="dark"] .hero-field,
+[data-theme="dark"] .l-section[data-field]::before {
+  filter: grayscale(1) invert(1);
+}
+
+/* the section field (PatternField brief): one quiet field per later
+   section, about half the shapes, centred on the heading row at the
+   right and faded to nothing at the section's top edge and before the
+   body copy. */
+main:not(.embed-page) .l-section[data-field] {
+  position: relative;
+  isolation: isolate;
+}
+.l-section[data-field]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--section-field) right top / min(100rem, 160%) auto no-repeat;
+  filter: grayscale(1) contrast(0.9);
+  opacity: var(--section-field-opacity);
+  -webkit-mask-image: radial-gradient(ellipse 70% 8rem at 100% 8rem, black, transparent);
+  mask-image: radial-gradient(ellipse 70% 8rem at 100% 8rem, black, transparent);
+}
+/* min() is not valid as a gradient size in Chromium, so the width caps here */
+@media (min-width: 48rem) {
+  .l-section[data-field]::before {
+    -webkit-mask-image: radial-gradient(ellipse 32rem 8rem at 100% 8rem, black, transparent);
+    mask-image: radial-gradient(ellipse 32rem 8rem at 100% 8rem, black, transparent);
+  }
 }
 body:has(main.embed-page) .hero-field {
   display: none;
