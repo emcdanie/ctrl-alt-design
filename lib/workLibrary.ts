@@ -57,7 +57,7 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "booking",
     medium: "case study",
-    cover: "/images/case-studies/travel/booking-search-5.webp",
+    cover: "/images/case-studies/travel/flights-after.webp",
     rank: -1,
     title: "B2B travel platform",
     bubbleLabel: "B2B travel|platform",
@@ -273,11 +273,13 @@ export interface WorkCase {
   tags: string[];
   href: string;
   cover?: string;
+  /** other case studies from the same work, linked under the card (Part W3) */
+  also?: { label: string; href: string }[];
 }
 
-const CASE_COPY: Record<string, Pick<WorkCase, "line" | "years" | "tags">> = {
+const CASE_COPY: Record<string, Pick<WorkCase, "line" | "years" | "tags" | "also">> = {
   /* the lead case on /work and Home (Part S, 21 Sep 2026) */
-  booking: { line: "A redesign that had not shipped in two years, rebuilt into a platform that did.", years: "2024 to 2026", tags: ["Product design", "Design systems"] },
+  booking: { line: "A redesign that had not shipped in two years, rebuilt into a platform that did.", years: "2024 to 2026", tags: ["Product design", "Design systems"], also: [{ label: "Search", href: "/case-studies/search-experts" }, { label: "Checkout", href: "/case-studies/checkout" }] },
   "code-first": { line: "Figma and code as one system, not two.", years: "2025 to 2026", tags: ["Design tokens", "Figma ⇄ code"] },
   drift: { line: "A first design system for a product that had outgrown its UI.", years: "2024 to 2026", tags: ["Design systems", "Governance"] },
   chip: { line: "An agent that watches the system and never moves silently.", years: "2026", tags: ["AI-enabled design", "Governance"] },

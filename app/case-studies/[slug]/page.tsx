@@ -67,7 +67,7 @@ const ARTICLE: Record<
   },
   "search-experts": {
     title: "Search for people who know what they want.",
-    lead: "Our users booked travel every day. They knew the route, the fare and the policy. I shipped a results page that kept their search in view and put filters behind one button. This is that page, and the version I'd build with the time for every micro-interaction.",
+    lead: "The people booking used it every day. They knew the route, the fare and the policy. I shipped a results page that kept their search in view and put filters behind one button. This is that page, and the version I'd build with the time for every micro-interaction.",
   },
   checkout: {
     title: "A checkout that knows who's paying.",

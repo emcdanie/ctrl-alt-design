@@ -89,6 +89,28 @@ export default function CheckoutCase({ cs }: { cs: CaseStudy }) {
           </div>
         </div>
       </Section>
+
+      {/* the end of the flow (Part W6, Elleta: "this should be the end of
+          the flow"): the booking confirmation as shipped, de-branded. Shown
+          no wider than half its pixel width, so it stays sharp. */}
+      <Section id="checkout-done" labelledBy="checkout-done-title" ruled>
+        <SectionHeader id="checkout-done-title" kicker="03 · Confirmed" heading="The end of the flow." />
+        <ExampleFrame
+          demo
+          path="travel / cars / booking completed"
+          caption="The booking confirmation, as shipped. Names and codes are blurred."
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="trv-shot"
+            src="/images/case-studies/travel/booking-completed.webp"
+            width={1880}
+            height={1188}
+            loading="lazy"
+            alt="Booking completed: the car booking with its route and details, pick-up and drop-off times, what happens next, and a button to the dashboard."
+          />
+        </ExampleFrame>
+      </Section>
     </>
   );
 }

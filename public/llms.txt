@@ -8,7 +8,7 @@ Positioning term: AI-enabled (never "AI-augmented" or "AI-assisted").
 
 ## Case studies
 - /case-studies/booking-platform : A booking platform, rebuilt mid-flight. A redesign that had not shipped in two years became a platform that did: a system in code, a funded team and six product areas live.
-- /case-studies/search-experts : Search for people who know what they want. Our users booked travel every day. I shipped a results page that kept their search in view and put filters behind one button.
+- /case-studies/search-experts : Search for people who know what they want. The people booking used it every day. I shipped a results page that kept their search in view and put filters behind one button.
 - /case-studies/checkout : A checkout that knows who's paying. I designed the checkout and payment step once, for every product, so company rules show up as fewer choices instead of more forms.
 - /case-studies/chip : AI builds what your system is. CHIP sees it first.
 - /case-studies/brad-frost : Working code-first changes what you notice. What Building Brad Frost's Component System in Reverse Taught Me About Design

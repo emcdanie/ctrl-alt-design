@@ -2321,6 +2321,9 @@ main:not(.embed-page) .l-section:first-of-type::before {
 .site-footer__mark {
   width: 100%;
   line-height: 0.8;
+  /* decoration only: the letters and Bella take no clicks, so the "A"
+     never covers the CV button under it at 1024 and wider (Part W7) */
+  pointer-events: none;
 }
 
 /* one letter per flex item, spread edge to edge of the container */
@@ -7637,11 +7640,23 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin: 0;
 }
 
+/* list items as flush-left rows on hairlines, no hanging indent, one
+   type size in every card (Part W2) */
 .trv-card ul {
   margin: 0;
-  padding-left: 1.1em;
-  display: grid;
-  gap: var(--spacing-2);
+  padding: 0;
+  list-style: none;
+}
+
+.trv-card li {
+  padding-block: var(--spacing-3);
+  border-top: 1px solid var(--color-semantic-border);
+  font-size: var(--typography-font-size-base);
+  line-height: var(--leading-body);
+}
+
+.trv-card li:last-child {
+  padding-bottom: 0;
 }
 
 .trv-card--link {
@@ -7670,9 +7685,21 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   justify-self: start;
 }
 
+/* a still screenshot in a frame: never wider than half its pixel width
+   (the sharpness rule, Part W5), centred */
+.trv-shot {
+  display: block;
+  width: 100%;
+  max-width: 940px;
+  height: auto;
+  margin-inline: auto;
+}
+
 .trv-two {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  /* equal-height cards (Part W2) */
+  align-items: stretch;
   gap: var(--grid-gap);
 }
 
@@ -8200,6 +8227,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .shot {
   position: relative;
   width: 100%;
+  margin-inline: auto;
   border-radius: var(--radius-md);
   overflow: hidden;
 }

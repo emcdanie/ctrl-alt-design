@@ -1,6 +1,6 @@
 - region "Case studies":
   - paragraph: Case studies
-  - heading "Three systems, up close." [level=2]
+  - heading "Four cases, up close." [level=2]
   - paragraph: Real teams, real drift. What I found, what I built, what changed.
   - link /Case study \d+ to \d+ Code First Figma and code as one system, not two\. Design tokens Figma ⇄ code Read it →/:
     - /url: /case-studies/brad-frost

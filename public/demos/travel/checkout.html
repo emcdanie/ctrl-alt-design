@@ -477,6 +477,12 @@ html,body{background:transparent}
 /* the blocks captions sit on the frame's inner padding (Part U) */
 .kstage{padding:0 20px 20px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+#before img{max-width:450px;margin-inline:auto}
+
+.w6-done{position:absolute;inset:0;z-index:60;display:grid;place-items:center;gap:12px;align-content:center;padding:16px;overflow:auto;background:var(--app-bg)}
+.w6-done img{display:block;width:min(100%,940px);height:auto;border-radius:12px;box-shadow:0 8px 24px rgb(0 0 0/.12)}
+.w6-done button{font:500 15px Geist,sans-serif;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.w6-done button:focus-visible,#w6-see:focus-visible{outline:2px solid var(--iris);outline-offset:2px}
 </style>
 </head>
 <body>
@@ -710,6 +716,19 @@ function kit(p){$$('#kitSeg button').forEach(b=>b.setAttribute('aria-pressed',b.
 $$('#kitSeg button').forEach(b=>b.onclick=()=>kit(b.dataset.p));
 render();kit('cars');
 
+</script>
+<script>
+(function(){
+  var SRC="/images/case-studies/travel/booking-completed.webp";
+  function show(){var vp=document.getElementById("vp");if(!vp||vp.querySelector(".w6-done"))return;
+    if(getComputedStyle(vp).position==="static")vp.style.position="relative";
+    var d=document.createElement("div");d.className="w6-done";d.setAttribute("role","dialog");d.setAttribute("aria-label","Booking completed");
+    d.innerHTML='<img src="'+SRC+'" width="1880" height="1188" alt="Booking completed: the car booking, pick-up and drop-off, what happens next, and a button to the dashboard. Names and codes are blurred."><button type="button">Back to checkout</button>';
+    vp.appendChild(d);var b=d.querySelector("button");b.onclick=function(){d.remove();var s=document.getElementById("w6-see");if(s)s.focus()};b.focus();}
+  new MutationObserver(function(){var a=document.getElementById("again");
+    if(a&&!document.getElementById("w6-see")){a.insertAdjacentHTML("beforebegin",'<button class="primary" id="w6-see" type="button">See the confirmation</button>');document.getElementById("w6-see").onclick=show;show();}
+  }).observe(document.body,{childList:true,subtree:true});
+})();
 </script>
 </body>
 </html>

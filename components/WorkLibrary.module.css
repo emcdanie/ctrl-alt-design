@@ -563,3 +563,27 @@
     transition: none;
   }
 }
+
+/* the platform card with its sibling studies under it (Part W3): the
+   card still fills the row, the line sits under it */
+.caseWithAlso {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: var(--spacing-3);
+}
+
+.also {
+  margin: 0;
+  color: var(--color-ink-muted);
+}
+
+.alsoLink {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.alsoLink:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: 2px;
+}

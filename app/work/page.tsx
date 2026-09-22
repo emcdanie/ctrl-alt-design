@@ -35,7 +35,7 @@ export default function WorkPage() {
 
       <Section id="case-studies" label="Case studies">
         <SectionHeader
-          heading="Three systems,"
+          heading="Four cases,"
           accent="up close"
           after="."
           lead="Real teams, real drift. What I found, what I built, what changed."

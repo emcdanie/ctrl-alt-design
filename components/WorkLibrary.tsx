@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { Fragment, useId, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
@@ -20,7 +20,7 @@ import styles from "./WorkLibrary.module.css";
  *  (Home): the kicker is the kind and years in the code role, no tags,
  *  no "Read it"; the title's arrow shows on hover only. */
 export function CaseStudyCard({ item, quiet = false }: { item: WorkCase; quiet?: boolean }) {
-  return (
+  const card = (
     <Card
       href={item.href}
       className={`h-full ${styles.caseCard}`}
@@ -66,6 +66,25 @@ export function CaseStudyCard({ item, quiet = false }: { item: WorkCase; quiet?:
         </>
       )}
     </Card>
+  );
+  /* the other studies from the same work, under the card: the card is
+     one link, so these sit outside it (Part W3) */
+  if (quiet || !item.also?.length) return card;
+  return (
+    <div className={styles.caseWithAlso}>
+      {card}
+      <p className={`text-code ${styles.also}`}>
+        Also from this platform:{" "}
+        {item.also.map((a, i) => (
+          <Fragment key={a.href}>
+            {i > 0 ? " · " : null}
+            <Link href={a.href} className={styles.alsoLink}>
+              {a.label}
+            </Link>
+          </Fragment>
+        ))}
+      </p>
+    </div>
   );
 }
 
