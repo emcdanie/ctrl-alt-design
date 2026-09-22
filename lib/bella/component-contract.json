@@ -151,7 +151,7 @@
         "{--color-border-medium}",
         "{--color-ink-soft}",
         "{--color-semantic-accent-subtle}",
-        "{--color-accent-iris}",
+        "{--color-accent-line}",
         "{--color-ink}",
         "{--color-alpha-ink-6}"
       ]
@@ -528,7 +528,7 @@
       ],
       "tokens": [
         "{--color-accent-ink}",
-        "{--iris-soft}",
+        "{--tint-soft}",
         "{--font-code}",
         "{--text-meta}",
         "{--radius-sm}"

@@ -24,8 +24,8 @@
   --color-ink-muted: var(--color-light-muted);
   --color-surface: var(--color-light-panel);
   --color-white-pure: var(--color-light-panel);
-  --color-accent-iris: var(--color-ink); /* brand refresh 22 Sep 2026: iris retired; the old accent reads as ink */
-  --color-accent-peri: var(--color-ink-muted);
+  --color-accent-line: var(--color-ink); /* brand refresh 22 Sep 2026: iris retired; the old accent reads as ink */
+  --color-accent-muted: var(--color-ink-muted);
 
   /* verdict tokens for the pipeline instrument (27 Jul): a real
      pass/fail pair. Green and a cool-leaning red; the banned warm
@@ -156,8 +156,8 @@ body {
   --radius-pill: 999px;
   /* a soft iris wash: row hover (10%, the mock); the Current pill takes
      6% so its iris text clears AA (4.61:1 on the card; 10% gave 4.37) */
-  --iris-soft: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
-  --iris-pill: color-mix(in srgb, var(--color-accent-ink) 6%, transparent);
+  --tint-soft: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
+  --tint-pill: color-mix(in srgb, var(--color-accent-ink) 6%, transparent);
   --radius-popover: 0.75rem;
   /* Term: the dotted iris underline (thicker, further off in headings) */
   --term-dot: 1.5px;
@@ -460,8 +460,8 @@ body {
   /* surfaces: 4% toward the cream ink, so lighter than the ground */
   --surface-card: var(--color-semantic-surface-card);
   --border-faint: var(--color-semantic-border);
-  --iris-soft: color-mix(in srgb, var(--color-accent-ink) 14%, transparent);
-  --iris-pill: var(--iris-soft); /* 6.53:1 on the dark card */
+  --tint-soft: color-mix(in srgb, var(--color-accent-ink) 14%, transparent);
+  --tint-pill: var(--tint-soft); /* 6.53:1 on the dark card */
   /* case accents as TEXT flip to the bright variant on navy (deep is
      calibrated for light cards only) */
   --case-code-first-text: var(--color-dark-muted);
@@ -970,7 +970,7 @@ body {
 
   --color-border-soft: var(--color-dark-line);
   --color-border-medium: var(--color-dark-line);
-  --color-accent-iris: var(--color-dark-ink);
+  --color-accent-line: var(--color-dark-ink);
   background: var(--color-semantic-background);
 }
 
@@ -1008,7 +1008,7 @@ li {
 }
 
 ::selection {
-  background: rgba(167, 156, 226, 0.28);
+  background: rgba(232, 168, 62, 0.28); /* ochre (brand refresh, 22 Sep 2026) */
   color: var(--color-ink);
 }
 
@@ -1833,7 +1833,7 @@ h1.display-heading {
 
 @media (hover: hover) {
   .xp .accordion__trigger:hover {
-    background: var(--iris-soft);
+    background: var(--tint-soft);
   }
 }
 
@@ -1842,7 +1842,7 @@ h1.display-heading {
    name and the chevron go iris with it, and the body underneath keeps
    the card surface, so the row reads as header and content. */
 .xp.is-open .accordion__trigger {
-  background: var(--iris-soft);
+  background: var(--tint-soft);
 }
 
 /* the deeper accent, not the link iris: on the open row's iris wash the
@@ -1875,7 +1875,7 @@ h1.display-heading {
   margin-left: var(--spacing-2);
   padding: 3px var(--spacing-2);
   border-radius: var(--radius-pill);
-  background: var(--iris-pill);
+  background: var(--tint-pill);
   font-size: var(--text-meta);
   font-weight: 500;
   letter-spacing: 0;
@@ -2587,7 +2587,7 @@ h1.display-heading {
   width: var(--cursor-bracket);
   height: var(--cursor-bracket);
   overflow: visible;
-  stroke: var(--color-accent-peri);
+  stroke: var(--color-accent-muted);
   stroke-width: var(--cursor-stroke);
   stroke-linecap: round;
 }
@@ -2817,7 +2817,7 @@ h1.display-heading {
    not the solid inverse fill */
 .filter-chip[aria-pressed="true"] {
   background: var(--color-semantic-accent-subtle);
-  border-color: var(--color-accent-iris);
+  border-color: var(--color-accent-line);
   color: var(--color-ink);
 }
 
@@ -5581,7 +5581,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .jn-step {
-  --cc: var(--hero-iris-bright, var(--color-accent-ink));
+  --cc: var(--color-accent-ink);
   --trace-w: 2px;
   position: relative;
   display: block;
@@ -7564,7 +7564,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .trv-card--link:hover {
-  border-color: var(--color-accent-iris);
+  border-color: var(--color-accent-line);
 }
 
 .trv-card--link:focus-visible {
@@ -7684,7 +7684,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .linked-phrase.is-on,
 .linked-phrase:hover {
-  background: var(--iris-soft);
+  background: var(--tint-soft);
   color: var(--color-accent-ink);
 }
 
@@ -7706,8 +7706,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    ring and the soft fill. Nothing else moves, dims or hides. */
 .case-frame__body [data-t].is-lit {
   outline-color: var(--color-accent-ink);
-  background-color: var(--iris-soft);
-  box-shadow: 0 0 0 8px var(--iris-soft);
+  background-color: var(--tint-soft);
+  box-shadow: 0 0 0 8px var(--tint-soft);
 }
 
 /* the close: what changed, and what it taught (frame as above) */
@@ -8109,7 +8109,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   display: grid;
   gap: var(--spacing-1);
   margin-left: var(--spacing-6);
-  background: var(--iris-soft);
+  background: var(--tint-soft);
 }
 
 /* the one it would not answer: the point of the section */
@@ -8285,7 +8285,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .scan__point.is-on {
-  background: var(--iris-soft);
+  background: var(--tint-soft);
 }
 
 .scan__point.is-on .scan__dot {
@@ -8313,7 +8313,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .scan__phrase.is-lit {
-  background: var(--iris-soft);
+  background: var(--tint-soft);
   color: var(--color-semantic-accent-hover);
 }
 
