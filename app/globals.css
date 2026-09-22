@@ -7365,10 +7365,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .case-section__heading {
   margin: 0 0 var(--spacing-4);
   font-family: var(--font-body);
-  font-size: var(--text-display-3);
+  font-size: var(--text-display-2); /* one case h2 size, as Drift (22 Sep 2026: CHIP was 28.8 to 30px) */
   font-weight: var(--typography-font-weight-light);
   letter-spacing: var(--tracking-h2);
-  line-height: 1.15;
+  line-height: 1.08;
   color: var(--color-ink);
 }
 
