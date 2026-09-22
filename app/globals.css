@@ -1876,20 +1876,22 @@ h1.display-heading {
   }
 }
 
-/* An open row STAYS purple (Elleta, 20 Sep 2026): the wash is the open
-   state, not a hover that fades when the pointer leaves. The company
-   name and the chevron go iris with it, and the body underneath keeps
-   the card surface, so the row reads as header and content. */
+/* An open row STAYS filled (Elleta, 20 Sep 2026): the fill is the open
+   state, not a hover that fades when the pointer leaves, and the body
+   underneath keeps the card surface, so the row reads as header and
+   content. The fill is ochre (item 3, 22 Sep 2026; was the soft wash)
+   and everything on it reads in the on-accent ink, #121212 in both
+   themes: muted text on ochre would sit near 4:1. */
 .xp.is-open .accordion__trigger {
-  background: var(--tint-soft);
+  background: var(--color-semantic-accent);
 }
 
-/* the open row reads in ink: ochre is a fill, never text (brand refresh,
-   22 Sep 2026; was the deeper iris) */
 .xp.is-open .xp__company,
 .xp.is-open .xp__current,
+.xp.is-open .xp__dates,
+.xp.is-open .xp__role,
 .xp.is-open .accordion__chev {
-  color: var(--color-ink);
+  color: var(--color-semantic-text-on-accent);
 }
 
 /* the ring is :focus-visible only: a mouse click never draws one. Inset,
@@ -1981,16 +1983,10 @@ h1.display-heading {
   margin: var(--spacing-2) 0 0;
 }
 
-/* the CV button: a neutral outline (purple is for accent words, links,
-   focus rings and the primary button) */
+/* the CV button: the ink primary with the label roll (item 3, 22 Sep
+   2026; was a neutral outline). Only the icon gap is local. */
 .btn-key.xp__cv {
   gap: var(--spacing-2);
-  border-color: var(--border-faint);
-  color: var(--color-ink);
-}
-
-.btn-key.xp__cv:hover {
-  background: color-mix(in srgb, var(--color-ink) 6%, transparent);
 }
 
 /* House rules: four cards (the one Card surface), 2x2 from 768px,
@@ -8180,9 +8176,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   transition: background var(--dur-base) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
 
+/* the lit phrase: the ochre fill, on-accent ink (item 3, 22 Sep 2026) */
 .scan__phrase.is-lit {
-  background: var(--tint-soft);
-  color: var(--color-ink);
+  background: var(--color-semantic-accent);
+  color: var(--color-semantic-text-on-accent);
 }
 
 .scan-read__prose > p {

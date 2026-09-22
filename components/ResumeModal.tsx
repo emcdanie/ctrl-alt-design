@@ -391,7 +391,7 @@ export function ResumeButton() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <Button className="xp__cv" onClick={() => setOpen(true)}>
+      <Button variant="primary" className="xp__cv" onClick={() => setOpen(true)}>
         <Icon name="Page" size="sm" />
         View CV
       </Button>

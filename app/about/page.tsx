@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
 import Section from "@/components/layout/Section";
@@ -74,9 +73,7 @@ export default function AboutPage() {
       </Section>
 
       <Section id="the-pack" label="The pack">
-        <SectionHeader heading="Good" accent="company" after=".">
-          <Image className="illo" src="/images/bella/set/bella-and-obi.webp" alt="" width={1040} height={900} />
-        </SectionHeader>
+        <SectionHeader heading="Good" accent="company" after="." />
         <WorkedWith />
       </Section>
 
