@@ -209,7 +209,6 @@ body {
   --text-mono: var(--typography-font-size-mono);
   --tracking-mono: var(--typography-letter-spacing-mono);
   --mono-feature: var(--typography-font-feature-mono);
-  --text-code: var(--text-mono); /* 14px: the code role (.text-code) sits on the floor, never under it (Elleta, 19 Sep 2026) */
   --text-caption: 0.9375rem; /* 15px: a title under a name (experience rows) */
   /* Good company grid cells (100px under 700px) */
   --logo-cell: 132px;
@@ -269,7 +268,6 @@ body {
   /* ELLETA wordmark: component token, no BELLA size fits 44/36 */
   --nav-wordmark-size: 2.75rem;
   /* Eyebrow/label tracking: caps + spacing carry the old mono look */
-  --tracking-eyebrow: var(--tracking-mono);
 
   /* 3D language elevation tokens (token lock 2026-07-17): the orb,
      keycap switch, and nav-bar depth values, moved verbatim out of the
@@ -335,8 +333,6 @@ body {
   --case-design-lab-hi: var(--case-filters-hi);
   --case-design-lab-lo: var(--case-filters-lo);
   --case-design-lab-deep: var(--case-filters-deep);
-  --case-writing-hi: #F5A79C;
-  --case-writing-deep: #B23C30;
   --case-code-first-text: var(--color-ink-muted);
   --case-drift-text: var(--color-ink-muted);
   --case-clarity-text: var(--color-ink-muted);
@@ -358,9 +354,6 @@ body {
   --gov-clay-hi: #D99A6E;
   --gov-clay-deep: #8A4726;
   --gov-clay-text: var(--gov-clay-deep);
-  --gov-grey-hi: #B8B2C2;
-  --gov-grey-deep: #57525F;
-  --gov-grey-text: var(--gov-grey-deep);
   --hub-hi: #CFC7F6;
   --hub-lo: #A99BEC;
   /* The six panel-ground companions (--hero-panel-ink-soft / -meta /
@@ -482,7 +475,6 @@ body {
      #161616); ae6eb70 still ships #a1a1a1. Drop this line once BELLA
      commits the change and the site re-syncs. */
   --color-dark-muted: #b1b1b1;
-  --color-semantic-text-secondary: #b1b1b1;
   /* surfaces: 4% toward the cream ink, so lighter than the ground */
   --surface-card: var(--color-semantic-surface-card);
   --border-faint: var(--color-semantic-border);
@@ -504,7 +496,6 @@ body {
      the 26% tint (the raw -hi sat too close to its own wash, like the
      case-writing salmon did) */
   --gov-clay-text: #EDC3A2;
-  --gov-grey-text: #D0CAD8;
   /* thesis cards in dark sit on the dark card surface (was the navy
      specimen ground; navy left dark mode 19 Sep 2026) */
   --thesis-band-ground: var(--color-dark-surface);
@@ -1095,9 +1086,8 @@ main:not(.embed-page) .l-section:first-of-type::before {
 
 .eyebrow,
 .section-label {
-  /* Eyebrows are Geist, uppercase, tracked (--tracking-eyebrow).
-     Presence pass 2026-07-17: 700 weight; case surfaces use the case
-     identity colour (-text flips), neutral surfaces ink-soft. */
+  /* Eyebrows are the Mono label role (Geist refresh, 22 Sep 2026):
+     13px, 400, ss09, no caps, muted. */
   font-family: var(--font-code);
   font-size: var(--text-mono);
   font-weight: 400;
@@ -7277,7 +7267,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .agentdemo__findings li.is-bad .agentdemo__mk { color: var(--color-fail-ink); }
 
 .agentdemo__caption { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-soft); max-width: 70ch; }
-.agentdemo__foot { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-muted); max-width: 70ch; }
+.agentdemo__foot { margin: 0; font-size: var(--typography-font-size-base); color: var(--color-ink-muted); max-width: var(--measure-body); }
 
 /* the citation is a LINK and has to look like one: iris and underlined
    is the inline-link contract (section 4). It shipped as muted body text
