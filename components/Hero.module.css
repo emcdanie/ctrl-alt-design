@@ -12,8 +12,8 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--spacing-2) var(--spacing-4);
-  /* one hero offset: the h1 starts where every page h1 does */
-  margin: 0 0 var(--spacing-3);
+  /* the mock's eyebrow gap (portfolio-preview.html, item 5): 16px to the h1 */
+  margin: 0 0 var(--spacing-4);
 }
 
 /* metadata tier, like the line it sits in */
@@ -34,15 +34,16 @@
 /* size, measure, weight, tracking, leading and the squeeze come from
    the Heading primitive (hero tier, squeeze) */
 .headline {
-  margin: var(--spacing-4) 0 var(--hero-lead-gap);
+  margin: 0 0 var(--hero-lead-gap);
 }
 
-/* the hero lead recipe, the same as every page opening (Part Q) */
+/* the mock's lead (portfolio-preview.html, item 5): muted, 40ch */
 .lead {
   margin: 0 0 var(--spacing-6);
-  max-width: var(--measure-hero-lead);
+  max-width: 40ch;
   font-size: var(--text-hero-lead);
   line-height: 1.55;
+  color: var(--color-ink-muted);
 }
 
 .ctas {

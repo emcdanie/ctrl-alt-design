@@ -280,7 +280,7 @@ body {
      confident, grown-up") */
   /* the minimums dropped so the longest word fits a 342px phone column
      (Part U); from about 480px up the sizes are Part Q's */
-  --component-heading-hero-font-size: clamp(2.75rem, 1.5rem + 5.6vw, 6.75rem);
+  --component-heading-hero-font-size: clamp(2.5rem, 1.6rem + 4.2vw, 4.75rem); /* 76px max, portfolio-preview.html (item 5, 22 Sep 2026; was 108px): the Home h1 on the mock's one title size */
   --component-heading-page-font-size: clamp(2.5rem, 1.6rem + 4.2vw, 4.75rem); /* 76px max, system-page-mock (22 Sep 2026; was 84px) */
   --tracking-title: var(--typography-letter-spacing-display);
   --leading-title: var(--typography-line-height-heading, 1.08);

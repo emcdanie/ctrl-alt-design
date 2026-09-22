@@ -158,7 +158,7 @@ ladder below (endpoints 32 / 36 / 40 / 48 / 56 / 72). Body text never below
 
 | Token | Pair |
 | --- | --- |
-| `--component-heading-hero-font-size` | 40 → 180 (Heading tier hero: the home headline) |
+| `--component-heading-hero-font-size` | 40 → 76 (Heading tier hero: the home headline; portfolio-preview.html, 22 Sep 2026) |
 | `--component-heading-page-font-size` | 48 → 104, max-width 20ch (tier page: every page title, case studies and /design-system included; the case pull quote) |
 | `--component-heading-section-font-size` | 36 → 64 (tiers section and case: every section head, beat headline and the case sign-off) |
 | `--font-hero` | `clamp(40px, 5vw, 56px)` (overlay nav links, Geist; not a heading tier) |
