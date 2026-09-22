@@ -148,6 +148,8 @@ body {
      Card painted rgb(236,235,231): two card surfaces on one page. The
      site now reads BELLA's token, so there is one source. */
   --surface-card: var(--color-semantic-surface-card);
+  /* the pattern cut into the pull-quote marks: BELLA's seed 7, the logo's (item 9, 22 Sep 2026) */
+  --pattern-mark: url(/pattern/7.svg);
   /* the quiet section field (PatternField brief, 22 Sep 2026) */
   --section-field-opacity: 0.04;
   /* the dot grid behind every page opening (Part V, Elleta, 21 Sep
@@ -2044,7 +2046,6 @@ h1.display-heading {
   font-size: 5.5rem;
   font-weight: 800;
   line-height: 1;
-  color: var(--color-ink);
   transform: rotate(-8deg);
   pointer-events: none;
 }
@@ -2058,6 +2059,20 @@ h1.display-heading {
     transform: translateY(-4px) rotate(4deg) scale(1.08);
   }
 }
+
+/* a pull-quote mark filled with the brand pattern, like the logo (item 9,
+   22 Sep 2026; was solid ink): the glyph clips the static pattern SVG,
+   so the page carries no pattern paths. Decorative, aria-hidden. Each
+   mark shows its own patch of the field. */
+.pattern-mark {
+  background: var(--pattern-mark) 30% 40% / 14rem auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.quotes__item:nth-child(2n) .pattern-mark { background-position: 70% 20%; }
+.quotes__item:nth-child(3n) .pattern-mark { background-position: 45% 75%; }
 
 .quotes__card {
   height: 100%;

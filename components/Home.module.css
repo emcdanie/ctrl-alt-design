@@ -42,7 +42,7 @@
   margin-bottom: var(--spacing-2);
 }
 
-/* pull quote: the big iris opening mark, then the line */
+/* pull quote: the big pattern-filled opening mark, then the line */
 .quote {
   max-width: 52rem;
   margin: 0;
@@ -50,12 +50,14 @@
 
 .mark {
   display: block;
-  height: 0.5em;
+  width: fit-content;
+  /* the full glyph box, so background-clip: text paints all of it; the
+     negative margin keeps the old half-em footprint */
+  margin-bottom: -0.5em;
   font-family: var(--font-body);
   font-size: 6rem;
   font-weight: 800;
   line-height: 1;
-  color: var(--color-ink);
   transform: rotate(-8deg);
   transform-origin: left;
 }

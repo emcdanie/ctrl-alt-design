@@ -89,7 +89,7 @@ export default function AboutPage() {
             const [before, after] = t.quote.split(t.bold);
             return (
               <li key={t.name} className="quotes__item">
-                <span className="quotes__mark" aria-hidden="true">
+                <span className="quotes__mark pattern-mark" aria-hidden="true">
                   “
                 </span>
                 <Card className="quotes__card">

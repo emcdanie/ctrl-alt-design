@@ -18,4 +18,7 @@ export const SECTION_FIELDS = 8;
 
 /* the routes whose fields are prerendered at build; any other route's
    files render on first request and cache */
-export const PRERENDERED_FIELD_SEEDS = ["/", "/work", "/quick", "/about", "/design-system", "/learning"].map(routeSeed);
+export const PRERENDERED_FIELD_SEEDS = [
+  ...["/", "/work", "/quick", "/about", "/design-system", "/learning"].map(routeSeed),
+  7, // the pull-quote marks (--pattern-mark): BELLA's default seed, the logo's
+];
