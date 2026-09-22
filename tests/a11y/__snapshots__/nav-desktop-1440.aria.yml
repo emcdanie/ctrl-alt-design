@@ -1,6 +1,6 @@
 - link "Elleta McDaniel, home":
   - /url: /
-  - text: ELLETA
+  - img "ELLETA"
 - navigation "Primary":
   - link "Work":
     - /url: /work

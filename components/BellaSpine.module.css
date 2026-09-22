@@ -494,7 +494,7 @@
   padding: 1px var(--spacing-3);
   border-radius: var(--radius-pill);
   background: var(--color-chip-c3);
-  color: var(--k);
+  color: var(--color-chip-text); /* chip text on a chip fill, in both modes */
   white-space: nowrap;
 }
 .vBad { background: var(--bad); }
@@ -764,3 +764,9 @@
 @media (prefers-reduced-motion: reduce) {
   .root *, .root *::before { transition: none !important; animation: none !important; }
 }
+
+/* Mono labels on chip fills keep chip text, and figures keep ink, whatever
+   order the global .text-code (muted) loads in (22 Sep 2026: the root
+   layout's BELLA modules moved the chunk order and dark text went muted) */
+.root :is(.tagv, .verdict, .vbOk, .vbBad, .bd, .bdAa, .bdNo, .triC1bg, .triC2bg, .triC3bg):global(.text-code) { color: var(--color-chip-text); }
+.root :is(.v, .sc):global(.text-code) { color: var(--ink); }
