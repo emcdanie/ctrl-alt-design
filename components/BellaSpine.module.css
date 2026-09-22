@@ -162,8 +162,8 @@
 .sv7 i.on { background: var(--color-chip-c1); border-color: var(--ink); }
 .sv21 {
   display: grid;
-  /* 7 x 3 check squares (Elleta, 22 Sep 2026; the mock draws 11 x 2) */
-  grid-template-columns: repeat(7, 12px);
+  /* 11 x 2 check squares: 22 checks, no orphan (Elleta, 22 Sep 2026) */
+  grid-template-columns: repeat(11, 12px);
   grid-auto-rows: 12px;
   gap: 2px;
   /* stretch, as in the mock: .sv's flex-end collapsed the squares to 0px */
@@ -485,6 +485,7 @@
   padding: calc(var(--pd) * 0.55) calc(var(--pd) * 1.1);
   border-radius: var(--r);
   background: var(--a);
+  border: 1px solid var(--ae, var(--a)); /* the edge the gate measures */
   color: var(--on);
   font-weight: 500;
   font-size: 0.9375rem;
@@ -595,12 +596,13 @@
 }
 .grid21 {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* 22 checks: 2 columns, then 11 x 2 from 1024; both divide 22, no orphans */
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-2);
   margin-top: var(--spacing-4);
 }
-@media (min-width: 47.5rem) {
-  .grid21 { grid-template-columns: repeat(7, 1fr); }
+@media (min-width: 64rem) {
+  .grid21 { grid-template-columns: repeat(11, 1fr); }
 }
 .c21 {
   position: relative;

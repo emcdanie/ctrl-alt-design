@@ -45,6 +45,12 @@ const FILES = [
   { from: "src/components/BrandWordmark/BrandWordmark.module.css", to: "components/bella/BrandWordmark/BrandWordmark.module.css" },
   { from: "src/components/PatternField/PatternField.tsx", to: "components/bella/PatternField/PatternField.tsx" },
   { from: "src/components/PatternField/PatternField.module.css", to: "components/bella/PatternField/PatternField.module.css" },
+  /* favicons (2026-09-22): solid ink E at 16/32 and the SVG, pattern E at 180/512;
+   * the app/ file names are the Next.js icon conventions */
+  { from: "src/assets/brand/favicon/favicon.ico", to: "app/favicon.ico" },
+  { from: "src/assets/brand/favicon/favicon.svg", to: "app/icon.svg" },
+  { from: "src/assets/brand/favicon/apple-touch-icon.png", to: "app/apple-icon.png" },
+  { from: "src/assets/brand/favicon/icon-512.png", to: "app/icon1.png" },
 ];
 
 const sha = (p) => createHash("sha256").update(readFileSync(p)).digest("hex");

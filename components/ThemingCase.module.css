@@ -138,7 +138,7 @@
 @media (min-width: 60rem) {
   .ex {
     grid-template-columns: 1.2fr 0.8fr;
-    padding: calc(var(--spacing-8) + var(--spacing-1)) calc(var(--spacing-8) + var(--spacing-1)) calc(var(--spacing-12) + var(--spacing-2));
+    padding: calc(var(--spacing-8) + var(--spacing-1));
   }
 }
 .sheets {
@@ -319,12 +319,9 @@
   letter-spacing: var(--tracking-h2);
   line-height: 1.1;
 }
+/* the caption spans both columns, inside the panel's padding (audit:contain, 22 Sep 2026) */
 @media (min-width: 60rem) {
-  .cap {
-    position: absolute;
-    left: calc(var(--spacing-6) + var(--spacing-1));
-    bottom: var(--spacing-4);
-  }
+  .cap { grid-column: 1 / -1; }
 }
 
 /* ── the demo listing card (every theme dresses it) ────────────── */

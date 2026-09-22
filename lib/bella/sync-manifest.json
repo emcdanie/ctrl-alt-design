@@ -1,8 +1,8 @@
 {
   "bella": {
     "version": "0.3.0",
-    "commit": "d99421e19925ba373d4d1437d09cb8b493826255",
-    "describe": "v0.3.0-bella-92-gd99421e",
+    "commit": "35848335a2718ae50bf4629eda28f571994fa43f",
+    "describe": "v0.3.0-bella-94-g3584833",
     "syncedFrom": "https://github.com/emcdanie/bella"
   },
   "files": {
@@ -19,6 +19,10 @@
     "components/bella/BrandWordmark/BrandWordmark.tsx": "dfc261b10189de5e6189d302235076fada3b10c40841b016985bd47b40eb97d7",
     "components/bella/BrandWordmark/BrandWordmark.module.css": "391988415167e50241bcb0c96337955c928239ca978aece46167039a7a7652ab",
     "components/bella/PatternField/PatternField.tsx": "f659a542787f3cf4cf3f441f8b6e555089ed9d9c9bf7fc019f9e371e7030747c",
-    "components/bella/PatternField/PatternField.module.css": "1f636111b3f2bdda5e02710255c52b70674c47ed6304eff3ed265645a71ddb6f"
+    "components/bella/PatternField/PatternField.module.css": "1f636111b3f2bdda5e02710255c52b70674c47ed6304eff3ed265645a71ddb6f",
+    "app/favicon.ico": "7c4ab731c9abe2e784256a80b63b5f51f9173d42983941b63748bed0af781149",
+    "app/icon.svg": "f49ac89e255f138b811ca48be2d01061c87b9a19e07e0e02dc3e38854cb8b9b6",
+    "app/apple-icon.png": "eef75377904368830d7f86e6b2d1694b2c73626cd60395754f9ac68577ab1bda",
+    "app/icon1.png": "0a2705425128fd3a9318590e90eee42ad966b9b8865502ab7c61be61ede4a33f"
   }
 }

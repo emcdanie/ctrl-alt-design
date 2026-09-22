@@ -231,6 +231,11 @@ Must pass before any work is "done":
   signatures per route; no line wider than `--measure-body`. A deliberate exception carries
   `data-frame-exempt="<reason>"` and is printed on every run. The frame tokens are published in
   `/api/bella.json` (`frame`).
+- `audit:contain` — every panel or figure with a visible box (Playwright, `AUDIT_URL`), every
+  route at 1440, 1024 and 390, both themes, every tab state: no descendant, SVG shapes included,
+  leaves the panel's content box; no shape straddles its SVG's viewBox edge (cut off); no pin or
+  badge overlaps a button, link or drawn control (an SVG `.lc` group). Deliberate clipping (an
+  HTML ancestor hiding overflow, an SVG `clip-path` or `mask`) is not counted. (Elleta, 22 Sep 2026.)
 - `audit:sharp` — every raster image on every route, and inside its demo iframes (every tab
   of a before/after too), renders at most half its natural pixel width at 1440 and 390, on a 2x
   screen: nothing is stretched soft. No 2x source? Cap the display width, never upscale.

@@ -8345,6 +8345,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-radius: var(--radius-card);
   background: var(--color-semantic-surface);
 }
+.exhibit:has(> .exhibit__replay) { padding-top: 1.25rem; }
 .exhibit svg[data-bella-diagram] {
   display: block;
   width: 100%;
@@ -8360,10 +8361,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-feature-settings: var(--mono-feature);
   color: var(--color-ink-muted);
 }
+/* in the panel's flow, top right, above the picture: never in its padding,
+   never over the drawing (audit:contain, 22 Sep 2026) */
 .exhibit__replay {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
+  position: relative;
+  display: block;
+  margin: 0 0 var(--spacing-3) auto;
   z-index: 2;
   padding: 0.1875rem 0.625rem;
   border: 1px solid var(--color-semantic-border-strong);

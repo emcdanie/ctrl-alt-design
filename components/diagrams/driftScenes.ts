@@ -88,7 +88,8 @@ function sceneFile() {
     swatch: ["Colors", "_tokens/colour", "Accent"],
   };
   const dupNames = ["Inputs", "Input v2", "_old_Users/Edit form", "InputField", "Search input"];
-  let o = '<g id="zoom-world" style="transform-origin:0 0">';
+  /* the file is bigger than the picture on purpose: an explicit crop to the 900 x 340 window */
+  let o = '<clipPath id="zoom-crop"><rect width="900" height="340"/></clipPath><g clip-path="url(#zoom-crop)"><g id="zoom-world" style="transform-origin:0 0">';
   let x = 20;
   let colI = 0;
   let dupPlaced = 0;
@@ -108,7 +109,7 @@ function sceneFile() {
     x += w + ri(14, 26);
     colI++;
   }
-  return o + "</g>";
+  return o + "</g></g>";
 }
 
 /* 2 one field, five ways */
@@ -140,7 +141,7 @@ function sceneField() {
 function sceneFix() {
   let o = "";
   const sizes = ["small", "medium", "large"];
-  const colW = 110;
+  const colW = 100; /* 6 x 100 + the frame fits the 900 viewBox (was 110: cut off, 22 Sep 2026) */
   const x0 = 240;
   const y0 = 70;
   o += T(150, y0 + 60, "intent", "t", "end") + T(150, y0 + 78, "positive", "ti", "end") + T(150, y0 + 150, "intent", "t", "end") + T(150, y0 + 168, "negative", "ti", "end");
@@ -192,7 +193,7 @@ function sceneUsers() {
     g += R(232, y + 6, 70, 6, 3, "f") + (r === 0 ? H(2, 316, y - 4, 90, 26) : "") + LC(322, y + 4, 12, 10, 2) + ico(322, y + 4) + LC(342, y + 4, 12, 10, 2) + (r === 2 ? R(342, y + 4, 12, 10, 2, "c2") : ico(342, y + 4)) + LC(362, y + 4, 12, 10, 2) + ico(362, y + 4);
   }
   o += `<g class="pop" style="${d(0)}">${g}</g>`;
-  o += `<path class="s" d="M440 170 H460 m-6 -5 l6 5 l-6 5"/>`;
+  o += `<path class="s" d="M444 170 H464 m-6 -5 l6 5 l-6 5"/>` /* in the gap between the halves at 390 (they show 10-440 and 470-900) */;
   /* after */
   let h = R(480, 20, 400, 290, 12) + T(480, 336, "after", "t");
   h += H(4, 486, 26, 388, 28) + R(500, 33, 40, 10, 5, "f") + R(556, 33, 44, 10, 5, "f") + R(610, 33, 56, 10, 5, "f");
@@ -241,8 +242,8 @@ export const DECISIONS: { t: string; b: string; w: string; pins: [number, number
     b: "“New user”, the users tab and the role badges were the same filled pill, so there was no clear CTA.",
     w: "One filled button per page. Import and export move into the table, smaller.",
     pins: [
-      [236, 62, "b"],
-      [770, 92, "a"],
+      [222, 78, "b"],
+      [757, 111, "a"],
     ],
   },
   {
@@ -250,7 +251,7 @@ export const DECISIONS: { t: string; b: string; w: string; pins: [number, number
     b: "Roles were pills that looked clickable, and actions were a row of icons.",
     w: "A role is information, not an action: icon plus text. Status gets its own column; actions are words.",
     pins: [
-      [316, 160, "b"],
+      [300, 177, "b"],
       [644, 197, "a"],
     ],
   },
@@ -259,8 +260,8 @@ export const DECISIONS: { t: string; b: string; w: string; pins: [number, number
     b: "Roles was a small pill on the far right, a hidden entry point.",
     w: "You can find it, and the navigation reads in one order.",
     pins: [
-      [344, 98, "b"],
-      [616, 58, "a"],
+      [330, 114, "b"],
+      [604, 73, "a"],
     ],
   },
   {
@@ -276,6 +277,6 @@ export const DECISIONS: { t: string; b: string; w: string; pins: [number, number
     t: "The header tells you where you stand.",
     b: "You had to count the table to know who was set up.",
     w: "“10 users · 8 unregistered”, with invite right there, so the next step is obvious.",
-    pins: [[482, 122, "a"]],
+    pins: [[490, 118, "a"]],
   },
 ];
