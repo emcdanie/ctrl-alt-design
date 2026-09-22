@@ -58,7 +58,7 @@ override the constitution.
 
 ## 2. Layout
 - **Sections use Section + SectionHeader. No custom spacing.** (Elleta, 2026-09-18, layout system,
-  `specs/layout-system`.) `components/layout/`: `Container` (content `--layout-max` 66rem (1,056px, matches the mocks, 22 Sep 2026) plus
+  `specs/layout-system`.) `components/layout/`: `Container` (content `--layout-max` 62.5rem (1,000px, system-page-mock, 22 Sep 2026) plus
   `--layout-gutter`), `Section.tsx` (section padding, the plain mono label on the hairline rule; no paw since Part Q, 2026-09-21), `SectionHeader`
   (`layout="stacked"`, the default since 2026-09-20: label, heading, then the lead and body under it,
   left-aligned, the text column capped at 42rem. Elleta: "the body text has moved above the image,
