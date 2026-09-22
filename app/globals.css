@@ -456,7 +456,12 @@ body {
 [data-theme="dark"] {
   /* the dark ground (also set on body below, where the dark inks live) */
   --color-semantic-background: var(--color-dark-bg);
-  --section-field-opacity: 0.035;
+  /* the pattern fields read on dark (item 8, 22 Sep 2026): BELLA's 0.06
+     all but vanished on #0d0d0d. At 0.12 the worst field pixel puts
+     muted text at 6.93:1, the same floor as light; sections at 0.06
+     (8.10:1), still quieter than the hero. */
+  --component-pattern-field-opacity: 0.12;
+  --section-field-opacity: 0.06;
   /* surfaces: 4% toward the cream ink, so lighter than the ground */
   --surface-card: var(--color-semantic-surface-card);
   --border-faint: var(--color-semantic-border);
