@@ -68,6 +68,7 @@ const GATE: { name: string; stops: string }[] = [
   { name: "audit:structure", stops: "more than one route tree per case, or anything off palette" },
   { name: "audit:layout", stops: "a page that sets its own spacing" },
   { name: "audit:frame", stops: "a page off the frame: a second content edge or a stray title size" },
+  { name: "audit:contain", stops: "a picture that spills out of its panel, or a pin over a control" },
   { name: "audit:sharp", stops: "a picture shown wider than half its pixels" },
   { name: "audit:fonts", stops: "a typeface or weight the system doesn't own" },
   { name: "audit:tokens", stops: "a raw colour or spacing value in the code" },
