@@ -173,7 +173,6 @@ function Zoom() {
   const [lc, setLc] = useState(false);
   const [arrow, setArrow] = useState(50);
   const reduce = useReduce();
-  const worldRef = useRef<HTMLDivElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const narrow = useNarrow();
   const tabIds = useId().replace(/:/g, "");
@@ -197,22 +196,6 @@ function Zoom() {
     },
     [reduce],
   );
-
-  /* scene 1: the whole file, then a slow zoom toward the duplicates */
-  useEffect(() => {
-    if (shown !== 0) return;
-    const g = worldRef.current?.querySelector<SVGGElement>("#zoom-world");
-    if (!g) return;
-    g.style.transition = "none";
-    g.style.transform = reduce ? "translate(-250px,-150px) scale(.95)" : "scale(.5)";
-    if (reduce) return;
-    void g.getBoundingClientRect();
-    const t = window.setTimeout(() => {
-      g.style.transition = "transform 3.2s cubic-bezier(.45,0,.2,1)";
-      g.style.transform = "translate(-250px,-150px) scale(.95)";
-    }, 900);
-    return () => clearTimeout(t);
-  }, [shown, reduce]);
 
   const openDec = (i: number, from?: HTMLElement | null) => {
     setAct(i);
@@ -321,7 +304,7 @@ function Zoom() {
             show what looks clickable
           </button>
         )}
-        <div className={halves ? "dfc-zstack" : undefined} ref={worldRef}>
+        <div className={halves ? "dfc-zstack" : undefined}>
           {views.map((v) => (
             <div className="dfc-zwrap" key={v.side}>
               <svg
