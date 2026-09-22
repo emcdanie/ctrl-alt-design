@@ -29,7 +29,6 @@ const SHELL = "shell";
 const SHELL_FILES = {
   "components/CaseShellV2.tsx": "@/components/layout/Section",
   "components/CaseSection.tsx": "@/components/layout/Container",
-  "components/CaseBeat.tsx": "@/components/layout/Container",
 };
 
 /* file -> "section" | "shell" */

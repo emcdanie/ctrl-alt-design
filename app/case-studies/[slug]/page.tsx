@@ -229,7 +229,7 @@ export default async function CaseStudyPage({
           article?.mock
             ? article.mock.eyebrow
             : article
-            ? `Case study · ${sentenceCase(cs.category)} · ${fullYears(cs.year)}`
+            ? `Case · ${sentenceCase(cs.category)} · ${fullYears(cs.year)}`
             : spans(cs.eyebrow ?? `${sentenceCase(cs.category)} · ${cs.year}`)
         }
         title={article ? article.title : cs.title}
@@ -238,7 +238,8 @@ export default async function CaseStudyPage({
         subhead={cs.summary ?? cs.description}
         readingMinutes={readingMinutes}
         tags={cs.tags}
-        crumbs={article?.mock ? false : undefined}
+        /* every case opens with "← All work" (W1 release, 22 Sep 2026),
+           the mock-built cases included */
         endReveal={article?.mock ? false : undefined}
         glance={Boolean(article?.mock)}
         className={article?.mock ? "cs2--mock" : undefined}

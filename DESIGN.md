@@ -483,9 +483,10 @@ border, one shadow) holding all their working parts. The mixed treatment is
 deliberate: flat = a specimen under inspection; carded = an instrument you
 operate.
 
-## CaseBeat is THE case-study beat template (airtight spec, 22 Jul 2026)
+## CaseBeat was the case-study beat template (airtight spec, 22 Jul 2026)
 
-components/CaseBeat.tsx + docs/recipes/case-beat.md implement
+Retired 22 Sep 2026: its last consumer, the System page, was rebuilt on layout
+Sections from the mock, so the component and its recipe were deleted. It implemented
 docs/briefs/case-layout-constitution.md. The structural law: the headline is
 a CHILD of the text column (never a full-width banner), so the whole
 narrative unit moves together under `.beat--flip`; visuals are FLAT (no

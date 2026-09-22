@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import OverlayNav from "@/components/OverlayNav";
-import Breadcrumb from "@/components/Breadcrumb";
+import CaseBackLink from "@/components/CaseBackLink";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { BRIEF_CREDIT, STUDIES, findStudy, type StudyBrief, type StudySection } from "@/content/studies";
@@ -44,23 +44,18 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
       <OverlayNav />
 
       <Section id="study-hero" labelledBy="study-hero-title">
-        {/* three levels deep, so a breadcrumb rather than a page label
-            (Part G): Work / Pattern studies / this brief */}
-        <Breadcrumb
-          trail={[
-            { label: "Work", href: "/work" },
-            { label: "Pattern studies", href: "/work#studies" },
-            { label: study.title },
-          ]}
-        />
+        {/* "← All work" (W1 release, 22 Sep 2026): the study pages are
+            unlinked from /work now, so the way back is one link, not a
+            three-level breadcrumb */}
+        <CaseBackLink className="case-back--top" />
         <SectionHeader
           as="h1"
           id="study-hero-title"
+          kicker={`Study · ${study.kind}`}
           heading={study.title}
           lead={`${study.project}. ${study.line}`}
         >
-          {/* Part G: the breadcrumb is the label, so the year and kind
-              sit under the lead rather than stacking above the h1 */}
+          {/* the year and kind sit under the lead (Part G) */}
           <p className="text-code">
             {study.year} / {study.kind}
           </p>

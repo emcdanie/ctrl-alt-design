@@ -379,9 +379,6 @@ body {
   --ease-out: var(--motion-easing-out); /* cubic-bezier(.22,1,.36,1) */
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* BELLA easing.in-out, pending */
 
-  /* pattern-study tile (Work, 19 Sep 2026): one ground behind every
-     framed crop */
-  --tile: var(--color-light-panel);
   --cover-warm-hi: var(--color-light-panel);
   --cover-warm-lo: var(--color-light-line);
   --cover-warm-ink: var(--color-light-muted);
@@ -499,7 +496,6 @@ body {
   /* cover placeholder flips as a SET in dark (cover-contrast fix,
      21 Jul): dark warm plate, parchment-warm ink; >=3:1 large-text on
      every stop, scrim-free (the placeholder skips the media scrim) */
-  --tile: var(--color-dark-surface);
   --cover-warm-hi: #1f1f1f;
   --cover-warm-lo: var(--color-dark-surface);
   --cover-warm-ink: var(--color-dark-muted);
@@ -1226,13 +1222,11 @@ main:not(.embed-page) .l-section:first-of-type::before {
 /* page / section / case sizes come from the .text-display-1/2 utilities
    the Heading primitive adds; the page title keeps display-1's leading
    and measure (this rule sits after .display-heading) */
-/* the iris word never splits across lines ("code-first" broke at its
-   hyphen, audit 21 Sep), from 600px up. On a phone a whole accent word
-   can be wider than the screen, so there it may wrap (Part U) */
-@media (min-width: 600px) {
-  .display-heading .accent {
-    white-space: nowrap;
-  }
+/* the accent half-line WRAPS (live audit, 22 Sep 2026): the old nowrap
+   clipped "systems." on Home and "used it." on Learning at the right
+   edge between 1100 and 1280. h1s balance their lines instead. */
+h1.display-heading {
+  text-wrap: balance;
 }
 
 .display-heading--page {
@@ -8277,43 +8271,48 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   color: var(--color-ink-muted);
 }
 
-/* Breadcrumb (Part G): two levels deep only, in the page label's place */
-.crumbs {
-  margin-bottom: var(--section-label-gap);
-}
-
-.crumbs__list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-2);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  color: var(--color-ink-muted);
-}
-
-.crumbs__item {
+/* "← All work" (CaseBackLink, 22 Sep 2026, W1 release): the way back
+   from a case or study page to /work, above the page label and beside
+   "Next case". The mono label role in ink; the site focus rule applies
+   (a:focus-visible); a 24px-tall target. */
+.case-back {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-2);
-  min-width: 0;
-}
-
-.crumbs__sep {
-  color: var(--color-ink-muted);
-}
-
-.crumbs__link {
-  color: var(--color-ink-muted);
+  min-block-size: var(--spacing-6);
+  margin-bottom: var(--section-label-gap);
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
+  color: var(--color-ink);
   text-decoration: none;
 }
 
-.crumbs__link:hover,
-.crumbs__link:focus-visible {
-  color: var(--color-accent-ink);
+/* one hero offset (live audit, 22 Sep 2026): the back link sits in the
+   section's top padding, so a case h1 starts where every page h1 does */
+.case-back--top {
+  display: flex;
+  inline-size: fit-content;
+  margin-top: calc(-1 * (var(--spacing-6) + var(--section-label-gap)));
+}
+
+.case-back:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.cs2-endreveal__labelrow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  column-gap: var(--spacing-6);
+}
+
+.cs2-endreveal__labelrow .case-back {
+  margin-bottom: var(--spacing-3);
 }
 
 /* ─── Scan and read (Elleta, 20 Sep 2026, Part J item 2) ─────────────
@@ -8882,7 +8881,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .dfc-stats__l { margin: 0; font-size: 1rem; /* the mock's 15px, raised to the 16px reading floor */ color: var(--color-ink-muted); }
 /* the mock hero: lead 20px muted at 40ch */
 .cs2--mock .l-header .text-lead,
-.cs2--mock .l-header > p {
+.cs2--mock .l-header > p:not(.l-header__kicker) {
   max-width: 40ch;
   font-size: 1.25rem;
   color: var(--color-ink-muted);

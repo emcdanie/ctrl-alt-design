@@ -50,9 +50,6 @@ test.describe("Work", () => {
   test("case studies", async ({ page }) => {
     await expect(page.locator("#work-hero")).toMatchAriaSnapshot(snap("work-grid"));
   });
-  test("pattern studies", async ({ page }) => {
-    await expect(page.locator("#studies")).toMatchAriaSnapshot(snap("work-studies"));
-  });
 });
 
 test.describe("Home", () => {

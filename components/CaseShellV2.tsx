@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Breadcrumb from "@/components/Breadcrumb";
+import CaseBackLink from "@/components/CaseBackLink";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { Tag } from "@/components/ui/Tag";
@@ -104,10 +104,10 @@ export default function CaseShellV2({
   nda?: string;
   /** link out to the shipped surface where NDA allows */
   linkOut?: { label: string; href: string };
-  /** the back-to-Work breadcrumb. A case study is read FROM the library,
+  /** the "← All work" link. A case study is read FROM the library,
       so it earns a way back; the System page is a first-class nav item in
       its own right (section 1b) and is not reached through /work, so its
-      crumb pointed at a place the reader did not come from. */
+      back link would point at a place the reader did not come from. */
   crumbs?: boolean;
   /** identity colour pair for a page with no work-library row. The System
       page deliberately has none, because audit:parity requires slugs and
@@ -140,16 +140,14 @@ export default function CaseShellV2({
           column under it. The composition's sections follow, each one a
           Section-rhythm block in its own Container. */}
       <Section labelledBy="page-title">
-        {/* two levels deep, so the breadcrumb REPLACES the page label
-            (Part G): one nav > ol, with BreadcrumbList JSON-LD. Its
-            topic and years sit in the facts row, where nothing is lost. */}
-        {crumbs && caseItem?.title && (
-          <Breadcrumb trail={[{ label: "Work", href: "/work" }, { label: caseItem.title }]} />
-        )}
+        {/* "← All work" above the page label (W1 release, 22 Sep 2026;
+            replaces the Work / title breadcrumb). The System page opts out:
+            it is a nav item of its own, not reached through /work. */}
+        {crumbs && <CaseBackLink className="case-back--top" />}
         <SectionHeader
           as="h1"
           id="page-title"
-          kicker={crumbs && caseItem?.title ? undefined : eyebrow}
+          kicker={eyebrow}
           heading={title}
           accent={article ? accent : undefined}
           after={article ? after : undefined}

@@ -1,31 +1,20 @@
 import type { Metadata } from "next";
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseShellV2 from "@/components/CaseShellV2";
-import BellaSpine from "@/components/BellaSpine";
+import BellaSpine, { HeroStats } from "@/components/BellaSpine";
+import spine from "@/components/BellaSpine.module.css";
 import { auditCount, spellCount } from "@/lib/bella/gate";
 
 export const metadata: Metadata = {
   title: "BELLA, the system behind this site",
   description:
-    "The design system behind elleta.design: tokens, type, controls, and the governance gate, with every value read live from the running stylesheet.",
+    "BELLA is my open design system, and it runs this site: how I make one, who decides, where AI helps, and the gate that stops drift from shipping.",
 };
 
-/* ── ON THE REAL CASE SHELL (migration, 27 Jul 2026) ──
-   This page is a case study of BELLA, so it renders through the SAME
-   path every case route uses:
-
-     CaseStudyLayout -> CaseShellV2 -> CaseBeats, each a Section in its own Container
-
-   It used to use the case COMPONENTS inside a bespoke page shell with
-   its own rail and its own bands, which is why CaseBeat had no gutter,
-   why the page had four different left edges, and why no two sections
-   shared a structure. The shell is not forked and there is no
-   system-page variant: CaseShellV2 optional-chains its work-library
-   lookup throughout, so a slug with no WORK_ITEMS row degrades cleanly.
-
-   The slug deliberately has NO registry row. audit:parity requires
-   case-study slugs and WORK_ITEMS rows to be 1:1 in BOTH directions, so
-   adding one for BELLA would fail the gate. */
+/* The System page renders through the case shell (CaseStudyLayout ->
+   CaseShellV2), with no work-library row: audit:parity requires slugs
+   and WORK_ITEMS rows to be 1:1, so a BELLA row would fail it. Rebuilt
+   from system-page-mock.html (Elleta, 22 Sep 2026, W1 release). */
 const SLUG = "bella";
 
 export default function DesignSystemPage() {
@@ -36,25 +25,20 @@ export default function DesignSystemPage() {
     <CaseStudyLayout>
       <CaseShellV2
         slug={SLUG}
-        eyebrow="System"
-        title="BELLA, the system behind this site"
-        subhead="A design system is only as useful to an AI as it is readable by a machine. This is that argument, demonstrated on the system running the page you are reading."
-        /* Part R (21 Sep 2026): the hero is the h1 and its lead, no chips
-           row, no reading time; and the page ends on its claim, not on a
-           next-case card */
-        lead="A design system is only as useful to an AI as it is readable by a machine. This is that argument, demonstrated on the system running the page you are reading."
+        eyebrow="System · BELLA"
+        title="A design system people trust"
+        accent="and AI can build with"
+        subhead="BELLA is my open design system, and it runs the site you're reading."
+        lead="BELLA is my open design system, and it runs the site you're reading. This page shows how I make one: who decides, where AI helps, and what stops drift from shipping."
         readingMinutes={6}
         tags={[]}
         endReveal={false}
-        /* not reached through /work: System is its own primary nav item
-           (section 1b), so a back-to-Work crumb pointed somewhere the
-           reader had not been. Every real case keeps its crumb. */
+        /* System is its own nav item, not reached through /work */
         crumbs={false}
-        /* the clarity pair, which this page ALREADY treats as its
-           identity: the frontier accent on the maturity radar and the
-           Teenage badges. No new colour is invented, and no WORK_ITEMS
-           row is added, which audit:parity would refuse. */
         identity={{ text: "var(--case-clarity-text)", hi: "var(--case-clarity-hi)" }}
+        heroExtra={<HeroStats auditCount={audits} />}
+        /* the page's local tokens (BellaSpine.module.css .root) cover the hero stats too */
+        className={spine.root}
       >
         <BellaSpine auditCount={audits} auditCountWord={spellCount(audits)} />
       </CaseShellV2>
