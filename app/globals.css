@@ -89,8 +89,8 @@
 }
 
 /* Every heading is Geist (--font-display resolves to Geist). TYPE LOCK:
-   two faces. Unique renders only on the ELLETA wordmarks (.nav-wordmark,
-   .site-footer__wordmark) and the BELLA logo; everything else, headings
+   two faces. Unique renders only on the ELLETA wordmarks (the BELLA logo; the nav and footer ELLETA are
+   BrandWordmark SVGs since 22 Sep 2026); everything else, headings
    included, is Geist. No mono family exists. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
@@ -216,13 +216,6 @@ body {
   /* footer contact photo (72px under 700px) */
   --footer-photo: 6rem;
   --footer-photo-sm: 4.5rem;
-  /* site footer: ELLETA in Unique, its letters spread across the
-     container; the letters stand 96 -> 240px tall (Unique's cap is
-     0.706em, so the font size is the cap height / 0.706). Bella sits on
-     the last A at 0.55x the cap height */
-  --footer-wordmark-cap: clamp(6rem, 18vw, 15rem);
-  --footer-wordmark-size: calc(var(--footer-wordmark-cap) / 0.706);
-  --footer-bella-height: calc(0.706em * 0.55);
   /* heading measures in em (display-1 18em, the rest 22em) */
   /* STOPGAP override of BELLA's px size ramp, in rem so every size
      follows the reader's font setting; tag rises to the 14px floor and
@@ -2303,52 +2296,6 @@ h1.display-heading {
   pointer-events: none;
 }
 
-/* one letter per flex item, spread edge to edge of the container */
-.site-footer__wordmark {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding-top: calc(var(--footer-bella-height) + 0.04em);
-  margin-bottom: -0.115em;
-  font-family: var(--font-hero-display);
-  font-weight: 400;
-  font-size: var(--footer-wordmark-size);
-  line-height: 0.8;
-  color: var(--color-dark-ink);
-}
-
-/* Trim the reserve where the band has slack (Elleta, 20 Sep 2026).
-   Bella's full height was reserved above the letters at every width,
-   and at desktop widths most of that band sat empty. It is not only
-   her reserve though: FooterTrail walks its prints along it and needs
-   about 94px of clear lane or it renders nothing. From 1280px the lane
-   measures 137px and up, so the reserve gives 40px of it back and the
-   trail keeps its floor. Below 1280 the lane is already near that
-   floor (129px at 1200, 99px at 390), so the reserve stays. Measured,
-   not guessed: at 1200 a 40px trim drops the lane to 89 and the trail
-   stops rendering. Bella still stands on the
-   A, about 60px clear of the "in progress" line. */
-@media (min-width: 1280px) {
-  .site-footer__wordmark {
-    padding-top: calc(var(--footer-bella-height) + 0.04em - var(--spacing-10));
-  }
-}
-
-/* Bella stands on the A's apex, centred on the letter */
-.site-footer__a {
-  position: relative;
-}
-
-.site-footer__bella {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% - 0.03em);
-  height: var(--footer-bella-height);
-  width: auto;
-  max-width: none;
-  transform: translateX(-50%);
-}
-
 /* what is being built: one muted line under the link columns */
 .building-line {
   margin: 0;
@@ -2379,41 +2326,6 @@ h1.display-heading {
   margin: var(--spacing-2) 0 0;
   font-size: var(--text-meta);
   color: var(--color-dark-ink);
-}
-
-/* the footer paw trail (components/FooterTrail.tsx): prints in the
-   footer's accent at 40%, placed by script in the empty band above the
-   letters; they step in one by one (80ms apart) the first time */
-.site-footer {
-  position: relative;
-}
-
-.footer-trail {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.footer-trail__paw {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  fill: var(--color-brand-periwinkle);
-  opacity: 0;
-}
-
-.footer-trail--settled .footer-trail__paw {
-  opacity: 0.4;
-}
-
-.footer-trail--go .footer-trail__paw {
-  animation: footer-paw var(--dur-base) var(--ease-out) forwards;
-  animation-delay: calc(var(--i) * 80ms);
-}
-
-@keyframes footer-paw {
-  from { opacity: 0; scale: 0.5; }
-  to { opacity: 0.4; scale: 1; }
 }
 
 /* small print: one row under the wordmark, from its left edge; the
