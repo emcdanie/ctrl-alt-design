@@ -126,7 +126,7 @@ function PeopleRow({ v, k, run, reduce, label }: { v: number; k: number; run: nu
       </p>
       <div className="dfc-pc__row" aria-hidden="true">
         {fill.map((p, i) => (
-          <svg key={i} viewBox="0 0 18 26" data-bella-diagram>
+          <svg key={i} viewBox="0 0 18 26" width="18" height="26" data-bella-diagram>
             <clipPath id={`${uid}-${i}`}>
               <path d={PERSON} />
             </clipPath>
