@@ -267,11 +267,11 @@ function Duo() {
         </div>
       </div>
       <div className={`${s.legend} text-code`}>
-        <span>
+        <span className="text-code">
           <i className={`${s.lg} ${s.lgBad}`} aria-hidden="true" />
           guessed: not in the system
         </span>
-        <span>
+        <span className="text-code">
           <i className={`${s.lg} ${s.lgOk}`} aria-hidden="true" />
           read from the contract
         </span>
@@ -376,7 +376,7 @@ function Lifecycle() {
       <div className={s.lanes} aria-hidden="true">
         {LANES.map(([name, claude], k) => (
           <div key={name} className={`${s.lane} ${claude ? s.claude : ""}`}>
-            <span>{name}</span>
+            <span className="text-code">{name}</span>
             {STEPS.map((st, i) => (
               <i key={i} className={`${st[5][k] ? s.laneOn : ""} ${i === cur ? s.cur : ""}`} />
             ))}
@@ -911,7 +911,7 @@ function Maturity({ auditCount }: { auditCount: number }) {
 
 export default function BellaSpine({ auditCount, auditCountWord }: { auditCount: number; auditCountWord: string }) {
   return (
-    <div className={s.root}>
+    <>
       <Section id="s1" ruled>
         <SectionHeader
           kicker="01 · Why it matters"
@@ -1046,6 +1046,6 @@ export default function BellaSpine({ auditCount, auditCountWord }: { auditCount:
           </div>
         </div>
       </Section>
-    </div>
+    </>
   );
 }

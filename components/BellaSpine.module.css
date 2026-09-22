@@ -267,7 +267,7 @@
   gap: var(--spacing-5);
   margin-top: var(--spacing-3);
 }
-.lg { display: inline-block; width: 10px; height: 10px; margin-right: var(--spacing-2); border-radius: 3px; vertical-align: -1px; }
+.lg { display: inline-block; width: 10px; height: 10px; margin-right: var(--spacing-2); border-radius: var(--radius-sm); vertical-align: -1px; }
 .lgBad { background: var(--bad); }
 .lgOk { background: var(--color-chip-c3); }
 
@@ -407,6 +407,7 @@
 }
 .seg button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
 .pgOut { display: grid; align-content: start; gap: var(--spacing-3); }
+.pgOut > p { max-width: var(--measure-body); }
 .lst {
   --a: #5b4bd1; /* token-waiver: the demo listing's default accent, overwritten live */
   --on: #ffffff; /* token-waiver: overwritten live */
@@ -523,7 +524,7 @@
   align-content: center;
   min-height: 64px;
   border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   background: var(--bg);
   text-align: center;
   transition: background 0.3s, border-color 0.3s;

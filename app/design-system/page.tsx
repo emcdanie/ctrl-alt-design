@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseShellV2 from "@/components/CaseShellV2";
 import BellaSpine, { HeroStats } from "@/components/BellaSpine";
+import spine from "@/components/BellaSpine.module.css";
 import { auditCount, spellCount } from "@/lib/bella/gate";
 
 export const metadata: Metadata = {
@@ -36,6 +37,8 @@ export default function DesignSystemPage() {
         crumbs={false}
         identity={{ text: "var(--case-clarity-text)", hi: "var(--case-clarity-hi)" }}
         heroExtra={<HeroStats auditCount={audits} />}
+        /* the page's local tokens (BellaSpine.module.css .root) cover the hero stats too */
+        className={spine.root}
       >
         <BellaSpine auditCount={audits} auditCountWord={spellCount(audits)} />
       </CaseShellV2>

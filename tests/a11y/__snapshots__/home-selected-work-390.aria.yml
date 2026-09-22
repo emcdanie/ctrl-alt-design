@@ -1,10 +1,17 @@
 - region "Selected work":
   - paragraph: Selected work
   - heading "Start with the work." [level=2]
-  - paragraph: "Four cases, up close: what drifted, what I built, and what changed."
-  - link /Design systems · \d+ to \d+ Code First Figma and code as one system, not two\./:
-    - /url: /case-studies/brad-frost
-  - link /Design systems · \d+ to \d+ From Drift to Foundation A first design system for a product that had outgrown its UI\./:
-    - /url: /case-studies/design-system-transformation
-  - link /AI \+ design systems · \d+ CHIP An agent that watches the system and never moves silently\./:
-    - /url: /case-studies/chip
+  - paragraph: "Three cases, up close: what drifted, what I built, and what changed."
+  - list:
+    - listitem:
+      - link /\d+ · Design systems · \d+ to \d+ · Lead case From Drift to Foundation Nobody asked for a system\. I built one anyway, got a CTO to fund a team, then handed it to every product team\. systems at scale governance tokens figma → code close with engineers/:
+        - /url: /case-studies/design-system-transformation
+    - listitem:
+      - link /\d+ · Product design · \d+ to \d+ B2B travel platform Two years of redesign, nothing live\. Six product areas shipped on the new system\. shipped impact problem framing stakeholders/:
+        - /url: /case-studies/booking-platform
+    - listitem:
+      - link /\d+ · Design systems · BELLA · \d+ One system, many faces Themes in BELLA swap the values, never the components\. token strategy figma → code consistency without fragmentation accessibility in every theme ai-ready structure/:
+        - /url: /case-studies/theming
+  - paragraph:
+    - link "See all work":
+      - /url: /work
