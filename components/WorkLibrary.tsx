@@ -348,7 +348,7 @@ export function WorkIndex() {
               <svg viewBox="0 0 300 180" aria-hidden="true" data-bella-diagram dangerouslySetInnerHTML={{ __html: WORK_THUMBS[row.id] }} />
             </span>
             <span className={styles.rowBody}>
-              <span className={styles.rowMeta}>
+              <span className={styles.metaLine}>
                 {row.n} · {row.meta}
                 {row.lead ? <> · {row.lead}</> : null}
               </span>

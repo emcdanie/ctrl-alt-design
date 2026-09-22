@@ -8457,9 +8457,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-radius: var(--radius-full);
   background: transparent;
   color: var(--color-ink);
-  font-family: var(--font-code);
+  font-family: var(--font-body); /* buttons stay Geist (BELLA) */
   font-size: var(--text-mono);
-  font-feature-settings: var(--mono-feature);
   cursor: pointer;
   transition: border-color var(--dur-fast) var(--ease-out);
 }
@@ -8498,10 +8497,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    Part B of case-study-mock.html: a 1000px content column (the mock's
    1080 wrap less its 40px gutters) and 88px section padding, set by
    re-pointing the frame tokens on this page only. */
-.cs2--mock {
-  --container-max: calc(62.5rem + var(--layout-gutter) * 2);
-  --section-pad-y: 5.5rem;
-}
+/* (the mock's 1000px column, 88px sections and 76px h1 gave way to the
+   site frame so audit:frame holds: one content edge, one rhythm, one h1) */
 .case-hero__facts--glance {
   grid-template-columns: minmax(0, 1fr);
   gap: 0;
@@ -8524,7 +8521,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-radius: var(--radius-card);
   background: var(--color-semantic-surface);
 }
-.case-hero__signals-label {
+.case-hero__signals-meta {
   margin: 0 0 0.75rem;
   font-family: var(--font-code);
   font-size: var(--text-mono);
@@ -8534,6 +8531,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 .case-hero__tags { display: flex; flex-wrap: wrap; gap: 0.375rem; }
 .cs2--mock .case-hero__nda {
+  max-width: var(--measure-body);
   margin-top: 1.25rem;
   font-family: var(--font-code);
   font-size: var(--text-mono);
@@ -8594,6 +8592,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .dfc-pc__l { margin: 0; font-size: 1rem; /* the mock's 15px, raised to the 16px reading floor */ color: var(--color-ink-muted); }
 .dfc-src-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-top: 0.75rem; }
 .dfc-src {
+  max-width: var(--measure-body);
   margin: 0;
   font-family: var(--font-code);
   font-size: var(--text-mono);
@@ -8650,9 +8649,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-radius: var(--radius-full);
   background: transparent;
   color: var(--color-ink-muted);
-  font-family: var(--font-code);
+  font-family: var(--font-body); /* buttons stay Geist (BELLA) */
   font-size: var(--text-mono);
-  font-feature-settings: var(--mono-feature);
   cursor: pointer;
   transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
 }
@@ -8692,7 +8690,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border: 1px solid var(--color-ink);
   border-radius: 50%;
   color: var(--color-chip-text);
-  font-family: var(--font-code);
+  font-family: var(--font-body); /* buttons stay Geist (BELLA) */
   font-size: var(--text-mono);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -8746,7 +8744,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   border-radius: 6px;
   background: none;
   color: var(--color-ink-muted);
-  font-family: var(--font-code);
+  font-family: var(--font-body); /* buttons stay Geist (BELLA) */
   font-size: 0.875rem;
   cursor: pointer;
 }
@@ -8882,13 +8880,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   color: var(--color-ink);
 }
 .dfc-stats__l { margin: 0; font-size: 1rem; /* the mock's 15px, raised to the 16px reading floor */ color: var(--color-ink-muted); }
-/* the mock hero: h1 76px across the column, lead 20px muted at 40ch */
-.cs2--mock .display-heading--page,
-.cs2--mock h1.display-heading {
-  font-size: clamp(2.5rem, 6.4vw, 4.75rem);
-  max-inline-size: none;
-  max-width: none;
-}
+/* the mock hero: lead 20px muted at 40ch */
 .cs2--mock .l-header .text-lead,
 .cs2--mock .l-header > p {
   max-width: 40ch;
@@ -8906,3 +8898,4 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 /* /work index hero lead: muted, 40ch (mock Part A) */
 #work-hero .l-header__lead { max-width: 40ch; color: var(--color-ink-muted); }
+.case-hero__signals--bare { margin-top: 1.5rem; padding: 0; background: none; }

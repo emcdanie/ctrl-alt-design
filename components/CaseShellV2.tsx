@@ -202,7 +202,7 @@ export default function CaseShellV2({
             )}
             {heroExtra}
             {nda && (
-              <p role="note" className="case-hero__nda">
+              <p role="note" className={glance ? "case-hero__nda text-meta" : "case-hero__nda"}>
                 {nda}
               </p>
             )}

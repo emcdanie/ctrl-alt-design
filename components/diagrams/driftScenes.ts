@@ -88,7 +88,7 @@ function sceneFile() {
     swatch: ["Colors", "_tokens/colour", "Accent"],
   };
   const dupNames = ["Inputs", "Input v2", "_old_Users/Edit form", "InputField", "Search input"];
-  let o = '<g id="dfc-world" style="transform-origin:0 0">';
+  let o = '<g id="zoom-world" style="transform-origin:0 0">';
   let x = 20;
   let colI = 0;
   let dupPlaced = 0;

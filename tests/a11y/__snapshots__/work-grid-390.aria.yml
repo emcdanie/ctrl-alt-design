@@ -1,10 +1,20 @@
-- region "Case studies":
-  - paragraph: Case studies
-  - heading "Four cases, up close." [level=2]
-  - paragraph: Real teams, real drift. What I found, what I built, what changed.
-  - link /Case study \d+ to \d+ Code First Figma and code as one system, not two\. Design tokens Figma ⇄ code Read it →/:
-    - /url: /case-studies/brad-frost
-  - link /Case study \d+ to \d+ From Drift to Foundation A first design system for a product that had outgrown its UI\. Design systems Governance Read it →/:
-    - /url: /case-studies/design-system-transformation
-  - link /Case study \d+ CHIP An agent that watches the system and never moves silently\. AI-enabled design Governance Read it →/:
-    - /url: /case-studies/chip
+- region "Selected work.":
+  - paragraph: Work
+  - heading "Selected work." [level=1]
+  - paragraph: Each one says what I claimed, what proves it, and what changed. Tags show the signals it's evidence for.
+  - list:
+    - listitem:
+      - link /\d+ · Design systems · \d+ to \d+ · Lead case From Drift to Foundation Nobody asked for a system\. I built one anyway, got a CTO to fund a team, then handed it to every product team\. systems at scale governance tokens figma → code close with engineers/:
+        - /url: /case-studies/design-system-transformation
+    - listitem:
+      - link /\d+ · Product design · \d+ to \d+ B2B travel platform Two years of redesign, nothing live\. Six product areas shipped on the new system\. shipped impact problem framing stakeholders/:
+        - /url: /case-studies/booking-platform
+    - listitem:
+      - link /\d+ · Pattern · \d+ to \d+ Search for people who know what they want One search for flights, stays, trains and cars, each with its supplier’s rules\. consistency vs exceptions states & variants/:
+        - /url: /case-studies/search-experts
+    - listitem:
+      - link /\d+ · AI-enabled design · \d+ CHIP An agent that watches the system and never moves silently\. I show it live\. ai-compatible system judgement over ai/:
+        - /url: /case-studies/chip
+    - listitem:
+      - link /\d+ · Design systems · BELLA · \d+ One system, many faces Themes in BELLA swap the values, never the components\. token strategy figma → code consistency without fragmentation accessibility in every theme ai-ready structure/:
+        - /url: /case-studies/theming

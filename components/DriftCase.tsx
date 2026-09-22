@@ -120,8 +120,9 @@ function PeopleRow({ v, k, run, reduce, label }: { v: number; k: number; run: nu
   }, [run, reduce, v, k]);
   return (
     <div className="dfc-pc">
-      <p className="dfc-pc__n" aria-label={`${v}%`}>
+      <p className="dfc-pc__n">
         <span aria-hidden="true">{n}%</span>
+        <span className="sr-only">{v}%</span>
       </p>
       <div className="dfc-pc__row" aria-hidden="true">
         {fill.map((p, i) => (
@@ -149,7 +150,7 @@ function People() {
         ))}
       </div>
       <div className="dfc-src-row">
-        <p className="dfc-src">each row is ten people · source: my interviews and surveys with customer success and sales, 2024</p>
+        <p className="dfc-src text-meta">each row is ten people · source: my interviews and surveys with customer success and sales, 2024</p>
         {!reduce && (
           <button type="button" className="exhibit__replay dfc-inline-replay" onClick={replay} aria-label="Replay the people charts">
             replay
@@ -200,7 +201,7 @@ function Zoom() {
   /* scene 1: the whole file, then a slow zoom toward the duplicates */
   useEffect(() => {
     if (shown !== 0) return;
-    const g = worldRef.current?.querySelector<SVGGElement>("#dfc-world");
+    const g = worldRef.current?.querySelector<SVGGElement>("#zoom-world");
     if (!g) return;
     g.style.transition = "none";
     g.style.transform = reduce ? "translate(-250px,-150px) scale(.95)" : "scale(.5)";
@@ -616,7 +617,7 @@ function Turnaround() {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function DriftCase(_props: { cs: CaseStudy }) {
   return (
-    <div className="dfc">
+    <>
       <Section ruled>
         <Eyebrow>01 · The problem, framed</Eyebrow>
         <h2 className="text-display-2 dfc-h2">It felt complicated. The numbers said why.</h2>
@@ -643,7 +644,7 @@ export default function DriftCase(_props: { cs: CaseStudy }) {
 
       <Section ruled id="zoom">
         <Eyebrow>01b · The problem, at four zoom levels</Eyebrow>
-        <h2 className="text-display-2 dfc-h2">From the whole file, down to one field, and back out to the product.</h2>
+        <h2 className="text-display-2 dfc-h2">From the whole file, down to one field, and back.</h2>
         <Zoom />
       </Section>
 
@@ -731,6 +732,6 @@ export default function DriftCase(_props: { cs: CaseStudy }) {
           </div>
         </div>
       </Section>
-    </div>
+    </>
   );
 }

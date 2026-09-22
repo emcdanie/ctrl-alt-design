@@ -9,6 +9,7 @@ import ChipCase from "@/components/ChipCase";
 import BookingCase from "@/components/BookingCase";
 import SearchCase from "@/components/SearchCase";
 import CheckoutCase from "@/components/CheckoutCase";
+import ThemingCase from "@/components/ThemingCase";
 import type { CaseStudy } from "@/lib/content";
 import { Tag } from "@/components/ui/Tag";
 
@@ -43,7 +44,7 @@ const ARTICLE: Record<
      *  tags, and no end reveal */
     mock?: {
       eyebrow: string;
-      signals: { label: string; tags: { text: string; tone?: "c2" | "c3"; outline?: boolean }[] };
+      signals: { label?: string; tags: { text: string; tone?: "c2" | "c3"; outline?: boolean }[] };
     };
   }
 > = {
@@ -115,6 +116,29 @@ const ARTICLE: Record<
       { label: "Status", value: "Honest prototype, CHIP 2.0 in progress" },
     ],
   },
+  /* theming-case-study.html (Geist refresh, 22 Sep 2026) */
+  theming: {
+    title: "One system, many faces.",
+    lead: "Themes in BELLA swap the values, never the components. Watch the same screen change, token by token. Nothing to scroll or click.",
+    caseFact: false,
+    facts: [
+      { label: "role", value: "Design systems lead, and the person who builds it" },
+      { label: "system", value: "BELLA, my own open design system" },
+      { label: "scope", value: "Token tiers, themes, contrast gate, Figma ⇄ code" },
+      { label: "proof", value: "Light and dark live on this site; axe runs clean in both" },
+    ],
+    mock: {
+      eyebrow: "Case · Theming · BELLA, 2026",
+      signals: {
+        tags: [
+          { text: "token strategy figma → code" },
+          { text: "consistency without fragmentation", tone: "c3" },
+          { text: "accessibility in every theme", tone: "c2" },
+          { text: "ai-ready structure", outline: true },
+        ],
+      },
+    },
+  },
 };
 
 /* house style for a span: "Oct 2024 - Jan 2025" reads "... to ...".
@@ -174,6 +198,7 @@ const COMPOSITIONS: Record<string, React.ComponentType<{ cs: CaseStudy }>> = {
   "booking-platform": BookingCase,
   "search-experts": SearchCase,
   checkout: CheckoutCase,
+  theming: ThemingCase,
 };
 
 export default async function CaseStudyPage({
@@ -219,8 +244,8 @@ export default async function CaseStudyPage({
         className={article?.mock ? "cs2--mock" : undefined}
         heroExtra={
           article?.mock ? (
-            <div className="case-hero__signals">
-              <p className="case-hero__signals-label">{article.mock.signals.label}</p>
+            <div className={article.mock.signals.label ? "case-hero__signals" : "case-hero__signals case-hero__signals--bare"}>
+              {article.mock.signals.label ? <p className="case-hero__signals-meta">{article.mock.signals.label}</p> : null}
               <div className="case-hero__tags">
                 {article.mock.signals.tags.map((t) => (
                   <Tag key={t.text} tone={t.tone} outline={t.outline}>
