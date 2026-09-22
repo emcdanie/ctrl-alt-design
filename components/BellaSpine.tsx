@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import CaseBeat from "@/components/CaseBeat";
 import AgentDemo from "@/components/AgentDemo";
 import ContractPipeline from "@/components/ContractPipeline";
@@ -115,6 +116,13 @@ export default function BellaSpine({
           </p>
         }
         visual={<ContractPipeline />}
+        /* the theming case goes deeper on the same pipeline (Geist
+           refresh, Elleta 22 Sep 2026) */
+        foot={
+          <Link href="/case-studies/theming" className="text-action">
+            See theming in depth →
+          </Link>
+        }
       />
 
       {/* ── 03 ── WIDE (27 Jul). The table is the demo, so it is the

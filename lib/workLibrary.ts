@@ -198,6 +198,29 @@ export const WORK_ITEMS: WorkItem[] = [
     deep: "var(--case-drift-deep)",
     text: "var(--case-drift-text)",
   },
+  /* Theming (Geist refresh, 22 Sep 2026): BELLA's themes as a case.
+     Wears the Drift pair: the same system, so no new colour. */
+  {
+    id: "theming",
+    medium: "case study",
+    rank: 5,
+    title: "One system, many faces",
+    bubbleLabel: "Theming",
+    kicker: "Design systems · 2026",
+    ingredients: ["Themes swap values, never components", "One name, two answers", "A gate on every theme"],
+    href: "/case-studies/theming",
+    inCluster: false,
+    type: "Design Systems",
+    year: "2026",
+    yearStart: 2026,
+    role: "Designer and builder, BELLA",
+    impact: "Four themes on one set of components, each checked by the gate",
+    skills: ["Design systems", "Design tokens", "Accessibility", "Component libraries"],
+    hi: "var(--case-drift-hi)",
+    lo: "var(--case-drift-lo)",
+    deep: "var(--case-drift-deep)",
+    text: "var(--case-drift-text)",
+  },
   {
     id: "design-lab",
     medium: "prototype",
@@ -294,3 +317,68 @@ export const WORK_CASES: WorkCase[] = Object.entries(CASE_COPY).map(([id, copy])
     .join(" ");
   return { id, title: item.title, kind, href: item.href, cover: item.cover, ...copy };
 });
+
+/* ── The /work index (Geist refresh, 22 Sep 2026) ───────────────────
+ * Part A of bella/docs/reference/case-study-mock.html: five ruled rows,
+ * a line thumbnail (components/diagrams/workThumbs.ts), a Mono meta line,
+ * the one-line claim and the signal tags the case is evidence for. Home
+ * keeps its cards (WORK_CASES above). */
+export interface WorkIndexRow {
+  id: string;
+  n: string;
+  meta: string;
+  lead?: string;
+  title: string;
+  claim: string;
+  href: string;
+  tags: { text: string; tone?: "c2" | "c3"; outline?: boolean }[];
+}
+
+export const WORK_INDEX: WorkIndexRow[] = [
+  {
+    id: "drift",
+    n: "01",
+    meta: "Design systems · 2024 to 2026",
+    lead: "Lead case",
+    title: "From Drift to Foundation",
+    claim: "Nobody asked for a system. I built one anyway, got a CTO to fund a team, then handed it to every product team.",
+    href: "/case-studies/design-system-transformation",
+    tags: [{ text: "systems at scale" }, { text: "governance", tone: "c2" }, { text: "tokens figma → code", tone: "c3" }, { text: "close with engineers", outline: true }],
+  },
+  {
+    id: "booking",
+    n: "02",
+    meta: "Product design · 2024 to 2026",
+    title: "B2B travel platform",
+    claim: "Two years of redesign, nothing live. Six product areas shipped on the new system.",
+    href: "/case-studies/booking-platform",
+    tags: [{ text: "shipped impact" }, { text: "problem framing", tone: "c2" }, { text: "stakeholders", outline: true }],
+  },
+  {
+    id: "search",
+    n: "03",
+    meta: "Pattern · 2024 to 2026",
+    title: "Search for people who know what they want",
+    claim: "One search for flights, stays, trains and cars, each with its supplier\u2019s rules.",
+    href: "/case-studies/search-experts",
+    tags: [{ text: "consistency vs exceptions", tone: "c3" }, { text: "states & variants", outline: true }],
+  },
+  {
+    id: "chip",
+    n: "04",
+    meta: "AI-enabled design · 2026",
+    title: "CHIP",
+    claim: "An agent that watches the system and never moves silently. I show it live.",
+    href: "/case-studies/chip",
+    tags: [{ text: "ai-compatible system" }, { text: "judgement over ai", outline: true }],
+  },
+  {
+    id: "theming",
+    n: "05",
+    meta: "Design systems · BELLA · 2026",
+    title: "One system, many faces",
+    claim: "Themes in BELLA swap the values, never the components.",
+    href: "/case-studies/theming",
+    tags: [{ text: "token strategy figma → code" }, { text: "consistency without fragmentation", tone: "c3" }, { text: "accessibility in every theme", tone: "c2" }, { text: "ai-ready structure", outline: true }],
+  },
+];

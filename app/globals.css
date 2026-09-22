@@ -8904,3 +8904,5 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   .exhibit svg.dfc-zsvg text,
   .exhibit svg.dfc-grave text { display: none; }
 }
+/* /work index hero lead: muted, 40ch (mock Part A) */
+#work-hero .l-header__lead { max-width: 40ch; color: var(--color-ink-muted); }
