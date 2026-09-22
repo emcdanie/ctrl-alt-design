@@ -67,7 +67,7 @@
   font-size: var(--text-mono);
   font-weight: 400;
   letter-spacing: var(--tracking-mono);
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   background: var(--color-card);
   border: 1px solid var(--color-semantic-accent-border);
   border-radius: var(--radius-full);

@@ -838,7 +838,7 @@
 
 .pill3 {
   background: var(--color-semantic-accent-subtle);
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
 }
 
 .detailTitle {

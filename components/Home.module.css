@@ -55,7 +55,7 @@
   font-size: 6rem;
   font-weight: 800;
   line-height: 1;
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   transform: rotate(-8deg);
   transform-origin: left;
 }

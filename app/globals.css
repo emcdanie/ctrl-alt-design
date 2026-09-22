@@ -1894,7 +1894,7 @@ main:not(.embed-page) .l-section:first-of-type::before {
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.4;
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   vertical-align: middle;
 }
 
@@ -2017,7 +2017,7 @@ main:not(.embed-page) .l-section:first-of-type::before {
   font-size: 5.5rem;
   font-weight: 800;
   line-height: 1;
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   transform: rotate(-8deg);
   pointer-events: none;
 }
@@ -2056,7 +2056,7 @@ main:not(.embed-page) .l-section:first-of-type::before {
   font-size: 1.3em;
   font-weight: 800;
   line-height: 0;
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
 }
 
 .quotes__quote + figcaption {
@@ -4465,7 +4465,7 @@ textarea:focus-visible {
 
 .bmm-badge--growing {
   background: var(--color-semantic-accent-subtle);
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
 }
 
 .bmm-badge--teenage {
@@ -4557,7 +4557,7 @@ textarea:focus-visible {
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
   font-weight: 600;
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
   /* 44px house rule, inline hit-area growth */
@@ -4720,7 +4720,7 @@ textarea:focus-visible {
   border-radius: var(--radius-md);
   font-family: var(--font-mono);
   font-size: var(--typography-font-size-tag);
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   max-width: 100%;
   min-width: 0;
 }
@@ -5180,7 +5180,7 @@ textarea:focus-visible {
    applied only where she marks words. Case identity colours stay
    case-scoped; this register is the ACCENT ink, not a case colour. */
 .cs2-em {
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   font-weight: 700;
 }
 
@@ -5458,7 +5458,7 @@ textarea:focus-visible {
 
 .csp-flag__val {
   font-weight: 600;
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
 }
 
 /* tones: iris default; drift = the recorded drift status colour;
@@ -6756,7 +6756,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .ds-stage__kick { margin: 0 0 var(--spacing-1); }
-.ds-stage__kick b { color: var(--color-accent-ink); }
+.ds-stage__kick b { color: var(--color-ink); }
 
 .ds-stage__lead {
   font-size: var(--typography-font-size-xl);
@@ -6774,7 +6774,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .ds-stage__sub strong { color: var(--color-ink); font-weight: 600; }
 .ds-stage__hl {
-  color: var(--color-accent-ink);
+  color: var(--color-ink);
   font-weight: 600;
   font-style: normal;
 }
@@ -6908,7 +6908,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .ds-stage__k { color: var(--color-ink-muted); }
-.ds-stage__v { color: var(--color-accent-ink); font-weight: 600; }
+.ds-stage__v { color: var(--color-ink); font-weight: 600; }
 
 .ds-stage__sample {
   border: 1px solid var(--color-border-soft);

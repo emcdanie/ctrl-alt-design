@@ -277,19 +277,21 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* the type pill, tinted over the page ground: over the flat card
-   surface the tint pulled the text under AA */
+/* the type pill */
 .pill {
   display: inline-block;
-  font-family: var(--font-body);
-  font-size: var(--text-meta);
-  font-weight: 500;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
   line-height: 1.5;
   white-space: nowrap;
   border-radius: var(--radius-full);
   padding: 0 var(--spacing-2);
-  color: var(--color-accent-ink);
-  background: color-mix(in srgb, var(--color-accent-ink) 7%, var(--color-semantic-background));
+  /* Geist refresh: a chip fill with the fixed chip ink, never iris text */
+  color: var(--color-chip-text);
+  background: var(--color-chip-c1);
 }
 
 .cardTitle,
