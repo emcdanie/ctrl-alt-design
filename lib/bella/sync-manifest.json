@@ -1,14 +1,24 @@
 {
   "bella": {
     "version": "0.3.0",
-    "commit": "9b7f03ff7dc1ab48a5fcd0f3b5aa126239bb951d",
-    "describe": "v0.3.0-bella-83-g9b7f03f",
+    "commit": "d99421e19925ba373d4d1437d09cb8b493826255",
+    "describe": "v0.3.0-bella-92-gd99421e",
     "syncedFrom": "https://github.com/emcdanie/bella"
   },
   "files": {
-    "lib/bella/bella.css": "3fee7e3b679f69b6d9f039975139e27cf1f07ea91bf05ee206d4d2b86da5a554",
+    "lib/bella/bella.css": "530a5b2c1c4b4b43898473ba50573bfab8d1cc45f906d0ce89a6d612727544e1",
     "components/bella/Card/Card.tsx": "8c2d8a9bfc4ad0fefb1174a59c5630c5a7d885239b17dab386f4708bb5d66cb8",
-    "components/bella/Card/Card.module.css": "7299365f9e1c024b82ffb33c593cc80298bd83575b31f8ec039da68b7ec37dd0",
-    "components/bella/shared/Trace.module.css": "6988e4a4137d1fbebeaee4cbb7a241c0aacc0ec97f2332f63b5e6dcbadc3b7fb"
+    "components/bella/Card/Card.module.css": "3509cd0d4d27ce49831eaf979015bb4b46626202418dce12fb86bb1add84d4c9",
+    "components/bella/shared/Trace.module.css": "6988e4a4137d1fbebeaee4cbb7a241c0aacc0ec97f2332f63b5e6dcbadc3b7fb",
+    "tokens/bella.json": "a2e4efb9d9823516aac19a4ffb140e2487b3cfa4ddd634608202a70f51c8c5d0",
+    "components/brand/pattern.ts": "61d68eecd7f816441fa8381a57bdf56e80910597b5e2b106017c67d766bfca50",
+    "components/brand/pattern-core.mjs": "f0dd67f262911f9b793ab89bfee3d6e5db5f83673d8462f8f50820a72e62cdac",
+    "components/brand/pattern-core.d.mts": "883df6106de67e9ecf2ee26ad9fd55814a1c657e5d529365c363c1e02770a084",
+    "components/bella/Button/Button.tsx": "a3bd55b4101bdb139a01495a757522fe0a522d73dfabdbde7150a90490d640a1",
+    "components/bella/Button/Button.module.css": "3808ee419aa1caca7f4aa0e0e69816d7430f6d08aa406df69cffe73aa05a563d",
+    "components/bella/BrandWordmark/BrandWordmark.tsx": "dfc261b10189de5e6189d302235076fada3b10c40841b016985bd47b40eb97d7",
+    "components/bella/BrandWordmark/BrandWordmark.module.css": "391988415167e50241bcb0c96337955c928239ca978aece46167039a7a7652ab",
+    "components/bella/PatternField/PatternField.tsx": "f659a542787f3cf4cf3f441f8b6e555089ed9d9c9bf7fc019f9e371e7030747c",
+    "components/bella/PatternField/PatternField.module.css": "1f636111b3f2bdda5e02710255c52b70674c47ed6304eff3ed265645a71ddb6f"
   }
 }

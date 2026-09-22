@@ -1,0 +1,222 @@
+/* Button (component 2, extracted from the portfolio keycap system,
+ * 2026-07-22; motion reworked 2026-09-18; recoloured by the brand refresh,
+ * 2026-09-22). Tokens only. Three tiers: primary is the raised INK keycap
+ * (the one 3D moment per view), secondary the control outline, tertiary
+ * the ink text link. No accent colour on any tier at rest: the ochre ring
+ * is focus-visible only (--ring-focus-*, 3px, 3px offset). Labels are
+ * Geist caps, never Unique.
+ *
+ * ONE JOB PER STATE (2026-09-18, kept exactly):
+ * - hover + focus-visible: the label roll (label up, aria-hidden copy in
+ *   from below, motion.duration.normal on motion.easing.out), plus a shift
+ *   on every tier: primary plate to ink-hover, secondary outline to ink,
+ *   tertiary underline to 2px (motion.duration.fast).
+ * - active: the keycap press (motion.transform.key-press, tighter shadow),
+ *   primary only; secondary settles onto the inset fill. Down, never up.
+ * - Buttons never lift on hover: lift is reserved for cards.
+ * - Reduced motion: no roll, no press; the colour shift stays.
+ *
+ * The locked shadow.key-* pair casts in ink.
+ */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  min-height: var(--component-button-primary-min-height);
+  padding: var(--component-button-primary-padding-y) var(--component-button-primary-padding-x);
+  font-family: var(--component-button-primary-font-family);
+  font-size: var(--component-button-primary-font-size);
+  font-weight: var(--component-button-primary-font-weight);
+  letter-spacing: var(--component-button-primary-letter-spacing);
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 0;
+  border-radius: var(--component-button-shape-default);
+  background: none;
+  margin: 0;
+}
+
+.pill {
+  border-radius: var(--component-button-shape-pill);
+}
+
+.button:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+
+/* THE LABEL ROLL. The window clips to one line; the label and its copy
+ * stack in it. The copy is aria-hidden (see Button.tsx). */
+.roll {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.rollLabel,
+.rollCopy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  transition: transform var(--component-button-motion-roll-duration) var(--component-button-motion-roll-easing);
+}
+
+.rollCopy {
+  position: absolute;
+  inset: 0;
+  transform: translateY(100%);
+  /* selecting or copying the label yields it once */
+  user-select: none;
+}
+
+.button:hover:not(:disabled) .rollLabel,
+.button:focus-visible .rollLabel {
+  transform: translateY(-100%);
+}
+
+.button:hover:not(:disabled) .rollCopy,
+.button:focus-visible .rollCopy {
+  transform: translateY(0);
+}
+
+/* PRIMARY: the raised keycap. Gloss (white alpha, the permitted translucent
+ * overlay) over the plate gradient; the locked shadow.key pair carries the
+ * elevation. Hover rolls the label and deepens the plate. Active: press onto
+ * the reduced plate. */
+.primary {
+  color: var(--component-button-primary-foreground);
+  border: 1px solid var(--component-button-primary-edge);
+  background:
+    var(--component-button-primary-gloss),
+    linear-gradient(var(--component-button-primary-fill-hi), var(--component-button-primary-fill-lo));
+  box-shadow: var(--shadow-key-resting);
+  transition:
+    transform var(--component-button-motion-shift-duration) var(--component-button-motion-shift-easing),
+    box-shadow var(--component-button-motion-shift-duration) var(--component-button-motion-shift-easing);
+}
+
+/* Hover and focus-visible: the plate settles onto its deep stop. Colour
+ * only, so it stays under reduced motion. */
+.primary:hover:not(:disabled),
+.primary:focus-visible {
+  background:
+    var(--component-button-primary-gloss),
+    linear-gradient(var(--component-button-primary-fill-hi-hover), var(--component-button-primary-fill-lo-hover));
+}
+
+.primary:active:not(:disabled) {
+  transform: var(--component-button-motion-press);
+  background:
+    var(--component-button-primary-gloss-pressed),
+    linear-gradient(var(--component-button-primary-fill-hi), var(--component-button-primary-fill-lo));
+  box-shadow: var(--shadow-key-pressed);
+}
+
+/* SECONDARY: the control outline, ink label, no elevation. Hover and
+ * focus-visible take the outline to ink; active settles onto the inset. */
+.secondary {
+  min-height: var(--component-button-secondary-min-height);
+  padding: var(--component-button-secondary-padding-y) var(--component-button-secondary-padding-x);
+  color: var(--component-button-secondary-foreground);
+  border: 1px solid var(--component-button-secondary-border);
+  background: var(--component-button-secondary-background);
+  transition: background-color var(--component-button-motion-shift-duration) var(--component-button-motion-shift-easing);
+}
+
+.secondary:hover:not(:disabled),
+.secondary:focus-visible {
+  background: var(--component-button-secondary-background-hover);
+  border-color: var(--component-button-secondary-border-hover);
+}
+
+.secondary:active:not(:disabled) {
+  background: var(--component-button-secondary-background-active);
+}
+
+/* TERTIARY: the text tier. Ink AND underlined: the underline is the
+ * affordance, and it thickens on hover and focus-visible. ONE
+ * static underline sits on the roll window; only the text rolls, so no
+ * line ever travels through the window edge. It is currentColor, so it
+ * takes the hover colour shift. */
+.tertiary {
+  min-height: var(--component-button-tertiary-min-height);
+  color: var(--component-button-tertiary-foreground);
+  background: var(--component-button-tertiary-background);
+  transition: color var(--component-button-motion-shift-duration) var(--component-button-motion-shift-easing);
+}
+
+/* room under the text for the window's line: offset + thickness */
+.tertiary .rollLabel,
+.tertiary .rollCopy {
+  padding-block-start: var(--spacing-1);
+  padding-block-end: calc(
+    var(--component-button-tertiary-underline-offset) + var(--component-button-tertiary-underline-thickness)
+  );
+}
+
+/* the one underline, static on the window. audit:quality asserts it is
+ * the only underline, at rest and mid-roll (single-underline). */
+.tertiary .roll::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: var(--component-button-tertiary-underline-thickness);
+  background: currentColor;
+}
+
+.tertiary:hover:not(:disabled),
+.tertiary:focus-visible {
+  color: var(--component-button-tertiary-foreground-hover);
+}
+
+.tertiary:hover:not(:disabled) .roll::after,
+.tertiary:focus-visible .roll::after {
+  height: var(--component-button-tertiary-underline-thickness-hover);
+}
+
+/* DISABLED (buttons only): no roll, no press, no affordances. Primary and
+ * secondary sit on the muted inset surface; the text tier stays text
+ * (muted, no box). */
+.button:disabled {
+  cursor: not-allowed;
+  color: var(--color-semantic-text-muted);
+  background: var(--color-semantic-surface-inset);
+  border: 1px solid var(--color-semantic-border);
+  box-shadow: none;
+  transform: none;
+}
+
+.tertiary:disabled {
+  background: transparent;
+  border: 0;
+}
+
+.tertiary:disabled .roll::after {
+  content: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rollLabel,
+  .rollCopy,
+  .primary {
+    transition: none;
+  }
+
+  .button:hover:not(:disabled) .rollLabel,
+  .button:focus-visible .rollLabel {
+    transform: none;
+  }
+
+  .button:hover:not(:disabled) .rollCopy,
+  .button:focus-visible .rollCopy {
+    transform: translateY(100%);
+  }
+
+  .primary:active:not(:disabled) {
+    transform: none;
+  }
+}
