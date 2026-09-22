@@ -92,9 +92,11 @@
 
 .results-meta {
   font-family: var(--font-code);
-  font-size: var(--text-meta);
+  font-size: var(--text-mono);
   font-variant-numeric: tabular-nums;
   color: var(--color-ink-muted);
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
 }
 
 .results-meta b {
@@ -318,7 +320,7 @@
 .stackTitle {
   margin: 0;
   font-size: var(--text-body);
-  font-weight: 600;
+  font-weight: var(--typography-font-weight-medium);
   color: var(--color-ink);
 }
 
@@ -354,7 +356,7 @@
 }
 
 .rowTitle {
-  font-weight: 600;
+  font-weight: var(--typography-font-weight-medium);
   color: var(--color-ink);
   text-align: left;
 }
@@ -483,7 +485,7 @@
 .centreText {
   font-family: var(--font-body);
   font-size: var(--text-lead);
-  font-weight: 700;
+  font-weight: var(--typography-font-weight-medium);
   fill: var(--color-accent-ink);
 }
 
@@ -643,9 +645,11 @@
   margin: 0;
   text-align: center;
   font-family: var(--font-code);
-  font-size: var(--text-meta);
+  font-size: var(--text-mono);
   color: var(--color-ink-muted);
   pointer-events: none;
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
 }
 
 /* key and detail cards float over the map */
@@ -702,7 +706,7 @@
 .keyTitle {
   margin: var(--spacing-1) 0 var(--spacing-2);
   font-size: var(--text-body);
-  font-weight: 600;
+  font-weight: var(--typography-font-weight-medium);
   color: var(--color-ink);
 }
 
@@ -750,9 +754,11 @@
 
 .codeNote {
   font-family: var(--font-code);
-  font-size: var(--text-meta);
+  font-size: var(--text-mono);
   font-variant-numeric: tabular-nums;
   color: var(--color-ink-muted);
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
 }
 
 .mapCtl {

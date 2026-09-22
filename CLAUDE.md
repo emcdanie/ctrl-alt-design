@@ -25,9 +25,12 @@ override the constitution.
 - **No hardcoded hex or px in components.** Reference tokens only. No arbitrary Tailwind `text-[Npx]` /
   `bg-[#...]`. Spacing and type come from the scale, not ad-hoc values.
 - **Body min 16px.** Never smaller for reading text.
-- **No pure white and no pure black** as surfaces/text. Warm neutrals only.
-- BELLA core: ground `#F5F4EF` (light) / navy `#1B1B40` (dark); ink `#1A1720` / `#F4EFE6`;
-  accent iris `#5B4BD1` / periwinkle `#A79CE2`. **No amber anywhere.**
+- **Geist refresh palette (Elleta, 2026-09-22; supersedes the warm neutrals).** Pure white only as
+  the light page ground. Light: ink `#121212`, muted `#515151`, line `#e3e3e3`, panel `#f2f2f2`,
+  bg `#fff`, border-strong `#8c8c8c`. Dark: ink `#ededed`, muted `#b1b1b1`, line `#2a2a2a`, panel
+  `#161616`, bg `#0d0d0d`, border-strong `#636363`. Chip fills c1 `#c9bff5`, c2 `#f6c9a8`, c3
+  `#cfe8dc`, chip text always `#17191a`. **Colour lives in fills only**; iris `#5B4BD1` /
+  periwinkle `#A79CE2` stay for links, focus and the primary button. **No amber anywhere.**
 - Cascade trap: BELLA's unlayered `:root` beats `@theme`. Keep app theme tokens in an unlayered
   `:root` that loads AFTER imports so they win.
 
@@ -76,13 +79,14 @@ override the constitution.
 
 ## 3. Type
 - **Two typefaces (revised 2026-09-18, Geist headings; supersedes 2026-07-17).** Geist for all
-  text, headings included: Geist 700, sentence case, `--tracking-display` (-0.03em), leading
-  1.05 (display-1) / 1.1 (display-2/3), one iris accent word where the design has one. Unique ONLY
+  text, headings included: **Geist 300** (Geist refresh, 2026-09-22), sentence case, display and
+  hero track `--tracking-display` (-0.035em), h2 `--tracking-h2` (-0.03em), leading 1.08; the
+  accent is the muted half-line, not iris. Titles (card, item, sub) are Geist 500 at 20px,
+  -0.015em. Body is Geist 400 at 17px, -0.01em. Unique ONLY
   on the ELLETA wordmarks (nav + footer) and the BELLA logo. Every display heading renders through
   the ONE `ui/Heading` primitive (tiers: hero / page / section / case, plus `sub`), and no
   consumer sets its own heading size, tracking or leading. Pages still never set their own tracking
-  or leading; the hero `squeeze` variant (weight 820 to 640, tracking -0.01em to -0.03em over the first
-  60vh of scroll, line height 1.0; Elleta, 2026-09-19, gentler in the polish pass) is the one approved exception, and it lives in the primitive. Page openings are FLAT (eyebrow + Heading, the Work
+  or leading; the hero `squeeze` animation is retired (Geist 300 holds still; the prop is a no-op). Page openings are FLAT (eyebrow + Heading, the Work
   pattern); bubble page headers are parked (last live at e25eefc, may return in the expression
   pass). The elevation/orb tokens stay: keycaps, the home cluster, and the About portrait still
   consume them.
@@ -90,14 +94,14 @@ override the constitution.
   body, UI, card titles, eyebrows, meta, nav links, buttons, or chips.
 - **Unique never renders inside a Card (Elleta, 2026-07-21, card-voice).** Cards use Geist only;
   Unique stays page-tier (the Heading primitive: section heads and heroes). Card statements use
-  the shared `.card-statement` recipe (Geist 700 at `--font-card-title`), card titles the shared
+  the shared `.card-statement` recipe (Geist 500 at `--font-card-title`, 20px), card titles the shared
   `.heading-item`. Enforced by the Unique-in-card check in `audit:reuse`.
-- Geist = everything else. Eyebrows stay Geist caps with `--tracking-eyebrow`.
-- **Code role (Elleta, 2026-09-19, learning build).** Geist Mono returns as ONE role, not a third
-  face: `--font-code`, for metadata only (dates, stat lines, the inspector cursor label, the Term
-  popover's word line, code-comment notes `// ...`, credential IDs). Never headings, body, buttons
-  or nav. `.text-code` is 14px, on the floor like every other text (no exception for the code
-  role; counts in chips use it at 70% opacity or are dropped when they crowd at 390px). `audit:fonts` allows the mono family only on the `--font-code` token line and fails
+- Geist = everything else, except the Mono label role below.
+- **Mono label role (Elleta, 2026-09-22, Geist refresh; supersedes the 19 Sep code role).** Geist
+  Mono through `--font-code` is for eyebrows, labels, tags, status pills and meta only: 13px
+  (`--text-mono`, BELLA's floor), weight 400, `ss09` (`--mono-feature`), no caps, no tracking.
+  `.eyebrow`, `.text-code`, `.text-meta`, `.l-section__label`, Tag and StatusPill use it. Never
+  headings, body, buttons or nav. `audit:fonts` allows the mono family only on the `--font-code` token line and fails
   `--font-code` on heading, body, button or nav selectors and elements.
 - **Style rule going forward (Elleta, 2026-09-18, about-rebuild lock).** No eyebrow label above
   every heading. One iris word per display heading, only the word that matters (use the `accent`

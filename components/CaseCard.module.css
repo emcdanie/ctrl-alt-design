@@ -22,11 +22,10 @@
   background: linear-gradient(160deg, var(--cover-warm-hi), var(--cover-warm-lo));
   padding: var(--spacing-4) var(--spacing-5);
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 300;
   font-size: var(--font-subsection);
   line-height: 0.9;
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
+  letter-spacing: var(--tracking-h2);
   color: var(--cover-warm-ink);
   opacity: 0.55;
   overflow: hidden;
@@ -42,11 +41,11 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
+  font-feature-settings: var(--mono-feature);
 }
 
 /* the dates: the code role, neutral, beside the case-coloured type */
@@ -64,17 +63,17 @@
   top: var(--spacing-3);
   left: var(--spacing-3);
   z-index: 1;
-  font-family: var(--font-mono);
-  font-size: var(--text-meta);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-accent-ink);
   background: var(--color-card);
   border: 1px solid var(--color-semantic-accent-border);
   border-radius: var(--radius-full);
   padding: 2px var(--spacing-2);
   white-space: nowrap;
+  font-feature-settings: var(--mono-feature);
 }
 
 /* DEMOTED (Elleta, 21 Jul, card-voice): the title renders through the

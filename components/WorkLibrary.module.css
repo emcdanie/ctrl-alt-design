@@ -64,13 +64,13 @@
 }
 
 .table thead th {
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
   white-space: nowrap;
+  font-feature-settings: var(--mono-feature);
 }
 
 .table tbody tr:last-child th,
@@ -97,16 +97,16 @@
 .mxHead {
   all: unset;
   cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: var(--typography-font-size-tag);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
   min-height: var(--spacing-touch-target);
   display: inline-flex;
   align-items: center;
   transition: color var(--dur-fast) var(--ease-out);
+  font-feature-settings: var(--mono-feature);
 }
 
 .mxHead:hover {

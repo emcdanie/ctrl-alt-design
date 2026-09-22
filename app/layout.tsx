@@ -19,7 +19,7 @@ const geist = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400"],
 });
 
 // Unique is for the ELLETA wordmarks (nav + footer) and the BELLA logo
