@@ -17,6 +17,9 @@
 
 /* the second half of each h2 is the muted half-line, as in the mock */
 .root :global(.display-heading) > span:not([class]) { color: var(--muted); }
+/* the hero h1 breaks before its half-line, as in the mock: h1 balance
+   otherwise pulls "trust" down to line 2 (W3, 22 Sep 2026) */
+.root h1:global(.display-heading) > :global(.accent) { display: block; }
 
 /* ── shared ── */
 .panel {
@@ -159,21 +162,38 @@
 .sv7 i.on { background: var(--color-chip-c1); border-color: var(--ink); }
 .sv21 {
   display: grid;
-  grid-template-columns: repeat(11, 9px);
-  grid-auto-rows: 9px;
-  gap: 3px;
+  /* 7 x 3 check squares (Elleta, 22 Sep 2026; the mock draws 11 x 2) */
+  grid-template-columns: repeat(7, 12px);
+  grid-auto-rows: 12px;
+  gap: 2px;
+  /* stretch, as in the mock: .sv's flex-end collapsed the squares to 0px */
+  align-items: stretch;
   width: max-content;
   height: auto;
 }
-.sv21 i { border-radius: 2px; background: var(--line); transition: background 0.25s; }
+.sv21 i { position: relative; border-radius: var(--radius-sm); background: var(--line); transition: background 0.25s; }
+.sv21 i::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 2px;
+  width: 3px;
+  height: 6px;
+  border: solid var(--color-chip-text);
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.25s;
+  transition-delay: inherit;
+}
 .sv21 i.on { background: var(--color-chip-c3); }
+.sv21 i.on::after { opacity: 1; }
 .sv2 i { width: 26px; height: 26px; border: 1px solid var(--ink); border-radius: 50%; }
 .sv2 i:first-child { background: #ffffff; } /* token-waiver: the light theme ground, drawn */
 .sv2 i:last-child { background: #0d0d0d; margin-left: -8px; } /* token-waiver: the dark theme ground, drawn */
 @media (max-width: 43.74rem) {
   .stats { grid-template-columns: 1fr 1fr; row-gap: var(--spacing-6); }
   .stats b { font-size: 2.25rem; }
-  .sv21 { grid-template-columns: repeat(11, 7px); grid-auto-rows: 7px; gap: 2px; }
   .sv7 i { width: 13px; height: 13px; }
 }
 
@@ -341,7 +361,7 @@
 .lcs b { font-weight: 500; font-size: 0.875rem; line-height: 1.2; color: var(--ink); }
 .lcs span { font-family: var(--font-code); font-size: var(--text-mono); line-height: 1.3; }
 .lcs.done i { background: var(--color-chip-c3); border-color: var(--ink); color: var(--k); }
-.lcs[aria-selected="true"] i { background: var(--color-chip-c1); border-color: var(--ink); color: var(--k); transform: scale(1.14); }
+.lcs[aria-selected="true"] i { background: var(--color-brand-ochre); border-color: var(--ink); color: var(--k); transform: scale(1.14); }
 .lanes { display: grid; gap: var(--spacing-1); margin-top: var(--spacing-5); }
 .lane {
   display: grid;
@@ -382,7 +402,7 @@
 @media (min-width: 56.25rem) {
   .pg { grid-template-columns: 0.8fr 1.2fr; }
 }
-.pgCtl { display: grid; align-content: start; gap: var(--spacing-5); }
+.pgCtl { display: grid; align-content: start; align-self: start; gap: var(--spacing-5); } /* sizes to its content: no empty box under reset */
 .grp { display: grid; gap: var(--spacing-2); justify-items: start; }
 .sws { display: flex; flex-wrap: wrap; gap: var(--spacing-3); }
 .sws button {
@@ -409,8 +429,8 @@
 .pgOut { display: grid; align-content: start; gap: var(--spacing-3); }
 .pgOut > p { max-width: var(--measure-body); }
 .lst {
-  --a: #5b4bd1; /* token-waiver: the demo listing's default accent, overwritten live */
-  --on: #ffffff; /* token-waiver: overwritten live */
+  --a: #e8a83e; /* token-waiver: the demo listing's default accent (BELLA ochre), overwritten live */
+  --on: #121212; /* token-waiver: ink on ochre, overwritten live */
   --r: 12px;
   --pd: 16px;
   --lbg: #ffffff; /* token-waiver: overwritten live */
@@ -474,7 +494,7 @@
   padding: 1px var(--spacing-3);
   border-radius: var(--radius-pill);
   background: var(--color-chip-c3);
-  color: var(--k);
+  color: var(--color-chip-text); /* chip text on a chip fill, in both modes */
   white-space: nowrap;
 }
 .vBad { background: var(--bad); }
@@ -567,7 +587,7 @@
   transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
 }
 .pipe { container-type: inline-size; }
-.tok i { width: 14px; height: 14px; border: 1px solid var(--ink); border-radius: 50%; background: var(--color-chip-c1); }
+.tok i { width: 14px; height: 14px; border: 1px solid var(--ink); border-radius: 50%; background: var(--color-brand-ochre); }
 @media (max-width: 47.5rem) {
   .pipe { grid-template-columns: 1fr; gap: var(--spacing-2); padding-bottom: 0; }
   .pipeLine, .tok { display: none; }
@@ -667,7 +687,7 @@
 }
 .dOk { background: var(--color-chip-c3); }
 .dNo { background: var(--bad); }
-.dDot { width: 36px; height: 36px; border-radius: 50%; background: var(--color-chip-c1); transition: transform 0.7s ease; }
+.dDot { width: 36px; height: 36px; border-radius: 50%; background: var(--color-brand-ochre); transition: transform 0.7s ease; }
 .dHit { position: absolute; width: 44px; height: 44px; border: 1px dashed var(--ink); border-radius: var(--radius-md); }
 .dSr {
   padding: 3px var(--spacing-2);
@@ -744,3 +764,9 @@
 @media (prefers-reduced-motion: reduce) {
   .root *, .root *::before { transition: none !important; animation: none !important; }
 }
+
+/* Mono labels on chip fills keep chip text, and figures keep ink, whatever
+   order the global .text-code (muted) loads in (22 Sep 2026: the root
+   layout's BELLA modules moved the chunk order and dark text went muted) */
+.root :is(.tagv, .verdict, .vbOk, .vbBad, .bd, .bdAa, .bdNo, .triC1bg, .triC2bg, .triC3bg):global(.text-code) { color: var(--color-chip-text); }
+.root :is(.v, .sc):global(.text-code) { color: var(--ink); }

@@ -1,5 +1,6 @@
 import RevealObserver from "@/components/RevealObserver";
 import SiteFooter from "@/components/SiteFooter";
+import PatternField from "@/components/bella/PatternField/PatternField";
 import type { Metadata } from "next";
 import BracketCursor from "@/components/BracketCursor";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -83,6 +84,10 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">Skip to content</a>
         <DevTools />
         <IconProvider>
+          {/* the hero ground on every page: BELLA's greyscale pattern at ~7% with a radial fade (brand refresh, 22 Sep 2026; replaces the dot grid) */}
+          <div className="hero-field" aria-hidden="true">
+            <PatternField />
+          </div>
           {children}
           <SiteFooter />
         </IconProvider>

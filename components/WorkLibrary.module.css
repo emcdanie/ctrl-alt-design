@@ -286,12 +286,12 @@
   position: absolute;
   inset: 5px;
   border-radius: var(--radius-full);
-  border: 1.5px solid var(--color-accent-iris);
+  border: 1.5px solid var(--color-accent-line);
   background: var(--color-semantic-accent-subtle);
 }
 
 .lDotCert::before {
-  background: var(--color-accent-iris);
+  background: var(--color-accent-line);
 }
 
 .lDotMuted {
@@ -299,7 +299,7 @@
 }
 
 .lDot:focus-visible {
-  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 1px;
 }
 

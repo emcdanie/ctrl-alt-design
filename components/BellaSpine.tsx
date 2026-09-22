@@ -424,7 +424,7 @@ const ratio = (a: string, b: string) => {
 /* the contrast maths needs real values, so the playground's brand swatches
    and the two grounds it checks against are literals, each reviewed */
 const ACC: [string, string][] = [
-  ["iris", "#5b4bd1"], // token-waiver: a brand swatch the visitor tries
+  ["ochre", "#e8a83e"], // token-waiver: a brand swatch the visitor tries
   ["sea", "#1f5f7a"], // token-waiver: a brand swatch the visitor tries
   ["market", "#0a7a5c"], // token-waiver: a brand swatch the visitor tries
   ["coral", "#e8603c"], // token-waiver: a brand swatch the visitor tries

@@ -67,7 +67,7 @@ export default function GetInTouch() {
         aria-controls={panelId}
         onClick={() => setOpen((o) => !o)}
       >
-        Get in touch
+        Let&rsquo;s talk
       </button>
       {open && (
         <div id={panelId} className="get-in-touch__panel">

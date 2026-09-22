@@ -71,7 +71,7 @@
 /* the map list's pressed buttons match the pressed FilterChip */
 .mapListBtn[aria-pressed="true"] {
   background: var(--color-semantic-accent-subtle);
-  border-color: var(--color-accent-iris);
+  border-color: var(--color-accent-line);
   color: var(--color-ink);
 }
 
@@ -119,7 +119,7 @@
 }
 
 .clear:focus-visible {
-  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 2px;
 }
 
@@ -175,11 +175,11 @@
   height: 12px;
   border-radius: var(--radius-full);
   background: var(--color-semantic-background);
-  border: 1.5px solid var(--color-accent-iris);
+  border: 1.5px solid var(--color-accent-line);
 }
 
 .tl > li.tlCert::before {
-  background: var(--color-accent-iris);
+  background: var(--color-accent-line);
 }
 
 .meta {
@@ -229,7 +229,7 @@
 }
 
 .items summary:focus-visible {
-  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 2px;
 }
 
@@ -274,7 +274,7 @@
 .inlineLink:focus-visible,
 .detailLink a:focus-visible,
 .entryTitle a:focus-visible {
-  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
@@ -392,12 +392,12 @@
   width: 14px;
   height: 14px;
   border-radius: var(--radius-full);
-  border: 1.5px solid var(--color-accent-iris);
+  border: 1.5px solid var(--color-accent-line);
   background: var(--color-semantic-accent-subtle);
 }
 
 .keyDotFilled {
-  background: var(--color-accent-iris);
+  background: var(--color-accent-line);
 }
 
 .keyCell {
@@ -491,7 +491,7 @@
 
 .wires path {
   fill: none;
-  stroke: var(--color-accent-iris);
+  stroke: var(--color-accent-line);
   stroke-width: 1.8;
   stroke-opacity: 0.95;
 }
@@ -519,7 +519,7 @@
 
 .halo {
   fill: none;
-  stroke: var(--color-accent-iris);
+  stroke: var(--color-accent-line);
   stroke-width: 2;
   opacity: 0;
 }
@@ -531,11 +531,11 @@
 
 .nodeL .dot {
   fill: var(--color-semantic-background);
-  stroke: var(--color-accent-iris);
+  stroke: var(--color-accent-line);
 }
 
 .nodeL.cert .dot {
-  fill: var(--color-accent-iris);
+  fill: var(--color-accent-line);
 }
 
 .nodeS .dot,
@@ -551,8 +551,8 @@
 }
 
 .g3 .dot {
-  fill: color-mix(in srgb, var(--color-accent-iris) 22%, var(--color-semantic-background));
-  stroke: var(--color-accent-iris);
+  fill: color-mix(in srgb, var(--color-accent-line) 22%, var(--color-semantic-background));
+  stroke: var(--color-accent-line);
 }
 
 .nodeS text,
@@ -632,7 +632,7 @@
 }
 
 .voiceWires path.wireOn {
-  stroke: var(--color-accent-iris);
+  stroke: var(--color-accent-line);
   stroke-opacity: 0.95;
   stroke-width: 1.8;
 }
@@ -736,7 +736,7 @@
 
 .swL,
 .sw3 {
-  border-color: var(--color-accent-iris);
+  border-color: var(--color-accent-line);
   background: var(--color-semantic-accent-subtle);
 }
 
@@ -787,13 +787,13 @@
 
 .ctlBtn:hover,
 .closeBtn:hover {
-  border-color: var(--color-accent-iris);
+  border-color: var(--color-accent-line);
 }
 
 .ctlBtn:focus-visible,
 .closeBtn:focus-visible,
 .mapListBtn:focus-visible {
-  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 2px;
 }
 

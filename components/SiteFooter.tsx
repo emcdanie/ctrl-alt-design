@@ -2,12 +2,12 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import Image from "next/image";
 import Link from "next/link";
+import BrandWordmark from "@/components/bella/BrandWordmark/BrandWordmark";
 import Heading from "@/components/ui/Heading";
 import { PawIcon } from "@/components/PawTrail";
 import FooterEmail from "@/components/FooterEmail";
 import SharePortfolio from "@/components/SharePortfolio";
 import FooterCta from "@/components/FooterCta";
-import FooterTrail from "@/components/FooterTrail";
 import { ResumeLink } from "@/components/ResumeModal";
 import { BUILDING } from "@/content/building";
 import { social } from "@/lib/social";
@@ -118,17 +118,8 @@ export default function SiteFooter() {
             of small print from the wordmark's left edge, the version and
             policy links on the right (wrapping under it on phones) */}
         <div className="site-footer__brand">
-          <div className="site-footer__mark" role="img" aria-label="Elleta">
-            <span className="site-footer__wordmark" aria-hidden="true">
-              {["E", "L", "L", "E", "T"].map((l, i) => (
-                <span key={i}>{l}</span>
-              ))}
-              <span className="site-footer__a">
-                A
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="site-footer__bella" src="/images/bella/set/bella-portrait.svg" alt="" />
-              </span>
-            </span>
+          <div className="site-footer__mark">
+            <BrandWordmark size="full-bleed" />
           </div>
           <div className="text-meta site-footer__small">
             {/* slot: "This page weighs XX KB" (filled by the footprint branch) */}
@@ -145,7 +136,6 @@ export default function SiteFooter() {
           </div>
         </div>
       </div>
-      <FooterTrail />
     </footer>
   );
 }

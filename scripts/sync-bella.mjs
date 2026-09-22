@@ -30,6 +30,21 @@ const FILES = [
   { from: "src/components/Card/Card.tsx", to: "components/bella/Card/Card.tsx" },
   { from: "src/components/Card/Card.module.css", to: "components/bella/Card/Card.module.css" },
   { from: "src/components/shared/Trace.module.css", to: "components/bella/shared/Trace.module.css" },
+  /* brand refresh (2026-09-22): the pattern-filled wordmark and the hero
+   * PatternField. The relative imports upstream fix the layout: components
+   * under components/bella/, the generator under components/brand/, and the
+   * token JSON the generator reads at tokens/bella.json. BrandWordmark
+   * imports Button for its optional Reroll control, so Button comes too. */
+  { from: "tokens/bella.json", to: "tokens/bella.json" },
+  { from: "src/brand/pattern.ts", to: "components/brand/pattern.ts" },
+  { from: "src/brand/pattern-core.mjs", to: "components/brand/pattern-core.mjs" },
+  { from: "src/brand/pattern-core.d.mts", to: "components/brand/pattern-core.d.mts" },
+  { from: "src/components/Button/Button.tsx", to: "components/bella/Button/Button.tsx" },
+  { from: "src/components/Button/Button.module.css", to: "components/bella/Button/Button.module.css" },
+  { from: "src/components/BrandWordmark/BrandWordmark.tsx", to: "components/bella/BrandWordmark/BrandWordmark.tsx" },
+  { from: "src/components/BrandWordmark/BrandWordmark.module.css", to: "components/bella/BrandWordmark/BrandWordmark.module.css" },
+  { from: "src/components/PatternField/PatternField.tsx", to: "components/bella/PatternField/PatternField.tsx" },
+  { from: "src/components/PatternField/PatternField.module.css", to: "components/bella/PatternField/PatternField.module.css" },
 ];
 
 const sha = (p) => createHash("sha256").update(readFileSync(p)).digest("hex");

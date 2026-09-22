@@ -24,8 +24,8 @@
   --color-ink-muted: var(--color-light-muted);
   --color-surface: var(--color-light-panel);
   --color-white-pure: var(--color-light-panel);
-  --color-accent-iris: #5B4BD1;
-  --color-accent-peri: #A79CE2;
+  --color-accent-line: var(--color-ink); /* brand refresh 22 Sep 2026: iris retired; the old accent reads as ink */
+  --color-accent-muted: var(--color-ink-muted);
 
   /* verdict tokens for the pipeline instrument (27 Jul): a real
      pass/fail pair. Green and a cool-leaning red; the banned warm
@@ -89,8 +89,8 @@
 }
 
 /* Every heading is Geist (--font-display resolves to Geist). TYPE LOCK:
-   two faces. Unique renders only on the ELLETA wordmarks (.nav-wordmark,
-   .site-footer__wordmark) and the BELLA logo; everything else, headings
+   two faces. Unique renders only on the ELLETA wordmarks (the BELLA logo; the nav and footer ELLETA are
+   BrandWordmark SVGs since 22 Sep 2026); everything else, headings
    included, is Geist. No mono family exists. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
@@ -151,15 +151,13 @@ body {
   /* the dot grid behind every page opening (Part V, Elleta, 21 Sep
      2026: a quiet Figma-style frame now the hero art is gone). Recorded
      addition in DESIGN.md. Faint enough to leave text contrast alone. */
-  --dot-grid-color: rgb(20 20 40 / 0.14);
-  --dot-grid-size: 24px;
   --border-faint: var(--color-semantic-border);
   --radius-card: 1rem;
   --radius-pill: 999px;
   /* a soft iris wash: row hover (10%, the mock); the Current pill takes
      6% so its iris text clears AA (4.61:1 on the card; 10% gave 4.37) */
-  --iris-soft: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
-  --iris-pill: color-mix(in srgb, var(--color-accent-ink) 6%, transparent);
+  --tint-soft: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
+  --tint-pill: color-mix(in srgb, var(--color-accent-ink) 6%, transparent);
   --radius-popover: 0.75rem;
   /* Term: the dotted iris underline (thicker, further off in headings) */
   --term-dot: 1.5px;
@@ -173,7 +171,7 @@ body {
      wide screens hug the content a little less; the gutters still sit
      outside it, and the reading measures (--measure-lead 42rem,
      --measure-body 65ch) are unchanged, so lines do not get longer. */
-  --layout-max: 78rem;
+  --layout-max: 66rem;
   --layout-gutter: clamp(1.5rem, 4vw, 3rem);
   /* more air between sections (Part Q): ~64px at 390, ~118px at 1440 */
   --section-pad-y: clamp(4rem, 2rem + 6vw, 8rem);
@@ -216,13 +214,6 @@ body {
   /* footer contact photo (72px under 700px) */
   --footer-photo: 6rem;
   --footer-photo-sm: 4.5rem;
-  /* site footer: ELLETA in Unique, its letters spread across the
-     container; the letters stand 96 -> 240px tall (Unique's cap is
-     0.706em, so the font size is the cap height / 0.706). Bella sits on
-     the last A at 0.55x the cap height */
-  --footer-wordmark-cap: clamp(6rem, 18vw, 15rem);
-  --footer-wordmark-size: calc(var(--footer-wordmark-cap) / 0.706);
-  --footer-bella-height: calc(0.706em * 0.55);
   /* heading measures in em (display-1 18em, the rest 22em) */
   /* STOPGAP override of BELLA's px size ramp, in rem so every size
      follows the reader's font setting; tag rises to the 14px floor and
@@ -314,8 +305,7 @@ body {
 
 
 
-  --hero-iris-bright: #7A6BE8;
-  --peri: #A79CE2; /* fixed periwinkle (proto --peri) */
+  --peri: #e8a83e; /* was the fixed periwinkle; ochre since the brand refresh (22 Sep 2026) */
   --case-code-first-hi: #F6BBD6;
   --case-code-first-lo: #F0A0C8;
   --case-code-first-deep: #B23A70;
@@ -395,11 +385,11 @@ body {
   --page-glow: rgba(255, 255, 255, 0.55);
   --key-face-hi: #FFFFFF;
   /* Filled-keycap face — FIXED in both themes. White labels need ≥4.5:1
-     on every gradient stop: #6C5CE0 4.9:1, #5B4BD1 6.1:1 (the lighter
+     on every stop: ink #121212 (brand refresh 22 Sep 2026; was iris) (the old lighter
      #8E7EEC is 3.3:1 — never under a white label). */
-  --key-fill-hi: #6C5CE0;
-  --key-fill-lo: #5B4BD1;
-  --key-fill-edge: #4A3FB0;
+  --key-fill-hi: #121212;
+  --key-fill-lo: #121212;
+  --key-fill-edge: #000000;
 
   /* Theme switch (sun/moon keycap-thumb slider, from _proto/_hero.html) */
 
@@ -466,13 +456,12 @@ body {
 
 [data-theme="dark"] {
   /* the dark ground (also set on body below, where the dark inks live) */
-  --dot-grid-color: rgb(255 255 255 / 0.1);
   --color-semantic-background: var(--color-dark-bg);
   /* surfaces: 4% toward the cream ink, so lighter than the ground */
   --surface-card: var(--color-semantic-surface-card);
   --border-faint: var(--color-semantic-border);
-  --iris-soft: color-mix(in srgb, var(--color-accent-ink) 14%, transparent);
-  --iris-pill: var(--iris-soft); /* 6.53:1 on the dark card */
+  --tint-soft: color-mix(in srgb, var(--color-accent-ink) 14%, transparent);
+  --tint-pill: var(--tint-soft); /* 6.53:1 on the dark card */
   /* case accents as TEXT flip to the bright variant on navy (deep is
      calibrated for light cards only) */
   --case-code-first-text: var(--color-dark-muted);
@@ -981,7 +970,7 @@ body {
 
   --color-border-soft: var(--color-dark-line);
   --color-border-medium: var(--color-dark-line);
-  --color-accent-iris: #A79CE2;
+  --color-accent-line: var(--color-dark-ink);
   background: var(--color-semantic-background);
 }
 
@@ -1019,7 +1008,7 @@ li {
 }
 
 ::selection {
-  background: rgba(167, 156, 226, 0.28);
+  background: rgba(232, 168, 62, 0.28); /* ochre (brand refresh, 22 Sep 2026) */
   color: var(--color-ink);
 }
 
@@ -1060,17 +1049,24 @@ main:not(.embed-page) .l-section:first-of-type {
   isolation: isolate;
 }
 
-main:not(.embed-page) .l-section:first-of-type::before {
-  content: "";
+/* the hero ground: PatternField from the root layout, pinned to the top of
+   the page under everything (brand refresh, 22 Sep 2026; was a dot grid) */
+.hero-field {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: -1;
+  height: min(100svh, 56.25rem);
+  overflow: hidden;
   pointer-events: none;
-  background-image: radial-gradient(circle at 1px 1px, var(--dot-grid-color) 1px, transparent 1.5px);
-  background-size: var(--dot-grid-size) var(--dot-grid-size);
-  background-position: center top;
-  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
-  mask-image: linear-gradient(to bottom, #000 55%, transparent);
+}
+body:has(main.embed-page) .hero-field {
+  display: none;
+}
+/* its own stacking context, so the field's z-index -1 paints above the body ground */
+body {
+  isolation: isolate;
 }
 
 
@@ -1837,7 +1833,7 @@ h1.display-heading {
 
 @media (hover: hover) {
   .xp .accordion__trigger:hover {
-    background: var(--iris-soft);
+    background: var(--tint-soft);
   }
 }
 
@@ -1846,16 +1842,15 @@ h1.display-heading {
    name and the chevron go iris with it, and the body underneath keeps
    the card surface, so the row reads as header and content. */
 .xp.is-open .accordion__trigger {
-  background: var(--iris-soft);
+  background: var(--tint-soft);
 }
 
-/* the deeper accent, not the link iris: on the open row's iris wash the
-   link colour measured 3.36:1, under AA. accent-hover flips per theme,
-   so dark gets the lighter periwinkle for the same reason. */
+/* the open row reads in ink: ochre is a fill, never text (brand refresh,
+   22 Sep 2026; was the deeper iris) */
 .xp.is-open .xp__company,
 .xp.is-open .xp__current,
 .xp.is-open .accordion__chev {
-  color: var(--color-semantic-accent-hover);
+  color: var(--color-ink);
 }
 
 /* the ring is :focus-visible only: a mouse click never draws one */
@@ -1879,7 +1874,7 @@ h1.display-heading {
   margin-left: var(--spacing-2);
   padding: 3px var(--spacing-2);
   border-radius: var(--radius-pill);
-  background: var(--iris-pill);
+  background: var(--tint-pill);
   font-size: var(--text-meta);
   font-weight: 500;
   letter-spacing: 0;
@@ -2097,7 +2092,7 @@ h1.display-heading {
   --color-ink-soft: var(--color-dark-ink);
   --color-ink-muted: var(--color-dark-muted);
   --color-accent-ink: var(--color-dark-ink);
-  --ring-focus-color: var(--color-dark-ink);
+  --ring-focus-color: var(--color-brand-ochre);
   background: var(--color-dark-surface);
   color: var(--color-dark-ink);
   overflow: hidden;
@@ -2304,52 +2299,6 @@ h1.display-heading {
   pointer-events: none;
 }
 
-/* one letter per flex item, spread edge to edge of the container */
-.site-footer__wordmark {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding-top: calc(var(--footer-bella-height) + 0.04em);
-  margin-bottom: -0.115em;
-  font-family: var(--font-hero-display);
-  font-weight: 400;
-  font-size: var(--footer-wordmark-size);
-  line-height: 0.8;
-  color: var(--color-dark-ink);
-}
-
-/* Trim the reserve where the band has slack (Elleta, 20 Sep 2026).
-   Bella's full height was reserved above the letters at every width,
-   and at desktop widths most of that band sat empty. It is not only
-   her reserve though: FooterTrail walks its prints along it and needs
-   about 94px of clear lane or it renders nothing. From 1280px the lane
-   measures 137px and up, so the reserve gives 40px of it back and the
-   trail keeps its floor. Below 1280 the lane is already near that
-   floor (129px at 1200, 99px at 390), so the reserve stays. Measured,
-   not guessed: at 1200 a 40px trim drops the lane to 89 and the trail
-   stops rendering. Bella still stands on the
-   A, about 60px clear of the "in progress" line. */
-@media (min-width: 1280px) {
-  .site-footer__wordmark {
-    padding-top: calc(var(--footer-bella-height) + 0.04em - var(--spacing-10));
-  }
-}
-
-/* Bella stands on the A's apex, centred on the letter */
-.site-footer__a {
-  position: relative;
-}
-
-.site-footer__bella {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% - 0.03em);
-  height: var(--footer-bella-height);
-  width: auto;
-  max-width: none;
-  transform: translateX(-50%);
-}
-
 /* what is being built: one muted line under the link columns */
 .building-line {
   margin: 0;
@@ -2380,41 +2329,6 @@ h1.display-heading {
   margin: var(--spacing-2) 0 0;
   font-size: var(--text-meta);
   color: var(--color-dark-ink);
-}
-
-/* the footer paw trail (components/FooterTrail.tsx): prints in the
-   footer's accent at 40%, placed by script in the empty band above the
-   letters; they step in one by one (80ms apart) the first time */
-.site-footer {
-  position: relative;
-}
-
-.footer-trail {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.footer-trail__paw {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  fill: var(--color-brand-periwinkle);
-  opacity: 0;
-}
-
-.footer-trail--settled .footer-trail__paw {
-  opacity: 0.4;
-}
-
-.footer-trail--go .footer-trail__paw {
-  animation: footer-paw var(--dur-base) var(--ease-out) forwards;
-  animation-delay: calc(var(--i) * 80ms);
-}
-
-@keyframes footer-paw {
-  from { opacity: 0; scale: 0.5; }
-  to { opacity: 0.4; scale: 1; }
 }
 
 /* small print: one row under the wordmark, from its left edge; the
@@ -2672,7 +2586,7 @@ h1.display-heading {
   width: var(--cursor-bracket);
   height: var(--cursor-bracket);
   overflow: visible;
-  stroke: var(--color-accent-peri);
+  stroke: var(--color-accent-muted);
   stroke-width: var(--cursor-stroke);
   stroke-linecap: round;
 }
@@ -2902,7 +2816,7 @@ h1.display-heading {
    not the solid inverse fill */
 .filter-chip[aria-pressed="true"] {
   background: var(--color-semantic-accent-subtle);
-  border-color: var(--color-accent-iris);
+  border-color: var(--color-accent-line);
   color: var(--color-ink);
 }
 
@@ -5666,7 +5580,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .jn-step {
-  --cc: var(--hero-iris-bright, var(--color-accent-ink));
+  --cc: var(--color-accent-ink);
   --trace-w: 2px;
   position: relative;
   display: block;
@@ -7450,10 +7364,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .case-section__heading {
   margin: 0 0 var(--spacing-4);
   font-family: var(--font-body);
-  font-size: var(--text-display-3);
+  font-size: var(--text-display-2); /* one case h2 size, as Drift (22 Sep 2026: CHIP was 28.8 to 30px) */
   font-weight: var(--typography-font-weight-light);
   letter-spacing: var(--tracking-h2);
-  line-height: 1.15;
+  line-height: 1.08;
   color: var(--color-ink);
 }
 
@@ -7649,7 +7563,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .trv-card--link:hover {
-  border-color: var(--color-accent-iris);
+  border-color: var(--color-accent-line);
 }
 
 .trv-card--link:focus-visible {
@@ -7769,7 +7683,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 .linked-phrase.is-on,
 .linked-phrase:hover {
-  background: var(--iris-soft);
+  background: var(--tint-soft);
   color: var(--color-accent-ink);
 }
 
@@ -7791,8 +7705,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
    ring and the soft fill. Nothing else moves, dims or hides. */
 .case-frame__body [data-t].is-lit {
   outline-color: var(--color-accent-ink);
-  background-color: var(--iris-soft);
-  box-shadow: 0 0 0 8px var(--iris-soft);
+  background-color: var(--tint-soft);
+  box-shadow: 0 0 0 8px var(--tint-soft);
 }
 
 /* the close: what changed, and what it taught (frame as above) */
@@ -8194,7 +8108,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   display: grid;
   gap: var(--spacing-1);
   margin-left: var(--spacing-6);
-  background: var(--iris-soft);
+  background: var(--tint-soft);
 }
 
 /* the one it would not answer: the point of the section */
@@ -8370,7 +8284,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .scan__point.is-on {
-  background: var(--iris-soft);
+  background: var(--tint-soft);
 }
 
 .scan__point.is-on .scan__dot {
@@ -8398,8 +8312,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 
 .scan__phrase.is-lit {
-  background: var(--iris-soft);
-  color: var(--color-semantic-accent-hover);
+  background: var(--tint-soft);
+  color: var(--color-ink);
 }
 
 .scan-read__prose > p {

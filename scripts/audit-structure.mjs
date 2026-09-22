@@ -56,6 +56,16 @@ for (const f of [...appFiles, ...componentFiles]) {
   if (m) fail(f, `arbitrary type size ${m[0]}`, "the ramp tokens, no text-[Npx]");
 }
 
+/* A BELLA component font token (var(--component-*-font-family)) passes only
+   when lib/bella/bella.css resolves it to a Geist stack; any other value
+   still fails (Elleta, 22 Sep 2026: the vendored Button). */
+const BELLA_FONT_TOKENS = new Map(
+  [...readFileSync("lib/bella/bella.css", "utf8").matchAll(/(--component-[a-z0-9-]+-font-family):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()])
+);
+const isBellaGeistToken = (v) => {
+  const t = v.match(/^var\((--component-[a-z0-9-]+-font-family)\)$/)?.[1];
+  return !!t && /^Geist\b/.test(BELLA_FONT_TOKENS.get(t) ?? "");
+};
 /* 5. one type system — no literal font-family in app/components; every
  * fontFamily/font-family must resolve through var(--font-*). Exemptions:
  * globals.css + layout.tsx define the tokens. */
@@ -72,7 +82,7 @@ for (const f of [...appFiles, ...componentFiles]) {
   /* CSS: declaration values */
   for (const m of s.matchAll(/font-family\s*:\s*([^;}]+)/g)) {
     const v = m[1].trim();
-    if (!v.startsWith("var(--font-") && v !== "inherit") {
+    if (!v.startsWith("var(--font-") && v !== "inherit" && !isBellaGeistToken(v)) {
       fail(`${f} font-family`, `"${v}"`, "a var(--font-*) token");
     }
   }
