@@ -27,7 +27,7 @@ export default function DesignSystemPage() {
         slug={SLUG}
         eyebrow="System · BELLA"
         title="A design system people trust"
-        accent="and AI can build with"
+        accent="and AI can build with."
         subhead="BELLA is my open design system, and it runs the site you're reading."
         lead="BELLA is my open design system, and it runs the site you're reading. This page shows how I make one: who decides, where AI helps, and what stops drift from shipping."
         readingMinutes={6}
