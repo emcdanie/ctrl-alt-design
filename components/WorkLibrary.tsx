@@ -1,21 +1,17 @@
 "use client";
 
 import { Fragment, useId, useMemo, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
-import { FilterChip } from "@/components/ui/FilterChip";
 import { Tag } from "@/components/ui/Tag";
-import { STUDIES, STUDY_KINDS, studyHref, type Study, type StudyKind } from "@/content/studies";
 import { SKILL_EVIDENCE, WORK_INDEX, WORK_ITEMS, type WorkCase, type WorkItem } from "@/lib/workLibrary";
 import { WORK_THUMBS } from "@/components/diagrams/workThumbs";
 import { SKILLS, slugify } from "@/content/skills";
 import styles from "./WorkLibrary.module.css";
 
-/* /work (Elleta, 19 Sep 2026): the three case cards, and the pattern
- * studies list: one row of type chips over one row per study (the
- * problem first, then the project, then a framed crop). The skills
- * matrix below serves /skills and /quick. */
+/* /work (Elleta, 19 Sep 2026): the case cards. The pattern studies list
+ * left /work on 22 Sep 2026 (W1 release); the study pages stay live.
+ * The skills matrix below serves /skills and /quick. */
 
 /** A case study card on the ONE Card system: flat until hover. `quiet`
  *  (Home): the kicker is the kind and years in the code role, no tags,
@@ -86,77 +82,6 @@ export function CaseStudyCard({ item, quiet = false }: { item: WorkCase; quiet?:
         ))}
       </p>
     </div>
-  );
-}
-
-/** The pattern studies: one chip row (All and the three kinds, with
- *  counts), then one row per study. The server renders every row. */
-export function StudiesList() {
-  const [kind, setKind] = useState<StudyKind | null>(null);
-  const shown = kind ? STUDIES.filter((s) => s.kind === kind) : STUDIES;
-  return (
-    <div className={styles.studies}>
-      <div className={`filter-chip-row ${styles.studyChips}`} role="group" aria-label="Filter the studies by type">
-        <FilterChip pressed={kind === null} onClick={() => setKind(null)}>
-          All <span className="text-code filter-chip__count">{STUDIES.length}</span>
-        </FilterChip>
-        {STUDY_KINDS.map((k) => (
-          <FilterChip key={k} pressed={kind === k} onClick={() => setKind(kind === k ? null : k)}>
-            {k} <span className="text-code filter-chip__count">{STUDIES.filter((s) => s.kind === k).length}</span>
-          </FilterChip>
-        ))}
-      </div>
-      <ul className={styles.studyList}>
-        {shown.map((s) => (
-          <li key={s.id}>
-            <StudyRow study={s} />
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function StudyRow({ study: s }: { study: Study }) {
-  const body = (
-    <>
-      <span className={styles.studyText}>
-        <span className={`text-code ${styles.studyMeta}`}>
-          {s.year} / {s.kind}
-        </span>
-        <h3 className={`heading-item ${styles.studyTitle}`}>
-          {s.title}{" "}
-          <span className={styles.studyArrow} aria-hidden="true">
-            →
-          </span>
-        </h3>
-        <span className={styles.studyLine}>
-          <span className={styles.studyProject}>{s.project}.</span> {s.line}
-        </span>
-      </span>
-      <span className={styles.tile}>
-        <Image
-          className={styles.tileImg}
-          src={s.thumb.src}
-          width={s.thumb.width}
-          height={s.thumb.height}
-          sizes="(min-width: 600px) 13rem, 5.5rem"
-          loading="lazy"
-          alt=""
-          unoptimized={s.thumb.src.endsWith(".svg")}
-        />
-      </span>
-    </>
-  );
-  /* brief pages route in the app; demos are static files */
-  return s.page ? (
-    <Link href={studyHref(s)} className={styles.studyRow}>
-      {body}
-    </Link>
-  ) : (
-    <a href={studyHref(s)} className={styles.studyRow}>
-      {body}
-    </a>
   );
 }
 

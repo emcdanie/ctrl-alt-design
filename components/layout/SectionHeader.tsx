@@ -39,8 +39,7 @@ export default function SectionHeader({
   after?: ReactNode;
   as?: "h1" | "h2";
   /** the page label above an h1: code role, sentence case, muted
-   *  (Elleta, 20 Sep 2026, Part G). A page two levels deep passes its
-   *  Breadcrumb here instead, which replaces the label. */
+   *  (Elleta, 20 Sep 2026, Part G). */
   kicker?: ReactNode;
   /** "stacked" (default): heading above the lead at every width;
    *  "split": heading beside the lead from 1024px */

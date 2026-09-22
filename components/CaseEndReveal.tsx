@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { WORK_ITEMS } from "@/lib/workLibrary";
+import CaseBackLink from "@/components/CaseBackLink";
 
 /**
  * End-of-case reveal (Elleta 24 Jul, in-flow pass): a normal section at the
@@ -98,7 +99,10 @@ export default function CaseEndReveal({ slug }: { slug: string }) {
         </p>
 
         <span className="cs2-endreveal__rule" aria-hidden="true" />
-        <p className="cs2-endreveal__label">Next case</p>
+        <div className="cs2-endreveal__labelrow">
+          <p className="cs2-endreveal__label">Next case</p>
+          <CaseBackLink />
+        </div>
 
         <Link href={next.href} className="cs2-endreveal__next" aria-label={`Read ${next.title}`}>
           <span className="cs2-endreveal__thumb" aria-hidden="true">
