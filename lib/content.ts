@@ -78,7 +78,7 @@ export type CaseBlock =
   /* text = the closing/takeaway display line. offer + body are optional
      structured slots (CHIP's takeaway leads with an offer keyline over a
      body paragraph); compositions that don't set them fall back to the
-     single-text form (DriftV2 splits text into keyline + body itself). */
+     single-text form. */
   | { kind: "lessons"; text: string; offer?: string; body?: string }
   /* upfront NDA disclosure (Pass C): quiet note before the body */
   | { kind: "disclosure"; text: string }

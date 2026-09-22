@@ -4,12 +4,13 @@ import { findWorkItemBySlug } from "@/lib/workLibrary";
 import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseShellV2 from "@/components/CaseShellV2";
 import CodeFirstV2 from "@/components/CodeFirstV2";
-import DriftV2 from "@/components/DriftV2";
+import DriftCase from "@/components/DriftCase";
 import ChipCase from "@/components/ChipCase";
 import BookingCase from "@/components/BookingCase";
 import SearchCase from "@/components/SearchCase";
 import CheckoutCase from "@/components/CheckoutCase";
 import type { CaseStudy } from "@/lib/content";
+import { Tag } from "@/components/ui/Tag";
 
 /* metadata reads in sentence case: "DESIGN SYSTEMS" -> "Design systems" */
 const sentenceCase = (t: string) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
@@ -37,13 +38,40 @@ const ARTICLE: Record<
     lead?: string;
     /** false when the facts already carry the years (the umbrella) */
     caseFact?: boolean;
+    /** the mock layout (Geist refresh, 22 Sep 2026): an eyebrow instead
+     *  of the breadcrumb, the lead AND the at-a-glance strip, the signal
+     *  tags, and no end reveal */
+    mock?: {
+      eyebrow: string;
+      signals: { label: string; tags: { text: string; tone?: "c2" | "c3"; outline?: boolean }[] };
+    };
   }
 > = {
+  /* Part B of case-study-mock.html (Geist refresh, 22 Sep 2026) */
   "design-system-transformation": {
-    title: "The system is the",
-    accent: "agreements",
-    after: ", not the library.",
-    note: "Under NDA. The client appears as an industry only. Artifacts are recreated and the data is illustrative.",
+    title: "The system is the agreements, not the library.",
+    lead: "A first design system for a B2B travel platform that had outgrown its UI, built by one designer and one developer, then funded and handed to every product team.",
+    caseFact: false,
+    facts: [
+      { label: "role", value: "Lead product designer, design systems" },
+      { label: "team", value: "Every squad, one per product, plus admin and invoicing" },
+      { label: "scope", value: "Audit, tokens, library in code, governance" },
+      { label: "outcome", value: "A funded team and six product areas live" },
+    ],
+    note: "Under NDA: the client appears as an industry only. Artifacts are recreated.",
+    mock: {
+      eyebrow: "Case · Design systems · 2024 to 2026",
+      signals: {
+        label: "this case is evidence for",
+        tags: [
+          { text: "systems at scale" },
+          { text: "contribution & governance", tone: "c2" },
+          { text: "tokens figma → code", tone: "c3" },
+          { text: "close with engineers", outline: true },
+          { text: "shipped impact", outline: true },
+        ],
+      },
+    },
   },
   "brad-frost": {
     title: "Working",
@@ -141,7 +169,7 @@ export async function generateMetadata({
    audit:parity keeps the registry honest. ── */
 const COMPOSITIONS: Record<string, React.ComponentType<{ cs: CaseStudy }>> = {
   "brad-frost": CodeFirstV2,
-  "design-system-transformation": DriftV2,
+  "design-system-transformation": DriftCase,
   chip: ChipCase,
   "booking-platform": BookingCase,
   "search-experts": SearchCase,
@@ -173,7 +201,9 @@ export default async function CaseStudyPage({
       <CaseShellV2
         slug={slug}
         eyebrow={
-          article
+          article?.mock
+            ? article.mock.eyebrow
+            : article
             ? `Case study · ${sentenceCase(cs.category)} · ${fullYears(cs.year)}`
             : spans(cs.eyebrow ?? `${sentenceCase(cs.category)} · ${cs.year}`)
         }
@@ -183,8 +213,26 @@ export default async function CaseStudyPage({
         subhead={cs.summary ?? cs.description}
         readingMinutes={readingMinutes}
         tags={cs.tags}
+        crumbs={article?.mock ? false : undefined}
+        endReveal={article?.mock ? false : undefined}
+        glance={Boolean(article?.mock)}
+        className={article?.mock ? "cs2--mock" : undefined}
+        heroExtra={
+          article?.mock ? (
+            <div className="case-hero__signals">
+              <p className="case-hero__signals-label">{article.mock.signals.label}</p>
+              <div className="case-hero__tags">
+                {article.mock.signals.tags.map((t) => (
+                  <Tag key={t.text} tone={t.tone} outline={t.outline}>
+                    {t.text}
+                  </Tag>
+                ))}
+              </div>
+            </div>
+          ) : undefined
+        }
         facts={
-          article && !article.lead
+          article && (!article.lead || article.mock)
             ? [
                 ...(article.caseFact === false
                   ? []

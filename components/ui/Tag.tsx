@@ -8,14 +8,17 @@ export function Tag({
   children,
   identity,
   outline,
+  tone,
   style,
 }: {
   children: React.ReactNode;
   identity?: boolean;
   outline?: boolean;
+  /** chip fill: c1 lavender (default), c2 peach, c3 mint (Geist refresh) */
+  tone?: "c2" | "c3";
   style?: React.CSSProperties;
 }) {
-  const cls = ["tag", identity ? "tag--identity" : "", outline ? "tag--outline" : ""].filter(Boolean).join(" ");
+  const cls = ["tag", identity ? "tag--identity" : "", outline ? "tag--outline" : "", tone ? `tag--${tone}` : ""].filter(Boolean).join(" ");
   return (
     <span className={cls} style={style}>
       {children}
