@@ -36,12 +36,17 @@ const BELLA_SEM = (line: number, strong: number, muted: number, accent: number):
   accent: ["brand", accent],
 });
 
+/* the ochre ramp, light to dark: step 3 is ochre and step 5 ochre-deep
+ * (BELLA's two brand primitives); the other steps are derived between
+ * and beyond them for the exhibit, not BELLA tokens */
+const OCHRE = ["#fdf6ea", "#f9e8c8", "#f2d08f", "#e8a83e", "#d38f24", "#b97a14", "#8a5a0f", "#5c3c0a"]; // token-waiver: the exhibit's subject
+
 export const THEMES: Record<ThemeKey, Theme> = {
   ground: {
     name: "ground",
     neutral: ["#ffffff", "#f2f2f2", "#e3e3e3", "#8c8c8c", "#6b6b6b", "#515151", "#2a2a2a", "#121212"], // token-waiver: BELLA light primitives, the exhibit's subject
-    brand: ["#efeafe", "#e0d8fc", "#c9bff5", "#a99cf5", "#7d6be0", "#5b4bd1", "#3f329a", "#241d5c"], // token-waiver: BELLA iris ramp, the exhibit's subject
-    sem: BELLA_SEM(2, 3, 5, 2),
+    brand: OCHRE, // BELLA's ochre (item 2, 22 Sep 2026; iris retired)
+    sem: BELLA_SEM(2, 3, 5, 3),
     tint: ["#e9e8e4", "#1b1b1b"], // token-waiver: exhibit wash per theme (mock)
     swatch: ["#ffffff", "#121212"], // token-waiver: picker swatch data
     note: "BELLA · light",
@@ -49,8 +54,8 @@ export const THEMES: Record<ThemeKey, Theme> = {
   night: {
     name: "night",
     neutral: ["#0d0d0d", "#161616", "#1f1f1f", "#2a2a2a", "#636363", "#8c8c8c", "#b1b1b1", "#ededed"], // token-waiver: BELLA dark primitives, the exhibit's subject
-    brand: ["#241d5c", "#3f329a", "#5b4bd1", "#7d6be0", "#a99cf5", "#c9bff5", "#e0d8fc", "#efeafe"], // token-waiver: BELLA iris ramp, reversed for dark
-    sem: BELLA_SEM(3, 4, 6, 5),
+    brand: [...OCHRE].reverse(), // the same ramp, reversed for dark
+    sem: BELLA_SEM(3, 4, 6, 4),
     tint: ["#d9d8dd", "#232228"], // token-waiver: exhibit wash per theme (mock)
     swatch: ["#0d0d0d", "#ededed"], // token-waiver: picker swatch data
     note: "BELLA · dark",
@@ -121,10 +126,11 @@ export const ratio = (a: string, b: string) => {
 };
 
 export type Grade = { label: string; tone: "aaa" | "aa" | "no" };
-export const grade = (r: number, control: boolean): Grade => {
+export const grade = (r: number, control: boolean, large = false): Grade => {
   if (control) return r >= 3 ? { label: "≥ 3:1", tone: "aaa" } : { label: "fails", tone: "no" };
   if (r >= 7) return { label: "AAA", tone: "aaa" };
   if (r >= 4.5) return { label: "AA", tone: "aa" };
+  if (large && r >= 3) return { label: "AA large", tone: "aa" };
   return { label: "fails", tone: "no" };
 };
 
@@ -149,5 +155,5 @@ export const ASKS: { name: string; light: string; lightHex: string; dark: string
   { name: "text-primary", light: "{color.light.ink}", lightHex: "#121212", dark: "{color.dark.ink}", darkHex: "#ededed" }, // token-waiver: the hex IS the answer shown
   { name: "text-muted", light: "{color.light.muted}", lightHex: "#515151", dark: "{color.dark.muted}", darkHex: "#b1b1b1" }, // token-waiver: the hex IS the answer shown
   { name: "surface-card", light: "{color.light.panel}", lightHex: "#f2f2f2", dark: "{color.dark.surface}", darkHex: "#161616" }, // token-waiver: the hex IS the answer shown
-  { name: "focus-ring", light: "{color.brand.iris}", lightHex: "#5b4bd1", dark: "{color.brand.periwinkle}", darkHex: "#a79ce2" }, // token-waiver: the hex IS the answer shown
+  { name: "focus-ring", light: "{color.brand.ochre-deep}", lightHex: "#b97a14", dark: "{color.brand.ochre}", darkHex: "#e8a83e" }, // token-waiver: the hex IS the answer shown
 ];

@@ -66,6 +66,10 @@ function GateRow({ row, index, still }: { row: ReturnType<typeof gateRows>[numbe
       cancelAnimationFrame(raf);
     };
   }, [still, index, row.ratio]);
+  /* reduced motion is known only after mount, so `still` overrides the
+     animated state rather than seeding it: the final frame, always */
+  const full = still || grown;
+  const popped = still || badge;
   const tone = row.grade.tone === "aaa" ? "" : row.grade.tone === "aa" ? s.aa : s.no;
   return (
     <div className={s.grow}>
@@ -74,10 +78,10 @@ function GateRow({ row, index, still }: { row: ReturnType<typeof gateRows>[numbe
         <i style={{ left: `${gatePct(3)}%` }} />
         <i style={{ left: `${gatePct(4.5)}%` }} />
         <i style={{ left: `${gatePct(7)}%` }} />
-        <span className={`${s.bar} ${tone}`} style={{ width: grown ? `${Math.min(100, gatePct(row.ratio))}%` : 0 }} />
+        <span className={`${s.bar} ${tone}`} style={{ width: full ? `${Math.min(100, gatePct(row.ratio))}%` : 0 }} />
       </span>
       <span className={s.growValue}>{(still ? row.ratio : shown).toFixed(2)}</span>
-      <span className={`${s.badge} ${tone} ${badge ? s.badgeOn : ""}`}>{row.grade.label}</span>
+      <span className={`${s.badge} ${tone} ${popped ? s.badgeOn : ""}`}>{row.grade.label}</span>
     </div>
   );
 }
