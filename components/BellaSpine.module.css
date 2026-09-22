@@ -402,7 +402,7 @@
 @media (min-width: 56.25rem) {
   .pg { grid-template-columns: 0.8fr 1.2fr; }
 }
-.pgCtl { display: grid; align-content: start; gap: var(--spacing-5); }
+.pgCtl { display: grid; align-content: start; align-self: start; gap: var(--spacing-5); } /* sizes to its content: no empty box under reset */
 .grp { display: grid; gap: var(--spacing-2); justify-items: start; }
 .sws { display: flex; flex-wrap: wrap; gap: var(--spacing-3); }
 .sws button {
