@@ -29,8 +29,10 @@ override the constitution.
   the light page ground. Light: ink `#121212`, muted `#515151`, line `#e3e3e3`, panel `#f2f2f2`,
   bg `#fff`, border-strong `#8c8c8c`. Dark: ink `#ededed`, muted `#b1b1b1`, line `#2a2a2a`, panel
   `#161616`, bg `#0d0d0d`, border-strong `#636363`. Chip fills c1 `#c9bff5`, c2 `#f6c9a8`, c3
-  `#cfe8dc`, chip text always `#17191a`. **Colour lives in fills only**; iris `#5B4BD1` /
-  periwinkle `#A79CE2` stay for links, focus and the primary button. **No amber anywhere.**
+  `#cfe8dc`, chip text always `#17191a`. **Colour lives in fills only**, plus focus and status. Brand refresh (Elleta,
+  2026-09-22): ochre `#e8a83e` is the one accent fill (light surfaces, `#121212` text on it);
+  the focus ring is 3px ochre-deep `#b97a14` in light, ochre in dark, 3px offset, focus only;
+  links are ink + underline; the primary button fills ink. Iris and periwinkle are retired. **No amber anywhere.**
 - Cascade trap: BELLA's unlayered `:root` beats `@theme`. Keep app theme tokens in an unlayered
   `:root` that loads AFTER imports so they win.
 

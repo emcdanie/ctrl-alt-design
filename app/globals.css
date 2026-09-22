@@ -24,8 +24,8 @@
   --color-ink-muted: var(--color-light-muted);
   --color-surface: var(--color-light-panel);
   --color-white-pure: var(--color-light-panel);
-  --color-accent-iris: #5B4BD1;
-  --color-accent-peri: #A79CE2;
+  --color-accent-iris: var(--color-ink); /* brand refresh 22 Sep 2026: iris retired; the old accent reads as ink */
+  --color-accent-peri: var(--color-ink-muted);
 
   /* verdict tokens for the pipeline instrument (27 Jul): a real
      pass/fail pair. Green and a cool-leaning red; the banned warm
@@ -314,8 +314,7 @@ body {
 
 
 
-  --hero-iris-bright: #7A6BE8;
-  --peri: #A79CE2; /* fixed periwinkle (proto --peri) */
+  --peri: #e8a83e; /* was the fixed periwinkle; ochre since the brand refresh (22 Sep 2026) */
   --case-code-first-hi: #F6BBD6;
   --case-code-first-lo: #F0A0C8;
   --case-code-first-deep: #B23A70;
@@ -395,11 +394,11 @@ body {
   --page-glow: rgba(255, 255, 255, 0.55);
   --key-face-hi: #FFFFFF;
   /* Filled-keycap face — FIXED in both themes. White labels need ≥4.5:1
-     on every gradient stop: #6C5CE0 4.9:1, #5B4BD1 6.1:1 (the lighter
+     on every stop: ink #121212 (brand refresh 22 Sep 2026; was iris) (the old lighter
      #8E7EEC is 3.3:1 — never under a white label). */
-  --key-fill-hi: #6C5CE0;
-  --key-fill-lo: #5B4BD1;
-  --key-fill-edge: #4A3FB0;
+  --key-fill-hi: #121212;
+  --key-fill-lo: #121212;
+  --key-fill-edge: #000000;
 
   /* Theme switch (sun/moon keycap-thumb slider, from _proto/_hero.html) */
 
@@ -981,7 +980,7 @@ body {
 
   --color-border-soft: var(--color-dark-line);
   --color-border-medium: var(--color-dark-line);
-  --color-accent-iris: #A79CE2;
+  --color-accent-iris: var(--color-dark-ink);
   background: var(--color-semantic-background);
 }
 
@@ -2097,7 +2096,7 @@ h1.display-heading {
   --color-ink-soft: var(--color-dark-ink);
   --color-ink-muted: var(--color-dark-muted);
   --color-accent-ink: var(--color-dark-ink);
-  --ring-focus-color: var(--color-dark-ink);
+  --ring-focus-color: var(--color-brand-ochre);
   background: var(--color-dark-surface);
   color: var(--color-dark-ink);
   overflow: hidden;

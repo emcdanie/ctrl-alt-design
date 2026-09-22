@@ -119,7 +119,7 @@
 }
 
 .clear:focus-visible {
-  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 2px;
 }
 
@@ -229,7 +229,7 @@
 }
 
 .items summary:focus-visible {
-  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 2px;
 }
 
@@ -274,7 +274,7 @@
 .inlineLink:focus-visible,
 .detailLink a:focus-visible,
 .entryTitle a:focus-visible {
-  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
@@ -793,7 +793,7 @@
 .ctlBtn:focus-visible,
 .closeBtn:focus-visible,
 .mapListBtn:focus-visible {
-  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 2px;
 }
 

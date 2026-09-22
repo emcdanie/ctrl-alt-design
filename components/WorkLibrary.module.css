@@ -299,7 +299,7 @@
 }
 
 .lDot:focus-visible {
-  outline: var(--ring-focus-width) solid var(--color-accent-iris);
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: 1px;
 }
 
