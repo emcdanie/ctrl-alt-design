@@ -26,7 +26,7 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
 | Radii | from the set only | `--radius-sm` 4 (marks, swatches), `--radius-md` 8 (insets inside a card), `--radius-lg` 12 (BELLA controls), `--radius-card` 16, `--radius-pill`. A deliberate exception wears `data-frame-exempt="<reason>"` and is listed by audit:frame |
 | Featured/marketing panel | section-scale color block, NOT a card | radius `--radius-3xl` (24px), padding `--spacing-8` (32px), shadow `--shadow-soft` (recorded exception: `.feature-panel` only) |
 | Panel-scale glass wrappers | `.glass-card` (About, featured testimonial) | radius `--radius-card` like cards; padding `--spacing-8` (panel tier) |
-| Container | content width + side padding | `--layout-max` (66rem = 1056px content) + `--layout-gutter` (clamp 24 to 48px) each side = `--container-max`, via `Container` / `.container` (aliases `.page-container`, `.layout-container`) |
+| Container | content width + side padding | `--layout-max` (62.5rem = 1000px content) + `--layout-gutter` (clamp 24 to 48px) each side = `--container-max`, via `Container` / `.container` (aliases `.page-container`, `.layout-container`) |
 | Section vertical padding | every section, every route | `--section-pad-y` (clamp 4 to 8rem, Part Q) via layout `Section` (`.l-section`); the first section adds the nav height; hairline via the Section label or `.section--ruled`. The only rhythm token (O.9, 21 Sep 2026) |
 | Dot grid (recorded addition, Part V, 21 Sep 2026) | behind every page's opening section, one rule | `--dot-grid-color` (ink 14% light, cream 10% dark), `--dot-grid-size` (24px); fades out by the opening's end, no clicks, no motion |
 | Gaps inside a section | stacks | `--space-stack-sm/md/lg` (12 / 24 / 40px) |
@@ -69,7 +69,7 @@ they are: `--color-accent-iris` (was espresso) and `--color-accent-peri`
    `app/case-studies/[slug]` + CaseStudyShell from its
    `content/case-studies/*.ts` data (ordered `blocks`). NEVER add a
    per-case route file — extend the block schema instead.
-3. **Layout:** centered 1056px content container (`--layout-max`), token spacing (`--space-*` /
+3. **Layout:** centered 1000px content container (`--layout-max`), token spacing (`--space-*` /
    `--spacing-*`), body ≥16px, NO arbitrary `text-[Npx]`, NO hardcoded
    hex in components (fixed-context surfaces use their recorded tokens).
 4. **Gates (un-regressable):** `npm run gate` = `audit:structure`
@@ -158,7 +158,7 @@ ladder below (endpoints 32 / 36 / 40 / 48 / 56 / 72). Body text never below
 
 | Token | Pair |
 | --- | --- |
-| `--component-heading-hero-font-size` | 40 → 180 (Heading tier hero: the home headline) |
+| `--component-heading-hero-font-size` | 40 → 76 (Heading tier hero: the home headline; portfolio-preview.html, 22 Sep 2026) |
 | `--component-heading-page-font-size` | 48 → 104, max-width 20ch (tier page: every page title, case studies and /design-system included; the case pull quote) |
 | `--component-heading-section-font-size` | 36 → 64 (tiers section and case: every section head, beat headline and the case sign-off) |
 | `--font-hero` | `clamp(40px, 5vw, 56px)` (overlay nav links, Geist; not a heading tier) |

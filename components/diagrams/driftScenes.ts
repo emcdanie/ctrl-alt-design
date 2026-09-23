@@ -35,7 +35,9 @@ export function buttonGrave() {
 }
 
 /* 1 the file: an overloaded canvas, dense and uneven (seeded, so it is
-   the same picture every time), then a slow zoom to the duplicates */
+   the same picture every time), shown whole (item 7, 22 Sep 2026; was a
+   crop with a slow zoom to the duplicates): the canvas is measured as it
+   is drawn and scaled to fit the 900 x 340 window, so nothing is cut */
 function sceneFile() {
   let seed = 7;
   const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
@@ -88,8 +90,9 @@ function sceneFile() {
     swatch: ["Colors", "_tokens/colour", "Accent"],
   };
   const dupNames = ["Inputs", "Input v2", "_old_Users/Edit form", "InputField", "Search input"];
-  /* the file is bigger than the picture on purpose: an explicit crop to the 900 x 340 window */
-  let o = '<clipPath id="zoom-crop"><rect width="900" height="340"/></clipPath><g clip-path="url(#zoom-crop)"><g id="zoom-world" style="transform-origin:0 0">';
+  let o = "";
+  let right = 0;
+  let bottom = 0;
   let x = 20;
   let colI = 0;
   let dupPlaced = 0;
@@ -104,12 +107,18 @@ function sceneFile() {
       const nm = isDup ? dupNames[dupPlaced] : names[kind][ri(0, names[kind].length - 1)];
       o += `<g class="${isDup ? "k k1 dup" + colI : ""}">` + (isDup ? R(x - 5, y - 18, w + 10, h + 24, 10, "hlr", "opacity:.45") : "") + L(x, y - 5, nm) + R(x, y, w, h, 6, "s", "opacity:.55") + kinds[kind](x, y, w, h) + "</g>";
       if (isDup) dupPlaced++;
+      right = Math.max(right, x + w + 5);
+      bottom = Math.max(bottom, y + h + 6);
       y += h + ri(26, 40);
     }
     x += w + ri(14, 26);
     colI++;
   }
-  return o + "</g></g>";
+  /* fit the whole canvas inside the window with a 10px margin, centred */
+  const k = Math.min(880 / right, 320 / bottom);
+  const tx = (900 - right * k) / 2;
+  const ty = (340 - bottom * k) / 2;
+  return `<g transform="translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${k.toFixed(4)})">${o}</g>`;
 }
 
 /* 2 one field, five ways */

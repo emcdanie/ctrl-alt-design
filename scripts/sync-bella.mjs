@@ -30,8 +30,10 @@ const FILES = [
   { from: "src/components/Card/Card.tsx", to: "components/bella/Card/Card.tsx" },
   { from: "src/components/Card/Card.module.css", to: "components/bella/Card/Card.module.css" },
   { from: "src/components/shared/Trace.module.css", to: "components/bella/shared/Trace.module.css" },
-  /* brand refresh (2026-09-22): the pattern-filled wordmark and the hero
-   * PatternField. The relative imports upstream fix the layout: components
+  /* brand refresh (2026-09-22): the pattern-filled wordmark and the pattern
+   * generator. PatternField left the set on 22 Sep (PatternField brief): the
+   * site draws the fields as static SVG backgrounds from the same generator
+   * (app/pattern/[file]/route.ts), so no pattern paths sit in the DOM. The relative imports upstream fix the layout: components
    * under components/bella/, the generator under components/brand/, and the
    * token JSON the generator reads at tokens/bella.json. BrandWordmark
    * imports Button for its optional Reroll control, so Button comes too. */
@@ -43,8 +45,6 @@ const FILES = [
   { from: "src/components/Button/Button.module.css", to: "components/bella/Button/Button.module.css" },
   { from: "src/components/BrandWordmark/BrandWordmark.tsx", to: "components/bella/BrandWordmark/BrandWordmark.tsx" },
   { from: "src/components/BrandWordmark/BrandWordmark.module.css", to: "components/bella/BrandWordmark/BrandWordmark.module.css" },
-  { from: "src/components/PatternField/PatternField.tsx", to: "components/bella/PatternField/PatternField.tsx" },
-  { from: "src/components/PatternField/PatternField.module.css", to: "components/bella/PatternField/PatternField.module.css" },
   /* favicons (2026-09-22): solid ink E at 16/32 and the SVG, pattern E at 180/512;
    * the app/ file names are the Next.js icon conventions */
   { from: "src/assets/brand/favicon/favicon.ico", to: "app/favicon.ico" },

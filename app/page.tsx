@@ -75,7 +75,7 @@ export default function Home() {
 
       <Section id="word-of-mouth" label="Word of mouth">
         <figure className={styles.quote}>
-          <span className={styles.mark} aria-hidden="true">
+          <span className={`${styles.mark} pattern-mark`} aria-hidden="true">
             “
           </span>
           <blockquote className={styles.words}>

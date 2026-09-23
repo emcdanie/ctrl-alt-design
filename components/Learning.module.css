@@ -120,7 +120,7 @@
 
 .clear:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  outline-offset: var(--ring-focus-offset);
 }
 
 .view {
@@ -230,7 +230,7 @@
 
 .items summary:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  outline-offset: var(--ring-focus-offset);
 }
 
 .items ul {
@@ -275,7 +275,7 @@
 .detailLink a:focus-visible,
 .entryTitle a:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  outline-offset: var(--ring-focus-offset);
   border-radius: var(--radius-sm);
 }
 
@@ -527,6 +527,12 @@
 .node:focus-visible .halo,
 .node.sel .halo {
   opacity: 1;
+}
+
+/* SVG nodes take no outline: the halo is their focus ring (item 4) */
+.node:focus-visible .halo {
+  stroke: var(--ring-focus-color);
+  stroke-width: var(--ring-focus-width);
 }
 
 .nodeL .dot {
@@ -794,7 +800,7 @@
 .closeBtn:focus-visible,
 .mapListBtn:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: 2px;
+  outline-offset: var(--ring-focus-offset);
 }
 
 .closeBtn {

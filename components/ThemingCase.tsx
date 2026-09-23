@@ -252,9 +252,9 @@ export default function ThemingCase({ cs }: { cs: CaseStudy }) {
               {"\n"}
               <K>&quot;focus-ring&quot;</K>
               {"     "}
-              <R>{"{color.brand.iris}"}</R>
-              {"     "}
-              <R>{"{color.brand.periwinkle}"}</R>
+              <R>{"{color.brand.ochre-deep}"}</R>
+              {" "}
+              <R>{"{color.brand.ochre}"}</R>
               {"\n"}
               <K>&quot;chip-1&quot;</K>
               {"         "}
@@ -338,7 +338,7 @@ export default function ThemingCase({ cs }: { cs: CaseStudy }) {
           id="theming-pipeline-title"
           kicker="02c · How it ships"
           heading="From a token file to production, through a gate."
-          lead="A theme only counts once it's in code. This is BELLA's real pipeline, and every step runs on every change."
+          lead="DTCG tokens in, CSS custom properties out. A theme only counts once it's in code. This is BELLA's real pipeline, and every step runs on every change."
         />
         <Pipeline />
         <div className={s.gateWin}>

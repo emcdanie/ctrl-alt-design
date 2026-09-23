@@ -26,7 +26,7 @@ const ZONES: {
   {
     id: "face",
     label: "Face",
-    drives: "The filled key face, a two-stop gradient. Fixed in both themes so the white label always clears AA.",
+    drives: "The filled key face, a two-stop gradient: the primary button's fill, ink in light and near-white in dark, so its label always clears AA.",
     flags: ["--key-fill-hi", "--key-fill-lo"],
   },
   {

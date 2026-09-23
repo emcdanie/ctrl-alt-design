@@ -120,7 +120,6 @@ export default function ContactSection() {
     fontSize: "var(--typography-font-size-base)",
     lineHeight: 1.5,
     color: "var(--color-ink)",
-    outline: "none",
     transition: "border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out)",
     fontFamily: "var(--font-body)",
   });

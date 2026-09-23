@@ -116,8 +116,8 @@
 .play:focus-visible,
 .askPause:focus-visible,
 .mapRow:focus-visible {
-  outline: 2px solid var(--color-semantic-focus-ring);
-  outline-offset: 2px;
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
 }
 
 /* ── 01 · the exhibit: the stage ───────────────────────────────── */
@@ -833,13 +833,13 @@
 }
 
 .pair figure > div:focus-visible {
-  outline: 2px solid var(--color-semantic-focus-ring);
-  outline-offset: -2px;
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
 }
 .hl:focus-visible,
 .json:focus-visible {
-  outline: 2px solid var(--color-semantic-focus-ring);
-  outline-offset: -2px;
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
 }
 
 /* the pipeline's moving token and its step nodes (integration pass) */
