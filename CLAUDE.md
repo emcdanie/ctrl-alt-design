@@ -116,7 +116,7 @@ override the constitution.
 - **Type comes from the text utilities** (`.text-display-1/2/3`, `.text-lead`, `.text-body`,
   `.text-meta`, `.accent`). No page-specific font sizes: if a size is missing, add a token.
 - **Never set heading widths in `ch` for Unique** (condensed, so `ch` wraps early): use
-  `--measure-heading` (22em); every page h1 caps at `--measure-title` (15em), the Home hero at `--measure-hero` (13em) (Part Q, 2026-09-21: heroes are text only, titles bigger and wider, the hero lead on `--text-hero-lead`). Headings `text-wrap: balance`, paragraphs `text-wrap: pretty`.
+  `--measure-heading` (22em); every page h1 caps at `--measure-title` (15em), the Home hero at `--measure-hero` (11em, 23 Sep 2026: three lines at 1440) (Part Q, 2026-09-21: heroes are text only, titles bigger and wider, the hero lead on `--text-hero-lead`). Headings `text-wrap: balance`, paragraphs `text-wrap: pretty`.
 - **Numbers in columns are right-aligned and tabular (Elleta, 2026-07-28, readability
   audit).** Any figure that sits in a column beside other figures (a table cell, a grid
   column, a stat row) uses `text-align: right` and `font-variant-numeric: tabular-nums`,
