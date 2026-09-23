@@ -126,11 +126,10 @@ export const ratio = (a: string, b: string) => {
 };
 
 export type Grade = { label: string; tone: "aaa" | "aa" | "no" };
-export const grade = (r: number, control: boolean, large = false): Grade => {
+export const grade = (r: number, control: boolean): Grade => {
   if (control) return r >= 3 ? { label: "≥ 3:1", tone: "aaa" } : { label: "fails", tone: "no" };
   if (r >= 7) return { label: "AAA", tone: "aaa" };
   if (r >= 4.5) return { label: "AA", tone: "aa" };
-  if (large && r >= 3) return { label: "AA large", tone: "aa" };
   return { label: "fails", tone: "no" };
 };
 

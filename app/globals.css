@@ -384,13 +384,14 @@ body {
   --modal-backdrop: rgba(26, 23, 32, 0.7);
   /* page-top glow — flips to near-none on navy */
   --page-glow: rgba(255, 255, 255, 0.55);
-  --key-face-hi: #FFFFFF;
-  /* Filled-keycap face — FIXED in both themes. White labels need ≥4.5:1
-     on every stop: ink #121212 (brand refresh 22 Sep 2026; was iris) (the old lighter
-     #8E7EEC is 3.3:1 — never under a white label). */
-  --key-fill-hi: #121212;
-  --key-fill-lo: #121212;
-  --key-fill-edge: #000000;
+  /* The inspector's keycap reads BELLA's primary button (/quick item,
+     22 Sep 2026; was fixed #121212 in both themes, which sat at 1.04:1
+     on the dark card): ink with a light label in light, near-white with
+     an ink label in dark, exactly like every primary on the site. */
+  --key-face-hi: var(--component-button-primary-foreground);
+  --key-fill-hi: var(--component-button-primary-fill-hi);
+  --key-fill-lo: var(--component-button-primary-fill-lo);
+  --key-fill-edge: var(--component-button-primary-edge);
 
   /* Theme switch (sun/moon keycap-thumb slider, from _proto/_hero.html) */
 
@@ -4599,6 +4600,11 @@ textarea:focus-visible {
 .ds-leaders line {
   stroke: var(--color-semantic-accent-border);
   stroke-width: 1.5;
+}
+
+/* dark: #636363 sat at 3.0:1 on the card; muted reads at 8.4:1 */
+[data-theme="dark"] .ds-leaders line {
+  stroke: var(--color-ink-muted);
 }
 
 .ds-gate__receipt {
