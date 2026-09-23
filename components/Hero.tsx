@@ -34,7 +34,14 @@ export default function Hero() {
             id="home-hero-title"
             className={styles.headline}
             accent={WORDS[WORDS.length - 1]}
-            after={`. ${HOME_TAGLINE}`}
+            after={
+              <>
+                {/* the tagline always starts its own line, and the full stop
+                    stays glued to "systems" (no space, so no break before it) */}
+                .<br />
+                {HOME_TAGLINE}
+              </>
+            }
           >
             {WORDS.slice(0, -1).join(" ")}
           </Heading>

@@ -233,7 +233,7 @@ body {
      widened them from 8.5em, which made every hero look timid. em, like
      every heading measure (DESIGN.md) */
   --measure-title: 15em;
-  --measure-hero: 13em;
+  --measure-hero: 11em; /* 11em (hero break, 23 Sep 2026; was 13em): "AI-enabled design systems." no longer fits one line at 76px, so the h1 reads in three lines: AI-enabled / design systems. / Built to stop drift. */
   /* the hero lead (Part Q): bigger, 1.5rem under the h1, 34em max */
   --text-hero-lead: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);
   --measure-hero-lead: 34em;
