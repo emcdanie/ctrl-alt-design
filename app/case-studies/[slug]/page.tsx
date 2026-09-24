@@ -59,7 +59,7 @@ const ARTICLE: Record<
       { label: "scope", value: "Audit, tokens, library in code, governance" },
       { label: "outcome", value: "A funded team and six product areas live" },
     ],
-    note: "Under NDA: the client appears as an industry only. Artifacts are recreated.",
+    note: "Under NDA. Diagrams are my own, redrawn to show the approach; no client screens or data.",
     mock: {
       eyebrow: "Case · Design systems · 2024 to 2026",
       signals: {
@@ -85,7 +85,7 @@ const ARTICLE: Record<
     title: "A booking platform, rebuilt",
     accent: "mid-flight",
     after: ".",
-    note: "Under NDA: a B2B travel platform. Screens are de-branded; names and codes are blurred.",
+    note: "Under NDA. Diagrams are my own, redrawn to show the approach; no client screens or data.",
     caseFact: false,
     facts: [
       { label: "Role", value: "Lead product designer, design systems" },
