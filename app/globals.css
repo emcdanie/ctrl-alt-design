@@ -1612,6 +1612,21 @@ h1.display-heading {
   --logo-box-h: 34px;
 }
 
+/* the table's bottom rule runs the full width even when the last row is
+   short (4 + 3 on About): it lies on the last row's cell rules, so the
+   eye reads one line, not an orphaned 750px one (24 Sep audit, A3) */
+.logo-grid:not(.logo-grid--row) {
+  position: relative;
+}
+
+.logo-grid:not(.logo-grid--row)::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: var(--color-semantic-border);
+}
+
 .logo-grid__cell {
   /* the cell is the logo's size container: a mark never outgrows it */
   container-type: inline-size;
