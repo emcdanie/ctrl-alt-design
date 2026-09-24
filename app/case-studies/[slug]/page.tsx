@@ -156,6 +156,12 @@ const facts = (cs: CaseStudy) =>
     .filter((f): f is { label: string; value: string } => Boolean(f.value))
     .map((f) => ({ ...f, value: toSpan(f.value) }));
 
+/* Unknown slugs 404 from the static not-found page (23 Sep 2026). With
+   the default (true) they rendered at request time, and notFound() there
+   came back as Next's error shell: no theme script in its head, so the
+   404 stayed light in dark mode. Every real slug is in the params below. */
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
 }

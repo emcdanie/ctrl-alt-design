@@ -23,6 +23,12 @@ const ORDER: { key: keyof StudyBrief; heading: string }[] = [
 
 const shows = (s?: StudySection): s is StudySection => !!s && !s.draft && s.paragraphs.length > 0;
 
+/* Unknown slugs 404 from the static not-found page (23 Sep 2026). With
+   the default (true) they rendered at request time, and notFound() there
+   came back as Next's error shell: no theme script in its head, so the
+   404 stayed light in dark mode. Every real slug is in the params below. */
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return STUDIES.filter((s) => s.page).map((s) => ({ slug: s.id }));
 }
