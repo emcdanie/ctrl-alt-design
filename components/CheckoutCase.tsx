@@ -135,7 +135,7 @@ function DoneDiagram() {
       >
         <rect className="s" x="250.5" y="20.5" width="400" height="280" rx="14" />
         <circle className="c3" cx="450.5" cy="58.5" r="18" />
-        <path className="s" d="M442 58.5 L448 64.5 L460 52.5" />
+        <path className="s on-chip" d="M442 58.5 L448 64.5 L460 52.5" />
         <text className="ti opt" x="450.5" y="100" textAnchor="middle">booking completed</text>
         <path className="s" d="M300 128.5 H600" />
         <circle className="fill-ink" cx="300" cy="128.5" r="4" />

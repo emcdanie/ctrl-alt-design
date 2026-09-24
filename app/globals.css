@@ -8372,6 +8372,8 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 /* shared figure text: the mock's 11-12px labels sit at 13 */
 .exhibit [data-bella-diagram] .on-ink { fill: var(--color-semantic-background); }
 .exhibit [data-bella-diagram] .x { stroke: var(--color-ink); stroke-width: 1; }
+/* a stroke on a chip fill takes the chip text colour, so it holds in dark */
+.exhibit [data-bella-diagram] .s.on-chip { stroke: var(--color-chip-text); }
 .exhibit [data-bella-diagram] .dash { fill: none; stroke: var(--color-ink); stroke-width: 1; stroke-dasharray: 4 4; }
 
 /* 01b the zoom story */
