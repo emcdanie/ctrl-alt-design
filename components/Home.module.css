@@ -17,7 +17,14 @@
      used to close itself with a second full-bleed rule, and the next
      section's label rule sits right under that, so the eye read two
      lines between the marks and Selected work. */
-  padding-block: var(--spacing-4);
+  /* the band is a section like the others: the section pad above its
+     rule and below its marks, so every gap on Home is the one section
+     padding twice (24 Sep audit, A4) */
+  padding-block: calc(var(--section-pad-y) + var(--spacing-4)) var(--section-pad-y);
+}
+
+.logos:global(.section--ruled)::before {
+  top: var(--section-pad-y);
 }
 
 .logos :global(.logo-grid) {

@@ -3131,16 +3131,21 @@ section[id],
    geometry). */
 .home-work-row {
   display: grid;
-  /* auto-FIT, not auto-fill (Elleta, 20 Sep 2026, fix pass 2): three
-     cards in a container that fits four tracks left an empty fourth
-     column at 1280. auto-fit collapses the empty tracks so the cards
-     stretch to the container at every width. min(): below an 18rem
-     column the track shrinks to the container, so a 320 viewport
-     (256px content) never scrolls sideways */
-  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  /* one column on a phone; from 640px, one track per card (below) */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--grid-gap);
   align-items: stretch;
   margin-top: var(--spacing-4);
+}
+
+/* one equal track per card, and no empty ones: two doors read 1fr 1fr,
+   not 484 484 0 (auto-fit kept a collapsed third track; 24 Sep audit, A4) */
+@media (min-width: 640px) {
+  .home-work-row {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+  }
 }
 
 /* ─── Case pending-visual placeholder (migration kickoff, 23 Jul):
