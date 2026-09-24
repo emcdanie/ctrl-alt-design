@@ -2639,8 +2639,10 @@ h1.display-heading {
     max-width: 100%;
   }
 
+  /* shared by content, not equally: equal shares squeezed "Timeline"
+     past its padding on /learning (audit:contain, 24 Sep 2026) */
   .seg-control li {
-    flex: 1 1 0;
+    flex: 1 1 auto;
     min-width: 0;
   }
 
