@@ -105,7 +105,10 @@ function sceneFile() {
       const isDup = dupCols.includes(colI) && dupPlaced < 5 && y > 120 && y < 420 && !o.includes("dup" + colI);
       const kind = isDup ? "inputs" : ["cards", "table", "chips", "text", "swatch", "cards", "table"][ri(0, 6)];
       const nm = isDup ? dupNames[dupPlaced] : names[kind][ri(0, names[kind].length - 1)];
-      o += `<g class="${isDup ? "k k1 dup" + colI : ""}">` + (isDup ? R(x - 5, y - 18, w + 10, h + 24, 10, "hlr", "opacity:.45") : "") + L(x, y - 5, nm) + R(x, y, w, h, 6, "s", "opacity:.55") + kinds[kind](x, y, w, h) + "</g>";
+      /* the highlight holds its whole label (◆ plus the name, ~8 units a
+         Mono letter at 13, and headroom above it): "_old_Users/Edit
+         form" ran past it (A8) */
+      o += `<g class="${isDup ? "k k1 dup" + colI : ""}">` + (isDup ? R(x - 5, y - 22, Math.max(w, (nm.length + 2) * 8) + 10, h + 28, 10, "hlr", "opacity:.45") : "") + L(x, y - 5, nm) + R(x, y, w, h, 6, "s", "opacity:.55") + kinds[kind](x, y, w, h) + "</g>";
       if (isDup) dupPlaced++;
       right = Math.max(right, x + w + 5);
       bottom = Math.max(bottom, y + h + 6);
