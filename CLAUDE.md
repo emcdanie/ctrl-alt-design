@@ -72,7 +72,7 @@ override the constitution.
   `.section--ruled` draws the hairline. `--space-section` is deleted (21 Sep 2026). Gaps inside a section use `--space-stack-sm/md/lg`. No inline/ad-hoc paddings.
 - **Every page is Nav, then Sections, then Footer**, built from `Container` + the layout `Section`.
   (Elleta, 2026-09-20, Part E: /quick, /contact, the 404, /privacy and /accessibility moved over and the
-  older section component was deleted; its `SectionList` lives at `components/ui/SectionList.tsx`.
+  older section component was deleted; its `SectionList` followed on 24 Sep, when About's short lead moved to ScanRead.
   `prose` on a layout `Section` keeps its paragraphs on the body measure, for reading pages.
   The case route and /design-system render through CaseShellV2, whose hero and sections are on the
   same frame; audit:layout checks the shell's files. Nothing is allowlisted (21 Sep 2026).)
