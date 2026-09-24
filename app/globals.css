@@ -7473,56 +7473,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   justify-self: start;
 }
 
-/* a still screenshot in a frame: never wider than half its pixel width
-   (the sharpness rule, Part W5), centred */
-.trv-shot {
-  display: block;
-  width: 100%;
-  max-width: 940px;
-  height: auto;
-  margin-inline: auto;
-}
-
 .trv-two {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
   /* equal-height cards (Part W2) */
   align-items: stretch;
   gap: var(--grid-gap);
-}
-
-/* a frame holding a working demo: the demo is the body, edge to edge,
-   at the height measured for each breakpoint (FrameDemo) */
-.case-frame--demo .case-frame__body {
-  max-height: none;
-  overflow: visible;
-  padding: 0;
-}
-
-.case-demo {
-  display: block;
-  width: 100%;
-  height: var(--embed-h-sm);
-  border: 0;
-  background: transparent;
-}
-
-@media (min-width: 700px) {
-  .case-demo {
-    height: var(--embed-h-md);
-  }
-}
-
-@media (min-width: 1024px) {
-  .case-demo {
-    height: var(--embed-h-mdhi);
-  }
-}
-
-@media (min-width: 1100px) {
-  .case-demo {
-    height: var(--embed-h-lg);
-  }
 }
 
 /* stacked (below 900px) the section is two screens by design, so the

@@ -96,11 +96,13 @@ const ARTICLE: Record<
   },
   "search-experts": {
     title: "Search for people who know what they want.",
-    lead: "The people booking used it every day. They knew the route, the fare and the policy. I shipped a results page that kept their search in view and put filters behind one button. This is that page, and the version I'd build with the time for every micro-interaction.",
+    lead: "The people booking used it every day. They knew the route, the fare and the policy. I shipped a results page that kept their search in view and put filters behind one button. Below is that page's pattern, and the version I'd build with the time for every micro-interaction.",
+    note: "Under NDA. Diagrams are my own, redrawn to show the approach; no client screens or data.",
   },
   checkout: {
     title: "A checkout that knows who's paying.",
     lead: "Company travel has rules: who you book for, what your role allows, which cards you may see. I designed the checkout and payment step once, for every product, so those rules show up as fewer choices instead of more forms.",
+    note: "Under NDA. Diagrams are my own, redrawn to show the approach; no client screens or data.",
   },
   chip: {
     title: "AI builds what your system is. CHIP",

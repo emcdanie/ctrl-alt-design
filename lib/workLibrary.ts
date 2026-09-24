@@ -57,7 +57,6 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "booking",
     medium: "case study",
-    cover: "/images/case-studies/travel/flights-after.webp",
     rank: -1,
     title: "B2B travel platform",
     bubbleLabel: "B2B travel|platform",
@@ -78,7 +77,6 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "search-experts",
     medium: "case study",
-    cover: "/images/case-studies/travel/search-results-1.webp",
     rank: 2,
     title: "Search for experts",
     bubbleLabel: "Search for|experts",
@@ -99,7 +97,6 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: "checkout",
     medium: "case study",
-    cover: "/images/case-studies/travel/checkout-2.webp",
     rank: 3,
     title: "Forms and checkout",
     bubbleLabel: "Forms and|checkout",
