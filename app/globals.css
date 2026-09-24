@@ -2078,17 +2078,15 @@ h1.display-heading {
 
 /* a pull-quote mark filled with the brand pattern, like the logo (item 9,
    22 Sep 2026; was solid ink): the glyph clips the static pattern SVG,
-   so the page carries no pattern paths. Decorative, aria-hidden. Each
-   mark shows its own patch of the field. */
+   so the page carries no pattern paths. Decorative, aria-hidden. Every
+   mark takes the same light patch (24 Sep audit, A6). */
 .pattern-mark {
-  background: var(--pattern-mark) 30% 40% / 14rem auto;
+  background: var(--pattern-mark) 70% 20% / 14rem auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
 }
-.quotes__item:nth-child(2n) .pattern-mark { background-position: 70% 20%; }
-.quotes__item:nth-child(3n) .pattern-mark { background-position: 45% 75%; }
 
 .quotes__card {
   height: 100%;
