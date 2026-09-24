@@ -12,33 +12,9 @@ import type { CaseStudy } from "@/lib/content";
  * Section, Exhibit and tokens. Six sections, each claim, evidence, so
  * what; every picture is a recreated inline-SVG exhibit that draws once
  * in view, holds still, and replays on request. Reduced motion shows the
- * finished frame. The mock's reviewer notes and "your words" gaps stay
- * out by design.
+ * finished frame. The mock's reviewer notes stay out; its three "your
+ * words" boxes carry Elleta's copy (24 Sep audit, B5).
  */
-
-/* ── shared: play once in view, replay, reduced motion ───────────── */
-function usePlayOnce<T extends HTMLElement>(threshold = 0.4) {
-  const ref = useRef<T>(null);
-  const [run, setRun] = useState(0);
-  const reduce = useReduce();
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (es) => {
-        if (es.some((e) => e.isIntersecting)) {
-          io.disconnect();
-          setRun(1);
-        }
-      },
-      { threshold },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [threshold]);
-  const replay = useCallback(() => setRun((n) => n + 1), []);
-  return { ref, run, reduce, replay };
-}
 
 /* a media query as external state: false on the server, live after */
 function useMedia(query: string) {
@@ -54,6 +30,16 @@ function useMedia(query: string) {
 }
 const useNarrow = () => useMedia("(max-width: 640px)");
 const useReduce = () => useMedia("(prefers-reduced-motion: reduce)");
+
+/** one "your words" box: a Mono label, then Elleta's lines, verbatim */
+function Words({ k, children }: { k: string; children: React.ReactNode }) {
+  return (
+    <div className="dfc-words">
+      <span className="text-code dfc-words__k">{k}</span>
+      <p className="dfc-words__v">{children}</p>
+    </div>
+  );
+}
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return <p className="eyebrow dfc-eyebrow">{children}</p>;
@@ -76,86 +62,27 @@ function Cee({ items }: { items: [string, string][] }) {
   );
 }
 
-/* ── 01 people rows: ten people a row, filled to the exact percent ── */
-const PERSON = "M9 7.5a4 4 0 1 0 0.01 0Z M1.5 25 C1.5 17 4.5 13.5 9 13.5 C13.5 13.5 16.5 17 16.5 25 Z";
-const PEOPLE: [number, string][] = [
-  [81, "said booking was overly complex"],
-  [59, "said changing a booking was hard"],
-  [37, "of support had lost a booking to complexity"],
-  [48, "spent 10+ hours a week helping customers book"],
+/* ── 01 what the research said, in words (24 Sep audit, B3): no
+   percentages and no people rows, which read as exact counts ── */
+const FINDINGS = [
+  "Most people said booking was overly complex.",
+  "More than half said changing a booking was hard.",
+  "A third of support had lost a booking to complexity.",
+  "Nearly half spent 10+ hours a week helping customers book.",
 ];
 
-function PeopleRow({ v, k, run, reduce, label }: { v: number; k: number; run: number; reduce: boolean; label: string }) {
-  const uid = useId().replace(/:/g, "");
-  const [n, setN] = useState(0);
-  const [fill, setFill] = useState<number[]>(Array(10).fill(0));
-  useEffect(() => {
-    if (!run) return;
-    const target = Array.from({ length: 10 }, (_, i) => Math.max(0, Math.min(1, v / 10 - i)));
-    if (reduce) {
-      const f = requestAnimationFrame(() => {
-        setN(v);
-        setFill(target);
-      });
-      return () => cancelAnimationFrame(f);
-    }
-    const reset = requestAnimationFrame(() => {
-      setN(0);
-      setFill(Array(10).fill(0));
-    });
-    const timers = target.map((p, i) => window.setTimeout(() => setFill((f) => f.map((x, j) => (j === i ? p : x))), k * 250 + i * 90));
-    const t0 = performance.now() + k * 250;
-    let raf = 0;
-    const tick = (t: number) => {
-      const x = Math.max(0, Math.min(1, (t - t0) / 1100));
-      setN(Math.round(v * (1 - Math.pow(1 - x, 3))));
-      if (x < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => {
-      timers.forEach(clearTimeout);
-      cancelAnimationFrame(raf);
-      cancelAnimationFrame(reset);
-    };
-  }, [run, reduce, v, k]);
-  return (
-    <div className="dfc-pc">
-      <p className="dfc-pc__n">
-        <span aria-hidden="true">{n}%</span>
-        <span className="sr-only">{v}%</span>
-      </p>
-      <div className="dfc-pc__row" aria-hidden="true">
-        {fill.map((p, i) => (
-          <svg key={i} viewBox="0 0 18 26" width="18" height="26" data-bella-diagram>
-            <clipPath id={`${uid}-${i}`}>
-              <path d={PERSON} />
-            </clipPath>
-            <rect className="dfc-pc__fl" clipPath={`url(#${uid}-${i})`} x="0" y="0" height="26" width={18 * p} />
-            <path className="dfc-pc__o" d={PERSON} />
-          </svg>
-        ))}
-      </div>
-      <p className="dfc-pc__l">{label}</p>
-    </div>
-  );
-}
-
 function People() {
-  const { ref, run, reduce, replay } = usePlayOnce<HTMLDivElement>(0.4);
   return (
-    <div ref={ref} className="dfc-ppl-wrap">
-      <div className="dfc-ppl">
-        {PEOPLE.map(([v, l], k) => (
-          <PeopleRow key={l} v={v} k={k} run={run} reduce={reduce} label={l} />
+    <div className="dfc-ppl-wrap">
+      <ul className="dfc-ppl">
+        {FINDINGS.map((f) => (
+          <li key={f} className="dfc-pc">
+            <p className="text-lead dfc-pc__l">{f}</p>
+          </li>
         ))}
-      </div>
+      </ul>
       <div className="dfc-src-row">
-        <p className="dfc-src text-meta">each row is ten people · source: my interviews and surveys with customer success and sales, 2024</p>
-        {!reduce && (
-          <button type="button" className="exhibit__replay dfc-inline-replay" onClick={replay} aria-label="Replay the people charts">
-            replay
-          </button>
-        )}
+        <p className="dfc-src text-meta">My interviews with customer success and sales.</p>
       </div>
     </div>
   );
@@ -643,6 +570,10 @@ export default function DriftCase(_props: { cs: CaseStudy }) {
         <Eyebrow>01b · The problem, at four zoom levels</Eyebrow>
         <h2 className="text-display-2 dfc-h2">From the whole file, down to one field, and back.</h2>
         <Zoom />
+        <Words k="Trade-off">
+          I left dropdowns out of search. One filter button opens a drawer, because a sidebar of filters was a wall competing
+          with the results. The cost: filters sit one tap further away.
+        </Words>
       </Section>
 
       <Section ruled>
@@ -656,6 +587,11 @@ export default function DriftCase(_props: { cs: CaseStudy }) {
           ]}
         />
         <Cascade />
+        <Words k="What I chose not to do">
+          I didn&apos;t wait for sign-off. The team said a system, docs and changelogs weren&apos;t necessary, so I built it for
+          myself and paired with one developer. The cost: months carrying it alone, and pushback later on workflows,
+          complexity and naming.
+        </Words>
       </Section>
 
       <Section ruled>
@@ -706,6 +642,11 @@ export default function DriftCase(_props: { cs: CaseStudy }) {
             <p className="dfc-stats__l">checkout for every product</p>
           </div>
         </div>
+        <Words k="AI, and where I kept it out">
+          I used Figma Make to prototype components and whole flows, so developers found the gaps before the sprint instead
+          of halfway through it. What I kept out: the decisions. What ships and what things are called were settled with the
+          team, not generated.
+        </Words>
       </Section>
 
       <Section ruled>

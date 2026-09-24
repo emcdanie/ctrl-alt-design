@@ -8394,23 +8394,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .dfc-cee__v { margin: 0; font-size: 1rem; color: var(--color-ink); }
 
 /* 01 people rows */
-.dfc-ppl { display: grid; margin-top: var(--space-stack-lg); border-top: 1px solid var(--color-semantic-border); }
+/* 01 the research, in words (24 Sep audit, B3): four statements on the
+   old grid, no percentages, no people rows */
+.dfc-ppl { display: grid; margin: var(--space-stack-lg) 0 0; padding: 0; list-style: none; border-top: 1px solid var(--color-semantic-border); }
 @media (min-width: 768px) { .dfc-ppl { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .dfc-pc { padding: 1.25rem 1.25rem 1.25rem 0; border-bottom: 1px solid var(--color-semantic-border); }
-.dfc-pc__n {
-  margin: 0;
-  font-size: 3rem;
-  font-weight: var(--typography-font-weight-light);
-  letter-spacing: -0.04em;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  color: var(--color-ink);
-}
-.dfc-pc__row { display: flex; gap: 3px; margin: 0.875rem 0 0.625rem; }
-.dfc-pc__row svg { width: 18px; height: 26px; flex: none; overflow: visible; }
-.dfc-pc__o { fill: none; stroke: var(--color-ink); stroke-width: 1.2; }
-.dfc-pc__fl { fill: var(--color-chip-c2); }
-.dfc-pc__l { margin: 0; font-size: 1rem; /* the mock's 15px, raised to the 16px reading floor */ color: var(--color-ink-muted); }
+.dfc-pc__l { margin: 0; color: var(--color-ink); text-wrap: pretty; }
 .dfc-src-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-top: 0.75rem; }
 .dfc-src {
   max-width: var(--measure-body);
@@ -8420,7 +8409,22 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-feature-settings: var(--mono-feature);
   color: var(--color-ink-muted);
 }
-.exhibit__replay.dfc-inline-replay { position: static; flex: none; }
+
+/* "your words" (the approved mock's three boxes, 24 Sep audit, B5): a
+   ruled box, a Mono label, Elleta's lines */
+.dfc-words {
+  max-width: var(--measure-body);
+  margin: var(--space-stack-lg) 0 0;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: 0.75rem;
+}
+.dfc-words__k {
+  display: block;
+  margin: 0 0 0.25rem;
+  color: var(--color-ink);
+}
+.dfc-words__v { margin: 0; color: var(--color-ink-soft); text-wrap: pretty; }
 
 /* shared figure text: the mock's 11-12px labels sit at 13 */
 .exhibit [data-bella-diagram] .on-ink { fill: var(--color-semantic-background); }
