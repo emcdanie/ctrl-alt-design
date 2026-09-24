@@ -33,7 +33,7 @@ export default function Home() {
       <OverlayNav />
       <Hero />
 
-      <div className={styles.logos}>
+      <div className={`${styles.logos} section--ruled`}>
         <Container>
           <WorkedWith layout="row" label="Worked with" />
         </Container>
