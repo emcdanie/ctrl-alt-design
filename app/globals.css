@@ -7352,35 +7352,26 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   text-underline-offset: 3px;
 }
 
-.trv-stats {
+/* the numbered decision notes under a booking diagram (24 Sep audit, B1):
+   the numbers match the ink markers on the drawing */
+.trv-notes {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
-  gap: var(--space-stack-md) var(--layout-gutter);
-  margin: 0;
-}
-
-.trv-stats > div {
-  padding-top: var(--space-stack-sm);
-  border-top: 1px solid var(--color-semantic-border);
-}
-
-.trv-stats__v {
-  font-size: var(--text-display-2);
-  font-weight: var(--typography-font-weight-light);
-  letter-spacing: var(--tracking-h2);
-  line-height: 1.1;
-  color: var(--color-ink);
-}
-
-.trv-stats dd {
-  margin: var(--spacing-2) 0 0;
+  gap: var(--space-stack-sm);
+  max-width: var(--measure-body);
+  margin: var(--space-stack-md) 0 0;
+  padding-left: 1.5rem;
+  list-style: decimal;
   color: var(--color-ink-soft);
 }
 
-.trv-source {
-  max-width: var(--measure-body);
-  margin: var(--space-stack-md) 0 0;
-  color: var(--color-ink-muted);
+.trv-notes li::marker {
+  font-family: var(--font-code);
+  color: var(--color-ink);
+}
+
+.trv-notes b {
+  font-weight: 600;
+  color: var(--color-ink);
 }
 
 .trv-ship {
