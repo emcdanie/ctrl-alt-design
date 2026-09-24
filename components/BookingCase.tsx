@@ -1,8 +1,8 @@
 import Link from "next/link";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
-import Container from "@/components/layout/Container";
-import ExampleFrame, { FrameDemo } from "@/components/ExampleFrame";
+import Exhibit from "@/components/diagrams/Exhibit";
+import { Mark, Notes, Words } from "@/components/diagrams/Decisions";
 import { StatusPill } from "@/components/ui/StatusPill";
 import type { CaseStudy } from "@/lib/content";
 
@@ -11,16 +11,11 @@ import type { CaseStudy } from "@/lib/content";
  * mock case-study-booking-mock.html). Six sections and the close, the
  * mock's copy as written, with the 21 Sep corrections: the developer line
  * matches Drift 05, and the close's h2 is Elleta's line, fitted to the
- * 50-character title rule (21 Sep). The before/after screens are working demos in public/demos/travel;
- * everything else is page-native. NDA: industry only, screens de-branded.
+ * 50-character title rule (21 Sep). NDA pass (24 Sep audit, B1/B2): no
+ * product screens, legacy or shipped. Search and trips are line diagrams
+ * in the site's diagram style, drawn fresh, with the numbered decision
+ * notes under them; the research numbers and the close live on Drift.
  */
-
-const STATS = [
-  ["81%", "said booking was overly complex"],
-  ["59%", "said changing a booking was hard"],
-  ["37%", "of the support team had lost a booking to complexity"],
-  ["48%", "spent 10+ hours a week helping customers book"],
-];
 
 const SHIPPED: [string, string, boolean][] = [
   ["Design system", "Built in the new front-end framework with my engineering team", true],
@@ -49,18 +44,138 @@ const STORIES = [
   },
   {
     n: "03",
-    title: "Policies, roles and notifications",
-    line: "Users and roles for travel managers, approvals, and messages people act on.",
-    legacy: "Legacy: policy rules lived in the back end, per company.",
-  },
-  {
-    n: "04",
     title: "Forms and checkout",
     line: "Forms that ask only what each user needs, validation, and one checkout for every product.",
     legacy: "Legacy: every supplier wanted different fields.",
     href: "/case-studies/checkout",
   },
 ];
+
+/* the decision notes, as written for the retired before/after demos */
+const SEARCH_NOTES: [string, string][] = [
+  ["Keep the search in view.", "Before: changing a date restarted the whole search, and people dropped off. After: the search stays pinned at the top and changes without starting over."],
+  ["One filter button, not a wall.", "Before: a long sidebar of risk levels, presets and sliders. After: Filter and Sort, a count of what’s active, and the chips in a drawer."],
+  ["Scan, don’t read.", "Before: sort tabs, pagination and a long filter sidebar competing with the results. After: every card puts time, route, stops and price in the same place."],
+  ["Say the rule once.", "Before: an upsell line repeated on every fare, and no policy limit in view. After: one small Out of policy badge on each fare."],
+];
+
+const TRIP_NOTES: [string, string][] = [
+  ["One place for the whole trip.", "Before: hotel bookings on their own page, one vertical at a time. After: flights, hotel and extras in one booking panel."],
+  ["Suggest the next step.", "Before: start a new search. After: the trip knows you’ll need a hotel and offers one."],
+  ["Hide what you don’t need.", "Before: every traveller listed on the card. After: details on demand."],
+];
+
+/* search: the bar pinned at the top, one Filter button opening a drawer,
+   result cards with every slot in the same place, one policy badge */
+function SearchDiagram() {
+  const cards = [145.5, 195.5, 245.5];
+  return (
+    <Exhibit caption="The search pattern, drawn fresh. The numbers are the decisions.">
+      <svg
+        viewBox="0 0 900 330"
+        data-bella-diagram
+        role="img"
+        aria-label="A search bar pinned at the top of the page. Under it, one Filter button with a count, and Sort; the Filter button opens a drawer of filter chips on the right. Below, result cards that put time, route, stops and price in the same place, and one small out of policy badge on a fare."
+      >
+        <rect className="s" x="40.5" y="20.5" width="820" height="290" rx="14" />
+        <rect className="s" x="70.5" y="44.5" width="600" height="40" rx="20" />
+        <path className="s" d="M250.5 52 V77 M400.5 52 V77 M520.5 52 V77" />
+        <text className="t opt" x="92" y="69">from · to</text>
+        <text className="t opt" x="272" y="69">dates</text>
+        <text className="t opt" x="422" y="69">travellers</text>
+        <rect className="c1" x="590.5" y="50.5" width="72" height="28" rx="14" />
+        <text className="tk opt" x="626.5" y="69" textAnchor="middle">Search</text>
+        <text className="t opt" x="690" y="69">pinned on scroll</text>
+
+        <rect className="s" x="70.5" y="100.5" width="110" height="30" rx="15" />
+        <text className="ti opt" x="125.5" y="120" textAnchor="middle">Filter · 2</text>
+        <rect className="s" x="192.5" y="100.5" width="70" height="30" rx="15" />
+        <text className="ti opt" x="227.5" y="120" textAnchor="middle">Sort</text>
+        <path className="dash" d="M262.5 115.5 H632" />
+
+        <rect className="s" x="640.5" y="100.5" width="200" height="190" rx="10" />
+        <text className="t opt" x="660" y="124">filters, in a drawer</text>
+        <rect className="c2" x="660.5" y="140.5" width="70" height="22" rx="11" />
+        <rect className="c2" x="740.5" y="140.5" width="80" height="22" rx="11" />
+        <rect className="c2" x="660.5" y="172.5" width="90" height="22" rx="11" />
+        <rect className="c2" x="760.5" y="172.5" width="50" height="22" rx="11" />
+        <rect className="c2" x="660.5" y="204.5" width="60" height="22" rx="11" />
+        <rect className="s" x="660.5" y="250.5" width="160" height="26" rx="13" />
+        <text className="ti opt" x="740.5" y="268" textAnchor="middle">Show results</text>
+
+        {cards.map((y, i) => (
+          <g key={y}>
+            <rect className="s" x="70.5" y={y} width="550" height="40" rx="8" />
+            {i === 0 ? (
+              <text className="t opt" x="88" y={y + 24.5}>time</text>
+            ) : (
+              <rect className="f" x="88.5" y={y + 16} width="40" height="8" rx="4" />
+            )}
+            <path className="s" d={`M150 ${y + 20} H330`} />
+            <circle className="fill-ink" cx="150" cy={y + 20} r="3" />
+            <circle className="fill-ink" cx={i === 1 ? 240 : 330} cy={y + 20} r="3" />
+            <circle className="fill-ink" cx="330" cy={y + 20} r="3" />
+            {i === 0 ? (
+              <text className="t opt" x="350" y={y + 24.5}>route · stops</text>
+            ) : null}
+            {i === 0 ? (
+              <text className="t opt" x="602" y={y + 24.5} textAnchor="end">price</text>
+            ) : (
+              <rect className="f" x="562.5" y={y + 16} width="40" height="8" rx="4" />
+            )}
+          </g>
+        ))}
+        <rect className="c3" x="424.5" y="205.5" width="124" height="20" rx="10" />
+        <text className="tk opt" x="486.5" y="220" textAnchor="middle">out of policy</text>
+
+        <Mark n={1} x={56} y={64.5} />
+        <Mark n={2} x={56} y={115.5} />
+        <Mark n={3} x={56} y={165.5} />
+        <Mark n={4} x={406} y={215.5} />
+      </svg>
+      <Notes notes={SEARCH_NOTES} />
+    </Exhibit>
+  );
+}
+
+/* trips: one panel for the whole trip, a suggested next step, the
+   travellers folded away until asked for */
+function TripDiagram() {
+  const rows: [number, string, string][] = [
+    [70.5, "c1", "flight"],
+    [126.5, "c2", "hotel"],
+    [182.5, "c3", "extras"],
+  ];
+  return (
+    <Exhibit caption="The trip panel, drawn fresh. The numbers are the decisions.">
+      <svg
+        viewBox="0 0 900 300"
+        data-bella-diagram
+        role="img"
+        aria-label="One trip panel holding the flight, the hotel and the extras as three rows. The flight row folds its travellers behind a details control. Under the rows, a dashed suggestion offers the next step the trip needs."
+      >
+        <rect className="s" x="200.5" y="20.5" width="500" height="260" rx="14" />
+        <text className="ti opt" x="228" y="52">your trip</text>
+        {rows.map(([y, c, label]) => (
+          <g key={label}>
+            <rect className="s" x="228.5" y={y} width="444" height="44" rx="8" />
+            <rect className={c} x="240.5" y={y + 12} width="20" height="20" rx="6" />
+            <text className="ti opt" x="272" y={y + 26.5}>{label}</text>
+            <rect className="f" x="340.5" y={y + 19} width="160" height="6" rx="3" />
+          </g>
+        ))}
+        <text className="t opt" x="656" y="97" textAnchor="end">travellers ▸</text>
+        <rect className="dash" x="228.5" y="238.5" width="444" height="30" rx="8" />
+        <text className="t opt" x="244" y="258">suggested: what the trip needs next</text>
+
+        <Mark n={1} x={318} y={47.5} />
+        <Mark n={2} x={650} y={253.5} />
+        <Mark n={3} x={544} y={92.5} />
+      </svg>
+      <Notes notes={TRIP_NOTES} />
+    </Exhibit>
+  );
+}
 
 function Part({
   id,
@@ -75,7 +190,7 @@ function Part({
   kicker: string;
   heading: string;
   lead?: React.ReactNode;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }) {
   return (
     <Section id={id} labelledBy={`${id}-title`} ruled>
@@ -89,27 +204,14 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
   void cs;
   return (
     <>
+      {/* the research numbers live on Drift (24 Sep audit, B2) */}
       <Part
         id="problem"
         index="01"
         kicker="The problem"
         heading="Two years of redesign. Nothing shipped."
         lead="When I joined, a new design had been in progress for two years and none of it was live. The legacy product was costing time on both sides of the screen. I started by asking the people who picked up the phone."
-      >
-        <div>
-          <dl className="trv-stats">
-            {STATS.map(([v, l]) => (
-              <div key={v}>
-                <dt className="trv-stats__v">{v}</dt>
-                <dd>{l}</dd>
-              </div>
-            ))}
-          </dl>
-          <p className="text-code trv-source">
-            Source: my interviews and surveys with the customer success and sales teams, 2024.
-          </p>
-        </div>
-      </Part>
+      />
 
       <Part
         id="search"
@@ -119,27 +221,18 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
         lead={
           <>
             The same search had to work for flights, stays, trains and cars, each supplier sending
-            different data. Before is the legacy flights search, after is the flights search I shipped.{" "}
+            different data. The drawing shows the pattern I shipped and the four decisions behind it.{" "}
             <Link href="/case-studies/search-experts" className="trv-link">
               The full story is its own case study.
             </Link>
           </>
         }
       >
-        <ExampleFrame
-          demo
-          path="search / before and after"
-          caption={
-            <>
-              Legacy flights search and the flights search I shipped. De-branded.{" "}
-              <a href="/demos/travel/booking-search.html" target="_blank" rel="noopener noreferrer" className="trv-link">
-                Open full screen ↗<span className="sr-only"> (opens in a new tab)</span>
-              </a>
-            </>
-          }
-        >
-          <FrameDemo src="/demos/travel/booking-search.html" title="Flights search, before, after and the ticket card, with four notes" heights={[790, 790, 1160, 1160]} />
-        </ExampleFrame>
+        <SearchDiagram />
+        <Words k="Trade-off">
+          I left dropdowns out of search. One filter button opens a drawer, because a sidebar of filters was a wall competing
+          with the results. The cost: filters sit one tap further away.
+        </Words>
       </Part>
 
       <Part
@@ -149,20 +242,7 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
         heading="See the whole trip in one place."
         lead="Changing anything used to mean starting a new search. The trip view keeps flights, hotel and extras together."
       >
-        <ExampleFrame
-          demo
-          path="trips / before and after"
-          caption={
-            <>
-              The hotel bookings page and the trip view. De-branded.{" "}
-              <a href="/demos/travel/booking-trips.html" target="_blank" rel="noopener noreferrer" className="trv-link">
-                Open full screen ↗<span className="sr-only"> (opens in a new tab)</span>
-              </a>
-            </>
-          }
-        >
-          <FrameDemo src="/demos/travel/booking-trips.html" title="Trips, before and after, with three notes" heights={[420, 420, 660, 775]} />
-        </ExampleFrame>
+        <TripDiagram />
       </Part>
 
       <Part
@@ -190,8 +270,8 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
         id="stories"
         index="05"
         kicker="The case studies"
-        heading="Four stories from the same platform."
-        lead="Each one shows the shipped screen, what I would refine, and the legacy constraint it had to live with."
+        heading="Three stories from the same platform."
+        lead="Each one shows the pattern I shipped, what I would refine, and the legacy constraint it had to live with."
       >
         <ul className="trv-stories">
           {STORIES.map((s) => {
@@ -201,19 +281,13 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
                 <h3 className="heading-item">{s.title}</h3>
                 <p>{s.line}</p>
                 <p className="text-code trv-stories__legacy">{s.legacy}</p>
-                {/* no page yet: a plain note, not a pill, and not dimmed (W3) */}
-                {s.href ? null : <p className="text-code">Case study coming</p>}
               </>
             );
             return (
               <li key={s.n}>
-                {s.href ? (
-                  <Link href={s.href} className="trv-card trv-card--link">
-                    {body}
-                  </Link>
-                ) : (
-                  <div className="trv-card">{body}</div>
-                )}
+                <Link href={s.href} className="trv-card trv-card--link">
+                  {body}
+                </Link>
               </li>
             );
           })}
@@ -232,7 +306,7 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
             <span className="text-code">To leadership</span>
             <h3 className="heading-item">Cost, risk and what it unlocks</h3>
             <ul>
-              <li>“It feels complicated” became numbers: 37% of the support team had lost a booking to it.</li>
+              <li>“It feels complicated” became evidence: a third of the support team had lost a booking to it.</li>
               <li>The system pitched with a rollout plan and a clear ask.</li>
               <li>Result: funding for an engineering team and two more designers.</li>
             </ul>
@@ -250,26 +324,6 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
         </div>
       </Part>
 
-      <section className="l-section section--ruled case-close" aria-labelledby="case-close-heading">
-        <Container className="case-close__grid">
-          <div>
-            <p className="text-code case-section__kicker">What changed</p>
-            <h2 id="case-close-heading" className="case-section__heading">
-              From a redesign that stalled to one that shipped.
-            </h2>
-          </div>
-          <div>
-            <p>
-              A funded team, a system in code, and six product areas live on it.{" "}
-              <strong>The research turned “it feels complicated” into numbers leadership could act on.</strong>
-            </p>
-            <p className="case-close__learned">
-              What I learned: in a legacy product, half the job is finding out why things are there
-              before you change them.
-            </p>
-          </div>
-        </Container>
-      </section>
     </>
   );
 }

@@ -370,10 +370,6 @@ body {
   --ease-out: var(--motion-easing-out); /* cubic-bezier(.22,1,.36,1) */
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* BELLA easing.in-out, pending */
 
-  --cover-warm-hi: var(--color-light-panel);
-  --cover-warm-lo: var(--color-light-line);
-  --cover-warm-ink: var(--color-light-muted);
-
   /* Fixed-context "paper" tokens — surfaces that stay light in BOTH
      modes (reveal card, resume modal). Never flip these. */
   --surface-paper: #FAFAF8;
@@ -490,12 +486,6 @@ body {
      specimen ground; navy left dark mode 19 Sep 2026) */
   --thesis-band-ground: var(--color-dark-surface);
   --thesis-band-ink: var(--color-dark-ink);
-  /* cover placeholder flips as a SET in dark (cover-contrast fix,
-     21 Jul): dark warm plate, parchment-warm ink; >=3:1 large-text on
-     every stop, scrim-free (the placeholder skips the media scrim) */
-  --cover-warm-hi: #1f1f1f;
-  --cover-warm-lo: var(--color-dark-surface);
-  --cover-warm-ink: var(--color-dark-muted);
   --modal-backdrop: rgba(0, 0, 0, 0.6);
   --page-glow: rgba(255, 255, 255, 0.04);
 }
@@ -1612,6 +1602,21 @@ h1.display-heading {
   --logo-box-h: 34px;
 }
 
+/* the table's bottom rule runs the full width even when the last row is
+   short (4 + 3 on About): it lies on the last row's cell rules, so the
+   eye reads one line, not an orphaned 750px one (24 Sep audit, A3) */
+.logo-grid:not(.logo-grid--row) {
+  position: relative;
+}
+
+.logo-grid:not(.logo-grid--row)::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: var(--color-semantic-border);
+}
+
 .logo-grid__cell {
   /* the cell is the logo's size container: a mark never outgrows it */
   container-type: inline-size;
@@ -2063,17 +2068,15 @@ h1.display-heading {
 
 /* a pull-quote mark filled with the brand pattern, like the logo (item 9,
    22 Sep 2026; was solid ink): the glyph clips the static pattern SVG,
-   so the page carries no pattern paths. Decorative, aria-hidden. Each
-   mark shows its own patch of the field. */
+   so the page carries no pattern paths. Decorative, aria-hidden. Every
+   mark takes the same light patch (24 Sep audit, A6). */
 .pattern-mark {
-  background: var(--pattern-mark) 30% 40% / 14rem auto;
+  background: var(--pattern-mark) 70% 20% / 14rem auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
 }
-.quotes__item:nth-child(2n) .pattern-mark { background-position: 70% 20%; }
-.quotes__item:nth-child(3n) .pattern-mark { background-position: 45% 75%; }
 
 .quotes__card {
   height: 100%;
@@ -2241,9 +2244,9 @@ h1.display-heading {
 
 /* the wordmark: the window's width less 16px a side, 40px under the
    small print, and nothing under it */
+/* inside the footer's container: the text's left edge and width */
 .site-footer__mark {
-  width: calc(100% - 2 * var(--spacing-4));
-  margin: var(--spacing-10) auto 0;
+  margin-top: var(--spacing-10);
   line-height: 0;
   pointer-events: none;
 }
@@ -2636,8 +2639,10 @@ h1.display-heading {
     max-width: 100%;
   }
 
+  /* shared by content, not equally: equal shares squeezed "Timeline"
+     past its padding on /learning (audit:contain, 24 Sep 2026) */
   .seg-control li {
-    flex: 1 1 0;
+    flex: 1 1 auto;
     min-width: 0;
   }
 
@@ -3116,16 +3121,21 @@ section[id],
    geometry). */
 .home-work-row {
   display: grid;
-  /* auto-FIT, not auto-fill (Elleta, 20 Sep 2026, fix pass 2): three
-     cards in a container that fits four tracks left an empty fourth
-     column at 1280. auto-fit collapses the empty tracks so the cards
-     stretch to the container at every width. min(): below an 18rem
-     column the track shrinks to the container, so a 320 viewport
-     (256px content) never scrolls sideways */
-  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  /* one column on a phone; from 640px, one track per card (below) */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--grid-gap);
   align-items: stretch;
   margin-top: var(--spacing-4);
+}
+
+/* one equal track per card, and no empty ones: two doors read 1fr 1fr,
+   not 484 484 0 (auto-fit kept a collapsed third track; 24 Sep audit, A4) */
+@media (min-width: 640px) {
+  .home-work-row {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+  }
 }
 
 /* ─── Case pending-visual placeholder (migration kickoff, 23 Jul):
@@ -7334,35 +7344,26 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   text-underline-offset: 3px;
 }
 
-.trv-stats {
+/* the numbered decision notes under a booking diagram (24 Sep audit, B1):
+   the numbers match the ink markers on the drawing */
+.trv-notes {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
-  gap: var(--space-stack-md) var(--layout-gutter);
-  margin: 0;
-}
-
-.trv-stats > div {
-  padding-top: var(--space-stack-sm);
-  border-top: 1px solid var(--color-semantic-border);
-}
-
-.trv-stats__v {
-  font-size: var(--text-display-2);
-  font-weight: var(--typography-font-weight-light);
-  letter-spacing: var(--tracking-h2);
-  line-height: 1.1;
-  color: var(--color-ink);
-}
-
-.trv-stats dd {
-  margin: var(--spacing-2) 0 0;
+  gap: var(--space-stack-sm);
+  max-width: var(--measure-body);
+  margin: var(--space-stack-md) 0 0;
+  padding-left: 1.5rem;
+  list-style: decimal;
   color: var(--color-ink-soft);
 }
 
-.trv-source {
-  max-width: var(--measure-body);
-  margin: var(--space-stack-md) 0 0;
-  color: var(--color-ink-muted);
+.trv-notes li::marker {
+  font-family: var(--font-code);
+  color: var(--color-ink);
+}
+
+.trv-notes b {
+  font-weight: 600;
+  color: var(--color-ink);
 }
 
 .trv-ship {
@@ -7474,56 +7475,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   justify-self: start;
 }
 
-/* a still screenshot in a frame: never wider than half its pixel width
-   (the sharpness rule, Part W5), centred */
-.trv-shot {
-  display: block;
-  width: 100%;
-  max-width: 940px;
-  height: auto;
-  margin-inline: auto;
-}
-
 .trv-two {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
   /* equal-height cards (Part W2) */
   align-items: stretch;
   gap: var(--grid-gap);
-}
-
-/* a frame holding a working demo: the demo is the body, edge to edge,
-   at the height measured for each breakpoint (FrameDemo) */
-.case-frame--demo .case-frame__body {
-  max-height: none;
-  overflow: visible;
-  padding: 0;
-}
-
-.case-demo {
-  display: block;
-  width: 100%;
-  height: var(--embed-h-sm);
-  border: 0;
-  background: transparent;
-}
-
-@media (min-width: 700px) {
-  .case-demo {
-    height: var(--embed-h-md);
-  }
-}
-
-@media (min-width: 1024px) {
-  .case-demo {
-    height: var(--embed-h-mdhi);
-  }
-}
-
-@media (min-width: 1100px) {
-  .case-demo {
-    height: var(--embed-h-lg);
-  }
 }
 
 /* stacked (below 900px) the section is two screens by design, so the
@@ -8174,6 +8131,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   transition: opacity var(--dur-fast) var(--ease-out), scale var(--dur-fast) var(--ease-out);
 }
 
+.scan__point--static {
+  cursor: default;
+}
+
 .scan__point.is-on {
   background: var(--tint-soft);
 }
@@ -8381,23 +8342,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .dfc-cee__v { margin: 0; font-size: 1rem; color: var(--color-ink); }
 
 /* 01 people rows */
-.dfc-ppl { display: grid; margin-top: var(--space-stack-lg); border-top: 1px solid var(--color-semantic-border); }
+/* 01 the research, in words (24 Sep audit, B3): four statements on the
+   old grid, no percentages, no people rows */
+.dfc-ppl { display: grid; margin: var(--space-stack-lg) 0 0; padding: 0; list-style: none; border-top: 1px solid var(--color-semantic-border); }
 @media (min-width: 768px) { .dfc-ppl { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .dfc-pc { padding: 1.25rem 1.25rem 1.25rem 0; border-bottom: 1px solid var(--color-semantic-border); }
-.dfc-pc__n {
-  margin: 0;
-  font-size: 3rem;
-  font-weight: var(--typography-font-weight-light);
-  letter-spacing: -0.04em;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  color: var(--color-ink);
-}
-.dfc-pc__row { display: flex; gap: 3px; margin: 0.875rem 0 0.625rem; }
-.dfc-pc__row svg { width: 18px; height: 26px; flex: none; overflow: visible; }
-.dfc-pc__o { fill: none; stroke: var(--color-ink); stroke-width: 1.2; }
-.dfc-pc__fl { fill: var(--color-chip-c2); }
-.dfc-pc__l { margin: 0; font-size: 1rem; /* the mock's 15px, raised to the 16px reading floor */ color: var(--color-ink-muted); }
+.dfc-pc__l { margin: 0; color: var(--color-ink); text-wrap: pretty; }
 .dfc-src-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-top: 0.75rem; }
 .dfc-src {
   max-width: var(--measure-body);
@@ -8407,11 +8357,25 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-feature-settings: var(--mono-feature);
   color: var(--color-ink-muted);
 }
-.exhibit__replay.dfc-inline-replay { position: static; flex: none; }
+
+/* "your words" (components/diagrams/Decisions.tsx; 24 Sep audit, B5,
+   F3): the "Where it broke" card (surface, card radius, 1.5rem) at the
+   full content width, its label in the section-label Mono (.eyebrow) */
+.case-words {
+  margin: var(--space-stack-lg) 0 0;
+  padding: 1.5rem;
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+.case-words__k { margin: 0 0 0.5rem; }
+/* the card runs the content width; its lines keep the body measure */
+.case-words__v { max-width: var(--measure-body); margin: 0; color: var(--color-ink-soft); text-wrap: pretty; }
 
 /* shared figure text: the mock's 11-12px labels sit at 13 */
 .exhibit [data-bella-diagram] .on-ink { fill: var(--color-semantic-background); }
 .exhibit [data-bella-diagram] .x { stroke: var(--color-ink); stroke-width: 1; }
+/* a stroke on a chip fill takes the chip text colour, so it holds in dark */
+.exhibit [data-bella-diagram] .s.on-chip { stroke: var(--color-chip-text); }
 .exhibit [data-bella-diagram] .dash { fill: none; stroke: var(--color-ink); stroke-width: 1; stroke-dasharray: 4 4; }
 
 /* 01b the zoom story */
@@ -8586,7 +8550,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .dfc-cas .tv { opacity: 0; }
 .dfc-cas .ck { transform-box: fill-box; transform-origin: center; }
 .dfc-cas .tv { fill: var(--color-chip-c1); stroke: var(--color-ink); stroke-width: 1; }
-.dfc-cas.is-playing .fr { animation: ex-draw 0.9s var(--motion-easing-draw) forwards; }
+/* the frames drop the dash once drawn: a 1-unit dash leaves a notch
+   where it starts and ends, top left (24 Sep audit, A7) */
+.dfc-cas.is-playing .fr { animation: dfc-frame-draw 0.9s var(--motion-easing-draw) forwards; }
 .dfc-cas.is-playing .f2 { animation-delay: 0.12s; }
 .dfc-cas.is-playing .f3 { animation-delay: 0.24s; }
 .dfc-cas.is-playing .k1 { animation: ex-pop 0.45s var(--motion-easing-pop) forwards 0.9s; }
@@ -8603,10 +8569,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .dfc-cas.is-playing .sw { animation: dfc-retint 1.2s ease forwards 3.9s; }
 .dfc-cas.is-final .fr,
 .dfc-cas.is-final .wr { stroke-dashoffset: 0; }
+.dfc-cas.is-final .fr { stroke-dasharray: none; }
 .dfc-cas.is-final .ck,
 .dfc-cas.is-final .tx { opacity: 1; }
 .dfc-cas.is-final .sw { fill: var(--color-chip-c3); }
 @keyframes dfc-hop60 { 0% { opacity: 0; transform: translateX(0); } 15%, 85% { opacity: 1; } 100% { opacity: 0; transform: translateX(60px); } }
+@keyframes dfc-frame-draw { 99% { stroke-dashoffset: 0; stroke-dasharray: 1; } 100% { stroke-dashoffset: 0; stroke-dasharray: none; } }
 @keyframes dfc-retint { 0% { fill: var(--color-chip-c1); } 40%, 100% { fill: var(--color-chip-c3); } }
 
 /* 03 rollout timeline */

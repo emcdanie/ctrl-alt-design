@@ -4,29 +4,19 @@ import { useRouter } from "next/navigation";
 import OverlayNav from "@/components/OverlayNav";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
-import CaseCard from "@/components/CaseCard";
+import { CaseRowList } from "@/components/CaseRow";
 import TokenInspector from "@/components/TokenInspector";
 import { MatrixView } from "@/components/WorkLibrary";
 import { Button } from "@/components/ui/Button";
 import { POSITIONING } from "@/lib/copy";
 import Heading from "@/components/ui/Heading";
-import { WORK_ITEMS } from "@/lib/workLibrary";
+import { HOME_CASES } from "@/content/cases";
 import Link from "next/link";
 
 /* The fast lane (two-speed flow): the four-minute version, composed
  * ONLY from existing components. The discovery lane (constellation,
  * deep cases, Point of View) stays untouched; nobody is forced through
  * either door. */
-
-const TOP_CASES = [...WORK_ITEMS]
-  .sort((a, b) => {
-    const ra = a.rank ?? 99;
-    const rb = b.rank ?? 99;
-    if (ra !== rb) return ra - rb;
-    if (!!a.featured !== !!b.featured) return a.featured ? -1 : 1;
-    return b.yearStart - a.yearStart;
-  })
-  .slice(0, 3);
 
 export default function QuickPage() {
   const router = useRouter();
@@ -49,15 +39,9 @@ export default function QuickPage() {
         />
       </Section>
 
-      {/* Top 3 cases, the library's own default order */}
+      {/* the same lead three as Home, in the same order and rows (24 Sep audit, B6) */}
       <Section id="quick-cases" label="Closest look, three cases">
-        <ul className="home-work-row reveal-group">
-          {TOP_CASES.map((i) => (
-            <li key={i.id}>
-              <CaseCard item={i} />
-            </li>
-          ))}
-        </ul>
+        <CaseRowList rows={HOME_CASES} />
       </Section>
 
       {/* Skills coverage at a glance; headers jump into the filtered library */}

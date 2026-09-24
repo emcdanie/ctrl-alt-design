@@ -21,7 +21,17 @@ import { useSpotlight } from "@/components/Spotlight";
 /** one scan point: a control, keyed to the phrase it lights */
 export function ScanPoint({ k, children }: { k: string; children: ReactNode }) {
   const ctx = useSpotlight();
-  if (!ctx) return <li className="scan__item">{children}</li>;
+  /* outside a Spotlight: the same point, not a control (About's short
+     lead, whose points name no phrase in the prose) */
+  if (!ctx)
+    return (
+      <li className="scan__item">
+        <span className="scan__point scan__point--static">
+          <span className="scan__dot" aria-hidden="true" />
+          <span>{children}</span>
+        </span>
+      </li>
+    );
   const on = ctx.active === k;
   return (
     <li className="scan__item">
