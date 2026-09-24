@@ -8400,21 +8400,18 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   color: var(--color-ink-muted);
 }
 
-/* "your words" (the approved mock's three boxes, 24 Sep audit, B5): a
-   ruled box, a Mono label, Elleta's lines */
-.dfc-words {
-  max-width: var(--measure-body);
+/* "your words" (components/diagrams/Decisions.tsx; 24 Sep audit, B5,
+   F3): the "Where it broke" card (surface, card radius, 1.5rem) at the
+   full content width, its label in the section-label Mono (.eyebrow) */
+.case-words {
   margin: var(--space-stack-lg) 0 0;
-  padding: 1rem 1.125rem;
-  border: 1px solid var(--color-semantic-border-strong);
-  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
 }
-.dfc-words__k {
-  display: block;
-  margin: 0 0 0.25rem;
-  color: var(--color-ink);
-}
-.dfc-words__v { margin: 0; color: var(--color-ink-soft); text-wrap: pretty; }
+.case-words__k { margin: 0 0 0.5rem; }
+/* the card runs the content width; its lines keep the body measure */
+.case-words__v { max-width: var(--measure-body); margin: 0; color: var(--color-ink-soft); text-wrap: pretty; }
 
 /* shared figure text: the mock's 11-12px labels sit at 13 */
 .exhibit [data-bella-diagram] .on-ink { fill: var(--color-semantic-background); }

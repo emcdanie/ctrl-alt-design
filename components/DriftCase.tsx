@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import Section from "@/components/layout/Section";
 import Exhibit from "@/components/diagrams/Exhibit";
+import { Words } from "@/components/diagrams/Decisions";
 import { buttonGrave, SCENES, DECISIONS } from "@/components/diagrams/driftScenes";
 import type { CaseStudy } from "@/lib/content";
 
@@ -12,8 +13,9 @@ import type { CaseStudy } from "@/lib/content";
  * Section, Exhibit and tokens. Six sections, each claim, evidence, so
  * what; every picture is a recreated inline-SVG exhibit that draws once
  * in view, holds still, and replays on request. Reduced motion shows the
- * finished frame. The mock's reviewer notes stay out; its three "your
- * words" boxes carry Elleta's copy (24 Sep audit, B5).
+ * finished frame. The mock's reviewer notes stay out; two of its "your
+ * words" boxes carry Elleta's copy (24 Sep audit, B5; the trade-off moved
+ * to the booking page, F1).
  */
 
 /* a media query as external state: false on the server, live after */
@@ -30,16 +32,6 @@ function useMedia(query: string) {
 }
 const useNarrow = () => useMedia("(max-width: 640px)");
 const useReduce = () => useMedia("(prefers-reduced-motion: reduce)");
-
-/** one "your words" box: a Mono label, then Elleta's lines, verbatim */
-function Words({ k, children }: { k: string; children: React.ReactNode }) {
-  return (
-    <div className="dfc-words">
-      <span className="text-code dfc-words__k">{k}</span>
-      <p className="dfc-words__v">{children}</p>
-    </div>
-  );
-}
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return <p className="eyebrow dfc-eyebrow">{children}</p>;
@@ -325,7 +317,7 @@ function Cascade() {
           brand-600
         </text>
         <text className="t tx x1 opt" x="90.5" y="115">
-          <tspan x="90.5">foundation ·</tspan>
+          <tspan x="90.5">foundation</tspan>
           <tspan x="90.5" dy="17">raw value</tspan>
         </text>
         <g className="ck k2">
@@ -335,7 +327,7 @@ function Cascade() {
           --action
         </text>
         <text className="t tx x2 opt" x="370.5" y="115">
-          <tspan x="370.5">semantic ·</tspan>
+          <tspan x="370.5">semantic</tspan>
           <tspan x="370.5" dy="17">what it&apos;s for</tspan>
         </text>
         <g className="ck k3">
@@ -345,7 +337,7 @@ function Cascade() {
           </text>
         </g>
         <text className="t tx x3 opt" x="650.5" y="115">
-          <tspan x="650.5">component ·</tspan>
+          <tspan x="650.5">component</tspan>
           <tspan x="650.5" dy="17">reads meaning</tspan>
         </text>
         <circle className="tv v1" cx="280.5" cy="95.5" r="5" />
@@ -570,10 +562,6 @@ export default function DriftCase(_props: { cs: CaseStudy }) {
         <Eyebrow>01b · The problem, at four zoom levels</Eyebrow>
         <h2 className="text-display-2 dfc-h2">From the whole file, down to one field, and back.</h2>
         <Zoom />
-        <Words k="Trade-off">
-          I left dropdowns out of search. One filter button opens a drawer, because a sidebar of filters was a wall competing
-          with the results. The cost: filters sit one tap further away.
-        </Words>
       </Section>
 
       <Section ruled>
@@ -587,20 +575,17 @@ export default function DriftCase(_props: { cs: CaseStudy }) {
           ]}
         />
         <Cascade />
-        <Words k="What I chose not to do">
-          I didn&apos;t wait for sign-off. The team said a system, docs and changelogs weren&apos;t necessary, so I built it for
-          myself and paired with one developer. The cost: months carrying it alone, and pushback later on workflows,
-          complexity and naming.
-        </Words>
       </Section>
 
       <Section ruled>
         <Eyebrow>03 · Collaboration, and where it broke</Eyebrow>
         <h2 className="text-display-2 dfc-h2">Nobody asked for a system.</h2>
-        <p className="text-lead dfc-lead">
-          When I proposed one, the answer was that it wasn&apos;t necessary. Docs and changelogs weren&apos;t either. So I built it for myself, and
-          paired with one developer.
-        </p>
+        {/* the box leads the section; the lead that repeated it is gone (F2) */}
+        <Words k="What I chose not to do">
+          I didn&apos;t wait for sign-off. The team said a system, docs and changelogs weren&apos;t necessary, so I built it for
+          myself and paired with one developer. The cost: months carrying it alone, and pushback later on workflows,
+          complexity and naming.
+        </Words>
         <Rollout />
         <div className="dfc-two">
           <div>

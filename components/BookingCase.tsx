@@ -2,6 +2,7 @@ import Link from "next/link";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
 import Exhibit from "@/components/diagrams/Exhibit";
+import { Mark, Notes, Words } from "@/components/diagrams/Decisions";
 import { StatusPill } from "@/components/ui/StatusPill";
 import type { CaseStudy } from "@/lib/content";
 
@@ -63,32 +64,6 @@ const TRIP_NOTES: [string, string][] = [
   ["Suggest the next step.", "After: the trip knows you’ll need a hotel and offers one. Before: start a new search."],
   ["Hide what you don’t need.", "Before: every traveller listed on the card. After: details on demand."],
 ];
-
-/** a numbered decision marker on a diagram, in clear space beside what it
- *  marks (never across a frame); the digit drops on phones, where the
- *  notes list under the drawing carries the numbers */
-function Mark({ n, x, y }: { n: number; x: number; y: number }) {
-  return (
-    <g>
-      <circle className="fill-ink" cx={x} cy={y} r="11" />
-      <text className="ti on-ink opt" x={x} y={y + 4.5} textAnchor="middle">
-        {n}
-      </text>
-    </g>
-  );
-}
-
-function Notes({ notes }: { notes: [string, string][] }) {
-  return (
-    <ol className="trv-notes">
-      {notes.map(([t, b]) => (
-        <li key={t}>
-          <b>{t}</b> {b}
-        </li>
-      ))}
-    </ol>
-  );
-}
 
 /* search: the bar pinned at the top, one Filter button opening a drawer,
    result cards with every slot in the same place, one policy badge */
@@ -254,6 +229,10 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
         }
       >
         <SearchDiagram />
+        <Words k="Trade-off">
+          I left dropdowns out of search. One filter button opens a drawer, because a sidebar of filters was a wall competing
+          with the results. The cost: filters sit one tap further away.
+        </Words>
       </Part>
 
       <Part
