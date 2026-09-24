@@ -370,10 +370,6 @@ body {
   --ease-out: var(--motion-easing-out); /* cubic-bezier(.22,1,.36,1) */
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* BELLA easing.in-out, pending */
 
-  --cover-warm-hi: var(--color-light-panel);
-  --cover-warm-lo: var(--color-light-line);
-  --cover-warm-ink: var(--color-light-muted);
-
   /* Fixed-context "paper" tokens — surfaces that stay light in BOTH
      modes (reveal card, resume modal). Never flip these. */
   --surface-paper: #FAFAF8;
@@ -490,12 +486,6 @@ body {
      specimen ground; navy left dark mode 19 Sep 2026) */
   --thesis-band-ground: var(--color-dark-surface);
   --thesis-band-ink: var(--color-dark-ink);
-  /* cover placeholder flips as a SET in dark (cover-contrast fix,
-     21 Jul): dark warm plate, parchment-warm ink; >=3:1 large-text on
-     every stop, scrim-free (the placeholder skips the media scrim) */
-  --cover-warm-hi: #1f1f1f;
-  --cover-warm-lo: var(--color-dark-surface);
-  --cover-warm-ink: var(--color-dark-muted);
   --modal-backdrop: rgba(0, 0, 0, 0.6);
   --page-glow: rgba(255, 255, 255, 0.04);
 }
