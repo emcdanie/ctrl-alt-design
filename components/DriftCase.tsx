@@ -383,37 +383,43 @@ function Cascade() {
         role="img"
         aria-label="A raw colour value is set once in the foundation, travels to a semantic token called action, and the Book button picks it up. Then the value changes once and the button follows."
       >
+        {/* three equal frames, 30px in from each side, content centred on
+            the wire: the swatch row, then the label on two lines, so no
+            label runs past its frame (24 Sep audit, A7) */}
         <rect className="s fr" pathLength={1} x="60.5" y="30.5" width="220" height="130" rx="14" />
         <rect className="s fr f2" pathLength={1} x="340.5" y="30.5" width="220" height="130" rx="14" />
         <rect className="s fr f3" pathLength={1} x="620.5" y="30.5" width="220" height="130" rx="14" />
         <path className="s wr w1" pathLength={1} d="M280.5 95.5 H340.5" />
         <path className="s wr w2" pathLength={1} d="M560.5 95.5 H620.5" />
         <g className="ck k1">
-          <rect className="sw" x="90.5" y="60.5" width="40" height="24" rx="8" />
+          <rect className="sw" x="90.5" y="54.5" width="40" height="24" rx="8" />
         </g>
-        <text className="ti tx x1" x="142" y="77">
+        <text className="ti tx x1" x="142" y="71">
           brand-600
         </text>
-        <text className="t tx x1 opt" x="90" y="120">
-          foundation · raw value
+        <text className="t tx x1 opt" x="90.5" y="115">
+          <tspan x="90.5">foundation ·</tspan>
+          <tspan x="90.5" dy="17">raw value</tspan>
         </text>
         <g className="ck k2">
-          <rect className="sw" x="370.5" y="60.5" width="40" height="24" rx="8" />
+          <rect className="sw" x="370.5" y="54.5" width="40" height="24" rx="8" />
         </g>
-        <text className="ti tx x2" x="422" y="77">
+        <text className="ti tx x2" x="422" y="71">
           --action
         </text>
-        <text className="t tx x2 opt" x="370" y="120">
-          semantic · what it&apos;s for
+        <text className="t tx x2 opt" x="370.5" y="115">
+          <tspan x="370.5">semantic ·</tspan>
+          <tspan x="370.5" dy="17">what it&apos;s for</tspan>
         </text>
         <g className="ck k3">
-          <rect className="sw" x="665.5" y="58.5" width="130" height="30" rx="15" />
-          <text className="tk" x="730.5" y="78" textAnchor="middle">
+          <rect className="sw" x="650.5" y="51.5" width="130" height="30" rx="15" />
+          <text className="tk" x="715.5" y="71" textAnchor="middle">
             Book
           </text>
         </g>
-        <text className="t tx x3 opt" x="650" y="120">
-          component · reads meaning
+        <text className="t tx x3 opt" x="650.5" y="115">
+          <tspan x="650.5">component ·</tspan>
+          <tspan x="650.5" dy="17">reads meaning</tspan>
         </text>
         <circle className="tv v1" cx="280.5" cy="95.5" r="5" />
         <circle className="tv v2" cx="560.5" cy="95.5" r="5" />
@@ -535,6 +541,8 @@ function Rollout() {
 
 /* ── 04 turnaround ──────────────────────────────────────────────── */
 const AREAS = ["system in code", "search", "flights", "cars", "checkout", "users & roles"];
+/* the first label wraps, so it stays left of the step it sits on (A7) */
+const AREA_LINES: Record<string, string[]> = { "system in code": ["system", "in code"] };
 const PTS: [number, number][] = [
   [437.5, 172],
   [512.5, 144],
@@ -570,8 +578,14 @@ function Turnaround() {
           return (
             <g key={a} className="ship" style={{ animationDelay: `${2.2 + (i + 1) * 0.36}s` }}>
               <circle cx={x} cy={y} r="5" className="s c3" />
-              <text className="t opt" x={x} y={y - 11} textAnchor="middle">
-                {a}
+              <text className="t opt" x={x} y={y - 11 - ((AREA_LINES[a]?.length ?? 1) - 1) * 14} textAnchor="middle">
+                {AREA_LINES[a]
+                  ? AREA_LINES[a].map((line, j) => (
+                      <tspan key={line} x={x} dy={j ? 14 : 0}>
+                        {line}
+                      </tspan>
+                    ))
+                  : a}
               </text>
             </g>
           );

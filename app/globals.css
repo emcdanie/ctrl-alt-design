@@ -8608,7 +8608,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .dfc-cas .tv { opacity: 0; }
 .dfc-cas .ck { transform-box: fill-box; transform-origin: center; }
 .dfc-cas .tv { fill: var(--color-chip-c1); stroke: var(--color-ink); stroke-width: 1; }
-.dfc-cas.is-playing .fr { animation: ex-draw 0.9s var(--motion-easing-draw) forwards; }
+/* the frames drop the dash once drawn: a 1-unit dash leaves a notch
+   where it starts and ends, top left (24 Sep audit, A7) */
+.dfc-cas.is-playing .fr { animation: dfc-frame-draw 0.9s var(--motion-easing-draw) forwards; }
 .dfc-cas.is-playing .f2 { animation-delay: 0.12s; }
 .dfc-cas.is-playing .f3 { animation-delay: 0.24s; }
 .dfc-cas.is-playing .k1 { animation: ex-pop 0.45s var(--motion-easing-pop) forwards 0.9s; }
@@ -8625,10 +8627,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .dfc-cas.is-playing .sw { animation: dfc-retint 1.2s ease forwards 3.9s; }
 .dfc-cas.is-final .fr,
 .dfc-cas.is-final .wr { stroke-dashoffset: 0; }
+.dfc-cas.is-final .fr { stroke-dasharray: none; }
 .dfc-cas.is-final .ck,
 .dfc-cas.is-final .tx { opacity: 1; }
 .dfc-cas.is-final .sw { fill: var(--color-chip-c3); }
 @keyframes dfc-hop60 { 0% { opacity: 0; transform: translateX(0); } 15%, 85% { opacity: 1; } 100% { opacity: 0; transform: translateX(60px); } }
+@keyframes dfc-frame-draw { 99% { stroke-dashoffset: 0; stroke-dasharray: 1; } 100% { stroke-dashoffset: 0; stroke-dasharray: none; } }
 @keyframes dfc-retint { 0% { fill: var(--color-chip-c1); } 40%, 100% { fill: var(--color-chip-c3); } }
 
 /* 03 rollout timeline */
