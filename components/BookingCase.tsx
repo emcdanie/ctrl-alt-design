@@ -61,7 +61,7 @@ const SEARCH_NOTES: [string, string][] = [
 
 const TRIP_NOTES: [string, string][] = [
   ["One place for the whole trip.", "Before: hotel bookings on their own page, one vertical at a time. After: flights, hotel and extras in one booking panel."],
-  ["Suggest the next step.", "After: the trip knows you’ll need a hotel and offers one. Before: start a new search."],
+  ["Suggest the next step.", "Before: start a new search. After: the trip knows you’ll need a hotel and offers one."],
   ["Hide what you don’t need.", "Before: every traveller listed on the card. After: details on demand."],
 ];
 
@@ -271,7 +271,7 @@ export default function BookingCase({ cs }: { cs: CaseStudy }) {
         index="05"
         kicker="The case studies"
         heading="Three stories from the same platform."
-        lead="Each one shows the shipped screen, what I would refine, and the legacy constraint it had to live with."
+        lead="Each one shows the pattern I shipped, what I would refine, and the legacy constraint it had to live with."
       >
         <ul className="trv-stories">
           {STORIES.map((s) => {
