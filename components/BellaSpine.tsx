@@ -1041,13 +1041,13 @@ export default function BellaSpine({ auditCount, auditCountWord }: { auditCount:
         <div className={s.cta}>
           <p>This is how I&apos;d start with your system: an audit, one component through the whole lifecycle, and a gate your team owns.</p>
           <div className={s.ctaB}>
-            <Button href="/contact" variant="primary">
+            <Button href="/contact" variant="primary" trackEvent="lets-talk">
               Let&apos;s talk
             </Button>
-            <a className={s.chip} href="https://emcdanie.github.io/bella" target="_blank" rel="noopener noreferrer">
+            <a className={s.chip} href="https://emcdanie.github.io/bella" target="_blank" rel="noopener noreferrer" data-umami-event="storybook">
               Storybook ↗
             </a>
-            <a className={s.chip} href="https://github.com/emcdanie/bella" target="_blank" rel="noopener noreferrer">
+            <a className={s.chip} href="https://github.com/emcdanie/bella" target="_blank" rel="noopener noreferrer" data-umami-event="github">
               GitHub ↗
             </a>
           </div>

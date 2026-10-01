@@ -11,8 +11,8 @@ import { social } from "@/lib/social";
    row with the only version label, then the pattern ELLETA at the
    content width (same left edge as the text), flush with the bottom edge. */
 
-const external = (href: string, label: string) => (
-  <a className="site-footer__link" href={href} target="_blank" rel="noopener noreferrer">
+const external = (href: string, label: string, event: string) => (
+  <a className="site-footer__link" href={href} target="_blank" rel="noopener noreferrer" data-umami-event={event}>
     {label} ↗<span className="sr-only"> (opens in a new tab)</span>
   </a>
 );
@@ -44,9 +44,9 @@ export default function SiteFooter() {
           <div>
             <p className="site-footer__label">elsewhere</p>
             <ul className="site-footer__list">
-              <li>{external(social.linkedin, "LinkedIn")}</li>
-              <li>{external("https://github.com/emcdanie/bella", "BELLA on GitHub")}</li>
-              <li>{external("https://emcdanie.github.io/bella/", "Storybook")}</li>
+              <li>{external(social.linkedin, "LinkedIn", "linkedin")}</li>
+              <li>{external("https://github.com/emcdanie/bella", "BELLA on GitHub", "github")}</li>
+              <li>{external("https://emcdanie.github.io/bella/", "Storybook", "storybook")}</li>
               <li><ResumeLink className="site-footer__link" /></li>
             </ul>
           </div>

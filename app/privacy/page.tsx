@@ -18,7 +18,7 @@ export default function PrivacyPage() {
           as="h1"
           id="privacy-title"
           heading="Privacy"
-          lead="No ads, no analytics, no tracking cookies. The only personal data this site handles is what you choose to send me."
+          lead="No ads, no tracking cookies. Analytics are anonymous: visit counts and a few button clicks, nothing that identifies you. The only personal data this site handles is what you choose to send me."
         />
         <TodoNote>Last updated: the date of publishing.</TodoNote>
       </Section>
@@ -66,7 +66,12 @@ export default function PrivacyPage() {
       <Section prose id="who-else" labelledBy="who-else-title">
         <SectionHeader id="who-else-title" heading="Who else handles data" />
         <ul className="section-list">
-          {["Vercel Inc. (hosting, USA)", "Resend (email delivery, USA)", "Anthropic PBC (Find my fit, USA)"].map((i) => (
+          {[
+            "Vercel Inc. (hosting, USA)",
+            "Resend (email delivery, USA)",
+            "Anthropic PBC (Find my fit, USA)",
+            "Umami (visit counts: no cookies, no personal data, only totals across all visits)",
+          ].map((i) => (
             <li key={i}>{i}</li>
           ))}
         </ul>

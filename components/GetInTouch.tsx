@@ -63,6 +63,7 @@ export default function GetInTouch() {
         type="button"
         className="get-in-touch__trigger"
         data-component="GetInTouch"
+        data-umami-event="lets-talk"
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((o) => !o)}

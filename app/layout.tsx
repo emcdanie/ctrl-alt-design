@@ -2,6 +2,7 @@ import RevealObserver from "@/components/RevealObserver";
 import SiteFooter from "@/components/SiteFooter";
 import RouteField from "@/components/RouteField";
 import type { Metadata } from "next";
+import Script from "next/script";
 import BracketCursor from "@/components/BracketCursor";
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
@@ -66,6 +67,11 @@ const themeInit = `try{var d=document.documentElement,m=matchMedia("(prefers-col
 // exists once this runs, so without JS nothing is ever hidden.
 const revealInit = `document.documentElement.classList.add("js-reveal")`;
 
+// Umami Cloud (analytics, Elleta, 1 Oct 2026): cookieless, aggregated
+// visits only. data-domains keeps previews and localhost uncounted; no
+// website id in the env, no script at all.
+const umamiId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -91,6 +97,14 @@ export default function RootLayout({
         </IconProvider>
         <BracketCursor />
         <RevealObserver />
+        {umamiId && (
+          <Script
+            src="https://cloud.umami.is/script.js"
+            strategy="afterInteractive"
+            data-website-id={umamiId}
+            data-domains="elleta.design"
+          />
+        )}
       </body>
     </html>
   );

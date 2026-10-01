@@ -269,7 +269,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
               <span>·</span>
               <span>+34 633287939</span>
               <span>·</span>
-              <a href={social.linkedin} className="hover:text-[color:var(--ink-on-paper)] transition-colors">linkedin.com/in/elleta-mcdaniel</a>
+              <a href={social.linkedin} data-umami-event="linkedin" className="hover:text-[color:var(--ink-on-paper)] transition-colors">linkedin.com/in/elleta-mcdaniel</a>
             </div>
           </div>
 
@@ -391,7 +391,7 @@ export function ResumeButton() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <Button variant="primary" className="xp__cv" onClick={() => setOpen(true)}>
+      <Button variant="primary" className="xp__cv" onClick={() => setOpen(true)} trackEvent="cv-open">
         <Icon name="Page" size="sm" />
         View CV
       </Button>
@@ -405,7 +405,7 @@ export function ResumeLink({ className = "" }: { className?: string }) {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button type="button" className={className} onClick={() => setOpen(true)}>
+      <button type="button" className={className} onClick={() => setOpen(true)} data-umami-event="cv-open">
         CV
       </button>
       <ResumeModal open={open} onClose={() => setOpen(false)} />

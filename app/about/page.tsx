@@ -129,6 +129,7 @@ export default function AboutPage() {
           <a
             className="text-action"
             href="https://www.linkedin.com/in/elleta-mcdaniel/details/recommendations/"
+            data-umami-event="linkedin"
             target="_blank"
             rel="noopener noreferrer"
           >
