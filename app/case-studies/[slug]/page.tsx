@@ -12,6 +12,7 @@ import CheckoutCase from "@/components/CheckoutCase";
 import ThemingCase from "@/components/ThemingCase";
 import type { CaseStudy } from "@/lib/content";
 import { Tag } from "@/components/ui/Tag";
+import CaseEnd from "@/components/CaseEnd";
 
 /* metadata reads in sentence case: "DESIGN SYSTEMS" -> "Design systems" */
 const sentenceCase = (t: string) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
@@ -41,7 +42,7 @@ const ARTICLE: Record<
     caseFact?: boolean;
     /** the mock layout (Geist refresh, 22 Sep 2026): an eyebrow instead
      *  of the breadcrumb, the lead AND the at-a-glance strip, the signal
-     *  tags, and no end reveal */
+     *  tags */
     mock?: {
       eyebrow: string;
       signals: { label?: string; tags: { text: string; tone?: "c2" | "c3"; outline?: boolean }[] };
@@ -242,7 +243,6 @@ export default async function CaseStudyPage({
         tags={cs.tags}
         /* every case opens with "← All work" (W1 release, 22 Sep 2026),
            the mock-built cases included */
-        endReveal={article?.mock ? false : undefined}
         glance={Boolean(article?.mock)}
         className={article?.mock ? "cs2--mock" : undefined}
         heroExtra={
@@ -273,6 +273,7 @@ export default async function CaseStudyPage({
         nda={article?.note}
       >
         <Composition cs={cs} />
+        <CaseEnd slug={slug} />
       </CaseShellV2>
     </CaseStudyLayout>
   );

@@ -400,13 +400,14 @@ export function ResumeButton() {
   );
 }
 
-/* "CV" as a small text link (the footer's small print): opens the modal. */
-export function ResumeLink({ className = "" }: { className?: string }) {
+/* "CV" as a small text link (the footer's small print, the case ending's
+   "View CV"): opens the modal. */
+export function ResumeLink({ className = "", label = "CV" }: { className?: string; label?: string }) {
   const [open, setOpen] = useState(false);
   return (
     <>
       <button type="button" className={className} onClick={() => setOpen(true)} data-umami-event="cv-open">
-        CV
+        {label}
       </button>
       <ResumeModal open={open} onClose={() => setOpen(false)} />
     </>

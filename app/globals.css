@@ -306,7 +306,6 @@ body {
 
 
 
-  --peri: #e8a83e; /* was the fixed periwinkle; ochre since the brand refresh (22 Sep 2026) */
   --case-code-first-hi: #F6BBD6;
   --case-code-first-lo: #F0A0C8;
   --case-code-first-deep: #B23A70;
@@ -6048,202 +6047,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   }
 }
 
-/* ── End-of-case reveal, in-flow (CaseEndReveal, Elleta 24 Jul): a normal
-   section at the very end of the case, NOT a modal. A soft dome sits behind
-   the Unique sign-off, the next case, and a share. No position:fixed, no
-   scroll-lock, no dismiss, no focus trap: scrolling up leaves it, the back
-   button re-shows it. Ours, not pink: warm cream/steel dome (light), plum-
-   navy dome (dark). The sign-off is the site's Unique display (Heading
-   tier=case); the heart wears the clay accent. One fade-up on enter (JS
-   toggles .is-visible); prefers-reduced-motion renders it static. ── */
-/* The lead-in was margin-top 80 plus padding-top 128, so the sign-off
-   started 208px below the last beat, on top of that beat's own 64px
-   floor: 272px of nothing before the thanks, roughly a third of a
-   1440x900 screen (measured 27 Jul). The dome still needs room to rise
-   behind the type, so the padding carries the space and the margin
-   stops doubling it. */
-.cs2-endreveal {
-  --enddome-top: #EDE7F3;   /* peri-tinted cream where the dome crests */
-  --enddome-mid: #EBE6DC;
-  position: relative;
-  overflow: hidden;
-  margin-top: 0;
-  /* the section rhythm like every section (O.10) */
-  padding: var(--section-pad-y) var(--spacing-6);
-  text-align: center;
-}
-[data-theme="dark"] .cs2-endreveal {
-  --enddome-top: #2A2622;   /* lifted warm dome (was plum-navy) */
-  --enddome-mid: #211E1B;
-}
-
-/* the dome is an in-flow background glow rising from the section floor;
-   it fades to transparent so it reads on the page ground, not a hard edge */
-.cs2-endreveal__dome {
-  position: absolute;
-  left: 50%;
-  bottom: -20%;
-  transform: translateX(-50%);
-  width: 150vw;
-  height: 130%;
-  border-radius: 50% 50% 0 0;
-  pointer-events: none;
-  z-index: 0;
-  background: radial-gradient(58% 62% at 50% 100%,
-    var(--enddome-top) 0%, var(--enddome-mid) 42%, transparent 72%);
-}
-
-.cs2-endreveal__inner {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 27.5rem;
-  margin: 0 auto;
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
-}
-.cs2-endreveal.is-visible .cs2-endreveal__inner {
-  opacity: 1;
-  transform: none;
-}
-
-/* the sign-off is a paragraph, not a heading (19 Sep 2026) */
-.cs2-endreveal__thanks {
-  font-family: var(--font-body);
-  font-size: var(--text-lead);
-  font-weight: 600;
-  color: var(--color-ink);
-  margin: 0 0 var(--spacing-2);
-}
-.cs2-endreveal__heart {
-  color: var(--case-writing-text);
-}
-
-.cs2-endreveal__rule {
-  display: block;
-  width: 46px;
-  height: 1px;
-  background: var(--color-border-medium);
-  margin: var(--spacing-5) auto;
-}
-
-.cs2-endreveal__label {
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-weight: 400;
-  letter-spacing: var(--tracking-mono);
-  color: var(--color-muted);
-  margin: 0 0 var(--spacing-3);
-  font-feature-settings: var(--mono-feature);
-}
-
-/* the next-case unit: one link to the case */
-.cs2-endreveal__next {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-4);
-  text-align: left;
-  text-decoration: none;
-  background: var(--color-card);
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-card);
-  padding: var(--spacing-3) var(--spacing-4);
-  box-shadow: var(--shadow-md);
-  transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
-}
-.cs2-endreveal__next:hover {
-  transform: translateY(-2px);
-  border-color: var(--color-border-medium);
-  box-shadow: var(--shadow-lg);
-}
-
-/* circle emblem: a steel -> peri disc with an iris ring, a simple per-case
-   monogram in a warm light ink. No screenshot, no live embed. */
-.cs2-endreveal__thumb {
-  flex: none;
-  width: 54px;
-  height: 54px;
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-body);
-  font-weight: var(--typography-font-weight-medium);
-  font-size: var(--typography-font-size-xl);
-  color: var(--color-card);
-  background: radial-gradient(120% 120% at 30% 22%, var(--case-filters-hi), var(--peri) 60%, var(--case-filters-deep));
-  box-shadow:
-    0 0 0 1px var(--color-border-soft),
-    0 0 0 3px var(--color-card),
-    0 0 0 4px var(--color-semantic-accent-border);
-}
-
-.cs2-endreveal__meta {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-.cs2-endreveal__title {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: var(--typography-font-weight-medium);
-  line-height: 1.2;
-  color: var(--color-ink);
-}
-.cs2-endreveal__kicker {
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  color: var(--color-ink-muted);
-  margin-top: 1px;
-}
-.cs2-endreveal__arrow {
-  flex: none;
-  color: var(--color-muted);
-  font-size: var(--typography-font-size-xl);
-}
-
-.cs2-endreveal__share {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  margin-top: var(--spacing-4);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 600;
-  color: var(--color-ink);
-  background: var(--color-card);
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-2) var(--spacing-5);
-  cursor: pointer;
-  transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
-}
-.cs2-endreveal__share:hover {
-  border-color: var(--color-border-medium);
-}
-.cs2-endreveal__share svg {
-  width: 16px;
-  height: 16px;
-}
-.cs2-endreveal__copied {
-  display: block;
-  min-height: var(--spacing-5);
-  margin-top: var(--spacing-2);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-sm);
-  color: var(--case-filters-text);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cs2-endreveal__inner {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
 
 /* From Drift section 04: the governance STATUS BOARD (in-page, tokenised
    to BELLA, dark-adaptive via the site theme). Static; component status
@@ -8060,21 +7863,17 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin-top: calc(-1 * (var(--spacing-6) + var(--section-label-gap)));
 }
 
+/* the case ending (CaseEnd, 1 Oct 2026): Let's talk, View CV, next case */
+.case-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-stack-sm) var(--space-stack-md);
+}
+
 .case-back:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
-}
-
-.cs2-endreveal__labelrow {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: baseline;
-  column-gap: var(--spacing-6);
-}
-
-.cs2-endreveal__labelrow .case-back {
-  margin-bottom: var(--spacing-3);
 }
 
 /* ─── Scan and read (Elleta, 20 Sep 2026, Part J item 2) ─────────────
@@ -8663,14 +8462,17 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-size: 1.25rem;
   color: var(--color-ink-muted);
 }
-.exhibit svg.dfc-zsvg { overflow: hidden; }
+.exhibit svg.dfc-zsvg,
+.exhibit svg.dfc-grave.is-detail { overflow: hidden; }
 .dfc-mark { display: inline; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 /* phones: the zoom pictures and the button grave scale to about a third,
    so their words would fall under the 13px floor; the pictures keep
-   their shapes and the caption and popover carry the words */
+   their shapes and the caption and popover carry the words. Below 600px
+   the file and the grave show a cropped detail (.is-detail) whose labels
+   stay at 13px or more, so their words show */
 @media (max-width: 640px) {
-  .exhibit svg.dfc-zsvg text,
-  .exhibit svg.dfc-grave text { display: none; }
+  .exhibit svg.dfc-zsvg:not(.is-detail) text,
+  .exhibit svg.dfc-grave:not(.is-detail) text { display: none; }
 }
 /* /work index hero lead: muted, 40ch (mock Part A) */
 #work-hero .l-header__lead { max-width: 40ch; color: var(--color-ink-muted); }

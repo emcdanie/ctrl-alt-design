@@ -18,7 +18,7 @@ export default function PrivacyPage() {
           as="h1"
           id="privacy-title"
           heading="Privacy"
-          lead="No ads, no tracking cookies. Analytics are anonymous: visit counts and a few button clicks, nothing that identifies you. The only personal data this site handles is what you choose to send me."
+          lead="No ads, no tracking cookies. Analytics are anonymous: visit counts, a few button clicks and whether a case study was read to the end, nothing that identifies you. The only personal data this site handles is what you choose to send me."
         />
         <TodoNote>Last updated: the date of publishing.</TodoNote>
       </Section>
