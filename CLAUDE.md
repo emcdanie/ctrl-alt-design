@@ -219,6 +219,7 @@ Use the `portfolio-spec` skill. For any non-trivial task:
 ## 9. The gate (`npm run gate`) — un-regressable
 Must pass before any work is "done":
 - `audit:structure` — per-case route dirs, container/section system, no arbitrary `text-[Npx]`, no amber.
+  No `TodoNote` in a production build's HTML (it reads `.next/server/app`, so build first; Elleta, 1 Oct 2026).
 - `audit:layout` — every route is listed; a route on the layout system renders the layout `Section`
   and no raw `<section>`; `SectionHeader` layout is "stacked" (default) or "split" and no stylesheet reshapes
   `.l-header`; no arbitrary margin/padding classes or inline margin/padding in `app/` (and
