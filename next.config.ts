@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
       { source: "/point-of-view", destination: "/about#how-i-think", permanent: true },
       // learning build 2026-09-19: the skills matrix is a view of /learning
       { source: "/skills", destination: "/learning?view=skills", permanent: true },
+      // short links 2026-10-01: /in is the LinkedIn link, tagged for Umami; temporary so the target can change
+      { source: "/in", destination: "/?utm_source=linkedin&utm_medium=social", permanent: false },
     ];
   },
 };
