@@ -37,8 +37,12 @@ const useNarrow = () => useMedia("(max-width: 640px)");
 const useDetail = () => useMedia("(max-width: 599px)");
 const clipTo = (id: string, [x, y, w, h]: number[], svg: string) =>
   `<defs><clipPath id="${id}"><rect x="${x}" y="${y}" width="${w}" height="${h}"/></clipPath></defs><g clip-path="url(#${id})">${svg}</g>`;
-const FILE_DETAIL = [308, 49, 128, 96];
-const GRAVE_DETAIL = [590, 40, 284, 118];
+/* the file draws its labels at 13 units scaled by 0.4005, so a 104-unit
+   crop puts them at 15px on a 390 phone (13.6px at 360) */
+const FILE_DETAIL = [320, 57, 104, 80];
+/* the grave's labels are 13 units: a 240-unit crop keeps them at 13px
+   or more down to a 360 phone, the lavender one in view */
+const GRAVE_DETAIL = [636, 40, 240, 118];
 const useReduce = () => useMedia("(prefers-reduced-motion: reduce)");
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
