@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import Section from "@/components/layout/Section";
 import Exhibit from "@/components/diagrams/Exhibit";
+import { Words } from "@/components/diagrams/Decisions";
 import { buttonGrave, SCENES, DECISIONS } from "@/components/diagrams/driftScenes";
 import type { CaseStudy } from "@/lib/content";
 
@@ -12,33 +13,10 @@ import type { CaseStudy } from "@/lib/content";
  * Section, Exhibit and tokens. Six sections, each claim, evidence, so
  * what; every picture is a recreated inline-SVG exhibit that draws once
  * in view, holds still, and replays on request. Reduced motion shows the
- * finished frame. The mock's reviewer notes and "your words" gaps stay
- * out by design.
+ * finished frame. The mock's reviewer notes stay out; two of its "your
+ * words" boxes carry Elleta's copy (24 Sep audit, B5; the trade-off moved
+ * to the booking page, F1).
  */
-
-/* ── shared: play once in view, replay, reduced motion ───────────── */
-function usePlayOnce<T extends HTMLElement>(threshold = 0.4) {
-  const ref = useRef<T>(null);
-  const [run, setRun] = useState(0);
-  const reduce = useReduce();
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (es) => {
-        if (es.some((e) => e.isIntersecting)) {
-          io.disconnect();
-          setRun(1);
-        }
-      },
-      { threshold },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [threshold]);
-  const replay = useCallback(() => setRun((n) => n + 1), []);
-  return { ref, run, reduce, replay };
-}
 
 /* a media query as external state: false on the server, live after */
 function useMedia(query: string) {
@@ -76,86 +54,27 @@ function Cee({ items }: { items: [string, string][] }) {
   );
 }
 
-/* ── 01 people rows: ten people a row, filled to the exact percent ── */
-const PERSON = "M9 7.5a4 4 0 1 0 0.01 0Z M1.5 25 C1.5 17 4.5 13.5 9 13.5 C13.5 13.5 16.5 17 16.5 25 Z";
-const PEOPLE: [number, string][] = [
-  [81, "said booking was overly complex"],
-  [59, "said changing a booking was hard"],
-  [37, "of support had lost a booking to complexity"],
-  [48, "spent 10+ hours a week helping customers book"],
+/* ── 01 what the research said, in words (24 Sep audit, B3): no
+   percentages and no people rows, which read as exact counts ── */
+const FINDINGS = [
+  "Most people said booking was overly complex.",
+  "More than half said changing a booking was hard.",
+  "A third of support had lost a booking to complexity.",
+  "Nearly half spent 10+ hours a week helping customers book.",
 ];
 
-function PeopleRow({ v, k, run, reduce, label }: { v: number; k: number; run: number; reduce: boolean; label: string }) {
-  const uid = useId().replace(/:/g, "");
-  const [n, setN] = useState(0);
-  const [fill, setFill] = useState<number[]>(Array(10).fill(0));
-  useEffect(() => {
-    if (!run) return;
-    const target = Array.from({ length: 10 }, (_, i) => Math.max(0, Math.min(1, v / 10 - i)));
-    if (reduce) {
-      const f = requestAnimationFrame(() => {
-        setN(v);
-        setFill(target);
-      });
-      return () => cancelAnimationFrame(f);
-    }
-    const reset = requestAnimationFrame(() => {
-      setN(0);
-      setFill(Array(10).fill(0));
-    });
-    const timers = target.map((p, i) => window.setTimeout(() => setFill((f) => f.map((x, j) => (j === i ? p : x))), k * 250 + i * 90));
-    const t0 = performance.now() + k * 250;
-    let raf = 0;
-    const tick = (t: number) => {
-      const x = Math.max(0, Math.min(1, (t - t0) / 1100));
-      setN(Math.round(v * (1 - Math.pow(1 - x, 3))));
-      if (x < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => {
-      timers.forEach(clearTimeout);
-      cancelAnimationFrame(raf);
-      cancelAnimationFrame(reset);
-    };
-  }, [run, reduce, v, k]);
-  return (
-    <div className="dfc-pc">
-      <p className="dfc-pc__n">
-        <span aria-hidden="true">{n}%</span>
-        <span className="sr-only">{v}%</span>
-      </p>
-      <div className="dfc-pc__row" aria-hidden="true">
-        {fill.map((p, i) => (
-          <svg key={i} viewBox="0 0 18 26" width="18" height="26" data-bella-diagram>
-            <clipPath id={`${uid}-${i}`}>
-              <path d={PERSON} />
-            </clipPath>
-            <rect className="dfc-pc__fl" clipPath={`url(#${uid}-${i})`} x="0" y="0" height="26" width={18 * p} />
-            <path className="dfc-pc__o" d={PERSON} />
-          </svg>
-        ))}
-      </div>
-      <p className="dfc-pc__l">{label}</p>
-    </div>
-  );
-}
-
 function People() {
-  const { ref, run, reduce, replay } = usePlayOnce<HTMLDivElement>(0.4);
   return (
-    <div ref={ref} className="dfc-ppl-wrap">
-      <div className="dfc-ppl">
-        {PEOPLE.map(([v, l], k) => (
-          <PeopleRow key={l} v={v} k={k} run={run} reduce={reduce} label={l} />
+    <div className="dfc-ppl-wrap">
+      <ul className="dfc-ppl">
+        {FINDINGS.map((f) => (
+          <li key={f} className="dfc-pc">
+            <p className="text-lead dfc-pc__l">{f}</p>
+          </li>
         ))}
-      </div>
+      </ul>
       <div className="dfc-src-row">
-        <p className="dfc-src text-meta">each row is ten people · source: my interviews and surveys with customer success and sales, 2024</p>
-        {!reduce && (
-          <button type="button" className="exhibit__replay dfc-inline-replay" onClick={replay} aria-label="Replay the people charts">
-            replay
-          </button>
-        )}
+        <p className="dfc-src text-meta">My interviews with customer success and sales.</p>
       </div>
     </div>
   );
@@ -383,37 +302,43 @@ function Cascade() {
         role="img"
         aria-label="A raw colour value is set once in the foundation, travels to a semantic token called action, and the Book button picks it up. Then the value changes once and the button follows."
       >
+        {/* three equal frames, 30px in from each side, content centred on
+            the wire: the swatch row, then the label on two lines, so no
+            label runs past its frame (24 Sep audit, A7) */}
         <rect className="s fr" pathLength={1} x="60.5" y="30.5" width="220" height="130" rx="14" />
         <rect className="s fr f2" pathLength={1} x="340.5" y="30.5" width="220" height="130" rx="14" />
         <rect className="s fr f3" pathLength={1} x="620.5" y="30.5" width="220" height="130" rx="14" />
         <path className="s wr w1" pathLength={1} d="M280.5 95.5 H340.5" />
         <path className="s wr w2" pathLength={1} d="M560.5 95.5 H620.5" />
         <g className="ck k1">
-          <rect className="sw" x="90.5" y="60.5" width="40" height="24" rx="8" />
+          <rect className="sw" x="90.5" y="54.5" width="40" height="24" rx="8" />
         </g>
-        <text className="ti tx x1" x="142" y="77">
+        <text className="ti tx x1" x="142" y="71">
           brand-600
         </text>
-        <text className="t tx x1 opt" x="90" y="120">
-          foundation · raw value
+        <text className="t tx x1 opt" x="90.5" y="115">
+          <tspan x="90.5">foundation</tspan>
+          <tspan x="90.5" dy="17">raw value</tspan>
         </text>
         <g className="ck k2">
-          <rect className="sw" x="370.5" y="60.5" width="40" height="24" rx="8" />
+          <rect className="sw" x="370.5" y="54.5" width="40" height="24" rx="8" />
         </g>
-        <text className="ti tx x2" x="422" y="77">
+        <text className="ti tx x2" x="422" y="71">
           --action
         </text>
-        <text className="t tx x2 opt" x="370" y="120">
-          semantic · what it&apos;s for
+        <text className="t tx x2 opt" x="370.5" y="115">
+          <tspan x="370.5">semantic</tspan>
+          <tspan x="370.5" dy="17">what it&apos;s for</tspan>
         </text>
         <g className="ck k3">
-          <rect className="sw" x="665.5" y="58.5" width="130" height="30" rx="15" />
-          <text className="tk" x="730.5" y="78" textAnchor="middle">
+          <rect className="sw" x="650.5" y="51.5" width="130" height="30" rx="15" />
+          <text className="tk" x="715.5" y="71" textAnchor="middle">
             Book
           </text>
         </g>
-        <text className="t tx x3 opt" x="650" y="120">
-          component · reads meaning
+        <text className="t tx x3 opt" x="650.5" y="115">
+          <tspan x="650.5">component</tspan>
+          <tspan x="650.5" dy="17">reads meaning</tspan>
         </text>
         <circle className="tv v1" cx="280.5" cy="95.5" r="5" />
         <circle className="tv v2" cx="560.5" cy="95.5" r="5" />
@@ -535,6 +460,8 @@ function Rollout() {
 
 /* ── 04 turnaround ──────────────────────────────────────────────── */
 const AREAS = ["system in code", "search", "flights", "cars", "checkout", "users & roles"];
+/* the first label wraps, so it stays left of the step it sits on (A7) */
+const AREA_LINES: Record<string, string[]> = { "system in code": ["system", "in code"] };
 const PTS: [number, number][] = [
   [437.5, 172],
   [512.5, 144],
@@ -570,8 +497,14 @@ function Turnaround() {
           return (
             <g key={a} className="ship" style={{ animationDelay: `${2.2 + (i + 1) * 0.36}s` }}>
               <circle cx={x} cy={y} r="5" className="s c3" />
-              <text className="t opt" x={x} y={y - 11} textAnchor="middle">
-                {a}
+              <text className="t opt" x={x} y={y - 11 - ((AREA_LINES[a]?.length ?? 1) - 1) * 14} textAnchor="middle">
+                {AREA_LINES[a]
+                  ? AREA_LINES[a].map((line, j) => (
+                      <tspan key={line} x={x} dy={j ? 14 : 0}>
+                        {line}
+                      </tspan>
+                    ))
+                  : a}
               </text>
             </g>
           );
@@ -647,10 +580,12 @@ export default function DriftCase(_props: { cs: CaseStudy }) {
       <Section ruled>
         <Eyebrow>03 · Collaboration, and where it broke</Eyebrow>
         <h2 className="text-display-2 dfc-h2">Nobody asked for a system.</h2>
-        <p className="text-lead dfc-lead">
-          When I proposed one, the answer was that it wasn&apos;t necessary. Docs and changelogs weren&apos;t either. So I built it for myself, and
-          paired with one developer.
-        </p>
+        {/* the box leads the section; the lead that repeated it is gone (F2) */}
+        <Words k="What I chose not to do">
+          I didn&apos;t wait for sign-off. The team said a system, docs and changelogs weren&apos;t necessary, so I built it for
+          myself and paired with one developer. The cost: months carrying it alone, and pushback later on workflows,
+          complexity and naming.
+        </Words>
         <Rollout />
         <div className="dfc-two">
           <div>
@@ -692,6 +627,11 @@ export default function DriftCase(_props: { cs: CaseStudy }) {
             <p className="dfc-stats__l">checkout for every product</p>
           </div>
         </div>
+        <Words k="AI, and where I kept it out">
+          I used Figma Make to prototype components and whole flows, so developers found the gaps before the sprint instead
+          of halfway through it. What I kept out: the decisions. What ships and what things are called were settled with the
+          team, not generated.
+        </Words>
       </Section>
 
       <Section ruled>

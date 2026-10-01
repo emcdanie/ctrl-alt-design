@@ -4,7 +4,6 @@ import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
 import Spotlight from "@/components/Spotlight";
 import { ScanPhrase, ScanPoint, ScanRead } from "@/components/ScanRead";
-import SectionList from "@/components/ui/SectionList";
 import Card from "@/components/ui/Card";
 import { TESTIMONIALS } from "@/content/testimonials";
 import WorkedWith from "@/components/WorkedWith";
@@ -44,6 +43,17 @@ export default function AboutPage() {
           accent={<Term id="rulebook" />}
           after="."
           lead="Teams move fast. A good system helps them move together."
+        />
+        {/* the New tricks layout: the list left, the text right (24 Sep audit, A5) */}
+        <ScanRead
+          points={
+            <>
+              <ScanPoint k="tokens">Token architecture</ScanPoint>
+              <ScanPoint k="storybook">Component libraries in Storybook</ScanPoint>
+              <ScanPoint k="governance">Governance and contribution</ScanPoint>
+              <ScanPoint k="ai">AI-ready docs and MCP</ScanPoint>
+            </>
+          }
         >
           <p>
             Components get duplicated. Decisions get made under sprint pressure and nobody writes them
@@ -51,15 +61,7 @@ export default function AboutPage() {
             structure underneath and write it down, <strong>so design and dev can talk again</strong>. Then I hand
             it over: the system belongs to the team, not to me. It&apos;s the part I&apos;d do for free.
           </p>
-          <SectionList
-            items={[
-              "Token architecture",
-              "Component libraries in Storybook",
-              "Governance and contribution",
-              "AI-ready docs and MCP",
-            ]}
-          />
-        </SectionHeader>
+        </ScanRead>
       </Section>
 
       <Section id="track-record" label="Track record">

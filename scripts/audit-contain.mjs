@@ -16,10 +16,19 @@
  * 2. Clear of controls: no pin or badge (a class naming "pin" or "badge")
  *    overlaps a button or link it is not part of, or a control drawn in
  *    a picture (an SVG .lc group, the "looks clickable" outline).
- * 3. The receipt: theme, width, route, element, measured, expected.
+ * 3. Text in its box (24 Sep 2026 audit, A8): every visible text node
+ *    on the page, nav and footer included, stays inside its nearest
+ *    bordered or backgrounded ancestor, by 1px. A background clipped to
+ *    the text itself is not a box, nor is an inline span (a decoration
+ *    on its line); an ancestor that hides overflow already keeps the
+ *    text in, and a closed <details> shows none of its content. SVG text has no box ancestor, so its box
+ *    is the smallest rect in the same drawing that holds the text's
+ *    first letter, measured to the inside of its stroke with 0.25px of
+ *    slack: a label never touches or crosses its frame.
+ * 4. The receipt: theme, width, route, element, measured, expected.
  *
  * Browser audit: reads AUDIT_URL like the others. */
-import { readdirSync, readFileSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
 import { BASE } from "./lib/base-url.mjs";
@@ -30,7 +39,9 @@ const THEMES = ["light", "dark"];
 const slugs = readdirSync("content/case-studies")
   .filter((f) => f.endsWith(".ts") && f !== "index.ts")
   .map((f) => f.replace(/\.ts$/, ""));
-const study = readFileSync("content/studies.ts", "utf8").match(/id: "([^"]+)"/)?.[1];
+/* the studies with a page (the same four as audit:axe; the first id in
+   content/studies.ts has no page, so it used to audit a 404) */
+const studies = ["stock-screener", "race-day", "insurance-forms", "legal-search"];
 const ROUTES = [
   "/",
   "/work",
@@ -39,7 +50,11 @@ const ROUTES = [
   "/design-system",
   "/quick",
   "/contact",
-  ...(study ? [`/work/studies/${study}`] : []),
+  "/privacy",
+  "/accessibility",
+  "/no-such-page",
+  "/design-system/inspector",
+  ...studies.map((id) => `/work/studies/${id}`),
   ...slugs.map((s) => `/case-studies/${s}`),
 ];
 
@@ -152,6 +167,87 @@ function check() {
         break;
       }
     }
+  }
+  /* 3. text in its box */
+  const transparent = (c) => /rgba\(0, 0, 0, 0\)|transparent/.test(c);
+  const isBox = (el) => {
+    const c = getComputedStyle(el);
+    if (c.backgroundClip === "text" || c.webkitBackgroundClip === "text") return false;
+    /* an inline span (a linked phrase, a highlight) is a decoration on
+       its line, not a container: a smaller face inside it overshoots its
+       line box without leaving anything */
+    if (c.display === "inline") return false;
+    return (
+      !transparent(c.backgroundColor) ||
+      c.backgroundImage !== "none" ||
+      ["Top", "Right", "Bottom", "Left"].some((d) => parseFloat(c[`border${d}Width`]) > 0 && c[`border${d}Style`] !== "none")
+    );
+  };
+  const clips = (el) => {
+    const c = getComputedStyle(el);
+    return c.overflowX !== "visible" || c.overflowY !== "visible";
+  };
+  const range = document.createRange();
+  const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const seenBox = new Set();
+  while (walk.nextNode()) {
+    const node = walk.currentNode;
+    if (!node.textContent.trim()) continue;
+    const host = node.parentElement;
+    if (!host || host.closest("svg, script, style, noscript, .sr-only") || !shown(host)) continue;
+    /* a closed <details> keeps a layout box for its hidden content */
+    if (host.closest("details:not([open])") && !host.closest("summary")) continue;
+    let box = host;
+    let held = false;
+    for (; box && box !== document.body && box !== document.documentElement; box = box.parentElement) {
+      if (isBox(box)) break;
+      if (clips(box)) {
+        held = true;
+        break;
+      }
+    }
+    if (held || !box || box === document.body || box === document.documentElement || clips(box) || seenBox.has(box)) continue;
+    const b = box.getBoundingClientRect();
+    range.selectNodeContents(node);
+    for (const r of range.getClientRects()) {
+      if (!r.width || !r.height) continue;
+      const over = past(r, { l: b.left, r: b.right, t: b.top, b: b.bottom });
+      if (over > 1) {
+        seenBox.add(box);
+        out.push([`"${node.textContent.trim().slice(0, 32)}" in ${name(box)}`, `${Math.round(over)}px outside its box`, "text inside its bordered or backgrounded box"]);
+        break;
+      }
+    }
+  }
+  for (const t of document.querySelectorAll("svg text")) {
+    if (!shown(t)) continue;
+    const tr = t.getBoundingClientRect();
+    if (!tr.width) continue;
+    const svg = t.closest("svg");
+    /* the first letter: a few px in from the start edge, mid-height */
+    const px = tr.left + Math.min(4, tr.width / 2);
+    const py = tr.top + tr.height / 2;
+    let frame = null;
+    let area = Infinity;
+    for (const rect of svg.querySelectorAll("rect")) {
+      if (rect.closest("clipPath, mask, defs, pattern") || !shown(rect)) continue;
+      const rr = rect.getBoundingClientRect();
+      if (px < rr.left || px > rr.right || py < rr.top || py > rr.bottom) continue;
+      if (rr.width * rr.height < area) {
+        area = rr.width * rr.height;
+        const sc = getComputedStyle(rect);
+        const scale = rr.width / (rect.width.baseVal.value || rr.width);
+        frame = { left: rr.left, right: rr.right, top: rr.top, bottom: rr.bottom, stroke: sc.stroke === "none" ? 0 : parseFloat(sc.strokeWidth) * scale };
+      }
+    }
+    if (!frame) continue;
+    /* the inside of the frame's stroke: a label touching the line has
+       already crossed it */
+    const inset = frame.stroke / 2;
+    const over = past(tr, { l: frame.left + inset, r: frame.right - inset, t: frame.top + inset, b: frame.bottom - inset });
+    /* 0.25px, not 1: the Drift cascade label that crossed its frame
+       (A7) sat 0.72px into the stroke at 1440, so 1px let it pass */
+    if (over > 0.25) out.push([`svg text "${t.textContent.trim().slice(0, 32)}"`, `${Math.round(over)}px past its frame`, "every label inside the shape it sits in"]);
   }
   return out;
 }

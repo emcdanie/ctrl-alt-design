@@ -357,6 +357,8 @@
 @media (min-width: 900px) {
   .row { grid-template-columns: 20rem minmax(0, 1fr); }
 }
+/* the section label draws the section's one rule; the first row adds none */
+.index > li:first-child .row { border-top: 0; }
 .row:hover { transform: translateY(-2px); }
 .row:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);

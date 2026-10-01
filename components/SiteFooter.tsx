@@ -8,8 +8,8 @@ import { social } from "@/lib/social";
 /* Site footer, from footer-mock.html (Elleta, 22 Sep 2026): the panel
    ground in both themes, "Let's compare notes.", one line and the one
    "Let's talk" beside the pages and elsewhere columns, one small-print
-   row with the only version label, then the pattern ELLETA across the
-   window, flush with the bottom edge. */
+   row with the only version label, then the pattern ELLETA at the
+   content width (same left edge as the text), flush with the bottom edge. */
 
 const external = (href: string, label: string) => (
   <a className="site-footer__link" href={href} target="_blank" rel="noopener noreferrer">
@@ -59,9 +59,9 @@ export default function SiteFooter() {
           </p>
           <p>Built on BELLA · v0.2</p>
         </div>
-      </div>
-      <div className="site-footer__mark">
-        <BrandWordmark size="full-bleed" />
+        <div className="site-footer__mark">
+          <BrandWordmark size="full-bleed" />
+        </div>
       </div>
     </footer>
   );

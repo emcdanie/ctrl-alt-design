@@ -63,6 +63,16 @@ export const CASES: CaseRowData[] = [
     href: "/case-studies/chip",
     tags: [{ text: "ai-compatible system" }, { text: "judgement over ai", outline: true }],
   },
+  /* Code First (24 Sep audit, B6; Brad Frost Web, permission given) */
+  {
+    id: "code-first",
+    n: "06",
+    meta: "Design systems · Brad Frost Web · 2025 to 2026",
+    title: "Code First",
+    claim: "Working code-first changes what you notice.",
+    href: "/case-studies/brad-frost",
+    tags: [{ text: "tokens figma → code", tone: "c3" }, { text: "close with engineers", outline: true }],
+  },
 ];
 
 /* Home shows the first three (Elleta, 22 Sep 2026): Drift, B2B travel,
