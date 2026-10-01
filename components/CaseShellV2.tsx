@@ -5,7 +5,6 @@ import CaseBackLink from "@/components/CaseBackLink";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { Tag } from "@/components/ui/Tag";
-import CaseEndReveal from "@/components/CaseEndReveal";
 import { findWorkItemBySlug } from "@/lib/workLibrary";
 
 /**
@@ -74,7 +73,6 @@ export default function CaseShellV2({
   linkOut,
   crumbs = true,
   identity,
-  endReveal = true,
   glance = false,
   heroExtra,
   className,
@@ -115,8 +113,6 @@ export default function CaseShellV2({
       pair the head renders flat grey while every real case wears its
       colour, so the pair can be supplied directly instead. */
   identity?: { text: string; hi: string };
-  /** the thanks-and-next-case close; the System page ends on its claim */
-  endReveal?: boolean;
   /** the facts as the mock's at-a-glance strip: four ruled cells (Geist refresh) */
   glance?: boolean;
   /** hero content between the facts and the NDA note (the signal tags) */
@@ -209,11 +205,6 @@ export default function CaseShellV2({
       </Section>
 
       {children}
-
-      {/* the end-of-case overlay reveal renders ONCE here for every case
-          (triggers when the end enters view); no composition ships its own
-          next-case section */}
-      {endReveal ? <CaseEndReveal slug={slug} /> : null}
     </div>
   );
 }

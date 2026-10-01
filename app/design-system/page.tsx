@@ -32,7 +32,6 @@ export default function DesignSystemPage() {
         lead="BELLA is my open design system, and it runs the site you're reading. This page shows how I make one: who decides, where AI helps, and what stops drift from shipping."
         readingMinutes={6}
         tags={[]}
-        endReveal={false}
         /* System is its own nav item, not reached through /work */
         crumbs={false}
         identity={{ text: "var(--case-clarity-text)", hi: "var(--case-clarity-hi)" }}

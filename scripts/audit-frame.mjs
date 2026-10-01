@@ -194,7 +194,7 @@ for (const width of WIDTHS) {
         /* a shadow means it floats: allowed only on floating things (the
            next-case card, popovers, dialogs), and not a content card */
         if (c.boxShadow !== "none") {
-          if (!el.closest(".cs2-endreveal, [popover], [role=dialog], [role=tooltip]"))
+          if (!el.closest("[popover], [role=dialog], [role=tooltip]"))
             F(el, "a resting card with a shadow", "no shadow: shadows are for floating things only");
           continue;
         }
