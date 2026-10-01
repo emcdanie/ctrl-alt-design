@@ -22,6 +22,7 @@ export function Button({
   children,
   ariaLabel,
   newTab = false,
+  trackEvent,
 }: {
   variant?: "primary" | "secondary";
   href?: string;
@@ -33,6 +34,8 @@ export function Button({
   ariaLabel?: string;
   /** open in a new tab: a plain anchor with rel, not the router Link */
   newTab?: boolean;
+  /** analytics: the Umami event name, rendered as data-umami-event */
+  trackEvent?: string;
 }) {
   /* primary = the standard BELLA primary: flat fill, never lifts */
   const cls = `btn-key${variant === "primary" ? " btn-key--primary" : ""}${className ? ` ${className}` : ""}`;
@@ -56,19 +59,20 @@ export function Button({
           className={cls}
           aria-label={ariaLabel}
           data-component="Button"
+          data-umami-event={trackEvent}
         >
           {label}
         </a>
       );
     }
     return (
-      <Link href={href} className={cls} aria-label={ariaLabel} data-component="Button">
+      <Link href={href} className={cls} aria-label={ariaLabel} data-component="Button" data-umami-event={trackEvent}>
         {label}
       </Link>
     );
   }
   return (
-    <button type={type} onClick={onClick} disabled={disabled} className={cls} aria-label={ariaLabel} data-component="Button">
+    <button type={type} onClick={onClick} disabled={disabled} className={cls} aria-label={ariaLabel} data-component="Button" data-umami-event={trackEvent}>
       {label}
     </button>
   );

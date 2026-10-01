@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/Button";
 export default function FooterCta() {
   const onContact = usePathname() === "/contact";
   return (
-    <Button href="/contact" variant={onContact ? "secondary" : "primary"} className="btn-pill">
+    <Button href="/contact" variant={onContact ? "secondary" : "primary"} className="btn-pill" trackEvent="lets-talk">
       Let&rsquo;s talk
     </Button>
   );

@@ -175,7 +175,7 @@ export default function ContactSection() {
 
             {/* no plaintext email anywhere (constitution copy rule); the
                 form is the channel, LinkedIn the alternative */}
-            <a href={social.linkedin} target="_blank" rel="noopener noreferrer" style={linkStyle}>
+            <a href={social.linkedin} target="_blank" rel="noopener noreferrer" style={linkStyle} data-umami-event="linkedin">
               <Icon name="Linkedin" size="sm" />
               linkedin.com/in/elleta-mcdaniel
             </a>

@@ -46,6 +46,10 @@
         {
           "name": "newTab",
           "type": "boolean"
+        },
+        {
+          "name": "trackEvent",
+          "type": "string"
         }
       ],
       "variants": [

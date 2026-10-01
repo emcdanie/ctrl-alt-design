@@ -34,7 +34,7 @@ export default function ContactActions({ layout = "row" }: { layout?: "row" | "s
         <Icon name={copied ? "Check" : "Copy"} size="sm" />
         {copied ? "Email copied" : "Copy email"}
       </Button>
-      <Button href={social.linkedin}>
+      <Button href={social.linkedin} trackEvent="linkedin">
         LinkedIn <Icon name="OpenNewWindow" size="sm" />
         <span className="sr-only"> (opens in a new tab)</span>
       </Button>

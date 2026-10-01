@@ -67,7 +67,7 @@ export default function QuickPage() {
           two regions sharing a name fails axe landmark-unique. */}
       <Section id="quick-cta" label="Work together">
         <p className="quick-cta">
-          <Button href="/contact" variant="primary">
+          <Button href="/contact" variant="primary" trackEvent="lets-talk">
             Let&rsquo;s talk
             <span aria-hidden="true">&rarr;</span>
           </Button>

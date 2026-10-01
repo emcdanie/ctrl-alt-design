@@ -12,7 +12,12 @@ import styles from "./WorkLibrary.module.css";
  *  drawing up. Data: content/cases.ts. */
 export default function CaseRow({ row }: { row: CaseRowData }) {
   return (
-    <Link href={row.href} className={styles.row}>
+    <Link
+      href={row.href}
+      className={styles.row}
+      data-umami-event="case-open"
+      data-umami-event-case={row.href.split("/").pop()}
+    >
       <span className={styles.thumb}>
         <svg viewBox="0 0 300 180" aria-hidden="true" data-bella-diagram dangerouslySetInnerHTML={{ __html: WORK_THUMBS[row.id] }} />
       </span>
