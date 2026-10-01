@@ -180,5 +180,21 @@ for (const f of [...appFiles, ...componentFiles]) {
   }
 }
 
+/* 8. no TodoNote in a production build (Elleta, 1 Oct 2026). TodoNote
+ * renders nothing in production; this reads the built HTML to prove it.
+ * No build, no pass: run `next build` first (CI builds before the gate). */
+{
+  const { existsSync } = await import("node:fs");
+  if (!existsSync(".next/BUILD_ID") || !existsSync(".next/server/app")) {
+    fail(".next", "no production build", "run `next build` before the gate");
+  } else {
+    for (const f of walk(".next/server/app", [".html"])) {
+      if (readFileSync(f, "utf8").includes("todo-note")) {
+        fail(f, "a rendered TodoNote", "TodoNote renders nothing in production");
+      }
+    }
+  }
+}
+
 console.log(fails === 0 ? "structure gate: PASS" : `structure gate: ${fails} failure(s)`);
 process.exit(fails === 0 ? 0 : 1);
