@@ -70,7 +70,7 @@ export default function PrivacyPage() {
             "Vercel Inc. (hosting, USA)",
             "Resend (email delivery, USA)",
             "Anthropic PBC (Find my fit, USA)",
-            "Umami (visit counts: no cookies, no personal data, only totals across all visits)",
+            "Umami (visit counts: no cookies, no personal data, only totals across all visits, EU)",
           ].map((i) => (
             <li key={i}>{i}</li>
           ))}
