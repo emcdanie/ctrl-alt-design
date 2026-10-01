@@ -18,7 +18,7 @@ export default function PrivacyPage() {
           as="h1"
           id="privacy-title"
           heading="Privacy"
-          lead="No ads, no tracking cookies, and the only analytics are anonymous visit counts. The only personal data this site handles is what you choose to send me."
+          lead="No ads, no tracking cookies. Analytics are anonymous: visit counts and a few button clicks, nothing that identifies you. The only personal data this site handles is what you choose to send me."
         />
         <TodoNote>Last updated: the date of publishing.</TodoNote>
       </Section>
@@ -75,7 +75,6 @@ export default function PrivacyPage() {
             <li key={i}>{i}</li>
           ))}
         </ul>
-        <TodoNote>Confirm Umami Cloud&apos;s data region and add it in brackets like the others.</TodoNote>
         <p>
           Transfers to the USA rely on the EU-US Data Privacy Framework or the European Commission&apos;s standard
           contractual clauses in each provider&apos;s data processing terms.
