@@ -1,4 +1,10 @@
 {
   "$comment": "Accepted npm audit advisories (high/critical only reach the gate). Each entry needs id (GHSA), reason, expires (YYYY-MM-DD). Empty by design — see scripts/npm-audit-gate.mjs.",
-  "advisories": []
+  "advisories": [
+    {
+      "id": "GHSA-vfj7-8cjw-p6xm",
+      "reason": "braces <=3.0.3, no patched release. Dev-only: eslint toolchain (eslint-config-next > @next/eslint-plugin-next > fast-glob > micromatch > braces). Not in the runtime or build output. DoS from nested patterns we write ourselves.",
+      "expires": "2026-11-02"
+    }
+  ]
 }
