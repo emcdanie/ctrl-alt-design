@@ -29,12 +29,22 @@ try {
 }
 const report = JSON.parse(audit);
 
+// Every advisory a package inherits: its own, plus (following `via` package
+// names) those of the dependencies it is flagged through. A transitive entry
+// passes only when each advisory in that chain is accepted.
+const vulns = report.vulnerabilities ?? {};
+function advisoryIds(name, seen = new Set()) {
+  if (seen.has(name) || !vulns[name]) return [];
+  seen.add(name);
+  return (vulns[name].via ?? []).flatMap((v) =>
+    typeof v === "string" ? advisoryIds(v, seen) : v.url ? [v.url.split("/").pop()] : []
+  );
+}
+
 const failing = [];
-for (const [name, vuln] of Object.entries(report.vulnerabilities ?? {})) {
+for (const [name, vuln] of Object.entries(vulns)) {
   if (!["high", "critical"].includes(vuln.severity)) continue;
-  const ids = (vuln.via ?? [])
-    .filter((v) => typeof v === "object" && v.url)
-    .map((v) => v.url.split("/").pop());
+  const ids = [...new Set(advisoryIds(name))];
   const unaccepted = ids.filter((id) => !accepted.has(id));
   if (ids.length === 0 || unaccepted.length > 0) {
     failing.push({ name, severity: vuln.severity, advisories: unaccepted.length ? unaccepted : ["(transitive)"] });
