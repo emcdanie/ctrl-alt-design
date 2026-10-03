@@ -302,13 +302,15 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 
 ---
 
-## 11. Cowork relay (Elleta, 2026-09-19)
-- **Inbox.** When Elleta types "check inbox", read `_private/inbox/site.md`, do the work it
-  describes, then move it to `_private/inbox/done/site-<YYYY-MM-DD-HHMM>.md`.
-- **Report.** At the end of every task, prepend a report to `_private/reports/site.md`: the date
-  and a one-line summary, the commits, the gate result, the screenshot paths, decisions for
-  Elleta (numbered, each yes/no or pick-one), and any deviations from the prompt.
-- `_private/` is gitignored: never commit an inbox or report file.
+## 11. Cowork relay (Elleta, 2026-10-03; supersedes 2026-09-19)
+- When Elleta types "go" or "/go", read `docs/reference/inbox/next.md` and do the work. Log any
+  decision made alone in `docs/reference/decisions-while-away.md` and save checkpoint screenshots
+  in `docs/reference/inbox/screens/`.
+- When done, write `docs/reference/inbox/report.md` (under 15 lines, then "Needs Elleta" as
+  numbered yes/no or pick-one items), move `next.md` to
+  `docs/reference/inbox/done/<YYYY-MM-DD-slug>.md`, and stop.
+- Commit only when `next.md` asks for it, never push. `docs/reference/inbox` is gitignored; never
+  commit it.
 
 ---
 
