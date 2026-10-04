@@ -1,6 +1,11 @@
-import * as Iconoir from "iconoir-react";
+import { ArrowRight, Check, Copy, HalfMoon, Linkedin, NavArrowDown, OpenNewWindow, Page, SunLight } from "iconoir-react";
 
-export type IconName = keyof typeof Iconoir;
+/* The glyphs the site uses, by name (named imports, 4 Oct 2026): a
+   namespace import with a computed key shipped all of Iconoir, about
+   375 KB gzipped, on every page. Add a glyph here when a page needs it. */
+const ICONS = { ArrowRight, Check, Copy, HalfMoon, Linkedin, NavArrowDown, OpenNewWindow, Page, SunLight } as const;
+
+export type IconName = keyof typeof ICONS;
 
 const SIZE = {
   sm: "var(--icon-sm)",
@@ -36,7 +41,7 @@ export function Icon({
   className?: string;
   style?: React.CSSProperties;
 }) {
-  const Glyph = Iconoir[name] as React.ComponentType<Record<string, unknown>>;
+  const Glyph = ICONS[name] as React.ComponentType<Record<string, unknown>>;
   return (
     <Glyph
       color="currentColor"
