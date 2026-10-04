@@ -191,6 +191,9 @@
   width: 120%;
   max-width: none; /* the global img cap squashed it to 100% (fixed 18d) */
   filter: drop-shadow(var(--hero-shadow));
+  /* the shadow stays on the photo: nothing past its box (18g; it ran
+     out past the shoulder under the faint code) */
+  clip-path: inset(0);
 }
 
 .paint {
