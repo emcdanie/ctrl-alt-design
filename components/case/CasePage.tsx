@@ -118,7 +118,7 @@ export function Beat({
   children?: ReactNode;
 }) {
   return (
-    <section className={styles.beat} aria-labelledby={`${id}-h`}>
+    <section id={id} className={styles.beat} aria-labelledby={`${id}-h`}>
       <div className={`${styles.beatHeader} ${align === "edge" ? styles.edge : styles.col}`}>
         <p className={styles.beatLabel}>
           <span className={styles.badge}>{num}</span>

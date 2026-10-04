@@ -29,8 +29,8 @@ test.describe("About", () => {
   test("experience", async ({ page }) => {
     await expect(page.locator("#track-record")).toMatchAriaSnapshot(snap("about-experience"));
   });
-  test("logo grid", async ({ page }) => {
-    await expect(page.locator("#the-pack")).toMatchAriaSnapshot(snap("about-logos"));
+  test("the pack", async ({ page }) => {
+    await expect(page.locator("#the-pack")).toMatchAriaSnapshot(snap("about-pack"));
   });
   test("testimonials", async ({ page }) => {
     await expect(page.locator("#word-of-mouth")).toMatchAriaSnapshot(snap("about-testimonials"));
@@ -82,8 +82,8 @@ test.describe("Nav", () => {
 });
 
 /* The experience accordion without JavaScript: the server renders every
-   panel open, so the content is all there. With JavaScript only the
-   current role stays open. */
+   panel open, so the content is all there. With JavaScript every role
+   starts collapsed. */
 test.describe("About experience without JavaScript", () => {
   test.use({ javaScriptEnabled: false });
   test("every panel is visible", async ({ page }) => {
@@ -94,12 +94,14 @@ test.describe("About experience without JavaScript", () => {
   });
 });
 
-test("About experience with JavaScript: only the current role is open", async ({ page }) => {
+/* site v3 (Figma 403:7256): every row starts collapsed to its outcome
+   line; the chevron opens the bullets */
+test("About experience with JavaScript: every role starts collapsed", async ({ page }) => {
   await open(page, "/about");
   const triggers = page.locator("#track-record .accordion__trigger");
-  await expect(triggers.first()).toHaveAttribute("aria-expanded", "true");
-  for (let i = 1; i < (await triggers.count()); i++) await expect(triggers.nth(i)).toHaveAttribute("aria-expanded", "false");
-  await expect(page.locator("#track-record .accordion__panel").nth(1)).toBeHidden();
+  await expect(triggers).toHaveCount(5);
+  for (let i = 0; i < (await triggers.count()); i++) await expect(triggers.nth(i)).toHaveAttribute("aria-expanded", "false");
+  await expect(page.locator("#track-record .accordion__panel").first()).toBeHidden();
 });
 
 test.describe("Learning", () => {

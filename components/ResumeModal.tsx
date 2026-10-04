@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
 import { social } from "@/lib/social";
 
 interface ResumeModalProps {
@@ -385,30 +384,22 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
   );
 }
 
-/* "View CV": the secondary Button that opens this modal. It owns the
-   open state, so the page around it can stay a server component. */
-export function ResumeButton({ variant = "primary" }: { variant?: "primary" | "secondary" }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <Button variant={variant} className="xp__cv" onClick={() => setOpen(true)} trackEvent="cv-open">
-        <Icon name="Page" size="sm" />
-        View CV
-      </Button>
-      <ResumeModal open={open} onClose={() => setOpen(false)} />
-    </>
-  );
-}
-
 /* "CV" as a small text link (the footer's small print, the case ending's
-   "View CV"): opens the modal. */
-export function ResumeLink({ className = "", label = "CV" }: { className?: string; label?: string }) {
+   "View CV"), or, with `button`, the Button that opens it (the About
+   hero's one primary, site v3): opens the modal. */
+export function ResumeLink({ className = "", label = "CV", button }: { className?: string; label?: string; button?: "primary" | "secondary" }) {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button type="button" className={className} onClick={() => setOpen(true)} data-umami-event="cv-open">
-        {label}
-      </button>
+      {button ? (
+        <Button variant={button} className={className} onClick={() => setOpen(true)} trackEvent="cv-open">
+          {label}
+        </Button>
+      ) : (
+        <button type="button" className={className} onClick={() => setOpen(true)} data-umami-event="cv-open">
+          {label}
+        </button>
+      )}
       <ResumeModal open={open} onClose={() => setOpen(false)} />
     </>
   );

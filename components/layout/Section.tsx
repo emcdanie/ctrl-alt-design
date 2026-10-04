@@ -32,8 +32,11 @@ export default function Section({
    *  Home's proof row, so the gaps either side of it are equal) */
   flushBottom?: string;
   /** "case": the Layout B body (1056) of a rebuilt case page (site v3,
-   *  CLAUDE.md section 2); every other page keeps the one frame */
-  width?: "page" | "case";
+   *  CLAUDE.md section 2); "case-edge": the same body with the page's
+   *  text on its left edge, not the centred column (About, site v3,
+   *  Figma 403:7256: the h1 at x192); every other page keeps the one
+   *  frame */
+  width?: "page" | "case" | "case-edge";
   children: ReactNode;
 }) {
   const labelId = label && id ? `${id}-label` : undefined;
@@ -44,7 +47,7 @@ export default function Section({
       aria-labelledby={labelId ?? labelledBy}
       data-frame-exempt={flushBottom}
     >
-      <Container className={width === "case" ? "container--case" : ""}>
+      <Container className={width === "case" ? "container--case" : width === "case-edge" ? "container--case container--edge" : ""}>
         {label ? (
           <p id={labelId} className="l-section__label">
             {label}

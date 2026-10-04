@@ -1,0 +1,8 @@
+- region "The pack.":
+  - paragraph: 5 The pack
+  - heading "The pack." [level=2]
+  - img "An illustration of Bella and Obi, two dogs with big feathered ears, sitting side by side."
+  - list:
+    - listitem:
+      - heading "Bella" [level=3]
+      - paragraph: My dog and my design partner. She's the name and the face behind BELLA, the design system this whole site is built on.

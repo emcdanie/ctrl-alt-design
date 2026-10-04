@@ -24,7 +24,7 @@ const ROUTES = [
    A route joins in the commit that rebuilds it (CLAUDE.md section 3,
    Migration) and is then held to the v3 locks by the leg at the end of
    the route loop. */
-const V3_ROUTES = ["/case-studies/design-system-transformation", "/case-studies/federated", "/case-studies/theming"];
+const V3_ROUTES = ["/case-studies/design-system-transformation", "/case-studies/federated", "/case-studies/theming", "/case-studies/chip", "/about"];
 const CARD_SCOPE = '[class*="card"], [class*="Card"], .thesis-band, .ds-gate__row, [role="dialog"]';
 /* The metadata tier stays exempt (Elleta's ruling, 2026-07-27): tags,
    pills, eyebrows, kickers and chips are a deliberate separate tier on
@@ -211,7 +211,10 @@ for (const route of ROUTES) {
            card meta) is a label, held to 16 */
         const block = el.closest("p, li, blockquote, dd, figcaption");
         const blockText = block ? block.textContent.replace(/\s+/g, " ").trim() : "";
-        const reading = !!block && !el.closest("nav, button, footer") && (blockText.length >= 48 || /[.!?]$/.test(blockText));
+        /* the kicker is the line directly above the page's h1: a label by
+           position (structural, not a class), however long */
+        const kicker = !!block && block.nextElementSibling?.tagName === "H1";
+        const reading = !!block && !kicker && !el.closest("nav, button, footer") && (blockText.length >= 48 || /[.!?]$/.test(blockText));
         const label = `${el.tagName.toLowerCase()} "${own.slice(0, 30)}"`;
         if (reading && size < 18) out.push([label, `${size}px`, ">= 18px reading text"]);
         else if (size < 16) out.push([label, `${size}px`, ">= 16px labels and UI"]);

@@ -8,7 +8,9 @@
  *    Layout B, the rebuilt case template (site v3, CLAUDE.md section 2):
  *    its container is .container--case (the 1056 body) and its h1 sits on
  *    the text column, centred at --case-col-max; Layout B routes share
- *    their own edge, compared only with each other.
+ *    their own edge, compared only with each other. A Layout B page whose
+ *    text sits on the body's left edge (.container--edge, About, site v3)
+ *    is held to that edge, and compared only with its own kind.
  * 2. Two title recipes: `display` (the Home hero) and `page` (everything
  *    else). An h1 renders one of their two sizes and is never wider than
  *    its measure. Every h1 and h2 in main is 50 characters or fewer.
@@ -98,7 +100,7 @@ for (const width of WIDTHS) {
       const displaySize = px(probe({ fontSize: "var(--component-heading-hero-font-size)" }, "fontSize"));
       const cardShadow = probe({ boxShadow: "var(--shadow-card)" }, "boxShadow");
       const colMax = px(probe({ width: "var(--case-col-max)" }, "width"));
-      const out = { fails: [], exempt: [], cards: [], edge: null, layoutB: false };
+      const out = { fails: [], exempt: [], cards: [], edge: null, layoutB: false, edgeB: false };
       /* 0b. no runaway height at 1440, and the tallest leaf-ish culprit */
       const docH = document.documentElement.scrollHeight;
       if (innerWidth === 1440 && docH > 20000) {
@@ -140,8 +142,12 @@ for (const width of WIDTHS) {
         if (cont.classList.contains("container--case")) {
           /* Layout B: the text column, centred in the case body */
           out.layoutB = true;
+          /* Layout B on the body's edge (.container--edge, About, site v3):
+             the text starts on the 1056 body's left edge, x192 at 1440;
+             these routes share their own edge, compared with each other */
+          out.edgeB = cont.classList.contains("container--edge");
           const content = cont.getBoundingClientRect().width - px(cc.paddingLeft) - px(cc.paddingRight);
-          inner = Math.round(inner + Math.max(0, (content - colMax) / 2));
+          if (!out.edgeB) inner = Math.round(inner + Math.max(0, (content - colMax) / 2));
         }
         out.edge = inner;
         const h1 = main.querySelector("h1");
@@ -254,7 +260,7 @@ for (const width of WIDTHS) {
     const sigs = [...new Set(r.cards)];
     if (sigs.length > 2) fail(route, width, "cards", `${sigs.length} signatures (${sigs.join("; ")})`, "at most 2: the content card and ExampleFrame");
     if (r.edge != null) {
-      const group = `${width}${r.layoutB ? " layout B" : ""}`;
+      const group = `${width}${r.layoutB ? (r.edgeB ? " layout B edge" : " layout B") : ""}`;
       edges[group] ??= { value: r.edge, route };
       if (Math.abs(edges[group].value - r.edge) > 1)
         fail(route, width, "content edge", `${r.edge}px`, `${edges[group].value}px, as on ${edges[group].route}`);

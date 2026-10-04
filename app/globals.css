@@ -159,10 +159,8 @@ body {
   --border-faint: var(--color-semantic-border);
   --radius-card: 1rem;
   --radius-pill: 999px;
-  /* a soft iris wash: row hover (10%, the mock); the Current pill takes
-     6% so its iris text clears AA (4.61:1 on the card; 10% gave 4.37) */
+  /* a soft iris wash: row hover (10%, the mock) */
   --tint-soft: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
-  --tint-pill: color-mix(in srgb, var(--color-accent-ink) 6%, transparent);
   --radius-popover: 0.75rem;
   /* Term: the dotted iris underline (thicker, further off in headings) */
   --term-dot: 1.5px;
@@ -260,13 +258,26 @@ body {
   --kit-swatch-red: #b3272f;
   --kit-swatch-pink: #da8f98;
   --kit-swatch-green: #5e8a5e;
+  /* Glass plates (Elleta, 4 Oct 2026, site v3, CLAUDE.md section 1
+     "Glass"): the About hero's Pattern and Photo plates, Hero v4 style */
+  --glass-plate-fill: rgba(255, 255, 255, 0.18);
+  --glass-plate-blur: 8px;
+  --glass-plate-edge: rgba(255, 255, 255, 0.65);
+  --glass-plate-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --glass-plate-shadow: 0 16px 23px rgba(18, 18, 18, 0.12);
+  /* About Figure 1 (how this site gets built), pictures only: the human
+     steps' ochre-deep edge, and the terminal that stays dark in both
+     themes */
+  --pic-human-edge: var(--color-brand-ochre-deep);
+  --pic-terminal-ground: #17191f;
+  --pic-terminal-ink: #eceef3;
+  --pic-terminal-ok: #72d08b;
   /* display tokens alias the BELLA heading scale (set below; TODO: move
      the values into BELLA component.heading.* and delete the override) */
   --text-display-1: var(--component-heading-page-font-size);
   --text-display-2: var(--component-heading-section-font-size);
   --text-display-3: clamp(1.375rem, 1.2rem + 0.75vw, 2rem);
   /* heading-3: item, card and entry titles (Geist 600) */
-  --text-heading-3: clamp(1.125rem, 1.05rem + 0.3vw, 1.375rem);
   --text-lead: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
   --leading-lead: 1.55;
   --text-body: var(--typography-font-size-body); /* 17px (Geist refresh) */
@@ -563,7 +574,6 @@ body {
   --surface-card: var(--color-semantic-surface-card);
   --border-faint: var(--color-semantic-border);
   --tint-soft: color-mix(in srgb, var(--color-accent-ink) 14%, transparent);
-  --tint-pill: var(--tint-soft); /* 6.53:1 on the dark card */
   /* case accents as TEXT flip to the bright variant on navy (deep is
      calibrated for light cards only) */
   --case-code-first-text: var(--color-dark-muted);
@@ -592,6 +602,8 @@ body {
   /* the markup red on dark (Federated pictures, site v3): #b5323a sat at
      2.65:1 on the dark danger wash; BELLA's dark danger text reads AA */
   --markup-red: var(--color-semantic-danger-text);
+  /* the human steps' edge on dark: ochre, as the focus ring does */
+  --pic-human-edge: var(--color-semantic-accent);
 }
 
 /* Dark overrides live on BODY, not html: var() inside a custom property
@@ -1979,255 +1991,6 @@ h1.display-heading {
   }
 }
 
-/* Experience: one --surface-card panel, hairlines between the rows
-   (the About mock). Phones: dates, then company and title, in column 1;
-   the chevron in column 2 across both rows, centred. From 1024px:
-   11rem 1fr auto, one row. The whole row is the button; it takes a
-   soft iris wash on hover, only where hover exists, so a tap never
-   leaves it stuck. */
-.xp-list {
-  margin-bottom: var(--space-stack-lg); /* the View CV button follows */
-  overflow: hidden;
-  background: var(--surface-card);
-  border: 1px solid var(--border-faint);
-  border-radius: var(--radius-card);
-}
-
-.xp + .xp {
-  border-top: 1px solid var(--border-faint);
-}
-
-.xp .accordion__trigger {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--spacing-1) var(--spacing-6);
-  align-items: center;
-  min-height: var(--spacing-touch-target);
-  padding: var(--spacing-5) var(--spacing-6);
-}
-
-.xp__dates {
-  grid-column: 1;
-  grid-row: 1;
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
-.xp__who {
-  grid-column: 1;
-  grid-row: 2;
-  display: block;
-}
-
-.xp .accordion__chev {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-  align-self: center;
-}
-
-@media (min-width: 1024px) {
-  .xp .accordion__trigger {
-    grid-template-columns: 11rem minmax(0, 1fr) auto;
-  }
-
-  .xp__dates,
-  .xp__who,
-  .xp .accordion__chev {
-    grid-row: 1;
-  }
-
-  .xp__who {
-    grid-column: 2;
-  }
-
-  .xp .accordion__chev {
-    grid-column: 3;
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .xp .accordion__trigger:hover {
-    background: var(--tint-soft);
-  }
-}
-
-/* An open row STAYS filled (Elleta, 20 Sep 2026): the fill is the open
-   state, not a hover that fades when the pointer leaves, and the body
-   underneath keeps the card surface, so the row reads as header and
-   content. The fill is ochre (item 3, 22 Sep 2026; was the soft wash)
-   and everything on it reads in the on-accent ink, #121212 in both
-   themes: muted text on ochre would sit near 4:1. */
-.xp.is-open .accordion__trigger {
-  background: var(--color-semantic-accent);
-}
-
-.xp.is-open .xp__company,
-.xp.is-open .xp__current,
-.xp.is-open .xp__dates,
-.xp.is-open .xp__role,
-.xp.is-open .accordion__chev {
-  color: var(--color-semantic-text-on-accent);
-}
-
-/* the ring is :focus-visible only: a mouse click never draws one. Inset,
-   the one exception to the 3px offset (item 4, 22 Sep 2026): .xp-list
-   clips its overflow for the rounded card, so an outward ring is cut off. */
-.xp .accordion__trigger:focus-visible {
-  outline-offset: calc(0px - var(--ring-focus-width));
-  border-radius: 0;
-}
-
-.xp__company {
-  display: block;
-  font-family: var(--font-body);
-  font-size: var(--text-heading-3);
-  font-weight: var(--typography-font-weight-medium);
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-  color: var(--color-ink);
-}
-
-/* Current: iris on a soft iris wash, 14px (the floor), 500 */
-.xp__current {
-  margin-left: var(--spacing-2);
-  padding: 3px var(--spacing-2);
-  border-radius: var(--radius-pill);
-  background: var(--tint-pill);
-  font-size: var(--text-meta);
-  font-weight: 500;
-  letter-spacing: 0;
-  line-height: 1.4;
-  color: var(--color-ink);
-  vertical-align: middle;
-}
-
-/* the title: 15px, muted, regular (not the heading's weight) */
-.xp__role {
-  display: block;
-  margin-top: 2px;
-  font-family: var(--font-body);
-  font-size: var(--text-caption);
-  font-weight: 400;
-  color: var(--color-ink-muted);
-}
-
-.xp__body {
-  padding: 0 var(--spacing-6) var(--spacing-6);
-}
-
-@media (min-width: 1024px) {
-  /* the open row lines up with the company column */
-  .xp__body {
-    padding-left: calc(var(--spacing-6) + 11rem + var(--spacing-6));
-  }
-}
-
-/* the clients behind the work, first line of the open row */
-.xp__clients {
-  margin: 0 0 var(--spacing-3);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 500;
-  color: var(--color-ink);
-}
-
-/* the open row's lines: plain muted discs (the mock), not the › list */
-.xp__did {
-  margin: 0 0 var(--spacing-3);
-  padding: 0 0 0 1.1em;
-  list-style: disc;
-}
-
-.xp__did li {
-  margin: 0.3em 0;
-  padding: 0;
-  font-size: var(--text-body);
-  line-height: var(--leading-body);
-  max-width: 42rem;
-}
-
-.xp__did li::before {
-  content: none;
-}
-
-.xp__did li::marker {
-  color: var(--color-ink-muted);
-}
-
-.xp__case {
-  margin: var(--spacing-2) 0 0;
-}
-
-/* the CV button: the ink primary with the label roll (item 3, 22 Sep
-   2026; was a neutral outline). Only the icon gap is local. */
-.btn-key.xp__cv {
-  gap: var(--spacing-2);
-}
-
-/* House rules: four cards (the one Card surface), 2x2 from 768px,
-   equal heights per row */
-.cares {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-stack-md);
-}
-
-.cares__card {
-  height: 100%;
-}
-
-/* Word of mouth: uniform quote cards, 2 columns from 900px. No avatars,
-   no stars, no carousel. */
-/* "Read all 15 on LinkedIn" under the quotes */
-.quotes__more {
-  margin: var(--space-stack-md) 0 0;
-}
-
-.quotes {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-stack-lg) var(--space-stack-md); /* rows clear the hanging marks */
-}
-
-@media (min-width: 900px) {
-  .quotes {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* each quote: a big iris opening mark hanging over the card's top-left
-   edge (it springs on card hover; the card itself stays put) and a
-   small closing mark at the end. Both are aria-hidden. */
-.quotes__item {
-  position: relative;
-}
-
-.quotes__mark {
-  position: absolute;
-  z-index: 1;
-  top: -1.875rem;
-  left: 0.875rem;
-  font-family: var(--font-body);
-  font-size: 5.5rem;
-  font-weight: 800;
-  line-height: 1;
-  transform: rotate(-8deg);
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .quotes__mark {
-    transition: transform var(--dur-base) var(--ease-out);
-  }
-
-  .quotes__item:hover .quotes__mark {
-    transform: translateY(-4px) rotate(4deg) scale(1.08);
-  }
-}
-
 /* a pull-quote mark filled with the brand pattern, like the logo (item 9,
    22 Sep 2026; was solid ink): the glyph clips the static pattern SVG,
    so the page carries no pattern paths. Decorative, aria-hidden. Every
@@ -2238,71 +2001,6 @@ h1.display-heading {
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-}
-
-.quotes__card {
-  height: 100%;
-}
-
-.quotes__figure {
-  margin: 0;
-}
-
-.quotes__quote {
-  margin: 0;
-}
-
-.quotes__quote p {
-  margin: 0;
-  font-size: var(--text-body);
-  line-height: var(--leading-body);
-  color: var(--color-ink);
-}
-
-.quotes__close {
-  margin-left: 0.1em;
-  font-size: 1.3em;
-  font-weight: 800;
-  line-height: 0;
-  color: var(--color-ink);
-}
-
-.quotes__quote + figcaption {
-  margin-top: var(--space-stack-sm);
-}
-
-.quotes__name {
-  display: block;
-  font-weight: 600;
-  color: var(--color-ink);
-}
-
-.quotes__role {
-  display: block;
-  margin-top: 2px;
-}
-
-@media (min-width: 768px) {
-  .cares {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.cares h3 {
-  margin: 0 0 var(--spacing-1);
-}
-
-/* house rules: muted body, the one bold claim in full ink (the mock) */
-.cares p {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: var(--leading-body);
-  color: var(--color-ink-muted);
-}
-
-.cares p strong {
-  color: var(--color-ink);
 }
 
 /* ─── Site footer (footer-mock.html, Elleta 22 Sep 2026) ───────────
@@ -7897,63 +7595,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   color: var(--color-ink-muted);
 }
 
-/* ─── CHIP: zones over a cropped screenshot (20 Sep 2026) ────────────
-   The one case that annotates a raster image. Every zone wears its
-   number at all times, so the picture reads as annotated before anyone
-   touches a phrase; lighting one adds the ring and the fill, and
-   nothing anywhere fades. */
-.shot {
-  position: relative;
-  width: 100%;
-  margin-inline: auto;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.shot__img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.shot__zone {
-  position: absolute;
-  display: block;
-  pointer-events: none;
-}
-
-/* the permanent index: a small iris chip on the zone's top-left corner */
-.shot__n {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: grid;
-  place-items: center;
-  min-width: 1.25rem;
-  height: 1.25rem;
-  padding: 0 var(--spacing-1);
-  transform: translate(-35%, -35%);
-  border-radius: var(--radius-full);
-  background: var(--color-accent-ink);
-  color: var(--color-page);
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: var(--tracking-mono);
-  font-feature-settings: var(--mono-feature);
-}
-
-/* at phone width the chips crowd, so they shrink rather than hide */
-@container (max-width: 22rem) {
-  .shot__n {
-    /* 1.25rem since site v3: the mono label is 16px now, a 1rem disc clipped it */
-    min-width: 1.25rem;
-    height: 1.25rem;
-    transform: translate(-25%, -25%);
-  }
-}
-
 /* the page label above an h1 (Part G): code role, sentence case, muted,
    .75rem of air under it. Same line on every page, and on a page two
    levels deep the breadcrumb takes its place. */
@@ -8001,115 +7642,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   .case-back:hover {
     text-decoration: underline;
     text-underline-offset: 3px;
-  }
-}
-
-/* ─── Scan and read (Elleta, 20 Sep 2026, Part J item 2) ─────────────
-   A text-heavy section read two ways: the scan points on the left, the
-   paragraphs on the right, pointing at either one lighting the other.
-   Nothing is ever dimmed. Under 860px it stacks: points, then prose. */
-.scan-read {
-  display: grid;
-  gap: var(--space-stack-md);
-  margin-top: var(--space-stack-md);
-}
-
-@media (min-width: 860px) {
-  .scan-read {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-    gap: var(--layout-gutter);
-    align-items: start;
-  }
-}
-
-.scan {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--spacing-1);
-}
-
-.scan__point {
-  display: flex;
-  align-items: baseline;
-  gap: var(--spacing-3);
-  width: 100%;
-  padding: var(--spacing-2) var(--spacing-3);
-  border: 0;
-  border-radius: var(--radius-md);
-  background: none;
-  font: inherit;
-  font-size: var(--typography-font-size-base);
-  text-align: left;
-  color: inherit;
-  cursor: pointer;
-  transition: background var(--dur-fast) var(--ease-out);
-}
-
-.scan__dot {
-  flex: none;
-  width: 6px;
-  height: 6px;
-  border-radius: var(--radius-full);
-  background: var(--color-accent-ink);
-  opacity: 0.6;
-  transform: translateY(-0.2em);
-  transition: opacity var(--dur-fast) var(--ease-out), scale var(--dur-fast) var(--ease-out);
-}
-
-.scan__point--static {
-  cursor: default;
-}
-
-.scan__point.is-on {
-  background: var(--tint-soft);
-}
-
-.scan__point.is-on .scan__dot {
-  opacity: 1;
-  scale: 1.3;
-}
-
-.scan__point:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: var(--ring-focus-offset);
-}
-
-.scan__point b,
-.scan__point strong {
-  font-weight: 600;
-}
-
-/* the phrase is a TARGET, not a control, so no underline at rest: the
-   dotted underline belongs to Term, which opens a definition */
-.scan__phrase {
-  padding: 0 0.12em;
-  margin: 0 -0.12em;
-  border-radius: var(--radius-sm);
-  transition: background var(--dur-base) var(--ease-out), color var(--dur-fast) var(--ease-out);
-}
-
-/* the lit phrase: the ochre fill, on-accent ink (item 3, 22 Sep 2026) */
-.scan__phrase.is-lit {
-  background: var(--color-semantic-accent);
-  color: var(--color-semantic-text-on-accent);
-}
-
-.scan-read__prose > p {
-  max-width: 36rem;
-  margin: 0 0 var(--section-lead-gap);
-}
-
-.scan-read__prose > p:last-child {
-  margin-bottom: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scan__point,
-  .scan__dot,
-  .scan__phrase {
-    transition: none;
   }
 }
 

@@ -1,21 +1,20 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
-import { ResumeButton } from "@/components/ResumeModal";
 import AccordionItem from "@/components/ui/Accordion";
+import { TextLink } from "@/components/ui/TextLink";
 import { WORK_ITEMS } from "@/lib/workLibrary";
+import s from "./ExperienceSection.module.css";
 
-/* Experience on About (step 3, 18 Sep 2026; accordion 18 Sep evening):
-   one AccordionItem per role, in one panel (the About mock). Closed:
-   dates (.text-code), then company (heading-3) with a Current pill
-   and the title under it, a chevron. Open: the
-   clients line, up to three "What I did" lines from the data below,
-   then a "Case study: <title> →" link. The current role opens by
-   default.
+/* Track record on About (site v3, Figma 403:7256, 4 Oct 2026; was the
+   18 Sep accordion in one panel). One card per role, all collapsed:
+   the trigger holds dates, company (a Current tag on the current role)
+   and title, with a chevron; under it, always shown, the role's one
+   outcome line and its case link where one exists. The chevron opens
+   the clients line and up to three "What I did" lines.
 
    This file is one of the two NDA-exempt surfaces (constitution §7):
    employer and engagement names live HERE and in ResumeModal only, so
-   the About "Good company" grid reads its names from this data rather
-   than typing them anywhere else. */
+   any About line that names an employer (the Kindness proof below)
+   renders from this file rather than typing the name anywhere else. */
 
 type Row = {
   company: string;
@@ -27,6 +26,8 @@ type Row = {
   /** bullets; <strong> marks the key phrase to scan for. About shows
    *  the first three, so lead with the strongest */
   did: ReactNode[];
+  /** the one outcome line shown on the collapsed row (About, site v3) */
+  outcome: string;
   /** case-study slugs (the last segment of a WORK_ITEMS href) */
   related?: string[];
 };
@@ -39,6 +40,7 @@ export const EXPERIENCE: Row[] = [
     role: "AI-Assisted Design Systems Engineer · Maker Program",
     dates: "Oct 2025 to now",
     current: true,
+    outcome: "Built a Figma component library aligned with reusable web components and a multi-theme architecture.",
     did: [
       "Built a Figma component library aligned with reusable web components and a multi-theme architecture.",
       "Translated an existing code-based design system into production-ready Figma components.",
@@ -50,6 +52,7 @@ export const EXPERIENCE: Row[] = [
     company: "Mango",
     role: "Design Systems Specialist",
     dates: "Apr to Jul 2026",
+    outcome: "Brought AI into Mango's design-system work for the first time.",
     did: [
       <>Brought AI into Mango&apos;s design-system work for the first time. With <strong>Claude, Figma MCP and Code Connect</strong> I automated audits and made components machine-readable, so I could ship far more in a few months while keeping Mango&apos;s design system up to date.</>,
       <>Built the tooling and documentation the team needed to <strong>adopt Code Connect themselves</strong>, so design-to-code parity didn&apos;t depend on me.</>,
@@ -57,12 +60,14 @@ export const EXPERIENCE: Row[] = [
       "Defined, governed and released reusable components across shared Figma libraries, documented in Zeroheight.",
       "Led accessibility and dark-mode audits, and defined design-system metrics for adoption, coverage, efficiency and quality.",
     ],
+    related: ["federated"],
   },
   {
     company: "BizAway",
     role: "Product & Design Systems Designer",
     dates: "Jul 2024 to Feb 2026",
     clients: "Clients included Air France and WeRoad.",
+    outcome: "Built the company's first design system from scratch (tokens, components, themes), with AI in mind from day one.",
     did: [
       <>Built the company&apos;s <strong>first design system from scratch</strong> (tokens, components, themes), with AI in mind from day one, and integrated the tokens into production with engineering.</>,
       <><strong>Wrote the documentation</strong> even when I was told it wasn&apos;t important, because a system nobody can read is a system nobody uses.</>,
@@ -75,6 +80,7 @@ export const EXPERIENCE: Row[] = [
     company: "United Nations Geneva",
     role: "UX / Product Designer",
     dates: "Oct to Dec 2025",
+    outcome: "Defined user roles, permission structures and dashboard frameworks for a multi-stakeholder institutional platform.",
     did: [
       "Defined user roles, permission structures and dashboard frameworks for a multi-stakeholder institutional platform.",
       "Designed scalable information architecture for operational workflows across departments.",
@@ -86,6 +92,7 @@ export const EXPERIENCE: Row[] = [
     role: "UX/UI Designer",
     dates: "Feb 2023 to Feb 2024",
     clients: "Client: Riyad Bank.",
+    outcome: "Designed enterprise banking and SaaS platform experiences for digital clients.",
     did: [
       "Designed enterprise banking and SaaS platform experiences for digital clients.",
       "Ran user research and usability testing to validate complex workflows.",
@@ -93,84 +100,65 @@ export const EXPERIENCE: Row[] = [
   },
 ];
 
-/* "Good company": each org's own mark (public/logos/<file>.svg),
-   inlined in currentColor so it takes the theme's muted ink. Marks fit
-   one box (the grid sets its size); `scale` shrinks a mark that reads
-   too heavy in it. `lockup` sets live text beside an emblem that has no
-   words of its own. The name is the accessible label. */
-export type Org = { name: string; file: string; scale?: number; lockup?: string[] };
-
-/* NDA (Elleta, 20 Sep 2026): the B2B travel platform is NOT in this row.
-   The engagement may appear as an industry descriptor only, so its mark
-   is gone and its file with it. The employment entry below stays: this
-   file and ResumeModal are the two surfaces where employment history is
-   allowed to name an employer (CLAUDE.md section 7). Seven marks. */
-export const WORKED_WITH: Org[] = [
-  { name: "Brad Frost Web", file: "brad-frost" },
-  { name: "Mango", file: "mango" },
-  { name: "United Nations Geneva", file: "un-geneva", lockup: ["United Nations", "Geneva"] },
-  { name: "Air France", file: "air-france" },
-  { name: "Riyad Bank", file: "riyad-bank" },
-  { name: "WeRoad", file: "weroad" },
-  { name: "VML", file: "vml", scale: 0.62 },
-];
-
 const bySlug = (slug: string) => WORK_ITEMS.find((w) => w.href.endsWith(`/${slug}`));
+
+/** House rules, Kindness: its proof names an employer, so it renders
+ *  from this file (constitution §7). Copy from Figma 403:7256. */
+export function KindnessProof({ className = "" }: { className?: string }) {
+  return <p className={className}>Proof: at BizAway I wrote the documentation even when I was told it wasn&apos;t important.</p>;
+}
 
 export default function ExperienceSection() {
   return (
-    <>
-      <div className="xp-list">
-        {EXPERIENCE.map((r) => (
-          <AccordionItem
-            key={r.company}
-            className="xp"
-            defaultOpen={r.current}
-            heading={
-              <>
-                {/* DOM order is reading order: dates, company, role. The
-                    spaces keep the button's name from running words
-                    together. */}
-                <span className="text-code xp__dates">{r.dates}</span>{" "}
-                <span className="xp__who">
-                  <span className="xp__company">
-                    {r.company}
-                    {r.current ? (
-                      <>
-                        <span className="sr-only">, current role</span>{" "}
-                        <span className="xp__current" aria-hidden="true">
-                          Current
-                        </span>
-                      </>
-                    ) : null}
-                  </span>{" "}
-                  <span className="xp__role">{r.role}</span>
-                </span>
-              </>
-            }
-          >
-            <div className="xp__body">
-              {r.clients ? <p className="xp__clients">{r.clients}</p> : null}
-              <ul className="section-list xp__did">
-                {r.did.slice(0, 3).map((d, i) => (
-                  <li key={i}>{d}</li>
-                ))}
-              </ul>
+    <div className={s.list}>
+      {EXPERIENCE.map((r) => (
+        <AccordionItem
+          key={r.company}
+          className={s.row}
+          heading={
+            <>
+              {/* DOM order is reading order: dates, company, role. The
+                  spaces keep the button's name from running words
+                  together. */}
+              <span className={s.dates}>{r.dates}</span>{" "}
+              <span className={s.company}>
+                {r.company}
+                {r.current ? (
+                  <>
+                    <span className="sr-only">, current role</span>{" "}
+                    <span className={s.current} aria-hidden="true">
+                      Current
+                    </span>
+                  </>
+                ) : null}
+              </span>{" "}
+              <span className={s.role}>{r.role}</span>
+            </>
+          }
+          peek={
+            <div className={s.peek}>
+              <p className={s.outcome}>{r.outcome}</p>
               {r.related?.map((slug) => {
                 const w = bySlug(slug);
                 return w ? (
-                  <p key={slug} className="xp__case">
-                    <Link href={w.href} className="text-action">
-                      Case study: {w.title} →
-                    </Link>
+                  <p key={slug} className={s.caseLink}>
+                    <TextLink href={w.href}>Case study: {w.title} →</TextLink>
                   </p>
                 ) : null;
               })}
             </div>
-          </AccordionItem>
-        ))}
-      </div>
-      <ResumeButton />
-    </>
+          }
+        >
+          <div className={s.body}>
+            {r.clients ? <p className={s.clients}>{r.clients}</p> : null}
+            <ul className={s.did}>
+              {r.did.slice(0, 3).map((d, i) => (
+                <li key={i}>{d}</li>
+              ))}
+            </ul>
+          </div>
+        </AccordionItem>
+      ))}
+    </div>
   );
 }

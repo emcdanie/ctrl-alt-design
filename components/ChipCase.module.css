@@ -1,0 +1,25 @@
+/* CHIP 2.0 page copy outside the template's slots (Figma 407:8187): the
+   beat 1 body on the body's left edge, and the reflection's closing line
+   and course credit on the text column. Body/Base and Body/Small. */
+
+.body,
+.next,
+.credit {
+  width: 100%;
+  max-width: var(--case-col-max);
+  margin-block: 0;
+  font-size: var(--typography-font-size-body);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-semantic-text-body);
+  text-wrap: pretty;
+}
+
+.next,
+.credit {
+  margin-inline: auto;
+}
+
+.credit {
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-semantic-text-secondary);
+}

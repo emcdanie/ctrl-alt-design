@@ -1,0 +1,133 @@
+/* Track record on About (Site v3, Figma 403:7256 "3 · Track record";
+   Elleta, 4 Oct 2026; was one panel with hairlines in globals.css). One
+   card per role, 12 between; the summary is the accordion's button,
+   the outcome line and case link always show under it. */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.row {
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+
+/* the heading is the company's (600, the v3 heading lock); the dates
+   and the title inside it are its labels, set regular below */
+.row :global(.accordion__heading) {
+  font-weight: var(--typography-font-weight-semibold);
+}
+
+/* the summary: text left, the 44 chevron right, centred on it */
+.row :global(.accordion__trigger) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--spacing-touch-target);
+  column-gap: var(--spacing-4);
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: 0;
+  font-family: var(--font-body);
+}
+
+.row :global(.accordion__chev) {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  justify-self: center;
+  color: var(--color-semantic-text-primary);
+}
+
+.dates,
+.company,
+.role {
+  grid-column: 1;
+  display: block;
+}
+
+.dates {
+  font-weight: var(--typography-font-weight-regular);
+  font-size: var(--text-label);
+  line-height: 1.3;
+  color: var(--color-semantic-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.company {
+  margin-top: var(--spacing-1);
+  font-size: var(--typography-font-size-xl);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.3;
+  color: var(--color-semantic-text-primary);
+}
+
+/* Current: an ochre fill (colour lives in fills), text-primary on it */
+.current {
+  display: inline-block;
+  margin-left: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-accent);
+  color: var(--color-semantic-text-on-accent);
+  font-size: var(--text-label);
+  font-weight: var(--typography-font-weight-medium);
+  line-height: 1.25;
+  vertical-align: middle;
+}
+
+.role {
+  margin-top: var(--spacing-1);
+  font-weight: var(--typography-font-weight-regular);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.7;
+  color: var(--color-semantic-text-secondary);
+}
+
+.peek {
+  max-width: var(--case-col-max);
+  margin-top: var(--spacing-4);
+}
+
+.outcome {
+  margin: 0;
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.7;
+  color: var(--color-semantic-text-body);
+  text-wrap: pretty;
+}
+
+.caseLink {
+  margin: var(--spacing-1) 0 0;
+}
+
+.body {
+  max-width: var(--case-col-max);
+  padding-top: var(--spacing-4);
+}
+
+.clients {
+  margin: 0 0 var(--spacing-2);
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.7;
+  color: var(--color-semantic-text-primary);
+}
+
+.did {
+  margin: 0;
+  padding-left: 1.1em;
+  list-style: disc;
+}
+
+.did li {
+  margin: var(--spacing-1) 0;
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.7;
+  color: var(--color-semantic-text-body);
+}
+
+.did li::marker {
+  color: var(--color-semantic-text-secondary);
+}

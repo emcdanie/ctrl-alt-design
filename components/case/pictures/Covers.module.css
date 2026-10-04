@@ -39,8 +39,29 @@
   height: 264px;
 }
 
+/* the stay photo's only source is 600px (Figma's fill too): in the Next
+   case slot the card is held to at most a 300px photo, never upscaled
+   (audit:sharp, 2x) */
+.canvas[data-slot="next"] .stay {
+  transform: scale(calc(0.95 / max(1, var(--cover-scale, 1))));
+  transform-origin: 50% 50%;
+}
+
 .canvas[data-slot="work"] .art {
   transform: scale(0.80303);
+}
+
+/* the cover at figure size (CHIP Figure 1, Figma 836x501.6 on the stage):
+   in flow, drawn 1.9x; ScaledArt fits it to the stage below 1440 */
+.canvas[data-slot="figure"] {
+  position: relative;
+  width: 836px;
+  height: 501.6px;
+  transform: none;
+}
+
+.canvas[data-slot="figure"] .art {
+  transform: scale(1.9);
 }
 
 /* ── Atlas ── */

@@ -10,7 +10,8 @@ import s from "./Covers.module.css";
    theme; brand, carrier and on-photo colours are picture tokens
    (--cover-*, --kit-*). */
 
-export type CoverSlot = "next" | "work";
+/** "figure": the cover drawn as a case figure (CHIP Figure 1) */
+export type CoverSlot = "next" | "work" | "figure";
 
 function Canvas({ slot, label, children }: { slot: CoverSlot; label: string; children: ReactNode }) {
   return (
