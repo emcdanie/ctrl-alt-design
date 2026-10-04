@@ -129,7 +129,7 @@ export default function Hero() {
           <div className={styles.stage} data-stage>
             <div className={styles.trail} aria-hidden="true">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/home/pattern-ribbon.webp" alt="" width={1240} height={520} decoding="async" />
+              <img src="/images/home/pattern-ribbon.webp" alt="" width={1240} height={520} decoding="async" fetchPriority="low" />
             </div>
             <div className={`${styles.layer} ${styles.you}`}>
               <i className={styles.anchor} data-anchor-me />
@@ -141,11 +141,16 @@ export default function Hero() {
                     under the contrast floor, so nothing for an audit to read. It
                     rides the photo's layer, behind the photo, in every state */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className={styles.code} src="/images/home/hero-code.webp" alt="" width={370} height={214} decoding="async" />
+                <img className={styles.code} src="/images/home/hero-code.webp" alt="" width={370} height={214} decoding="async" fetchPriority="low" />
+                {/* the LCP (23, 4 Oct 2026): 800w for phones (396px at most,
+                    sharp at 2x), 1080w for the 540px desktop; the hero's
+                    decoration loads low so the photo gets the bandwidth */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   className={styles.portrait}
                   src="/images/home/portrait.webp"
+                  srcSet="/images/home/portrait-800.webp 800w, /images/home/portrait.webp 1080w"
+                  sizes="(max-width: 900px) 396px, 540px"
                   alt="Elleta McDaniel with her dog Bella"
                   width={1080}
                   height={908}
@@ -156,7 +161,7 @@ export default function Hero() {
             <div className={`${styles.layer} ${styles.paint}`} aria-hidden="true">
               <i className={styles.anchor} data-anchor-pattern />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className={styles.fill} src="/images/home/bella-ear-pattern.webp" alt="" width={900} height={908} decoding="async" />
+              <img className={styles.fill} src="/images/home/bella-ear-pattern.webp" alt="" width={900} height={908} decoding="async" fetchPriority="low" />
             </div>
             <div className={`${styles.layer} ${styles.agent}`} aria-hidden="true">
               <div className={styles.grid} />
