@@ -276,7 +276,22 @@ const COLOURS: [string, string][] = [
   ["Greens", "green"],
 ];
 
-const sw = (name: string) => `var(--kit-swatch-${name})`;
+/* written out so audit:debt sees each token's consumer */
+const SWATCH: Record<string, string> = {
+  black: "var(--kit-swatch-black)",
+  taupe: "var(--kit-swatch-taupe)",
+  sand: "var(--kit-swatch-sand)",
+  blue: "var(--kit-swatch-blue)",
+  beige: "var(--kit-swatch-beige)",
+  white: "var(--kit-swatch-white)",
+  ecru: "var(--kit-swatch-ecru)",
+  grey: "var(--kit-swatch-grey)",
+  brown: "var(--kit-swatch-brown)",
+  red: "var(--kit-swatch-red)",
+  pink: "var(--kit-swatch-pink)",
+  green: "var(--kit-swatch-green)",
+};
+const sw = (name: string) => SWATCH[name];
 
 function Check({ icon, children }: { icon: ReactNode; children: ReactNode }) {
   return (

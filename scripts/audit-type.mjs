@@ -66,7 +66,7 @@ for (const route of ROUTES) {
           if (exemptRe.test(el.className.toString()) || el.closest('[class*="tok-inspector"]')) continue;
           /* a v3 route's pictures keep the Case UI kit's own type (CLAUDE.md
              section 1, pictures only); the v3 leg below says the same */
-          if (isV3 && el.closest("figure") && !el.closest("figcaption, blockquote")) continue;
+          if (isV3 && el.closest("figure, [role=img]") && !el.closest("figcaption, blockquote")) continue;
           /* chrome, not reading text: the constitution (section 3) names
              buttons, nav links and chips as their own tier, and a
              figcaption is attribution. Same carve-out both passes. */
@@ -108,7 +108,7 @@ for (const route of ROUTES) {
       if (text.length < 16) continue;
       if (exemptRe.test(el.className.toString()) || el.closest("figcaption, footer, button, label, nav")) continue;
       if (el.closest('[class*="tok-inspector"]')) continue;
-      if (isV3 && el.closest("figure") && !el.closest("figcaption, blockquote")) continue;
+      if (isV3 && el.closest("figure, [role=img]") && !el.closest("figcaption, blockquote")) continue;
       const size = parseFloat(getComputedStyle(el).fontSize);
       if (size < 16) out.push(`${el.className.toString().split(" ")[0] || el.tagName}@${size}px :: ${text.slice(0, 40)}`);
     }
@@ -179,7 +179,7 @@ for (const route of ROUTES) {
   /* ── site v3 leg (Elleta, 4 Oct 2026): a rebuilt route is held to the
      v3 locks everywhere OUTSIDE PICTURES (the locks say so: inside a
      figure's picture the Case UI kit keeps its own type). A picture is
-     what a <figure> holds besides its figcaption (and a quote's
+     what a <figure> or a [role=img] picture (a card cover) holds besides its figcaption (and a quote's
      blockquote); nothing is opted out by attribute or class. Headings Figtree 600; reading text (p, li,
      blockquote, dd, figcaption) >= 18px; every other visible text
      >= 16px; the mono face only on <code>. ── */
@@ -188,7 +188,7 @@ for (const route of ROUTES) {
       const out = [];
       /* a quote is a figure too (Site/Quote): its blockquote and
          figcaption are text, not picture */
-      const inPicture = (el) => !!el.closest("figure") && !el.closest("figcaption, blockquote");
+      const inPicture = (el) => !!el.closest("figure, [role=img]") && !el.closest("figcaption, blockquote");
       const visible = (el) => {
         const r = el.getBoundingClientRect();
         const cs = getComputedStyle(el);

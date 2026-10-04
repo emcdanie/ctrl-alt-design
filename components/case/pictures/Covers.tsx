@@ -14,11 +14,11 @@ export type CoverSlot = "next" | "work";
 
 function Canvas({ slot, label, children }: { slot: CoverSlot; label: string; children: ReactNode }) {
   return (
-    <figure className={s.canvas} data-slot={slot} role="img" aria-label={label}>
+    <div className={s.canvas} data-slot={slot} role="img" aria-label={label}>
       <div className={s.fill} aria-hidden="true">
         {children}
       </div>
-    </figure>
+    </div>
   );
 }
 

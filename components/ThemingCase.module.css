@@ -917,7 +917,7 @@
 
 .rules span {
   padding-top: 0;
-  font-family: inherit;
+  font-family: var(--font-body);
   font-size: var(--text-label);
   font-feature-settings: normal;
   color: var(--color-semantic-text-secondary);

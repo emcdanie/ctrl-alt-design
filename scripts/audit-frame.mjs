@@ -16,7 +16,9 @@
  *    (the first adds the nav height, like every page).
  * 4. Radii from the set: --radius-sm/md/lg/card or a pill. A deliberate
  *    exception carries data-frame-exempt="<reason>" and is listed below,
- *    never a silent allowlist.
+ *    never a silent allowlist. Inside a picture (a [role=img] element) the
+ *    drawn product UI keeps its own radii (Elleta, 5 Oct 2026: the Case UI
+ *    kit stays as drawn); the picture's own box is still checked.
  * 5. Cards: at most 2 card signatures per route (content card + frame).
  *    A card with a shadow floats: it is allowed only on floating things
  *    (the next-case card, popovers, dialogs) and is not counted. Since
@@ -196,7 +198,8 @@ for (const width of WIDTHS) {
         if (exemptOf(el) || !visible(el)) continue;
         const c = getComputedStyle(el);
         const rc = el.getBoundingClientRect();
-        for (const corner of ["borderTopLeftRadius", "borderTopRightRadius", "borderBottomRightRadius", "borderBottomLeftRadius"]) {
+        const inPicture = el.parentElement?.closest('[role="img"]');
+        for (const corner of inPicture ? [] : ["borderTopLeftRadius", "borderTopRightRadius", "borderBottomRightRadius", "borderBottomLeftRadius"]) {
           const v = c[corner];
           if (v === "0px") continue;
           const n = px(v);

@@ -38,6 +38,9 @@ const V = ({ children }: { children: ReactNode }) => <span className={s.v}>{chil
 const C = ({ children }: { children: ReactNode }) => <span className={s.c}>{children}</span>;
 const R = ({ children }: { children: ReactNode }) => <span className={s.r}>{children}</span>;
 
+const ONE_NAME_CAPTION =
+  "One name, two answers: the component asks for background; light mode answers #ffffff, dark mode answers #0d0d0d. Motion: the name changes every 2.2s while in view (background, text-primary, text-muted, surface-card, focus-ring); swatches pop and the arrows draw. Reduced motion holds background."; // token-waiver: the two answers shown as caption text
+
 const RULES: [string, ReactNode][] = [
   ["Components never read tier 1.", "A new need gets a new named role first."],
   ["Dark is a theme, not an inversion.", "Its own greys, chosen so muted text still clears 7:1."],
@@ -124,7 +127,7 @@ export default function ThemingCase() {
         >
           <CaseFigure
             n={2}
-            caption="One name, two answers: the component asks for background; light mode answers #ffffff, dark mode answers #0d0d0d. Motion: the name changes every 2.2s while in view (background, text-primary, text-muted, surface-card, focus-ring); swatches pop and the arrows draw. Reduced motion holds background."
+            caption={ONE_NAME_CAPTION}
           >
             <OneName />
           </CaseFigure>

@@ -575,7 +575,7 @@ for (const theme of ["light", "dark"]) {
          blockquote, and is not numbered) has a "Figure N." caption,
          numbered in order from 1, and its own "Enlarge Figure N"
          button. */
-      const v3 = document.querySelector(".container--case");
+      const v3 = document.querySelector("main .container--case");
       const v3Beats = v3 ? [...v3.querySelectorAll("section[aria-labelledby]")] : [];
       if (v3) {
         for (const sec of v3Beats) {
