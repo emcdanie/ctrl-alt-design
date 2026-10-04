@@ -27,7 +27,6 @@ export default function OverlayNav() {
     href === "/work"
       ? pathname.startsWith("/work") || pathname.startsWith("/case-studies")
       : pathname === href || pathname.startsWith(href + "/");
-  const [hovered, setHovered] = useState<string | null>(null);
   const [triggerHovered, setTriggerHovered] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -152,7 +151,7 @@ export default function OverlayNav() {
         ref={menuRef}
         id="overlay-menu"
         inert={!open}
-        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[color:var(--color-ink)] ease-[var(--ease-in-out)]"
+        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)] text-[color:var(--color-ink)] ease-[var(--ease-in-out)]"
         style={{
           clipPath: open ? "inset(0% 0 0% 0)" : "inset(100% 0 0% 0)",
           /* belt-and-braces with the inert guard: closed-menu content can
@@ -168,38 +167,29 @@ export default function OverlayNav() {
         <div className="absolute left-6 right-6 top-6 h-px bg-[color:var(--color-border-soft)] sm:left-8 sm:right-8" />
 
         <div className="relative flex h-full flex-col justify-between px-6 pb-8 pt-28 sm:px-8 sm:pb-10 sm:pt-32 lg:px-16 lg:pb-14 lg:pt-36">
-          <div
-            className="pointer-events-none absolute right-[-16px] top-1/2 -translate-y-1/2 select-none font-[family:var(--font-display)] text-[clamp(120px,18vw,240px)] font-bold leading-none tracking-[-0.04em] text-[color:var(--color-semantic-accent-border)]"
-            aria-hidden="true"
-          >
-            EM
-          </div>
-
           <nav className="relative z-10 max-w-5xl">
             {menuItems.map((item) => {
-              const isHovered = hovered === item.num;
-              const anyHovered = hovered !== null;
-              const dimmed = anyHovered && !isHovered;
-
               const sharedClasses =
                 "font-[family:var(--font-display)] text-[length:var(--font-hero)] font-normal leading-[1.02] tracking-[-0.02em] transition-colors duration-[var(--dur-fast)]";
-              const colorClass = dimmed ? "text-[color:var(--color-ink-muted)]" : "text-[color:var(--color-ink)]";
+              /* highlight, never dim (18g, house rule): the hovered or
+                 focused link gets an ochre underline and its number turns
+                 ink; the other links stay as they are */
+              const colorClass =
+                "text-[color:var(--color-ink)] decoration-[color:var(--color-brand-ochre)] decoration-[length:var(--ring-focus-width)] underline-offset-[0.12em] hover:underline focus-visible:underline";
 
               return (
                 <div
                   key={item.num}
                   className="group flex items-start gap-4 border-b border-[color:var(--color-border-soft)] py-4 sm:gap-6 sm:py-5 lg:gap-10"
-                  onMouseEnter={() => setHovered(item.num)}
-                  onMouseLeave={() => setHovered(null)}
                 >
-                  <span aria-hidden="true" className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] sm:min-w-20">
+                  <span aria-hidden="true" className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] group-hover:text-[color:var(--color-ink)] group-focus-within:text-[color:var(--color-ink)] sm:min-w-20">
                     (_{item.num})
                   </span>
 
                   {item.href.startsWith("#") ? (
                     <button
                       onClick={() => handleNavClick(item.href)}
-                      className={`${sharedClasses} ${colorClass} bg-transparent p-0 text-left hover:text-[color:var(--color-ink-soft)]`}
+                      className={`${sharedClasses} ${colorClass} bg-transparent p-0 text-left`}
                     >
                       {item.label}
                     </button>
@@ -209,7 +199,7 @@ export default function OverlayNav() {
                       data-component="NavLink"
                       onClick={() => setOpen(false)}
                       aria-current={isCurrent(item.href) ? "page" : undefined}
-                      className={`${sharedClasses} ${colorClass} block hover:text-[color:var(--color-ink-soft)]`}
+                      className={`${sharedClasses} ${colorClass} block`}
                     >
                       {item.label}
                     </Link>
@@ -218,10 +208,10 @@ export default function OverlayNav() {
               );
             })}
             <div className="group flex items-start gap-4 border-b border-[color:var(--color-border-soft)] py-4 sm:gap-6 sm:py-5 lg:gap-10">
-              <span aria-hidden="true" className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] sm:min-w-20">
+              <span aria-hidden="true" className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] group-hover:text-[color:var(--color-ink)] group-focus-within:text-[color:var(--color-ink)] sm:min-w-20">
                 (_05)
               </span>
-              <ResumeLink className="font-[family:var(--font-display)] text-[length:var(--font-hero)] font-normal leading-[1.02] tracking-[-0.02em] text-[color:var(--color-ink)] bg-transparent p-0 text-left hover:text-[color:var(--color-ink-soft)]" />
+              <ResumeLink className="font-[family:var(--font-display)] text-[length:var(--font-hero)] font-normal leading-[1.02] tracking-[-0.02em] text-[color:var(--color-ink)] decoration-[color:var(--color-brand-ochre)] decoration-[length:var(--ring-focus-width)] underline-offset-[0.12em] hover:underline focus-visible:underline bg-transparent p-0 text-left" />
             </div>
           </nav>
 
