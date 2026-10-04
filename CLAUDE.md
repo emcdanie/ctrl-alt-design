@@ -278,6 +278,8 @@ Must pass before any work is "done":
   broken function fails in a second rather than after two minutes of browser work. Tests are
   not an audit and do not change the derived count.
 - tsc clean; all routes 200 (light + dark); NDA content-grep clean.
+- **Home JS budget (not gated; Elleta, 4 Oct 2026): 240 KB gzipped.** The framework chunks
+  alone are about 158 KB; the earlier 146 KB was below that floor.
 
 **No per-element exemptions (Elleta, 2026-07-27, hard rule).** The gate has no opt-out.
 If something cannot pass an audit, it does not get to be live DOM. No `data-example`, no

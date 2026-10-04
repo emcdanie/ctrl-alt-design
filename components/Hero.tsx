@@ -131,14 +131,16 @@ export default function Hero() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/images/home/pattern-ribbon.webp" alt="" width={1240} height={520} decoding="async" />
             </div>
-            {/* the faint code is a picture (CLAUDE.md §9): decoration far
-                under the contrast floor, so nothing for an audit to read */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className={styles.code} src="/images/home/hero-code.webp" alt="" width={399} height={222} decoding="async" />
             <div className={`${styles.layer} ${styles.you}`}>
               <i className={styles.anchor} data-anchor-me />
+              {/* the faint code is a picture (CLAUDE.md §9): decoration far
+                  under the contrast floor, so nothing for an audit to read. It rides
+                  the photo's layer, behind the photo, in every state */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className={styles.code} src="/images/home/hero-code.webp" alt="" width={399} height={222} decoding="async" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
+                className={styles.portrait}
                 src="/images/home/portrait.webp"
                 alt="Elleta McDaniel with her dog Bella"
                 width={1080}
@@ -149,7 +151,7 @@ export default function Hero() {
             <div className={`${styles.layer} ${styles.paint}`} aria-hidden="true">
               <i className={styles.anchor} data-anchor-pattern />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/home/bella-ear-pattern.webp" alt="" width={900} height={908} decoding="async" />
+              <img className={styles.fill} src="/images/home/bella-ear-pattern.webp" alt="" width={900} height={908} decoding="async" />
             </div>
             <div className={`${styles.layer} ${styles.agent}`} aria-hidden="true">
               <div className={styles.grid} />

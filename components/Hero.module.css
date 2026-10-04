@@ -63,8 +63,10 @@
 
 /* the code line wears ochre angle brackets: generated, so nothing reads
    or measures them as text */
+/* the code line shows in every state and theme (18e) */
 .subCode {
-  opacity: calc(1 - var(--hero-p) * 2);
+  position: relative;
+  z-index: 9;
 }
 
 .subCode::before,
@@ -149,18 +151,26 @@
 }
 
 /* the pulled-apart card: ground, hairline and shadow fade in with --hero-p */
+/* the plates are glass in both themes (18e): --hero-plate-fill and
+   --hero-plate-line flip with the theme, the shadow stays ink-tinted.
+   The photo's plate has no fill: the photo is never dimmed */
 .layer::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: var(--radius-card);
-  background: color-mix(in srgb, var(--color-semantic-background) 60%, transparent);
-  outline: 1px solid var(--color-semantic-border);
-  box-shadow: var(--shadow-soft);
+  background: var(--hero-plate-fill);
+  outline: 1px solid var(--hero-plate-line);
+  box-shadow: var(--hero-plate-shadow);
   opacity: var(--hero-p);
 }
 
-.layer img {
+.you::before {
+  background: none;
+}
+
+.fill,
+.portrait {
   position: absolute;
   inset: 0;
   display: block;
@@ -175,7 +185,7 @@
 }
 
 /* the portrait is wider than the card: the shoulder runs past it */
-.you img {
+.portrait {
   width: 120%;
   max-width: none; /* the global img cap squashed it to 100% (fixed 18d) */
   filter: drop-shadow(var(--hero-shadow));
@@ -203,8 +213,8 @@
   inset: 0;
   border-radius: var(--radius-card);
   background-image:
-    linear-gradient(var(--color-semantic-border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--color-semantic-border) 1px, transparent 1px);
+    linear-gradient(var(--hero-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hero-grid-line) 1px, transparent 1px);
   background-size: var(--spacing-4) var(--spacing-4);
 }
 
@@ -325,7 +335,7 @@
   width: 16.25rem;
   max-width: none;
   height: auto;
-  opacity: calc(0.5 - var(--hero-p));
+  opacity: 0.5;
 }
 
 /* ── leaders and legend (pulled apart, wide screens only) ── */
