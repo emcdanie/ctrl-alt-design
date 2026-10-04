@@ -761,8 +761,11 @@
 
 /* the 390 frames put Enlarge 8 in from the picture's corner */
 @media (max-width: 639px) {
+  /* the art starts under the tool row (Enlarge, Replay), so no tool sits
+     on a title or a card corner */
   .stage {
     padding: var(--spacing-5);
+    padding-top: calc(var(--spacing-3) + var(--spacing-touch-target) + var(--spacing-3));
   }
 
   .wideOnly {

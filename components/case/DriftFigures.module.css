@@ -824,6 +824,46 @@
 
 /* ── phone (390 frames 303:4790) ── */
 @media (max-width: 639px) {
+  /* Figure 8, option B: the real staircase, area names as plain 16px
+     labels left of their node, the system chip under its node, "next"
+     dashed at the top right, the flat line's label under the baseline */
+  .drawing {
+    margin-top: var(--spacing-12);
+    margin-bottom: var(--spacing-20);
+  }
+
+  .areaChip {
+    flex-direction: row;
+    gap: var(--spacing-1);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: var(--text-label);
+    /* above its tread, ending just left of the node, so no line runs
+       through the word */
+    transform: translate(-100%, calc(-100% - var(--spacing-1)));
+    line-height: 1.2;
+  }
+
+  .sysChip {
+    transform: translate(-50%, calc(100% + var(--spacing-4)));
+  }
+
+  .nextChip {
+    top: calc(var(--spacing-10) * -1);
+    right: 0;
+    font-size: var(--text-label);
+  }
+
+  .nextMore {
+    display: none;
+  }
+
+  .flatLabel {
+    top: calc(578 / 648 * 100% + var(--spacing-16));
+    font-size: var(--text-label);
+  }
+
 
   /* the swipe: one level per screen, scroll-snap, no pan past the track */
   .levels {

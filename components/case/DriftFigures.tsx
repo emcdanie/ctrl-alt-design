@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { useFigurePlay } from "./CaseFigure";
-import ScaledArt from "./ScaledArt";
 import s from "./DriftFigures.module.css";
 
 /* The four Drift figures with motion (Site v3; masters on 🧪 Drift motion
@@ -378,9 +377,8 @@ export function Staircase() {
   const { playing, run } = useFigurePlay();
   return (
     <div className={`${s.stage}`} data-play={playing ? "on" : "off"} key={run}>
-      {/* the real staircase at every width, scaled to fit (Figma option B
-         for 390, 4 Oct late) */}
-      <ScaledArt width={928}>
+      {/* the real staircase at every width; at 390 its labels sit at 16px
+         left of each node (Figma option B, build spec 4 Oct late) */}
       <div className={s.card}>
         <div className={s.cardHead}>
           <p className={s.cardTitle}>Shipped on the system</p>
@@ -409,10 +407,11 @@ export function Staircase() {
             ))}
           </ol>
           <span className={s.flatLabel}>2 years of redesign · nothing live</span>
-          <span className={s.nextChip}>next: flight extras, nearly done</span>
+          <span className={s.nextChip}>
+            next: flight extras<span className={s.nextMore}>, nearly done</span>
+          </span>
         </div>
       </div>
-      </ScaledArt>
     </div>
   );
 }
