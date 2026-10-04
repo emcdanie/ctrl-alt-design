@@ -29,8 +29,8 @@ test.describe("About", () => {
   test("experience", async ({ page }) => {
     await expect(page.locator("#track-record")).toMatchAriaSnapshot(snap("about-experience"));
   });
-  test("the pack", async ({ page }) => {
-    await expect(page.locator("#the-pack")).toMatchAriaSnapshot(snap("about-pack"));
+  test("house rules", async ({ page }) => {
+    await expect(page.locator("#house-rules")).toMatchAriaSnapshot(snap("about-house-rules"));
   });
   test("testimonials", async ({ page }) => {
     await expect(page.locator("#word-of-mouth")).toMatchAriaSnapshot(snap("about-testimonials"));
@@ -123,25 +123,17 @@ test.describe("Learning", () => {
 });
 
 /* The Drift case on the Site v3 template (4 Oct 2026; replaces the 22 Sep
-   zoom story, whose tabs and pins left with the rebuild). Every figure's
-   Enlarge (below 768px) opens the full-screen viewer; Escape closes it and
-   focus goes back to Enlarge (Site/Figure button 323:138). A figure with
-   motion has Replay at every width. */
+   zoom story, whose tabs and pins left with the rebuild). A figure with
+   motion has Replay at every width; no figure has Enlarge (removed 4 Oct
+   late: the page's own pinch-zoom does the job). */
 test.describe("Case study: figures", () => {
   test.beforeEach(async ({ page }) => {
     await open(page, "/case-studies/design-system-transformation");
   });
 
-  test("Enlarge opens the figure, Escape closes it and returns focus", async ({ page }) => {
-    /* Enlarge shows below 768px only (Site v3 rules, 4 Oct late) */
-    test.skip(test.info().project.name !== "390", "Enlarge is a phone control");
-    const enlarge = page.getByRole("button", { name: "Enlarge Figure 2" });
-    await enlarge.click();
-    const viewer = page.getByRole("dialog", { name: "Figure 2, enlarged" });
-    await expect(viewer).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(viewer).toBeHidden();
-    await expect(enlarge).toBeFocused();
+  test("no figure offers Enlarge or a viewer", async ({ page }) => {
+    await expect(page.getByRole("button", { name: /^Enlarge Figure/ })).toHaveCount(0);
+    await expect(page.locator("main dialog")).toHaveCount(0);
   });
 
   test("a figure with motion offers Replay", async ({ page }) => {

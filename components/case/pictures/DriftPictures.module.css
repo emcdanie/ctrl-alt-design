@@ -189,18 +189,12 @@
   font-size: 14px;
 }
 
-.keptBadge {
-  position: absolute;
-  top: -20.58px;
-  left: 91.68px;
-  width: 33.68px;
-  height: 33.68px;
-}
-
+/* the cross sits just outside the card's top-right corner, 8 clear of
+   it, never on the card (Elleta, 4 Oct late) */
 .auditFail {
   position: absolute;
-  top: 0;
-  left: 725.94px;
+  top: 14.97px;
+  left: 760.13px;
   width: 33.68px;
   height: 33.68px;
 }
@@ -511,4 +505,429 @@
 .alsoNext {
   background: var(--color-semantic-surface-inset);
   color: var(--color-semantic-text-secondary);
+}
+
+/* ---------- Figures 1 and 6: the Harbour loft stay card ----------
+   Fixed rows, so the anatomy pins in Figure 6 meet their parts: from the
+   card top, photo 0 to 180, title centre 214, location 245, stars 271,
+   divider 296, amenities 313 to 353, divider 369, footer centre 406,
+   bottom 446. 300 wide at most: the photo is a 600px source. */
+
+.stay {
+  width: 300px;
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.stayPhoto {
+  position: relative;
+  height: 180px;
+}
+
+.stayPhoto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stayControl {
+  position: absolute;
+  top: var(--spacing-3);
+  display: inline-flex;
+  padding: var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--cover-on-photo);
+  color: var(--cover-on-photo-ink);
+  box-shadow: var(--shadow-ui);
+}
+
+.stayControl[data-at="start"] {
+  left: var(--spacing-3);
+}
+
+.stayControl[data-at="end"] {
+  right: var(--spacing-3);
+}
+
+.stayGlyph,
+.stayPin,
+.stayAmenityGlyph {
+  display: block;
+  flex: 0 0 auto;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.stayGlyph {
+  width: 16px;
+  height: 16px;
+}
+
+.stayCount {
+  position: absolute;
+  left: var(--spacing-3);
+  bottom: var(--spacing-3);
+  padding: 2px var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--cover-photo-scrim);
+  color: var(--cover-on-photo);
+  font-size: 12px;
+  font-weight: var(--typography-font-weight-medium);
+  line-height: 16px;
+}
+
+.stayBody {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-5);
+}
+
+.stayTitle {
+  font-size: 24px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 28px;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.stayWhere,
+.stayRating {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  margin-top: var(--spacing-2);
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--color-semantic-text-secondary);
+  white-space: nowrap;
+}
+
+.stayPin {
+  width: 16px;
+  height: 16px;
+}
+
+.stayStars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.stayStar {
+  width: 15px;
+  height: 15px;
+  fill: var(--color-semantic-accent);
+}
+
+.stayScore {
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-text-primary);
+}
+
+.stayReviews {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.stayAmenities {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--spacing-4);
+  padding-block: var(--spacing-4);
+  border-block: 1px solid var(--color-semantic-border);
+}
+
+.stayAmenity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-1);
+  height: 40px;
+  font-size: 13px;
+  line-height: 16px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.stayAmenityGlyph {
+  width: 20px;
+  height: 20px;
+}
+
+.stayFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  margin-top: var(--spacing-4);
+}
+
+.stayBook {
+  height: 40px;
+}
+
+.stayPrice {
+  font-size: 22px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.stayNight {
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-regular);
+  color: var(--color-semantic-text-secondary);
+}
+
+/* the drifted list: each row its own type, case and button. Its inks
+   stay AA on the card in both themes: drift is shape, case and weight,
+   never an unreadable colour */
+.drift {
+  --drift-ink: var(--kit-ramp-600);
+  --drift-ink-b: var(--kit-ramp-700);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  width: 400px;
+  padding: var(--spacing-6) var(--spacing-6) var(--spacing-5);
+  border-radius: var(--radius-md);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+  color: var(--color-semantic-text-primary);
+}
+
+:global([data-theme="dark"]) .drift {
+  --drift-ink: var(--kit-ramp-300);
+  --drift-ink-b: var(--kit-ramp-200);
+}
+
+.driftHead {
+  font-size: 22px;
+  font-weight: var(--typography-font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.driftCount {
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-regular);
+  color: var(--color-semantic-text-secondary);
+}
+
+.driftRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.driftThumb {
+  display: block;
+  width: 88px;
+  height: 76px;
+  flex: 0 0 auto;
+  object-fit: cover;
+}
+
+.driftThumb[data-shape="round"] {
+  border-radius: var(--radius-lg);
+}
+
+.driftText {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.driftNameA {
+  font-size: 18px;
+  font-weight: var(--typography-font-weight-medium);
+  line-height: 1.2;
+}
+
+.driftStarsA {
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--drift-ink);
+}
+
+.driftPriceA {
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.driftNameB {
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.driftStarsB {
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--drift-ink-b);
+}
+
+.driftPriceB {
+  font-size: 18px;
+  font-weight: var(--typography-font-weight-bold);
+  line-height: 1.2;
+}
+
+.driftBookA,
+.driftBookB {
+  flex: 0 0 auto;
+  color: var(--kit-on-action);
+  white-space: nowrap;
+}
+
+.driftBookA {
+  padding: var(--spacing-2) var(--spacing-4);
+  background: var(--kit-ramp-600);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.driftBookB {
+  padding: var(--spacing-2) var(--spacing-5);
+  border-radius: var(--radius-pill);
+  background: var(--kit-ramp-800);
+  font-size: 13px;
+  font-weight: var(--typography-font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.driftPerk {
+  align-self: flex-start;
+  padding: var(--spacing-1) var(--spacing-2);
+  background: color-mix(in srgb, var(--color-semantic-accent) 30%, var(--color-semantic-surface));
+  font-size: 13px;
+  font-weight: var(--typography-font-weight-bold);
+  line-height: 1.2;
+  transform: rotate(1deg);
+}
+
+/* Figure 1 at 1440: the drifted list tilted at left, the card at right;
+   each marker 8 clear of its card's top-right corner, never on it */
+.coverArt {
+  position: relative;
+  width: 928px;
+  height: 470px;
+}
+
+.coverBefore {
+  position: absolute;
+  left: 24px;
+  top: 104px;
+  transform: rotate(2deg);
+}
+
+.coverFail {
+  position: absolute;
+  left: 440px;
+  top: 98px;
+}
+
+.coverAfter {
+  position: absolute;
+  left: 540px;
+  top: 12px;
+}
+
+.coverPass {
+  position: absolute;
+  left: 848px;
+  top: 12px;
+}
+
+/* Figure 1 at 390: the 390 frame restacks, before above after, each with
+   its marker beside its label, outside the card */
+.coverPhone {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.coverPhone .drift {
+  width: 100%;
+  max-width: 300px;
+  margin-inline: auto;
+  padding: var(--spacing-5) var(--spacing-4);
+}
+
+.coverPhone .driftRow {
+  gap: var(--spacing-3);
+}
+
+/* the 390 frame lets the drifted names wrap */
+.coverPhone .driftNameB {
+  white-space: normal;
+}
+
+.coverPhone .driftThumb {
+  width: 64px;
+  height: 56px;
+}
+
+.coverLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  font-size: 16px;
+  color: var(--color-semantic-text-primary);
+}
+
+.coverPhoneCard {
+  width: 100%;
+  max-width: 300px;
+  margin-inline: auto;
+}
+
+/* Figure 6: the card at x 314, y 32 in the 928-wide art; the pins meet
+   its parts at the y the card's fixed rows put them */
+.anatomyArt {
+  position: relative;
+  width: 928px;
+  height: 510px;
+}
+
+.anatomyCard {
+  position: absolute;
+  left: 314px;
+  top: 32px;
+}
+
+.pinSlot {
+  position: absolute;
+  display: flex;
+  transform: translateY(-50%);
+}
+
+.pinSlot[data-side="left"] {
+  right: 678px;
+}
+
+.pinSlot[data-side="right"] {
+  left: 678px;
+}
+
+.pin {
+  font-family: var(--font-code);
+  font-size: 16px;
+}
+
+.pinSwatch {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: var(--radius-pill);
 }

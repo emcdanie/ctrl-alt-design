@@ -124,67 +124,24 @@
   margin-left: var(--spacing-1);
 }
 
-/* ── 4 · Word of mouth: Brad Frost's quote large, three across ── */
-.quotes {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-6);
-  /* the feature quote's mark hangs above its card */
-  padding-top: var(--spacing-10);
-}
-
-.featureWrap {
-  position: relative;
-}
-
-.mark {
-  position: absolute;
-  z-index: 1;
-  left: var(--spacing-6);
-  top: calc(var(--spacing-16) * -1);
-  font-size: var(--quote-mark-size);
-  font-weight: var(--typography-font-weight-black);
-  line-height: 1;
-  transform: rotate(-8deg);
-  pointer-events: none;
-}
-
-.feature,
+/* ── 4 · Word of mouth: Brad Frost's quote on Site/Quote (CaseQuote, the
+   case pages' one treatment), then three across. Each small card is a
+   two-row subgrid, so the quote rows share a height and every byline
+   starts on the same line at the card bottom. ── */
 .quote {
+  grid-row: span 2;
+  display: grid;
+  grid-template-rows: subgrid;
+  row-gap: var(--spacing-4);
   margin: 0;
-  display: flex;
-  flex-direction: column;
+  padding: var(--spacing-6) var(--spacing-10) var(--spacing-8);
   border: 1px solid var(--color-semantic-border);
   border-radius: var(--radius-card);
-}
-
-.feature {
-  gap: var(--spacing-3);
-  padding: var(--spacing-12) var(--spacing-10) var(--spacing-8);
-  background: var(--color-semantic-background);
-}
-
-.quote {
-  justify-content: space-between;
-  gap: var(--spacing-4);
-  height: 100%;
-  padding: var(--spacing-6) var(--spacing-10) var(--spacing-8);
   background: var(--color-semantic-surface-card);
 }
 
-.feature blockquote,
 .quote blockquote {
   margin: 0;
-}
-
-.feature blockquote p {
-  margin: 0;
-  font-size: var(--text-quote);
-  font-weight: var(--typography-font-weight-light);
-  line-height: 1.45;
-  letter-spacing: -0.03em;
-  color: var(--color-semantic-text-primary);
-  text-wrap: pretty;
 }
 
 .quote blockquote p {
@@ -202,28 +159,24 @@
   padding: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: auto;
   gap: var(--spacing-6);
 }
 
+.small > li {
+  grid-row: span 2;
+  display: grid;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+}
+
 .by {
+  align-self: end;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--spacing-3);
   font-size: var(--typography-font-size-sm);
   line-height: 1.3;
-}
-
-/* the feature byline: name and role side by side from 640px */
-@media (min-width: 640px) {
-  .whoRow {
-    flex: 1 1 auto;
-    flex-direction: row;
-    gap: var(--spacing-2);
-  }
-
-  .whoRow > * {
-    flex: 1 1 0;
-  }
 }
 
 .who {
@@ -260,15 +213,7 @@
   letter-spacing: -0.02em;
 }
 
-/* ── 5 · The pack, 6 · House rules: cards two across ── */
-.packPicture {
-  display: block;
-  width: 100%;
-  max-width: 32.5rem;
-  height: auto;
-  border-radius: var(--radius-card);
-}
-
+/* ── 5 · House rules: cards two across ── */
 .cards {
   list-style: none;
   margin: 0;
@@ -326,7 +271,6 @@
     width: 88.5%;
   }
 
-  .feature,
   .quote {
     padding-inline: var(--spacing-6);
   }

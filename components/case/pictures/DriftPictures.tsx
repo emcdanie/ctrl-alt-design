@@ -118,7 +118,6 @@ export function DriftButtons() {
                 <span className={s.kept}>
                   <MarkupRing />
                   <KitButton className={s.keptButton}>Book now</KitButton>
-                  <MarkupBadge kind="pass" size="md" className={s.keptBadge} />
                 </span>
               </div>
             </KitPanel>
@@ -326,6 +325,198 @@ export function DriftShipped() {
               ))}
               <span className={s.alsoNext}>Next: flight extras, nearly done</span>
             </span>
+          </div>
+        </div>
+      </ScaledArt>
+    </div>
+  );
+}
+
+/* ---------- Figures 1 and 6: the Harbour loft stay card, live ----------
+   (Elleta, 4 Oct late: no PNG pictures left, so both follow the theme.)
+   The same card in both figures. Its photo is a 600px source, so the card
+   is never wider than 300 CSS px (audit:sharp, 2x). */
+
+const KIT = "/images/kit";
+
+function Line({ d, className }: { d: string[]; className: string }) {
+  return (
+    <svg className={className} viewBox="0 0 20 20" fill="none">
+      {d.map((p) => (
+        <path key={p} d={p} />
+      ))}
+    </svg>
+  );
+}
+
+const AMENITIES: [string, string[]][] = [
+  ["2 beds", ["M2.5 16V5", "M2.5 12.5h15V16", "M17.5 12.5V10a2 2 0 0 0-2-2H9v4.5"]],
+  ["1 bath", ["M5 10V5.5a2 2 0 0 1 3.5-1.3", "M2.5 10h15v1.5a4 4 0 0 1-4 4h-7a4 4 0 0 1-4-4Z", "M5.5 15.5 4.5 17.5", "M14.5 15.5l1 2"]],
+  ["Wi-Fi", ["M2.5 8a11 11 0 0 1 15 0", "M5 11a7 7 0 0 1 10 0", "M7.6 13.9a3.4 3.4 0 0 1 4.8 0", "M10 16.6h.01"]],
+  ["Parking", ["M4.8 15H4a1 1 0 0 1-1-1v-3l1.8-3.6a2 2 0 0 1 1.8-1.1h6.8a2 2 0 0 1 1.8 1.1L17 11v3a1 1 0 0 1-1 1h-.8", "M8.2 15h3.6", "M3 11h14", "M8 15a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z", "M15 15a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"]],
+];
+
+const STAR = "M10 2.5l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 7.8l5-.7Z";
+
+function StayCard({ className = "" }: { className?: string }) {
+  return (
+    <div className={`${s.stay} ${className}`.trim()}>
+      <div className={s.stayPhoto}>
+        <img src={`${KIT}/stay-harbour.jpg`} width={600} height={400} alt="" loading="lazy" decoding="async" />
+        <span className={s.stayControl} data-at="start">
+          <Line className={s.stayGlyph} d={["M10 15.8 4.2 10 10 4.2", "M15.8 10H4.2"]} />
+        </span>
+        <span className={s.stayControl} data-at="end">
+          <Line className={s.stayGlyph} d={["M16 11.7c1.2-1.2 2.5-2.7 2.5-4.6a4.6 4.6 0 0 0-4.6-4.6c-1.5 0-2.5.4-3.9 1.7C8.6 2.9 7.6 2.5 6.1 2.5a4.6 4.6 0 0 0-4.6 4.6c0 1.9 1.3 3.4 2.5 4.6l6 6Z"]} />
+        </span>
+        <span className={s.stayCount}>1 / 8</span>
+      </div>
+      <div className={s.stayBody}>
+        <span className={s.stayTitle}>Harbour loft</span>
+        <span className={s.stayWhere}>
+          <Line className={s.stayPin} d={["M16.5 8.3c0 5-6.5 9.2-6.5 9.2S3.5 13.3 3.5 8.3a6.5 6.5 0 0 1 13 0Z", "M10 10.8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"]} />
+          Old town, by the water
+        </span>
+        <span className={s.stayRating}>
+          <span className={s.stayStars}>
+            {[0, 1, 2, 3, 4].map((k) => (
+              <svg key={k} viewBox="0 0 20 20" className={s.stayStar}>
+                <path d={STAR} />
+              </svg>
+            ))}
+          </span>
+          <span className={s.stayScore}>4.9</span>
+          <span className={s.stayReviews}>(23 reviews)</span>
+        </span>
+        <span className={s.stayAmenities}>
+          {AMENITIES.map(([label, d]) => (
+            <span key={label} className={s.stayAmenity}>
+              <Line className={s.stayAmenityGlyph} d={d} />
+              {label}
+            </span>
+          ))}
+        </span>
+        <span className={s.stayFoot}>
+          <KitButton className={s.stayBook}>Book now</KitButton>
+          <span className={s.stayPrice}>
+            €142 <span className={s.stayNight}>/ night</span>
+          </span>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* the drifted list: every row its own button, type and capitalisation */
+function DriftedList({ className = "" }: { className?: string }) {
+  return (
+    <div className={`${s.drift} ${className}`.trim()}>
+      <span className={s.driftHead}>
+        Stays in Lisbon <span className={s.driftCount}>(42)</span>
+      </span>
+      <span className={s.driftRow}>
+        <img className={s.driftThumb} data-shape="square" src={`${KIT}/stay-canal.webp`} width={576} height={384} alt="" loading="lazy" decoding="async" />
+        <span className={s.driftText}>
+          <span className={s.driftNameA}>Canal House Suite</span>
+          <span className={s.driftStarsA}>★★★★☆ 4.6</span>
+          <span className={s.driftPriceA}>€96</span>
+        </span>
+        <span className={s.driftBookA}>Book</span>
+      </span>
+      <span className={s.driftRow}>
+        <img className={s.driftThumb} data-shape="round" src={`${KIT}/stay-oldtown.webp`} width={300} height={200} alt="" loading="lazy" decoding="async" />
+        <span className={s.driftText}>
+          <span className={s.driftNameB}>OLD TOWN LOFT</span>
+          <span className={s.driftStarsB}>4.8 stars</span>
+          <span className={s.driftPriceB}>€142 /nt</span>
+        </span>
+        <span className={s.driftBookB}>BOOK NOW</span>
+      </span>
+      <span className={s.driftPerk}>Free cancellation!!</span>
+    </div>
+  );
+}
+
+const F1_LABEL =
+  "Before: a 'Stays in Lisbon' list where each row uses a different button, type and capitalisation, marked with a red cross. After: one Harbour loft stay card on the system, with one Book now button, marked with a green tick.";
+
+export function DriftCover({ wideClass, phoneClass }: { wideClass: string; phoneClass: string }) {
+  return (
+    <>
+      <div className={`${s.root} ${wideClass}`} style={{ "--art-w": 928 } as CSSProperties} role="img" aria-label={F1_LABEL}>
+        <ScaledArt width={992}>
+          <div className={s.bleed} aria-hidden="true">
+            <div className={s.coverArt}>
+              <DriftedList className={s.coverBefore} />
+              <MarkupBadge kind="fail" size="md" className={s.coverFail} />
+              <StayCard className={s.coverAfter} />
+              <MarkupBadge kind="pass" size="md" className={s.coverPass} />
+            </div>
+          </div>
+        </ScaledArt>
+      </div>
+      <div className={phoneClass} role="img" aria-label={F1_LABEL}>
+        <div className={s.coverPhone} aria-hidden="true">
+          <span className={s.coverLabel}>
+            <MarkupBadge kind="fail" size="md" />
+            Before · drifted
+          </span>
+          <DriftedList />
+          <span className={s.coverLabel}>
+            <MarkupBadge kind="pass" size="md" />
+            After · on BELLA
+          </span>
+          <StayCard className={s.coverPhoneCard} />
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* Figure 6: the card's parts pinned to the tokens they read. [token,
+   swatch, side, y]: y is the part's centre in the 928-wide art (the card
+   sits at x 314, y 32; see .anatomyCard) */
+const PINS: [string, string, "left" | "right", number, number][] = [
+  ["--radius-card", "transparent", "left", 32, 308],
+  ["--text-primary", "var(--color-semantic-text-primary)", "left", 246, 330],
+  ["--accent", "var(--color-semantic-accent)", "left", 303, 330],
+  ["color.action.primary", "var(--kit-action)", "left", 438, 330],
+  ["--text-secondary", "var(--color-semantic-text-secondary)", "right", 277, 622],
+  ["--border-subtle", "var(--color-semantic-border)", "right", 328, 622],
+  ["--surface-card", "var(--color-semantic-surface)", "right", 458, 622],
+];
+
+export function DriftAnatomy() {
+  return (
+    <div
+      className={s.root}
+      style={{ "--art-w": 928 } as CSSProperties}
+      role="img"
+      aria-label="The Harbour loft stay card with each part pinned to its token: --radius-card on the corners, --text-primary on the title, --accent on the stars, color.action.primary on Book now, --text-secondary on the location, --border-subtle on the divider, --surface-card on the card."
+    >
+      <ScaledArt width={992}>
+        <div className={s.bleed} aria-hidden="true">
+          <div className={s.anatomyArt}>
+            <StayCard className={s.anatomyCard} />
+            <svg className={s.overlay} viewBox="0 0 928 510" width="928" height="510">
+              {PINS.map(([t, , side, y, to]) => {
+                const from = side === "left" ? 258 : 670;
+                return (
+                  <g key={t} className={kitLeader}>
+                    <path d={`M${from} ${y} H${to}`} />
+                    <path d={arrowHead(to, y, side === "left" ? 1 : -1)} className={s.arrowHead} />
+                  </g>
+                );
+              })}
+            </svg>
+            {PINS.map(([t, swatch, side, y]) => (
+              <span key={t} className={s.pinSlot} data-side={side} style={{ top: y }}>
+                <MarkupNote tone="neutral" className={s.pin}>
+                  <span className={s.pinSwatch} style={{ background: swatch }} />
+                  {t}
+                </MarkupNote>
+              </span>
+            ))}
           </div>
         </div>
       </ScaledArt>

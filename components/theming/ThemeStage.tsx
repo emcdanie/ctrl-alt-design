@@ -39,33 +39,22 @@ const useReducedMotion = () => {
   return reduce;
 };
 
-/* one gate row: the bar grows, the ratio counts up, the grade pops.
+/* one gate row: the bar grows and the grade pops; the ratio is always
+ * the real one (job 32: a count-up from 0 meant stills caught "0.00").
  * Remounted per theme change (key), so every theme replays it. */
 function GateRow({ row, index, still }: { row: ReturnType<typeof gateRows>[number]; index: number; still: boolean }) {
   const [grown, setGrown] = useState(still);
-  const [shown, setShown] = useState(still ? row.ratio : 0);
   const [badge, setBadge] = useState(still);
   useEffect(() => {
     if (still) return;
-    let raf = 0;
     const delay = 60 + index * 70;
-    const t1 = window.setTimeout(() => {
-      setGrown(true);
-      const t0 = performance.now();
-      const tick = () => {
-        const x = Math.max(0, Math.min(1, (performance.now() - t0) / 550));
-        setShown(row.ratio * x);
-        if (x < 1) raf = requestAnimationFrame(tick);
-      };
-      raf = requestAnimationFrame(tick);
-    }, delay);
+    const t1 = window.setTimeout(() => setGrown(true), delay);
     const t2 = window.setTimeout(() => setBadge(true), delay + 450);
     return () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
-      cancelAnimationFrame(raf);
     };
-  }, [still, index, row.ratio]);
+  }, [still, index]);
   /* reduced motion is known only after mount, so `still` overrides the
      animated state rather than seeding it: the final frame, always */
   const full = still || grown;
@@ -80,7 +69,7 @@ function GateRow({ row, index, still }: { row: ReturnType<typeof gateRows>[numbe
         <i style={{ left: `${gatePct(7)}%` }} />
         <span className={`${s.bar} ${tone}`} style={{ width: full ? `${Math.min(100, gatePct(row.ratio))}%` : 0 }} />
       </span>
-      <span className={s.growValue}>{(still ? row.ratio : shown).toFixed(2)}</span>
+      <span className={s.growValue}>{row.ratio.toFixed(2)}</span>
       <span className={`${s.badge} ${tone} ${popped ? s.badgeOn : ""}`}>{row.grade.label}</span>
     </div>
   );

@@ -1,19 +1,16 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import { Icon } from "@/components/ui/Icon";
 import styles from "./Case.module.css";
 
-/* A numbered case figure (Site v3, Figma Site/Figure button 323:138).
-   Every figure has Enlarge, top-right: a full-screen viewer at the
-   figure's full width, with the page's own pinch-zoom and a pan inside
-   the frame, the caption pinned at the foot. Close and Esc return focus
-   to Enlarge (the native dialog does both). Page zoom is never disabled.
+/* A numbered case figure (Site v3). No Enlarge and no viewer (Elleta,
+   4 Oct late: "it covers the picture and isn't needed"): a phone zooms a
+   picture with the page's own pinch-zoom, which is never disabled.
 
    A figure with motion (`replay`) plays once when half of it is in view
-   and offers Replay beside Enlarge; its art reads `useFigurePlay()` and
-   keys its animation on `run`. Reduced motion is CSS's job: the art
-   shows its finished frame. */
+   and offers Replay, top-right; its art reads `useFigurePlay()` and keys
+   its animation on `run`. Reduced motion is CSS's job: the art shows its
+   finished frame. */
 
 const PlayContext = createContext<{ playing: boolean; run: number }>({ playing: true, run: 0 });
 
@@ -28,8 +25,6 @@ export default function CaseFigure({
   caption,
   replay = false,
   inset = false,
-  phoneTop,
-  bare = false,
   children,
   className = "",
 }: {
@@ -38,20 +33,14 @@ export default function CaseFigure({
   caption: ReactNode;
   /** the art has motion: play in view, show Replay */
   replay?: boolean;
-  /** the tools sit 16 in from the corner (the motion figures) */
+  /** Replay sits 16 in from the corner (the motion figures) */
   inset?: boolean;
-  /** at 390 the tools sit below the picture's top label (the cover) */
-  phoneTop?: "label";
-  /** the art brings its own stage (a picture exported with it) */
-  bare?: boolean;
   children: ReactNode;
   className?: string;
 }) {
   const art = useRef<HTMLDivElement>(null);
-  const dialog = useRef<HTMLDialogElement>(null);
   const [playing, setPlaying] = useState(!replay);
   const [run, setRun] = useState(0);
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (!replay || playing) return;
@@ -73,29 +62,16 @@ export default function CaseFigure({
     return () => io.disconnect();
   }, [replay, playing]);
 
-  const show = () => {
-    setOpen(true);
-    requestAnimationFrame(() => dialog.current?.showModal());
-  };
-
   return (
     <figure className={`${styles.figBlock} ${className}`.trim()}>
-      <div className={styles.figureArt} ref={art}>
-        {bare ? (
+      <div className={styles.figureArt} ref={art} data-replay={replay || undefined}>
+        {/* Site/Figure stage (417:1706): the grid behind every picture,
+            56/64 margins at 1440 and 20 at 390 */}
+        <div className={styles.stage}>
           <PlayContext.Provider value={{ playing, run }}>{children}</PlayContext.Provider>
-        ) : (
-          /* Site/Figure stage (417:1706): the grid behind every picture,
-             56/64 margins at 1440 and 20 at 390 */
-          <div className={styles.stage}>
-            <PlayContext.Provider value={{ playing, run }}>{children}</PlayContext.Provider>
-          </div>
-        )}
-        <div className={styles.figureTools} data-inset={inset || undefined} data-phone-top={phoneTop} data-bare={bare || undefined}>
-          <button type="button" className={`${styles.toolButton} ${styles.enlarge}`} data-icon onClick={show} aria-haspopup="dialog">
-            <Icon name="Enlarge" />
-            <span className="sr-only">Enlarge Figure {n}</span>
-          </button>
-          {replay ? (
+        </div>
+        {replay ? (
+          <div className={styles.figureTools} data-inset={inset || undefined}>
             <button
               type="button"
               className={styles.toolButton}
@@ -106,37 +82,12 @@ export default function CaseFigure({
             >
               Replay<span className="sr-only"> Figure {n}</span>
             </button>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
       </div>
       <figcaption className={`${styles.caption} ${styles.col}`}>
         <span className={styles.captionNum}>Figure {n}.</span> {caption}
       </figcaption>
-      {open ? (
-        <dialog
-          ref={dialog}
-          className={styles.viewer}
-          aria-label={`Figure ${n}, enlarged`}
-          onClose={() => setOpen(false)}
-        >
-          <div className={styles.viewerInner}>
-            <div className={styles.viewerStage}>
-              <div className={styles.viewerArt} data-viewer>
-                <PlayContext.Provider value={{ playing: true, run }}>{children}</PlayContext.Provider>
-              </div>
-            </div>
-            <div className={styles.viewerCaption}>
-              <p>
-                <span className={styles.captionNum}>Figure {n}.</span> {caption}
-              </p>
-            </div>
-          </div>
-          <button type="button" className={`${styles.toolButton} ${styles.viewerClose}`} data-icon onClick={() => dialog.current?.close()}>
-            <Icon name="Xmark" />
-            <span className="sr-only">Close Figure {n}</span>
-          </button>
-        </dialog>
-      ) : null}
     </figure>
   );
 }

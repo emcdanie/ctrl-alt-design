@@ -227,12 +227,6 @@
   position: relative;
 }
 
-.picture {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
 /* Site/Figure stage (417:1706): a 32px line grid that fades to the page
    ground at the edges, radius 16; standard margins 56/64 (20 at 390) */
 .stage {
@@ -280,14 +274,6 @@
   z-index: 2;
 }
 
-/* Enlarge only below 768px (Site v3 rules, 4 Oct late); Replay at every
-   width */
-@media (min-width: 768px) {
-  .toolButton.enlarge {
-    display: none;
-  }
-}
-
 .figureTools[data-inset] {
   top: var(--spacing-4);
   right: var(--spacing-4);
@@ -298,8 +284,8 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-2);
-  min-width: var(--case-enlarge);
-  height: var(--case-enlarge);
+  min-width: var(--spacing-touch-target);
+  height: var(--spacing-touch-target);
   padding: 0 var(--spacing-4);
   border: 1px solid var(--color-semantic-border);
   border-radius: var(--radius-pill);
@@ -309,11 +295,6 @@
   font: inherit;
   font-size: var(--typography-font-size-sm);
   cursor: pointer;
-}
-
-.toolButton[data-icon] {
-  padding: 0;
-  width: var(--case-enlarge);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -332,65 +313,12 @@
   font-weight: var(--typography-font-weight-semibold);
 }
 
-/* the full-screen viewer: the figure at its full width, the page's own
-   pinch-zoom and a pan inside the frame; the caption pinned at the foot */
-.viewer {
-  width: 100vw;
-  height: 100dvh;
-  max-width: none;
-  max-height: none;
-  margin-block: 0;
-  padding: 0;
-  border: 0;
-  background: var(--color-semantic-background);
-  color: var(--color-semantic-text-body);
-}
-
-.viewer::backdrop {
-  background: var(--color-semantic-background);
-}
-
-.viewerInner {
-  height: 100%;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-}
-
-.viewerStage {
-  overflow: auto;
-  padding: var(--spacing-16) var(--spacing-6) var(--spacing-6);
-  overscroll-behavior: contain;
-}
-
-.viewerArt {
-  width: var(--case-body-max);
-  max-width: none;
-  margin-inline: auto;
-}
-
-.viewerCaption {
-  padding: var(--spacing-4) var(--spacing-6) var(--spacing-6);
-  border-top: 1px solid var(--color-semantic-border);
-  background: var(--color-semantic-surface);
-  font-size: var(--typography-font-size-sm);
-  line-height: var(--typography-line-height-normal);
-}
-
-.viewerCaption > * {
-  max-width: var(--case-col-max);
-  margin-inline: auto;
-}
-
-.viewerClose {
-  position: fixed;
-  top: var(--spacing-4);
-  right: var(--spacing-4);
-  z-index: 3;
-}
-
 /* ── Quote (Site/Quote, locked: do not restyle) ── */
 .quoteWrap {
   position: relative;
+  /* the mark hangs 68 above the card and the beat gap is 40: this clears
+     it from whatever sits above (a long lead at 390 touched it) */
+  margin-top: var(--spacing-10);
 }
 
 .quote {
@@ -759,12 +687,15 @@
   background: var(--color-semantic-text-primary);
 }
 
-/* the 390 frames put Enlarge 8 in from the picture's corner */
+/* the 390 frames: 20 margins; Replay sits 8 in from the picture's corner */
 @media (max-width: 639px) {
-  /* the art starts under the tool row (Enlarge, Replay), so no tool sits
-     on a title or a card corner */
   .stage {
     padding: var(--spacing-5);
+  }
+
+  /* a figure with Replay starts its art under the button, so Replay never
+     sits on a title or a card corner */
+  .figureArt[data-replay] .stage {
     padding-top: calc(var(--spacing-3) + var(--spacing-touch-target) + var(--spacing-3));
   }
 
@@ -779,10 +710,6 @@
   .figureTools:not([data-inset]) {
     top: var(--spacing-2);
     right: var(--spacing-2);
-  }
-
-  .figureTools[data-phone-top="label"] {
-    top: calc(var(--spacing-12) + var(--spacing-1));
   }
 }
 

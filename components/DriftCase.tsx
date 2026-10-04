@@ -1,7 +1,7 @@
 import { CasePage, Beat, BeatText, CaseQuote, Lessons } from "@/components/case/CasePage";
 import CaseFigure from "@/components/case/CaseFigure";
-import CasePicture from "@/components/case/CasePicture";
-import { DriftButtons, DriftShipped, DriftSurvey } from "@/components/case/pictures/DriftPictures";
+import caseStyles from "@/components/case/Case.module.css";
+import { DriftAnatomy, DriftButtons, DriftCover, DriftShipped, DriftSurvey } from "@/components/case/pictures/DriftPictures";
 import NextCase from "@/components/case/NextCase";
 import { CoverAtlas, CoverBrands, CoverSearch } from "@/components/case/pictures/Covers";
 import { ZoomLevels, TokenCascade, Rollout, Staircase } from "@/components/case/DriftFigures";
@@ -9,10 +9,9 @@ import { ZoomLevels, TokenCascade, Rollout, Staircase } from "@/components/case/
 /* From Drift to Foundation (Site v3, Elleta, 4 Oct 2026): the case rebuilt
    from the Site v3 frames, Figma e7U5Hxpr441rT719SPclas, 1440 293:1259 and
    390 303:4790, on Template / Case page. Copy is the frames' copy.
-   Pictures 1, 2, 3, 6 and 9 are the frames' own art at 2x (the Case UI
-   kit is never live DOM); figures 4, 5, 7 and 8 are drawn here and move. */
-
-const IMG = "/images/case/drift";
+   Every picture is live and follows the theme (no PNG pictures, Elleta,
+   4 Oct late): 1, 2, 3, 6 and 9 are drawn from the Case UI kit; 4, 5, 7
+   and 8 are drawn here and move. */
 
 export default function DriftCase() {
   return (
@@ -35,17 +34,9 @@ export default function DriftCase() {
       cover={
         <CaseFigure
           n={1}
-          bare
-          phoneTop="label"
           caption="Before: every team built its own card, button and type. After: one system, and 17 buttons became one. Under NDA: visuals are my own, recreated; no client screens or data."
         >
-          <CasePicture
-            src={`${IMG}/f1-cover.webp`}
-            phone={`${IMG}/f1-cover-390.webp`}
-            width={2112}
-            height={1391}
-            alt="Before: a 'Stays in Lisbon' list where each row uses a different button, type and capitalisation, marked with a red cross. After: one Harbour loft stay card on the system, with one Book now button, marked with a green tick."
-          />
+          <DriftCover wideClass={caseStyles.wideOnly} phoneClass={caseStyles.phoneOnly} />
         </CaseFigure>
       }
     >
@@ -96,14 +87,8 @@ export default function DriftCase() {
           <TokenCascade />
         </CaseFigure>
         <BeatText>Every fare case became one rule string, so a card can’t show the wrong text. Here is one stay card with the tokens it reads.</BeatText>
-        <CaseFigure n={6} bare caption="One stay card, each part pinned to the token it reads.">
-          <CasePicture
-            src={`${IMG}/f6-anatomy.webp`}
-            phone={`${IMG}/f6-anatomy-390.webp`}
-            width={2112}
-            height={1386}
-            alt="The Harbour loft stay card with each part pinned to its token: --radius-card on the corners, --text-primary on the title, --accent on the stars, color.action.primary on Book now, --text-secondary on the location, --border-subtle on the divider, --surface-card on the card."
-          />
+        <CaseFigure n={6} caption="One stay card, each part pinned to the token it reads.">
+          <DriftAnatomy />
         </CaseFigure>
       </Beat>
 
@@ -166,8 +151,8 @@ export default function DriftCase() {
         more={[
           {
             href: "/case-studies/chip",
-            meta: "AI · Design systems",
-            title: "CHIP: an agent that catches drift",
+            meta: "AI-enabled design · 2026",
+            title: "CHIP",
             cover: <CoverAtlas slot="work" label="CHIP's Atlas view of the FilterChip: six parts pinned on the anatomy stage, bottom layer first, with 'checks 6 of 6 pass'." />,
           },
           {

@@ -1,0 +1,20 @@
+- region "Four things I care about.":
+  - paragraph: 5 House rules
+  - heading "Four things I care about." [level=2]
+  - list:
+    - listitem:
+      - heading "Kindness" [level=3]
+      - paragraph: /Docs written for the person reading them at \d+[hmsp]+ on a Friday\./
+      - paragraph: /Proof:\sat \S+ I wrote the documentation even when I was told it wasn't important\./
+    - listitem:
+      - heading "Respect" [level=3]
+      - paragraph: For the designer's craft and the engineer's time. I check it can be built before I design it three ways.
+      - paragraph: "Proof: a frontend lead wrote that I treat technical constraints as creative opportunities rather than obstacles."
+    - listitem:
+      - heading "Sharing" [level=3]
+      - paragraph: "I learned all of this in public, from Brad Frost, Vitaly Friedman, Nathan Curtis, Romina Kavčić and the Into Design Systems crowd. So I give it back: BELLA is open for anyone to read."
+      - paragraph: "Proof: BELLA is public on GitHub, with its Storybook."
+    - listitem:
+      - heading "Love of the craft" [level=3]
+      - paragraph: Naming, tokens, governance. The unglamorous stuff is my favourite stuff.
+      - paragraph: "Proof: on Drift I counted seventeen buttons doing one job; the system kept one."

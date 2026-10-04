@@ -31,7 +31,7 @@ export default function FederatedCase() {
         { label: "Platforms", value: "Web, iOS and Android" },
       ]}
       cover={
-        <CaseFigure n={1} phoneTop="label" caption="Same squads, same quarter. What changed is when they came to us.">
+        <CaseFigure n={1} caption="Same squads, same quarter. What changed is when they came to us.">
           <FederatedCover />
         </CaseFigure>
       }

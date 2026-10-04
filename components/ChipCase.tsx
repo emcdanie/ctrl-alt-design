@@ -1,4 +1,4 @@
-import { CasePage, Beat, Lessons } from "@/components/case/CasePage";
+import { CasePage, Beat, BeatText, Lessons } from "@/components/case/CasePage";
 import CaseFigure from "@/components/case/CaseFigure";
 import NextCase from "@/components/case/NextCase";
 import { CoverProduct, CoverSearch, CoverStay } from "@/components/case/pictures/Covers";
@@ -41,11 +41,10 @@ export default function ChipCase() {
         label="Why I built it"
         heading="The truth about my system lived in four places."
         lead="Notion, Storybook, Figma and BELLA’s gate scripts each held a piece. Every switch was a tax, and asking a cloud agent to look cost money."
-        align="edge"
       >
-        <p className={s.body}>
+        <BeatText>
           I didn’t build this for a theoretical user. I built it for me. CHIP started as a five-day build at a Claude Code hackathon in April 2026; CHIP 2.0 replaced the cloud agent with a local one, so nothing leaves my machine.
-        </p>
+        </BeatText>
       </Beat>
 
       <Beat
@@ -54,7 +53,6 @@ export default function ChipCase() {
         label="Take it apart"
         heading="Five layers make one button."
         lead="Atlas shows a component the way it is built: rest with numbered parts, then exploded into its layers. A concept mock on BELLA’s Button."
-        align="edge"
       >
         <CaseFigure
           n={2}
@@ -71,7 +69,6 @@ export default function ChipCase() {
         label="The gate tells the truth"
         heading="Real checks, not illustrations."
         lead="Atlas reads BELLA’s own gate. What it finds is what the gate found, with the date it ran."
-        align="edge"
       >
         <CaseFigure
           n={3}
@@ -87,7 +84,6 @@ export default function ChipCase() {
         label="It teaches"
         heading="One job per state."
         lead="Every specimen carries a short lesson, so the rule travels with the component."
-        align="edge"
       >
         <CaseFigure n={4} caption="The Lesson dialog in the Atlas concept mock. Each state does one thing, so you can read it at a glance.">
           <ChipLesson label="A concept mock of the Lesson dialog for Button, One job per state. Rest: the ink keycap. Hover rolls the label; nothing lifts. Focus is the only place ochre-deep appears. Press sinks the key 2px. Disabled drops the keycap: no shadow, no roll. Why it matters: when hover, focus and press each look different, a keyboard user always knows where they are, and nobody mistakes a hover for a selection." />
@@ -100,7 +96,6 @@ export default function ChipCase() {
         label="Ask, then approve"
         heading="Ask anything. Nothing runs until I confirm."
         lead="One input jumps or asks OBI. A miss says so and lists the closest three. The terminal takes ask, sync, audit and status, never a shell."
-        align="edge"
       >
         <CaseFigure
           n={5}

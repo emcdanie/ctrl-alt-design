@@ -196,7 +196,6 @@ body {
   --case-col-max: 43.5rem;
   --case-gap-section: 6rem;
   --case-gap-block: var(--spacing-10);
-  --case-enlarge: var(--spacing-touch-target);
   /* Label/Eyebrow, Label/Table, Label/Button: 16px (site v3) */
   --text-label: var(--typography-font-size-tag);
   /* Site/Quote: 32 at 1440, fluid to 24 at 390 (TODO(bella): a Quote style,
@@ -2312,7 +2311,9 @@ body:has(main.site-ground-page) {
   will-change: transform, width, height;
 }
 
-.bracket-cursor[data-visible="true"] {
+/* only on a target: the idle 22px bracket box around a resting pointer
+   read as a stray dashed square on the pictures (Elleta, job 32 item 10) */
+.bracket-cursor[data-visible="true"][data-active="true"] {
   opacity: 1;
 }
 

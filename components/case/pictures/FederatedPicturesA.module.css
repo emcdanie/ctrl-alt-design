@@ -93,14 +93,16 @@
   width: 432px;
 }
 
+/* the markers sit 8 above each panel's top-right corner, never on the
+   panel (Elleta, 4 Oct late); the chat's corner is 100.5 up once rotated */
 .f1BadgeFail {
-  left: 390px;
-  top: 70px;
+  left: 366px;
+  top: 32px;
 }
 
 .f1BadgePass {
-  left: 898px;
-  top: 70px;
+  left: 868px;
+  top: 34px;
 }
 
 .f1Leaders {
@@ -570,10 +572,12 @@
   background: currentColor;
 }
 
+/* above the card's top-right corner, beside the status, never on the
+   photo or its close control (Elleta, 4 Oct late) */
 .passBadge {
   position: absolute;
-  left: 254px;
-  top: 18px;
+  left: 244px;
+  top: -16px;
 }
 
 .popover {

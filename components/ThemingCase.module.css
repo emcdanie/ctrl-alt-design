@@ -333,28 +333,38 @@
 }
 
 /* ── the demo listing card (every theme dresses it) ────────────── */
+/* job 32 (4 Oct 2026): high fidelity, at the level of Drift's Harbour
+   loft card. Every colour is a theme role (--t-*); the photo is the one
+   thing that stays itself. The card caps at 20rem, so its photo never
+   renders wider than 288 CSS px (576px source, audit:sharp). */
 .pv {
+  --pv-pad: var(--spacing-4);
   min-width: 0;
+  width: 100%;
+  max-width: 20rem;
   overflow: hidden;
-  border: 1px solid var(--color-semantic-border);
+  border: 1px solid var(--t-line);
   border-radius: var(--radius-lg);
   background: var(--t-bg);
   color: var(--t-ink);
   font-family: var(--font-body);
+  box-shadow: var(--shadow-ui-ink);
   transition: background-color 0.5s, color 0.5s;
 }
 .pv * { transition: background-color 0.5s, color 0.5s, border-color 0.5s, fill 0.5s, stroke 0.5s, outline-color 0.3s; }
 .ex .pv {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
+  align-self: center;
+  justify-self: end;
+}
+@media (max-width: 59.9375rem) {
+  .ex .pv { justify-self: center; }
 }
 .pvNav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: calc(var(--spacing-3) + 2px);
-  padding: var(--spacing-3) var(--spacing-4);
+  padding: var(--spacing-3) var(--pv-pad);
   border-bottom: 1px solid var(--t-line);
   font-size: var(--typography-font-size-sm);
 }
@@ -366,115 +376,153 @@
   border: 1px solid var(--t-line);
   border-radius: var(--radius-full);
   color: var(--t-ink);
-  font-size: var(--text-mono);
+  font-size: var(--typography-font-size-tag);
   white-space: nowrap;
   text-overflow: ellipsis;
-  box-shadow: 0 1px 6px color-mix(in srgb, var(--color-light-ink) 6%, transparent);
-}
-@media (max-width: 32.5rem) {
-  .pvSearch { display: none; }
 }
 .pvBody {
-  display: grid;
-  gap: calc(var(--spacing-3) + 2px);
-  padding: var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding: var(--pv-pad);
 }
-.ex .pvBody { flex: 1; display: flex; flex-direction: column; }
-.pvCard { min-width: 0; }
-.ex .pvCard { flex: 1; display: flex; flex-direction: column; }
+/* the photo well: the panel role shows while the photo loads */
 .pvImg {
   position: relative;
   display: block;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 2;
   overflow: hidden;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   background: var(--t-panel);
 }
-.ex .pvImg { flex: 1; aspect-ratio: auto; min-height: 12.5rem; }
-.pvImg > svg { display: block; width: 100%; height: 100%; }
-.ex .pvImg > svg { position: absolute; inset: 0; }
-.pvSea { fill: color-mix(in oklab, var(--t-accent) 35%, var(--t-panel)); }
-.pvS { fill: none; stroke: var(--t-ink); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
-.pvA { fill: var(--t-accent); }
-.pvPill {
-  position: absolute;
-  top: calc(var(--spacing-2) + 2px);
-  left: calc(var(--spacing-2) + 2px);
-  padding: 2px calc(var(--spacing-2) + 2px);
-  border-radius: var(--radius-full);
-  background: var(--color-light-bg);
-  color: var(--color-light-ink);
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-feature-settings: var(--mono-feature);
-  box-shadow: 0 1px 4px color-mix(in srgb, var(--color-light-ink) 15%, transparent);
+.pvImg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.pvHeart {
+/* the photo's own controls, Harbour loft's: back and save, on a disc
+   in the theme's ground */
+.pvCtl {
   position: absolute;
   top: var(--spacing-2);
-  right: calc(var(--spacing-2) + 2px);
-  width: 1.5rem;
-  height: 1.5rem;
+  display: inline-flex;
+  padding: calc(var(--spacing-1) + 2px);
+  border-radius: var(--radius-full);
+  background: var(--t-bg);
+  color: var(--t-ink);
+  box-shadow: var(--shadow-sm);
 }
-.pvHeart svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  fill: color-mix(in srgb, var(--color-light-ink) 35%, transparent);
-  stroke: var(--color-light-bg);
+.pvCtl[data-at="start"] { left: var(--spacing-2); }
+.pvCtl[data-at="end"] { right: var(--spacing-2); }
+.pvCtl svg {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
   stroke-width: 1.6;
 }
+/* carousel dots: the theme's ground on the photo */
 .pvPag {
   position: absolute;
   bottom: var(--spacing-2);
   left: 50%;
   display: flex;
   gap: var(--spacing-1);
+  padding: 3px var(--spacing-2);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--t-ink) 35%, transparent);
   transform: translateX(-50%);
 }
 .pvPag i {
   width: 0.375rem;
   height: 0.375rem;
   border-radius: 50%;
-  background: var(--color-light-bg);
-  opacity: 0.6;
+  background: var(--t-bg);
+  opacity: 0.55;
 }
 .pvPag i.on { opacity: 1; }
 .pvCb {
   display: grid;
-  gap: 2px;
-  padding: calc(var(--spacing-2) + 2px) 2px 0;
-}
-.pvRow {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
   gap: var(--spacing-2);
 }
-.pvTtl { font-weight: 500; font-size: 0.9375rem; }
-.pvRt { font-size: var(--typography-font-size-sm); }
-.pvMeta { font-size: var(--typography-font-size-sm); color: var(--t-muted); }
-.pvPrice { margin-top: var(--spacing-1); font-size: 0.9375rem; color: var(--t-ink); }
-.pvPrice b,
-.pvBk b { font-weight: 600; }
+.pvTtl {
+  min-width: 0;
+  font-weight: 600;
+  font-size: var(--typography-font-size-base);
+  line-height: 1.25;
+}
+/* tag.fill reads accent; its label is whichever of ink or ground reads on it */
+.pvPill {
+  position: absolute;
+  left: var(--spacing-2);
+  bottom: var(--spacing-2);
+  padding: 1px var(--spacing-2);
+  border-radius: var(--radius-full);
+  background: var(--t-accent);
+  color: var(--t-on-accent);
+  font-size: var(--typography-font-size-tag);
+  font-weight: 500;
+}
+.pvRt {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--typography-font-size-sm);
+}
+.pvRt b { font-weight: 600; }
+/* stars fill with accent, outlined in ink, so a pale accent still reads */
+.pvStars {
+  display: inline-flex;
+  gap: 1px;
+  color: var(--t-accent);
+}
+.pvStars svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+.pvStars svg path {
+  stroke: var(--t-ink);
+  stroke-width: 1.2;
+}
+.pvAm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1) var(--spacing-3);
+  padding-top: var(--spacing-2);
+  border-top: 1px solid var(--t-line);
+  color: var(--t-muted);
+  font-size: var(--typography-font-size-sm);
+}
+.pvAm > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  white-space: nowrap;
+}
+.pvAm svg {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  stroke-width: 1.5;
+}
 .pvBk {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: calc(var(--spacing-2) + 2px);
-  margin-top: 2px;
+  gap: var(--spacing-2);
+  margin-top: auto;
   padding-top: var(--spacing-3);
   border-top: 1px solid var(--t-line);
 }
-.ex .pvBk { margin-top: auto; }
+.pvPrice { color: var(--t-ink); font-size: var(--typography-font-size-sm); white-space: nowrap; }
+.pvPrice b { font-weight: 600; font-size: var(--typography-font-size-base); }
+.pvPer { color: var(--t-muted); }
 .pvBtn {
   display: inline-block;
-  padding: calc(var(--spacing-2) + 2px) calc(var(--spacing-4) + 2px);
+  padding: var(--spacing-2) var(--spacing-3);
   border-radius: var(--radius-md);
   background: var(--t-action);
   color: var(--t-on-action);
   font-weight: 500;
-  font-size: 0.9375rem;
+  font-size: var(--typography-font-size-sm);
   white-space: nowrap;
 }
 
@@ -482,7 +530,9 @@
 .pv .pulse { outline-color: var(--t-ink); }
 /* the strip version: each card wears its own theme's control border */
 .pvSmall { border-color: var(--t-border); }
-.pvSmall .pvBody { padding: var(--spacing-3); }
+.pvSmall { --pv-pad: var(--spacing-3); }
+/* a strip card is narrow: "month" goes under the price, so the button fits */
+.pvSmall .pvPrice { display: grid; line-height: 1.2; }
 
 /* ── 01b · one name, two answers ──────────────────────────────── */
 .ask {
@@ -778,13 +828,10 @@
 @media (min-width: 48rem) {
   .strip { grid-template-columns: repeat(4, 1fr); }
 }
-.strip figure { margin: 0; min-width: 0; }
-.strip figcaption {
-  margin-top: var(--spacing-2);
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-feature-settings: var(--mono-feature);
-  color: var(--color-ink-muted);
+/* one column on a phone: the card keeps its width cap (its photo is 576px) */
+@media (max-width: 47.9375rem) {
+  .strip { justify-items: center; }
+  .stripItem { width: 100%; max-width: 19rem; }
 }
 
 /* ── 04 · the rules ───────────────────────────────────────────── */
@@ -865,7 +912,9 @@
 .cells {
   list-style: none;
   margin-block: 0;
+  margin-inline: auto;
   padding: 0;
+  width: 100%;
   max-width: var(--case-col-max);
   display: flex;
   flex-direction: column;
@@ -904,7 +953,9 @@
 
 /* the rules: number, title, line; no rules between them */
 .rules {
+  width: 100%;
   max-width: var(--case-col-max);
+  margin-inline: auto;
   gap: var(--spacing-5);
   border-top: 0;
 }
@@ -1045,13 +1096,18 @@
 
 /* Figure 8: the card in four themes, each named under it */
 .stripItem {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
 }
+.stripItem .pv { flex: 1; display: flex; flex-direction: column; max-width: none; }
+.stripItem .pvBody { flex: 1; }
 
+/* Label style (Case template's fact label), not mono: it sits outside the card */
 .stripLabel {
   margin-block: var(--spacing-2) 0;
-  font-family: var(--font-code);
   font-size: var(--text-label);
+  line-height: var(--typography-line-height-snug);
   color: var(--color-semantic-text-secondary);
 }
 

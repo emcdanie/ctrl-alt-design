@@ -113,7 +113,7 @@ export function Beat({
   /** Body/Lead (22, Drift) or Body/Base (20, Federated): the frames differ */
   leadSize?: "lead" | "base";
   /** the header on the text column (Drift, Federated) or on the body's
-   *  left edge (Theming's frame) */
+   *  left edge (About, a page on the case-edge frame) */
   align?: "col" | "edge";
   children?: ReactNode;
 }) {

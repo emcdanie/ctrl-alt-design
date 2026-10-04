@@ -14,7 +14,7 @@ import s from "./Chip.module.css";
 
 export function Picture({ label, className = "", children }: { label: string; className?: string; children: ReactNode }) {
   return (
-    <div role="img" aria-label={label} className={`${s.root} ${className}`.trim()} data-tools>
+    <div role="img" aria-label={label} className={`${s.root} ${className}`.trim()}>
       <div aria-hidden="true" className={s.inner}>
         {children}
       </div>
@@ -59,7 +59,7 @@ export function PartLabel({ n, title, spec, short = false }: { n: number; title:
 /* ── Figure 1 · Cover/CHIP Atlas (383:684), at figure size ─────────── */
 export function ChipCover({ label }: { label: string }) {
   return (
-    <ScaledArt width={836}>
+    <ScaledArt width={928}>
       <CoverAtlas slot="figure" label={label} />
     </ScaledArt>
   );

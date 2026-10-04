@@ -99,7 +99,7 @@ export const COMPONENT_SLOTS: [string, Role][] = [
 export const SEMANTIC_ROWS: Role[] = ["bg", "panel", "line", "muted", "ink", "action", "accent"];
 export const JSON_ROLES: Role[] = ["bg", "panel", "line", "muted", "ink", "action", "on-action", "accent"];
 
-/* the preview reads nine custom properties, one per role */
+/* the preview reads ten custom properties: nine roles and the tag label */
 export function themeVars(t: Theme): CSSProperties {
   return {
     "--t-bg": val(t, "bg"),
@@ -111,6 +111,8 @@ export function themeVars(t: Theme): CSSProperties {
     "--t-on-action": val(t, "on-action"),
     "--t-accent": val(t, "accent"),
     "--t-border": val(t, "border-strong"),
+    /* the tag's label: whichever of ink or ground reads better on accent */
+    "--t-on-accent": ratio(val(t, "ink"), val(t, "accent")) >= ratio(val(t, "bg"), val(t, "accent")) ? val(t, "ink") : val(t, "bg"),
   } as CSSProperties;
 }
 
@@ -145,8 +147,10 @@ export const gateRows = (t: Theme) =>
     return { ...row, ratio: r, grade: grade(r, row.control) };
   });
 
-/* log scale, 1 to 21 */
-export const gatePct = (v: number) => (Math.log(Math.max(v, 1)) / Math.log(21)) * 100;
+/* log scale, 1 to 21. Rounded to 2 places: Math.log can differ in the
+   last digit between Node and the browser, and an unrounded inline style
+   was a hydration mismatch (job 32, 4 Oct 2026) */
+export const gatePct = (v: number) => Math.round((Math.log(Math.max(v, 1)) / Math.log(21)) * 10000) / 100;
 
 /* "One name, two answers": the names a component asks for */
 export const ASKS: { name: string; light: string; lightHex: string; dark: string; darkHex: string }[] = [

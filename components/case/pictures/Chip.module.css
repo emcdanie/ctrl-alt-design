@@ -652,11 +652,6 @@
 
 /* ── 390: the frame restacks ── */
 @media (max-width: 639px) {
-  /* Replay and Enlarge sit above the picture at 390, never on a panel */
-  .root[data-tools] {
-    padding-top: var(--spacing-10);
-  }
-
   .panel {
     padding: var(--spacing-4);
   }

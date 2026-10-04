@@ -1,8 +1,8 @@
 /* CHIP 2.0 page copy outside the template's slots (Figma 407:8187): the
-   beat 1 body on the body's left edge, and the reflection's closing line
-   and course credit on the text column. Body/Base and Body/Small. */
+   reflection's closing line and course credit on the text column, like
+   every other text on the page (Layout B, Cowork review 4 Oct late).
+   Body/Base and Body/Small. */
 
-.body,
 .next,
 .credit {
   width: 100%;

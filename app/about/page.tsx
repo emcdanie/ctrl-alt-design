@@ -3,7 +3,7 @@ import Section from "@/components/layout/Section";
 import Heading from "@/components/ui/Heading";
 import { Button } from "@/components/ui/Button";
 import { TextLink, textLinkClass } from "@/components/ui/TextLink";
-import { Beat } from "@/components/case/CasePage";
+import { Beat, CaseQuote } from "@/components/case/CasePage";
 import CaseFigure from "@/components/case/CaseFigure";
 import ExperienceSection, { KindnessProof } from "@/components/ExperienceSection";
 import { ResumeLink } from "@/components/ResumeModal";
@@ -14,11 +14,11 @@ import st from "@/components/about/About.module.css";
 /* About on Template / Page (Site v3, Figma e7U5Hxpr441rT719SPclas, 1440
    403:7256, 390 403:7591; Elleta, 4 Oct 2026, "reworked 4 Oct late").
    One layout Section on the 1056 body, text on its left edge: the hero,
-   then six numbered beats (the short lead, how I work with AI, track
-   record, word of mouth, the pack, house rules). Copy as approved in the
-   frames; the Obi line and the bio line are parked until Elleta writes
-   them. Cut: Good company, the paw trail, logo tiles, a second contact
-   CTA (the site footer carries contact). */
+   then five numbered beats (the short lead, how I work with AI, track
+   record, word of mouth, house rules). Copy as approved in the frames.
+   Cut: Good company, the paw trail, logo tiles, a second contact CTA (the
+   site footer carries contact), and the Pack with its dog illustration
+   (Elleta, 4 Oct late: no dog illustrations). */
 
 const quote = (name: string) => TESTIMONIALS.find((t) => t.name === name) as Testimonial;
 const initials = (name: string) =>
@@ -145,47 +145,27 @@ export default function AboutPage() {
             lead="Four of fifteen recommendations, quoted as written."
             align="edge"
           >
-            <div className={st.quotes}>
-              <div className={st.featureWrap}>
-                <span className={`${st.mark} pattern-mark`} aria-hidden="true">
-                  “
-                </span>
-                <figure className={st.feature}>
-                  <blockquote>
-                    <p>{FEATURE.quote}</p>
-                  </blockquote>
-                  <figcaption className={st.by}>
-                    <span className={st.avatar} aria-hidden="true">
-                      {initials(FEATURE.name)}
-                    </span>
-                    <span className={`${st.who} ${st.whoRow}`}>
-                      <span className={st.name}>{FEATURE.name}</span>
-                      <span className={st.role}>{roleLine(FEATURE)}</span>
-                    </span>
-                  </figcaption>
-                </figure>
-              </div>
-              <ul className={st.small}>
-                {SMALL.map((t) => (
-                  <li key={t.name}>
-                    <figure className={st.quote}>
-                      <blockquote>
-                        <p>{t.quote}</p>
-                      </blockquote>
-                      <figcaption className={st.by}>
-                        <span className={st.avatar} aria-hidden="true">
-                          {initials(t.name)}
-                        </span>
-                        <span className={st.who}>
-                          <span className={st.name}>{t.name}</span>
-                          <span className={st.role}>{roleLine(t)}</span>
-                        </span>
-                      </figcaption>
-                    </figure>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <CaseQuote quote={FEATURE.quote} name={FEATURE.name} role={roleLine(FEATURE)} />
+            <ul className={st.small}>
+              {SMALL.map((t) => (
+                <li key={t.name}>
+                  <figure className={st.quote}>
+                    <blockquote>
+                      <p>{t.quote}</p>
+                    </blockquote>
+                    <figcaption className={st.by}>
+                      <span className={st.avatar} aria-hidden="true">
+                        {initials(t.name)}
+                      </span>
+                      <span className={st.who}>
+                        <span className={st.name}>{t.name}</span>
+                        <span className={st.role}>{roleLine(t)}</span>
+                      </span>
+                    </figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ul>
             <p className={st.linkRow}>
               <TextLink href="https://www.linkedin.com/in/elleta-mcdaniel/details/recommendations/" external trackEvent="linkedin">
                 Read all 15 on LinkedIn <span aria-hidden="true">↗</span>
@@ -193,33 +173,8 @@ export default function AboutPage() {
             </p>
           </Beat>
 
-          {/* 5 · The pack (the Obi line and the bio line are parked) */}
-          <Beat id="the-pack" num="5" label="The pack" heading="The pack." align="edge">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className={st.packPicture}
-              src="/images/bella/set/bella-and-obi.webp"
-              alt="An illustration of Bella and Obi, two dogs with big feathered ears, sitting side by side."
-              width={1040}
-              height={900}
-              loading="lazy"
-              decoding="async"
-            />
-            <ul className={st.cards}>
-              <li>
-                <div className={st.card}>
-                  <h3 className="heading-item">Bella</h3>
-                  <p>
-                    My dog and my design partner. She&apos;s the name and the face behind BELLA, the design system this
-                    whole site is built on.
-                  </p>
-                </div>
-              </li>
-            </ul>
-          </Beat>
-
-          {/* 6 · House rules */}
-          <Beat id="house-rules" num="6" label="House rules" heading="Four things I care about." align="edge">
+          {/* 5 · House rules */}
+          <Beat id="house-rules" num="5" label="House rules" heading="Four things I care about." align="edge">
             <ul className={st.cards}>
               <li>
                 <div className={st.card}>

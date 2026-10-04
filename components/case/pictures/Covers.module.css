@@ -51,17 +51,20 @@
   transform: scale(0.80303);
 }
 
-/* the cover at figure size (CHIP Figure 1, Figma 836x501.6 on the stage):
-   in flow, drawn 1.9x; ScaledArt fits it to the stage below 1440 */
+/* the cover at figure size (CHIP Figure 1): the Atlas card fills the
+   stage's inner width like every other figure (928 = 1056 less the 64
+   margins; Cowork review, 4 Oct late). The card is centred in its 440x264
+   art, so the art scales 928 / 352.71 about its centre; ScaledArt fits it
+   to the stage below 1440 */
 .canvas[data-slot="figure"] {
   position: relative;
-  width: 836px;
-  height: 501.6px;
+  width: 928px;
+  height: 647.24px;
   transform: none;
 }
 
 .canvas[data-slot="figure"] .art {
-  transform: scale(1.9);
+  transform: scale(2.6311);
 }
 
 /* ── Atlas ── */

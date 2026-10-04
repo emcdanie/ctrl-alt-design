@@ -105,7 +105,7 @@ export default function ThemingCase() {
         ]}
         tags={["token strategy figma → code", "consistency without fragmentation", "accessibility in every theme", "ai-ready structure"]}
       >
-        <Beat id="exhibit" num="1" label="The exhibit" heading="Change the theme, not the code." align="edge">
+        <Beat id="exhibit" num="1" label="The exhibit" heading="Change the theme, not the code.">
           <CaseFigure
             n={1}
             replay
@@ -123,7 +123,7 @@ export default function ThemingCase() {
           label="In Storybook"
           heading="One name, two answers."
           lead="A component asks for background. Light mode answers white; dark mode answers near-black. The name never changes."
-          align="edge"
+         
         >
           <CaseFigure
             n={2}
@@ -136,7 +136,7 @@ export default function ThemingCase() {
           </CaseFigure>
         </Beat>
 
-        <Beat id="decisions" num="3" label="Decisions" heading="Name the job, not the colour." align="edge">
+        <Beat id="decisions" num="3" label="Decisions" heading="Name the job, not the colour.">
           <ul className={s.cells}>
             <li>
               <b>the idea</b>
@@ -164,7 +164,7 @@ export default function ThemingCase() {
           label="From the repo"
           heading="The real files, not a slide."
           lead="These are excerpts from BELLA's public repo. Light and dark are the same names pointing at different values."
-          align="edge"
+         
         >
           <CaseFigure n={5} caption="Three excerpts from BELLA's public repo: the semantic names, the Button's contract, and the reading order.">
             <div className={s.repo} role="img" aria-label="Three excerpts from BELLA's public repo. The semantic names: each name has one answer for light mode and one for dark. The Button's contract: its variants, states and what not to do. The reading order: raw values first, then what they're for, then what uses them.">
@@ -211,7 +211,7 @@ export default function ThemingCase() {
           label="How it ships"
           heading="From a token file to production, through a gate."
           lead="DTCG tokens in, CSS custom properties out. A theme only counts once it's in code. This is BELLA's real pipeline, and every step runs on every change."
-          align="edge"
+         
         >
           <CaseFigure
             n={6}
@@ -239,7 +239,7 @@ export default function ThemingCase() {
           </CaseFigure>
         </Beat>
 
-        <Beat id="side-by-side" num="6" label="Side by side" heading="Same card. Four themes. No new components." align="edge">
+        <Beat id="side-by-side" num="6" label="Side by side" heading="Same card. Four themes. No new components.">
           <CaseFigure n={8} caption="The same card in four themes. One component tree; only the token values change. Coast and market are demo brands.">
             <div className={s.strip} role="img" aria-label="The same listing card in four themes: ground and night (BELLA), coast and market (demo brands).">
               {ORDER.map((k) => (
@@ -254,7 +254,7 @@ export default function ThemingCase() {
           </CaseFigure>
         </Beat>
 
-        <Beat id="rules" num="7" label="The rules" heading="What keeps themes honest." align="edge">
+        <Beat id="rules" num="7" label="The rules" heading="What keeps themes honest.">
           <ol className={s.rules}>
             {RULES.map(([title, body], i) => (
               <li key={title}>
