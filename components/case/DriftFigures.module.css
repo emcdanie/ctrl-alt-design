@@ -1,0 +1,1238 @@
+/* Drift's four figures with motion (Site v3). Layout first, then the motion,
+   which only runs under prefers-reduced-motion: no-preference: everywhere
+   else every element sits in its finished frame. */
+
+/* ── shared ── */
+.stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-background);
+}
+
+/* the template's stage grid, fading out toward the foot */
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--color-semantic-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-semantic-border) 1px, transparent 1px);
+  background-size: var(--spacing-8) var(--spacing-8);
+  mask-image: linear-gradient(to bottom, black, transparent 60%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--spacing-6);
+  padding: 0 var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-background-inverse);
+  color: var(--color-semantic-text-inverse);
+  font-size: var(--text-label);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.4;
+  flex: 0 0 auto;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  padding: var(--spacing-8);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
+  padding-right: calc(var(--spacing-touch-target) * 2 + var(--spacing-4));
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: var(--typography-font-size-xl);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-success-subtle);
+  color: var(--color-semantic-success-text);
+  font-size: var(--text-label);
+  line-height: var(--typography-line-height-snug);
+}
+
+.status::before {
+  content: "";
+  width: var(--spacing-2);
+  height: var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: currentColor;
+}
+
+.badgePass,
+.badgeFail {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-8);
+  height: var(--spacing-8);
+  border-radius: var(--radius-pill);
+  flex: 0 0 auto;
+}
+
+.badgePass {
+  background: var(--color-semantic-success-subtle);
+  color: var(--color-semantic-success-text);
+}
+
+.badgeFail {
+  background: var(--color-semantic-danger-subtle);
+  color: var(--color-semantic-danger-text);
+}
+
+/* ── Figure 4 · Zoom levels ── */
+.zoom {
+  padding: var(--spacing-16) var(--spacing-6) var(--spacing-12);
+}
+
+.levels {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--spacing-6);
+}
+
+.level {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-3) var(--spacing-5);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+
+.levelStage {
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-background);
+}
+
+.levelArt {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.levelHead {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--typography-font-size-xl);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+}
+
+.levelMeta {
+  margin: 0;
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.45;
+  color: var(--color-semantic-text-body);
+}
+
+.levelArrow {
+  position: absolute;
+  top: 45%;
+  right: calc(var(--spacing-6) * -1);
+  width: var(--spacing-6);
+  fill: none;
+  stroke: var(--markup-line);
+  stroke-width: 1.5;
+}
+
+.fileRect {
+  fill: var(--color-semantic-border);
+}
+
+.hotRect {
+  fill: var(--kit-action-subtle);
+  stroke: var(--kit-action);
+  stroke-width: 1.5;
+}
+
+.hotFill {
+  fill: var(--kit-action);
+}
+
+.hotOutline {
+  fill: var(--color-semantic-surface);
+  stroke: var(--kit-action);
+  stroke-width: 1.5;
+}
+
+.inputBox {
+  fill: var(--color-semantic-surface);
+  stroke: var(--color-semantic-border-strong);
+  stroke-width: 1;
+}
+
+.kitText,
+.kitTextHot,
+.kitTextInk,
+.kitTextRed {
+  font-size: 12px;
+  fill: var(--color-semantic-text-secondary);
+}
+
+.kitTextHot {
+  fill: var(--kit-action);
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.kitTextInk {
+  fill: var(--color-semantic-text-primary);
+  font-size: 13px;
+}
+
+.kitTextRed {
+  fill: var(--markup-red);
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.markRed {
+  fill: none;
+  stroke: var(--markup-red);
+  stroke-width: 1.5;
+}
+
+.swipeMeta {
+  display: none;
+}
+
+.dots {
+  display: inline-flex;
+  gap: var(--spacing-1);
+  margin-right: var(--spacing-2);
+}
+
+.dot,
+.dotOn {
+  width: var(--spacing-2);
+  height: var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-border-strong);
+  opacity: 0.45;
+}
+
+.dotOn {
+  opacity: 1;
+  background: var(--color-semantic-text-primary);
+}
+
+/* ── Figure 5 · Token cascade ── */
+.cascade {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  padding: var(--spacing-16) var(--spacing-10) var(--spacing-12);
+}
+
+.tiers {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-10);
+}
+
+.tier {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-4);
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+
+.tierHead {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-size: var(--typography-font-size-xl);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+}
+
+.tierLead {
+  margin: 0;
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.4;
+  color: var(--color-semantic-text-body);
+}
+
+.ramp {
+  display: flex;
+  gap: var(--spacing-1);
+}
+
+.swatch,
+.swatchOn {
+  width: var(--spacing-5);
+  height: var(--spacing-10);
+  border-radius: var(--radius-sm);
+}
+
+.swatchOn {
+  outline: 2px solid var(--color-semantic-text-primary);
+  outline-offset: 1px;
+}
+
+.token {
+  font-family: var(--font-code);
+  font-size: var(--text-label);
+  color: var(--color-semantic-text-primary);
+}
+
+.tokenQuiet {
+  font-family: var(--font-code);
+  font-size: var(--text-label);
+  color: var(--color-semantic-text-secondary);
+}
+
+.tokenList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.tokenRow,
+.tokenRowOn {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--spacing-2);
+  row-gap: 0;
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-md);
+}
+
+.tokenRowOn {
+  background: var(--kit-action-subtle);
+}
+
+.tokenRowOn .token {
+  color: var(--kit-action);
+}
+
+.tokenRow .token,
+.tokenRowOn .token {
+  flex: 1 1 auto;
+}
+
+.tokenValue {
+  font-size: var(--text-label);
+  color: var(--color-semantic-text-secondary);
+  white-space: nowrap;
+}
+
+.tokenRowOn .tokenValue {
+  color: var(--kit-ramp-800);
+}
+
+.tokenDot {
+  width: var(--spacing-3);
+  height: var(--spacing-3);
+  border-radius: var(--radius-pill);
+  flex: 0 0 auto;
+  border: 1px solid var(--color-semantic-border-strong);
+}
+
+.tokenDot[data-dot="action"] {
+  background: var(--kit-action);
+  border-color: var(--kit-action);
+}
+
+.tokenDot[data-dot="ink"] {
+  background: var(--color-semantic-text-primary);
+  border-color: var(--color-semantic-text-primary);
+}
+
+.tokenDot[data-dot="line"] {
+  background: var(--color-semantic-border);
+}
+
+.priceRow {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-background);
+}
+
+.price {
+  font-size: var(--typography-font-size-xl);
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.per {
+  font-size: var(--text-label);
+  font-weight: var(--typography-font-weight-regular);
+  color: var(--color-semantic-text-secondary);
+}
+
+.kitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--spacing-8);
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-sm);
+  background: var(--kit-action);
+  color: var(--kit-on-action);
+  font-size: var(--text-label);
+  font-weight: var(--typography-font-weight-medium);
+  white-space: nowrap;
+}
+
+.kitButton[data-fill] {
+  min-height: var(--spacing-10);
+  padding: var(--spacing-2) var(--spacing-5);
+  border-radius: var(--radius-md);
+}
+
+.beforeButton {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
+.tierArrows {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.tierArrow {
+  position: absolute;
+  top: 66%;
+  width: var(--spacing-10);
+  height: var(--spacing-3);
+  fill: none;
+  stroke: var(--markup-line);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+
+.tierArrow:nth-child(1) {
+  left: calc((100% - var(--spacing-10) * 2) / 3);
+}
+
+.tierArrow:nth-child(2) {
+  left: calc((100% - var(--spacing-10) * 2) / 3 * 2 + var(--spacing-10));
+}
+
+.change {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  padding: var(--spacing-5) var(--spacing-6);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+
+.changeRow {
+  display: grid;
+  grid-template-columns: 11.875rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.changeRow + .changeRow {
+  padding-top: var(--spacing-4);
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.changeLabel {
+  margin: 0;
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+}
+
+.verticals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--spacing-3);
+}
+
+.vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+}
+
+.verticalName {
+  font-size: var(--text-label);
+  color: var(--color-semantic-text-secondary);
+}
+
+.changeNote {
+  margin: 0;
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.5;
+  color: var(--color-semantic-success-text);
+}
+
+.passPop {
+  display: inline-flex;
+}
+
+/* ── Figure 7 · Rollout ── */
+.rolloutStage {
+  padding: var(--spacing-16) var(--spacing-16) var(--spacing-12);
+}
+
+.rollout {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: var(--spacing-3);
+  row-gap: var(--spacing-6);
+}
+
+.track {
+  position: absolute;
+  top: calc(var(--spacing-12) / 2 - 1px);
+  left: 10%;
+  right: 10%;
+  height: 2px;
+}
+
+.trackLine,
+.trackShared {
+  position: absolute;
+  top: 0;
+  height: 2px;
+  background: var(--color-semantic-text-primary);
+  transform-origin: left center;
+}
+
+.trackLine {
+  left: 0;
+  width: 75%;
+}
+
+.trackShared {
+  left: 75%;
+  width: 25%;
+  background: var(--color-semantic-success-text);
+}
+
+.rStep {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-6);
+}
+
+.disc {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-12);
+  height: var(--spacing-12);
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--color-semantic-text-primary);
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-primary);
+}
+
+.disc[data-shared] {
+  border-color: var(--color-semantic-success-text);
+  color: var(--color-semantic-success-text);
+}
+
+.rCard {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  flex: 1 1 auto;
+  padding: var(--spacing-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-surface-inset);
+  border: 1px solid transparent;
+}
+
+.rStep[data-cto] .rCard {
+  background: var(--color-semantic-surface);
+  border-color: var(--color-semantic-border-ink);
+}
+
+.rTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2);
+}
+
+.rTop .badgePass {
+  width: var(--spacing-6);
+  height: var(--spacing-6);
+}
+
+.no {
+  padding: 0 var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-danger-subtle);
+  color: var(--color-semantic-danger-text);
+  font-size: var(--text-label);
+  line-height: 1.6;
+}
+
+.rTitle {
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+}
+
+.rMeta {
+  font-size: var(--text-label);
+  line-height: 1.35;
+  color: var(--color-semantic-text-secondary);
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--spacing-3);
+}
+
+.broke,
+.changed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding: var(--spacing-5);
+  border-radius: var(--radius-lg);
+}
+
+.broke {
+  background: var(--color-semantic-danger-subtle);
+}
+
+.changed {
+  background: var(--color-semantic-success-subtle);
+}
+
+.panelTitle {
+  margin: 0;
+  font-size: var(--text-label);
+  font-weight: var(--typography-font-weight-semibold);
+}
+
+.broke .panelTitle {
+  color: var(--color-semantic-danger-text);
+}
+
+.changed .panelTitle {
+  color: var(--color-semantic-success-text);
+}
+
+.panelList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.panelList li {
+  position: relative;
+  padding-left: var(--spacing-8);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.7;
+  color: var(--color-semantic-text-primary);
+}
+
+.panelList li::before {
+  position: absolute;
+  left: var(--spacing-1);
+  font-weight: var(--typography-font-weight-semibold);
+}
+
+.broke .panelList li::before {
+  content: "×";
+  color: var(--color-semantic-danger-text);
+}
+
+.changed .panelList li::before {
+  content: "✓";
+  color: var(--color-semantic-success-text);
+}
+
+/* ── Figure 8 · Shipped staircase ── */
+.stairStage {
+  padding: var(--spacing-10) var(--spacing-6);
+}
+
+.drawing {
+  position: relative;
+  aspect-ratio: 942 / 648;
+}
+
+.drawingSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.baseline {
+  stroke: var(--color-semantic-border);
+  stroke-width: 1.5;
+}
+
+.flat,
+.stair {
+  fill: none;
+  stroke: var(--color-semantic-text-primary);
+  stroke-width: 2;
+}
+
+.sysNode {
+  fill: var(--color-semantic-accent);
+  stroke: var(--color-semantic-text-primary);
+  stroke-width: 1.5;
+}
+
+.areaNode {
+  fill: var(--color-semantic-success-subtle);
+  stroke: var(--color-semantic-text-primary);
+  stroke-width: 1.5;
+}
+
+.sysChip,
+.areaChip,
+.nextChip,
+.sysChipList,
+.areaChipList,
+.nextChipList {
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-semantic-border);
+  background: var(--color-semantic-surface);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.2;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.sysChip {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  border-color: var(--color-semantic-accent);
+  background: linear-gradient(var(--color-semantic-surface-glass-accent), var(--color-semantic-surface-glass-accent)), var(--color-semantic-surface);
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.areaChips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.areaChip {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -100%);
+}
+
+.flatLabel {
+  position: absolute;
+  left: 0;
+  top: calc(578 / 648 * 100% + var(--spacing-3));
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-semantic-text-body);
+}
+
+.nextChip {
+  position: absolute;
+  right: 0;
+  top: calc(578 / 648 * 100% + var(--spacing-2));
+  border-style: dashed;
+  color: var(--color-semantic-text-secondary);
+}
+
+.stairList {
+  display: none;
+}
+
+/* ── tablet: the zoom levels two by two, the cascade tiers stacked ── */
+@media (max-width: 1023px) {
+  .levels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .levelArrow,
+  .tierArrows {
+    display: none;
+  }
+
+  .tiers {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+  }
+
+  .changeRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .changeRow .verticals {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .rolloutStage,
+  .cascade {
+    padding: var(--spacing-12) var(--spacing-6) var(--spacing-8);
+  }
+}
+
+/* ── phone (390 frames 303:4790) ── */
+@media (max-width: 639px) {
+  .zoom {
+    padding: var(--spacing-16) 0 var(--spacing-6);
+    background: transparent;
+  }
+
+  .zoom .grid {
+    display: none;
+  }
+
+  /* the swipe: one level per screen, scroll-snap, no pan past the track */
+  .levels {
+    display: flex;
+    gap: var(--spacing-4);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .levels::-webkit-scrollbar {
+    display: none;
+  }
+
+  .level {
+    flex: 0 0 88%;
+    scroll-snap-align: start;
+  }
+
+  .swipeMeta {
+    display: flex;
+    align-items: center;
+    margin: var(--spacing-4) 0 0;
+    font-size: var(--text-label);
+    color: var(--color-semantic-text-secondary);
+  }
+
+  .cascade,
+  .rolloutStage,
+  .stairStage {
+    padding: var(--spacing-16) 0 0;
+    background: transparent;
+  }
+
+  .cascade .grid,
+  .rolloutStage .grid,
+  .stairStage .grid {
+    display: none;
+  }
+
+  .tokenRow,
+  .tokenRowOn {
+    padding-inline: var(--spacing-2);
+  }
+
+  .changeRow .verticals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .vertical .kitButton {
+    align-self: stretch;
+  }
+
+  .card {
+    padding: var(--spacing-5);
+  }
+
+  .cardHead {
+    padding-right: 0;
+  }
+
+  /* the rollout runs down a vertical line */
+  .rollout {
+    grid-template-columns: 1fr;
+    row-gap: var(--spacing-3);
+  }
+
+  .track {
+    top: var(--spacing-6);
+    bottom: var(--spacing-12);
+    left: calc(var(--spacing-12) / 2 - 1px);
+    right: auto;
+    width: 2px;
+    height: auto;
+  }
+
+  .trackLine,
+  .trackShared {
+    left: 0;
+    width: 2px;
+    transform-origin: center top;
+  }
+
+  .trackLine {
+    top: 0;
+    height: 75%;
+  }
+
+  .trackShared {
+    top: 75%;
+    height: 25%;
+  }
+
+  .rStep {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+  }
+
+  .rCard {
+    flex: 1 1 auto;
+  }
+
+  .panels {
+    grid-template-columns: 1fr;
+  }
+
+  /* the staircase becomes numbered steps, each indented further */
+  .drawing {
+    display: none;
+  }
+
+  .stairList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+
+  .stairFlat {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-3);
+    font-size: var(--typography-font-size-sm);
+    color: var(--color-semantic-text-body);
+  }
+
+  .stairRule {
+    flex: 0 0 var(--spacing-10);
+    height: 2px;
+    align-self: center;
+    background: var(--color-semantic-text-primary);
+  }
+
+  .stairSys,
+  .stairItem,
+  .stairNext {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+  }
+
+  .stairItem {
+    padding-left: calc(var(--i) * var(--spacing-3) + var(--spacing-3));
+  }
+
+  .stairNext {
+    padding-left: calc(var(--spacing-3) * 8);
+  }
+
+  .stairDot {
+    width: var(--spacing-5);
+    height: var(--spacing-5);
+    border-radius: var(--radius-pill);
+    background: var(--color-semantic-accent);
+  }
+
+  .sysChipList {
+    border-color: var(--color-semantic-accent);
+    background: linear-gradient(var(--color-semantic-surface-glass-accent), var(--color-semantic-surface-glass-accent)), var(--color-semantic-surface);
+  }
+
+  .areaChipList {
+    border-radius: var(--radius-pill);
+  }
+
+  .nextChipList {
+    border-style: dashed;
+    border-radius: var(--radius-pill);
+    color: var(--color-semantic-text-secondary);
+  }
+}
+
+/* ── motion (draw easing, plays once; reduced motion keeps the finished
+   frame because none of this applies) ── */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(var(--spacing-3));
+    }
+  }
+
+  @keyframes zoomIn {
+    from {
+      opacity: 0;
+      transform: translateX(-30%) scale(0.4);
+    }
+  }
+
+  @keyframes pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    70% {
+      transform: scale(1.06);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes growX {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  @keyframes growY {
+    from {
+      transform: scaleY(0);
+    }
+  }
+
+  @keyframes draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+  }
+
+  @keyframes turnGreen {
+    from {
+      background: var(--color-semantic-text-primary);
+    }
+  }
+
+  /* not yet in view: hold the start frame (the figure is off screen) */
+  .stage[data-play="off"] .level,
+  .stage[data-play="off"] .levelArrow,
+  .stage[data-play="off"] [data-after],
+  .stage[data-play="off"] .passPop,
+  .stage[data-play="off"] .tierArrow,
+  .stage[data-play="off"] .rStep,
+  .stage[data-play="off"] .panels,
+  .stage[data-play="off"] .areaChip,
+  .stage[data-play="off"] .areaNode,
+  .stage[data-play="off"] .sysNode,
+  .stage[data-play="off"] .sysChip,
+  .stage[data-play="off"] .nextChip,
+  .stage[data-play="off"] .stairItem,
+  .stage[data-play="off"] .stairNext {
+    opacity: 0;
+  }
+
+  .stage[data-play="off"] .trackLine,
+  .stage[data-play="off"] .trackShared {
+    transform: scaleX(0);
+  }
+
+  .stage[data-play="off"] .flat,
+  .stage[data-play="off"] .stair {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  /* F4: the file appears, then each level zooms out of the one before
+     (0.6s each) while its arrow draws; then all four hold */
+  .stage[data-play="on"] .level {
+    animation: zoomIn 0.6s var(--motion-easing-draw) both;
+    animation-delay: calc(var(--i) * 0.6s);
+  }
+
+  .stage[data-play="on"] .levelArrow {
+    animation: fadeIn 0.3s var(--motion-easing-draw) both;
+    animation-delay: calc(var(--i) * 0.6s + 0.45s);
+  }
+
+  /* F1: connectors 1 → 2 → 3, the swatch to action.primary, Book now
+     fills, the Before buttons snap into the After style, then the ✓ */
+  .stage[data-play="on"] .tierArrow {
+    animation: fadeIn 0.5s var(--motion-easing-draw) both;
+    animation-delay: calc(var(--i) * 0.5s + 0.2s);
+  }
+
+  .stage[data-play="on"] .swatchOn {
+    animation: pop 0.6s var(--motion-easing-pop) both 1.2s;
+  }
+
+  .stage[data-play="on"] .tokenRowOn {
+    animation: fadeIn 0.6s var(--motion-easing-draw) both 1.4s;
+  }
+
+  .stage[data-play="on"] .kitButton[data-fill] {
+    animation: pop 0.45s var(--motion-easing-pop) both 1.9s;
+  }
+
+  .stage[data-play="on"] [data-after] {
+    animation: pop 0.45s var(--motion-easing-pop) both;
+    animation-delay: calc(var(--i) * 0.12s + 2.4s);
+  }
+
+  .stage[data-play="on"] .passPop {
+    animation: pop 0.45s var(--motion-easing-pop) both 3s;
+  }
+
+  /* F2: the line draws through five steps (2.6s); each step pops as the
+     line reaches it; 4 → 5 turns green; then the two panels rise */
+  .stage[data-play="on"] .trackLine {
+    animation: growX 2.1s linear both 0.1s;
+  }
+
+  .stage[data-play="on"] .trackShared {
+    animation: growX 0.5s linear both 2.2s, turnGreen 0.4s linear both 2.6s;
+  }
+
+  .stage[data-play="on"] .rStep {
+    animation: pop 0.45s var(--motion-easing-pop) both;
+    animation-delay: calc(var(--i) * 0.58s);
+  }
+
+  .stage[data-play="on"] .panels {
+    animation: rise 0.6s var(--motion-easing-out) both 3s;
+  }
+
+  /* F3: the flat line (1.6s), the system node pops, the stair climbs
+     (2.4s), each chip rises onto its step, "next" fades in last */
+  .stage[data-play="on"] .flat {
+    stroke-dasharray: 1;
+    animation: draw 1.6s linear both;
+  }
+
+  .stage[data-play="on"] .sysNode,
+  .stage[data-play="on"] .sysChip {
+    animation: pop 0.5s var(--motion-easing-pop) both 1.6s;
+  }
+
+  .stage[data-play="on"] .stair {
+    stroke-dasharray: 1;
+    animation: draw 2.4s var(--motion-easing-draw) both 2.1s;
+  }
+
+  .stage[data-play="on"] .areaNode,
+  .stage[data-play="on"] .areaChip,
+  .stage[data-play="on"] .stairItem {
+    animation: rise 0.4s var(--motion-easing-out) both;
+    animation-delay: calc(var(--i) * 0.36s + 2.4s);
+  }
+
+  .stage[data-play="on"] .nextChip,
+  .stage[data-play="on"] .stairNext {
+    animation: fadeIn 0.5s var(--motion-easing-out) both 4.8s;
+  }
+
+  @media (max-width: 639px) {
+    .stage[data-play="off"] .trackLine,
+    .stage[data-play="off"] .trackShared {
+      transform: scaleY(0);
+    }
+
+    .stage[data-play="on"] .trackLine {
+      animation-name: growY;
+    }
+
+    .stage[data-play="on"] .trackShared {
+      animation-name: growY, turnGreen;
+    }
+
+    /* the swipe levels sit side by side: no zoom, just appear */
+    .stage[data-play="on"] .level {
+      animation-name: fadeIn;
+    }
+  }
+}

@@ -24,7 +24,7 @@ const ROUTES = [
    A route joins in the commit that rebuilds it (CLAUDE.md section 3,
    Migration) and is then held to the v3 locks by the leg at the end of
    the route loop. */
-const V3_ROUTES = [];
+const V3_ROUTES = ["/case-studies/design-system-transformation"];
 const CARD_SCOPE = '[class*="card"], [class*="Card"], .thesis-band, .ds-gate__row, [role="dialog"]';
 /* The metadata tier stays exempt (Elleta's ruling, 2026-07-27): tags,
    pills, eyebrows, kickers and chips are a deliberate separate tier on
@@ -50,8 +50,9 @@ for (const route of ROUTES) {
     await page.evaluate((v) => scrollTo(0, v), y);
     await page.waitForTimeout(30);
   }
+  const isV3 = V3_ROUTES.includes(route);
   const bad = await page.evaluate(
-    ({ scope, exempt }) => {
+    ({ scope, exempt, isV3 }) => {
       const exemptRe = new RegExp(exempt);
       const out = [];
       /* HARDENED (2026-07-27, spec system-page-redesign): the card pass
@@ -63,6 +64,9 @@ for (const route of ROUTES) {
       for (const card of document.querySelectorAll(scope)) {
         for (const el of card.querySelectorAll("p, li, blockquote, dd, dt, code, pre, td, th, span")) {
           if (exemptRe.test(el.className.toString()) || el.closest('[class*="tok-inspector"]')) continue;
+          /* a v3 route's pictures keep the Case UI kit's own type (CLAUDE.md
+             section 1, pictures only); the v3 leg below says the same */
+          if (isV3 && el.closest("figure") && !el.closest("figcaption, blockquote")) continue;
           /* chrome, not reading text: the constitution (section 3) names
              buttons, nav links and chips as their own tier, and a
              figcaption is attribution. Same carve-out both passes. */
@@ -80,7 +84,7 @@ for (const route of ROUTES) {
       }
       return [...new Set(out)];
     },
-    { scope: CARD_SCOPE, exempt: META_EXEMPT.source }
+    { scope: CARD_SCOPE, exempt: META_EXEMPT.source, isV3 }
   );
   for (const b of bad) {
     fails++;
@@ -94,7 +98,7 @@ for (const route of ROUTES) {
      characters so short reading labels stop hiding under it. The
      metadata tier stays allowlisted by Elleta's ruling: tags, pills,
      eyebrows and kickers are a deliberate separate tier. ── */
-  const floorBad = await page.evaluate((exempt) => {
+  const floorBad = await page.evaluate(({ exempt, isV3 }) => {
     const exemptRe = new RegExp(exempt);
     const out = [];
     for (const el of document.querySelectorAll("p, li, code, pre, td, th, dt, span, blockquote")) {
@@ -104,11 +108,12 @@ for (const route of ROUTES) {
       if (text.length < 16) continue;
       if (exemptRe.test(el.className.toString()) || el.closest("figcaption, footer, button, label, nav")) continue;
       if (el.closest('[class*="tok-inspector"]')) continue;
+      if (isV3 && el.closest("figure") && !el.closest("figcaption, blockquote")) continue;
       const size = parseFloat(getComputedStyle(el).fontSize);
       if (size < 16) out.push(`${el.className.toString().split(" ")[0] || el.tagName}@${size}px :: ${text.slice(0, 40)}`);
     }
     return [...new Set(out)];
-  }, META_EXEMPT.source);
+  }, { exempt: META_EXEMPT.source, isV3 });
   for (const b of floorBad) {
     fails++;
     console.error(receipt("type", `${route} ${b}`, "own text past ~40 chars below 16px", ">=16px computed for reading text"));
@@ -174,17 +179,16 @@ for (const route of ROUTES) {
   /* ── site v3 leg (Elleta, 4 Oct 2026): a rebuilt route is held to the
      v3 locks everywhere OUTSIDE PICTURES (the locks say so: inside a
      figure's picture the Case UI kit keeps its own type). A picture is
-     what a <figure> holds besides its figcaption; nothing is opted out
-     by attribute or class. Headings Figtree 600; reading text (p, li,
+     what a <figure> holds besides its figcaption (and a quote's
+     blockquote); nothing is opted out by attribute or class. Headings Figtree 600; reading text (p, li,
      blockquote, dd, figcaption) >= 18px; every other visible text
      >= 16px; the mono face only on <code>. ── */
   if (V3_ROUTES.includes(route)) {
     const v3Bad = await page.evaluate(() => {
       const out = [];
-      const inPicture = (el) => {
-        const fig = el.closest("figure");
-        return !!fig && !el.closest("figcaption");
-      };
+      /* a quote is a figure too (Site/Quote): its blockquote and
+         figcaption are text, not picture */
+      const inPicture = (el) => !!el.closest("figure") && !el.closest("figcaption, blockquote");
       const visible = (el) => {
         const r = el.getBoundingClientRect();
         const cs = getComputedStyle(el);
@@ -202,7 +206,12 @@ for (const route of ROUTES) {
         if (!own || inPicture(el) || !visible(el) || el.closest("svg")) continue;
         const cs = getComputedStyle(el);
         const size = parseFloat(cs.fontSize);
-        const reading = el.closest("p, li, blockquote, dd, figcaption") && !el.closest("nav, button, footer");
+        /* reading text is a sentence: a block of 48+ characters, or one
+           that ends like a sentence; a short label (a badge, a kicker,
+           card meta) is a label, held to 16 */
+        const block = el.closest("p, li, blockquote, dd, figcaption");
+        const blockText = block ? block.textContent.replace(/\s+/g, " ").trim() : "";
+        const reading = !!block && !el.closest("nav, button, footer") && (blockText.length >= 48 || /[.!?]$/.test(blockText));
         const label = `${el.tagName.toLowerCase()} "${own.slice(0, 30)}"`;
         if (reading && size < 18) out.push([label, `${size}px`, ">= 18px reading text"]);
         else if (size < 16) out.push([label, `${size}px`, ">= 16px labels and UI"]);

@@ -29,6 +29,8 @@ const SHELL = "shell";
 const SHELL_FILES = {
   "components/CaseShellV2.tsx": "@/components/layout/Section",
   "components/CaseSection.tsx": "@/components/layout/Container",
+  /* the Site v3 case template (4 Oct 2026): one layout Section on the case body */
+  "components/case/CasePage.tsx": "@/components/layout/Section",
 };
 
 /* file -> "section" | "shell" */

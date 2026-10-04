@@ -41,7 +41,7 @@ export default function SiteFooter() {
             <FooterCta />
           </div>
           <nav aria-label="Footer pages">
-            <p className="site-footer__label">pages</p>
+            <p className="site-footer__label">Pages</p>
             <ul className="site-footer__list">
               <li><Link className="site-footer__link" href="/work">Work</Link></li>
               <li><Link className="site-footer__link" href="/design-system">System</Link></li>
@@ -50,7 +50,7 @@ export default function SiteFooter() {
             </ul>
           </nav>
           <div>
-            <p className="site-footer__label">elsewhere</p>
+            <p className="site-footer__label">Elsewhere</p>
             <ul className="site-footer__list">
               <li>{external(social.linkedin, "LinkedIn", "linkedin", <LinkedInIcon />)}</li>
               <li>{external("https://github.com/emcdanie/bella", "BELLA on GitHub", "github")}</li>

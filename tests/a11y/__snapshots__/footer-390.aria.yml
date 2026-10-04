@@ -4,7 +4,7 @@
   - link "Let’s talk":
     - /url: /contact
   - navigation "Footer pages":
-    - paragraph: pages
+    - paragraph: Pages
     - list:
       - listitem:
         - link "Work":
@@ -18,7 +18,7 @@
       - listitem:
         - link "About":
           - /url: /about
-  - paragraph: elsewhere
+  - paragraph: Elsewhere
   - list:
     - listitem:
       - link "LinkedIn ↗ (opens in a new tab)":

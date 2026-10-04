@@ -568,7 +568,29 @@ for (const theme of ["light", "dark"]) {
           if (!ex.querySelector(".exhibit__caption")?.textContent?.trim()) out.push(`exhibit has no caption: ${label}`);
         }
       }
-      if (!beats.length && !sections.length && !mockSections.length) out.push("no beat, case or mock sections found (template not rendering)");
+      /* ── SITE V3 TEMPLATE LAW (Elleta, 4 Oct 2026, Template / Case
+         page 291:2303). A case on Layout B (.container--case): every
+         beat opens on its h2; every figure (a quote is a figure with a
+         blockquote, and is not numbered) has a "Figure N." caption,
+         numbered in order from 1, and its own "Enlarge Figure N"
+         button. */
+      const v3 = document.querySelector(".container--case");
+      const v3Beats = v3 ? [...v3.querySelectorAll("section[aria-labelledby]")] : [];
+      if (v3) {
+        for (const sec of v3Beats) {
+          if (!sec.querySelector("h2")) out.push(`v3 beat has no h2: ${sec.getAttribute("aria-labelledby")}`);
+        }
+        const figs = [...v3.querySelectorAll("figure")].filter((f) => !f.querySelector("blockquote"));
+        figs.forEach((f, k) => {
+          const n = k + 1;
+          const cap = f.querySelector(":scope > figcaption")?.textContent?.trim() ?? "";
+          if (!cap.startsWith(`Figure ${n}.`)) out.push(`figure ${n} caption does not open "Figure ${n}.": ${cap.slice(0, 30)}`);
+          const enlarge = [...f.querySelectorAll("button")].some((b) => b.textContent.replace(/\s+/g, " ").trim().includes(`Enlarge Figure ${n}`));
+          if (!enlarge) out.push(`figure ${n} has no "Enlarge Figure ${n}" button`);
+        });
+        if (!figs.length) out.push("v3 case with no figures");
+      }
+      if (!beats.length && !sections.length && !mockSections.length && !v3Beats.length) out.push("no beat, case or mock sections found (template not rendering)");
       /* the takeaway-band card exception, held tight: a thesis card
          on a case route outside .cs2-takeaway is card creep */
       for (const t of document.querySelectorAll(".cs2 .thesis-band")) {
@@ -580,7 +602,7 @@ for (const theme of ["light", "dark"]) {
     });
     for (const b of beatBad) {
       fails++;
-      console.error(receipt("visual", `(${theme} ${width} ${caseRoute}) ${b}`, "a beat-template violation", "the case-template law (CaseBeat: headline with body, flat visuals, alternation; CaseSection: text plus one named, captioned ExampleFrame, alternation, one screen; mock: ruled sections with an eyebrow and h2, captioned exhibits)"));
+      console.error(receipt("visual", `(${theme} ${width} ${caseRoute}) ${b}`, "a beat-template violation", "the case-template law (CaseBeat: headline with body, flat visuals, alternation; CaseSection: text plus one named, captioned ExampleFrame, alternation, one screen; mock: ruled sections with an eyebrow and h2, captioned exhibits; v3: beats with an h2, figures numbered with Enlarge)"));
     }
     await ctx.close();
   }

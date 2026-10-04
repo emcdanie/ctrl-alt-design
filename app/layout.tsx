@@ -4,20 +4,22 @@ import RouteField from "@/components/RouteField";
 import type { Metadata } from "next";
 import Script from "next/script";
 import BracketCursor from "@/components/BracketCursor";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Figtree, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import DevTools from "@/components/DevTools";
 import IconProvider from "@/components/ui/IconProvider";
 import { POSITIONING } from "@/lib/copy";
 import "./globals.css";
 
-const geist = Geist({
-  variable: "--font-geist",
-  subsets: ["latin"],
+// The text face (Elleta, 4 Oct 2026, site v3): Figtree for all text,
+// headings SemiBold 600 (CLAUDE.md section 3).
+const figtree = Figtree({
+  variable: "--font-figtree",
+  subsets: ["latin", "latin-ext"],
 });
 
-// The code face (Elleta, 19 Sep 2026): metadata only, through
-// --font-code (CLAUDE.md section 3). font-waiver: the loader names it.
+// The code face: Code/Token only since site v3 (real token and code
+// names), through --font-code (CLAUDE.md section 3). font-waiver: the loader names it.
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
@@ -25,7 +27,7 @@ const geistMono = Geist_Mono({
 });
 
 // Unique is for the ELLETA wordmarks (nav + footer) and the BELLA logo
-// only, so only its Regular cut loads. Everything else is Geist.
+// only, so only its Regular cut loads. Everything else is Figtree.
 // Licensed webfonts, free for commercial use; files unmodified.
 const unique = localFont({
   src: [
@@ -86,7 +88,7 @@ export default function RootLayout({
       {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla) inject
           attributes like cz-shortcut-listen on <body> before hydration; this
           silences that benign server/client attribute mismatch only */}
-      <body className={`${geist.variable} ${geistMono.variable} ${unique.variable} antialiased`} suppressHydrationWarning>
+      <body className={`${figtree.variable} ${geistMono.variable} ${unique.variable} antialiased`} suppressHydrationWarning>
         <a href="#main-content" className="skip-link">Skip to content</a>
         <DevTools />
         <IconProvider>

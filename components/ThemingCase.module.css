@@ -750,7 +750,7 @@
   border-bottom: 1px solid var(--color-semantic-border);
 }
 .plain:last-child { border-bottom: 0; }
-.plain p { margin: 0; font-size: var(--text-body); line-height: 1.5; color: var(--color-ink); }
+.plain p { margin: 0; max-width: var(--measure-body); font-size: var(--text-body); line-height: 1.5; color: var(--color-ink); }
 .plain code {
   grid-column: 2;
   min-width: 0;

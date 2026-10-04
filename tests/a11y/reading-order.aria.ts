@@ -120,39 +120,28 @@ test.describe("Learning", () => {
   });
 });
 
-/* The Drift case's zoom story (Geist refresh, 22 Sep 2026). A phrase
-   reached by KEYBOARD does what a hover does: it lights its phrase and
-   switches the picture to its zoom level. The tabs are a tablist with
-   arrow keys; the users & roles pins are buttons that open the decision
-   under the picture, and Escape closes it. */
-test.describe("Case study: zoom story", () => {
+/* The Drift case on the Site v3 template (4 Oct 2026; replaces the 22 Sep
+   zoom story, whose tabs and pins left with the rebuild). Every figure's
+   Enlarge opens the full-screen viewer; Escape closes it and focus goes
+   back to Enlarge (Site/Figure button 323:138). A figure with motion has
+   Replay as a plain button beside it. */
+test.describe("Case study: figures", () => {
   test.beforeEach(async ({ page }) => {
     await open(page, "/case-studies/design-system-transformation");
   });
 
-  test("focusing a phrase selects its zoom level", async ({ page }) => {
-    const phrase = page.locator(".dfc-mark").filter({ hasText: "the same field was built five ways" });
-    await phrase.focus();
-    await expect(phrase).toHaveClass(/is-on/);
-    await expect(page.getByRole("tab", { name: "02 one field" })).toHaveAttribute("aria-selected", "true");
-  });
-
-  test("arrow keys move along the tabs", async ({ page }) => {
-    await page.getByRole("tab", { name: "01 the file" }).focus();
-    await page.keyboard.press("ArrowRight");
-    await expect(page.getByRole("tab", { name: "02 one field" })).toBeFocused();
-    await expect(page.getByRole("tab", { name: "02 one field" })).toHaveAttribute("aria-selected", "true");
-  });
-
-  test("a pin opens its decision under the picture, Escape closes it", async ({ page }) => {
-    await page.getByRole("tab", { name: "04 in the product" }).click();
-    const pin = page.getByRole("button", { name: /Decision 2: Badges stop looking like buttons\. \(the fix, after\)/ });
-    await pin.focus();
-    await page.keyboard.press("Enter");
-    await expect(pin).toHaveAttribute("aria-pressed", "true");
-    await expect(page.getByRole("status").filter({ hasText: "Badges stop looking like buttons." })).toBeVisible();
+  test("Enlarge opens the figure, Escape closes it and returns focus", async ({ page }) => {
+    const enlarge = page.getByRole("button", { name: "Enlarge Figure 2" });
+    await enlarge.click();
+    const viewer = page.getByRole("dialog", { name: "Figure 2, enlarged" });
+    await expect(viewer).toBeVisible();
     await page.keyboard.press("Escape");
-    await expect(pin).toHaveAttribute("aria-pressed", "false");
+    await expect(viewer).toBeHidden();
+    await expect(enlarge).toBeFocused();
+  });
+
+  test("a figure with motion offers Replay", async ({ page }) => {
+    await expect(page.getByRole("button", { name: "Replay Figure 4" })).toBeVisible();
   });
 });
 

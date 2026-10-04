@@ -5,6 +5,10 @@
  *
  * 1. One content edge: the h1 and the first section's content start at the
  *    container's inner left edge, the same number on every route (±1px).
+ *    Layout B, the rebuilt case template (site v3, CLAUDE.md section 2):
+ *    its container is .container--case (the 1056 body) and its h1 sits on
+ *    the text column, centred at --case-col-max; Layout B routes share
+ *    their own edge, compared only with each other.
  * 2. Two title recipes: `display` (the Home hero) and `page` (everything
  *    else). An h1 renders one of their two sizes and is never wider than
  *    its measure. Every h1 and h2 in main is 50 characters or fewer.
@@ -15,7 +19,9 @@
  *    never a silent allowlist.
  * 5. Cards: at most 2 card signatures per route (content card + frame).
  *    A card with a shadow floats: it is allowed only on floating things
- *    (the next-case card, popovers, dialogs) and is not counted.
+ *    (the next-case card, popovers, dialogs) and is not counted. Since
+ *    site v3 (BELLA fc2c100, "at rest every card wears shadow.card") a
+ *    card may rest on exactly --shadow-card; any other shadow still fails.
  * 6. Reading measure: no paragraph in main is wider than --measure-body.
  * 0. No sideways scroll: the page is never wider than the window (Part U:
  *    four routes overflowed at 390 while every check above passed).
@@ -88,7 +94,9 @@ for (const width of WIDTHS) {
       const radii = ["sm", "md", "lg", "card"].map((k) => px(probe({ borderRadius: `var(--radius-${k})` }, "borderTopLeftRadius")));
       const pageSize = px(probe({ fontSize: "var(--text-display-1)" }, "fontSize"));
       const displaySize = px(probe({ fontSize: "var(--component-heading-hero-font-size)" }, "fontSize"));
-      const out = { fails: [], exempt: [], cards: [], edge: null };
+      const cardShadow = probe({ boxShadow: "var(--shadow-card)" }, "boxShadow");
+      const colMax = px(probe({ width: "var(--case-col-max)" }, "width"));
+      const out = { fails: [], exempt: [], cards: [], edge: null, layoutB: false };
       /* 0b. no runaway height at 1440, and the tallest leaf-ish culprit */
       const docH = document.documentElement.scrollHeight;
       if (innerWidth === 1440 && docH > 20000) {
@@ -126,7 +134,13 @@ for (const width of WIDTHS) {
       const cont = firstSection?.querySelector(".container, .layout-container");
       if (cont) {
         const cc = getComputedStyle(cont);
-        const inner = Math.round(cont.getBoundingClientRect().left + px(cc.paddingLeft));
+        let inner = Math.round(cont.getBoundingClientRect().left + px(cc.paddingLeft));
+        if (cont.classList.contains("container--case")) {
+          /* Layout B: the text column, centred in the case body */
+          out.layoutB = true;
+          const content = cont.getBoundingClientRect().width - px(cc.paddingLeft) - px(cc.paddingRight);
+          inner = Math.round(inner + Math.max(0, (content - colMax) / 2));
+        }
         out.edge = inner;
         const h1 = main.querySelector("h1");
         if (h1 && visible(h1) && !h1.classList.contains("sr-only")) {
@@ -197,12 +211,16 @@ for (const width of WIDTHS) {
         const bordered = ["Top", "Right", "Bottom", "Left"].every((sd) => px(c[`border${sd}Width`]) >= 1 && c[`border${sd}Style`] !== "none");
         const r = px(c.borderTopLeftRadius);
         if (!bordered || r < 12 || r >= Math.min(rc.width, rc.height) / 2 || rc.height < 60 || el.matches(CONTROL)) continue;
+        /* a Layout B picture (a figure's art, not its caption) draws the
+           Case UI kit: its boxes are not site cards (CLAUDE.md section 1,
+           pictures only) */
+        if (out.layoutB && el.closest("figure") && !el.closest("figcaption, blockquote") && !el.matches("figure")) continue;
         if (el.parentElement.closest("[data-card]")) continue;
         el.setAttribute("data-card", "");
         /* a shadow means it floats: allowed only on floating things (the
            next-case card, popovers, dialogs), and not a content card */
         if (c.boxShadow !== "none") {
-          if (!el.closest("[popover], [role=dialog], [role=tooltip]"))
+          if (c.boxShadow !== cardShadow && !el.closest("[popover], [role=dialog], [role=tooltip]"))
             F(el, "a resting card with a shadow", "no shadow: shadows are for floating things only");
           continue;
         }
@@ -233,9 +251,10 @@ for (const width of WIDTHS) {
     const sigs = [...new Set(r.cards)];
     if (sigs.length > 2) fail(route, width, "cards", `${sigs.length} signatures (${sigs.join("; ")})`, "at most 2: the content card and ExampleFrame");
     if (r.edge != null) {
-      edges[width] ??= { value: r.edge, route };
-      if (Math.abs(edges[width].value - r.edge) > 1)
-        fail(route, width, "content edge", `${r.edge}px`, `${edges[width].value}px, as on ${edges[width].route}`);
+      const group = `${width}${r.layoutB ? " layout B" : ""}`;
+      edges[group] ??= { value: r.edge, route };
+      if (Math.abs(edges[group].value - r.edge) > 1)
+        fail(route, width, "content edge", `${r.edge}px`, `${edges[group].value}px, as on ${edges[group].route}`);
     }
     for (const reason of r.exempt) exempts.set(reason, [...(exempts.get(reason) ?? []), `${route}@${width}`]);
     table.push(`  ${String(width).padEnd(5)} ${route.padEnd(46)} edge ${r.edge ?? "-"}px  cards ${sigs.length}  ${r.fails.length ? `${r.fails.length} fail` : "ok"}`);

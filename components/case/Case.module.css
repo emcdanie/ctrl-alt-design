@@ -1,0 +1,650 @@
+/* The case template (Site v3, Elleta, 4 Oct 2026; Figma Template/Case page
+   291:2303). Layout B: a 1056 body (the case container), the text column
+   696 centred in it, wide items on the full body. Type from BELLA's
+   Foundations styles, colour from the semantic tokens; the Case UI kit
+   lives only inside the pictures. */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--case-gap-section);
+}
+
+.col {
+  width: 100%;
+  max-width: var(--case-col-max);
+  margin-inline: auto;
+}
+
+/* ── Hero ── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
+
+.back {
+  align-self: flex-start;
+}
+
+.kicker {
+  margin-block: 0;
+  font-size: var(--text-label);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-secondary);
+}
+
+.title {
+  margin-block: 0;
+  max-width: none;
+}
+
+.lead {
+  margin-block: 0;
+  font-size: var(--typography-font-size-xl);
+  line-height: 1.5;
+  color: var(--color-semantic-text-body);
+  text-wrap: pretty;
+}
+
+/* ── Results ── */
+.results {
+  list-style: none;
+  margin-block: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-6);
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-6) var(--spacing-6) var(--spacing-8);
+  background: var(--color-semantic-surface);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+}
+
+.resultBar {
+  width: var(--spacing-10);
+  height: var(--spacing-1);
+  border-radius: var(--radius-sm);
+  background: var(--color-semantic-accent);
+}
+
+.resultValue {
+  margin-block: 0;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--component-heading-line-height);
+  letter-spacing: var(--component-heading-letter-spacing);
+  color: var(--color-semantic-text-primary);
+}
+
+.resultValue[data-size="page"] {
+  font-size: var(--typography-font-size-display-page);
+}
+
+.resultValue[data-size="section"] {
+  font-size: var(--typography-font-size-display-section);
+}
+
+.resultLabel {
+  margin-block: 0;
+  font-size: var(--typography-font-size-body);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-semantic-text-body);
+}
+
+/* ── Overview facts ── */
+.facts {
+  margin-block: 0;
+  padding-top: var(--spacing-6);
+  border-top: 1px solid var(--color-semantic-border);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--spacing-6);
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.factLabel {
+  font-size: var(--text-label);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-secondary);
+}
+
+.factValue {
+  margin-block: 0;
+  font-size: var(--typography-font-size-sm);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-semantic-text-body);
+}
+
+.overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--case-gap-block);
+}
+
+/* ── Beats ── */
+.beat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--case-gap-block);
+}
+
+.beatHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.beatLabel {
+  margin-block: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--spacing-8);
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-background-inverse);
+  color: var(--color-semantic-text-inverse);
+  font-size: var(--text-label);
+  line-height: 1.25;
+}
+
+.beatHeading {
+  margin-block: 0;
+  max-width: none;
+}
+
+.body {
+  margin-block: 0;
+  font-size: var(--typography-font-size-xl);
+  line-height: 1.5;
+  color: var(--color-semantic-text-body);
+  text-wrap: pretty;
+}
+
+/* ── Figures ── */
+.figBlock {
+  margin-block: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.figureArt {
+  position: relative;
+}
+
+.picture {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.figureTools {
+  position: absolute;
+  top: var(--spacing-3);
+  right: var(--spacing-3);
+  display: flex;
+  gap: var(--spacing-2);
+  z-index: 2;
+}
+
+.figureTools[data-inset] {
+  top: var(--spacing-4);
+  right: var(--spacing-4);
+}
+
+.toolButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  min-width: var(--case-enlarge);
+  height: var(--case-enlarge);
+  padding: 0 var(--spacing-4);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-primary);
+  box-shadow: var(--shadow-ui);
+  font: inherit;
+  font-size: var(--typography-font-size-sm);
+  cursor: pointer;
+}
+
+.toolButton[data-icon] {
+  padding: 0;
+  width: var(--case-enlarge);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .toolButton:hover {
+    background: var(--color-semantic-surface-inset);
+  }
+}
+
+.caption {
+  font-size: var(--typography-font-size-sm);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-semantic-text-body);
+}
+
+.captionNum {
+  font-weight: var(--typography-font-weight-semibold);
+}
+
+/* the full-screen viewer: the figure at its full width, the page's own
+   pinch-zoom and a pan inside the frame; the caption pinned at the foot */
+.viewer {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin-block: 0;
+  padding: 0;
+  border: 0;
+  background: var(--color-semantic-background);
+  color: var(--color-semantic-text-body);
+}
+
+.viewer::backdrop {
+  background: var(--color-semantic-background);
+}
+
+.viewerInner {
+  height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+.viewerStage {
+  overflow: auto;
+  padding: var(--spacing-16) var(--spacing-6) var(--spacing-6);
+  overscroll-behavior: contain;
+}
+
+.viewerArt {
+  width: var(--case-body-max);
+  max-width: none;
+  margin-inline: auto;
+}
+
+.viewerCaption {
+  padding: var(--spacing-4) var(--spacing-6) var(--spacing-6);
+  border-top: 1px solid var(--color-semantic-border);
+  background: var(--color-semantic-surface);
+  font-size: var(--typography-font-size-sm);
+  line-height: var(--typography-line-height-normal);
+}
+
+.viewerCaption > * {
+  max-width: var(--case-col-max);
+  margin-inline: auto;
+}
+
+.viewerClose {
+  position: fixed;
+  top: var(--spacing-4);
+  right: var(--spacing-4);
+  z-index: 3;
+}
+
+/* ── Quote (Site/Quote, locked: do not restyle) ── */
+.quoteWrap {
+  position: relative;
+}
+
+.quote {
+  position: relative;
+  margin-block: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding: var(--spacing-12) var(--spacing-10) var(--spacing-8);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-background);
+}
+
+.quoteMark {
+  position: absolute;
+  z-index: 1;
+  left: var(--spacing-6);
+  top: calc(var(--spacing-16) * -1);
+  font-size: var(--quote-mark-size);
+  font-weight: var(--typography-font-weight-black);
+  line-height: 1;
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+.quoteText {
+  margin-block: 0;
+}
+
+.quoteText p {
+  margin-block: 0;
+  font-size: var(--text-quote);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--color-semantic-text-primary);
+  text-wrap: pretty;
+}
+
+.quoteBy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--spacing-2);
+  line-height: var(--typography-line-height-snug);
+}
+
+.quoteName {
+  font-size: var(--typography-font-size-body);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--color-semantic-text-primary);
+}
+
+.quoteRole {
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-semantic-text-secondary);
+}
+
+/* ── Reflection: what I'd do differently ── */
+.lessonsLabel {
+  margin-block: 0;
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-secondary);
+}
+
+.lessons {
+  list-style: none;
+  margin-block: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-6);
+}
+
+.lesson {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
+
+.lessonIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-16);
+  height: var(--spacing-16);
+  border-radius: var(--radius-pill);
+  /* surface-glass-accent is 15% ochre: layered over surface to stay opaque
+     (build spec section 3.6) */
+  background: linear-gradient(var(--color-semantic-surface-glass-accent), var(--color-semantic-surface-glass-accent)), var(--color-semantic-surface);
+  color: var(--color-semantic-text-primary);
+}
+
+.lessonTitle {
+  margin-block: 0;
+  font-size: var(--typography-font-size-xl);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+}
+
+.lessonBody {
+  margin-block: 0;
+  font-size: var(--typography-font-size-body);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-semantic-text-body);
+}
+
+/* ── Case end, Next case, More work ── */
+.end {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.endLabel {
+  margin-block: 0;
+  font-size: var(--text-label);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-secondary);
+}
+
+.nextTab {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-10);
+  padding: var(--spacing-3);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+  color: inherit;
+  text-decoration: none;
+}
+
+.nextCover {
+  flex: 0 0 auto;
+  width: min(32.5rem, 50%);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-semantic-surface-inset);
+}
+
+.nextCover img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.nextText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-4);
+  padding-right: var(--spacing-8);
+}
+
+.cardMeta {
+  margin-block: 0;
+  font-size: var(--text-label);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-secondary);
+}
+
+.nextTitle {
+  margin-block: 0;
+  font-size: var(--typography-font-size-display-section);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--component-heading-line-height);
+  letter-spacing: var(--component-heading-letter-spacing);
+  color: var(--color-semantic-text-primary);
+  text-wrap: balance;
+}
+
+.nextLead {
+  margin-block: 0;
+  font-size: var(--typography-font-size-xl);
+  line-height: 1.5;
+  color: var(--color-semantic-text-body);
+}
+
+.read {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-height: var(--spacing-touch-target);
+  padding: var(--spacing-3) var(--spacing-5);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-background-inverse);
+  color: var(--color-semantic-text-inverse);
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nextTab:hover .read {
+    background: var(--color-semantic-accent-raised-hover);
+  }
+}
+
+.moreHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+}
+
+.moreHeading {
+  margin-block: 0;
+}
+
+.workCards {
+  list-style: none;
+  margin-block: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-6);
+}
+
+.workCard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  padding: var(--spacing-3);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+  color: inherit;
+  text-decoration: none;
+}
+
+.workCover {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-semantic-surface-inset);
+}
+
+.workCover img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.workText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-3) var(--spacing-3);
+}
+
+.workTitle {
+  margin-block: 0;
+  font-size: var(--typography-font-size-xl);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .workCard:hover .workTitle,
+  .nextTab:hover .nextTitle {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+}
+
+/* the 390 frames put Enlarge 8 in from the picture's corner */
+@media (max-width: 639px) {
+  .figureTools:not([data-inset]) {
+    top: var(--spacing-2);
+    right: var(--spacing-2);
+  }
+
+  .figureTools[data-phone-top="label"] {
+    top: calc(var(--spacing-12) + var(--spacing-1));
+  }
+}
+
+/* ── phone and tablet ── */
+@media (max-width: 1023px) {
+  .results {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-6);
+  }
+
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lessons {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-10);
+  }
+
+  .nextTab {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-6);
+  }
+
+  .nextCover {
+    width: 100%;
+  }
+
+  .nextText {
+    padding: 0 var(--spacing-3) var(--spacing-3);
+  }
+
+  .workCards {
+    grid-template-columns: 1fr;
+  }
+
+  .moreHead {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 1023px) and (min-width: 640px) {
+  .results {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .workCards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -196,12 +196,18 @@ export async function generateMetadata({
    audit:parity keeps the registry honest. ── */
 const COMPOSITIONS: Record<string, React.ComponentType<{ cs: CaseStudy }>> = {
   "brad-frost": CodeFirstV2,
-  "design-system-transformation": DriftCase,
   chip: ChipCase,
   "booking-platform": BookingCase,
   "search-experts": SearchCase,
   checkout: CheckoutCase,
   theming: ThemingCase,
+};
+
+/* Site v3 (Elleta, 4 Oct 2026): a case rebuilt from the Site v3 frames
+   renders the whole page on Template / Case page (components/case), not
+   through CaseShellV2. A slug moves here when it is rebuilt. */
+const V3_CASES: Record<string, React.ComponentType> = {
+  "design-system-transformation": DriftCase,
 };
 
 export default async function CaseStudyPage({
@@ -212,6 +218,13 @@ export default async function CaseStudyPage({
   const { slug } = await params;
   const cs = getCaseStudy(slug);
   if (!cs) notFound();
+  const V3 = V3_CASES[slug];
+  if (V3)
+    return (
+      <CaseStudyLayout>
+        <V3 />
+      </CaseStudyLayout>
+    );
   const Composition = COMPOSITIONS[slug];
   if (!Composition) notFound();
   const article = ARTICLE[slug];
