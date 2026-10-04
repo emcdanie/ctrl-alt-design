@@ -24,15 +24,27 @@ override the constitution.
 ## 1. Tokens (never hardcode)
 - **No hardcoded hex or px in components.** Reference tokens only. No arbitrary Tailwind `text-[Npx]` /
   `bg-[#...]`. Spacing and type come from the scale, not ad-hoc values.
-- **Body min 16px.** Never smaller for reading text.
-- **Geist refresh palette (Elleta, 2026-09-22; supersedes the warm neutrals).** Pure white only as
-  the light page ground. Light: ink `#121212`, muted `#515151`, line `#e3e3e3`, panel `#f2f2f2`,
-  bg `#fff`, border-strong `#8c8c8c`. Dark: ink `#ededed`, muted `#b1b1b1`, line `#2a2a2a`, panel
-  `#161616`, bg `#0d0d0d`, border-strong `#636363`. Chip fills c1 `#c9bff5`, c2 `#f6c9a8`, c3
-  `#cfe8dc`, chip text always `#17191a`. **Colour lives in fills only**, plus focus and status. Brand refresh (Elleta,
-  2026-09-22): ochre `#e8a83e` is the one accent fill (light surfaces, `#121212` text on it);
-  the focus ring is 3px ochre-deep `#b97a14` in light, ochre in dark, 3px offset, focus only;
-  links are ink + underline; the primary button fills ink. Iris and periwinkle are retired. **No amber anywhere.**
+- **Reading text 18px or more; labels and UI 16px or more; nothing smaller** (Elleta, 4 Oct 2026,
+  site v3; supersedes "Body min 16px").
+- **Colour B (Elleta, 4 Oct 2026, site v3; supersedes the 22 Sep Geist refresh palette: ink
+  `#121212`, pure white ground, the grey panel set).** BELLA's colour B tokens (`lib/bella/bella.css`,
+  synced from BELLA, never restated as hex in the site). Light: background `#f6f7f9`, surface `#fff`,
+  surface-inset `#eceef3`, text-primary `#1d2030`, text-body `#2b2f3d`, text-secondary `#474c5e`,
+  border `#e4e6ec`, border-ink `#1d2030`, accent (ochre) `#e8a83e`. Dark: background `#0f1117`,
+  surface `#171a22`, text-body `#eceef3`, and the rest from BELLA's dark theme. Chip fills
+  chip-1/2/3, chip-text, danger-subtle/text and success-subtle/text come from BELLA too.
+  **Colour lives in fills only**, plus focus and status. Ochre is the one accent fill
+  (text-primary on it; surface-glass-accent is its 15% tint, layered over `surface` wherever it must
+  be opaque); the focus ring is 3px ochre-deep `#b97a14` in light, ochre in dark, 3px offset, focus
+  only; links are ink + underline; the primary button fills ink. Iris and periwinkle stay retired.
+  **No amber anywhere.**
+- **Pictures only (Elleta, 4 Oct 2026, site v3).** Inside case figures, and nowhere in site
+  chrome: the Case UI kit (product theme, Default blue `#4A5BD4`, Federated `#121212`) and the
+  markup rules: grey dashed `#8a8fa3` 1.5px dash 4/4, red `#b5323a` annotations (never on text),
+  slot outlines 1px `#DF37AC` dash 2/2. They live on tokens like everything else.
+- **Glass (Elleta, 4 Oct 2026, site v3):** `rgba(255,255,255,.18)`, `backdrop-filter: blur(8px)`
+  (none on the Agent plate, so the face stays sharp), 1px `rgba(255,255,255,.65)` border,
+  `inset 0 1px 0 rgba(255,255,255,.7)`. On tokens, never inline.
 - Cascade trap: BELLA's unlayered `:root` beats `@theme`. Keep app theme tokens in an unlayered
   `:root` that loads AFTER imports so they win.
 
@@ -80,36 +92,48 @@ override the constitution.
   same frame; audit:layout checks the shell's files. Nothing is allowlisted (21 Sep 2026).)
 - **One `:root` for tokens**, at the top of `app/globals.css`. New tokens go there, never mid-file.
 - Cards fill the grid evenly (equal heights, consistent gaps).
+- **Layout B, the case template (Elleta, 4 Oct 2026, site v3 concept lock).** A case page body is
+  1056 wide (192 side pad at 1440); the text column sits at x180, 696 wide; wide items (results,
+  figures, quotes, next case) take the full 1056; 96 between sections; the template's 72/96/120
+  spacing and the 192 pad are tokens (`--case-*` in the `:root`), never raw values. Rebuilt case
+  pages use it; the 1,000px `--layout-max` frame stays for every other page until its own rebuild.
 
 ## 3. Type
-- **Two typefaces (revised 2026-09-18, Geist headings; supersedes 2026-07-17).** Geist for all
-  text, headings included: **Geist 300** (Geist refresh, 2026-09-22), sentence case, display and
-  hero track `--tracking-display` (-0.035em), h2 `--tracking-h2` (-0.03em), leading 1.08; the
-  accent is the muted half-line, not iris. Titles (card, item, sub) are Geist 500 at 20px,
-  -0.015em. Body is Geist 400 at 17px, -0.01em. Unique ONLY
-  on the ELLETA wordmarks (nav + footer) and the BELLA logo. Every display heading renders through
-  the ONE `ui/Heading` primitive (tiers: hero / page / section / case, plus `sub`), and no
-  consumer sets its own heading size, tracking or leading. Pages still never set their own tracking
-  or leading; the hero `squeeze` animation is retired (Geist 300 holds still; the prop is a no-op). Page openings are FLAT (eyebrow + Heading, the Work
-  pattern); bubble page headers are parked (last live at e25eefc, may return in the expression
-  pass). The elevation/orb tokens stay: keycaps, the home cluster, and the About portrait still
-  consume them.
+- **Figtree, one style per role (Elleta, 4 Oct 2026, site v3; supersedes the 18 Sep Geist headings
+  and the 22 Sep Geist 300 refresh).** Figtree for all text, from BELLA's type tokens. Headings are
+  **SemiBold 600**, sentence case ("pages win"). The styles (BELLA Foundations): Display/Hero 60 ·
+  Display/Page 60 · Display/Section 40 · Heading/Card 22 · Body/Lead 22 · Body/Base 20 ·
+  Body/Small 18 · Label/Strong 18 · Label/Button 16 · Label/Table 16 · Label/Eyebrow 16 ·
+  Code/Token 16. One style per role: page title Display/Page, section heading Display/Section,
+  result numbers Display/Section (one size per page), card titles Heading/Card, page and beat
+  leads Body/Lead, captions Body/Small, beat labels Label/Strong. Display sizes are fluid from 390
+  to 1440 (the 390 frames draw the 1440 sizes; code scales them). Raw values only where the Site
+  v3 build spec §3 lists them, each with a `TODO(bella)` comment, until BELLA ships the style
+  (Home hero words 82, Body/Strong 20, the Next case title 32). Unique ONLY on the ELLETA
+  wordmarks (nav + footer) and the BELLA logo. Every display heading renders through the ONE
+  `ui/Heading` primitive (tiers: hero / page / section / case, plus `sub`), and no consumer sets
+  its own heading size, tracking or leading. Page openings are FLAT (eyebrow + Heading). The
+  elevation/orb tokens stay: keycaps, the home cluster, and the About portrait still consume them.
+- **Migration (site v3).** Pages move to these locks when they are rebuilt from the Site v3 frames
+  (Drift first, then Federated, 27). `audit:type`'s v3 leg lists the rebuilt routes and holds them
+  to the 16/18 floors, Figtree 600 headings and no mono labels; a route joins the list in the
+  commit that rebuilds it. Until then the shared tokens carry the older pages.
 - Unique never renders below 24px (the gate enforces this; the ELLETA wordmark is 44/36px), and never in
   body, UI, card titles, eyebrows, meta, nav links, buttons, or chips.
-- **Unique never renders inside a Card (Elleta, 2026-07-21, card-voice).** Cards use Geist only;
-  Unique stays page-tier (the Heading primitive: section heads and heroes). Card statements use
-  the shared `.card-statement` recipe (Geist 500 at `--font-card-title`, 20px), card titles the shared
-  `.heading-item`. Enforced by the Unique-in-card check in `audit:reuse`.
-- Geist = everything else, except the Mono label role below.
-- **Mono label role (Elleta, 2026-09-22, Geist refresh; supersedes the 19 Sep code role).** Geist
-  Mono through `--font-code` is for eyebrows, labels, tags, status pills and meta only: 13px
-  (`--text-mono`, BELLA's floor), weight 400, `ss09` (`--mono-feature`), no caps, no tracking.
-  `.eyebrow`, `.text-code`, `.text-meta`, `.l-section__label`, Tag and StatusPill use it. Never
-  headings, body, buttons or nav. `audit:fonts` allows the mono family only on the `--font-code` token line and fails
-  `--font-code` on heading, body, button or nav selectors and elements.
+- **Unique never renders inside a Card (Elleta, 2026-07-21, card-voice).** Cards use the text
+  face only (Figtree since site v3); card statements use the shared `.card-statement` recipe, card
+  titles the shared `.heading-item` (Heading/Card). Enforced by the Unique-in-card check in
+  `audit:reuse`.
+- **No mono labels (Elleta, 4 Oct 2026, site v3; supersedes the 22 Sep mono label role).** Geist
+  Mono through `--font-code` is Code/Token only (16px): real token and code names, such as
+  `--accent` or `color.action.primary`. Eyebrows, labels, tags, status pills and meta are Figtree
+  on the Label styles. `audit:fonts` allows the mono family only on the `--font-code` token line and
+  fails `--font-code` on heading, body, button or nav selectors and elements.
+- **Bracket words (site v3):** equal-padding boxes that hug their word (auto-layout), never a
+  fixed width. Add and heart buttons share one height.
 - **Style rule going forward (Elleta, 2026-09-18, about-rebuild lock).** No eyebrow label above
-  every heading. One iris word per display heading, only the word that matters (use the `accent`
-  prop). Never on card titles or body text. No card grids unless the content really is a set
+  every heading. Site v3 headings carry no accent word (iris is retired; the `accent` prop stays
+  for pages not yet rebuilt). Never on card titles or body text. No card grids unless the content really is a set
   of cards. Applies to new and rebuilt surfaces; existing pages migrate when they are next touched.
 - The site nav and footer are global landmarks and don't count toward one-primary-per-page.
 - Name the UN as 'United Nations Geneva' (matches the CV).
@@ -127,13 +151,12 @@ override the constitution.
   Enforced by the numeric-alignment check in `audit:structure`.
 
 ## 4. Color & dark mode
-- **Colour affordance rule (refined 2026-07-17):** saturated iris at body scale means INTERACTIVE,
-  and only that. Eyebrows/kickers: weight 700, tracked, NEVER iris; on case-scoped surfaces they
-  wear that case's identity colour (`--case-*-text`, AA on their ground); on neutral surfaces
-  `--color-eyebrow` (ink-soft). Inline body links are iris AND underlined. Decorative purple uses
-  periwinkle tints. Existing display headings keep their iris accent word; new ones do not
-  (style rule, section 3). Enforced by the no-iris eyebrow
-  check in `audit:structure` + the live AA sweep in `audit:contrast`.
+- **Colour roles (Elleta, 4 Oct 2026, site v3; supersedes the 17 Jul iris affordance rule).**
+  Text is text-primary (headings, labels), text-body (reading text) or text-secondary (meta, the
+  quiet half). Ochre is a fill (accent bars, highlights, the active row), never text. Links are
+  ink + underline; status uses the danger/success subtle fills with their text tokens; eyebrows are
+  text-secondary. Case identity colours live inside the case pictures, not on site chrome. The live
+  AA sweep in `audit:contrast` enforces contrast in both themes.
 - Every surface/text/border resolves from semantic tokens via `[data-theme="dark"]`. No hardcoded values.
 - Dark mode is a first-class contract on EVERY surface, not an afterthought — case pages included.
 - The ELLETA wordmark is live text in `--color-ink`, so it flips with the theme; no plate, no glow.
@@ -246,7 +269,8 @@ Must pass before any work is "done":
 - `audit:copy` — fails on `—`/`–` and on "AI-augmented" / "AI-assisted".
 - `audit:controls` — keycap used as filter/toggle/sort fails; >1 primary per view fails; filters/toggles
   missing `aria-pressed`/`aria-current` fail.
-- `audit:fonts` — any face other than the Unique/Geist tokens fails; Unique set on anything but
+- `audit:fonts` — any face other than the font tokens (Figtree text, Geist Mono code, Unique
+  wordmark; Geist sans until the last page leaves it) fails; Unique set on anything but
   the ELLETA wordmarks or the BELLA logo fails; any mono family reference outside the `--font-code`
   token fails, and `--font-code` on headings, body, buttons or nav fails.
 - `audit:tokens` — colour literals and raw spacing (>=4px) in `app/**`/`components/**` fail;
@@ -263,8 +287,10 @@ Must pass before any work is "done":
   `.card-body` recipe never computes below 18px; sitewide, any P/LI with own text past ~40
   chars computes >= 16px. Metadata rows (tags/pills/eyebrows/kickers) are a deliberate
   separate tier and exempt. Section index labels count as metadata: short labels only, never
-  sentences. Nothing visible renders below 14px. Every heading is Geist (never Unique) and leads
+  sentences. Nothing visible renders below 14px. Every heading is the text face (never Unique) and leads
   >= 1.0; Unique renders only on the wordmarks; every h2 display head on a page computes one size.
+  The v3 leg (site v3, 4 Oct 2026) holds every rebuilt route to the v3 locks: reading text >= 18px,
+  everything visible >= 16px, headings Figtree 600, mono only on `code`.
 - `audit:visual` — one ground on /design-system (band backgrounds equal the page ground,
   no exceptions since the 23 Jul DS2 no-wash port), sibling specimen cards render equal
   heights, cover placeholders clear 3:1 against both gradient stops, both themes.

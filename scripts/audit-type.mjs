@@ -20,6 +20,11 @@ const ROUTES = [
   "/case-studies/design-system-transformation",
   "/case-studies/booking-platform", "/case-studies/search-experts", "/case-studies/checkout",
 ];
+/* Site v3 (Elleta, 4 Oct 2026): the routes rebuilt from the Site v3 frames.
+   A route joins in the commit that rebuilds it (CLAUDE.md section 3,
+   Migration) and is then held to the v3 locks by the leg at the end of
+   the route loop. */
+const V3_ROUTES = [];
 const CARD_SCOPE = '[class*="card"], [class*="Card"], .thesis-band, .ds-gate__row, [role="dialog"]';
 /* The metadata tier stays exempt (Elleta's ruling, 2026-07-27): tags,
    pills, eyebrows, kickers and chips are a deliberate separate tier on
@@ -165,6 +170,50 @@ for (const route of ROUTES) {
   for (const b of uniqueBad) {
     fails++;
     console.error(receipt("type", `${route} "${b}"`, "Unique inside a card scope", "Geist in cards (Unique stays page-tier)"));
+  }
+  /* ── site v3 leg (Elleta, 4 Oct 2026): a rebuilt route is held to the
+     v3 locks everywhere OUTSIDE PICTURES (the locks say so: inside a
+     figure's picture the Case UI kit keeps its own type). A picture is
+     what a <figure> holds besides its figcaption; nothing is opted out
+     by attribute or class. Headings Figtree 600; reading text (p, li,
+     blockquote, dd, figcaption) >= 18px; every other visible text
+     >= 16px; the mono face only on <code>. ── */
+  if (V3_ROUTES.includes(route)) {
+    const v3Bad = await page.evaluate(() => {
+      const out = [];
+      const inPicture = (el) => {
+        const fig = el.closest("figure");
+        return !!fig && !el.closest("figcaption");
+      };
+      const visible = (el) => {
+        const r = el.getBoundingClientRect();
+        const cs = getComputedStyle(el);
+        return r.width > 1 && r.height > 1 && cs.visibility !== "hidden" && cs.opacity !== "0" && !el.closest(".sr-only, [aria-hidden='true']");
+      };
+      for (const el of document.querySelectorAll("h1, h2, h3, h4, h5, h6")) {
+        if (inPicture(el) || !visible(el) || !el.textContent.trim()) continue;
+        const cs = getComputedStyle(el);
+        const label = el.textContent.trim().slice(0, 40);
+        if (!/figtree/i.test(cs.fontFamily)) out.push([`"${label}" font`, cs.fontFamily.split(",")[0], "Figtree"]);
+        if (cs.fontWeight !== "600") out.push([`"${label}" weight`, cs.fontWeight, "600"]);
+      }
+      for (const el of document.querySelectorAll("body *")) {
+        const own = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join("").trim();
+        if (!own || inPicture(el) || !visible(el) || el.closest("svg")) continue;
+        const cs = getComputedStyle(el);
+        const size = parseFloat(cs.fontSize);
+        const reading = el.closest("p, li, blockquote, dd, figcaption") && !el.closest("nav, button, footer");
+        const label = `${el.tagName.toLowerCase()} "${own.slice(0, 30)}"`;
+        if (reading && size < 18) out.push([label, `${size}px`, ">= 18px reading text"]);
+        else if (size < 16) out.push([label, `${size}px`, ">= 16px labels and UI"]);
+        if (/geist mono|monospace/i.test(cs.fontFamily) && !el.closest("code")) out.push([label, "mono", "mono only on <code> (Code/Token)"]);
+      }
+      return out;
+    });
+    for (const [what, got, expected] of v3Bad) {
+      fails++;
+      console.error(receipt("type", `${route} v3 ${what}`, got, expected));
+    }
   }
 }
 await browser.close();
