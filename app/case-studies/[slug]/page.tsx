@@ -5,6 +5,7 @@ import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseShellV2 from "@/components/CaseShellV2";
 import CodeFirstV2 from "@/components/CodeFirstV2";
 import DriftCase from "@/components/DriftCase";
+import FederatedCase from "@/components/FederatedCase";
 import ChipCase from "@/components/ChipCase";
 import BookingCase from "@/components/BookingCase";
 import SearchCase from "@/components/SearchCase";
@@ -208,6 +209,7 @@ const COMPOSITIONS: Record<string, React.ComponentType<{ cs: CaseStudy }>> = {
    through CaseShellV2. A slug moves here when it is rebuilt. */
 const V3_CASES: Record<string, React.ComponentType> = {
   "design-system-transformation": DriftCase,
+  federated: FederatedCase,
 };
 
 export default async function CaseStudyPage({

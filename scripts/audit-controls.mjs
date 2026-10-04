@@ -10,6 +10,7 @@ import { BASE } from "./lib/base-url.mjs";
 const routes = ["/", "/work", "/about", "/contact",
   "/point-of-view", "/case-studies/brad-frost", "/case-studies/chip",
   "/case-studies/design-system-transformation",
+  "/case-studies/federated",
   "/learning", "/design-system", "/quick"];
 
 /* ── source scan: the retired demo register must not return.

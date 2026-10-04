@@ -86,6 +86,8 @@ export function Beat({
   label,
   heading,
   lead,
+  leadSize = "lead",
+  frameExempt,
   children,
 }: {
   id: string;
@@ -93,11 +95,15 @@ export function Beat({
   label: string;
   heading: string;
   lead?: string;
+  /** Body/Lead (22, Drift) or Body/Base (20, Federated): the frames differ */
+  leadSize?: "lead" | "base";
+  /** a named audit:frame exception for this header (printed every run) */
+  frameExempt?: string;
   children?: ReactNode;
 }) {
   return (
     <section className={styles.beat} aria-labelledby={`${id}-h`}>
-      <div className={`${styles.beatHeader} ${styles.col}`}>
+      <div className={`${styles.beatHeader} ${styles.col}`} data-frame-exempt={frameExempt}>
         <p className={styles.beatLabel}>
           <span className={styles.badge}>{num}</span>
           {label}
@@ -105,7 +111,7 @@ export function Beat({
         <Heading tier="section" id={`${id}-h`} className={styles.beatHeading}>
           {heading}
         </Heading>
-        {lead ? <p className={styles.lead}>{lead}</p> : null}
+        {lead ? <p className={leadSize === "base" ? styles.leadBase : styles.lead}>{lead}</p> : null}
       </div>
       {children}
     </section>
@@ -140,10 +146,16 @@ export function CaseQuote({ quote, name, role }: { quote: string; name: string; 
 }
 
 /** Reflection: "What I'd do differently", three lessons */
-export function Lessons({ items }: { items: { icon: IconName; title: string; body: string }[] }) {
+export function Lessons({
+  items,
+  label = "What I’d do differently",
+}: {
+  items: { icon: IconName; title: string; body: string }[];
+  label?: string;
+}) {
   return (
     <>
-      <p className={`${styles.lessonsLabel} ${styles.col}`}>What I’d do differently</p>
+      <p className={`${styles.lessonsLabel} ${styles.col}`}>{label}</p>
       <ul className={styles.lessons}>
         {items.map((l) => (
           <li key={l.title} className={styles.lesson}>

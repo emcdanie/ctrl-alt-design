@@ -17,3 +17,4 @@ export { default as designSystemTransformation } from "./design-system-transform
 export { default as bradFrost } from "./brad-frost";
 export { default as chip } from "./chip";
 export { default as theming } from "./theming";
+export { default as federated } from "./federated";

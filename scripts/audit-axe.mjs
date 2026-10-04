@@ -27,6 +27,7 @@ const ROUTES = [
   "/case-studies/chip",
   "/case-studies/brad-frost",
   "/case-studies/design-system-transformation",
+  "/case-studies/federated",
   "/case-studies/booking-platform",
   "/case-studies/search-experts",
   "/case-studies/checkout",

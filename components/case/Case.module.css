@@ -48,6 +48,14 @@
   text-wrap: pretty;
 }
 
+.leadBase {
+  margin-block: 0;
+  font-size: var(--typography-font-size-body);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-semantic-text-body);
+  text-wrap: pretty;
+}
+
 /* ── Results ── */
 .results {
   list-style: none;
@@ -587,8 +595,85 @@
   }
 }
 
+/* a figure whose 390 frame is a different picture (a swipe): the wide
+   art above 640px, the phone art below */
+.phoneOnly {
+  display: none;
+}
+
+/* the picture swipe (390 frames): one picture per screen, scroll-snap */
+.swipe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.swipeTrack {
+  list-style: none;
+  margin-block: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--spacing-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.swipeTrack::-webkit-scrollbar {
+  display: none;
+}
+
+.swipeItem {
+  flex: 0 0 82%;
+  scroll-snap-align: start;
+}
+
+.swipeItem img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.swipeMeta {
+  margin-block: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  font-size: var(--text-label);
+  color: var(--color-semantic-text-secondary);
+}
+
+.swipeDots {
+  display: inline-flex;
+  gap: var(--spacing-1);
+}
+
+.swipeDot,
+.swipeDotOn {
+  width: var(--spacing-2);
+  height: var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-border-strong);
+  opacity: 0.45;
+}
+
+.swipeDotOn {
+  opacity: 1;
+  background: var(--color-semantic-text-primary);
+}
+
 /* the 390 frames put Enlarge 8 in from the picture's corner */
 @media (max-width: 639px) {
+  .wideOnly {
+    display: none;
+  }
+
+  .phoneOnly {
+    display: block;
+  }
+
   .figureTools:not([data-inset]) {
     top: var(--spacing-2);
     right: var(--spacing-2);

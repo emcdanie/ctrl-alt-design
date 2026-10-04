@@ -264,6 +264,7 @@ for (const theme of ["light", "dark"]) {
     "/learning", "/design-system", "/design-system/inspector", "/quick",
     "/case-studies/chip", "/case-studies/brad-frost",
     "/case-studies/design-system-transformation",
+    "/case-studies/federated",
     "/case-studies/booking-platform", "/case-studies/search-experts", "/case-studies/checkout",
   ];
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
@@ -316,7 +317,7 @@ for (const theme of ["light", "dark"]) {
    readout table) before the fix landed. ── */
 /* every case on the CaseBeat template is swept (drift joined at its
    migration, feat/case-migration-drift); add each migrated slug here */
-for (const caseRoute of ["/case-studies/brad-frost", "/case-studies/design-system-transformation", "/case-studies/chip"]) {
+for (const caseRoute of ["/case-studies/brad-frost", "/case-studies/design-system-transformation", "/case-studies/federated", "/case-studies/chip"]) {
 for (const theme of ["light", "dark"]) {
   for (const width of [1440, 390]) {
     const ctx = await browser.newContext({ viewport: { width, height: width > 800 ? 900 : 844 } });
