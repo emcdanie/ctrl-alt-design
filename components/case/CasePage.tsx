@@ -2,30 +2,29 @@ import type { ReactNode } from "react";
 import Section from "@/components/layout/Section";
 import Heading from "@/components/ui/Heading";
 import { Icon, type IconName } from "@/components/ui/Icon";
-import { TextLink } from "@/components/ui/TextLink";
 import styles from "./Case.module.css";
 
 /* Template / Case page (Site v3, Figma 291:2303; Elleta, 4 Oct 2026):
    Hero, Results, Overview, Beats, Reflection, Next case, More work, on
-   Layout B. The page is one layout Section on the case body (1056); the
-   slots inside it keep the template's rhythm (--case-gap-*), and text
-   sits on the 696 column. A case composition fills the slots. */
+   Layout B. The Hero slot is the white hero band and the grey showcase
+   under it (CaseHero, CaseShowcase; 4 Oct late: no kicker, no back link,
+   no Figure 1 cover). The rest is one layout Section on the case body
+   (1056); the slots inside it keep the template's rhythm (--case-gap-*),
+   and text sits on the 696 column. A case composition fills the slots. */
 
 export function CasePage({
-  kicker,
-  title,
-  lead,
+  hero,
+  showcase,
   results,
   resultSize = "section",
   facts,
   tags,
-  cover,
   children,
 }: {
-  /** "Complex SaaS · 2024–26 · Design systems" */
-  kicker: string;
-  title: string;
-  lead: string;
+  /** the case hero band (CaseHero): the h1 lives there, id "case-title" */
+  hero: ReactNode;
+  /** the showcase under it (CaseShowcase) */
+  showcase: ReactNode;
   /** none on a case whose facts carry it (Theming, CHIP) */
   results?: { n: string; label: string }[];
   /** one size per page: Display/Page or Display/Section */
@@ -33,63 +32,53 @@ export function CasePage({
   facts: { label: string; value: string }[];
   /** signal tags under the facts (Theming) */
   tags?: string[];
-  /** Figure 1, the cover; some cases open without one */
-  cover?: ReactNode;
   /** the beats, the reflection and the case end */
   children: ReactNode;
 }) {
   return (
-    <Section width="case" labelledBy="case-title">
-      <div className={styles.page}>
-        <header className={`${styles.hero} ${styles.col}`}>
-          <TextLink href="/work" className={styles.back} icon={<Icon name="ArrowLeft" size="sm" />}>
-            All work
-          </TextLink>
-          <p className={styles.kicker}>{kicker}</p>
-          <Heading tier="page" id="case-title" className={styles.title}>
-            {title}
-          </Heading>
-          <p className={styles.lead}>{lead}</p>
-        </header>
-
-        {results?.length ? (
-        <ul className={styles.results} aria-label="Results">
-          {results.map((r) => (
-            <li key={r.n + r.label} className={styles.result}>
-              <span className={styles.resultBar} aria-hidden="true" />
-              <p className={styles.resultValue} data-size={resultSize}>
-                {r.n}
-              </p>
-              <p className={styles.resultLabel}>{r.label}</p>
-            </li>
-          ))}
-        </ul>
-        ) : null}
-
-        <div className={styles.overview}>
-          <dl className={`${styles.facts} ${styles.col}`}>
-            {facts.map((f) => (
-              <div key={f.label} className={styles.fact}>
-                <dt className={styles.factLabel}>{f.label}</dt>
-                <dd className={styles.factValue}>{f.value}</dd>
-              </div>
-            ))}
-          </dl>
-          {tags?.length ? (
-            <ul className={`${styles.signalTags} ${styles.col}`} aria-label="This case is evidence for">
-              {tags.map((t) => (
-                <li key={t} className={styles.signalTag}>
-                  {t}
+    <>
+      {hero}
+      {showcase}
+      <Section width="case" labelledBy="case-title">
+        <div className={styles.page}>
+          {results?.length ? (
+            <ul className={styles.results} aria-label="Results">
+              {results.map((r) => (
+                <li key={r.n + r.label} className={styles.result}>
+                  <span className={styles.resultBar} aria-hidden="true" />
+                  <p className={styles.resultValue} data-size={resultSize}>
+                    {r.n}
+                  </p>
+                  <p className={styles.resultLabel}>{r.label}</p>
                 </li>
               ))}
             </ul>
           ) : null}
-          {cover}
-        </div>
 
-        {children}
-      </div>
-    </Section>
+          <div className={styles.overview}>
+            <dl className={`${styles.facts} ${styles.col}`}>
+              {facts.map((f) => (
+                <div key={f.label} className={styles.fact}>
+                  <dt className={styles.factLabel}>{f.label}</dt>
+                  <dd className={styles.factValue}>{f.value}</dd>
+                </div>
+              ))}
+            </dl>
+            {tags?.length ? (
+              <ul className={`${styles.signalTags} ${styles.col}`} aria-label="This case is evidence for">
+                {tags.map((t) => (
+                  <li key={t} className={styles.signalTag}>
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+
+          {children}
+        </div>
+      </Section>
+    </>
   );
 }
 

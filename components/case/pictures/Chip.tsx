@@ -1,14 +1,12 @@
 import type { ReactNode } from "react";
-import ScaledArt from "@/components/case/ScaledArt";
-import { CoverAtlas } from "./Covers";
 import s from "./Chip.module.css";
 
 /* CHIP 2.0 figures as live pictures (Site v3, Figma e7U5Hxpr441rT719SPclas,
    Case page / CHIP 1440 407:8187 and 390 407:10271). Atlas is a concept
    mock, so every Atlas panel wears the "concept mock" tag. The 390 frame
    restacks these pictures (panels in a column, the lesson states two up),
-   so they are laid out with CSS rather than scaled; the two fixed drawings
-   (the Atlas cover and the Button specimen) scale. Colours read the
+   so they are laid out with CSS rather than scaled; the one fixed drawing
+   (the Button specimen) scales; the Atlas cover lives in the case hero. Colours read the
    semantic and component tokens, so the pictures follow the theme. Each
    picture names itself (role="img"); everything inside is decorative. */
 
@@ -56,16 +54,7 @@ export function PartLabel({ n, title, spec, short = false }: { n: number; title:
   );
 }
 
-/* ── Figure 1 · Cover/CHIP Atlas (383:684), at figure size ─────────── */
-export function ChipCover({ label }: { label: string }) {
-  return (
-    <ScaledArt width={928}>
-      <CoverAtlas slot="figure" label={label} />
-    </ScaledArt>
-  );
-}
-
-/* ── Figure 3 · The gate tells the truth ──────────────────────────── */
+/* ── Figure 2 · The gate tells the truth ──────────────────────────── */
 const CHECKS: [string, string, "success" | "neutral"][] = [
   ["pass", "Contrast · primary label 15.8:1", "success"],
   ["pass", "Contract parity", "success"],
@@ -88,20 +77,28 @@ function Status({ tone, children }: { tone: "success" | "neutral" | "danger"; ch
   );
 }
 
+/** the gate's checks as Figure 2 lists them; `count` keeps the first few
+ *  (the case showcase) */
+export function GateChecks({ count = CHECKS.length }: { count?: number }) {
+  return (
+    <ul className={s.rows}>
+      {CHECKS.slice(0, count).map(([pill, text, tone]) => (
+        <li key={text} className={s.row}>
+          <Status tone={tone}>{pill}</Status>
+          <span>{text}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function ChipGate({ label }: { label: string }) {
   return (
     <Picture label={label}>
       <div className={s.pair}>
         <div className={s.panel}>
           <PanelHead>Checks · from the gate</PanelHead>
-          <ul className={s.rows}>
-            {CHECKS.map(([pill, text, tone]) => (
-              <li key={text} className={s.row}>
-                <Status tone={tone}>{pill}</Status>
-                <span>{text}</span>
-              </li>
-            ))}
-          </ul>
+          <GateChecks />
         </div>
         <div className={s.panel}>
           <PanelHead>What the gate caught</PanelHead>
@@ -120,7 +117,7 @@ export function ChipGate({ label }: { label: string }) {
   );
 }
 
-/* ── Figure 4 · Lesson: one job per state ─────────────────────────── */
+/* ── Figure 3 · Lesson: one job per state ─────────────────────────── */
 const STATES: { state: "rest" | "hover" | "focus" | "press" | "disabled"; note: string }[] = [
   { state: "rest", note: "Rest: the ink keycap." },
   { state: "hover", note: "Hover rolls the label. Nothing lifts." },
@@ -168,7 +165,7 @@ export function ChipLesson({ label }: { label: string }) {
   );
 }
 
-/* ── Figure 5 · Ask, then approve ─────────────────────────────────── */
+/* ── Figure 4 · Ask, then approve ─────────────────────────────────── */
 export function ChipAsk({ label }: { label: string }) {
   return (
     <Picture label={label}>

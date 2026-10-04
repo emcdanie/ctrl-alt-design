@@ -19,7 +19,7 @@ function Step({ n }: { n: number | string }) {
   return <span className={s.step}>{n}</span>;
 }
 
-/* ── Figure 4 · Zoom levels (F4) ─────────────────────────────────── */
+/* ── Figure 3 · Zoom levels (F4) ─────────────────────────────────── */
 const LEVELS = [
   { title: "The file", meta: "40 pages that nobody owned.", short: "the file" },
   { title: "One page", meta: "120 frames, three called “final”.", short: "one page" },
@@ -164,7 +164,7 @@ export function ZoomLevels() {
   );
 }
 
-/* ── Figure 5 · Token cascade (F1) ──────────────────────────────── */
+/* ── Figure 4 · Token cascade (F1) ──────────────────────────────── */
 /* the ramp, each step its own token (written out so audit:debt can see
    every var() read) */
 const RAMP: [number, string][] = [
@@ -297,7 +297,7 @@ export function TokenCascade() {
   );
 }
 
-/* ── Figure 7 · Rollout (F2) ───────────────────────────────────────── */
+/* ── Figure 6 · Rollout (F2) ───────────────────────────────────────── */
 const STEPS: { title: string; meta: string; icon: IconName; no?: boolean; shared?: boolean; cto?: boolean }[] = [
   { title: "Proposed", meta: "Told it wasn’t necessary", icon: "ChatBubbleXmark", no: true },
   { title: "Built it for myself", meta: "Nights and side time", icon: "Cube" },
@@ -359,7 +359,7 @@ export function Rollout() {
   );
 }
 
-/* ── Figure 8 · Shipped staircase (F3) ───────────────────────────── */
+/* ── Figure 7 · Shipped staircase (F3) ───────────────────────────── */
 /* the drawing's own coordinates (942 × 648, Figma 366:33642): each area's
    node, and its chip centred above it with an 8px gap */
 const AREAS: { label: string[]; x: number; y: number }[] = [

@@ -575,7 +575,8 @@ for (const theme of ["light", "dark"]) {
          blockquote, and is not numbered) has a "Figure N." caption,
          numbered in order from 1. (Enlarge left with the 4 Oct late
          review; Replay is the one figure control.) */
-      const v3 = document.querySelector("main .container--case");
+      /* the case body's container (the hero band above it has its own) */
+      const v3 = document.querySelector("main .l-section .container--case");
       const v3Beats = v3 ? [...v3.querySelectorAll("section[aria-labelledby]")] : [];
       if (v3) {
         for (const sec of v3Beats) {

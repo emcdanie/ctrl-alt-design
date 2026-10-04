@@ -5,7 +5,7 @@ import { KitAvatar, KitButton, KitChip, KitStatus, KitTag, KitTheme, MarkupBadge
 import ScaledArt from "@/components/case/ScaledArt";
 import s from "./FederatedPicturesB.module.css";
 
-/* Federated figures 4 to 7 as live pictures (Site v3, Figma
+/* Federated figures 3 to 6 as live pictures (Site v3, Figma
    e7U5Hxpr441rT719SPclas, Figure · Two lanes 293:22606, Intake flow and
    board 293:22750, KPI tree and Pareto 293:22932, Asked for vs shipped
    293:22181). Each draws inside the figure stage at the 1440 design width
@@ -27,7 +27,7 @@ function Picture({ label, children }: { label: string; children: ReactNode }) {
 
 const Accent = () => <span className={s.accent} />;
 
-/* ── Figure 5 · Two lanes ─────────────────────────────────────────── */
+/* ── Figure 4 · Two lanes ─────────────────────────────────────────── */
 const PEOPLE = ["avatar-r9", "avatar-r4", "avatar-r6", "avatar-r10"];
 
 export function FedTwoLanes({ label }: { label: string }) {
@@ -84,7 +84,7 @@ export function FedTwoLanes({ label }: { label: string }) {
   );
 }
 
-/* ── Figure 6 · Intake flow and board ─────────────────────────────── */
+/* ── Figure 5 · Intake flow and board ─────────────────────────────── */
 type Dot = "open" | "red" | "ochre";
 const BEFORE: [string, string, Dot][] = [
   ["Squad builds", "its own version", "open"],
@@ -160,7 +160,7 @@ export function FedIntake({ label }: { label: string }) {
   );
 }
 
-/* ── Figure 7 · KPI tree and Pareto ───────────────────────────────── */
+/* ── Figure 6 · KPI tree and Pareto ───────────────────────────────── */
 const CASE = [
   ["Cost", "Duplicated components, rebuilt squad by squad"],
   ["Time to market", "Decisions before the build, not after"],
@@ -235,11 +235,11 @@ export function FedKpi({ label }: { label: string }) {
   );
 }
 
-/* ── Figure 4 · Asked for vs shipped ──────────────────────────────── */
+/* ── Figure 3 · Asked for vs shipped ──────────────────────────────── */
 type SizeState = "in" | "out" | "last" | "sel";
 type Cell = [label: string, col: number, row: number, state?: SizeState];
 
-function SizeGrid({ cells, w, h }: { cells: Cell[]; w: number; h: number }) {
+export function SizeGrid({ cells, w, h }: { cells: Cell[]; w: number; h: number }) {
   const cols = Math.max(...cells.map((c) => c[1])) + 1;
   const rows = Math.max(...cells.map((c) => c[2])) + 1;
   return (
@@ -255,7 +255,7 @@ function SizeGrid({ cells, w, h }: { cells: Cell[]; w: number; h: number }) {
   );
 }
 
-const ROWS = (sel: string, out: string[], last: string[]): Cell[] =>
+export const ROWS = (sel: string, out: string[], last: string[]): Cell[] =>
   ["XXS", "XS", "S", "M", "L", "XL", "XXL", "1XL", "2XL", "3XL", "4XL"].map((t, k) => [
     t,
     k % 4,
@@ -312,7 +312,36 @@ function Layout({ chip, label, end }: { chip: ReactNode; label: string; end: Rea
   );
 }
 
-function TrimBox({ on }: { on: boolean }) {
+/* the chip's three layouts: colour, text and the new slot */
+export const ColourChip = () => (
+  <span className={`${s.oldChip} ${s.colourChip}`}>
+    <span className={s.bigSwatch} style={{ background: sw("taupe") }} />
+    <span className={s.swatchLine} />
+  </span>
+);
+
+export const TextChip = () => (
+  <span className={`${s.oldChip} ${s.textChip}`}>
+    <span className={s.small}>Fabric</span>
+    <span className={s.label16}>Linen</span>
+  </span>
+);
+
+export const SlotChip = () => <span className={s.slotChip}>Slot</span>;
+
+/** Figure 3's pieces outside the figure (the case hero and showcase): the
+ *  product theme and the picture's own variables */
+export function FedPieces({ className = "", children }: { className?: string; children: ReactNode }) {
+  return (
+    <KitTheme mode="federated">
+      <div className={`${s.pieces} ${className}`.trim()}>{children}</div>
+    </KitTheme>
+  );
+}
+
+/** the stock mark, asked (negative spacing) or shipped (Trim); `label`
+ *  off draws the box alone */
+export function TrimBox({ on, label = true }: { on: boolean; label?: boolean }) {
   return (
     <span className={s.trim}>
       <span className={s.trimBox} data-on={on || undefined}>
@@ -322,10 +351,63 @@ function TrimBox({ on }: { on: boolean }) {
         <span className={s.trimBounds} />
         <Bell className={s.trimBell} />
       </span>
-      <span className={s.trimLabel} data-on={on || undefined}>
-        {on ? "Shipped: Trim" : "Asked: −4px"}
-      </span>
+      {label ? (
+        <span className={s.trimLabel} data-on={on || undefined}>
+          {on ? "Shipped: Trim" : "Asked: −4px"}
+        </span>
+      ) : null}
     </span>
+  );
+}
+
+/** the chip group with slots: pick a group, its labels come with it */
+export function ChipGroupCard() {
+  return (
+    <div className={`${s.card} ${s.group}`}>
+      <span className={s.groupTitle}>Chip group, with slots</span>
+      <span className={s.verdict}>
+        <span className={s.verdictIcon} data-kind="fail">
+          <Xmark />
+        </span>
+        <span className={s.body}>Select 11 chips, change every label and colour by hand</span>
+      </span>
+      <span className={s.picker}>
+        <span className={s.property}>
+          <span className={s.sub}>Group</span>
+          <span className={s.dropdown}>
+            Letters
+            <NavArrowDown />
+          </span>
+        </span>
+        <span className={s.options}>
+          <KitChip selected className={s.optionOn}>
+            Letters
+          </KitChip>
+          <KitChip>Kids</KitChip>
+          <KitChip>Colours</KitChip>
+        </span>
+        <span className={s.preview}>
+          {[
+            ["XS", "in"],
+            ["S", "in"],
+            ["M", "sel"],
+            ["L", "last"],
+            ["XL", "in"],
+          ].map(([t, st], k) => (
+            <span key={t} className={s.pcell} data-state={st} style={{ left: k * 45 }}>
+              {t}
+              {st === "last" ? <span className={s.pmark} /> : null}
+            </span>
+          ))}
+        </span>
+      </span>
+      <span className={s.verdict}>
+        <span className={s.verdictIcon} data-kind="pass">
+          <CheckGlyph />
+        </span>
+        <span className={s.body}>Pick the group you need. Labels and colours come with it.</span>
+      </span>
+    </div>
   );
 }
 
@@ -362,27 +444,9 @@ export function FedShipped({ label }: { label: string }) {
           </div>
           <div className={`${s.card} ${s.kept}`}>
             <span className={s.title18}>Kept the old chip, added a slot</span>
-            <Layout
-              chip={
-                <span className={`${s.oldChip} ${s.colourChip}`}>
-                  <span className={s.bigSwatch} style={{ background: sw("taupe") }} />
-                  <span className={s.swatchLine} />
-                </span>
-              }
-              label="Colour"
-              end={<KitTag>Kept</KitTag>}
-            />
-            <Layout
-              chip={
-                <span className={`${s.oldChip} ${s.textChip}`}>
-                  <span className={s.small}>Fabric</span>
-                  <span className={s.label16}>Linen</span>
-                </span>
-              }
-              label="Text"
-              end={<KitTag>Kept</KitTag>}
-            />
-            <Layout chip={<span className={s.slotChip}>Slot</span>} label="Slot variant" end={<KitStatus>New</KitStatus>} />
+            <Layout chip={<ColourChip />} label="Colour" end={<KitTag>Kept</KitTag>} />
+            <Layout chip={<TextChip />} label="Text" end={<KitTag>Kept</KitTag>} />
+            <Layout chip={<SlotChip />} label="Slot variant" end={<KitStatus>New</KitStatus>} />
             <span className={s.rule} />
             <span className={s.label16}>Three fills for the slot</span>
             <span className={s.fills}>
@@ -421,51 +485,7 @@ export function FedShipped({ label }: { label: string }) {
           </div>
         </div>
 
-        <div className={`${s.card} ${s.group}`}>
-          <span className={s.groupTitle}>Chip group, with slots</span>
-          <span className={s.verdict}>
-            <span className={s.verdictIcon} data-kind="fail">
-              <Xmark />
-            </span>
-            <span className={s.body}>Select 11 chips, change every label and colour by hand</span>
-          </span>
-          <span className={s.picker}>
-            <span className={s.property}>
-              <span className={s.sub}>Group</span>
-              <span className={s.dropdown}>
-                Letters
-                <NavArrowDown />
-              </span>
-            </span>
-            <span className={s.options}>
-              <KitChip selected className={s.optionOn}>
-                Letters
-              </KitChip>
-              <KitChip>Kids</KitChip>
-              <KitChip>Colours</KitChip>
-            </span>
-            <span className={s.preview}>
-              {[
-                ["XS", "in"],
-                ["S", "in"],
-                ["M", "sel"],
-                ["L", "last"],
-                ["XL", "in"],
-              ].map(([t, st], k) => (
-                <span key={t} className={s.pcell} data-state={st} style={{ left: k * 45 }}>
-                  {t}
-                  {st === "last" ? <span className={s.pmark} /> : null}
-                </span>
-              ))}
-            </span>
-          </span>
-          <span className={s.verdict}>
-            <span className={s.verdictIcon} data-kind="pass">
-              <CheckGlyph />
-            </span>
-            <span className={s.body}>Pick the group you need. Labels and colours come with it.</span>
-          </span>
-        </div>
+        <ChipGroupCard />
 
         <span className={s.whyHead}>Why a slot: every one of these kept working, and the new card got its own</span>
 

@@ -1,12 +1,14 @@
 import type { CSSProperties, ElementType, ReactNode } from "react";
 
-export type HeadingTier = "hero" | "page" | "section" | "case" | "sub";
+export type HeadingTier = "hero" | "page" | "title" | "section" | "case" | "sub";
 
 /**
  * THE display heading primitive: every display heading renders through
  * this. Unique 700 all-caps at four tiers, fluid between 390 and 1440
  * (display-type-scale fix, 18 Sep 2026): hero 40-180 (home headline),
- * page 40-64 (every page title: /about, case studies, /design-system),
+ * page 40-64 (every page title: /about, /design-system), title 40-64
+ * (the case title in the case hero band, Display/Case title; `long`
+ * for a three-line title, 40-56),
  * section 32-48 (every section head and beat headline, one size per
  * page), case 32-48 (the case sign-off). Tier "sub" is the h3-level sub-heading: Geist
  * 700 at 24-32, never Unique. Tracking and leading come from
@@ -33,6 +35,7 @@ export default function Heading({
   style,
   label,
   squeeze = false,
+  long = false,
   children,
 }: {
   tier?: HeadingTier;
@@ -52,9 +55,11 @@ export default function Heading({
    *  -0.01em to -0.03em over the first 60vh of scroll). The one
    *  approved tracking exception, and it lives here, never in a page. */
   squeeze?: boolean;
+  /** title tier only: the long-title size (56 to 40) */
+  long?: boolean;
   children: ReactNode;
 }) {
-  const Tag: ElementType = as ?? (tier === "hero" || tier === "page" ? "h1" : tier === "sub" ? "h3" : "h2");
+  const Tag: ElementType = as ?? (tier === "hero" || tier === "page" || tier === "title" ? "h1" : tier === "sub" ? "h3" : "h2");
   /* ONE iris word per PAGE, on the h1 (Elleta, 20 Sep 2026, the calm
      pass). Every h2 on every page was colouring a word, which made the
      accent mean "a heading" rather than "the one idea". Below the h1 the
@@ -65,8 +70,9 @@ export default function Heading({
   /* the size comes from the shared text utility, not a tier-private rule */
   const size = tier === "page" ? " text-display-1" : tier === "section" || tier === "case" ? " text-display-2" : "";
   const squeezed = squeeze && tier === "hero" ? " display-heading--squeeze" : "";
+  const longTitle = long && tier === "title" ? " display-heading--title-long" : "";
   return (
-    <Tag id={id} style={style} aria-label={label} className={`display-heading display-heading--${tier}${size}${squeezed} ${className}`.trim()}>
+    <Tag id={id} style={style} aria-label={label} className={`display-heading display-heading--${tier}${size}${squeezed}${longTitle} ${className}`.trim()}>
       {children}
       {accent != null ? <span className={irisAccent ? "accent" : undefined}> {accent}</span> : null}
       {after}

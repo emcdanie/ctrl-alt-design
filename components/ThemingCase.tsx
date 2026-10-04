@@ -1,5 +1,9 @@
 import type { ReactNode } from "react";
 import { CasePage, Beat } from "@/components/case/CasePage";
+import caseStyles from "@/components/case/Case.module.css";
+import CaseHero from "@/components/case/CaseHero";
+import CaseShowcase, { type ShowcaseCard } from "@/components/case/CaseShowcase";
+import type { CollagePiece } from "@/components/case/CaseCollage";
 import CaseFigure, { ReplayKey } from "@/components/case/CaseFigure";
 import NextCase from "@/components/case/NextCase";
 import { CoverProduct, CoverSearch, CoverStay } from "@/components/case/pictures/Covers";
@@ -15,7 +19,9 @@ import s from "@/components/ThemingCase.module.css";
    case on Template / Case page. Copy and beats are the live case's
    (approved 4 Oct late); the exhibit keeps its motion, with Replay, and
    reduced motion shows its final frame. No results row, no cover, no NDA
-   line. Theme hexes live inside the pictures only. */
+   line. The hero band (4 Oct late) replaces the kicker and the lead; its
+   collage and showcase dress the one listing card (Preview) in the four
+   themes. Theme hexes live inside the pictures only. */
 
 function Win({ path, dark = false, children }: { path: string; dark?: boolean; children: ReactNode }) {
   return (
@@ -90,13 +96,39 @@ function StorybookTable() {
   );
 }
 
+const HERO_LABEL =
+  "The same listing card, Canet de Mar, Spain, at €1,150 a month, in four themes overlapping: ground in front, night and market behind it, coast across its corner.";
+
+const COLLAGE: CollagePiece[] = [
+  { key: "night", node: <Preview theme={THEMES.night} small />, x: 18, y: 80, r: -4, s: 1.08, w: 220 },
+  { key: "market", node: <Preview theme={THEMES.market} small />, x: 309, y: 100, r: 4, s: 1.08, w: 220 },
+  { key: "ground", node: <Preview theme={THEMES.ground} />, x: 116, y: 54, w: 320 },
+  { key: "coast", node: <Preview theme={THEMES.coast} small />, x: 203, y: 245, r: -4, s: 0.86, w: 220 },
+];
+
+const SHOWCASE: ShowcaseCard[] = (["night", "coast", "market"] as const).map((k) => ({
+  title: `${k} · ${k === "night" ? "BELLA" : "demo brand"}`,
+  label: `The listing card in theme ${k}${k === "night" ? " (BELLA)" : ", a demo brand"}.`,
+  node: (
+    <span className={caseStyles.piecesNarrow}>
+      <Preview theme={THEMES[k]} small />
+    </span>
+  ),
+}));
+
 export default function ThemingCase() {
   return (
     <ThemeStage>
       <CasePage
-        kicker="Case · Theming · BELLA, 2026"
-        title="One system, many faces."
-        lead="Themes in BELLA swap the values, never the components. Watch the same screen change, token by token. Nothing to scroll or click."
+        hero={
+          <CaseHero
+            title="One system, many faces."
+            meta={["Case · Theming · BELLA", "2026"]}
+            intro="Themes in BELLA swap the values, never the components. Watch the same screen change, token by token. Nothing to scroll or click."
+            collage={{ label: HERO_LABEL, pieces: COLLAGE }}
+          />
+        }
+        showcase={<CaseShowcase label="Theming, the same card in three more themes" cards={SHOWCASE} />}
         facts={[
           { label: "Role", value: "Design systems lead, and the person who builds it" },
           { label: "System", value: "BELLA, my own open design system" },

@@ -6,7 +6,7 @@ import { useFigurePlay } from "@/components/case/CaseFigure";
 import { Key, PanelHead, Picture, Pin, PARTS, PartLabel } from "./Chip";
 import s from "./Chip.module.css";
 
-/* Figure 2 · Take it apart (Site v3, Figma Figure · Take it apart ·
+/* Figure 1 · Take it apart (Site v3, Figma Figure · Take it apart ·
    Button, in 407:8187). The Button specimen at rest, five numbered parts
    pinned to it, beside the same five layers exploded: tilted plates (the
    frame's matrix 0.94, -0.16, 0.34, 0.46) with soft shadows, 5 at the top

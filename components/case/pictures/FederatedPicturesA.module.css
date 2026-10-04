@@ -19,17 +19,6 @@
   line-height: 1;
 }
 
-.leaderRed {
-  fill: none;
-  stroke: var(--markup-red);
-  stroke-width: 1.5;
-  stroke-dasharray: 4 4;
-}
-
-.dotRed {
-  fill: var(--markup-red);
-}
-
 .leaderGrey {
   fill: none;
   stroke: var(--markup-line);
@@ -46,177 +35,11 @@
   box-shadow: 0 0 0 2px var(--color-semantic-surface);
 }
 
-.stack[data-size="28"] > img + img {
-  margin-left: calc(var(--spacing-2) * -1);
-}
-
 .stack[data-size="26"] > img + img {
   margin-left: calc(var(--spacing-2) * -1);
 }
 
 /* ── Figure 1 ── */
-.f1 {
-  position: relative;
-  width: 928px;
-  height: 503px;
-}
-
-.f1 > * {
-  position: absolute;
-}
-
-.colLabel {
-  top: 0;
-  font-size: 18px;
-  font-weight: var(--typography-font-weight-semibold);
-  line-height: 25px;
-}
-
-.f1LabelBefore {
-  left: 0;
-}
-
-.f1LabelAfter {
-  left: 496px;
-}
-
-.f1Chat {
-  left: 4px;
-  top: 106px;
-  width: 422px;
-  transform: rotate(-1.5deg);
-}
-
-.f1Desk {
-  left: 496px;
-  top: 102px;
-  width: 432px;
-}
-
-/* the markers sit 8 above each panel's top-right corner, never on the
-   panel (Elleta, 4 Oct late); the chat's corner is 100.5 up once rotated */
-.f1BadgeFail {
-  left: 366px;
-  top: 32px;
-}
-
-.f1BadgePass {
-  left: 868px;
-  top: 34px;
-}
-
-.f1Leaders {
-  left: 0;
-  top: 0;
-  overflow: visible;
-}
-
-.f1Note1 {
-  left: 0;
-  top: 465px;
-}
-
-.f1Note2 {
-  left: 226px;
-  top: 457px;
-}
-
-.chat,
-.desk {
-  display: flex;
-  flex-direction: column;
-  padding: var(--spacing-6);
-  border-radius: var(--radius-xl);
-}
-
-.chat {
-  gap: var(--spacing-1);
-}
-
-.desk {
-  gap: var(--spacing-4);
-}
-
-.panelTitle {
-  font-size: 18px;
-  font-weight: var(--typography-font-weight-semibold);
-  line-height: 24px;
-}
-
-.chat .panelTitle {
-  padding-bottom: var(--spacing-3);
-}
-
-.message {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--spacing-3);
-}
-
-.msgName {
-  font-size: 16px;
-  font-weight: var(--typography-font-weight-semibold);
-  line-height: 24px;
-}
-
-.msgText {
-  font-size: 16px;
-  line-height: 1.4;
-  color: var(--color-semantic-text-body);
-}
-
-.hosts {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  font-size: 16px;
-  line-height: 22px;
-  color: var(--color-semantic-text-secondary);
-}
-
-.hosts .stack {
-  margin-right: calc(var(--spacing-1) / 2);
-}
-
-.agenda {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-3);
-  font-size: 16px;
-  line-height: 22px;
-}
-
-/* Figure 1 at 390: restacked, the labels with their badges above each panel */
-.f1Phone {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-}
-
-.phoneLabel {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  font-size: 16px;
-  line-height: 21px;
-  color: var(--color-semantic-text-secondary);
-}
-
-.f1PhoneChat {
-  margin-block: var(--spacing-2);
-  transform: rotate(-1.5deg);
-}
-
-.phoneNotes {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--spacing-2);
-  margin-bottom: var(--spacing-2);
-}
-
-/* ── Figure 2 ── */
 .f2 {
   position: relative;
   width: 928px;
@@ -395,7 +218,7 @@
   line-height: 22px;
 }
 
-/* ── Figure 3 ── */
+/* ── Figure 2 ── */
 .f3 {
   padding-top: var(--spacing-4);
   display: flex;
@@ -645,7 +468,7 @@
   gap: var(--spacing-3);
 }
 
-/* Figure 3 at 390: one live card per swipe screen, its markers kept inside */
+/* Figure 2 at 390: one live card per swipe screen, its markers kept inside */
 /* (the track is about 300 wide: each card keeps room only on the side
    its markers stand out) */
 .swipeCard {

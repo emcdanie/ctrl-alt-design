@@ -15,7 +15,7 @@
   padding: var(--spacing-8);
 }
 
-/* ---------- Figure 2: survey ---------- */
+/* ---------- Figure 1: survey ---------- */
 
 .survey {
   display: flex;
@@ -97,7 +97,7 @@
   color: var(--color-semantic-text-primary);
 }
 
-/* ---------- Figure 3: 17 buttons ---------- */
+/* ---------- Figure 2: 17 buttons ---------- */
 
 .buttonsArt {
   position: relative;
@@ -234,7 +234,7 @@
   font-size: 16px;
 }
 
-/* ---------- Figure 9: shipped on the system ---------- */
+/* ---------- Figure 8: shipped on the system ---------- */
 
 .shippedArt {
   position: relative;
@@ -507,8 +507,8 @@
   color: var(--color-semantic-text-secondary);
 }
 
-/* ---------- Figures 1 and 6: the Harbour loft stay card ----------
-   Fixed rows, so the anatomy pins in Figure 6 meet their parts: from the
+/* ---------- Figure 5 and the case hero: the Harbour loft stay card ----------
+   Fixed rows, so the anatomy pins in Figure 5 meet their parts: from the
    card top, photo 0 to 180, title centre 214, location 245, stars 271,
    divider 296, amenities 313 to 353, divider 369, footer centre 406,
    bottom 446. 300 wide at most: the photo is a 600px source. */
@@ -815,84 +815,21 @@
   transform: rotate(1deg);
 }
 
-/* Figure 1 at 1440: the drifted list tilted at left, the card at right;
-   each marker 8 clear of its card's top-right corner, never on it */
-.coverArt {
+/* one drifted button, cropped from Figure 2's picture (DriftedButton) */
+.driftedOne {
   position: relative;
-  width: 928px;
-  height: 470px;
+  display: block;
+  flex: 0 0 auto;
+  overflow: hidden;
 }
 
-.coverBefore {
+.driftedOne img {
   position: absolute;
-  left: 24px;
-  top: 104px;
-  transform: rotate(2deg);
+  display: block;
+  max-width: none;
 }
 
-.coverFail {
-  position: absolute;
-  left: 440px;
-  top: 98px;
-}
-
-.coverAfter {
-  position: absolute;
-  left: 540px;
-  top: 12px;
-}
-
-.coverPass {
-  position: absolute;
-  left: 848px;
-  top: 12px;
-}
-
-/* Figure 1 at 390: the 390 frame restacks, before above after, each with
-   its marker beside its label, outside the card */
-.coverPhone {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
-}
-
-.coverPhone .drift {
-  width: 100%;
-  max-width: 300px;
-  margin-inline: auto;
-  padding: var(--spacing-5) var(--spacing-4);
-}
-
-.coverPhone .driftRow {
-  gap: var(--spacing-3);
-}
-
-/* the 390 frame lets the drifted names wrap */
-.coverPhone .driftNameB {
-  white-space: normal;
-}
-
-.coverPhone .driftThumb {
-  width: 64px;
-  height: 56px;
-}
-
-.coverLabel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-3);
-  font-size: 16px;
-  color: var(--color-semantic-text-primary);
-}
-
-.coverPhoneCard {
-  width: 100%;
-  max-width: 300px;
-  margin-inline: auto;
-}
-
-/* Figure 6: the card at x 314, y 32 in the 928-wide art; the pins meet
+/* Figure 5: the card at x 314, y 32 in the 928-wide art; the pins meet
    its parts at the y the card's fixed rows put them */
 .anatomyArt {
   position: relative;

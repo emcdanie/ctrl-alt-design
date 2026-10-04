@@ -6,12 +6,13 @@ import Swipe from "@/components/case/Swipe";
 import caseStyles from "@/components/case/Case.module.css";
 import s from "./FederatedPicturesA.module.css";
 
-/* Federated, Figures 1 to 3, as live pictures (Site v3; Figma
+/* Federated, Figures 1 and 2 (and the hero's product cards), as live pictures (Site v3; Figma
    e7U5Hxpr441rT719SPclas, 1440 293:20908 and 390 304:7219). Product
    theme mode "Federated": ink actions, no indigo. Each picture names
    itself (role="img"); everything inside is aria-hidden. Drawn at the
-   1440 design size (928 inside the stage) and scaled to fit; Figure 1
-   restacks and Figure 3 swipes below 640px, as the 390 frames do. */
+   1440 design size (928 inside the stage) and scaled to fit; Figure 2
+   swipes below 640px, as the 390 frames do. `bare` draws a version
+   without its markup (status, badge, markers): the hero collage. */
 
 const AV = "/images/kit";
 const av = (n: string) => `${AV}/avatar-${n}.webp`;
@@ -37,117 +38,7 @@ function Miss({ children }: { children: ReactNode }) {
   );
 }
 
-/* ── Figure 1 · Cover: before and after inbox ─────────────────────── */
-const F1_LABEL =
-  "Before, told after it shipped: a team chat where three squads report what they already built and ask for review, marked with a red cross, annotated 'told after the fact' and 'three side channels'. After, brought to the open desk: a Thursday agenda with squads, devs and the system team, where the size selector and order card states are decided together and a video tag comes next week, marked with a green tick.";
-
-const CHAT = [
-  { who: "Squad A", av: av("r8"), text: "We already built our own card for the redesign." },
-  { who: "Squad B", av: av("r10"), text: "Dev has been waiting a week. Can you review today?" },
-  { who: "Squad C", av: av("r16"), text: "We made a new selector chip. Is that OK?" },
-];
-
-const AGENDA = [
-  { item: "Size selector for the new card", status: "Decided together" },
-  { item: "Order card states", status: "Decided together" },
-  { item: "Video tag on the product card", status: "Next week" },
-];
-
-function ChatPanel() {
-  return (
-    <KitPanel className={s.chat}>
-      <p className={s.panelTitle}>Team chat</p>
-      {CHAT.map((m) => (
-        <div key={m.who} className={s.message}>
-          <KitAvatar src={m.av} />
-          <div>
-            <p className={s.msgName}>{m.who}</p>
-            <p className={s.msgText}>{m.text}</p>
-          </div>
-        </div>
-      ))}
-    </KitPanel>
-  );
-}
-
-function DeskPanel() {
-  return (
-    <KitPanel className={s.desk}>
-      <p className={s.panelTitle}>Open desk · Thursday</p>
-      <div className={s.hosts}>
-        <span className={s.stack} data-size="28">
-          {[av("elleta"), av("r4"), av("r6"), av("r8")].map((src) => (
-            <KitAvatar key={src} src={src} size={28} />
-          ))}
-        </span>
-        <span>Squads, devs and the system team</span>
-      </div>
-      {AGENDA.map((a) => (
-        <div key={a.item} className={s.agenda}>
-          <span>{a.item}</span>
-          <KitStatus>{a.status}</KitStatus>
-        </div>
-      ))}
-    </KitPanel>
-  );
-}
-
-export function FederatedCover() {
-  return (
-    <>
-      <Pic label={F1_LABEL} className={caseStyles.wideOnly}>
-        <ScaledArt width={928}>
-          <div className={s.f1}>
-            <p className={`${s.colLabel} ${s.f1LabelBefore}`}>Before: told after it shipped</p>
-            <p className={`${s.colLabel} ${s.f1LabelAfter}`}>After: brought to the open desk</p>
-            <div className={s.f1Chat}>
-              <ChatPanel />
-            </div>
-            <div className={s.f1Desk}>
-              <DeskPanel />
-            </div>
-            <MarkupBadge kind="fail" size="lg" className={s.f1BadgeFail} />
-            <MarkupBadge kind="pass" size="lg" className={s.f1BadgePass} />
-            <svg className={s.f1Leaders} viewBox="0 0 928 503" width={928} height={503}>
-              <line x1={100.5} y1={400.7} x2={88.5} y2={464.7} className={s.leaderRed} />
-              <circle cx={100.5} cy={400.7} r={4} className={s.dotRed} />
-              <line x1={330.3} y1={392.6} x2={320.5} y2={456.6} className={s.leaderRed} />
-              <circle cx={330.3} cy={392.6} r={4} className={s.dotRed} />
-            </svg>
-            <div className={s.f1Note1}>
-              <Miss>Told after the fact</Miss>
-            </div>
-            <div className={s.f1Note2}>
-              <Miss>Three side channels</Miss>
-            </div>
-          </div>
-        </ScaledArt>
-      </Pic>
-      <Pic label={F1_LABEL} className={caseStyles.phoneOnly}>
-        <div className={s.f1Phone}>
-          <p className={s.phoneLabel}>
-            <MarkupBadge kind="fail" size="md" />
-            Before: told after it shipped
-          </p>
-          <div className={s.f1PhoneChat}>
-            <ChatPanel />
-          </div>
-          <div className={s.phoneNotes}>
-            <Miss>Told after the fact</Miss>
-            <Miss>Three side channels</Miss>
-          </div>
-          <p className={s.phoneLabel}>
-            <MarkupBadge kind="pass" size="md" />
-            After: brought to the open desk
-          </p>
-          <DeskPanel />
-        </div>
-      </Pic>
-    </>
-  );
-}
-
-/* ── Figure 2 · Who serves whom ───────────────────────────────────── */
+/* ── Figure 1 · Who serves whom ───────────────────────────────────── */
 const F2_LABEL =
   "Who serves whom: a design manager who set priorities and backed the process, above the design system team of four designers (one running it, one lead on leave, one on leave, one out) with about 7 component libraries. Beside it, partners (marketing email templates, AI assistant design) and engineering (system tech leads and platform devs on Web, iOS and Android). Below, the product squads, each with its own designer: Checkout, Account and orders, Product page, Listing and search, Email, Assistant.";
 
@@ -268,7 +159,7 @@ export function FederatedWho() {
   );
 }
 
-/* ── Figure 3 · One card, three versions ──────────────────────────── */
+/* ── Figure 2 · One card, three versions ──────────────────────────── */
 const F3_LABEL =
   "One product card, three versions: the published card with its name, discounted price, colour and size and a 'last units' mark; a new draft with a caps title on two lines, the colour cut off, a 20px close target and a discount badge; a post-purchase copy with the full price and no discount. Four issues are marked: caps title on two lines, colour cut off, close target 20px, discount missing.";
 
@@ -287,10 +178,10 @@ function Marker({ n, className }: { n: number; className: string }) {
   return <span className={`${s.marker} ${className}`}>{n}</span>;
 }
 
-function Published() {
+export function Published({ bare = false }: { bare?: boolean }) {
   return (
     <div className={s.version}>
-      <KitStatus>Published</KitStatus>
+      {bare ? null : <KitStatus>Published</KitStatus>}
       <div className={s.card}>
         <Coat>
           <span className={s.close}>
@@ -309,14 +200,18 @@ function Published() {
           Last units
         </p>
       </div>
-      <MarkupBadge kind="pass" size="md" className={s.passBadge} />
-      <span className={s.popover}>Wool blend belted coat with wide lapels</span>
-      <span className={s.caret} />
+      {bare ? null : (
+        <>
+          <MarkupBadge kind="pass" size="md" className={s.passBadge} />
+          <span className={s.popover}>Wool blend belted coat with wide lapels</span>
+          <span className={s.caret} />
+        </>
+      )}
     </div>
   );
 }
 
-function Draft() {
+export function Draft({ bare = false }: { bare?: boolean }) {
   return (
     <div className={s.version}>
       <KitTag>New draft</KitTag>
@@ -331,14 +226,18 @@ function Draft() {
         <p className={s.plain}>119,99 €</p>
         <p className={`${s.meta} ${s.ellipsis}`}>Colour: Beige, size: M, regular fit, wool blend</p>
       </div>
-      <Marker n={3} className={s.m3} />
-      <Marker n={1} className={s.m1} />
-      <Marker n={2} className={s.m2} />
+      {bare ? null : (
+        <>
+          <Marker n={3} className={s.m3} />
+          <Marker n={1} className={s.m1} />
+          <Marker n={2} className={s.m2} />
+        </>
+      )}
     </div>
   );
 }
 
-function Copy() {
+export function Copy({ bare = false }: { bare?: boolean }) {
   return (
     <div className={s.version}>
       <KitTag>Post-purchase copy</KitTag>
@@ -349,7 +248,7 @@ function Copy() {
         <p className={s.meta}>Colour: Beige</p>
         <p className={s.meta}>Size: M</p>
       </div>
-      <Marker n={4} className={s.m4} />
+      {bare ? null : <Marker n={4} className={s.m4} />}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import ScaledArt from "@/components/case/ScaledArt";
 import { KitAvatar, KitButton, KitChip, KitInput, KitPanel, KitStatus, KitTag, KitUserRow, MarkupBadge, MarkupNote, MarkupRing, kitLeader } from "@/components/case/kit/Kit";
 import s from "./DriftPictures.module.css";
 
-/* Drift figures 2, 3 and 9 as live pictures (Site v3, Figma e7U5Hxpr441rT719SPclas:
+/* Drift figures 1, 2 and 8 (and the hero pieces) as live pictures (Site v3, Figma e7U5Hxpr441rT719SPclas:
    Visual · Team survey 293:2239, Visual · 17 buttons audit 293:2284, Visual ·
    Shipped on the system 293:3253). Each is drawn at its 1440 design size and
    scaled to fit the stage (the 390 frames are the same picture, scaled). A
@@ -11,7 +11,7 @@ import s from "./DriftPictures.module.css";
 
 const AVATAR = "/images/kit";
 
-/* ---------- Figure 2: what support and sales told me ---------- */
+/* ---------- Figure 1: what support and sales told me ---------- */
 
 const FINDINGS: [string, string, string, string][] = [
   ["Most", "had", "walked a customer through a booking", "."],
@@ -62,7 +62,7 @@ export function DriftSurvey() {
   );
 }
 
-/* ---------- Figure 3: 17 buttons in production ---------- */
+/* ---------- Figure 2: 17 buttons in production ---------- */
 
 /* The 16 drifted buttons, in the Figma "Buttons" frame's own units
    (501.42 x 236.42). They fail contrast and the type rules on purpose, so
@@ -144,7 +144,7 @@ export function DriftButtons() {
   );
 }
 
-/* ---------- Figure 9: shipped on the system ---------- */
+/* ---------- Figure 8: shipped on the system ---------- */
 
 /* leaders in the Figma Picture's units (928 x 674.73): an elbow from each
    atom's dot to the part it builds */
@@ -217,11 +217,8 @@ export function DriftShipped() {
               <span className={s.atomsTitle}>Atoms</span>
               <span className={s.atomsLead}>Small parts, designed once.</span>
               <span className={s.atomRows}>
-                {ATOMS.map(([label, part]) => (
-                  <span className={s.atomRow} key={label}>
-                    <span className={s.atomLabel}>{label}</span>
-                    {part}
-                  </span>
+                {ATOMS.map(([label]) => (
+                  <AtomRow key={label} atom={label} />
                 ))}
               </span>
             </KitPanel>
@@ -332,9 +329,9 @@ export function DriftShipped() {
   );
 }
 
-/* ---------- Figures 1 and 6: the Harbour loft stay card, live ----------
+/* ---------- Figure 5 and the case hero: the Harbour loft stay card ----------
    (Elleta, 4 Oct late: no PNG pictures left, so both follow the theme.)
-   The same card in both figures. Its photo is a 600px source, so the card
+   The same card in both places. Its photo is a 600px source, so the card
    is never wider than 300 CSS px (audit:sharp, 2x). */
 
 const KIT = "/images/kit";
@@ -358,7 +355,7 @@ const AMENITIES: [string, string[]][] = [
 
 const STAR = "M10 2.5l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 7.8l5-.7Z";
 
-function StayCard({ className = "" }: { className?: string }) {
+export function StayCard({ className = "" }: { className?: string }) {
   return (
     <div className={`${s.stay} ${className}`.trim()}>
       <div className={s.stayPhoto}>
@@ -408,7 +405,7 @@ function StayCard({ className = "" }: { className?: string }) {
 }
 
 /* the drifted list: every row its own button, type and capitalisation */
-function DriftedList({ className = "" }: { className?: string }) {
+export function DriftedList({ className = "" }: { className?: string }) {
   return (
     <div className={`${s.drift} ${className}`.trim()}>
       <span className={s.driftHead}>
@@ -437,43 +434,54 @@ function DriftedList({ className = "" }: { className?: string }) {
   );
 }
 
-const F1_LABEL =
-  "Before: a 'Stays in Lisbon' list where each row uses a different button, type and capitalisation, marked with a red cross. After: one Harbour loft stay card on the system, with one Book now button, marked with a green tick.";
+/* ---------- the case hero and showcase: single pieces ----------
+   Clones for CaseHero's collage and CaseShowcase's cards, drawn by the
+   same code as the figures. */
 
-export function DriftCover({ wideClass, phoneClass }: { wideClass: string; phoneClass: string }) {
+/* the first six drifted buttons of Figure 2, cropped from the same
+   picture (the drift misses AA on purpose, so it stays a flat picture,
+   never live DOM; CLAUDE.md section 9): [x, y, w, h] in its units */
+const DRIFTED: [number, number, number, number][] = [
+  [0, 4.24, 61.94, 34.97],
+  [76.9, 3.37, 106.42, 36.71],
+  [198.29, 0, 101.68, 43.45],
+  [314.94, 3.31, 79.19, 36.84],
+  [409.1, 3.87, 92.16, 35.71],
+  [0, 62.16, 134.42, 41.58],
+];
+
+/** one drifted button, 1 to 6, as Figure 2 draws it */
+export function DriftedButton({ n }: { n: 1 | 2 | 3 | 4 | 5 | 6 }) {
+  const [x, y, w, h] = DRIFTED[n - 1];
   return (
-    <>
-      <div className={`${s.root} ${wideClass}`} style={{ "--art-w": 928 } as CSSProperties} role="img" aria-label={F1_LABEL}>
-        <ScaledArt width={992}>
-          <div className={s.bleed} aria-hidden="true">
-            <div className={s.coverArt}>
-              <DriftedList className={s.coverBefore} />
-              <MarkupBadge kind="fail" size="md" className={s.coverFail} />
-              <StayCard className={s.coverAfter} />
-              <MarkupBadge kind="pass" size="md" className={s.coverPass} />
-            </div>
-          </div>
-        </ScaledArt>
-      </div>
-      <div className={phoneClass} role="img" aria-label={F1_LABEL}>
-        <div className={s.coverPhone} aria-hidden="true">
-          <span className={s.coverLabel}>
-            <MarkupBadge kind="fail" size="md" />
-            Before · drifted
-          </span>
-          <DriftedList />
-          <span className={s.coverLabel}>
-            <MarkupBadge kind="pass" size="md" />
-            After · on BELLA
-          </span>
-          <StayCard className={s.coverPhoneCard} />
-        </div>
-      </div>
-    </>
+    <span className={s.driftedOne} style={{ width: w, height: h }}>
+      <img src="/images/kit/drift-17-buttons.svg" width={501} height={236} alt="" style={{ left: -x, top: -y }} />
+    </span>
   );
 }
 
-/* Figure 6: the card's parts pinned to the tokens they read. [token,
+/** a token pinned as Figure 5 pins it: the name, with its swatch */
+export function TokenPin({ token, swatch }: { token: string; swatch?: string }) {
+  return (
+    <MarkupNote tone="neutral" className={s.pin}>
+      {swatch ? <span className={s.pinSwatch} style={{ background: swatch }} /> : null}
+      {token}
+    </MarkupNote>
+  );
+}
+
+/** one atom row of Figure 8 (Input, Chip, Button, Avatar, Tag) */
+export function AtomRow({ atom }: { atom: string }) {
+  const part = ATOMS.find(([label]) => label === atom);
+  return part ? (
+    <span className={s.atomRow}>
+      <span className={s.atomLabel}>{part[0]}</span>
+      {part[1]}
+    </span>
+  ) : null;
+}
+
+/* Figure 5: the card's parts pinned to the tokens they read. [token,
    swatch, side, y]: y is the part's centre in the 928-wide art (the card
    sits at x 314, y 32; see .anatomyCard) */
 const PINS: [string, string, "left" | "right", number, number][] = [
@@ -511,10 +519,7 @@ export function DriftAnatomy() {
             </svg>
             {PINS.map(([t, swatch, side, y]) => (
               <span key={t} className={s.pinSlot} data-side={side} style={{ top: y }}>
-                <MarkupNote tone="neutral" className={s.pin}>
-                  <span className={s.pinSwatch} style={{ background: swatch }} />
-                  {t}
-                </MarkupNote>
+                <TokenPin token={t} swatch={swatch} />
               </span>
             ))}
           </div>

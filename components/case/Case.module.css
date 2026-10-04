@@ -22,18 +22,140 @@
   max-width: var(--case-col-max);
 }
 
-/* ── Hero ── */
-.hero {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-5);
-}
-
+/* the CV link in the case end (NextCase) */
 .back {
   align-self: flex-start;
 }
 
-.kicker {
+/* ── Hero band + showcase (build-spec, Elleta, 4 Oct late) ──
+   The band is white (surface) the full page width and starts under the
+   fixed nav; the grey ground starts under it with the showcase. Both sit
+   on the case body's frame (.container--case), the band's columns 440 |
+   88 | 528 at 1440 (5fr | 6fr), stacked from 960 down. */
+.heroBand {
+  padding-block: calc(var(--header-height) + var(--case-hero-pad-y)) var(--case-hero-pad-y);
+  background: var(--color-semantic-surface);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  align-items: center;
+  column-gap: var(--case-hero-gap);
+}
+
+.heroText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+  min-width: 0;
+}
+
+.heroText :global(.display-heading) {
+  margin-block: 0;
+  max-width: none;
+}
+
+.heroRule {
+  display: block;
+  height: 1px;
+  background: var(--color-semantic-border);
+}
+
+.heroMeta {
+  margin-block: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  column-gap: var(--spacing-4);
+  font-size: var(--text-label);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-secondary);
+}
+
+.heroIntro {
+  margin-block: 0;
+  font-size: var(--typography-font-size-xl);
+  line-height: 1.5;
+  color: var(--color-semantic-text-body);
+  text-wrap: pretty;
+}
+
+.heroDisclosure {
+  margin-block: 0;
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.7;
+  color: var(--color-semantic-text-secondary);
+  text-wrap: pretty;
+}
+
+/* the collage: a 528x480 canvas scaled to the box (CaseCollage sets
+   --collage-scale), fading into the band on all four edges. A mask, so
+   the fade is the band's own colour in both themes. */
+.collage {
+  --collage-fade: var(--case-collage-fade);
+  position: relative;
+  width: 100%;
+  max-width: 528px;
+  aspect-ratio: 528 / 480;
+  justify-self: end;
+  overflow: hidden;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, black var(--collage-fade), black calc(100% - var(--collage-fade)), transparent),
+    linear-gradient(to bottom, transparent, black var(--collage-fade), black calc(100% - var(--collage-fade)), transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, black var(--collage-fade), black calc(100% - var(--collage-fade)), transparent),
+    linear-gradient(to bottom, transparent, black var(--collage-fade), black calc(100% - var(--collage-fade)), transparent);
+  mask-composite: intersect;
+}
+
+.collageCanvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(var(--collage-scale, 1));
+}
+
+.collagePiece {
+  position: absolute;
+  transform-origin: 50% 50%;
+}
+
+/* the showcase: the grey ground, three equal white cards of real UI */
+.showcase {
+  padding-block: var(--case-hero-pad-y);
+  background: var(--color-semantic-background);
+}
+
+.showcaseTrack {
+  list-style: none;
+  margin-block: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-6);
+}
+
+.showcaseTrack:focus-visible {
+  outline: 3px solid var(--color-semantic-focus-ring);
+  outline-offset: 3px;
+  border-radius: var(--radius-card);
+}
+
+.showcaseCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  min-width: 0;
+  padding: var(--spacing-6);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.showcaseTitle {
   margin-block: 0;
   font-size: var(--text-label);
   font-weight: var(--typography-font-weight-semibold);
@@ -41,9 +163,112 @@
   color: var(--color-semantic-text-secondary);
 }
 
-.title {
-  margin-block: 0;
-  max-width: none;
+.showcasePieces {
+  min-width: 0;
+}
+
+/* how a card lays its pieces out: a wrapping row or a column, 12 apart */
+.piecesRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+}
+
+.piecesColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+}
+
+.piecesColumn > * {
+  max-width: 100%;
+}
+
+/* a column whose pieces run the card's width (atom rows) */
+.piecesStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.piecesStack > :first-child {
+  align-self: flex-start;
+}
+
+/* one narrow piece, centred (a 220-wide listing card) */
+.piecesNarrow {
+  display: flex;
+  justify-content: center;
+}
+
+/* doubled class: wins over a piece's own width: 100% */
+.piecesNarrow.piecesNarrow > * {
+  width: 220px;
+  flex: 0 0 auto;
+}
+
+/* the body follows the showcase one block gap down, not a nav and a
+   section pad (Figma: the Results slot 40 under the showcase) */
+main .showcase + :global(.l-section.l-section) {
+  padding-top: var(--case-gap-block);
+}
+
+@media (max-width: 959.98px) {
+  .heroGrid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--case-hero-gap-stacked);
+  }
+
+  .collage {
+    justify-self: center;
+  }
+
+  /* the phone showcase: a sideways swipe of 280-wide cards, the next one
+     peeking; the track runs to the window's edges and scrolls inside
+     itself, so the page never does */
+  .showcaseTrack {
+    display: flex;
+    gap: var(--spacing-3);
+    margin-inline: calc(var(--container-pad) * -1);
+    padding-inline: var(--container-pad);
+    scroll-padding-inline: var(--container-pad);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .showcaseTrack::-webkit-scrollbar {
+    display: none;
+  }
+
+  .showcaseCard {
+    flex: 0 0 var(--case-showcase-card-w);
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 639.98px) {
+  .heroBand {
+    padding-block: calc(var(--header-height) + var(--spacing-8)) var(--spacing-8);
+  }
+
+  .collage {
+    --collage-fade: var(--spacing-10);
+    --collage-scale: calc(350 / 528);
+    max-width: 350px;
+    aspect-ratio: 350 / 300;
+  }
+
+  .collagePiece[data-phone="off"] {
+    display: none;
+  }
+
+  .showcase {
+    padding-block: var(--spacing-8);
+  }
 }
 
 .lead {

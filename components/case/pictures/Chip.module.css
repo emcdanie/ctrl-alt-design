@@ -148,7 +148,7 @@
   box-shadow: none;
 }
 
-/* ── Figure 2 · Take it apart ── */
+/* ── Figure 1 · Take it apart ── */
 .apart {
   display: flex;
   flex-direction: column;
@@ -352,7 +352,7 @@
   background: var(--markup-line);
 }
 
-/* ── Figure 3 · The gate ── */
+/* ── Figure 2 · The gate ── */
 .pair {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -424,7 +424,7 @@
   color: var(--color-semantic-text-secondary);
 }
 
-/* ── Figure 4 · Lesson ── */
+/* ── Figure 3 · Lesson ── */
 .lesson {
   gap: var(--spacing-3);
   padding: var(--spacing-5);
@@ -491,7 +491,7 @@
   color: var(--color-semantic-text-primary);
 }
 
-/* ── Figure 5 · Ask, then approve ── */
+/* ── Figure 4 · Ask, then approve ── */
 .ask {
   display: grid;
   grid-template-columns: minmax(0, 477fr) minmax(0, 427fr);

@@ -90,7 +90,7 @@
   color: var(--color-semantic-danger-text);
 }
 
-/* ── Figure 4 · Zoom levels ── */
+/* ── Figure 3 · Zoom levels ── */
 
 .levels {
   position: relative;
@@ -231,7 +231,7 @@
   background: var(--color-semantic-text-primary);
 }
 
-/* ── Figure 5 · Token cascade ── */
+/* ── Figure 4 · Token cascade ── */
 .cascade {
   display: flex;
   flex-direction: column;
@@ -512,7 +512,7 @@
   display: inline-flex;
 }
 
-/* ── Figure 7 · Rollout ── */
+/* ── Figure 6 · Rollout ── */
 
 .rollout {
   position: relative;
@@ -702,7 +702,7 @@
   color: var(--color-semantic-success-text);
 }
 
-/* ── Figure 8 · Shipped staircase ── */
+/* ── Figure 7 · Shipped staircase ── */
 
 .drawing {
   position: relative;
@@ -824,7 +824,7 @@
 
 /* ── phone (390 frames 303:4790) ── */
 @media (max-width: 639px) {
-  /* Figure 8, option B: the real staircase, area names as plain 16px
+  /* Figure 7, option B: the real staircase, area names as plain 16px
      labels left of their node, the system chip under its node, "next"
      dashed at the top right, the flat line's label under the baseline */
   .drawing {

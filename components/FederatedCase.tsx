@@ -1,23 +1,79 @@
 import { CasePage, Beat, BeatText, CaseQuote, Lessons } from "@/components/case/CasePage";
 import CaseFigure from "@/components/case/CaseFigure";
-import { FedIntake, FedKpi, FedShipped, FedTwoLanes } from "@/components/case/pictures/FederatedPicturesB";
+import caseStyles from "@/components/case/Case.module.css";
+import CaseHero from "@/components/case/CaseHero";
+import CaseShowcase, { type ShowcaseCard } from "@/components/case/CaseShowcase";
+import type { CollagePiece } from "@/components/case/CaseCollage";
+import { ChipGroupCard, ColourChip, FedIntake, FedKpi, FedPieces, FedShipped, FedTwoLanes, ROWS, SizeGrid, SlotChip, TextChip, TrimBox } from "@/components/case/pictures/FederatedPicturesB";
 import NextCase from "@/components/case/NextCase";
 import { CoverAtlas, CoverSearch, CoverStay } from "@/components/case/pictures/Covers";
-import { FederatedCover, FederatedVersions, FederatedWho } from "@/components/case/pictures/FederatedPicturesA";
+import { Copy, Draft, FederatedVersions, FederatedWho, Published } from "@/components/case/pictures/FederatedPicturesA";
 
 /* Federated (Site v3, Elleta, 4 Oct 2026; approved as-is): the case built
    from the Site v3 frames, Figma e7U5Hxpr441rT719SPclas, 1440 293:20908
    and 390 304:7219, on Template / Case page, product theme mode
    "Federated". Copy is the frames' copy; the retailer stays "a leading
-   European fashion retailer". All seven figures and the covers are built
-   live from the Case UI kit (components/case/pictures). */
+   European fashion retailer". All six figures, the hero band's collage,
+   the showcase and the covers are built live from the Case UI kit
+   (components/case/pictures); the hero band (4 Oct late) replaces the
+   kicker, the lead and the Figure 1 cover. */
+
+const HERO_LABEL =
+  "Three versions of one product card, overlapping: a new draft, the published card (a wool blend belted coat at €119.99, down from €179.99, beige, size M, last units) and a post-purchase copy at the full price; below them, the chip group with slots.";
+
+const COLLAGE: CollagePiece[] = [
+  { key: "draft", node: <FedPieces><Draft bare /></FedPieces>, x: -37, y: -37, r: 3, s: 0.69 },
+  { key: "published", node: <FedPieces><Published bare /></FedPieces>, x: 154, y: -19, r: -2, s: 0.82 },
+  { key: "copy", node: <FedPieces><Copy bare /></FedPieces>, x: 324, y: -17, r: -4, s: 0.65 },
+  { key: "group", node: <FedPieces><ChipGroupCard /></FedPieces>, x: -204, y: 325, s: 0.48, w: 928 },
+];
+
+const SHOWCASE: ShowcaseCard[] = [
+  {
+    title: "One chip group, every size",
+    label: "One chip group with every size, XXS to 4XL: M selected, XXS and 2XL out of stock with a notify bell, 3XL and 4XL marked last units.",
+    node: (
+      <FedPieces>
+        <SizeGrid cells={ROWS("M", ["XXS", "2XL"], ["3XL", "4XL"])} w={62} h={44} />
+      </FedPieces>
+    ),
+  },
+  {
+    title: "Three layouts, one chip",
+    label: "One chip in three layouts: a colour swatch, text (Fabric, Linen) and the new slot.",
+    node: (
+      <FedPieces className={caseStyles.piecesRow}>
+        <ColourChip />
+        <TextChip />
+        <SlotChip />
+      </FedPieces>
+    ),
+  },
+  {
+    title: "Trim off · trim on",
+    label: "The 3XL size with its notify bell, twice: without Trim the bell sits off the size's edge; with Trim it lines up.",
+    node: (
+      <FedPieces className={caseStyles.piecesRow}>
+        <TrimBox on={false} label={false} />
+        <TrimBox on label={false} />
+      </FedPieces>
+    ),
+  },
+];
 
 export default function FederatedCase() {
   return (
     <CasePage
-      kicker="Federated design system · 2026 · 13 weeks"
-      title="They stopped telling me what they’d done"
-      lead="A cross-platform design system for a leading European fashion retailer, with three of its four designers out. I made the slow work fast, opened one door for every squad, and extended what already worked instead of copying it."
+      hero={
+        <CaseHero
+          title="They stopped telling me what they’d done"
+          long
+          meta={["Federated design system", "2026 · 13 weeks"]}
+          intro="A cross-platform design system for a leading European fashion retailer, with three of its four designers out. I made the slow work fast, opened one door for every squad, and extended what already worked instead of copying it."
+          collage={{ label: HERO_LABEL, pieces: COLLAGE }}
+        />
+      }
+      showcase={<CaseShowcase label="Federated, in real UI" cards={SHOWCASE} />}
       resultSize="page"
       results={[
         { n: "< 3 min", label: "a spacing migration of 3,882 bindings, about 12 hours by hand per platform" },
@@ -30,11 +86,6 @@ export default function FederatedCase() {
         { label: "Timeline", value: "April to July 2026" },
         { label: "Platforms", value: "Web, iOS and Android" },
       ]}
-      cover={
-        <CaseFigure n={1} caption="Same squads, same quarter. What changed is when they came to us.">
-          <FederatedCover />
-        </CaseFigure>
-      }
     >
       <Beat
         id="setup"
@@ -44,7 +95,7 @@ export default function FederatedCase() {
         lead="I started my career using a federated system, then building one. Here a small system team sat between many squads, three platforms and two partner teams. Three of its four designers were out, so I ran it day to day for 13 weeks."
         leadSize="base"
       >
-        <CaseFigure n={2} caption="One small system team in the middle of many squads, three platforms and two partner teams.">
+        <CaseFigure n={1} caption="One small system team in the middle of many squads, three platforms and two partner teams.">
           <FederatedWho />
         </CaseFigure>
       </Beat>
@@ -57,7 +108,7 @@ export default function FederatedCase() {
         lead="Squads built what they needed and told us afterwards. The product card had a published version, a post-purchase copy and a new draft, each with its own rules. Adding AI on top would only have copied the mess faster."
         leadSize="base"
       >
-        <CaseFigure n={3} caption="Recreated. The card being redesigned already existed three times.">
+        <CaseFigure n={2} caption="Recreated. The card being redesigned already existed three times.">
           <FederatedVersions />
         </CaseFigure>
       </Beat>
@@ -71,7 +122,7 @@ export default function FederatedCase() {
         leadSize="base"
       >
         <CaseFigure
-          n={4}
+          n={3}
           caption="Product page, bag, size guide and filters all had to keep working. The slot added the new case without breaking the old pattern."
         >
           <FedShipped
@@ -91,7 +142,7 @@ export default function FederatedCase() {
         lead="Claude did the checkable work: the spacing migration, dark mode coverage, accessibility checks and icon clean-up, and I checked what it did. Names, props and which requests to close stayed decisions with the platform developers."
         leadSize="base"
       >
-        <CaseFigure n={5} caption="Claude did the slow, checkable work. The time it saved went into the decisions.">
+        <CaseFigure n={4} caption="Claude did the slow, checkable work. The time it saved went into the decisions.">
           <FedTwoLanes
             label="Two lanes. The slow work: a spacing migration of 3,882 bindings, about 12 hours by hand per platform, under 3 minutes with Claude and checked by me; 84 of 84 brand tokens ready for dark mode; 280 icon bindings cleaned with searchable names; 12 components with accessibility fixes. What stayed with people: component names, props and structure, and which requests to close, decided with the platform devs."
           />
@@ -106,7 +157,7 @@ export default function FederatedCase() {
         lead="Every week, squads brought real cases to an open desk, before anyone built. One path in: need, system team, open desk, joint decision, developer. After a retro we moved to Kanban with three in flight at most, and seven requests closed with a written reason."
         leadSize="base"
       >
-        <CaseFigure n={6} caption="The value is timing: squads brought the case before building, so it was built once.">
+        <CaseFigure n={5} caption="The value is timing: squads brought the case before building, so it was built once.">
           <FedIntake
             label="When did the system team hear about it? Before, after the build: the squad builds its own version, the dev waits over a week, the system hears last, then rework or a new copy. After, before the build: the need comes from the squad, the open desk takes it that week, it's decided together, and the dev builds once. From the team retro: 'Technical feedback reaches us after the open desk, not before.' What changed: a new open desk template to bring the case before building, Kanban with three in progress at most, and one way in through squad, system team, open desk and dev."
           />
@@ -122,7 +173,7 @@ export default function FederatedCase() {
         lead="The system had no baseline, so I built one: a KPI tree from business goals to system work, and a Pareto of the pain points. A few root causes held most of the pain. I asked for a small, low-risk first phase before scaling AI."
         leadSize="base"
       >
-        <CaseFigure n={7} caption="The slide I took to leadership, recreated. Shape only, the real numbers stay private.">
+        <CaseFigure n={6} caption="The slide I took to leadership, recreated. Shape only, the real numbers stay private.">
           <FedKpi
             label="The leadership slide, recreated: 'Clean the system before scaling AI'. The ask, phase 1: bridge design and code on the top components, machine-readable descriptions, one sprint with no new budget, phases 2 and 3 only if phase 1 works. Beside it the cost (duplicated components rebuilt squad by squad), time to market (decisions before the build, not after) and risk (AI copies whatever is there today), over a KPI tree from business goals to product results to system work. Two months after I left: developers on the system went from 50% to 100% on Web, iOS and Android."
           />
