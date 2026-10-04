@@ -1,77 +1,32 @@
-import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
 import Hero from "@/components/Hero";
-import { CaseRowList } from "@/components/CaseRow";
-import WorkedWith from "@/components/WorkedWith";
-import Card from "@/components/ui/Card";
+import CaseRow from "@/components/CaseRow";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
-import Container from "@/components/layout/Container";
-import { HOME_CASES } from "@/content/cases";
+import { TextLink } from "@/components/ui/TextLink";
+import { HOME_LEAD } from "@/content/cases";
 import { TESTIMONIALS } from "@/content/testimonials";
+import caseStyles from "@/components/WorkLibrary.module.css";
 import styles from "@/components/Home.module.css";
 
-/* Home (home rebuild, 19 Sep 2026): hero, the teams row, the three
-   cases, three doors into the system, one quote. The shared layout
-   renders the closing section and the footer. */
-
-/* the doors: the whole card is the link. A Process door ("How a
-   request gets fetched") returns when /process exists. */
-const DOORS = [
-  { kind: "System", title: "BELLA, inspected live", body: "Tokens, components and the docs an AI can read.", href: "/design-system" },
-  { kind: "Learning", title: "Where I learned it", body: "Courses, certificates and the people I follow.", href: "/learning" },
-];
+/* Home · v2 (Gate 2, 3 Oct 2026; Figma "Home · v2"), hero v3 (Elleta,
+   4 Oct 2026): the designer and code hero, the quote card, the lead
+   three as cards (Drift featured), the system beat, then the site
+   footer (the Home closing card is retired). The anatomy specimen joins
+   the system section once AtlasSpecimen is on main. */
 
 /* the one sentence around the bold phrase, verbatim from the source */
 const QUOTE = TESTIMONIALS[0];
 const SENTENCE = QUOTE.quote.split(" … ").find((s) => s.includes(QUOTE.bold)) ?? QUOTE.quote;
 const [BEFORE, AFTER] = SENTENCE.split(QUOTE.bold);
 
+const [FEATURED, ...PAIR] = HOME_LEAD;
+
 export default function Home() {
   return (
-    <main id="main-content">
+    <main id="main-content" className="site-ground-page">
       <OverlayNav />
       <Hero />
-
-      <div className={`${styles.logos} section--ruled`}>
-        <Container>
-          <WorkedWith layout="row" label="Worked with" />
-        </Container>
-      </div>
-
-      <Section id="selected-work" label="Selected work">
-        <SectionHeader
-          heading="Start with the"
-          accent="work"
-          after="."
-          lead="Three cases, up close: what drifted, what I built, and what changed."
-        />
-        {/* the SAME row as /work (W1 release, 22 Sep 2026), the first three */}
-        <CaseRowList rows={HOME_CASES} />
-        <p>
-          <Link href="/work" className={styles.more}>
-            See all work <span aria-hidden="true">→</span>
-          </Link>
-        </p>
-      </Section>
-
-      <Section id="how-i-work" label="How I work">
-        <SectionHeader
-          heading="The system behind the"
-          accent="site"
-          after="."
-          lead="This site runs on BELLA, my own design system. Pick a door."
-        />
-        <div className="home-work-row reveal-group">
-          {DOORS.map((d) => (
-            <Card key={d.kind} href={d.href}>
-              <span className={`text-code ${styles.kicker}`}>{d.kind}</span>
-              <span className={`heading-item ${styles.title}`}>{d.title}</span>
-              <span className={`card-body ${styles.body}`}>{d.body}</span>
-            </Card>
-          ))}
-        </div>
-      </Section>
 
       <Section id="word-of-mouth" label="Word of mouth">
         <figure className={styles.quote}>
@@ -87,11 +42,50 @@ export default function Home() {
           </blockquote>
           <figcaption className={styles.cite}>
             <b>{QUOTE.name}</b> · {QUOTE.role} ·{" "}
-            <Link href="/about#word-of-mouth" className={styles.more}>
+            <TextLink href="/about#word-of-mouth">
               More on About <span aria-hidden="true">→</span>
-            </Link>
+            </TextLink>
           </figcaption>
         </figure>
+      </Section>
+
+      <Section id="selected-work" label="Selected work">
+        <SectionHeader
+          heading="Start with the"
+          accent="work"
+          after="."
+          lead="Three cases, up close: what drifted, what I built, and what changed."
+        />
+        <div className={styles.cases}>
+          <CaseRow row={FEATURED} layout="featured" />
+          <div className={caseStyles.cardPair}>
+            {PAIR.map((row) => (
+              <CaseRow key={row.id} row={row} layout="card" />
+            ))}
+          </div>
+          <p className={styles.more}>
+            <TextLink href="/work">
+              See all work <span aria-hidden="true">→</span>
+            </TextLink>
+          </p>
+        </div>
+      </Section>
+
+      <Section id="how-i-work" label="How I work">
+        <SectionHeader
+          heading="The system behind the"
+          accent="site"
+          after="."
+          lead="This site runs on BELLA, my own design system."
+        />
+        <p className={styles.links}>
+          <TextLink href="/design-system">
+            Inspect BELLA <span aria-hidden="true">→</span>
+          </TextLink>
+          <TextLink href="/learning">
+            Where I learned it <span aria-hidden="true">→</span>
+          </TextLink>
+        </p>
       </Section>
     </main>
   );

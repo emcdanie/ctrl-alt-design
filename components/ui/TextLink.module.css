@@ -1,0 +1,24 @@
+/* Site/Text link: no side padding, the 44px hit area from the touch
+   target token, ink with an underline (links are ink, CLAUDE.md §1). */
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-height: var(--spacing-touch-target);
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-semantic-border-strong, currentColor);
+  text-underline-offset: 4px;
+}
+
+.link:hover {
+  text-decoration-color: currentColor;
+}
+
+.link:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}

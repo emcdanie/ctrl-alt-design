@@ -39,8 +39,10 @@ override the constitution.
 ## 1b. IA (nav)
 - Primary nav (Elleta, 2026-09-18, about-rebuild lock; supersedes 2026-07-17; "Skills" became
   "Learning" 2026-09-19, /skills redirects to /learning?view=skills): **Work · System ·
-  Learning · About**, plus a "Get in touch" button on the right (secondary weight) that opens Copy
-  email + LinkedIn (`GetInTouch` / `ContactActions`; below lg they live in the menu). The /contact
+  Learning · About**, then a LinkedIn icon and a Copy-email icon, both 44px targets
+  (`ContactActions layout="icons"`, email assembled on click; the menu keeps the labelled pair).
+  The "Get in touch" button and the Home closing contact card are retired (Elleta, 4 Oct 2026,
+  hero v3 lock; supersedes the 18 Sep "Get in touch" button). The /contact
   route stays until its own PR retires it. /design-system is a first-class page (the system inspecting itself);
   the footer "See the system" colophon link stays.
 - **Work page (Elleta, 2026-09-19, pattern-studies direction; supersedes 2026-09-18).** Hero

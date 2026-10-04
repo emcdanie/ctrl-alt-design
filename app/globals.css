@@ -299,6 +299,12 @@ body {
   --font-hero: clamp(2.5rem, 5vw, 3.5rem);
   /* sub-heading tier (h3 level): Geist 700, never Unique, 24 to 32 */
   --font-subsection: clamp(1.5rem, 1.3143rem + 0.7619vw, 2rem);
+  /* Site surfaces (Home · v2, Gate 2, 3 Oct 2026): stand-ins until BELLA
+     ships color/semantic/ground and color/semantic/raised (CHIP queue 09,
+     09-bella-surface-tokens.md). Home uses only these two plus the inset
+     token. Swap the right-hand sides then; nothing else changes. */
+  --site-ground: var(--color-semantic-border);
+  --site-raised: var(--color-semantic-background);
   --font-card-title: 1.25rem; /* titles: 20px (Geist refresh) */
   --font-body-size: var(--text-body);
   --font-small: 14px;
@@ -422,6 +428,25 @@ body {
 
   --cursor-bracket: 10px;
   --cursor-stroke: 1.5px;
+
+  /* Home hero v3 (Elleta, 4 Oct 2026, hero v3 lock): the specimen stage
+     and the scroll that assembles it. The stage height keeps the portrait
+     at half its natural width on a 2x screen (audit:sharp). --hero-p is
+     the one motion property: 1 pulled apart, 0 assembled. */
+  --hero-p: 0;
+  --hero-frame-h: 30rem;
+  --hero-stage-w: 28.125rem;
+  --hero-stage-h: 28.375rem;
+  --hero-word: clamp(3rem, 1.4rem + 4.4vw, 5.125rem);
+  --hero-col: 18.125rem;
+  --hero-scroll: 26.25rem;
+  --hero-shift-x: 6rem;
+  --hero-shift-y: 6rem;
+  --hero-lift: 10.5rem;
+  --hero-skew: -9deg;
+  --hero-shrink: 0.36;
+  --hero-corner: 1.25rem;
+  --hero-shadow: 14px 10px 24px rgba(18, 18, 18, 0.16);
 }
 
 @media (max-width: 640px) {
@@ -1312,42 +1337,34 @@ h1.display-heading {
 }
 
 .nav-link:focus-visible,
-.get-in-touch__trigger:focus-visible {
+.nav-icon:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: var(--ring-focus-offset);
 }
 
-.get-in-touch__trigger {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--spacing-touch-target);
-  padding: 0 var(--spacing-5);
+/* the header's LinkedIn and Copy email icons (Elleta, 4 Oct 2026,
+   hero v3 lock): 44px targets, ink, the inset wash on hover like a
+   current nav link */
+.nav-icon {
+  display: inline-grid;
+  place-items: center;
+  width: var(--spacing-touch-target);
+  height: var(--spacing-touch-target);
+  border: 0;
   border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-ink);
   cursor: pointer;
-  font-family: var(--font-body);
-  font-size: var(--text-nav);
-  font-weight: 500;
-  /* secondary everywhere (polish pass, 19 Sep 2026): the one filled
-     primary on a screen belongs to the content, not the nav */
-  border: 1.5px solid var(--color-accent-ink);
-  color: var(--color-accent-ink);
-  /* on the page ground, not transparent: the header is glass, and over
-     the navy footer a see-through button put iris on grey (under AA) */
-  background: var(--color-semantic-background);
   transition: background-color var(--dur-fast) var(--ease-out);
 }
 
-.get-in-touch__trigger:hover {
-  background: color-mix(in srgb, var(--color-accent-ink) 10%, var(--color-semantic-background));
-}
-
-.get-in-touch__trigger[aria-expanded="true"] {
-  background: color-mix(in srgb, var(--color-accent-ink) 16%, var(--color-semantic-background));
+.nav-icon:hover {
+  background: var(--color-semantic-surface-inset);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .nav-link,
-  .get-in-touch__trigger {
+  .nav-icon {
     transition: none;
   }
 }
@@ -2158,6 +2175,16 @@ h1.display-heading {
   color: var(--color-ink-muted);
 }
 
+/* Home · v2: the page ground under the whole page, footer included, so
+   the wordmark sits on the page colour and the cards read as raised */
+body:has(main.site-ground-page) {
+  background: var(--site-ground);
+}
+
+.site-footer__link svg {
+  margin-right: var(--spacing-2);
+}
+
 .site-footer__row {
   display: grid;
   gap: var(--spacing-8);
@@ -2197,7 +2224,7 @@ h1.display-heading {
 .site-footer__link {
   display: inline-flex;
   align-items: center;
-  min-height: var(--spacing-6);
+  min-height: var(--spacing-touch-target);
   padding: 0;
   border: 0;
   background: none;
@@ -2235,6 +2262,8 @@ h1.display-heading {
 }
 
 .site-footer__link--small {
+  /* inline in the small print: the WCAG 2.5.8 inline exception */
+  min-height: var(--spacing-6);
   font-size: inherit;
   color: inherit;
   text-decoration: underline;
@@ -2426,26 +2455,9 @@ h1.display-heading {
   white-space: nowrap;
 }
 
-/* Get in touch: a disclosure in the header, panel under the button */
-.get-in-touch {
-  position: relative;
-}
-
-/* dropdown items: compact padding, still a 44px target */
-.get-in-touch__panel .btn-key {
-  padding: 0 var(--spacing-3);
-}
-
-.get-in-touch__panel {
-  position: absolute;
-  top: calc(100% + var(--spacing-2));
-  right: 0;
-  z-index: 1;
-  padding: var(--spacing-4);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-lg);
-  background: var(--color-semantic-background);
-  box-shadow: var(--shadow-soft);
+.contact-actions--icons {
+  display: flex;
+  gap: 0;
 }
 
 /* ─── Corner-bracket cursor (18 Sep 2026) ───────────────────────

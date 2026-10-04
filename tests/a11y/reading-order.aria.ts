@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import { HOME_STORY } from "../../lib/copy";
 
 /* Reading order as a screen reader meets it: the accessibility tree of
    each section, snapshotted per viewport. If a layout change reorders
@@ -57,11 +58,8 @@ test.describe("Home", () => {
     await open(page, "/");
   });
   test("hero", async ({ page }) => {
-    await expect(page.locator("main h1")).toHaveAccessibleName("AI-enabled design systems. Built to stop drift.");
+    await expect(page.locator("main h1")).toHaveAccessibleName(HOME_STORY);
     await expect(page.locator('[aria-labelledby="home-hero-title"]')).toMatchAriaSnapshot(snap("home-hero"));
-  });
-  test("teams row", async ({ page }) => {
-    await expect(page.getByRole("group", { name: "Worked with" })).toMatchAriaSnapshot(snap("home-logos"));
   });
   for (const id of ["selected-work", "how-i-work", "word-of-mouth"])
     test(id, async ({ page }) => {

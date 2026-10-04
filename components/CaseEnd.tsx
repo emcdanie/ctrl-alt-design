@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-const slugOf = (href: string) => href.split("/").pop() ?? "";
+const slugOf = (href?: string) => href?.split("/").pop() ?? "";
 
 /* The one case ending (Elleta, 1 Oct 2026; replaces CaseEndReveal): Let's
  * talk, View CV, and the next case in /work order, wrapping to the first.
@@ -49,7 +49,7 @@ export default function CaseEnd({ slug }: { slug: string }) {
         </Button>
         <ResumeLink className="text-action" label="View CV" />
         <Link
-          href={next.href}
+          href={next.href ?? "/work"}
           className="text-action"
           data-umami-event="next-case"
           data-umami-event-case={slugOf(next.href)}

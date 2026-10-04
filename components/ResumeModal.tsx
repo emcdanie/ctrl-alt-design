@@ -387,11 +387,11 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
 
 /* "View CV": the secondary Button that opens this modal. It owns the
    open state, so the page around it can stay a server component. */
-export function ResumeButton() {
+export function ResumeButton({ variant = "primary" }: { variant?: "primary" | "secondary" }) {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <Button variant="primary" className="xp__cv" onClick={() => setOpen(true)} trackEvent="cv-open">
+      <Button variant={variant} className="xp__cv" onClick={() => setOpen(true)} trackEvent="cv-open">
         <Icon name="Page" size="sm" />
         View CV
       </Button>

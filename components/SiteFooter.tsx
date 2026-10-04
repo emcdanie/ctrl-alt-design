@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import BrandWordmark from "@/components/bella/BrandWordmark/BrandWordmark";
 import Heading from "@/components/ui/Heading";
 import FooterCta from "@/components/FooterCta";
+import { LinkedInIcon } from "@/components/ui/LinkedInIcon";
 import { ResumeLink } from "@/components/ResumeModal";
 import { social } from "@/lib/social";
 
@@ -9,10 +12,15 @@ import { social } from "@/lib/social";
    ground in both themes, "Let's compare notes.", one line and the one
    "Let's talk" beside the pages and elsewhere columns, one small-print
    row with the only version label, then the pattern ELLETA at the
-   content width (same left edge as the text), flush with the bottom edge. */
+   content width (same left edge as the text), flush with the bottom edge.
 
-const external = (href: string, label: string, event: string) => (
+   LinkedIn carries its icon everywhere. The Home closing card (Gate 2,
+   3 Oct 2026) is retired (Elleta, 4 Oct 2026, hero v3 lock): "/" gets
+   this same footer. */
+
+const external = (href: string, label: string, event: string, icon?: React.ReactNode) => (
   <a className="site-footer__link" href={href} target="_blank" rel="noopener noreferrer" data-umami-event={event}>
+    {icon}
     {label} ↗<span className="sr-only"> (opens in a new tab)</span>
   </a>
 );
@@ -44,7 +52,7 @@ export default function SiteFooter() {
           <div>
             <p className="site-footer__label">elsewhere</p>
             <ul className="site-footer__list">
-              <li>{external(social.linkedin, "LinkedIn", "linkedin")}</li>
+              <li>{external(social.linkedin, "LinkedIn", "linkedin", <LinkedInIcon />)}</li>
               <li>{external("https://github.com/emcdanie/bella", "BELLA on GitHub", "github")}</li>
               <li>{external("https://emcdanie.github.io/bella/", "Storybook", "storybook")}</li>
               <li><ResumeLink className="site-footer__link" /></li>

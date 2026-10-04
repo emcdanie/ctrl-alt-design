@@ -1,77 +1,479 @@
-/* Home opening (home rebuild, 19 Sep 2026). The Section supplies the
- * padding and the container; one text column since Part Q (21 Sep):
- * the hero art and its scroll drift are gone. */
+/* Home hero v3 (Elleta, 4 Oct 2026, hero v3 lock; prototype option C).
+ * The Section supplies the padding and the container. Geometry comes from
+ * the --hero-* tokens in the :root; --hero-p (1 apart, 0 assembled) is
+ * set on .hero by the component and drives every transform below. */
+
+/* the scroll runway: the frame holds still (sticky) while the first
+   --hero-scroll of scroll assembles it */
+.scroller {
+  height: calc(var(--hero-frame-h) + var(--hero-scroll));
+}
 
 .hero {
-  display: grid;
+  --hero-p: 1;
+  position: sticky;
+  top: calc(var(--header-height) + var(--section-pad-y));
+  height: var(--hero-frame-h);
 }
 
-/* status line: dot + availability, then name and place */
-.status {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-2) var(--spacing-4);
-  /* the mock's eyebrow gap (portfolio-preview.html, item 5): 16px to the h1 */
-  margin: 0 0 var(--spacing-4);
+.col {
+  position: absolute;
+  top: var(--space-stack-lg);
+  z-index: 6;
+  width: var(--hero-col);
 }
 
-/* metadata tier, like the line it sits in */
-.metaItem {
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
+
+.word {
+  margin: 0;
+  font-size: var(--hero-word);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  color: var(--color-ink);
   white-space: nowrap;
 }
 
+/* the pattern dot after "designer" */
 .dot {
   display: inline-block;
-  width: 0.5rem;
-  height: 0.5rem;
-  margin-right: var(--spacing-2);
+  width: 0.2em;
+  height: 0.2em;
+  margin-left: 0.05em;
   border-radius: var(--radius-full);
-  background: var(--case-clarity-text);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--case-clarity-text) 18%, transparent);
+  background: url(/images/home/pattern-dot.webp) center / cover;
 }
 
-/* size, measure, weight, tracking, leading and the squeeze come from
-   the Heading primitive (hero tier, squeeze) */
-.headline {
-  margin: 0 0 var(--hero-lead-gap);
-}
-
-/* the mock's lead (portfolio-preview.html, item 5): muted, 40ch */
-.lead {
-  margin: 0 0 var(--spacing-6);
-  max-width: 40ch;
-  font-size: var(--text-hero-lead);
+.sub {
+  margin: var(--spacing-5) 0 0;
+  font-size: var(--typography-font-size-lg);
   line-height: 1.55;
+  color: var(--color-ink-muted);
+  text-wrap: pretty;
+}
+
+/* the code line wears ochre angle brackets: generated, so nothing reads
+   or measures them as text */
+.subCode {
+  opacity: calc(1 - var(--hero-p) * 2);
+}
+
+.subCode::before,
+.subCode::after {
+  font-family: var(--font-code);
+  font-feature-settings: var(--mono-feature);
+  color: var(--color-semantic-focus-ring);
+}
+
+.subCode::before {
+  content: "<" / "";
+  margin-right: 0.12em;
+}
+
+.subCode::after {
+  content: ">" / "";
+  margin-left: 0.12em;
+}
+
+/* "code" in the ochre cursor corners (the nav hover's corners, at size) */
+.corners {
+  position: relative;
+  display: inline-block;
+  padding: 0.04em 0.14em 0.06em;
+  margin: -0.04em -0.14em -0.06em;
+}
+
+.corners i {
+  position: absolute;
+  width: var(--hero-corner);
+  height: var(--hero-corner);
+  border: 3px solid var(--color-brand-ochre);
+}
+
+.tl {
+  top: 0;
+  left: 0;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  border-top-left-radius: var(--radius-sm);
+}
+
+.tr {
+  top: 0;
+  right: 0;
+  border-left: 0 !important;
+  border-bottom: 0 !important;
+  border-top-right-radius: var(--radius-sm);
+}
+
+.bl {
+  bottom: 0;
+  left: 0;
+  border-right: 0 !important;
+  border-top: 0 !important;
+  border-bottom-left-radius: var(--radius-sm);
+}
+
+.br {
+  bottom: 0;
+  right: 0;
+  border-left: 0 !important;
+  border-top: 0 !important;
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+/* ── the specimen stage ── */
+.stage {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: 4;
+  width: var(--hero-stage-w);
+  height: var(--hero-stage-h);
+  transform: translateX(-56%);
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+}
+
+/* the pulled-apart card: ground, hairline and shadow fade in with --hero-p */
+.layer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--color-semantic-background) 60%, transparent);
+  outline: 1px solid var(--color-semantic-border);
+  box-shadow: var(--shadow-soft);
+  opacity: var(--hero-p);
+}
+
+.layer img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.you {
+  z-index: 3;
+  transform: translateY(calc(0px - var(--hero-shift-y) * var(--hero-p))) skewY(calc(var(--hero-skew) * var(--hero-p)))
+    scale(calc(1 - var(--hero-shrink) * var(--hero-p)));
+}
+
+/* the portrait is wider than the card: the shoulder runs past it */
+.you img {
+  width: 120%;
+  filter: drop-shadow(var(--hero-shadow));
+}
+
+.paint {
+  z-index: 4;
+  transform: translate(calc(0px - var(--hero-shift-x) * var(--hero-p)), calc(-1.25rem * var(--hero-p)))
+    skewY(calc(var(--hero-skew) * var(--hero-p))) scale(calc(1 - var(--hero-shrink) * var(--hero-p)));
+}
+
+.hero[data-apart] .paint {
+  z-index: 2;
+}
+
+.agent {
+  z-index: 5;
+  opacity: var(--hero-p);
+  transform: translate(calc(var(--hero-shift-x) * var(--hero-p)), calc(0px - var(--hero-lift) * var(--hero-p)))
+    skewY(calc(var(--hero-skew) * var(--hero-p))) scale(calc(1 - var(--hero-shrink) * var(--hero-p)));
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-card);
+  background-image:
+    linear-gradient(var(--color-semantic-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-semantic-border) 1px, transparent 1px);
+  background-size: var(--spacing-4) var(--spacing-4);
+}
+
+.box {
+  position: absolute;
+  border: 1.5px dashed var(--color-ink);
+}
+
+.box b {
+  position: absolute;
+  top: -1.25rem;
+  left: -1px;
+  padding: 2px var(--spacing-1);
+  border-radius: var(--radius-sm);
+  font: 500 var(--text-mono) / 1.2 var(--font-code);
+  white-space: nowrap;
+  background: var(--color-ink);
+  color: var(--color-semantic-background);
+}
+
+.box.ochre {
+  border-color: var(--color-brand-ochre);
+}
+
+.box.ochre b {
+  background: var(--color-brand-ochre);
+  color: var(--color-chip-text);
+}
+
+.box.peach {
+  border-color: var(--color-chip-c2);
+}
+
+.box.peach b {
+  background: var(--color-chip-c2);
+  color: var(--color-chip-text);
+}
+
+.boxAlt {
+  left: 47%;
+  top: 8%;
+  width: 40%;
+  height: 50%;
+}
+
+.boxRadius {
+  left: 55%;
+  top: 22%;
+  width: 22%;
+  height: 16%;
+}
+
+.boxSpace {
+  left: 82%;
+  top: 38%;
+  width: 7%;
+  height: 9%;
+}
+
+.boxPattern {
+  left: 6%;
+  top: 56%;
+  width: 44%;
+  height: 38%;
+}
+
+/* leader anchors: on each layer's visible part */
+.anchor,
+.anchorEnd {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+}
+
+.you .anchor {
+  left: 30%;
+  top: 93%;
+}
+
+.paint .anchor {
+  left: 14%;
+  top: 94%;
+}
+
+.anchorEnd {
+  left: 100%;
+  top: 50%;
+}
+
+/* the pattern ribbon: behind, flowing out left, fading */
+.trail {
+  position: absolute;
+  left: -31.25rem;
+  bottom: 0;
+  z-index: 1;
+  width: 38.75rem;
+  height: 16.25rem;
+  opacity: calc(1 - var(--hero-p));
+}
+
+.trail img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  mask-image: linear-gradient(90deg, black 80%, transparent 100%);
+  clip-path: inset(0 0 0 calc(100% * var(--hero-p)));
+}
+
+/* faint code behind the photo, peeking out right of the shoulder: a
+   grey picture (hero-code.webp), faded to sit back on either ground */
+.code {
+  position: absolute;
+  left: 76%;
+  top: 56%;
+  z-index: 1;
+  width: 24.9375rem;
+  max-width: none;
+  height: auto;
+  opacity: calc(0.5 - var(--hero-p));
+}
+
+/* ── leaders and legend (pulled apart, wide screens only) ── */
+.leaders {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  opacity: calc(var(--hero-p) * 2 - 1);
+}
+
+.leaders :global(path) {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 1.25;
+}
+
+.leaders :global(circle) {
+  fill: var(--color-ink);
+}
+
+.legend {
+  position: absolute;
+  right: 0;
+  top: 18.25rem;
+  z-index: 8;
+  display: grid;
+  gap: var(--spacing-3);
+  opacity: calc(var(--hero-p) * 2 - 1);
+  pointer-events: none;
+}
+
+.legend > div {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-size: var(--text-caption);
+  color: var(--color-ink);
+}
+
+.legend em {
+  display: grid;
+  place-items: center;
+  width: var(--spacing-6);
+  height: var(--spacing-6);
+  border-radius: var(--radius-full);
+  font: 500 var(--text-mono) / 1 var(--font-code);
+  font-style: normal;
+  background: var(--color-ink);
+  color: var(--color-semantic-background);
+}
+
+.legend em.ochre {
+  background: var(--color-brand-ochre);
+  color: var(--color-chip-text);
+}
+
+.legend small {
+  display: block;
+  font: 400 var(--text-mono) / 1.4 var(--font-code);
+  font-feature-settings: var(--mono-feature);
   color: var(--color-ink-muted);
 }
 
-.ctas {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-3) var(--spacing-6);
+/* the middle widths: the stage steps down beside the columns */
+@media (min-width: 901px) and (max-width: 1199px) {
+  .stage {
+    transform: translateX(-56%) scale(0.78);
+    transform-origin: 50% 100%;
+  }
+
+  .col {
+    width: calc(var(--hero-col) - 2.5rem);
+  }
 }
 
-.quietLink {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--spacing-touch-target);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink);
-  text-decoration: underline;
-  text-decoration-color: var(--color-semantic-border);
-  text-underline-offset: 4px;
+/* phone: words stacked over the stage, assembles as it scrolls into view */
+@media (max-width: 900px) {
+  /* the layers spread less, so the agent layer stays on screen */
+  .hero {
+    --hero-shift-x: 3rem;
+    --hero-lift: 7rem;
+  }
+
+  .scroller {
+    height: auto;
+  }
+
+  .hero {
+    position: relative;
+    top: auto;
+    height: auto;
+  }
+
+  .col {
+    position: static;
+    width: auto;
+    margin-top: var(--spacing-4);
+  }
+
+  .right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .right .sub {
+    display: none;
+  }
+
+  .corners i {
+    width: var(--spacing-3);
+    height: var(--spacing-3);
+    border-width: 2px;
+  }
+
+  .stage {
+    position: relative;
+    left: auto;
+    width: min(100%, 20.625rem);
+    height: auto;
+    aspect-ratio: 450 / 454; /* --hero-stage-w / --hero-stage-h, as a ratio */
+    margin: var(--space-stack-md) auto 0;
+    transform: none;
+  }
+
+  .trail {
+    left: -24.5rem;
+    width: 27.125rem;
+    height: 11.375rem;
+  }
+
+  .code,
+  .legend,
+  .leaders {
+    display: none;
+  }
 }
 
-.quietLink:hover,
-.quietLink:focus-visible {
-  color: var(--color-accent-ink);
-  text-decoration-color: currentColor;
-}
+@media (prefers-reduced-motion: reduce) {
+  .hero {
+    --hero-p: 0;
+  }
 
-.quietLink:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: var(--ring-focus-offset);
+  .scroller {
+    height: auto;
+  }
+
+  .hero {
+    position: relative;
+    top: auto;
+  }
 }

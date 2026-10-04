@@ -76,10 +76,11 @@ for (const r of routes) {
 }
 
 /* ONE theme toggle (18 Sep 2026): exactly one in the document (the
-   mobile menu carries none), and in the header it sits directly left of
-   the last control: the CTA at lg+, the menu button below lg. */
+   mobile menu carries none). In the header it is the last control at
+   lg+ (the Get in touch CTA retired, hero v3 lock, 4 Oct 2026) and sits
+   directly left of the menu button below lg. */
 for (const [w, lastSel, lastName] of [
-  [1440, ".get-in-touch__trigger", "the Get in touch CTA"],
+  [1440, '[data-component="ThemeToggle"]', null],
   [390, '[aria-controls="overlay-menu"]', "the menu button"],
 ]) {
   await page.setViewportSize({ width: w, height: 900 });
@@ -103,7 +104,9 @@ for (const [w, lastSel, lastName] of [
       };
     }, lastSel);
     if (t.count !== 1) fail(`${r} @${w} ThemeToggle`, `${t.count} toggles in the document`, "exactly one");
-    if (!t.lastOk || !t.toggleOk) fail(`${r} @${w} ThemeToggle`, "not directly left of " + lastName, `ThemeToggle, then ${lastName}, at the end of the header`);
+    if (lastName === null) {
+      if (!t.lastOk) fail(`${r} @${w} ThemeToggle`, "not the last header control", "ThemeToggle at the end of the header");
+    } else if (!t.lastOk || !t.toggleOk) fail(`${r} @${w} ThemeToggle`, "not directly left of " + lastName, `ThemeToggle, then ${lastName}, at the end of the header`);
   }
 }
 await browser.close();

@@ -152,6 +152,11 @@ for (const width of WIDTHS) {
         }
       }
       for (const h of main.querySelectorAll("h1, h2")) {
+        /* a named exception (data-frame-exempt on the heading's section
+           content, printed below every run): the Home h1, the story line
+           locked by Elleta 3 Oct 2026, hidden behind the hero v3 words
+           (4 Oct 2026) */
+        if (h.parentElement?.querySelector(":scope > [data-frame-exempt]")) continue;
         const t = (h.getAttribute("aria-label") || h.textContent || "").replace(/\s+/g, " ").trim();
         if (t.length > LIMIT) F(h, `${t.length} characters`, `${LIMIT} or fewer`);
       }

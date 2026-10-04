@@ -12,8 +12,12 @@ export interface CaseRowData {
   lead?: string;
   title: string;
   claim: string;
-  href: string;
+  /** no href: the case isn't live yet, and `status` says so */
+  href?: string;
+  status?: string;
   tags: { text: string; tone?: "c2" | "c3"; outline?: boolean }[];
+  /** the specimen frame's strips on the card layouts (Home · v2) */
+  specimen?: { path: string; mode: string; caption: string };
 }
 
 export const CASES: CaseRowData[] = [
@@ -78,3 +82,22 @@ export const CASES: CaseRowData[] = [
 /* Home shows the first three (Elleta, 22 Sep 2026): Drift, B2B travel,
  * Theming. The order above is theirs, so /work numbers them the same. */
 export const HOME_CASES: CaseRowData[] = CASES.slice(0, 3);
+
+/* Home · v2 (Gate 2, 3 Oct 2026): the lead three in /work order, Drift
+ * featured, then Federated (not live yet) and CHIP as cards. Numbers
+ * follow the Gate 2 /work order (01 Drift, 02 Federated, 03 CHIP). */
+const byId = (id: string) => CASES.find((c) => c.id === id)!;
+export const HOME_LEAD: CaseRowData[] = [
+  { ...byId("drift"), specimen: { path: "drift / buttons · audit", mode: "one kept", caption: "Redrawn from my own audit." } },
+  {
+    id: "federated",
+    n: "02",
+    meta: "Design systems · federated · 2026",
+    title: "They stopped telling me what they\u2019d done",
+    claim: "Proves a federated system can run without me as the bottleneck.",
+    status: "Coming soon",
+    tags: [],
+    specimen: { path: "federated / contribution", mode: "to come", caption: "Redrawn diagram to come" },
+  },
+  { ...byId("chip"), n: "03", specimen: { path: "chip / watch loop", mode: "watching", caption: "Drawn from CHIP\u2019s watch loop." } },
+];

@@ -1,0 +1,66 @@
+/* the inset level inside a raised card: hairline, card radius, the grid
+   in the line token, Mono strips at the metadata tier */
+.frame {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface-inset);
+}
+
+.strip {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--color-semantic-border);
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-feature-settings: var(--mono-feature);
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+}
+
+.path {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.foot {
+  border-top: 1px solid var(--color-semantic-border);
+  border-bottom: 0;
+  white-space: normal;
+}
+
+.stage {
+  display: grid;
+  place-items: center;
+  padding: var(--spacing-6);
+  background-image:
+    linear-gradient(var(--color-semantic-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-semantic-border) 1px, transparent 1px);
+  background-size: var(--spacing-6) var(--spacing-6);
+}
+
+.stage svg {
+  width: 100%;
+  max-width: 27.5rem;
+  height: auto;
+}
+
+/* one highlighted part, in ochre (the only accent fill) */
+.stage svg :global(.c1) {
+  fill: var(--color-semantic-accent);
+}
+
+.empty {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 5 / 3;
+  width: 100%;
+  max-width: 27.5rem;
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  color: var(--color-ink-muted);
+}

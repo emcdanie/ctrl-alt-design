@@ -1,66 +1,24 @@
-/* Home sections (home rebuild, 19 Sep 2026): the teams row, the door
- * cards and the pull quote. Section rhythm comes from Section and
- * SectionHeader; this file only shapes what sits inside them. */
+/* Home sections (Home · v2, Gate 2, 3 Oct 2026): the quote card, the
+ * case stack and the system links. Section rhythm comes from Section
+ * and SectionHeader; this file only shapes what sits inside them. */
 
-/* Teams row: the About logo component in its row layout, with its
-   "Worked with" label, between a hairline above and below.
-
-   ONE line, never two (Elleta, 20 Sep 2026, fix pass 2): the band draws
-   its own two full-bleed rules. The grid's ruled cells were painting a
-   second, container-inset line directly under the marks; that rule now
-   belongs to the grid layout only, not the row layout, so it is fixed
-   in the logo component (globals.css .logo-grid--row) rather than
-   overridden here. */
-.logos {
-  /* ONE hairline, above, at the content width (.section--ruled in
-     page.tsx; Elleta's checklist, 20 Sep 2026, and 24 Sep audit). The band
-     used to close itself with a second full-bleed rule, and the next
-     section's label rule sits right under that, so the eye read two
-     lines between the marks and Selected work. */
-  /* the band is a section like the others: the section pad above its
-     rule and below its marks, so every gap on Home is the one section
-     padding twice (24 Sep audit, A4) */
-  padding-block: calc(var(--section-pad-y) + var(--spacing-4)) var(--section-pad-y);
-}
-
-.logos:global(.section--ruled)::before {
-  top: var(--section-pad-y);
-}
-
-.logos :global(.logo-grid) {
-  row-gap: var(--spacing-4);
-}
-
-/* door cards: kicker, title, line, go. The kicker is the quiet code
-   role, same as Home's case cards (Elleta, 20 Sep 2026): no caps, no
-   tracking, .text-code carries the face and the size. */
-.kicker {
-  display: block;
-  margin-bottom: var(--spacing-2);
-  color: var(--color-eyebrow);
-}
-
-.title,
-.body {
-  display: block;
-}
-
-.title {
-  margin-bottom: var(--spacing-2);
-}
-
-/* pull quote: the big pattern-filled opening mark, then the line */
+/* the quote as a card on the raised surface, the big pattern-filled
+   mark on top, inside the card (audit:contain) */
 .quote {
-  max-width: 52rem;
   margin: 0;
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--site-raised);
 }
 
 .mark {
   display: block;
   width: fit-content;
   /* the full glyph box, so background-clip: text paints all of it; the
-     negative margin keeps the old half-em footprint */
-  margin-bottom: -0.5em;
+     negative margin keeps the old half-em footprint; the top and left
+     step keeps the rotated glyph inside the card's padding */
+  margin: var(--spacing-2) 0 -0.5em var(--spacing-2);
   font-family: var(--font-body);
   font-size: 6rem;
   font-weight: 800;
@@ -75,6 +33,7 @@
 
 .words p {
   margin: 0;
+  max-width: 52rem;
   font-family: var(--font-body);
   font-size: var(--text-display-3);
   font-weight: 500;
@@ -89,6 +48,10 @@
 }
 
 .cite {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--spacing-2);
   margin-top: var(--spacing-4);
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
@@ -100,8 +63,20 @@
   color: var(--color-ink);
 }
 
+/* the featured case, the pair, then See all work */
+.cases {
+  display: grid;
+  gap: var(--spacing-6);
+  margin-top: var(--space-stack-lg);
+}
+
 .more {
-  color: var(--color-accent-ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  margin: 0;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--spacing-6);
+  margin: var(--space-stack-md) 0 0;
 }

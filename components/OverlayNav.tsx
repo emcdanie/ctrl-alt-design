@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "@/components/ThemeToggle";
-import GetInTouch from "@/components/GetInTouch";
 import ContactActions from "@/components/ContactActions";
 import BrandWordmark from "@/components/bella/BrandWordmark/BrandWordmark";
+import { ResumeLink } from "@/components/ResumeModal";
 
 
 /* Primary IA — visible in the desktop header (NN/g: hidden desktop nav
@@ -100,17 +100,19 @@ export default function OverlayNav() {
                 {item.label}
               </Link>
             ))}
+            {/* CV on every page (Gate 2, 3 Oct 2026): opens the CV modal */}
+            <ResumeLink className="nav-link" />
           </nav>
 
-          <div className="flex items-center gap-4">
-          {/* ONE theme toggle, always directly left of the CTA (lg+) or the
-              menu button (below lg). audit:controls checks both. */}
-          <ThemeToggle />
-          {/* Contact left the nav (about-rebuild lock, 18 Sep 2026): the
-              ask is a button; below lg it lives in the menu instead */}
-          <div className="hidden lg:block">
-            <GetInTouch />
+          <div className="flex items-center gap-2">
+          {/* LinkedIn and Copy email as two 44px icons (Elleta, 4 Oct
+              2026, hero v3 lock; the "Let's talk" button is retired) */}
+          <div className="pointer-events-auto">
+            <ContactActions layout="icons" />
           </div>
+          {/* ONE theme toggle: last at lg+, directly left of the menu
+              button below lg. audit:controls checks both. */}
+          <ThemeToggle />
           <button
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
@@ -215,11 +217,17 @@ export default function OverlayNav() {
                 </div>
               );
             })}
+            <div className="group flex items-start gap-4 border-b border-[color:var(--color-border-soft)] py-4 sm:gap-6 sm:py-5 lg:gap-10">
+              <span aria-hidden="true" className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] sm:min-w-20">
+                (_05)
+              </span>
+              <ResumeLink className="font-[family:var(--font-display)] text-[length:var(--font-hero)] font-normal leading-[1.02] tracking-[-0.02em] text-[color:var(--color-ink)] bg-transparent p-0 text-left hover:text-[color:var(--color-ink-soft)]" />
+            </div>
           </nav>
 
           <div className="relative z-10 mt-12 flex flex-col gap-3 sm:mt-16">
-            {/* Get in touch, the menu's copy of the header button
-                (email assembled on click, §6) */}
+            {/* the menu's labelled copy of the header icons (email
+                assembled on click, §6) */}
             <ContactActions />
           </div>
         </div>
