@@ -17,10 +17,6 @@
     "components/bella/Button/Button.tsx": "a3bd55b4101bdb139a01495a757522fe0a522d73dfabdbde7150a90490d640a1",
     "components/bella/Button/Button.module.css": "3808ee419aa1caca7f4aa0e0e69816d7430f6d08aa406df69cffe73aa05a563d",
     "components/bella/BrandWordmark/BrandWordmark.tsx": "dfc261b10189de5e6189d302235076fada3b10c40841b016985bd47b40eb97d7",
-    "components/bella/BrandWordmark/BrandWordmark.module.css": "391988415167e50241bcb0c96337955c928239ca978aece46167039a7a7652ab",
-    "app/favicon.ico": "7c4ab731c9abe2e784256a80b63b5f51f9173d42983941b63748bed0af781149",
-    "app/icon.svg": "f49ac89e255f138b811ca48be2d01061c87b9a19e07e0e02dc3e38854cb8b9b6",
-    "app/apple-icon.png": "eef75377904368830d7f86e6b2d1694b2c73626cd60395754f9ac68577ab1bda",
-    "app/icon1.png": "0a2705425128fd3a9318590e90eee42ad966b9b8865502ab7c61be61ede4a33f"
+    "components/bella/BrandWordmark/BrandWordmark.module.css": "391988415167e50241bcb0c96337955c928239ca978aece46167039a7a7652ab"
   }
 }

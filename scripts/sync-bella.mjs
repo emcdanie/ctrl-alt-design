@@ -45,12 +45,8 @@ const FILES = [
   { from: "src/components/Button/Button.module.css", to: "components/bella/Button/Button.module.css" },
   { from: "src/components/BrandWordmark/BrandWordmark.tsx", to: "components/bella/BrandWordmark/BrandWordmark.tsx" },
   { from: "src/components/BrandWordmark/BrandWordmark.module.css", to: "components/bella/BrandWordmark/BrandWordmark.module.css" },
-  /* favicons (2026-09-22): solid ink E at 16/32 and the SVG, pattern E at 180/512;
-   * the app/ file names are the Next.js icon conventions */
-  { from: "src/assets/brand/favicon/favicon.ico", to: "app/favicon.ico" },
-  { from: "src/assets/brand/favicon/favicon.svg", to: "app/icon.svg" },
-  { from: "src/assets/brand/favicon/apple-touch-icon.png", to: "app/apple-icon.png" },
-  { from: "src/assets/brand/favicon/icon-512.png", to: "app/icon1.png" },
+  /* favicons: no longer vendored. 4 Oct 2026: favicon is the site's brand
+   * mark, not BELLA's (Elleta). scripts/build-favicons.mjs makes them here. */
 ];
 
 const sha = (p) => createHash("sha256").update(readFileSync(p)).digest("hex");
