@@ -404,6 +404,9 @@ body {
      and consumes no key tokens. :active sinks the key (translateY(2px))
      onto the reduced plate. */
   --btn-key-radius: var(--radius-lg);
+  /* primary hover + focus plate (18m, 4 Oct 2026): a highlight, never a
+     dim. Light lifts the ink plate to BELLA's hover stop (#343434). */
+  --btn-key-primary-hover: var(--component-button-primary-fill-hi-hover);
   /* case prose measure (readability pass 2026-07-20): ~70ch, one place */
   --measure-case: 70ch;
   /* card body measure (card-voice readability, 21 Jul) */
@@ -528,6 +531,9 @@ body {
   --thesis-band-ink: var(--color-dark-ink);
   --modal-backdrop: rgba(0, 0, 0, 0.6);
   --page-glow: rgba(255, 255, 255, 0.04);
+  /* dark primary hover brightens the light plate to white; BELLA's dark
+     hover stop (#cdcdcd) darkens it, which reads as dimming (18m) */
+  --btn-key-primary-hover: var(--color-light-bg);
 }
 
 /* Dark overrides live on BODY, not html: var() inside a custom property
@@ -3007,8 +3013,11 @@ body:has(main.site-ground-page) {
   justify-content: center;
   gap: var(--spacing-2);
   cursor: pointer;
+  /* 1.5px: between --border-width-thin (1) and -medium (2); no exact token */
   border: 1.5px solid var(--color-accent-ink);
   border-radius: var(--btn-key-radius);
+  /* 11px 18px: off the 4px spacing scale (12/16/20); no exact token, and a
+     swap would shift every button (18m, 4 Oct 2026) */
   padding: 11px 18px;
   min-height: var(--spacing-touch-target);
   font-family: var(--font-body);
@@ -3089,11 +3098,14 @@ body:has(main.site-ground-page) {
   transition: background var(--dur-fast) var(--ease-out);
 }
 
-.btn-key--primary:hover {
-  background: var(--component-button-primary-fill-lo);
+/* hover and focus-visible take the highlight plate (BELLA: focus takes
+   the hover plate). Colour only, so it stays under reduced motion. */
+.btn-key--primary:hover:not(:disabled),
+.btn-key--primary:focus-visible {
+  background: var(--btn-key-primary-hover);
 }
 
-.btn-key--primary:active {
+.btn-key--primary:active:not(:disabled) {
   background: var(--component-button-primary-edge);
 }
 
