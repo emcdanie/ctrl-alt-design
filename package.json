@@ -33,7 +33,8 @@
     "test": "vitest run",
     "sync:bella": "node scripts/sync-bella.mjs",
     "audit:sync": "node scripts/sync-bella.mjs --check",
-    "audit:order": "playwright test && node scripts/audit-order.mjs"
+    "audit:order": "playwright test && node scripts/audit-order.mjs",
+    "build:favicons": "node scripts/build-favicons.mjs"
   },
   "dependencies": {
     "iconoir-react": "^7.11.1",
