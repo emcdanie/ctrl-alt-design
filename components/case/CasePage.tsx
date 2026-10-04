@@ -87,7 +87,6 @@ export function Beat({
   heading,
   lead,
   leadSize = "lead",
-  frameExempt,
   children,
 }: {
   id: string;
@@ -97,13 +96,11 @@ export function Beat({
   lead?: string;
   /** Body/Lead (22, Drift) or Body/Base (20, Federated): the frames differ */
   leadSize?: "lead" | "base";
-  /** a named audit:frame exception for this header (printed every run) */
-  frameExempt?: string;
   children?: ReactNode;
 }) {
   return (
     <section className={styles.beat} aria-labelledby={`${id}-h`}>
-      <div className={`${styles.beatHeader} ${styles.col}`} data-frame-exempt={frameExempt}>
+      <div className={`${styles.beatHeader} ${styles.col}`}>
         <p className={styles.beatLabel}>
           <span className={styles.badge}>{num}</span>
           {label}

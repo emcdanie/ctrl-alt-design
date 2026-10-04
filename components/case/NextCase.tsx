@@ -71,7 +71,7 @@ export default function NextCase({
         </div>
       </div>
       <section className={styles.end} aria-labelledby="more-work-h">
-        <div className={`${styles.moreHead} ${styles.col}`}>
+        <div className={styles.moreHead}>
           <Heading tier="section" id="more-work-h" className={styles.moreHeading}>
             More work
           </Heading>

@@ -33,7 +33,7 @@ export default function FederatedCase() {
         { label: "Platforms", value: "Web, iOS and Android" },
       ]}
       cover={
-        <CaseFigure n={1} phoneTop="label" caption="Same squads, same quarter. What changed is when they came to us.">
+        <CaseFigure n={1} bare phoneTop="label" caption="Same squads, same quarter. What changed is when they came to us.">
           <CasePicture
             src={`${IMG}/f1-cover.webp`}
             phone={`${IMG}/f1-cover-390.webp`}
@@ -52,7 +52,7 @@ export default function FederatedCase() {
         lead="I started my career using a federated system, then building one. Here a small system team sat between many squads, three platforms and two partner teams. Three of its four designers were out, so I ran it day to day for 13 weeks."
         leadSize="base"
       >
-        <CaseFigure n={2} caption="One small system team in the middle of many squads, three platforms and two partner teams.">
+        <CaseFigure n={2} bare caption="One small system team in the middle of many squads, three platforms and two partner teams.">
           <CasePicture
             src={`${IMG}/f2-who.webp`}
             phone={`${IMG}/f2-who-390.webp`}
@@ -67,12 +67,11 @@ export default function FederatedCase() {
         id="breaking"
         num="2"
         label="What was breaking"
-        heading="The card being redesigned already existed three times."
-        frameExempt="Federated heading over 50 characters: the frame's approved copy (4 Oct 2026), Elleta to shorten or keep"
+        heading="The card already existed three times."
         lead="Squads built what they needed and told us afterwards. The product card had a published version, a post-purchase copy and a new draft, each with its own rules. Adding AI on top would only have copied the mess faster."
         leadSize="base"
       >
-        <CaseFigure n={3} caption="Recreated. The card being redesigned already existed three times.">
+        <CaseFigure n={3} bare caption="Recreated. The card being redesigned already existed three times.">
           <div className={styles.wideOnly}>
             <CasePicture
               src={`${IMG}/f3-versions.webp`}
@@ -98,13 +97,13 @@ export default function FederatedCase() {
         id="chip"
         num="3"
         label="The chip"
-        heading="They asked for a new chip. I said I’d review it with the devs."
-        frameExempt="Federated heading over 50 characters: the frame's approved copy (4 Oct 2026), Elleta to shorten or keep"
+        heading="They asked for a new chip. I reviewed it first."
         lead="The redesign asked for a brand new size selector chip. The designer also wanted negative spacing to line up the stock marks. I didn’t say no to the need. I took it to the developers and audited what the code really rendered."
         leadSize="base"
       >
         <CaseFigure
           n={4}
+          bare
           caption="Product page, bag, size guide and filters all had to keep working. The slot added the new case without breaking the old pattern."
         >
           <CasePicture
@@ -128,7 +127,7 @@ export default function FederatedCase() {
         lead="Claude did the checkable work: the spacing migration, dark mode coverage, accessibility checks and icon clean-up, and I checked what it did. Names, props and which requests to close stayed decisions with the platform developers."
         leadSize="base"
       >
-        <CaseFigure n={5} caption="Claude did the slow, checkable work. The time it saved went into the decisions.">
+        <CaseFigure n={5} bare caption="Claude did the slow, checkable work. The time it saved went into the decisions.">
           <CasePicture
             src={`${IMG}/f5-lanes.webp`}
             phone={`${IMG}/f5-lanes-390.webp`}
@@ -147,7 +146,7 @@ export default function FederatedCase() {
         lead="Every week, squads brought real cases to an open desk, before anyone built. One path in: need, system team, open desk, joint decision, developer. After a retro we moved to Kanban with three in flight at most, and seven requests closed with a written reason."
         leadSize="base"
       >
-        <CaseFigure n={6} caption="The value is timing: squads brought the case before building, so it was built once.">
+        <CaseFigure n={6} bare caption="The value is timing: squads brought the case before building, so it was built once.">
           <CasePicture
             src={`${IMG}/f6-intake.webp`}
             phone={`${IMG}/f6-intake-390.webp`}
@@ -167,7 +166,7 @@ export default function FederatedCase() {
         lead="The system had no baseline, so I built one: a KPI tree from business goals to system work, and a Pareto of the pain points. A few root causes held most of the pain. I asked for a small, low-risk first phase before scaling AI."
         leadSize="base"
       >
-        <CaseFigure n={7} caption="The slide I took to leadership, recreated. Shape only, the real numbers stay private.">
+        <CaseFigure n={7} bare caption="The slide I took to leadership, recreated. Shape only, the real numbers stay private.">
           <CasePicture
             src={`${IMG}/f7-kpi.webp`}
             phone={`${IMG}/f7-kpi-390.webp`}

@@ -171,9 +171,6 @@ for (const width of WIDTHS) {
            locked by Elleta 3 Oct 2026, hidden behind the hero v3 words
            (4 Oct 2026) */
         if (h.parentElement?.querySelector(":scope > [data-frame-exempt]")) continue;
-        /* or a heading inside a named exception (a v3 beat header whose
-           approved copy runs long, 4 Oct 2026) */
-        if (h.closest("[data-frame-exempt]")) continue;
         const t = (h.getAttribute("aria-label") || h.textContent || "").replace(/\s+/g, " ").trim();
         if (t.length > LIMIT) F(h, `${t.length} characters`, `${LIMIT} or fewer`);
       }

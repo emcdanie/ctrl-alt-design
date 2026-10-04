@@ -209,13 +209,55 @@
   height: auto;
 }
 
+/* Site/Figure stage (417:1706): a 32px line grid that fades to the page
+   ground at the edges, radius 16; standard margins 56/64 (20 at 390) */
+.stage {
+  position: relative;
+  isolation: isolate;
+  padding: calc(var(--spacing-12) + var(--spacing-2)) var(--spacing-16);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 50% 50% at 50% 50%, transparent 0%, color-mix(in srgb, var(--color-semantic-background) 30%, transparent) 70%, color-mix(in srgb, var(--color-semantic-background) 95%, transparent) 100%),
+    linear-gradient(var(--color-semantic-border) 1px, transparent 1px) 0 0 / var(--spacing-8) var(--spacing-8),
+    linear-gradient(90deg, var(--color-semantic-border) 1px, transparent 1px) 0 0 / var(--spacing-8) var(--spacing-8),
+    var(--color-semantic-background);
+}
+
+/* a picture at its design width, scaled to fit (ScaledArt) */
+.scaled {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.scaledInner {
+  transform-origin: top left;
+  margin-inline: auto;
+}
+
 .figureTools {
   position: absolute;
   top: var(--spacing-3);
   right: var(--spacing-3);
   display: flex;
-  gap: var(--spacing-2);
+  gap: var(--spacing-3);
   z-index: 2;
+}
+
+/* Enlarge only below 768px (Site v3 rules, 4 Oct late); Replay at every
+   width */
+@media (min-width: 768px) {
+  .toolButton.enlarge {
+    display: none;
+  }
 }
 
 .figureTools[data-inset] {
@@ -666,6 +708,10 @@
 
 /* the 390 frames put Enlarge 8 in from the picture's corner */
 @media (max-width: 639px) {
+  .stage {
+    padding: var(--spacing-5);
+  }
+
   .wideOnly {
     display: none;
   }

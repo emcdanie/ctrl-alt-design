@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { useFigurePlay } from "./CaseFigure";
+import ScaledArt from "./ScaledArt";
 import s from "./DriftFigures.module.css";
 
 /* The four Drift figures with motion (Site v3; masters on 🧪 Drift motion
@@ -17,10 +18,6 @@ const i = (n: number) => ({ "--i": n }) as CSSProperties;
 
 function Step({ n }: { n: number | string }) {
   return <span className={s.step}>{n}</span>;
-}
-
-function Grid() {
-  return <div className={s.grid} aria-hidden="true" />;
 }
 
 /* ── Figure 4 · Zoom levels (F4) ─────────────────────────────────── */
@@ -133,8 +130,7 @@ export function ZoomLevels() {
     return () => el.removeEventListener("scroll", onScroll);
   }, []);
   return (
-    <div className={`${s.stage} ${s.zoom}`} data-play={playing ? "on" : "off"} key={run}>
-      <Grid />
+    <div className={`${s.stage}`} data-play={playing ? "on" : "off"} key={run}>
       <ol className={s.levels} ref={track} aria-label="Four zoom levels">
         {LEVELS.map((l, k) => {
           const Art = LEVEL_ART[k];
@@ -212,7 +208,6 @@ export function TokenCascade() {
   const { playing, run } = useFigurePlay();
   return (
     <div className={`${s.stage} ${s.cascade}`} data-play={playing ? "on" : "off"} key={run}>
-      <Grid />
       <ol className={s.tiers}>
         <li className={s.tier}>
           <p className={s.tierHead}>
@@ -315,8 +310,7 @@ const STEPS: { title: string; meta: string; icon: IconName; no?: boolean; shared
 export function Rollout() {
   const { playing, run } = useFigurePlay();
   return (
-    <div className={`${s.stage} ${s.rolloutStage}`} data-play={playing ? "on" : "off"} key={run}>
-      <Grid />
+    <div className={`${s.stage}`} data-play={playing ? "on" : "off"} key={run}>
       <div className={s.card}>
         <div className={s.cardHead}>
           <p className={s.cardTitle}>Rollout</p>
@@ -383,8 +377,10 @@ const pct = (v: number, of: number) => `${(v / of) * 100}%`;
 export function Staircase() {
   const { playing, run } = useFigurePlay();
   return (
-    <div className={`${s.stage} ${s.stairStage}`} data-play={playing ? "on" : "off"} key={run}>
-      <Grid />
+    <div className={`${s.stage}`} data-play={playing ? "on" : "off"} key={run}>
+      {/* the real staircase at every width, scaled to fit (Figma option B
+         for 390, 4 Oct late) */}
+      <ScaledArt width={928}>
       <div className={s.card}>
         <div className={s.cardHead}>
           <p className={s.cardTitle}>Shipped on the system</p>
@@ -415,25 +411,8 @@ export function Staircase() {
           <span className={s.flatLabel}>2 years of redesign · nothing live</span>
           <span className={s.nextChip}>next: flight extras, nearly done</span>
         </div>
-        <ol className={s.stairList}>
-          <li className={s.stairFlat}>
-            <span className={s.stairRule} aria-hidden="true" />2 years of redesign · nothing live
-          </li>
-          <li className={s.stairSys}>
-            <span className={s.stairDot} aria-hidden="true" />
-            <span className={s.sysChipList}>the system</span>
-          </li>
-          {AREAS.map((a, k) => (
-            <li key={a.label.join(" ")} className={s.stairItem} style={i(k)}>
-              <Step n={k + 1} />
-              <span className={s.areaChipList}>{a.label.join(" ")}</span>
-            </li>
-          ))}
-          <li className={s.stairNext}>
-            <span className={s.nextChipList}>next: flight extras</span>
-          </li>
-        </ol>
       </div>
+      </ScaledArt>
     </div>
   );
 }

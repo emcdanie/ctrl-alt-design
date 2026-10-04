@@ -15,7 +15,7 @@ const IMG = "/images/case/drift";
 export default function DriftCase() {
   return (
     <CasePage
-      kicker="Complex SaaS · 2024 to 26 · Design systems"
+      kicker="Complex SaaS · 2024 to 2026 · Design systems"
       title="From Drift to Foundation"
       lead="A B2B travel platform had spent two years on a redesign with nothing live. I built its first design system from zero, wired the tokens to production, and the work started shipping."
       resultSize="page"
@@ -33,6 +33,7 @@ export default function DriftCase() {
       cover={
         <CaseFigure
           n={1}
+          bare
           phoneTop="label"
           caption="Before: every team built its own card, button and type. After: one system, and 17 buttons became one. Under NDA: visuals are my own, recreated; no client screens or data."
         >
@@ -53,7 +54,7 @@ export default function DriftCase() {
         heading="It felt complicated. The numbers said why."
         lead="The drift was structural. Every vertical solved the same need its own way, with no shared language. I interviewed customer success and sales to turn “it looks inconsistent” into evidence."
       >
-        <CaseFigure n={2} caption="Four answers in words, not percentages: from my own interviews, not customer data.">
+        <CaseFigure n={2} bare caption="Four answers in words, not percentages: from my own interviews, not customer data.">
           <CasePicture
             src={`${IMG}/f2-survey.webp`}
             phone={`${IMG}/f2-survey-390.webp`}
@@ -65,6 +66,7 @@ export default function DriftCase() {
         <BeatText>Then I counted. Seventeen buttons did one job. The filter chip was built four ways, which broke sort and empty states.</BeatText>
         <CaseFigure
           n={3}
+          bare
           caption="Seventeen near-identical buttons from one product: 8 corner radii, 2 fonts, 4 heights. The ringed one is the one the system kept. Recreated."
         >
           <CasePicture
@@ -105,7 +107,7 @@ export default function DriftCase() {
           <TokenCascade />
         </CaseFigure>
         <BeatText>Every fare case became one rule string, so a card can’t show the wrong text. Here is one stay card with the tokens it reads.</BeatText>
-        <CaseFigure n={6} caption="One stay card, each part pinned to the token it reads.">
+        <CaseFigure n={6} bare caption="One stay card, each part pinned to the token it reads.">
           <CasePicture
             src={`${IMG}/f6-anatomy.webp`}
             phone={`${IMG}/f6-anatomy-390.webp`}
@@ -137,7 +139,7 @@ export default function DriftCase() {
         <CaseFigure n={8} replay inset caption="Each step is a product area shipped on the system. Order as on my list; not to scale.">
           <Staircase />
         </CaseFigure>
-        <CaseFigure n={9} caption="A handful of small parts builds every product area. Recreated with BELLA; no client screens.">
+        <CaseFigure n={9} bare caption="A handful of small parts builds every product area. Recreated with BELLA; no client screens.">
           <CasePicture
             src={`${IMG}/f9-shipped.webp`}
             phone={`${IMG}/f9-shipped-390.webp`}

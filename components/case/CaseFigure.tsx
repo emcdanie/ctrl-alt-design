@@ -29,6 +29,7 @@ export default function CaseFigure({
   replay = false,
   inset = false,
   phoneTop,
+  bare = false,
   children,
   className = "",
 }: {
@@ -41,6 +42,8 @@ export default function CaseFigure({
   inset?: boolean;
   /** at 390 the tools sit below the picture's top label (the cover) */
   phoneTop?: "label";
+  /** the art brings its own stage (a picture exported with it) */
+  bare?: boolean;
   children: ReactNode;
   className?: string;
 }) {
@@ -78,9 +81,17 @@ export default function CaseFigure({
   return (
     <figure className={`${styles.figBlock} ${className}`.trim()}>
       <div className={styles.figureArt} ref={art}>
-        <PlayContext.Provider value={{ playing, run }}>{children}</PlayContext.Provider>
-        <div className={styles.figureTools} data-inset={inset || undefined} data-phone-top={phoneTop}>
-          <button type="button" className={styles.toolButton} data-icon onClick={show} aria-haspopup="dialog">
+        {bare ? (
+          <PlayContext.Provider value={{ playing, run }}>{children}</PlayContext.Provider>
+        ) : (
+          /* Site/Figure stage (417:1706): the grid behind every picture,
+             56/64 margins at 1440 and 20 at 390 */
+          <div className={styles.stage}>
+            <PlayContext.Provider value={{ playing, run }}>{children}</PlayContext.Provider>
+          </div>
+        )}
+        <div className={styles.figureTools} data-inset={inset || undefined} data-phone-top={phoneTop} data-bare={bare || undefined}>
+          <button type="button" className={`${styles.toolButton} ${styles.enlarge}`} data-icon onClick={show} aria-haspopup="dialog">
             <Icon name="Enlarge" />
             <span className="sr-only">Enlarge Figure {n}</span>
           </button>
