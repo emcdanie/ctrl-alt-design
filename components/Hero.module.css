@@ -335,7 +335,7 @@
   width: 16.25rem;
   max-width: none;
   height: auto;
-  opacity: 0.5;
+  opacity: calc(0.5 * (1 - var(--hero-p))); /* gone while pulled apart, like the plates fade in (18f) */
 }
 
 /* ── leaders and legend (pulled apart, wide screens only) ── */

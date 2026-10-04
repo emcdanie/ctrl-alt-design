@@ -36,11 +36,3 @@
   outline-offset: var(--ring-focus-offset);
   border-radius: var(--radius-sm);
 }
-
-/* stacked below 900px the lines don't share a row, so each reserves
-   two lines: one wrapping line no longer makes the three uneven */
-@media (max-width: 899px) {
-  .line {
-    min-height: 3em;
-  }
-}

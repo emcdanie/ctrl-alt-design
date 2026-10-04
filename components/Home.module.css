@@ -81,8 +81,8 @@
   margin: var(--space-stack-md) 0 0;
 }
 
-/* the proof row (18d, 4 Oct 2026): three equal columns from 900px, one
-   below; each ProofLine spans two subgrid rows (label, line) */
+/* the proof row (18d, 4 Oct 2026): three equal columns from 900px, each
+   ProofLine spanning two subgrid rows (label, line); one column below */
 .proof {
   display: grid;
   grid-template-rows: auto auto;
@@ -95,10 +95,12 @@
   }
 }
 
+/* stacked: a plain column with one gap between items, so a wrapping
+   line never makes the gaps uneven (18f) */
 @media (max-width: 899px) {
   .proof {
-    grid-template-rows: none;
-    grid-auto-rows: auto;
-    row-gap: var(--space-stack-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-md);
   }
 }
