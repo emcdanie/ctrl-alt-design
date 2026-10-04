@@ -597,6 +597,13 @@ body {
   padding-block: var(--section-pad-y);
 }
 
+/* a named exception (Section flushBottom, audit:frame prints it): Home's
+   proof row, so photo→proof and proof→quotes are one pad each (Elleta,
+   4 Oct 2026) */
+.l-section.l-section--flush-bottom {
+  padding-bottom: 0;
+}
+
 /* the page opening clears the nav, then one section pad (twice the pad
    was right at 3.2rem; at the Part Q rhythm it pushed the h1 a third of
    the way down the screen) */

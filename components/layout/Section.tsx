@@ -13,6 +13,7 @@ export default function Section({
   labelledBy,
   prose = false,
   ruled = false,
+  flushBottom,
   children,
 }: {
   id?: string;
@@ -25,14 +26,19 @@ export default function Section({
   prose?: boolean;
   /** a hairline at the top with no label (a case page's sections) */
   ruled?: boolean;
+  /** drop the bottom pad, as a named audit:frame exception: the dated
+   *  reason is required and printed on every run (Elleta, 4 Oct 2026,
+   *  Home's proof row, so the gaps either side of it are equal) */
+  flushBottom?: string;
   children: ReactNode;
 }) {
   const labelId = label && id ? `${id}-label` : undefined;
   return (
     <section
       id={id}
-      className={["l-section", prose ? "l-section--prose" : "", ruled ? "section--ruled" : ""].filter(Boolean).join(" ")}
+      className={["l-section", prose ? "l-section--prose" : "", ruled ? "section--ruled" : "", flushBottom ? "l-section--flush-bottom" : ""].filter(Boolean).join(" ")}
       aria-labelledby={labelId ?? labelledBy}
+      data-frame-exempt={flushBottom}
     >
       <Container>
         {label ? (

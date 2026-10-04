@@ -170,7 +170,10 @@ for (const width of WIDTHS) {
         const bottom = px(c.paddingBottom);
         const wantTop = i === 0 && !embed ? header + padY : padY;
         if (Math.abs(top - wantTop) > 1) F(s, `padding-top ${top}px`, `${i === 0 && !embed ? "nav + " : ""}--section-pad-y, ${wantTop}px`);
-        if (Math.abs(bottom - padY) > 1) F(s, `padding-bottom ${bottom}px`, `--section-pad-y, ${padY}px`);
+        /* a Section flushBottom (named, printed with the exemptions below):
+           no bottom pad by design (Home's proof row, Elleta, 4 Oct 2026) */
+        const flush = s.classList.contains("l-section--flush-bottom") && s.hasAttribute("data-frame-exempt");
+        if (flush ? bottom !== 0 : Math.abs(bottom - padY) > 1) F(s, `padding-bottom ${bottom}px`, flush ? "0 (flushBottom)" : `--section-pad-y, ${padY}px`);
       });
 
       /* 4 + 5. radii and cards */

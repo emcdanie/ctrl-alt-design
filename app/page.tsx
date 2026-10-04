@@ -32,7 +32,7 @@ export default function Home() {
       <Hero />
 
       {/* the proof row (18d, 4 Oct 2026): quiet, no box, no label */}
-      <Section id="proof">
+      <Section id="proof" flushBottom="Home proof row: equal gaps either side (Elleta, 4 Oct 2026)">
         <div className={styles.proof}>
           {HOME_PROOF.map((p) => (
             <ProofLine key={p.label} label={p.label} line={p.line} href={p.href} />
