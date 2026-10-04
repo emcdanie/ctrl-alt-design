@@ -133,20 +133,25 @@ export default function Hero() {
             </div>
             <div className={`${styles.layer} ${styles.you}`}>
               <i className={styles.anchor} data-anchor-me />
-              {/* the faint code is a picture (CLAUDE.md §9): decoration far
-                  under the contrast floor, so nothing for an audit to read. It rides
-                  the photo's layer, behind the photo, in every state */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className={styles.code} src="/images/home/hero-code.webp" alt="" width={370} height={214} decoding="async" />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className={styles.portrait}
-                src="/images/home/portrait.webp"
-                alt="Elleta McDaniel with her dog Bella"
-                width={1080}
-                height={908}
-                fetchPriority="high"
-              />
+              {/* the photo and the faint code fade at the bottom as ONE group
+                  (18h): the photo covers the code first, so no code ever
+                  reads through her */}
+              <div className={styles.group}>
+                {/* the faint code is a picture (CLAUDE.md §9): decoration far
+                    under the contrast floor, so nothing for an audit to read. It
+                    rides the photo's layer, behind the photo, in every state */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className={styles.code} src="/images/home/hero-code.webp" alt="" width={370} height={214} decoding="async" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  className={styles.portrait}
+                  src="/images/home/portrait.webp"
+                  alt="Elleta McDaniel with her dog Bella"
+                  width={1080}
+                  height={908}
+                  fetchPriority="high"
+                />
+              </div>
             </div>
             <div className={`${styles.layer} ${styles.paint}`} aria-hidden="true">
               <i className={styles.anchor} data-anchor-pattern />

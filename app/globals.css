@@ -454,6 +454,7 @@ body {
   --hero-plate-line: var(--color-semantic-border);
   --hero-plate-shadow: 0 14px 40px color-mix(in srgb, var(--color-light-ink) 12%, transparent);
   --hero-grid-line: var(--color-semantic-border);
+  --hero-contact: color-mix(in srgb, var(--color-ink) 10%, transparent); /* the stage's contact shadow (18h) */
   /* Home's pattern field reads as texture, not a picture (18e) */
   --home-field-opacity: 0.035;
 }
@@ -498,6 +499,7 @@ body {
   --hero-plate-fill: rgb(255 255 255 / 0.06);
   --hero-plate-line: rgb(255 255 255 / 0.12);
   --hero-grid-line: rgb(255 255 255 / 0.14);
+  --hero-contact: color-mix(in srgb, var(--color-light-ink) 45%, transparent); /* dark ink, so it reads on the dark ground */
   --home-field-opacity: 0.05;
   /* surfaces: 4% toward the cream ink, so lighter than the ground */
   --surface-card: var(--color-semantic-surface-card);
