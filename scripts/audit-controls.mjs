@@ -109,6 +109,32 @@ for (const [w, lastSel, lastName] of [
     } else if (!t.lastOk || !t.toggleOk) fail(`${r} @${w} ThemeToggle`, "not directly left of " + lastName, `ThemeToggle, then ${lastName}, at the end of the header`);
   }
 }
+/* ONE header height (18f, 4 Oct 2026): the bar never wraps. At 360,
+   390 and 1024 it measures the same; below 380px LinkedIn and Copy
+   email leave the header and the menu sheet carries them. */
+{
+  const heights = {};
+  for (const w of [360, 390, 1024]) {
+    await page.setViewportSize({ width: w, height: 900 });
+    await page.goto(BASE + "/", { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(400);
+    const h = await page.evaluate(() => {
+      const bar = document.querySelector(".nav-row")?.parentElement;
+      const contact = document.querySelector(".nav-contact");
+      const menu = document.getElementById("overlay-menu");
+      return {
+        bar: bar ? Math.round(bar.getBoundingClientRect().height) : 0,
+        headerIcons: contact ? getComputedStyle(contact).display !== "none" : false,
+        menuHas: !!menu && /LinkedIn/.test(menu.textContent) && /Copy email/.test(menu.textContent),
+      };
+    });
+    heights[w] = h.bar;
+    if (w < 380 && h.headerIcons) fail(`/ @${w} header`, "LinkedIn and Copy email in the header", "in the menu sheet only, below 380px");
+    if (w < 1024 && !h.menuHas) fail(`/ @${w} menu`, "no LinkedIn / Copy email in the menu sheet", "both, as labelled rows");
+  }
+  const vals = Object.values(heights);
+  if (new Set(vals).size !== 1) fail("/ header height", JSON.stringify(heights), "one height at 360, 390 and 1024");
+}
 await browser.close();
 console.log(fails === 0 ? "controls gate: PASS" : `controls gate: ${fails} failure(s)`);
 process.exit(fails === 0 ? 0 : 1);

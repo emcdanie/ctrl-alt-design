@@ -107,7 +107,7 @@ export default function OverlayNav() {
           <div className="flex items-center gap-2">
           {/* LinkedIn and Copy email as two 44px icons (Elleta, 4 Oct
               2026, hero v3 lock; the "Let's talk" button is retired) */}
-          <div className="pointer-events-auto">
+          <div className="nav-contact pointer-events-auto">
             <ContactActions layout="icons" />
           </div>
           {/* ONE theme toggle: last at lg+, directly left of the menu
@@ -228,7 +228,7 @@ export default function OverlayNav() {
           <div className="relative z-10 mt-12 flex flex-col gap-3 sm:mt-16">
             {/* the menu's labelled copy of the header icons (email
                 assembled on click, §6) */}
-            <ContactActions />
+            <ContactActions layout="menu" />
           </div>
         </div>
       </div>

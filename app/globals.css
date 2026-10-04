@@ -1391,6 +1391,48 @@ h1.display-heading {
   border-color: var(--color-ink-muted);
 }
 
+/* below 380px the wordmark and four 44px controls don't fit one row
+   (measured: 113 + 4 x 44 + 3 x 8 + 2 x 24 = 361, plus air): the header
+   keeps the toggle and the menu button, and LinkedIn and Copy email
+   live in the menu sheet only (18f, 4 Oct 2026) */
+@media (max-width: 379.98px) {
+  .nav-contact {
+    display: none;
+  }
+}
+
+/* the menu sheet's contact rows: the header icon, then its label */
+.contact-actions.contact-actions--menu {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+}
+
+.menu-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  min-height: var(--spacing-touch-target);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--text-body);
+  color: var(--color-ink);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menu-contact:hover .nav-icon {
+  border-color: var(--color-ink-muted);
+}
+
+.menu-contact:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+  border-radius: var(--radius-full);
+}
+
 /* the menu button is the phone's: gone from lg, where the links show */
 @media (min-width: 1024px) {
   .nav-icon--menu {
@@ -2482,17 +2524,8 @@ body:has(main.site-ground-page) {
   gap: var(--spacing-3);
 }
 
-.contact-actions--stack {
-  flex-direction: column;
-  align-items: stretch;
-}
-
-.contact-actions .btn-key {
-  white-space: nowrap;
-}
-
 .contact-actions--icons {
-  display: flex;
+  flex-wrap: nowrap;
   gap: var(--spacing-2);
 }
 
