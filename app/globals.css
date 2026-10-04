@@ -441,6 +441,7 @@ body {
   --hero-col: 18.125rem;
   --hero-scroll: 26.25rem;
   --hero-shift-x: 6rem;
+  --hero-agent-x: 4.5rem; /* clears the "code" corners by 12px or more when apart (18d) */
   --hero-shift-y: 6rem;
   --hero-lift: 10.5rem;
   --hero-skew: -9deg;

@@ -4,16 +4,18 @@
  * set on .hero by the component and drives every transform below. */
 
 /* the scroll runway: the frame holds still (sticky) while the first
-   --hero-scroll of scroll assembles it */
+   --hero-scroll of scroll assembles it. The frame stops one section pad
+   short: the stage hangs into the Section's bottom padding, so the photo
+   sits on the hero's bottom edge (Elleta, 4 Oct 2026, 18d) */
 .scroller {
-  height: calc(var(--hero-frame-h) + var(--hero-scroll));
+  height: calc(var(--hero-frame-h) - var(--section-pad-y) + var(--hero-scroll));
 }
 
 .hero {
   --hero-p: 1;
   position: sticky;
   top: calc(var(--header-height) + var(--section-pad-y));
-  height: var(--hero-frame-h);
+  height: calc(var(--hero-frame-h) - var(--section-pad-y));
 }
 
 .col {
@@ -133,7 +135,7 @@
 .stage {
   position: absolute;
   left: 50%;
-  bottom: 0;
+  bottom: calc(0px - var(--section-pad-y));
   z-index: 4;
   width: var(--hero-stage-w);
   height: var(--hero-stage-h);
@@ -175,6 +177,7 @@
 /* the portrait is wider than the card: the shoulder runs past it */
 .you img {
   width: 120%;
+  max-width: none; /* the global img cap squashed it to 100% (fixed 18d) */
   filter: drop-shadow(var(--hero-shadow));
 }
 
@@ -191,7 +194,7 @@
 .agent {
   z-index: 5;
   opacity: var(--hero-p);
-  transform: translate(calc(var(--hero-shift-x) * var(--hero-p)), calc(0px - var(--hero-lift) * var(--hero-p)))
+  transform: translate(calc(var(--hero-agent-x) * var(--hero-p)), calc(0px - var(--hero-lift) * var(--hero-p)))
     skewY(calc(var(--hero-skew) * var(--hero-p))) scale(calc(1 - var(--hero-shrink) * var(--hero-p)));
 }
 
@@ -311,13 +314,15 @@
 }
 
 /* faint code behind the photo, peeking out right of the shoulder: a
-   grey picture (hero-code.webp), faded to sit back on either ground */
+   grey picture (hero-code.webp), faded to sit back on either ground.
+   It starts at shoulder height and ends on the photo's bottom, so none
+   of it shows over the hair or under the hero (18d) */
 .code {
   position: absolute;
-  left: 76%;
-  top: 56%;
+  left: 96%;
+  top: 68%;
   z-index: 1;
-  width: 24.9375rem;
+  width: 16.25rem;
   max-width: none;
   height: auto;
   opacity: calc(0.5 - var(--hero-p));
@@ -405,6 +410,7 @@
   /* the layers spread less, so the agent layer stays on screen */
   .hero {
     --hero-shift-x: 3rem;
+    --hero-agent-x: 3rem;
     --hero-lift: 7rem;
   }
 
@@ -430,8 +436,10 @@
     align-items: flex-end;
   }
 
+  /* both lines show on a phone, whatever the scroll: no legend here */
   .right .sub {
-    display: none;
+    align-self: stretch;
+    opacity: 1;
   }
 
   .corners i {
@@ -443,10 +451,16 @@
   .stage {
     position: relative;
     left: auto;
-    width: min(100%, 20.625rem);
+    /* the portrait runs 120% of the stage: sized so it ends on the
+       screen edge, uncropped, and sits on the hero's bottom edge */
+    width: min(calc((100% + var(--layout-gutter)) / 1.2), 20.625rem);
     height: auto;
     aspect-ratio: 450 / 454; /* --hero-stage-w / --hero-stage-h, as a ratio */
-    margin: var(--space-stack-md) auto 0;
+    /* laid out one section pad higher, drawn one pad lower: the photo
+       lands on the Section's bottom edge (a negative bottom margin
+       collapses through the wrappers and overshoots) */
+    top: var(--section-pad-y);
+    margin: calc(var(--space-stack-md) - var(--section-pad-y)) 0 0;
     transform: none;
   }
 
