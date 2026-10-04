@@ -1,16 +1,19 @@
 import OverlayNav from "@/components/OverlayNav";
 import Hero from "@/components/Hero";
+import ProofLine from "@/components/ProofLine";
 import CaseRow from "@/components/CaseRow";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { TextLink } from "@/components/ui/TextLink";
 import { HOME_LEAD } from "@/content/cases";
+import { HOME_PROOF } from "@/lib/copy";
 import { TESTIMONIALS } from "@/content/testimonials";
 import caseStyles from "@/components/WorkLibrary.module.css";
 import styles from "@/components/Home.module.css";
 
 /* Home · v2 (Gate 2, 3 Oct 2026; Figma "Home · v2"), hero v3 (Elleta,
-   4 Oct 2026): the designer and code hero, the quote card, the lead
+   4 Oct 2026): the designer and code hero, the proof row (18d), the
+   quote card, the lead
    three as cards (Drift featured), the system beat, then the site
    footer (the Home closing card is retired). The anatomy specimen joins
    the system section once AtlasSpecimen is on main. */
@@ -27,6 +30,15 @@ export default function Home() {
     <main id="main-content" className="site-ground-page">
       <OverlayNav />
       <Hero />
+
+      {/* the proof row (18d, 4 Oct 2026): quiet, no box, no label */}
+      <Section id="proof">
+        <div className={styles.proof}>
+          {HOME_PROOF.map((p) => (
+            <ProofLine key={p.label} label={p.label} line={p.line} href={p.href} />
+          ))}
+        </div>
+      </Section>
 
       <Section id="word-of-mouth" label="Word of mouth">
         <figure className={styles.quote}>
