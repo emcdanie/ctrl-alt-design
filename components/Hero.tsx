@@ -137,7 +137,7 @@ export default function Hero() {
                   under the contrast floor, so nothing for an audit to read. It rides
                   the photo's layer, behind the photo, in every state */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className={styles.code} src="/images/home/hero-code.webp" alt="" width={399} height={222} decoding="async" />
+              <img className={styles.code} src="/images/home/hero-code.webp" alt="" width={370} height={214} decoding="async" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className={styles.portrait}

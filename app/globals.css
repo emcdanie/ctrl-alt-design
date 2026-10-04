@@ -434,11 +434,12 @@ body {
      at half its natural width on a 2x screen (audit:sharp). --hero-p is
      the one motion property: 1 pulled apart, 0 assembled. */
   --hero-p: 0;
-  --hero-frame-h: 30rem;
+  --hero-frame-h: 30.5rem; /* stage top 198 at 1440, as the prototype (18f) */
   --hero-stage-w: 28.125rem;
   --hero-stage-h: 28.375rem;
   --hero-word: clamp(3rem, 1.4rem + 4.4vw, 5.125rem);
   --hero-col: 18.125rem;
+  --hero-word-drop: 3.3125rem; /* the words start 53px below the photo's top, as the prototype (18f) */
   --hero-scroll: 26.25rem;
   --hero-shift-x: 6rem;
   --hero-agent-x: 4.5rem; /* clears the "code" corners by 12px or more when apart (18d) */

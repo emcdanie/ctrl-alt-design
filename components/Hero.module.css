@@ -20,7 +20,8 @@
 
 .col {
   position: absolute;
-  top: var(--space-stack-lg);
+  /* from the stage's top (frame minus stage), then the word drop */
+  top: calc(var(--hero-frame-h) - var(--hero-stage-h) + var(--hero-word-drop));
   z-index: 6;
   width: var(--hero-col);
 }
@@ -186,6 +187,7 @@
 
 /* the portrait is wider than the card: the shoulder runs past it */
 .portrait {
+  z-index: 1; /* above the faint code in the same layer */
   width: 120%;
   max-width: none; /* the global img cap squashed it to 100% (fixed 18d) */
   filter: drop-shadow(var(--hero-shadow));
@@ -323,16 +325,15 @@
   clip-path: inset(0 0 0 calc(100% * var(--hero-p)));
 }
 
-/* faint code behind the photo, peeking out right of the shoulder: a
-   grey picture (hero-code.webp), faded to sit back on either ground.
-   It starts at shoulder height and ends on the photo's bottom, so none
-   of it shows over the hair or under the hero (18d) */
+/* faint code behind the hair and shoulder, the portrait covering its
+   left part: the prototype's block as a grey picture (hero-code.webp),
+   at its size and place (Elleta, 4 Oct 2026, 18f; supersedes 18d) */
 .code {
   position: absolute;
-  left: 96%;
-  top: 68%;
-  z-index: 1;
-  width: 16.25rem;
+  left: 76%;
+  top: 56%;
+  z-index: 0;
+  width: 23.125rem; /* the prototype's block, 370 x 213 (18f) */
   max-width: none;
   height: auto;
   opacity: calc(0.5 * (1 - var(--hero-p))); /* gone while pulled apart, like the plates fade in (18f) */
@@ -363,7 +364,7 @@
 .legend {
   position: absolute;
   right: 0;
-  top: 18.25rem;
+  top: calc(var(--hero-frame-h) - var(--hero-stage-h) + 16.625rem); /* 266px under the stage top */
   z-index: 8;
   display: grid;
   gap: var(--spacing-3);
@@ -403,15 +404,11 @@
   color: var(--color-ink-muted);
 }
 
-/* the middle widths: the stage steps down beside the columns */
+/* the middle widths keep the full stage (as the prototype); the right
+   column narrows so its lines clear the hair (18f) */
 @media (min-width: 901px) and (max-width: 1199px) {
-  .stage {
-    transform: translateX(-56%) scale(0.78);
-    transform-origin: 50% 100%;
-  }
-
-  .col {
-    width: calc(var(--hero-col) - 2.5rem);
+  .right {
+    width: 15rem;
   }
 }
 
