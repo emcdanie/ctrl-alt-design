@@ -47,7 +47,7 @@ export default function ContactActions({ layout = "row" }: { layout?: "row" | "s
           data-umami-event="linkedin"
           aria-label="LinkedIn (opens in a new tab)"
         >
-          <LinkedInIcon />
+          <LinkedInIcon size="solid-md" />
         </a>
         <button
           type="button"
@@ -56,7 +56,7 @@ export default function ContactActions({ layout = "row" }: { layout?: "row" | "s
           data-umami-event="copy-email"
           aria-label={copied ? "Email copied" : "Copy email"}
         >
-          <Icon name={copied ? "Check" : "Mail"} size="sm" />
+          <Icon name={copied ? "Check" : "Mail"} size="md" />
         </button>
         {status}
       </div>

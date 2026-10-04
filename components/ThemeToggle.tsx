@@ -43,7 +43,7 @@ export default function ThemeToggle() {
       data-component="ThemeToggle"
       onClick={toggle}
     >
-      <Icon name={dark ? "SunLight" : "HalfMoon"} size="sm" />
+      <Icon name={dark ? "SunLight" : "HalfMoon"} size="md" />
     </button>
   );
 }

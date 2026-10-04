@@ -1362,24 +1362,33 @@ h1.display-heading {
   outline-offset: var(--ring-focus-offset);
 }
 
-/* the header's LinkedIn and Copy email icons (Elleta, 4 Oct 2026,
-   hero v3 lock): 44px targets, ink, the inset wash on hover like a
-   current nav link */
+/* the header's controls are one family (18e, 4 Oct 2026): LinkedIn,
+   Copy email, the theme toggle and the phone menu button are each a
+   44px round target on the card surface with the toggle's border, a
+   20px glyph, the same hover and the same 8px gap */
 .nav-icon {
   display: inline-grid;
   place-items: center;
   width: var(--spacing-touch-target);
   height: var(--spacing-touch-target);
-  border: 0;
+  padding: 0;
+  border: 1px solid var(--color-border-medium);
   border-radius: var(--radius-full);
-  background: transparent;
+  background: var(--color-card);
   color: var(--color-ink);
   cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease-out);
+  transition: border-color var(--dur-fast) var(--ease-out);
 }
 
 .nav-icon:hover {
-  background: var(--color-semantic-surface-inset);
+  border-color: var(--color-ink-muted);
+}
+
+/* the menu button is the phone's: gone from lg, where the links show */
+@media (min-width: 1024px) {
+  .nav-icon--menu {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2477,7 +2486,7 @@ body:has(main.site-ground-page) {
 
 .contact-actions--icons {
   display: flex;
-  gap: 0;
+  gap: var(--spacing-2);
 }
 
 /* ─── Corner-bracket cursor (18 Sep 2026) ───────────────────────

@@ -117,7 +117,7 @@ export default function OverlayNav() {
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
             onMouseLeave={() => setTriggerHovered(false)}
-            className="lg:hidden pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--color-border-medium)] bg-[color:var(--color-glass)] text-[color:var(--color-ink)] shadow-[var(--shadow-soft)] transition-all duration-[var(--dur-fast)] hover:bg-[color:var(--color-glass-strong)]"
+            className="nav-icon nav-icon--menu pointer-events-auto relative"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="overlay-menu"
