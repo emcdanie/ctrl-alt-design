@@ -1,0 +1,514 @@
+/* Drift figures 2, 3 and 9, drawn at their 1440 design size inside the
+   figure stage and scaled to fit (ScaledArt). Pictures only: kit type sits
+   below the site floors by design (CLAUDE.md section 1, pictures only).
+   Neutrals read the semantic tokens so each picture follows the theme. */
+
+.root {
+  /* the art carries a --spacing-8 (32) bleed so card shadows are not
+     clipped by ScaledArt's overflow; the root pulls it back out to the
+     stage edge at the same scale the art is drawn (32 of the art's
+     unbleed width, --art-w, read as a share of the stage width) */
+  margin: calc(-100% * 32 / var(--art-w));
+}
+
+.bleed {
+  padding: var(--spacing-8);
+}
+
+/* ---------- Figure 2: survey ---------- */
+
+.survey {
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--spacing-8) + var(--spacing-1)) var(--spacing-10) var(--spacing-5);
+  border-radius: var(--radius-xl);
+}
+
+.surveyHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--spacing-4);
+}
+
+.surveyEyebrow {
+  font-family: var(--font-code);
+  font-size: 12px;
+  font-weight: var(--typography-font-weight-medium);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  color: var(--color-semantic-text-secondary);
+}
+
+.surveyMeta {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--color-semantic-text-secondary);
+}
+
+.finding {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-5);
+  padding: calc(var(--spacing-4) + 2px) 0;
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.findingNum {
+  width: 16px;
+  font-family: var(--font-code);
+  font-size: 13px;
+  font-weight: var(--typography-font-weight-medium);
+  line-height: 1.4;
+  color: var(--color-semantic-text-secondary);
+}
+
+.findingLine {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: 26px;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.findingLead {
+  font-weight: var(--typography-font-weight-semibold);
+  letter-spacing: -0.015em;
+  color: var(--color-semantic-text-primary);
+}
+
+.findingWord {
+  color: var(--color-semantic-text-secondary);
+}
+
+.findingStop {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.findingMark {
+  padding: 0 calc(var(--spacing-1) + 2px);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-semantic-accent) 42%, var(--color-semantic-surface));
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--color-semantic-text-primary);
+}
+
+/* ---------- Figure 3: 17 buttons ---------- */
+
+.buttonsArt {
+  position: relative;
+  width: 928px;
+  height: 371px;
+}
+
+.auditCard {
+  position: absolute;
+  top: 14.97px;
+  left: 190.84px;
+  width: 561.29px;
+  height: 353.58px;
+}
+
+.auditHead {
+  position: absolute;
+  top: 29.94px;
+  left: 29.94px;
+  width: 501.42px;
+  height: 31.1px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.auditTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: 20px;
+  font-weight: var(--typography-font-weight-semibold);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--color-semantic-text-primary);
+}
+
+.auditCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 31.7px;
+  height: 23.74px;
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-danger-subtle);
+  color: var(--color-semantic-danger-text);
+  font-size: 13px;
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.auditFilter {
+  display: inline-flex;
+  align-items: center;
+  height: 31.1px;
+  padding: 0 var(--spacing-3);
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  color: var(--color-semantic-text-secondary);
+  white-space: nowrap;
+}
+
+.auditButtons {
+  position: absolute;
+  top: 87.23px;
+  left: 29.94px;
+  width: 501.42px;
+  height: 236.42px;
+}
+
+.drifted {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+
+.kept {
+  position: absolute;
+  top: 126.19px;
+  left: 230.52px;
+  width: 104.42px;
+  height: 43.45px;
+}
+
+.keptButton {
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+}
+
+.keptBadge {
+  position: absolute;
+  top: -20.58px;
+  left: 91.68px;
+  width: 33.68px;
+  height: 33.68px;
+}
+
+.auditFail {
+  position: absolute;
+  top: 0;
+  left: 725.94px;
+  width: 33.68px;
+  height: 33.68px;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.arrowHead {
+  stroke-dasharray: none;
+}
+
+.calloutSlot {
+  position: absolute;
+  display: flex;
+  height: 39.58px;
+}
+
+.calloutSlot[data-side="left"] {
+  left: 0;
+}
+
+.calloutSlot[data-side="right"] {
+  right: 0;
+}
+
+.callout > span {
+  background: var(--markup-line);
+}
+
+.callout {
+  height: 100%;
+  padding: 0 var(--spacing-4);
+  font-size: 16px;
+}
+
+/* ---------- Figure 9: shipped on the system ---------- */
+
+.shippedArt {
+  position: relative;
+  width: 960px;
+  height: 698px;
+}
+
+.atoms {
+  position: absolute;
+  top: 83.33px;
+  left: 0;
+  width: 264px;
+  height: 468.62px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-6);
+}
+
+.atomsTitle {
+  font-size: 24px;
+  font-weight: var(--typography-font-weight-semibold);
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+  color: var(--color-semantic-text-primary);
+}
+
+.atomsLead {
+  margin-top: var(--spacing-1);
+  font-size: 17px;
+  line-height: 1.3;
+  color: var(--color-semantic-text-body);
+}
+
+.atomRows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-3);
+}
+
+.atomRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 var(--spacing-3) 0 calc(var(--spacing-3) + 2px);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-semantic-surface-inset) 55%, var(--color-semantic-surface));
+}
+
+.atomLabel {
+  font-size: 16px;
+  color: var(--color-semantic-text-body);
+}
+
+.atomInput {
+  width: 120px;
+}
+
+.areas {
+  position: absolute;
+  top: 0;
+  left: 384px;
+  width: 576px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.area {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-3) + 2px);
+  padding: calc(var(--spacing-4) + 2px) var(--spacing-5);
+}
+
+.areaHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 22.75px;
+}
+
+.areaTitle {
+  font-size: 19px;
+  font-weight: var(--typography-font-weight-semibold);
+  letter-spacing: -0.01em;
+  color: var(--color-semantic-text-primary);
+}
+
+.ringed {
+  position: relative;
+  display: inline-flex;
+}
+
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.searchInput {
+  width: 300px;
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  height: 60.28px;
+  padding: 0 var(--spacing-4) 0 var(--spacing-3);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-semantic-surface-inset) 55%, var(--color-semantic-surface));
+}
+
+.carrier {
+  flex: 0 0 auto;
+}
+
+.carrierGround {
+  fill: var(--kit-carrier);
+}
+
+.carrierGlyph {
+  fill: none;
+  stroke: var(--kit-on-action);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.carrierStripe {
+  stroke: var(--color-semantic-accent);
+  stroke-width: 2.4;
+}
+
+.times {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.timesMain {
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-text-primary);
+}
+
+.timesSub {
+  font-size: 14px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.price {
+  font-size: 19px;
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-text-primary);
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  height: 18.6px;
+  align-items: center;
+  font-size: 15px;
+  color: var(--color-semantic-text-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.payRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-top: var(--spacing-3);
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.totalStack {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.totalLabel {
+  font-size: 13px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.totalValue {
+  font-size: 24px;
+  font-weight: var(--typography-font-weight-semibold);
+  letter-spacing: -0.01em;
+  color: var(--color-semantic-text-primary);
+}
+
+.pay {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.secure {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing-1) + 2px);
+  font-size: 14px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.lock {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.users {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-3) + 2px);
+}
+
+.leaderDot {
+  fill: var(--markup-line);
+}
+
+.alsoLive {
+  position: absolute;
+  top: 665px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-2) + 2px);
+  height: 32.6px;
+}
+
+.alsoLabel {
+  margin-right: var(--spacing-1);
+  font-size: 17px;
+  color: var(--color-semantic-text-body);
+}
+
+.alsoChip,
+.alsoNext {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  height: 32.6px;
+  padding: 0 var(--spacing-3);
+  border-radius: var(--radius-pill);
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.alsoChip {
+  border: 1px solid var(--color-semantic-border);
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-primary);
+}
+
+.alsoDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-success);
+}
+
+.alsoNext {
+  background: var(--color-semantic-surface-inset);
+  color: var(--color-semantic-text-secondary);
+}

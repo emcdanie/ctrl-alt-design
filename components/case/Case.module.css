@@ -16,6 +16,12 @@
   margin-inline: auto;
 }
 
+/* the text measure on the body's left edge (Theming's beats) */
+.edge {
+  width: 100%;
+  max-width: var(--case-col-max);
+}
+
 /* ── Hero ── */
 .hero {
   display: flex;
@@ -141,6 +147,24 @@
   gap: var(--case-gap-block);
 }
 
+.signalTags {
+  list-style: none;
+  margin-block: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+}
+
+.signalTag {
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-surface-inset);
+  color: var(--color-semantic-text-secondary);
+  font-size: var(--text-label);
+  line-height: 1.5;
+}
+
 /* ── Beats ── */
 .beat {
   display: flex;
@@ -236,6 +260,10 @@
   position: relative;
   width: 100%;
   overflow: hidden;
+  /* a badge may sit on the picture's edge, into the stage margin
+     (Federated Figure 1): clip, never scroll, 40 out */
+  overflow: clip;
+  overflow-clip-margin: var(--spacing-10);
 }
 
 .scaledInner {
@@ -506,7 +534,29 @@
   width: min(32.5rem, 50%);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--color-semantic-surface-inset);
+}
+
+/* Site v3: "Card covers (Work card, Next case tab) always sit on the
+   Stage grid: the components carry it behind the Cover slot." The
+   .stage::before recipe, drawn on the slot itself. A live cover keeps
+   its slot's design ratio (520x340, 490x260) and is scaled into it. */
+.nextCover,
+.workCover {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse 50% 50% at 50% 50%, transparent 0%, color-mix(in srgb, var(--color-semantic-background) 30%, transparent) 70%, color-mix(in srgb, var(--color-semantic-background) 95%, transparent) 100%),
+    linear-gradient(var(--color-semantic-border) 1px, transparent 1px) 0 0 / var(--spacing-8) var(--spacing-8),
+    linear-gradient(90deg, var(--color-semantic-border) 1px, transparent 1px) 0 0 / var(--spacing-8) var(--spacing-8),
+    var(--color-semantic-background);
+}
+
+.nextCover[data-live] {
+  aspect-ratio: 520 / 340;
+}
+
+.workCover[data-live] {
+  aspect-ratio: 490 / 260;
 }
 
 .nextCover img {
@@ -605,7 +655,6 @@
 .workCover {
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--color-semantic-surface-inset);
 }
 
 .workCover img {
@@ -671,7 +720,11 @@
   scroll-snap-align: start;
 }
 
-.swipeItem img {
+.swipeItem[data-fit] {
+  flex: 0 0 auto;
+}
+
+.swipeItem > img {
   display: block;
   width: 100%;
   height: auto;

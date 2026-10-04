@@ -28,7 +28,8 @@ const external = (href: string, label: string, event: string, icon?: React.React
 export default function SiteFooter() {
   return (
     <footer className="site-footer">
-      <div className="container">
+      {/* on the content edge, x192 at 1440 like every v3 page (Site v3, 4 Oct late) */}
+      <div className="container container--case">
         <Heading tier="section" as="h2" accent="notes" after=".">
           Let&apos;s compare
         </Heading>

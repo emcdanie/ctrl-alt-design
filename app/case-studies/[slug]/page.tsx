@@ -201,7 +201,6 @@ const COMPOSITIONS: Record<string, React.ComponentType<{ cs: CaseStudy }>> = {
   "booking-platform": BookingCase,
   "search-experts": SearchCase,
   checkout: CheckoutCase,
-  theming: ThemingCase,
 };
 
 /* Site v3 (Elleta, 4 Oct 2026): a case rebuilt from the Site v3 frames
@@ -210,6 +209,7 @@ const COMPOSITIONS: Record<string, React.ComponentType<{ cs: CaseStudy }>> = {
 const V3_CASES: Record<string, React.ComponentType> = {
   "design-system-transformation": DriftCase,
   federated: FederatedCase,
+  theming: ThemingCase,
 };
 
 export default async function CaseStudyPage({

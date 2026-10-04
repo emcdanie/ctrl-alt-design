@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { isValidElement, useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
 import { TextLink, textLinkClass } from "@/components/ui/TextLink";
@@ -8,13 +8,42 @@ import Heading from "@/components/ui/Heading";
 import { ResumeLink } from "@/components/ResumeModal";
 import styles from "./Case.module.css";
 
+export type CoverImage = { src: string; width: number; height: number; alt: string };
+
 export type CaseLink = {
   href: string;
-  /** a 2x cover picture and its pixel size */
-  cover: { src: string; width: number; height: number; alt: string };
+  /** a live cover (components/case/pictures/Covers.tsx, drawn for this
+      slot), or a 2x cover picture and its pixel size */
+  cover: ReactNode | CoverImage;
   meta: string;
   title: string;
 };
+
+const isImage = (c: CaseLink["cover"]): c is CoverImage =>
+  typeof c === "object" && c !== null && !isValidElement(c) && "src" in c;
+
+/* A cover slot. Site v3: card covers always sit on the Stage grid, so
+   the slot draws it behind the Cover. A live cover is drawn at the slot's
+   design width (520 Next case, 490 More work) and scaled to the slot's
+   real width through --cover-scale; an image cover just fills it. */
+function CoverSlot({ cover, className, design }: { cover: CaseLink["cover"]; className: string; design: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const live = !isImage(cover);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !live || typeof ResizeObserver === "undefined") return;
+    const fit = () => el.style.setProperty("--cover-scale", String(el.clientWidth / design));
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    fit();
+    return () => ro.disconnect();
+  }, [design, live]);
+  return (
+    <div className={className} ref={ref} data-live={live || undefined}>
+      {isImage(cover) ? <img src={cover.src} width={cover.width} height={cover.height} alt={cover.alt} loading="lazy" decoding="async" /> : cover}
+    </div>
+  );
+}
 
 /* The case end on the v3 template (Figma Next case tab 303:31929, Work card
    compact 299:22226): View CV, the Next case tab, then More work. It sends
@@ -28,8 +57,8 @@ export default function NextCase({
 }: {
   slug: string;
   next: CaseLink;
-  /** the next case's one-line lead */
-  lead: string;
+  /** the next case's one-line lead (parked where no copy is approved) */
+  lead?: string;
   more: CaseLink[];
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -56,13 +85,11 @@ export default function NextCase({
             Next case
           </p>
           <Link className={styles.nextTab} href={next.href} data-umami-event="next-case">
-            <span className={styles.nextCover}>
-              <img src={next.cover.src} width={next.cover.width} height={next.cover.height} alt={next.cover.alt} loading="lazy" decoding="async" />
-            </span>
+            <CoverSlot cover={next.cover} className={styles.nextCover} design={520} />
             <span className={styles.nextText}>
               <span className={styles.cardMeta}>{next.meta}</span>
               <span className={styles.nextTitle}>{next.title}</span>
-              <span className={styles.nextLead}>{lead}</span>
+              {lead ? <span className={styles.nextLead}>{lead}</span> : null}
               <span className={styles.read}>
                 Read the case <Icon name="ArrowRight" size="sm" />
               </span>
@@ -83,9 +110,7 @@ export default function NextCase({
           {more.map((w) => (
             <li key={w.href}>
               <Link className={styles.workCard} href={w.href}>
-                <div className={styles.workCover}>
-                  <img src={w.cover.src} width={w.cover.width} height={w.cover.height} alt={w.cover.alt} loading="lazy" decoding="async" />
-                </div>
+                <CoverSlot cover={w.cover} className={styles.workCover} design={490} />
                 <div className={styles.workText}>
                   <p className={styles.cardMeta}>{w.meta}</p>
                   <p className={styles.workTitle}>{w.title}</p>

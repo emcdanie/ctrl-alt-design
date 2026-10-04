@@ -24,7 +24,7 @@ const ROUTES = [
    A route joins in the commit that rebuilds it (CLAUDE.md section 3,
    Migration) and is then held to the v3 locks by the leg at the end of
    the route loop. */
-const V3_ROUTES = ["/case-studies/design-system-transformation", "/case-studies/federated"];
+const V3_ROUTES = ["/case-studies/design-system-transformation", "/case-studies/federated", "/case-studies/theming"];
 const CARD_SCOPE = '[class*="card"], [class*="Card"], .thesis-band, .ds-gate__row, [role="dialog"]';
 /* The metadata tier stays exempt (Elleta's ruling, 2026-07-27): tags,
    pills, eyebrows, kickers and chips are a deliberate separate tier on

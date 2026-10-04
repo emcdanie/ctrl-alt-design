@@ -221,6 +221,45 @@ body {
   --kit-ramp-900: #232c6e;
   --markup-line: #8a8fa3;
   --markup-red: #b5323a;
+  /* Drift figure 9: the invented carrier's mark */
+  --kit-carrier: #115b62;
+  /* Covers (Site v3, Next case and More work slots): picture-only
+     colours that do not follow the theme. The three client brands on the
+     Theming cover, the invented carrier mark, and the controls that sit
+     on a photo. Never site chrome. */
+  --cover-brand-ink: #1d2030;
+  --cover-brand-on: #ffffff;
+  --cover-brand-tint: #f6c9a8;
+  --cover-brand-a: #1d2030;
+  --cover-brand-a-ground: #f6f7f9;
+  --cover-brand-a-deep: #121212;
+  --cover-brand-b: #3e7a3c;
+  --cover-brand-b-ground: #eef5ec;
+  --cover-brand-b-tint: #cfe8dc;
+  --cover-brand-c: #b04a2f;
+  --cover-brand-c-ground: #fbefe9;
+  --cover-carrier: #0f5c63;
+  --cover-carrier-stripe: #f2c14e;
+  --cover-on-photo: #ffffff;
+  --cover-on-photo-ink: #121212;
+  --cover-photo-scrim: #121212a6;
+  /* Federated product pictures (F4, sampled from the Site v3 frame):
+     the slot markup, the last-units mark and the product swatches */
+  --markup-slot: #b1518d;
+  --kit-stock: #b1552e;
+  --kit-stock-on-dark: #e39a72; /* the last-units text on a dark page */
+  --kit-swatch-black: #1f1f21;
+  --kit-swatch-taupe: #8f7f72;
+  --kit-swatch-sand: #ded6cd;
+  --kit-swatch-blue: #3d6ed8;
+  --kit-swatch-beige: #d0c0a1;
+  --kit-swatch-white: #f3f4f1;
+  --kit-swatch-ecru: #e8e4d3;
+  --kit-swatch-grey: #9a9ca2;
+  --kit-swatch-brown: #7c6b55;
+  --kit-swatch-red: #b3272f;
+  --kit-swatch-pink: #da8f98;
+  --kit-swatch-green: #5e8a5e;
   /* display tokens alias the BELLA heading scale (set below; TODO: move
      the values into BELLA component.heading.* and delete the override) */
   --text-display-1: var(--component-heading-page-font-size);
@@ -550,6 +589,9 @@ body {
   /* dark primary hover brightens the light plate to white; BELLA's dark
      hover stop (#cdcdcd) darkens it, which reads as dimming (18m) */
   --btn-key-primary-hover: var(--color-light-bg);
+  /* the markup red on dark (Federated pictures, site v3): #b5323a sat at
+     2.65:1 on the dark danger wash; BELLA's dark danger text reads AA */
+  --markup-red: var(--color-semantic-danger-text);
 }
 
 /* Dark overrides live on BODY, not html: var() inside a custom property

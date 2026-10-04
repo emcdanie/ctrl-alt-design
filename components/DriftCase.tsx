@@ -1,7 +1,9 @@
 import { CasePage, Beat, BeatText, CaseQuote, Lessons } from "@/components/case/CasePage";
 import CaseFigure from "@/components/case/CaseFigure";
 import CasePicture from "@/components/case/CasePicture";
+import { DriftButtons, DriftShipped, DriftSurvey } from "@/components/case/pictures/DriftPictures";
 import NextCase from "@/components/case/NextCase";
+import { CoverAtlas, CoverBrands, CoverSearch } from "@/components/case/pictures/Covers";
 import { ZoomLevels, TokenCascade, Rollout, Staircase } from "@/components/case/DriftFigures";
 
 /* From Drift to Foundation (Site v3, Elleta, 4 Oct 2026): the case rebuilt
@@ -54,28 +56,15 @@ export default function DriftCase() {
         heading="It felt complicated. The numbers said why."
         lead="The drift was structural. Every vertical solved the same need its own way, with no shared language. I interviewed customer success and sales to turn “it looks inconsistent” into evidence."
       >
-        <CaseFigure n={2} bare caption="Four answers in words, not percentages: from my own interviews, not customer data.">
-          <CasePicture
-            src={`${IMG}/f2-survey.webp`}
-            phone={`${IMG}/f2-survey-390.webp`}
-            width={2112}
-            height={988}
-            alt="What support and sales told me, from my survey of 28 people: most had walked a customer through a booking; more than half said changing a booking was hard; more than 4 in 10 had lost a booking to complexity; more than half spent an hour or more a week helping customers book."
-          />
+        <CaseFigure n={2} caption="Four answers in words, not percentages: from my own interviews, not customer data.">
+          <DriftSurvey />
         </CaseFigure>
         <BeatText>Then I counted. Seventeen buttons did one job. The filter chip was built four ways, which broke sort and empty states.</BeatText>
         <CaseFigure
           n={3}
-          bare
           caption="Seventeen near-identical buttons from one product: 8 corner radii, 2 fonts, 4 heights. The ringed one is the one the system kept. Recreated."
         >
-          <CasePicture
-            src={`${IMG}/f3-buttons.webp`}
-            phone={`${IMG}/f3-buttons-390.webp`}
-            width={2112}
-            height={1016}
-            alt="Buttons in production: 17 buttons that all mean 'book a stay', labelled for their differences: square corners, no radius at all, all caps, full pill, a second font, light weight and pale. One is ringed as the one the system kept."
-          />
+          <DriftButtons />
         </CaseFigure>
       </Beat>
 
@@ -139,14 +128,8 @@ export default function DriftCase() {
         <CaseFigure n={8} replay inset caption="Each step is a product area shipped on the system. Order as on my list; not to scale.">
           <Staircase />
         </CaseFigure>
-        <CaseFigure n={9} bare caption="A handful of small parts builds every product area. Recreated with BELLA; no client screens.">
-          <CasePicture
-            src={`${IMG}/f9-shipped.webp`}
-            phone={`${IMG}/f9-shipped-390.webp`}
-            width={2112}
-            height={1620}
-            alt="Atoms, small parts designed once (input, chip, button, avatar, tag), wired to the product areas they build: Search, Checkout and payment, and Users and roles, each marked Live. Also live on the system: Design system, Flights, Cars. Next: flight extras, nearly done."
-          />
+        <CaseFigure n={9} caption="A handful of small parts builds every product area. Recreated with BELLA; no client screens.">
+          <DriftShipped />
         </CaseFigure>
         <CaseQuote
           quote="I used Figma Make to prototype components and whole flows, so developers found the gaps before the sprint instead of halfway through it. What I kept out: the decisions. What ships and what things are called were settled with the team, not generated."
@@ -177,7 +160,7 @@ export default function DriftCase() {
           href: "/case-studies/theming",
           meta: "B2B travel · Theming",
           title: "One system, many brands",
-          cover: { src: `${IMG}/next-federated.webp`, width: 1040, height: 680, alt: "One Button in three client themes, Brand A, B and C: one Button, three themes, zero forks." },
+          cover: <CoverBrands slot="next" label="One Button in three client themes, Brand A, B and C: one Button, three themes, zero forks." />,
         }}
         lead="How the same components wear each client’s brand without forking the code."
         more={[
@@ -185,13 +168,13 @@ export default function DriftCase() {
             href: "/case-studies/chip",
             meta: "AI · Design systems",
             title: "CHIP: an agent that catches drift",
-            cover: { src: `${IMG}/work-chip.webp`, width: 980, height: 520, alt: "CHIP reviewing checkout: found 14 hard-coded colours outside tokens, with the fix as a diff and Approve or Reject." },
+            cover: <CoverAtlas slot="work" label="CHIP's Atlas view of the FilterChip: six parts pinned on the anatomy stage, bottom layer first, with 'checks 6 of 6 pass'." />,
           },
           {
             href: "/case-studies/search-experts",
             meta: "B2B travel · Product",
             title: "Search for experts",
-            cover: { src: `${IMG}/work-search.webp`, width: 980, height: 520, alt: "A flight search result: Lisbon to Amsterdam, a direct morning flight at €89 with Select." },
+            cover: <CoverSearch slot="work" label="A flight search result: Lisbon to Amsterdam, a direct morning flight at €89 with Select." />,
           },
         ]}
       />

@@ -12,6 +12,7 @@
 }
 
 .theme[data-mode="federated"] {
+  --kit-chip-ink: var(--color-semantic-text-primary);
   --kit-action: var(--color-semantic-text-primary);
   --kit-action-subtle: var(--color-semantic-surface-inset);
   --kit-on-action: var(--color-semantic-text-inverse);
@@ -71,7 +72,9 @@
 
 .chip[data-selected] {
   background: var(--kit-action-subtle);
-  color: var(--kit-ramp-700);
+  /* federated mode's subtle fill is surface-inset, which goes dark in
+     dark mode: its chip ink follows the text instead of the indigo */
+  color: var(--kit-chip-ink, var(--kit-ramp-700));
 }
 
 .chip:not([data-selected]) {

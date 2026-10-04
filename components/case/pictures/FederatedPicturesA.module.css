@@ -1,0 +1,653 @@
+/* Federated, Figures 1 to 3 (Site v3). Pictures only: drawn at the 1440
+   frame's size inside the stage (928 wide) and scaled by ScaledArt, so
+   positions are the frame's own (x and y from the stage's content edge).
+   Colours read the semantic tokens and the picture tokens (--kit-*,
+   --markup-*), so the pictures follow the theme. Kit type sits below the
+   site floors by design (CLAUDE.md section 1, pictures only). */
+
+.pic {
+  color: var(--color-semantic-text-primary);
+  text-align: left;
+}
+
+.pic p {
+  margin: 0;
+}
+
+.miss {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.leaderRed {
+  fill: none;
+  stroke: var(--markup-red);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+
+.dotRed {
+  fill: var(--markup-red);
+}
+
+.leaderGrey {
+  fill: none;
+  stroke: var(--markup-line);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+
+.stack {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.stack > img {
+  box-shadow: 0 0 0 2px var(--color-semantic-surface);
+}
+
+.stack[data-size="28"] > img + img {
+  margin-left: calc(var(--spacing-2) * -1);
+}
+
+.stack[data-size="26"] > img + img {
+  margin-left: calc(var(--spacing-2) * -1);
+}
+
+/* ── Figure 1 ── */
+.f1 {
+  position: relative;
+  width: 928px;
+  height: 503px;
+}
+
+.f1 > * {
+  position: absolute;
+}
+
+.colLabel {
+  top: 0;
+  font-size: 18px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 25px;
+}
+
+.f1LabelBefore {
+  left: 0;
+}
+
+.f1LabelAfter {
+  left: 496px;
+}
+
+.f1Chat {
+  left: 4px;
+  top: 106px;
+  width: 422px;
+  transform: rotate(-1.5deg);
+}
+
+.f1Desk {
+  left: 496px;
+  top: 102px;
+  width: 432px;
+}
+
+.f1BadgeFail {
+  left: 390px;
+  top: 70px;
+}
+
+.f1BadgePass {
+  left: 898px;
+  top: 70px;
+}
+
+.f1Leaders {
+  left: 0;
+  top: 0;
+  overflow: visible;
+}
+
+.f1Note1 {
+  left: 0;
+  top: 465px;
+}
+
+.f1Note2 {
+  left: 226px;
+  top: 457px;
+}
+
+.chat,
+.desk {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-6);
+  border-radius: var(--radius-xl);
+}
+
+.chat {
+  gap: var(--spacing-1);
+}
+
+.desk {
+  gap: var(--spacing-4);
+}
+
+.panelTitle {
+  font-size: 18px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 24px;
+}
+
+.chat .panelTitle {
+  padding-bottom: var(--spacing-3);
+}
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+}
+
+.msgName {
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 24px;
+}
+
+.msgText {
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-semantic-text-body);
+}
+
+.hosts {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.hosts .stack {
+  margin-right: calc(var(--spacing-1) / 2);
+}
+
+.agenda {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  font-size: 16px;
+  line-height: 22px;
+}
+
+/* Figure 1 at 390: restacked, the labels with their badges above each panel */
+.f1Phone {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.phoneLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: 16px;
+  line-height: 21px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.f1PhoneChat {
+  margin-block: var(--spacing-2);
+  transform: rotate(-1.5deg);
+}
+
+.phoneNotes {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
+}
+
+/* ── Figure 2 ── */
+.f2 {
+  position: relative;
+  width: 928px;
+  height: 628px;
+}
+
+.f2 > * {
+  position: absolute;
+}
+
+.f2Lines {
+  left: 0;
+  top: 0;
+}
+
+.manager {
+  left: 328px;
+  top: 0;
+  width: 272px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4);
+  border-radius: var(--radius-xl);
+}
+
+.group {
+  top: 134px;
+  height: 252px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: calc(var(--spacing-3) + 2px);
+  padding: calc(var(--spacing-5) + 2px);
+  border-radius: var(--radius-xl);
+}
+
+.partners {
+  left: 0;
+  width: 272px;
+}
+
+.team {
+  left: 296px;
+  width: 336px;
+  gap: var(--spacing-4);
+  border: 2px solid var(--color-semantic-accent);
+}
+
+.engineering {
+  left: 656px;
+  width: 272px;
+}
+
+.accent {
+  display: block;
+  width: 40px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-accent);
+  flex: 0 0 auto;
+}
+
+.groupHead {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.groupIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--color-semantic-surface-inset);
+  color: var(--color-semantic-text-primary);
+  flex: 0 0 auto;
+}
+
+.groupTitle {
+  display: block;
+  font-size: 18px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 24px;
+}
+
+.groupSub {
+  display: block;
+  margin-top: 2px;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.partner {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--color-semantic-text-body);
+}
+
+.people {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.person {
+  width: 66px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.lead {
+  box-shadow: 0 0 0 3px var(--color-semantic-accent);
+}
+
+.grey {
+  filter: grayscale(1);
+}
+
+.platform {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 26px;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.squads {
+  left: 0;
+  top: 442px;
+  width: 928px;
+  height: 186px;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-3) + 2px);
+  padding: var(--spacing-5);
+  border-radius: var(--radius-xl);
+}
+
+.squadsHead {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--spacing-2) + 2px);
+}
+
+.squadsSub {
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.squadList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--spacing-2) + 2px);
+}
+
+.squad {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  height: 40px;
+  padding: calc(var(--spacing-1) + 2px) calc(var(--spacing-3) + 2px) calc(var(--spacing-1) + 2px) calc(var(--spacing-1) + 2px);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-background);
+  font-size: 16px;
+  line-height: 22px;
+}
+
+/* ── Figure 3 ── */
+.f3 {
+  padding-top: var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  width: 928px;
+}
+
+.versions {
+  display: flex;
+  gap: calc(var(--spacing-10) + var(--spacing-1));
+}
+
+.version {
+  position: relative;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+}
+
+.card {
+  width: 280px;
+  height: 487px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-xl);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.card[data-draft] {
+  border-radius: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.photo {
+  position: relative;
+  display: block;
+  width: 256px;
+  height: 320px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.photo[data-square] {
+  border-radius: 0;
+}
+
+.photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.close {
+  position: absolute;
+  top: var(--spacing-2);
+  right: var(--spacing-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-primary);
+}
+
+.closeSmall {
+  position: absolute;
+  top: var(--spacing-2);
+  right: var(--spacing-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-primary);
+}
+
+.discount {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--markup-red);
+  color: var(--color-semantic-surface);
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.3;
+}
+
+.cardTitle {
+  font-size: 16px;
+  line-height: 21px;
+}
+
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.caps {
+  text-transform: uppercase;
+  font-weight: var(--typography-font-weight-bold);
+}
+
+.strong {
+  font-weight: var(--typography-font-weight-semibold);
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-2);
+  font-size: 16px;
+  line-height: 21px;
+}
+
+.sale {
+  font-size: 18px;
+  line-height: 23px;
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-danger-text);
+}
+
+.was {
+  color: var(--color-semantic-text-secondary);
+  text-decoration: line-through;
+}
+
+.off {
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--color-semantic-danger-text);
+}
+
+.plain,
+.meta {
+  font-size: 16px;
+  line-height: 21px;
+}
+
+.meta {
+  color: var(--color-semantic-text-secondary);
+}
+
+.full {
+  font-size: 18px;
+  line-height: 23px;
+  font-weight: var(--typography-font-weight-bold);
+}
+
+/* "last units": the product's stock colour, between its sale red and ochre */
+.stock {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-1) + 2px);
+  font-size: 16px;
+  line-height: 21px;
+  color: color-mix(in srgb, var(--color-semantic-danger-text) 70%, var(--color-semantic-accent-hover));
+}
+
+.stockDot {
+  width: 5px;
+  height: 5px;
+  background: currentColor;
+}
+
+.passBadge {
+  position: absolute;
+  left: 254px;
+  top: 18px;
+}
+
+.popover {
+  position: absolute;
+  left: 20px;
+  top: 300px;
+  width: 240px;
+  padding: calc(var(--spacing-2) + 2px) calc(var(--spacing-3) + 2px);
+  border-radius: var(--radius-md);
+  background: var(--color-semantic-background-inverse);
+  color: var(--color-semantic-text-inverse);
+  font-size: 16px;
+  line-height: 21px;
+}
+
+.caret {
+  position: absolute;
+  left: 60px;
+  top: 362px;
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 8px solid var(--color-semantic-background-inverse);
+}
+
+.marker {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+  background: var(--markup-red);
+  box-shadow: 0 0 0 2px var(--color-semantic-surface);
+  color: var(--color-semantic-surface);
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1;
+}
+
+.m3 {
+  left: 214px;
+  top: 46px;
+}
+
+.m1 {
+  left: 268px;
+  top: 381px;
+}
+
+.m2 {
+  left: 268px;
+  top: 449px;
+}
+
+.m4 {
+  left: -12px;
+  top: 421px;
+}
+
+.legend {
+  display: flex;
+  gap: var(--spacing-3);
+}
+
+/* Figure 3 at 390: one live card per swipe screen, its markers kept inside */
+/* (the track is about 300 wide: each card keeps room only on the side
+   its markers stand out) */
+.swipeCard {
+  padding-inline-end: var(--spacing-3);
+}
+
+.swipeCardStart {
+  padding-inline-start: var(--spacing-3);
+}

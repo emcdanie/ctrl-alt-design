@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Exhibit from "@/components/diagrams/Exhibit";
+import { useFigurePlay } from "@/components/case/CaseFigure";
 import s from "@/components/ThemingCase.module.css";
 
 const STEPS: [string, string][] = [
@@ -30,7 +30,7 @@ const VY = STEPS.map((_, i) => 12 + i * 80);
 
 /* BELLA's pipeline: a token (the chip marked "action") hops from step
  * to step; each step lights as it arrives, the gate turns mint with a
- * tick, and the drawing holds on ship. Plays once in view (Exhibit),
+ * tick, and the drawing holds on ship. Plays once in view (CaseFigure),
  * replay restarts it; reduced motion shows that finished frame. */
 export default function Pipeline() {
   const [pos, setPos] = useState(0);
@@ -71,11 +71,19 @@ export default function Pipeline() {
     });
   }, []);
 
+  /* plays when its case figure comes into view, restarts on Replay
+     (CaseFigure's play context; Site v3) */
+  const { playing, run } = useFigurePlay();
+  useEffect(() => {
+    if (!playing || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    play();
+  }, [playing, run, play]);
+
   const cls = (i: number) =>
     [s.nd, lit === i ? s.lit : "", passed && i === GATE ? s.pass : ""].filter(Boolean).join(" ");
 
   return (
-    <Exhibit className={s.pipe} replayLabel="Replay the pipeline animation" onPlay={play}>
+    <div className={s.pipe}>
       <svg className={s.pipeWide} viewBox="0 0 880 150" data-bella-diagram role="img" aria-label={LABEL}>
         <path className={s.ln} d={`M${XS[0] + W / 2} 62 H${XS[4] + W / 2}`} />
         {STEPS.map(([a, b], i) => (
@@ -126,6 +134,6 @@ export default function Pipeline() {
           <circle className={s.tokc} cx="24" cy={VY[0] + VH / 2} r="7" />
         </g>
       </svg>
-    </Exhibit>
+    </div>
   );
 }

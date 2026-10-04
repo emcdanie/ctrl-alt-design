@@ -858,3 +858,210 @@
 @media (prefers-reduced-motion: reduce) {
   .tokMove { transition: none; }
 }
+
+/* ── Site v3 (4 Oct 2026, Figma 420:12279): the case on the template ── */
+
+/* decisions: three cells on the body edge, an ochre dot each */
+.cells {
+  list-style: none;
+  margin-block: 0;
+  padding: 0;
+  max-width: var(--case-col-max);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
+
+.cells li {
+  position: relative;
+  padding-left: var(--spacing-5);
+}
+
+.cells li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: var(--spacing-2);
+  height: var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-accent);
+}
+
+.cells b {
+  display: block;
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-text-primary);
+}
+
+.cells p {
+  margin-block: var(--spacing-1) 0;
+  font-size: var(--typography-font-size-body);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-semantic-text-body);
+}
+
+/* the rules: number, title, line; no rules between them */
+.rules {
+  max-width: var(--case-col-max);
+  gap: var(--spacing-5);
+  border-top: 0;
+}
+
+.rules li {
+  grid-template-columns: var(--spacing-8) 1fr;
+  padding: 0;
+  border-bottom: 0;
+}
+
+.rules span {
+  padding-top: 0;
+  font-family: inherit;
+  font-size: var(--text-label);
+  font-feature-settings: normal;
+  color: var(--color-semantic-text-secondary);
+  line-height: 1.6;
+}
+
+.rules b {
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-text-primary);
+}
+
+.rules div p {
+  margin-block: var(--spacing-1) 0;
+  max-width: none;
+  font-size: var(--typography-font-size-body);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-semantic-text-body);
+}
+
+/* a code window drawn dark in both themes (the repo excerpts) */
+.winDark {
+  border-color: var(--color-semantic-background-inverse);
+  background: var(--color-semantic-background-inverse);
+  color: var(--color-semantic-text-inverse);
+}
+
+.winDark header {
+  background: color-mix(in srgb, var(--color-semantic-text-inverse) 8%, var(--color-semantic-background-inverse));
+  border-bottom-color: transparent;
+}
+
+.winDark .winPath,
+.winDark .k,
+.winDark .r,
+.winDark .v,
+.winDark .c {
+  color: var(--color-semantic-text-inverse);
+}
+
+.repo .code {
+  gap: var(--spacing-2);
+}
+
+.repo .say {
+  margin-block: 0 var(--spacing-4);
+  padding: 0;
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-semantic-text-body);
+}
+
+/* Figure 3: the Storybook semantic table, light beside dark */
+.sbFrame {
+  width: 100%;
+}
+
+.sbPair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+}
+
+.sbTable {
+  list-style: none;
+  margin-block: 0;
+  padding: 0;
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-md);
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-primary);
+}
+
+.sbTable li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.sbTable li:first-child {
+  border-top: 0;
+}
+
+.sbTable code {
+  font-family: var(--font-code);
+  font-size: var(--text-label);
+}
+
+.sbHex {
+  margin-left: auto;
+  color: var(--color-semantic-text-secondary);
+}
+
+/* the dark answer stays dark in both themes: it is the dark theme's table */
+.sbDark {
+  border-color: var(--color-semantic-background-inverse);
+  background: var(--color-semantic-background-inverse);
+  color: var(--color-semantic-text-inverse);
+}
+
+.sbDark li {
+  border-top-color: color-mix(in srgb, var(--color-semantic-text-inverse) 14%, transparent);
+}
+
+.sbDark .sbHex {
+  color: var(--color-semantic-text-inverse);
+}
+
+.sbSwatch {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-semantic-border-strong);
+  flex: 0 0 auto;
+}
+
+.sbNote {
+  margin-block: var(--spacing-2) 0;
+  font-family: var(--font-code);
+  font-size: var(--text-label);
+  color: var(--color-semantic-text-secondary);
+}
+
+/* Figure 8: the card in four themes, each named under it */
+.stripItem {
+  min-width: 0;
+}
+
+.stripLabel {
+  margin-block: var(--spacing-2) 0;
+  font-family: var(--font-code);
+  font-size: var(--text-label);
+  color: var(--color-semantic-text-secondary);
+}
+
+@media (max-width: 639px) {
+  .sbPair {
+    grid-template-columns: 1fr;
+  }
+}
+
+.winDark .r {
+  padding: 0;
+  background: transparent;
+}

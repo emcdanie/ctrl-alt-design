@@ -18,6 +18,7 @@ export function CasePage({
   results,
   resultSize = "section",
   facts,
+  tags,
   cover,
   children,
 }: {
@@ -25,12 +26,15 @@ export function CasePage({
   kicker: string;
   title: string;
   lead: string;
-  results: { n: string; label: string }[];
+  /** none on a case whose facts carry it (Theming, CHIP) */
+  results?: { n: string; label: string }[];
   /** one size per page: Display/Page or Display/Section */
   resultSize?: "page" | "section";
   facts: { label: string; value: string }[];
-  /** Figure 1, the cover */
-  cover: ReactNode;
+  /** signal tags under the facts (Theming) */
+  tags?: string[];
+  /** Figure 1, the cover; some cases open without one */
+  cover?: ReactNode;
   /** the beats, the reflection and the case end */
   children: ReactNode;
 }) {
@@ -48,6 +52,7 @@ export function CasePage({
           <p className={styles.lead}>{lead}</p>
         </header>
 
+        {results?.length ? (
         <ul className={styles.results} aria-label="Results">
           {results.map((r) => (
             <li key={r.n + r.label} className={styles.result}>
@@ -59,6 +64,7 @@ export function CasePage({
             </li>
           ))}
         </ul>
+        ) : null}
 
         <div className={styles.overview}>
           <dl className={`${styles.facts} ${styles.col}`}>
@@ -69,6 +75,15 @@ export function CasePage({
               </div>
             ))}
           </dl>
+          {tags?.length ? (
+            <ul className={`${styles.signalTags} ${styles.col}`} aria-label="This case is evidence for">
+              {tags.map((t) => (
+                <li key={t} className={styles.signalTag}>
+                  {t}
+                </li>
+              ))}
+            </ul>
+          ) : null}
           {cover}
         </div>
 
@@ -87,6 +102,7 @@ export function Beat({
   heading,
   lead,
   leadSize = "lead",
+  align = "col",
   children,
 }: {
   id: string;
@@ -96,11 +112,14 @@ export function Beat({
   lead?: string;
   /** Body/Lead (22, Drift) or Body/Base (20, Federated): the frames differ */
   leadSize?: "lead" | "base";
+  /** the header on the text column (Drift, Federated) or on the body's
+   *  left edge (Theming's frame) */
+  align?: "col" | "edge";
   children?: ReactNode;
 }) {
   return (
     <section className={styles.beat} aria-labelledby={`${id}-h`}>
-      <div className={`${styles.beatHeader} ${styles.col}`}>
+      <div className={`${styles.beatHeader} ${align === "edge" ? styles.edge : styles.col}`}>
         <p className={styles.beatLabel}>
           <span className={styles.badge}>{num}</span>
           {label}

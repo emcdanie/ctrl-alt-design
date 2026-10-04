@@ -140,3 +140,9 @@ export default function CaseFigure({
     </figure>
   );
 }
+
+/** restarts its children on Replay (a live exhibit that runs its own loop) */
+export function ReplayKey({ children }: { children: ReactNode }) {
+  const { run } = useFigurePlay();
+  return <div key={run}>{children}</div>;
+}
