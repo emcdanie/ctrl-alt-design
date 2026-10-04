@@ -60,7 +60,9 @@
   cursor: pointer;
   transition: border-color 0.2s;
 }
-.chip:hover { border-color: var(--ink); }
+@media (hover: hover) and (pointer: fine) {
+  .chip:hover { border-color: var(--ink); }
+}
 .note {
   max-width: var(--measure-body);
   margin-top: var(--spacing-5);
@@ -728,7 +730,10 @@
   text-align: left;
   cursor: pointer;
 }
-.mtr:hover, .mtr[aria-pressed="true"] { background: var(--bg); }
+.mtr[aria-pressed="true"] { background: var(--bg); }
+@media (hover: hover) and (pointer: fine) {
+  .mtr:hover { background: var(--bg); }
+}
 .mtr b { font-weight: 500; }
 .tr {
   display: grid;

@@ -76,9 +76,9 @@
   padding: calc(var(--spacing-1) + 2px) var(--spacing-3) calc(var(--spacing-1) + 2px) calc(var(--spacing-1) + 2px);
   background: var(--color-semantic-background);
 }
-.th:hover,
-.play:hover,
-.askPause:hover { border-color: var(--color-ink); }
+@media (hover: hover) and (pointer: fine) {
+  .th:hover, .play:hover, .askPause:hover { border-color: var(--color-ink); }
+}
 .th[aria-pressed="true"] {
   border-color: var(--color-ink);
   box-shadow: inset 0 0 0 1px var(--color-ink);
@@ -212,13 +212,21 @@
 }
 .mapRow span { min-width: 0; overflow-wrap: anywhere; }
 .mapRow em { font-style: normal; color: var(--color-ink-muted); }
-.mapRow:hover,
 .mapRow.hot {
   background: var(--color-chip-c1);
   color: var(--color-chip-text);
 }
-.mapRow:hover em,
+
+@media (hover: hover) and (pointer: fine) {
+  .mapRow:hover {
+    background: var(--color-chip-c1);
+    color: var(--color-chip-text);
+  }
+}
 .mapRow.hot em { color: var(--color-chip-text); }
+@media (hover: hover) and (pointer: fine) {
+  .mapRow:hover em { color: var(--color-chip-text); }
+}
 
 /* the gate: contrast on a log scale, 1 to 21 */
 .gate { display: grid; gap: var(--spacing-2); }

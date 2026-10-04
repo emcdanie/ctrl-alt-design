@@ -77,8 +77,10 @@
   border-bottom: none;
 }
 
-.table tbody tr:hover {
-  background: var(--color-semantic-accent-subtle);
+@media (hover: hover) and (pointer: fine) {
+  .table tbody tr:hover {
+    background: var(--color-semantic-accent-subtle);
+  }
 }
 
 /* ── Skills x projects matrix (§8) ── */
@@ -108,8 +110,10 @@
   font-feature-settings: var(--mono-feature);
 }
 
-.mxHead:hover {
-  color: var(--color-accent-ink);
+@media (hover: hover) and (pointer: fine) {
+  .mxHead:hover {
+    color: var(--color-accent-ink);
+  }
 }
 
 .mxHead[aria-pressed="true"] {
@@ -359,7 +363,9 @@
 }
 /* the section label draws the section's one rule; the first row adds none */
 .index > li:first-child .row { border-top: 0; }
-.row:hover { transform: translateY(-2px); }
+@media (hover: hover) and (pointer: fine) {
+  .row:hover { transform: translateY(-2px); }
+}
 .row:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: var(--ring-focus-offset);
@@ -378,7 +384,9 @@
   height: auto;
   transition: transform 0.4s var(--motion-easing-pop);
 }
-.row:hover .thumb svg { transform: scale(1.04); }
+@media (hover: hover) and (pointer: fine) {
+  .row:hover .thumb svg { transform: scale(1.04); }
+}
 .rowBody { display: block; min-width: 0; }
 .metaLine {
   display: block;
@@ -397,11 +405,18 @@
   line-height: 1.15;
   color: var(--color-ink);
 }
-.row:hover .rowTitle,
 .row:focus-visible .rowTitle {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 6px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .row:hover .rowTitle {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+  }
 }
 .rowClaim {
   display: block;
@@ -442,11 +457,13 @@ a.card:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: var(--ring-focus-offset);
 }
-a.card:hover .cardTitle,
-a.card:hover .cardTitleFeatured {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 6px;
+@media (hover: hover) and (pointer: fine) {
+  a.card:hover .cardTitle,
+  a.card:hover .cardTitleFeatured {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+  }
 }
 .cardBody { display: flex; flex-direction: column; min-width: 0; height: 100%; }
 .cardTitle {

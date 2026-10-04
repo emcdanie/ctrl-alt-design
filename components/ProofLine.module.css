@@ -26,9 +26,11 @@
   text-wrap: pretty;
 }
 
-.proof:hover .line {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+@media (hover: hover) and (pointer: fine) {
+  .proof:hover .line {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
 }
 
 .proof:focus-visible {

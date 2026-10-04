@@ -1363,9 +1363,14 @@ h1.display-heading {
   transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
 }
 
-.nav-link:hover,
 .nav-link--current {
   color: var(--color-ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-link:hover {
+    color: var(--color-ink);
+  }
 }
 
 .nav-link--current {
@@ -1396,8 +1401,10 @@ h1.display-heading {
   transition: border-color var(--dur-fast) var(--ease-out);
 }
 
-.nav-icon:hover {
-  border-color: var(--color-ink-muted);
+@media (hover: hover) and (pointer: fine) {
+  .nav-icon:hover {
+    border-color: var(--color-ink-muted);
+  }
 }
 
 /* below 380px the wordmark and four 44px controls don't fit one row
@@ -1432,8 +1439,10 @@ h1.display-heading {
   cursor: pointer;
 }
 
-.menu-contact:hover .nav-icon {
-  border-color: var(--color-ink-muted);
+@media (hover: hover) and (pointer: fine) {
+  .menu-contact:hover .nav-icon {
+    border-color: var(--color-ink-muted);
+  }
 }
 
 .menu-contact:focus-visible {
@@ -1986,7 +1995,7 @@ h1.display-heading {
   }
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .xp .accordion__trigger:hover {
     background: var(--tint-soft);
   }
@@ -2322,9 +2331,11 @@ body:has(main.site-ground-page) {
   cursor: pointer;
 }
 
-.site-footer__link:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+@media (hover: hover) and (pointer: fine) {
+  .site-footer__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
 }
 
 .site-footer__link:focus-visible {
@@ -2787,9 +2798,11 @@ body:has(main.site-ground-page) {
   font-size: var(--typography-font-size-tag);
 }
 
-.filter-chip:hover {
-  border-color: var(--color-ink-muted);
-  background: var(--color-alpha-ink-6);
+@media (hover: hover) and (pointer: fine) {
+  .filter-chip:hover {
+    border-color: var(--color-ink-muted);
+    background: var(--color-alpha-ink-6);
+  }
 }
 
 /* pressed (one style for /learning and /work, 19 Sep 2026): iris-soft,
@@ -2971,7 +2984,6 @@ body:has(main.site-ground-page) {
   mask-composite: exclude;
 }
 
-.trace-host:hover::before,
 .trace-host:focus-within::before,
 .trace-host:focus-visible::before,
 .trace-host.trace-on::before {
@@ -2979,6 +2991,13 @@ body:has(main.site-ground-page) {
      one trace, pinned on */
   opacity: 1;
   animation: trace-travel 3.4s linear infinite;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .trace-host:hover::before {
+    opacity: 1;
+    animation: trace-travel 3.4s linear infinite;
+  }
 }
 
 @keyframes trace-travel {
@@ -3030,8 +3049,13 @@ body:has(main.site-ground-page) {
   transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
 
-.btn-key:hover {
-  background: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
+/* every hover that changes fill, colour or transform sits behind this
+   guard: a tap on touch leaves :hover stuck (WebKit and iOS), so focus-
+   visible and :active stay outside it (23, 4 Oct 2026) */
+@media (hover: hover) and (pointer: fine) {
+  .btn-key:hover {
+    background: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
+  }
 }
 
 /* THE LABEL ROLL (BELLA #44, ported 20 Sep 2026). The window clips to
@@ -3060,14 +3084,24 @@ body:has(main.site-ground-page) {
   user-select: none;
 }
 
-.btn-key:hover:not(:disabled) .btn-key__label,
 .btn-key:focus-visible .btn-key__label {
   transform: translateY(-100%);
 }
 
-.btn-key:hover:not(:disabled) .btn-key__copy,
+@media (hover: hover) and (pointer: fine) {
+  .btn-key:hover:not(:disabled) .btn-key__label {
+    transform: translateY(-100%);
+  }
+}
+
 .btn-key:focus-visible .btn-key__copy {
   transform: translateY(0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-key:hover:not(:disabled) .btn-key__copy {
+    transform: translateY(0);
+  }
 }
 
 
@@ -3100,9 +3134,14 @@ body:has(main.site-ground-page) {
 
 /* hover and focus-visible take the highlight plate (BELLA: focus takes
    the hover plate). Colour only, so it stays under reduced motion. */
-.btn-key--primary:hover:not(:disabled),
 .btn-key--primary:focus-visible {
   background: var(--btn-key-primary-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-key--primary:hover:not(:disabled) {
+    background: var(--btn-key-primary-hover);
+  }
 }
 
 .btn-key--primary:active:not(:disabled) {
@@ -3291,8 +3330,10 @@ button:focus-visible {
   padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
 }
 
-.footer-nav-link:hover {
-  color: var(--color-ink);
+@media (hover: hover) and (pointer: fine) {
+  .footer-nav-link:hover {
+    color: var(--color-ink);
+  }
 }
 
 /* Generic form focus fallback for non-contact forms */
@@ -3332,8 +3373,10 @@ textarea:focus-visible {
   transition: opacity var(--dur-fast) var(--ease-out);
 }
 
-.demo-link:hover {
-  opacity: 0.75;
+@media (hover: hover) and (pointer: fine) {
+  .demo-link:hover {
+    opacity: 0.75;
+  }
 }
 
 
@@ -3374,8 +3417,10 @@ textarea:focus-visible {
   transition: color var(--dur-fast) var(--ease-out);
 }
 
-.process-accordion-trigger:hover {
-  color: var(--color-ink);
+@media (hover: hover) and (pointer: fine) {
+  .process-accordion-trigger:hover {
+    color: var(--color-ink);
+  }
 }
 
 .process-accordion-trigger:focus-visible {
@@ -3464,8 +3509,10 @@ textarea:focus-visible {
   transition: opacity var(--dur-fast) var(--ease-out);
 }
 
-.process-accordion-link:hover {
-  opacity: 0.7;
+@media (hover: hover) and (pointer: fine) {
+  .process-accordion-link:hover {
+    opacity: 0.7;
+  }
 }
 
 .process-accordion-link:focus-visible {
@@ -3501,9 +3548,11 @@ textarea:focus-visible {
   transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
 }
 
-.card-interactive:hover {
-  transform: var(--motion-transform-hover-lift);
-  box-shadow: var(--shadow-card-elevated);
+@media (hover: hover) and (pointer: fine) {
+  .card-interactive:hover {
+    transform: var(--motion-transform-hover-lift);
+    box-shadow: var(--shadow-card-elevated);
+  }
 }
 
 /* Vinyl spin */
@@ -4884,9 +4933,11 @@ textarea:focus-visible {
   font-feature-settings: var(--mono-feature);
 }
 
-.tok-annotation__trigger:hover {
-  border-color: var(--color-ink-muted);
-  color: var(--color-ink);
+@media (hover: hover) and (pointer: fine) {
+  .tok-annotation__trigger:hover {
+    border-color: var(--color-ink-muted);
+    color: var(--color-ink);
+  }
 }
 
 .tok-annotation__trigger[aria-expanded="true"] {
@@ -5597,8 +5648,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   text-overflow: ellipsis;
 }
 
-.jn-step:hover {
-  color: var(--color-ink);
+@media (hover: hover) and (pointer: fine) {
+  .jn-step:hover {
+    color: var(--color-ink);
+  }
 }
 
 .jn-step[aria-current="step"] {
@@ -7353,8 +7406,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   transition: border-color var(--dur-fast) var(--ease-out);
 }
 
-.trv-card--link:hover {
-  border-color: var(--color-accent-line);
+@media (hover: hover) and (pointer: fine) {
+  .trv-card--link:hover {
+    border-color: var(--color-accent-line);
+  }
 }
 
 .trv-card--link:focus-visible {
@@ -7428,10 +7483,16 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-feature-settings: var(--mono-feature);
 }
 
-.linked-phrase.is-on,
-.linked-phrase:hover {
+.linked-phrase.is-on {
   background: var(--tint-soft);
   color: var(--color-accent-ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .linked-phrase:hover {
+    background: var(--tint-soft);
+    color: var(--color-accent-ink);
+  }
 }
 
 .linked-phrase:focus-visible {
@@ -7967,9 +8028,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   gap: var(--space-stack-sm) var(--space-stack-md);
 }
 
-.case-back:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+@media (hover: hover) and (pointer: fine) {
+  .case-back:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 }
 
 /* ─── Scan and read (Elleta, 20 Sep 2026, Part J item 2) ─────────────
@@ -8126,7 +8189,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   cursor: pointer;
   transition: border-color var(--dur-fast) var(--ease-out);
 }
-.exhibit__replay:hover { border-color: var(--color-ink); }
+@media (hover: hover) and (pointer: fine) {
+  .exhibit__replay:hover { border-color: var(--color-ink); }
+}
 .exhibit__replay:focus-visible,
 .exhibit button:focus-visible,
 .exhibit [tabindex]:focus-visible {
@@ -8299,15 +8364,24 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   color: var(--color-ink-muted);
 }
 .dfc-mark.is-on,
-.dfc-mark:hover,
 .dfc-mark:focus-visible {
   background: var(--color-chip-c1);
   color: var(--color-chip-text);
   border-color: transparent;
 }
+
+@media (hover: hover) and (pointer: fine) {
+  .dfc-mark:hover {
+    background: var(--color-chip-c1);
+    color: var(--color-chip-text);
+    border-color: transparent;
+  }
+}
 .dfc-mark.is-on::before,
-.dfc-mark:hover::before,
 .dfc-mark:focus-visible::before { color: var(--color-chip-text); }
+@media (hover: hover) and (pointer: fine) {
+  .dfc-mark:hover::before { color: var(--color-chip-text); }
+}
 .dfc-mark:focus-visible { outline: var(--ring-focus-width) solid var(--ring-focus-color); outline-offset: var(--ring-focus-offset); }
 .dfc-ztabs { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: 2.25rem; }
 .dfc-ztabs button {
@@ -8321,7 +8395,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   cursor: pointer;
   transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
 }
-.dfc-ztabs button:hover { color: var(--color-ink); }
+@media (hover: hover) and (pointer: fine) {
+  .dfc-ztabs button:hover { color: var(--color-ink); }
+}
 .dfc-ztabs button[aria-selected="true"] { border-color: var(--color-ink); color: var(--color-ink); }
 .dfc-ztabs button:focus-visible { outline: var(--ring-focus-width) solid var(--ring-focus-color); outline-offset: var(--ring-focus-offset); }
 .exhibit.dfc-zfig { margin-top: 1rem; }
@@ -8364,7 +8440,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 }
 .dfc-pin.is-before { background: var(--color-chip-c2); }
 .dfc-pin.is-after { background: var(--color-chip-c1); }
-.dfc-pin:hover { transform: translate(-50%, -50%) scale(1.15); }
+@media (hover: hover) and (pointer: fine) {
+  .dfc-pin:hover { transform: translate(-50%, -50%) scale(1.15); }
+}
 .dfc-pin[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--color-semantic-surface), 0 0 0 4px var(--color-ink); }
 .dfc-pin:focus-visible { outline: var(--ring-focus-width) solid var(--ring-focus-color); outline-offset: var(--ring-focus-offset); }
 .dfc-zpop {
@@ -8415,7 +8493,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-size: 0.875rem;
   cursor: pointer;
 }
-.dfc-zpop__nav button:hover { color: var(--color-ink); background: var(--color-semantic-surface); }
+@media (hover: hover) and (pointer: fine) {
+  .dfc-zpop__nav button:hover { color: var(--color-ink); background: var(--color-semantic-surface); }
+}
 .dfc-zpop__nav button:focus-visible { outline: var(--ring-focus-width) solid var(--ring-focus-color); outline-offset: var(--ring-focus-offset); }
 .dfc-zpop p { margin: 0.375rem 0 0; color: var(--color-ink-muted); }
 .dfc-zpop__k {
