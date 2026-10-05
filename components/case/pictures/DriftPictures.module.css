@@ -990,8 +990,10 @@
     }
   }
 
+  /* one float, 4s, then still: nothing moves on its own past 5s
+     (WCAG 2.2.2, job 34) */
   .pinFloat {
-    animation: pinFloat 4s ease-in-out infinite;
+    animation: pinFloat 4s ease-in-out 1;
   }
 
   .pinSwap {

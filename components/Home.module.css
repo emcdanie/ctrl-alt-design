@@ -81,6 +81,15 @@
   margin: var(--space-stack-md) 0 0;
 }
 
+/* the accessibility line under the system links (job 34, findability):
+   the cite's quiet type, the link inline */
+.a11y {
+  margin: var(--space-stack-sm) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+}
+
 /* the proof row (18d, 4 Oct 2026): three equal columns from 900px, each
    ProofLine spanning two subgrid rows (label, line); one column below */
 .proof {

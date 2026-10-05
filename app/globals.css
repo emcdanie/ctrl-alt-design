@@ -3089,6 +3089,15 @@ button:focus-visible {
   outline-offset: var(--ring-focus-offset);
 }
 
+/* the ring's colour at rest is the focus token too (job 34): an
+   element with a transition otherwise animates its ring in from
+   currentColor, the text colour (#eceef3 in dark), so a capture taken
+   in the first frames shows a pale ring. Zero specificity: any
+   component rule still wins. */
+:where(a, button, input, select, textarea, summary, [tabindex]) {
+  outline-color: var(--ring-focus-color);
+}
+
 /* Contact form fields — stable focus, no flicker, no radius change.
    Fields sit on the contact card surface (light theme) / navy card (dark);
    the semantic tokens flip with the theme. */

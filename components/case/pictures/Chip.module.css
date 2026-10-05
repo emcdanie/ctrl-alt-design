@@ -945,7 +945,9 @@
   }
 
   .rollTrack {
-    animation: roll 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    /* two rolls (4.8s), then still: nothing moves on its own past 5s
+       (WCAG 2.2.2, job 34) */
+    animation: roll 2.4s cubic-bezier(0.22, 1, 0.36, 1) 2;
   }
 
   @keyframes explode {

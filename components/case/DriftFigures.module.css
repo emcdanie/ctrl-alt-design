@@ -765,6 +765,14 @@
   stroke-width: 1.5;
 }
 
+/* the live tick inside each area dot: the state in a shape, not only
+   the green fill (job 34, colour alone) */
+.areaTick {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .sysChip,
 .areaChip,
 .nextChip,

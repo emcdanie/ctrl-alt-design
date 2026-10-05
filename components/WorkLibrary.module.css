@@ -171,6 +171,12 @@
   border-radius: var(--radius-full);
 }
 
+/* on the ochre fill the ochre ring disappears (1.0 to 1.7:1): the ring
+   takes the on-accent ink there, 7.8:1 or more in both themes (job 34) */
+.mxOn .mxLink:focus-visible {
+  outline-color: var(--color-semantic-text-on-accent);
+}
+
 .mxDetails {
   position: relative;
   display: inline-block;

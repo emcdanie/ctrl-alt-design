@@ -195,6 +195,13 @@ export default function Home() {
             Where I learned it <span aria-hidden="true">→</span>
           </TextLink>
         </p>
+        {/* findability (job 34): the accessibility statement, from the system beat */}
+        <p className={styles.a11y}>
+          Built to WCAG 2.2 AA, AAA contrast ·{" "}
+          <TextLink href="/accessibility">
+            Accessibility <span aria-hidden="true">→</span>
+          </TextLink>
+        </p>
       </Section>
     </main>
   );

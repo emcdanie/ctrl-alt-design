@@ -99,6 +99,9 @@ export default function AboutPage() {
               <TextLink href="/design-system">
                 See how this site is built <span aria-hidden="true">→</span>
               </TextLink>
+              <TextLink href="/accessibility">
+                Accessibility <span aria-hidden="true">→</span>
+              </TextLink>
             </p>
             <CaseFigure
               n={1}

@@ -116,7 +116,12 @@
   text-wrap: pretty;
 }
 
+/* one or more text links on a row (job 34: the Accessibility link joins
+   "See how this site is built"), the gap as Home's system links */
 .linkRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--spacing-6);
   margin: 0;
 }
 

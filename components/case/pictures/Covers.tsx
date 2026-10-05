@@ -181,7 +181,7 @@ export function CoverProduct({ slot, label }: { slot: CoverSlot; label: string }
               </svg>
             </span>
           </div>
-          <span className={s.productTitle}>Wool blend belted coat with wide lapels</span>
+          <span className={s.productTitle}>Wool blend coat</span>
           <span className={s.productPrice}>
             <span className={s.productNow}>€119.99</span>
             <span className={s.productOff}>-33%</span>

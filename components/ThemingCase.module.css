@@ -55,9 +55,13 @@
   gap: var(--spacing-2);
   align-items: center;
 }
+/* targets (job 34): the theme switch and the pause buttons are the
+   primary controls here, 44px tall (WCAG 2.5.5); the map rows below
+   are secondary, at least 24px (2.5.8) */
 .th,
 .play,
 .askPause {
+  min-height: var(--spacing-touch-target);
   font-family: var(--font-code);
   font-size: var(--text-mono);
   font-feature-settings: var(--mono-feature);
@@ -196,6 +200,7 @@
   column-gap: var(--spacing-2);
   align-items: center;
   width: 100%;
+  min-height: var(--spacing-6);
   padding: 1px var(--spacing-1);
   border: 0;
   border-radius: var(--radius-sm);

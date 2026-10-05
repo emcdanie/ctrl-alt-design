@@ -449,6 +449,15 @@ function StairDrawing({ g, className }: { g: ReturnType<typeof stairGeometry>; c
         {g.areas.map((a) => (
           <circle key={a.label.join(" ")} cx={a.x} cy={a.y} r={7} className={s.areaNode} style={{ "--d": sec(a.delay) } as CSSProperties} />
         ))}
+        {/* never colour alone (job 34): each live area's dot carries a tick */}
+        {g.areas.map((a) => (
+          <path
+            key={`tick ${a.label.join(" ")}`}
+            d={`M${a.x - 3.5} ${a.y + 0.25}l2.25 2.25l4.5 -4.75`}
+            className={`${s.areaNode} ${s.areaTick}`}
+            style={{ "--d": sec(a.delay) } as CSSProperties}
+          />
+        ))}
       </svg>
       <span className={s.sysChip} style={{ left: pct(SYS_X, END_X), top: y(529) }}>
         the system
@@ -506,14 +515,18 @@ export function Staircase() {
 }
 
 /* ── Showcase card 3 · one token, every screen (Elleta, 5 Oct) ───── */
-/* action.primary cycles indigo → teal → ochre every 2.4s, only while the
-   card is in view. One attribute on the card (data-swatch) sets the
+/* action.primary steps indigo → teal → ochre, 2.4s apart, when the card
+   comes into view, then holds (2.2.2). One attribute on the card (data-swatch) sets the
    product action colour; the pill, the mini Harbour loft card, the search
    bar and the booking bar all read it, so they recolour together (300ms
    ease-out) and the pill pulses once per change. Reduced motion: no loop,
    the first state, and a tap on the pill steps the colour. */
 const SWATCHES = ["indigo", "teal", "ochre"] as const;
 const CYCLE_MS = 2400;
+/* WCAG 2.2.2 (job 34): each pass in view takes two steps (4.8s) and
+   stops, so nothing moves on its own past 5s; the card is a picture
+   with no room for a pause control */
+const RUN_STEPS = 2;
 
 export function TokenEverywhere() {
   const root = useRef<HTMLSpanElement>(null);
@@ -526,13 +539,21 @@ export function TokenEverywhere() {
     if (!el || typeof IntersectionObserver === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let timer: ReturnType<typeof setInterval> | undefined;
+    let taken = 0;
+    const stop = () => {
+      clearInterval(timer);
+      timer = undefined;
+    };
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting && !timer) {
-          timer = setInterval(() => setSteps((n) => n + 1), CYCLE_MS);
+          taken = 0;
+          timer = setInterval(() => {
+            setSteps((n) => n + 1);
+            if (++taken >= RUN_STEPS) stop();
+          }, CYCLE_MS);
         } else if (!e.isIntersecting && timer) {
-          clearInterval(timer);
-          timer = undefined;
+          stop();
         }
       },
       { threshold: 0.5 },

@@ -4,7 +4,10 @@
  * contrast audit samples key surfaces, axe checks every node and every
  * rule. "Incomplete" results (axe cannot auto-judge, e.g. text over
  * gradients) do not fail the gate; they are counted in the output and
- * verified manually when they change (see _review/audit notes). */
+ * verified manually when they change (see _review/audit notes).
+ * Tags (job 34, 5 Oct 2026): wcag2a, wcag2aa, wcag21a, wcag21aa,
+ * wcag22aa and best-practice, named explicitly so a default change in
+ * axe-core can never narrow the gate. */
 import { readFileSync } from "node:fs";
 import { receipt } from "./lib/receipt.mjs";
 import { chromium } from "playwright";
@@ -31,6 +34,7 @@ const ROUTES = [
   "/case-studies/booking-platform",
   "/case-studies/search-experts",
   "/case-studies/checkout",
+  "/case-studies/theming",
   /* the pattern-study brief pages (one template) */
   "/work/studies/stock-screener",
   "/work/studies/race-day",
@@ -75,7 +79,11 @@ for (const theme of ["light", "dark"]) {
     }
     await page.evaluate(axeSource);
     const res = await page.evaluate(async () => {
-      const r = await axe.run(document);
+      /* the full rule set, explicitly (job 34): WCAG 2.0/2.1/2.2 A and
+         AA plus axe's best practices. Structural, never per element. */
+      const r = await axe.run(document, {
+        runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"] },
+      });
       return {
         violations: r.violations.map((v) => ({
           id: v.id,
