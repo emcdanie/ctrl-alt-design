@@ -130,7 +130,8 @@ export default function FederatedCase() {
           caption="Product page, bag, size guide and filters all had to keep working. The slot added the new case without breaking the old pattern."
         >
           <FedShipped
-            label="Asked for versus shipped. A squad designer asks for a new size selector chip; I review it with the devs through a code audit, the blast radius and a best-practice check, agreed at the weekly open desk. What shipped: the old chip kept with a slot variant added, three fills for the slot (size and stock, kids' age and height, colour filter), and the stock marks aligned with a Trim property instead of negative spacing. A chip group with slots replaces selecting 11 chips by hand. Every place the chip lives kept working: the product page, the bag's change-size sheet, the size guide and the colour filters."
+            label="Asked for versus shipped. A squad designer asks for a new size selector chip; I review it with the devs through a code audit, the blast radius and a best-practice check, agreed at the weekly open desk. What shipped: the old chip kept with a slot variant added, three fills for the slot (size and stock, kids' age and height, colour filter), and the stock marks aligned with a Trim property instead of negative spacing."
+            moreLabel="A chip group with slots replaces selecting 11 chips by hand. Every place the chip lives kept working: the product page, the bag's change-size sheet, the size guide and the colour filters."
           />
         </CaseFigure>
         <BeatText>

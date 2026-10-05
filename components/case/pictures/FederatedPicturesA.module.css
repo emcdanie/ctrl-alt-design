@@ -40,10 +40,12 @@
 }
 
 /* ── Figure 1 ── */
+/* tightened for one screen (job F, 5 Oct 2026): 628 -> 494 tall;
+   shorter leaders, closer card padding */
 .f2 {
   position: relative;
   width: 928px;
-  height: 628px;
+  height: 494px;
 }
 
 .f2 > * {
@@ -59,22 +61,22 @@
   left: 328px;
   top: 0;
   width: 272px;
-  height: 100px;
+  height: 88px;
   display: flex;
   align-items: center;
   gap: var(--spacing-3);
-  padding: var(--spacing-4);
+  padding: var(--spacing-3) var(--spacing-4);
   border-radius: var(--radius-xl);
 }
 
 .group {
-  top: 134px;
-  height: 252px;
+  top: 104px;
+  height: 212px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: calc(var(--spacing-3) + 2px);
-  padding: calc(var(--spacing-5) + 2px);
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) calc(var(--spacing-5) + 2px);
   border-radius: var(--radius-xl);
 }
 
@@ -179,13 +181,13 @@
 
 .squads {
   left: 0;
-  top: 442px;
+  top: 332px;
   width: 928px;
-  height: 186px;
+  height: 162px;
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacing-3) + 2px);
-  padding: var(--spacing-5);
+  gap: calc(var(--spacing-2) + 2px);
+  padding: var(--spacing-4) var(--spacing-5);
   border-radius: var(--radius-xl);
 }
 
@@ -204,7 +206,7 @@
 .squadList {
   display: flex;
   flex-wrap: wrap;
-  gap: calc(var(--spacing-2) + 2px);
+  gap: var(--spacing-2);
 }
 
 .squad {
@@ -212,7 +214,7 @@
   align-items: center;
   gap: var(--spacing-2);
   height: 40px;
-  padding: calc(var(--spacing-1) + 2px) calc(var(--spacing-3) + 2px) calc(var(--spacing-1) + 2px) calc(var(--spacing-1) + 2px);
+  padding: calc(var(--spacing-1) + 2px) var(--spacing-3) calc(var(--spacing-1) + 2px) calc(var(--spacing-1) + 2px);
   border-radius: var(--radius-pill);
   background: var(--color-semantic-background);
   font-size: 16px;
@@ -224,9 +226,23 @@
   padding-top: var(--spacing-4);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-8);
+  gap: var(--spacing-6);
   width: 928px;
 }
+
+/* in Figure 2 the photos are 40px shorter, so the beat fits one screen
+   (job F, 5 Oct 2026); the text and the markers move up with them */
+.f3 .card {
+  height: 447px;
+}
+
+.f3 .photo {
+  height: 280px;
+}
+
+.f3 .m1 { top: 341px; }
+.f3 .m2 { top: 409px; }
+.f3 .m4 { top: 381px; }
 
 .versions {
   display: flex;

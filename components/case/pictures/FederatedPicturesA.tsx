@@ -169,11 +169,11 @@ export function FederatedWho() {
       <Pic label={F2_LABEL} className={caseStyles.wideOnly}>
         <ScaledArt width={928}>
           <div className={s.f2}>
-            <svg className={s.f2Lines} viewBox="0 0 928 628" width={928} height={628}>
-              <line x1={276} y1={260} x2={292} y2={260} className={s.leaderGrey} />
-              <line x1={636} y1={260} x2={652} y2={260} className={s.leaderGrey} />
-              <line x1={464} y1={390} x2={464} y2={436} className={s.leaderGrey} />
-              <line x1={464} y1={104} x2={464} y2={128} className={s.leaderGrey} />
+            <svg className={s.f2Lines} viewBox="0 0 928 494" width={928} height={494}>
+              <line x1={276} y1={210} x2={292} y2={210} className={s.leaderGrey} />
+              <line x1={636} y1={210} x2={652} y2={210} className={s.leaderGrey} />
+              <line x1={464} y1={316} x2={464} y2={332} className={s.leaderGrey} />
+              <line x1={464} y1={88} x2={464} y2={104} className={s.leaderGrey} />
             </svg>
             <Manager />
             <Partners />

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { Bell, Check as CheckGlyph, Code, Component, Heart, NavArrowDown, NavArrowRight, NavArrowUp, Position, Xmark } from "iconoir-react";
 import { KitAvatar, KitButton, KitChip, KitStatus, KitTag, KitTheme, MarkupBadge } from "@/components/case/kit/Kit";
+import ShowAll from "@/components/case/ShowAll";
 import ScaledArt from "@/components/case/ScaledArt";
 import Swipe from "@/components/case/Swipe";
 import caseStyles from "@/components/case/Case.module.css";
@@ -18,15 +19,35 @@ import s from "./FederatedPicturesB.module.css";
 
 type PanelItem = { key: string; short: string; label: string; node: ReactNode };
 
-function Picture({ label, panels, swipe, children }: { label: string; panels: PanelItem[]; swipe: string; children: ReactNode }) {
+/** `more`: the rest of a long picture, its own picture behind Show all
+ *  (job F, 5 Oct 2026: every beat fits one screen) */
+function Picture({
+  label,
+  panels,
+  swipe,
+  children,
+  more,
+}: {
+  label: string;
+  panels: PanelItem[];
+  swipe: string;
+  children: ReactNode;
+  more?: { label: string; total: number; node: ReactNode };
+}) {
+  const wide = (l: string, node: ReactNode) => (
+    <div role="img" aria-label={l} className={s.root}>
+      <div aria-hidden="true">
+        <KitTheme mode="federated">
+          <ScaledArt width={928}>{node}</ScaledArt>
+        </KitTheme>
+      </div>
+    </div>
+  );
   return (
     <>
-      <div role="img" aria-label={label} className={`${s.root} ${caseStyles.wideOnly}`}>
-        <div aria-hidden="true">
-          <KitTheme mode="federated">
-            <ScaledArt width={928}>{children}</ScaledArt>
-          </KitTheme>
-        </div>
+      <div className={caseStyles.wideOnly}>
+        {wide(label, children)}
+        {more ? <ShowAll total={more.total}>{wide(more.label, more.node)}</ShowAll> : null}
       </div>
       <div className={caseStyles.phoneOnly}>
         <Swipe
@@ -821,27 +842,40 @@ const SHIPPED_PANELS: PanelItem[] = [
   },
 ];
 
-export function FedShipped({ label }: { label: string }) {
+/* the ask, the slot and the trim stay in view; the chip group and the
+   four places the chip lives sit behind Show all 8 (job F) */
+export function FedShipped({ label, moreLabel }: { label: string; moreLabel: string }) {
   return (
-    <Picture label={label} panels={SHIPPED_PANELS} swipe="Asked for versus shipped">
+    <Picture
+      label={label}
+      panels={SHIPPED_PANELS}
+      swipe="Asked for versus shipped"
+      more={{
+        label: moreLabel,
+        total: 8,
+        node: (
+          <div className={s.shipped}>
+            <ChipGroupCard />
+
+            <span className={s.whyHead}>Why a slot: every one of these kept working, and the new card got its own</span>
+
+            <div className={s.screens}>
+              <ProductScreen cell={65} />
+              <BagScreen cell={58} />
+              <GuideScreen cell={65} />
+            </div>
+
+            <Filters />
+          </div>
+        ),
+      }}
+    >
       <div className={s.shipped}>
         <div className={s.shippedTop}>
           <Asked />
           <Kept />
           <TrimCard />
         </div>
-
-        <ChipGroupCard />
-
-        <span className={s.whyHead}>Why a slot: every one of these kept working, and the new card got its own</span>
-
-        <div className={s.screens}>
-          <ProductScreen cell={65} />
-          <BagScreen cell={58} />
-          <GuideScreen cell={65} />
-        </div>
-
-        <Filters />
       </div>
     </Picture>
   );
