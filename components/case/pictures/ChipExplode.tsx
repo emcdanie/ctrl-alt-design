@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import ScaledArt from "@/components/case/ScaledArt";
+import ShowAll from "@/components/case/ShowAll";
 import { useFigurePlay } from "@/components/case/CaseFigure";
 import caseStyles from "@/components/case/Case.module.css";
 import { Key, PanelHead, Picture, Pin, PARTS, PartLabel } from "./Chip";
@@ -62,72 +63,82 @@ function Plate({ n }: { n: number }) {
   );
 }
 
-export function ChipExplode({ label }: { label: string }) {
+/* the rest panel stays in view; the exploded panel opens behind Show the
+   exploded view (job F, 5 Oct 2026: the beat fits one screen) */
+export function ChipExplode({ label, explodedLabel }: { label: string; explodedLabel: string }) {
   const { playing, run } = useFigurePlay();
   const top = [...PARTS].reverse();
   return (
-    <Picture label={label}>
-      <div className={s.apart}>
-        <div className={s.panel}>
-          <PanelHead>Rest</PanelHead>
-          <div className={s.restBody}>
-            <div className={`${s.specimenBox} ${caseStyles.wideOnly}`}>
-              <ScaledArt width={480}>
-                <div className={s.specimen}>
-                  <span className={s.specimenRing} />
-                  <Key className={s.specimenKey} />
-                  <span className={s.restLeader} data-n="1" />
-                  <span className={s.restLeader} data-n="2" />
-                  <span className={s.restLeader} data-n="3" />
-                  <span className={s.restLeader} data-n="4" />
-                  <span className={s.restLeader} data-n="5" />
-                  {REST_PINS.map(([n, x, y]) => (
+    <>
+      <Picture label={label}>
+        <div className={s.apart}>
+          <div className={s.panel}>
+            <PanelHead>Rest</PanelHead>
+            <div className={s.restBody}>
+              <div className={`${s.specimenBox} ${caseStyles.wideOnly}`}>
+                <ScaledArt width={480}>
+                  <div className={s.specimen}>
+                    <span className={s.specimenRing} />
+                    <Key className={s.specimenKey} />
+                    <span className={s.restLeader} data-n="1" />
+                    <span className={s.restLeader} data-n="2" />
+                    <span className={s.restLeader} data-n="3" />
+                    <span className={s.restLeader} data-n="4" />
+                    <span className={s.restLeader} data-n="5" />
+                    {REST_PINS.map(([n, x, y]) => (
+                      <span key={n} className={s.restPin} style={{ left: `calc(50% - 140px + ${x}px)`, top: y }}>
+                        <Pin n={n} />
+                      </span>
+                    ))}
+                  </div>
+                </ScaledArt>
+              </div>
+              <div className={caseStyles.phoneOnly}>
+                <span className={s.phoneStage}>
+                  <span className={s.phoneRing} />
+                  <Key className={s.phoneKey} />
+                  {PHONE_LEADERS.map(([x, y, w, h]) => (
+                    <span key={`${x}-${y}`} className={s.phoneLeader} style={{ left: `calc(50% - 140px + ${x}px)`, top: y, width: w, height: h }} />
+                  ))}
+                  {PHONE_PINS.map(([n, x, y]) => (
                     <span key={n} className={s.restPin} style={{ left: `calc(50% - 140px + ${x}px)`, top: y }}>
                       <Pin n={n} />
                     </span>
                   ))}
-                </div>
-              </ScaledArt>
-            </div>
-            <div className={caseStyles.phoneOnly}>
-              <span className={s.phoneStage}>
-                <span className={s.phoneRing} />
-                <Key className={s.phoneKey} />
-                {PHONE_LEADERS.map(([x, y, w, h]) => (
-                  <span key={`${x}-${y}`} className={s.phoneLeader} style={{ left: `calc(50% - 140px + ${x}px)`, top: y, width: w, height: h }} />
-                ))}
-                {PHONE_PINS.map(([n, x, y]) => (
-                  <span key={n} className={s.restPin} style={{ left: `calc(50% - 140px + ${x}px)`, top: y }}>
-                    <Pin n={n} />
-                  </span>
-                ))}
-              </span>
-            </div>
-            <div className={s.legend}>
-              {PARTS.map((p) => (
-                <PartLabel key={p.n} {...p} />
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className={s.panel}>
-          <PanelHead>Exploded</PanelHead>
-          <div className={s.stack} data-play={playing ? "on" : "off"} key={run}>
-            {top.map((p, i) => (
-              <div key={p.n} className={s.layer} style={k(i)}>
-                <span className={s.plateWrap}>
-                  <Plate n={p.n} />
-                </span>
-                <span className={s.callout}>
-                  <span className={s.dot} />
-                  <span className={s.leader} />
-                  <PartLabel {...p} short />
                 </span>
               </div>
-            ))}
+              <div className={s.legend}>
+                {PARTS.map((p) => (
+                  <PartLabel key={p.n} {...p} />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </Picture>
+      </Picture>
+      <ShowAll total={2} label="Show the exploded view">
+        <Picture label={explodedLabel}>
+          <div className={s.apart}>
+            <div className={s.panel}>
+              <PanelHead>Exploded</PanelHead>
+              <div className={s.stack} data-play={playing ? "on" : "off"} key={run}>
+                {top.map((p, i) => (
+                  <div key={p.n} className={s.layer} style={k(i)}>
+                    <span className={s.plateWrap}>
+                      <Plate n={p.n} />
+                    </span>
+                    <span className={s.callout}>
+                      <span className={s.dot} />
+                      <span className={s.leader} />
+                      <PartLabel {...p} short />
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Picture>
+      </ShowAll>
+    </>
   );
 }

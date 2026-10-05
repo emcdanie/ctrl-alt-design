@@ -130,7 +130,10 @@ export default function ChipCase() {
           replay
           caption="The Button specimen in the Atlas concept mock. Rest: five numbered parts with their tokens. Exploded: the same five layers, top to bottom. Motion: Explode takes it apart in 0.8s (ease-out); Replay puts it back together. Reduced motion shows the exploded frame."
         >
-          <ChipExplode label="A concept mock of the Atlas Button specimen. At rest, a Save changes keycap with five numbered parts: 1 key shadow, --shadow-key-resting; 2 fill, ink keycap, primary-fill; 3 box, 44px min, pad 12/20, r12; 4 label, Geist 13, 700; 5 focus ring, 3px ochre-deep, focus only. Beside it the same five layers exploded into tilted plates, focus ring at the top down to the key shadow at the bottom, each labelled." />
+          <ChipExplode
+            label="A concept mock of the Atlas Button specimen. At rest, a Save changes keycap with five numbered parts: 1 key shadow, --shadow-key-resting; 2 fill, ink keycap, primary-fill; 3 box, 44px min, pad 12/20, r12; 4 label, Geist 13, 700; 5 focus ring, 3px ochre-deep, focus only."
+            explodedLabel="The same five layers exploded into tilted plates, focus ring at the top down to the key shadow at the bottom, each labelled."
+          />
         </CaseFigure>
       </Beat>
 

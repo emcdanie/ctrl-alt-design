@@ -7,7 +7,9 @@ import styles from "./Case.module.css";
    long figure keeps its key parts in view and the rest behind this one
    44px button, closed by default. Nothing is dropped: the parts are in
    the page, hidden until asked for. */
-export default function ShowAll({ total, children }: { total: number; children: ReactNode }) {
+/** `label`: the closed button's words, when "Show all N" would not name
+ *  what opens (one panel, not a set) */
+export default function ShowAll({ total, label, children }: { total: number; label?: string; children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const id = useId();
   return (
@@ -17,7 +19,7 @@ export default function ShowAll({ total, children }: { total: number; children: 
       </div>
       <div className={styles.moreBar}>
         <button type="button" className={styles.toolButton} aria-expanded={open} aria-controls={id} onClick={() => setOpen((o) => !o)}>
-          {open ? "Show fewer" : `Show all ${total}`}
+          {open ? "Show fewer" : (label ?? `Show all ${total}`)}
         </button>
       </div>
     </>
