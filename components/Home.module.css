@@ -33,7 +33,8 @@
 
 .words p {
   margin: 0;
-  max-width: 52rem;
+  /* the body cap, 760 at most (audit fix D10, 5 Oct 2026; was 52rem) */
+  max-width: 47.5rem;
   font-family: var(--font-body);
   font-size: var(--text-display-3);
   font-weight: 500;
@@ -78,12 +79,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0 var(--spacing-6);
+  max-width: var(--measure-body);
   margin: var(--space-stack-md) 0 0;
 }
 
 /* the accessibility line under the system links (job 34, findability):
    the cite's quiet type, the link inline */
 .a11y {
+  max-width: var(--measure-body);
   margin: var(--space-stack-sm) 0 0;
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);

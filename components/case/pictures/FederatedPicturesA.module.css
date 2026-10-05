@@ -446,18 +446,20 @@
   top: 46px;
 }
 
+/* 1, 2 and 4 sit in the gap between the cards, clear of the card edges
+   and the text (audit fix D6, 5 Oct 2026) */
 .m1 {
-  left: 268px;
+  left: 284px;
   top: 381px;
 }
 
 .m2 {
-  left: 268px;
+  left: 284px;
   top: 449px;
 }
 
 .m4 {
-  left: -12px;
+  left: -32px;
   top: 421px;
 }
 

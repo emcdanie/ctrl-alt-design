@@ -763,19 +763,22 @@
   gap: var(--spacing-4);
 }
 
+/* audit fix D7 (5 Oct 2026): roomier tiles, and the guide starts under
+   the size, so it marks the text's edge down to the bell without
+   running through the letters */
 .trim {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-2);
-  width: 104px;
+  width: 120px;
 }
 
 .trimBox {
   --fb-mark: var(--markup-red);
   position: relative;
-  width: 104px;
-  height: 92px;
+  width: 120px;
+  height: 104px;
   border: 1px solid var(--fb-line);
   border-radius: var(--radius-sm);
 }
@@ -797,16 +800,16 @@
 .trimGuide {
   position: absolute;
   left: 15px;
-  top: 6px;
+  top: 42px;
   width: 1px;
-  height: 80px;
+  height: 54px;
   background: var(--fb-mark);
 }
 
 .trimNeg {
   position: absolute;
   left: 8px;
-  top: 56px;
+  top: 66px;
   width: 14px;
   height: 4px;
   background: var(--fb-mark);
@@ -816,14 +819,14 @@
 .trimBounds {
   position: absolute;
   left: 15px;
-  top: 58px;
+  top: 68px;
   width: 20px;
   height: 20px;
   border: 1px dashed var(--fb-mark);
 }
 
 .trimBox[data-on] .trimBounds {
-  top: 62px;
+  top: 72px;
   width: 14px;
   height: 14px;
 }
@@ -831,7 +834,7 @@
 .trimBell {
   position: absolute;
   left: 18px;
-  top: 61px;
+  top: 71px;
   width: 14px;
   height: 14px;
   color: var(--color-semantic-text-primary);
@@ -839,7 +842,7 @@
 
 .trimBox[data-on] .trimBell {
   left: 15px;
-  top: 62px;
+  top: 72px;
 }
 
 .trimLabel {

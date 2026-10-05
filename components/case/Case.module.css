@@ -53,7 +53,8 @@
 
 .heroGrid[data-art-below] .collage {
   grid-column: 1 / -1;
-  justify-self: center;
+  /* on the content edge, with the text (audit fix D8, 5 Oct 2026) */
+  justify-self: start;
 }
 
 .heroText {
@@ -105,15 +106,16 @@
 /* the collage: a 528x480 canvas scaled to the box (CaseCollage sets
    --collage-scale). The box keeps the canvas's shape at every width, so
    the whole canvas always shows: no fades and no crop (5 Oct straighten
-   pass, job 34: nothing may crop a piece). overflow stays hidden as a
-   backstop the clip sweep reads, never as a crop. */
+   pass, job 34: nothing may crop a piece). Every piece sits inside the
+   canvas; overflow is visible so the cards' shadows fade out past its
+   edge instead of being cut flat there (audit fix D5, 5 Oct 2026). */
 .collage {
   position: relative;
   width: 100%;
   max-width: 528px;
   aspect-ratio: 528 / 480;
   justify-self: end;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .collageCanvas {
@@ -596,9 +598,6 @@ main .showcase + :global(.l-section.l-section) {
 /* ── Quote (Site/Quote, locked: do not restyle) ── */
 .quoteWrap {
   position: relative;
-  /* the mark hangs 68 above the card and the beat gap is 40: this clears
-     it from whatever sits above (a long lead at 390 touched it) */
-  margin-top: var(--spacing-10);
 }
 
 .quote {
@@ -607,7 +606,9 @@ main .showcase + :global(.l-section.l-section) {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
-  padding: var(--spacing-12) var(--spacing-10) var(--spacing-8);
+  /* the mark sits inside the card, above the words (audit fix D11, 5 Oct
+     2026: it hung over the top-left corner and its border) */
+  padding: calc(var(--spacing-20) + var(--spacing-2)) var(--spacing-10) var(--spacing-8);
   border: 1px solid var(--color-semantic-border);
   border-radius: var(--radius-card);
   background: var(--color-semantic-background);
@@ -616,8 +617,8 @@ main .showcase + :global(.l-section.l-section) {
 .quoteMark {
   position: absolute;
   z-index: 1;
-  left: var(--spacing-6);
-  top: calc(var(--spacing-16) * -1);
+  left: var(--spacing-8);
+  top: calc(var(--spacing-2) * -1);
   font-size: var(--quote-mark-size);
   font-weight: var(--typography-font-weight-black);
   line-height: 1;

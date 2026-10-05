@@ -265,9 +265,8 @@ Must pass before any work is "done":
   name. audit:contain allows deliberate clipping; this checks that nothing readable is cut by it.
   No rendered text under 12px effective: font-size times every transform, scale, zoom, SVG
   viewBox and iframe scale on the way to the screen. Runs with reduced motion and without it
-  (job 38, 5 Oct 2026). One dated allowlist entry, by Elleta's call (5 Oct 2026): the Theming
-  hero collage's text size, frozen until her Figma pick; remove in job 37. It is printed on
-  every run and is the only exception to the no-exemptions rule below.
+  (job 38, 5 Oct 2026). No allowlist: the Theming hero collage that had one is drawn at 1:1
+  since audit fix D3 (5 Oct 2026).
 - `audit:sharp` — every raster image on every route, and inside its demo iframes (every tab
   of a before/after too), renders at most half its natural pixel width at 1440 and 390, on a 2x
   screen: nothing is stretched soft. No 2x source? Cap the display width, never upscale.

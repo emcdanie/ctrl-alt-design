@@ -14,8 +14,10 @@ import s from "@/components/ThemingCase.module.css";
 
 /** `live`: the face is live DOM, not a picture (the exhibit), so the chip
  * row takes focus and scrolls by keyboard; inside a role="img" or
- * aria-hidden picture it stays out of the tab order */
-export default function Preview({ theme, face, hot, live = false }: { theme: Theme; face?: FaceKey; hot?: Role | null; live?: boolean }) {
+ * aria-hidden picture it stays out of the tab order. `bare`: the top bar
+ * straight onto the listing card, no search or chips (the hero's v5
+ * composition, Figma 551:38193) */
+export default function Preview({ theme, face, hot, live = false, bare = false }: { theme: Theme; face?: FaceKey; hot?: Role | null; live?: boolean; bare?: boolean }) {
   const cx = (base: string, role: Role) => `${base} ${hot === role ? s.pulse : ""}`.trim();
   const l = LISTING[theme.name];
   return (
@@ -27,21 +29,25 @@ export default function Preview({ theme, face, hot, live = false }: { theme: The
         <ViewGrid />
       </div>
       <div className={s.pvBody}>
-        <div className={s.pvWhere}>
-          <span data-r="muted" className={cx(s.pvLabel, "muted")}>
-            Where to
-          </span>
-          <span data-r="border-strong" className={cx(s.pvField, "border-strong")}>
-            {l.search}
-          </span>
-        </div>
-        <div className={s.pvChips} {...(live ? { tabIndex: 0, role: "group", "aria-label": "Filters, scroll sideways" } : {})}>
-          <span data-r="action" className={cx(`${s.pvChip} ${s.pvChipOn}`, "action")}>
-            Sea view
-          </span>
-          <span className={s.pvChip}>Pets ok</span>
-          <span className={s.pvChip}>Under €1,500</span>
-        </div>
+        {bare ? null : (
+          <>
+          <div className={s.pvWhere}>
+            <span data-r="muted" className={cx(s.pvLabel, "muted")}>
+              Where to
+            </span>
+            <span data-r="border-strong" className={cx(s.pvField, "border-strong")}>
+              {l.search}
+            </span>
+          </div>
+          <div className={s.pvChips} {...(live ? { tabIndex: 0, role: "group", "aria-label": "Filters, scroll sideways" } : {})}>
+            <span data-r="action" className={cx(`${s.pvChip} ${s.pvChipOn}`, "action")}>
+              Sea view
+            </span>
+            <span className={s.pvChip}>Pets ok</span>
+            <span className={s.pvChip}>Under €1,500</span>
+          </div>
+          </>
+        )}
         <div data-r="line" className={cx(s.pvCard, "line")}>
           <div className={s.pvImg}>
             <img src={l.photo} width={l.photoW} height={l.photoH} alt="" loading="lazy" decoding="async" />

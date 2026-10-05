@@ -34,18 +34,9 @@ const WIDTHS = [1440, 1280, 1110, 1024, 390];
 const THEMES = ["light", "dark"];
 const MOTIONS = ["reduce", "no-preference"];
 const MIN_PX = 12;
-/* The one allowlist entry (Elleta, 5 Oct 2026, job 38): the Theming hero
-   collage's text-size failures only, on its route only. Frozen until
-   Elleta's Figma pick, remove in job 37. Printed on every run. */
-const ALLOW = [
-  {
-    route: "/case-studies/theming",
-    selector: ".case-hero [data-has-phone]",
-    kind: "too small",
-    date: "2026-10-05",
-    reason: "frozen until Elleta's Figma pick, remove in job 37",
-  },
-];
+/* No allowlist: the Theming hero collage that needed one (job 38) is
+   drawn at 1:1 since audit fix D3 (5 Oct 2026). */
+const ALLOW = [];
 const slugs = readdirSync("content/case-studies")
   .filter((f) => f.endsWith(".ts") && f !== "index.ts")
   .map((f) => f.replace(/\.ts$/, ""));

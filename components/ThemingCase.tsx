@@ -11,7 +11,7 @@ import OneName from "@/components/theming/OneName";
 import Pipeline from "@/components/theming/Pipeline";
 import Preview, { WhatChanged } from "@/components/theming/Preview";
 import Swipe from "@/components/case/Swipe";
-import { FACE_ORDER, LISTING, THEMES, faceRows, type FaceKey } from "@/components/theming/themes";
+import { FACE_ORDER, LISTING, THEMES, faceRows, type FaceKey, faceVars } from "@/components/theming/themes";
 import { STORYBOOK_SEMANTIC } from "@/content/case-studies/theming";
 import s from "@/components/ThemingCase.module.css";
 
@@ -113,13 +113,30 @@ function StorybookTable() {
 }
 
 const HERO_LABEL =
-  "The same listing screen in four themes overlapping: bel·la homes in ground in front, night and verdello behind it, saltstay across its corner.";
+  "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it: one listing card, three brands.";
 
+/* the v5 composition (audit fix D3, Elleta, 5 Oct 2026; Figma 551:38193,
+   as the Theming cover): the switcher, the bel·la homes face on night in
+   front, saltstay and verdello fanned 6deg behind. Every face at 1:1 on a
+   528 canvas, so nothing is drawn under 14px */
+const COLLAGE_CANVAS = { w: 528, h: 664 };
 const COLLAGE: CollagePiece[] = [
-  { key: "night", node: <Preview theme={THEMES.night} face="night" />, x: 8, y: 40, s: 0.52, w: 296 },
-  { key: "market", node: <Preview theme={THEMES.market} face="market" />, x: 366, y: 40, s: 0.52, w: 296 },
-  { key: "ground", node: <Preview theme={THEMES.ground} />, x: 175, y: 4, s: 0.6, w: 296 },
-  { key: "coast", node: <Preview theme={THEMES.coast} face="coast" />, x: 400, y: 160, s: 0.4, w: 296 },
+  { key: "coast", node: <div className={s.heroBack} data-at="start"><Preview theme={THEMES.coast} face="coast" bare /></div>, x: 116, y: 76, w: 296 },
+  { key: "market", node: <div className={s.heroBack} data-at="end"><Preview theme={THEMES.market} face="market" bare /></div>, x: 116, y: 76, w: 296 },
+  {
+    key: "switch",
+    node: (
+      <div className={s.heroSwitch} style={faceVars("night")}>
+        <span data-on="">night</span>
+        <span>coast</span>
+        <span>market</span>
+      </div>
+    ),
+    x: 0,
+    y: 16,
+    w: 528,
+  },
+  { key: "night", node: <Preview theme={THEMES.night} face="night" bare />, x: 116, y: 76, w: 296 },
 ];
 
 const faceTitle = (k: FaceKey) => `${k} · ${LISTING[k].brand}`;
@@ -146,7 +163,7 @@ export default function ThemingCase() {
             title="One system, many faces."
             meta={["Case · Theming · BELLA", "2026"]}
             intro="Themes in BELLA swap the values, never the components. Watch the same screen change, token by token. Nothing to scroll or click."
-            collage={{ label: HERO_LABEL, pieces: COLLAGE, phone: <Preview theme={THEMES.ground} />, phoneLabel: "The bel·la homes listing screen in the ground theme, BELLA light: Seafront loft with a terrace, €1,150 a month, and Book a visit." }}
+            collage={{ label: HERO_LABEL, pieces: COLLAGE, canvas: COLLAGE_CANVAS, phone: <Preview theme={THEMES.night} face="night" />, phoneLabel: "The bel·la homes listing screen on theme night: Seafront loft with a terrace, €1,150 a month, and Book a visit." }}
           />
         }
         showcase={<CaseShowcase label="Theming, the same card in three more themes" cards={SHOWCASE} strip />}
