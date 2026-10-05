@@ -515,9 +515,9 @@ main .showcase + :global(.l-section.l-section) {
 .stage {
   position: relative;
   isolation: isolate;
-  /* 24 above and below the picture, 64 at the sides (beat heights, jobs
+  /* 16 above and below the picture, 64 at the sides (beat heights, jobs
      E2 and F, 5 Oct 2026: was 56 top and bottom) */
-  padding: var(--spacing-6) var(--spacing-16);
+  padding: var(--spacing-4) var(--spacing-16);
   border-radius: var(--radius-card);
   overflow: hidden;
   background: var(--color-semantic-background);
@@ -571,6 +571,21 @@ main .showcase + :global(.l-section.l-section) {
 
 .captionRow .toolButton {
   flex: none;
+}
+
+/* on a wide page Replay sits in the margin right of the caption column,
+   so the caption keeps the column's full measure */
+@media (min-width: 1100px) {
+  .captionRow {
+    position: relative;
+    display: block;
+  }
+
+  .captionRow .toolButton {
+    position: absolute;
+    top: calc(var(--spacing-2) * -1);
+    left: calc(100% + var(--spacing-6));
+  }
 }
 
 /* Show all N (job F): the rest of a long figure, closed by default */

@@ -26,12 +26,13 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-6);
+  gap: var(--spacing-5);
   /* narrower than the stage, so the stage grid shows round it like every
-     other figure (audit fix D4, 5 Oct 2026) */
-  max-width: 46rem;
+     other figure (audit fix D4, 5 Oct 2026); 52rem keeps Rollout's panels
+     from wrapping tall (job F) */
+  max-width: 52rem;
   margin-inline: auto;
-  padding: var(--spacing-8);
+  padding: var(--spacing-6) var(--spacing-8);
   border: 1px solid var(--color-semantic-border);
   border-radius: var(--radius-card);
   background: var(--color-semantic-surface);
@@ -192,10 +193,11 @@
 }
 
 /* ── Figure 4 · Token cascade ── */
+/* Figure 4, tightened one step for one screen (job F, 5 Oct 2026) */
 .cascade {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-8);
+  gap: var(--spacing-4);
 }
 
 .tiers {
@@ -204,7 +206,9 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* the semantic tier is wider, so its token rows sit on one line each
+     (job F, 5 Oct 2026); the arrows below follow the same split */
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr) minmax(0, 0.9fr);
   gap: var(--spacing-10);
 }
 
@@ -213,8 +217,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--spacing-4);
-  padding: var(--spacing-6);
+  gap: var(--spacing-3);
+  padding: var(--spacing-4) var(--spacing-5);
   border: 1px solid var(--color-semantic-border);
   border-radius: var(--radius-card);
   background: var(--color-semantic-surface);
@@ -274,7 +278,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-3);
+  gap: var(--spacing-2);
 }
 
 .tokenRow,
@@ -417,19 +421,19 @@
 }
 
 .tierArrow:nth-child(1) {
-  left: calc((100% - var(--spacing-10) * 2) / 3);
+  left: calc((100% - var(--spacing-10) * 2) * 0.9 / 3.1);
 }
 
 .tierArrow:nth-child(2) {
-  left: calc((100% - var(--spacing-10) * 2) / 3 * 2 + var(--spacing-10));
+  left: calc((100% - var(--spacing-10) * 2) * 2.2 / 3.1 + var(--spacing-10));
 }
 
 .change {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-4);
-  padding: var(--spacing-5) var(--spacing-6);
+  gap: var(--spacing-3);
+  padding: var(--spacing-4) var(--spacing-6);
   border: 1px solid var(--color-semantic-border);
   border-radius: var(--radius-card);
   background: var(--color-semantic-surface);
@@ -443,7 +447,7 @@
 }
 
 .changeRow + .changeRow {
-  padding-top: var(--spacing-4);
+  padding-top: var(--spacing-3);
   border-top: 1px solid var(--color-semantic-border);
 }
 
@@ -625,8 +629,8 @@
 .changed {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-3);
-  padding: var(--spacing-5);
+  gap: var(--spacing-2);
+  padding: var(--spacing-4) var(--spacing-5);
   border-radius: var(--radius-lg);
 }
 
