@@ -197,7 +197,7 @@ body {
   --case-body-max: var(--layout-max);
   --case-col-max: 43.5rem;
   --case-gap-section: 6rem;
-  --case-gap-block: var(--spacing-10);
+  --case-gap-block: var(--spacing-8); /* job F, 5 Oct 2026: was spacing-10 */
   /* The case hero band + showcase (Elleta, 4 Oct late, build-spec "Case
      hero band + showcase"): Display/Case title, fluid 64 to 40 (56 to 40
      for a long title; a BELLA proposal), leading 1.06; the band pads 72

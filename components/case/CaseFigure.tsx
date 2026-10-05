@@ -8,7 +8,7 @@ import styles from "./Case.module.css";
    picture with the page's own pinch-zoom, which is never disabled.
 
    A figure with motion (`replay`) plays once when half of it is in view
-   and offers Replay in the figure header, above the picture (job 38); its art reads `useFigurePlay()` and keys
+   and offers Replay at the end of the caption row (job F); its art reads `useFigurePlay()` and keys
    its animation on `run`. Reduced motion is CSS's job: the art shows its
    finished frame. */
 
@@ -61,8 +61,18 @@ export default function CaseFigure({
 
   return (
     <figure className={`${styles.figBlock} ${className}`.trim()}>
-      {replay ? (
-        <div className={styles.figureTools}>
+      <div className={styles.figureArt} ref={art} data-replay={replay || undefined}>
+        {/* Site/Figure stage (417:1706): the grid behind every picture,
+            56/64 margins at 1440 and 20 at 390 */}
+        <div className={styles.stage}>
+          <PlayContext.Provider value={{ playing, run }}>{children}</PlayContext.Provider>
+        </div>
+      </div>
+      <figcaption className={`${styles.caption} ${styles.col} ${styles.captionRow}`}>
+        <span>
+          <span className={styles.captionNum}>Figure {n}.</span> {caption}
+        </span>
+        {replay ? (
           <button
             type="button"
             className={styles.toolButton}
@@ -73,17 +83,7 @@ export default function CaseFigure({
           >
             Replay<span className="sr-only"> Figure {n}</span>
           </button>
-        </div>
-      ) : null}
-      <div className={styles.figureArt} ref={art} data-replay={replay || undefined}>
-        {/* Site/Figure stage (417:1706): the grid behind every picture,
-            56/64 margins at 1440 and 20 at 390 */}
-        <div className={styles.stage}>
-          <PlayContext.Provider value={{ playing, run }}>{children}</PlayContext.Provider>
-        </div>
-      </div>
-      <figcaption className={`${styles.caption} ${styles.col}`}>
-        <span className={styles.captionNum}>Figure {n}.</span> {caption}
+        ) : null}
       </figcaption>
     </figure>
   );
