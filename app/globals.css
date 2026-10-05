@@ -521,25 +521,21 @@ body {
   --cursor-bracket: 10px;
   --cursor-stroke: 1.5px;
 
-  /* Home hero v3 (Elleta, 4 Oct 2026, hero v3 lock): the specimen stage
-     and the scroll that assembles it. The stage height keeps the portrait
-     at half its natural width on a 2x screen (audit:sharp). --hero-p is
-     the one motion property: 1 pulled apart, 0 assembled. */
+  /* Home hero v4 (Elleta, 5 Oct 2026, job 43c): Figma 371:37889 laid out
+     on its 1440 canvas, which runs past the content edge (frame-exempt).
+     --hero-u is one Figma pixel: 1px at 1440 and wider, scaling down to
+     901. The motion is the Hero Stack Lab "Yours v4": a 3D turn
+     (perspective 1800, rotateY 6deg), spacing x0.9, frames apart at 70%.
+     --hero-p is the one motion property: 1 pulled apart, 0 assembled. */
   --hero-p: 0;
-  --hero-frame-h: 30.5rem; /* stage top 198 at 1440, as the prototype (18f) */
-  --hero-stage-w: 28.125rem;
-  --hero-stage-h: 28.375rem;
-  --hero-word: clamp(3rem, 1.4rem + 4.4vw, 5.125rem);
-  --hero-col: 18.125rem;
-  --hero-word-drop: 3.3125rem; /* the words start 53px below the photo's top, as the prototype (18f) */
+  --hero-canvas: min(100vw, 90rem);
+  --hero-u: calc(var(--hero-canvas) / 1440);
   --hero-scroll: 26.25rem;
-  --hero-shift-x: 6rem;
-  --hero-agent-x: 4.5rem; /* clears the "code" corners by 12px or more when apart (18d) */
-  --hero-shift-y: 6rem;
-  --hero-lift: 10.5rem;
-  --hero-skew: -9deg;
-  --hero-shrink: 0.36;
-  --hero-corner: 1.25rem;
+  --hero-turn: 6deg;
+  --hero-shrink: 0.3;
+  --hero-ribbon: 0.4;
+  --hero-word: clamp(3rem, 1.4rem + 4.4vw, 5.125rem); /* the phone words */
+  --hero-measure: #b5323a; /* Figma's Measure red, a picture colour */
   --hero-shadow: 14px 10px 24px rgba(18, 18, 18, 0.16);
   /* the glass plates when pulled apart (18e, 4 Oct 2026) */
   --hero-plate-fill: rgb(255 255 255 / 0.15); /* glass, so the photo reads through (18f; was 0.6) */
