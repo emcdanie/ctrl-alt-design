@@ -9,8 +9,9 @@ import NextCase from "@/components/case/NextCase";
 import { ThemeStage, ThemeExhibit, ThemeJson } from "@/components/theming/ThemeStage";
 import OneName from "@/components/theming/OneName";
 import Pipeline from "@/components/theming/Pipeline";
-import Preview from "@/components/theming/Preview";
-import { ORDER, THEMES } from "@/components/theming/themes";
+import Preview, { WhatChanged } from "@/components/theming/Preview";
+import Swipe from "@/components/case/Swipe";
+import { FACE_ORDER, LISTING, THEMES, faceRows, type FaceKey } from "@/components/theming/themes";
 import { STORYBOOK_SEMANTIC } from "@/content/case-studies/theming";
 import s from "@/components/ThemingCase.module.css";
 
@@ -112,22 +113,27 @@ function StorybookTable() {
 }
 
 const HERO_LABEL =
-  "The same listing card, Canet de Mar, Spain, at €1,150 a month, in four themes overlapping: ground in front, night and market behind it, coast across its corner.";
+  "The same listing screen in four themes overlapping: bel·la homes in ground in front, night and verdello behind it, saltstay across its corner.";
 
 const COLLAGE: CollagePiece[] = [
-  { key: "night", node: <Preview theme={THEMES.night} small />, x: 4, y: 64, s: 0.78, w: 220 },
-  { key: "market", node: <Preview theme={THEMES.market} small />, x: 352, y: 52, s: 0.78, w: 220 },
-  { key: "ground", node: <Preview theme={THEMES.ground} />, x: 123, y: 5, s: 0.88, w: 320 },
-  { key: "coast", node: <Preview theme={THEMES.coast} small />, x: 394, y: 214, s: 0.6, w: 220 },
+  { key: "night", node: <Preview theme={THEMES.night} face="night" />, x: 8, y: 40, s: 0.52, w: 296 },
+  { key: "market", node: <Preview theme={THEMES.market} face="market" />, x: 366, y: 40, s: 0.52, w: 296 },
+  { key: "ground", node: <Preview theme={THEMES.ground} />, x: 175, y: 4, s: 0.6, w: 296 },
+  { key: "coast", node: <Preview theme={THEMES.coast} face="coast" />, x: 400, y: 160, s: 0.4, w: 296 },
 ];
 
-const SHOWCASE: ShowcaseCard[] = (["night", "coast", "market"] as const).map((k) => ({
-  title: `${k} · ${k === "night" ? "BELLA" : "demo brand"}`,
-  label: `The listing card in theme ${k}${k === "night" ? " (BELLA)" : ", a demo brand"}.`,
+const faceTitle = (k: FaceKey) => `${k} · ${LISTING[k].brand}`;
+const faceLabel = (k: FaceKey) =>
+  `${LISTING[k].brand} in theme ${k}${k === "night" ? " (BELLA)" : ", a demo brand"}: ${LISTING[k].title}, ${LISTING[k].location}, ${LISTING[k].price} a month.`;
+const changedLabel = (k: FaceKey) => `What changed: ${faceRows(k).map(([n, v]) => `${n} ${v}`).join(", ")}.`;
+
+const SHOWCASE: ShowcaseCard[] = FACE_ORDER.map((k) => ({
+  title: faceTitle(k),
+  label: faceLabel(k),
   node: (
-    <span className={caseStyles.piecesNarrow}>
-      <Preview theme={THEMES[k]} small />
-    </span>
+    <div className={s.showFace}>
+      <Preview theme={THEMES[k]} face={k} />
+    </div>
   ),
 }));
 
@@ -140,7 +146,7 @@ export default function ThemingCase() {
             title="One system, many faces."
             meta={["Case · Theming · BELLA", "2026"]}
             intro="Themes in BELLA swap the values, never the components. Watch the same screen change, token by token. Nothing to scroll or click."
-            collage={{ label: HERO_LABEL, pieces: COLLAGE, phone: <Preview theme={THEMES.ground} />, phoneLabel: "One listing card in the ground theme, BELLA light: the Harbour loft listing with its price and Book a visit." }}
+            collage={{ label: HERO_LABEL, pieces: COLLAGE, phone: <Preview theme={THEMES.ground} />, phoneLabel: "The bel·la homes listing screen in the ground theme, BELLA light: Seafront loft with a terrace, €1,150 a month, and Book a visit." }}
           />
         }
         showcase={<CaseShowcase label="Theming, the same card in three more themes" cards={SHOWCASE} strip />}
@@ -288,15 +294,32 @@ export default function ThemingCase() {
 
         <Beat id="side-by-side" num="6" label="Side by side" heading="Same card. Four themes. No new components.">
           <CaseFigure n={8} caption="The same card in four themes. One component tree; only the token values change. Coast and market are demo brands.">
-            <div className={s.strip} role="img" aria-label="The same listing card in four themes: ground and night (BELLA), coast and market (demo brands).">
-              {ORDER.map((k) => (
-                <div key={k} className={s.stripItem} aria-hidden="true">
-                  <Preview theme={THEMES[k]} small />
-                  <p className={s.stripLabel}>
-                    {k} · {k === "ground" || k === "night" ? "BELLA" : "demo brand"}
-                  </p>
-                </div>
-              ))}
+            <div className={caseStyles.wideOnly}>
+              <div className={s.faces} role="img" aria-label={`The same listing screen in three themes. ${FACE_ORDER.map((k) => `${faceLabel(k)} ${changedLabel(k)}`).join(" ")}`}>
+                {FACE_ORDER.map((k) => (
+                  <div key={k} className={s.face} aria-hidden="true">
+                    <Preview theme={THEMES[k]} face={k} />
+                    <WhatChanged face={k} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className={caseStyles.phoneOnly}>
+              {/* three peers to compare: a Reel (job 42) */}
+              <Swipe
+                reel
+                label="The same listing screen in three themes"
+                items={FACE_ORDER.map((k) => ({
+                  key: k,
+                  short: faceTitle(k),
+                  node: (
+                    <div className={s.face} role="img" aria-label={`${faceLabel(k)} ${changedLabel(k)}`}>
+                      <Preview theme={THEMES[k]} face={k} />
+                      <WhatChanged face={k} />
+                    </div>
+                  ),
+                }))}
+              />
             </div>
           </CaseFigure>
         </Beat>

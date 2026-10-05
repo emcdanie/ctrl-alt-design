@@ -106,7 +106,8 @@ export const COMPONENT_SLOTS: [string, Role][] = [
 export const SEMANTIC_ROWS: Role[] = ["bg", "panel", "line", "muted", "ink", "action", "accent"];
 export const JSON_ROLES: Role[] = ["bg", "panel", "line", "muted", "ink", "action", "on-action", "accent"];
 
-/* the preview reads nine custom properties, one per role */
+/* the preview reads one custom property per role; surface is the ground
+   here (the brand faces set their own, faceVars) */
 export function themeVars(t: Theme): CSSProperties {
   return {
     "--t-bg": val(t, "bg"),
@@ -118,6 +119,7 @@ export function themeVars(t: Theme): CSSProperties {
     "--t-on-action": val(t, "on-action"),
     "--t-accent": val(t, "accent"),
     "--t-border": val(t, "border-strong"),
+    "--t-surface": val(t, "bg"),
   } as CSSProperties;
 }
 
@@ -165,3 +167,115 @@ export const ASKS: { name: string; light: string; lightHex: string; dark: string
   { name: "surface-card", light: "{color.light.panel}", lightHex: "#f2f2f2", dark: "{color.dark.surface}", darkHex: "#161616" }, // token-waiver: the hex IS the answer shown
   { name: "focus-ring", light: "{color.brand.ochre-deep}", lightHex: "#b97a14", dark: "{color.brand.ochre}", darkHex: "#e8a83e" }, // token-waiver: the hex IS the answer shown
 ];
+
+/* The theming face (job 43, Elleta, 5 Oct 2026; Figma "Theming face"
+ * 480:55355 and its "Faces v2 · brand" collection): each brand's listing
+ * (content) and the values its face reads. Ground and night are BELLA, so
+ * both show bel·la homes; coast and market are the demo brands saltstay
+ * and verdello. Photos are the Figma face's own. */
+export interface Listing {
+  brand: string;
+  search: string;
+  photo: string;
+  photoW: number;
+  photoH: number;
+  title: string;
+  location: string;
+  price: string;
+}
+
+const BELLA_HOMES: Listing = {
+  brand: "bel·la homes",
+  search: "Coast · any week",
+  photo: "/images/kit/stay-harbour.jpg",
+  photoW: 600,
+  photoH: 400,
+  title: "Seafront loft with a terrace",
+  location: "Canet de Mar, by the water",
+  price: "€1,150",
+};
+
+export const LISTING: Record<ThemeKey, Listing> = {
+  ground: BELLA_HOMES,
+  night: BELLA_HOMES,
+  coast: {
+    brand: "saltstay",
+    search: "Seaside · any week",
+    photo: "/images/kit/stay-cottage.webp",
+    photoW: 800,
+    photoH: 451,
+    title: "White cottage above the bay",
+    location: "Costa Brava, steps to the sand",
+    price: "€980",
+  },
+  market: {
+    brand: "verdello",
+    search: "City · weekends",
+    photo: "/images/kit/stay-oldtown-flat.webp",
+    photoW: 800,
+    photoH: 533,
+    title: "Old town flat by the market",
+    location: "Girona, two streets from the square",
+    price: "€1,240",
+  },
+};
+
+export type FaceKey = "night" | "coast" | "market";
+export const FACE_ORDER: FaceKey[] = ["night", "coast", "market"];
+
+/* the brand values, exactly as the Figma collection: the first four are
+ * the ones "What changed" lists; the rest follow from them */
+export interface FaceValues {
+  action: string;
+  bg: string;
+  accent: string;
+  /** card radius, px */
+  radius: number;
+  /** field and button radius, px; "pill" rounds them fully */
+  ctl: number | "pill";
+  surface: string;
+  panel: string;
+  line: string;
+  border: string;
+  ink: string;
+  muted: string;
+  onAction: string;
+}
+
+export const FACES: Record<FaceKey, FaceValues> = {
+  // token-waiver: the Figma brand collection, the exhibit's subject (every hex in FACES)
+  night: { action: "#eceef3", bg: "#0f1117", accent: "#e8a83e", radius: 16, ctl: 10, surface: "#171a22", panel: "#1d2030", line: "#2e3240", border: "#858b9f", ink: "#eceef3", muted: "#b1b7c7", onAction: "#1d2030" }, // token-waiver: brand data
+  coast: { action: "#1f5f7a", bg: "#f6f4ef", accent: "#f6c9a8", radius: 20, ctl: "pill", surface: "#fffdf9", panel: "#ebe6dc", line: "#d9d2c3", border: "#8e8a80", ink: "#1d2a33", muted: "#3f4d57", onAction: "#f6f4ef" }, // token-waiver: brand data
+  market: { action: "#0a7a5c", bg: "#eef6f3", accent: "#cfe8dc", radius: 6, ctl: 4, surface: "#ffffff", panel: "#e3f5ee", line: "#d3e6df", border: "#6b8a80", ink: "#0f2a24", muted: "#3f5a53", onAction: "#ffffff" }, // token-waiver: brand data
+};
+
+/* "What changed": [name, value as Figma writes it, swatch kind] */
+export const faceRows = (k: FaceKey): [string, string, "action" | "bg" | "accent" | "radius"][] => {
+  const f = FACES[k];
+  return [
+    ["action", f.action, "action"],
+    ["background", f.bg, "bg"],
+    ["accent", f.accent, "accent"],
+    ["radius", f.ctl === "pill" ? `${f.radius}, buttons pill` : String(f.radius), "radius"],
+  ];
+};
+
+/* the face's variables; the same names themeVars sets, plus surface and
+ * the two radii */
+export function faceVars(k: FaceKey): CSSProperties {
+  const f = FACES[k];
+  return {
+    "--t-bg": f.bg,
+    "--t-surface": f.surface,
+    "--t-panel": f.panel,
+    "--t-line": f.line,
+    "--t-border": f.border,
+    "--t-ink": f.ink,
+    "--t-muted": f.muted,
+    "--t-action": f.action,
+    "--t-on-action": f.onAction,
+    "--t-accent": f.accent,
+    "--t-radius": `${f.radius}px`,
+    "--t-ctl-radius": f.ctl === "pill" ? "999px" : `${f.ctl}px`,
+  } as CSSProperties;
+}
