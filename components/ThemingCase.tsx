@@ -293,7 +293,7 @@ export default function ThemingCase() {
         </Beat>
 
         <Beat id="side-by-side" num="6" label="Side by side" heading="Same card. Four themes. No new components.">
-          <CaseFigure n={8} caption="The same card in four themes. One component tree; only the token values change. Coast and market are demo brands.">
+          <CaseFigure n={8} caption="The same card in three themes. One component tree; only the token values change. Coast and market are demo brands.">
             <div className={caseStyles.wideOnly}>
               <div className={s.faces} role="img" aria-label={`The same listing screen in three themes. ${FACE_ORDER.map((k) => `${faceLabel(k)} ${changedLabel(k)}`).join(" ")}`}>
                 {FACE_ORDER.map((k) => (

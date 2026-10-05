@@ -204,14 +204,14 @@ body {
      (32 at 390), its columns sit 88 apart (28 stacked), the collage is
      528x480 and keeps that shape at every width (350x318 at 390), with
      no edge fades since the 5 Oct straighten pass; a phone showcase card
-     is 280 wide. */
+     is 296 wide, as Figma (Elleta, 5 Oct 2026, job 43b). */
   --text-display-case: clamp(40px, 40px + 24 * (100vw - 390px) / 1050, 64px);
   --text-display-case-long: clamp(40px, 40px + 16 * (100vw - 390px) / 1050, 56px);
   --leading-case-title: 1.06;
   --case-hero-pad-y: calc(var(--spacing-16) + var(--spacing-2));
   --case-hero-gap: calc(var(--spacing-20) + var(--spacing-2));
   --case-hero-gap-stacked: calc(var(--spacing-6) + var(--spacing-1));
-  --case-showcase-card-w: 280px;
+  --case-showcase-card-w: 296px;
   /* Label/Eyebrow, Label/Table, Label/Button: 16px (site v3) */
   --text-label: var(--typography-font-size-tag);
   /* Site/Quote: 32 at 1440, fluid to 24 at 390 (TODO(bella): a Quote style,

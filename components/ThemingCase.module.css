@@ -414,8 +414,35 @@
   font-size: var(--typography-font-size-base);
   line-height: 1.7;
 }
-.pvChips { display: flex; flex-wrap: wrap; gap: var(--spacing-2); }
+/* the filter chips are ONE row on every face (Elleta, 5 Oct 2026, 17:35).
+   On the live exhibit (`live`, a tab stop with a name) the row scrolls
+   sideways and runs to the face edge, so the next chip peeks there. In a
+   picture face (role="img", aria-hidden) a scroller can't take focus, and
+   a chip cut at the edge fails the clip sweep, so a chip that doesn't fit
+   drops out whole: the row wraps into one chip-high line that hides the
+   rest (decision while away, 5 Oct 2026; Elleta to confirm) */
+.pvChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  height: 2.75rem;
+  overflow: hidden;
+}
+.pvChips[tabindex] {
+  flex-wrap: nowrap;
+  height: auto;
+  margin-inline: calc(-1 * var(--spacing-4));
+  padding-inline: var(--spacing-4);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--spacing-4);
+  scrollbar-width: none;
+}
+.pvChips::-webkit-scrollbar { display: none; }
 .pvChip {
+  flex: none;
+  scroll-snap-align: start;
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;

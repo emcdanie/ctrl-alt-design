@@ -12,7 +12,10 @@ import s from "@/components/ThemingCase.module.css";
  * (Figure 8, the showcase, the hero collage); without, the theme's roles
  * (the exhibit, where `hot` outlines the parts that read one role). */
 
-export default function Preview({ theme, face, hot }: { theme: Theme; face?: FaceKey; hot?: Role | null }) {
+/** `live`: the face is live DOM, not a picture (the exhibit), so the chip
+ * row takes focus and scrolls by keyboard; inside a role="img" or
+ * aria-hidden picture it stays out of the tab order */
+export default function Preview({ theme, face, hot, live = false }: { theme: Theme; face?: FaceKey; hot?: Role | null; live?: boolean }) {
   const cx = (base: string, role: Role) => `${base} ${hot === role ? s.pulse : ""}`.trim();
   const l = LISTING[theme.name];
   return (
@@ -32,7 +35,7 @@ export default function Preview({ theme, face, hot }: { theme: Theme; face?: Fac
             {l.search}
           </span>
         </div>
-        <div className={s.pvChips}>
+        <div className={s.pvChips} {...(live ? { tabIndex: 0, role: "group", "aria-label": "Filters, scroll sideways" } : {})}>
           <span data-r="action" className={cx(`${s.pvChip} ${s.pvChipOn}`, "action")}>
             Sea view
           </span>

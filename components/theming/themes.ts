@@ -56,11 +56,12 @@ export const THEMES: Record<ThemeKey, Theme> = {
   },
   night: {
     name: "night",
-    neutral: ["#0d0d0d", "#161616", "#1f1f1f", "#2a2a2a", "#636363", "#8c8c8c", "#b1b1b1", "#ededed"], // token-waiver: BELLA dark primitives, the exhibit's subject
+    // BELLA's cool dark ramp (cool-975 to the dark ink), the same night as FACES.night (Elleta, 5 Oct 2026, job 43b)
+    neutral: ["#0f1117", "#171a22", "#1d2030", "#2e3240", "#686d7d", "#858b9f", "#b1b7c7", "#eceef3"], // token-waiver: BELLA dark primitives, the exhibit's subject
     brand: [...OCHRE].reverse(), // the same ramp, reversed for dark
-    sem: BELLA_SEM(3, 4, 6, 4),
+    sem: BELLA_SEM(3, 5, 6, 4),
     tint: ["#d9d8dd", "#232228"], // token-waiver: exhibit wash per theme (mock)
-    swatch: ["#0d0d0d", "#ededed"], // token-waiver: picker swatch data
+    swatch: ["#0f1117", "#eceef3"], // token-waiver: picker swatch data
     note: "BELLA · dark",
     mode: "dark",
   },

@@ -219,7 +219,7 @@ export function ThemeExhibit() {
             </div>
           </div>
         </div>
-        <Preview theme={t} hot={hot} />
+        <Preview theme={t} hot={hot} live />
         <figcaption className={s.cap}>
           <span>theme</span>
           <b>{key}</b>
