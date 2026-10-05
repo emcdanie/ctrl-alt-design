@@ -242,23 +242,8 @@ body {
   --markup-red: #b5323a;
   /* Drift figure 9: the invented carrier's mark */
   --kit-carrier: #115b62;
-  /* Covers (Site v3, Next case and More work slots): picture-only
-     colours that do not follow the theme. The three client brands on the
-     Theming cover, the invented carrier mark, and the controls that sit
-     on a photo. Never site chrome. */
-  --cover-brand-ink: #1d2030;
-  --cover-brand-on: #ffffff;
-  --cover-brand-tint: #f6c9a8;
-  --cover-brand-a: #1d2030;
-  --cover-brand-a-ground: #f6f7f9;
-  --cover-brand-a-deep: #121212;
-  --cover-brand-b: #3e7a3c;
-  --cover-brand-b-ground: #eef5ec;
-  --cover-brand-b-tint: #cfe8dc;
-  --cover-brand-c: #b04a2f;
-  --cover-brand-c-ground: #fbefe9;
-  --cover-carrier: #0f5c63;
-  --cover-carrier-stripe: #f2c14e;
+  /* picture-only colours that do not follow the theme: the controls that
+     sit on a photo. Never site chrome. */
   --cover-on-photo: #ffffff;
   --cover-on-photo-ink: #121212;
   --cover-photo-scrim: #121212a6;

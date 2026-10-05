@@ -1,5 +1,7 @@
 /* the inset level inside a raised card: hairline, card radius, the grid
-   in the line token, Mono strips at the metadata tier */
+   in the line token. The label bar and caption as Figma's "Covers final"
+   (529:84898, job 43): the body face, 16 over the stage, 18 under it, on
+   the surface */
 .frame {
   display: grid;
   /* one shrinkable column: the nowrap strips grew an auto column past
@@ -8,7 +10,7 @@
   overflow: hidden;
   border: 1px solid var(--color-semantic-border);
   border-radius: var(--radius-card);
-  background: var(--color-semantic-surface-inset);
+  background: var(--color-semantic-surface);
 }
 
 .strip {
@@ -17,10 +19,9 @@
   gap: var(--spacing-4);
   padding: var(--spacing-3) var(--spacing-4);
   border-bottom: 1px solid var(--color-semantic-border);
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-feature-settings: var(--mono-feature);
-  color: var(--color-ink-muted);
+  font-size: var(--text-label);
+  line-height: 1.3;
+  color: var(--color-semantic-text-secondary);
   white-space: nowrap;
 }
 
@@ -34,6 +35,8 @@
 .foot {
   border-top: 1px solid var(--color-semantic-border);
   border-bottom: 0;
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.5;
   white-space: normal;
 }
 
@@ -59,17 +62,11 @@
   fill: var(--color-semantic-accent);
 }
 
-/* a live cover (the More work slot, 490 x 260 design px) scaled to the
-   stage by ScaledArt; the sizer gives the absolute canvas its box */
-.cover {
+/* a Figma cover picture (job 43): the stage IS the picture, edge to edge,
+   one per theme */
+.stagePicture {
   display: block;
-  width: 100%;
-  max-width: 30.625rem;
+  padding: 0;
+  background-image: none;
 }
 
-.coverSize {
-  position: relative;
-  display: block;
-  width: 490px; /* token-waiver: the Covers "work" slot's design width, scaled by ScaledArt */
-  height: 260px; /* token-waiver: the Covers "work" slot's design height */
-}

@@ -3,7 +3,6 @@ import { Tag } from "@/components/ui/Tag";
 import SpecimenFrame from "@/components/SpecimenFrame";
 import { textLinkClass } from "@/components/ui/TextLink";
 import { WORK_THUMBS } from "@/components/diagrams/workThumbs";
-import { CoverProduct } from "@/components/case/pictures/Covers";
 import type { CaseRowData } from "@/content/cases";
 import styles from "./WorkLibrary.module.css";
 
@@ -69,7 +68,7 @@ function CaseCardLayout({ row, featured }: { row: CaseRowData; featured: boolean
         mode={row.specimen?.mode ?? ""}
         caption={row.specimen?.caption ?? ""}
         art={WORK_THUMBS[row.id]}
-        cover={row.specimen?.cover === "product" ? <CoverProduct slot="work" label={`${row.title}: a product card`} /> : undefined}
+        picture={row.specimen?.picture}
       />
       <span className={styles.cardBody}>
         <span className={styles.metaLine}>

@@ -5,6 +5,12 @@
  * (components/diagrams/workThumbs.ts, keyed by id), a Mono meta line, the
  * one-line claim and the signal tags the case is evidence for. Case
  * identity (colour, slug parity) stays on WORK_ITEMS in lib/workLibrary.ts. */
+/** a card cover exported from Figma's "Covers final" row (529:84898, job
+ *  43): the specimen stage as a flat picture, light and dark, at 3x. A
+ *  picture because the recreated UI in it runs under the 14px floor at
+ *  card size (CLAUDE.md section 9). Files: /images/case/covers/<name>-<theme>.webp */
+export type CoverPicture = { name: string; alt: string; width: number; height: number };
+
 export interface CaseRowData {
   id: string;
   n: string;
@@ -17,7 +23,7 @@ export interface CaseRowData {
   status?: string;
   tags: { text: string; tone?: "c2" | "c3"; outline?: boolean }[];
   /** the specimen frame's strips on the card layouts (Home · v2) */
-  specimen?: { path: string; mode: string; caption: string; cover?: "product" };
+  specimen?: { path: string; mode: string; caption: string; picture?: CoverPicture };
 }
 
 export const CASES: CaseRowData[] = [
@@ -88,7 +94,15 @@ export const HOME_CASES: CaseRowData[] = CASES.slice(0, 3);
  * follow the Gate 2 /work order (01 Drift, 02 Federated, 03 CHIP). */
 const byId = (id: string) => CASES.find((c) => c.id === id)!;
 export const HOME_LEAD: CaseRowData[] = [
-  { ...byId("drift"), specimen: { path: "drift / buttons · audit", mode: "one kept", caption: "Redrawn from my own audit." } },
+  {
+    ...byId("drift"),
+    specimen: {
+      path: "drift / buttons · audit",
+      mode: "before → after",
+      caption: "Recreated from my audit. No client UI.",
+      picture: { name: "drift", width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
+    },
+  },
   {
     id: "federated",
     n: "02",
@@ -97,9 +111,23 @@ export const HOME_LEAD: CaseRowData[] = [
     claim: "Proves a federated system can run without me as the bottleneck.",
     href: "/case-studies/federated",
     tags: [],
-    specimen: { path: "federated / product card", mode: "published", caption: "One chip, a new slot, nothing forked.", cover: "product" },
+    specimen: {
+      path: "federated / contribution",
+      mode: "one system",
+      caption: "Recreated. One chip, a new slot, nothing forked.",
+      picture: { name: "federated", width: 1392, height: 1008, alt: "A product page with its size chips, beside a panel: kept the old chip, added a slot. Colour and Text kept, Slot new, and three fills for the slot: size and stock, kids' age and height, a colour filter." },
+    },
   },
-  { ...byId("chip"), n: "03", specimen: { path: "chip / watch loop", mode: "watching", caption: "Drawn from CHIP\u2019s watch loop." } },
+  {
+    ...byId("chip"),
+    n: "03",
+    specimen: {
+      path: "chip 2.0 / atlas",
+      mode: "filter chip",
+      caption: "CHIP 2.0 checks every layer of a component.",
+      picture: { name: "chip", width: 1392, height: 1008, alt: "CHIP's Atlas anatomy of the FilterChip: the Accessible chip with six numbered parts." },
+    },
+  },
 ];
 
 /* /work (Site v3, job 33, Elleta 5 Oct 2026): Home's case cards, four
@@ -110,5 +138,14 @@ export const WORK_CASES: CaseRowData[] = [
   HOME_LEAD[0],
   HOME_LEAD[1],
   HOME_LEAD[2],
-  { ...byId("theming"), n: "04" },
+  {
+    ...byId("theming"),
+    n: "04",
+    specimen: {
+      path: "theming / theme switcher",
+      mode: "on BELLA",
+      caption: "Three brands, one set of components.",
+      picture: { name: "theming", width: 1392, height: 1008, alt: "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it." },
+    },
+  },
 ];

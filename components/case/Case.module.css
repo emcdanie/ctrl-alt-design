@@ -746,8 +746,8 @@ main .showcase + :global(.l-section.l-section) {
 
 /* Site v3: "Card covers (Work card, Next case tab) always sit on the
    Stage grid: the components carry it behind the Cover slot." The
-   .stage::before recipe, drawn on the slot itself. A live cover keeps
-   its slot's design ratio (520x340, 490x260) and is scaled into it. */
+   .stage::before recipe, drawn on the slot itself; the cover picture
+   fills the slot (job 43, D1). */
 .nextCover,
 .workCover {
   position: relative;
@@ -757,14 +757,6 @@ main .showcase + :global(.l-section.l-section) {
     linear-gradient(var(--color-semantic-border) 1px, transparent 1px) 0 0 / var(--spacing-8) var(--spacing-8),
     linear-gradient(90deg, var(--color-semantic-border) 1px, transparent 1px) 0 0 / var(--spacing-8) var(--spacing-8),
     var(--color-semantic-background);
-}
-
-.nextCover[data-live] {
-  aspect-ratio: 520 / 340;
-}
-
-.workCover[data-live] {
-  aspect-ratio: 490 / 260;
 }
 
 .nextCover img {
