@@ -4,12 +4,15 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import styles from "./Case.module.css";
 
 /* The case hero's collage (build-spec "Case hero band + showcase", Elleta,
-   4 Oct late): clones of the case's own picture components, tilted a few
-   degrees and overlapping, no frame, fading into the band on all four
-   edges. Laid out on a 528x480 canvas (the 1440 frame) and scaled to the
-   box's width; the box is 528x480 at 1440 and 350x300 at 390, so the
-   phone crops a little top and bottom, inside the fades. The collage is a
-   picture: one role="img" with a label, everything inside aria-hidden. */
+   4 Oct late; straightened 5 Oct, job 34: "why do you keep making things
+   crooked"): clones of the case's own picture components, straight and
+   overlapping, no frame and no fades. Laid out on a 528x480 canvas (the
+   1440 frame, Figma straighten pass) and scaled to the box's width at
+   every width, so every piece sits fully inside the box: nothing with
+   text or a control is ever cut. A piece's x/y is its drawn top-left
+   (scale grows from that corner), so the numbers read straight off the
+   Figma frame. The collage is a picture: one role="img" with a label,
+   everything inside aria-hidden. */
 
 export const COLLAGE_W = 528;
 export const COLLAGE_H = 480;
@@ -17,11 +20,9 @@ export const COLLAGE_H = 480;
 export type CollagePiece = {
   key: string;
   node: ReactNode;
-  /** top-left on the 528x480 canvas */
+  /** the drawn top-left on the 528x480 canvas */
   x: number;
   y: number;
-  /** tilt in degrees, within ±6 */
-  r?: number;
   /** a piece drawn smaller than its figure size, as the frame draws it */
   s?: number;
   /** the piece's box, for a piece that fills its figure's width or
@@ -57,8 +58,9 @@ export default function CaseCollage({ label, pieces }: { label: string; pieces: 
           <div
             key={p.key}
             className={styles.collagePiece}
+            data-key={p.key}
             data-phone={p.phone === false ? "off" : undefined}
-            style={{ left: p.x, top: p.y, width: p.w, height: p.h, transform: `rotate(${p.r ?? 0}deg)${p.s ? ` scale(${p.s})` : ""}` }}
+            style={{ left: p.x, top: p.y, width: p.w, height: p.h, transform: p.s ? `scale(${p.s})` : undefined }}
           >
             {p.node}
           </div>

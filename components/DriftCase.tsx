@@ -21,15 +21,15 @@ const HERO_LABEL =
   "Before and after, overlapping: a drifted 'Stays in Lisbon' list where each row uses its own button, type and capitalisation, and the Harbour loft stay card on the system with one Book now button; five drifted book buttons and two token pins, action.primary and accent, scattered below.";
 
 const COLLAGE: CollagePiece[] = [
-  { key: "before", node: <DriftedList />, x: -4, y: 83, r: 6, s: 0.975 },
-  { key: "after", node: <StayCard />, x: 244, y: -14, r: -3, s: 0.96 },
-  { key: "b1", node: <DriftedButton n={1} />, x: 39, y: 382, r: 4 },
-  { key: "b2", node: <DriftedButton n={2} />, x: 111, y: 402, r: -2 },
-  { key: "b3", node: <DriftedButton n={3} />, x: 23, y: 429, r: -3, phone: false },
-  { key: "b4", node: <DriftedButton n={4} />, x: 149, y: 448, r: 3, phone: false },
-  { key: "b5", node: <DriftedButton n={5} />, x: 235, y: 422, r: 2 },
-  { key: "t1", node: <TokenPin token="action.primary" swatch="var(--kit-action)" float swap />, x: 299, y: 426, r: -4, phone: false },
-  { key: "t2", node: <TokenPin token="accent" swatch="var(--color-semantic-accent)" float />, x: 348, y: 403, r: 3 },
+  { key: "before", node: <DriftedList />, x: 0, y: 90, s: 0.975 },
+  { key: "after", node: <StayCard />, x: 237, y: 10, s: 0.89 },
+  { key: "b1", node: <DriftedButton n={1} />, x: 39, y: 382 },
+  { key: "b2", node: <DriftedButton n={2} />, x: 111, y: 402 },
+  { key: "b3", node: <DriftedButton n={3} />, x: 23, y: 429, phone: false },
+  { key: "b4", node: <DriftedButton n={4} />, x: 149, y: 443, phone: false },
+  { key: "b5", node: <DriftedButton n={5} />, x: 235, y: 422 },
+  { key: "t1", node: <TokenPin token="action.primary" swatch="var(--kit-action)" float swap />, x: 331, y: 440, s: 0.75, phone: false },
+  { key: "t2", node: <TokenPin token="accent" swatch="var(--color-semantic-accent)" float />, x: 349, y: 405, s: 0.75 },
 ];
 
 /* "17 → 1 → everywhere" (Elleta, 5 Oct): the drift, the one button, and

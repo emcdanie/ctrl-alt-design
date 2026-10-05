@@ -24,10 +24,11 @@
   white-space: nowrap;
 }
 
+/* a long path wraps under itself at 390, never a silent ellipsis (job 34) */
 .path {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .foot {

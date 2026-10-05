@@ -200,15 +200,15 @@ body {
      hero band + showcase"): Display/Case title, fluid 64 to 40 (56 to 40
      for a long title; a BELLA proposal), leading 1.06; the band pads 72
      (32 at 390), its columns sit 88 apart (28 stacked), the collage is
-     528x480 (350x300 at 390) and fades 72 on every edge (40 at 390); a
-     phone showcase card is 280 wide. */
+     528x480 and keeps that shape at every width (350x318 at 390), with
+     no edge fades since the 5 Oct straighten pass; a phone showcase card
+     is 280 wide. */
   --text-display-case: clamp(40px, 40px + 24 * (100vw - 390px) / 1050, 64px);
   --text-display-case-long: clamp(40px, 40px + 16 * (100vw - 390px) / 1050, 56px);
   --leading-case-title: 1.06;
   --case-hero-pad-y: calc(var(--spacing-16) + var(--spacing-2));
   --case-hero-gap: calc(var(--spacing-20) + var(--spacing-2));
   --case-hero-gap-stacked: calc(var(--spacing-6) + var(--spacing-1));
-  --case-collage-fade: 72px;
   --case-showcase-card-w: 280px;
   /* Label/Eyebrow, Label/Table, Label/Button: 16px (site v3) */
   --text-label: var(--typography-font-size-tag);

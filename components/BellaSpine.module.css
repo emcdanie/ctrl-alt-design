@@ -367,17 +367,16 @@
 .lanes { display: grid; gap: var(--spacing-1); margin-top: var(--spacing-5); }
 .lane {
   display: grid;
-  grid-template-columns: 170px repeat(7, 1fr);
+  grid-template-columns: 13rem repeat(7, 1fr);
   align-items: center;
   gap: var(--spacing-2);
 }
+/* a lane name wraps in the narrow phone column, never a silent ellipsis (job 34) */
 .lane > span {
-  overflow: hidden;
   color: var(--muted);
   font-family: var(--font-code);
   font-size: var(--text-mono);
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
 }
 .lane i { height: 8px; border-radius: 4px; background: transparent; }
 .lane i.laneOn { background: var(--line); }
@@ -396,7 +395,7 @@
   .lcs { grid-template-rows: 34px; }
   .lcs i { width: 34px; height: 34px; }
   .lcSteps::before { top: 17px; }
-  .lane { grid-template-columns: 92px repeat(7, 1fr); gap: var(--spacing-1); }
+  .lane { grid-template-columns: 8rem repeat(7, 1fr); gap: var(--spacing-1); }
 }
 
 /* ── 03 playground ── */

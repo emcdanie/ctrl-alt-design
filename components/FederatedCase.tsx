@@ -22,10 +22,10 @@ const HERO_LABEL =
   "Three versions of one product card, overlapping: a new draft, the published card (a wool blend belted coat at €119.99, down from €179.99, beige, size M, last units) and a post-purchase copy at the full price; below them, the chip group with slots.";
 
 const COLLAGE: CollagePiece[] = [
-  { key: "draft", node: <FedPieces><Draft bare /></FedPieces>, x: -37, y: -37, r: 3, s: 0.69 },
-  { key: "published", node: <FedPieces><Published bare /></FedPieces>, x: 154, y: -19, r: -2, s: 0.82 },
-  { key: "copy", node: <FedPieces><Copy bare /></FedPieces>, x: 324, y: -17, r: -4, s: 0.65 },
-  { key: "group", node: <FedPieces><ChipGroupCard /></FedPieces>, x: -204, y: 325, s: 0.48, w: 928 },
+  { key: "draft", node: <FedPieces><Draft bare /></FedPieces>, x: 4, y: 51, s: 0.6 },
+  { key: "published", node: <FedPieces><Published bare /></FedPieces>, x: 189, y: 20, s: 0.75 },
+  { key: "copy", node: <FedPieces><Copy bare /></FedPieces>, x: 370, y: 65, s: 0.55 },
+  { key: "group", node: <FedPieces><ChipGroupCard /></FedPieces>, x: 34, y: 374, s: 0.48, w: 928 },
 ];
 
 const SHOWCASE: ShowcaseCard[] = [

@@ -188,7 +188,8 @@ export function Published({ bare = false }: { bare?: boolean }) {
             <Icon name="Xmark" size="md" />
           </span>
         </Coat>
-        <p className={`${s.cardTitle} ${s.ellipsis}`}>Wool blend belted coat with wide lapels</p>
+        {/* the cut is the picture's point, drawn as text, never clipped (job 34) */}
+        <p className={`${s.cardTitle} ${s.oneLine}`}>Wool blend belted coat with wide…</p>
         <p className={s.price}>
           <span className={s.sale}>€119.99</span>
           <span className={s.was}>€179.99</span>
@@ -229,7 +230,7 @@ export function Draft({ bare = false }: { bare?: boolean }) {
         </Coat>
         <p className={`${s.cardTitle} ${s.caps}`}>Wool blend belted coat with wide lapels</p>
         <p className={s.plain}>119,99 €</p>
-        <p className={`${s.meta} ${s.ellipsis}`}>Colour: Beige, size: M, regular fit, wool blend</p>
+        <p className={`${s.meta} ${s.oneLine}`}>Colour: Beige, size: M, regular fit…</p>
       </div>
       {bare ? null : (
         <>
@@ -264,6 +265,12 @@ const VERSIONS = [
   { key: "copy", short: "post-purchase copy", node: <Copy />, label: "Post-purchase copy: the same card at the full price of 179.99 with colour and size on their own lines, and no discount." },
 ];
 
+/* the four issues, by the version they sit on */
+const MISSES: Record<string, string[]> = {
+  draft: ["1 Caps title, two lines", "2 Colour cut off", "3 Close target 20px"],
+  copy: ["4 Discount missing"],
+};
+
 export function FederatedVersions() {
   return (
     <>
@@ -276,10 +283,9 @@ export function FederatedVersions() {
               ))}
             </div>
             <div className={s.legend}>
-              <Miss>1 Caps title, two lines</Miss>
-              <Miss>2 Colour cut off</Miss>
-              <Miss>3 Close target 20px</Miss>
-              <Miss>4 Discount missing</Miss>
+              {[...MISSES.draft, ...MISSES.copy].map((m) => (
+                <Miss key={m}>{m}</Miss>
+              ))}
             </div>
           </div>
         </ScaledArt>
@@ -294,6 +300,15 @@ export function FederatedVersions() {
             node: (
               <Pic label={v.label} className={v.key === "copy" ? s.swipeCardStart : s.swipeCard}>
                 {v.node}
+                {/* the numbered markers keep their words on the phone too:
+                    the legend lines for this card, under it (job 34) */}
+                {MISSES[v.key] ? (
+                  <span className={s.swipeLegend}>
+                    {MISSES[v.key].map((m) => (
+                      <Miss key={m}>{m}</Miss>
+                    ))}
+                  </span>
+                ) : null}
               </Pic>
             ),
           }))}

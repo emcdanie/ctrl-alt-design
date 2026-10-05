@@ -120,6 +120,9 @@ export function ZoomLevels() {
   const { playing, run } = useFigurePlay();
   const track = useRef<HTMLOListElement>(null);
   const [at, setAt] = useState(0);
+  /* a tab stop only while it scrolls (the 390 swipe): arrow keys then
+     move it, and the track keeps its name (job 34) */
+  const [swipes, setSwipes] = useState(false);
   useEffect(() => {
     const el = track.current;
     if (!el) return;
@@ -127,12 +130,19 @@ export function ZoomLevels() {
       const w = el.firstElementChild instanceof HTMLElement ? el.firstElementChild.offsetWidth : el.clientWidth;
       setAt(Math.max(0, Math.min(LEVELS.length - 1, Math.round(el.scrollLeft / Math.max(1, w)))));
     };
+    const measure = () => setSwipes(el.scrollWidth > el.clientWidth + 1);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
     el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
+    return () => {
+      ro.disconnect();
+      el.removeEventListener("scroll", onScroll);
+    };
   }, []);
   return (
     <div className={`${s.stage}`} data-play={playing ? "on" : "off"} key={run}>
-      <ol className={s.levels} ref={track} aria-label="Four zoom levels">
+      <ol className={s.levels} ref={track} aria-label="Four zoom levels" tabIndex={swipes ? 0 : undefined}>
         {LEVELS.map((l, k) => {
           const Art = LEVEL_ART[k];
           return (

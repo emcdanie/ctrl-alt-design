@@ -565,9 +565,8 @@
 }
 
 .brand[data-brand="a"] {
-  top: 66.1px;
+  top: 66px;
   left: 43.1px;
-  transform: rotate(-5deg);
 }
 
 .brand[data-brand="b"] {
@@ -584,9 +583,8 @@
   --brand-ground: var(--cover-brand-c-ground);
   --brand-photo: linear-gradient(90deg, var(--cover-brand-tint), var(--cover-brand-c));
   --brand-button-radius: 0;
-  top: 77.26px;
+  top: 66px;
   left: 276.4px;
-  transform: rotate(5deg);
 }
 
 .brandBar {

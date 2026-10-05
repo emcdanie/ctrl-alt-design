@@ -24,9 +24,9 @@ const COVER_LABEL =
   "A concept mock of CHIP's Atlas view of the FilterChip, specimen No. 003 in Actions: the chip on an anatomy stage with six numbered parts pinned to it, bottom layer first, and 'Checks 6 of 6 pass'.";
 
 const COLLAGE: CollagePiece[] = [
-  { key: "atlas", node: <CoverAtlas slot="next" label={COVER_LABEL} />, x: -23, y: 26, r: 3, s: 1.02, w: 520, h: 340 },
-  { key: "key", node: <Key state="focus" />, x: 261, y: 353, r: 2, s: 1.1 },
-  { key: "mock", node: <Mock />, x: 100, y: 362 },
+  { key: "atlas", node: <CoverAtlas slot="next" label={COVER_LABEL} />, x: -41, y: 23, s: 1.02, w: 520, h: 340 },
+  { key: "key", node: <Key state="focus" />, x: 271, y: 353 },
+  { key: "mock", node: <Mock />, x: 380, y: 25 },
 ];
 
 const SHOWCASE: ShowcaseCard[] = [
@@ -104,7 +104,7 @@ export default function ChipCase() {
           replay
           caption="The Button specimen in the Atlas concept mock. Rest: five numbered parts with their tokens. Exploded: the same five layers, top to bottom. Motion: Explode takes it apart in 0.8s (ease-out); Replay puts it back together. Reduced motion shows the exploded frame."
         >
-          <ChipExplode label="A concept mock of the Atlas Button specimen. At rest, a Save changes keycap with five numbered parts: 1 key shadow, --shadow-key-resting; 2 fill, ink keycap, primary-fill; 3 box, 44px min, pad 12/20, r12; 4 label, Geist 13, 700, caps, .08em; 5 focus ring, 3px ochre-deep, focus only. Beside it the same five layers exploded into tilted plates, focus ring at the top down to the key shadow at the bottom, each labelled." />
+          <ChipExplode label="A concept mock of the Atlas Button specimen. At rest, a Save changes keycap with five numbered parts: 1 key shadow, --shadow-key-resting; 2 fill, ink keycap, primary-fill; 3 box, 44px min, pad 12/20, r12; 4 label, Geist 13, 700; 5 focus ring, 3px ochre-deep, focus only. Beside it the same five layers exploded into tilted plates, focus ring at the top down to the key shadow at the bottom, each labelled." />
         </CaseFigure>
       </Beat>
 

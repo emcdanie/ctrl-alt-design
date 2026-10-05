@@ -91,36 +91,38 @@
 }
 
 /* the collage: a 528x480 canvas scaled to the box (CaseCollage sets
-   --collage-scale), fading into the band on all four edges. A mask, so
-   the fade is the band's own colour in both themes. */
+   --collage-scale). The box keeps the canvas's shape at every width, so
+   the whole canvas always shows: no fades and no crop (5 Oct straighten
+   pass, job 34: nothing may crop a piece). overflow stays hidden as a
+   backstop the clip sweep reads, never as a crop. */
 .collage {
-  --collage-fade: var(--case-collage-fade);
   position: relative;
   width: 100%;
   max-width: 528px;
   aspect-ratio: 528 / 480;
   justify-self: end;
   overflow: hidden;
-  -webkit-mask-image:
-    linear-gradient(to right, transparent, black var(--collage-fade), black calc(100% - var(--collage-fade)), transparent),
-    linear-gradient(to bottom, transparent, black var(--collage-fade), black calc(100% - var(--collage-fade)), transparent);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(to right, transparent, black var(--collage-fade), black calc(100% - var(--collage-fade)), transparent),
-    linear-gradient(to bottom, transparent, black var(--collage-fade), black calc(100% - var(--collage-fade)), transparent);
-  mask-composite: intersect;
 }
 
 .collageCanvas {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) scale(var(--collage-scale, 1));
+  left: 0;
+  top: 0;
+  transform: scale(var(--collage-scale, 1));
+  transform-origin: 0 0;
 }
 
 .collagePiece {
   position: absolute;
-  transform-origin: 50% 50%;
+  transform-origin: 0 0;
+}
+
+/* a picture's one-line ellipsis would hide words in the collage (the
+   Federated card title and meta, the Theming search pill): there the
+   line wraps, so every word shows (job 34 clip sweep) */
+.collagePiece p,
+.collagePiece span[data-r="line"] {
+  white-space: normal;
 }
 
 /* the showcase: the grey ground, three equal white cards of real UI */
@@ -256,10 +258,7 @@ main .showcase + :global(.l-section.l-section) {
   }
 
   .collage {
-    --collage-fade: var(--spacing-10);
-    --collage-scale: calc(350 / 528);
     max-width: 350px;
-    aspect-ratio: 350 / 300;
   }
 
   .collagePiece[data-phone="off"] {

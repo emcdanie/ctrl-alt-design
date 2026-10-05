@@ -257,6 +257,11 @@ Must pass before any work is "done":
   leaves the panel's content box; no shape straddles its SVG's viewBox edge (cut off); no pin or
   badge overlaps a button, link or drawn control (an SVG `.lc` group). Deliberate clipping (an
   HTML ancestor hiding overflow, an SVG `clip-path` or `mask`) is not counted. (Elleta, 22 Sep 2026.)
+- `audit:clip` — the clip sweep (`scripts/clip-sweep.mjs`; Elleta, 5 Oct 2026, job 34): every route
+  at 1440, 1280, 1110, 1024 and 390, both themes, animations at their end state. No text or control
+  partly visible under an ancestor that hides, clips or masks it (fades included); no text clipped
+  by its own box (an ellipsis counts); no horizontal scroller holding text without a tab stop and a
+  name. audit:contain allows deliberate clipping; this checks that nothing readable is cut by it.
 - `audit:sharp` — every raster image on every route, and inside its demo iframes (every tab
   of a before/after too), renders at most half its natural pixel width at 1440 and 390, on a 2x
   screen: nothing is stretched soft. No 2x source? Cap the display width, never upscale.

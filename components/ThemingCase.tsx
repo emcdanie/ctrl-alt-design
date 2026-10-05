@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { CasePage, Beat } from "@/components/case/CasePage";
 import caseStyles from "@/components/case/Case.module.css";
 import CaseHero from "@/components/case/CaseHero";
@@ -42,7 +42,21 @@ function Win({ path, dark = false, children }: { path: string; dark?: boolean; c
 const K = ({ children }: { children: ReactNode }) => <span className={s.k}>{children}</span>;
 const V = ({ children }: { children: ReactNode }) => <span className={s.v}>{children}</span>;
 const C = ({ children }: { children: ReactNode }) => <span className={s.c}>{children}</span>;
-const R = ({ children }: { children: ReactNode }) => <span className={s.r}>{children}</span>;
+/* a token path may break after each "." when the window is narrow */
+const R = ({ children }: { children: string }) => (
+  <span className={s.r}>
+    {children.split(".").map((part, k, all) => (
+      <Fragment key={k}>
+        {part}
+        {k < all.length - 1 ? (
+          <>
+            .<wbr />
+          </>
+        ) : null}
+      </Fragment>
+    ))}
+  </span>
+);
 
 const ONE_NAME_CAPTION =
   "One name, two answers: the component asks for background; light mode answers #ffffff, dark mode answers #0d0d0d. Motion: the name changes every 2.2s while in view (background, text-primary, text-muted, surface-card, focus-ring); swatches pop and the arrows draw. Reduced motion holds background."; // token-waiver: the two answers shown as caption text
@@ -100,10 +114,10 @@ const HERO_LABEL =
   "The same listing card, Canet de Mar, Spain, at €1,150 a month, in four themes overlapping: ground in front, night and market behind it, coast across its corner.";
 
 const COLLAGE: CollagePiece[] = [
-  { key: "night", node: <Preview theme={THEMES.night} small />, x: 18, y: 80, r: -4, s: 1.08, w: 220 },
-  { key: "market", node: <Preview theme={THEMES.market} small />, x: 309, y: 100, r: 4, s: 1.08, w: 220 },
-  { key: "ground", node: <Preview theme={THEMES.ground} />, x: 116, y: 54, w: 320 },
-  { key: "coast", node: <Preview theme={THEMES.coast} small />, x: 203, y: 245, r: -4, s: 0.86, w: 220 },
+  { key: "night", node: <Preview theme={THEMES.night} small />, x: 4, y: 64, s: 0.78, w: 220 },
+  { key: "market", node: <Preview theme={THEMES.market} small />, x: 352, y: 52, s: 0.78, w: 220 },
+  { key: "ground", node: <Preview theme={THEMES.ground} />, x: 123, y: 5, s: 0.88, w: 320 },
+  { key: "coast", node: <Preview theme={THEMES.coast} small />, x: 394, y: 214, s: 0.6, w: 220 },
 ];
 
 const SHOWCASE: ShowcaseCard[] = (["night", "coast", "market"] as const).map((k) => ({

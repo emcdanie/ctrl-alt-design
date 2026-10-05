@@ -361,6 +361,7 @@
 }
 .pvNav {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: calc(var(--spacing-3) + 2px);
@@ -369,16 +370,17 @@
   font-size: var(--typography-font-size-sm);
 }
 .pvNav b { font-weight: 500; white-space: nowrap; }
+/* the search pill takes its own row when the brand leaves too little
+   room, and its words wrap before they are ever cut (job 34) */
 .pvSearch {
   min-width: 0;
-  overflow: hidden;
   padding: calc(var(--spacing-1) + 1px) var(--spacing-3);
   border: 1px solid var(--t-line);
+  flex: 1 1 auto;
   border-radius: var(--radius-full);
   color: var(--t-ink);
   font-size: var(--typography-font-size-tag);
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  text-wrap: balance;
 }
 .pvBody {
   display: flex;
@@ -638,15 +640,14 @@
   border-bottom: 1px solid var(--color-semantic-border);
   background: var(--color-semantic-surface);
 }
+/* the path wraps onto a second line at 390, never a silent ellipsis (job 34) */
 .winPath {
   min-width: 0;
-  overflow: hidden;
   font-family: var(--font-code);
   font-size: var(--text-mono);
   font-feature-settings: var(--mono-feature);
   color: var(--color-ink-muted);
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 .dots { display: flex; flex: none; gap: calc(var(--spacing-1) + 1px); }
 .dots i {
@@ -727,10 +728,13 @@
   color: var(--color-ink);
 }
 .say b { font-weight: 500; }
+/* the code wraps (a break after each "." in a token path), so a narrow
+   window never cuts a line or hides it in a scroller (job 34) */
 .hl {
   margin: 0;
   padding: var(--spacing-4);
-  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   font-family: var(--font-code);
   font-size: var(--text-mono);
   font-feature-settings: var(--mono-feature);
@@ -1002,6 +1006,7 @@
 }
 
 .winDark .winPath,
+.winDark .hl,
 .winDark .k,
 .winDark .r,
 .winDark .v,

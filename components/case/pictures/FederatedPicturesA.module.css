@@ -323,10 +323,8 @@
   line-height: 21px;
 }
 
-.ellipsis {
-  overflow: hidden;
+.oneLine {
   white-space: nowrap;
-  text-overflow: ellipsis;
 }
 
 .caps {
@@ -476,4 +474,14 @@
 
 .swipeCardStart {
   padding-inline-start: var(--spacing-3);
+}
+
+.swipeLegend {
+  /* adds no width of its own: wraps inside the card's width */
+  width: 0;
+  min-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-3);
 }

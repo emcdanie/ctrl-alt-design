@@ -39,7 +39,8 @@ export default function Swipe({
   }, [items.length]);
   return (
     <div className={styles.swipe}>
-      <ul className={styles.swipeTrack} ref={track} aria-label={label}>
+      {/* a tab stop with a name: arrow keys scroll it (job 34) */}
+      <ul className={styles.swipeTrack} ref={track} aria-label={label} tabIndex={0}>
         {items.map((it) => (
           <li key={it.key} className={styles.swipeItem} data-fit={fit || undefined}>
             {it.node}

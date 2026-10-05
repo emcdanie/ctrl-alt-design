@@ -38,7 +38,7 @@ export const PARTS: { n: number; title: string; spec: string }[] = [
   { n: 1, title: "Key shadow", spec: "--shadow-key-resting" },
   { n: 2, title: "Fill", spec: "ink keycap · primary-fill" },
   { n: 3, title: "Box", spec: "44px min · pad 12/20 · r12" },
-  { n: 4, title: "Label", spec: "Geist 13 · 700 · caps · .08em" },
+  { n: 4, title: "Label", spec: "Geist 13 · 700" },
   { n: 5, title: "Focus ring", spec: "3px ochre-deep · focus only" },
 ];
 

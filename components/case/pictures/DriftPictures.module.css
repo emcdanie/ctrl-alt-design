@@ -827,7 +827,6 @@
   font-size: 13px;
   font-weight: var(--typography-font-weight-bold);
   line-height: 1.2;
-  transform: rotate(1deg);
 }
 
 /* one drifted button, cropped from Figure 2's picture (DriftedButton) */
