@@ -5,7 +5,7 @@
 @theme {
   /* Page + surfaces — lush ground (light default; navy dark via [data-theme]) */
   --color-cream: var(--color-light-panel);
-  --color-page: var(--color-semantic-background); /* site v3: the #f6f7f9 ground */
+  --color-page: var(--color-semantic-background); /* the BELLA ground (stone 95 since 5 Oct 2026) */
   /* CARD vs GROUND SEPARATION (defect, 27 Jul): the ground
      (--color-semantic-background, dropped to #F1EFE6 in bella.css) and
      the card were about 5 of 255 apart. At that distance a card edge
@@ -18,7 +18,7 @@
      BELLA name at this repo's separation values cannot live here: @theme is
      layered and loses to bella.css's unlayered :root. It lives in the APP
      TOKEN AUTHORITY block below. */
-  --color-card: var(--color-semantic-surface);
+  --color-card: var(--color-semantic-surface-card); /* light ground (BELLA 159bf43, 5 Oct 2026): stone cards on the stone ground */
   --color-ink: var(--color-light-ink);
   --color-ink-soft: var(--color-light-ink);
   --color-ink-muted: var(--color-light-muted);
@@ -346,7 +346,7 @@ body {
      component. --color-card derives from it in @theme, so the swapped Card
      and the 50-odd surfaces still named --color-card cannot drift apart.
      --color-semantic-surface-inset backs the Card's media well. */
-  --color-semantic-surface: var(--color-light-bg); /* site v3 colour B (4 Oct 2026): white surfaces on the #f6f7f9 ground */
+  --color-semantic-surface: var(--color-light-bg); /* white surfaces (the hero band, product UI in pictures); cards use surface-card */
   --color-semantic-surface-inset: var(--color-surface);
 
   /* Header offset. All sticky/fixed elements below the nav use this.

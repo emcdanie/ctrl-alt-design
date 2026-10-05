@@ -13,7 +13,7 @@
   padding: var(--spacing-6);
   border: 1px solid var(--color-semantic-border);
   border-radius: var(--radius-card);
-  background: var(--color-semantic-surface);
+  background: var(--color-semantic-surface-card);
 }
 
 /* the heading is the company's (600, the v3 heading lock); the dates
