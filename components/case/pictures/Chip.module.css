@@ -59,9 +59,8 @@
   width: 28px;
   height: 28px;
   border-radius: var(--radius-pill);
-  /* neutral (job 38: ochre only for highlights) */
-  background: var(--color-semantic-background-inverse);
-  color: var(--color-semantic-text-inverse);
+  background: var(--color-semantic-accent);
+  color: var(--color-semantic-text-on-accent);
   font-size: 14px;
   font-weight: var(--typography-font-weight-semibold);
   line-height: 1;

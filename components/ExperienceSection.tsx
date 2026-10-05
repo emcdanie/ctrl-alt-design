@@ -37,7 +37,7 @@ type Row = {
 export const EXPERIENCE: Row[] = [
   {
     company: "Brad Frost Web",
-    role: "AI-enabled Design Systems Engineer · Maker Program",
+    role: "AI-Assisted Design Systems Engineer · Maker Program",
     dates: "Oct 2025 to now",
     current: true,
     outcome: "Built a Figma component library aligned with reusable web components and a multi-theme architecture.",

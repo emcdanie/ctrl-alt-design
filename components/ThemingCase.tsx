@@ -6,7 +6,6 @@ import CaseShowcase, { type ShowcaseCard } from "@/components/case/CaseShowcase"
 import type { CollagePiece } from "@/components/case/CaseCollage";
 import CaseFigure, { ReplayKey } from "@/components/case/CaseFigure";
 import NextCase from "@/components/case/NextCase";
-import { CoverProduct, CoverSearch, CoverStay } from "@/components/case/pictures/Covers";
 import { ThemeStage, ThemeExhibit, ThemeJson } from "@/components/theming/ThemeStage";
 import OneName from "@/components/theming/OneName";
 import Pipeline from "@/components/theming/Pipeline";
@@ -324,29 +323,7 @@ export default function ThemingCase() {
           lead="The hard part of theming isn't the colours. It's agreeing on what each role means, so a new brand can arrive without anyone opening a component file."
         />
 
-        <NextCase
-          slug="theming"
-          next={{
-            href: "/case-studies/search-experts",
-            meta: "B2B travel · Product",
-            title: "Search for people who know what they want",
-            cover: <CoverSearch slot="next" label="A flight search result: Lisbon to Amsterdam, a direct morning flight, 08:10 to 11:55, at €89." />,
-          }}
-          more={[
-            {
-              href: "/case-studies/design-system-transformation",
-              meta: "Complex SaaS · Design systems",
-              title: "From Drift to Foundation",
-              cover: <CoverStay slot="work" label="The Harbour loft stay card on the system: photo, title and location." />,
-            },
-            {
-              href: "/case-studies/federated",
-              meta: "Design systems · federated · 2026",
-              title: "They stopped telling me what they’d done",
-              cover: <CoverProduct slot="work" label="A product card: a wool blend belted coat at €119.99, 33 percent off." />,
-            },
-          ]}
-        />
+        <NextCase slug="theming" />
       </CasePage>
     </ThemeStage>
   );

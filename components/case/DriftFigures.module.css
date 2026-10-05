@@ -394,24 +394,23 @@
   color: var(--color-semantic-text-secondary);
 }
 
+/* one button for the Component tier and every After button (job 40):
+   BELLA Button's box, 44 tall, its padding, weight and radius, in the
+   picture's action colour, at its natural width */
 .kitButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: var(--spacing-8);
-  padding: var(--spacing-1) var(--spacing-3);
-  border-radius: var(--radius-sm);
+  align-self: flex-start;
+  min-height: var(--component-button-primary-min-height);
+  padding: var(--component-button-primary-padding-y) var(--component-button-primary-padding-x);
+  border-radius: var(--radius-md);
   background: var(--kit-action);
   color: var(--kit-on-action);
-  font-size: var(--text-label);
-  font-weight: var(--typography-font-weight-medium);
+  font-size: var(--component-button-primary-font-size);
+  font-weight: var(--component-button-primary-font-weight);
+  line-height: 1;
   white-space: nowrap;
-}
-
-.kitButton[data-fill] {
-  min-height: var(--spacing-10);
-  padding: var(--spacing-2) var(--spacing-5);
-  border-radius: var(--radius-md);
 }
 
 .beforeButton {
@@ -937,10 +936,6 @@
 
   .changeRow .verticals {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .vertical .kitButton {
-    align-self: stretch;
   }
 
   .card {

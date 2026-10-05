@@ -7,6 +7,8 @@ import { TextLink, textLinkClass } from "@/components/ui/TextLink";
 import Heading from "@/components/ui/Heading";
 import { ResumeLink } from "@/components/ResumeModal";
 import styles from "./Case.module.css";
+import { WORK_CASES } from "@/content/cases";
+import { CaseCover } from "./pictures/Covers";
 
 export type CoverImage = { src: string; width: number; height: number; alt: string };
 
@@ -45,22 +47,26 @@ function CoverSlot({ cover, className, design }: { cover: CaseLink["cover"]; cla
   );
 }
 
+/* The case loop (Elleta, 5 Oct 2026, job 40): the four /work cases, each
+   case's Next is the one after it, and More work the other two. Meta,
+   title and lead come from content/cases.ts, so a card never goes stale. */
+const LOOP = ["drift", "theming", "federated", "chip"];
+const byId = (id: string) => WORK_CASES.find((c) => c.id === id)!;
+const linkOf = (id: string, slot: "next" | "work"): CaseLink & { lead: string } => {
+  const c = byId(id);
+  return { href: c.href!, meta: c.meta, title: c.title, lead: c.claim, cover: <CaseCover id={id} slot={slot} /> };
+};
+
 /* The case end on the v3 template (Figma Next case tab 303:31929, Work card
    compact 299:22226): View CV, the Next case tab, then More work. It sends
    "case-end" to Umami once per page view when it comes into view (Elleta,
    1 Oct 2026), like every case ending. */
-export default function NextCase({
-  slug,
-  next,
-  lead,
-  more,
-}: {
-  slug: string;
-  next: CaseLink;
-  /** the next case's one-line lead (parked where no copy is approved) */
-  lead?: string;
-  more: CaseLink[];
-}) {
+export default function NextCase({ slug }: { slug: string }) {
+  const k = LOOP.findIndex((id) => byId(id).href?.endsWith(`/${slug}`));
+  const nextId = LOOP[(k + 1) % LOOP.length];
+  const next = linkOf(nextId, "next");
+  const lead = next.lead;
+  const more = LOOP.filter((id, n) => n !== k && id !== nextId).map((id) => linkOf(id, "work"));
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const end = ref.current;

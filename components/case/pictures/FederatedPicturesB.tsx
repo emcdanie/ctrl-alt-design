@@ -51,11 +51,14 @@ function Picture({ label, panels, swipe, children }: { label: string; panels: Pa
   );
 }
 
+const Accent = () => <span className={s.accent} />;
+
 /* ── Figure 4 · Two lanes ─────────────────────────────────────────── */
 const PEOPLE = ["avatar-r9", "avatar-r4", "avatar-r6", "avatar-r10"];
 
 const Migration = () => (
   <div className={`${s.card} ${s.migration}`}>
+    <Accent />
     <span className={s.title}>Spacing migration</span>
     <span className={s.sub}>3,882 bindings moved to the new spacing tokens</span>
     <span className={s.beforeAfter}>
@@ -76,6 +79,7 @@ const Migration = () => (
 
 const DarkMode = () => (
   <div className={`${s.card} ${s.darkMode}`}>
+    <Accent />
     <span className={s.ring}>84/84</span>
     <span className={s.body}>Brand tokens ready for dark mode. Design stopped being the blocker.</span>
   </div>
@@ -83,6 +87,7 @@ const DarkMode = () => (
 
 const Cleanup = () => (
   <div className={`${s.card} ${s.cleanup}`}>
+    <Accent />
     <span className={s.bigStat}>
       <span className={s.big}>280</span>
       <span className={s.body}>icon bindings cleaned, with searchable names</span>
@@ -202,6 +207,7 @@ const LANE_TITLE = "When did the system team hear about it?";
 
 const Timelines = () => (
   <div className={`${s.card} ${s.timelines}`}>
+    <Accent />
     <span className={s.title}>{LANE_TITLE}</span>
     <Lane kind="fail" head="Before: after the build" steps={BEFORE} />
     <span className={s.rule} />
@@ -211,6 +217,7 @@ const Timelines = () => (
 
 const OneLane = ({ after }: { after: boolean }) => (
   <div className={`${s.card} ${s.timelines}`}>
+    <Accent />
     <span className={s.title}>{LANE_TITLE}</span>
     {after ? <Lane kind="pass" head="After: before the build" steps={AFTER} /> : <Lane kind="fail" head="Before: after the build" steps={BEFORE} />}
   </div>
@@ -218,6 +225,7 @@ const OneLane = ({ after }: { after: boolean }) => (
 
 const Evidence = () => (
   <div className={`${s.card} ${s.evidence}`}>
+    <Accent />
     <span className={s.title18}>From the team retro</span>
     <span className={s.note}>“Technical feedback reaches us after the open desk, not before.”</span>
     <span className={s.label16}>What changed</span>
@@ -270,7 +278,10 @@ const CASE = [
 
 const SlideHead = () => (
   <>
-    <span className={s.eyebrow}>State of the design system · July</span>
+    <span className={s.eyebrow}>
+      <Accent />
+      State of the design system · July
+    </span>
     <span className={s.slideTitle}>Clean the system before scaling AI</span>
   </>
 );
@@ -315,6 +326,7 @@ const Tree = () => (
 
 const Outcome = () => (
   <div className={`${s.card} ${s.outcome}`}>
+    <Accent />
     <span className={s.sub}>Two months after I left</span>
     <span className={s.title}>Developers on the system</span>
     <span className={s.change}>

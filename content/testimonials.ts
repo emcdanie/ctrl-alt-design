@@ -52,7 +52,7 @@ export const TESTIMONIALS: Testimonial[] = [
     // TODO(elleta): LinkedIn profile URL
   },
   {
-    quote: "The impact of her work as a UX/UI Designer continues to resonate within our banking projects, such as those for [a bank in the Gulf].",
+    quote: "The impact of her work as a UX/UI Designer continues to resonate within our banking projects.",
     bold: "continues to resonate",
     name: "Roberto Arpón",
     role: "Senior Product Designer",

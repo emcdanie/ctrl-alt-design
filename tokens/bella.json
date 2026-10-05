@@ -965,6 +965,32 @@
             }
           }
         },
+        "ochre-24": {
+          "$value": "#e8a83e3d",
+          "$type": "color",
+          "$description": "Ochre at 24%: the highlight wash in light and warm (Elleta, 2026-10-05).",
+          "$extensions": {
+            "bella": {
+              "oklch": "oklch(77.43% 0.1397 76.1 / 23.9%)",
+              "usage": [
+                "color.semantic.highlight-wash (light)"
+              ]
+            }
+          }
+        },
+        "ochre-18": {
+          "$value": "#e8a83e2e",
+          "$type": "color",
+          "$description": "Ochre at 18%: the highlight wash in dark (Elleta, 2026-10-05).",
+          "$extensions": {
+            "bella": {
+              "oklch": "oklch(77.43% 0.1397 76.1 / 18%)",
+              "usage": [
+                "color.semantic.highlight-wash (dark)"
+              ]
+            }
+          }
+        },
         "ochre-15": {
           "$value": "#e8a83e26",
           "$type": "color",
@@ -2092,6 +2118,25 @@
             "related": [
               "spacing.touch-target (AAA floor)"
             ]
+          }
+        }
+      }
+    },
+    "size": {
+      "control": {
+        "input": {
+          "$value": "57px",
+          "$type": "dimension",
+          "$description": "Input field height: the field text (font-size.base, 18px) at line-height.normal (1.7, 30.6; code wins on line-height, Elleta, 2026-10-05) + 12px padding + 1px border each side = 56.6, rounded up to a whole 57. The queue asked for 52, which assumed 16px at 1.6 from a stale build. The error state's 2px edge (border + inset shadow) stays inside it.",
+          "$extensions": {
+            "bella": {
+              "usage": [
+                "min-height of the Input field (component.input.min-height), code and Figma"
+              ],
+              "dont": [
+                "Do not use for buttons, chips or selects: those are spacing.touch-target (44)"
+              ]
+            }
           }
         }
       }
@@ -4151,6 +4196,50 @@
         }
       }
     },
+    "highlight-wash": {
+      "$value": "{color.alpha.ochre-24}",
+      "$type": "color",
+      "$description": "The lit background of a highlight: a linked phrase, or the part of a picture it points at, lit on hover, focus or pin (Elleta, 2026-10-05: the highlight is ochre). Always paired with the 2px highlight-edge: never colour alone.",
+      "$extensions": {
+        "bella": {
+          "usage": [
+            "Background of a lit phrase or picture target (hover, focus-visible, pinned)"
+          ],
+          "a11y": "Verified 2026-10-05: ink text 12.12:1 on the wash over the ground, 13.34 over card, 12.08 over inset (warm worst 11.31).",
+          "dont": [
+            "Never the only signal: pair it with the 2px highlight-edge (underline for text, outline for a picture target)",
+            "Not a selected or active state: that is accent (the ochre fill)"
+          ]
+        }
+      }
+    },
+    "highlight-edge": {
+      "$value": "{color.cool.900}",
+      "$type": "color",
+      "$description": "The 2px underline (text) or outline (picture target) of a lit highlight. Ink in light: ochre-deep measured 2.69:1 on the wash, under the 3:1 bar (2026-10-05).",
+      "$extensions": {
+        "bella": {
+          "usage": [
+            "2px underline under a lit phrase",
+            "2px outline around a lit picture target"
+          ],
+          "a11y": "Checked in the gate against the wash over ground, card and inset, and against each surface beside it: 3:1 or better (WCAG 1.4.11)."
+        }
+      }
+    },
+    "highlight-text": {
+      "$value": "{color.cool.900}",
+      "$type": "color",
+      "$description": "Text on the highlight wash: the primary ink. Ochre is never text on light.",
+      "$extensions": {
+        "bella": {
+          "usage": [
+            "Text of a lit phrase"
+          ],
+          "a11y": "AAA (7:1) on the wash over ground, card and inset, checked in the gate."
+        }
+      }
+    },
     "focus-ring": {
       "$value": "{color.brand.ochre-deep}",
       "$type": "color",
@@ -4841,6 +4930,50 @@
         }
       }
     },
+    "highlight-wash": {
+      "$value": "{color.alpha.ochre-18}",
+      "$type": "color",
+      "$description": "The lit background of a highlight: a linked phrase, or the part of a picture it points at, lit on hover, focus or pin (Elleta, 2026-10-05: the highlight is ochre). Always paired with the 2px highlight-edge: never colour alone.",
+      "$extensions": {
+        "bella": {
+          "usage": [
+            "Background of a lit phrase or picture target (hover, focus-visible, pinned)"
+          ],
+          "a11y": "Verified 2026-10-05: ink text 11.76:1 on the wash over the ground, 10.59 over card, 9.78 over inset (worst); the ochre edge 5.46:1 on the wash (worst).",
+          "dont": [
+            "Never the only signal: pair it with the 2px highlight-edge (underline for text, outline for a picture target)",
+            "Not a selected or active state: that is accent (the ochre fill)"
+          ]
+        }
+      }
+    },
+    "highlight-edge": {
+      "$value": "{color.brand.ochre}",
+      "$type": "color",
+      "$description": "The 2px underline (text) or outline (picture target) of a lit highlight. Ochre in dark.",
+      "$extensions": {
+        "bella": {
+          "usage": [
+            "2px underline under a lit phrase",
+            "2px outline around a lit picture target"
+          ],
+          "a11y": "Checked in the gate against the wash over ground, card and inset, and against each surface beside it: 3:1 or better (WCAG 1.4.11)."
+        }
+      }
+    },
+    "highlight-text": {
+      "$value": "{color.cool.50}",
+      "$type": "color",
+      "$description": "Text on the highlight wash: the primary ink. Ochre is never text on light.",
+      "$extensions": {
+        "bella": {
+          "usage": [
+            "Text of a lit phrase"
+          ],
+          "a11y": "AAA (7:1) on the wash over ground, card and inset, checked in the gate."
+        }
+      }
+    },
     "focus-ring": {
       "$value": "{color.brand.ochre}",
       "$type": "color",
@@ -5405,8 +5538,9 @@
           "$type": "other"
         },
         "padding-y": {
-          "$value": "{spacing.3}",
-          "$type": "dimension"
+          "$value": "0px",
+          "$type": "dimension",
+          "$description": "No block padding: the box is min-height (spacing.touch-target, 44) and the label centres in it, so every tier is one 44 box (2026-10-05; 12px padding rendered 45 with the Figtree label and the 1px edge)."
         },
         "padding-x": {
           "$value": "{spacing.5}",
@@ -5461,8 +5595,9 @@
           "$description": "Hover and focus-visible: the outline goes ink."
         },
         "padding-y": {
-          "$value": "{spacing.3}",
-          "$type": "dimension"
+          "$value": "0px",
+          "$type": "dimension",
+          "$description": "No block padding: the box is min-height (spacing.touch-target, 44) and the label centres in it, so every tier is one 44 box (2026-10-05; 12px padding rendered 45 with the Figtree label and the 1px edge)."
         },
         "padding-x": {
           "$value": "{spacing.5}",
@@ -7115,7 +7250,7 @@
         "$type": "dimension"
       },
       "min-height": {
-        "$value": "{spacing.touch-target}",
+        "$value": "{size.control.input}",
         "$type": "dimension"
       }
     },

@@ -44,6 +44,12 @@
   column-gap: var(--case-hero-gap);
 }
 
+/* a wider art column for a collage drawn at 1:1 on a bigger canvas
+   (job 41, Federated: its 660 canvas, the text takes the rest) */
+.heroGrid[data-wide-art] {
+  grid-template-columns: minmax(0, 1fr) var(--art-w);
+}
+
 .heroText {
   display: flex;
   flex-direction: column;
@@ -231,7 +237,8 @@ main .showcase + :global(.l-section.l-section) {
    528 (job 38: beside the text it shrank to 0.88 at 1024 and its text
    fell under 12px) */
 @media (max-width: 1179.98px) {
-  .heroGrid {
+  .heroGrid,
+  .heroGrid[data-wide-art] {
     grid-template-columns: minmax(0, 1fr);
     row-gap: var(--case-hero-gap-stacked);
   }
@@ -346,6 +353,13 @@ main .showcase + :global(.l-section.l-section) {
   background: var(--color-semantic-surface-card);
   border: 1px solid var(--color-semantic-border);
   border-radius: var(--radius-card);
+}
+
+.resultBar {
+  width: var(--spacing-10);
+  height: var(--spacing-1);
+  border-radius: var(--radius-sm);
+  background: var(--color-semantic-accent);
 }
 
 .resultValue {

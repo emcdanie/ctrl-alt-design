@@ -1,8 +1,8 @@
 /* Federated figures 3 to 6 (FederatedPicturesB.tsx). Drawn at the 1440
    design width (928) and scaled by ScaledArt; picture type sits at the
    Figma sizes and never reflows. Neutrals read the semantic tokens so the
-   pictures follow the theme. Ochre only marks a highlight (job 38): the
-   card top bars are gone, the ring, bar and bullets are neutral. */
+   pictures follow the theme; ochre is the brand accent token (the card
+   top bars, the ring and the bullets, as at 6fd03f9; job 41). */
 
 .root {
   width: 100%;
@@ -16,6 +16,15 @@
   box-shadow: var(--shadow-card);
   color: var(--color-semantic-text-body);
   overflow: hidden;
+}
+
+.accent {
+  display: block;
+  width: 40px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-accent);
+  flex: 0 0 auto;
 }
 
 .title {
@@ -136,7 +145,7 @@
   justify-content: center;
   width: 120px;
   height: 120px;
-  border: 12px solid var(--color-semantic-border-strong);
+  border: 12px solid var(--color-semantic-accent);
   border-radius: var(--radius-pill);
   color: var(--color-semantic-text-primary);
   font-size: 24px;
@@ -311,7 +320,7 @@
   width: 6px;
   height: 6px;
   border-radius: var(--radius-pill);
-  background: var(--color-semantic-icon-muted);
+  background: var(--color-semantic-accent);
 }
 
 /* ── Figure 6 · KPI tree and Pareto ── */

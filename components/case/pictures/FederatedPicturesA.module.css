@@ -95,6 +95,15 @@
   width: 272px;
 }
 
+.accent {
+  display: block;
+  width: 40px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-accent);
+  flex: 0 0 auto;
+}
+
 .groupHead {
   display: flex;
   align-items: center;

@@ -191,3 +191,17 @@ export function CoverProduct({ slot, label }: { slot: CoverSlot; label: string }
     </Canvas>
   );
 }
+
+/* one cover per case, for the case end (Next case and More work; job 40) */
+export function CaseCover({ id, slot }: { id: string; slot: CoverSlot }) {
+  switch (id) {
+    case "drift":
+      return <CoverStay slot={slot} label="The Harbour loft stay card on the system: photo, title and location." />;
+    case "federated":
+      return <CoverProduct slot={slot} label="A product card: a wool blend coat at €119.99, 33 percent off." />;
+    case "chip":
+      return <CoverAtlas slot={slot} label="CHIP's Atlas view of the FilterChip specimen, with checks 6 of 6 pass." />;
+    default:
+      return <CoverBrands slot={slot} label="One Button in three client themes, Brand A, B and C: one Button, three themes, zero forks." />;
+  }
+}

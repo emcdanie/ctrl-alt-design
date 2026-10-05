@@ -43,7 +43,7 @@ export const CASES: CaseRowData[] = [
   {
     id: "theming",
     n: "03",
-    meta: "Design systems · BELLA · 2026",
+    meta: "Design systems · theming · 2026",
     title: "One system, many faces",
     claim: "Themes in BELLA swap the values, never the components.",
     href: "/case-studies/theming",

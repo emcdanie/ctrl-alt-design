@@ -92,6 +92,7 @@ const Manager = () => (
 
 const Partners = () => (
   <KitPanel className={`${s.group} ${s.partners}`}>
+    <span className={s.accent} />
     <GroupHead icon="Sparks" title="Partners" sub="Work that leaned on the system" />
     <span className={s.partner}>
       <Icon name="Mail" size="sm" />
@@ -106,6 +107,7 @@ const Partners = () => (
 
 const Team = () => (
   <KitPanel className={`${s.group} ${s.team}`}>
+    <span className={s.accent} />
     <GroupHead icon="ViewGrid" title="Design system team" sub="About 7 component libraries" />
     <span className={s.people}>
       {TEAM.map((p) => (
@@ -120,6 +122,7 @@ const Team = () => (
 
 const Engineering = () => (
   <KitPanel className={`${s.group} ${s.engineering}`}>
+    <span className={s.accent} />
     <GroupHead icon="Code" title="Engineering" sub="System tech leads and platform devs" />
     {PLATFORMS.map((p) => (
       <span key={p.name} className={s.platform}>
@@ -136,6 +139,7 @@ const Engineering = () => (
 
 const Squads = () => (
   <KitPanel className={s.squads}>
+    <span className={s.accent} />
     <span className={s.squadsHead}>
       <span className={s.groupTitle}>Product squads</span>
       <span className={s.squadsSub}>Each with its own designer, on Web, iOS and Android</span>
@@ -259,7 +263,7 @@ export function Published({ bare = false }: { bare?: boolean }) {
 export function Draft({ bare = false }: { bare?: boolean }) {
   return (
     <div className={s.version}>
-      {bare ? null : <KitTag>New draft</KitTag>}
+      <KitTag>New draft</KitTag>
       <div className={s.card} data-draft>
         <Coat square>
           <span className={s.discount}>-33%</span>

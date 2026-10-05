@@ -8,11 +8,6 @@ import CaseShowcase, {
 } from "@/components/case/CaseShowcase";
 import type { CollagePiece } from "@/components/case/CaseCollage";
 import {
-  CoverProduct,
-  CoverSearch,
-  CoverStay,
-} from "@/components/case/pictures/Covers";
-import {
   ChipAsk,
   ChipAtlas,
   ChipGate,
@@ -40,9 +35,13 @@ const COVER_LABEL =
 
 /* job 38: straight, nothing covers another piece's text, all inside the
    528x480 canvas; the Atlas card is CHIP's own, drawn at its real size */
+/* the 6fd03f9 composition (job 41): the Atlas card top left, the
+   focused Save changes key below and right of it. The one fix: the card
+   is CHIP's own real-size Atlas drawing, so its text is 14px or more
+   (the shrunk cover drew it at 9 to 11) */
 const COLLAGE: CollagePiece[] = [
-  { key: "key", node: <Key state="focus" className={s.heroKey} />, x: 8, y: 32 },
-  { key: "atlas", node: <ChipAtlas />, x: 0, y: 100, w: 528 },
+  { key: "atlas", node: <ChipAtlas />, x: 0, y: 10, w: 480 },
+  { key: "key", node: <Key state="focus" />, x: 271, y: 353 },
 ];
 
 const SHOWCASE: ShowcaseCard[] = [
@@ -218,45 +217,7 @@ export default function ChipCase() {
         </p>
       </Beat>
 
-      <NextCase
-        slug="chip"
-        next={{
-          href: "/case-studies/design-system-transformation",
-          meta: "Complex SaaS · Design systems",
-          title: "From Drift to Foundation",
-          cover: (
-            <CoverStay
-              slot="next"
-              label="The Harbour loft stay card on the system: photo, title and location."
-            />
-          ),
-        }}
-        lead="Nobody asked for a system. I built one anyway, got a CTO to fund a team, then handed it to every product team."
-        more={[
-          {
-            href: "/case-studies/federated",
-            meta: "Design systems · federated · 2026",
-            title: "They stopped telling me what they’d done",
-            cover: (
-              <CoverProduct
-                slot="work"
-                label="A product card: a wool blend belted coat at €119.99, 33 percent off."
-              />
-            ),
-          },
-          {
-            href: "/case-studies/search-experts",
-            meta: "B2B travel · Product",
-            title: "Search for experts",
-            cover: (
-              <CoverSearch
-                slot="work"
-                label="A flight search result: Lisbon to Amsterdam, a direct morning flight, 08:10 to 11:55, at €89."
-              />
-            ),
-          },
-        ]}
-      />
+      <NextCase slug="chip" />
     </CasePage>
   );
 }

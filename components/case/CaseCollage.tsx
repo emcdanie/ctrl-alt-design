@@ -38,6 +38,7 @@ export default function CaseCollage({
   pieces,
   phone,
   phoneLabel,
+  canvas = { w: COLLAGE_W, h: COLLAGE_H },
 }: {
   label: string;
   pieces: CollagePiece[];
@@ -45,18 +46,20 @@ export default function CaseCollage({
   phone?: ReactNode;
   /** the phone card's own name (it shows one card, not the collage) */
   phoneLabel?: string;
+  /** a canvas of its own (job 41: Federated draws its cards at 1:1 on 660x634) */
+  canvas?: { w: number; h: number };
 }) {
   const box = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState<number | null>(null);
   useEffect(() => {
     const el = box.current;
     if (!el || typeof ResizeObserver === "undefined") return;
-    const fit = () => setScale(el.clientWidth / COLLAGE_W);
+    const fit = () => setScale(el.clientWidth / canvas.w);
     const ro = new ResizeObserver(fit);
     ro.observe(el);
     fit();
     return () => ro.disconnect();
-  }, []);
+  }, [canvas.w]);
   const collage = (
     <div
       className={styles.collage}
@@ -64,9 +67,9 @@ export default function CaseCollage({
       ref={box}
       role="img"
       aria-label={label}
-      style={scale == null ? undefined : ({ "--collage-scale": scale } as CSSProperties)}
+      style={{ maxWidth: canvas.w, aspectRatio: `${canvas.w} / ${canvas.h}`, ...(scale == null ? {} : { "--collage-scale": scale }) } as CSSProperties}
     >
-      <div className={styles.collageCanvas} style={{ width: COLLAGE_W, height: COLLAGE_H }} aria-hidden="true">
+      <div className={styles.collageCanvas} style={{ width: canvas.w, height: canvas.h }} aria-hidden="true">
         {pieces.map((p) => (
           <div
             key={p.key}

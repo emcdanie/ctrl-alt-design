@@ -4,9 +4,8 @@ import caseStyles from "@/components/case/Case.module.css";
 import CaseHero from "@/components/case/CaseHero";
 import CaseShowcase, { type ShowcaseCard } from "@/components/case/CaseShowcase";
 import type { CollagePiece } from "@/components/case/CaseCollage";
-import { ChipGroupCard, ColourChip, FedIntake, FedKpi, FedPieces, FedShipped, FedTwoLanes, ROWS, SizeGrid, SlotChip, TextChip, TrimBox } from "@/components/case/pictures/FederatedPicturesB";
+import { ColourChip, FedIntake, FedKpi, FedPieces, FedShipped, FedTwoLanes, ROWS, SizeGrid, SlotChip, TextChip, TrimBox } from "@/components/case/pictures/FederatedPicturesB";
 import NextCase from "@/components/case/NextCase";
-import { CoverAtlas, CoverSearch, CoverStay } from "@/components/case/pictures/Covers";
 import { Copy, Draft, FederatedVersions, FederatedWho, Published } from "@/components/case/pictures/FederatedPicturesA";
 
 /* Federated (Site v3, Elleta, 4 Oct 2026; approved as-is): the case built
@@ -19,14 +18,19 @@ import { Copy, Draft, FederatedVersions, FederatedWho, Published } from "@/compo
    kicker, the lead and the Figure 1 cover. */
 
 const HERO_LABEL =
-  "Two versions of one product card, side by side: a new draft with a caps title and a minus 33 percent badge, and the published card, a wool blend belted coat at €119.99, down from €179.99, beige, size M.";
+  "Three versions of one product card: a new draft, the published card on top of it (a wool blend belted coat at €119.99, down from €179.99, beige, size M, last units) and a post-purchase copy at the full price.";
 
-/* two cards at 0.9, side by side, every piece inside the 528x480 box and
-   none over another's text (Elleta, 5 Oct, job 38: fewer cards at 0.85 or
-   more, so nothing renders under 12px, the 1024 collage scale included) */
+/* the 6fd03f9 composition (job 41), drawn at 1:1 so every text is 14px
+   or more (Elleta, 5 Oct: never scaled down) on a 660x634 canvas. The
+   published card is on top and covers only the draft's photo (it ends at
+   487, where the draft's text starts); the copy sits beside it, so its
+   tag stays clear. The chip-group strip is 928 wide at 1:1 and does not
+   fit, so it leaves the hero (it is in Figure 1). */
+const CANVAS = { w: 660, h: 634 };
 const COLLAGE: CollagePiece[] = [
-  { key: "draft", node: <FedPieces><Draft bare /></FedPieces>, x: 0, y: 5, s: 0.9 },
-  { key: "published", node: <FedPieces><Published bare /></FedPieces>, x: 272, y: 30, s: 0.9 },
+  { key: "draft", node: <FedPieces><Draft bare /></FedPieces>, x: 0, y: 112 },
+  { key: "copy", node: <FedPieces><Copy bare /></FedPieces>, x: 380, y: 112 },
+  { key: "published", node: <FedPieces><Published bare /></FedPieces>, x: 100, y: 0 },
 ];
 
 const SHOWCASE: ShowcaseCard[] = [
@@ -71,7 +75,7 @@ export default function FederatedCase() {
           long
           meta={["Federated design system", "2026 · 13 weeks"]}
           intro="A cross-platform design system for a leading European fashion retailer, with three of its four designers out. I made the slow work fast, opened one door for every squad, and extended what already worked instead of copying it."
-          collage={{ label: HERO_LABEL, pieces: COLLAGE, phone: <FedPieces><Published bare /></FedPieces>, phoneLabel: "The published product card: the product name, a discounted price of 119.99 from 179.99, beige, size M." }}
+          collage={{ label: HERO_LABEL, pieces: COLLAGE, canvas: CANVAS, phone: <FedPieces><Published bare /></FedPieces>, phoneLabel: "The published product card: the product name, a discounted price of 119.99 from 179.99, beige, size M." }}
         />
       }
       showcase={<CaseShowcase label="Federated, in real UI" cards={SHOWCASE} />}
@@ -193,30 +197,7 @@ export default function FederatedCase() {
         />
       </Beat>
 
-      <NextCase
-        slug="federated"
-        next={{
-          href: "/case-studies/chip",
-          meta: "AI-enabled design · 2026",
-          title: "CHIP",
-          cover: <CoverAtlas slot="next" label="CHIP's Atlas view of the FilterChip: six parts pinned on the anatomy stage, bottom layer first, with 'checks 6 of 6 pass'." />,
-        }}
-        lead="An agent that watches the system and never moves silently. I approve every fix."
-        more={[
-          {
-            href: "/case-studies/design-system-transformation",
-            meta: "Complex SaaS · Design systems",
-            title: "From Drift to Foundation: two years without a live redesign, then a system that shipped",
-            cover: <CoverStay slot="work" label="The Harbour loft stay card on the system: photo, title and location." />,
-          },
-          {
-            href: "/case-studies/search-experts",
-            meta: "B2B travel · Product",
-            title: "Search for experts",
-            cover: <CoverSearch slot="work" label="A flight search result: Lisbon to Amsterdam, a direct morning flight, 08:10 to 11:55, at €89." />,
-          },
-        ]}
-      />
+      <NextCase slug="federated" />
     </CasePage>
   );
 }

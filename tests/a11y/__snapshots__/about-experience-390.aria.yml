@@ -2,13 +2,13 @@
   - paragraph: 3 Track record
   - heading "Where I've been." [level=2]
   - paragraph: "Five teams, one thread: making the system the thing people trust."
-  - heading /Oct \d+ to now Brad Frost Web , current role AI-enabled Design Systems Engineer · Maker Program/ [level=3]:
-    - button /Oct \d+ to now Brad Frost Web , current role AI-enabled Design Systems Engineer · Maker Program/ [expanded]
+  - heading /Oct \d+ to now Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program/ [level=3]:
+    - button /Oct \d+ to now Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program/ [expanded]
   - paragraph: Built a Figma component library aligned with reusable web components and a multi-theme architecture.
   - paragraph:
     - 'link "Case study: Code First →"':
       - /url: /case-studies/brad-frost
-  - region /Oct \d+ to now Brad Frost Web , current role AI-enabled Design Systems Engineer · Maker Program/:
+  - region /Oct \d+ to now Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program/:
     - list:
       - listitem: Built a Figma component library aligned with reusable web components and a multi-theme architecture.
       - listitem: Translated an existing code-based design system into production-ready Figma components.

@@ -200,6 +200,7 @@ const TOKENS: [string, string, string][] = [
 /* the Before buttons are the drift itself (off-brand fills that miss AA),
    so they ship as pictures, never live DOM (CLAUDE.md section 9): crops of
    the frame at 2x, [width, height] at 1x */
+// [CHECK] label: the After labels wait on Elleta's answer (job 40); no copy changes until then
 const VERTICALS: [string, string, string, string, [number, number]][] = [
   ["Stays", "Book", "Book stays", "stays", [64, 33]],
   ["Flights", "BOOK NOW", "Book flights", "flights", [103, 34]],

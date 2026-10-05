@@ -615,3 +615,10 @@
   font-size: max(12.247px, var(--cover-min));
 }
 
+
+/* a More work card is 260 tall and the brands drawing 340: the note has
+   no room below the faces there, and the card's title says it (job 41,
+   audit:clip: it was cut at the slot's bottom edge) */
+.canvas[data-slot="work"] .brandsNote {
+  display: none;
+}

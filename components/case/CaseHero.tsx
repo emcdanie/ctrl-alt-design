@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import Container from "@/components/layout/Container";
 import Heading from "@/components/ui/Heading";
 import CaseCollage, { type CollagePiece } from "./CaseCollage";
@@ -32,12 +32,12 @@ export default function CaseHero({
   disclosure?: string;
   /** `phone`: the one readable card the 390 frame shows instead of the
    *  collage, at its own size (job 38: no shrunk collage on a phone) */
-  collage: { label: string; pieces: CollagePiece[]; phone?: ReactNode; phoneLabel?: string };
+  collage: { label: string; pieces: CollagePiece[]; phone?: ReactNode; phoneLabel?: string; canvas?: { w: number; h: number } };
 }) {
   return (
     <div className={`case-hero ${styles.heroBand}`}>
       <Container className="container--case">
-        <div className={styles.heroGrid}>
+        <div className={styles.heroGrid} data-wide-art={collage.canvas && collage.canvas.w > 528 ? "" : undefined} style={collage.canvas ? ({ "--art-w": `${collage.canvas.w}px` } as CSSProperties) : undefined}>
           <div className={styles.heroText}>
             <Heading tier="title" long={long} id="case-title">
               {title}
@@ -51,7 +51,7 @@ export default function CaseHero({
             <p className={styles.heroIntro}>{intro}</p>
             {disclosure ? <p className={styles.heroDisclosure}>{disclosure}</p> : null}
           </div>
-          <CaseCollage label={collage.label} pieces={collage.pieces} phone={collage.phone} phoneLabel={collage.phoneLabel} />
+          <CaseCollage label={collage.label} pieces={collage.pieces} phone={collage.phone} phoneLabel={collage.phoneLabel} canvas={collage.canvas} />
         </div>
       </Container>
     </div>

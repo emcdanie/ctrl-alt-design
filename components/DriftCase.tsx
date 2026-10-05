@@ -5,7 +5,6 @@ import CaseShowcase, { type ShowcaseCard } from "@/components/case/CaseShowcase"
 import type { CollagePiece } from "@/components/case/CaseCollage";
 import { ButtonAnatomyMini, DriftAnatomy, DriftButtons, DriftedButton, DriftedList, DriftedSet, DriftShipped, DriftSurvey, StayCard, TokenPin } from "@/components/case/pictures/DriftPictures";
 import NextCase from "@/components/case/NextCase";
-import { CoverAtlas, CoverBrands, CoverSearch } from "@/components/case/pictures/Covers";
 import { ZoomLevels, TokenCascade, Rollout, Staircase, TokenEverywhere } from "@/components/case/DriftFigures";
 
 /* From Drift to Foundation (Site v3, Elleta, 4 Oct 2026): the case rebuilt
@@ -24,16 +23,18 @@ const HERO_LABEL =
    on the right; the drifted list sits in front and overlaps only the
    card's photo (its "1 / 8" dropped here), ending above the card's title.
    The loose buttons and pins share the free corner bottom left. */
+/* the 6fd03f9 composition (job 41); the one fix: "Canal House Suite" is
+   no longer under the stay card (card flush right at 261, list 0.94) */
 const COLLAGE: CollagePiece[] = [
-  { key: "after", node: <StayCard count={false} />, x: 270, y: 100, s: 0.86 },
-  { key: "before", node: <DriftedList />, x: 0, y: 0, s: 0.9 },
-  { key: "b1", node: <DriftedButton n={1} />, x: 8, y: 286 },
-  { key: "b2", node: <DriftedButton n={2} />, x: 84, y: 284 },
-  { key: "b3", node: <DriftedButton n={3} />, x: 8, y: 336, phone: false },
-  { key: "b4", node: <DriftedButton n={4} />, x: 124, y: 339 },
-  { key: "b5", node: <DriftedButton n={5} />, x: 8, y: 392 },
-  { key: "t2", node: <TokenPin token="accent" swatch="var(--color-semantic-accent)" float />, x: 114, y: 393, s: 0.75 },
-  { key: "t1", node: <TokenPin token="action.primary" swatch="var(--kit-action)" float swap />, x: 8, y: 440, s: 0.75, phone: false },
+  { key: "before", node: <DriftedList />, x: 0, y: 90, s: 0.94 },
+  { key: "after", node: <StayCard />, x: 261, y: 10, s: 0.89 },
+  { key: "b1", node: <DriftedButton n={1} />, x: 39, y: 382 },
+  { key: "b2", node: <DriftedButton n={2} />, x: 111, y: 402 },
+  { key: "b3", node: <DriftedButton n={3} />, x: 23, y: 429, phone: false },
+  { key: "b4", node: <DriftedButton n={4} />, x: 149, y: 443, phone: false },
+  { key: "b5", node: <DriftedButton n={5} />, x: 235, y: 422 },
+  { key: "t1", node: <TokenPin token="action.primary" swatch="var(--kit-action)" float swap />, x: 331, y: 440, s: 0.75, phone: false },
+  { key: "t2", node: <TokenPin token="accent" swatch="var(--color-semantic-accent)" float />, x: 349, y: 405, s: 0.75 },
 ];
 
 /* "17 → 1 → everywhere" (Elleta, 5 Oct): the drift, the one button, and
@@ -180,30 +181,7 @@ export default function DriftCase() {
         />
       </Beat>
 
-      <NextCase
-        slug="design-system-transformation"
-        next={{
-          href: "/case-studies/theming",
-          meta: "B2B travel · Theming",
-          title: "One system, many brands",
-          cover: <CoverBrands slot="next" label="One Button in three client themes, Brand A, B and C: one Button, three themes, zero forks." />,
-        }}
-        lead="How the same components wear each client’s brand without forking the code."
-        more={[
-          {
-            href: "/case-studies/chip",
-            meta: "AI-enabled design · 2026",
-            title: "CHIP",
-            cover: <CoverAtlas slot="work" label="CHIP's Atlas view of the FilterChip: six parts pinned on the anatomy stage, bottom layer first, with 'checks 6 of 6 pass'." />,
-          },
-          {
-            href: "/case-studies/search-experts",
-            meta: "B2B travel · Product",
-            title: "Search for experts",
-            cover: <CoverSearch slot="work" label="A flight search result: Lisbon to Amsterdam, a direct morning flight, 08:10 to 11:55, at €89." />,
-          },
-        ]}
-      />
+      <NextCase slug="design-system-transformation" />
     </CasePage>
   );
 }
