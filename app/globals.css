@@ -2026,12 +2026,12 @@ h1.display-heading {
   -webkit-text-fill-color: transparent;
 }
 
-/* ─── Site footer (footer-mock.html, Elleta 22 Sep 2026) ───────────
-   The panel ground in both themes under a hairline; the heading, a row of
-   the lead + the one Let's talk beside the pages and elsewhere columns,
-   one small-print row, then the pattern ELLETA across the window, 16px
-   from each edge, flush with the bottom of the page. */
+/* ─── Site footer (the footer lock, 4 Oct 2026; job E1, 5 Oct) ──────
+   The page ground under a hairline; back to top as a half-round tab on
+   that hairline, the pages row, the elsewhere row, one small-print row
+   with the colophon, then the pattern ELLETA, flush with the bottom. */
 .site-footer {
+  position: relative;
   padding-top: var(--spacing-16);
   border-top: 1px solid var(--color-semantic-border);
   /* the page ground, never white (job 38, one ground) */
@@ -2053,37 +2053,51 @@ body:has(main.site-ground-page) {
   margin-right: var(--spacing-2);
 }
 
-.site-footer__row {
+/* back to top: a half-round tab, 96 x 48, centred on the footer's top
+   edge, in the footer's ground, the hairline round its arc */
+.site-footer__top {
+  position: absolute;
+  top: 0;
+  left: 50%;
   display: grid;
-  gap: var(--spacing-8);
-  margin-top: var(--spacing-10);
+  place-items: center;
+  width: calc(var(--spacing-touch-target) * 2 + var(--spacing-2));
+  height: calc(var(--spacing-touch-target) + var(--spacing-1));
+  padding: var(--spacing-2) 0 0;
+  border: 1px solid var(--color-semantic-border);
+  border-bottom: 0;
+  border-radius: var(--radius-full) var(--radius-full) 0 0;
+  background: var(--color-semantic-background);
+  color: var(--color-ink);
+  cursor: pointer;
+  transform: translate(-50%, calc(-100% + 1px));
 }
 
-@media (min-width: 44rem) {
-  .site-footer__row {
-    grid-template-columns: 1.3fr 1fr 1fr;
-  }
+.site-footer__top:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
 }
 
-.site-footer__lead {
-  max-width: var(--measure-body);
-  margin: 0;
-  font-size: var(--text-body);
-  line-height: 1.6;
-  color: var(--color-ink-muted);
+/* one row each: the label, then its links across */
+.site-footer__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--spacing-8);
 }
 
-.site-footer__label {
-  margin-bottom: var(--spacing-2);
-}
-
-/* the one closing CTA: the ink fill at rest, the focus ring only on focus (Elleta, 22 Sep 2026) */
-.site-footer .btn-key--primary {
+.site-footer__row + .site-footer__row {
   margin-top: var(--spacing-4);
 }
 
+.site-footer__label {
+  min-width: 6rem;
+}
+
 .site-footer__list {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--spacing-6);
   margin: 0;
   padding: 0;
   list-style: none;

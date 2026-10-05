@@ -1,8 +1,5 @@
 - contentinfo:
-  - heading "Let's compare notes." [level=2]
-  - paragraph: Open to full-time roles and select freelance projects, working remotely from near Barcelona. You talk to the person designing your system.
-  - link "Let’s talk":
-    - /url: /contact
+  - button "Back to top"
   - navigation "Footer pages":
     - paragraph: Pages
     - list:
@@ -38,5 +35,8 @@
     - text: ·
     - link "Privacy":
       - /url: /privacy
-  - paragraph: Built on BELLA · v0.2
+  - paragraph:
+    - text: Built on BELLA ·
+    - link "how this site works":
+      - /url: /design-system
   - img "ELLETA"

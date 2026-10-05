@@ -511,11 +511,13 @@ main .showcase + :global(.l-section.l-section) {
 /* Site/Figure stage (417:1706): a 32px line grid, quiet (job 34 1b,
    Elleta: "this bg is too much"): border-subtle lines at 50% in light and
    35% in dark, fading to the page ground at the edges. No spotlight, no
-   rim. Radius 16; standard margins 56/64 (20 at 390) */
+   rim. Radius 16; margins 32/64 (20 at 390) */
 .stage {
   position: relative;
   isolation: isolate;
-  padding: calc(var(--spacing-12) + var(--spacing-2)) var(--spacing-16);
+  /* 32 above and below the picture, 64 at the sides (beat heights, job
+     E2, 5 Oct 2026: was 56 top and bottom) */
+  padding: var(--spacing-8) var(--spacing-16);
   border-radius: var(--radius-card);
   overflow: hidden;
   background: var(--color-semantic-background);

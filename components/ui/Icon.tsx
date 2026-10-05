@@ -1,9 +1,9 @@
-import { ArrowLeft, ArrowRight, ArrowUp, ChatBubbleXmark, Check, Code, Copy, Cube, DotsGrid3x3, Group, HalfMoon, Label, Linkedin, Mail, NavArrowDown, OpenNewWindow, Page, Presentation, Search, SunLight, Sparks, ViewGrid, Xmark } from "iconoir-react";
+import { ArrowLeft, ArrowRight, ArrowUp, ChatBubbleXmark, Check, Code, Copy, Cube, DotsGrid3x3, Group, HalfMoon, Label, Linkedin, Mail, NavArrowDown, NavArrowUp, OpenNewWindow, Page, Presentation, Search, SunLight, Sparks, ViewGrid, Xmark } from "iconoir-react";
 
 /* The glyphs the site uses, by name (named imports, 4 Oct 2026): a
    namespace import with a computed key shipped all of Iconoir, about
    375 KB gzipped, on every page. Add a glyph here when a page needs it. */
-const ICONS = { ArrowLeft, ArrowRight, ArrowUp, ChatBubbleXmark, Check, Code, Copy, Cube, DotsGrid3x3, Group, HalfMoon, Label, Linkedin, Mail, NavArrowDown, OpenNewWindow, Page, Presentation, Search, SunLight, Sparks, ViewGrid, Xmark } as const;
+const ICONS = { ArrowLeft, ArrowRight, ArrowUp, ChatBubbleXmark, Check, Code, Copy, Cube, DotsGrid3x3, Group, HalfMoon, Label, Linkedin, Mail, NavArrowDown, NavArrowUp, OpenNewWindow, Page, Presentation, Search, SunLight, Sparks, ViewGrid, Xmark } as const;
 
 export type IconName = keyof typeof ICONS;
 

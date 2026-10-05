@@ -2,21 +2,18 @@
 
 import Link from "next/link";
 import BrandWordmark from "@/components/bella/BrandWordmark/BrandWordmark";
-import Heading from "@/components/ui/Heading";
-import FooterCta from "@/components/FooterCta";
+import { Icon } from "@/components/ui/Icon";
 import { LinkedInIcon } from "@/components/ui/LinkedInIcon";
 import { ResumeLink } from "@/components/ResumeModal";
 import { social } from "@/lib/social";
 
-/* Site footer, from footer-mock.html (Elleta, 22 Sep 2026): the panel
-   ground in both themes, "Let's compare notes.", one line and the one
-   "Let's talk" beside the pages and elsewhere columns, one small-print
-   row with the only version label, then the pattern ELLETA at the
-   content width (same left edge as the text), flush with the bottom edge.
-
-   LinkedIn carries its icon everywhere. The Home closing card (Gate 2,
-   3 Oct 2026) is retired (Elleta, 4 Oct 2026, hero v3 lock): "/" gets
-   this same footer. */
+/* The site footer, one on every route (Elleta, 5 Oct 2026, job E1; the
+   footer lock of 4 Oct, concept-lock-2026-10-04-home-footer-templates):
+   back to top as a half-round tab centred on the footer's top edge, the
+   page links in a row, the elsewhere links in a row, the small print with
+   the colophon, then the pattern ELLETA. "Let's compare notes." and its
+   "Let's talk" were cut in that lock; /contact stays reachable from the
+   nav menu. LinkedIn carries its icon everywhere. */
 
 const external = (href: string, label: string, event: string, icon?: React.ReactNode) => (
   <a className="site-footer__link" href={href} target="_blank" rel="noopener noreferrer" data-umami-event={event}>
@@ -25,40 +22,38 @@ const external = (href: string, label: string, event: string, icon?: React.React
   </a>
 );
 
+const toTop = () => {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  document.querySelector<HTMLElement>("a, button")?.focus({ preventScroll: true });
+};
+
 export default function SiteFooter() {
   return (
     <footer className="site-footer">
+      <button type="button" className="site-footer__top" onClick={toTop} data-umami-event="back-to-top">
+        <Icon name="NavArrowUp" size="md" />
+        <span className="sr-only">Back to top</span>
+      </button>
       {/* on the content edge, x192 at 1440 like every v3 page (Site v3, 4 Oct late) */}
       <div className="container container--case">
-        <Heading tier="section" as="h2" accent="notes" after=".">
-          Let&apos;s compare
-        </Heading>
-        <div className="site-footer__row" id="contact">
-          <div>
-            <p className="site-footer__lead">
-              Open to full-time roles and select freelance projects, working remotely from near Barcelona. You talk to
-              the person designing your system.
-            </p>
-            <FooterCta />
-          </div>
-          <nav aria-label="Footer pages">
-            <p className="site-footer__label">Pages</p>
-            <ul className="site-footer__list">
-              <li><Link className="site-footer__link" href="/work">Work</Link></li>
-              <li><Link className="site-footer__link" href="/design-system">System</Link></li>
-              <li><Link className="site-footer__link" href="/learning">Learning</Link></li>
-              <li><Link className="site-footer__link" href="/about">About</Link></li>
-            </ul>
-          </nav>
-          <div>
-            <p className="site-footer__label">Elsewhere</p>
-            <ul className="site-footer__list">
-              <li>{external(social.linkedin, "LinkedIn", "linkedin", <LinkedInIcon />)}</li>
-              <li>{external("https://github.com/emcdanie/bella", "BELLA on GitHub", "github")}</li>
-              <li>{external("https://emcdanie.github.io/bella/", "Storybook", "storybook")}</li>
-              <li><ResumeLink className="site-footer__link" /></li>
-            </ul>
-          </div>
+        <nav className="site-footer__row" aria-label="Footer pages">
+          <p className="site-footer__label">Pages</p>
+          <ul className="site-footer__list">
+            <li><Link className="site-footer__link" href="/work">Work</Link></li>
+            <li><Link className="site-footer__link" href="/design-system">System</Link></li>
+            <li><Link className="site-footer__link" href="/learning">Learning</Link></li>
+            <li><Link className="site-footer__link" href="/about">About</Link></li>
+          </ul>
+        </nav>
+        <div className="site-footer__row">
+          <p className="site-footer__label">Elsewhere</p>
+          <ul className="site-footer__list">
+            <li>{external(social.linkedin, "LinkedIn", "linkedin", <LinkedInIcon />)}</li>
+            <li>{external("https://github.com/emcdanie/bella", "BELLA on GitHub", "github")}</li>
+            <li>{external("https://emcdanie.github.io/bella/", "Storybook", "storybook")}</li>
+            <li><ResumeLink className="site-footer__link" /></li>
+          </ul>
         </div>
         <div className="site-footer__legal">
           <p>
@@ -66,7 +61,12 @@ export default function SiteFooter() {
             <Link className="site-footer__link site-footer__link--small" href="/accessibility">Accessibility</Link> ·{" "}
             <Link className="site-footer__link site-footer__link--small" href="/privacy">Privacy</Link>
           </p>
-          <p>Built on BELLA · v0.2</p>
+          <p>
+            Built on BELLA ·{" "}
+            <Link className="site-footer__link site-footer__link--small" href="/design-system">
+              how this site works <span aria-hidden="true">→</span>
+            </Link>
+          </p>
         </div>
         <div className="site-footer__mark">
           <BrandWordmark size="full-bleed" />

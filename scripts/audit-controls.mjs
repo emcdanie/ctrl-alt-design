@@ -67,11 +67,9 @@ for (const r of routes) {
     return { primaries: primaries.length, footerPrimaries, chipsNoAria: chipsNoAria.length, segBad: segBad.length };
   });
   if (res.primaries > 1) fail(`${r} .btn-key--primary`, `${res.primaries} visible primaries`, "max 1 per view");
-  /* the footer's Get in touch: the one footer primary, except on
-     /contact, where it steps down to secondary beside "Send message" */
-  const onContact = r.split("?")[0] === "/contact";
-  if (onContact && res.footerPrimaries !== 0) fail(`${r} footer Get in touch`, `${res.footerPrimaries} footer primaries`, "secondary on /contact (0 footer primaries)");
-  if (!onContact && res.footerPrimaries !== 1) fail(`${r} footer Get in touch`, `${res.footerPrimaries} footer primaries`, "exactly 1 footer primary");
+  /* the footer has no primary: its Get in touch was cut in the footer
+     lock (Elleta, 4 Oct 2026; job E1, 5 Oct) */
+  if (res.footerPrimaries !== 0) fail(`${r} footer`, `${res.footerPrimaries} footer primaries`, "no footer primary (footer lock, 4 Oct 2026)");
   if (res.chipsNoAria) fail(`${r} .filter-chip`, `${res.chipsNoAria} chips without aria-pressed`, "aria-pressed on every filter chip");
   if (res.segBad) fail(`${r} .seg-control`, `${res.segBad} controls without exactly one aria-current`, "exactly one aria-current per control");
 }
