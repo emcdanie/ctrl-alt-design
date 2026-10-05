@@ -6,6 +6,7 @@ import CaseShowcase, { type ShowcaseCard } from "@/components/case/CaseShowcase"
 import type { CollagePiece } from "@/components/case/CaseCollage";
 import CaseFigure, { ReplayKey } from "@/components/case/CaseFigure";
 import NextCase from "@/components/case/NextCase";
+import ShowAll from "@/components/case/ShowAll";
 import { ThemeStage, ThemeExhibit, ThemeJson } from "@/components/theming/ThemeStage";
 import OneName from "@/components/theming/OneName";
 import Pipeline from "@/components/theming/Pipeline";
@@ -206,26 +207,29 @@ export default function ThemingCase() {
           </CaseFigure>
         </Beat>
 
-        <Beat id="decisions" num="3" label="Decisions" heading="Name the job, not the colour.">
-          <ul className={s.cells}>
-            <li>
-              <b>the idea</b>
-              <p>
-                Components only read meaning. A button reads action, never blue-600.
-              </p>
-            </li>
-            <li>
-              <b>what shows it</b>
-              <p>Four themes above, one component tree. Switching theme swaps nine semantic pointers and touches zero components.</p>
-            </li>
-            <li>
-              <b>why it matters</b>
-              <p>A new brand or market is a token file, not a redesign. And it can&apos;t ship below the contrast bar.</p>
-            </li>
-          </ul>
-          <CaseFigure n={4} caption="The tier 2 file for theme ground. Every theme file has the same names; only the pointers change. On the live page it follows whichever theme the exhibit shows.">
-            <ThemeJson />
-          </CaseFigure>
+        <Beat id="decisions" num="3" label="Decisions" heading="Name the job, not the colour." align="edge">
+          {/* at 1440 the three cells sit beside the figure (job F, 5 Oct 2026) */}
+          <div className={caseStyles.beside}>
+            <ul className={s.cells}>
+              <li>
+                <b>the idea</b>
+                <p>
+                  Components only read meaning. A button reads action, never blue-600.
+                </p>
+              </li>
+              <li>
+                <b>what shows it</b>
+                <p>Four themes above, one component tree. Switching theme swaps nine semantic pointers and touches zero components.</p>
+              </li>
+              <li>
+                <b>why it matters</b>
+                <p>A new brand or market is a token file, not a redesign. And it can&apos;t ship below the contrast bar.</p>
+              </li>
+            </ul>
+            <CaseFigure n={4} caption="The tier 2 file for theme ground. Every theme file has the same names; only the pointers change. On the live page it follows whichever theme the exhibit shows.">
+              <ThemeJson />
+            </CaseFigure>
+          </div>
         </Beat>
 
         <Beat
@@ -237,7 +241,9 @@ export default function ThemingCase() {
          
         >
           <CaseFigure n={5} caption="Three excerpts from BELLA's public repo: the semantic names, the Button's contract, and the reading order.">
-            <div className={s.repo} role="img" aria-label="Three excerpts from BELLA's public repo. The semantic names: each name has one answer for light mode and one for dark. The Button's contract: its variants, states and what not to do. The reading order: raw values first, then what they're for, then what uses them.">
+            {/* the semantic names stay in view; the Button's contract and the
+                reading order sit behind Show all 3 (job F, 5 Oct 2026) */}
+            <div className={s.repo} role="img" aria-label="The first of three excerpts from BELLA's public repo, the semantic names: each name has one answer for light mode and one for dark.">
               <div className={s.code} aria-hidden="true">
                 <Win dark path="emcdanie/bella · tokens/semantic/light.json → dark.json">
                   <pre className={s.hl}>
@@ -250,28 +256,34 @@ export default function ThemingCase() {
                   </pre>
                 </Win>
                 <p className={s.say}>In plain words: each name on the left has one answer for light mode and one for dark.</p>
-                <Win dark path="emcdanie/bella · tokens/component.json">
-                  <pre className={s.hl}>
-                    <K>&quot;button&quot;</K>{": {\n  "}
-                    <K>&quot;name&quot;</K>{": "}<V>&quot;Button&quot;</V>{",\n  "}
-                    <K>&quot;variants&quot;</K>{": ["}<V>&quot;primary&quot;</V>{", "}<V>&quot;secondary&quot;</V>{", "}<V>&quot;tertiary&quot;</V>{"],\n  "}
-                    <K>&quot;states&quot;</K>{": ["}<V>&quot;default&quot;</V>{", "}<V>&quot;hover&quot;</V>{", "}<V>&quot;active&quot;</V>{", "}<V>&quot;focus&quot;</V>{", "}<V>&quot;disabled&quot;</V>{"],\n  "}
-                    <K>&quot;dont&quot;</K>{": ["}<V>&quot;Do not render more than one primary per view&quot;</V>{",\n           "}<V>&quot;Do not use for filters, toggles, or sort&quot;</V>{"]\n}"}
-                  </pre>
-                </Win>
-                <p className={s.say}>In plain words: the Button&apos;s rulebook. Which versions exist, which states it has, and how not to use it. People and AI tools both read this.</p>
-                <Win dark path="emcdanie/bella · tokens/$themes.json">
-                  <pre className={s.hl}>
-                    <K>&quot;tokenSetOrder&quot;</K>{": [\n  "}
-                    <V>&quot;primitive&quot;</V>{",       "}<C>{"// tier 1 · raw values"}</C>{"\n  "}
-                    <V>&quot;semantic/light&quot;</V>{",  "}<C>{"// tier 2 · what it's for"}</C>{"\n  "}
-                    <V>&quot;semantic/dark&quot;</V>{",\n  "}
-                    <V>&quot;component&quot;</V>{"        "}<C>{"// tier 3 · what reads it"}</C>{"\n]"}
-                  </pre>
-                </Win>
-                <p className={s.say}>In plain words: the reading order. Raw values first, then what they&apos;re for, then what uses them.</p>
               </div>
             </div>
+            <ShowAll total={3}>
+              <div className={s.repo} role="img" aria-label="Two more excerpts from BELLA's public repo. The Button's contract: its variants, states and what not to do. The reading order: raw values first, then what they're for, then what uses them.">
+                <div className={s.code} aria-hidden="true">
+                  <Win dark path="emcdanie/bella · tokens/component.json">
+                    <pre className={s.hl}>
+                      <K>&quot;button&quot;</K>{": {\n  "}
+                      <K>&quot;name&quot;</K>{": "}<V>&quot;Button&quot;</V>{",\n  "}
+                      <K>&quot;variants&quot;</K>{": ["}<V>&quot;primary&quot;</V>{", "}<V>&quot;secondary&quot;</V>{", "}<V>&quot;tertiary&quot;</V>{"],\n  "}
+                      <K>&quot;states&quot;</K>{": ["}<V>&quot;default&quot;</V>{", "}<V>&quot;hover&quot;</V>{", "}<V>&quot;active&quot;</V>{", "}<V>&quot;focus&quot;</V>{", "}<V>&quot;disabled&quot;</V>{"],\n  "}
+                      <K>&quot;dont&quot;</K>{": ["}<V>&quot;Do not render more than one primary per view&quot;</V>{",\n           "}<V>&quot;Do not use for filters, toggles, or sort&quot;</V>{"]\n}"}
+                    </pre>
+                  </Win>
+                  <p className={s.say}>In plain words: the Button&apos;s rulebook. Which versions exist, which states it has, and how not to use it. People and AI tools both read this.</p>
+                  <Win dark path="emcdanie/bella · tokens/$themes.json">
+                    <pre className={s.hl}>
+                      <K>&quot;tokenSetOrder&quot;</K>{": [\n  "}
+                      <V>&quot;primitive&quot;</V>{",       "}<C>{"// tier 1 · raw values"}</C>{"\n  "}
+                      <V>&quot;semantic/light&quot;</V>{",  "}<C>{"// tier 2 · what it's for"}</C>{"\n  "}
+                      <V>&quot;semantic/dark&quot;</V>{",\n  "}
+                      <V>&quot;component&quot;</V>{"        "}<C>{"// tier 3 · what reads it"}</C>{"\n]"}
+                    </pre>
+                  </Win>
+                  <p className={s.say}>In plain words: the reading order. Raw values first, then what they&apos;re for, then what uses them.</p>
+                </div>
+              </div>
+            </ShowAll>
           </CaseFigure>
         </Beat>
 

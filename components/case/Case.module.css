@@ -588,6 +588,28 @@ main .showcase + :global(.l-section.l-section) {
   }
 }
 
+/* a short beat's text beside its figure at 1440 (job F, 5 Oct 2026):
+   the text on a 360 column, the figure beside it */
+.beside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--case-gap-block);
+}
+
+/* its text keeps the beat header's edge at every width */
+.beside > :first-child {
+  margin-inline: 0;
+}
+
+@media (min-width: 1100px) {
+  .beside {
+    display: grid;
+    grid-template-columns: 22.5rem minmax(0, 1fr);
+    align-items: start;
+    column-gap: var(--spacing-8);
+  }
+}
+
 /* Show all N (job F): the rest of a long figure, closed by default */
 .moreBar {
   display: flex;
