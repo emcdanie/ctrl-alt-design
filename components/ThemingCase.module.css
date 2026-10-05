@@ -724,10 +724,13 @@
 .dot2 { background: var(--color-chip-c2); }
 .dot3 { background: var(--color-chip-c3); }
 .cee p { margin: 0; font-size: var(--text-body); line-height: 1.6; color: var(--color-ink); }
+/* the tier 2 file wraps, indentation kept, never a sideways scroll
+   (job 42, rule 5: nothing cut, mobile first) */
 .json {
   margin: var(--spacing-6) 0 0;
   padding: var(--spacing-4);
-  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   border-radius: var(--radius-lg);
   background: var(--color-semantic-surface);
   color: var(--color-ink);

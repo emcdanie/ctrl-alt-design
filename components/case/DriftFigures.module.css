@@ -187,30 +187,6 @@
   stroke-width: 1.5;
 }
 
-.swipeMeta {
-  display: none;
-}
-
-.dots {
-  display: inline-flex;
-  gap: var(--spacing-1);
-  margin-right: var(--spacing-2);
-}
-
-.dot,
-.dotOn {
-  width: var(--spacing-2);
-  height: var(--spacing-2);
-  border-radius: var(--radius-pill);
-  background: var(--color-semantic-border-strong);
-  opacity: 0.45;
-}
-
-.dotOn {
-  opacity: 1;
-  background: var(--color-semantic-text-primary);
-}
-
 /* ── Figure 4 · Token cascade ── */
 .cascade {
   display: flex;
@@ -901,33 +877,12 @@
   }
 
 
-  /* the swipe: one level per screen, scroll-snap, no pan past the track */
+  /* the levels stack, one per row, in order (job 42, mobile first) */
   .levels {
-    display: flex;
-    gap: var(--spacing-4);
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-5);
   }
-
-  .levels::-webkit-scrollbar {
-    display: none;
-  }
-
-  .level {
-    flex: 0 0 88%;
-    scroll-snap-align: start;
-  }
-
-  .swipeMeta {
-    display: flex;
-    align-items: center;
-    margin: var(--spacing-4) 0 0;
-    font-size: var(--text-label);
-    color: var(--color-semantic-text-secondary);
-  }
-
 
   .tokenRow,
   .tokenRowOn {

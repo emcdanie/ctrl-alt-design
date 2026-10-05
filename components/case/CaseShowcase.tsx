@@ -19,7 +19,9 @@ import styles from "./Case.module.css";
 export type ShowcaseCard = { title: string; label: string; node: ReactNode };
 
 /** `hook`: an optional line under the strip (Drift, Elleta, 5 Oct) */
-export default function CaseShowcase({ label, cards, hook }: { label: string; cards: ShowcaseCard[]; hook?: string }) {
+/** `strip`: below 960px the cards scroll sideways, full-bleed (peers only;
+ *  job 42). Without it they stack. */
+export default function CaseShowcase({ label, cards, hook, strip = false }: { label: string; cards: ShowcaseCard[]; hook?: string; strip?: boolean }) {
   const track = useRef<HTMLUListElement>(null);
   const [at, setAt] = useState(0);
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function CaseShowcase({ label, cards, hook }: { label: string; ca
     <div className={`case-showcase ${styles.showcase}`}>
       <Container className="container--case">
         {/* focusable so a keyboard can scroll the phone track */}
-        <ul className={styles.showcaseTrack} ref={track} aria-label={label} tabIndex={0}>
+        <ul className={styles.showcaseTrack} ref={track} aria-label={label} tabIndex={strip ? 0 : undefined} data-strip={strip || undefined}>
           {cards.map((c) => (
             <li key={c.title} className={styles.showcaseCard}>
               <p className={styles.showcaseTitle}>{c.title}</p>
@@ -52,6 +54,7 @@ export default function CaseShowcase({ label, cards, hook }: { label: string; ca
             </li>
           ))}
         </ul>
+        {strip ? (
         <p className={`${styles.swipeMeta} ${styles.showcaseMeta}`} aria-live="polite">
           <span className={styles.swipeDots} aria-hidden="true">
             {cards.map((c, k) => (
@@ -60,6 +63,7 @@ export default function CaseShowcase({ label, cards, hook }: { label: string; ca
           </span>
           {at + 1} of {cards.length} · {cards[at].title} · swipe
         </p>
+        ) : null}
         {hook ? <p className={styles.showcaseHook}>{hook}</p> : null}
       </Container>
     </div>

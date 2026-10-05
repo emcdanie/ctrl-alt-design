@@ -143,7 +143,7 @@ export default function ThemingCase() {
             collage={{ label: HERO_LABEL, pieces: COLLAGE, phone: <Preview theme={THEMES.ground} />, phoneLabel: "One listing card in the ground theme, BELLA light: the Harbour loft listing with its price and Book a visit." }}
           />
         }
-        showcase={<CaseShowcase label="Theming, the same card in three more themes" cards={SHOWCASE} />}
+        showcase={<CaseShowcase label="Theming, the same card in three more themes" cards={SHOWCASE} strip />}
         facts={[
           { label: "Role", value: "Design systems lead, and the person who builds it" },
           { label: "System", value: "BELLA, my own open design system" },

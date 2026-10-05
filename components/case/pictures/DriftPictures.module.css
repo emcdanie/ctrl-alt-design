@@ -1079,9 +1079,13 @@
   background: var(--markup-line);
 }
 
+/* full column width, but never past 300: the photo's only source is
+   600px (audit:sharp, 2x; job 42) */
 .phoneStay {
   width: 100%;
+  max-width: 300px;
   height: 100%;
+  margin-inline: auto;
 }
 
 .phonePins {

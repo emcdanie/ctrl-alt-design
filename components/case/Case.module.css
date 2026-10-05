@@ -260,14 +260,18 @@ main .showcase + :global(.l-section.l-section) {
 
 @media (max-width: 959.98px) {
 
-  /* the phone showcase: a sideways swipe of 280-wide cards, the next one
-     peeking; the track runs to the window's edges and scrolls inside
-     itself, so the page never does */
+  /* the phone showcase (job 42, mobile first): the cards stack, one
+     column, in order. Only a showcase of peers keeps the full-bleed strip
+     (`strip`: Theming's faces, until its part B) */
   .showcaseTrack {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .showcaseTrack[data-strip] {
     display: flex;
     gap: var(--spacing-3);
     margin-inline: calc(var(--container-pad) * -1);
-    padding-inline: var(--container-pad);
+    padding: var(--spacing-2) var(--container-pad) var(--spacing-6);
     scroll-padding-inline: var(--container-pad);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -275,21 +279,16 @@ main .showcase + :global(.l-section.l-section) {
     scrollbar-width: none;
   }
 
-  .showcaseTrack::-webkit-scrollbar {
+  .showcaseTrack[data-strip]::-webkit-scrollbar {
     display: none;
   }
 
-  /* room under the cards for their shadow; the track clips at its box */
-  .showcaseTrack {
-    padding-block: var(--spacing-2) var(--spacing-6);
-  }
-
-  .showcaseMeta.showcaseMeta {
+  .showcaseTrack[data-strip] + .showcaseMeta.showcaseMeta {
     display: flex;
     margin-top: calc(var(--spacing-2) * -1);
   }
 
-  .showcaseCard {
+  .showcaseTrack[data-strip] .showcaseCard {
     flex: 0 0 var(--case-showcase-card-w);
     scroll-snap-align: start;
   }
@@ -901,18 +900,49 @@ main .showcase + :global(.l-section.l-section) {
   display: none;
 }
 
-/* the picture swipe (390 frames): one picture per screen, scroll-snap */
-.swipe {
+/* a figure's phone version (job 42, mobile first; components/case/Swipe):
+   a STACK by default, each part its own full-width card in reading order,
+   at its own size */
+.stack {
+  list-style: none;
+  margin-block: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--spacing-5);
+}
+
+.stackItem {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.stackItem > * {
+  width: 100%;
+  max-width: 100%;
+}
+
+.stackItem > img {
+  display: block;
+  height: auto;
+}
+
+/* the Reel, only for peers you compare: full-bleed to the screen edges
+   (the next card leaves at the screen edge, not a frame line), equal
+   heights, room for the shadow, snap, a named tab stop */
+.reel {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
 }
 
-.swipeTrack {
+.reelTrack {
   list-style: none;
-  margin-block: 0;
-  padding: 0;
+  margin: 0 calc(var(--container-pad) * -1);
+  padding: var(--spacing-2) var(--container-pad) var(--spacing-6);
+  scroll-padding-inline: var(--container-pad);
   display: flex;
+  align-items: stretch;
   gap: var(--spacing-4);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -920,23 +950,28 @@ main .showcase + :global(.l-section.l-section) {
   scrollbar-width: none;
 }
 
-.swipeTrack::-webkit-scrollbar {
+.reelTrack::-webkit-scrollbar {
   display: none;
 }
 
-.swipeItem {
-  flex: 0 0 82%;
+.reelItem {
+  flex: 0 0 auto;
+  display: flex;
   scroll-snap-align: start;
 }
 
-.swipeItem[data-fit] {
-  flex: 0 0 auto;
-}
+/* a Reel never sits inside a framed figure: on the phone its stage drops
+   the frame, so the strip can run to the screen edges */
+@media (max-width: 639px) {
+  .stage:has(.reel) {
+    padding: 0;
+    overflow: visible;
+    background: none;
+  }
 
-.swipeItem > img {
-  display: block;
-  width: 100%;
-  height: auto;
+  .stage:has(.reel)::before {
+    display: none;
+  }
 }
 
 .swipeMeta {
@@ -1030,5 +1065,35 @@ main .showcase + :global(.l-section.l-section) {
 
   .workCards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* lessons at 390 (Elleta, 5 Oct 2026, job 42, rule 7): the icon moves into the
+   title row, on the right, 40px, top-aligned with the title's first line,
+   16 gap; the body runs the full width below. Desktop unchanged. */
+@media (max-width: 639px) {
+  .lesson {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title icon"
+      "body body";
+    column-gap: var(--spacing-4);
+    row-gap: var(--spacing-3);
+    align-items: start;
+  }
+
+  .lessonIcon {
+    grid-area: icon;
+    width: var(--spacing-10);
+    height: var(--spacing-10);
+  }
+
+  .lessonTitle {
+    grid-area: title;
+  }
+
+  .lessonBody {
+    grid-area: body;
   }
 }

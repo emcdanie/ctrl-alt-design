@@ -3,22 +3,47 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import styles from "./Case.module.css";
 
-/* A picture swipe for the 390 frames (Site v3 "phone figures: swipe"):
-   one picture per screen, scroll-snap, no pan past the track, dots and
-   "N of M · <name> · swipe" under it. Above 640px the figure shows its
-   wide picture instead (CaseFigure's art decides which). Each item is a
-   node: an <img>, or a live picture that names itself (role="img").
-   `fit` lets each item hug its picture instead of taking 82% of the track. */
+/* A figure's phone version (below 640px; CaseFigure's art shows the wide
+   picture above it). Mobile first (job 42, Elleta, 5 Oct 2026; her 3 Oct
+   research: on a phone, don't scroll sideways, stack and don't shrink):
+
+   - default, a STACK: each item its own full-width card, in reading order,
+     at its own size. A sequence or a diagram's parts always stacks.
+   - `reel`: only for peers you compare (three versions of one card), when
+     a stack would run past about two screens. The Reel pattern (Every
+     Layout, Inclusive Components): full-bleed to the screen edges so the
+     next card leaves at the screen edge, never a frame line; equal
+     heights; room for the shadow; snap; a named tab stop and "N of M";
+     it never moves by itself.
+
+   Each item is a node that names itself (role="img") or an <img>. `fit`
+   is kept for the callers; it no longer changes anything. */
 export default function Swipe({
   items,
   label,
-  fit = false,
+  reel = false,
 }: {
   items: { key: string; node: ReactNode; short: string }[];
-  /** the track's accessible name */
+  /** the list's accessible name */
   label: string;
   fit?: boolean;
+  reel?: boolean;
 }) {
+  if (!reel) {
+    return (
+      <ul className={styles.stack} aria-label={label}>
+        {items.map((it) => (
+          <li key={it.key} className={styles.stackItem}>
+            {it.node}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  return <Reel items={items} label={label} />;
+}
+
+function Reel({ items, label }: { items: { key: string; node: ReactNode; short: string }[]; label: string }) {
   const track = useRef<HTMLUListElement>(null);
   const [at, setAt] = useState(0);
   useEffect(() => {
@@ -26,23 +51,54 @@ export default function Swipe({
     if (!el) return;
     const onScroll = () => {
       const kids = [...el.children] as HTMLElement[];
-      const left = el.getBoundingClientRect().left;
+      const left = el.getBoundingClientRect().left + parseFloat(getComputedStyle(el).scrollPaddingLeft || "0");
       const off = (k: HTMLElement) => Math.abs(k.getBoundingClientRect().left - left);
       let best = 0;
       kids.forEach((k, n) => {
         if (off(k) < off(kids[best])) best = n;
       });
-      setAt(Math.max(0, Math.min(items.length - 1, best)));
+      setAt(best);
     };
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => el.removeEventListener("scroll", onScroll);
   }, [items.length]);
+  /* equal heights: every item's card, its largest filled or bordered box,
+     takes the tallest card's height; content stays at the top */
+  useEffect(() => {
+    const el = track.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const cardOf = (li: Element) => {
+      let best: HTMLElement | null = null;
+      let area = 0;
+      for (const e of li.querySelectorAll<HTMLElement>("*")) {
+        const cs = getComputedStyle(e);
+        const filled = !/rgba\(0, 0, 0, 0\)|transparent/.test(cs.backgroundColor) || parseFloat(cs.borderTopWidth) > 0;
+        if (!filled) continue;
+        const r = e.getBoundingClientRect();
+        if (r.width * r.height > area) {
+          area = r.width * r.height;
+          best = e;
+        }
+      }
+      return best;
+    };
+    const fit = () => {
+      const cards = [...el.children].map(cardOf);
+      for (const c of cards) if (c) c.style.minHeight = "";
+      const tallest = Math.max(0, ...cards.map((c) => (c ? c.getBoundingClientRect().height : 0)));
+      if (!tallest) return;
+      for (const c of cards) if (c) c.style.minHeight = `${tallest}px`;
+    };
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    fit();
+    return () => ro.disconnect();
+  }, [items.length]);
   return (
-    <div className={styles.swipe}>
-      {/* a tab stop with a name: arrow keys scroll it (job 34) */}
-      <ul className={styles.swipeTrack} ref={track} aria-label={label} tabIndex={0}>
+    <div className={styles.reel}>
+      <ul className={styles.reelTrack} ref={track} role="region" aria-label={label} tabIndex={0}>
         {items.map((it) => (
-          <li key={it.key} className={styles.swipeItem} data-fit={fit || undefined}>
+          <li key={it.key} className={styles.reelItem}>
             {it.node}
           </li>
         ))}

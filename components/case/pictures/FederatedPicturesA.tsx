@@ -334,8 +334,9 @@ export function FederatedVersions() {
         </ScaledArt>
       </Pic>
       <div className={caseStyles.phoneOnly}>
+        {/* the one Reel (job 42): three peers to compare */}
         <Swipe
-          fit
+          reel
           label="Three versions of one product card"
           items={VERSIONS.map((v) => ({
             key: v.key,

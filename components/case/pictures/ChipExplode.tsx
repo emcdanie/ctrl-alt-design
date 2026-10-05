@@ -82,7 +82,7 @@ export function ChipExplode({ label }: { label: string }) {
                   <span className={s.restLeader} data-n="4" />
                   <span className={s.restLeader} data-n="5" />
                   {REST_PINS.map(([n, x, y]) => (
-                    <span key={n} className={s.restPin} style={{ left: x, top: y }}>
+                    <span key={n} className={s.restPin} style={{ left: `calc(50% - 140px + ${x}px)`, top: y }}>
                       <Pin n={n} />
                     </span>
                   ))}
@@ -94,10 +94,10 @@ export function ChipExplode({ label }: { label: string }) {
                 <span className={s.phoneRing} />
                 <Key className={s.phoneKey} />
                 {PHONE_LEADERS.map(([x, y, w, h]) => (
-                  <span key={`${x}-${y}`} className={s.phoneLeader} style={{ left: x, top: y, width: w, height: h }} />
+                  <span key={`${x}-${y}`} className={s.phoneLeader} style={{ left: `calc(50% - 140px + ${x}px)`, top: y, width: w, height: h }} />
                 ))}
                 {PHONE_PINS.map(([n, x, y]) => (
-                  <span key={n} className={s.restPin} style={{ left: x, top: y }}>
+                  <span key={n} className={s.restPin} style={{ left: `calc(50% - 140px + ${x}px)`, top: y }}>
                     <Pin n={n} />
                   </span>
                 ))}
