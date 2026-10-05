@@ -17,7 +17,7 @@ import { ZoomLevels, TokenCascade, Rollout, Staircase, TokenEverywhere } from "@
    clones of the figures' own components. */
 
 const HERO_LABEL =
-  "Before and after, overlapping: a drifted 'Stays in Lisbon' list where each row uses its own button, type and capitalisation, and the Harbour loft stay card on the system with one Book now button; five drifted book buttons and two token pins, action.primary and accent, scattered below.";
+  "Before and after, overlapping: a drifted 'Stays in Lisbon' list where each row uses its own type and capitalisation, and the Harbour loft stay card on the system with one Book now button; five drifted book buttons and two token pins, action.primary and accent, scattered below.";
 
 /* job 38 (P1.4): no text under another card. The stay card sits behind
    on the right; the drifted list sits in front and overlaps only the

@@ -18,19 +18,18 @@ import { Copy, Draft, FederatedVersions, FederatedWho, Published } from "@/compo
    kicker, the lead and the Figure 1 cover. */
 
 const HERO_LABEL =
-  "Three versions of one product card: a new draft, the published card on top of it (a wool blend belted coat at €119.99, down from €179.99, beige, size M, last units) and a post-purchase copy at the full price.";
+  "Three versions of one product card, side by side: a new draft, the published card (a wool blend belted coat at €119.99, down from €179.99, beige, size M, last units) and a post-purchase copy at the full price.";
 
-/* the 6fd03f9 composition (job 41), drawn at 1:1 so every text is 14px
-   or more (Elleta, 5 Oct: never scaled down) on a 660x634 canvas. The
-   published card is on top and covers only the draft's photo (it ends at
-   487, where the draft's text starts); the copy sits beside it, so its
-   tag stays clear. The chip-group strip is 928 wide at 1:1 and does not
-   fit, so it leaves the hero (it is in Figure 1). */
-const CANVAS = { w: 660, h: 634 };
+/* the 6fd03f9 cards (job 41), drawn at 1:1 so every text is 14px or more
+   (Elleta, 5 Oct: never scaled down). Job 41b, option B: the collage sits
+   below the text across the content width, and each card reads in full:
+   draft, published, post-purchase copy, side by side, 24 apart, no card
+   over another. The chip-group strip is in Figure 1. */
+const CANVAS = { w: 888, h: 562 }; // 546 of cards plus room for the shadow
 const COLLAGE: CollagePiece[] = [
-  { key: "draft", node: <FedPieces><Draft bare /></FedPieces>, x: 0, y: 112 },
-  { key: "copy", node: <FedPieces><Copy bare /></FedPieces>, x: 380, y: 112 },
-  { key: "published", node: <FedPieces><Published bare /></FedPieces>, x: 100, y: 0 },
+  { key: "draft", node: <FedPieces><Draft bare /></FedPieces>, x: 0, y: 24 },
+  { key: "published", node: <FedPieces><Published bare /></FedPieces>, x: 304, y: 0 },
+  { key: "copy", node: <FedPieces><Copy bare /></FedPieces>, x: 608, y: 24 },
 ];
 
 const SHOWCASE: ShowcaseCard[] = [
@@ -75,7 +74,7 @@ export default function FederatedCase() {
           long
           meta={["Federated design system", "2026 · 13 weeks"]}
           intro="A cross-platform design system for a leading European fashion retailer, with three of its four designers out. I made the slow work fast, opened one door for every squad, and extended what already worked instead of copying it."
-          collage={{ label: HERO_LABEL, pieces: COLLAGE, canvas: CANVAS, phone: <FedPieces><Published bare /></FedPieces>, phoneLabel: "The published product card: the product name, a discounted price of 119.99 from 179.99, beige, size M." }}
+          collage={{ label: HERO_LABEL, pieces: COLLAGE, canvas: CANVAS, below: true, phone: <FedPieces><Published bare /></FedPieces>, phoneLabel: "The published product card: the product name, a discounted price of 119.99 from 179.99, beige, size M." }}
         />
       }
       showcase={<CaseShowcase label="Federated, in real UI" cards={SHOWCASE} />}

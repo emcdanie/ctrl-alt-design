@@ -622,7 +622,9 @@ export function StayCard({ className = "", count = true }: { className?: string;
   );
 }
 
-/* the drifted list: every row its own button, type and capitalisation */
+/* the drifted list: every row its own type and capitalisation. Its row
+   buttons left the hero (job 41b, Elleta: nothing half-hidden under the
+   stay card); the loose drifted buttons below carry the button drift */
 export function DriftedList({ className = "" }: { className?: string }) {
   return (
     <div className={`${s.drift} ${className}`.trim()}>
@@ -636,7 +638,6 @@ export function DriftedList({ className = "" }: { className?: string }) {
           <span className={s.driftStarsA}>★★★★☆ 4.6</span>
           <span className={s.driftPriceA}>€96</span>
         </span>
-        <span className={s.driftBookA}>Book</span>
       </span>
       <span className={s.driftRow}>
         <img className={s.driftThumb} data-shape="round" src={`${KIT}/stay-oldtown.webp`} width={300} height={200} alt="" loading="lazy" decoding="async" />
@@ -645,7 +646,6 @@ export function DriftedList({ className = "" }: { className?: string }) {
           <span className={s.driftStarsB}>4.8 stars</span>
           <span className={s.driftPriceB}>€142 /nt</span>
         </span>
-        <span className={s.driftBookB}>BOOK NOW</span>
       </span>
       <span className={s.driftPerk}>Free cancellation!!</span>
     </div>

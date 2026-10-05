@@ -820,30 +820,6 @@
   line-height: 1.2;
 }
 
-.driftBookA,
-.driftBookB {
-  flex: 0 0 auto;
-  color: var(--kit-on-action);
-  white-space: nowrap;
-}
-
-.driftBookA {
-  padding: var(--spacing-2) var(--spacing-4);
-  background: var(--kit-ramp-600);
-  font-size: 16px;
-  line-height: 1.2;
-}
-
-.driftBookB {
-  padding: var(--spacing-2) var(--spacing-5);
-  border-radius: var(--radius-pill);
-  background: var(--kit-ramp-800);
-  font-size: 14px;
-  font-weight: var(--typography-font-weight-bold);
-  line-height: 1.2;
-  letter-spacing: 0.04em;
-}
-
 .driftPerk {
   align-self: flex-start;
   padding: var(--spacing-1) var(--spacing-2);

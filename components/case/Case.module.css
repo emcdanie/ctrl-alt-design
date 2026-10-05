@@ -44,10 +44,16 @@
   column-gap: var(--case-hero-gap);
 }
 
-/* a wider art column for a collage drawn at 1:1 on a bigger canvas
-   (job 41, Federated: its 660 canvas, the text takes the rest) */
-.heroGrid[data-wide-art] {
-  grid-template-columns: minmax(0, 1fr) var(--art-w);
+/* a collage drawn at 1:1 on a wide canvas goes below the text, across
+   the full content width; the text keeps its usual column (job 41b,
+   Elleta: Federated, option B) */
+.heroGrid[data-art-below] {
+  row-gap: var(--case-hero-gap-stacked);
+}
+
+.heroGrid[data-art-below] .collage {
+  grid-column: 1 / -1;
+  justify-self: center;
 }
 
 .heroText {
@@ -237,8 +243,7 @@ main .showcase + :global(.l-section.l-section) {
    528 (job 38: beside the text it shrank to 0.88 at 1024 and its text
    fell under 12px) */
 @media (max-width: 1179.98px) {
-  .heroGrid,
-  .heroGrid[data-wide-art] {
+  .heroGrid {
     grid-template-columns: minmax(0, 1fr);
     row-gap: var(--case-hero-gap-stacked);
   }
