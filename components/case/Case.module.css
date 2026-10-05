@@ -167,6 +167,16 @@
   min-width: 0;
 }
 
+.showcaseHook {
+  margin-block: var(--spacing-8) 0;
+  font-size: var(--typography-font-size-xl);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+  text-align: center;
+  text-wrap: balance;
+}
+
 /* how a card lays its pieces out: a wrapping row or a column, 12 apart */
 .piecesRow {
   display: flex;
@@ -184,17 +194,6 @@
 
 .piecesColumn > * {
   max-width: 100%;
-}
-
-/* a column whose pieces run the card's width (atom rows) */
-.piecesStack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-}
-
-.piecesStack > :first-child {
-  align-self: flex-start;
 }
 
 /* one narrow piece, centred (a 220-wide listing card) */

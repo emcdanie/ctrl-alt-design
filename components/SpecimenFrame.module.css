@@ -2,6 +2,9 @@
    in the line token, Mono strips at the metadata tier */
 .frame {
   display: grid;
+  /* one shrinkable column: the nowrap strips grew an auto column past
+     the card at 390, and the frame's overflow clipped the right side */
+  grid-template-columns: minmax(0, 1fr);
   overflow: hidden;
   border: 1px solid var(--color-semantic-border);
   border-radius: var(--radius-card);

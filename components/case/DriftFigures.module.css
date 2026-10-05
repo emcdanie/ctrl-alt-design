@@ -69,27 +69,6 @@
   background: currentColor;
 }
 
-.badgePass,
-.badgeFail {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--spacing-8);
-  height: var(--spacing-8);
-  border-radius: var(--radius-pill);
-  flex: 0 0 auto;
-}
-
-.badgePass {
-  background: var(--color-semantic-success-subtle);
-  color: var(--color-semantic-success-text);
-}
-
-.badgeFail {
-  background: var(--color-semantic-danger-subtle);
-  color: var(--color-semantic-danger-text);
-}
-
 /* ── Figure 3 · Zoom levels ── */
 
 .levels {
@@ -605,9 +584,17 @@
   gap: var(--spacing-2);
 }
 
-.rTop .badgePass {
-  width: var(--spacing-6);
-  height: var(--spacing-6);
+/* the verdict on the leader (Elleta, 5 Oct): from 640px it sits on the
+   green 4 → 5 segment, centred between the two discs; on a phone it stays
+   in the step's top row */
+@media (min-width: 640px) {
+  .sharedTag {
+    position: absolute;
+    z-index: 1;
+    top: calc(var(--spacing-12) / 2);
+    right: calc(50% + (100% + var(--spacing-3)) / 2);
+    transform: translate(50%, -50%);
+  }
 }
 
 .no {
@@ -704,9 +691,29 @@
 
 /* ── Figure 7 · Shipped staircase ── */
 
+/* the aspect ratio and --base (the baseline's height share) come from
+   the geometry, inline; the phone drawing swaps in below 640px */
 .drawing {
   position: relative;
-  aspect-ratio: 942 / 648;
+}
+
+.drawingPhone {
+  display: none;
+}
+
+.areaFill {
+  stroke: none;
+}
+
+/* the soft accent fill under the stair, 12% to nothing */
+.fillStopTop {
+  stop-color: var(--color-semantic-accent);
+  stop-opacity: 0.12;
+}
+
+.fillStopEnd {
+  stop-color: var(--color-semantic-accent);
+  stop-opacity: 0;
 }
 
 .drawingSvg {
@@ -782,7 +789,7 @@
 .flatLabel {
   position: absolute;
   left: 0;
-  top: calc(578 / 648 * 100% + var(--spacing-3));
+  top: calc(var(--base) + var(--spacing-3));
   font-size: var(--typography-font-size-sm);
   color: var(--color-semantic-text-body);
 }
@@ -790,7 +797,7 @@
 .nextChip {
   position: absolute;
   right: 0;
-  top: calc(578 / 648 * 100% + var(--spacing-2));
+  top: calc(var(--base) + var(--spacing-2));
   border-style: dashed;
   color: var(--color-semantic-text-secondary);
 }
@@ -827,7 +834,12 @@
   /* Figure 7, option B: the real staircase, area names as plain 16px
      labels left of their node, the system chip under its node, "next"
      dashed at the top right, the flat line's label under the baseline */
-  .drawing {
+  .drawingWide {
+    display: none;
+  }
+
+  .drawingPhone {
+    display: block;
     margin-top: var(--spacing-12);
     margin-bottom: var(--spacing-20);
   }
@@ -860,7 +872,7 @@
   }
 
   .flatLabel {
-    top: calc(578 / 648 * 100% + var(--spacing-16));
+    top: calc(var(--base) + var(--spacing-16));
     font-size: var(--text-label);
   }
 
@@ -1046,6 +1058,10 @@
     stroke-dashoffset: 1;
   }
 
+  .stage[data-play="off"] .areaFill {
+    clip-path: inset(0 100% 0 0);
+  }
+
   /* F4: the file appears, then each level zooms out of the one before
      (0.6s each) while its arrow draws; then all four hold */
   .stage[data-play="on"] .level {
@@ -1105,31 +1121,47 @@
     animation: rise 0.6s var(--motion-easing-out) both 3s;
   }
 
-  /* F3: the flat line (1.6s), the system node pops, the stair climbs
-     (2.4s), each chip rises onto its step, "next" fades in last */
+  /* F3 (Elleta, 5 Oct; about 2.6s): the flat line draws (0.5s), the
+     system pops at 0.5s, the stair draws 1.6s ease-out with the accent
+     fill revealed behind it; each area node and chip pops at its --d,
+     the moment the line reaches it (0.5s + 1.6s x its length share along
+     the stair, computed in DriftFigures.tsx); "next" fades in last */
   .stage[data-play="on"] .flat {
     stroke-dasharray: 1;
-    animation: draw 1.6s linear both;
+    animation: draw 0.5s linear both;
   }
 
   .stage[data-play="on"] .sysNode,
   .stage[data-play="on"] .sysChip {
-    animation: pop 0.5s var(--motion-easing-pop) both 1.6s;
+    animation: pop 0.4s var(--motion-easing-pop) both 0.5s;
   }
 
   .stage[data-play="on"] .stair {
     stroke-dasharray: 1;
-    animation: draw 2.4s var(--motion-easing-draw) both 2.1s;
+    animation: draw 1.6s var(--motion-easing-out) both 0.5s;
+  }
+
+  .stage[data-play="on"] .areaFill {
+    animation: reveal 1.6s var(--motion-easing-out) both 0.5s;
   }
 
   .stage[data-play="on"] .areaNode,
   .stage[data-play="on"] .areaChip {
     animation: rise 0.4s var(--motion-easing-out) both;
-    animation-delay: calc(var(--i) * 0.36s + 2.4s);
+    animation-delay: var(--d);
   }
 
   .stage[data-play="on"] .nextChip {
-    animation: fadeIn 0.5s var(--motion-easing-out) both 4.8s;
+    animation: fadeIn 0.4s var(--motion-easing-out) both 2.2s;
+  }
+
+  @keyframes reveal {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
   }
 
   @media (max-width: 639px) {
@@ -1150,5 +1182,124 @@
     .stage[data-play="on"] .level {
       animation-name: fadeIn;
     }
+  }
+}
+
+/* ── Showcase card 3 · one token, every screen (Elleta, 5 Oct) ── */
+.everywhere {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+/* the one value the card swaps; indigo is the kit's own default */
+.everywhere[data-swatch="teal"] {
+  --kit-action: var(--kit-swap-teal);
+}
+
+.everywhere[data-swatch="ochre"] {
+  --kit-action: var(--kit-swap-ochre);
+  --kit-on-action: var(--kit-on-swap-ochre);
+}
+
+.everyPill {
+  align-self: flex-start;
+  display: flex;
+  cursor: pointer;
+}
+
+.everyStay,
+.everyBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+}
+
+.everyStayText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  min-width: 0;
+}
+
+/* a figure: tabular digits, right-aligned (CLAUDE.md section 3) */
+.everyTotal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  min-width: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.everyTitle {
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.2;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.everyPrice {
+  font-size: 15px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.2;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.everyPer {
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-regular);
+  line-height: 1.2;
+  color: var(--color-semantic-text-secondary);
+}
+
+.everySearch {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.everyInput {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.everyIcon {
+  width: var(--spacing-10);
+  height: var(--spacing-10);
+  padding: 0;
+}
+
+.everyFill {
+  font-size: 14px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes everyPulseA {
+    50% {
+      transform: scale(1.06);
+    }
+  }
+
+  @keyframes everyPulseB {
+    50% {
+      transform: scale(1.06);
+    }
+  }
+
+  .everyFill {
+    transition: background-color 0.3s ease-out, color 0.3s ease-out;
+  }
+
+  .everyPill[data-pulse="a"] {
+    animation: everyPulseA 0.24s ease-out;
+  }
+
+  .everyPill[data-pulse="b"] {
+    animation: everyPulseB 0.24s ease-out;
   }
 }

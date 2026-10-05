@@ -101,3 +101,14 @@ export const HOME_LEAD: CaseRowData[] = [
   },
   { ...byId("chip"), n: "03", specimen: { path: "chip / watch loop", mode: "watching", caption: "Drawn from CHIP\u2019s watch loop." } },
 ];
+
+/* /work (Site v3, job 33, Elleta 5 Oct 2026): Home's case cards, four
+ * cases in this order: Drift, Federated (live since 4 Oct), CHIP,
+ * Theming. Booking, Search and Code First leave /work; their pages stay
+ * live, unlinked from it. */
+export const WORK_CASES: CaseRowData[] = [
+  HOME_LEAD[0],
+  { ...HOME_LEAD[1], href: "/case-studies/federated", status: undefined },
+  HOME_LEAD[2],
+  { ...byId("theming"), n: "04" },
+];

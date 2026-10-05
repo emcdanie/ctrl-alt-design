@@ -99,7 +99,7 @@ export function DriftButtons() {
       className={s.root}
       style={{ "--art-w": 928 } as CSSProperties}
       role="img"
-      aria-label="Buttons in production: 17 buttons that all mean 'book a stay', labelled for their differences: square corners, no radius at all, all caps, full pill, a second font, light weight and pale. One is ringed as the one the system kept."
+      aria-label="Buttons in production: 17 buttons that all mean 'book a stay', labelled for their differences: square corners, no radius at all, all caps, full pill, a second font, light weight and pale. The set is tagged Drifted; one is ringed and tagged Kept, the one the system kept."
     >
       <ScaledArt width={992}>
         <div className={s.bleed} aria-hidden="true">
@@ -119,9 +119,21 @@ export function DriftButtons() {
                   <MarkupRing />
                   <KitButton className={s.keptButton}>Book now</KitButton>
                 </span>
+                {/* the verdicts sit inside the card's bottom edge (Elleta,
+                   5 Oct): "Drifted" for the set, and "Kept" on a leader
+                   that drops from the ring through the row-4 gutter */}
+                <svg className={s.keptLeader} viewBox="0 0 12 80" width="12" height="80">
+                  <circle className={s.leaderDot} cx="6" cy="2.9" r="2.9" />
+                  <path className={kitLeader} d="M6 2.9V80" />
+                </svg>
+                <MarkupBadge kind="fail" className={s.auditFail}>
+                  Drifted
+                </MarkupBadge>
+                <MarkupBadge kind="pass" className={s.keptTag}>
+                  Kept
+                </MarkupBadge>
               </div>
             </KitPanel>
-            <MarkupBadge kind="fail" size="md" className={s.auditFail} />
             <svg className={s.overlay} viewBox="0 0 928 370.45" width="928" height="370.45">
               {BUTTON_LEADERS.map(([a, b, y]) => (
                 <g key={`${a}-${y}`} className={kitLeader}>
@@ -460,13 +472,65 @@ export function DriftedButton({ n }: { n: 1 | 2 | 3 | 4 | 5 | 6 }) {
   );
 }
 
-/** a token pinned as Figure 5 pins it: the name, with its swatch */
-export function TokenPin({ token, swatch }: { token: string; swatch?: string }) {
+/** a token pinned as Figure 5 pins it: the name, with its swatch. In the
+ *  hero collage a pin may `float` (a 6px drift, 4s) and `swap` its swatch
+ *  once, about 1s after load (Elleta, 5 Oct); reduced motion keeps both
+ *  still on the first state. */
+export function TokenPin({ token, swatch, float = false, swap = false }: { token: string; swatch?: string; float?: boolean; swap?: boolean }) {
   return (
-    <MarkupNote tone="neutral" className={s.pin}>
-      {swatch ? <span className={s.pinSwatch} style={{ background: swatch }} /> : null}
+    <MarkupNote tone="neutral" className={`${s.pin} ${float ? s.pinFloat : ""}`.trim()}>
+      {swatch ? <span className={`${s.pinSwatch} ${swap ? s.pinSwap : ""}`.trim()} style={{ background: swatch }} /> : null}
       {token}
     </MarkupNote>
+  );
+}
+
+/* ---------- the showcase, "17 → 1 → everywhere" (Elleta, 5 Oct) ---------- */
+
+/** card 1: the drifted buttons, under their count */
+export function DriftedSet() {
+  return (
+    <span className={s.driftedSet}>
+      <span className={s.countPill}>17</span>
+      {([1, 2, 3, 4, 5, 6] as const).map((n) => (
+        <DriftedButton key={n} n={n} />
+      ))}
+    </span>
+  );
+}
+
+/* card 2: the system button with three pins. In the piece's own units
+   (232 wide, the card's inner width at 390): [token, swatch, the dot on
+   the button]. Each leader drops from its dot down the button's left
+   gutter, then runs right to an arrow at its pin; the rightmost dot takes
+   the top pin, so no two leaders cross. */
+const MINI_PIN_X = 44;
+const MINI_ROW_Y = (k: number) => 76 + k * 48;
+const MINI_PINS: [string, string | undefined, number, number][] = [
+  ["text.primary", "var(--color-semantic-text-primary)", 29, 34],
+  ["action.primary", "var(--kit-action)", 14, 22],
+  ["radius 16", undefined, 4.7, 39.3],
+];
+
+export function ButtonAnatomyMini() {
+  return (
+    <span className={s.mini}>
+      <KitButton className={s.miniButton}>Book now</KitButton>
+      <svg className={s.miniLeaders} viewBox="0 0 232 196" width="232" height="196">
+        {MINI_PINS.map(([t, , x, y], k) => (
+          <g key={t}>
+            <path className={kitLeader} d={`M${x} ${y} V${MINI_ROW_Y(k)} H${MINI_PIN_X}`} />
+            <path className={`${kitLeader} ${s.arrowHead}`} d={arrowHead(MINI_PIN_X, MINI_ROW_Y(k), 1)} />
+            <circle className={s.miniDot} cx={x} cy={y} r="3.5" />
+          </g>
+        ))}
+      </svg>
+      {MINI_PINS.map(([t, swatch], k) => (
+        <span key={t} className={s.miniPin} style={{ top: MINI_ROW_Y(k) }}>
+          <TokenPin token={t} swatch={swatch} />
+        </span>
+      ))}
+    </span>
   );
 }
 

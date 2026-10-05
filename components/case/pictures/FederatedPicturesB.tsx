@@ -102,10 +102,10 @@ const AFTER: [string, string, Dot][] = [
 function Lane({ kind, head, steps }: { kind: "pass" | "fail"; head: string; steps: [string, string, Dot][] }) {
   return (
     <span className={s.lane}>
-      <span className={s.laneHead} data-kind={kind}>
-        <MarkupBadge kind={kind} />
+      {/* the lane's verdict: its head as a labelled tag, icon + words */}
+      <MarkupBadge kind={kind} className={s.laneHead}>
         {head}
-      </span>
+      </MarkupBadge>
       <span className={s.steps}>
         {steps.map(([t, sub, dot], k) => (
           <span key={t} className={s.step}>

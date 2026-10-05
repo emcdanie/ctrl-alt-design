@@ -425,6 +425,9 @@
   color: var(--color-ink-muted);
 }
 .rowTags { display: flex; flex-wrap: wrap; gap: calc(var(--spacing-1) * 1.5); }
+/* a long tag wraps inside a narrow card rather than leaving it (Theming,
+   "consistency without fragmentation", at 390; job 33) */
+.rowTags > :global(.tag) { max-width: 100%; white-space: normal; }
 @media (prefers-reduced-motion: reduce) {
   .row,
   .thumb svg { transition: none; }

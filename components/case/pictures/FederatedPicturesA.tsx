@@ -199,10 +199,15 @@ export function Published({ bare = false }: { bare?: boolean }) {
           <span className={s.stockDot} />
           Last units
         </p>
+        {/* the verdict sits inside the card's bottom edge, not on its corner */}
+        {bare ? null : (
+          <MarkupBadge kind="pass" className={s.passBadge}>
+            On system
+          </MarkupBadge>
+        )}
       </div>
       {bare ? null : (
         <>
-          <MarkupBadge kind="pass" size="md" className={s.passBadge} />
           <span className={s.popover}>Wool blend belted coat with wide lapels</span>
           <span className={s.caret} />
         </>

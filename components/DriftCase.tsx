@@ -1,14 +1,12 @@
 import { CasePage, Beat, BeatText, CaseQuote, Lessons } from "@/components/case/CasePage";
 import CaseFigure from "@/components/case/CaseFigure";
-import caseStyles from "@/components/case/Case.module.css";
 import CaseHero from "@/components/case/CaseHero";
 import CaseShowcase, { type ShowcaseCard } from "@/components/case/CaseShowcase";
 import type { CollagePiece } from "@/components/case/CaseCollage";
-import { KitButton } from "@/components/case/kit/Kit";
-import { AtomRow, DriftAnatomy, DriftButtons, DriftedButton, DriftedList, DriftShipped, DriftSurvey, StayCard, TokenPin } from "@/components/case/pictures/DriftPictures";
+import { ButtonAnatomyMini, DriftAnatomy, DriftButtons, DriftedButton, DriftedList, DriftedSet, DriftShipped, DriftSurvey, StayCard, TokenPin } from "@/components/case/pictures/DriftPictures";
 import NextCase from "@/components/case/NextCase";
 import { CoverAtlas, CoverBrands, CoverSearch } from "@/components/case/pictures/Covers";
-import { ZoomLevels, TokenCascade, Rollout, Staircase } from "@/components/case/DriftFigures";
+import { ZoomLevels, TokenCascade, Rollout, Staircase, TokenEverywhere } from "@/components/case/DriftFigures";
 
 /* From Drift to Foundation (Site v3, Elleta, 4 Oct 2026): the case rebuilt
    from the Site v3 frames, Figma e7U5Hxpr441rT719SPclas, 1440 293:1259 and
@@ -30,46 +28,27 @@ const COLLAGE: CollagePiece[] = [
   { key: "b3", node: <DriftedButton n={3} />, x: 23, y: 429, r: -3, phone: false },
   { key: "b4", node: <DriftedButton n={4} />, x: 149, y: 448, r: 3, phone: false },
   { key: "b5", node: <DriftedButton n={5} />, x: 235, y: 422, r: 2 },
-  { key: "t1", node: <TokenPin token="action.primary" swatch="var(--kit-action)" />, x: 299, y: 426, r: -4, phone: false },
-  { key: "t2", node: <TokenPin token="accent" swatch="var(--color-semantic-accent)" />, x: 348, y: 403, r: 3 },
+  { key: "t1", node: <TokenPin token="action.primary" swatch="var(--kit-action)" float swap />, x: 299, y: 426, r: -4, phone: false },
+  { key: "t2", node: <TokenPin token="accent" swatch="var(--color-semantic-accent)" float />, x: 348, y: 403, r: 3 },
 ];
 
+/* "17 → 1 → everywhere" (Elleta, 5 Oct): the drift, the one button, and
+   the one token reaching every screen */
 const SHOWCASE: ShowcaseCard[] = [
   {
-    title: "Drifted · six of seventeen",
-    label: "Six of the seventeen drifted book buttons: Book, BOOK NOW, Book Now, Reserve, RESERVE and Book this stay, each its own fill, radius and type.",
-    node: (
-      <span className={caseStyles.piecesRow}>
-        {([1, 2, 3, 4, 5, 6] as const).map((n) => (
-          <DriftedButton key={n} n={n} />
-        ))}
-      </span>
-    ),
+    title: "17 buttons, one job",
+    label: "17 buttons, one job: a count of 17, then six of the drifted book buttons, Book, BOOK NOW, Book Now, Reserve, RESERVE and Book this stay, each its own fill, radius and type.",
+    node: <DriftedSet />,
   },
   {
-    title: "On the system · atoms",
-    label: "Atoms on the system: one Book now button, then a chip (Direct), an input (Where to?) and a tag (Admin).",
-    node: (
-      <span className={caseStyles.piecesStack}>
-        <KitButton>Book now</KitButton>
-        <AtomRow atom="Chip" />
-        <AtomRow atom="Input" />
-        <AtomRow atom="Tag" />
-      </span>
-    ),
+    title: "1 button",
+    label: "1 button: the system's Book now button, pinned to the three tokens it reads: action.primary for the fill, radius 16 for the corners, text.primary for the label.",
+    node: <ButtonAnatomyMini />,
   },
   {
-    title: "One token, every button",
-    label: "The tokens every button reads: action.primary, text.primary, accent, radius/card 16 and shadow.card.",
-    node: (
-      <span className={caseStyles.piecesRow}>
-        <TokenPin token="action.primary" swatch="var(--kit-action)" />
-        <TokenPin token="text.primary" swatch="var(--color-semantic-text-primary)" />
-        <TokenPin token="accent" swatch="var(--color-semantic-accent)" />
-        <TokenPin token="radius/card 16" />
-        <TokenPin token="shadow.card" />
-      </span>
-    ),
+    title: "1 token, every screen",
+    label: "1 token, every screen: the action.primary token, cycling from indigo to teal to ochre, and the buttons that read it, on a Harbour loft stay card, a search bar and a booking bar, recolouring together.",
+    node: <TokenEverywhere />,
   },
 ];
 
@@ -85,7 +64,7 @@ export default function DriftCase() {
           collage={{ label: HERO_LABEL, pieces: COLLAGE }}
         />
       }
-      showcase={<CaseShowcase label="Drift, in real UI" cards={SHOWCASE} />}
+      showcase={<CaseShowcase label="Drift, in real UI" cards={SHOWCASE} hook="Change it once. It ships everywhere." />}
       resultSize="page"
       results={[
         { n: "+2", label: "designers, plus a funded engineering team" },

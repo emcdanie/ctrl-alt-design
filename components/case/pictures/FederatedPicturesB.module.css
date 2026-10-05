@@ -210,20 +210,7 @@
 }
 
 .laneHead {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  font-size: 18px;
-  font-weight: var(--typography-font-weight-medium);
-  line-height: 1.3;
-}
-
-.laneHead[data-kind="fail"] {
-  color: var(--color-semantic-danger-text);
-}
-
-.laneHead[data-kind="pass"] {
-  color: var(--color-semantic-success-text);
+  align-self: flex-start;
 }
 
 .steps {

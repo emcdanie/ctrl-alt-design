@@ -230,6 +230,12 @@ body {
   --kit-ramp-700: #3a49b8;
   --kit-ramp-800: #2e3a93;
   --kit-ramp-900: #232c6e;
+  /* Drift showcase card 3 (Elleta, 5 Oct): the three values action.primary
+     cycles through, indigo (--kit-ramp-600), a teal and an ochre; the
+     ochre carries dark text for AA, as every ochre fill does */
+  --kit-swap-teal: var(--case-chip-deep);
+  --kit-swap-ochre: var(--color-brand-ochre);
+  --kit-on-swap-ochre: var(--color-chip-text);
   --markup-line: #8a8fa3;
   --markup-red: #b5323a;
   /* Drift figure 9: the invented carrier's mark */
@@ -579,8 +585,8 @@ body {
   --section-field-opacity: 0.06;
   /* hero v3 glass plates and Home's field, dark (18e, 4 Oct 2026) */
   --hero-plate-fill: rgb(255 255 255 / 0.06);
-  --hero-plate-line: rgb(255 255 255 / 0.12);
-  --hero-grid-line: rgb(255 255 255 / 0.14);
+  --hero-plate-line: var(--color-semantic-border); /* job 33: bound, as in light */
+  --hero-grid-line: var(--color-semantic-border);
   --hero-contact: color-mix(in srgb, var(--color-light-ink) 45%, transparent); /* dark ink, so it reads on the dark ground */
   --home-field-opacity: 0.05;
   /* surfaces: 4% toward the cream ink, so lighter than the ground */
@@ -1095,17 +1101,19 @@ body {
   --color-semantic-surface: var(--color-dark-surface);
   --color-card: var(--color-semantic-surface);
   --color-semantic-surface-inset: var(--color-surface);
-  --color-surface: #1f1f1f;
-  --color-white-pure: #1f1f1f;
-  --color-glass: rgba(22, 22, 22, 0.68);
-  --color-glass-strong: rgba(22, 22, 22, 0.82);
-  --color-tag-bg: rgba(237, 237, 237, 0.08);
+  /* job 33 (5 Oct 2026): the Geist-era neutral greys (#1f1f1f, #161616,
+     #ededed) bound to the semantic dark set, mirroring the light leg */
+  --color-surface: var(--color-dark-inset);
+  --color-white-pure: var(--color-dark-bg);
+  --color-glass: color-mix(in srgb, var(--color-semantic-surface) 68%, transparent);
+  --color-glass-strong: color-mix(in srgb, var(--color-semantic-surface) 82%, transparent);
+  --color-tag-bg: color-mix(in srgb, var(--color-dark-ink) 8%, transparent);
   --color-tag-border: var(--color-dark-line);
   /* dark leg of the verdict pair: lifted so both clear AA on the card */
-  --color-pass-ink: #86D6B0;
-  --color-pass-subtle: rgba(134, 214, 176, 0.16);
-  --color-fail-ink: #F2A0AB;
-  --color-fail-subtle: rgba(242, 160, 171, 0.16);
+  --color-pass-ink: var(--color-semantic-success-text);
+  --color-pass-subtle: var(--color-semantic-success-subtle);
+  --color-fail-ink: var(--color-semantic-danger-text);
+  --color-fail-subtle: var(--color-semantic-danger-subtle);
 
   --color-border-soft: var(--color-dark-line);
   --color-border-medium: var(--color-dark-line);

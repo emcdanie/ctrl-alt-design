@@ -102,7 +102,7 @@
 .buttonsArt {
   position: relative;
   width: 928px;
-  height: 371px;
+  height: 401px;
 }
 
 .auditCard {
@@ -110,7 +110,7 @@
   top: 14.97px;
   left: 190.84px;
   width: 561.29px;
-  height: 353.58px;
+  height: 383.58px;
 }
 
 .auditHead {
@@ -189,14 +189,29 @@
   font-size: 14px;
 }
 
-/* the cross sits just outside the card's top-right corner, 8 clear of
-   it, never on the card (Elleta, 4 Oct late) */
-.auditFail {
+/* the verdict tags, inside the card's bottom edge (in .auditButtons
+   units): "Drifted" on the left, "Kept" centred on the row-4 gutter
+   (x 292.97, between Book stay and Select room) under the ring */
+.auditFail,
+.keptTag {
   position: absolute;
-  top: 14.97px;
-  left: 760.13px;
-  width: 33.68px;
-  height: 33.68px;
+  top: 252px;
+}
+
+.auditFail {
+  left: 0;
+}
+
+.keptTag {
+  left: 292.97px;
+  transform: translateX(-50%);
+}
+
+.keptLeader {
+  position: absolute;
+  top: 172px;
+  left: 286.97px;
+  overflow: visible;
 }
 
 .overlay {
@@ -867,4 +882,93 @@
   height: 14px;
   border: 1px solid var(--color-semantic-border-strong);
   border-radius: var(--radius-pill);
+}
+
+/* ---------- the showcase, "17 → 1 → everywhere" (Elleta, 5 Oct) ---------- */
+
+/* card 1: the 17 count, then six of the drifted buttons */
+.driftedSet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.countPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 100%;
+  max-width: max-content;
+  height: 28px;
+  padding: 0 var(--spacing-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-danger-subtle);
+  color: var(--color-semantic-danger-text);
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1;
+}
+
+/* card 2: the system button, three pins on dashed leaders */
+.mini {
+  position: relative;
+  display: block;
+  width: 232px;
+  height: 196px;
+}
+
+.miniButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 44px;
+  padding: 0 var(--spacing-6);
+  border-radius: var(--radius-card);
+}
+
+.miniLeaders {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.miniDot {
+  fill: var(--markup-line);
+  stroke: var(--color-semantic-surface);
+  stroke-width: 1.5;
+}
+
+.miniPin {
+  position: absolute;
+  left: 44px;
+  display: flex;
+  transform: translateY(-50%);
+}
+
+/* the hero collage's pins: a 6px float and one swatch change, motion only */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes pinFloat {
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  @keyframes pinSwap {
+    to {
+      background: var(--kit-swap-teal);
+    }
+  }
+
+  .pinFloat {
+    animation: pinFloat 4s ease-in-out infinite;
+  }
+
+  .pinSwap {
+    animation: pinSwap 0.3s ease-out 1s both;
+  }
+
+  .pinSwatch {
+    transition: background-color 0.3s ease-out;
+  }
 }

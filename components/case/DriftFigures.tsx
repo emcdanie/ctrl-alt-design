@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { useFigurePlay } from "./CaseFigure";
+import { KitButton, KitInput, KitPanel, MarkupBadge } from "./kit/Kit";
+import { TokenPin } from "./pictures/DriftPictures";
 import s from "./DriftFigures.module.css";
 
 /* The four Drift figures with motion (Site v3; masters on 🧪 Drift motion
@@ -195,14 +197,6 @@ const VERTICALS: [string, string, string, string, [number, number]][] = [
   ["Cars", "BOOK", "Book cars", "cars", [73, 32]],
 ];
 
-function Badge({ kind, label }: { kind: "pass" | "fail"; label: string }) {
-  return (
-    <span className={kind === "pass" ? s.badgePass : s.badgeFail} role="img" aria-label={label}>
-      <Icon name={kind === "pass" ? "Check" : "Xmark"} size="sm" />
-    </span>
-  );
-}
-
 export function TokenCascade() {
   const { playing, run } = useFigurePlay();
   return (
@@ -273,7 +267,7 @@ export function TokenCascade() {
               </li>
             ))}
           </ul>
-          <Badge kind="fail" label="Inconsistent" />
+          <MarkupBadge kind="fail">Inconsistent</MarkupBadge>
         </div>
         <div className={s.changeRow}>
           <p className={s.changeLabel}>After: one decision</p>
@@ -288,7 +282,7 @@ export function TokenCascade() {
             ))}
           </ul>
           <span className={s.passPop}>
-            <Badge kind="pass" label="Consistent" />
+            <MarkupBadge kind="pass">Consistent</MarkupBadge>
           </span>
         </div>
         <p className={s.changeNote}>Every vertical reads action.primary. Change it once, and all four follow, in design and in code.</p>
@@ -329,7 +323,11 @@ export function Rollout() {
                 <span className={s.rTop}>
                   <Step n={k + 1} />
                   {st.no ? <span className={s.no}>No</span> : null}
-                  {st.shared ? <Badge kind="pass" label="Shared" /> : null}
+                  {st.shared ? (
+                    <MarkupBadge kind="pass" className={s.sharedTag}>
+                      On system
+                    </MarkupBadge>
+                  ) : null}
                 </span>
                 <span className={s.rTitle}>{st.title}</span>
                 <span className={s.rMeta}>{st.meta}</span>
@@ -360,21 +358,124 @@ export function Rollout() {
 }
 
 /* ── Figure 7 · Shipped staircase (F3) ───────────────────────────── */
-/* the drawing's own coordinates (942 × 648, Figma 366:33642): each area's
-   node, and its chip centred above it with an 8px gap */
-const AREAS: { label: string[]; x: number; y: number }[] = [
-  { label: ["system", "in code"], x: 369.5, y: 500 },
-  { label: ["search"], x: 470, y: 422 },
-  { label: ["flights"], x: 566.5, y: 344 },
-  { label: ["cars"], x: 656, y: 266 },
-  { label: ["checkout"], x: 756.5, y: 188 },
-  { label: ["users &", "roles"], x: 866.5, y: 110 },
+/* The drawing's own units (942 wide, Figma 366:33642): the system node on
+   the baseline, then six risers, each area's node on its tread with its
+   chip centred above it, 8px clear. Two geometries (Elleta, 5 Oct): from
+   640px the rise is 52 and the viewBox starts at the top chip, so the
+   chart fills the card (about 25% shorter, no empty top-left); on a
+   phone the rise stays 78, the room a 16px label needs above its tread. */
+type Pt = [number, number];
+const BASE = 578;
+const SYS_X = 250.5;
+const END_X = 942;
+const RISER_X = [318, 421, 519, 614, 698, 815];
+const AREAS: { label: string[]; x: number }[] = [
+  { label: ["system", "in code"], x: 369.5 },
+  { label: ["search"], x: 470 },
+  { label: ["flights"], x: 566.5 },
+  { label: ["cars"], x: 656 },
+  { label: ["checkout"], x: 756.5 },
+  { label: ["users &", "roles"], x: 866.5 },
 ];
-const STAIR = "M250.5 578H318V500H421V422H519V344H614V266H698V188H815V110H942";
+/* timing (Elleta, 5 Oct; total about 2.6s): the flat line draws 0.5s, the
+   system pops at 0.5s, the stair draws 1.6s ease-out; each area pops when
+   the line reaches it, then "next" fades in last */
+const FLAT_S = 0.5;
+const STAIR_S = 1.6;
+
+function stairGeometry(rise: number, top: number, bottom: number) {
+  const pts: Pt[] = [[SYS_X, BASE]];
+  let y = BASE;
+  for (const x of RISER_X) {
+    pts.push([x, y]);
+    y -= rise;
+    pts.push([x, y]);
+  }
+  pts.push([END_X, y]);
+  const d = `M${SYS_X} ${BASE}` + pts.slice(1).map(([x, py], k) => (pts[k][1] === py ? `H${x}` : `V${py}`)).join("");
+  /* the length along the path's segments to a point on it */
+  const seg = pts.slice(1).map((p, k) => Math.abs(p[0] - pts[k][0]) + Math.abs(p[1] - pts[k][1]));
+  const total = seg.reduce((t, l) => t + l, 0);
+  const lengthTo = ([tx, ty]: Pt) => {
+    let run = 0;
+    for (let k = 0; k < seg.length; k++) {
+      const [ax, ay] = pts[k];
+      const [bx, by] = pts[k + 1];
+      const on = ay === by ? ty === ay && tx >= Math.min(ax, bx) && tx <= Math.max(ax, bx) : tx === ax && ty >= Math.min(ay, by) && ty <= Math.max(ay, by);
+      if (on) return run + Math.abs(tx - ax) + Math.abs(ty - ay);
+      run += seg[k];
+    }
+    return total;
+  };
+  const areas = AREAS.map((a, k) => {
+    const ay = BASE - (k + 1) * rise;
+    return { ...a, y: ay, delay: FLAT_S + STAIR_S * (lengthTo([a.x, ay]) / total) };
+  });
+  return { d, fill: `${d}V${BASE}Z`, areas, top, h: bottom - top };
+}
+
+const WIDE = stairGeometry(52, 190, 626);
+const PHONE = stairGeometry(78, 20, 648);
 const pct = (v: number, of: number) => `${(v / of) * 100}%`;
+const sec = (v: number) => `${Math.round(v * 1000)}ms`;
+
+function StairDrawing({ g, className }: { g: ReturnType<typeof stairGeometry>; className: string }) {
+  const grad = useId();
+  const y = (v: number) => pct(v - g.top, g.h);
+  return (
+    <div className={`${s.drawing} ${className}`} style={{ aspectRatio: `${END_X} / ${g.h}`, "--base": y(BASE) } as CSSProperties}>
+      <svg viewBox={`0 ${g.top} ${END_X} ${g.h}`} className={s.drawingSvg} aria-hidden="true">
+        <defs>
+          <linearGradient id={grad} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" className={s.fillStopTop} />
+            <stop offset="1" className={s.fillStopEnd} />
+          </linearGradient>
+        </defs>
+        <path d={g.fill} className={s.areaFill} fill={`url(#${grad})`} />
+        <path d={`M0 ${BASE}H${END_X}`} className={s.baseline} />
+        <path d={`M0 ${BASE}H${SYS_X}`} className={s.flat} pathLength={1} />
+        <path d={g.d} className={s.stair} pathLength={1} />
+        <circle cx={SYS_X} cy={BASE} r={10} className={s.sysNode} />
+        {g.areas.map((a) => (
+          <circle key={a.label.join(" ")} cx={a.x} cy={a.y} r={7} className={s.areaNode} style={{ "--d": sec(a.delay) } as CSSProperties} />
+        ))}
+      </svg>
+      <span className={s.sysChip} style={{ left: pct(SYS_X, END_X), top: y(529) }}>
+        the system
+      </span>
+      <ol className={s.areaChips}>
+        {g.areas.map((a) => (
+          <li key={a.label.join(" ")} className={s.areaChip} style={{ "--d": sec(a.delay), left: pct(a.x, END_X), top: y(a.y - 15) } as CSSProperties}>
+            {a.label.map((l) => (
+              <span key={l}>{l}</span>
+            ))}
+          </li>
+        ))}
+      </ol>
+      <span className={s.flatLabel}>2 years of redesign · nothing live</span>
+      <span className={s.nextChip}>
+        next: flight extras<span className={s.nextMore}>, nearly done</span>
+      </span>
+    </div>
+  );
+}
 
 export function Staircase() {
   const { playing, run } = useFigurePlay();
+  /* "6 areas live" counts up with the chips; the count is decoration
+     (aria-hidden, no live region), the final text stays for readers */
+  const [live, setLive] = useState(AREAS.length);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setLive(AREAS.length);
+      return;
+    }
+    setLive(0);
+    if (!playing) return;
+    const g = window.matchMedia("(max-width: 639px)").matches ? PHONE : WIDE;
+    const timers = g.areas.map((a, k) => setTimeout(() => setLive(k + 1), a.delay * 1000));
+    return () => timers.forEach(clearTimeout);
+  }, [playing, run]);
   return (
     <div className={`${s.stage}`} data-play={playing ? "on" : "off"} key={run}>
       {/* the real staircase at every width; at 390 its labels sit at 16px
@@ -382,36 +483,91 @@ export function Staircase() {
       <div className={s.card}>
         <div className={s.cardHead}>
           <p className={s.cardTitle}>Shipped on the system</p>
-          <span className={s.status}>6 areas live</span>
-        </div>
-        <div className={s.drawing}>
-          <svg viewBox="0 0 942 648" className={s.drawingSvg} aria-hidden="true">
-            <path d="M0 578H942" className={s.baseline} />
-            <path d="M0 578H250.5" className={s.flat} pathLength={1} />
-            <path d={STAIR} className={s.stair} pathLength={1} />
-            <circle cx={250.5} cy={578} r={10} className={s.sysNode} />
-            {AREAS.map((a, k) => (
-              <circle key={a.label.join(" ")} cx={a.x} cy={a.y} r={7} className={s.areaNode} style={i(k)} />
-            ))}
-          </svg>
-          <span className={s.sysChip} style={{ left: pct(250.5, 942), top: pct(529, 648) }}>
-            the system
-          </span>
-          <ol className={s.areaChips}>
-            {AREAS.map((a, k) => (
-              <li key={a.label.join(" ")} className={s.areaChip} style={{ ...i(k), left: pct(a.x, 942), top: pct(a.y - 15, 648) }}>
-                {a.label.map((l) => (
-                  <span key={l}>{l}</span>
-                ))}
-              </li>
-            ))}
-          </ol>
-          <span className={s.flatLabel}>2 years of redesign · nothing live</span>
-          <span className={s.nextChip}>
-            next: flight extras<span className={s.nextMore}>, nearly done</span>
+          <span className={s.status}>
+            <span aria-hidden="true">{live} areas live</span>
+            <span className="sr-only">{AREAS.length} areas live</span>
           </span>
         </div>
+        <StairDrawing g={WIDE} className={s.drawingWide} />
+        <StairDrawing g={PHONE} className={s.drawingPhone} />
       </div>
     </div>
+  );
+}
+
+/* ── Showcase card 3 · one token, every screen (Elleta, 5 Oct) ───── */
+/* action.primary cycles indigo → teal → ochre every 2.4s, only while the
+   card is in view. One attribute on the card (data-swatch) sets the
+   product action colour; the pill, the mini Harbour loft card, the search
+   bar and the booking bar all read it, so they recolour together (300ms
+   ease-out) and the pill pulses once per change. Reduced motion: no loop,
+   the first state, and a tap on the pill steps the colour. */
+const SWATCHES = ["indigo", "teal", "ochre"] as const;
+const CYCLE_MS = 2400;
+
+export function TokenEverywhere() {
+  const root = useRef<HTMLSpanElement>(null);
+  /* steps taken: the colour is steps mod 3; the pulse alternates two
+     identical animations by parity so each change replays it */
+  const [steps, setSteps] = useState(0);
+  const step = () => setSteps((n) => n + 1);
+  useEffect(() => {
+    const el = root.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let timer: ReturnType<typeof setInterval> | undefined;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting && !timer) {
+          timer = setInterval(() => setSteps((n) => n + 1), CYCLE_MS);
+        } else if (!e.isIntersecting && timer) {
+          clearInterval(timer);
+          timer = undefined;
+        }
+      },
+      { threshold: 0.5 },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      if (timer) clearInterval(timer);
+    };
+  }, []);
+  return (
+    <span className={s.everywhere} ref={root} data-swatch={SWATCHES[steps % SWATCHES.length]}>
+      {/* pointer only: the card is a picture (aria-hidden), so the tap is a
+         convenience for reduced motion, not a control */}
+      <span className={s.everyPill} data-pulse={steps === 0 ? undefined : steps % 2 ? "a" : "b"} onClick={step}>
+        <TokenPin token="action.primary" swatch="var(--kit-action)" />
+      </span>
+      <KitPanel className={s.everyStay}>
+        <span className={s.everyStayText}>
+          <span className={s.everyTitle}>Harbour loft</span>
+          <span className={s.everyPrice}>
+            €142 <span className={s.everyPer}>/ night</span>
+          </span>
+        </span>
+        <KitButton size="sm" className={s.everyFill}>
+          Book now
+        </KitButton>
+      </KitPanel>
+      <span className={s.everySearch}>
+        <KitInput search className={s.everyInput}>
+          Where to?
+        </KitInput>
+        <KitButton size="sm" className={`${s.everyFill} ${s.everyIcon}`}>
+          <Icon name="ArrowRight" size="sm" />
+        </KitButton>
+      </span>
+      <KitPanel className={s.everyBar}>
+        <span className={s.everyTotal}>
+          <span className={s.everyPer}>Total</span>
+          <span className={s.everyTitle}>€438</span>
+        </span>
+        <KitButton size="sm" className={s.everyFill}>
+          Pay €438
+        </KitButton>
+      </KitPanel>
+    </span>
   );
 }

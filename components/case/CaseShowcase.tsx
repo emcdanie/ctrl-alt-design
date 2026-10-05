@@ -15,7 +15,8 @@ import styles from "./Case.module.css";
 
 export type ShowcaseCard = { title: string; label: string; node: ReactNode };
 
-export default function CaseShowcase({ label, cards }: { label: string; cards: ShowcaseCard[] }) {
+/** `hook`: an optional line under the strip (Drift, Elleta, 5 Oct) */
+export default function CaseShowcase({ label, cards, hook }: { label: string; cards: ShowcaseCard[]; hook?: string }) {
   return (
     <div className={`case-showcase ${styles.showcase}`}>
       <Container className="container--case">
@@ -30,6 +31,7 @@ export default function CaseShowcase({ label, cards }: { label: string; cards: S
             </li>
           ))}
         </ul>
+        {hook ? <p className={styles.showcaseHook}>{hook}</p> : null}
       </Container>
     </div>
   );

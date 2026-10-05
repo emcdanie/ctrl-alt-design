@@ -398,9 +398,8 @@
 /* above the card's top-right corner, beside the status, never on the
    photo or its close control (Elleta, 4 Oct late) */
 .passBadge {
-  position: absolute;
-  left: 244px;
-  top: -16px;
+  align-self: flex-start;
+  margin-top: auto;
 }
 
 .popover {

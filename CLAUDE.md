@@ -57,18 +57,13 @@ override the constitution.
   hero v3 lock; supersedes the 18 Sep "Get in touch" button). The /contact
   route stays until its own PR retires it. /design-system is a first-class page (the system inspecting itself);
   the footer "See the system" colophon link stays.
-- **Work page (Elleta, 2026-09-19, pattern-studies direction; supersedes 2026-09-18).** Hero
-  (the `// the work` note, h1 "Work that holds its shape.", one lead; no search, Find my fit,
-  chips or count). Then Case studies: the three cases as equal Cards, flat until hover, full-year
-  dates in `.text-code`, at most two outline Tags. Then Pattern studies (`#studies`): a sticky
-  head from 1024px (heading, lead crediting the course briefs, "Where these came from" to
-  /learning, bella-skate) beside one row of type chips (All, Course brief, Prototype, Hackathon)
-  and one row per study, problem first, with a framed crop on the `--tile` ground. Rows and the
-  brief pages read `content/studies.ts`. The four course briefs get a page each at
-  `/work/studies/<id>` from one template; empty sections drop out and `draft: true` sections
-  stay hidden until Elleta approves them. Old `/work?skill=` and `?case=` links redirect to
-  `/work#studies` (`proxy.ts`). The Cards · Map · Table switcher, the Table and Map views,
-  Find my fit and the featured card stay retired.
+- **Work page (Elleta, 5 Oct 2026, Site v3 job 33; supersedes 2026-09-19).** Hero (kicker
+  "Work", h1 "Selected work.", one lead). Then Home's case cards (`CaseRow` featured + card,
+  data `WORK_CASES` in `content/cases.ts`): Drift full width, then Federated, CHIP and Theming,
+  two up from 900px, one column below. Booking platform, Search and Code First stay live,
+  unlinked from /work. The pattern studies left /work on 22 Sep; their pages at
+  `/work/studies/<id>` stay live, unlinked. Old `/work?skill=` and `?case=` links redirect
+  (`proxy.ts`). The Cards · Map · Table switcher, Find my fit and the old row list stay retired.
 
 ## 2. Layout
 - **Sections use Section + SectionHeader. No custom spacing.** (Elleta, 2026-09-18, layout system,

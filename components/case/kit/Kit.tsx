@@ -79,10 +79,14 @@ export function KitUserRow({ avatar, name, email, role }: { avatar: string; name
 }
 
 /* markup layer */
-export function MarkupBadge({ kind, size = "sm", className = "" }: { kind: "pass" | "fail"; size?: "sm" | "md" | "lg"; className?: string }) {
+/** a verdict tag (Elleta, 5 Oct): icon + word, 28px tall, the success or
+ *  danger tint, no shadow, no ring. It sits inside a card's edge or on a
+ *  leader, never floating at a corner where it reads as a close button. */
+export function MarkupBadge({ kind, children, className = "" }: { kind: "pass" | "fail"; children: ReactNode; className?: string }) {
   return (
-    <span className={`${s.badge} ${className}`.trim()} data-kind={kind} data-size={size}>
-      <Icon name={kind === "pass" ? "Check" : "Xmark"} size={size === "lg" ? "lg" : size === "md" ? "md" : "sm"} />
+    <span className={`${s.badge} ${className}`.trim()} data-kind={kind}>
+      <Icon name={kind === "pass" ? "Check" : "Xmark"} size="sm" />
+      {children}
     </span>
   );
 }
