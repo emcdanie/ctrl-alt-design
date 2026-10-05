@@ -157,11 +157,13 @@
   stroke-width: 1;
 }
 
+/* in the 203-wide viewBox units: the art draws about 188px wide at 1440,
+   so 16 renders at 14.8px (figure text 14px floor, job 38) */
 .kitText,
 .kitTextHot,
 .kitTextInk,
 .kitTextRed {
-  font-size: 12px;
+  font-size: 16px;
   fill: var(--color-semantic-text-secondary);
 }
 
@@ -172,7 +174,6 @@
 
 .kitTextInk {
   fill: var(--color-semantic-text-primary);
-  font-size: 13px;
 }
 
 .kitTextRed {
@@ -328,6 +329,22 @@
 
 .tokenRowOn .tokenValue {
   color: var(--kit-ramp-800);
+}
+
+/* dark: --kit-action-subtle is a fixed light tint, a near-white bar on
+   the dark card (job 38). The row takes the inset surface and keeps its
+   highlight as an action-coloured edge; text on semantic tokens */
+:global([data-theme="dark"]) .tokenRowOn {
+  background: var(--color-semantic-surface-inset);
+  box-shadow: inset 2px 0 0 var(--kit-action);
+}
+
+:global([data-theme="dark"]) .tokenRowOn .token {
+  color: var(--color-semantic-text-primary);
+}
+
+:global([data-theme="dark"]) .tokenRowOn .tokenValue {
+  color: var(--color-semantic-text-secondary);
 }
 
 .tokenDot {

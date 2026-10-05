@@ -23,3 +23,9 @@
   font-size: var(--typography-font-size-sm);
   color: var(--color-semantic-text-secondary);
 }
+
+/* the hero key's label at 16, so the 1024 collage scale (0.88) keeps it
+   at 14 (job 38) */
+.heroKey[data-state] {
+  font-size: 16px;
+}

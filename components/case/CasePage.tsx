@@ -45,7 +45,6 @@ export function CasePage({
             <ul className={styles.results} aria-label="Results">
               {results.map((r) => (
                 <li key={r.n + r.label} className={styles.result}>
-                  <span className={styles.resultBar} aria-hidden="true" />
                   <p className={styles.resultValue} data-size={resultSize}>
                     {r.n}
                   </p>

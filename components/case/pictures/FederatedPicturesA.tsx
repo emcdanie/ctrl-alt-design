@@ -78,84 +78,123 @@ function GroupHead({ icon, title, sub }: { icon: IconName; title: string; sub: s
   );
 }
 
+/* Figure 1's panels: drawn in place on the wide picture, one per swipe
+   screen below 640px at their own size (job 38: no shrunk picture) */
+const Manager = () => (
+  <KitPanel className={s.manager}>
+    <KitAvatar src={av("manager")} size={40} />
+    <span>
+      <span className={s.groupTitle}>Design manager</span>
+      <span className={s.groupSub}>Set priorities, backed the process</span>
+    </span>
+  </KitPanel>
+);
+
+const Partners = () => (
+  <KitPanel className={`${s.group} ${s.partners}`}>
+    <GroupHead icon="Sparks" title="Partners" sub="Work that leaned on the system" />
+    <span className={s.partner}>
+      <Icon name="Mail" size="sm" />
+      Marketing · email templates
+    </span>
+    <span className={s.partner}>
+      <Icon name="Sparks" size="sm" />
+      AI assistant design
+    </span>
+  </KitPanel>
+);
+
+const Team = () => (
+  <KitPanel className={`${s.group} ${s.team}`}>
+    <GroupHead icon="ViewGrid" title="Design system team" sub="About 7 component libraries" />
+    <span className={s.people}>
+      {TEAM.map((p) => (
+        <span key={p.tag} className={s.person}>
+          <KitAvatar src={p.src} size={40} className={p.lead ? s.lead : s.grey} />
+          {p.lead ? <KitStatus>{p.tag}</KitStatus> : <KitTag>{p.tag}</KitTag>}
+        </span>
+      ))}
+    </span>
+  </KitPanel>
+);
+
+const Engineering = () => (
+  <KitPanel className={`${s.group} ${s.engineering}`}>
+    <GroupHead icon="Code" title="Engineering" sub="System tech leads and platform devs" />
+    {PLATFORMS.map((p) => (
+      <span key={p.name} className={s.platform}>
+        {p.name}
+        <span className={s.stack} data-size="26">
+          {p.avs.map((src) => (
+            <KitAvatar key={src} src={src} size={26} />
+          ))}
+        </span>
+      </span>
+    ))}
+  </KitPanel>
+);
+
+const Squads = () => (
+  <KitPanel className={s.squads}>
+    <span className={s.squadsHead}>
+      <span className={s.groupTitle}>Product squads</span>
+      <span className={s.squadsSub}>Each with its own designer, on Web, iOS and Android</span>
+    </span>
+    <span className={s.squadList}>
+      {SQUADS.map((q) => (
+        <span key={q.name} className={s.squad}>
+          <KitAvatar src={q.av} size={28} />
+          {q.name}
+        </span>
+      ))}
+    </span>
+  </KitPanel>
+);
+
+const WHO_PANELS = [
+  { key: "manager", short: "design manager", node: <Manager />, label: "A design manager who set priorities and backed the process." },
+  { key: "team", short: "system team", node: <Team />, label: "The design system team, about 7 component libraries: four designers, one running it, the lead on leave, one on leave and one out." },
+  { key: "partners", short: "partners", node: <Partners />, label: "Partners whose work leaned on the system: marketing email templates and AI assistant design." },
+  { key: "engineering", short: "engineering", node: <Engineering />, label: "Engineering: system tech leads and platform devs on Web, iOS and Android." },
+  { key: "squads", short: "product squads", node: <Squads />, label: "The product squads, each with its own designer: Checkout, Account and orders, Product page, Listing and search, Email, Assistant." },
+];
+
 export function FederatedWho() {
   return (
-    <Pic label={F2_LABEL}>
-      <ScaledArt width={928}>
-        <div className={s.f2}>
-          <svg className={s.f2Lines} viewBox="0 0 928 628" width={928} height={628}>
-            <line x1={276} y1={260} x2={292} y2={260} className={s.leaderGrey} />
-            <line x1={636} y1={260} x2={652} y2={260} className={s.leaderGrey} />
-            <line x1={464} y1={390} x2={464} y2={436} className={s.leaderGrey} />
-            <line x1={464} y1={104} x2={464} y2={128} className={s.leaderGrey} />
-          </svg>
-          <KitPanel className={s.manager}>
-            <KitAvatar src={av("manager")} size={40} />
-            <span>
-              <span className={s.groupTitle}>Design manager</span>
-              <span className={s.groupSub}>Set priorities, backed the process</span>
-            </span>
-          </KitPanel>
-
-          <KitPanel className={`${s.group} ${s.partners}`}>
-            <span className={s.accent} />
-            <GroupHead icon="Sparks" title="Partners" sub="Work that leaned on the system" />
-            <span className={s.partner}>
-              <Icon name="Mail" size="sm" />
-              Marketing · email templates
-            </span>
-            <span className={s.partner}>
-              <Icon name="Sparks" size="sm" />
-              AI assistant design
-            </span>
-          </KitPanel>
-
-          <KitPanel className={`${s.group} ${s.team}`}>
-            <span className={s.accent} />
-            <GroupHead icon="ViewGrid" title="Design system team" sub="About 7 component libraries" />
-            <span className={s.people}>
-              {TEAM.map((p) => (
-                <span key={p.tag} className={s.person}>
-                  <KitAvatar src={p.src} size={52} className={p.lead ? s.lead : s.grey} />
-                  {p.lead ? <KitStatus>{p.tag}</KitStatus> : <KitTag>{p.tag}</KitTag>}
-                </span>
-              ))}
-            </span>
-          </KitPanel>
-
-          <KitPanel className={`${s.group} ${s.engineering}`}>
-            <span className={s.accent} />
-            <GroupHead icon="Code" title="Engineering" sub="System tech leads and platform devs" />
-            {PLATFORMS.map((p) => (
-              <span key={p.name} className={s.platform}>
-                {p.name}
-                <span className={s.stack} data-size="26">
-                  {p.avs.map((src) => (
-                    <KitAvatar key={src} src={src} size={26} />
-                  ))}
-                </span>
-              </span>
-            ))}
-          </KitPanel>
-
-          <KitPanel className={s.squads}>
-            <span className={s.accent} />
-            <span className={s.squadsHead}>
-              <span className={s.groupTitle}>Product squads</span>
-              <span className={s.squadsSub}>Each with its own designer, on Web, iOS and Android</span>
-            </span>
-            <span className={s.squadList}>
-              {SQUADS.map((q) => (
-                <span key={q.name} className={s.squad}>
-                  <KitAvatar src={q.av} size={28} />
-                  {q.name}
-                </span>
-              ))}
-            </span>
-          </KitPanel>
-        </div>
-      </ScaledArt>
-    </Pic>
+    <>
+      <Pic label={F2_LABEL} className={caseStyles.wideOnly}>
+        <ScaledArt width={928}>
+          <div className={s.f2}>
+            <svg className={s.f2Lines} viewBox="0 0 928 628" width={928} height={628}>
+              <line x1={276} y1={260} x2={292} y2={260} className={s.leaderGrey} />
+              <line x1={636} y1={260} x2={652} y2={260} className={s.leaderGrey} />
+              <line x1={464} y1={390} x2={464} y2={436} className={s.leaderGrey} />
+              <line x1={464} y1={104} x2={464} y2={128} className={s.leaderGrey} />
+            </svg>
+            <Manager />
+            <Partners />
+            <Team />
+            <Engineering />
+            <Squads />
+          </div>
+        </ScaledArt>
+      </Pic>
+      <div className={caseStyles.phoneOnly}>
+        <Swipe
+          fit
+          label="Who serves whom"
+          items={WHO_PANELS.map((p) => ({
+            key: p.key,
+            short: p.short,
+            node: (
+              <Pic label={p.label} className={s.phonePanel}>
+                {p.node}
+              </Pic>
+            ),
+          }))}
+        />
+      </div>
+    </>
   );
 }
 
@@ -220,7 +259,7 @@ export function Published({ bare = false }: { bare?: boolean }) {
 export function Draft({ bare = false }: { bare?: boolean }) {
   return (
     <div className={s.version}>
-      <KitTag>New draft</KitTag>
+      {bare ? null : <KitTag>New draft</KitTag>}
       <div className={s.card} data-draft>
         <Coat square>
           <span className={s.discount}>-33%</span>

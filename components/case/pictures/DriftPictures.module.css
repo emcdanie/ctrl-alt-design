@@ -33,7 +33,7 @@
 
 .surveyEyebrow {
   font-family: var(--font-code);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: var(--typography-font-weight-medium);
   letter-spacing: 0.04em;
   line-height: 1.4;
@@ -41,7 +41,7 @@
 }
 
 .surveyMeta {
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.4;
   color: var(--color-semantic-text-secondary);
 }
@@ -55,9 +55,9 @@
 }
 
 .findingNum {
-  width: 16px;
+  width: 20px;
   font-family: var(--font-code);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: var(--typography-font-weight-medium);
   line-height: 1.4;
   color: var(--color-semantic-text-secondary);
@@ -144,7 +144,7 @@
   border-radius: var(--radius-pill);
   background: var(--color-semantic-danger-subtle);
   color: var(--color-semantic-danger-text);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: var(--typography-font-weight-medium);
 }
 
@@ -155,9 +155,27 @@
   padding: 0 var(--spacing-3);
   border: 1px solid var(--color-semantic-border-strong);
   border-radius: var(--radius-pill);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-semantic-text-secondary);
   white-space: nowrap;
+}
+
+/* RESERVE (the 5th button, a near-black fill) sinks into the dark card:
+   an edge in the strong border token, dark theme only (job 38) */
+.reserveEdge {
+  display: none;
+  position: absolute;
+  top: 3.87px;
+  left: 409.1px;
+  width: 92.16px;
+  height: 35.71px;
+  pointer-events: none;
+}
+
+:global([data-theme="dark"]) .reserveEdge,
+:global([data-theme="dark"]) .driftedOne[data-n="5"]::after {
+  display: block;
+  box-shadow: inset 0 0 0 1px var(--color-semantic-border-strong);
 }
 
 .auditButtons {
@@ -257,12 +275,15 @@
   height: 698px;
 }
 
-.atoms {
+.atomsAt {
   position: absolute;
   top: 83.33px;
   left: 0;
   width: 264px;
   height: 468.62px;
+}
+
+.atoms {
   display: flex;
   flex-direction: column;
   padding: var(--spacing-6);
@@ -400,7 +421,7 @@
 }
 
 .timesSub {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--color-semantic-text-secondary);
 }
 
@@ -435,7 +456,7 @@
 }
 
 .totalLabel {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--color-semantic-text-secondary);
 }
 
@@ -456,7 +477,7 @@
   display: inline-flex;
   align-items: center;
   gap: calc(var(--spacing-1) + 2px);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--color-semantic-text-secondary);
 }
 
@@ -476,10 +497,13 @@
   fill: var(--markup-line);
 }
 
-.alsoLive {
+.alsoAt {
   position: absolute;
   top: 665px;
   left: 0;
+}
+
+.alsoLive {
   display: flex;
   align-items: center;
   gap: calc(var(--spacing-2) + 2px);
@@ -591,7 +615,7 @@
   border-radius: var(--radius-pill);
   background: var(--cover-photo-scrim);
   color: var(--cover-on-photo);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: var(--typography-font-weight-medium);
   line-height: 16px;
 }
@@ -662,7 +686,7 @@
   align-items: center;
   gap: var(--spacing-1);
   height: 40px;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 16px;
   color: var(--color-semantic-text-secondary);
 }
@@ -814,7 +838,7 @@
   padding: var(--spacing-2) var(--spacing-5);
   border-radius: var(--radius-pill);
   background: var(--kit-ramp-800);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: var(--typography-font-weight-bold);
   line-height: 1.2;
   letter-spacing: 0.04em;
@@ -824,7 +848,7 @@
   align-self: flex-start;
   padding: var(--spacing-1) var(--spacing-2);
   background: color-mix(in srgb, var(--color-semantic-accent) 30%, var(--color-semantic-surface));
-  font-size: 13px;
+  font-size: 14px;
   font-weight: var(--typography-font-weight-bold);
   line-height: 1.2;
 }
@@ -835,6 +859,13 @@
   display: block;
   flex: 0 0 auto;
   overflow: hidden;
+}
+
+.driftedOne::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: none;
 }
 
 .driftedOne img {
@@ -970,4 +1001,191 @@
   .pinSwatch {
     transition: background-color 0.3s ease-out;
   }
+}
+
+/* Figure 8: the Case UI kit's small sizes (sm button 13, chip 13, status
+   12, email 13) lifted to 15 inside this figure, so they stay 14px or
+   more after the 0.97 scale at 1440 and on the phone panels (job 38).
+   Kit.module.css is shared; this only reaches Drift's own parts. */
+.floor .kitFloor[class] {
+  font-size: 15px;
+}
+
+.floor .users > span > span > span:last-child,
+.floor .users > span > span:last-child {
+  font-size: 15px;
+}
+
+/* ---------- the phone swipes (below 640px, job 38) ----------
+   One part per panel at its own size, nothing scaled: text 14px or more */
+.panel {
+  height: 100%;
+}
+
+.panel > div {
+  height: 100%;
+}
+
+.phoneCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  height: 100%;
+  padding: var(--spacing-5);
+}
+
+.phoneEyebrow {
+  font-family: var(--font-code);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-semantic-text-secondary);
+}
+
+.phoneFinding {
+  font-size: 22px;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.phoneFinding .findingMark {
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.phoneMeta {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-semantic-text-secondary);
+}
+
+.phoneHead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+}
+
+.phoneSet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.phoneKept {
+  height: 43px;
+  padding: 0 var(--spacing-4);
+  font-size: 14px;
+}
+
+.phoneVerdicts {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.phoneNotes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.phoneNote {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+}
+
+.phoneCallout > span {
+  background: var(--markup-line);
+}
+
+.phoneStay {
+  width: 100%;
+  height: 100%;
+}
+
+.phonePins {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.phonePinRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-1);
+}
+
+.phoneShip {
+  display: block;
+  height: 100%;
+}
+
+.phoneShip > * {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+.phoneShip .areaHead {
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  height: auto;
+}
+
+/* a user row: the role tag drops under the name, in line with it */
+.phoneShip .users > span {
+  flex-wrap: wrap;
+  row-gap: var(--spacing-1);
+}
+
+.phoneShip .users > span > span:last-child {
+  margin-left: var(--spacing-12); /* the 36px avatar plus its 12px gap */
+}
+
+.phoneShip .searchRow,
+.phoneShip .result,
+.phoneShip .pay,
+.phoneShip .payRow {
+  flex-wrap: wrap;
+}
+
+.phoneShip .searchInput {
+  width: 100%;
+}
+
+.phoneShip .result {
+  height: auto;
+  padding-block: var(--spacing-3);
+}
+
+.phoneShip .times {
+  flex-basis: 60%;
+}
+
+.phoneShip .line {
+  height: auto;
+  gap: var(--spacing-3);
+}
+
+.alsoPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+  padding: var(--spacing-5);
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.alsoPanel .alsoChip,
+.alsoPanel .alsoNext {
+  white-space: normal;
+  height: auto;
+  min-height: 32.6px;
 }

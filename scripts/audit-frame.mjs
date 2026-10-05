@@ -41,6 +41,10 @@
  *    2026: Drift shipped at 79,429px when unsized SVGs lost their CSS).
  * 7. The receipt: route, width, element, measured, expected; one line per
  *    route on a pass.
+ * 8. Both motion settings (job 38, 5 Oct 2026): every check runs with
+ *    reduced motion and without it, so a layout that only holds while
+ *    motion is off (or only while it is on) fails. Receipts from the
+ *    no-preference pass carry "motion".
  *
  * Browser audit: reads AUDIT_URL like the others. */
 import { readdirSync, readFileSync } from "node:fs";
@@ -49,6 +53,8 @@ import { receipt } from "./lib/receipt.mjs";
 import { BASE } from "./lib/base-url.mjs";
 
 const WIDTHS = [1440, 1024, 390];
+const MOTIONS = ["reduce", "no-preference"];
+let MOTION = ""; // receipt label for the current pass
 const LIMIT = 50;
 
 /* every page route audit:layout lists, with one real id for each dynamic
@@ -76,7 +82,7 @@ const ROUTES = [
 let fails = 0;
 const fail = (route, width, offender, got, expected) => {
   fails++;
-  console.error(receipt("frame", `(${width} ${route}) ${offender}`, got, expected));
+  console.error(receipt("frame", `(${width}${MOTION} ${route}) ${offender}`, got, expected));
 };
 
 const browser = await chromium.launch();
@@ -84,8 +90,9 @@ const edges = {}; // width -> { value, route }
 const exempts = new Map(); // reason -> routes
 const table = [];
 
-for (const width of WIDTHS) {
-  const page = await browser.newPage({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+for (const motion of MOTIONS) for (const width of WIDTHS) {
+  MOTION = motion === "reduce" ? "" : " motion";
+  const page = await browser.newPage({ viewport: { width, height: 900 }, reducedMotion: motion });
   for (const route of ROUTES) {
     await page.goto(BASE + route, { waitUntil: "networkidle", timeout: 30000 });
     const r = await page.evaluate(({ LIMIT }) => {
@@ -290,7 +297,7 @@ for (const width of WIDTHS) {
         fail(route, width, "content edge", `${r.edge}px`, `${edges[group].value}px, as on ${edges[group].route}`);
     }
     for (const reason of r.exempt) exempts.set(reason, [...(exempts.get(reason) ?? []), `${route}@${width}`]);
-    table.push(`  ${String(width).padEnd(5)} ${route.padEnd(46)} edge ${r.edge ?? "-"}px  cards ${sigs.length}  ${r.fails.length ? `${r.fails.length} fail` : "ok"}`);
+    table.push(`  ${(String(width) + MOTION).padEnd(12)} ${route.padEnd(46)} edge ${r.edge ?? "-"}px  cards ${sigs.length}  ${r.fails.length ? `${r.fails.length} fail` : "ok"}`);
   }
   await page.close();
 }
@@ -305,4 +312,4 @@ if (fails) {
   process.exit(1);
 }
 console.log(table.join("\n"));
-console.log(`frame gate: PASS (${ROUTES.length} routes × ${WIDTHS.length} widths)`);
+console.log(`frame gate: PASS (${ROUTES.length} routes × ${WIDTHS.length} widths × ${MOTIONS.length} motion settings)`);

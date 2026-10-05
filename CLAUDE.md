@@ -58,9 +58,9 @@ override the constitution.
   route stays until its own PR retires it. /design-system is a first-class page (the system inspecting itself);
   the footer "See the system" colophon link stays.
 - **Work page (Elleta, 5 Oct 2026, Site v3 job 33; supersedes 2026-09-19).** Hero (kicker
-  "Work", h1 "Selected work.", one lead). Then Home's case cards (`CaseRow` featured + card,
-  data `WORK_CASES` in `content/cases.ts`): Drift full width, then Federated, CHIP and Theming,
-  two up from 900px, one column below. Booking platform, Search and Code First stay live,
+  "Work", h1 "Selected work.", one lead). Then Home's case cards (`CaseRow` card,
+  data `WORK_CASES` in `content/cases.ts`): Drift, Federated, CHIP and Theming as a 2x2 grid
+  from 900px, one column below (Elleta, 5 Oct 2026, job 38: no lone last row). Booking platform, Search and Code First stay live,
   unlinked from /work. The pattern studies left /work on 22 Sep; their pages at
   `/work/studies/<id>` stay live, unlinked. Old `/work?skill=` and `?case=` links redirect
   (`proxy.ts`). The Cards · Map · Table switcher, Find my fit and the old row list stay retired.
@@ -251,7 +251,8 @@ Must pass before any work is "done":
   pads by `--section-pad-y`; radii from the set (`--radius-sm/md/lg/card`, pill); at most 2 card
   signatures per route; no line wider than `--measure-body`. A deliberate exception carries
   `data-frame-exempt="<reason>"` and is printed on every run. The frame tokens are published in
-  `/api/bella.json` (`frame`).
+  `/api/bella.json` (`frame`). Runs with reduced motion and without it (job 38, 5 Oct 2026);
+  audit:layout reads source, so motion cannot change it.
 - `audit:contain` — every panel or figure with a visible box (Playwright, `AUDIT_URL`), every
   route at 1440, 1024 and 390, both themes, every tab state: no descendant, SVG shapes included,
   leaves the panel's content box; no shape straddles its SVG's viewBox edge (cut off); no pin or
@@ -262,11 +263,17 @@ Must pass before any work is "done":
   partly visible under an ancestor that hides, clips or masks it (fades included); no text clipped
   by its own box (an ellipsis counts); no horizontal scroller holding text without a tab stop and a
   name. audit:contain allows deliberate clipping; this checks that nothing readable is cut by it.
+  No rendered text under 12px effective: font-size times every transform, scale, zoom, SVG
+  viewBox and iframe scale on the way to the screen. Runs with reduced motion and without it
+  (job 38, 5 Oct 2026). One dated allowlist entry, by Elleta's call (5 Oct 2026): the Theming
+  hero collage's text size, frozen until her Figma pick; remove in job 37. It is printed on
+  every run and is the only exception to the no-exemptions rule below.
 - `audit:sharp` — every raster image on every route, and inside its demo iframes (every tab
   of a before/after too), renders at most half its natural pixel width at 1440 and 390, on a 2x
   screen: nothing is stretched soft. No 2x source? Cap the display width, never upscale.
 - `audit:contrast` — WCAG AA (AAA-minded); Unique below 24px fails everywhere, no exceptions.
-- `audit:copy` — fails on `—`/`–` and on "AI-augmented" / "AI-assisted".
+- `audit:copy` — fails on `—`/`–`, on "AI-augmented" / "AI-assisted", and on placeholder words
+  ("to come", "coming soon", "lorem", "TBD"; word-boundary, any case; job 38). No allowlist.
 - `audit:controls` — keycap used as filter/toggle/sort fails; >1 primary per view fails; filters/toggles
   missing `aria-pressed`/`aria-current` fail.
 - `audit:fonts` — any face other than the font tokens (Figtree text, Geist Mono code, Unique
@@ -274,7 +281,11 @@ Must pass before any work is "done":
   the ELLETA wordmarks or the BELLA logo fails; any mono family reference outside the `--font-code`
   token fails, and `--font-code` on headings, body, buttons or nav fails.
 - `audit:tokens` — colour literals and raw spacing (>=4px) in `app/**`/`components/**` fail;
-  `token-waiver:` inline comments mark the reviewed proto-exact/artwork exceptions.
+  `token-waiver:` inline comments mark the reviewed proto-exact/artwork exceptions. One ground
+  per route (rendered, `AUDIT_URL`, 1440, both themes): body, main and footer compute one colour (job 38).
+- `audit:dark` — every case-study demo embed renders a dark ground in dark; a figure caption or
+  short panel label naming one theme ("BELLA · light", "light mode") renders that theme's
+  ground (luminance >= 0.5 light, <= 0.2 dark) whatever the page theme (job 38).
 - `audit:parity` — every case-study slug has exactly one `WORK_ITEMS` row and vice versa; side
   tables for case identity (the deleted `EXTRA_CASES` pattern) fail.
 - `audit:contract` — every component in the contract exists, token $refs resolve, no entry for a

@@ -11,7 +11,7 @@ folder describe the July build and are stale.
 1. **Hi.** The `elleta-bella-walk` illustration + two short lines in her voice. No
    eyebrow label, no tagline, no highlighted keyword.
 2. **Worked with.** One row of real logos: Brad Frost Web, the 2024-25 employer, VML,
-   UN Geneva. Monochrome, equal height. Mango as plain text until Elleta confirms her
+   UN Geneva. Monochrome, equal height. The global fashion retailer as plain text until Elleta confirms her
    approval covers the logo. Logos are official files only (press/brand page or
    Wikimedia Commons, SVG preferred) in `public/logos/`, source URL per file listed in
    the PR. Never drawn or recreated. No official file, or use restricted: the name as

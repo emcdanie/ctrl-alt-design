@@ -113,7 +113,7 @@ export function ThemeExhibit() {
 
   const t = THEMES[key];
   const rows = gateRows(t);
-  const tint = { "--tint-l": t.tint[0], "--tint-d": t.tint[1] } as CSSProperties;
+  const tint = { "--tint": t.tint[t.mode === "dark" ? 1 : 0] } as CSSProperties;
 
   const rowProps = (role: Role) => ({
     type: "button" as const,
@@ -156,9 +156,12 @@ export function ThemeExhibit() {
         )}
       </div>
 
+      {/* pinned to the theme it shows (job 38): ground, coast and market
+          are light themes, night is dark, whatever the page's own mode */}
       <figure
         ref={figRef}
-        className={s.ex}
+        className={`${s.ex} ${t.mode === "dark" ? s.pinDark : s.pinLight}`}
+        data-theme={t.mode}
         style={tint}
         aria-label={`The ${key} theme: tier 1 primitives, the tier 2 roles that point into them, the tier 3 component slots that read those roles, the contrast gate, and the listing card they dress. Every theme passes the gate.`}
       >
@@ -207,20 +210,12 @@ export function ThemeExhibit() {
           <div className={`${s.sheet} ${s.gsheet}`}>
             <b className={s.sheetLabel}>the gate · every theme must pass before it ships</b>
             <div className={s.gate}>
-              <div className={s.gscale} aria-hidden="true">
-                <span />
-                <div>
-                  <span style={{ left: `${gatePct(3)}%` }}>3</span>
-                  <span style={{ left: `${gatePct(4.5)}%` }}>4.5</span>
-                  <span style={{ left: `${gatePct(7)}%` }}>7</span>
-                  <span style={{ left: "100%" }}>21</span>
-                </div>
-                <span />
-                <span />
-              </div>
               {rows.map((row, i) => (
                 <GateRow key={`${key}-${gen}-${i}`} row={row} index={i} still={reduce} />
               ))}
+              {/* a legend, not numbers over the ticks: on a log scale 4.5
+                  and 7 sit too close to label (job 38) */}
+              <p className={s.glegend}>ticks at 3, 4.5 and 7 to 1 · the bar runs 1 to 21</p>
             </div>
           </div>
         </div>

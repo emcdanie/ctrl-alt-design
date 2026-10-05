@@ -85,7 +85,7 @@ const roles: CvRole[] = [
       {
         period: "Apr 2026, Jul 2026",
         title: "Design Systems Specialist",
-        company: "Mango",
+        company: "a global fashion retailer",
         highlights: [
           "Owned cross-platform component governance across Web, iOS, and Android, defining, governing, and releasing reusable components across multiple shared Figma libraries, documented in Zeroheight.",
           "Established AI-enabled design-system workflows with Claude, Figma MCP, and the Desktop Bridge, enabling automated audits, machine-readable component patterns, and scalable documentation.",
@@ -108,7 +108,7 @@ const roles: CvRole[] = [
   {
     period: "July 2024, Feb 2026",
     title: "UX/UI Designer, Product & Design Systems",
-    company: "BizAway" /* TODO(elleta): exact entry wording is yours; the name is restored per _private/nda-employers.txt (Pass E task 9) */,
+    company: "a B2B travel platform",
     highlights: [
       "Led the UX transformation of a complex B2B SaaS travel platform, redesigning the booking foundation across flights, car rentals, finance, admin, and multi-role dashboards.",
       "Built and implemented the company's first scalable design system from scratch: token architecture, reusable component library, and theme support, with tokens integrated directly into production code.",
@@ -233,7 +233,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             {/* PDF download, enabled once /public/cv/Elleta_McDaniel_Product_Designer_CV.pdf is added */}
             <span
               className="bg-[color:var(--ink-on-paper-border)] text-[var(--color-semantic-text-inverse)]/50 text-[length:var(--typography-font-size-tag)] font-medium px-4 py-2 rounded-full cursor-not-allowed select-none"
-              title="PDF coming soon"
+              title="The PDF is not published yet"
               aria-disabled="true"
             >
               Download PDF

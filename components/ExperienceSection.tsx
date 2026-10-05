@@ -37,7 +37,7 @@ type Row = {
 export const EXPERIENCE: Row[] = [
   {
     company: "Brad Frost Web",
-    role: "AI-Assisted Design Systems Engineer · Maker Program",
+    role: "AI-enabled Design Systems Engineer · Maker Program",
     dates: "Oct 2025 to now",
     current: true,
     outcome: "Built a Figma component library aligned with reusable web components and a multi-theme architecture.",
@@ -49,24 +49,24 @@ export const EXPERIENCE: Row[] = [
     related: ["brad-frost"],
   },
   {
-    company: "Mango",
+    company: "A global fashion retailer",
     role: "Design Systems Specialist",
     dates: "Apr to Jul 2026",
-    outcome: "Brought AI into Mango's design-system work for the first time.",
+    outcome: "Brought AI into the retailer's design-system work for the first time.",
     did: [
-      <>Brought AI into Mango&apos;s design-system work for the first time. With <strong>Claude, Figma MCP and Code Connect</strong> I automated audits and made components machine-readable, so I could ship far more in a few months while keeping Mango&apos;s design system up to date.</>,
+      <>Brought AI into the retailer&apos;s design-system work for the first time. With <strong>Claude, Figma MCP and Code Connect</strong> I automated audits and made components machine-readable, so I could ship far more in a few months while keeping the retailer&apos;s design system up to date.</>,
       <>Built the tooling and documentation the team needed to <strong>adopt Code Connect themselves</strong>, so design-to-code parity didn&apos;t depend on me.</>,
-      <>Owned cross-platform component governance across <strong>web, iOS and Android</strong> within Mango&apos;s design system, during a leadership transition.</>,
+      <>Owned cross-platform component governance across <strong>web, iOS and Android</strong> within the retailer&apos;s design system, during a leadership transition.</>,
       "Defined, governed and released reusable components across shared Figma libraries, documented in Zeroheight.",
       "Led accessibility and dark-mode audits, and defined design-system metrics for adoption, coverage, efficiency and quality.",
     ],
     related: ["federated"],
   },
   {
-    company: "BizAway",
+    company: "A B2B travel platform",
     role: "Product & Design Systems Designer",
     dates: "Jul 2024 to Feb 2026",
-    clients: "Clients included Air France and WeRoad.",
+    clients: "Clients included an airline and a travel start-up.",
     outcome: "Built the company's first design system from scratch (tokens, components, themes), with AI in mind from day one.",
     did: [
       <>Built the company&apos;s <strong>first design system from scratch</strong> (tokens, components, themes), with AI in mind from day one, and integrated the tokens into production with engineering.</>,
@@ -91,7 +91,7 @@ export const EXPERIENCE: Row[] = [
     company: "VML",
     role: "UX/UI Designer",
     dates: "Feb 2023 to Feb 2024",
-    clients: "Client: Riyad Bank.",
+    clients: "Client: a bank in the Gulf.",
     outcome: "Designed enterprise banking and SaaS platform experiences for digital clients.",
     did: [
       "Designed enterprise banking and SaaS platform experiences for digital clients.",
@@ -105,7 +105,7 @@ const bySlug = (slug: string) => WORK_ITEMS.find((w) => w.href.endsWith(`/${slug
 /** House rules, Kindness: its proof names an employer, so it renders
  *  from this file (constitution §7). Copy from Figma 403:7256. */
 export function KindnessProof({ className = "" }: { className?: string }) {
-  return <p className={className}>Proof: at BizAway I wrote the documentation even when I was told it wasn&apos;t important.</p>;
+  return <p className={className}>Proof: at a B2B travel platform I wrote the documentation even when I was told it wasn&apos;t important.</p>;
 }
 
 export default function ExperienceSection() {

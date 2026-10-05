@@ -25,7 +25,8 @@ import s from "@/components/ThemingCase.module.css";
 
 function Win({ path, dark = false, children }: { path: string; dark?: boolean; children: ReactNode }) {
   return (
-    <div className={dark ? `${s.win} ${s.winDark}` : s.win}>
+    /* a dark window is pinned dark in both page modes (job 38) */
+    <div className={dark ? `${s.win} ${s.pinDark}` : s.win} data-theme={dark ? "dark" : undefined}>
       <header>
         <span className={s.dots} aria-hidden="true">
           <i />
@@ -89,7 +90,8 @@ function StorybookTable() {
           <div className={s.sbPair}>
             {(["light", "dark"] as const).map((mode) => (
               <div key={mode}>
-                <ul className={mode === "dark" ? `${s.sbTable} ${s.sbDark}` : s.sbTable}>
+                {/* each table pinned to the mode it shows, whatever the page's (job 38) */}
+                <ul className={`${s.sbTable} ${mode === "dark" ? s.pinDark : s.pinLight}`} data-theme={mode}>
                   {STORYBOOK_SEMANTIC.map((row) => (
                     <li key={row.name}>
                       <span className={s.sbSwatch} style={{ background: row[mode] }} />
@@ -139,7 +141,7 @@ export default function ThemingCase() {
             title="One system, many faces."
             meta={["Case · Theming · BELLA", "2026"]}
             intro="Themes in BELLA swap the values, never the components. Watch the same screen change, token by token. Nothing to scroll or click."
-            collage={{ label: HERO_LABEL, pieces: COLLAGE }}
+            collage={{ label: HERO_LABEL, pieces: COLLAGE, phone: <Preview theme={THEMES.ground} />, phoneLabel: "One listing card in the ground theme, BELLA light: the Harbour loft listing with its price and Book a visit." }}
           />
         }
         showcase={<CaseShowcase label="Theming, the same card in three more themes" cards={SHOWCASE} />}
@@ -328,7 +330,7 @@ export default function ThemingCase() {
             href: "/case-studies/search-experts",
             meta: "B2B travel · Product",
             title: "Search for people who know what they want",
-            cover: <CoverSearch slot="next" label="A flight search result: Lisbon to Amsterdam, a direct morning flight at €89 with Select." />,
+            cover: <CoverSearch slot="next" label="A flight search result: Lisbon to Amsterdam, a direct morning flight, 08:10 to 11:55, at €89." />,
           }}
           more={[
             {
@@ -341,7 +343,7 @@ export default function ThemingCase() {
               href: "/case-studies/federated",
               meta: "Design systems · federated · 2026",
               title: "They stopped telling me what they’d done",
-              cover: <CoverProduct slot="work" label="A product card: a wool blend belted coat at €119.99, down from €179.99." />,
+              cover: <CoverProduct slot="work" label="A product card: a wool blend belted coat at €119.99, 33 percent off." />,
             },
           ]}
         />

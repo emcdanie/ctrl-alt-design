@@ -15,6 +15,9 @@
  * 4. No custom spacing in app/ or components/sections/: arbitrary
  *    Tailwind margin/padding (mt-[, py-[ ...) or inline margin/padding.
  *    Spacing comes from Section, SectionHeader and the tokens.
+ *
+ * This file reads source, so motion cannot change its result. The rendered
+ * layout (audit:frame) runs with reduced motion and without it (job 38).
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";

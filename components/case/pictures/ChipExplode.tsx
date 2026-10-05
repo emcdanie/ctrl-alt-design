@@ -3,6 +3,7 @@
 import type { CSSProperties } from "react";
 import ScaledArt from "@/components/case/ScaledArt";
 import { useFigurePlay } from "@/components/case/CaseFigure";
+import caseStyles from "@/components/case/Case.module.css";
 import { Key, PanelHead, Picture, Pin, PARTS, PartLabel } from "./Chip";
 import s from "./Chip.module.css";
 
@@ -23,6 +24,24 @@ const REST_PINS: [number, number, number][] = [
   [3, 20.5, 42.5],
   [4, 226, 34],
   [5, 440, 96.8],
+];
+
+/* the 390 specimen (job 38): the real 44px key, drawn at its own size in
+   a 280x160 stage instead of the 480 drawing scaled to 0.6, so the label
+   and pins stay 14px. [n, pin left, pin top] and [left, top, w, h] */
+const PHONE_PINS: [number, number, number][] = [
+  [1, 126, 124],
+  [2, 6, 66],
+  [3, 70, 8],
+  [4, 126, 8],
+  [5, 246, 66],
+];
+const PHONE_LEADERS: [number, number, number, number][] = [
+  [140, 102, 1, 22],
+  [34, 80, 36, 1],
+  [84, 36, 1, 22],
+  [140, 36, 1, 36],
+  [216, 80, 30, 1],
 ];
 
 const k = (n: number) => ({ "--k": n }) as CSSProperties;
@@ -52,7 +71,7 @@ export function ChipExplode({ label }: { label: string }) {
         <div className={s.panel}>
           <PanelHead>Rest</PanelHead>
           <div className={s.restBody}>
-            <div className={s.specimenBox}>
+            <div className={`${s.specimenBox} ${caseStyles.wideOnly}`}>
               <ScaledArt width={480}>
                 <div className={s.specimen}>
                   <span className={s.specimenRing} />
@@ -69,6 +88,20 @@ export function ChipExplode({ label }: { label: string }) {
                   ))}
                 </div>
               </ScaledArt>
+            </div>
+            <div className={caseStyles.phoneOnly}>
+              <span className={s.phoneStage}>
+                <span className={s.phoneRing} />
+                <Key className={s.phoneKey} />
+                {PHONE_LEADERS.map(([x, y, w, h]) => (
+                  <span key={`${x}-${y}`} className={s.phoneLeader} style={{ left: x, top: y, width: w, height: h }} />
+                ))}
+                {PHONE_PINS.map(([n, x, y]) => (
+                  <span key={n} className={s.restPin} style={{ left: x, top: y }}>
+                    <Pin n={n} />
+                  </span>
+                ))}
+              </span>
             </div>
             <div className={s.legend}>
               {PARTS.map((p) => (

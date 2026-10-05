@@ -14,8 +14,6 @@ export const metadata: Metadata = {
     "Case studies from real teams: what I claimed, what proves it, and what changed.",
 };
 
-const [FEATURED, ...REST] = WORK_CASES;
-
 /* Work: the hero and the case cards. The pattern studies left /work on
    22 Sep 2026 (W1 release); their pages stay live, unlinked. The shared
    footer carries the contact. WorkScrollMemory keeps the scroll so
@@ -25,8 +23,8 @@ export default function WorkPage() {
     <main id="main-content" className="page-shell min-h-screen">
       <OverlayNav />
 
-      {/* the cases (Site v3, job 33, 5 Oct 2026): Home's case cards, the
-          lead card full width, the other three two up from 900px */}
+      {/* the cases (Site v3): Home's case cards, a 2x2 grid from 900px
+          (Elleta, 5 Oct 2026, job 38: four cases, no lone last row) */}
       <Section id="work-hero" labelledBy="work-hero-title">
         <SectionHeader
           as="h1"
@@ -36,9 +34,8 @@ export default function WorkPage() {
           lead="Each one says what I claimed, what proves it, and what changed. Tags show the signals it's evidence for."
         />
         <div className={homeStyles.cases}>
-          <CaseRow row={FEATURED} layout="featured" />
           <div className={caseStyles.cardPair}>
-            {REST.map((row) => (
+            {WORK_CASES.map((row) => (
               <CaseRow key={row.id} row={row} layout="card" />
             ))}
           </div>

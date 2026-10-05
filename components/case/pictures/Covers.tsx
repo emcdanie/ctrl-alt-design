@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import s from "./Covers.module.css";
 
 /* Card covers as live pictures (Site v3): the Next case tab slot (520x340)
@@ -12,6 +12,10 @@ import s from "./Covers.module.css";
 
 export type CoverSlot = "next" | "work";
 
+/* the type floor (job 38): no cover text renders under 14px through any
+   scale. The CSS reads the scales it sits under (NextCase's --cover-scale,
+   a ScaledArt's inverse --art-k), so each text size is max(its design
+   size, 14px over the scale), from the first paint. */
 function Canvas({ slot, label, children }: { slot: CoverSlot; label: string; children: ReactNode }) {
   return (
     <div className={s.canvas} data-slot={slot} role="img" aria-label={label}>
@@ -22,10 +26,9 @@ function Canvas({ slot, label, children }: { slot: CoverSlot; label: string; chi
   );
 }
 
-/* ── Cover/CHIP · Atlas filter chip (hi-fi), Figma 383:684 (440x264) ── */
-const PINS_TOP = [1, 3, 5];
-const PINS_BOTTOM = [2, 4, 6];
-const PARTS = ["Box · 44px min", "Outline · 1px", "Hover wash", "Pressed fill", "Label", "Focus ring · 3px"];
+/* ── Cover/CHIP · Atlas filter chip (hi-fi), Figma 383:684 (440x264) ──
+   A teaser (job 38): the head and the specimen chip, centred, no pins or
+   parts list, so the 14px-floored type fits at every slot size. */
 
 export function CoverAtlas({ slot, label }: { slot: CoverSlot; label: string }) {
   return (
@@ -34,7 +37,7 @@ export function CoverAtlas({ slot, label }: { slot: CoverSlot; label: string }) 
         <div className={s.atlas}>
           <div className={s.atlasHead}>
             <div className={s.atlasTitle}>
-              <span className={s.atlasEyebrow}>Atlas · Specimen No. 003 · Actions</span>
+              <span className={s.atlasEyebrow}>Atlas · No. 003</span>
               <span className={s.atlasName}>FilterChip</span>
             </div>
             <span className={s.atlasPass}>Checks 6 of 6 pass</span>
@@ -42,25 +45,6 @@ export function CoverAtlas({ slot, label }: { slot: CoverSlot; label: string }) 
           <div className={s.atlasBody}>
             <div className={s.atlasStage}>
               <span className={s.atlasChip}>Accessible</span>
-              {PINS_TOP.map((n, i) => (
-                <span key={n} className={s.atlasLeader} data-side="top" style={{ "--col": i } as CSSProperties}>
-                  <span className={s.atlasPin}>{n}</span>
-                </span>
-              ))}
-              {PINS_BOTTOM.map((n, i) => (
-                <span key={n} className={s.atlasLeader} data-side="bottom" style={{ "--col": i } as CSSProperties}>
-                  <span className={s.atlasPin}>{n}</span>
-                </span>
-              ))}
-            </div>
-            <div className={s.atlasParts}>
-              <span className={s.atlasEyebrow}>6 parts, bottom layer first</span>
-              {PARTS.map((p, i) => (
-                <span key={p} className={s.atlasPart} data-selected={i === 3 || undefined}>
-                  <span className={s.atlasMark}>{i + 1}</span>
-                  {p}
-                </span>
-              ))}
             </div>
           </div>
         </div>
@@ -97,7 +81,6 @@ export function CoverStay({ slot, label }: { slot: CoverSlot; label: string }) {
                 d={["M11.08 8.17c.87-.85 1.75-1.87 1.75-3.2a3.2 3.2 0 0 0-3.2-3.2c-1.03 0-1.75.29-2.63 1.17C6.12 2.06 5.4 1.77 4.37 1.77a3.2 3.2 0 0 0-3.2 3.2c0 1.34.87 2.36 1.75 3.2L7 12.25l4.08-4.08Z"]}
               />
             </span>
-            <span className={s.stayCount}>1 / 8</span>
           </div>
           <div className={s.stayBody}>
             <span className={s.stayTitle}>Harbour loft</span>
@@ -118,7 +101,7 @@ export function CoverStay({ slot, label }: { slot: CoverSlot; label: string }) {
 /* ── Search for experts cover (Work card · Search for experts > Cover,
    Figma I293:1259;291:1844;299:22335;299:22206), drawn in the 490x260
    slot: the search card fills the cover. ── */
-export function CoverSearch({ slot, label, action = "product" }: { slot: CoverSlot; label: string; action?: "product" | "ink" }) {
+export function CoverSearch({ slot, label }: { slot: CoverSlot; label: string }) {
   return (
     <Canvas slot={slot} label={label}>
       <div className={s.search}>
@@ -132,7 +115,7 @@ export function CoverSearch({ slot, label, action = "product" }: { slot: CoverSl
               <circle cx="5.25" cy="5.25" r="3.75" />
               <path d="m8 8 2.75 2.75" />
             </svg>
-            Lisbon → Amsterdam · 12 Oct · 1 adult
+            Lisbon → Amsterdam
           </span>
           <span className={s.searchChip} data-selected="">
             Direct
@@ -148,12 +131,8 @@ export function CoverSearch({ slot, label, action = "product" }: { slot: CoverSl
           </span>
           <span className={s.searchTimes}>
             <span className={s.searchTime}>08:10 → 11:55</span>
-            <span className={s.searchRoute}>LIS · AMS · 2h 45m, direct</span>
           </span>
           <span className={s.searchPrice}>€89</span>
-          <span className={s.searchSelect} data-action={action}>
-            Select
-          </span>
         </div>
       </div>
     </Canvas>
@@ -205,7 +184,6 @@ export function CoverProduct({ slot, label }: { slot: CoverSlot; label: string }
           <span className={s.productTitle}>Wool blend belted coat with wide lapels</span>
           <span className={s.productPrice}>
             <span className={s.productNow}>€119.99</span>
-            <s className={s.productWas}>€179.99</s>
             <span className={s.productOff}>-33%</span>
           </span>
         </div>

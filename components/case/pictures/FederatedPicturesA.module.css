@@ -95,15 +95,6 @@
   width: 272px;
 }
 
-.accent {
-  display: block;
-  width: 40px;
-  height: 4px;
-  border-radius: var(--radius-pill);
-  background: var(--color-semantic-accent);
-  flex: 0 0 auto;
-}
-
 .groupHead {
   display: flex;
   align-items: center;
@@ -146,15 +137,16 @@
   color: var(--color-semantic-text-body);
 }
 
+/* two by two, each tag beside its avatar: at the 14px tag floor four
+   tags under four avatars ran into each other (job 38) */
 .people {
-  display: flex;
-  gap: var(--spacing-2);
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: var(--spacing-3);
 }
 
 .person {
-  width: 66px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   gap: var(--spacing-2);
 }
@@ -484,4 +476,25 @@
   flex-wrap: wrap;
   gap: var(--spacing-2);
   margin-top: var(--spacing-3);
+}
+
+/* Figure 1 at 390: one panel per swipe screen, at its own size, in flow
+   (job 38: no shrunk desktop picture on a phone) */
+.phonePanel {
+  width: 280px;
+  padding-block-end: var(--spacing-3);
+}
+
+.phonePanel :is(.manager, .group, .squads) {
+  width: auto;
+  height: auto;
+}
+
+.phonePanel .people {
+  grid-template-columns: max-content;
+}
+
+.phonePanel .squadsHead {
+  flex-direction: column;
+  align-items: flex-start;
 }

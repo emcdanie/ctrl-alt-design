@@ -1,7 +1,8 @@
 /* Card covers (Site v3). Each cover draws at its slot's design size in
    design pixels (--px, one Figma pixel) and NextCase scales the canvas to
-   the slot (--cover-scale). Pictures keep their own type below the site
-   floors by design (CLAUDE.md section 1, pictures only). Radii snap to
+   the slot (--cover-scale). Text never renders under 14px through the
+   scale (job 38): --cover-min is 14px over --cover-scale and a ScaledArt's
+   inverse scale (--art-k). Radii snap to
    the site set (4, 8, 12, 16, pill). */
 
 .canvas {
@@ -15,6 +16,7 @@
   transform: scale(var(--cover-scale, 1));
   transform-origin: 0 0;
   font-family: var(--font-body);
+  --cover-min: calc(14px / var(--cover-scale, 1) * var(--art-k, 1));
 }
 
 .canvas[data-slot="work"] {
@@ -49,6 +51,7 @@
 
 .canvas[data-slot="work"] .art {
   transform: scale(0.80303);
+  --cover-min: calc(14px / var(--cover-scale, 1) * var(--art-k, 1) / 0.80303);
 }
 
 /* ── Atlas ── */
@@ -67,11 +70,11 @@
   border-radius: var(--radius-lg);
   background: var(--color-semantic-surface);
   box-shadow: var(--shadow-card);
-  overflow: hidden;
 }
 
 .atlasHead {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   gap: calc(var(--px) * 8.818);
 }
@@ -82,18 +85,16 @@
   display: flex;
   flex-direction: column;
   gap: calc(var(--px) * 2.204);
-  white-space: nowrap;
 }
 
 .atlasEyebrow {
-  font-size: 8.818px;
+  font-size: max(8.818px, var(--cover-min));
   line-height: 1.3;
   color: var(--color-semantic-text-secondary);
-  white-space: nowrap;
 }
 
 .atlasName {
-  font-size: 22.044px;
+  font-size: max(22.044px, var(--cover-min));
   font-weight: var(--typography-font-weight-semibold);
   line-height: 1.15;
   letter-spacing: -0.015em;
@@ -109,7 +110,7 @@
   border-radius: var(--radius-pill);
   background: var(--color-semantic-success-subtle);
   color: var(--color-semantic-success-text);
-  font-size: 8.818px;
+  font-size: max(8.818px, var(--cover-min));
   line-height: 1.3;
   white-space: nowrap;
 }
@@ -123,19 +124,23 @@
 }
 
 .atlasBody {
+  flex: 1 1 auto;
+  min-height: 0;
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   gap: calc(var(--px) * 11.022);
 }
 
 /* the anatomy stage: a 13.2px line grid on the inset ground */
 .atlasStage {
   position: relative;
-  flex: 0 0 auto;
-  width: 187.378px;
-  height: 158.72px;
+  flex: 1 1 0;
+  min-height: calc(var(--cover-min) * 2.5);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: var(--radius-md);
-  overflow: hidden;
   background:
     linear-gradient(90deg, var(--color-semantic-border) 0.551px, transparent 0.551px) 11.02px 0 / 13.227px 100%,
     linear-gradient(var(--color-semantic-border) 0.551px, transparent 0.551px) 0 6.61px / 100% 13.227px,
@@ -143,10 +148,7 @@
 }
 
 .atlasChip {
-  position: absolute;
-  top: 61.72px;
-  left: 55.39px;
-  height: 35.271px;
+  min-height: 35.271px;
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
@@ -155,108 +157,13 @@
   border-radius: var(--radius-pill);
   background: var(--color-semantic-surface);
   color: var(--color-semantic-text-primary);
-  font-size: 9.92px;
+  font-size: max(9.92px, var(--cover-min));
   font-weight: var(--typography-font-weight-semibold);
   line-height: 1.3;
   white-space: nowrap;
 }
 
 /* a leader: the line from a pin to its anchor on the chip's edge */
-.atlasLeader {
-  position: absolute;
-  left: calc(70.4px + var(--col) * 22.875px);
-  width: 0.827px;
-  height: 26.453px;
-  background: var(--color-semantic-border-ink);
-}
-
-.atlasLeader[data-side="top"] {
-  top: 35.27px;
-}
-
-.atlasLeader[data-side="bottom"] {
-  top: 97px;
-}
-
-.atlasLeader::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  width: 3.858px;
-  height: 3.858px;
-  border-radius: var(--radius-pill);
-  background: var(--color-semantic-border-ink);
-  transform: translate(-50%, -50%);
-}
-
-.atlasLeader[data-side="top"]::after {
-  top: 100%;
-}
-
-.atlasLeader[data-side="bottom"]::after {
-  top: 0;
-}
-
-.atlasPin,
-.atlasMark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-pill);
-  background: var(--color-semantic-background-inverse);
-  color: var(--color-semantic-text-inverse);
-  font-size: 8.818px;
-  font-weight: var(--typography-font-weight-semibold);
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-
-.atlasPin {
-  position: absolute;
-  left: 50%;
-  width: 15.431px;
-  height: 15.431px;
-  transform: translateX(-50%);
-}
-
-.atlasLeader[data-side="top"] .atlasPin {
-  bottom: 100%;
-}
-
-.atlasLeader[data-side="bottom"] .atlasPin {
-  top: 100%;
-}
-
-.atlasMark {
-  flex: 0 0 auto;
-  width: 13.227px;
-  height: 13.227px;
-}
-
-.atlasParts {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--px) * 5.511);
-}
-
-.atlasPart {
-  display: flex;
-  align-items: center;
-  gap: calc(var(--px) * 5.511);
-  padding: calc(var(--px) * 2.204) calc(var(--px) * 8);
-  border-radius: var(--radius-md);
-  color: var(--color-semantic-text-primary);
-  font-size: 9.92px;
-  line-height: 1.7;
-  white-space: nowrap;
-}
-
-.atlasPart[data-selected] {
-  background: var(--color-semantic-surface-inset);
-}
-
 /* ── Drift stay card ── */
 .stay {
   position: absolute;
@@ -264,15 +171,19 @@
   left: 61.96px;
   width: 316.078px;
   height: 248px;
+  display: flex;
+  flex-direction: column;
   border-radius: var(--radius-lg);
   background: var(--color-semantic-surface);
   box-shadow: var(--shadow-card);
   overflow: hidden;
 }
 
+/* the photo gives way when the floored text needs the room (job 38) */
 .stayPhoto {
   position: relative;
-  height: 165.941px;
+  flex: 0 1 165.941px;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -318,20 +229,6 @@
   height: 14.224px;
 }
 
-.stayCount {
-  position: absolute;
-  left: 12.64px;
-  top: 137.49px;
-  padding: calc(var(--px) * 3.161) calc(var(--px) * 7.902);
-  border-radius: var(--radius-pill);
-  background: var(--cover-photo-scrim);
-  color: var(--cover-on-photo);
-  font-size: 9.482px;
-  font-weight: var(--typography-font-weight-medium);
-  line-height: 1.2;
-  white-space: nowrap;
-}
-
 .stayBody {
   display: flex;
   flex-direction: column;
@@ -341,7 +238,7 @@
 }
 
 .stayTitle {
-  font-size: 20.545px;
+  font-size: max(20.545px, var(--cover-min));
   font-weight: var(--typography-font-weight-semibold);
   line-height: 1.2;
   color: var(--color-semantic-text-primary);
@@ -352,7 +249,7 @@
   display: flex;
   align-items: center;
   gap: calc(var(--px) * 4.741);
-  font-size: 11.853px;
+  font-size: max(11.853px, var(--cover-min));
   line-height: 1.2;
   color: var(--color-semantic-text-secondary);
   white-space: nowrap;
@@ -384,7 +281,7 @@
 }
 
 .searchTitle {
-  font-size: 12.535px;
+  font-size: max(12.535px, var(--cover-min));
   font-weight: var(--typography-font-weight-semibold);
   line-height: 1.35;
   color: var(--color-semantic-text-primary);
@@ -398,7 +295,7 @@
   border-radius: var(--radius-pill);
   background: var(--color-semantic-success-subtle);
   color: var(--color-semantic-success-text);
-  font-size: 8.85px;
+  font-size: max(8.85px, var(--cover-min));
   font-weight: var(--typography-font-weight-medium);
   line-height: 1.2;
 }
@@ -413,14 +310,16 @@
 
 .searchRow {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: calc(var(--px) * 11.797);
 }
 
 .searchInput {
   flex: 0 0 auto;
-  width: 221.203px;
-  height: 29.494px;
+  /* the route only, sized to its text under the 14px floor (job 38) */
+  min-width: 221.203px;
+  min-height: 29.494px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -429,7 +328,7 @@
   border-radius: var(--radius-md);
   background: var(--color-semantic-surface);
   color: var(--color-semantic-text-body);
-  font-size: 10.32px;
+  font-size: max(10.32px, var(--cover-min));
   white-space: nowrap;
 }
 
@@ -447,7 +346,7 @@
   border-radius: var(--radius-pill);
   background: var(--color-semantic-surface);
   color: var(--color-semantic-text-body);
-  font-size: 9.59px;
+  font-size: max(9.59px, var(--cover-min));
   font-weight: var(--typography-font-weight-medium);
   line-height: 1.2;
   white-space: nowrap;
@@ -461,6 +360,7 @@
 
 .searchResult {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: calc(var(--px) * 10.323);
   padding: calc(var(--px) * 7.373) calc(var(--px) * 8.848) calc(var(--px) * 7.373) calc(var(--px) * 10.323);
@@ -504,44 +404,21 @@
 }
 
 .searchTime {
-  font-size: 11.06px;
+  font-size: max(11.06px, var(--cover-min));
   font-weight: var(--typography-font-weight-semibold);
   color: var(--color-semantic-text-primary);
 }
 
-.searchRoute {
-  font-size: 9.585px;
-  color: var(--color-semantic-text-secondary);
-}
-
 .searchPrice {
-  font-size: 12.535px;
+  font-size: max(12.535px, var(--cover-min));
   font-weight: var(--typography-font-weight-semibold);
   line-height: 1.35;
   color: var(--color-semantic-text-primary);
   font-variant-numeric: tabular-nums;
 }
 
-.searchSelect {
-  display: inline-flex;
-  align-items: center;
-  padding: calc(var(--px) * 5.899) calc(var(--px) * 10.323);
-  border-radius: var(--radius-md);
-  background: var(--kit-action);
-  color: var(--kit-on-action);
-  font-size: 9.59px;
-  font-weight: var(--typography-font-weight-semibold);
-  line-height: 1.2;
-  white-space: nowrap;
-}
-
 /* the Federated frame draws its Search card in the Federated product
    mode: the action is ink */
-.searchSelect[data-action="ink"] {
-  background: var(--color-semantic-text-primary);
-  color: var(--color-semantic-text-inverse);
-}
-
 /* ── Theming brands: one trip screen in three client themes ── */
 .brands {
   position: relative;
@@ -591,7 +468,7 @@
   padding: calc(var(--px) * 10) calc(var(--px) * 12);
   background: var(--brand);
   color: var(--cover-brand-on);
-  font-size: 11px;
+  font-size: max(11px, var(--cover-min));
   font-weight: var(--typography-font-weight-semibold);
   line-height: 1.2;
 }
@@ -605,7 +482,7 @@
 
 .brandTrip {
   color: var(--cover-brand-ink);
-  font-size: 13px;
+  font-size: max(13px, var(--cover-min));
   font-weight: var(--typography-font-weight-semibold);
   line-height: 1.2;
 }
@@ -623,7 +500,7 @@
   border-radius: var(--brand-button-radius);
   background: var(--brand);
   color: var(--cover-brand-on);
-  font-size: 11px;
+  font-size: max(11px, var(--cover-min));
   font-weight: var(--typography-font-weight-medium);
   line-height: 1.2;
 }
@@ -640,9 +517,11 @@
   background: var(--color-semantic-surface);
   color: var(--color-semantic-text-secondary);
   font-family: var(--font-code);
-  font-size: 10px;
+  font-size: max(10px, var(--cover-min));
   line-height: 1.2;
-  white-space: nowrap;
+  width: max-content;
+  max-width: 90%;
+  text-align: center;
 }
 
 /* ── Federated product card ── */
@@ -668,11 +547,12 @@
   overflow: hidden;
 }
 
+/* the photo gives way when the floored text needs the room (job 38) */
 .productPhoto {
   position: relative;
-  flex: 0 0 auto;
+  flex: 0 1 180.642px;
+  min-height: 0;
   width: 287.802px;
-  height: 180.642px;
   border-radius: var(--radius-md);
   overflow: hidden;
 }
@@ -703,19 +583,18 @@
   height: 13.778px;
 }
 
+/* wraps, never an ellipsis (audit:clip counts one as cut text) */
 .productTitle {
   max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   color: var(--color-semantic-text-primary);
-  font-size: 12.247px;
+  font-size: max(12.247px, var(--cover-min));
   font-weight: var(--typography-font-weight-medium);
   line-height: 1.3;
 }
 
 .productPrice {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: calc(var(--px) * 6.123);
   line-height: 1.3;
@@ -729,14 +608,10 @@
 }
 
 .productNow {
-  font-size: 13.778px;
+  font-size: max(13.778px, var(--cover-min));
 }
 
 .productOff {
-  font-size: 12.247px;
+  font-size: max(12.247px, var(--cover-min));
 }
 
-.productWas {
-  color: var(--color-semantic-text-secondary);
-  font-size: 12.247px;
-}

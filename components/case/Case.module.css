@@ -117,6 +117,16 @@
   transform-origin: 0 0;
 }
 
+/* the showcase swipe cue: only where the showcase swipes (below 960px) */
+.showcaseMeta.showcaseMeta {
+  display: none;
+}
+
+/* the phone hero card (job 38): hidden above 640px */
+.collagePhone {
+  display: none;
+}
+
 /* a picture's one-line ellipsis would hide words in the collage (the
    Federated card title and meta, the Theming search pill): there the
    line wraps, so every word shows (job 34 clip sweep) */
@@ -217,7 +227,10 @@ main .showcase + :global(.l-section.l-section) {
   padding-top: var(--case-gap-block);
 }
 
-@media (max-width: 959.98px) {
+/* the hero stacks below 1180px, so the collage always draws at its full
+   528 (job 38: beside the text it shrank to 0.88 at 1024 and its text
+   fell under 12px) */
+@media (max-width: 1179.98px) {
   .heroGrid {
     grid-template-columns: minmax(0, 1fr);
     row-gap: var(--case-hero-gap-stacked);
@@ -226,6 +239,14 @@ main .showcase + :global(.l-section.l-section) {
   .collage {
     justify-self: center;
   }
+
+  /* stacked, the text keeps the case column's measure (audit:frame) */
+  .heroText {
+    max-width: var(--case-col-max);
+  }
+}
+
+@media (max-width: 959.98px) {
 
   /* the phone showcase: a sideways swipe of 280-wide cards, the next one
      peeking; the track runs to the window's edges and scrolls inside
@@ -246,6 +267,16 @@ main .showcase + :global(.l-section.l-section) {
     display: none;
   }
 
+  /* room under the cards for their shadow; the track clips at its box */
+  .showcaseTrack {
+    padding-block: var(--spacing-2) var(--spacing-6);
+  }
+
+  .showcaseMeta.showcaseMeta {
+    display: flex;
+    margin-top: calc(var(--spacing-2) * -1);
+  }
+
   .showcaseCard {
     flex: 0 0 var(--case-showcase-card-w);
     scroll-snap-align: start;
@@ -263,6 +294,17 @@ main .showcase + :global(.l-section.l-section) {
 
   .collagePiece[data-phone="off"] {
     display: none;
+  }
+
+  /* one readable card instead of the collage, centred at its own size */
+  .collage[data-has-phone] {
+    display: none;
+  }
+
+  .collagePhone {
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 
   .showcase {
@@ -304,13 +346,6 @@ main .showcase + :global(.l-section.l-section) {
   background: var(--color-semantic-surface-card);
   border: 1px solid var(--color-semantic-border);
   border-radius: var(--radius-card);
-}
-
-.resultBar {
-  width: var(--spacing-10);
-  height: var(--spacing-1);
-  border-radius: var(--radius-sm);
-  background: var(--color-semantic-accent);
 }
 
 .resultValue {
@@ -380,10 +415,12 @@ main .showcase + :global(.l-section.l-section) {
   gap: var(--spacing-2);
 }
 
+/* outline, never stone-filled (job 38) */
 .signalTag {
-  padding: var(--spacing-1) var(--spacing-3);
+  padding: calc(var(--spacing-1) - 1px) var(--spacing-3);
+  border: 1px solid var(--color-semantic-border-strong);
   border-radius: var(--radius-pill);
-  background: var(--color-semantic-surface-inset);
+  background: transparent;
   color: var(--color-semantic-text-secondary);
   font-size: var(--text-label);
   line-height: 1.5;
@@ -451,14 +488,22 @@ main .showcase + :global(.l-section.l-section) {
   position: relative;
 }
 
-/* Site/Figure stage (417:1706): a 32px line grid that fades to the page
-   ground at the edges, radius 16; standard margins 56/64 (20 at 390) */
+/* Site/Figure stage (417:1706): a 32px line grid, quiet (job 34 1b,
+   Elleta: "this bg is too much"): border-subtle lines at 50% in light and
+   35% in dark, fading to the page ground at the edges. No spotlight, no
+   rim. Radius 16; standard margins 56/64 (20 at 390) */
 .stage {
   position: relative;
   isolation: isolate;
   padding: calc(var(--spacing-12) + var(--spacing-2)) var(--spacing-16);
   border-radius: var(--radius-card);
   overflow: hidden;
+  background: var(--color-semantic-background);
+  --stage-grid: color-mix(in srgb, var(--color-semantic-border-subtle) 50%, transparent);
+}
+
+:global([data-theme="dark"]) .stage {
+  --stage-grid: color-mix(in srgb, var(--color-semantic-border-subtle) 35%, transparent);
 }
 
 .stage::before {
@@ -467,10 +512,9 @@ main .showcase + :global(.l-section.l-section) {
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(ellipse 50% 50% at 50% 50%, transparent 0%, color-mix(in srgb, var(--color-semantic-background) 30%, transparent) 70%, color-mix(in srgb, var(--color-semantic-background) 95%, transparent) 100%),
-    linear-gradient(var(--color-semantic-border) 1px, transparent 1px) 0 0 / var(--spacing-8) var(--spacing-8),
-    linear-gradient(90deg, var(--color-semantic-border) 1px, transparent 1px) 0 0 / var(--spacing-8) var(--spacing-8),
-    var(--color-semantic-background);
+    linear-gradient(var(--stage-grid) 1px, transparent 1px) 0 0 / var(--spacing-8) var(--spacing-8),
+    linear-gradient(90deg, var(--stage-grid) 1px, transparent 1px) 0 0 / var(--spacing-8) var(--spacing-8);
+  mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, black 55%, transparent 100%);
 }
 
 /* a picture at its design width, scaled to fit (ScaledArt) */
@@ -489,18 +533,12 @@ main .showcase + :global(.l-section.l-section) {
   margin-inline: auto;
 }
 
+/* the figure header: Replay on the right, above the picture, never on it
+   (job 38: it hung 35 to 50px past the edge) */
 .figureTools {
-  position: absolute;
-  top: var(--spacing-3);
-  right: var(--spacing-3);
   display: flex;
+  justify-content: flex-end;
   gap: var(--spacing-3);
-  z-index: 2;
-}
-
-.figureTools[data-inset] {
-  top: var(--spacing-4);
-  right: var(--spacing-4);
 }
 
 .toolButton {
@@ -632,9 +670,9 @@ main .showcase + :global(.l-section.l-section) {
   width: var(--spacing-16);
   height: var(--spacing-16);
   border-radius: var(--radius-pill);
-  /* surface-glass-accent is 15% ochre: layered over surface to stay opaque
-     (build spec section 3.6) */
-  background: linear-gradient(var(--color-semantic-surface-glass-accent), var(--color-semantic-surface-glass-accent)), var(--color-semantic-surface);
+  /* neutral (job 38: ochre only for highlights) */
+  background: var(--color-semantic-surface-inset);
+  border: 1px solid var(--color-semantic-border);
   color: var(--color-semantic-text-primary);
 }
 
@@ -911,16 +949,10 @@ main .showcase + :global(.l-section.l-section) {
   background: var(--color-semantic-text-primary);
 }
 
-/* the 390 frames: 20 margins; Replay sits 8 in from the picture's corner */
+/* the 390 frames: 20 margins */
 @media (max-width: 639px) {
   .stage {
     padding: var(--spacing-5);
-  }
-
-  /* a figure with Replay starts its art under the button, so Replay never
-     sits on a title or a card corner */
-  .figureArt[data-replay] .stage {
-    padding-top: calc(var(--spacing-3) + var(--spacing-touch-target) + var(--spacing-3));
   }
 
   .wideOnly {
@@ -929,11 +961,6 @@ main .showcase + :global(.l-section.l-section) {
 
   .phoneOnly {
     display: block;
-  }
-
-  .figureTools:not([data-inset]) {
-    top: var(--spacing-2);
-    right: var(--spacing-2);
   }
 }
 

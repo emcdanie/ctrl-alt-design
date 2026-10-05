@@ -3,10 +3,25 @@ import CaseFigure from "@/components/case/CaseFigure";
 import NextCase from "@/components/case/NextCase";
 import caseStyles from "@/components/case/Case.module.css";
 import CaseHero from "@/components/case/CaseHero";
-import CaseShowcase, { type ShowcaseCard } from "@/components/case/CaseShowcase";
+import CaseShowcase, {
+  type ShowcaseCard,
+} from "@/components/case/CaseShowcase";
 import type { CollagePiece } from "@/components/case/CaseCollage";
-import { CoverAtlas, CoverProduct, CoverSearch, CoverStay } from "@/components/case/pictures/Covers";
-import { ChipAsk, ChipGate, ChipLesson, GateChecks, Key, Mock, PARTS, PartLabel } from "@/components/case/pictures/Chip";
+import {
+  CoverProduct,
+  CoverSearch,
+  CoverStay,
+} from "@/components/case/pictures/Covers";
+import {
+  ChipAsk,
+  ChipAtlas,
+  ChipGate,
+  ChipLesson,
+  GateChecks,
+  Key,
+  PARTS,
+  PartLabel,
+} from "@/components/case/pictures/Chip";
 import { ChipExplode } from "@/components/case/pictures/ChipExplode";
 import s from "./ChipCase.module.css";
 
@@ -21,23 +36,26 @@ import s from "./ChipCase.module.css";
    Own work on own systems: no NDA line. */
 
 const COVER_LABEL =
-  "A concept mock of CHIP's Atlas view of the FilterChip, specimen No. 003 in Actions: the chip on an anatomy stage with six numbered parts pinned to it, bottom layer first, and 'Checks 6 of 6 pass'.";
+  "A concept mock of CHIP's Atlas view of the FilterChip, specimen No. 003 in Actions: the chip on an anatomy stage with six numbered parts pinned to it, bottom layer first, and 'Checks 6 of 6 pass', above a focused Save changes key.";
 
+/* job 38: straight, nothing covers another piece's text, all inside the
+   528x480 canvas; the Atlas card is CHIP's own, drawn at its real size */
 const COLLAGE: CollagePiece[] = [
-  { key: "atlas", node: <CoverAtlas slot="next" label={COVER_LABEL} />, x: -41, y: 23, s: 1.02, w: 520, h: 340 },
-  { key: "key", node: <Key state="focus" />, x: 271, y: 353 },
-  { key: "mock", node: <Mock />, x: 380, y: 25 },
+  { key: "key", node: <Key state="focus" className={s.heroKey} />, x: 8, y: 32 },
+  { key: "atlas", node: <ChipAtlas />, x: 0, y: 100, w: 528 },
 ];
 
 const SHOWCASE: ShowcaseCard[] = [
   {
     title: "Checks · from the gate · concept mock",
-    label: "A concept mock of three checks from BELLA's gate, each passing: contrast of the primary label 15.8:1, contract parity, story and docs present.",
+    label:
+      "A concept mock of three checks from BELLA's gate, each passing: contrast of the primary label 15.8:1, contract parity, story and docs present.",
     node: <GateChecks count={3} />,
   },
   {
     title: "One job per state · concept mock",
-    label: "A concept mock of the Save changes keycap in three states: rest, focus with its ochre-deep ring, and disabled.",
+    label:
+      "A concept mock of the Save changes keycap in three states: rest, focus with its ochre-deep ring, and disabled.",
     node: (
       <span className={caseStyles.piecesColumn}>
         <Key state="rest" />
@@ -48,7 +66,8 @@ const SHOWCASE: ShowcaseCard[] = [
   },
   {
     title: "Five parts, numbered · concept mock",
-    label: "A concept mock of the Button's numbered parts: 1 key shadow, --shadow-key-resting; 2 fill, ink keycap, primary-fill; 3 box, 44px min, pad 12/20, r12.",
+    label:
+      "A concept mock of the Button's numbered parts: 1 key shadow, --shadow-key-resting; 2 fill, ink keycap, primary-fill; 3 box, 44px min, pad 12/20, r12.",
     node: (
       <span className={caseStyles.piecesColumn}>
         {PARTS.slice(0, 3).map((p) => (
@@ -69,7 +88,12 @@ export default function ChipCase() {
           meta={["CHIP 2.0 · in progress · AI + design systems", "2026"]}
           intro="AI doesn’t fix a neglected design system. It sends you the bill. CHIP 2.0 is a local bridge for BELLA: it reads the real repo, runs BELLA’s own gate scripts, indexes my notes and docs, and answers questions with a local model."
           disclosure="Atlas pictures are a concept mock, drawn from BELLA components."
-          collage={{ label: COVER_LABEL, pieces: COLLAGE }}
+          collage={{
+            label: COVER_LABEL,
+            pieces: COLLAGE,
+            phone: <ChipAtlas />,
+            phoneLabel: "Atlas, the FilterChip specimen: checks 6 of 6 pass, and its six parts, bottom first: box at 44px minimum, outline 1px, hover wash, pressed fill, label, focus ring 3px. Concept mock.",
+          }}
         />
       }
       showcase={<CaseShowcase label="CHIP, in real UI" cards={SHOWCASE} />}
@@ -88,7 +112,10 @@ export default function ChipCase() {
         lead="Notion, Storybook, Figma and BELLA’s gate scripts each held a piece. Every switch was a tax, and asking a cloud agent to look cost money."
       >
         <BeatText>
-          I didn’t build this for a theoretical user. I built it for me. CHIP started as a five-day build at a Claude Code hackathon in April 2026; CHIP 2.0 replaced the cloud agent with a local one, so nothing leaves my machine.
+          I didn’t build this for a theoretical user. I built it for me. CHIP
+          started as a five-day build at a Claude Code hackathon in April 2026;
+          CHIP 2.0 replaced the cloud agent with a local one, so nothing leaves
+          my machine.
         </BeatText>
       </Beat>
 
@@ -130,7 +157,10 @@ export default function ChipCase() {
         heading="One job per state."
         lead="Every specimen carries a short lesson, so the rule travels with the component."
       >
-        <CaseFigure n={3} caption="The Lesson dialog in the Atlas concept mock. Each state does one thing, so you can read it at a glance.">
+        <CaseFigure
+          n={3}
+          caption="The Lesson dialog in the Atlas concept mock. Each state does one thing, so you can read it at a glance."
+        >
           <ChipLesson label="A concept mock of the Lesson dialog for Button, One job per state. Rest: the ink keycap. Hover rolls the label; nothing lifts. Focus is the only place ochre-deep appears. Press sinks the key 2px. Disabled drops the keycap: no shadow, no roll. Why it matters: when hover, focus and press each look different, a keyboard user always knows where they are, and nobody mistakes a hover for a selection." />
         </CaseFigure>
       </Beat>
@@ -160,14 +190,31 @@ export default function ChipCase() {
         <Lessons
           label="Lessons"
           items={[
-            { icon: "Group", title: "The agent never moves silently.", body: "The human stays in the judgment layer: watch, catch, draft, approve, log." },
-            { icon: "Label", title: "Run it on my own systems.", body: "Not a client’s: NDA-clean and more honest." },
-            { icon: "Search", title: "Build it in public, labelled a prototype.", body: "Honesty beats polish." },
+            {
+              icon: "Group",
+              title: "The agent never moves silently.",
+              body: "The human stays in the judgment layer: watch, catch, draft, approve, log.",
+            },
+            {
+              icon: "Label",
+              title: "Run it on my own systems.",
+              body: "Not a client’s: NDA-clean and more honest.",
+            },
+            {
+              icon: "Search",
+              title: "Build it in public, labelled a prototype.",
+              body: "Honesty beats polish.",
+            },
           ]}
         />
-        <p className={s.next}>Atlas is a concept mock. The next step is building it into CHIP, one specimen at a time.</p>
+
+        <p className={s.next}>
+          Atlas is a concept mock. The next step is building it into CHIP, one
+          specimen at a time.
+        </p>
         <p className={s.credit}>
-          Credit: Brad Frost, TJ Pitre and Ian Frost (Southleft), whose AI and design systems course seeded the inspection thinking.
+          Credit: Brad Frost, TJ Pitre and Ian Frost (Southleft), whose AI and
+          design systems course seeded the inspection thinking.
         </p>
       </Beat>
 
@@ -177,7 +224,12 @@ export default function ChipCase() {
           href: "/case-studies/design-system-transformation",
           meta: "Complex SaaS · Design systems",
           title: "From Drift to Foundation",
-          cover: <CoverStay slot="next" label="The Harbour loft stay card on the system: photo, title and location." />,
+          cover: (
+            <CoverStay
+              slot="next"
+              label="The Harbour loft stay card on the system: photo, title and location."
+            />
+          ),
         }}
         lead="Nobody asked for a system. I built one anyway, got a CTO to fund a team, then handed it to every product team."
         more={[
@@ -185,13 +237,23 @@ export default function ChipCase() {
             href: "/case-studies/federated",
             meta: "Design systems · federated · 2026",
             title: "They stopped telling me what they’d done",
-            cover: <CoverProduct slot="work" label="A product card: a wool blend belted coat at €119.99, down from €179.99." />,
+            cover: (
+              <CoverProduct
+                slot="work"
+                label="A product card: a wool blend belted coat at €119.99, 33 percent off."
+              />
+            ),
           },
           {
             href: "/case-studies/search-experts",
             meta: "B2B travel · Product",
             title: "Search for experts",
-            cover: <CoverSearch slot="work" label="A flight search result: Lisbon to Amsterdam, a direct morning flight at €89 with Select." />,
+            cover: (
+              <CoverSearch
+                slot="work"
+                label="A flight search result: Lisbon to Amsterdam, a direct morning flight, 08:10 to 11:55, at €89."
+              />
+            ),
           },
         ]}
       />

@@ -37,7 +37,7 @@ export default function Preview({ theme, small = false, hot }: { theme: Theme; s
           <span className={s.pvCtl} data-at="end">
             <Heart />
           </span>
-          <span data-r="accent" className={cx(s.pvPill, "accent")}>
+          <span data-r="panel" className={cx(s.pvPill, "panel")}>
             new
           </span>
           <span className={s.pvPag}>
@@ -52,7 +52,7 @@ export default function Preview({ theme, small = false, hot }: { theme: Theme; s
             Canet de Mar, Spain
           </b>
           <span className={s.pvRt}>
-            <span className={s.pvStars}>
+            <span data-r="accent" className={cx(s.pvStars, "accent")}>
               {[0, 1, 2, 3, 4].map((i) => (
                 <StarSolid key={i} />
               ))}

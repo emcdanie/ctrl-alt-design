@@ -504,7 +504,9 @@
 
 .node text {
   font-family: var(--font-body);
-  font-size: var(--text-meta);
+  /* in viewBox units: the map draws at about 0.73 at 1440 and 0.7 at
+     1110, so 1.2x keeps names at 12.5px or more (job 38, audit:clip) */
+  font-size: calc(var(--text-meta) * 1.2);
   font-weight: 500;
   fill: var(--color-ink-muted);
 }
@@ -568,6 +570,12 @@
   font-size: var(--text-caption);
   font-weight: 600;
   fill: var(--color-ink);
+}
+
+/* the voices network draws at about 0.65 at 1024, so its names take
+   1.35x to stay 12px or more on screen (job 38, audit:clip) */
+.nodeV text {
+  font-size: calc(var(--text-caption) * 1.35);
 }
 
 .nodeW text {

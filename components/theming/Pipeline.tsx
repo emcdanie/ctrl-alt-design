@@ -19,7 +19,7 @@ const LABEL =
   "A token travels through five steps: write the tokens, build them, generate the CSS, check them at the gate, and ship to Storybook and the site. The gate lights up with a tick when it passes.";
 
 /* wide: five boxes in a row (880 user units, drawn from 1024px up) */
-const W = 150;
+const W = 162; /* room for "css · json · theme" at 14.5 (job 38) */
 const GAP = (880 - 40 - 5 * W) / 4;
 const XS = STEPS.map((_, i) => 20 + i * (W + GAP));
 /* narrow: five boxes stacked (300 user units, phones and tablets) */

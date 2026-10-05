@@ -4,10 +4,17 @@
  * Spacing scope: padding / margin / gap / scroll-margin values >= 4px
  * (0-3px hairlines, borders, and optical nudges are design details, not
  * scale spacing). Colour scope: hex / rgb() / hsl() anywhere, with the
- * `black`/`white` keywords permitted only inside mask-image hacks. */
+ * `black`/`white` keywords permitted only inside mask-image hacks.
+ *
+ * One ground (job 38, 5 Oct 2026: Home's body and every footer wore
+ * their own colour). Rendered, AUDIT_URL, every route at 1440 in both
+ * themes: the body, main and footer grounds (each element's own fill, or
+ * the first filled ancestor's) compute one colour. */
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
+import { BASE } from "./lib/base-url.mjs";
 
 const ROOTS = ["app", "components"];
 const EXT = /\.(tsx|ts|css)$/;
@@ -55,6 +62,36 @@ for (const root of ROOTS) {
     });
   }
 }
+
+/* one ground per route */
+const slugs = readdirSync("content/case-studies")
+  .filter((f) => f.endsWith(".ts") && f !== "index.ts")
+  .map((f) => f.replace(/\.ts$/, ""));
+const studyIds = [...readFileSync("content/studies.ts", "utf8").matchAll(/\bid: "([^"]+)"/g)].map((m) => m[1]);
+const ROUTES = ["/", "/work", "/learning", "/about", "/design-system", "/design-system/inspector", "/quick", "/contact", "/privacy", "/accessibility", "/this-page-does-not-exist",
+  ...studyIds.map((id) => `/work/studies/${id}`), ...slugs.map((x) => `/case-studies/${x}`)];
+const browser = await chromium.launch();
+for (const theme of ["light", "dark"]) {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, colorScheme: theme, reducedMotion: "reduce" });
+  await page.addInitScript((t) => { try { localStorage.setItem("theme", t); } catch {} }, theme);
+  for (const route of ROUTES) {
+    await page.goto(BASE + route, { waitUntil: "networkidle", timeout: 30000 });
+    await page.evaluate((t) => (document.documentElement.dataset.theme = t), theme);
+    await page.waitForTimeout(150);
+    const g = await page.evaluate(() => {
+      const cv = document.createElement("canvas").getContext("2d");
+      const rgb = (c) => { cv.clearRect(0, 0, 1, 1); cv.fillStyle = "#000"; cv.fillStyle = c; cv.fillRect(0, 0, 1, 1); const d = cv.getImageData(0, 0, 1, 1).data; return d[3] ? `rgb(${d[0]}, ${d[1]}, ${d[2]})` : null; };
+      const ground = (el) => { for (; el; el = el.parentElement) { const c = rgb(getComputedStyle(el).backgroundColor); if (c) return c; } return "rgb(255, 255, 255)"; };
+      const pick = (sel) => { const el = document.querySelector(sel); return el ? ground(el) : null; };
+      return { body: pick("body"), main: pick("main"), footer: pick("body > footer, footer:not(main footer)") };
+    });
+    const seen = Object.entries(g).filter(([, v]) => v);
+    if (new Set(seen.map(([, v]) => v)).size > 1)
+      fail(`${route} (${theme})`, "ground", seen.map(([k, v]) => `${k} ${v}`).join(", "), "one ground colour on body, main and footer");
+  }
+  await page.close();
+}
+await browser.close();
 
 if (failures) {
   console.log(`tokens gate: ${failures} failure(s)`);

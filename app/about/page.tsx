@@ -113,7 +113,7 @@ export default function AboutPage() {
                 relationships that shape how a company actually uses its system.
               </p>
               <p>
-                At Mango I was the first to bring AI into their design-system work: I used it to audit and ship faster
+                At a global fashion retailer I was the first to bring AI into their design-system work: I used it to audit and ship faster
                 while updating the system, then built the tools so the team could carry on without me. My most recent
                 example is the site you&apos;re on. It runs on BELLA, my own design system: tokens, components in
                 Storybook, and docs an AI can read.

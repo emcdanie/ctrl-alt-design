@@ -174,7 +174,9 @@ body {
      wide screens hug the content a little less; the gutters still sit
      outside it, and the reading measures (--measure-lead 42rem,
      --measure-body 65ch) are unchanged, so lines do not get longer. */
-  --layout-max: 62.5rem; /* 1,000px content, system-page-mock (22 Sep 2026) */
+  /* one content edge (job 38, 5 Oct 2026): every page on the case
+     template's 1056 body, so the h1 sits at x192 at 1440 everywhere */
+  --layout-max: 66rem;
   --layout-gutter: clamp(1.5rem, 4vw, 3rem);
   /* more air between sections (Part Q): ~64px at 390, ~118px at 1440 */
   --section-pad-y: clamp(4rem, 2.5rem + 3.4vw, 5.5rem); /* the mock's 88px at desktop, 64px floor */
@@ -192,7 +194,7 @@ body {
   /* Layout B, the case template (Elleta, 4 Oct 2026, site v3 concept lock;
      CLAUDE.md section 2): a 1056 body, the text column 696 centred in it
      (x180 at 1440), 96 between sections, 40 between blocks. */
-  --case-body-max: 66rem;
+  --case-body-max: var(--layout-max);
   --case-col-max: 43.5rem;
   --case-gap-section: 6rem;
   --case-gap-block: var(--spacing-10);
@@ -397,8 +399,10 @@ body {
      ships color/semantic/ground and color/semantic/raised (CHIP queue 09,
      09-bella-surface-tokens.md). Home uses only these two plus the inset
      token. Swap the right-hand sides then; nothing else changes. */
-  --site-ground: var(--color-semantic-border);
-  --site-raised: var(--color-semantic-background);
+  /* one ground on every route (job 38, 5 Oct 2026): Home's ground is the
+     page ground, stone 95, and its cards the card surface, stone 99 */
+  --site-ground: var(--color-semantic-background);
+  --site-raised: var(--color-semantic-surface-card);
   --font-card-title: 1.25rem; /* titles: 20px (Geist refresh) */
   --font-body-size: var(--text-body);
   --font-small: 14px;
@@ -577,6 +581,10 @@ body {
 [data-theme="dark"] {
   /* the dark ground (also set on body below, where the dark inks live) */
   --color-semantic-background: var(--color-dark-bg);
+  /* the picture kit's subtle action wash, dark (job 38: it stayed light) */
+  --kit-action-subtle: color-mix(in srgb, var(--kit-action) 24%, var(--color-dark-bg));
+  /* and its selected-chip ink, light on that wash (AA) */
+  --kit-chip-ink: var(--kit-ramp-200);
   /* the pattern fields read on dark (item 8, 22 Sep 2026): BELLA's 0.06
      all but vanished on #0d0d0d. At 0.12 the worst field pixel puts
      muted text at 6.93:1, the same floor as light; sections at 0.06
@@ -2045,7 +2053,8 @@ h1.display-heading {
 .site-footer {
   padding-top: var(--spacing-16);
   border-top: 1px solid var(--color-semantic-border);
-  background: var(--color-semantic-surface);
+  /* the page ground, never white (job 38, one ground) */
+  background: var(--color-semantic-background);
   color: var(--color-ink);
 }
 

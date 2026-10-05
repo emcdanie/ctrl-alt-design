@@ -1,8 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { ASKS } from "@/components/theming/themes";
 import s from "@/components/ThemingCase.module.css";
+
+/* a token path breaks only after a "." on a phone, never mid-word (job 38) */
+const Path = ({ v }: { v: string }) => (
+  <>
+    {v.split(".").map((part, k, all) => (
+      <Fragment key={k}>
+        {part}
+        {k < all.length - 1 ? (
+          <>
+            .<wbr />
+          </>
+        ) : null}
+      </Fragment>
+    ))}
+  </>
+);
 
 const STEP = 2200; /* ms per name, the mock's interval */
 
@@ -40,10 +56,11 @@ export default function OneName() {
           pause
         </button>
       )}
-      <div className={s.askSide}>
+      {/* each side on the theme it names (job 38, audit:dark) */}
+      <div className={`${s.askSide} ${s.pinLight}`} data-theme="light">
         <span className={s.askLbl}>light mode</span>
         <i key={`l${i}`} className={s.askSw} style={{ background: a.lightHex }} aria-hidden="true" />
-        <code>{a.light}</code>
+        <code><Path v={a.light} /></code>
         <span className={s.askHex}>{a.lightHex}</span>
       </div>
       <div className={s.askMid}>
@@ -54,10 +71,10 @@ export default function OneName() {
           <path className={`${s.aw} ${s.awR}`} d="M100 20 H190 m-8 -6 l8 6 l-8 6" />
         </svg>
       </div>
-      <div className={s.askSide}>
+      <div className={`${s.askSide} ${s.pinDark}`} data-theme="dark">
         <span className={s.askLbl}>dark mode</span>
         <i key={`d${i}`} className={s.askSw} style={{ background: a.darkHex }} aria-hidden="true" />
-        <code>{a.dark}</code>
+        <code><Path v={a.dark} /></code>
         <span className={s.askHex}>{a.darkHex}</span>
       </div>
     </div>

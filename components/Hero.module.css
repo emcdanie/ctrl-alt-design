@@ -264,6 +264,9 @@
   padding: 2px var(--spacing-1);
   border-radius: var(--radius-sm);
   font: 500 var(--text-mono) / 1.2 var(--font-code);
+  /* counter the layer's shrink, so the label reads 13px at every --hero-p
+     (job 38: it fell to 10.4px apart) */
+  font-size: calc(var(--text-mono) / (1 - var(--hero-shrink) * var(--hero-p)));
   white-space: nowrap;
   background: var(--color-ink);
   color: var(--color-semantic-background);

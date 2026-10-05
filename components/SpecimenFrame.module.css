@@ -39,6 +39,7 @@
 
 .stage {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   padding: var(--spacing-6);
   background-image:
@@ -58,13 +59,17 @@
   fill: var(--color-semantic-accent);
 }
 
-.empty {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 5 / 3;
+/* a live cover (the More work slot, 490 x 260 design px) scaled to the
+   stage by ScaledArt; the sizer gives the absolute canvas its box */
+.cover {
+  display: block;
   width: 100%;
-  max-width: 27.5rem;
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  color: var(--color-ink-muted);
+  max-width: 30.625rem;
+}
+
+.coverSize {
+  position: relative;
+  display: block;
+  width: 490px; /* token-waiver: the Covers "work" slot's design width, scaled by ScaledArt */
+  height: 260px; /* token-waiver: the Covers "work" slot's design height */
 }

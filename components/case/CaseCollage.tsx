@@ -33,7 +33,19 @@ export type CollagePiece = {
   phone?: boolean;
 };
 
-export default function CaseCollage({ label, pieces }: { label: string; pieces: CollagePiece[] }) {
+export default function CaseCollage({
+  label,
+  pieces,
+  phone,
+  phoneLabel,
+}: {
+  label: string;
+  pieces: CollagePiece[];
+  /** below 640px: this one card at its own size instead of the collage */
+  phone?: ReactNode;
+  /** the phone card's own name (it shows one card, not the collage) */
+  phoneLabel?: string;
+}) {
   const box = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState<number | null>(null);
   useEffect(() => {
@@ -45,9 +57,10 @@ export default function CaseCollage({ label, pieces }: { label: string; pieces: 
     fit();
     return () => ro.disconnect();
   }, []);
-  return (
+  const collage = (
     <div
       className={styles.collage}
+      data-has-phone={phone ? "" : undefined}
       ref={box}
       role="img"
       aria-label={label}
@@ -67,5 +80,14 @@ export default function CaseCollage({ label, pieces }: { label: string; pieces: 
         ))}
       </div>
     </div>
+  );
+  if (!phone) return collage;
+  return (
+    <>
+      {collage}
+      <div className={styles.collagePhone} role="img" aria-label={phoneLabel ?? label}>
+        <div aria-hidden="true">{phone}</div>
+      </div>
+    </>
   );
 }

@@ -17,7 +17,7 @@ export interface CaseRowData {
   status?: string;
   tags: { text: string; tone?: "c2" | "c3"; outline?: boolean }[];
   /** the specimen frame's strips on the card layouts (Home · v2) */
-  specimen?: { path: string; mode: string; caption: string };
+  specimen?: { path: string; mode: string; caption: string; cover?: "product" };
 }
 
 export const CASES: CaseRowData[] = [
@@ -84,7 +84,7 @@ export const CASES: CaseRowData[] = [
 export const HOME_CASES: CaseRowData[] = CASES.slice(0, 3);
 
 /* Home · v2 (Gate 2, 3 Oct 2026): the lead three in /work order, Drift
- * featured, then Federated (not live yet) and CHIP as cards. Numbers
+ * featured, then Federated (live since 4 Oct) and CHIP as cards. Numbers
  * follow the Gate 2 /work order (01 Drift, 02 Federated, 03 CHIP). */
 const byId = (id: string) => CASES.find((c) => c.id === id)!;
 export const HOME_LEAD: CaseRowData[] = [
@@ -95,9 +95,9 @@ export const HOME_LEAD: CaseRowData[] = [
     meta: "Design systems · federated · 2026",
     title: "They stopped telling me what they\u2019d done",
     claim: "Proves a federated system can run without me as the bottleneck.",
-    status: "Coming soon",
+    href: "/case-studies/federated",
     tags: [],
-    specimen: { path: "federated / contribution", mode: "to come", caption: "Redrawn diagram to come" },
+    specimen: { path: "federated / product card", mode: "published", caption: "One chip, a new slot, nothing forked.", cover: "product" },
   },
   { ...byId("chip"), n: "03", specimen: { path: "chip / watch loop", mode: "watching", caption: "Drawn from CHIP\u2019s watch loop." } },
 ];
@@ -108,7 +108,7 @@ export const HOME_LEAD: CaseRowData[] = [
  * live, unlinked from it. */
 export const WORK_CASES: CaseRowData[] = [
   HOME_LEAD[0],
-  { ...HOME_LEAD[1], href: "/case-studies/federated", status: undefined },
+  HOME_LEAD[1],
   HOME_LEAD[2],
   { ...byId("theming"), n: "04" },
 ];

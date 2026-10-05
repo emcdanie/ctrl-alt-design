@@ -54,6 +54,47 @@ export function PartLabel({ n, title, spec, short = false }: { n: number; title:
   );
 }
 
+/* ── The hero card · Atlas, the FilterChip specimen ─────────────────
+   CHIP's own drawing of the Atlas cover (job 38), at its real size so no
+   word renders under 16px at 1440 (14 through the 1024 collage scale):
+   the shared cover draws at 9 to 11px and is scaled down further. The
+   body wraps, so the same card is the 390 hero card (stage above parts). */
+const ATLAS_PARTS = ["Box · 44px min", "Outline · 1px", "Hover wash", "Pressed fill", "Label", "Focus ring · 3px"];
+
+export function ChipAtlas() {
+  return (
+    <div className={`${s.panel} ${s.atlas}`}>
+      <span className={s.head}>
+        <span className={s.atlasEyebrow}>Atlas · No. 003 · Actions</span>
+        <Mock />
+      </span>
+      <span className={s.atlasHead}>
+        <span className={s.atlasName}>FilterChip</span>
+        <Status tone="success">Checks 6 of 6 pass</Status>
+      </span>
+      <span className={s.atlasBody}>
+        <span className={s.atlasStage}>
+          <span className={s.atlasChip}>Accessible</span>
+          {[1, 3, 5, 2, 4, 6].map((n, i) => (
+            <span key={n} className={s.atlasLeader} data-side={i < 3 ? "top" : "bottom"} data-col={i % 3}>
+              <Pin n={n} />
+            </span>
+          ))}
+        </span>
+        <span className={s.atlasParts}>
+          <span className={s.atlasEyebrow}>6 parts, bottom first</span>
+          {ATLAS_PARTS.map((p, i) => (
+            <span key={p} className={s.atlasPart} data-selected={i === 3 || undefined}>
+              <Pin n={i + 1} />
+              {p}
+            </span>
+          ))}
+        </span>
+      </span>
+    </div>
+  );
+}
+
 /* ── Figure 2 · The gate tells the truth ──────────────────────────── */
 const CHECKS: [string, string, "success" | "neutral"][] = [
   ["pass", "Contrast · primary label 15.8:1", "success"],
@@ -130,9 +171,13 @@ export function Key({ state = "rest", className = "" }: { state?: "rest" | "hove
   return (
     <span className={`${s.key} ${className}`.trim()} data-state={state}>
       {state === "hover" ? (
+        /* one label in a key-high window; the track rolls the next one in
+           (motion only), reduced motion shows the one label still */
         <span className={s.roll}>
-          <span>Save changes</span>
-          <span>Save changes</span>
+          <span className={s.rollTrack}>
+            <span>Save changes</span>
+            <span>Save changes</span>
+          </span>
         </span>
       ) : (
         <span>Save changes</span>

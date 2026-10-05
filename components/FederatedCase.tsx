@@ -19,13 +19,14 @@ import { Copy, Draft, FederatedVersions, FederatedWho, Published } from "@/compo
    kicker, the lead and the Figure 1 cover. */
 
 const HERO_LABEL =
-  "Three versions of one product card, overlapping: a new draft, the published card (a wool blend belted coat at €119.99, down from €179.99, beige, size M, last units) and a post-purchase copy at the full price; below them, the chip group with slots.";
+  "Two versions of one product card, side by side: a new draft with a caps title and a minus 33 percent badge, and the published card, a wool blend belted coat at €119.99, down from €179.99, beige, size M.";
 
+/* two cards at 0.9, side by side, every piece inside the 528x480 box and
+   none over another's text (Elleta, 5 Oct, job 38: fewer cards at 0.85 or
+   more, so nothing renders under 12px, the 1024 collage scale included) */
 const COLLAGE: CollagePiece[] = [
-  { key: "draft", node: <FedPieces><Draft bare /></FedPieces>, x: 4, y: 51, s: 0.6 },
-  { key: "published", node: <FedPieces><Published bare /></FedPieces>, x: 189, y: 20, s: 0.75 },
-  { key: "copy", node: <FedPieces><Copy bare /></FedPieces>, x: 370, y: 65, s: 0.55 },
-  { key: "group", node: <FedPieces><ChipGroupCard /></FedPieces>, x: 34, y: 374, s: 0.48, w: 928 },
+  { key: "draft", node: <FedPieces><Draft bare /></FedPieces>, x: 0, y: 5, s: 0.9 },
+  { key: "published", node: <FedPieces><Published bare /></FedPieces>, x: 272, y: 30, s: 0.9 },
 ];
 
 const SHOWCASE: ShowcaseCard[] = [
@@ -70,7 +71,7 @@ export default function FederatedCase() {
           long
           meta={["Federated design system", "2026 · 13 weeks"]}
           intro="A cross-platform design system for a leading European fashion retailer, with three of its four designers out. I made the slow work fast, opened one door for every squad, and extended what already worked instead of copying it."
-          collage={{ label: HERO_LABEL, pieces: COLLAGE }}
+          collage={{ label: HERO_LABEL, pieces: COLLAGE, phone: <FedPieces><Published bare /></FedPieces>, phoneLabel: "The published product card: the product name, a discounted price of 119.99 from 179.99, beige, size M." }}
         />
       }
       showcase={<CaseShowcase label="Federated, in real UI" cards={SHOWCASE} />}
@@ -212,7 +213,7 @@ export default function FederatedCase() {
             href: "/case-studies/search-experts",
             meta: "B2B travel · Product",
             title: "Search for experts",
-            cover: <CoverSearch slot="work" action="ink" label="A flight search result: Lisbon to Amsterdam, a direct morning flight at €89 with Select." />,
+            cover: <CoverSearch slot="work" label="A flight search result: Lisbon to Amsterdam, a direct morning flight, 08:10 to 11:55, at €89." />,
           },
         ]}
       />

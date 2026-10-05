@@ -8,7 +8,7 @@ import styles from "./Case.module.css";
    picture with the page's own pinch-zoom, which is never disabled.
 
    A figure with motion (`replay`) plays once when half of it is in view
-   and offers Replay, top-right; its art reads `useFigurePlay()` and keys
+   and offers Replay in the figure header, above the picture (job 38); its art reads `useFigurePlay()` and keys
    its animation on `run`. Reduced motion is CSS's job: the art shows its
    finished frame. */
 
@@ -24,7 +24,6 @@ export default function CaseFigure({
   n,
   caption,
   replay = false,
-  inset = false,
   children,
   className = "",
 }: {
@@ -33,8 +32,6 @@ export default function CaseFigure({
   caption: ReactNode;
   /** the art has motion: play in view, show Replay */
   replay?: boolean;
-  /** Replay sits 16 in from the corner (the motion figures) */
-  inset?: boolean;
   children: ReactNode;
   className?: string;
 }) {
@@ -64,26 +61,26 @@ export default function CaseFigure({
 
   return (
     <figure className={`${styles.figBlock} ${className}`.trim()}>
+      {replay ? (
+        <div className={styles.figureTools}>
+          <button
+            type="button"
+            className={styles.toolButton}
+            onClick={() => {
+              setPlaying(true);
+              setRun((r) => r + 1);
+            }}
+          >
+            Replay<span className="sr-only"> Figure {n}</span>
+          </button>
+        </div>
+      ) : null}
       <div className={styles.figureArt} ref={art} data-replay={replay || undefined}>
         {/* Site/Figure stage (417:1706): the grid behind every picture,
             56/64 margins at 1440 and 20 at 390 */}
         <div className={styles.stage}>
           <PlayContext.Provider value={{ playing, run }}>{children}</PlayContext.Provider>
         </div>
-        {replay ? (
-          <div className={styles.figureTools} data-inset={inset || undefined}>
-            <button
-              type="button"
-              className={styles.toolButton}
-              onClick={() => {
-                setPlaying(true);
-                setRun((r) => r + 1);
-              }}
-            >
-              Replay<span className="sr-only"> Figure {n}</span>
-            </button>
-          </div>
-        ) : null}
       </div>
       <figcaption className={`${styles.caption} ${styles.col}`}>
         <span className={styles.captionNum}>Figure {n}.</span> {caption}

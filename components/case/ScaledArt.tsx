@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import styles from "./Case.module.css";
 
 /* A picture drawn at its frame's design width and scaled down to fit the
    stage, type included, never reflowed (Site v3 rules: "scale the picture
    to fit, never the type outside it"). Below the design width it shrinks;
-   it never grows past it. */
+   it never grows past it. The inverse scale is --art-k, so a picture
+   inside can keep its type at a floor (the covers, job 38). */
 export default function ScaledArt({ width, children }: { width: number; children: ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
   const inner = useRef<HTMLDivElement>(null);
@@ -29,7 +30,7 @@ export default function ScaledArt({ width, children }: { width: number; children
   }, [width]);
   return (
     <div className={styles.scaled} ref={box} style={{ height }}>
-      <div className={styles.scaledInner} ref={inner} style={{ width, transform: scale < 1 ? `scale(${scale})` : undefined }}>
+      <div className={styles.scaledInner} ref={inner} style={{ width, transform: scale < 1 ? `scale(${scale})` : undefined, "--art-k": scale < 1 ? 1 / scale : 1 } as CSSProperties}>
         {children}
       </div>
     </div>

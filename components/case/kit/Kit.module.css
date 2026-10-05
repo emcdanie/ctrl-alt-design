@@ -41,7 +41,7 @@
 .button[data-size="sm"] {
   padding: var(--spacing-2) calc(var(--spacing-3) + 2px);
   border-radius: var(--radius-md);
-  font-size: 13px;
+  font-size: 14px; /* figure text floor (job 38) */
 }
 
 .input {
@@ -64,7 +64,7 @@
   gap: calc(var(--spacing-1) + 2px);
   padding: calc(var(--spacing-1) + 2px) var(--spacing-3);
   border-radius: var(--radius-pill);
-  font-size: 13px;
+  font-size: 14px; /* figure text floor (job 38) */
   font-weight: var(--typography-font-weight-medium);
   line-height: 1;
   white-space: nowrap;
@@ -93,11 +93,13 @@
 .tag {
   display: inline-flex;
   align-items: center;
-  padding: 3px calc(var(--spacing-2) + 2px);
+  /* outline, never stone-filled; figure text 14px floor (job 38) */
+  padding: 2px calc(var(--spacing-2) + 2px);
+  border: 1px solid var(--color-semantic-border);
   border-radius: var(--radius-pill);
-  background: var(--color-semantic-surface-inset);
+  background: transparent;
   color: var(--color-semantic-text-secondary);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: var(--typography-font-weight-medium);
   line-height: 1.2;
   white-space: nowrap;
@@ -111,7 +113,7 @@
   border-radius: var(--radius-pill);
   background: var(--color-semantic-success-subtle);
   color: var(--color-semantic-success-text);
-  font-size: 12px;
+  font-size: 14px; /* figure text floor (job 38) */
   font-weight: var(--typography-font-weight-medium);
   line-height: 1.2;
   white-space: nowrap;
@@ -168,7 +170,7 @@
 
 .email {
   color: var(--color-semantic-text-secondary);
-  font-size: 13px;
+  font-size: 14px; /* figure text floor (job 38) */
 }
 
 /* markup layer: the verdict tag (Elleta, 5 Oct), icon + word */

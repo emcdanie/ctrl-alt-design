@@ -1,7 +1,8 @@
 /* Federated figures 3 to 6 (FederatedPicturesB.tsx). Drawn at the 1440
    design width (928) and scaled by ScaledArt; picture type sits at the
    Figma sizes and never reflows. Neutrals read the semantic tokens so the
-   pictures follow the theme; ochre is the brand accent token. */
+   pictures follow the theme. Ochre only marks a highlight (job 38): the
+   card top bars are gone, the ring, bar and bullets are neutral. */
 
 .root {
   width: 100%;
@@ -15,15 +16,6 @@
   box-shadow: var(--shadow-card);
   color: var(--color-semantic-text-body);
   overflow: hidden;
-}
-
-.accent {
-  display: block;
-  width: 40px;
-  height: 4px;
-  flex: 0 0 auto;
-  border-radius: var(--radius-pill);
-  background: var(--color-semantic-accent);
 }
 
 .title {
@@ -144,7 +136,7 @@
   justify-content: center;
   width: 120px;
   height: 120px;
-  border: 12px solid var(--color-semantic-accent);
+  border: 12px solid var(--color-semantic-border-strong);
   border-radius: var(--radius-pill);
   color: var(--color-semantic-text-primary);
   font-size: 24px;
@@ -319,7 +311,7 @@
   width: 6px;
   height: 6px;
   border-radius: var(--radius-pill);
-  background: var(--color-semantic-accent);
+  background: var(--color-semantic-icon-muted);
 }
 
 /* ── Figure 6 · KPI tree and Pareto ── */
@@ -358,20 +350,22 @@
   gap: var(--spacing-5);
 }
 
-/* the slide's dark panel: the inverse pair, so it stays dark on the
-   light page and turns light on the dark page, always readable */
+/* the slide's ask: the page ground with an ink outline, so it reads as
+   the one emphasised panel in both themes and never turns white on the
+   dark page (job 38) */
 .ask {
   display: flex;
   flex-direction: column;
   gap: calc(var(--spacing-2) + 2px);
   height: 275px;
   padding: calc(var(--spacing-4) + 2px);
+  border: 1.5px solid var(--color-semantic-text-primary);
   border-radius: var(--radius-lg);
-  background: var(--color-semantic-surface-inverse);
+  background: var(--color-semantic-background);
 }
 
 .askTitle {
-  color: var(--color-semantic-text-inverse);
+  color: var(--color-semantic-text-primary);
   font-size: 18px;
   font-weight: var(--typography-font-weight-semibold);
   line-height: 1.3;
@@ -382,7 +376,7 @@
 }
 
 .askList .bullet {
-  color: var(--color-semantic-text-inverse);
+  color: var(--color-semantic-text-body);
 }
 
 .cells {
@@ -464,7 +458,7 @@
   height: 12px;
   margin-top: 2px;
   border-radius: var(--radius-pill);
-  background: var(--color-semantic-accent);
+  background: var(--color-semantic-border-strong);
 }
 
 .platforms {
@@ -485,7 +479,8 @@
 /* ── Figure 3 · Asked for vs shipped ── */
 /* .pieces: the same variables for Figure 3's pieces outside the figure */
 .shipped,
-.pieces {
+.pieces,
+.phone {
   --fb-line: color-mix(in oklab, var(--color-semantic-border-strong) 32%, var(--color-semantic-surface));
   --fb-stock-text: var(--kit-stock);
   --fb-trim-text: var(--kit-ramp-600);
@@ -497,7 +492,8 @@
 }
 
 :global([data-theme="dark"]) .shipped,
-:global([data-theme="dark"]) .pieces {
+:global([data-theme="dark"]) .pieces,
+:global([data-theme="dark"]) .phone {
   --fb-stock-text: var(--kit-stock-on-dark);
   --fb-trim-text: var(--kit-ramp-300);
 }
@@ -681,8 +677,9 @@
   flex: 0 0 auto;
   border: 1px dashed var(--markup-slot);
   border-radius: var(--radius-sm);
-  background: var(--kit-ramp-100);
-  color: var(--kit-ramp-700);
+  /* semantic, so the slot follows the theme (job 38: it was white in dark) */
+  background: color-mix(in oklab, var(--markup-slot) 12%, var(--color-semantic-surface));
+  color: var(--color-semantic-text-primary);
   font-size: 16px;
   font-weight: var(--typography-font-weight-medium);
 }
@@ -1328,4 +1325,147 @@
   font-size: 16px;
   line-height: 1.3;
   text-align: center;
+}
+
+/* ── 390: one panel per swipe screen, at its own size, in flow (job 38:
+   no shrunk desktop picture on a phone). Fixed design widths and heights
+   give way to the panel's width; rows that ran across the 928 picture
+   wrap or stack. ── */
+.phonePanel {
+  width: 280px;
+  padding-block-end: var(--spacing-3);
+}
+
+.phone {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.phone .card {
+  height: auto;
+  margin-top: 0;
+}
+
+.phone .stackCol {
+  gap: var(--spacing-3);
+}
+
+.phone .fills,
+.phone .platforms {
+  flex-wrap: wrap;
+}
+
+/* sequences run down the panel, their arrows turned to point down */
+.phone .beforeAfter,
+.phone .tree {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+}
+
+.phone .arrow,
+.phone .treeArrow {
+  transform: rotate(90deg);
+}
+
+.phone .stat {
+  width: auto;
+}
+
+.phone .people {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.phone .slide {
+  padding: var(--spacing-6);
+}
+
+.phone .ask {
+  height: auto;
+}
+
+.phone .cell {
+  height: auto;
+}
+
+.phone .note {
+  width: auto;
+}
+
+/* the lanes run down the panel: dot, then its step */
+.phone .steps {
+  grid-template-columns: 1fr;
+  row-gap: var(--spacing-3);
+}
+
+.phone .step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--spacing-3);
+}
+
+.phone .track {
+  grid-row: span 2;
+  margin-top: var(--spacing-1);
+}
+
+.phone .line {
+  display: none;
+}
+
+.phone .stepSub {
+  margin-top: 0;
+}
+
+.phone .group {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-4);
+}
+
+.phone .groupTitle {
+  width: auto;
+}
+
+.phone .picker {
+  width: auto;
+  align-self: stretch;
+}
+
+.phone .photo {
+  width: 100%;
+}
+
+.phone .actions .add {
+  flex: 1 1 auto;
+  width: auto;
+}
+
+.phone .filters {
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
+
+.phone .colourCol,
+.phone .sortCol {
+  width: auto;
+  align-self: stretch;
+}
+
+/* the colour grid: two columns in flow; each cell's inline left and top
+   only place it on the wide picture */
+.phone .colourGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: auto;
+  height: auto;
+  align-self: stretch;
+}
+
+.phone .colourCell {
+  position: static;
+  width: auto;
+  margin: 0 -1px -1px 0;
 }

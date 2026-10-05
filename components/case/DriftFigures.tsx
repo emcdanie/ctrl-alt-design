@@ -56,11 +56,11 @@ function PageArt() {
   const rows = ["Search · v4", "Search · v4 final", "Search · v4 FINAL 2", "Checkout · old", "Stays · card", "Flights · card"];
   return (
     <svg viewBox="0 0 203 190" className={s.levelArt} aria-hidden="true">
-      <rect x={8} y={68} width={177} height={24} rx={4} className={s.hotOutline} />
+      <rect x={8} y={68} width={190} height={24} rx={4} className={s.hotOutline} />
       {rows.map((t, k) => (
         <g key={t}>
           <rect x={16} y={20 + k * 28} width={10} height={8} rx={2} className={k === 2 ? s.hotFill : s.fileRect} />
-          <text x={32} y={28 + k * 28} className={k === 2 ? s.kitTextHot : s.kitText}>
+          <text x={32} y={29.5 + k * 28} className={k === 2 ? s.kitTextHot : s.kitText}>
             {t}
           </text>
         </g>
@@ -82,7 +82,7 @@ function FrameArt() {
       {inputs.map(([t, y, h, r], k) => (
         <g key={t}>
           <rect x={14} y={y} width={171} height={h} rx={r} className={k === 0 ? s.hotOutline : s.inputBox} />
-          <text x={24} y={y + h / 2 + 4} className={s.kitText}>
+          <text x={24} y={y + h / 2 + 5.5} className={s.kitText}>
             {t}
           </text>
         </g>
@@ -95,11 +95,11 @@ function FieldArt() {
   return (
     <svg viewBox="0 0 203 190" className={s.levelArt} aria-hidden="true">
       <rect x={40} y={28} width={145} height={34} rx={4} className={s.inputBox} />
-      <text x={52} y={50} className={s.kitText}>
+      <text x={52} y={51} className={s.kitText}>
         Where to?
       </text>
       <rect x={40} y={104} width={145} height={40} rx={10} className={s.hotOutline} />
-      <text x={54} y={129} className={s.kitTextInk}>
+      <text x={54} y={130} className={s.kitTextInk}>
         Where to?
       </text>
       <path d="M27 28v34M22 28h10M22 62h10" className={s.markRed} />

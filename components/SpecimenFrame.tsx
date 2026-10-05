@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+import ScaledArt from "@/components/case/ScaledArt";
 import styles from "./SpecimenFrame.module.css";
 
 /* Site/Specimen frame, light (Gate 2, 3 Oct 2026): the case card's
@@ -12,12 +14,15 @@ export default function SpecimenFrame({
   mode,
   caption,
   art,
+  cover,
 }: {
   path: string;
   mode: string;
   caption: string;
   /** inner markup of a 300 x 180 data-bella-diagram drawing (workThumbs) */
   art?: string;
+  /** a live hi-fi cover (components/case/pictures/Covers), in place of `art` */
+  cover?: ReactNode;
 }) {
   return (
     <span className={styles.frame} aria-hidden="true">
@@ -26,11 +31,15 @@ export default function SpecimenFrame({
         <span className="text-code">{mode}</span>
       </span>
       <span className={styles.stage}>
-        {art ? (
+        {cover ? (
+          <span className={styles.cover}>
+            <ScaledArt width={490}>
+              <span className={styles.coverSize}>{cover}</span>
+            </ScaledArt>
+          </span>
+        ) : art ? (
           <svg viewBox="0 0 300 180" aria-hidden="true" data-bella-diagram dangerouslySetInnerHTML={{ __html: art }} />
-        ) : (
-          <span className={`text-code ${styles.empty}`}>redrawn diagram to come</span>
-        )}
+        ) : null}
       </span>
       <span className={`text-code ${styles.strip} ${styles.foot}`}>{caption}</span>
     </span>

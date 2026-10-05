@@ -20,16 +20,20 @@ import { ZoomLevels, TokenCascade, Rollout, Staircase, TokenEverywhere } from "@
 const HERO_LABEL =
   "Before and after, overlapping: a drifted 'Stays in Lisbon' list where each row uses its own button, type and capitalisation, and the Harbour loft stay card on the system with one Book now button; five drifted book buttons and two token pins, action.primary and accent, scattered below.";
 
+/* job 38 (P1.4): no text under another card. The stay card sits behind
+   on the right; the drifted list sits in front and overlaps only the
+   card's photo (its "1 / 8" dropped here), ending above the card's title.
+   The loose buttons and pins share the free corner bottom left. */
 const COLLAGE: CollagePiece[] = [
-  { key: "before", node: <DriftedList />, x: 0, y: 90, s: 0.975 },
-  { key: "after", node: <StayCard />, x: 237, y: 10, s: 0.89 },
-  { key: "b1", node: <DriftedButton n={1} />, x: 39, y: 382 },
-  { key: "b2", node: <DriftedButton n={2} />, x: 111, y: 402 },
-  { key: "b3", node: <DriftedButton n={3} />, x: 23, y: 429, phone: false },
-  { key: "b4", node: <DriftedButton n={4} />, x: 149, y: 443, phone: false },
-  { key: "b5", node: <DriftedButton n={5} />, x: 235, y: 422 },
-  { key: "t1", node: <TokenPin token="action.primary" swatch="var(--kit-action)" float swap />, x: 331, y: 440, s: 0.75, phone: false },
-  { key: "t2", node: <TokenPin token="accent" swatch="var(--color-semantic-accent)" float />, x: 349, y: 405, s: 0.75 },
+  { key: "after", node: <StayCard count={false} />, x: 270, y: 100, s: 0.86 },
+  { key: "before", node: <DriftedList />, x: 0, y: 0, s: 0.9 },
+  { key: "b1", node: <DriftedButton n={1} />, x: 8, y: 286 },
+  { key: "b2", node: <DriftedButton n={2} />, x: 84, y: 284 },
+  { key: "b3", node: <DriftedButton n={3} />, x: 8, y: 336, phone: false },
+  { key: "b4", node: <DriftedButton n={4} />, x: 124, y: 339 },
+  { key: "b5", node: <DriftedButton n={5} />, x: 8, y: 392 },
+  { key: "t2", node: <TokenPin token="accent" swatch="var(--color-semantic-accent)" float />, x: 114, y: 393, s: 0.75 },
+  { key: "t1", node: <TokenPin token="action.primary" swatch="var(--kit-action)" float swap />, x: 8, y: 440, s: 0.75, phone: false },
 ];
 
 /* "17 → 1 → everywhere" (Elleta, 5 Oct): the drift, the one button, and
@@ -61,7 +65,7 @@ export default function DriftCase() {
           meta={["Complex SaaS · B2B travel", "2024 to 2026"]}
           intro="A B2B travel platform had spent two years on a redesign with nothing live. I built its first design system from zero, wired the tokens to production, and the work started shipping."
           disclosure="Under NDA: visuals are my own, recreated; no client screens or data."
-          collage={{ label: HERO_LABEL, pieces: COLLAGE }}
+          collage={{ label: HERO_LABEL, pieces: COLLAGE, phone: <StayCard />, phoneLabel: "The Harbour loft stay card, built on the system: old town by the water, 4.9 stars from 23 reviews, 2 beds, 1 bath, Wi-Fi and parking, and one Book now button at 142 euros a night." }}
         />
       }
       showcase={<CaseShowcase label="Drift, in real UI" cards={SHOWCASE} hook="Change it once. It ships everywhere." />}
@@ -104,7 +108,7 @@ export default function DriftCase() {
         heading="From the whole file, down to one field, and back."
         lead="One overloaded design file, and code that didn’t match it. Zooming in showed the same input built again and again, each a little different."
       >
-        <CaseFigure n={3} replay inset caption="One file, one page, one frame, one field. Recreated from my audit deck.">
+        <CaseFigure n={3} replay caption="One file, one page, one frame, one field. Recreated from my audit deck.">
           <ZoomLevels />
         </CaseFigure>
       </Beat>
@@ -119,7 +123,6 @@ export default function DriftCase() {
         <CaseFigure
           n={4}
           replay
-          inset
           caption="Change it once in the foundation, and every button follows. Decide the colour once; the semantic name carries the meaning, and every vertical’s button reads that name. Recreated concept."
         >
           <TokenCascade />
@@ -131,7 +134,7 @@ export default function DriftCase() {
       </Beat>
 
       <Beat id="collaboration" num="3" label="Collaboration, and where it broke" heading="Nobody asked for a system.">
-        <CaseFigure n={6} replay inset caption="From one designer's side project to every team's.">
+        <CaseFigure n={6} replay caption="From one designer's side project to every team's.">
           <Rollout />
         </CaseFigure>
         <CaseQuote
@@ -148,7 +151,7 @@ export default function DriftCase() {
         heading="From a redesign that stalled to one that shipped."
         lead="Two years of redesign, and nothing live. Then the system gave every squad one language, and the work started landing."
       >
-        <CaseFigure n={7} replay inset caption="Each step is a product area shipped on the system. Order as on my list; not to scale.">
+        <CaseFigure n={7} replay caption="Each step is a product area shipped on the system. Order as on my list; not to scale.">
           <Staircase />
         </CaseFigure>
         <CaseFigure n={8} caption="A handful of small parts builds every product area. Recreated with BELLA; no client screens.">
@@ -197,7 +200,7 @@ export default function DriftCase() {
             href: "/case-studies/search-experts",
             meta: "B2B travel · Product",
             title: "Search for experts",
-            cover: <CoverSearch slot="work" label="A flight search result: Lisbon to Amsterdam, a direct morning flight at €89 with Select." />,
+            cover: <CoverSearch slot="work" label="A flight search result: Lisbon to Amsterdam, a direct morning flight, 08:10 to 11:55, at €89." />,
           },
         ]}
       />

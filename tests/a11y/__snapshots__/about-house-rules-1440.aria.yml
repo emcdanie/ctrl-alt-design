@@ -5,7 +5,7 @@
     - listitem:
       - heading "Kindness" [level=3]
       - paragraph: /Docs written for the person reading them at \d+[hmsp]+ on a Friday\./
-      - paragraph: /Proof:\sat \S+ I wrote the documentation even when I was told it wasn't important\./
+      - paragraph: "Proof: at a B2B travel platform I wrote the documentation even when I was told it wasn't important."
     - listitem:
       - heading "Respect" [level=3]
       - paragraph: For the designer's craft and the engineer's time. I check it can be built before I design it three ways.

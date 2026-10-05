@@ -128,10 +128,10 @@
   margin: var(--spacing-4) 0 0;
   padding: var(--spacing-4);
   border-radius: var(--radius-card);
-  background: var(--tint-l);
+  background: var(--tint);
+  color: var(--color-ink);
   transition: background-color 0.7s ease;
 }
-:global([data-theme="dark"]) .ex { background: var(--tint-d); }
 @media (min-width: 40.0625rem) {
   .ex { padding: calc(var(--spacing-6) + var(--spacing-1)); }
 }
@@ -146,7 +146,10 @@
   gap: calc(var(--spacing-2) + 2px);
   align-content: stretch;
 }
-@media (min-width: 43.75rem) {
+/* tiers 2 and 3 side by side only where a column holds the longest
+   token name on one line: the exhibit full width (700 to 959) or a wide
+   window (job 38: "button.background" broke at 1024) */
+@media (min-width: 43.75rem) and (max-width: 59.9375rem), (min-width: 72rem) {
   .sheets { grid-template-columns: 1fr 1fr; }
   .sheets > .sheet:first-child,
   .sheets > .gsheet { grid-column: 1 / -1; }
@@ -176,18 +179,21 @@
 .ramp i {
   height: 1.25rem;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--color-semantic-border);
+  border: 1px solid var(--color-semantic-border-strong);
   transition: background-color 0.6s;
 }
 .map {
   display: grid;
   gap: 3px;
 }
+/* a token name never breaks: name and value share a line when the
+   column has room, and the value drops under the name when it has not
+   (job 38: "button.ba/ckground" at 1024) */
 .mapRow {
   position: relative;
-  display: grid;
-  grid-template-columns: 0.875rem 1fr auto;
-  gap: var(--spacing-2);
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--spacing-2);
   align-items: center;
   width: 100%;
   padding: 1px var(--spacing-1);
@@ -207,11 +213,17 @@
   width: 0.875rem;
   height: 0.875rem;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--color-semantic-border);
+  border: 1px solid var(--color-semantic-border-strong);
   transition: background-color 0.6s;
 }
-.mapRow span { min-width: 0; overflow-wrap: anywhere; }
-.mapRow em { font-style: normal; color: var(--color-ink-muted); }
+.mapRow i { flex: none; }
+.mapRow span { white-space: nowrap; }
+.mapRow em {
+  margin-left: auto;
+  font-style: normal;
+  white-space: nowrap;
+  color: var(--color-ink-muted);
+}
 .mapRow.hot {
   background: var(--color-chip-c1);
   color: var(--color-chip-text);
@@ -230,8 +242,7 @@
 
 /* the gate: contrast on a log scale, 1 to 21 */
 .gate { display: grid; gap: var(--spacing-2); }
-.grow,
-.gscale {
+.grow {
   display: grid;
   grid-template-columns: 7.5rem 1fr 4rem 3.875rem;
   gap: calc(var(--spacing-2) + 2px);
@@ -288,23 +299,26 @@
 }
 .badge.no { background: transparent; color: var(--color-ink); box-shadow: inset 0 0 0 1px var(--color-ink); }
 .badgeOn { opacity: 1; transform: none; }
-.gscale {
+/* the scale's legend under the bars (job 38: numbers over the ticks collided) */
+.glegend {
+  margin: var(--spacing-1) 0 0;
   font-family: var(--font-code);
   font-size: var(--text-mono);
   font-feature-settings: var(--mono-feature);
   color: var(--color-ink-muted);
 }
-.gscale div { position: relative; height: 1.125rem; }
-.gscale div span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
-.gscale div span:last-child { transform: translateX(-100%); }
+/* a phone: label, ratio and grade on one line, the bar full width under
+   them (job 38 P0.1) */
 @media (max-width: 40rem) {
-  .grow,
-  .gscale {
-    grid-template-columns: 5.25rem 1fr 3.25rem 3.5rem;
-    gap: calc(var(--spacing-1) + 2px);
+  .grow {
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas: "label value badge" "track track track";
+    row-gap: var(--spacing-1);
   }
-  /* the scale numbers collide on a phone; the badges carry the grade */
-  .gscale { display: none; }
+  .growLabel { grid-area: label; }
+  .track { grid-area: track; }
+  .growValue { grid-area: value; }
+  .badge { grid-area: badge; }
 }
 
 /* the caption: theme name, bottom left on wide screens */
@@ -452,15 +466,16 @@
   font-size: var(--typography-font-size-base);
   line-height: 1.25;
 }
-/* tag.fill reads accent; its label is whichever of ink or ground reads on it */
+/* tag.fill reads panel (job 38: no ochre on the "new" tag), its label ink */
 .pvPill {
   position: absolute;
   left: var(--spacing-2);
   bottom: var(--spacing-2);
   padding: 1px var(--spacing-2);
   border-radius: var(--radius-full);
-  background: var(--t-accent);
-  color: var(--t-on-accent);
+  border: 1px solid var(--t-line);
+  background: var(--t-panel);
+  color: var(--t-ink);
   font-size: var(--typography-font-size-tag);
   font-weight: 500;
 }
@@ -577,6 +592,7 @@
   font-feature-settings: var(--mono-feature);
   overflow-wrap: anywhere;
 }
+.askSide code { overflow-wrap: normal; }
 .askLbl,
 .askHex { color: var(--color-ink-muted); }
 .askSide code { color: var(--color-ink); }
@@ -756,7 +772,9 @@
 .pipe svg[data-bella-diagram] { margin-inline: auto; }
 .pipeWide { display: none !important; max-width: 62.5rem; }
 .pipeNarrow { max-width: 21.25rem; }
-@media (min-width: 64rem) {
+/* the row of five needs 1280px to keep its words at 14px; below that
+   the stacked drawing shows (job 38) */
+@media (min-width: 80rem) {
   .pipeWide { display: block !important; }
   .pipeNarrow { display: none !important; }
 }
@@ -775,6 +793,11 @@
   transition: fill 0.3s;
 }
 .t2 { transition: fill 0.3s; }
+/* figure text at least 14px on screen (job 38): 14.5 user units holds it
+   at the drawing's smallest scale */
+.pipe svg :global(.t) { font-size: 14.5px; } /* token-waiver: SVG user units, not CSS px */
+.pipeNarrow .t1 { font-size: 17px; } /* token-waiver: SVG user units; the stack renders at 0.9 on a phone */
+.pipe .pipeNarrow :global(.t) { font-size: 16.5px; } /* token-waiver: SVG user units, as above */
 .lit .bx { fill: var(--color-chip-c1); stroke: var(--color-ink); }
 .pass .bx { fill: var(--color-chip-c3); stroke: var(--color-ink); }
 .lit .t1,
@@ -912,7 +935,7 @@
 
 /* ── Site v3 (4 Oct 2026, Figma 420:12279): the case on the template ── */
 
-/* decisions: three cells on the body edge, an ochre dot each */
+/* decisions: three cells on the body edge, a neutral dot each (job 38) */
 .cells {
   list-style: none;
   margin-block: 0;
@@ -938,7 +961,7 @@
   width: var(--spacing-2);
   height: var(--spacing-2);
   border-radius: var(--radius-pill);
-  background: var(--color-semantic-accent);
+  background: var(--color-semantic-border-strong);
 }
 
 .cells b {
@@ -993,25 +1016,53 @@
   color: var(--color-semantic-text-body);
 }
 
+/* pinned panels (job 38): a panel that names a mode renders in it,
+   whatever the page's mode. The site's light tokens live on :root only
+   and its inks flip on body, so a nested data-theme alone cannot reset
+   them; each pin restates the roles the panels read from BELLA's light
+   or dark primitives. */
+.pinLight,
+.pinDark {
+  color: var(--color-ink);
+}
+.pinLight {
+  --color-ink: var(--color-light-ink);
+  --color-ink-muted: var(--color-light-muted);
+  --color-semantic-text-primary: var(--color-light-ink);
+  --color-semantic-text-secondary: var(--color-light-muted);
+  --color-semantic-background: var(--color-light-bg);
+  --color-semantic-surface: var(--color-light-panel);
+  --color-semantic-border: var(--color-light-line);
+  --color-semantic-border-strong: var(--color-light-control);
+}
+.pinDark {
+  --color-ink: var(--color-dark-ink);
+  --color-ink-muted: var(--color-dark-muted);
+  --color-semantic-text-primary: var(--color-dark-ink);
+  --color-semantic-text-secondary: var(--color-dark-muted);
+  --color-semantic-background: var(--color-dark-bg);
+  --color-semantic-surface: var(--color-dark-surface);
+  --color-semantic-border: var(--color-dark-line);
+  --color-semantic-border-strong: var(--color-dark-control);
+}
+
+/* OneName's two sides, each on the ground of the mode it names */
+.askSide.pinLight,
+.askSide.pinDark {
+  padding: var(--spacing-3);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-background);
+}
+
 /* a code window drawn dark in both themes (the repo excerpts) */
-.winDark {
-  border-color: var(--color-semantic-background-inverse);
-  background: var(--color-semantic-background-inverse);
-  color: var(--color-semantic-text-inverse);
-}
+.win.pinDark header { background: var(--color-semantic-surface); }
 
-.winDark header {
-  background: color-mix(in srgb, var(--color-semantic-text-inverse) 8%, var(--color-semantic-background-inverse));
-  border-bottom-color: transparent;
-}
-
-.winDark .winPath,
-.winDark .hl,
-.winDark .k,
-.winDark .r,
-.winDark .v,
-.winDark .c {
-  color: var(--color-semantic-text-inverse);
+/* in the dark window a token path is ink, not a chip */
+.pinDark .r {
+  padding: 0;
+  background: transparent;
+  color: var(--color-ink);
 }
 
 .repo .code {
@@ -1060,28 +1111,14 @@
 }
 
 .sbTable code {
+  color: var(--color-ink);
   font-family: var(--font-code);
   font-size: var(--text-label);
 }
 
-.sbHex {
+.sbTable .sbHex {
   margin-left: auto;
   color: var(--color-semantic-text-secondary);
-}
-
-/* the dark answer stays dark in both themes: it is the dark theme's table */
-.sbDark {
-  border-color: var(--color-semantic-background-inverse);
-  background: var(--color-semantic-background-inverse);
-  color: var(--color-semantic-text-inverse);
-}
-
-.sbDark li {
-  border-top-color: color-mix(in srgb, var(--color-semantic-text-inverse) 14%, transparent);
-}
-
-.sbDark .sbHex {
-  color: var(--color-semantic-text-inverse);
 }
 
 .sbSwatch {
@@ -1122,7 +1159,3 @@
   }
 }
 
-.winDark .r {
-  padding: 0;
-  background: transparent;
-}

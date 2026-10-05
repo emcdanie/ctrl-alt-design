@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Container from "@/components/layout/Container";
 import Heading from "@/components/ui/Heading";
 import CaseCollage, { type CollagePiece } from "./CaseCollage";
@@ -29,7 +30,9 @@ export default function CaseHero({
   intro: string;
   /** Body/Small under the intro (an NDA or concept-mock line) */
   disclosure?: string;
-  collage: { label: string; pieces: CollagePiece[] };
+  /** `phone`: the one readable card the 390 frame shows instead of the
+   *  collage, at its own size (job 38: no shrunk collage on a phone) */
+  collage: { label: string; pieces: CollagePiece[]; phone?: ReactNode; phoneLabel?: string };
 }) {
   return (
     <div className={`case-hero ${styles.heroBand}`}>
@@ -48,7 +51,7 @@ export default function CaseHero({
             <p className={styles.heroIntro}>{intro}</p>
             {disclosure ? <p className={styles.heroDisclosure}>{disclosure}</p> : null}
           </div>
-          <CaseCollage label={collage.label} pieces={collage.pieces} />
+          <CaseCollage label={collage.label} pieces={collage.pieces} phone={collage.phone} phoneLabel={collage.phoneLabel} />
         </div>
       </Container>
     </div>

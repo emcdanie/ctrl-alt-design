@@ -19,6 +19,8 @@ export interface Theme {
   /** the picker swatch: page ground and its answer colour */
   swatch: [string, string];
   note: string;
+  /** the mode the theme is: the exhibit pins its panel to it */
+  mode: "light" | "dark";
 }
 
 export type ThemeKey = "ground" | "night" | "coast" | "market";
@@ -50,6 +52,7 @@ export const THEMES: Record<ThemeKey, Theme> = {
     tint: ["#e9e8e4", "#1b1b1b"], // token-waiver: exhibit wash per theme (mock)
     swatch: ["#ffffff", "#121212"], // token-waiver: picker swatch data
     note: "BELLA · light",
+    mode: "light",
   },
   night: {
     name: "night",
@@ -59,6 +62,7 @@ export const THEMES: Record<ThemeKey, Theme> = {
     tint: ["#d9d8dd", "#232228"], // token-waiver: exhibit wash per theme (mock)
     swatch: ["#0d0d0d", "#ededed"], // token-waiver: picker swatch data
     note: "BELLA · dark",
+    mode: "dark",
   },
   coast: {
     name: "coast",
@@ -68,6 +72,7 @@ export const THEMES: Record<ThemeKey, Theme> = {
     tint: ["#f3dccb", "#2a2320"], // token-waiver: exhibit wash per theme (mock)
     swatch: ["#f6f4ef", "#1f5f7a"], // token-waiver: picker swatch data
     note: "demo brand",
+    mode: "light",
   },
   market: {
     name: "market",
@@ -77,6 +82,7 @@ export const THEMES: Record<ThemeKey, Theme> = {
     tint: ["#d7ebe2", "#1b2622"], // token-waiver: exhibit wash per theme (mock)
     swatch: ["#ffffff", "#0a7a5c"], // token-waiver: picker swatch data
     note: "demo brand",
+    mode: "light",
   },
 };
 
@@ -92,14 +98,15 @@ export const COMPONENT_SLOTS: [string, Role][] = [
   ["card.border", "line"],
   ["card.surface", "bg"],
   ["image.well", "panel"],
-  ["tag.fill", "accent"],
+  ["tag.fill", "panel"],
+  ["rating.star", "accent"],
   ["text.meta", "muted"],
   ["input.border", "border-strong"],
 ];
 export const SEMANTIC_ROWS: Role[] = ["bg", "panel", "line", "muted", "ink", "action", "accent"];
 export const JSON_ROLES: Role[] = ["bg", "panel", "line", "muted", "ink", "action", "on-action", "accent"];
 
-/* the preview reads ten custom properties: nine roles and the tag label */
+/* the preview reads nine custom properties, one per role */
 export function themeVars(t: Theme): CSSProperties {
   return {
     "--t-bg": val(t, "bg"),
@@ -111,8 +118,6 @@ export function themeVars(t: Theme): CSSProperties {
     "--t-on-action": val(t, "on-action"),
     "--t-accent": val(t, "accent"),
     "--t-border": val(t, "border-strong"),
-    /* the tag's label: whichever of ink or ground reads better on accent */
-    "--t-on-accent": ratio(val(t, "ink"), val(t, "accent")) >= ratio(val(t, "bg"), val(t, "accent")) ? val(t, "ink") : val(t, "bg"),
   } as CSSProperties;
 }
 

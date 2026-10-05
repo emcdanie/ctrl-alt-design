@@ -1,13 +1,26 @@
 import type { CSSProperties, ReactNode } from "react";
 import ScaledArt from "@/components/case/ScaledArt";
+import Swipe from "@/components/case/Swipe";
+import caseStyles from "@/components/case/Case.module.css";
 import { KitAvatar, KitButton, KitChip, KitInput, KitPanel, KitStatus, KitTag, KitUserRow, MarkupBadge, MarkupNote, MarkupRing, kitLeader } from "@/components/case/kit/Kit";
 import s from "./DriftPictures.module.css";
 
 /* Drift figures 1, 2 and 8 (and the hero pieces) as live pictures (Site v3, Figma e7U5Hxpr441rT719SPclas:
    Visual · Team survey 293:2239, Visual · 17 buttons audit 293:2284, Visual ·
    Shipped on the system 293:3253). Each is drawn at its 1440 design size and
-   scaled to fit the stage (the 390 frames are the same picture, scaled). A
-   picture names itself with role="img"; everything inside is aria-hidden. */
+   scaled to fit the stage above 640px; below it, a swipe of full-size
+   panels (job 38: no shrunk desktop picture on a phone, text 14px or
+   more). A picture or panel names itself with role="img"; everything
+   inside is aria-hidden. */
+
+/** one phone swipe panel: names itself, its inside is aria-hidden */
+function Panel({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div role="img" aria-label={label} className={s.panel}>
+      <div aria-hidden="true">{children}</div>
+    </div>
+  );
+}
 
 const AVATAR = "/images/kit";
 
@@ -20,45 +33,76 @@ const FINDINGS: [string, string, string, string][] = [
   ["More than half", "spent", "an hour or more a week", "helping customers book."],
 ];
 
+const FINDING_SHORT = ["walked through", "changing", "lost a booking", "an hour a week"];
+
+const findingText = ([lead, verb, mark, rest]: (typeof FINDINGS)[number]) =>
+  `${lead} ${verb} ${mark}${rest === "." ? "." : ` ${rest}`}`;
+
 export function DriftSurvey() {
   return (
-    <div
-      className={s.root}
-      style={{ "--art-w": 944 } as CSSProperties}
-      role="img"
-      aria-label="What support and sales told me, from my survey of 28 people: most had walked a customer through a booking; more than half said changing a booking was hard; more than 4 in 10 had lost a booking to complexity; more than half spent an hour or more a week helping customers book."
-    >
-      <ScaledArt width={1008}>
-        <div className={s.bleed} aria-hidden="true">
-          <KitPanel className={s.survey}>
-            <div className={s.surveyHead}>
-              <span className={s.surveyEyebrow}>WHAT SUPPORT AND SALES TOLD ME</span>
-              <span className={s.surveyMeta}>My survey of 28 people in support and sales, in words</span>
-            </div>
-            {FINDINGS.map(([lead, verb, mark, rest], i) => (
-              <div className={s.finding} key={i}>
-                <span className={s.findingNum}>{String(i + 1).padStart(2, "0")}</span>
-                <span className={s.findingLine}>
-                  <span className={s.findingLead}>{lead}</span>
-                  <span className={s.findingWord}>{verb}</span>
-                  {rest === "." ? (
-                    <span className={s.findingStop}>
-                      <span className={s.findingMark}>{mark}</span>
-                      <span className={s.findingWord}>{rest}</span>
-                    </span>
-                  ) : (
-                    <>
-                      <span className={s.findingMark}>{mark}</span>
-                      <span className={s.findingWord}>{rest}</span>
-                    </>
-                  )}
-                </span>
+    <>
+      <div
+        className={`${s.root} ${caseStyles.wideOnly}`}
+        style={{ "--art-w": 944 } as CSSProperties}
+        role="img"
+        aria-label="What support and sales told me, from my survey of 28 people: most had walked a customer through a booking; more than half said changing a booking was hard; more than 4 in 10 had lost a booking to complexity; more than half spent an hour or more a week helping customers book."
+      >
+        <ScaledArt width={1008}>
+          <div className={s.bleed} aria-hidden="true">
+            <KitPanel className={s.survey}>
+              <div className={s.surveyHead}>
+                <span className={s.surveyEyebrow}>WHAT SUPPORT AND SALES TOLD ME</span>
+                <span className={s.surveyMeta}>My survey of 28 people in support and sales, in words</span>
               </div>
-            ))}
-          </KitPanel>
-        </div>
-      </ScaledArt>
-    </div>
+              {FINDINGS.map(([lead, verb, mark, rest], i) => (
+                <div className={s.finding} key={i}>
+                  <span className={s.findingNum}>{String(i + 1).padStart(2, "0")}</span>
+                  <span className={s.findingLine}>
+                    <span className={s.findingLead}>{lead}</span>
+                    <span className={s.findingWord}>{verb}</span>
+                    {rest === "." ? (
+                      <span className={s.findingStop}>
+                        <span className={s.findingMark}>{mark}</span>
+                        <span className={s.findingWord}>{rest}</span>
+                      </span>
+                    ) : (
+                      <>
+                        <span className={s.findingMark}>{mark}</span>
+                        <span className={s.findingWord}>{rest}</span>
+                      </>
+                    )}
+                  </span>
+                </div>
+              ))}
+            </KitPanel>
+          </div>
+        </ScaledArt>
+      </div>
+      <div className={caseStyles.phoneOnly}>
+        <Swipe
+          label="What support and sales told me: four findings"
+          items={FINDINGS.map((f, i) => ({
+            key: f[2],
+            short: FINDING_SHORT[i],
+            node: (
+              <Panel label={`Finding ${i + 1} of 4, from my survey of 28 people in support and sales: ${findingText(f)}`}>
+                <KitPanel className={s.phoneCard}>
+                  <span className={s.phoneEyebrow}>
+                    {String(i + 1).padStart(2, "0")} · what support and sales told me
+                  </span>
+                  <span className={s.phoneFinding}>
+                    <span className={s.findingLead}>{f[0]}</span> <span className={s.findingWord}>{f[1]}</span>{" "}
+                    <span className={s.findingMark}>{f[2]}</span>
+                    {f[3] === "." ? <span className={s.findingWord}>.</span> : <span className={s.findingWord}> {f[3]}</span>}
+                  </span>
+                  <span className={s.phoneMeta}>My survey of 28 people in support and sales, in words</span>
+                </KitPanel>
+              </Panel>
+            ),
+          }))}
+        />
+      </div>
+    </>
   );
 }
 
@@ -93,66 +137,139 @@ function arrowHead(x: number, y: number, dir: 1 | -1) {
   return `M${x - dir * 6.55} ${y - 4.68} L${x} ${y} L${x - dir * 6.55} ${y + 4.68}`;
 }
 
+/* the phone panel 2: each callout with the button it names (DRIFTED
+   numbers, the same buttons the wide picture's leaders point at) */
+const NOTE_BUTTON: [string, number][] = [
+  ["Square corners", 1],
+  ["No radius at all", 5],
+  ["All caps", 10],
+  ["Full pill", 12],
+  ["Second font", 13],
+  ["Light weight, pale", 16],
+];
+
 export function DriftButtons() {
   return (
-    <div
-      className={s.root}
-      style={{ "--art-w": 928 } as CSSProperties}
-      role="img"
-      aria-label="Buttons in production: 17 buttons that all mean 'book a stay', labelled for their differences: square corners, no radius at all, all caps, full pill, a second font, light weight and pale. The set is tagged Drifted; one is ringed and tagged Kept, the one the system kept."
-    >
-      <ScaledArt width={992}>
-        <div className={s.bleed} aria-hidden="true">
-          <div className={s.buttonsArt}>
-            <KitPanel className={s.auditCard}>
-              <div className={s.auditHead}>
-                <span className={s.auditTitle}>
-                  Buttons in production <span className={s.auditCount}>17</span>
+    <>
+      <div
+        className={`${s.root} ${caseStyles.wideOnly}`}
+        style={{ "--art-w": 928 } as CSSProperties}
+        role="img"
+        aria-label="Buttons in production: 17 buttons that all mean 'book a stay', labelled for their differences: square corners, no radius at all, all caps, full pill, a second font, light weight and pale. The set is tagged Drifted; one is ringed and tagged Kept, the one the system kept."
+      >
+        <ScaledArt width={992}>
+          <div className={s.bleed} aria-hidden="true">
+            <div className={s.buttonsArt}>
+              <KitPanel className={s.auditCard}>
+                <div className={s.auditHead}>
+                  <span className={s.auditTitle}>
+                    Buttons in production <span className={s.auditCount}>17</span>
+                  </span>
+                  <span className={s.auditFilter}>One job: book a stay</span>
+                </div>
+                <div className={s.auditButtons}>
+                  {/* the drift itself: off-brand fills that miss AA on purpose, so a
+                     flat picture, never live DOM (CLAUDE.md section 9) */}
+                  <img className={s.drifted} src="/images/kit/drift-17-buttons.svg" width={501} height={236} alt="" />
+                  {/* RESERVE's near-black fill sinks into the dark card: an edge
+                     in the border token, dark theme only (job 38) */}
+                  <span className={s.reserveEdge} />
+                  <span className={s.kept}>
+                    <MarkupRing />
+                    <KitButton className={s.keptButton}>Book now</KitButton>
+                  </span>
+                  {/* the verdicts sit inside the card's bottom edge (Elleta,
+                     5 Oct): "Drifted" for the set, and "Kept" on a leader
+                     that drops from the ring through the row-4 gutter */}
+                  <svg className={s.keptLeader} viewBox="0 0 12 80" width="12" height="80">
+                    <circle className={s.leaderDot} cx="6" cy="2.9" r="2.9" />
+                    <path className={kitLeader} d="M6 2.9V80" />
+                  </svg>
+                  <MarkupBadge kind="fail" className={s.auditFail}>
+                    Drifted
+                  </MarkupBadge>
+                  <MarkupBadge kind="pass" className={s.keptTag}>
+                    Kept
+                  </MarkupBadge>
+                </div>
+              </KitPanel>
+              <svg className={s.overlay} viewBox="0 0 928 370.45" width="928" height="370.45">
+                {BUTTON_LEADERS.map(([a, b, y]) => (
+                  <g key={`${a}-${y}`} className={kitLeader}>
+                    <path d={`M${a} ${y} H${b}`} />
+                    <path d={arrowHead(b, y, b > a ? 1 : -1)} className={s.arrowHead} />
+                  </g>
+                ))}
+              </svg>
+              {NOTES.map(([label, side, y]) => (
+                <span key={label} className={s.calloutSlot} data-side={side} style={{ top: y }}>
+                  <MarkupNote tone="neutral" dot className={s.callout}>
+                    {label}
+                  </MarkupNote>
                 </span>
-                <span className={s.auditFilter}>One job: book a stay</span>
-              </div>
-              <div className={s.auditButtons}>
-                {/* the drift itself: off-brand fills that miss AA on purpose, so a
-                   flat picture, never live DOM (CLAUDE.md section 9) */}
-                <img className={s.drifted} src="/images/kit/drift-17-buttons.svg" width={501} height={236} alt="" />
-                <span className={s.kept}>
-                  <MarkupRing />
-                  <KitButton className={s.keptButton}>Book now</KitButton>
-                </span>
-                {/* the verdicts sit inside the card's bottom edge (Elleta,
-                   5 Oct): "Drifted" for the set, and "Kept" on a leader
-                   that drops from the ring through the row-4 gutter */}
-                <svg className={s.keptLeader} viewBox="0 0 12 80" width="12" height="80">
-                  <circle className={s.leaderDot} cx="6" cy="2.9" r="2.9" />
-                  <path className={kitLeader} d="M6 2.9V80" />
-                </svg>
-                <MarkupBadge kind="fail" className={s.auditFail}>
-                  Drifted
-                </MarkupBadge>
-                <MarkupBadge kind="pass" className={s.keptTag}>
-                  Kept
-                </MarkupBadge>
-              </div>
-            </KitPanel>
-            <svg className={s.overlay} viewBox="0 0 928 370.45" width="928" height="370.45">
-              {BUTTON_LEADERS.map(([a, b, y]) => (
-                <g key={`${a}-${y}`} className={kitLeader}>
-                  <path d={`M${a} ${y} H${b}`} />
-                  <path d={arrowHead(b, y, b > a ? 1 : -1)} className={s.arrowHead} />
-                </g>
               ))}
-            </svg>
-            {NOTES.map(([label, side, y]) => (
-              <span key={label} className={s.calloutSlot} data-side={side} style={{ top: y }}>
-                <MarkupNote tone="neutral" dot className={s.callout}>
-                  {label}
-                </MarkupNote>
-              </span>
-            ))}
+            </div>
           </div>
-        </div>
-      </ScaledArt>
-    </div>
+        </ScaledArt>
+      </div>
+      <div className={caseStyles.phoneOnly}>
+        <Swipe
+          label="Buttons in production, 17 for one job"
+          items={[
+            {
+              key: "set",
+              short: "the set",
+              node: (
+                <Panel label="Buttons in production: 17 buttons that all mean 'book a stay', each its own fill, radius and type. The set is tagged Drifted; the ringed Book now is tagged Kept, the one the system kept.">
+                  <KitPanel className={s.phoneCard}>
+                    <span className={s.phoneHead}>
+                      <span className={s.auditTitle}>
+                        Buttons in production <span className={s.auditCount}>17</span>
+                      </span>
+                      <span className={s.auditFilter}>One job: book a stay</span>
+                    </span>
+                    <span className={s.phoneSet}>
+                      {DRIFTED.map((_, k) => (
+                        <DriftedButton key={k} n={k + 1} />
+                      ))}
+                      <span className={s.ringed}>
+                        <KitButton className={s.phoneKept}>Book now</KitButton>
+                        <MarkupRing />
+                      </span>
+                    </span>
+                    <span className={s.phoneVerdicts}>
+                      <MarkupBadge kind="fail">Drifted</MarkupBadge>
+                      <MarkupBadge kind="pass">Kept</MarkupBadge>
+                    </span>
+                  </KitPanel>
+                </Panel>
+              ),
+            },
+            {
+              key: "notes",
+              short: "what drifted",
+              node: (
+                <Panel label="What drifted, six differences: Book with square corners; RESERVE with no radius at all; BOOK in all caps; Confirm as a full pill; RESERVE NOW in a second font; Select room in a light, pale weight.">
+                  <KitPanel className={s.phoneCard}>
+                    <span className={s.auditTitle}>What drifted</span>
+                    <span className={s.phoneNotes}>
+                      {NOTE_BUTTON.map(([label, n]) => (
+                        <span key={label} className={s.phoneNote}>
+                          <MarkupNote tone="neutral" dot className={s.phoneCallout}>
+                            {label}
+                          </MarkupNote>
+                          <DriftedButton n={n} />
+                        </span>
+                      ))}
+                    </span>
+                  </KitPanel>
+                </Panel>
+              ),
+            },
+          ]}
+        />
+      </div>
+    </>
   );
 }
 
@@ -194,150 +311,237 @@ function CarrierMark() {
 const ATOMS: [string, ReactNode][] = [
   [
     "Input",
-    <KitInput key="i" className={s.atomInput}>
+    <KitInput key="i" className={`${s.atomInput} ${s.kitFloor}`}>
       Where to?
     </KitInput>,
   ],
   [
     "Chip",
-    <KitChip key="c" selected>
+    <KitChip key="c" selected className={s.kitFloor}>
       Direct
     </KitChip>,
   ],
   [
     "Button",
-    <KitButton key="b" size="sm">
+    <KitButton key="b" size="sm" className={s.kitFloor}>
       Book
     </KitButton>,
   ],
   ["Avatar", <KitAvatar key="a" src={`${AVATAR}/drift-avatar-atom.jpg`} size={32} />],
-  ["Tag", <KitTag key="t">Admin</KitTag>],
+  ["Tag", <KitTag key="t" className={s.kitFloor}>Admin</KitTag>],
+];
+
+/* Figure 8's parts, drawn once: the wide picture places them, the phone
+   swipe shows one per panel */
+function AtomsPanel({ className }: { className: string }) {
+  return (
+    <KitPanel className={className}>
+      <span className={s.atomsTitle}>Atoms</span>
+      <span className={s.atomsLead}>Small parts, designed once.</span>
+      <span className={s.atomRows}>
+        {ATOMS.map(([label]) => (
+          <AtomRow key={label} atom={label} />
+        ))}
+      </span>
+    </KitPanel>
+  );
+}
+
+/** `short`: the phone panel's search reads only the route, so the field
+ *  fits the panel without wrapping */
+function SearchArea({ short = false }: { short?: boolean }) {
+  return (
+    <KitPanel className={s.area}>
+      <span className={s.areaHead}>
+        <span className={s.areaTitle}>Search</span>
+        <KitStatus className={s.kitFloor}>Live</KitStatus>
+      </span>
+      <span className={s.searchRow}>
+        <span className={s.ringed}>
+          <KitInput search className={`${s.searchInput} ${s.kitFloor}`}>
+            {short ? <>Lisbon {"→"} Amsterdam</> : <>Lisbon {"→"} Amsterdam {"·"} 12 Oct {"·"} 1 adult</>}
+          </KitInput>
+          <MarkupRing />
+        </span>
+        <span className={s.ringed}>
+          <KitChip selected className={s.kitFloor}>
+            Direct
+          </KitChip>
+          <MarkupRing />
+        </span>
+        <KitChip className={s.kitFloor}>Morning</KitChip>
+      </span>
+      <span className={s.result}>
+        <CarrierMark />
+        <span className={s.times}>
+          <span className={s.timesMain}>08:10 {"→"} 11:55</span>
+          <span className={s.timesSub}>
+            LIS {"·"} AMS {"·"} 2h 45m, direct
+          </span>
+        </span>
+        <span className={s.price}>{"€"}89</span>
+        <span className={s.ringed}>
+          <KitButton size="sm" className={s.kitFloor}>
+            Select
+          </KitButton>
+          <MarkupRing />
+        </span>
+      </span>
+    </KitPanel>
+  );
+}
+
+function CheckoutArea() {
+  return (
+    <KitPanel className={s.area}>
+      <span className={s.areaHead}>
+        <span className={s.areaTitle}>Checkout and payment</span>
+        <KitStatus className={s.kitFloor}>Live</KitStatus>
+      </span>
+      <span className={s.line}>
+        <span>Harbour loft, 3 nights</span>
+        <span>{"€"}426</span>
+      </span>
+      <span className={s.line}>
+        <span>Taxes and fees</span>
+        <span>{"€"}12</span>
+      </span>
+      <span className={s.payRow}>
+        <span className={s.totalStack}>
+          <span className={s.totalLabel}>Total</span>
+          <span className={s.totalValue}>{"€"}438</span>
+        </span>
+        <span className={s.pay}>
+          <span className={s.secure}>
+            <LockGlyph />
+            Secure
+          </span>
+          <span className={s.ringed}>
+            <KitButton size="sm" className={s.kitFloor}>
+              Pay {"€"}438
+            </KitButton>
+            <MarkupRing />
+          </span>
+        </span>
+      </span>
+    </KitPanel>
+  );
+}
+
+function UsersArea() {
+  return (
+    <KitPanel className={s.area}>
+      <span className={s.areaHead}>
+        <span className={s.areaTitle}>Users and roles</span>
+        <KitStatus className={s.kitFloor}>Live</KitStatus>
+      </span>
+      <span className={s.users}>
+        <KitUserRow avatar={`${AVATAR}/drift-avatar-ana.jpg`} name="Ana Rossi" email="ana@company.example" role="Admin" />
+        <KitUserRow avatar={`${AVATAR}/drift-avatar-marc.jpg`} name="Marc Silva" email="marc@company.example" role="Editor" />
+        <KitUserRow avatar={`${AVATAR}/drift-avatar-lena.jpg`} name="Lena Novak" email="lena@company.example" role="Viewer" />
+      </span>
+    </KitPanel>
+  );
+}
+
+function AlsoLive({ className }: { className: string }) {
+  return (
+    <span className={className}>
+      <span className={s.alsoLabel}>Also live on the system:</span>
+      {["Design system", "Flights", "Cars"].map((area) => (
+        <span className={s.alsoChip} key={area}>
+          <span className={s.alsoDot} />
+          {area}
+        </span>
+      ))}
+      <span className={s.alsoNext}>Next: flight extras, nearly done</span>
+    </span>
+  );
+}
+
+const SHIPPED_PANELS: { key: string; short: string; label: string; node: ReactNode }[] = [
+  {
+    key: "atoms",
+    short: "atoms",
+    label: "Atoms, small parts designed once: an input, a chip, a button, an avatar and a tag.",
+    node: <AtomsPanel className={s.atoms} />,
+  },
+  {
+    key: "search",
+    short: "search",
+    label: "Search, live on the system: the input, the Direct chip and the Select button are the atoms, ringed.",
+    node: <SearchArea short />,
+  },
+  {
+    key: "checkout",
+    short: "checkout",
+    label: "Checkout and payment, live on the system: the Pay button is the button atom, ringed.",
+    node: <CheckoutArea />,
+  },
+  {
+    key: "users",
+    short: "users and roles",
+    label: "Users and roles, live on the system: three people built from the avatar and tag atoms, tagged Admin, Editor and Viewer.",
+    node: <UsersArea />,
+  },
+  {
+    key: "also",
+    short: "also live",
+    label: "Also live on the system: Design system, Flights, Cars. Next: flight extras, nearly done.",
+    node: <AlsoLive className={s.alsoPanel} />,
+  },
 ];
 
 export function DriftShipped() {
   return (
-    <div
-      className={s.root}
-      style={{ "--art-w": 960 } as CSSProperties}
-      role="img"
-      aria-label="Atoms, small parts designed once (input, chip, button, avatar, tag), wired to the product areas they build: Search, Checkout and payment, and Users and roles, each marked Live. Also live on the system: Design system, Flights, Cars. Next: flight extras, nearly done."
-    >
-      <ScaledArt width={1024}>
-        <div className={s.bleed} aria-hidden="true">
-          <div className={s.shippedArt}>
-            <KitPanel className={s.atoms}>
-              <span className={s.atomsTitle}>Atoms</span>
-              <span className={s.atomsLead}>Small parts, designed once.</span>
-              <span className={s.atomRows}>
-                {ATOMS.map(([label]) => (
-                  <AtomRow key={label} atom={label} />
-                ))}
+    <>
+      <div
+        className={`${s.root} ${caseStyles.wideOnly}`}
+        style={{ "--art-w": 960 } as CSSProperties}
+        role="img"
+        aria-label="Atoms, small parts designed once (input, chip, button, avatar, tag), wired to the product areas they build: Search, Checkout and payment, and Users and roles, each marked Live. Also live on the system: Design system, Flights, Cars. Next: flight extras, nearly done."
+      >
+        <ScaledArt width={1024}>
+          <div className={s.bleed} aria-hidden="true">
+            <div className={`${s.shippedArt} ${s.floor}`}>
+              <AtomsPanel className={`${s.atoms} ${s.atomsAt}`} />
+
+              <span className={s.areas}>
+                <SearchArea />
+                <CheckoutArea />
+                <UsersArea />
               </span>
-            </KitPanel>
 
-            <span className={s.areas}>
-              <KitPanel className={s.area}>
-                <span className={s.areaHead}>
-                  <span className={s.areaTitle}>Search</span>
-                  <KitStatus>Live</KitStatus>
-                </span>
-                <span className={s.searchRow}>
-                  <span className={s.ringed}>
-                    <KitInput search className={s.searchInput}>
-                      Lisbon {"→"} Amsterdam {"·"} 12 Oct {"·"} 1 adult
-                    </KitInput>
-                    <MarkupRing />
-                  </span>
-                  <span className={s.ringed}>
-                    <KitChip selected>Direct</KitChip>
-                    <MarkupRing />
-                  </span>
-                  <KitChip>Morning</KitChip>
-                </span>
-                <span className={s.result}>
-                  <CarrierMark />
-                  <span className={s.times}>
-                    <span className={s.timesMain}>08:10 {"→"} 11:55</span>
-                    <span className={s.timesSub}>
-                      LIS {"·"} AMS {"·"} 2h 45m, direct
-                    </span>
-                  </span>
-                  <span className={s.price}>{"€"}89</span>
-                  <span className={s.ringed}>
-                    <KitButton size="sm">Select</KitButton>
-                    <MarkupRing />
-                  </span>
-                </span>
-              </KitPanel>
+              <svg className={s.overlay} viewBox="0 0 928 674.73" width="960" height="698">
+                {ATOM_LEADERS.map(([fy, ex, ty]) => (
+                  <g key={`${fy}-${ex}`}>
+                    <path className={kitLeader} d={`M${DOT_X} ${fy} H${ex} V${ty} H${END_X}`} />
+                    <path className={`${kitLeader} ${s.arrowHead}`} d={arrowHead(END_X, ty, 1)} />
+                    <circle className={s.leaderDot} cx={DOT_X + 2.9} cy={fy} r="2.9" />
+                  </g>
+                ))}
+              </svg>
 
-              <KitPanel className={s.area}>
-                <span className={s.areaHead}>
-                  <span className={s.areaTitle}>Checkout and payment</span>
-                  <KitStatus>Live</KitStatus>
-                </span>
-                <span className={s.line}>
-                  <span>Harbour loft, 3 nights</span>
-                  <span>{"€"}426</span>
-                </span>
-                <span className={s.line}>
-                  <span>Taxes and fees</span>
-                  <span>{"€"}12</span>
-                </span>
-                <span className={s.payRow}>
-                  <span className={s.totalStack}>
-                    <span className={s.totalLabel}>Total</span>
-                    <span className={s.totalValue}>{"€"}438</span>
-                  </span>
-                  <span className={s.pay}>
-                    <span className={s.secure}>
-                      <LockGlyph />
-                      Secure
-                    </span>
-                    <span className={s.ringed}>
-                      <KitButton size="sm">Pay {"€"}438</KitButton>
-                      <MarkupRing />
-                    </span>
-                  </span>
-                </span>
-              </KitPanel>
-
-              <KitPanel className={s.area}>
-                <span className={s.areaHead}>
-                  <span className={s.areaTitle}>Users and roles</span>
-                  <KitStatus>Live</KitStatus>
-                </span>
-                <span className={s.users}>
-                  <KitUserRow avatar={`${AVATAR}/drift-avatar-ana.jpg`} name="Ana Rossi" email="ana@company.example" role="Admin" />
-                  <KitUserRow avatar={`${AVATAR}/drift-avatar-marc.jpg`} name="Marc Silva" email="marc@company.example" role="Editor" />
-                  <KitUserRow avatar={`${AVATAR}/drift-avatar-lena.jpg`} name="Lena Novak" email="lena@company.example" role="Viewer" />
-                </span>
-              </KitPanel>
-            </span>
-
-            <svg className={s.overlay} viewBox="0 0 928 674.73" width="960" height="698">
-              {ATOM_LEADERS.map(([fy, ex, ty]) => (
-                <g key={`${fy}-${ex}`}>
-                  <path className={kitLeader} d={`M${DOT_X} ${fy} H${ex} V${ty} H${END_X}`} />
-                  <path className={`${kitLeader} ${s.arrowHead}`} d={arrowHead(END_X, ty, 1)} />
-                  <circle className={s.leaderDot} cx={DOT_X + 2.9} cy={fy} r="2.9" />
-                </g>
-              ))}
-            </svg>
-
-            <span className={s.alsoLive}>
-              <span className={s.alsoLabel}>Also live on the system:</span>
-              {["Design system", "Flights", "Cars"].map((area) => (
-                <span className={s.alsoChip} key={area}>
-                  <span className={s.alsoDot} />
-                  {area}
-                </span>
-              ))}
-              <span className={s.alsoNext}>Next: flight extras, nearly done</span>
-            </span>
+              <AlsoLive className={`${s.alsoLive} ${s.alsoAt}`} />
+            </div>
           </div>
-        </div>
-      </ScaledArt>
-    </div>
+        </ScaledArt>
+      </div>
+      <div className={caseStyles.phoneOnly}>
+        <Swipe
+          label="Shipped on the system: the atoms, then each product area"
+          items={SHIPPED_PANELS.map((p) => ({
+            key: p.key,
+            short: p.short,
+            node: (
+              <Panel label={p.label}>
+                <span className={`${s.floor} ${s.phoneShip}`}>{p.node}</span>
+              </Panel>
+            ),
+          }))}
+        />
+      </div>
+    </>
   );
 }
 
@@ -367,7 +571,9 @@ const AMENITIES: [string, string[]][] = [
 
 const STAR = "M10 2.5l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 7.8l5-.7Z";
 
-export function StayCard({ className = "" }: { className?: string }) {
+/** `count={false}` drops the photo's "1 / 8": the hero collage, where the
+ *  list overlaps the photo's left edge (job 38: no text under a card) */
+export function StayCard({ className = "", count = true }: { className?: string; count?: boolean }) {
   return (
     <div className={`${s.stay} ${className}`.trim()}>
       <div className={s.stayPhoto}>
@@ -378,7 +584,7 @@ export function StayCard({ className = "" }: { className?: string }) {
         <span className={s.stayControl} data-at="end">
           <Line className={s.stayGlyph} d={["M16 11.7c1.2-1.2 2.5-2.7 2.5-4.6a4.6 4.6 0 0 0-4.6-4.6c-1.5 0-2.5.4-3.9 1.7C8.6 2.9 7.6 2.5 6.1 2.5a4.6 4.6 0 0 0-4.6 4.6c0 1.9 1.3 3.4 2.5 4.6l6 6Z"]} />
         </span>
-        <span className={s.stayCount}>1 / 8</span>
+        {count ? <span className={s.stayCount}>1 / 8</span> : null}
       </div>
       <div className={s.stayBody}>
         <span className={s.stayTitle}>Harbour loft</span>
@@ -450,9 +656,9 @@ export function DriftedList({ className = "" }: { className?: string }) {
    Clones for CaseHero's collage and CaseShowcase's cards, drawn by the
    same code as the figures. */
 
-/* the first six drifted buttons of Figure 2, cropped from the same
-   picture (the drift misses AA on purpose, so it stays a flat picture,
-   never live DOM; CLAUDE.md section 9): [x, y, w, h] in its units */
+/* the 16 drifted buttons of Figure 2, cropped from the same picture
+   (the drift misses AA on purpose, so it stays a flat picture, never
+   live DOM; CLAUDE.md section 9): [x, y, w, h] in its units */
 const DRIFTED: [number, number, number, number][] = [
   [0, 4.24, 61.94, 34.97],
   [76.9, 3.37, 106.42, 36.71],
@@ -460,13 +666,23 @@ const DRIFTED: [number, number, number, number][] = [
   [314.94, 3.31, 79.19, 36.84],
   [409.1, 3.87, 92.16, 35.71],
   [0, 62.16, 134.42, 41.58],
+  [149.39, 62.6, 108.9, 40.71],
+  [273.26, 67.4, 64.19, 31.1],
+  [352.42, 63.6, 75.94, 38.71],
+  [0, 131.44, 69.68, 32.97],
+  [84.65, 126.19, 127.16, 43.45],
+  [353.65, 129.5, 85.68, 36.84],
+  [0, 195.47, 111.94, 37.58],
+  [126.9, 196.77, 40.45, 34.97],
+  [182.32, 192.1, 103.16, 44.32],
+  [300.45, 195.84, 103.06, 36.84],
 ];
 
-/** one drifted button, 1 to 6, as Figure 2 draws it */
-export function DriftedButton({ n }: { n: 1 | 2 | 3 | 4 | 5 | 6 }) {
+/** one drifted button, 1 to 16, as Figure 2 draws it */
+export function DriftedButton({ n }: { n: number }) {
   const [x, y, w, h] = DRIFTED[n - 1];
   return (
-    <span className={s.driftedOne} style={{ width: w, height: h }}>
+    <span className={s.driftedOne} data-n={n} style={{ width: w, height: h }}>
       <img src="/images/kit/drift-17-buttons.svg" width={501} height={236} alt="" style={{ left: -x, top: -y }} />
     </span>
   );
@@ -492,7 +708,7 @@ export function DriftedSet() {
   return (
     <span className={s.driftedSet}>
       <span className={s.countPill}>17</span>
-      {([1, 2, 3, 4, 5, 6] as const).map((n) => (
+      {[1, 2, 3, 4, 5, 6].map((n) => (
         <DriftedButton key={n} n={n} />
       ))}
     </span>
@@ -558,37 +774,97 @@ const PINS: [string, string, "left" | "right", number, number][] = [
   ["--surface-card", "var(--color-semantic-surface)", "right", 458, 622],
 ];
 
+/* the phone panels after the card: the same pins, grouped */
+const PIN_GROUPS: { key: string; title: string; pins: [string, string, string][] }[] = [
+  {
+    key: "text",
+    title: "Text and colour",
+    pins: [
+      ["--text-primary", "var(--color-semantic-text-primary)", "the title"],
+      ["--text-secondary", "var(--color-semantic-text-secondary)", "the location"],
+      ["--accent", "var(--color-semantic-accent)", "the stars"],
+      ["color.action.primary", "var(--kit-action)", "Book now"],
+    ],
+  },
+  {
+    key: "surface",
+    title: "Surface",
+    pins: [
+      ["--surface-card", "var(--color-semantic-surface)", "the card"],
+      ["--border-subtle", "var(--color-semantic-border)", "the dividers"],
+      ["--radius-card", "transparent", "the corners"],
+    ],
+  },
+];
+
 export function DriftAnatomy() {
   return (
-    <div
-      className={s.root}
-      style={{ "--art-w": 928 } as CSSProperties}
-      role="img"
-      aria-label="The Harbour loft stay card with each part pinned to its token: --radius-card on the corners, --text-primary on the title, --accent on the stars, color.action.primary on Book now, --text-secondary on the location, --border-subtle on the divider, --surface-card on the card."
-    >
-      <ScaledArt width={992}>
-        <div className={s.bleed} aria-hidden="true">
-          <div className={s.anatomyArt}>
-            <StayCard className={s.anatomyCard} />
-            <svg className={s.overlay} viewBox="0 0 928 510" width="928" height="510">
-              {PINS.map(([t, , side, y, to]) => {
-                const from = side === "left" ? 258 : 670;
-                return (
-                  <g key={t} className={kitLeader}>
-                    <path d={`M${from} ${y} H${to}`} />
-                    <path d={arrowHead(to, y, side === "left" ? 1 : -1)} className={s.arrowHead} />
-                  </g>
-                );
-              })}
-            </svg>
-            {PINS.map(([t, swatch, side, y]) => (
-              <span key={t} className={s.pinSlot} data-side={side} style={{ top: y }}>
-                <TokenPin token={t} swatch={swatch} />
-              </span>
-            ))}
+    <>
+      <div
+        className={`${s.root} ${caseStyles.wideOnly}`}
+        style={{ "--art-w": 928 } as CSSProperties}
+        role="img"
+        aria-label="The Harbour loft stay card with each part pinned to its token: --radius-card on the corners, --text-primary on the title, --accent on the stars, color.action.primary on Book now, --text-secondary on the location, --border-subtle on the divider, --surface-card on the card."
+      >
+        <ScaledArt width={992}>
+          <div className={s.bleed} aria-hidden="true">
+            <div className={s.anatomyArt}>
+              <StayCard className={s.anatomyCard} />
+              <svg className={s.overlay} viewBox="0 0 928 510" width="928" height="510">
+                {PINS.map(([t, , side, y, to]) => {
+                  const from = side === "left" ? 258 : 670;
+                  return (
+                    <g key={t} className={kitLeader}>
+                      <path d={`M${from} ${y} H${to}`} />
+                      <path d={arrowHead(to, y, side === "left" ? 1 : -1)} className={s.arrowHead} />
+                    </g>
+                  );
+                })}
+              </svg>
+              {PINS.map(([t, swatch, side, y]) => (
+                <span key={t} className={s.pinSlot} data-side={side} style={{ top: y }}>
+                  <TokenPin token={t} swatch={swatch} />
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-      </ScaledArt>
-    </div>
+        </ScaledArt>
+      </div>
+      <div className={caseStyles.phoneOnly}>
+        <Swipe
+          label="One stay card and the tokens it reads"
+          items={[
+            {
+              key: "card",
+              short: "the card",
+              node: (
+                <Panel label="The Harbour loft stay card: photo, title, location, a 4.9 rating, four amenities, Book now and 142 euros a night.">
+                  <StayCard className={s.phoneStay} />
+                </Panel>
+              ),
+            },
+            ...PIN_GROUPS.map((g) => ({
+              key: g.key,
+              short: g.title.toLowerCase(),
+              node: (
+                <Panel label={`${g.title}: ${g.pins.map(([t, , part]) => `${t} on ${part}`).join(", ")}.`}>
+                  <KitPanel className={s.phoneCard}>
+                    <span className={s.auditTitle}>{g.title}</span>
+                    <span className={s.phonePins}>
+                      {g.pins.map(([t, swatch, part]) => (
+                        <span key={t} className={s.phonePinRow}>
+                          <TokenPin token={t} swatch={swatch} />
+                          <span className={s.phoneMeta}>{part}</span>
+                        </span>
+                      ))}
+                    </span>
+                  </KitPanel>
+                </Panel>
+              ),
+            })),
+          ]}
+        />
+      </div>
+    </>
   );
 }
