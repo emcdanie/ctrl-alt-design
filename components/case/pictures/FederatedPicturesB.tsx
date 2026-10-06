@@ -75,7 +75,7 @@ function Picture({
         {phoneFirst ? (
           <>
             {stack(panels.filter((p) => p.key === phoneFirst))}
-            <ShowAll total={panels.length}>{stack(panels.filter((p) => p.key !== phoneFirst))}</ShowAll>
+            <ShowAll total={panels.length - 1} label={`Show the other ${panels.length - 1}`}>{stack(panels.filter((p) => p.key !== phoneFirst))}</ShowAll>
           </>
         ) : (
           stack(panels)
