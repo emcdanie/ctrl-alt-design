@@ -31,9 +31,8 @@ const toTop = () => {
 export default function SiteFooter() {
   return (
     <footer className="site-footer">
-      <button type="button" className="site-footer__top" onClick={toTop} data-umami-event="back-to-top">
+      <button type="button" className="site-footer__top" onClick={toTop} aria-label="Back to top" data-bracket="off" data-umami-event="back-to-top">
         <Icon name="NavArrowUp" size="md" />
-        <span className="sr-only">Back to top</span>
       </button>
       {/* on the content edge, x192 at 1440 like every v3 page (Site v3, 4 Oct late) */}
       <div className="container container--case">

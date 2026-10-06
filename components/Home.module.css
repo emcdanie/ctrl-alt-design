@@ -93,6 +93,10 @@
   color: var(--color-ink-muted);
 }
 
+.keep {
+  white-space: nowrap;
+}
+
 /* the proof row (18d, 4 Oct 2026): three equal columns from 900px, each
    ProofLine spanning two subgrid rows (label, line); one column below */
 .proof {

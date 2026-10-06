@@ -2027,15 +2027,16 @@ h1.display-heading {
 }
 
 /* ─── Site footer (the footer lock, 4 Oct 2026; job E1, 5 Oct) ──────
-   The page ground under a hairline; back to top as a half-round tab on
+   Its own ground (BELLA's surface, Elleta, 6 Oct, job G1, as the 22 Sep
+   footer mock) under a hairline; back to top as a half-round tab on
    that hairline, the pages row, the elsewhere row, one small-print row
    with the colophon, then the pattern ELLETA, flush with the bottom. */
 .site-footer {
   position: relative;
   padding-top: var(--spacing-16);
   border-top: 1px solid var(--color-semantic-border);
-  /* the page ground, never white (job 38, one ground) */
-  background: var(--color-semantic-background);
+  /* the one second ground; audit:tokens holds it to the surface token */
+  background: var(--color-semantic-surface);
   color: var(--color-ink);
 }
 
@@ -2043,8 +2044,8 @@ h1.display-heading {
   color: var(--color-ink-muted);
 }
 
-/* Home · v2: the page ground under the whole page, footer included, so
-   the wordmark sits on the page colour and the cards read as raised */
+/* Home · v2: the page ground under the whole page (the footer keeps its
+   own surface, job G1), so the cards read as raised */
 body:has(main.site-ground-page) {
   background: var(--site-ground);
 }
@@ -2067,7 +2068,7 @@ body:has(main.site-ground-page) {
   border: 1px solid var(--color-semantic-border);
   border-bottom: 0;
   border-radius: var(--radius-full) var(--radius-full) 0 0;
-  background: var(--color-semantic-background);
+  background: var(--color-semantic-surface);
   color: var(--color-ink);
   cursor: pointer;
   transform: translate(-50%, calc(-100% + 1px));

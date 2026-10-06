@@ -8,8 +8,10 @@
  *
  * One ground (job 38, 5 Oct 2026: Home's body and every footer wore
  * their own colour). Rendered, AUDIT_URL, every route at 1440 in both
- * themes: the body, main and footer grounds (each element's own fill, or
- * the first filled ancestor's) compute one colour. */
+ * themes: the body and main grounds (each element's own fill, or the
+ * first filled ancestor's) compute one colour. The footer is the one
+ * deliberate second ground (Elleta, 6 Oct 2026, job G1): it computes
+ * --color-semantic-surface, nothing else. */
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { chromium } from "playwright";
@@ -78,16 +80,24 @@ for (const theme of ["light", "dark"]) {
     await page.goto(BASE + route, { waitUntil: "networkidle", timeout: 30000 });
     await page.evaluate((t) => (document.documentElement.dataset.theme = t), theme);
     await page.waitForTimeout(150);
+    // a busy page can still be mid theme transition: let it finish
+    await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished.catch(() => {}))).then(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))));
     const g = await page.evaluate(() => {
       const cv = document.createElement("canvas").getContext("2d");
       const rgb = (c) => { cv.clearRect(0, 0, 1, 1); cv.fillStyle = "#000"; cv.fillStyle = c; cv.fillRect(0, 0, 1, 1); const d = cv.getImageData(0, 0, 1, 1).data; return d[3] ? `rgb(${d[0]}, ${d[1]}, ${d[2]})` : null; };
       const ground = (el) => { for (; el; el = el.parentElement) { const c = rgb(getComputedStyle(el).backgroundColor); if (c) return c; } return "rgb(255, 255, 255)"; };
       const pick = (sel) => { const el = document.querySelector(sel); return el ? ground(el) : null; };
-      return { body: pick("body"), main: pick("main"), footer: pick("body > footer, footer:not(main footer)") };
+      const probe = document.createElement("div");
+      probe.style.background = "var(--color-semantic-surface)";
+      document.body.append(probe);
+      const surface = rgb(getComputedStyle(probe).backgroundColor);
+      probe.remove();
+      return { body: pick("body"), main: pick("main"), footer: pick("body > footer, footer:not(main footer)"), surface };
     });
-    const seen = Object.entries(g).filter(([, v]) => v);
-    if (new Set(seen.map(([, v]) => v)).size > 1)
-      fail(`${route} (${theme})`, "ground", seen.map(([k, v]) => `${k} ${v}`).join(", "), "one ground colour on body, main and footer");
+    if (g.body && g.main && g.body !== g.main)
+      fail(`${route} (${theme})`, "ground", `body ${g.body}, main ${g.main}`, "one ground colour on body and main");
+    if (g.footer && g.footer !== g.surface)
+      fail(`${route} (${theme})`, "footer ground", `footer ${g.footer}`, `the surface token ${g.surface}`);
   }
   await page.close();
 }

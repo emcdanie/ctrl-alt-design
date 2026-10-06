@@ -197,10 +197,14 @@ export default function Home() {
         </p>
         {/* findability (job 34): the accessibility statement, from the system beat */}
         <p className={styles.a11y}>
-          Built to WCAG 2.2 AA, AAA contrast ·{" "}
-          <TextLink href="/accessibility">
-            Accessibility <span aria-hidden="true">→</span>
-          </TextLink>
+          Built to WCAG 2.2 AA,{" "}
+          {/* the link keeps its words: the line breaks before them (job G3) */}
+          <span className={styles.keep}>
+            AAA contrast ·{" "}
+            <TextLink href="/accessibility">
+              Accessibility <span aria-hidden="true">→</span>
+            </TextLink>
+          </span>
         </p>
       </Section>
     </main>

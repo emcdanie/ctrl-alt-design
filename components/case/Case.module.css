@@ -573,6 +573,15 @@ main .showcase + :global(.l-section.l-section) {
   flex: none;
 }
 
+/* on a phone Replay goes under the caption, so a long caption keeps the
+   full width (Elleta, 6 Oct 2026, F answers) */
+@media (max-width: 639px) {
+  .captionRow {
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+}
+
 /* on a wide page Replay sits in the margin right of the caption column,
    so the caption keeps the column's full measure */
 @media (min-width: 1100px) {
