@@ -1,6 +1,6 @@
 import OverlayNav from "@/components/OverlayNav";
 import Hero from "@/components/Hero";
-import ProofLine from "@/components/ProofLine";
+import ProofCard from "@/components/ProofCard";
 import CaseRow from "@/components/CaseRow";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
@@ -22,6 +22,9 @@ import type { CSSProperties } from "react";
 
 /* the one sentence around the bold phrase, verbatim from the source */
 const QUOTE = TESTIMONIALS[0];
+/* the pair under it (H4, the 4 Oct map): Mario Mezini and Ian Frost,
+   whole quotes, verbatim */
+const PAIR_QUOTES = ["Mario Mezini", "Ian Frost"].map((n) => TESTIMONIALS.find((t) => t.name === n)!);
 const SENTENCE = QUOTE.quote.split(" … ").find((s) => s.includes(QUOTE.bold)) ?? QUOTE.quote;
 const [BEFORE, AFTER] = SENTENCE.split(QUOTE.bold);
 
@@ -92,11 +95,11 @@ export default function Home() {
       <OverlayNav />
       <Hero />
 
-      {/* the proof row (18d, 4 Oct 2026): quiet, no box, no label */}
+      {/* the proof row (H4, 6 Oct 2026): three cards, the 4 Oct map */}
       <Section id="proof" flushBottom="Home proof row: equal gaps either side (Elleta, 4 Oct 2026)">
         <div className={styles.proof}>
           {HOME_PROOF.map((p) => (
-            <ProofLine key={p.label} label={p.label} line={p.line} href={p.href} />
+            <ProofCard key={p.title} title={p.title} link={p.link} href={p.href} />
           ))}
         </div>
       </Section>
@@ -120,6 +123,24 @@ export default function Home() {
             </TextLink>
           </figcaption>
         </figure>
+        <ul className={styles.pair}>
+          {PAIR_QUOTES.map((q) => (
+            <li key={q.name}>
+              <figure className={styles.pairQuote}>
+                <span className={`${styles.mark} ${styles.pairMark} pattern-mark`} aria-hidden="true">
+                  “
+                </span>
+                <blockquote className={styles.pairWords}>
+                  <p>{q.quote}</p>
+                </blockquote>
+                <figcaption className={styles.pairCite}>
+                  <b>{q.name}</b>
+                  {q.role}
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
       </Section>
 
       <Section id="selected-work" label="Selected work">

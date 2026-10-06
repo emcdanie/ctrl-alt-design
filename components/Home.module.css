@@ -97,12 +97,11 @@
   white-space: nowrap;
 }
 
-/* the proof row (18d, 4 Oct 2026): three equal columns from 900px, each
-   ProofLine spanning two subgrid rows (label, line); one column below */
+/* the proof row (H4, 6 Oct 2026, the 4 Oct map): three ProofCards,
+   equal heights, 24 apart; three columns from 900px, one below */
 .proof {
   display: grid;
-  grid-template-rows: auto auto;
-  gap: var(--spacing-2) var(--spacing-6);
+  gap: var(--spacing-6);
 }
 
 @media (min-width: 900px) {
@@ -111,14 +110,66 @@
   }
 }
 
-/* stacked: a plain column with one gap between items, so a wrapping
-   line never makes the gaps uneven (18f) */
-@media (max-width: 899px) {
-  .proof {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-stack-md);
+/* the pair under Brad's card (H4, the 4 Oct map): two quote cards side
+   by side from 900px, stacked below, equal heights */
+.pair {
+  display: grid;
+  gap: var(--spacing-6);
+  margin: var(--spacing-6) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 900px) {
+  .pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+.pair > li {
+  display: flex;
+}
+
+.pairQuote {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--site-raised);
+}
+
+.pairMark {
+  font-size: 4rem;
+}
+
+.pairWords {
+  margin: 0;
+}
+
+.pairWords p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-lg);
+  line-height: 1.5;
+  text-wrap: pretty;
+  color: var(--color-ink);
+}
+
+.pairCite {
+  display: grid;
+  margin-top: auto;
+  padding-top: var(--spacing-4);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+}
+
+.pairCite b {
+  font-weight: 600;
+  color: var(--color-ink);
 }
 
 /* ── The system door (Figma Home 293:29910, Exploded card · Door B v2) ──

@@ -79,7 +79,8 @@ function CaseCardLayout({ row, featured }: { row: CaseRowData; featured: boolean
         <span className={styles.rowClaim}>{row.claim}</span>
         {row.tags.length ? (
           <span className={styles.rowTags}>
-            {row.tags.map((t) => (
+            {/* two at most on a card, so it fits one screen (Elleta, 6 Oct 2026, H4); the case page has them all */}
+            {row.tags.slice(0, 2).map((t) => (
               <Tag key={t.text} tone={t.tone} outline={t.outline}>
                 {t.text}
               </Tag>
@@ -88,9 +89,13 @@ function CaseCardLayout({ row, featured }: { row: CaseRowData; featured: boolean
         ) : null}
         <span className={styles.cardEnd}>
           {row.href ? (
-            <span className={textLinkClass}>
-              Read the case <span aria-hidden="true">→</span>
-            </span>
+            <>
+              <span className={textLinkClass}>
+                Read the case <span aria-hidden="true">→</span>
+              </span>
+              {/* a live case with news (CHIP, H4): the status beside the link */}
+              {row.status ? <Tag>{row.status}</Tag> : null}
+            </>
           ) : row.status ? (
             <Tag>{row.status}</Tag>
           ) : null}

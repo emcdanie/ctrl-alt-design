@@ -1,3 +1,4 @@
+import { Tag } from "@/components/ui/Tag";
 import type { ReactNode } from "react";
 import Container from "@/components/layout/Container";
 import Heading from "@/components/ui/Heading";
@@ -20,6 +21,7 @@ export default function CaseHero({
   meta,
   intro,
   disclosure,
+  note,
   collage,
 }: {
   title: string;
@@ -30,6 +32,8 @@ export default function CaseHero({
   intro: string;
   /** Body/Small under the intro (an NDA or concept-mock line) */
   disclosure?: string;
+  /** one quiet note under the hero, a tag then its line (CHIP's "Update coming", H4) */
+  note?: { tag: string; text: string };
   /** `phone`: the one readable card the 390 frame shows instead of the
    *  collage, at its own size (job 38: no shrunk collage on a phone) */
   collage: { label: string; pieces: CollagePiece[]; phone?: ReactNode; phoneLabel?: string; canvas?: { w: number; h: number }; below?: boolean };
@@ -53,6 +57,12 @@ export default function CaseHero({
           </div>
           <CaseCollage label={collage.label} pieces={collage.pieces} phone={collage.phone} phoneLabel={collage.phoneLabel} canvas={collage.canvas} />
         </div>
+        {note ? (
+          <p className={styles.heroNote}>
+            <Tag>{note.tag}</Tag>
+            <span className="sr-only">:</span> {note.text}
+          </p>
+        ) : null}
       </Container>
     </div>
   );

@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { CoverPicture as Picture } from "@/content/cases";
 import { CoverPicture } from "@/components/case/pictures/Covers";
 import styles from "./SpecimenFrame.module.css";
@@ -30,7 +31,10 @@ export default function SpecimenFrame({
         <span className={styles.path}>{path}</span>
         <span>{mode}</span>
       </span>
-      <span className={`${styles.stage} ${picture ? styles.stagePicture : ""}`.trim()}>
+      <span
+        className={`${styles.stage} ${picture ? styles.stagePicture : ""}`.trim()}
+        style={picture?.focus ? ({ "--cover-focus": picture.focus } as CSSProperties) : undefined}
+      >
         {picture ? (
           <CoverPicture picture={picture} />
         ) : art ? (

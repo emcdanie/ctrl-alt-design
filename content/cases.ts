@@ -9,7 +9,9 @@
  *  43): the specimen stage as a flat picture, light and dark, at 3x. A
  *  picture because the recreated UI in it runs under the 14px floor at
  *  card size (CLAUDE.md section 9). Files: /images/case/covers/<name>-<theme>.webp */
-export type CoverPicture = { name: string; alt: string; width: number; height: number };
+/** `focus`: what the card's cropped stage keeps (object-position; H4,
+ *  cards fit one screen), centre when unset */
+export type CoverPicture = { name: string; alt: string; width: number; height: number; focus?: string };
 
 export interface CaseRowData {
   id: string;
@@ -89,63 +91,59 @@ export const CASES: CaseRowData[] = [
  * Theming. The order above is theirs, so /work numbers them the same. */
 export const HOME_CASES: CaseRowData[] = CASES.slice(0, 3);
 
-/* Home · v2 (Gate 2, 3 Oct 2026): the lead three in /work order, Drift
- * featured, then Federated (live since 4 Oct) and CHIP as cards. Numbers
- * follow the Gate 2 /work order (01 Drift, 02 Federated, 03 CHIP). */
+/* Home (Elleta, 6 Oct 2026, H4, back to the 4 Oct map; supersedes Home ·
+ * v2's lead three): the three READY cases, Drift featured, then Federated
+ * and Theming as cards. CHIP waits on /work with "Update coming". */
 const byId = (id: string) => CASES.find((c) => c.id === id)!;
-export const HOME_LEAD: CaseRowData[] = [
-  {
-    ...byId("drift"),
-    specimen: {
-      path: "drift / buttons · audit",
-      mode: "before → after",
-      caption: "Recreated from my audit. No client UI.",
-      picture: { name: "drift", width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
-    },
+const DRIFT: CaseRowData = {
+  ...byId("drift"),
+  specimen: {
+    path: "drift / buttons · audit",
+    mode: "before → after",
+    caption: "Recreated from my audit. No client UI.",
+    picture: { name: "drift", width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
   },
-  {
-    id: "federated",
-    n: "02",
-    meta: "Design systems · federated · 2026",
-    title: "They stopped telling me what they\u2019d done",
-    claim: "Proves a federated system can run without me as the bottleneck.",
-    href: "/case-studies/federated",
-    tags: [],
-    specimen: {
-      path: "federated / contribution",
-      mode: "one system",
-      caption: "Recreated. One chip, a new slot, nothing forked.",
-      picture: { name: "federated", width: 1392, height: 1008, alt: "A product page with its size chips, beside a panel: kept the old chip, added a slot. Colour and Text kept, Slot new, and three fills for the slot: size and stock, kids' age and height, a colour filter." },
-    },
+};
+const FEDERATED: CaseRowData = {
+  id: "federated",
+  n: "02",
+  meta: "Design systems · federated · 2026",
+  title: "They stopped telling me what they\u2019d done",
+  claim: "Proves a federated system can run without me as the bottleneck.",
+  href: "/case-studies/federated",
+  tags: [],
+  specimen: {
+    path: "federated / contribution",
+    mode: "one system",
+    caption: "Recreated. One chip, a new slot, nothing forked.",
+    picture: { name: "federated", width: 1392, height: 1008, focus: "50% 0%", alt: "A product page with its size chips, beside a panel: kept the old chip, added a slot. Colour and Text kept, Slot new, and three fills for the slot: size and stock, kids' age and height, a colour filter." },
   },
-  {
-    ...byId("chip"),
-    n: "03",
-    specimen: {
-      path: "chip 2.0 / atlas",
-      mode: "filter chip",
-      caption: "CHIP 2.0 checks every layer of a component.",
-      picture: { name: "chip", width: 1392, height: 1008, alt: "CHIP's Atlas anatomy of the FilterChip: the Accessible chip with six numbered parts." },
-    },
+};
+const CHIP: CaseRowData = {
+  ...byId("chip"),
+  n: "03",
+  /* CHIP 2.0 is in progress (Elleta, 6 Oct 2026, H4): the card stays a link */
+  status: "Update coming",
+  specimen: {
+    path: "chip 2.0 / atlas",
+    mode: "filter chip",
+    caption: "CHIP 2.0 checks every layer of a component.",
+    picture: { name: "chip", width: 1392, height: 1008, alt: "CHIP's Atlas anatomy of the FilterChip: the Accessible chip with six numbered parts." },
   },
-];
+};
+const THEMING: Omit<CaseRowData, "n"> = {
+  ...byId("theming"),
+  specimen: {
+    path: "theming / theme switcher",
+    mode: "on BELLA",
+    caption: "Three brands, one set of components.",
+    picture: { name: "theming", width: 1392, height: 1008, alt: "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it." },
+  },
+};
+export const HOME_LEAD: CaseRowData[] = [DRIFT, FEDERATED, { ...THEMING, n: "03" }];
 
 /* /work (Site v3, job 33, Elleta 5 Oct 2026): Home's case cards, four
  * cases in this order: Drift, Federated (live since 4 Oct), CHIP,
  * Theming. Booking, Search and Code First leave /work; their pages stay
  * live, unlinked from it. */
-export const WORK_CASES: CaseRowData[] = [
-  HOME_LEAD[0],
-  HOME_LEAD[1],
-  HOME_LEAD[2],
-  {
-    ...byId("theming"),
-    n: "04",
-    specimen: {
-      path: "theming / theme switcher",
-      mode: "on BELLA",
-      caption: "Three brands, one set of components.",
-      picture: { name: "theming", width: 1392, height: 1008, alt: "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it." },
-    },
-  },
-];
+export const WORK_CASES: CaseRowData[] = [DRIFT, FEDERATED, CHIP, { ...THEMING, n: "04" }];

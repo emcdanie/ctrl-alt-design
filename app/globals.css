@@ -391,6 +391,8 @@ body {
   /* the back-to-top tab (H3, 6 Oct 2026, the adhamdannaway.com footer) */
   --footer-chevron-hi: var(--color-semantic-surface); /* the lighter tone under the debossed chevron */
   --footer-tab-overlap: var(--spacing-2);
+  /* a case card's cover stage, cropped (H4: a card fits one screen) */
+  --cover-stage-h: 11.25rem;
   --footer-tab-rise: 5px;
   --font-card-title: 1.25rem; /* titles: 20px (Geist refresh) */
   --font-body-size: var(--text-body);

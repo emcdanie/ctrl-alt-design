@@ -66,7 +66,17 @@
    one per theme */
 .stagePicture {
   display: block;
+  /* cropped, never scaled, so each card fits one screen with the nav
+     (Elleta, 6 Oct 2026, H4) */
+  height: var(--cover-stage-h);
+  overflow: hidden;
   padding: 0;
   background-image: none;
+}
+
+.stagePicture img {
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--cover-focus, 50% 50%);
 }
 

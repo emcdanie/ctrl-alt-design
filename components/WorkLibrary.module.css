@@ -457,6 +457,8 @@
 }
 @media (min-width: 900px) {
   .cardFeatured {
+    /* beside its text the featured cover already fits: no crop (H4) */
+    --cover-stage-h: auto;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: center;
     gap: var(--spacing-6);
@@ -494,7 +496,9 @@ a.card:focus-visible {
 }
 .cardEnd {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  gap: var(--spacing-2) var(--spacing-4);
   min-height: var(--spacing-touch-target);
   margin-top: auto;
   padding-top: var(--spacing-3);

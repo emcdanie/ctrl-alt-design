@@ -87,6 +87,7 @@ export default function ChipCase() {
           meta={["CHIP 2.0 · in progress · AI + design systems", "2026"]}
           intro="AI doesn’t fix a neglected design system. It sends you the bill. CHIP 2.0 is a local bridge for BELLA: it reads the real repo, runs BELLA’s own gate scripts, indexes my notes and docs, and answers questions with a local model."
           disclosure="Atlas pictures are a concept mock, drawn from BELLA components."
+          note={{ tag: "Update coming", text: "CHIP 2.0 is in progress. This shows the current version." }}
           collage={{
             label: COVER_LABEL,
             pieces: COLLAGE,
