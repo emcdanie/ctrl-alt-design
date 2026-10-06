@@ -8,7 +8,7 @@ import s from "./Covers.module.css";
    theme. Pictures, because the recreated UI in them runs under the 14px
    floor at card size (CLAUDE.md section 9); the data is in content/cases.ts. */
 
-export function CoverPicture({ picture }: { picture: Picture }) {
+export function CoverPicture({ picture, eager = false }: { picture: Picture; eager?: boolean }) {
   return (["light", "dark"] as const).map((t) => (
     // eslint-disable-next-line @next/next/no-img-element
     <img
@@ -19,7 +19,7 @@ export function CoverPicture({ picture }: { picture: Picture }) {
       width={picture.width}
       height={picture.height}
       alt={picture.alt}
-      loading="lazy"
+      loading={eager ? "eager" : "lazy"}
       decoding="async"
     />
   ));

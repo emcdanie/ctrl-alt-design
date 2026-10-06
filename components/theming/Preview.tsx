@@ -50,7 +50,7 @@ export default function Preview({ theme, face, hot, live = false, bare = false }
         )}
         <div data-r="line" className={cx(s.pvCard, "line")}>
           <div className={s.pvImg}>
-            <img src={l.photo} width={l.photoW} height={l.photoH} alt="" loading="lazy" decoding="async" />
+            <img src={l.photo} width={l.photoW} height={l.photoH} alt="" loading={bare ? "eager" : "lazy"} decoding="async" />
             <span data-r="panel" className={cx(s.pvTag, "panel")}>
               Guest favourite
             </span>
