@@ -2027,16 +2027,16 @@ h1.display-heading {
 }
 
 /* ─── Site footer (the footer lock, 4 Oct 2026; job E1, 5 Oct) ──────
-   Its own ground (BELLA's surface, Elleta, 6 Oct, job G1, as the 22 Sep
-   footer mock) under a hairline; back to top as a half-round tab on
+   Its own ground (BELLA's raised, Elleta, 6 Oct, jobs G1 + H1, as the
+   22 Sep footer mock) under a hairline; back to top as a half-round tab on
    that hairline, the pages row, the elsewhere row, one small-print row
    with the colophon, then the pattern ELLETA, flush with the bottom. */
 .site-footer {
   position: relative;
   padding-top: var(--spacing-16);
   border-top: 1px solid var(--color-semantic-border);
-  /* the one second ground; audit:tokens holds it to the surface token */
-  background: var(--color-semantic-surface);
+  /* the one second ground; audit:tokens holds it to the raised token */
+  background: var(--color-semantic-raised);
   color: var(--color-ink);
 }
 
@@ -2068,7 +2068,7 @@ body:has(main.site-ground-page) {
   border: 1px solid var(--color-semantic-border);
   border-bottom: 0;
   border-radius: var(--radius-full) var(--radius-full) 0 0;
-  background: var(--color-semantic-surface);
+  background: var(--color-semantic-raised);
   color: var(--color-ink);
   cursor: pointer;
   transform: translate(-50%, calc(-100% + 1px));

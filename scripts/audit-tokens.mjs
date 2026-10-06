@@ -10,8 +10,8 @@
  * their own colour). Rendered, AUDIT_URL, every route at 1440 in both
  * themes: the body and main grounds (each element's own fill, or the
  * first filled ancestor's) compute one colour. The footer is the one
- * deliberate second ground (Elleta, 6 Oct 2026, job G1): it computes
- * --color-semantic-surface, nothing else. */
+ * deliberate second ground (Elleta, 6 Oct 2026, jobs G1 + H1): it
+ * computes --color-semantic-raised, nothing else. */
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { chromium } from "playwright";
@@ -88,16 +88,16 @@ for (const theme of ["light", "dark"]) {
       const ground = (el) => { for (; el; el = el.parentElement) { const c = rgb(getComputedStyle(el).backgroundColor); if (c) return c; } return "rgb(255, 255, 255)"; };
       const pick = (sel) => { const el = document.querySelector(sel); return el ? ground(el) : null; };
       const probe = document.createElement("div");
-      probe.style.background = "var(--color-semantic-surface)";
+      probe.style.background = "var(--color-semantic-raised)";
       document.body.append(probe);
-      const surface = rgb(getComputedStyle(probe).backgroundColor);
+      const raised = rgb(getComputedStyle(probe).backgroundColor);
       probe.remove();
-      return { body: pick("body"), main: pick("main"), footer: pick("body > footer, footer:not(main footer)"), surface };
+      return { body: pick("body"), main: pick("main"), footer: pick("body > footer, footer:not(main footer)"), raised };
     });
     if (g.body && g.main && g.body !== g.main)
       fail(`${route} (${theme})`, "ground", `body ${g.body}, main ${g.main}`, "one ground colour on body and main");
-    if (g.footer && g.footer !== g.surface)
-      fail(`${route} (${theme})`, "footer ground", `footer ${g.footer}`, `the surface token ${g.surface}`);
+    if (g.footer && g.footer !== g.raised)
+      fail(`${route} (${theme})`, "footer ground", `footer ${g.footer}`, `the raised token ${g.raised}`);
   }
   await page.close();
 }

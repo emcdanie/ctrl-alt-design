@@ -282,7 +282,7 @@ Must pass before any work is "done":
 - `audit:tokens` — colour literals and raw spacing (>=4px) in `app/**`/`components/**` fail;
   `token-waiver:` inline comments mark the reviewed proto-exact/artwork exceptions. One ground
   per route (rendered, `AUDIT_URL`, 1440, both themes): body and main compute one colour (job 38); the
-  footer is the one second ground and computes `--color-semantic-surface` (Elleta, 6 Oct 2026, job G1).
+  footer is the one second ground and computes `--color-semantic-raised` (Elleta, 6 Oct 2026, jobs G1 + H1).
 - `audit:dark` — every case-study demo embed renders a dark ground in dark; a figure caption or
   short panel label naming one theme ("BELLA · light", "light mode") renders that theme's
   ground (luminance >= 0.5 light, <= 0.2 dark) whatever the page theme (job 38).
