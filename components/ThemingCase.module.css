@@ -1280,33 +1280,44 @@
 }
 
 
-/* the hero's v5 composition (audit fix D3): the switcher, centred over
-   the faces, and the two faces fanned 6deg behind the front one */
-.heroSwitch {
+/* the hero's exhibit (N, 6 Oct 2026): the pills in their own row, 24px
+   clear above the one face; the face sits inside the band, on the column's
+   left edge so the text-to-art gap matches Federated (Elleta, 6 Oct) */
+.heroArt {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-6);
+  justify-self: start;
+}
+.heroPills {
+  display: flex;
+  justify-content: flex-start;
   gap: var(--spacing-2);
 }
-.heroSwitch > span {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
+.heroPill {
+  min-height: var(--spacing-touch-target);
   padding: var(--spacing-1) var(--spacing-4);
   border: 1px solid var(--color-semantic-border-strong);
   border-radius: var(--radius-full);
+  background: transparent;
   color: var(--color-semantic-text-secondary);
+  font: inherit;
   font-weight: 500;
   font-size: var(--typography-font-size-sm);
+  cursor: pointer;
 }
-.heroSwitch > span[data-on] {
+.heroPill[aria-pressed="true"] {
   border-color: var(--t-action);
   background: var(--t-action);
   color: var(--t-on-action);
 }
-.heroBack[data-at="start"] { transform: translate(-3rem, 0.5rem) rotate(-6deg); } /* token-waiver: Figma fan, 48px and 6 degrees */
-.heroBack[data-at="end"] { transform: translate(3rem, 0.5rem) rotate(6deg); } /* token-waiver: Figma fan */
-/* the faces behind carry no words (Figma hides them), so nothing reads
-   cut: every text holder is hidden, the wells and icons stay */
-.heroBack b,
-.heroBack u,
-.heroBack span:not(:has(> *)) { visibility: hidden; }
+.heroPill:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+.heroFace {
+  width: 18.5rem;
+  max-width: 100%;
+  container-type: inline-size;
+}

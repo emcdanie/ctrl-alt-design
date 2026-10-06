@@ -90,6 +90,7 @@ export function Beat({
   label,
   heading,
   lead,
+  lead2,
   leadSize = "lead",
   align = "col",
   children,
@@ -99,6 +100,8 @@ export function Beat({
   label: string;
   heading: string;
   lead?: string;
+  /** a second line under the lead, same style (Theming beats 2 and 5) */
+  lead2?: string;
   /** Body/Lead (22, Drift) or Body/Base (20, Federated): the frames differ */
   leadSize?: "lead" | "base";
   /** the header on the text column (Drift, Federated) or on the body's
@@ -117,6 +120,7 @@ export function Beat({
           {heading}
         </Heading>
         {lead ? <p className={leadSize === "base" ? styles.leadBase : styles.lead}>{lead}</p> : null}
+        {lead2 ? <p className={leadSize === "base" ? styles.leadBase : styles.lead}>{lead2}</p> : null}
       </div>
       {children}
     </section>
