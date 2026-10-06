@@ -858,6 +858,17 @@
   line-height: 1.6;
 }
 
+/* the highlighted line: BELLA's ochre highlight, the full line width */
+.jsonHot {
+  display: block;
+  margin: 0 calc(var(--spacing-2) * -1);
+  padding: 0 calc(var(--spacing-2) - 2px);
+  border-left: 2px solid var(--color-semantic-highlight-edge);
+  border-radius: var(--radius-sm);
+  background: var(--color-semantic-highlight-wash);
+  color: var(--color-semantic-highlight-text);
+}
+
 /* ── 02b · from the repo ──────────────────────────────────────── */
 .code { display: grid; gap: var(--spacing-3); }
 .say {

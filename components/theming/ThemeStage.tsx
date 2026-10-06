@@ -243,9 +243,21 @@ export function ThemeJson() {
     null,
     2,
   );
+  /* the line the beat is about (a button reads action) wears the ochre
+     highlight; nothing else is dimmed (K3, Elleta, 6 Oct 2026) */
+  const lines = `// tier 2 · ${key}.tokens.json · the same names in every theme\n${body}`.split("\n");
   return (
     <pre className={s.json} tabIndex={0} aria-label="Tier 2 mapping for the current theme">
-      {`// tier 2 · ${key}.tokens.json · the same names in every theme\n${body}`}
+      {lines.map((l, i) =>
+        l.trimStart().startsWith('"action"') ? (
+          <mark key={i} className={s.jsonHot} data-t="action">
+            {l}
+            {"\n"}
+          </mark>
+        ) : (
+          `${l}\n`
+        ),
+      )}
     </pre>
   );
 }
