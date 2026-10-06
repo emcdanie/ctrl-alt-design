@@ -508,6 +508,9 @@
     aspect-ratio: 450 / 454;
     top: var(--section-pad-y);
     margin: calc(var(--space-stack-md) - var(--section-pad-y)) 0 0;
+    /* the pulled-apart plates reach 14px left of the stage: keep the
+       lowest one inside the gutter (job O5, 6 Oct 2026) */
+    margin-left: var(--spacing-4);
   }
 
   .code,
