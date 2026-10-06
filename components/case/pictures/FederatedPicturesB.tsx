@@ -20,19 +20,22 @@ import s from "./FederatedPicturesB.module.css";
 type PanelItem = { key: string; short: string; label: string; node: ReactNode };
 
 /** `more`: the rest of a long picture, its own picture behind Show all
- *  (job F, 5 Oct 2026: every beat fits one screen) */
+ *  (job F, 5 Oct 2026: every beat fits one screen). `phoneFirst`: on the
+ *  phone only that panel stays in view, the rest behind Show all (I4) */
 function Picture({
   label,
   panels,
   swipe,
   children,
   more,
+  phoneFirst,
 }: {
   label: string;
   panels: PanelItem[];
   swipe: string;
   children: ReactNode;
   more?: { label: string; total: number; node: ReactNode };
+  phoneFirst?: string;
 }) {
   const wide = (l: string, node: ReactNode) => (
     <div role="img" aria-label={l} className={s.root}>
@@ -43,6 +46,25 @@ function Picture({
       </div>
     </div>
   );
+  const stack = (items: PanelItem[]) => (
+    <Swipe
+      fit
+      label={swipe}
+      items={items.map((p) => ({
+        key: p.key,
+        short: p.short,
+        node: (
+          <div role="img" aria-label={p.label} className={s.phonePanel}>
+            <div aria-hidden="true">
+              <KitTheme mode="federated">
+                <div className={s.phone}>{p.node}</div>
+              </KitTheme>
+            </div>
+          </div>
+        ),
+      }))}
+    />
+  );
   return (
     <>
       <div className={caseStyles.wideOnly}>
@@ -50,23 +72,14 @@ function Picture({
         {more ? <ShowAll total={more.total}>{wide(more.label, more.node)}</ShowAll> : null}
       </div>
       <div className={caseStyles.phoneOnly}>
-        <Swipe
-          fit
-          label={swipe}
-          items={panels.map((p) => ({
-            key: p.key,
-            short: p.short,
-            node: (
-              <div role="img" aria-label={p.label} className={s.phonePanel}>
-                <div aria-hidden="true">
-                  <KitTheme mode="federated">
-                    <div className={s.phone}>{p.node}</div>
-                  </KitTheme>
-                </div>
-              </div>
-            ),
-          }))}
-        />
+        {phoneFirst ? (
+          <>
+            {stack(panels.filter((p) => p.key === phoneFirst))}
+            <ShowAll total={panels.length}>{stack(panels.filter((p) => p.key !== phoneFirst))}</ShowAll>
+          </>
+        ) : (
+          stack(panels)
+        )}
       </div>
     </>
   );
@@ -850,6 +863,7 @@ export function FedShipped({ label, moreLabel }: { label: string; moreLabel: str
       label={label}
       panels={SHIPPED_PANELS}
       swipe="Asked for versus shipped"
+      phoneFirst="product"
       more={{
         label: moreLabel,
         total: 8,
