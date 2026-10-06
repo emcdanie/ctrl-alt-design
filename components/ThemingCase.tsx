@@ -7,7 +7,7 @@ import type { CollagePiece } from "@/components/case/CaseCollage";
 import CaseFigure, { ReplayKey } from "@/components/case/CaseFigure";
 import NextCase from "@/components/case/NextCase";
 import ShowAll from "@/components/case/ShowAll";
-import { ThemeStage, ThemeExhibit, ThemeJson, FacePick } from "@/components/theming/ThemeStage";
+import { ThemeStage, ThemeExhibit, ThemeJson } from "@/components/theming/ThemeStage";
 import OneName from "@/components/theming/OneName";
 import Pipeline from "@/components/theming/Pipeline";
 import Preview, { WhatChanged } from "@/components/theming/Preview";
@@ -324,11 +324,9 @@ export default function ThemingCase() {
 
         <Beat id="side-by-side" num="6" label="Side by side" heading="Same card. Three themes. No new components.">
           <CaseFigure n={8} caption="The same card in three themes. One component tree; only the token values change. Coast and market are demo brands.">
-            {/* from 1024: the lists left, one face right (I3, 6 Oct 2026) */}
-            <div className={s.pickOnly}>
-              <FacePick labels={FACE_LABELS} />
-            </div>
-            <div className={`${caseStyles.wideOnly} ${s.pickHide}`}>
+            {/* three faces, each with its list under it (Figma 420:12279;
+                K1, Elleta, 6 Oct 2026: undoes I3 for this figure) */}
+            <div className={caseStyles.wideOnly}>
               <div className={s.faces} role="img" aria-label={`The same listing screen in three themes. ${FACE_ORDER.map((k) => FACE_LABELS[k]).join(" ")}`}>
                 {FACE_ORDER.map((k) => (
                   <div key={k} className={s.face} aria-hidden="true">
@@ -339,8 +337,7 @@ export default function ThemingCase() {
               </div>
             </div>
             <div className={caseStyles.phoneOnly}>
-              {/* three peers to compare: a Reel (job 42); each face alone
-                  fits one screen, its list behind What changed (I3) */}
+              {/* three peers to compare: a Reel (job 42) */}
               <Swipe
                 reel
                 label="The same listing screen in three themes"
@@ -350,20 +347,11 @@ export default function ThemingCase() {
                   node: (
                     <div className={s.face} role="img" aria-label={FACE_LABELS[k]}>
                       <Preview theme={THEMES[k]} face={k} />
+                      <WhatChanged face={k} />
                     </div>
                   ),
                 }))}
               />
-              <ShowAll total={3} label="What changed">
-                <div className={s.wcAll}>
-                  {FACE_ORDER.map((k) => (
-                    <div key={k} className={s.pickGroup}>
-                      <p className={s.wcFor}>{faceTitle(k)}</p>
-                      <WhatChanged face={k} />
-                    </div>
-                  ))}
-                </div>
-              </ShowAll>
             </div>
           </CaseFigure>
         </Beat>

@@ -986,33 +986,6 @@
 /* the Figma face width; in the phone Reel it never squeezes below it */
 .face { display: flex; flex-direction: column; gap: var(--spacing-6); width: 18.5rem; max-width: calc(100vw - 2 * var(--container-pad)); }
 .face .pv { flex: 1; }
-/* from 1024 (I3, Elleta, 6 Oct 2026: Figure 8 fits one screen): the
-   three lists on the left, one face on the right; the three-up faces
-   stay for 640 to 1023, the Reel below 640 */
-.pickOnly { display: none; }
-@media (min-width: 64rem) {
-  .pickOnly { display: block; }
-  .pickHide { display: none; }
-}
-.pick {
-  display: grid;
-  grid-template-columns: minmax(0, 22.5rem) 18.5rem;
-  justify-content: space-between;
-  align-items: start;
-  gap: var(--spacing-8);
-}
-.pickText { display: grid; gap: var(--spacing-5); }
-.pickGroup { display: grid; gap: var(--spacing-2); justify-items: start; }
-/* the button names each list, so its "What changed" head goes */
-.pick .wcHead { display: none; }
-/* below 1280 the face drops its price row and booking bar, never
-   scaled, never cut through (audit:clip) */
-@media (min-width: 64rem) and (max-width: 79.9375rem) {
-  .pickFace .pvPriceRow,
-  .pickFace .pvBar { display: none; }
-}
-.wcAll { display: grid; gap: var(--spacing-6); margin-top: var(--spacing-4); }
-.wcFor { margin: 0; font-weight: 600; color: var(--color-semantic-text-primary); }
 
 /* ── 04 · the rules ───────────────────────────────────────────── */
 .rules {
