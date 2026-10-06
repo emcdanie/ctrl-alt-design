@@ -481,6 +481,9 @@
 }
 
 .changeNote {
+  /* capped at the body measure on every renderer (CI's Linux fonts set
+     it 748 wide, 6 Oct 2026) */
+  max-inline-size: var(--measure-body);
   margin: 0;
   font-size: var(--typography-font-size-sm);
   line-height: 1.5;
