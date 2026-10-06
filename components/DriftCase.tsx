@@ -90,13 +90,12 @@ export default function DriftCase() {
         heading="It felt complicated. The numbers said why."
         lead="The drift was structural. Every vertical solved the same need its own way, with no shared language. I interviewed customer success and sales to turn “it looks inconsistent” into evidence."
       >
-        <CaseFigure n={1} fold caption="Four answers in words, not percentages: from my own interviews, not customer data.">
+        <CaseFigure n={1} caption="Four answers in words, not percentages: from my own interviews, not customer data.">
           <DriftSurvey />
         </CaseFigure>
         <BeatText>Then I counted. Seventeen buttons did one job. The filter chip was built four ways, which broke sort and empty states.</BeatText>
         <CaseFigure
           n={2}
-          fold
           caption="Seventeen near-identical buttons from one product: 8 corner radii, 2 fonts, 4 heights. The ringed one is the one the system kept. Recreated."
         >
           <DriftButtons />
@@ -110,7 +109,7 @@ export default function DriftCase() {
         heading="From the whole file, down to one field, and back."
         lead="One overloaded design file, and code that didn’t match it. Zooming in showed the same input built again and again, each a little different."
       >
-        <CaseFigure n={3} fold replay caption="One file, one page, one frame, one field. Recreated from my audit deck.">
+        <CaseFigure n={3} replay caption="One file, one page, one frame, one field. Recreated from my audit deck.">
           <ZoomLevels />
         </CaseFigure>
       </Beat>
@@ -124,20 +123,19 @@ export default function DriftCase() {
       >
         <CaseFigure
           n={4}
-          fold
           replay
           caption="Change it once in the foundation, and every button follows. Decide the colour once; the semantic name carries the meaning, and every vertical’s button reads that name. Recreated concept."
         >
           <TokenCascade />
         </CaseFigure>
         <BeatText>Every fare case became one rule string, so a card can’t show the wrong text. Here is one stay card with the tokens it reads.</BeatText>
-        <CaseFigure n={5} fold caption="One stay card, each part pinned to the token it reads.">
+        <CaseFigure n={5} caption="One stay card, each part pinned to the token it reads.">
           <DriftAnatomy />
         </CaseFigure>
       </Beat>
 
       <Beat id="collaboration" num="3" label="Collaboration, and where it broke" heading="Nobody asked for a system.">
-        <CaseFigure n={6} fold replay caption="From one designer's side project to every team's.">
+        <CaseFigure n={6} replay caption="From one designer's side project to every team's.">
           <Rollout />
         </CaseFigure>
         <CaseQuote
@@ -154,10 +152,10 @@ export default function DriftCase() {
         heading="From a redesign that stalled to one that shipped."
         lead="Two years of redesign, and nothing live. Then the system gave every squad one language, and the work started landing."
       >
-        <CaseFigure n={7} fold replay caption="Each step is a product area shipped on the system. Order as on my list; not to scale.">
+        <CaseFigure n={7} replay caption="Each step is a product area shipped on the system. Order as on my list; not to scale.">
           <Staircase />
         </CaseFigure>
-        <CaseFigure n={8} fold caption="A handful of small parts builds every product area. Recreated with BELLA; no client screens.">
+        <CaseFigure n={8} caption="A handful of small parts builds every product area. Recreated with BELLA; no client screens.">
           <DriftShipped />
         </CaseFigure>
         <CaseQuote

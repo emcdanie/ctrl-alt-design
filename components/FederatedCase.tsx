@@ -107,7 +107,7 @@ export default function FederatedCase() {
         lead="Squads built what they needed and told us afterwards. The product card had a published version, a post-purchase copy and a new draft, each with its own rules. Adding AI on top would only have copied the mess faster."
         leadSize="base"
       >
-        <CaseFigure n={2} fold caption="Recreated. The card being redesigned already existed three times.">
+        <CaseFigure n={2} caption="Recreated. The card being redesigned already existed three times.">
           <FederatedVersions />
         </CaseFigure>
       </Beat>
@@ -122,7 +122,6 @@ export default function FederatedCase() {
       >
         <CaseFigure
           n={3}
-          fold
           caption="Product page, bag, size guide and filters all had to keep working. The slot added the new case without breaking the old pattern."
         >
           <FedShipped
@@ -143,7 +142,7 @@ export default function FederatedCase() {
         lead="Claude did the checkable work: the spacing migration, dark mode coverage, accessibility checks and icon clean-up, and I checked what it did. Names, props and which requests to close stayed decisions with the platform developers."
         leadSize="base"
       >
-        <CaseFigure n={4} fold caption="Claude did the slow, checkable work. The time it saved went into the decisions.">
+        <CaseFigure n={4} caption="Claude did the slow, checkable work. The time it saved went into the decisions.">
           <FedTwoLanes
             label="Two lanes. The slow work: a spacing migration of 3,882 bindings, about 12 hours by hand per platform, under 3 minutes with Claude and checked by me; 84 of 84 brand tokens ready for dark mode; 280 icon bindings cleaned with searchable names; 12 components with accessibility fixes. What stayed with people: component names, props and structure, and which requests to close, decided with the platform devs."
           />
@@ -158,7 +157,7 @@ export default function FederatedCase() {
         lead="Every week, squads brought real cases to an open desk, before anyone built. One path in: need, system team, open desk, joint decision, developer. After a retro we moved to Kanban with three in flight at most, and seven requests closed with a written reason."
         leadSize="base"
       >
-        <CaseFigure n={5} fold caption="The value is timing: squads brought the case before building, so it was built once.">
+        <CaseFigure n={5} caption="The value is timing: squads brought the case before building, so it was built once.">
           <FedIntake
             label="When did the system team hear about it? Before, after the build: the squad builds its own version, the dev waits over a week, the system hears last, then rework or a new copy. After, before the build: the need comes from the squad, the open desk takes it that week, it's decided together, and the dev builds once. From the team retro: 'Technical feedback reaches us after the open desk, not before.' What changed: a new open desk template to bring the case before building, Kanban with three in progress at most, and one way in through squad, system team, open desk and dev."
           />
@@ -174,7 +173,7 @@ export default function FederatedCase() {
         lead="The system had no baseline, so I built one: a KPI tree from business goals to system work, and a Pareto of the pain points. A few root causes held most of the pain. I asked for a small, low-risk first phase before scaling AI."
         leadSize="base"
       >
-        <CaseFigure n={6} fold caption="The slide I took to leadership, recreated. Shape only, the real numbers stay private.">
+        <CaseFigure n={6} caption="The slide I took to leadership, recreated. Shape only, the real numbers stay private.">
           <FedKpi
             label="The leadership slide, recreated: 'Clean the system before scaling AI'. The ask, phase 1: bridge design and code on the top components, machine-readable descriptions, one sprint with no new budget, phases 2 and 3 only if phase 1 works. Beside it the cost (duplicated components rebuilt squad by squad), time to market (decisions before the build, not after) and risk (AI copies whatever is there today), over a KPI tree from business goals to product results to system work. Two months after I left: developers on the system went from 50% to 100% on Web, iOS and Android."
           />

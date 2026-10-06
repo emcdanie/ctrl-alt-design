@@ -128,7 +128,6 @@ export default function ChipCase() {
       >
         <CaseFigure
           n={1}
-          fold
           replay
           caption="The Button specimen in the Atlas concept mock. Rest: five numbered parts with their tokens. Exploded: the same five layers, top to bottom."
         >
@@ -148,7 +147,6 @@ export default function ChipCase() {
       >
         <CaseFigure
           n={2}
-          fold
           caption="Real findings from BELLA’s checks, not illustrations. Source: BELLA’s gate, 2 Oct 2026. Shown in the Atlas concept mock."
         >
           <ChipGate label="A concept mock with two panels. Checks from the gate: contrast of the primary label 15.8:1, contract parity, story and docs present, and focus ring visible in both themes all pass; touch target minimum 44px. What the gate caught: BrandWordmark has no story, PatternField has no story, and 6 components are missing a DSDS entry. Source: BELLA's gate, 2 Oct 2026." />
@@ -164,7 +162,6 @@ export default function ChipCase() {
       >
         <CaseFigure
           n={3}
-          fold
           caption="The Lesson dialog in the Atlas concept mock. Each state does one thing, so you can read it at a glance."
         >
           <ChipLesson label="A concept mock of the Lesson dialog for Button, One job per state. Rest: the ink keycap. Hover rolls the label; nothing lifts. Focus is the only place ochre-deep appears. Press sinks the key 2px. Disabled drops the keycap: no shadow, no roll. Why it matters: when hover, focus and press each look different, a keyboard user always knows where they are, and nobody mistakes a hover for a selection." />
@@ -180,7 +177,6 @@ export default function ChipCase() {
       >
         <CaseFigure
           n={4}
-          fold
           caption="One input asks OBI, and answers list their sources. Write tools return a before → after preview and wait. Nothing runs before Confirm, a preview expires after ten minutes, and CHIP never merges. Illustrative exchange."
         >
           <ChipAsk label="An illustrative exchange. I ask OBI why Filter chip fails the touch target at 40; OBI answers that at 40px the hit area is under the 44px BELLA floor, so the chip passes 5 of 6, and at 44 all six pass, citing the FilterChip story and the touch target check. The terminal runs audit filter-chip: touch target 40 to 44, preview before to after, expires in 10 min. A proposed change, FilterChip box size 40 to 44, waits for Elleta with Confirm and Cancel." />

@@ -503,7 +503,7 @@
     left: auto;
     /* the portrait runs 120% of the stage: sized so it ends on the
        screen edge, uncropped, and sits on the hero's bottom edge */
-    width: min(calc((100% + var(--layout-gutter)) / 1.2), 20.625rem);
+    width: min(calc((100% + var(--layout-gutter) - var(--spacing-4)) / 1.2), 20.625rem);
     height: auto;
     aspect-ratio: 450 / 454;
     top: var(--section-pad-y);
