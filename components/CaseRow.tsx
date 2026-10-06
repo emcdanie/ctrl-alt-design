@@ -12,8 +12,8 @@ import styles from "./WorkLibrary.module.css";
  *  the Mono meta line, the Geist Light title, the one-line claim, the
  *  signal tags. Hover lifts the row, underlines the title and eases the
  *  drawing up. Data: content/cases.ts. */
-export default function CaseRow({ row, layout = "row" }: { row: CaseRowData; layout?: "row" | "featured" | "card" }) {
-  if (layout !== "row") return <CaseCardLayout row={row} featured={layout === "featured"} />;
+export default function CaseRow({ row, layout = "row", eager = false }: { row: CaseRowData; layout?: "row" | "featured" | "card"; eager?: boolean }) {
+  if (layout !== "row") return <CaseCardLayout row={row} featured={layout === "featured"} eager={eager} />;
   return (
     <Link
       href={row.href ?? "/work"}
@@ -60,7 +60,7 @@ export function CaseRowList({ rows }: { rows: CaseRowData[] }) {
  *  the specimen frame beside the text; `card` stacks it on top. The
  *  whole card is the link; a case that isn't live yet carries its status
  *  instead of "Read the case". */
-function CaseCardLayout({ row, featured }: { row: CaseRowData; featured: boolean }) {
+function CaseCardLayout({ row, featured, eager }: { row: CaseRowData; featured: boolean; eager: boolean }) {
   const body = (
     <>
       <SpecimenFrame
@@ -69,11 +69,15 @@ function CaseCardLayout({ row, featured }: { row: CaseRowData; featured: boolean
         caption={row.specimen?.caption ?? ""}
         art={WORK_THUMBS[row.id]}
         picture={row.specimen?.picture}
+        eager={eager}
       />
       <span className={styles.cardBody}>
         <span className={styles.metaLine}>
-          {row.n} · {row.meta}
-          {row.lead ? <> · {row.lead}</> : null}
+          <span className={styles.metaNum}>{row.n} · </span>
+          {row.meta}
+          {row.lead ? <span className={styles.metaLead}><span className={styles.metaDot}> · </span>{row.lead}</span> : null}
+          {/* a live case with news (CHIP): the status in the meta line, not under the link (job O13) */}
+          {row.href && row.status ? <span className={styles.metaLead}><span className={styles.metaDot}> · </span>{row.status}</span> : null}
         </span>
         <span className={featured ? styles.cardTitleFeatured : styles.cardTitle}>{row.title}</span>
         <span className={styles.rowClaim}>{row.claim}</span>
@@ -89,13 +93,9 @@ function CaseCardLayout({ row, featured }: { row: CaseRowData; featured: boolean
         ) : null}
         <span className={styles.cardEnd}>
           {row.href ? (
-            <>
-              <span className={textLinkClass}>
-                Read the case <span aria-hidden="true">→</span>
-              </span>
-              {/* a live case with news (CHIP, H4): the status beside the link */}
-              {row.status ? <Tag>{row.status}</Tag> : null}
-            </>
+            <span className={textLinkClass}>
+              Read the case <span aria-hidden="true">→</span>
+            </span>
           ) : row.status ? (
             <Tag>{row.status}</Tag>
           ) : null}
