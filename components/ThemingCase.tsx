@@ -61,7 +61,7 @@ const R = ({ children }: { children: string }) => (
 );
 
 const ONE_NAME_CAPTION =
-  "One name, two answers: the component asks for background; light mode answers #ffffff, dark mode answers #0d0d0d. Motion: the name changes every 2.2s while in view (background, text-primary, text-muted, surface-card, focus-ring); swatches pop and the arrows draw. Reduced motion holds background."; // token-waiver: the two answers shown as caption text
+  "One name, two answers: the component asks for background; light mode answers #ffffff, dark mode answers #0d0d0d."; // token-waiver: the two answers shown as caption text
 
 const RULES: [string, ReactNode][] = [
   ["Components never read tier 1.", "A new need gets a new named role first."],
@@ -155,7 +155,7 @@ export default function ThemingCase() {
             n={1}
             replay
             replayBelow
-            caption="The exhibit, shown on theme ground (BELLA · light). Motion: the theme cycles ground → night → coast → market every 1.7s while in view; colours ease over 0.5s and the gate bars replay. Picking a theme pauses it. Reduced motion: no cycling, this frame."
+            caption="The exhibit, shown on theme ground (BELLA · light)."
           >
             <ReplayKey>
               <ThemeExhibit />
@@ -276,7 +276,7 @@ export default function ThemingCase() {
             n={6}
             replay
             replayBelow
-            caption="BELLA's pipeline. Motion: a token chip (action) hops step to step every 0.7s, and each step lights up as it lands; check turns mint and the drawing holds on ship. Plays once at half in view; Replay restarts; reduced motion shows this finished frame."
+            caption="BELLA's pipeline."
           >
             <Pipeline />
           </CaseFigure>
