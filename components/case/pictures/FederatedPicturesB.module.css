@@ -1531,7 +1531,7 @@
   width: 5px;
   height: 5px;
   flex: 0 0 auto;
-  margin: 4px 4px;
+  margin: var(--spacing-1);
   background: var(--kit-stock);
 }
 
@@ -1620,7 +1620,7 @@
   position: absolute;
   left: 16px;
   top: 66px;
-  padding: 4px;
+  padding: var(--spacing-1);
   outline: 1px dashed var(--fb-mark);
 }
 
