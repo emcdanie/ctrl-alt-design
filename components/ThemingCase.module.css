@@ -1321,3 +1321,23 @@
   max-width: 100%;
   container-type: inline-size;
 }
+
+/* phones (job O4, 6 Oct 2026): the header is one line, the path cut at
+   its start's end; the code scrolls sideways inside its card with a fade
+   on the right edge, never wrapping inside a token */
+@media (max-width: 39.99rem) {
+  .winPath {
+    overflow: hidden;
+    overflow-wrap: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .hl,
+  .json {
+    overflow-x: auto;
+    white-space: pre;
+    overflow-wrap: normal;
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - var(--spacing-8)), transparent); /* token-waiver: mask alpha, no colour */
+    mask-image: linear-gradient(90deg, #000 calc(100% - var(--spacing-8)), transparent); /* token-waiver: mask alpha, no colour */
+  }
+}
