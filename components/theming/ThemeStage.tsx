@@ -1,9 +1,11 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type CSSProperties, type Dispatch, type ReactNode, type SetStateAction } from "react";
-import Preview from "@/components/theming/Preview";
+import Preview, { WhatChanged } from "@/components/theming/Preview";
 import {
   COMPONENT_SLOTS,
+  FACE_ORDER,
+  LISTING,
   JSON_ROLES,
   ORDER,
   SEMANTIC_ROWS,
@@ -11,6 +13,7 @@ import {
   gatePct,
   gateRows,
   val,
+  type FaceKey,
   type Role,
   type ThemeKey,
 } from "@/components/theming/themes";
@@ -219,7 +222,11 @@ export function ThemeExhibit() {
             </div>
           </div>
         </div>
-        <Preview theme={t} hot={hot} live />
+        {/* from 1024 the face takes the sheets' height and crops below
+            (I3, 6 Oct 2026: the exhibit fits one screen) */}
+        <div className={s.exFace}>
+          <Preview theme={t} hot={hot} live />
+        </div>
         <figcaption className={s.cap}>
           <span>theme</span>
           <b>{key}</b>
@@ -227,6 +234,33 @@ export function ThemeExhibit() {
         </figcaption>
       </figure>
     </>
+  );
+}
+
+/* Figure 8 from 1024 (I3, Elleta, 6 Oct 2026: fits one screen): the
+ * three "What changed" lists on the left, each named by a button that
+ * puts its face on the right; one face at a time, night first */
+export function FacePick({ labels }: { labels: Record<FaceKey, string> }) {
+  const [on, setOn] = useState<FaceKey>(FACE_ORDER[0]);
+  return (
+    <div className={s.pick}>
+      <div className={s.pickText}>
+        {FACE_ORDER.map((k) => (
+          <div key={k} className={s.pickGroup}>
+            <button type="button" className={s.th} aria-pressed={k === on} onClick={() => setOn(k)}>
+              <span className={s.sw} style={{ "--a": THEMES[k].swatch[0], "--b": THEMES[k].swatch[1] } as CSSProperties} aria-hidden="true" />
+              {k} · {LISTING[k].brand}
+            </button>
+            <WhatChanged face={k} />
+          </div>
+        ))}
+      </div>
+      <div className={s.pickFace} role="img" aria-label={labels[on]}>
+        <div aria-hidden="true">
+          <Preview theme={THEMES[on]} face={on} />
+        </div>
+      </div>
+    </div>
   );
 }
 

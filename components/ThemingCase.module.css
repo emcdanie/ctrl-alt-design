@@ -377,12 +377,65 @@
   transition: background-color 0.5s, color 0.5s;
 }
 .pv * { transition: background-color 0.5s, color 0.5s, border-color 0.5s, fill 0.5s, stroke 0.5s, outline-color 0.3s; }
-.ex .pv {
-  align-self: center;
-  justify-self: end;
+.exFace {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
 }
 @media (max-width: 59.9375rem) {
-  .ex .pv { justify-self: center; }
+  .exFace { justify-content: center; }
+}
+/* from 1024 (I3, Elleta, 6 Oct 2026: the exhibit fits one screen): the
+   sheets on the left set the height, the face beside them takes it and
+   crops its lower part under a fade, never scaled; the theme name sits
+   under the face */
+@media (min-width: 64rem) {
+  .ex {
+    grid-template-columns: minmax(0, 1fr) 18.5rem;
+    grid-template-rows: minmax(0, 1fr) auto;
+    column-gap: var(--spacing-6);
+    padding: var(--spacing-6);
+  }
+  .sheets {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .sheets > .sheet:first-child,
+  .sheets > .gsheet { grid-column: 1 / -1; }
+  .exFace {
+    position: relative;
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 0;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, var(--color-ink) calc(100% - var(--spacing-12)), transparent);
+  }
+  .exFace > .pv {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .cap {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+/* a wide window: the gate's four rows two by two, each row's bar full
+   width under its label, ratio and grade (the phone row) */
+@media (min-width: 80rem) {
+  .gate { grid-template-columns: 1fr 1fr; column-gap: var(--spacing-8); }
+  .gate .grow {
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas: "label value badge" "track track track";
+    row-gap: var(--spacing-1);
+  }
+  .gate .growLabel { grid-area: label; }
+  .gate .track { grid-area: track; }
+  .gate .growValue { grid-area: value; }
+  .gate .badge { grid-area: badge; }
+  .glegend { grid-column: 1 / -1; }
 }
 .pvTop {
   display: flex;
@@ -938,6 +991,35 @@
 /* the Figma face width; in the phone Reel it never squeezes below it */
 .face { display: flex; flex-direction: column; gap: var(--spacing-6); width: 18.5rem; max-width: calc(100vw - 2 * var(--container-pad)); }
 .face .pv { flex: 1; }
+/* from 1024 (I3, Elleta, 6 Oct 2026: Figure 8 fits one screen): the
+   three lists on the left, one face on the right; the three-up faces
+   stay for 640 to 1023, the Reel below 640 */
+.pickOnly { display: none; }
+@media (min-width: 64rem) {
+  .pickOnly { display: block; }
+  .pickHide { display: none; }
+}
+.pick {
+  display: grid;
+  grid-template-columns: minmax(0, 22.5rem) 18.5rem;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--spacing-8);
+}
+.pickText { display: grid; gap: var(--spacing-5); }
+.pickGroup { display: grid; gap: var(--spacing-2); justify-items: start; }
+/* the button names each list, so its "What changed" head goes */
+.pick .wcHead { display: none; }
+/* below 1280 the face crops its lower part under a fade, never scaled */
+@media (min-width: 64rem) and (max-width: 79.9375rem) {
+  .pickFace {
+    max-height: 36rem;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, var(--color-ink) calc(100% - var(--spacing-12)), transparent);
+  }
+}
+.wcAll { display: grid; gap: var(--spacing-6); margin-top: var(--spacing-4); }
+.wcFor { margin: 0; font-weight: 600; color: var(--color-semantic-text-primary); }
 
 /* ── 04 · the rules ───────────────────────────────────────────── */
 .rules {
