@@ -146,4 +146,5 @@ export const HOME_LEAD: CaseRowData[] = [DRIFT, FEDERATED, { ...THEMING, n: "03"
  * cases in this order: Drift, Federated (live since 4 Oct), CHIP,
  * Theming. Booking, Search and Code First leave /work; their pages stay
  * live, unlinked from it. */
-export const WORK_CASES: CaseRowData[] = [DRIFT, FEDERATED, CHIP, { ...THEMING, n: "04" }];
+/* tags only where Figma 486:57509 has them: CHIP (K2, 6 Oct 2026) */
+export const WORK_CASES: CaseRowData[] = [{ ...DRIFT, tags: [] }, FEDERATED, CHIP, { ...THEMING, n: "04", tags: [] }];
