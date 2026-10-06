@@ -1198,3 +1198,20 @@ main .showcase + :global(.l-section.l-section) {
 .heroPhoneCard {
   width: min(280px, 100%);
 }
+
+/* a showcase piece that fills its card: the card's width, and the cards'
+   shared height with the piece centred in it (Federated, K7) */
+.piecesFill {
+  width: 100%;
+}
+
+.showcasePieces:has(.piecesFill) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.showcasePieces:has(.piecesFill) > * {
+  width: 100%;
+}

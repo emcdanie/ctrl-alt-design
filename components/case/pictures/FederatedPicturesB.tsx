@@ -558,6 +558,85 @@ export function TrimBox({ on, label = true }: { on: boolean; label?: boolean }) 
   );
 }
 
+/* ── the showcase's three atom cards (K7, Elleta, 6 Oct 2026) ─────────
+   Fluid, for the showcase only (Figure 3 keeps its drawn sizes): each
+   fills its card's width in equal columns, with a name or a key under it
+   in the case's own words. */
+
+/** every size on a 4-column grid the card's width; the bell sits 4 under
+ *  its size; a key for the two marks */
+export function SizeKeyGrid({ cells }: { cells: Cell[] }) {
+  return (
+    <span className={s.kGridWrap}>
+      <span className={s.kGrid}>
+        {cells.map(([t, , , st = "in"]) => (
+          <span key={t} className={s.kSize} data-state={st}>
+            <span className={s.sizeLabel}>{t}</span>
+            {st === "out" ? <Bell className={s.kBell} /> : null}
+            {st === "last" ? <span className={s.kMark} /> : null}
+          </span>
+        ))}
+        {/* the row's empty cells, drawn, so the grid closes square */}
+        {Array.from({ length: (4 - (cells.length % 4)) % 4 }, (_, k) => (
+          <span key={`blank-${k}`} className={s.kSize} />
+        ))}
+      </span>
+      <span className={s.kKey}>
+        <span className={s.kKeyItem}>
+          <span className={s.kMark} />
+          Last units
+        </span>
+        <span className={s.kKeyItem}>
+          <Bell className={s.kBell} />
+          Out of stock, notify bell
+        </span>
+      </span>
+    </span>
+  );
+}
+
+/** the chip's three layouts in equal columns, each named under it */
+export function LayoutTrio() {
+  return (
+    <span className={s.kTrio}>
+      {(
+        [
+          [<ColourChip key="c" />, "Colour"],
+          [<TextChip key="t" />, "Text"],
+          [<SlotChip key="s" />, "Slot"],
+        ] as const
+      ).map(([chip, name]) => (
+        <span key={name} className={s.kCol}>
+          {chip}
+          <span className={s.kName}>{name}</span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/** the 3XL size with its bell, trim off and on: the guide marks the
+ *  text's edge between the size and the bell, never through either; off,
+ *  the bell's padding pushes it off that edge; on, it lines up */
+export function TrimDuo() {
+  return (
+    <span className={s.kDuo}>
+      {[false, true].map((on) => (
+        <span key={String(on)} className={s.kCol}>
+          <span className={s.kTrim} data-on={on || undefined}>
+            <span className={s.kTrimText}>3XL</span>
+            <span className={s.kTrimGuide} />
+            <span className={s.kTrimBounds}>
+              <Bell className={s.kTrimBell} />
+            </span>
+          </span>
+          <span className={s.kName}>{on ? "Trim on" : "Trim off"}</span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
 /** the chip group with slots: pick a group, its labels come with it */
 export function ChipGroupCard() {
   return (

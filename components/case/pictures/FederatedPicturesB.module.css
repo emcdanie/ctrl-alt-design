@@ -1481,3 +1481,156 @@
   width: auto;
   margin: 0 -1px -1px 0;
 }
+
+/* ── the showcase's atom cards (K7, Elleta, 6 Oct 2026) ── */
+.kGridWrap {
+  display: grid;
+  gap: var(--spacing-3);
+  width: 100%;
+}
+
+.kGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--fb-line);
+  border-left: 1px solid var(--fb-line);
+}
+
+.kSize {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-1);
+  min-height: 52px;
+  padding: calc(var(--spacing-1) + 2px) var(--spacing-2);
+  border-right: 1px solid var(--fb-line);
+  border-bottom: 1px solid var(--fb-line);
+  background: var(--color-semantic-surface);
+}
+
+.kSize[data-state="sel"] {
+  box-shadow: inset 0 0 0 2px var(--color-semantic-text-primary);
+}
+
+.kSize[data-state="out"] .sizeLabel {
+  color: var(--color-semantic-text-secondary);
+  text-decoration: line-through;
+}
+
+.kBell {
+  display: block;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  color: var(--color-semantic-text-primary);
+}
+
+.kMark {
+  display: block;
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+  margin: 4px 4px;
+  background: var(--kit-stock);
+}
+
+.kKey {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1) var(--spacing-4);
+  color: var(--color-semantic-text-secondary);
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.kKeyItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.kTrio,
+.kDuo {
+  display: grid;
+  gap: var(--spacing-3);
+  width: 100%;
+}
+
+.kTrio {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.kDuo {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.kCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-width: 0;
+}
+
+.kName {
+  color: var(--color-semantic-text-secondary);
+  font-size: 14px;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.kTrim {
+  --fb-mark: var(--markup-red);
+  position: relative;
+  width: 100%;
+  max-width: 140px;
+  height: 104px;
+  border: 1px solid var(--fb-line);
+  border-radius: var(--radius-sm);
+}
+
+.kTrim[data-on] {
+  --fb-mark: var(--kit-ramp-600);
+}
+
+.kTrimText {
+  position: absolute;
+  left: 16px;
+  top: 10px;
+  color: var(--color-semantic-text-primary);
+  font-size: 20px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.3;
+}
+
+/* the text's left edge, from under the size to above the bell */
+.kTrimGuide {
+  position: absolute;
+  left: 16px;
+  top: 42px;
+  width: 1px;
+  height: 20px;
+  background: var(--fb-mark);
+}
+
+/* the bell's box: off, 4 of padding push the bell off the edge; on, the
+   box is the bell */
+.kTrimBounds {
+  position: absolute;
+  left: 16px;
+  top: 66px;
+  padding: 4px;
+  outline: 1px dashed var(--fb-mark);
+}
+
+.kTrim[data-on] .kTrimBounds {
+  padding: 0;
+}
+
+.kTrimBell {
+  display: block;
+  width: 20px;
+  height: 20px;
+  color: var(--color-semantic-text-primary);
+}

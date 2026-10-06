@@ -4,7 +4,7 @@ import caseStyles from "@/components/case/Case.module.css";
 import CaseHero from "@/components/case/CaseHero";
 import CaseShowcase, { type ShowcaseCard } from "@/components/case/CaseShowcase";
 import type { CollagePiece } from "@/components/case/CaseCollage";
-import { ColourChip, FedIntake, FedKpi, FedPieces, FedShipped, FedTwoLanes, ROWS, SizeGrid, SlotChip, TextChip, TrimBox } from "@/components/case/pictures/FederatedPicturesB";
+import { FedIntake, FedKpi, FedPieces, FedShipped, FedTwoLanes, LayoutTrio, ROWS, SizeKeyGrid, TrimDuo } from "@/components/case/pictures/FederatedPicturesB";
 import NextCase from "@/components/case/NextCase";
 import { Copy, Draft, FederatedVersions, FederatedWho, Published } from "@/components/case/pictures/FederatedPicturesA";
 
@@ -33,31 +33,28 @@ const COLLAGE: CollagePiece[] = [
 const SHOWCASE: ShowcaseCard[] = [
   {
     title: "One chip group, every size",
-    label: "One chip group with every size, XXS to 4XL: M selected, XXS and 2XL out of stock with a notify bell, 3XL and 4XL marked last units.",
+    label: "One chip group with every size, XXS to 4XL: M selected, XXS and 2XL out of stock with a notify bell, 3XL and 4XL marked last units. A key names the two marks.",
     node: (
-      <FedPieces>
-        <SizeGrid cells={ROWS("M", ["XXS", "2XL"], ["3XL", "4XL"])} w={62} h={44} />
+      <FedPieces className={caseStyles.piecesFill}>
+        <SizeKeyGrid cells={ROWS("M", ["XXS", "2XL"], ["3XL", "4XL"])} />
       </FedPieces>
     ),
   },
   {
     title: "Three layouts, one chip",
-    label: "One chip in three layouts: a colour swatch, text (Fabric, Linen) and the new slot.",
+    label: "One chip in three layouts, each named: Colour (a swatch), Text (Fabric, Linen) and the new Slot.",
     node: (
-      <FedPieces className={caseStyles.piecesRow}>
-        <ColourChip />
-        <TextChip />
-        <SlotChip />
+      <FedPieces className={caseStyles.piecesFill}>
+        <LayoutTrio />
       </FedPieces>
     ),
   },
   {
     title: "Trim off · trim on",
-    label: "The 3XL size with its notify bell, twice: without Trim the bell sits off the size's edge; with Trim it lines up.",
+    label: "The 3XL size with its notify bell, twice. Trim off: the bell's padding pushes it off the size's edge. Trim on: it lines up.",
     node: (
-      <FedPieces className={caseStyles.piecesRow}>
-        <TrimBox on={false} label={false} />
-        <TrimBox on label={false} />
+      <FedPieces className={caseStyles.piecesFill}>
+        <TrimDuo />
       </FedPieces>
     ),
   },
