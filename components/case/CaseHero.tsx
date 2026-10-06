@@ -22,6 +22,7 @@ export default function CaseHero({
   disclosure,
   note,
   collage,
+  art,
 }: {
   title: string;
   /** the long-title size, 56 (three lines at 1440) */
@@ -35,12 +36,14 @@ export default function CaseHero({
   note?: { tag: string; text: string };
   /** `phone`: the one readable card the 390 frame shows instead of the
    *  collage, at its own size (job 38: no shrunk collage on a phone) */
-  collage: { label: string; pieces: CollagePiece[]; phone?: ReactNode; phoneLabel?: string; canvas?: { w: number; h: number }; row?: boolean };
+  collage?: { label: string; pieces: CollagePiece[]; phone?: ReactNode; phoneLabel?: string; canvas?: { w: number; h: number }; row?: boolean };
+  /** a live exhibit in place of the collage (Theming, N) */
+  art?: ReactNode;
 }) {
   return (
     <div className={`case-hero ${styles.heroBand}`}>
       <Container className="container--case">
-        <div className={styles.heroGrid} data-art-row={collage.row ? "" : undefined}>
+        <div className={styles.heroGrid} data-art-row={collage?.row ? "" : undefined}>
           <div className={styles.heroText}>
             <Heading tier="title" long={long} id="case-title">
               {title}
@@ -54,7 +57,7 @@ export default function CaseHero({
             <p className={styles.heroIntro}>{intro}</p>
             {disclosure ? <p className={styles.heroDisclosure}>{disclosure}</p> : null}
           </div>
-          <CaseCollage label={collage.label} pieces={collage.pieces} phone={collage.phone} phoneLabel={collage.phoneLabel} canvas={collage.canvas} row={collage.row} />
+          {art ?? (collage ? <CaseCollage label={collage.label} pieces={collage.pieces} phone={collage.phone} phoneLabel={collage.phoneLabel} canvas={collage.canvas} row={collage.row} /> : null)}
         </div>
         {note ? (
           <p className={styles.heroNote}>

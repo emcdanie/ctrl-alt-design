@@ -3,11 +3,11 @@ import { CasePage, Beat } from "@/components/case/CasePage";
 import caseStyles from "@/components/case/Case.module.css";
 import CaseHero from "@/components/case/CaseHero";
 import CaseShowcase, { type ShowcaseCard } from "@/components/case/CaseShowcase";
-import type { CollagePiece } from "@/components/case/CaseCollage";
 import CaseFigure, { ReplayKey } from "@/components/case/CaseFigure";
 import NextCase from "@/components/case/NextCase";
 import ShowAll from "@/components/case/ShowAll";
 import { ThemeStage, ThemeExhibit, ThemeJson } from "@/components/theming/ThemeStage";
+import HeroExhibit from "@/components/theming/HeroExhibit";
 import OneName from "@/components/theming/OneName";
 import Pipeline from "@/components/theming/Pipeline";
 import Preview, { WhatChanged } from "@/components/theming/Preview";
@@ -113,33 +113,6 @@ function StorybookTable() {
   );
 }
 
-const HERO_LABEL =
-  "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it: one listing card, three brands.";
-
-/* the v5 composition (audit fix D3, Elleta, 5 Oct 2026; Figma 551:38193,
-   as the Theming cover): the switcher, the bel·la homes face on night in
-   front, saltstay and verdello fanned 6deg behind. Every face at 1:1 on a
-   528 canvas, so nothing is drawn under 14px */
-const COLLAGE_CANVAS = { w: 528, h: 664 };
-const COLLAGE: CollagePiece[] = [
-  { key: "coast", node: <div className={s.heroBack} data-at="start"><Preview theme={THEMES.coast} face="coast" bare /></div>, x: 116, y: 76, w: 296 },
-  { key: "market", node: <div className={s.heroBack} data-at="end"><Preview theme={THEMES.market} face="market" bare /></div>, x: 116, y: 76, w: 296 },
-  {
-    key: "switch",
-    node: (
-      <div className={s.heroSwitch} style={faceVars("night")}>
-        <span data-on="">night</span>
-        <span>coast</span>
-        <span>market</span>
-      </div>
-    ),
-    x: 0,
-    y: 16,
-    w: 528,
-  },
-  { key: "night", node: <Preview theme={THEMES.night} face="night" bare />, x: 116, y: 76, w: 296 },
-];
-
 const faceTitle = (k: FaceKey) => `${k} · ${LISTING[k].brand}`;
 const faceLabel = (k: FaceKey) =>
   `${LISTING[k].brand} in theme ${k}${k === "night" ? " (BELLA)" : ", a demo brand"}: ${LISTING[k].title}, ${LISTING[k].location}, ${LISTING[k].price} a month.`;
@@ -164,8 +137,8 @@ export default function ThemingCase() {
           <CaseHero
             title="One system, many faces."
             meta={["Case · Theming · BELLA", "2026"]}
-            intro="Themes in BELLA swap the values, never the components. Watch the same screen change, token by token. Nothing to scroll or click."
-            collage={{ label: HERO_LABEL, pieces: COLLAGE, canvas: COLLAGE_CANVAS, phone: <Preview theme={THEMES.night} face="night" />, phoneLabel: "The bel·la homes listing screen on theme night: Seafront loft with a terrace, €1,150 a month, and Book a visit." }}
+            intro="Themes in BELLA swap the values, never the components. Pick a theme and watch the same screen change, token by token."
+            art={<HeroExhibit />}
           />
         }
         showcase={<CaseShowcase label="Theming, the same card in three more themes" cards={SHOWCASE} strip />}
@@ -181,6 +154,7 @@ export default function ThemingCase() {
           <CaseFigure
             n={1}
             replay
+            replayBelow
             caption="The exhibit, shown on theme ground (BELLA · light). Motion: the theme cycles ground → night → coast → market every 1.7s while in view; colours ease over 0.5s and the gate bars replay. Picking a theme pauses it. Reduced motion: no cycling, this frame."
           >
             <ReplayKey>
@@ -194,7 +168,7 @@ export default function ThemingCase() {
           num="2"
           label="In Storybook"
           heading="One name, two answers."
-          lead="A component asks for background. Light mode answers white; dark mode answers near-black. The name never changes."
+          lead="Every component asks for a name that exists in every theme, so nothing falls back to light."
          
         >
           <CaseFigure
@@ -208,7 +182,7 @@ export default function ThemingCase() {
           </CaseFigure>
         </Beat>
 
-        <Beat id="decisions" num="3" label="Decisions" heading="Name the job, not the colour." align="edge">
+        <Beat id="decisions" num="3" label="Decisions" heading="Name the job, not the colour." lead="No component holds a colour of its own, so there's no stand-in to forget." align="edge">
           {/* at 1440 the three cells sit beside the figure (job F, 5 Oct 2026) */}
           <div className={caseStyles.beside}>
             <ul className={s.cells}>
@@ -293,12 +267,13 @@ export default function ThemingCase() {
           num="5"
           label="How it ships"
           heading="From a token file to production, through a gate."
-          lead="DTCG tokens in, CSS custom properties out. A theme only counts once it's in code. This is BELLA's real pipeline, and every step runs on every change."
+          lead="The gate fails the build if anyone hand-edits the generated tokens, if code and contract drift apart, or if a colour pair misses the contrast bar."
          
         >
           <CaseFigure
             n={6}
             replay
+            replayBelow
             caption="BELLA's pipeline. Motion: a token chip (action) hops step to step every 0.7s, and each step lights up as it lands; check turns mint and the drawing holds on ship. Plays once at half in view; Replay restarts; reduced motion shows this finished frame."
           >
             <Pipeline />
@@ -356,7 +331,7 @@ export default function ThemingCase() {
           </CaseFigure>
         </Beat>
 
-        <Beat id="rules" num="7" label="The rules" heading="What keeps themes honest.">
+        <Beat id="rules" num="7" label="The rules" heading="What keeps themes honest." lead="These rules are the lessons from a client's dark mode, written down so I don't learn them twice.">
           <ol className={s.rules}>
             {RULES.map(([title, body], i) => (
               <li key={title}>

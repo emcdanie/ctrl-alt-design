@@ -24,6 +24,7 @@ export default function CaseFigure({
   n,
   caption,
   replay = false,
+  replayBelow = false,
   children,
   className = "",
 }: {
@@ -32,6 +33,8 @@ export default function CaseFigure({
   caption: ReactNode;
   /** the art has motion: play in view, show Replay */
   replay?: boolean;
+  /** Replay under the caption at every width, not in the wide margin (Theming, N6) */
+  replayBelow?: boolean;
   children: ReactNode;
   className?: string;
 }) {
@@ -68,7 +71,7 @@ export default function CaseFigure({
           <PlayContext.Provider value={{ playing, run }}>{children}</PlayContext.Provider>
         </div>
       </div>
-      <figcaption className={`${styles.caption} ${styles.col} ${styles.captionRow}`}>
+      <figcaption className={`${styles.caption} ${styles.col} ${styles.captionRow} ${replayBelow ? styles.captionRowBelow : ""}`.trim()}>
         <span>
           <span className={styles.captionNum}>Figure {n}.</span> {caption}
         </span>
