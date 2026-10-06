@@ -168,7 +168,7 @@ export default function ThemingCase() {
           num="2"
           label="In Storybook"
           heading="One name, two answers."
-          lead="Every component asks for a name that exists in every theme, so nothing falls back to light. A component asks for background. Light mode answers white; dark mode answers near-black. The name never changes."
+          lead="Every component asks for a name that exists in every theme, so nothing falls back to light."
           lead2="A component asks for background. Light mode answers white; dark mode answers near-black. The name never changes."
          
         >
@@ -268,7 +268,7 @@ export default function ThemingCase() {
           num="5"
           label="How it ships"
           heading="From a token file to production, through a gate."
-          lead="The gate fails the build if anyone hand-edits the generated tokens, if code and contract drift apart, or if a colour pair misses the contrast bar. DTCG tokens in, CSS custom properties out. A theme only counts once it's in code. This is BELLA's real pipeline, and every step runs on every change."
+          lead="The gate fails the build if anyone hand-edits the generated tokens, if code and contract drift apart, or if a colour pair misses the contrast bar."
           lead2="DTCG tokens in, CSS custom properties out. A theme only counts once it's in code. This is BELLA's real pipeline, and every step runs on every change."
          
         >
