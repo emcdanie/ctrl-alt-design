@@ -1281,17 +1281,18 @@
 
 
 /* the hero's exhibit (N, 6 Oct 2026): the pills in their own row, 24px
-   clear above the one face; the face sits inside the band */
+   clear above the one face; the face sits inside the band, on the column's
+   left edge so the text-to-art gap matches Federated (Elleta, 6 Oct) */
 .heroArt {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--spacing-6);
-  justify-self: center;
+  justify-self: start;
 }
 .heroPills {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--spacing-2);
 }
 .heroPill {
