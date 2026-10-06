@@ -270,6 +270,32 @@
   box-shadow: var(--shadow-card);
 }
 
+/* the hero's row (K6): the card fills its column and the row's height,
+   16 inside on every card, the photo keeps its shape, prices wrap */
+.version[data-hero] {
+  width: 100%;
+  height: 100%;
+}
+
+.version[data-hero] .card {
+  width: 100%;
+  height: auto;
+  flex: 1;
+  padding: var(--spacing-4);
+}
+
+.version[data-hero] .photo {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+}
+
+.version[data-hero] .price {
+  flex-wrap: wrap;
+  column-gap: var(--spacing-2);
+  row-gap: 0;
+}
+
 .card[data-draft] {
   border-radius: 0;
   box-shadow: var(--shadow-sm);

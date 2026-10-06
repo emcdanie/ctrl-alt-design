@@ -35,12 +35,12 @@ export default function CaseHero({
   note?: { tag: string; text: string };
   /** `phone`: the one readable card the 390 frame shows instead of the
    *  collage, at its own size (job 38: no shrunk collage on a phone) */
-  collage: { label: string; pieces: CollagePiece[]; phone?: ReactNode; phoneLabel?: string; canvas?: { w: number; h: number }; below?: boolean };
+  collage: { label: string; pieces: CollagePiece[]; phone?: ReactNode; phoneLabel?: string; canvas?: { w: number; h: number }; row?: boolean };
 }) {
   return (
     <div className={`case-hero ${styles.heroBand}`}>
       <Container className="container--case">
-        <div className={styles.heroGrid} data-art-below={collage.below ? "" : undefined}>
+        <div className={styles.heroGrid} data-art-row={collage.row ? "" : undefined}>
           <div className={styles.heroText}>
             <Heading tier="title" long={long} id="case-title">
               {title}
@@ -54,7 +54,7 @@ export default function CaseHero({
             <p className={styles.heroIntro}>{intro}</p>
             {disclosure ? <p className={styles.heroDisclosure}>{disclosure}</p> : null}
           </div>
-          <CaseCollage label={collage.label} pieces={collage.pieces} phone={collage.phone} phoneLabel={collage.phoneLabel} canvas={collage.canvas} />
+          <CaseCollage label={collage.label} pieces={collage.pieces} phone={collage.phone} phoneLabel={collage.phoneLabel} canvas={collage.canvas} row={collage.row} />
         </div>
         {note ? (
           <p className={styles.heroNote}>

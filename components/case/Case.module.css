@@ -44,17 +44,26 @@
   column-gap: var(--case-hero-gap);
 }
 
-/* a collage drawn at 1:1 on a wide canvas goes below the text, across
-   the full content width; the text keeps its usual column (job 41b,
-   Elleta: Federated, option B) */
-.heroGrid[data-art-below] {
-  row-gap: var(--case-hero-gap-stacked);
+/* a row of cards (Federated, K6, Elleta, 6 Oct 2026; supersedes job
+   41b's collage below the text): beside the text from 1024, three equal
+   columns that share a top and a height. Each card reflows to its column
+   at its own type size; nothing is scaled. */
+.collageRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-3);
+  align-items: stretch;
+  width: 100%;
 }
 
-.heroGrid[data-art-below] .collage {
-  grid-column: 1 / -1;
-  /* on the content edge, with the text (audit fix D8, 5 Oct 2026) */
-  justify-self: start;
+.collageRowPiece {
+  display: flex;
+  min-width: 0;
+}
+
+.collageRowPiece > * {
+  flex: 1;
+  min-width: 0;
 }
 
 .heroText {
@@ -276,6 +285,18 @@ main .showcase + :global(.l-section.l-section) {
   }
 }
 
+/* the row of cards goes beside the text from 1024 (K6) */
+@media (min-width: 1024px) and (max-width: 1179.98px) {
+  .heroGrid[data-art-row] {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    column-gap: var(--spacing-10);
+  }
+
+  .heroGrid[data-art-row] .heroText {
+    max-width: none;
+  }
+}
+
 @media (max-width: 959.98px) {
 
   /* the phone showcase (job 42, mobile first): the cards stack, one
@@ -326,7 +347,8 @@ main .showcase + :global(.l-section.l-section) {
   }
 
   /* one readable card instead of the collage, centred at its own size */
-  .collage[data-has-phone] {
+  .collage[data-has-phone],
+  .collageRow[data-has-phone] {
     display: none;
   }
 
@@ -1170,4 +1192,9 @@ main .showcase + :global(.l-section.l-section) {
   .lessonBody {
     grid-area: body;
   }
+}
+
+/* the Federated phone hero card: one card at the kit's 280 (K6) */
+.heroPhoneCard {
+  width: min(280px, 100%);
 }

@@ -39,6 +39,7 @@ export default function CaseCollage({
   phone,
   phoneLabel,
   canvas = { w: COLLAGE_W, h: COLLAGE_H },
+  row = false,
 }: {
   label: string;
   pieces: CollagePiece[];
@@ -48,6 +49,9 @@ export default function CaseCollage({
   phoneLabel?: string;
   /** a canvas of its own (job 41: Federated draws its cards at 1:1 on 660x634) */
   canvas?: { w: number; h: number };
+  /** the pieces side by side in equal columns at their own type size,
+   *  reflowing to the column, never scaled (K6, Federated, 6 Oct 2026) */
+  row?: boolean;
 }) {
   const box = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState<number | null>(null);
@@ -60,7 +64,15 @@ export default function CaseCollage({
     fit();
     return () => ro.disconnect();
   }, [canvas.w]);
-  const collage = (
+  const collage = row ? (
+    <div className={styles.collageRow} data-has-phone={phone ? "" : undefined} role="img" aria-label={label}>
+      {pieces.map((p) => (
+        <div key={p.key} className={styles.collageRowPiece} data-key={p.key} aria-hidden="true">
+          {p.node}
+        </div>
+      ))}
+    </div>
+  ) : (
     <div
       className={styles.collage}
       data-has-phone={phone ? "" : undefined}

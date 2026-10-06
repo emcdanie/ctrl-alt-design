@@ -221,10 +221,14 @@ function Marker({ n, className }: { n: number; className: string }) {
   return <span className={`${s.marker} ${className}`}>{n}</span>;
 }
 
-export function Published({ bare = false }: { bare?: boolean }) {
+/** `hero`: the case hero's row (K6, Elleta, 6 Oct 2026): every card has
+ *  its label pill, fills its column, and its text wraps in full (the
+ *  cuts are Figure 2's point, not the hero's) */
+export function Published({ bare = false, hero = false }: { bare?: boolean; hero?: boolean }) {
+  bare = bare || hero;
   return (
-    <div className={s.version}>
-      {bare ? null : <KitStatus>Published</KitStatus>}
+    <div className={s.version} data-hero={hero || undefined}>
+      {hero ? <KitTag>Published</KitTag> : bare ? null : <KitStatus>Published</KitStatus>}
       <div className={s.card}>
         <Coat>
           <span className={s.close}>
@@ -232,7 +236,11 @@ export function Published({ bare = false }: { bare?: boolean }) {
           </span>
         </Coat>
         {/* the cut is the picture's point, drawn as text, never clipped (job 34) */}
-        <p className={`${s.cardTitle} ${s.oneLine}`}>Wool blend belted coat with wide…</p>
+        {hero ? (
+          <p className={s.cardTitle}>Wool blend belted coat with wide lapels</p>
+        ) : (
+          <p className={`${s.cardTitle} ${s.oneLine}`}>Wool blend belted coat with wide…</p>
+        )}
         <p className={s.price}>
           <span className={s.sale}>€119.99</span>
           <span className={s.was}>€179.99</span>
@@ -260,9 +268,10 @@ export function Published({ bare = false }: { bare?: boolean }) {
   );
 }
 
-export function Draft({ bare = false }: { bare?: boolean }) {
+export function Draft({ bare = false, hero = false }: { bare?: boolean; hero?: boolean }) {
+  bare = bare || hero;
   return (
-    <div className={s.version}>
+    <div className={s.version} data-hero={hero || undefined}>
       <KitTag>New draft</KitTag>
       <div className={s.card} data-draft>
         <Coat square>
@@ -273,7 +282,11 @@ export function Draft({ bare = false }: { bare?: boolean }) {
         </Coat>
         <p className={`${s.cardTitle} ${s.caps}`}>Wool blend belted coat with wide lapels</p>
         <p className={s.plain}>119,99 €</p>
-        <p className={`${s.meta} ${s.oneLine}`}>Colour: Beige, size: M, regular fit…</p>
+        {hero ? (
+          <p className={s.meta}>Colour: Beige, size: M, regular fit</p>
+        ) : (
+          <p className={`${s.meta} ${s.oneLine}`}>Colour: Beige, size: M, regular fit…</p>
+        )}
       </div>
       {bare ? null : (
         <>
@@ -286,9 +299,10 @@ export function Draft({ bare = false }: { bare?: boolean }) {
   );
 }
 
-export function Copy({ bare = false }: { bare?: boolean }) {
+export function Copy({ bare = false, hero = false }: { bare?: boolean; hero?: boolean }) {
+  bare = bare || hero;
   return (
-    <div className={s.version}>
+    <div className={s.version} data-hero={hero || undefined}>
       <KitTag>Post-purchase copy</KitTag>
       <div className={s.card}>
         <Coat />
