@@ -1235,3 +1235,17 @@ main .showcase + :global(.l-section.l-section) {
   .moreBarPhone { display: flex; }
   .phoneBody[data-open="false"] { display: none; }
 }
+
+/* a folded figure on a phone: its first screen, a fade, the rest behind
+   a button (job O1) */
+@media (max-width: 39.99rem) {
+  .figureArt[data-fold="closed"] {
+    max-height: 22rem;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, #000 calc(100% - var(--spacing-16)), transparent); /* token-waiver: mask alpha, no colour */
+  }
+}
+
+@media (max-width: 39.99rem) {
+  .showcaseTrack[data-stack-open="false"] > .showcaseCard:nth-child(n + 2) { display: none; }
+}

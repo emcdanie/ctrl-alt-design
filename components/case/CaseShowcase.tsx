@@ -24,6 +24,7 @@ export type ShowcaseCard = { title: string; label: string; node: ReactNode };
 export default function CaseShowcase({ label, cards, hook, strip = false }: { label: string; cards: ShowcaseCard[]; hook?: string; strip?: boolean }) {
   const track = useRef<HTMLUListElement>(null);
   const [at, setAt] = useState(0);
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     const el = track.current;
     if (!el) return;
@@ -44,7 +45,7 @@ export default function CaseShowcase({ label, cards, hook, strip = false }: { la
     <div className={`case-showcase ${styles.showcase}`}>
       <Container className="container--case">
         {/* focusable so a keyboard can scroll the phone track */}
-        <ul className={styles.showcaseTrack} ref={track} aria-label={label} tabIndex={strip ? 0 : undefined} data-strip={strip || undefined}>
+        <ul className={styles.showcaseTrack} ref={track} aria-label={label} tabIndex={strip ? 0 : undefined} data-strip={strip || undefined} data-stack-open={!strip ? open : undefined}>
           {cards.map((c) => (
             <li key={c.title} className={styles.showcaseCard}>
               <p className={styles.showcaseTitle}>{c.title}</p>
@@ -63,6 +64,14 @@ export default function CaseShowcase({ label, cards, hook, strip = false }: { la
           </span>
           {at + 1} of {cards.length} · {cards[at].title} · swipe
         </p>
+        ) : null}
+        {/* phones, stacked cards (job O1): the first card, the rest behind a button */}
+        {!strip && cards.length > 1 ? (
+          <div className={`${styles.moreBar} ${styles.moreBarPhone}`}>
+            <button type="button" className={styles.toolButton} aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+              {open ? "Show fewer" : `Show the other ${cards.length - 1}`}
+            </button>
+          </div>
         ) : null}
         {hook ? <p className={styles.showcaseHook}>{hook}</p> : null}
       </Container>

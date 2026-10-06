@@ -81,6 +81,7 @@ export function DriftSurvey() {
       <div className={caseStyles.phoneOnly}>
         <Swipe
           label="What support and sales told me: four findings"
+          keep={2}
           items={FINDINGS.map((f, i) => ({
             key: f[2],
             short: FINDING_SHORT[i],
@@ -530,6 +531,7 @@ export function DriftShipped() {
       <div className={caseStyles.phoneOnly}>
         <Swipe
           label="Shipped on the system: the atoms, then each product area"
+          keep={2}
           items={SHIPPED_PANELS.map((p) => ({
             key: p.key,
             short: p.short,
@@ -833,6 +835,7 @@ export function DriftAnatomy() {
       <div className={caseStyles.phoneOnly}>
         <Swipe
           label="One stay card and the tokens it reads"
+          keep={2}
           items={[
             {
               key: "card",

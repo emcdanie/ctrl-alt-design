@@ -174,11 +174,12 @@ export default function ThemingCase() {
         >
           <CaseFigure
             n={2}
+            fold
             caption={ONE_NAME_CAPTION}
           >
             <OneName />
           </CaseFigure>
-          <CaseFigure n={3} caption="And here it is in the real Storybook table (Foundations / Colors / Semantic), redrawn: the same five names, with their light and dark answers.">
+          <CaseFigure n={3} fold caption="And here it is in the real Storybook table (Foundations / Colors / Semantic), redrawn: the same five names, with their light and dark answers.">
             <StorybookTable />
           </CaseFigure>
         </Beat>
@@ -202,7 +203,7 @@ export default function ThemingCase() {
                 <p>A new brand or market is a token file, not a redesign. And it can&apos;t ship below the contrast bar.</p>
               </li>
             </ul>
-            <CaseFigure n={4} caption="The tier 2 file for theme ground. Every theme file has the same names; only the pointers change. On the live page it follows whichever theme the exhibit shows.">
+            <CaseFigure n={4} fold caption="The tier 2 file for theme ground. Every theme file has the same names; only the pointers change. On the live page it follows whichever theme the exhibit shows.">
               <ThemeJson />
             </CaseFigure>
           </div>
@@ -274,13 +275,14 @@ export default function ThemingCase() {
         >
           <CaseFigure
             n={6}
+            fold
             replay
             replayBelow
             caption="BELLA's pipeline."
           >
             <Pipeline />
           </CaseFigure>
-          <CaseFigure n={7} caption="The gate in four checks, from BELLA's package.json. Every theme passes it before it ships.">
+          <CaseFigure n={7} fold caption="The gate in four checks, from BELLA's package.json. Every theme passes it before it ships.">
             <div role="img" aria-label="The gate in four checks: rebuild every token output; stop if the rebuild differs from what's committed; check the code still matches each component's contract; screenshot every story, compare it, and run accessibility checks.">
               <div aria-hidden="true">
                 <Win path="emcdanie/bella · package.json · the gate, in four checks">

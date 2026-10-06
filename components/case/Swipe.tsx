@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import ShowAll from "./ShowAll";
 import styles from "./Case.module.css";
 
 /* A figure's phone version (below 640px; CaseFigure's art shows the wide
@@ -22,23 +23,39 @@ export default function Swipe({
   items,
   label,
   reel = false,
+  keep,
 }: {
   items: { key: string; node: ReactNode; short: string }[];
   /** the list's accessible name */
   label: string;
   fit?: boolean;
   reel?: boolean;
+  /** a stack longer than a phone screen or two: the first `keep` stay in
+   *  view, the rest sit behind "Show the other N" (job O1, 6 Oct 2026) */
+  keep?: number;
 }) {
   if (!reel) {
-    return (
-      <ul className={styles.stack} aria-label={label}>
-        {items.map((it) => (
+    const list = (its: typeof items, name: string) => (
+      <ul className={styles.stack} aria-label={name}>
+        {its.map((it) => (
           <li key={it.key} className={styles.stackItem}>
             {it.node}
           </li>
         ))}
       </ul>
     );
+    if (keep && keep < items.length) {
+      const rest = items.length - keep;
+      return (
+        <>
+          {list(items.slice(0, keep), label)}
+          <ShowAll total={rest} label={`Show the other ${rest}`}>
+            {list(items.slice(keep), `${label}, the rest`)}
+          </ShowAll>
+        </>
+      );
+    }
+    return list(items, label);
   }
   return <Reel items={items} label={label} />;
 }
