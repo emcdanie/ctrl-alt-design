@@ -1,0 +1,309 @@
+/* About's pictures (Site v3, Figma 403:7256 / 403:7591). Glass on the
+   glass tokens, the flow on the semantic tokens plus the picture-only
+   --pic-* tokens (app/globals.css :root). */
+
+/* ── Hero: the glass plates, 448 x 437 at 1440 ── */
+.plates {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  aspect-ratio: 448 / 437;
+  margin: 0;
+}
+
+.plate {
+  position: absolute;
+  overflow: hidden;
+  border: 1px solid var(--glass-plate-edge);
+  border-radius: var(--radius-card);
+  background: var(--glass-plate-fill);
+  -webkit-backdrop-filter: blur(var(--glass-plate-blur));
+  backdrop-filter: blur(var(--glass-plate-blur));
+  box-shadow: var(--glass-plate-highlight), var(--glass-plate-shadow);
+}
+
+/* 01 · Pattern, behind: 344 x 350 at (0, 87) */
+.patternPlate {
+  left: 0;
+  top: 19.9%;
+  width: 76.8%;
+  height: 80.1%;
+}
+
+/* the soft fill runs 21 past the plate and feathers to an ellipse,
+   solid in the centre 52%, at 80% strength */
+.patternFill {
+  position: absolute;
+  left: -6.14%;
+  top: -6.03%;
+  width: 112.3%;
+  height: 112.1%;
+  object-fit: cover;
+  opacity: 0.8;
+  -webkit-mask-image: radial-gradient(closest-side, black 52%, transparent 100%);
+  mask-image: radial-gradient(closest-side, black 52%, transparent 100%);
+}
+
+/* 02 · Photo, in front: 356 x 364 at (92, 0); the portrait is wider
+   than the plate (426) and the plate's edge cuts it */
+.photoPlate {
+  left: 20.5%;
+  top: 0;
+  width: 79.5%;
+  height: 83.3%;
+}
+
+.portrait {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 119.5%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: left top;
+  -webkit-mask-image: linear-gradient(to bottom, black 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 72%, transparent 100%);
+}
+
+/* ── Figure 1: how this site gets built ── */
+.flowRoot {
+  container-type: inline-size;
+}
+
+.phone {
+  display: none;
+}
+
+/* the stage is too narrow for five across at a readable size: the 390
+   frame's stack (the viewer, at the full body width, keeps the row) */
+@container (max-width: 719px) {
+  .wide {
+    display: none;
+  }
+
+  .phone {
+    display: block;
+  }
+}
+
+/* 928 x 248 at 1440: five 155 steps, arrows between */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-2) + 2px);
+  height: 248px;
+}
+
+/* the 390 stack (no Enlarge any more, so no top clearance) */
+.flowPhone {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--spacing-2);
+}
+
+.stepWrap {
+  display: contents;
+}
+
+.arrow {
+  flex: 0 0 auto;
+  width: 18px;
+  text-align: center;
+  font-size: var(--typography-font-size-sm);
+  line-height: 22px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.flowPhone .arrow {
+  width: auto;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(var(--spacing-2) + 2px);
+  padding: calc(var(--spacing-3) + 2px);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+
+.flow .step {
+  flex: 0 0 155px;
+  align-self: stretch;
+}
+
+/* the human steps: the ochre tint layered over surface (opaque), the
+   ochre-deep edge */
+.step[data-human] {
+  border: 1.5px solid var(--pic-human-edge);
+  background: linear-gradient(var(--color-semantic-surface-glass-accent), var(--color-semantic-surface-glass-accent)), var(--color-semantic-surface);
+}
+
+.tag {
+  padding: 2px calc(var(--spacing-2) + 2px);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-surface-inset);
+  color: var(--color-semantic-text-body);
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.tag[data-tag="human"] {
+  background: var(--color-semantic-accent);
+  color: var(--color-semantic-text-on-accent);
+}
+
+.artefact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(var(--spacing-1) + 2px);
+  width: 100%;
+  height: 112px;
+  padding: calc(var(--spacing-2) + 2px);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-md);
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-primary);
+}
+
+.artefact code {
+  font-family: var(--font-code);
+  font-size: 14px;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.quiet {
+  color: var(--color-semantic-text-secondary);
+}
+
+.file {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing-1) + 2px);
+}
+
+.fileIcon {
+  width: 10px;
+  height: 13px;
+  border: 1.5px solid currentColor;
+  border-radius: var(--radius-sm);
+}
+
+.terminal {
+  border-color: var(--pic-terminal-ground);
+  background: var(--pic-terminal-ground);
+  color: var(--pic-terminal-ink);
+}
+
+.ok {
+  color: var(--pic-terminal-ok);
+}
+
+.pass {
+  padding: var(--spacing-1) var(--spacing-3);
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.screens {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(var(--spacing-1) + 2px);
+}
+
+.shotWide,
+.shotPhone {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  height: 40px;
+  padding: 3px;
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-semantic-surface-inset);
+}
+
+.shotWide {
+  width: 48px;
+}
+
+.shotPhone {
+  width: 20px;
+}
+
+.shotWide b,
+.shotPhone b {
+  display: block;
+  height: 3px;
+  border-radius: 1px;
+  background: var(--color-semantic-border-strong);
+}
+
+.shotWide b:first-child,
+.shotPhone b:first-child {
+  height: 4px;
+  background: var(--color-semantic-text-primary);
+}
+
+.approved {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-pill);
+  background: var(--pic-human-edge);
+  color: var(--color-semantic-surface);
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1;
+}
+
+.note {
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--color-semantic-text-secondary);
+}
+
+/* the Merge step: a real key, depth as a shadow (shadow.key) */
+.keyArt {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(var(--spacing-1) + 2px);
+  height: 112px;
+  padding-top: calc(var(--spacing-2) + 2px);
+}
+
+.key {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 var(--spacing-5);
+  border-radius: var(--radius-md);
+  background: var(--color-semantic-background-inverse);
+  color: var(--color-semantic-text-inverse);
+  box-shadow: var(--shadow-key-resting);
+  font-size: var(--typography-font-size-tag);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.2;
+}
+
+.stepTitle {
+  font-size: var(--typography-font-size-tag);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.2;
+  color: var(--color-semantic-text-primary);
+}
+
+.stepSub {
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--color-semantic-text-secondary);
+}

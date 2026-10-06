@@ -5,17 +5,35 @@
  *
  * 1. One content edge: the h1 and the first section's content start at the
  *    container's inner left edge, the same number on every route (±1px).
- * 2. Two title recipes: `display` (the Home hero) and `page` (everything
- *    else). An h1 renders one of their two sizes and is never wider than
- *    its measure. Every h1 and h2 in main is 50 characters or fewer.
+ *    Layout B, the rebuilt case template (site v3, CLAUDE.md section 2):
+ *    its container is .container--case (the 1056 body) and its h1 sits on
+ *    the text column, centred at --case-col-max; Layout B routes share
+ *    their own edge, compared only with each other. A Layout B page whose
+ *    text sits on the body's left edge (.container--edge, About, site v3)
+ *    is held to that edge, and compared only with its own kind. A case
+ *    with the hero band (.case-hero, site v3, 4 Oct late) opens its h1 on
+ *    the band's own case-body edge (x192 at 1440, the Figma Hero slot),
+ *    and those routes share that edge, compared only with each other.
+ * 2. Three title recipes: `display` (the Home hero), `case title` (the h1
+ *    in a case hero band: --text-display-case, or -long) and `page`
+ *    (everything else). An h1 renders its recipe's size and is never
+ *    wider than its measure. Every h1 and h2 in main is 50 characters or
+ *    fewer.
  * 3. One section rhythm: every top-level section pads by --section-pad-y
- *    (the first adds the nav height, like every page).
+ *    (the first adds the nav height, like every page). A section that
+ *    follows the case showcase (.case-showcase, which clears the nav
+ *    itself with the hero band) opens one block gap down, --case-gap-block,
+ *    as the Figma Results slot sits 40 under the showcase.
  * 4. Radii from the set: --radius-sm/md/lg/card or a pill. A deliberate
  *    exception carries data-frame-exempt="<reason>" and is listed below,
- *    never a silent allowlist.
+ *    never a silent allowlist. Inside a picture (a [role=img] element) the
+ *    drawn product UI keeps its own radii (Elleta, 5 Oct 2026: the Case UI
+ *    kit stays as drawn); the picture's own box is still checked.
  * 5. Cards: at most 2 card signatures per route (content card + frame).
  *    A card with a shadow floats: it is allowed only on floating things
- *    (the next-case card, popovers, dialogs) and is not counted.
+ *    (the next-case card, popovers, dialogs) and is not counted. Since
+ *    site v3 (BELLA fc2c100, "at rest every card wears shadow.card") a
+ *    card may rest on exactly --shadow-card; any other shadow still fails.
  * 6. Reading measure: no paragraph in main is wider than --measure-body.
  * 0. No sideways scroll: the page is never wider than the window (Part U:
  *    four routes overflowed at 390 while every check above passed).
@@ -23,6 +41,10 @@
  *    2026: Drift shipped at 79,429px when unsized SVGs lost their CSS).
  * 7. The receipt: route, width, element, measured, expected; one line per
  *    route on a pass.
+ * 8. Both motion settings (job 38, 5 Oct 2026): every check runs with
+ *    reduced motion and without it, so a layout that only holds while
+ *    motion is off (or only while it is on) fails. Receipts from the
+ *    no-preference pass carry "motion".
  *
  * Browser audit: reads AUDIT_URL like the others. */
 import { readdirSync, readFileSync } from "node:fs";
@@ -31,6 +53,8 @@ import { receipt } from "./lib/receipt.mjs";
 import { BASE } from "./lib/base-url.mjs";
 
 const WIDTHS = [1440, 1024, 390];
+const MOTIONS = ["reduce", "no-preference"];
+let MOTION = ""; // receipt label for the current pass
 const LIMIT = 50;
 
 /* every page route audit:layout lists, with one real id for each dynamic
@@ -58,7 +82,7 @@ const ROUTES = [
 let fails = 0;
 const fail = (route, width, offender, got, expected) => {
   fails++;
-  console.error(receipt("frame", `(${width} ${route}) ${offender}`, got, expected));
+  console.error(receipt("frame", `(${width}${MOTION} ${route}) ${offender}`, got, expected));
 };
 
 const browser = await chromium.launch();
@@ -66,8 +90,9 @@ const edges = {}; // width -> { value, route }
 const exempts = new Map(); // reason -> routes
 const table = [];
 
-for (const width of WIDTHS) {
-  const page = await browser.newPage({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+for (const motion of MOTIONS) for (const width of WIDTHS) {
+  MOTION = motion === "reduce" ? "" : " motion";
+  const page = await browser.newPage({ viewport: { width, height: 900 }, reducedMotion: motion });
   for (const route of ROUTES) {
     await page.goto(BASE + route, { waitUntil: "networkidle", timeout: 30000 });
     const r = await page.evaluate(({ LIMIT }) => {
@@ -87,8 +112,13 @@ for (const width of WIDTHS) {
       const header = px(probe({ paddingTop: "var(--header-height)" }, "paddingTop"));
       const radii = ["sm", "md", "lg", "card"].map((k) => px(probe({ borderRadius: `var(--radius-${k})` }, "borderTopLeftRadius")));
       const pageSize = px(probe({ fontSize: "var(--text-display-1)" }, "fontSize"));
+      const caseTitleSize = px(probe({ fontSize: "var(--text-display-case)" }, "fontSize"));
+      const caseTitleLong = px(probe({ fontSize: "var(--text-display-case-long)" }, "fontSize"));
+      const blockGap = px(probe({ paddingTop: "var(--case-gap-block)" }, "paddingTop"));
       const displaySize = px(probe({ fontSize: "var(--component-heading-hero-font-size)" }, "fontSize"));
-      const out = { fails: [], exempt: [], cards: [], edge: null };
+      const cardShadow = probe({ boxShadow: "var(--shadow-card)" }, "boxShadow");
+      const colMax = px(probe({ width: "var(--case-col-max)" }, "width"));
+      const out = { fails: [], exempt: [], cards: [], edge: null, layoutB: false, edgeB: false, heroB: false };
       /* 0b. no runaway height at 1440, and the tallest leaf-ish culprit */
       const docH = document.documentElement.scrollHeight;
       if (innerWidth === 1440 && docH > 20000) {
@@ -126,9 +156,27 @@ for (const width of WIDTHS) {
       const cont = firstSection?.querySelector(".container, .layout-container");
       if (cont) {
         const cc = getComputedStyle(cont);
-        const inner = Math.round(cont.getBoundingClientRect().left + px(cc.paddingLeft));
+        let inner = Math.round(cont.getBoundingClientRect().left + px(cc.paddingLeft));
+        if (cont.classList.contains("container--case")) {
+          /* Layout B: the text column, centred in the case body */
+          out.layoutB = true;
+          /* Layout B on the body's edge (.container--edge, About, site v3):
+             the text starts on the 1056 body's left edge, x192 at 1440;
+             these routes share their own edge, compared with each other */
+          out.edgeB = cont.classList.contains("container--edge");
+          const content = cont.getBoundingClientRect().width - px(cc.paddingLeft) - px(cc.paddingRight);
+          if (!out.edgeB) inner = Math.round(inner + Math.max(0, (content - colMax) / 2));
+        }
         out.edge = inner;
         const h1 = main.querySelector("h1");
+        /* the case hero band: the h1 on the band's own case-body edge */
+        const band = h1?.closest(".case-hero");
+        const bandBox = band?.querySelector(".container--case");
+        if (bandBox) {
+          inner = Math.round(bandBox.getBoundingClientRect().left + px(getComputedStyle(bandBox).paddingLeft));
+          out.edge = inner;
+          out.heroB = true;
+        }
         if (h1 && visible(h1) && !h1.classList.contains("sr-only")) {
           const left = Math.round(h1.getBoundingClientRect().left);
           if (Math.abs(left - inner) > 1) F(h1, `left edge ${left}px`, `the container's inner edge, ${inner}px`);
@@ -143,8 +191,11 @@ for (const width of WIDTHS) {
         const c = getComputedStyle(h);
         const size = px(c.fontSize);
         const hero = h.classList.contains("display-heading--hero");
-        const want = hero ? displaySize : pageSize;
-        if (Math.abs(size - want) > 0.5) F(h, `font-size ${size}px`, `${hero ? "display" : "page"} ${want}px`);
+        const caseTitle = h.classList.contains("display-heading--title") && h.closest(".case-hero");
+        const long = h.classList.contains("display-heading--title-long");
+        const want = hero ? displaySize : caseTitle ? (long ? caseTitleLong : caseTitleSize) : pageSize;
+        const recipe = hero ? "display" : caseTitle ? `case title${long ? " (long)" : ""}` : "page";
+        if (Math.abs(size - want) > 0.5) F(h, `font-size ${size}px`, `${recipe} ${want}px`);
         if (!hero) {
           const measure = px(probe({ fontSize: c.fontSize, maxInlineSize: "var(--measure-title)", width: "10000px" }, "maxInlineSize", h.parentElement));
           const w = h.getBoundingClientRect().width;
@@ -152,6 +203,11 @@ for (const width of WIDTHS) {
         }
       }
       for (const h of main.querySelectorAll("h1, h2")) {
+        /* a named exception (data-frame-exempt on the heading's section
+           content, printed below every run): the Home h1, the story line
+           locked by Elleta 3 Oct 2026, hidden behind the hero v3 words
+           (4 Oct 2026) */
+        if (h.parentElement?.querySelector(":scope > [data-frame-exempt]")) continue;
         const t = (h.getAttribute("aria-label") || h.textContent || "").replace(/\s+/g, " ").trim();
         if (t.length > LIMIT) F(h, `${t.length} characters`, `${LIMIT} or fewer`);
       }
@@ -163,9 +219,13 @@ for (const width of WIDTHS) {
         const c = getComputedStyle(s);
         const top = px(c.paddingTop);
         const bottom = px(c.paddingBottom);
-        const wantTop = i === 0 && !embed ? header + padY : padY;
-        if (Math.abs(top - wantTop) > 1) F(s, `padding-top ${top}px`, `${i === 0 && !embed ? "nav + " : ""}--section-pad-y, ${wantTop}px`);
-        if (Math.abs(bottom - padY) > 1) F(s, `padding-bottom ${bottom}px`, `--section-pad-y, ${padY}px`);
+        const afterShowcase = s.previousElementSibling?.classList.contains("case-showcase");
+        const wantTop = afterShowcase ? blockGap : i === 0 && !embed ? header + padY : padY;
+        if (Math.abs(top - wantTop) > 1) F(s, `padding-top ${top}px`, afterShowcase ? `--case-gap-block after the case showcase, ${wantTop}px` : `${i === 0 && !embed ? "nav + " : ""}--section-pad-y, ${wantTop}px`);
+        /* a Section flushBottom (named, printed with the exemptions below):
+           no bottom pad by design (Home's proof row, Elleta, 4 Oct 2026) */
+        const flush = s.classList.contains("l-section--flush-bottom") && s.hasAttribute("data-frame-exempt");
+        if (flush ? bottom !== 0 : Math.abs(bottom - padY) > 1) F(s, `padding-bottom ${bottom}px`, flush ? "0 (flushBottom)" : `--section-pad-y, ${padY}px`);
       });
 
       /* 4 + 5. radii and cards */
@@ -174,7 +234,8 @@ for (const width of WIDTHS) {
         if (exemptOf(el) || !visible(el)) continue;
         const c = getComputedStyle(el);
         const rc = el.getBoundingClientRect();
-        for (const corner of ["borderTopLeftRadius", "borderTopRightRadius", "borderBottomRightRadius", "borderBottomLeftRadius"]) {
+        const inPicture = el.parentElement?.closest('[role="img"]');
+        for (const corner of inPicture ? [] : ["borderTopLeftRadius", "borderTopRightRadius", "borderBottomRightRadius", "borderBottomLeftRadius"]) {
           const v = c[corner];
           if (v === "0px") continue;
           const n = px(v);
@@ -189,12 +250,17 @@ for (const width of WIDTHS) {
         const bordered = ["Top", "Right", "Bottom", "Left"].every((sd) => px(c[`border${sd}Width`]) >= 1 && c[`border${sd}Style`] !== "none");
         const r = px(c.borderTopLeftRadius);
         if (!bordered || r < 12 || r >= Math.min(rc.width, rc.height) / 2 || rc.height < 60 || el.matches(CONTROL)) continue;
+        /* a Layout B picture (a figure's art, not its caption; or any
+           [role=img] picture, such as the case hero's collage and the
+           showcase's pieces) draws the Case UI kit: its boxes are not site
+           cards (CLAUDE.md section 1, pictures only) */
+        if (out.layoutB && (inPicture || (el.closest("figure") && !el.closest("figcaption, blockquote") && !el.matches("figure")))) continue;
         if (el.parentElement.closest("[data-card]")) continue;
         el.setAttribute("data-card", "");
         /* a shadow means it floats: allowed only on floating things (the
            next-case card, popovers, dialogs), and not a content card */
         if (c.boxShadow !== "none") {
-          if (!el.closest("[popover], [role=dialog], [role=tooltip]"))
+          if (c.boxShadow !== cardShadow && !el.closest("[popover], [role=dialog], [role=tooltip]"))
             F(el, "a resting card with a shadow", "no shadow: shadows are for floating things only");
           continue;
         }
@@ -225,12 +291,13 @@ for (const width of WIDTHS) {
     const sigs = [...new Set(r.cards)];
     if (sigs.length > 2) fail(route, width, "cards", `${sigs.length} signatures (${sigs.join("; ")})`, "at most 2: the content card and ExampleFrame");
     if (r.edge != null) {
-      edges[width] ??= { value: r.edge, route };
-      if (Math.abs(edges[width].value - r.edge) > 1)
-        fail(route, width, "content edge", `${r.edge}px`, `${edges[width].value}px, as on ${edges[width].route}`);
+      const group = `${width}${r.layoutB ? (r.heroB ? " layout B hero" : r.edgeB ? " layout B edge" : " layout B") : ""}`;
+      edges[group] ??= { value: r.edge, route };
+      if (Math.abs(edges[group].value - r.edge) > 1)
+        fail(route, width, "content edge", `${r.edge}px`, `${edges[group].value}px, as on ${edges[group].route}`);
     }
     for (const reason of r.exempt) exempts.set(reason, [...(exempts.get(reason) ?? []), `${route}@${width}`]);
-    table.push(`  ${String(width).padEnd(5)} ${route.padEnd(46)} edge ${r.edge ?? "-"}px  cards ${sigs.length}  ${r.fails.length ? `${r.fails.length} fail` : "ok"}`);
+    table.push(`  ${(String(width) + MOTION).padEnd(12)} ${route.padEnd(46)} edge ${r.edge ?? "-"}px  cards ${sigs.length}  ${r.fails.length ? `${r.fails.length} fail` : "ok"}`);
   }
   await page.close();
 }
@@ -245,4 +312,4 @@ if (fails) {
   process.exit(1);
 }
 console.log(table.join("\n"));
-console.log(`frame gate: PASS (${ROUTES.length} routes × ${WIDTHS.length} widths)`);
+console.log(`frame gate: PASS (${ROUTES.length} routes × ${WIDTHS.length} widths × ${MOTIONS.length} motion settings)`);

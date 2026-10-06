@@ -118,15 +118,15 @@ Employment history is public; case content stays abstracted. Encode the split:
 a. Term scoping: split the banned list into _private/nda-terms.txt (internal
    terms, banned EVERYWHERE, unchanged) and _private/nda-employers.txt (employer
    and engagement org names; the file is seeded, gitignored, Elleta approved its
-   two entries plus Mango on 17 Jul). The hook and audit:nda ban employer names
+   two entries plus the retailer on 17 Jul). The hook and audit:nda ban employer names
    everywhere EXCEPT components/ExperienceSection.tsx and
    components/ResumeModal.tsx. No other file is exempt, ever. Both lists stay
    gitignored; the scripts keep zero hardcoded terms; this brief names no names.
 b. Restore real names in Experience and Resume entries per the employers file:
-   the employer, the contract engagement, and Mango (already allowed).
+   the employer, the contract engagement, and the retailer (already allowed).
    TODO(elleta) on exact entry wording; do not write her lines.
 c. Logos in Experience only, per the existing public-org rule, now including the
-   two orgs from the employers file. Update the upload list (mango.png still
+   two orgs from the employers file. Update the upload list (the retailer logo still
    missing; the two org marks re-enter as fresh assets she provides; ASU and BFW
    re-exports stand).
    Case studies keep industry-not-client naming, recreated artifacts, disclosure

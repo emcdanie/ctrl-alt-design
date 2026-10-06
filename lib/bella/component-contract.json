@@ -253,6 +253,7 @@
           "values": [
             "hero",
             "page",
+            "title",
             "section",
             "case",
             "sub"

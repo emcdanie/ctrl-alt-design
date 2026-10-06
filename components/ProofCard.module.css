@@ -1,0 +1,46 @@
+/* one proof card in the row under the hero (H4, 6 Oct 2026): on the
+   surface, radius card, 28 in, the bar, the title, the link line. The
+   cards share the row's height (the row is a grid, stretch). */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  min-height: var(--spacing-touch-target);
+  padding: calc(var(--spacing-6) + var(--spacing-1));
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+  color: inherit;
+  text-decoration: none;
+}
+
+.bar {
+  width: var(--spacing-10);
+  height: var(--spacing-1);
+  margin-bottom: var(--spacing-1);
+  border-radius: var(--radius-full);
+  background: var(--color-semantic-accent);
+}
+
+.title {
+  text-wrap: pretty;
+}
+
+.link {
+  margin-top: auto;
+  font-size: var(--typography-font-size-base);
+  color: var(--color-semantic-text-secondary);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover .link {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+.card:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}

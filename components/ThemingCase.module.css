@@ -55,9 +55,13 @@
   gap: var(--spacing-2);
   align-items: center;
 }
+/* targets (job 34): the theme switch and the pause buttons are the
+   primary controls here, 44px tall (WCAG 2.5.5); the map rows below
+   are secondary, at least 24px (2.5.8) */
 .th,
 .play,
 .askPause {
+  min-height: var(--spacing-touch-target);
   font-family: var(--font-code);
   font-size: var(--text-mono);
   font-feature-settings: var(--mono-feature);
@@ -76,9 +80,9 @@
   padding: calc(var(--spacing-1) + 2px) var(--spacing-3) calc(var(--spacing-1) + 2px) calc(var(--spacing-1) + 2px);
   background: var(--color-semantic-background);
 }
-.th:hover,
-.play:hover,
-.askPause:hover { border-color: var(--color-ink); }
+@media (hover: hover) and (pointer: fine) {
+  .th:hover, .play:hover, .askPause:hover { border-color: var(--color-ink); }
+}
 .th[aria-pressed="true"] {
   border-color: var(--color-ink);
   box-shadow: inset 0 0 0 1px var(--color-ink);
@@ -128,10 +132,10 @@
   margin: var(--spacing-4) 0 0;
   padding: var(--spacing-4);
   border-radius: var(--radius-card);
-  background: var(--tint-l);
+  background: var(--tint);
+  color: var(--color-ink);
   transition: background-color 0.7s ease;
 }
-:global([data-theme="dark"]) .ex { background: var(--tint-d); }
 @media (min-width: 40.0625rem) {
   .ex { padding: calc(var(--spacing-6) + var(--spacing-1)); }
 }
@@ -146,7 +150,10 @@
   gap: calc(var(--spacing-2) + 2px);
   align-content: stretch;
 }
-@media (min-width: 43.75rem) {
+/* tiers 2 and 3 side by side only where a column holds the longest
+   token name on one line: the exhibit full width (700 to 959) or a wide
+   window (job 38: "button.background" broke at 1024) */
+@media (min-width: 43.75rem) and (max-width: 59.9375rem), (min-width: 72rem) {
   .sheets { grid-template-columns: 1fr 1fr; }
   .sheets > .sheet:first-child,
   .sheets > .gsheet { grid-column: 1 / -1; }
@@ -176,20 +183,24 @@
 .ramp i {
   height: 1.25rem;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--color-semantic-border);
+  border: 1px solid var(--color-semantic-border-strong);
   transition: background-color 0.6s;
 }
 .map {
   display: grid;
   gap: 3px;
 }
+/* a token name never breaks: name and value share a line when the
+   column has room, and the value drops under the name when it has not
+   (job 38: "button.ba/ckground" at 1024) */
 .mapRow {
   position: relative;
-  display: grid;
-  grid-template-columns: 0.875rem 1fr auto;
-  gap: var(--spacing-2);
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--spacing-2);
   align-items: center;
   width: 100%;
+  min-height: var(--spacing-6);
   padding: 1px var(--spacing-1);
   border: 0;
   border-radius: var(--radius-sm);
@@ -207,23 +218,36 @@
   width: 0.875rem;
   height: 0.875rem;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--color-semantic-border);
+  border: 1px solid var(--color-semantic-border-strong);
   transition: background-color 0.6s;
 }
-.mapRow span { min-width: 0; overflow-wrap: anywhere; }
-.mapRow em { font-style: normal; color: var(--color-ink-muted); }
-.mapRow:hover,
+.mapRow i { flex: none; }
+.mapRow span { white-space: nowrap; }
+.mapRow em {
+  margin-left: auto;
+  font-style: normal;
+  white-space: nowrap;
+  color: var(--color-ink-muted);
+}
 .mapRow.hot {
   background: var(--color-chip-c1);
   color: var(--color-chip-text);
 }
-.mapRow:hover em,
+
+@media (hover: hover) and (pointer: fine) {
+  .mapRow:hover {
+    background: var(--color-chip-c1);
+    color: var(--color-chip-text);
+  }
+}
 .mapRow.hot em { color: var(--color-chip-text); }
+@media (hover: hover) and (pointer: fine) {
+  .mapRow:hover em { color: var(--color-chip-text); }
+}
 
 /* the gate: contrast on a log scale, 1 to 21 */
 .gate { display: grid; gap: var(--spacing-2); }
-.grow,
-.gscale {
+.grow {
   display: grid;
   grid-template-columns: 7.5rem 1fr 4rem 3.875rem;
   gap: calc(var(--spacing-2) + 2px);
@@ -280,23 +304,26 @@
 }
 .badge.no { background: transparent; color: var(--color-ink); box-shadow: inset 0 0 0 1px var(--color-ink); }
 .badgeOn { opacity: 1; transform: none; }
-.gscale {
+/* the scale's legend under the bars (job 38: numbers over the ticks collided) */
+.glegend {
+  margin: var(--spacing-1) 0 0;
   font-family: var(--font-code);
   font-size: var(--text-mono);
   font-feature-settings: var(--mono-feature);
   color: var(--color-ink-muted);
 }
-.gscale div { position: relative; height: 1.125rem; }
-.gscale div span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
-.gscale div span:last-child { transform: translateX(-100%); }
+/* a phone: label, ratio and grade on one line, the bar full width under
+   them (job 38 P0.1) */
 @media (max-width: 40rem) {
-  .grow,
-  .gscale {
-    grid-template-columns: 5.25rem 1fr 3.25rem 3.5rem;
-    gap: calc(var(--spacing-1) + 2px);
+  .grow {
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas: "label value badge" "track track track";
+    row-gap: var(--spacing-1);
   }
-  /* the scale numbers collide on a phone; the badges carry the grade */
-  .gscale { display: none; }
+  .growLabel { grid-area: label; }
+  .track { grid-area: track; }
+  .growValue { grid-area: value; }
+  .badge { grid-area: badge; }
 }
 
 /* the caption: theme name, bottom left on wide screens */
@@ -325,156 +352,327 @@
 }
 
 /* ── the demo listing card (every theme dresses it) ────────────── */
+/* The theming face (job 43, Figma "Theming face" 480:55355, faces v2):
+   one phone screen, 296 wide as the Figma face. Every colour and radius
+   is a variable (--t-*): faceVars sets a brand's Figma values, themeVars
+   the exhibit's roles (no surface or radii there, so the fallbacks).
+   The photo is the one thing that stays itself; the face caps at 18.5rem
+   so no photo renders wider than half its pixels (audit:sharp). */
 .pv {
   min-width: 0;
+  width: 100%;
+  max-width: 18.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
   overflow: hidden;
-  border: 1px solid var(--color-semantic-border);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--t-line);
+  border-radius: var(--t-radius, var(--radius-lg));
   background: var(--t-bg);
   color: var(--t-ink);
   font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.3;
+  text-align: left;
   transition: background-color 0.5s, color 0.5s;
 }
 .pv * { transition: background-color 0.5s, color 0.5s, border-color 0.5s, fill 0.5s, stroke 0.5s, outline-color 0.3s; }
-.ex .pv {
-  align-self: stretch;
+.exFace {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
 }
-.pvNav {
+@media (max-width: 59.9375rem) {
+  .exFace { justify-content: center; }
+}
+/* from 1024 (I3, Elleta, 6 Oct 2026: the exhibit fits one screen): the
+   sheets on the left, the face beside them cropped to its top: the price
+   row and booking bar drop out, nothing is scaled; the theme name sits
+   under the face */
+@media (min-width: 64rem) {
+  .ex {
+    grid-template-columns: minmax(0, 1fr) 18.5rem;
+    grid-template-rows: minmax(0, 1fr) auto;
+    column-gap: var(--spacing-6);
+    padding: var(--spacing-6);
+  }
+  .sheets {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .sheets > .sheet:first-child,
+  .sheets > .gsheet { grid-column: 1 / -1; }
+  .exFace {
+    grid-column: 2;
+    grid-row: 1;
+    align-items: flex-start;
+  }
+  /* the crop drops whole parts, never cuts one (audit:clip) */
+  .exFace .pvPriceRow,
+  .exFace .pvBar { display: none; }
+  .cap {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+/* a wide window: the gate's four rows two by two, each row's bar full
+   width under its label, ratio and grade (the phone row) */
+@media (min-width: 80rem) {
+  .gate { grid-template-columns: 1fr 1fr; column-gap: var(--spacing-8); }
+  .gate .grow {
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas: "label value badge" "track track track";
+    row-gap: var(--spacing-1);
+  }
+  .gate .growLabel { grid-area: label; }
+  .gate .track { grid-area: track; }
+  .gate .growValue { grid-area: value; }
+  .gate .badge { grid-area: badge; }
+  .glegend { grid-column: 1 / -1; }
+}
+.pvTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: calc(var(--spacing-3) + 2px);
-  padding: var(--spacing-3) var(--spacing-4);
-  border-bottom: 1px solid var(--t-line);
-  font-size: var(--typography-font-size-sm);
+  gap: var(--spacing-3);
+  padding: calc(var(--spacing-3) + 2px) var(--spacing-4);
+  background: var(--t-surface, var(--t-bg));
 }
-.pvNav b { font-weight: 500; white-space: nowrap; }
-.pvSearch {
-  min-width: 0;
-  overflow: hidden;
-  padding: calc(var(--spacing-1) + 1px) var(--spacing-3);
-  border: 1px solid var(--t-line);
-  border-radius: var(--radius-full);
-  color: var(--t-ink);
-  font-size: var(--text-mono);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  box-shadow: 0 1px 6px color-mix(in srgb, var(--color-light-ink) 6%, transparent);
-}
-@media (max-width: 32.5rem) {
-  .pvSearch { display: none; }
-}
+.pvWord { font-weight: 600; font-size: 1.25rem; white-space: nowrap; }
+.pvTop svg { flex: none; width: var(--icon-md); height: var(--icon-md); stroke-width: 1.25; }
 .pvBody {
-  display: grid;
-  gap: calc(var(--spacing-3) + 2px);
-  padding: var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding-inline: var(--spacing-4);
 }
-.ex .pvBody { flex: 1; display: flex; flex-direction: column; }
-.pvCard { min-width: 0; }
-.ex .pvCard { flex: 1; display: flex; flex-direction: column; }
+.pvWhere { display: grid; gap: var(--spacing-2); }
+.pvLabel { color: var(--t-muted); font-weight: 500; font-size: var(--typography-font-size-sm); }
+.pvField {
+  display: flex;
+  align-items: center;
+  min-height: 3.5625rem;
+  padding: var(--spacing-3) var(--spacing-4);
+  border: 1px solid var(--t-border);
+  border-radius: var(--t-ctl-radius, var(--radius-md));
+  background: var(--t-surface, var(--t-bg));
+  color: var(--t-muted);
+  font-size: var(--typography-font-size-base);
+  line-height: 1.7;
+}
+/* the filter chips are ONE row on every face (Elleta, 5 Oct 2026, 17:35).
+   On the live exhibit (`live`, a tab stop with a name) the row scrolls
+   sideways and runs to the face edge, so the next chip peeks there. In a
+   picture face (role="img", aria-hidden) a scroller can't take focus, and
+   a chip cut at the edge fails the clip sweep, so a chip that doesn't fit
+   drops out whole: the row wraps into one chip-high line that hides the
+   rest (decision while away, 5 Oct 2026; Elleta to confirm) */
+.pvChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  height: 2.75rem;
+  overflow: hidden;
+}
+.pvChips[tabindex] {
+  flex-wrap: nowrap;
+  height: auto;
+  margin-inline: calc(-1 * var(--spacing-4));
+  padding-inline: var(--spacing-4);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--spacing-4);
+  scrollbar-width: none;
+}
+.pvChips::-webkit-scrollbar { display: none; }
+.pvChip {
+  flex: none;
+  scroll-snap-align: start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: var(--spacing-1) var(--spacing-4);
+  border: 1px solid var(--t-border);
+  border-radius: var(--radius-full);
+  color: var(--t-muted);
+  font-weight: 500;
+  font-size: var(--typography-font-size-sm);
+  white-space: nowrap;
+}
+.pvChipOn { border-color: var(--t-action); background: var(--t-action); color: var(--t-on-action); }
+.pvCard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--t-line);
+  border-radius: var(--t-radius, var(--radius-lg));
+  background: var(--t-surface, var(--t-bg));
+}
+/* the photo well: the panel role shows while the photo loads */
 .pvImg {
   position: relative;
-  display: block;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
+  height: 11rem;
   background: var(--t-panel);
 }
-.ex .pvImg { flex: 1; aspect-ratio: auto; min-height: 12.5rem; }
-.pvImg > svg { display: block; width: 100%; height: 100%; }
-.ex .pvImg > svg { position: absolute; inset: 0; }
-.pvSea { fill: color-mix(in oklab, var(--t-accent) 35%, var(--t-panel)); }
-.pvS { fill: none; stroke: var(--t-ink); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
-.pvA { fill: var(--t-accent); }
-.pvPill {
+.pvImg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pvTag {
   position: absolute;
-  top: calc(var(--spacing-2) + 2px);
-  left: calc(var(--spacing-2) + 2px);
-  padding: 2px calc(var(--spacing-2) + 2px);
+  top: var(--spacing-3);
+  left: var(--spacing-3);
+  padding: var(--spacing-1) var(--spacing-3);
   border-radius: var(--radius-full);
-  background: var(--color-light-bg);
-  color: var(--color-light-ink);
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-feature-settings: var(--mono-feature);
-  box-shadow: 0 1px 4px color-mix(in srgb, var(--color-light-ink) 15%, transparent);
+  background: var(--t-panel);
+  color: var(--t-ink);
+  font-size: var(--typography-font-size-tag);
+  line-height: 1.7;
 }
-.pvHeart {
+/* save: a white disc on the photo in every theme, as the Figma face */
+.pvSave {
   position: absolute;
-  top: var(--spacing-2);
-  right: calc(var(--spacing-2) + 2px);
-  width: 1.5rem;
-  height: 1.5rem;
+  top: var(--spacing-3);
+  right: var(--spacing-3);
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-full);
+  background: var(--color-alpha-glass-90);
+  color: var(--color-cool-900);
+  box-shadow: 0 1px 4px var(--color-alpha-key-20);
 }
-.pvHeart svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  fill: color-mix(in srgb, var(--color-light-ink) 35%, transparent);
-  stroke: var(--color-light-bg);
-  stroke-width: 1.6;
-}
+.pvSave svg { width: var(--icon-sm); height: var(--icon-sm); stroke-width: 1.33; }
 .pvPag {
   position: absolute;
-  bottom: var(--spacing-2);
+  bottom: calc(var(--spacing-2) + 2px);
   left: 50%;
   display: flex;
-  gap: var(--spacing-1);
+  gap: calc(var(--spacing-1) + 2px);
   transform: translateX(-50%);
 }
 .pvPag i {
   width: 0.375rem;
   height: 0.375rem;
   border-radius: 50%;
-  background: var(--color-light-bg);
-  opacity: 0.6;
+  background: var(--color-cool-0);
+  opacity: 0.55;
 }
 .pvPag i.on { opacity: 1; }
 .pvCb {
-  display: grid;
-  gap: 2px;
-  padding: calc(var(--spacing-2) + 2px) 2px 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4);
 }
-.pvRow {
+/* two lines held for every title, so the three faces line up */
+.pvTtl { min-height: 2.6em; font-weight: 600; font-size: var(--typography-font-size-base); }
+.pvLoc {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-1) + 2px);
+  color: var(--t-muted);
+}
+.pvLoc svg { flex: none; width: 0.875rem; height: 0.875rem; stroke-width: 1.5; }
+.pvRt { display: flex; gap: calc(var(--spacing-1) + 2px); }
+.pvRt b { font-weight: 600; }
+.pvRt u { text-underline-offset: 2px; }
+.pvAm {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--spacing-2);
+  gap: var(--spacing-1) calc(var(--spacing-3) + 2px);
+  color: var(--t-muted);
 }
-.pvTtl { font-weight: 500; font-size: 0.9375rem; }
-.pvRt { font-size: var(--typography-font-size-sm); }
-.pvMeta { font-size: var(--typography-font-size-sm); color: var(--t-muted); }
-.pvPrice { margin-top: var(--spacing-1); font-size: 0.9375rem; color: var(--t-ink); }
-.pvPrice b,
-.pvBk b { font-weight: 600; }
-.pvBk {
-  display: flex;
-  justify-content: space-between;
+.pvAm > span {
+  display: inline-flex;
   align-items: center;
-  gap: calc(var(--spacing-2) + 2px);
-  margin-top: 2px;
-  padding-top: var(--spacing-3);
-  border-top: 1px solid var(--t-line);
-}
-.ex .pvBk { margin-top: auto; }
-.pvBtn {
-  display: inline-block;
-  padding: calc(var(--spacing-2) + 2px) calc(var(--spacing-4) + 2px);
-  border-radius: var(--radius-md);
-  background: var(--t-action);
-  color: var(--t-on-action);
-  font-weight: 500;
-  font-size: 0.9375rem;
+  gap: var(--spacing-1);
   white-space: nowrap;
 }
+.pvAm svg { width: var(--icon-md); height: var(--icon-md); stroke-width: 1.5; }
+/* a face drawn narrower than Figma's 296 (the showcase card) closes the
+   amenity gaps so "Beach" stays on the row. The container is the
+   showcase's block wrapper: on the face itself it would zero the width
+   of a face that sizes to its content (the hero's phone card) */
+.showFace { container-type: inline-size; }
+@container (max-width: 18.4rem) {
+  .pvAm { column-gap: var(--spacing-2); }
+}
+/* in a face narrower than 296 the button wraps under the price, never cut */
+.pvPriceRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2);
+  padding-top: var(--spacing-2);
+  border-top: 1px solid var(--t-line);
+}
+.pvPrice { color: var(--t-ink); white-space: nowrap; }
+.pvPrice b { font-weight: 600; font-size: var(--typography-font-size-base); }
+.pvPer { color: var(--t-muted); }
+/* pictures of the secondary and primary buttons, 44 high */
+.pvBtn2,
+.pvBtn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: var(--spacing-5);
+  border: 1px solid var(--t-border);
+  border-radius: var(--t-ctl-radius, var(--radius-md));
+  font-weight: 600;
+  font-size: var(--typography-font-size-tag);
+  white-space: nowrap;
+}
+.pvBtn {
+  border-color: var(--t-action);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-cool-0) 18%, transparent), transparent 46%) var(--t-action);
+  color: var(--t-on-action);
+  box-shadow: 0 2px 0 var(--color-cool-950), 3px 6px 10px var(--color-alpha-key-24), inset 0 1px 0 var(--color-alpha-glass-40);
+}
+.pvBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  margin-top: auto;
+  padding: var(--spacing-4);
+  border-top: 1px solid var(--t-line);
+  background: var(--t-surface, var(--t-bg));
+}
+.pvDates { display: grid; }
+.pvDates b { font-weight: 600; font-size: var(--typography-font-size-tag); }
+.pvDates span { color: var(--t-muted); }
 
 .pv [data-r] { outline: 2px solid transparent; outline-offset: 3px; }
 .pv .pulse { outline-color: var(--t-ink); }
-/* the strip version: each card wears its own theme's control border */
-.pvSmall { border-color: var(--t-border); }
-.pvSmall .pvBody { padding: var(--spacing-3); }
+
+/* "What changed", under each Figure 8 face: page text, the swatches in
+   the face's own values */
+.wc { display: grid; gap: var(--spacing-2); width: 100%; max-width: 18.5rem; }
+.wcHead { margin: 0; font-weight: 600; font-size: var(--typography-font-size-tag); color: var(--color-semantic-text-primary); }
+.wc ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--spacing-2); }
+.wc li { display: flex; align-items: center; gap: calc(var(--spacing-2) + 2px); }
+.wc code { font-family: var(--font-code); font-size: var(--typography-font-size-tag); color: var(--color-semantic-text-primary); white-space: pre; }
+.wcSwatch {
+  flex: none;
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-sm);
+}
+.wcSwatch[data-kind="action"] { background: var(--t-action); }
+.wcSwatch[data-kind="bg"] { background: var(--t-bg); }
+.wcSwatch[data-kind="accent"] { background: var(--t-accent); }
+.wcSwatch[data-kind="radius"] { border: 1.5px solid var(--color-semantic-text-primary); border-radius: var(--t-ctl-radius); }
+
 
 /* ── 01b · one name, two answers ──────────────────────────────── */
 .ask {
@@ -517,6 +715,7 @@
   font-feature-settings: var(--mono-feature);
   overflow-wrap: anywhere;
 }
+.askSide code { overflow-wrap: normal; }
 .askLbl,
 .askHex { color: var(--color-ink-muted); }
 .askSide code { color: var(--color-ink); }
@@ -580,15 +779,14 @@
   border-bottom: 1px solid var(--color-semantic-border);
   background: var(--color-semantic-surface);
 }
+/* the path wraps onto a second line at 390, never a silent ellipsis (job 34) */
 .winPath {
   min-width: 0;
-  overflow: hidden;
   font-family: var(--font-code);
   font-size: var(--text-mono);
   font-feature-settings: var(--mono-feature);
   color: var(--color-ink-muted);
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 .dots { display: flex; flex: none; gap: calc(var(--spacing-1) + 1px); }
 .dots i {
@@ -644,10 +842,13 @@
 .dot2 { background: var(--color-chip-c2); }
 .dot3 { background: var(--color-chip-c3); }
 .cee p { margin: 0; font-size: var(--text-body); line-height: 1.6; color: var(--color-ink); }
+/* the tier 2 file wraps, indentation kept, never a sideways scroll
+   (job 42, rule 5: nothing cut, mobile first) */
 .json {
   margin: var(--spacing-6) 0 0;
   padding: var(--spacing-4);
-  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   border-radius: var(--radius-lg);
   background: var(--color-semantic-surface);
   color: var(--color-ink);
@@ -655,6 +856,17 @@
   font-size: var(--text-mono);
   font-feature-settings: var(--mono-feature);
   line-height: 1.6;
+}
+
+/* the highlighted line: BELLA's ochre highlight, the full line width */
+.jsonHot {
+  display: block;
+  margin: 0 calc(var(--spacing-2) * -1);
+  padding: 0 calc(var(--spacing-2) - 2px);
+  border-left: 2px solid var(--color-semantic-highlight-edge);
+  border-radius: var(--radius-sm);
+  background: var(--color-semantic-highlight-wash);
+  color: var(--color-semantic-highlight-text);
 }
 
 /* ── 02b · from the repo ──────────────────────────────────────── */
@@ -669,10 +881,13 @@
   color: var(--color-ink);
 }
 .say b { font-weight: 500; }
+/* the code wraps (a break after each "." in a token path), so a narrow
+   window never cuts a line or hides it in a scroller (job 34) */
 .hl {
   margin: 0;
   padding: var(--spacing-4);
-  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   font-family: var(--font-code);
   font-size: var(--text-mono);
   font-feature-settings: var(--mono-feature);
@@ -694,7 +909,9 @@
 .pipe svg[data-bella-diagram] { margin-inline: auto; }
 .pipeWide { display: none !important; max-width: 62.5rem; }
 .pipeNarrow { max-width: 21.25rem; }
-@media (min-width: 64rem) {
+/* the row of five needs 1280px to keep its words at 14px; below that
+   the stacked drawing shows (job 38) */
+@media (min-width: 80rem) {
   .pipeWide { display: block !important; }
   .pipeNarrow { display: none !important; }
 }
@@ -713,6 +930,11 @@
   transition: fill 0.3s;
 }
 .t2 { transition: fill 0.3s; }
+/* figure text at least 14px on screen (job 38): 14.5 user units holds it
+   at the drawing's smallest scale */
+.pipe svg :global(.t) { font-size: 14.5px; } /* token-waiver: SVG user units, not CSS px */
+.pipeNarrow .t1 { font-size: 17px; } /* token-waiver: SVG user units; the stack renders at 0.9 on a phone */
+.pipe .pipeNarrow :global(.t) { font-size: 16.5px; } /* token-waiver: SVG user units, as above */
 .lit .bx { fill: var(--color-chip-c1); stroke: var(--color-ink); }
 .pass .bx { fill: var(--color-chip-c3); stroke: var(--color-ink); }
 .lit .t1,
@@ -742,7 +964,7 @@
   border-bottom: 1px solid var(--color-semantic-border);
 }
 .plain:last-child { border-bottom: 0; }
-.plain p { margin: 0; font-size: var(--text-body); line-height: 1.5; color: var(--color-ink); }
+.plain p { margin: 0; max-width: var(--measure-body); font-size: var(--text-body); line-height: 1.5; color: var(--color-ink); }
 .plain code {
   grid-column: 2;
   min-width: 0;
@@ -766,18 +988,15 @@
 }
 
 /* ── 03 · side by side ────────────────────────────────────────── */
-.strip { display: grid; gap: var(--spacing-3); }
-@media (min-width: 48rem) {
-  .strip { grid-template-columns: repeat(4, 1fr); }
+/* Figure 8: the three faces side by side as the width allows (all three
+   from 960px), each with its list; below 640px they are a Reel */
+.faces { display: grid; grid-template-columns: min(100%, 18.5rem); gap: var(--spacing-5); justify-content: center; }
+@media (min-width: 40rem) {
+  .faces { grid-template-columns: repeat(auto-fit, 18.5rem); }
 }
-.strip figure { margin: 0; min-width: 0; }
-.strip figcaption {
-  margin-top: var(--spacing-2);
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-feature-settings: var(--mono-feature);
-  color: var(--color-ink-muted);
-}
+/* the Figma face width; in the phone Reel it never squeezes below it */
+.face { display: flex; flex-direction: column; gap: var(--spacing-6); width: 18.5rem; max-width: calc(100vw - 2 * var(--container-pad)); }
+.face .pv { flex: 1; }
 
 /* ── 04 · the rules ───────────────────────────────────────────── */
 .rules {
@@ -850,3 +1069,244 @@
 @media (prefers-reduced-motion: reduce) {
   .tokMove { transition: none; }
 }
+
+/* ── Site v3 (4 Oct 2026, Figma 420:12279): the case on the template ── */
+
+/* decisions: three cells on the body edge, a neutral dot each (job 38) */
+.cells {
+  list-style: none;
+  margin-block: 0;
+  margin-inline: auto;
+  padding: 0;
+  width: 100%;
+  max-width: var(--case-col-max);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
+
+.cells li {
+  position: relative;
+  padding-left: var(--spacing-5);
+}
+
+.cells li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: var(--spacing-2);
+  height: var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-border-strong);
+}
+
+.cells b {
+  display: block;
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-text-primary);
+}
+
+.cells p {
+  margin-block: var(--spacing-1) 0;
+  font-size: var(--typography-font-size-body);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-semantic-text-body);
+}
+
+/* the rules: number, title, line; no rules between them */
+.rules {
+  width: 100%;
+  max-width: var(--case-col-max);
+  margin-inline: auto;
+  gap: var(--spacing-5);
+  border-top: 0;
+}
+
+.rules li {
+  grid-template-columns: var(--spacing-8) 1fr;
+  padding: 0;
+  border-bottom: 0;
+}
+
+.rules span {
+  padding-top: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-label);
+  font-feature-settings: normal;
+  color: var(--color-semantic-text-secondary);
+  line-height: 1.6;
+}
+
+.rules b {
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-text-primary);
+}
+
+.rules div p {
+  margin-block: var(--spacing-1) 0;
+  max-width: none;
+  font-size: var(--typography-font-size-body);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-semantic-text-body);
+}
+
+/* pinned panels (job 38): a panel that names a mode renders in it,
+   whatever the page's mode. The site's light tokens live on :root only
+   and its inks flip on body, so a nested data-theme alone cannot reset
+   them; each pin restates the roles the panels read from BELLA's light
+   or dark primitives. */
+.pinLight,
+.pinDark {
+  color: var(--color-ink);
+}
+.pinLight {
+  --color-ink: var(--color-light-ink);
+  --color-ink-muted: var(--color-light-muted);
+  --color-semantic-text-primary: var(--color-light-ink);
+  --color-semantic-text-secondary: var(--color-light-muted);
+  --color-semantic-background: var(--color-light-bg);
+  --color-semantic-surface: var(--color-light-panel);
+  --color-semantic-border: var(--color-light-line);
+  --color-semantic-border-strong: var(--color-light-control);
+}
+.pinDark {
+  --color-ink: var(--color-dark-ink);
+  --color-ink-muted: var(--color-dark-muted);
+  --color-semantic-text-primary: var(--color-dark-ink);
+  --color-semantic-text-secondary: var(--color-dark-muted);
+  --color-semantic-background: var(--color-dark-bg);
+  --color-semantic-surface: var(--color-dark-surface);
+  --color-semantic-border: var(--color-dark-line);
+  --color-semantic-border-strong: var(--color-dark-control);
+}
+
+/* OneName's two sides, each on the ground of the mode it names */
+.askSide.pinLight,
+.askSide.pinDark {
+  padding: var(--spacing-3);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-background);
+}
+
+/* a code window drawn dark in both themes (the repo excerpts) */
+.win.pinDark header { background: var(--color-semantic-surface); }
+
+/* in the dark window a token path is ink, not a chip */
+.pinDark .r {
+  padding: 0;
+  background: transparent;
+  color: var(--color-ink);
+}
+
+.repo .code {
+  gap: var(--spacing-2);
+}
+
+.repo .say {
+  margin-block: 0 var(--spacing-4);
+  padding: 0;
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-semantic-text-body);
+}
+
+/* Figure 3: the Storybook semantic table, light beside dark */
+.sbFrame {
+  width: 100%;
+}
+
+.sbPair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+}
+
+.sbTable {
+  list-style: none;
+  margin-block: 0;
+  padding: 0;
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-md);
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-primary);
+}
+
+.sbTable li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.sbTable li:first-child {
+  border-top: 0;
+}
+
+.sbTable code {
+  color: var(--color-ink);
+  font-family: var(--font-code);
+  font-size: var(--text-label);
+}
+
+.sbTable .sbHex {
+  margin-left: auto;
+  color: var(--color-semantic-text-secondary);
+}
+
+.sbSwatch {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-semantic-border-strong);
+  flex: 0 0 auto;
+}
+
+.sbNote {
+  margin-block: var(--spacing-2) 0;
+  font-family: var(--font-code);
+  font-size: var(--text-label);
+  color: var(--color-semantic-text-secondary);
+}
+
+@media (max-width: 639px) {
+  .sbPair {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* the hero's v5 composition (audit fix D3): the switcher, centred over
+   the faces, and the two faces fanned 6deg behind the front one */
+.heroSwitch {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-2);
+}
+.heroSwitch > span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: var(--spacing-1) var(--spacing-4);
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: var(--radius-full);
+  color: var(--color-semantic-text-secondary);
+  font-weight: 500;
+  font-size: var(--typography-font-size-sm);
+}
+.heroSwitch > span[data-on] {
+  border-color: var(--t-action);
+  background: var(--t-action);
+  color: var(--t-on-action);
+}
+.heroBack[data-at="start"] { transform: translate(-3rem, 0.5rem) rotate(-6deg); } /* token-waiver: Figma fan, 48px and 6 degrees */
+.heroBack[data-at="end"] { transform: translate(3rem, 0.5rem) rotate(6deg); } /* token-waiver: Figma fan */
+/* the faces behind carry no words (Figma hides them), so nothing reads
+   cut: every text holder is hidden, the wells and icons stay */
+.heroBack b,
+.heroBack u,
+.heroBack span:not(:has(> *)) { visibility: hidden; }

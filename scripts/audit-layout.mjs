@@ -15,6 +15,9 @@
  * 4. No custom spacing in app/ or components/sections/: arbitrary
  *    Tailwind margin/padding (mt-[, py-[ ...) or inline margin/padding.
  *    Spacing comes from Section, SectionHeader and the tokens.
+ *
+ * This file reads source, so motion cannot change its result. The rendered
+ * layout (audit:frame) runs with reduced motion and without it (job 38).
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
@@ -29,6 +32,8 @@ const SHELL = "shell";
 const SHELL_FILES = {
   "components/CaseShellV2.tsx": "@/components/layout/Section",
   "components/CaseSection.tsx": "@/components/layout/Container",
+  /* the Site v3 case template (4 Oct 2026): one layout Section on the case body */
+  "components/case/CasePage.tsx": "@/components/layout/Section",
 };
 
 /* file -> "section" | "shell" */

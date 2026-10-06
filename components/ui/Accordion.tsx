@@ -19,6 +19,7 @@ export default function AccordionItem({
   level = 3,
   defaultOpen = false,
   className = "",
+  peek,
   children,
 }: {
   /** the trigger's content; it becomes the button's accessible name */
@@ -26,6 +27,9 @@ export default function AccordionItem({
   level?: 2 | 3 | 4;
   defaultOpen?: boolean;
   className?: string;
+  /** shown under the trigger whether the item is open or not (About's
+   *  outcome line and case link, site v3); the panel opens below it */
+  peek?: ReactNode;
   children: ReactNode;
 }) {
   // server render: open, so the content is there without JavaScript
@@ -53,6 +57,7 @@ export default function AccordionItem({
           <Icon name="NavArrowDown" size="md" className="accordion__chev" />
         </button>
       </H>
+      {peek}
       <div id={`${id}-panel`} role="region" aria-labelledby={`${id}-trigger`} className="accordion__panel">
         <div className="accordion__inner">{children}</div>
       </div>

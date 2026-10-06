@@ -72,3 +72,7 @@ docs/portfolio-ia-spec.md
 # Playwright (audit:order) run output
 /test-results/
 /playwright-report/
+
+# Cowork relay (next.md, report.md, done/) and its decisions log: local only, CLAUDE.md section 11
+/docs/reference/inbox
+/docs/reference/decisions-while-away.md

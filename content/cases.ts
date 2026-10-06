@@ -5,6 +5,14 @@
  * (components/diagrams/workThumbs.ts, keyed by id), a Mono meta line, the
  * one-line claim and the signal tags the case is evidence for. Case
  * identity (colour, slug parity) stays on WORK_ITEMS in lib/workLibrary.ts. */
+/** a card cover exported from Figma's "Covers final" row (529:84898, job
+ *  43): the specimen stage as a flat picture, light and dark, at 3x. A
+ *  picture because the recreated UI in it runs under the 14px floor at
+ *  card size (CLAUDE.md section 9). Files: /images/case/covers/<name>-<theme>.webp */
+/** `focus`: what the card's cropped stage keeps (object-position; H4,
+ *  cards fit one screen), centre when unset */
+export type CoverPicture = { name: string; alt: string; width: number; height: number; focus?: string };
+
 export interface CaseRowData {
   id: string;
   n: string;
@@ -12,8 +20,12 @@ export interface CaseRowData {
   lead?: string;
   title: string;
   claim: string;
-  href: string;
+  /** no href: the case isn't live yet, and `status` says so */
+  href?: string;
+  status?: string;
   tags: { text: string; tone?: "c2" | "c3"; outline?: boolean }[];
+  /** the specimen frame's strips on the card layouts (Home · v2) */
+  specimen?: { path: string; mode: string; caption: string; picture?: CoverPicture };
 }
 
 export const CASES: CaseRowData[] = [
@@ -39,7 +51,7 @@ export const CASES: CaseRowData[] = [
   {
     id: "theming",
     n: "03",
-    meta: "Design systems · BELLA · 2026",
+    meta: "Design systems · theming · 2026",
     title: "One system, many faces",
     claim: "Themes in BELLA swap the values, never the components.",
     href: "/case-studies/theming",
@@ -78,3 +90,61 @@ export const CASES: CaseRowData[] = [
 /* Home shows the first three (Elleta, 22 Sep 2026): Drift, B2B travel,
  * Theming. The order above is theirs, so /work numbers them the same. */
 export const HOME_CASES: CaseRowData[] = CASES.slice(0, 3);
+
+/* Home (Elleta, 6 Oct 2026, H4, back to the 4 Oct map; supersedes Home ·
+ * v2's lead three): the three READY cases, Drift featured, then Federated
+ * and Theming as cards. CHIP waits on /work with "Update coming". */
+const byId = (id: string) => CASES.find((c) => c.id === id)!;
+const DRIFT: CaseRowData = {
+  ...byId("drift"),
+  specimen: {
+    path: "drift / buttons · audit",
+    mode: "before → after",
+    caption: "Recreated from my audit. No client UI.",
+    picture: { name: "drift", width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
+  },
+};
+const FEDERATED: CaseRowData = {
+  id: "federated",
+  n: "02",
+  meta: "Design systems · federated · 2026",
+  title: "They stopped telling me what they\u2019d done",
+  claim: "Proves a federated system can run without me as the bottleneck.",
+  href: "/case-studies/federated",
+  tags: [],
+  specimen: {
+    path: "federated / contribution",
+    mode: "one system",
+    caption: "Recreated. One chip, a new slot, nothing forked.",
+    picture: { name: "federated", width: 1392, height: 1008, focus: "50% 0%", alt: "A product page with its size chips, beside a panel: kept the old chip, added a slot. Colour and Text kept, Slot new, and three fills for the slot: size and stock, kids' age and height, a colour filter." },
+  },
+};
+const CHIP: CaseRowData = {
+  ...byId("chip"),
+  n: "03",
+  /* CHIP 2.0 is in progress (Elleta, 6 Oct 2026, H4): the card stays a link */
+  status: "Update coming",
+  specimen: {
+    path: "chip 2.0 / atlas",
+    mode: "filter chip",
+    caption: "CHIP 2.0 checks every layer of a component.",
+    picture: { name: "chip", width: 1392, height: 1008, alt: "CHIP's Atlas anatomy of the FilterChip: the Accessible chip with six numbered parts." },
+  },
+};
+const THEMING: Omit<CaseRowData, "n"> = {
+  ...byId("theming"),
+  specimen: {
+    path: "theming / theme switcher",
+    mode: "on BELLA",
+    caption: "Three brands, one set of components.",
+    picture: { name: "theming", width: 1392, height: 1008, alt: "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it." },
+  },
+};
+export const HOME_LEAD: CaseRowData[] = [DRIFT, FEDERATED, { ...THEMING, n: "03" }];
+
+/* /work (Site v3, job 33, Elleta 5 Oct 2026): Home's case cards, four
+ * cases in this order: Drift, Federated (live since 4 Oct), CHIP,
+ * Theming. Booking, Search and Code First leave /work; their pages stay
+ * live, unlinked from it. */
+/* tags only where Figma 486:57509 has them: CHIP (K2, 6 Oct 2026) */
+export const WORK_CASES: CaseRowData[] = [{ ...DRIFT, tags: [] }, FEDERATED, CHIP, { ...THEMING, n: "04", tags: [] }];

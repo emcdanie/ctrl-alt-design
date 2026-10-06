@@ -17,3 +17,14 @@ const study: CaseStudy = {
 };
 
 export default study;
+
+/* Figure 3 (Site v3, Figma 420:12279): the real Storybook semantic table,
+ * redrawn. The hexes are BELLA's own light and dark answers at the time,
+ * shown as text in the picture. */
+export const STORYBOOK_SEMANTIC: { name: string; light: string; dark: string }[] = [
+  { name: "background", light: "#ffffff", dark: "#0d0d0d" },
+  { name: "text-primary", light: "#121212", dark: "#ededed" },
+  { name: "text-muted", light: "#515151", dark: "#b1b1b1" },
+  { name: "surface-card", light: "#f2f2f2", dark: "#161616" },
+  { name: "focus-ring", light: "#b97a14", dark: "#e8a83e" },
+];

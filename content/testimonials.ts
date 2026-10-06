@@ -26,8 +26,7 @@ export const TESTIMONIALS: Testimonial[] = [
     quote: "During her time with the team, she introduced valuable AI-driven automations and shared recommendations that helped us explore new ways of working.",
     bold: "AI-driven automations",
     name: "Xavier Boluda",
-    role: "Design System Designer",
-    company: "Mango",
+    role: "Design System Designer, global fashion retailer",
     // TODO(elleta): LinkedIn profile URL
   },
   {
@@ -53,7 +52,7 @@ export const TESTIMONIALS: Testimonial[] = [
     // TODO(elleta): LinkedIn profile URL
   },
   {
-    quote: "The impact of her work as a UX/UI Designer continues to resonate within our banking projects, such as those for Riyad Bank.",
+    quote: "The impact of her work as a UX/UI Designer continues to resonate within our banking projects.",
     bold: "continues to resonate",
     name: "Roberto Arpón",
     role: "Senior Product Designer",

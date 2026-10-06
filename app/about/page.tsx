@@ -1,236 +1,220 @@
-import Link from "next/link";
 import OverlayNav from "@/components/OverlayNav";
 import Section from "@/components/layout/Section";
-import SectionHeader from "@/components/layout/SectionHeader";
-import Spotlight from "@/components/Spotlight";
-import { ScanPhrase, ScanPoint, ScanRead } from "@/components/ScanRead";
-import Card from "@/components/ui/Card";
-import { TESTIMONIALS } from "@/content/testimonials";
-import WorkedWith from "@/components/WorkedWith";
-import ExperienceSection from "@/components/ExperienceSection";
-import Term, { TermHelp } from "@/components/ui/Term";
+import Heading from "@/components/ui/Heading";
+import { Button } from "@/components/ui/Button";
+import { TextLink, textLinkClass } from "@/components/ui/TextLink";
+import { Beat, CaseQuote } from "@/components/case/CasePage";
+import CaseFigure from "@/components/case/CaseFigure";
+import ExperienceSection, { KindnessProof } from "@/components/ExperienceSection";
+import { ResumeLink } from "@/components/ResumeModal";
+import { BuildFlow, HeroPlates } from "@/components/about/AboutPictures";
+import { TESTIMONIALS, type Testimonial } from "@/content/testimonials";
+import st from "@/components/about/About.module.css";
 
-/* About: the opening, then short lead, track record, the pack, word of
-   mouth, new tricks and house rules, each one a layout Section +
-   SectionHeader (specs/layout-system); the site footer carries the
-   closing contact band. Copy is Elleta's, used verbatim. */
+/* About on Template / Page (Site v3, Figma e7U5Hxpr441rT719SPclas, 1440
+   403:7256, 390 403:7591; Elleta, 4 Oct 2026, "reworked 4 Oct late").
+   One layout Section on the 1056 body, text on its left edge: the hero,
+   then five numbered beats (the short lead, how I work with AI, track
+   record, word of mouth, house rules). Copy as approved in the frames.
+   Cut: Good company, the paw trail, logo tiles, a second contact CTA (the
+   site footer carries contact), and the Pack with its dog illustration
+   (Elleta, 4 Oct late: no dog illustrations). */
+
+const quote = (name: string) => TESTIMONIALS.find((t) => t.name === name) as Testimonial;
+const initials = (name: string) =>
+  name
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2);
+const roleLine = (t: Testimonial) => [t.role, t.company].filter(Boolean).join(" · ");
+
+const FEATURE = quote("Brad Frost");
+const SMALL = ["Xavier Boluda", "Mario Mezini", "Ian Frost"].map(quote);
+
 export default function AboutPage() {
   return (
     <main id="main-content" className="page-shell min-h-screen text-[var(--color-ink-soft)]">
       <OverlayNav />
 
-      <Section id="about-hero" labelledBy="about-hero-title">
-        <TermHelp />
-        <SectionHeader
-          as="h1"
-          id="about-hero-title"
-          kicker="About"
-          heading="Fluent in design, code and"
-          accent={<Term id="bella" />}
-          after="."
-          lead={
-            <>
-              I build design systems that give designers and developers a <strong>shared language</strong>: <span className="nowrap"><Term id="tokens" />,</span>{" "}
-              components, and the decisions behind them, written down kindly so everyone can use them.
-            </>
-          }
-        />
-      </Section>
+      <Section width="case-edge" labelledBy="about-title">
+        <div className={st.page}>
+          {/* 0 · Hero */}
+          <div id="about-hero" className={st.hero}>
+            <div className={st.head}>
+              <p className={st.kicker}>About</p>
+              <Heading tier="page" id="about-title" className={st.title} accent="Bella.">
+                Fluent in design, code and
+              </Heading>
+              <p className={st.lead}>
+                I&apos;m a design engineer for design systems: tokens, components, and the decisions behind them, written
+                down kindly so designers and developers can both use them.
+              </p>
+              <p className={st.avail}>Open to full-time roles and select freelance projects, working remotely from near Barcelona.</p>
+              <div className={st.actions}>
+                <ResumeLink button="primary" label="View CV" />
+                <Button href="/contact">Let&apos;s talk</Button>
+              </div>
+            </div>
+            <div className={st.plates}>
+              <HeroPlates />
+            </div>
+          </div>
 
-      <Section id="short-lead" label="The short lead">
-        <SectionHeader
-          heading="A shared language, not a"
-          accent={<Term id="rulebook" />}
-          after="."
-          lead="Teams move fast. A good system helps them move together."
-        />
-        {/* the New tricks layout: the list left, the text right (24 Sep audit, A5) */}
-        <ScanRead
-          points={
-            <>
-              <ScanPoint k="tokens">Token architecture</ScanPoint>
-              <ScanPoint k="storybook">Component libraries in Storybook</ScanPoint>
-              <ScanPoint k="governance">Governance and contribution</ScanPoint>
-              <ScanPoint k="ai">AI-ready docs and MCP</ScanPoint>
-            </>
-          }
-        >
-          <p>
-            Components get duplicated. Decisions get made under sprint pressure and nobody writes them
-            down. The file meant to be the <Term id="source-of-truth" /> turns into the one nobody trusts. I dig out the
-            structure underneath and write it down, <strong>so design and dev can talk again</strong>. Then I hand
-            it over: the system belongs to the team, not to me. It&apos;s the part I&apos;d do for free.
-          </p>
-        </ScanRead>
-      </Section>
+          {/* 1 · The short lead */}
+          <Beat
+            id="short-lead"
+            num="1"
+            label="The short lead"
+            heading="A shared language, not a rulebook."
+            lead="Teams move fast. A good system helps them move together."
+            align="edge"
+          >
+            <ul className={st.points}>
+              <li>Token architecture</li>
+              <li>Component libraries in Storybook</li>
+              <li>Governance and contribution</li>
+              <li>AI-ready docs and MCP</li>
+            </ul>
+            <div className={st.body}>
+              <p>
+                Components get duplicated. Decisions get made under sprint pressure and nobody writes them down. The file
+                meant to be the source of truth turns into the one nobody trusts. I dig out the structure underneath and
+                write it down, so design and dev can talk again. Then I hand it over: the system belongs to the team, not
+                to me. It&apos;s the part I&apos;d do for free.
+              </p>
+            </div>
+          </Beat>
 
-      <Section id="track-record" label="Track record">
-        <SectionHeader
-          heading="Where I've"
-          accent={<Term id="been" />}
-          after="."
-          lead="Five teams, one thread: making the system the thing people trust."
-        />
-        <ExperienceSection />
-      </Section>
+          {/* 2 · How I work with AI */}
+          <Beat
+            id="how-i-work"
+            num="2"
+            label="How I work with AI"
+            heading="Design systems that hold up when AI shows up."
+            lead="Claude writes the code. I design the context, contracts and gates it works inside, and I decide what merges."
+            align="edge"
+          >
+            <p className={st.linkRow}>
+              <TextLink href="/design-system">
+                See how this site is built <span aria-hidden="true">→</span>
+              </TextLink>
+              <TextLink href="/accessibility">
+                Accessibility <span aria-hidden="true">→</span>
+              </TextLink>
+            </p>
+            <CaseFigure
+              n={1}
+              caption="How this site gets built. Cowork plans, Claude Code builds, the gate checks; I review the screenshots and decide what merges. Human steps are marked."
+            >
+              <BuildFlow />
+            </CaseFigure>
+            <div className={st.body}>
+              <p>
+                But the tools are the easy part. A system only sticks when the people using it trust it, so I work with
+                teams, not against them: pairing with engineers, bringing designers into the decisions, and building the
+                relationships that shape how a company actually uses its system.
+              </p>
+              <p>
+                At a global fashion retailer I was the first to bring AI into their design-system work: I used it to audit and ship faster
+                while updating the system, then built the tools so the team could carry on without me. My most recent
+                example is the site you&apos;re on. It runs on BELLA, my own design system: tokens, components in
+                Storybook, and docs an AI can read.
+              </p>
+            </div>
+          </Beat>
 
-      <Section id="the-pack" label="The pack">
-        <SectionHeader heading="Good" accent="company" after="." />
-        <WorkedWith />
-      </Section>
+          {/* 3 · Track record */}
+          <Beat
+            id="track-record"
+            num="3"
+            label="Track record"
+            heading="Where I've been."
+            lead="Five teams, one thread: making the system the thing people trust."
+            align="edge"
+          >
+            <ExperienceSection />
+            <p className={st.linkRow}>
+              <ResumeLink className={textLinkClass} label="View CV" />
+            </p>
+          </Beat>
 
-      <Section id="word-of-mouth" label="Word of mouth">
-        <SectionHeader
-          heading="In their own"
-          accent={<Term id="words" />}
-          after="."
-          lead="Six of fifteen recommendations, quoted as written."
-        />
-        <ul className="quotes reveal-group">
-          {TESTIMONIALS.map((t) => {
-            const [before, after] = t.quote.split(t.bold);
-            return (
-              <li key={t.name} className="quotes__item">
-                <span className="quotes__mark pattern-mark" aria-hidden="true">
-                  “
-                </span>
-                <Card className="quotes__card">
-                  <figure className="quotes__figure">
-                    <blockquote className="quotes__quote">
-                      <p>
-                        {before}
-                        <strong>{t.bold}</strong>
-                        {after}
-                        <span className="quotes__close" aria-hidden="true">
-                          ”
-                        </span>
-                      </p>
+          {/* 4 · Word of mouth */}
+          <Beat
+            id="word-of-mouth"
+            num="4"
+            label="Word of mouth"
+            heading="In their own words."
+            lead="Four of fifteen recommendations, quoted as written."
+            align="edge"
+          >
+            <CaseQuote quote={FEATURE.quote} name={FEATURE.name} role={roleLine(FEATURE)} />
+            <ul className={st.small}>
+              {SMALL.map((t) => (
+                <li key={t.name}>
+                  <figure className={st.quote}>
+                    <blockquote>
+                      <p>{t.quote}</p>
                     </blockquote>
-                    <figcaption>
-                      <span className="quotes__name">
-                        {t.href ? (
-                          <a href={t.href} target="_blank" rel="noopener noreferrer">
-                            {t.name}
-                            <span className="sr-only"> (LinkedIn, opens in a new tab)</span>
-                          </a>
-                        ) : (
-                          t.name
-                        )}
+                    <figcaption className={st.by}>
+                      <span className={st.avatar} aria-hidden="true">
+                        {initials(t.name)}
                       </span>
-                      <span className="text-meta quotes__role">{[t.role, t.company].filter(Boolean).join(" · ")}</span>
+                      <span className={st.who}>
+                        <span className={st.name}>{t.name}</span>
+                        <span className={st.role}>{roleLine(t)}</span>
+                      </span>
                     </figcaption>
                   </figure>
-                </Card>
+                </li>
+              ))}
+            </ul>
+            <p className={st.linkRow}>
+              <TextLink href="https://www.linkedin.com/in/elleta-mcdaniel/details/recommendations/" external trackEvent="linkedin">
+                Read all 15 on LinkedIn <span aria-hidden="true">↗</span>
+              </TextLink>
+            </p>
+          </Beat>
+
+          {/* 5 · House rules */}
+          <Beat id="house-rules" num="5" label="House rules" heading="Four things I care about." align="edge">
+            <ul className={st.cards}>
+              <li>
+                <div className={st.card}>
+                  <h3 className="heading-item">Kindness</h3>
+                  <p>Docs written for the person reading them at 5pm on a Friday.</p>
+                  <KindnessProof className={st.proof} />
+                </div>
               </li>
-            );
-          })}
-        </ul>
-        <p className="quotes__more">
-          <a
-            className="text-action"
-            href="https://www.linkedin.com/in/elleta-mcdaniel/details/recommendations/"
-            data-umami-event="linkedin"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read all 15 on LinkedIn ↗<span className="sr-only"> (opens in a new tab)</span>
-          </a>
-        </p>
-      </Section>
-
-      <Section id="new-tricks" label="New tricks">
-        <SectionHeader
-          heading="Design systems that hold up when"
-          accent={<Term id="ai" />}
-          after=" shows up."
-          lead="AI is part of how I work, not a trick in the deck."
-        />
-        {/* scan on the left, read on the right (Part J item 2). The
-            paragraph text is hers, unchanged; the point wording was
-            matched to the words the paragraphs already use, so a point
-            and its phrase light each other. */}
-        <Spotlight keys={["claude", "tools", "teams", "mango", "bella"]}>
-          <ScanRead
-            points={
-              <>
-                <ScanPoint k="claude">
-                  <b>Claude</b> for research and audits
-                </ScanPoint>
-                <ScanPoint k="tools">
-                  <b>Figma MCP</b>, Code Connect, Storybook
-                </ScanPoint>
-                <ScanPoint k="teams">
-                  Working <b>with teams</b>, not against them
-                </ScanPoint>
-                <ScanPoint k="mango">
-                  <b>First to bring AI</b> into a design-system team
-                </ScanPoint>
-                <ScanPoint k="bella">
-                  This site runs on <b>BELLA</b>
-                </ScanPoint>
-              </>
-            }
-          >
-            <p>
-              <ScanPhrase k="claude">I use Claude to synthesise research and audits</ScanPhrase>, draft
-              docs, and check my own work. I&apos;m happy to try a new tool the week it lands:{" "}
-              <ScanPhrase k="tools">
-                <span className="nowrap"><Term id="figma-mcp" />,</span>{" "}<span className="nowrap"><Term id="code-connect" />,</span>{" "}
-                <span className="nowrap"><Term id="storybook" /></span>
-              </ScanPhrase>
-              .
-            </p>
-            <p>
-              But the tools are the easy part. A system only sticks when the people using it trust
-              it, so <ScanPhrase k="teams">I work with teams, not against them</ScanPhrase>: pairing
-              with engineers, bringing designers into the decisions, and building the relationships
-              that shape how a company actually uses its system.
-            </p>
-            <p>
-              At Mango I was{" "}
-              <ScanPhrase k="mango">the first to bring AI into their design-system work</ScanPhrase>:
-              I used it to audit and ship faster while updating the system, then built the tools so
-              the team could carry on without me. My most recent example is the site you&apos;re on.{" "}
-              <ScanPhrase k="bella">
-                It runs on <span className="nowrap"><Term id="bella-system" /></span>
-              </ScanPhrase>
-              , my own design system: tokens, components in Storybook, and docs an AI can read.
-            </p>
-            <p>
-              <Link href="/design-system" className="text-action">
-                See how this site is built <span aria-hidden="true">→</span>
-              </Link>
-            </p>
-          </ScanRead>
-        </Spotlight>
-      </Section>
-
-      <Section id="house-rules" label="House rules">
-        <SectionHeader heading="Four things I" accent={<Term id="care" />} after=" about." />
-        <div className="cares reveal-group">
-          <Card className="cares__card">
-            <h3 className="heading-item">Kindness</h3>
-            <p>Docs written for the person reading them at <strong>5pm on a Friday</strong>.</p>
-          </Card>
-          <Card className="cares__card">
-            <h3 className="heading-item">Respect</h3>
-            <p>
-              For the designer&apos;s craft and the engineer&apos;s time. <strong>I check it can be built</strong>{" "}
-              before I design it three ways.
-            </p>
-          </Card>
-          <Card className="cares__card">
-            <h3 className="heading-item">Sharing</h3>
-            <p>
-              I learned all of this in public, from Brad Frost, Vitaly Friedman, Nathan Curtis, Romina
-              Kavčić and the Into Design Systems crowd. So I give it back: <strong>BELLA is open for anyone to
-              read</strong>.
-            </p>
-          </Card>
-          <Card className="cares__card">
-            <h3 className="heading-item">Love of the craft</h3>
-            <p>Naming, tokens, <span className="nowrap"><Term id="governance" />.</span> <strong>The unglamorous stuff</strong> is my favourite stuff.</p>
-          </Card>
+              <li>
+                <div className={st.card}>
+                  <h3 className="heading-item">Respect</h3>
+                  <p>For the designer&apos;s craft and the engineer&apos;s time. I check it can be built before I design it three ways.</p>
+                  <p className={st.proof}>
+                    Proof: a frontend lead wrote that I treat technical constraints as creative opportunities rather than
+                    obstacles.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <div className={st.card}>
+                  <h3 className="heading-item">Sharing</h3>
+                  <p>
+                    I learned all of this in public, from Brad Frost, Vitaly Friedman, Nathan Curtis, Romina Kavčić and the
+                    Into Design Systems crowd. So I give it back: BELLA is open for anyone to read.
+                  </p>
+                  <p className={st.proof}>Proof: BELLA is public on GitHub, with its Storybook.</p>
+                </div>
+              </li>
+              <li>
+                <div className={st.card}>
+                  <h3 className="heading-item">Love of the craft</h3>
+                  <p>Naming, tokens, governance. The unglamorous stuff is my favourite stuff.</p>
+                  <p className={st.proof}>Proof: on Drift I counted seventeen buttons doing one job; the system kept one.</p>
+                </div>
+              </li>
+            </ul>
+          </Beat>
         </div>
       </Section>
     </main>

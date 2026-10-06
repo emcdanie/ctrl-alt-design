@@ -1,0 +1,240 @@
+/* The Case UI kit (Figma: Case UI / Button 200:1120, Input 216:1151, Chip
+   216:1160, Avatar 216:1161, Tag 216:1162, Status 219:1174, User row
+   219:1185; Markup / Badge 219:1223, Target ring 219:1226). Product UI for
+   case pictures only, never site chrome. Neutrals read the semantic
+   tokens so a picture follows the theme; the product action colour is the
+   picture's own (--kit-action), and the Federated product mode swaps it to
+   ink. Kit type sits below the site floors by design: it is a picture
+   (CLAUDE.md section 1, pictures only). */
+
+.theme {
+  display: contents;
+}
+
+.theme[data-mode="federated"] {
+  --kit-chip-ink: var(--color-semantic-text-primary);
+  --kit-action: var(--color-semantic-text-primary);
+  --kit-action-subtle: var(--color-semantic-surface-inset);
+  --kit-on-action: var(--color-semantic-text-inverse);
+}
+
+.panel {
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-3) var(--spacing-5);
+  border-radius: calc(var(--radius-md) + 2px);
+  background: var(--kit-action);
+  color: var(--kit-on-action);
+  font-size: 15px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.button[data-size="sm"] {
+  padding: var(--spacing-2) calc(var(--spacing-3) + 2px);
+  border-radius: var(--radius-md);
+  font-size: 14px; /* figure text floor (job 38) */
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  height: var(--spacing-10);
+  padding: 0 var(--spacing-3);
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: calc(var(--radius-md) + 2px);
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-body);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing-1) + 2px);
+  padding: calc(var(--spacing-1) + 2px) var(--spacing-3);
+  border-radius: var(--radius-pill);
+  font-size: 14px; /* figure text floor (job 38) */
+  font-weight: var(--typography-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.chip[data-selected] {
+  background: var(--kit-action-subtle);
+  /* federated mode's subtle fill is surface-inset, which goes dark in
+     dark mode: its chip ink follows the text instead of the indigo */
+  color: var(--kit-chip-ink, var(--kit-ramp-700));
+}
+
+.chip:not([data-selected]) {
+  border: 1px solid var(--color-semantic-border-strong);
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-body);
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-sm);
+  flex: 0 0 auto;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  /* outline, never stone-filled; figure text 14px floor (job 38) */
+  padding: 2px calc(var(--spacing-2) + 2px);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-semantic-text-secondary);
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-medium);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing-1) + 1px);
+  padding: 3px var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-success-subtle);
+  color: var(--color-semantic-success-text);
+  font-size: 14px; /* figure text floor (job 38) */
+  font-weight: var(--typography-font-weight-medium);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+}
+
+.status[data-tone="neutral"] {
+  background: var(--color-semantic-surface-inset);
+  color: var(--color-semantic-text-secondary);
+}
+
+.status[data-tone="danger"] {
+  background: var(--color-semantic-danger-subtle);
+  color: var(--color-semantic-danger-text);
+}
+
+.avatar {
+  display: block;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-pill);
+  object-fit: cover;
+  background: var(--color-semantic-border);
+  flex: 0 0 auto;
+}
+
+.userRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  min-height: var(--spacing-10);
+}
+
+.who {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.name {
+  color: var(--color-semantic-text-primary);
+  font-size: 15px;
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.email {
+  color: var(--color-semantic-text-secondary);
+  font-size: 14px; /* figure text floor (job 38) */
+}
+
+/* markup layer: the verdict tag (Elleta, 5 Oct), icon + word */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing-1) + 2px);
+  height: 28px;
+  padding: 0 calc(var(--spacing-2) + 2px);
+  border-radius: var(--radius-pill);
+  font-size: 15px;
+  font-weight: var(--typography-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.badge[data-kind="pass"] {
+  background: var(--color-semantic-success-subtle);
+  color: var(--color-semantic-success-text);
+}
+
+.badge[data-kind="fail"] {
+  background: var(--color-semantic-danger-subtle);
+  color: var(--color-semantic-danger-text);
+}
+
+.ring {
+  position: absolute;
+  inset: -4px;
+  border: 1.5px dashed var(--markup-line);
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+}
+
+.note {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-danger-subtle);
+  color: var(--markup-red);
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.note[data-tone="neutral"] {
+  border: 1px solid var(--color-semantic-border);
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-primary);
+  box-shadow: var(--shadow-ui);
+}
+
+.noteDot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+}
+
+.leader {
+  fill: none;
+  stroke: var(--markup-line);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}

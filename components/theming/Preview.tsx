@@ -1,43 +1,63 @@
-import type { Role, Theme } from "@/components/theming/themes";
-import { themeVars } from "@/components/theming/themes";
+import { Bathroom, Bed, Heart, MapPin, ViewGrid, Wifi } from "iconoir-react";
+import type { FaceKey, Role, Theme } from "@/components/theming/themes";
+import { LISTING, faceRows, faceVars, themeVars } from "@/components/theming/themes";
 import s from "@/components/ThemingCase.module.css";
 
-/* The listing card every theme dresses: one component tree, read only
- * through nine role variables (--t-*). `small` is the side-by-side strip
- * version (no search pill, price in the body, no booking row). `hot`
- * outlines the parts that read one role, for the exhibit's tier rows. */
-export default function Preview({ theme, small = false, hot }: { theme: Theme; small?: boolean; hot?: Role | null }) {
-  const r = (role: Role) => ({ "data-r": role });
+/* The theming face (job 43, Elleta, 5 Oct 2026; Figma "Theming face"
+ * 480:55355, faces v2): one phone screen from ONE component tree. A top
+ * bar with the wordmark, "Where to" and its field, three filter chips
+ * (the first selected), the listing card, then the booking bar. Every
+ * colour and radius is a variable (--t-*); content comes from the brand's
+ * listing in themes.ts. With `face` it wears that brand's Figma values
+ * (Figure 8, the showcase, the hero collage); without, the theme's roles
+ * (the exhibit, where `hot` outlines the parts that read one role). */
+
+/** `live`: the face is live DOM, not a picture (the exhibit), so the chip
+ * row takes focus and scrolls by keyboard; inside a role="img" or
+ * aria-hidden picture it stays out of the tab order. `bare`: the top bar
+ * straight onto the listing card, no search or chips (the hero's v5
+ * composition, Figma 551:38193) */
+export default function Preview({ theme, face, hot, live = false, bare = false }: { theme: Theme; face?: FaceKey; hot?: Role | null; live?: boolean; bare?: boolean }) {
+  const cx = (base: string, role: Role) => `${base} ${hot === role ? s.pulse : ""}`.trim();
+  const l = LISTING[theme.name];
   return (
-    <div className={`${s.pv} ${small ? s.pvSmall : ""}`} style={themeVars(theme)}>
-      <div className={s.pvNav}>
-        <b>bel·la homes</b>
-        {small ? null : <span {...r("line")} className={`${s.pvSearch} ${hot === "line" ? s.pulse : ""}`}>Canet de Mar · any week · 2 guests</span>}
+    <div data-r="bg" className={cx(s.pv, "bg")} style={face ? faceVars(face) : themeVars(theme)}>
+      <div className={s.pvTop}>
+        <b data-r="ink" className={cx(s.pvWord, "ink")}>
+          {l.brand}
+        </b>
+        <ViewGrid />
       </div>
       <div className={s.pvBody}>
-        <div className={s.pvCard}>
-          <div {...r("panel")} className={`${s.pvImg} ${hot === "panel" ? s.pulse : ""}`}>
-            <svg
-              viewBox="0 0 400 300"
-              preserveAspectRatio="xMidYMid slice"
-              aria-hidden="true"
-              {...r("accent")}
-              className={hot === "accent" ? s.pulse : undefined}
-            >
-              <rect className={s.pvSea} x="0" y="190" width="400" height="110" />
-              <path className={s.pvS} d="M0 190 H400" />
-              <path className={s.pvS} d="M150 190 V120 L210 82 L270 120 V190 M186 190 V150 H210 V190" />
-              <rect className={`${s.pvS} ${s.pvA}`} x="226" y="136" width="26" height="20" rx="3" />
-              <circle className={`${s.pvS} ${s.pvA}`} cx="330" cy="70" r="18" />
-              <path className={s.pvS} d="M40 230 q14 -12 28 0 q14 -12 28 0 M250 250 q14 -12 28 0 q14 -12 28 0" />
-            </svg>
-            <span className={s.pvPill}>new</span>
-            <span className={s.pvHeart} aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="24" height="24">
-                <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
-              </svg>
+        {bare ? null : (
+          <>
+          <div className={s.pvWhere}>
+            <span data-r="muted" className={cx(s.pvLabel, "muted")}>
+              Where to
             </span>
-            <span className={s.pvPag} aria-hidden="true">
+            <span data-r="border-strong" className={cx(s.pvField, "border-strong")}>
+              {l.search}
+            </span>
+          </div>
+          <div className={s.pvChips} {...(live ? { tabIndex: 0, role: "group", "aria-label": "Filters, scroll sideways" } : {})}>
+            <span data-r="action" className={cx(`${s.pvChip} ${s.pvChipOn}`, "action")}>
+              Sea view
+            </span>
+            <span className={s.pvChip}>Pets ok</span>
+            <span className={s.pvChip}>Under €1,500</span>
+          </div>
+          </>
+        )}
+        <div data-r="line" className={cx(s.pvCard, "line")}>
+          <div className={s.pvImg}>
+            <img src={l.photo} width={l.photoW} height={l.photoH} alt="" loading="lazy" decoding="async" />
+            <span data-r="panel" className={cx(s.pvTag, "panel")}>
+              Guest favourite
+            </span>
+            <span className={s.pvSave}>
+              <Heart />
+            </span>
+            <span className={s.pvPag}>
               <i className={s.on} />
               <i />
               <i />
@@ -45,34 +65,66 @@ export default function Preview({ theme, small = false, hot }: { theme: Theme; s
             </span>
           </div>
           <div className={s.pvCb}>
-            <div className={s.pvRow}>
-              <b {...r("ink")} className={`${s.pvTtl} ${hot === "ink" ? s.pulse : ""}`}>
-                Canet de Mar, Spain
-              </b>
-              <span className={s.pvRt}>★ 4.92</span>
-            </div>
-            <span {...r("muted")} className={`${s.pvMeta} ${hot === "muted" ? s.pulse : ""}`}>
-              2 rooms · 64 m² · 5 min to the beach
+            <b className={s.pvTtl}>{l.title}</b>
+            <span className={s.pvLoc}>
+              <MapPin />
+              {l.location}
             </span>
-            {small ? (
-              <span className={s.pvPrice}>
-                <b>€1,150</b> month
+            <span className={s.pvRt}>
+              <b>★ 4.92</b> <u>(23 reviews)</u>
+            </span>
+            <span className={s.pvAm}>
+              <span>
+                <Bed />2 rooms
               </span>
-            ) : null}
+              <span>
+                <Bathroom />
+                64 m²
+              </span>
+              <span>
+                <Wifi />
+                Beach
+              </span>
+            </span>
+            <span className={s.pvPriceRow}>
+              <span className={s.pvPrice}>
+                <b>{l.price}</b> <span className={s.pvPer}>month</span>
+              </span>
+              {/* pictures of buttons inside the demo screen, not controls */}
+              <span className={s.pvBtn2}>Details</span>
+            </span>
           </div>
         </div>
-        {small ? null : (
-          <div data-r="line" className={`${s.pvBk} ${hot === "line" ? s.pulse : ""}`}>
-            <span>
-              <b>€1,150</b> <span className={s.pvMeta}>month</span>
-            </span>
-            {/* a picture of a button inside the demo card, not a control */}
-            <span {...r("action")} className={`${s.pvBtn} ${hot === "action" ? s.pulse : ""}`}>
-              Book a visit
-            </span>
-          </div>
-        )}
       </div>
+      <div className={s.pvBar}>
+        <span className={s.pvDates}>
+          <b>12 to 19 Oct</b>
+          <span>2 guests</span>
+        </span>
+        <span data-r="action" className={cx(s.pvBtn, "action")}>
+          Book a visit
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* "What changed", under each Figure 8 face: the four values the brand
+ * changes, read from themes.ts so the list can't drift from the face */
+export function WhatChanged({ face }: { face: FaceKey }) {
+  return (
+    <div className={s.wc} style={faceVars(face)}>
+      <p className={s.wcHead}>What changed</p>
+      <ul>
+        {faceRows(face).map(([k, v, kind]) => (
+          <li key={k}>
+            <span className={s.wcSwatch} data-kind={kind} />
+            <code>
+              {k}  {v}
+            </code>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

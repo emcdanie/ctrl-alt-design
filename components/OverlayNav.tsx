@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "@/components/ThemeToggle";
-import GetInTouch from "@/components/GetInTouch";
 import ContactActions from "@/components/ContactActions";
 import BrandWordmark from "@/components/bella/BrandWordmark/BrandWordmark";
+import { ResumeLink } from "@/components/ResumeModal";
 
 
 /* Primary IA — visible in the desktop header (NN/g: hidden desktop nav
@@ -27,7 +27,6 @@ export default function OverlayNav() {
     href === "/work"
       ? pathname.startsWith("/work") || pathname.startsWith("/case-studies")
       : pathname === href || pathname.startsWith(href + "/");
-  const [hovered, setHovered] = useState<string | null>(null);
   const [triggerHovered, setTriggerHovered] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -100,22 +99,24 @@ export default function OverlayNav() {
                 {item.label}
               </Link>
             ))}
+            {/* CV on every page (Gate 2, 3 Oct 2026): opens the CV modal */}
+            <ResumeLink className="nav-link" />
           </nav>
 
-          <div className="flex items-center gap-4">
-          {/* ONE theme toggle, always directly left of the CTA (lg+) or the
-              menu button (below lg). audit:controls checks both. */}
-          <ThemeToggle />
-          {/* Contact left the nav (about-rebuild lock, 18 Sep 2026): the
-              ask is a button; below lg it lives in the menu instead */}
-          <div className="hidden lg:block">
-            <GetInTouch />
+          <div className="flex items-center gap-2">
+          {/* LinkedIn and Copy email as two 44px icons (Elleta, 4 Oct
+              2026, hero v3 lock; the "Let's talk" button is retired) */}
+          <div className="nav-contact pointer-events-auto">
+            <ContactActions layout="icons" />
           </div>
+          {/* ONE theme toggle: last at lg+, directly left of the menu
+              button below lg. audit:controls checks both. */}
+          <ThemeToggle />
           <button
             onClick={() => setOpen((o) => !o)}
             onMouseEnter={() => setTriggerHovered(true)}
             onMouseLeave={() => setTriggerHovered(false)}
-            className="lg:hidden pointer-events-auto relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--color-border-medium)] bg-[color:var(--color-glass)] text-[color:var(--color-ink)] shadow-[var(--shadow-soft)] transition-all duration-[var(--dur-fast)] hover:bg-[color:var(--color-glass-strong)]"
+            className="nav-icon nav-icon--menu pointer-events-auto relative"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="overlay-menu"
@@ -150,7 +151,7 @@ export default function OverlayNav() {
         ref={menuRef}
         id="overlay-menu"
         inert={!open}
-        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)]/98 text-[color:var(--color-ink)] ease-[var(--ease-in-out)]"
+        className="fixed inset-0 z-[9990] overflow-hidden bg-[var(--color-semantic-background)] text-[color:var(--color-ink)] ease-[var(--ease-in-out)]"
         style={{
           clipPath: open ? "inset(0% 0 0% 0)" : "inset(100% 0 0% 0)",
           /* belt-and-braces with the inert guard: closed-menu content can
@@ -166,38 +167,29 @@ export default function OverlayNav() {
         <div className="absolute left-6 right-6 top-6 h-px bg-[color:var(--color-border-soft)] sm:left-8 sm:right-8" />
 
         <div className="relative flex h-full flex-col justify-between px-6 pb-8 pt-28 sm:px-8 sm:pb-10 sm:pt-32 lg:px-16 lg:pb-14 lg:pt-36">
-          <div
-            className="pointer-events-none absolute right-[-16px] top-1/2 -translate-y-1/2 select-none font-[family:var(--font-display)] text-[clamp(120px,18vw,240px)] font-bold leading-none tracking-[-0.04em] text-[color:var(--color-semantic-accent-border)]"
-            aria-hidden="true"
-          >
-            EM
-          </div>
-
           <nav className="relative z-10 max-w-5xl">
             {menuItems.map((item) => {
-              const isHovered = hovered === item.num;
-              const anyHovered = hovered !== null;
-              const dimmed = anyHovered && !isHovered;
-
               const sharedClasses =
                 "font-[family:var(--font-display)] text-[length:var(--font-hero)] font-normal leading-[1.02] tracking-[-0.02em] transition-colors duration-[var(--dur-fast)]";
-              const colorClass = dimmed ? "text-[color:var(--color-ink-muted)]" : "text-[color:var(--color-ink)]";
+              /* highlight, never dim (18g, house rule): the hovered or
+                 focused link gets an ochre underline and its number turns
+                 ink; the other links stay as they are */
+              const colorClass =
+                "text-[color:var(--color-ink)] decoration-[color:var(--color-brand-ochre)] decoration-[length:var(--ring-focus-width)] underline-offset-[0.12em] hover:underline focus-visible:underline";
 
               return (
                 <div
                   key={item.num}
                   className="group flex items-start gap-4 border-b border-[color:var(--color-border-soft)] py-4 sm:gap-6 sm:py-5 lg:gap-10"
-                  onMouseEnter={() => setHovered(item.num)}
-                  onMouseLeave={() => setHovered(null)}
                 >
-                  <span aria-hidden="true" className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] sm:min-w-20">
+                  <span aria-hidden="true" className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] group-hover:text-[color:var(--color-ink)] group-focus-within:text-[color:var(--color-ink)] sm:min-w-20">
                     (_{item.num})
                   </span>
 
                   {item.href.startsWith("#") ? (
                     <button
                       onClick={() => handleNavClick(item.href)}
-                      className={`${sharedClasses} ${colorClass} bg-transparent p-0 text-left hover:text-[color:var(--color-ink-soft)]`}
+                      className={`${sharedClasses} ${colorClass} bg-transparent p-0 text-left`}
                     >
                       {item.label}
                     </button>
@@ -207,7 +199,7 @@ export default function OverlayNav() {
                       data-component="NavLink"
                       onClick={() => setOpen(false)}
                       aria-current={isCurrent(item.href) ? "page" : undefined}
-                      className={`${sharedClasses} ${colorClass} block hover:text-[color:var(--color-ink-soft)]`}
+                      className={`${sharedClasses} ${colorClass} block`}
                     >
                       {item.label}
                     </Link>
@@ -215,12 +207,18 @@ export default function OverlayNav() {
                 </div>
               );
             })}
+            <div className="group flex items-start gap-4 border-b border-[color:var(--color-border-soft)] py-4 sm:gap-6 sm:py-5 lg:gap-10">
+              <span aria-hidden="true" className="mt-2 min-w-14 font-[family:var(--font-body)] text-[length:var(--typography-font-size-tag)] uppercase tracking-[0.24em] text-[color:var(--color-ink-muted)] group-hover:text-[color:var(--color-ink)] group-focus-within:text-[color:var(--color-ink)] sm:min-w-20">
+                (_05)
+              </span>
+              <ResumeLink className="font-[family:var(--font-display)] text-[length:var(--font-hero)] font-normal leading-[1.02] tracking-[-0.02em] text-[color:var(--color-ink)] decoration-[color:var(--color-brand-ochre)] decoration-[length:var(--ring-focus-width)] underline-offset-[0.12em] hover:underline focus-visible:underline bg-transparent p-0 text-left" />
+            </div>
           </nav>
 
           <div className="relative z-10 mt-12 flex flex-col gap-3 sm:mt-16">
-            {/* Get in touch, the menu's copy of the header button
-                (email assembled on click, §6) */}
-            <ContactActions />
+            {/* the menu's labelled copy of the header icons (email
+                assembled on click, §6) */}
+            <ContactActions layout="menu" />
           </div>
         </div>
       </div>

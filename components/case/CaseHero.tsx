@@ -1,0 +1,67 @@
+import type { ReactNode } from "react";
+import Container from "@/components/layout/Container";
+import Heading from "@/components/ui/Heading";
+import CaseCollage, { type CollagePiece } from "./CaseCollage";
+import styles from "./Case.module.css";
+
+/* The case hero band (build-spec "Case hero band + showcase", Elleta,
+   4 Oct late; Figma Template / Case page, the Hero slot): a white band the
+   full page width, on the case body's frame. Left, the title (Display/Case
+   title), a hairline, the meta row, the intro and, where Figure 1 used to
+   carry one, the disclosure line; right, the collage of the case's own
+   UI. Two columns from 960px (440 | 88 | 528 at 1440), stacked below
+   (text first, 28 apart). CaseShowcase follows it on the grey ground.
+   `case-hero` names the band for audit:frame (its h1 sits on the body's
+   left edge, not the text column). */
+
+export default function CaseHero({
+  title,
+  long = false,
+  meta,
+  intro,
+  disclosure,
+  note,
+  collage,
+}: {
+  title: string;
+  /** the long-title size, 56 (three lines at 1440) */
+  long?: boolean;
+  /** the meta row: left and right */
+  meta: [string, string];
+  intro: string;
+  /** Body/Small under the intro (an NDA or concept-mock line) */
+  disclosure?: string;
+  /** one quiet note under the hero, its label in bold then the line (CHIP's "Update coming", H4) */
+  note?: { tag: string; text: string };
+  /** `phone`: the one readable card the 390 frame shows instead of the
+   *  collage, at its own size (job 38: no shrunk collage on a phone) */
+  collage: { label: string; pieces: CollagePiece[]; phone?: ReactNode; phoneLabel?: string; canvas?: { w: number; h: number }; row?: boolean };
+}) {
+  return (
+    <div className={`case-hero ${styles.heroBand}`}>
+      <Container className="container--case">
+        <div className={styles.heroGrid} data-art-row={collage.row ? "" : undefined}>
+          <div className={styles.heroText}>
+            <Heading tier="title" long={long} id="case-title">
+              {title}
+            </Heading>
+            <span className={styles.heroRule} aria-hidden="true" />
+            {/* two labels (Label/Table), not a paragraph */}
+            <div className={styles.heroMeta}>
+              <span>{meta[0]}</span>
+              <span>{meta[1]}</span>
+            </div>
+            <p className={styles.heroIntro}>{intro}</p>
+            {disclosure ? <p className={styles.heroDisclosure}>{disclosure}</p> : null}
+          </div>
+          <CaseCollage label={collage.label} pieces={collage.pieces} phone={collage.phone} phoneLabel={collage.phoneLabel} canvas={collage.canvas} row={collage.row} />
+        </div>
+        {note ? (
+          <p className={styles.heroNote}>
+            <strong>{note.tag}:</strong> {note.text}
+          </p>
+        ) : null}
+      </Container>
+    </div>
+  );
+}

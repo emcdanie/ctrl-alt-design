@@ -1,0 +1,82 @@
+/* the inset level inside a raised card: hairline, card radius, the grid
+   in the line token. The label bar and caption as Figma's "Covers final"
+   (529:84898, job 43): the body face, 16 over the stage, 18 under it, on
+   the surface */
+.frame {
+  display: grid;
+  /* one shrinkable column: the nowrap strips grew an auto column past
+     the card at 390, and the frame's overflow clipped the right side */
+  grid-template-columns: minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+
+.strip {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--color-semantic-border);
+  font-size: var(--text-label);
+  line-height: 1.3;
+  color: var(--color-semantic-text-secondary);
+  white-space: nowrap;
+}
+
+/* a long path wraps under itself at 390, never a silent ellipsis (job 34) */
+.path {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.foot {
+  border-top: 1px solid var(--color-semantic-border);
+  border-bottom: 0;
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.5;
+  white-space: normal;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  padding: var(--spacing-6);
+  background-image:
+    linear-gradient(var(--color-semantic-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-semantic-border) 1px, transparent 1px);
+  background-size: var(--spacing-6) var(--spacing-6);
+}
+
+.stage svg {
+  width: 100%;
+  max-width: 27.5rem;
+  height: auto;
+}
+
+/* one highlighted part, in ochre (the only accent fill) */
+.stage svg :global(.c1) {
+  fill: var(--color-semantic-accent);
+}
+
+/* a Figma cover picture (job 43): the stage IS the picture, edge to edge,
+   one per theme */
+.stagePicture {
+  display: block;
+  /* cropped, never scaled, so each card fits one screen with the nav
+     (Elleta, 6 Oct 2026, H4) */
+  height: var(--cover-stage-h);
+  overflow: hidden;
+  padding: 0;
+  background-image: none;
+}
+
+.stagePicture img {
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--cover-focus, 50% 50%);
+}
+

@@ -1,0 +1,96 @@
+"use client";
+
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import styles from "./Case.module.css";
+
+/* A numbered case figure (Site v3). No Enlarge and no viewer (Elleta,
+   4 Oct late: "it covers the picture and isn't needed"): a phone zooms a
+   picture with the page's own pinch-zoom, which is never disabled.
+
+   A figure with motion (`replay`) plays once when half of it is in view
+   and offers Replay at the end of the caption row (job F); its art reads `useFigurePlay()` and keys
+   its animation on `run`. Reduced motion is CSS's job: the art shows its
+   finished frame. */
+
+const PlayContext = createContext<{ playing: boolean; run: number }>({ playing: true, run: 0 });
+
+/** for figure art with motion: `playing` turns on once in view, `run`
+ *  bumps on Replay so the art can restart its animation by key */
+export function useFigurePlay() {
+  return useContext(PlayContext);
+}
+
+export default function CaseFigure({
+  n,
+  caption,
+  replay = false,
+  children,
+  className = "",
+}: {
+  /** the figure number, "Figure N." */
+  n: number;
+  caption: ReactNode;
+  /** the art has motion: play in view, show Replay */
+  replay?: boolean;
+  children: ReactNode;
+  className?: string;
+}) {
+  const art = useRef<HTMLDivElement>(null);
+  const [playing, setPlaying] = useState(!replay);
+  const [run, setRun] = useState(0);
+
+  useEffect(() => {
+    if (!replay || playing) return;
+    const el = art.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setPlaying(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setPlaying(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [replay, playing]);
+
+  return (
+    <figure className={`${styles.figBlock} ${className}`.trim()}>
+      <div className={styles.figureArt} ref={art} data-replay={replay || undefined}>
+        {/* Site/Figure stage (417:1706): the grid behind every picture,
+            56/64 margins at 1440 and 20 at 390 */}
+        <div className={styles.stage}>
+          <PlayContext.Provider value={{ playing, run }}>{children}</PlayContext.Provider>
+        </div>
+      </div>
+      <figcaption className={`${styles.caption} ${styles.col} ${styles.captionRow}`}>
+        <span>
+          <span className={styles.captionNum}>Figure {n}.</span> {caption}
+        </span>
+        {replay ? (
+          <button
+            type="button"
+            className={styles.toolButton}
+            onClick={() => {
+              setPlaying(true);
+              setRun((r) => r + 1);
+            }}
+          >
+            Replay<span className="sr-only"> Figure {n}</span>
+          </button>
+        ) : null}
+      </figcaption>
+    </figure>
+  );
+}
+
+/** restarts its children on Replay (a live exhibit that runs its own loop) */
+export function ReplayKey({ children }: { children: ReactNode }) {
+  const { run } = useFigurePlay();
+  return <div key={run}>{children}</div>;
+}

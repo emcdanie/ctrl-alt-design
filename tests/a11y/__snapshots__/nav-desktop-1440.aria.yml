@@ -10,5 +10,9 @@
     - /url: /learning
   - link "About":
     - /url: /about
+  - button "CV"
+- link "LinkedIn (opens in a new tab)":
+  - /url: https://www.linkedin.com/in/elleta-mcdaniel/
+- button "Copy email"
+- status
 - button "Dark mode"
-- button "Let’s talk"

@@ -5,6 +5,7 @@ import CaseStudyLayout from "@/components/CaseStudyLayout";
 import CaseShellV2 from "@/components/CaseShellV2";
 import CodeFirstV2 from "@/components/CodeFirstV2";
 import DriftCase from "@/components/DriftCase";
+import FederatedCase from "@/components/FederatedCase";
 import ChipCase from "@/components/ChipCase";
 import BookingCase from "@/components/BookingCase";
 import SearchCase from "@/components/SearchCase";
@@ -105,20 +106,6 @@ const ARTICLE: Record<
     lead: "Company travel has rules: who you book for, what your role allows, which cards you may see. I designed the checkout and payment step once, for every product, so those rules show up as fewer choices instead of more forms.",
     note: "Under NDA. Diagrams are my own, redrawn to show the approach; no client screens or data.",
   },
-  chip: {
-    title: "AI builds what your system is. CHIP",
-    accent: "sees it first",
-    after: ".",
-    note: "A personal project on my own systems. Data is illustrative; nothing comes from a client.",
-    /* CHIP keeps a metadata list rather than the metrics block, and its
-       four facts are the mock's shortenings of those entries */
-    facts: [
-      { label: "Role", value: "Designer and builder, solo" },
-      { label: "Built", value: "5 days, Claude Code hackathon, Apr 2026" },
-      { label: "Tools", value: "Claude Code, MCP, BELLA tokens" },
-      { label: "Status", value: "Honest prototype, CHIP 2.0 in progress" },
-    ],
-  },
   /* theming-case-study.html (Geist refresh, 22 Sep 2026) */
   theming: {
     title: "One system, many faces.",
@@ -196,12 +183,19 @@ export async function generateMetadata({
    audit:parity keeps the registry honest. ── */
 const COMPOSITIONS: Record<string, React.ComponentType<{ cs: CaseStudy }>> = {
   "brad-frost": CodeFirstV2,
-  "design-system-transformation": DriftCase,
-  chip: ChipCase,
   "booking-platform": BookingCase,
   "search-experts": SearchCase,
   checkout: CheckoutCase,
+};
+
+/* Site v3 (Elleta, 4 Oct 2026): a case rebuilt from the Site v3 frames
+   renders the whole page on Template / Case page (components/case), not
+   through CaseShellV2. A slug moves here when it is rebuilt. */
+const V3_CASES: Record<string, React.ComponentType> = {
+  "design-system-transformation": DriftCase,
+  federated: FederatedCase,
   theming: ThemingCase,
+  chip: ChipCase,
 };
 
 export default async function CaseStudyPage({
@@ -212,6 +206,13 @@ export default async function CaseStudyPage({
   const { slug } = await params;
   const cs = getCaseStudy(slug);
   if (!cs) notFound();
+  const V3 = V3_CASES[slug];
+  if (V3)
+    return (
+      <CaseStudyLayout>
+        <V3 />
+      </CaseStudyLayout>
+    );
   const Composition = COMPOSITIONS[slug];
   if (!Composition) notFound();
   const article = ARTICLE[slug];

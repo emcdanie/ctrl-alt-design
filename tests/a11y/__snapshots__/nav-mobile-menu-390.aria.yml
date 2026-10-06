@@ -7,7 +7,8 @@
     - /url: /learning
   - link "About":
     - /url: /about
-- button "Copy email"
+  - button "CV"
 - link "LinkedIn (opens in a new tab)":
   - /url: https://www.linkedin.com/in/elleta-mcdaniel/
+- button "Copy email"
 - status

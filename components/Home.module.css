@@ -1,66 +1,24 @@
-/* Home sections (home rebuild, 19 Sep 2026): the teams row, the door
- * cards and the pull quote. Section rhythm comes from Section and
- * SectionHeader; this file only shapes what sits inside them. */
+/* Home sections (Home · v2, Gate 2, 3 Oct 2026): the quote card, the
+ * case stack and the system links. Section rhythm comes from Section
+ * and SectionHeader; this file only shapes what sits inside them. */
 
-/* Teams row: the About logo component in its row layout, with its
-   "Worked with" label, between a hairline above and below.
-
-   ONE line, never two (Elleta, 20 Sep 2026, fix pass 2): the band draws
-   its own two full-bleed rules. The grid's ruled cells were painting a
-   second, container-inset line directly under the marks; that rule now
-   belongs to the grid layout only, not the row layout, so it is fixed
-   in the logo component (globals.css .logo-grid--row) rather than
-   overridden here. */
-.logos {
-  /* ONE hairline, above, at the content width (.section--ruled in
-     page.tsx; Elleta's checklist, 20 Sep 2026, and 24 Sep audit). The band
-     used to close itself with a second full-bleed rule, and the next
-     section's label rule sits right under that, so the eye read two
-     lines between the marks and Selected work. */
-  /* the band is a section like the others: the section pad above its
-     rule and below its marks, so every gap on Home is the one section
-     padding twice (24 Sep audit, A4) */
-  padding-block: calc(var(--section-pad-y) + var(--spacing-4)) var(--section-pad-y);
-}
-
-.logos:global(.section--ruled)::before {
-  top: var(--section-pad-y);
-}
-
-.logos :global(.logo-grid) {
-  row-gap: var(--spacing-4);
-}
-
-/* door cards: kicker, title, line, go. The kicker is the quiet code
-   role, same as Home's case cards (Elleta, 20 Sep 2026): no caps, no
-   tracking, .text-code carries the face and the size. */
-.kicker {
-  display: block;
-  margin-bottom: var(--spacing-2);
-  color: var(--color-eyebrow);
-}
-
-.title,
-.body {
-  display: block;
-}
-
-.title {
-  margin-bottom: var(--spacing-2);
-}
-
-/* pull quote: the big pattern-filled opening mark, then the line */
+/* the quote as a card on the raised surface, the big pattern-filled
+   mark on top, inside the card (audit:contain) */
 .quote {
-  max-width: 52rem;
   margin: 0;
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--site-raised);
 }
 
 .mark {
   display: block;
   width: fit-content;
   /* the full glyph box, so background-clip: text paints all of it; the
-     negative margin keeps the old half-em footprint */
-  margin-bottom: -0.5em;
+     negative margin keeps the old half-em footprint; the top and left
+     step keeps the rotated glyph inside the card's padding */
+  margin: var(--spacing-2) 0 -0.5em var(--spacing-2);
   font-family: var(--font-body);
   font-size: 6rem;
   font-weight: 800;
@@ -75,6 +33,8 @@
 
 .words p {
   margin: 0;
+  /* the body cap, 760 at most (audit fix D10, 5 Oct 2026; was 52rem) */
+  max-width: 47.5rem;
   font-family: var(--font-body);
   font-size: var(--text-display-3);
   font-weight: 500;
@@ -89,6 +49,10 @@
 }
 
 .cite {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--spacing-2);
   margin-top: var(--spacing-4);
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
@@ -100,8 +64,517 @@
   color: var(--color-ink);
 }
 
+/* the featured case, the pair, then See all work */
+.cases {
+  display: grid;
+  gap: var(--spacing-6);
+  margin-top: var(--space-stack-lg);
+}
+
 .more {
-  color: var(--color-accent-ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  margin: 0;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--spacing-6);
+  max-width: var(--measure-body);
+  margin: var(--space-stack-md) 0 0;
+}
+
+/* the accessibility line under the system links (job 34, findability):
+   the cite's quiet type, the link inline */
+.a11y {
+  max-width: var(--measure-body);
+  margin: var(--space-stack-sm) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+}
+
+.keep {
+  white-space: nowrap;
+}
+
+/* the proof row (H4, 6 Oct 2026, the 4 Oct map): three ProofCards,
+   equal heights, 24 apart; three columns from 900px, one below */
+.proof {
+  display: grid;
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 900px) {
+  .proof {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* the pair under Brad's card (H4, the 4 Oct map): two quote cards side
+   by side from 900px, stacked below, equal heights */
+.pair {
+  display: grid;
+  gap: var(--spacing-6);
+  margin: var(--spacing-6) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 900px) {
+  .pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.pair > li {
+  display: flex;
+}
+
+.pairQuote {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--site-raised);
+}
+
+.pairMark {
+  font-size: 4rem;
+}
+
+.pairWords {
+  margin: 0;
+}
+
+.pairWords p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-lg);
+  line-height: 1.5;
+  text-wrap: pretty;
+  color: var(--color-ink);
+}
+
+.pairCite {
+  display: grid;
+  margin-top: auto;
+  padding-top: var(--spacing-4);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+}
+
+.pairCite b {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* ── The system door (Figma Home 293:29910, Exploded card · Door B v2) ──
+   The case card taken apart: four plates, Content on top, each tilted by
+   the one exploded-stack matrix (the same as CHIP's Take it apart, an
+   allowed tilt), a dot and one level leader to its legend row. Drawn in
+   design units (--u, one Figma pixel of the 993-wide frame), so the
+   picture scales with its column and never reflows. From 640px the
+   legend sits beside the plates; below, it follows them as a list. Text
+   never computes under 14px. */
+.door {
+  display: grid;
+  gap: var(--spacing-4);
+  margin: var(--space-stack-lg) 0 0;
+}
+
+.doorFrame {
+  container-type: inline-size;
+}
+
+.explode {
+  /* one Figma pixel: the column's width, or less when the viewport is
+     short, so the whole figure (stage, plates, caption) fits one screen
+     under the nav (I2, 6 Oct 2026). --door-chrome is what the figure
+     adds round the plates: the stage padding, the gap and the caption. */
+  --door-chrome: var(--spacing-20);
+  --u: min(100cqw / 993, (100svh - var(--header-height) - var(--door-chrome)) / 1040);
+  position: relative;
+  width: calc(993 * var(--u));
+  margin-inline: auto;
+}
+
+.plates {
+  position: relative;
+  height: calc(1040 * var(--u));
+}
+
+.plate {
+  position: absolute;
+  left: calc(20 * var(--u));
+  top: calc(var(--y) * var(--u));
+  z-index: calc(4 - var(--k));
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--u));
+  width: calc(460 * var(--u));
+  height: calc(490 * var(--u));
+  /* the card's own padding, at the plate's scale (K4) */
+  padding: calc(24 * var(--u));
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+  color: var(--color-semantic-text-primary);
+  transform: matrix(0.94, -0.16, 0.34, 0.46, 0, 0);
+  transform-origin: 0 0;
+}
+
+/* Content is the highlighted plate: the accent wash and border */
+.plate[data-n="4"],
+.legendRow[data-n="4"] {
+  border-color: var(--color-semantic-accent);
+  background: color-mix(in oklab, var(--color-semantic-accent) 16%, var(--color-semantic-surface));
+}
+
+/* Cover on top, Content under it: the two layers share the card's
+   split, so stacked they make the card (K4, Elleta, 6 Oct 2026) */
+.plate[data-n="3"] {
+  justify-content: flex-start;
+}
+
+.plate[data-n="4"] {
+  justify-content: flex-end;
+  gap: calc(8 * var(--u));
+}
+
+.plate[data-n="2"] {
+  align-items: center;
+  justify-content: center;
+  background: var(--color-semantic-surface-inset);
+}
+
+.plateEyebrow {
+  font-size: max(1rem, calc(16 * var(--u)));
+  line-height: 1.3;
+  color: var(--color-semantic-text-secondary);
+}
+
+.plateTitle {
+  /* 16 floor: the door's unit drops below 1 on short screens (I2) */
+  font-size: max(1rem, calc(22 * var(--u)));
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* on phones the plate is too small for both: the title alone (Elleta,
+   6 Oct 2026, pick 4b) */
+@media (max-width: 639.98px) {
+  .plate[data-n="4"] > :not(.plateTitle) {
+    display: none;
+  }
+}
+
+/* the description, tags and link as shapes, in the card's proportions */
+.plateClaim {
+  display: grid;
+  gap: calc(12 * var(--u));
+  padding-block: calc(6 * var(--u));
+}
+
+.plateClaim i,
+.plateTags i,
+.plateLink {
+  display: block;
+  border-radius: var(--radius-pill);
+}
+
+.plateClaim i {
+  height: calc(9 * var(--u));
+  background: var(--color-semantic-border);
+}
+
+.plateClaim i:last-child {
+  width: 62%;
+}
+
+.plateTags {
+  display: flex;
+  gap: calc(6 * var(--u));
+}
+
+.plateTags i {
+  width: calc(124 * var(--u));
+  height: calc(24 * var(--u));
+  border: 1px solid var(--color-semantic-border-strong);
+}
+
+.plateTags i:last-child {
+  width: calc(92 * var(--u));
+}
+
+.plateLink {
+  width: calc(116 * var(--u));
+  height: calc(8 * var(--u));
+  margin-top: calc(6 * var(--u));
+  background: var(--color-semantic-text-primary);
+}
+
+.platePhoto {
+  position: relative;
+  display: block;
+  height: calc(212 * var(--u));
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.platePhoto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoBtn {
+  position: absolute;
+  top: calc(14 * var(--u));
+  display: grid;
+  place-items: center;
+  width: calc(36 * var(--u));
+  height: calc(36 * var(--u));
+  border-radius: var(--radius-pill);
+  background: var(--cover-on-photo);
+  color: var(--cover-on-photo-ink);
+}
+
+.photoBtn[data-at="start"] {
+  left: calc(14 * var(--u));
+}
+
+.photoBtn[data-at="end"] {
+  right: calc(14 * var(--u));
+}
+
+.photoBtn svg {
+  width: 50%;
+  height: 50%;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.photoCount {
+  position: absolute;
+  left: calc(14 * var(--u));
+  bottom: calc(14 * var(--u));
+  padding: 0 calc(8 * var(--u));
+  border-radius: var(--radius-pill);
+  background: var(--cover-on-photo);
+  color: var(--cover-on-photo-ink);
+  font-family: var(--font-code);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.plateCard {
+  display: block;
+  width: calc(380 * var(--u));
+  height: calc(380 * var(--u));
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.plateChips {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: calc(10 * var(--u));
+}
+
+.plateChip {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+  padding: calc(4 * var(--u)) calc(12 * var(--u));
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-surface-inset);
+  font-family: var(--font-code);
+  font-feature-settings: var(--mono-feature);
+  font-size: max(0.875rem, calc(16 * var(--u)));
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.chipDot {
+  width: calc(12 * var(--u));
+  height: calc(12 * var(--u));
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-text-primary);
+}
+
+.chipDot[data-dot="accent"] {
+  background: var(--color-semantic-accent);
+}
+
+/* the dot on the plate and one level leader to the legend row */
+.leader {
+  position: absolute;
+  left: calc(477 * var(--u));
+  top: calc((var(--y) - 6) * var(--u));
+  z-index: 5;
+  width: calc(90 * var(--u));
+  height: var(--spacing-2);
+  translate: 0 -50%;
+}
+
+.leader::before,
+.leader::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+}
+
+.leader::before {
+  left: 0;
+  width: var(--spacing-2);
+  height: var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-text-primary);
+  translate: 0 -50%;
+}
+
+.leader::after {
+  left: calc(var(--spacing-2) / 2);
+  right: 0;
+  height: 1px;
+  background: var(--color-semantic-text-secondary);
+}
+
+.legend {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legendRow {
+  position: absolute;
+  left: calc(572.8 * var(--u));
+  top: calc((var(--y) - 6) * var(--u));
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: calc(12 * var(--u));
+  width: calc(380 * var(--u));
+  padding: calc(12 * var(--u)) calc(16 * var(--u));
+  border: 1px solid transparent;
+  border-radius: var(--radius-card);
+  translate: 0 -50%;
+}
+
+.legendNum {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  /* a one-digit badge, centred by the grid; the numeric rule's alignment
+     and tabular digits change nothing visible here */
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  width: max(1.75rem, calc(32 * var(--u)));
+  height: max(1.75rem, calc(32 * var(--u)));
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-md);
+  background: var(--color-semantic-surface);
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-semantic-text-primary);
+}
+
+.legendText {
+  display: grid;
+  min-width: 0;
+}
+
+.legendName {
+  font-size: max(1rem, calc(22 * var(--u)));
+  line-height: 1.5;
+  color: var(--color-semantic-text-primary);
+}
+
+/* reading text, so Geist at 16 or more (job 38, audit:type); the mono
+   role is labels only, 13px */
+.legendSpec {
+  font-size: max(1rem, calc(16 * var(--u)));
+  line-height: 1.4;
+  color: var(--color-semantic-text-secondary);
+}
+
+.doorCaption {
+  font-size: var(--typography-font-size-sm);
+  line-height: var(--typography-line-height-normal);
+  color: var(--color-semantic-text-body);
+}
+
+/* phone: the plates fill the column, the legend follows as a list */
+@container (max-width: 39.99rem) {
+  .explode {
+    --u: calc(100cqw / 640);
+  }
+
+  .leader {
+    display: none;
+  }
+
+  .legend {
+    position: static;
+    display: grid;
+    gap: var(--spacing-2);
+    margin-top: var(--spacing-5);
+  }
+
+  .legendRow {
+    position: static;
+    width: auto;
+    padding: var(--spacing-3) var(--spacing-4);
+    gap: var(--spacing-3);
+    translate: none;
+  }
+}
+
+/* motion (Figma annotation): starts as the assembled card; once in view
+   Surface, Cover and Content rise to their slots, staggered 0.12s, and
+   the leaders and legend fade in. Reduced motion keeps the end state
+   because none of this applies. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes doorRise {
+    from {
+      translate: 0 calc((814.4 - var(--y)) * var(--u));
+    }
+  }
+
+  @keyframes doorFade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  :global(.js-reveal) .explode:not(:global(.is-revealed)) .plate {
+    translate: 0 calc((814.4 - var(--y)) * var(--u));
+  }
+
+  :global(.js-reveal) .explode:not(:global(.is-revealed)) :is(.leader, .legendRow) {
+    opacity: 0;
+  }
+
+  .explode:global(.is-revealed) .plate {
+    animation: doorRise 0.9s var(--ease-out) calc(max(0, 2 - var(--k)) * 0.12s) both;
+  }
+
+  .explode:global(.is-revealed) :is(.leader, .legendRow) {
+    animation: doorFade 0.3s ease-out calc(0.6s + max(0, 2 - var(--k)) * 0.12s) both;
+  }
 }

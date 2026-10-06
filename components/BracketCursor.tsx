@@ -18,7 +18,10 @@ import { useEffect, useRef, useState } from "react";
    inside the viewport, so all four corners stay visible for targets
    that touch its edge (the nav). */
 
+/* data-bracket="off" opts a control out (the footer's back-to-top tab:
+   only its chevron shows, Elleta, 6 Oct 2026, job G2) */
 const TARGET = 'a[href], button:not([disabled]), [role="button"]';
+const OFF = '[data-bracket="off"]';
 const IDLE = 22; // the resting box around the pointer, px
 const PAD = 8; // the brackets sit this far outside a wrapped target, px
 const LAG = 0.22; // share of the remaining distance covered per frame
@@ -107,7 +110,8 @@ export default function BracketCursor() {
       if (e.pointerType !== "mouse") return;
       pointer.x = e.clientX;
       pointer.y = e.clientY;
-      const hit = (e.target as Element | null)?.closest?.(TARGET) ?? null;
+      const found = (e.target as Element | null)?.closest?.(TARGET) ?? null;
+      const hit = found?.matches(OFF) ? null : found;
       if (hit !== target) {
         target = hit;
         const text = hit ? labelFor(hit) : "";

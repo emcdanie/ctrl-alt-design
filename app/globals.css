@@ -5,7 +5,7 @@
 @theme {
   /* Page + surfaces — lush ground (light default; navy dark via [data-theme]) */
   --color-cream: var(--color-light-panel);
-  --color-page: var(--color-light-bg);
+  --color-page: var(--color-semantic-background); /* the BELLA ground (stone 95 since 5 Oct 2026) */
   /* CARD vs GROUND SEPARATION (defect, 27 Jul): the ground
      (--color-semantic-background, dropped to #F1EFE6 in bella.css) and
      the card were about 5 of 255 apart. At that distance a card edge
@@ -18,11 +18,11 @@
      BELLA name at this repo's separation values cannot live here: @theme is
      layered and loses to bella.css's unlayered :root. It lives in the APP
      TOKEN AUTHORITY block below. */
-  --color-card: var(--color-semantic-surface);
+  --color-card: var(--color-semantic-surface-card); /* light ground (BELLA 159bf43, 5 Oct 2026): stone cards on the stone ground */
   --color-ink: var(--color-light-ink);
   --color-ink-soft: var(--color-light-ink);
   --color-ink-muted: var(--color-light-muted);
-  --color-surface: var(--color-light-panel);
+  --color-surface: var(--color-light-inset); /* site v3: surface-inset, so a panel still reads on the panel-coloured ground */
   --color-white-pure: var(--color-light-panel);
   --color-accent-line: var(--color-ink); /* brand refresh 22 Sep 2026: iris retired; the old accent reads as ink */
   --color-accent-muted: var(--color-ink-muted);
@@ -100,7 +100,7 @@ h1, h2, h3, h4, h5, h6 {
    bella.css ships serif/mono-era typography primitives (generated
    file, not hand-edited). Bridge the primitives to the app fonts so every
    BELLA-styled surface uses the same stack. */
-/* next/font exposes --font-geist / --font-geist-mono / --font-unique on
+/* next/font exposes --font-figtree / --font-geist-mono / --font-unique on
  * <body> (layout.tsx className). Custom properties resolve at the element
  * they're DECLARED on, not where they're used, so every var that chains to
  * a next/font variable must be declared at body level. This block is the
@@ -109,11 +109,12 @@ h1, h2, h3, h4, h5, h6 {
  * The BELLA typography primitives bridge here for the same reason (they'd
  * otherwise compute against :root, where the app fonts are undefined). */
 body {
-  --font-display: var(--font-geist, "Geist"), system-ui, sans-serif;
-  --font-body: var(--font-geist, "Geist"), system-ui, sans-serif;
-  /* retired mono: token repointed to Geist so legacy consumers keep
-     rendering; the eyebrow look is caps + tracking, not a third face */
-  --font-mono: var(--font-geist, "Geist"), system-ui, sans-serif;
+  /* site v3 (Elleta, 4 Oct 2026): Figtree for all text */
+  --font-display: var(--font-figtree, "Figtree"), system-ui, sans-serif;
+  --font-body: var(--font-figtree, "Figtree"), system-ui, sans-serif;
+  /* retired mono: token repointed to the text face so legacy consumers
+     keep rendering */
+  --font-mono: var(--font-figtree, "Figtree"), system-ui, sans-serif;
   --font-hero-display: var(--font-unique, "Unique"), "Arial Narrow", sans-serif;
   /* the code face (Elleta, 19 Sep 2026): Geist's mono cut as ONE role, for
      metadata only (dates, stat lines, code-comment notes, credential
@@ -158,10 +159,8 @@ body {
   --border-faint: var(--color-semantic-border);
   --radius-card: 1rem;
   --radius-pill: 999px;
-  /* a soft iris wash: row hover (10%, the mock); the Current pill takes
-     6% so its iris text clears AA (4.61:1 on the card; 10% gave 4.37) */
+  /* a soft iris wash: row hover (10%, the mock) */
   --tint-soft: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
-  --tint-pill: color-mix(in srgb, var(--color-accent-ink) 6%, transparent);
   --radius-popover: 0.75rem;
   /* Term: the dotted iris underline (thicker, further off in headings) */
   --term-dot: 1.5px;
@@ -175,7 +174,9 @@ body {
      wide screens hug the content a little less; the gutters still sit
      outside it, and the reading measures (--measure-lead 42rem,
      --measure-body 65ch) are unchanged, so lines do not get longer. */
-  --layout-max: 62.5rem; /* 1,000px content, system-page-mock (22 Sep 2026) */
+  /* one content edge (job 38, 5 Oct 2026): every page on the case
+     template's 1056 body, so the h1 sits at x192 at 1440 everywhere */
+  --layout-max: 66rem;
   --layout-gutter: clamp(1.5rem, 4vw, 3rem);
   /* more air between sections (Part Q): ~64px at 390, ~118px at 1440 */
   --section-pad-y: clamp(4rem, 2.5rem + 3.4vw, 5.5rem); /* the mock's 88px at desktop, 64px floor */
@@ -190,13 +191,99 @@ body {
   --space-stack-sm: 12px;
   --space-stack-md: 24px;
   --space-stack-lg: 40px;
+  /* Layout B, the case template (Elleta, 4 Oct 2026, site v3 concept lock;
+     CLAUDE.md section 2): a 1056 body, the text column 696 centred in it
+     (x180 at 1440), 96 between sections, 40 between blocks. */
+  --case-body-max: var(--layout-max);
+  --case-col-max: 43.5rem;
+  --case-gap-section: 6rem;
+  --case-gap-block: var(--spacing-8); /* job F, 5 Oct 2026: was spacing-10 */
+  /* The case hero band + showcase (Elleta, 4 Oct late, build-spec "Case
+     hero band + showcase"): Display/Case title, fluid 64 to 40 (56 to 40
+     for a long title; a BELLA proposal), leading 1.06; the band pads 72
+     (32 at 390), its columns sit 88 apart (28 stacked), the collage is
+     528x480 and keeps that shape at every width (350x318 at 390), with
+     no edge fades since the 5 Oct straighten pass; a phone showcase card
+     is 296 wide, as Figma (Elleta, 5 Oct 2026, job 43b). */
+  --text-display-case: clamp(40px, 40px + 24 * (100vw - 390px) / 1050, 64px);
+  --text-display-case-long: clamp(40px, 40px + 16 * (100vw - 390px) / 1050, 56px);
+  --leading-case-title: 1.06;
+  --case-hero-pad-y: calc(var(--spacing-16) + var(--spacing-2));
+  --case-hero-gap: calc(var(--spacing-20) + var(--spacing-2));
+  --case-hero-gap-stacked: calc(var(--spacing-6) + var(--spacing-1));
+  --case-showcase-card-w: 296px;
+  /* Label/Eyebrow, Label/Table, Label/Button: 16px (site v3) */
+  --text-label: var(--typography-font-size-tag);
+  /* Site/Quote: 32 at 1440, fluid to 24 at 390 (TODO(bella): a Quote style,
+     type audit 4 Oct 2026); the mark at 144 */
+  --text-quote: clamp(1.5rem, 1.31rem + 0.76vw, 2rem);
+  --quote-mark-size: 9rem;
+  /* Pictures only (CLAUDE.md section 1, site v3): the Case UI kit and the
+     markup layer, sampled from the Site v3 frames. Never site chrome. */
+  --kit-action: #4a5bd4; /* product/button/fill, Default mode */
+  --kit-action-subtle: #eceefb;
+  --kit-on-action: #ffffff;
+  --kit-ramp-100: #eceefb;
+  --kit-ramp-200: #d5daf6;
+  --kit-ramp-300: #b4bcef;
+  --kit-ramp-400: #8f9ae6;
+  --kit-ramp-500: #6c7add;
+  --kit-ramp-600: #4a5bd4;
+  --kit-ramp-700: #3a49b8;
+  --kit-ramp-800: #2e3a93;
+  --kit-ramp-900: #232c6e;
+  /* Drift showcase card 3 (Elleta, 5 Oct): the three values action.primary
+     cycles through, indigo (--kit-ramp-600), a teal and an ochre; the
+     ochre carries dark text for AA, as every ochre fill does */
+  --kit-swap-teal: var(--case-chip-deep);
+  --kit-swap-ochre: var(--color-brand-ochre);
+  --kit-on-swap-ochre: var(--color-chip-text);
+  --markup-line: #8a8fa3;
+  --markup-red: #b5323a;
+  /* Drift figure 9: the invented carrier's mark */
+  --kit-carrier: #115b62;
+  /* picture-only colours that do not follow the theme: the controls that
+     sit on a photo. Never site chrome. */
+  --cover-on-photo: #ffffff;
+  --cover-on-photo-ink: #121212;
+  --cover-photo-scrim: #121212a6;
+  /* Federated product pictures (F4, sampled from the Site v3 frame):
+     the slot markup, the last-units mark and the product swatches */
+  --markup-slot: #b1518d;
+  --kit-stock: #b1552e;
+  --kit-stock-on-dark: #e39a72; /* the last-units text on a dark page */
+  --kit-swatch-black: #1f1f21;
+  --kit-swatch-taupe: #8f7f72;
+  --kit-swatch-sand: #ded6cd;
+  --kit-swatch-blue: #3d6ed8;
+  --kit-swatch-beige: #d0c0a1;
+  --kit-swatch-white: #f3f4f1;
+  --kit-swatch-ecru: #e8e4d3;
+  --kit-swatch-grey: #9a9ca2;
+  --kit-swatch-brown: #7c6b55;
+  --kit-swatch-red: #b3272f;
+  --kit-swatch-pink: #da8f98;
+  --kit-swatch-green: #5e8a5e;
+  /* Glass plates (Elleta, 4 Oct 2026, site v3, CLAUDE.md section 1
+     "Glass"): the About hero's Pattern and Photo plates, Hero v4 style */
+  --glass-plate-fill: rgba(255, 255, 255, 0.18);
+  --glass-plate-blur: 8px;
+  --glass-plate-edge: rgba(255, 255, 255, 0.65);
+  --glass-plate-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --glass-plate-shadow: 0 16px 23px rgba(18, 18, 18, 0.12);
+  /* About Figure 1 (how this site gets built), pictures only: the human
+     steps' ochre-deep edge, and the terminal that stays dark in both
+     themes */
+  --pic-human-edge: var(--color-brand-ochre-deep);
+  --pic-terminal-ground: #17191f;
+  --pic-terminal-ink: #eceef3;
+  --pic-terminal-ok: #72d08b;
   /* display tokens alias the BELLA heading scale (set below; TODO: move
      the values into BELLA component.heading.* and delete the override) */
   --text-display-1: var(--component-heading-page-font-size);
   --text-display-2: var(--component-heading-section-font-size);
   --text-display-3: clamp(1.375rem, 1.2rem + 0.75vw, 2rem);
   /* heading-3: item, card and entry titles (Geist 600) */
-  --text-heading-3: clamp(1.125rem, 1.05rem + 0.3vw, 1.375rem);
   --text-lead: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
   --leading-lead: 1.55;
   --text-body: var(--typography-font-size-body); /* 17px (Geist refresh) */
@@ -216,16 +303,11 @@ body {
   --logo-cell: 132px;
   --logo-cell-sm: 100px;
   /* heading measures in em (display-1 18em, the rest 22em) */
-  /* STOPGAP override of BELLA's px size ramp, in rem so every size
-     follows the reader's font setting; tag rises to the 14px floor and
-     base follows the fluid body size. TODO: move into BELLA. */
-  --typography-font-size-tag: var(--text-meta);
-  --typography-font-size-sm: 0.875rem;
-  --typography-font-size-base: var(--text-body);
-  --typography-font-size-lg: 1.125rem;
-  --typography-font-size-xl: 1.25rem;
+  /* BELLA's ramp is the site v3 lock (tag 16, sm 18, base 18, body 20,
+     xl 22, 4 Oct 2026); the old stopgap that shrank it is gone. BELLA
+     retired the 24 and 56 steps; these two stay for the pages that still
+     read them until each is rebuilt. */
   --typography-font-size-2xl: 1.5rem;
-  --typography-font-size-4xl: 2.5rem;
   --typography-font-size-5xl: 3.5rem;
   --measure-heading: 22em;
   /* the title measures: ONE token for every page h1 and one for the
@@ -251,7 +333,7 @@ body {
      component. --color-card derives from it in @theme, so the swapped Card
      and the 50-odd surfaces still named --color-card cannot drift apart.
      --color-semantic-surface-inset backs the Card's media well. */
-  --color-semantic-surface: var(--color-light-panel); /* Geist refresh (22 Sep 2026): the neutral panel; pure white is the page ground only */
+  --color-semantic-surface: var(--color-light-bg); /* white surfaces (the hero band, product UI in pictures); cards use surface-card */
   --color-semantic-surface-inset: var(--color-surface);
 
   /* Header offset. All sticky/fixed elements below the nav use this.
@@ -267,7 +349,6 @@ body {
   --shadow-orb: 13px 22px 44px rgba(0, 0, 0, 0.26), inset 7px 9px 18px rgba(255, 255, 255, 0.5), inset -9px -13px 28px rgba(0, 0, 0, 0.16);
   --shadow-nav-bar: 0 18px 48px rgba(26, 24, 20, 0.08);
 
-
   /* Display ladder (display-type-scale fix, 18 Sep 2026).
      Every tier is fluid between a 390 and a 1440 viewport:
      clamp(min, min + (max - min) * (100vw - 390px) / 1050, max).
@@ -282,29 +363,40 @@ body {
      confident, grown-up") */
   /* the minimums dropped so the longest word fits a 342px phone column
      (Part U); from about 480px up the sizes are Part Q's */
+  /* page and section sizes come from BELLA since site v3 (Display/Page 44-60,
+     Display/Section 34-40, 4 Oct 2026); only the Home hero keeps an override */
   --component-heading-hero-font-size: clamp(2.5rem, 1.6rem + 4.2vw, 4.75rem); /* 76px max, portfolio-preview.html (item 5, 22 Sep 2026; was 108px): the Home h1 on the mock's one title size */
-  --component-heading-page-font-size: clamp(2.5rem, 1.6rem + 4.2vw, 4.75rem); /* 76px max, system-page-mock (22 Sep 2026; was 84px) */
   --tracking-title: var(--typography-letter-spacing-display);
   --leading-title: var(--typography-line-height-heading, 1.08);
-  --component-heading-section-font-size: clamp(1.75rem, 1.45rem + 1.3vw, 2.75rem);
   /* Geist headings track slightly tight; leading never drops below 1
      (audit:type enforces it). */
   /* Geist refresh (22 Sep 2026): Geist 300, display -0.035em, h2
      -0.03em, titles 500 at 20px -0.015em (BELLA ae6eb70). */
   --tracking-display: var(--typography-letter-spacing-display);
-  --tracking-h2: var(--typography-letter-spacing-h2);
+  --tracking-h2: var(--component-heading-letter-spacing); /* site v3: -0.02em */
   --tracking-title-item: var(--typography-letter-spacing-title);
-  --leading-display: 1.08;
+  --leading-display: var(--component-heading-line-height); /* site v3: 1.15 */
   /* the overlay nav's Geist link size (not a heading tier) */
   --font-hero: clamp(2.5rem, 5vw, 3.5rem);
   /* sub-heading tier (h3 level): Geist 700, never Unique, 24 to 32 */
   --font-subsection: clamp(1.5rem, 1.3143rem + 0.7619vw, 2rem);
+  /* Site surfaces (Home · v2, Gate 2, 3 Oct 2026): stand-ins until BELLA
+     ships color/semantic/ground and color/semantic/raised (CHIP queue 09,
+     09-bella-surface-tokens.md). Home uses only these two plus the inset
+     token. Swap the right-hand sides then; nothing else changes. */
+  /* one ground on every route (job 38, 5 Oct 2026): Home's ground is the
+     page ground, stone 95, and its cards the card surface, stone 99 */
+  --site-ground: var(--color-semantic-background);
+  --site-raised: var(--color-semantic-surface-card);
+  /* the back-to-top tab (H3, 6 Oct 2026, the adhamdannaway.com footer) */
+  --footer-chevron-hi: var(--color-semantic-surface); /* the lighter tone under the debossed chevron */
+  --footer-tab-overlap: var(--spacing-2);
+  /* a case card's cover stage, cropped (H4: a card fits one screen) */
+  --cover-stage-h: 11.25rem;
+  --footer-tab-rise: 5px;
   --font-card-title: 1.25rem; /* titles: 20px (Geist refresh) */
   --font-body-size: var(--text-body);
   --font-small: 14px;
-
-
-
 
   --case-code-first-hi: #F6BBD6;
   --case-code-first-lo: #F0A0C8;
@@ -398,6 +490,9 @@ body {
      and consumes no key tokens. :active sinks the key (translateY(2px))
      onto the reduced plate. */
   --btn-key-radius: var(--radius-lg);
+  /* primary hover + focus plate (18m, 4 Oct 2026): a highlight, never a
+     dim. Light lifts the ink plate to BELLA's hover stop (#343434). */
+  --btn-key-primary-hover: var(--component-button-primary-fill-hi-hover);
   /* case prose measure (readability pass 2026-07-20): ~70ch, one place */
   --measure-case: 70ch;
   /* card body measure (card-voice readability, 21 Jul) */
@@ -411,17 +506,36 @@ body {
   --thesis-band-ground: var(--color-card);
   --thesis-band-ink: var(--color-ink);
 
-
-
-
-
-
   --hero-figure-width: 20rem;
   --illo-width: 11.25rem;
 
-
   --cursor-bracket: 10px;
   --cursor-stroke: 1.5px;
+
+  /* Home hero v4 (Elleta, 5 Oct 2026, job 43c): Figma 371:37889 laid out
+     on its 1440 canvas, which runs past the content edge (frame-exempt).
+     --hero-u is one Figma pixel: 1px at 1440 and wider, scaling down to
+     901. The motion is the Hero Stack Lab "Yours v4": a 3D turn
+     (perspective 1800, rotateY 6deg), spacing x0.9, frames apart at 70%.
+     --hero-p is the one motion property: 1 pulled apart, 0 assembled. */
+  --hero-p: 0;
+  --hero-canvas: min(100vw, 90rem);
+  --hero-u: calc(var(--hero-canvas) / 1440);
+  --hero-scroll: 26.25rem;
+  --hero-turn: 6deg;
+  --hero-shrink: 0.3;
+  --hero-ribbon: 0.4;
+  --hero-word: clamp(3rem, 1.4rem + 4.4vw, 5.125rem); /* the phone words */
+  --hero-measure: #b5323a; /* Figma's Measure red, a picture colour */
+  --hero-shadow: 14px 10px 24px rgba(18, 18, 18, 0.16);
+  /* the glass plates when pulled apart (18e, 4 Oct 2026) */
+  --hero-plate-fill: rgb(255 255 255 / 0.15); /* glass, so the photo reads through (18f; was 0.6) */
+  --hero-plate-line: var(--color-semantic-border);
+  --hero-plate-shadow: 0 14px 40px color-mix(in srgb, var(--color-light-ink) 12%, transparent);
+  --hero-grid-line: var(--color-semantic-border);
+  --hero-contact: color-mix(in srgb, var(--color-ink) 10%, transparent); /* the stage's contact shadow (18h) */
+  /* Home's pattern field reads as texture, not a picture (18e) */
+  --home-field-opacity: 0.035;
 }
 
 @media (max-width: 640px) {
@@ -453,18 +567,29 @@ body {
 
 [data-theme="dark"] {
   /* the dark ground (also set on body below, where the dark inks live) */
+  /* dark surface is darker than raised: lift raised for the chevron highlight */
+  --footer-chevron-hi: color-mix(in oklab, var(--color-semantic-raised), white 12%);
   --color-semantic-background: var(--color-dark-bg);
+  /* the picture kit's subtle action wash, dark (job 38: it stayed light) */
+  --kit-action-subtle: color-mix(in srgb, var(--kit-action) 24%, var(--color-dark-bg));
+  /* and its selected-chip ink, light on that wash (AA) */
+  --kit-chip-ink: var(--kit-ramp-200);
   /* the pattern fields read on dark (item 8, 22 Sep 2026): BELLA's 0.06
      all but vanished on #0d0d0d. At 0.12 the worst field pixel puts
      muted text at 6.93:1, the same floor as light; sections at 0.06
      (8.10:1), still quieter than the hero. */
   --component-pattern-field-opacity: 0.12;
   --section-field-opacity: 0.06;
+  /* hero v3 glass plates and Home's field, dark (18e, 4 Oct 2026) */
+  --hero-plate-fill: rgb(255 255 255 / 0.06);
+  --hero-plate-line: var(--color-semantic-border); /* job 33: bound, as in light */
+  --hero-grid-line: var(--color-semantic-border);
+  --hero-contact: color-mix(in srgb, var(--color-light-ink) 45%, transparent); /* dark ink, so it reads on the dark ground */
+  --home-field-opacity: 0.05;
   /* surfaces: 4% toward the cream ink, so lighter than the ground */
   --surface-card: var(--color-semantic-surface-card);
   --border-faint: var(--color-semantic-border);
   --tint-soft: color-mix(in srgb, var(--color-accent-ink) 14%, transparent);
-  --tint-pill: var(--tint-soft); /* 6.53:1 on the dark card */
   /* case accents as TEXT flip to the bright variant on navy (deep is
      calibrated for light cards only) */
   --case-code-first-text: var(--color-dark-muted);
@@ -487,6 +612,14 @@ body {
   --thesis-band-ink: var(--color-dark-ink);
   --modal-backdrop: rgba(0, 0, 0, 0.6);
   --page-glow: rgba(255, 255, 255, 0.04);
+  /* dark primary hover brightens the light plate to white; BELLA's dark
+     hover stop (#cdcdcd) darkens it, which reads as dimming (18m) */
+  --btn-key-primary-hover: var(--color-light-bg);
+  /* the markup red on dark (Federated pictures, site v3): #b5323a sat at
+     2.65:1 on the dark danger wash; BELLA's dark danger text reads AA */
+  --markup-red: var(--color-semantic-danger-text);
+  /* the human steps' edge on dark: ochre, as the focus ring does */
+  --pic-human-edge: var(--color-semantic-accent);
 }
 
 /* Dark overrides live on BODY, not html: var() inside a custom property
@@ -533,6 +666,12 @@ body {
   padding-inline: var(--container-pad);
 }
 
+/* Layout B, the case template (site v3, CLAUDE.md section 2): the same
+   container with the 1056 body; the text column sits inside it */
+.container.container--case {
+  max-width: calc(var(--case-body-max) + var(--container-pad) * 2);
+}
+
 /* ONE section rhythm: every section pads by --section-pad-y (.l-section
    below; the old --space-section rhythm is gone, O.9, 21 Sep 2026).
    .section--ruled draws the hairline at the top, at the container's
@@ -557,6 +696,13 @@ body {
    the sticky nav. */
 .l-section {
   padding-block: var(--section-pad-y);
+}
+
+/* a named exception (Section flushBottom, audit:frame prints it): Home's
+   proof row, so photo→proof and proof→quotes are one pad each (Elleta,
+   4 Oct 2026) */
+.l-section.l-section--flush-bottom {
+  padding-bottom: 0;
 }
 
 /* the page opening clears the nav, then one section pad (twice the pad
@@ -777,7 +923,7 @@ main.embed-page .l-section:first-of-type {
 .text-display-2,
 .text-display-3 {
   font-family: var(--font-body);
-  font-weight: var(--typography-font-weight-light);
+  font-weight: var(--typography-font-weight-semibold) /* site v3: headings 600 */;
   letter-spacing: var(--tracking-h2);
   line-height: var(--leading-display);
   text-wrap: balance;
@@ -889,7 +1035,6 @@ main.embed-page .l-section:first-of-type {
   margin-bottom: var(--spacing-12);
 }
 
-
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -953,17 +1098,19 @@ body {
   --color-semantic-surface: var(--color-dark-surface);
   --color-card: var(--color-semantic-surface);
   --color-semantic-surface-inset: var(--color-surface);
-  --color-surface: #1f1f1f;
-  --color-white-pure: #1f1f1f;
-  --color-glass: rgba(22, 22, 22, 0.68);
-  --color-glass-strong: rgba(22, 22, 22, 0.82);
-  --color-tag-bg: rgba(237, 237, 237, 0.08);
+  /* job 33 (5 Oct 2026): the Geist-era neutral greys (#1f1f1f, #161616,
+     #ededed) bound to the semantic dark set, mirroring the light leg */
+  --color-surface: var(--color-dark-inset);
+  --color-white-pure: var(--color-dark-bg);
+  --color-glass: color-mix(in srgb, var(--color-semantic-surface) 68%, transparent);
+  --color-glass-strong: color-mix(in srgb, var(--color-semantic-surface) 82%, transparent);
+  --color-tag-bg: color-mix(in srgb, var(--color-dark-ink) 8%, transparent);
   --color-tag-border: var(--color-dark-line);
   /* dark leg of the verdict pair: lifted so both clear AA on the card */
-  --color-pass-ink: #86D6B0;
-  --color-pass-subtle: rgba(134, 214, 176, 0.16);
-  --color-fail-ink: #F2A0AB;
-  --color-fail-subtle: rgba(242, 160, 171, 0.16);
+  --color-pass-ink: var(--color-semantic-success-text);
+  --color-pass-subtle: var(--color-semantic-success-subtle);
+  --color-fail-ink: var(--color-semantic-danger-text);
+  --color-fail-subtle: var(--color-semantic-danger-subtle);
 
   --color-border-soft: var(--color-dark-line);
   --color-border-medium: var(--color-dark-line);
@@ -975,7 +1122,7 @@ h1,
 h2 {
   font-family: var(--font-display);
   color: var(--color-ink);
-  font-weight: var(--typography-font-weight-light);
+  font-weight: var(--typography-font-weight-semibold) /* site v3: headings 600 */;
   letter-spacing: var(--tracking-h2);
 }
 
@@ -1066,6 +1213,13 @@ main:not(.embed-page) .l-section:first-of-type {
   -webkit-mask-image: radial-gradient(ellipse at 75% 30%, black 10%, transparent 70%);
   mask-image: radial-gradient(ellipse at 75% 30%, black 10%, transparent 70%);
 }
+/* Home: the field is texture only (18e, 4 Oct 2026): it read as a
+   picture behind the hero v3 photo in both themes */
+body:has(main.site-ground-page) .hero-field,
+main.site-ground-page .l-section[data-field]::before {
+  opacity: var(--home-field-opacity);
+}
+
 [data-theme="dark"] .hero-field,
 [data-theme="dark"] .l-section[data-field]::before {
   filter: grayscale(1) invert(1);
@@ -1105,9 +1259,6 @@ body:has(main.embed-page) .hero-field {
 body {
   isolation: isolate;
 }
-
-
-
 
 .eyebrow,
 .section-label {
@@ -1188,7 +1339,6 @@ body {
   -webkit-backdrop-filter: blur(var(--bella-blur-sm));
 }
 
-
 /* ─── Feature panel — the owned-color moment ─────────────────────
    Full periwinkle color block (Anthropic-panel feel). Everything inside
    reads in ink: #111 on #A79CE2 is 7.9:1, so body text passes 7:1. */
@@ -1213,15 +1363,10 @@ body {
   color: var(--color-brand-ink);
 }
 
-
-
-
-
 /* ─── Type scale ─────────────────────────────────────────────────
    Modular scale (×1.25 ratio). Use these classes instead of
    ad-hoc inline font-size / font-weight declarations.
 ────────────────────────────────────────────────────────────────── */
-
 
 /* ─── Display heading system (corrective pass 2026-07-17) ──────────
    ONE primitive for every display heading (ui/Heading.tsx renders
@@ -1232,7 +1377,7 @@ body {
    their own shells. */
 .display-heading {
   font-family: var(--font-body);
-  font-weight: var(--typography-font-weight-light);
+  font-weight: var(--typography-font-weight-semibold) /* site v3: headings 600 */;
   letter-spacing: var(--tracking-h2);
   line-height: var(--leading-display);
   text-wrap: balance;
@@ -1268,6 +1413,19 @@ h1.display-heading {
   max-inline-size: var(--measure-title);
 }
 
+/* the case title (Display/Case title, the case hero band, 4 Oct late):
+   64 fluid to 40, 56 to 40 when long; tracking -2%, leading 1.06 */
+.display-heading--title {
+  font-size: var(--text-display-case);
+  line-height: var(--leading-case-title);
+  letter-spacing: var(--tracking-h2);
+  max-inline-size: var(--measure-title);
+}
+
+.display-heading--title-long {
+  font-size: var(--text-display-case-long);
+}
+
 /* sub-heading (h3 level) is a title: Geist 500 at 20px (Geist refresh) */
 .display-heading--sub {
   font-family: var(--font-body);
@@ -1281,7 +1439,6 @@ h1.display-heading {
 .display-heading--inverse {
   color: var(--ink-on-dark-strong);
 }
-
 
 /* ─── Nav (step 1, 18 Sep 2026) ───────────────────────────────────
    Sentence-case Geist links rest soft and take full ink on hover; the
@@ -1302,9 +1459,14 @@ h1.display-heading {
   transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
 }
 
-.nav-link:hover,
 .nav-link--current {
   color: var(--color-ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-link:hover {
+    color: var(--color-ink);
+  }
 }
 
 .nav-link--current {
@@ -1312,42 +1474,88 @@ h1.display-heading {
 }
 
 .nav-link:focus-visible,
-.get-in-touch__trigger:focus-visible {
+.nav-icon:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: var(--ring-focus-offset);
 }
 
-.get-in-touch__trigger {
+/* the header's controls are one family (18e, 4 Oct 2026): LinkedIn,
+   Copy email, the theme toggle and the phone menu button are each a
+   44px round target on the card surface with the toggle's border, a
+   20px glyph, the same hover and the same 8px gap */
+.nav-icon {
+  display: inline-grid;
+  place-items: center;
+  width: var(--spacing-touch-target);
+  height: var(--spacing-touch-target);
+  padding: 0;
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-full);
+  background: var(--color-card);
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-icon:hover {
+    border-color: var(--color-ink-muted);
+  }
+}
+
+/* phones: the header keeps the toggle and the menu button, and LinkedIn
+   and Copy email live in the menu sheet as labelled rows (Site/Nav phone,
+   site v3 build spec section 1, 4 Oct 2026; was below 380px, 18f) */
+@media (max-width: 639.98px) {
+  .nav-contact {
+    display: none;
+  }
+}
+
+/* the menu sheet's contact rows: the header icon, then its label */
+.contact-actions.contact-actions--menu {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+}
+
+.menu-contact {
   display: inline-flex;
   align-items: center;
+  gap: var(--spacing-3);
   min-height: var(--spacing-touch-target);
-  padding: 0 var(--spacing-5);
-  border-radius: var(--radius-full);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--text-body);
+  color: var(--color-ink);
+  text-decoration: none;
   cursor: pointer;
-  font-family: var(--font-body);
-  font-size: var(--text-nav);
-  font-weight: 500;
-  /* secondary everywhere (polish pass, 19 Sep 2026): the one filled
-     primary on a screen belongs to the content, not the nav */
-  border: 1.5px solid var(--color-accent-ink);
-  color: var(--color-accent-ink);
-  /* on the page ground, not transparent: the header is glass, and over
-     the navy footer a see-through button put iris on grey (under AA) */
-  background: var(--color-semantic-background);
-  transition: background-color var(--dur-fast) var(--ease-out);
 }
 
-.get-in-touch__trigger:hover {
-  background: color-mix(in srgb, var(--color-accent-ink) 10%, var(--color-semantic-background));
+@media (hover: hover) and (pointer: fine) {
+  .menu-contact:hover .nav-icon {
+    border-color: var(--color-ink-muted);
+  }
 }
 
-.get-in-touch__trigger[aria-expanded="true"] {
-  background: color-mix(in srgb, var(--color-accent-ink) 16%, var(--color-semantic-background));
+.menu-contact:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+  border-radius: var(--radius-full);
+}
+
+/* the menu button is the phone's: gone from lg, where the links show */
+@media (min-width: 1024px) {
+  .nav-icon--menu {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .nav-link,
-  .get-in-touch__trigger {
+  .nav-icon {
     transition: none;
   }
 }
@@ -1444,15 +1652,13 @@ h1.display-heading {
 /* Metadata tier (14px, short labels only). --color-ink-muted measured
    7.96:1 on the light ground (#F1EFE6), 7.56:1 on the dark ground (#110F0D). */
 .section-row__meta,
+/* site v3 (4 Oct 2026, Site/Footer 46:537): no mono labels; Label/Table */
 .site-footer__label {
   margin: 0;
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-weight: 400;
-  letter-spacing: var(--tracking-mono);
-  color: var(--color-ink-muted);
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: var(--mono-feature);
+  font-size: var(--text-label);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-secondary);
 }
 
 .section-row__meta {
@@ -1816,255 +2022,6 @@ h1.display-heading {
   }
 }
 
-/* Experience: one --surface-card panel, hairlines between the rows
-   (the About mock). Phones: dates, then company and title, in column 1;
-   the chevron in column 2 across both rows, centred. From 1024px:
-   11rem 1fr auto, one row. The whole row is the button; it takes a
-   soft iris wash on hover, only where hover exists, so a tap never
-   leaves it stuck. */
-.xp-list {
-  margin-bottom: var(--space-stack-lg); /* the View CV button follows */
-  overflow: hidden;
-  background: var(--surface-card);
-  border: 1px solid var(--border-faint);
-  border-radius: var(--radius-card);
-}
-
-.xp + .xp {
-  border-top: 1px solid var(--border-faint);
-}
-
-.xp .accordion__trigger {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--spacing-1) var(--spacing-6);
-  align-items: center;
-  min-height: var(--spacing-touch-target);
-  padding: var(--spacing-5) var(--spacing-6);
-}
-
-.xp__dates {
-  grid-column: 1;
-  grid-row: 1;
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
-.xp__who {
-  grid-column: 1;
-  grid-row: 2;
-  display: block;
-}
-
-.xp .accordion__chev {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-  align-self: center;
-}
-
-@media (min-width: 1024px) {
-  .xp .accordion__trigger {
-    grid-template-columns: 11rem minmax(0, 1fr) auto;
-  }
-
-  .xp__dates,
-  .xp__who,
-  .xp .accordion__chev {
-    grid-row: 1;
-  }
-
-  .xp__who {
-    grid-column: 2;
-  }
-
-  .xp .accordion__chev {
-    grid-column: 3;
-  }
-}
-
-@media (hover: hover) {
-  .xp .accordion__trigger:hover {
-    background: var(--tint-soft);
-  }
-}
-
-/* An open row STAYS filled (Elleta, 20 Sep 2026): the fill is the open
-   state, not a hover that fades when the pointer leaves, and the body
-   underneath keeps the card surface, so the row reads as header and
-   content. The fill is ochre (item 3, 22 Sep 2026; was the soft wash)
-   and everything on it reads in the on-accent ink, #121212 in both
-   themes: muted text on ochre would sit near 4:1. */
-.xp.is-open .accordion__trigger {
-  background: var(--color-semantic-accent);
-}
-
-.xp.is-open .xp__company,
-.xp.is-open .xp__current,
-.xp.is-open .xp__dates,
-.xp.is-open .xp__role,
-.xp.is-open .accordion__chev {
-  color: var(--color-semantic-text-on-accent);
-}
-
-/* the ring is :focus-visible only: a mouse click never draws one. Inset,
-   the one exception to the 3px offset (item 4, 22 Sep 2026): .xp-list
-   clips its overflow for the rounded card, so an outward ring is cut off. */
-.xp .accordion__trigger:focus-visible {
-  outline-offset: calc(0px - var(--ring-focus-width));
-  border-radius: 0;
-}
-
-.xp__company {
-  display: block;
-  font-family: var(--font-body);
-  font-size: var(--text-heading-3);
-  font-weight: var(--typography-font-weight-medium);
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-  color: var(--color-ink);
-}
-
-/* Current: iris on a soft iris wash, 14px (the floor), 500 */
-.xp__current {
-  margin-left: var(--spacing-2);
-  padding: 3px var(--spacing-2);
-  border-radius: var(--radius-pill);
-  background: var(--tint-pill);
-  font-size: var(--text-meta);
-  font-weight: 500;
-  letter-spacing: 0;
-  line-height: 1.4;
-  color: var(--color-ink);
-  vertical-align: middle;
-}
-
-/* the title: 15px, muted, regular (not the heading's weight) */
-.xp__role {
-  display: block;
-  margin-top: 2px;
-  font-family: var(--font-body);
-  font-size: var(--text-caption);
-  font-weight: 400;
-  color: var(--color-ink-muted);
-}
-
-.xp__body {
-  padding: 0 var(--spacing-6) var(--spacing-6);
-}
-
-@media (min-width: 1024px) {
-  /* the open row lines up with the company column */
-  .xp__body {
-    padding-left: calc(var(--spacing-6) + 11rem + var(--spacing-6));
-  }
-}
-
-/* the clients behind the work, first line of the open row */
-.xp__clients {
-  margin: 0 0 var(--spacing-3);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  font-weight: 500;
-  color: var(--color-ink);
-}
-
-/* the open row's lines: plain muted discs (the mock), not the › list */
-.xp__did {
-  margin: 0 0 var(--spacing-3);
-  padding: 0 0 0 1.1em;
-  list-style: disc;
-}
-
-.xp__did li {
-  margin: 0.3em 0;
-  padding: 0;
-  font-size: var(--text-body);
-  line-height: var(--leading-body);
-  max-width: 42rem;
-}
-
-.xp__did li::before {
-  content: none;
-}
-
-.xp__did li::marker {
-  color: var(--color-ink-muted);
-}
-
-.xp__case {
-  margin: var(--spacing-2) 0 0;
-}
-
-/* the CV button: the ink primary with the label roll (item 3, 22 Sep
-   2026; was a neutral outline). Only the icon gap is local. */
-.btn-key.xp__cv {
-  gap: var(--spacing-2);
-}
-
-/* House rules: four cards (the one Card surface), 2x2 from 768px,
-   equal heights per row */
-.cares {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-stack-md);
-}
-
-.cares__card {
-  height: 100%;
-}
-
-/* Word of mouth: uniform quote cards, 2 columns from 900px. No avatars,
-   no stars, no carousel. */
-/* "Read all 15 on LinkedIn" under the quotes */
-.quotes__more {
-  margin: var(--space-stack-md) 0 0;
-}
-
-.quotes {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-stack-lg) var(--space-stack-md); /* rows clear the hanging marks */
-}
-
-@media (min-width: 900px) {
-  .quotes {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* each quote: a big iris opening mark hanging over the card's top-left
-   edge (it springs on card hover; the card itself stays put) and a
-   small closing mark at the end. Both are aria-hidden. */
-.quotes__item {
-  position: relative;
-}
-
-.quotes__mark {
-  position: absolute;
-  z-index: 1;
-  top: -1.875rem;
-  left: 0.875rem;
-  font-family: var(--font-body);
-  font-size: 5.5rem;
-  font-weight: 800;
-  line-height: 1;
-  transform: rotate(-8deg);
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .quotes__mark {
-    transition: transform var(--dur-base) var(--ease-out);
-  }
-
-  .quotes__item:hover .quotes__mark {
-    transform: translateY(-4px) rotate(4deg) scale(1.08);
-  }
-}
-
 /* a pull-quote mark filled with the brand pattern, like the logo (item 9,
    22 Sep 2026; was solid ink): the glyph clips the static pattern SVG,
    so the page carries no pattern paths. Decorative, aria-hidden. Every
@@ -2077,80 +2034,17 @@ h1.display-heading {
   -webkit-text-fill-color: transparent;
 }
 
-.quotes__card {
-  height: 100%;
-}
-
-.quotes__figure {
-  margin: 0;
-}
-
-.quotes__quote {
-  margin: 0;
-}
-
-.quotes__quote p {
-  margin: 0;
-  font-size: var(--text-body);
-  line-height: var(--leading-body);
-  color: var(--color-ink);
-}
-
-.quotes__close {
-  margin-left: 0.1em;
-  font-size: 1.3em;
-  font-weight: 800;
-  line-height: 0;
-  color: var(--color-ink);
-}
-
-.quotes__quote + figcaption {
-  margin-top: var(--space-stack-sm);
-}
-
-.quotes__name {
-  display: block;
-  font-weight: 600;
-  color: var(--color-ink);
-}
-
-.quotes__role {
-  display: block;
-  margin-top: 2px;
-}
-
-@media (min-width: 768px) {
-  .cares {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.cares h3 {
-  margin: 0 0 var(--spacing-1);
-}
-
-/* house rules: muted body, the one bold claim in full ink (the mock) */
-.cares p {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  line-height: var(--leading-body);
-  color: var(--color-ink-muted);
-}
-
-.cares p strong {
-  color: var(--color-ink);
-}
-
-/* ─── Site footer (footer-mock.html, Elleta 22 Sep 2026) ───────────
-   The panel ground in both themes under a hairline; the heading, a row of
-   the lead + the one Let's talk beside the pages and elsewhere columns,
-   one small-print row, then the pattern ELLETA across the window, 16px
-   from each edge, flush with the bottom of the page. */
+/* ─── Site footer (the footer lock, 4 Oct 2026; job E1, 5 Oct) ──────
+   Its own ground (BELLA's raised, Elleta, 6 Oct, jobs G1 + H1) under a
+   hairline; back to top as a half-round tab on that hairline (H3), the
+   pages row, the elsewhere row, one small-print row with the colophon,
+   then the pattern ELLETA, flush with the bottom. */
 .site-footer {
+  position: relative;
   padding-top: var(--spacing-16);
   border-top: 1px solid var(--color-semantic-border);
-  background: var(--color-semantic-surface);
+  /* the one second ground; audit:tokens holds it to the raised token */
+  background: var(--color-semantic-raised);
   color: var(--color-ink);
 }
 
@@ -2158,37 +2052,125 @@ h1.display-heading {
   color: var(--color-ink-muted);
 }
 
-.site-footer__row {
-  display: grid;
-  gap: var(--spacing-8);
-  margin-top: var(--spacing-10);
+/* Home · v2: the page ground under the whole page (the footer keeps its
+   own ground, job G1), so the cards read as raised */
+body:has(main.site-ground-page) {
+  background: var(--site-ground);
 }
 
-@media (min-width: 44rem) {
-  .site-footer__row {
-    grid-template-columns: 1.3fr 1fr 1fr;
+.site-footer__link svg {
+  margin-right: var(--spacing-2);
+}
+
+/* back to top: a half-round tab, 96 x 48 above the edge, centred on it,
+   in the footer's ground (H3). Its foot runs --footer-tab-overlap into the
+   footer so the arc and the edge read as one line, even risen. */
+.site-footer__top {
+  --tab-y: calc(-100% + var(--footer-tab-overlap));
+  --tab-lift: 0px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: calc(var(--spacing-touch-target) * 2 + var(--spacing-2));
+  height: calc(var(--spacing-touch-target) + var(--spacing-1) + var(--footer-tab-overlap));
+  padding: var(--spacing-2) 0 var(--footer-tab-overlap);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-full) var(--radius-full) 0 0;
+  background: var(--color-semantic-raised);
+  color: var(--color-semantic-border-strong);
+  cursor: pointer;
+  transform: translate(-50%, calc(var(--tab-y) - var(--tab-lift)));
+  transition: transform 0.3s ease;
+}
+
+/* the hairline round the arc, drawn taller than the tab and clipped at
+   the footer's edge, so it meets the footer's hairline with no seam and
+   no stubs below it (at rest and risen) */
+.site-footer__top::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 calc(var(--spacing-4) * -1);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: inherit;
+  clip-path: inset(0 0 calc(var(--spacing-4) + var(--footer-tab-overlap) - var(--tab-lift)) 0);
+  transition: clip-path 0.3s ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-footer__top:hover {
+    --tab-lift: var(--footer-tab-rise);
   }
 }
 
-.site-footer__lead {
-  max-width: var(--measure-body);
-  margin: 0;
-  font-size: var(--text-body);
-  line-height: 1.6;
-  color: var(--color-ink-muted);
+.site-footer__top:focus-visible {
+  --tab-lift: var(--footer-tab-rise);
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
 }
 
-.site-footer__label {
-  margin-bottom: var(--spacing-2);
+@media (prefers-reduced-motion: reduce) {
+  .site-footer__top,
+  .site-footer__top:hover,
+  .site-footer__top:focus-visible {
+    --tab-lift: 0px;
+  }
+
+  .site-footer__top,
+  .site-footer__top::before {
+    transition: none;
+  }
 }
 
-/* the one closing CTA: the ink fill at rest, the focus ring only on focus (Elleta, 22 Sep 2026) */
-.site-footer .btn-key--primary {
+/* the debossed chevron: wide, flat, thin, square caps; a highlight in
+   the lighter tone 1.5px under the stroke presses it in. The stroke is
+   border-strong, not border: border is about 1.2:1 on raised. */
+.site-footer__chevron {
+  position: relative;
+  width: calc(var(--spacing-8) + var(--spacing-1));
+  height: calc(var(--spacing-4) + 2px);
+  overflow: visible;
+}
+
+.site-footer__chevron path {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.site-footer__chevron-hi {
+  stroke: var(--footer-chevron-hi);
+  transform: translateY(1.5px);
+}
+
+.site-footer__chevron-line {
+  stroke: currentColor;
+}
+
+/* one row each: the label, then its links across */
+.site-footer__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--spacing-8);
+}
+
+.site-footer__row + .site-footer__row {
   margin-top: var(--spacing-4);
 }
 
+.site-footer__label {
+  min-width: 6rem;
+}
+
 .site-footer__list {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--spacing-6);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -2197,7 +2179,7 @@ h1.display-heading {
 .site-footer__link {
   display: inline-flex;
   align-items: center;
-  min-height: var(--spacing-6);
+  min-height: var(--spacing-touch-target);
   padding: 0;
   border: 0;
   background: none;
@@ -2208,9 +2190,11 @@ h1.display-heading {
   cursor: pointer;
 }
 
-.site-footer__link:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+@media (hover: hover) and (pointer: fine) {
+  .site-footer__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
 }
 
 .site-footer__link:focus-visible {
@@ -2224,17 +2208,23 @@ h1.display-heading {
   justify-content: space-between;
   gap: var(--spacing-2) var(--spacing-6);
   margin-top: var(--spacing-12);
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-feature-settings: var(--mono-feature);
-  color: var(--color-ink-muted);
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-semantic-text-secondary);
 }
 
 .site-footer__legal p {
   margin: 0;
 }
 
+.site-footer__keep {
+  white-space: nowrap;
+}
+
 .site-footer__link--small {
+  /* inline in the small print: the WCAG 2.5.8 inline exception. Inline,
+     not inline-flex, so the space before an arrow survives */
+  display: inline;
+  min-height: var(--spacing-6);
   font-size: inherit;
   color: inherit;
   text-decoration: underline;
@@ -2417,35 +2407,9 @@ h1.display-heading {
   gap: var(--spacing-3);
 }
 
-.contact-actions--stack {
-  flex-direction: column;
-  align-items: stretch;
-}
-
-.contact-actions .btn-key {
-  white-space: nowrap;
-}
-
-/* Get in touch: a disclosure in the header, panel under the button */
-.get-in-touch {
-  position: relative;
-}
-
-/* dropdown items: compact padding, still a 44px target */
-.get-in-touch__panel .btn-key {
-  padding: 0 var(--spacing-3);
-}
-
-.get-in-touch__panel {
-  position: absolute;
-  top: calc(100% + var(--spacing-2));
-  right: 0;
-  z-index: 1;
-  padding: var(--spacing-4);
-  border: 1px solid var(--color-border-medium);
-  border-radius: var(--radius-lg);
-  background: var(--color-semantic-background);
-  box-shadow: var(--shadow-soft);
+.contact-actions--icons {
+  flex-wrap: nowrap;
+  gap: var(--spacing-2);
 }
 
 /* ─── Corner-bracket cursor (18 Sep 2026) ───────────────────────
@@ -2465,7 +2429,9 @@ h1.display-heading {
   will-change: transform, width, height;
 }
 
-.bracket-cursor[data-visible="true"] {
+/* only on a target: the idle 22px bracket box around a resting pointer
+   read as a stray dashed square on the pictures (Elleta, job 32 item 10) */
+.bracket-cursor[data-visible="true"][data-active="true"] {
   opacity: 1;
 }
 
@@ -2518,10 +2484,11 @@ h1.display-heading {
      only), one tier above body text. .heading-item is the older name
      for the same recipe. */
   font-family: var(--font-body);
-  font-size: var(--font-card-title);
-  font-weight: var(--typography-font-weight-medium);
-  letter-spacing: var(--tracking-title-item);
-  line-height: 1.3;
+  /* Heading/Card, 22/600 (site v3, 4 Oct 2026) */
+  font-size: var(--typography-font-size-xl);
+  font-weight: var(--typography-font-weight-semibold);
+  letter-spacing: 0;
+  line-height: var(--typography-line-height-snug);
   color: var(--color-ink);
 }
 
@@ -2552,9 +2519,6 @@ h1.display-heading {
   letter-spacing: 0.01em;
   color: var(--color-muted);
 }
-
-
-
 
 /* ─── Surface system ────────────────────────────────────────────── */
 
@@ -2588,7 +2552,6 @@ h1.display-heading {
   background: #1A1814;
   color: var(--ink-on-dark-strong);
 }
-
 
 /* ─── §7 Control taxonomy — flat controls (keycap = actions only) ──── */
 
@@ -2697,9 +2660,11 @@ h1.display-heading {
   font-size: var(--typography-font-size-tag);
 }
 
-.filter-chip:hover {
-  border-color: var(--color-ink-muted);
-  background: var(--color-alpha-ink-6);
+@media (hover: hover) and (pointer: fine) {
+  .filter-chip:hover {
+    border-color: var(--color-ink-muted);
+    background: var(--color-alpha-ink-6);
+  }
 }
 
 /* pressed (one style for /learning and /work, 19 Sep 2026): iris-soft,
@@ -2881,7 +2846,6 @@ h1.display-heading {
   mask-composite: exclude;
 }
 
-.trace-host:hover::before,
 .trace-host:focus-within::before,
 .trace-host:focus-visible::before,
 .trace-host.trace-on::before {
@@ -2889,6 +2853,13 @@ h1.display-heading {
      one trace, pinned on */
   opacity: 1;
   animation: trace-travel 3.4s linear infinite;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .trace-host:hover::before {
+    opacity: 1;
+    animation: trace-travel 3.4s linear infinite;
+  }
 }
 
 @keyframes trace-travel {
@@ -2923,8 +2894,11 @@ h1.display-heading {
   justify-content: center;
   gap: var(--spacing-2);
   cursor: pointer;
+  /* 1.5px: between --border-width-thin (1) and -medium (2); no exact token */
   border: 1.5px solid var(--color-accent-ink);
   border-radius: var(--btn-key-radius);
+  /* 11px 18px: off the 4px spacing scale (12/16/20); no exact token, and a
+     swap would shift every button (18m, 4 Oct 2026) */
   padding: 11px 18px;
   min-height: var(--spacing-touch-target);
   font-family: var(--font-body);
@@ -2937,8 +2911,13 @@ h1.display-heading {
   transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
 
-.btn-key:hover {
-  background: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
+/* every hover that changes fill, colour or transform sits behind this
+   guard: a tap on touch leaves :hover stuck (WebKit and iOS), so focus-
+   visible and :active stay outside it (23, 4 Oct 2026) */
+@media (hover: hover) and (pointer: fine) {
+  .btn-key:hover {
+    background: color-mix(in srgb, var(--color-accent-ink) 10%, transparent);
+  }
 }
 
 /* THE LABEL ROLL (BELLA #44, ported 20 Sep 2026). The window clips to
@@ -2967,16 +2946,25 @@ h1.display-heading {
   user-select: none;
 }
 
-.btn-key:hover:not(:disabled) .btn-key__label,
 .btn-key:focus-visible .btn-key__label {
   transform: translateY(-100%);
 }
 
-.btn-key:hover:not(:disabled) .btn-key__copy,
+@media (hover: hover) and (pointer: fine) {
+  .btn-key:hover:not(:disabled) .btn-key__label {
+    transform: translateY(-100%);
+  }
+}
+
 .btn-key:focus-visible .btn-key__copy {
   transform: translateY(0);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .btn-key:hover:not(:disabled) .btn-key__copy {
+    transform: translateY(0);
+  }
+}
 
 .btn-key:active {
   background: color-mix(in srgb, var(--color-accent-ink) 16%, transparent);
@@ -3005,11 +2993,19 @@ h1.display-heading {
   transition: background var(--dur-fast) var(--ease-out);
 }
 
-.btn-key--primary:hover {
-  background: var(--component-button-primary-fill-lo);
+/* hover and focus-visible take the highlight plate (BELLA: focus takes
+   the hover plate). Colour only, so it stays under reduced motion. */
+.btn-key--primary:focus-visible {
+  background: var(--btn-key-primary-hover);
 }
 
-.btn-key--primary:active {
+@media (hover: hover) and (pointer: fine) {
+  .btn-key--primary:hover:not(:disabled) {
+    background: var(--btn-key-primary-hover);
+  }
+}
+
+.btn-key--primary:active:not(:disabled) {
   background: var(--component-button-primary-edge);
 }
 
@@ -3073,7 +3069,6 @@ section[id],
 .cs-shell {
   scroll-padding-top: calc(var(--header-height) + var(--spacing-4));
 }
-
 
 /* Portrait bubble (About): the glossy orb recipe holding a photo.
    One-light-source treatment (upper-left gloss, down-right shadow,
@@ -3168,6 +3163,15 @@ button:focus-visible {
   outline-offset: var(--ring-focus-offset);
 }
 
+/* the ring's colour at rest is the focus token too (job 34): an
+   element with a transition otherwise animates its ring in from
+   currentColor, the text colour (#eceef3 in dark), so a capture taken
+   in the first frames shows a pale ring. Zero specificity: any
+   component rule still wins. */
+:where(a, button, input, select, textarea, summary, [tabindex]) {
+  outline-color: var(--ring-focus-color);
+}
+
 /* Contact form fields — stable focus, no flicker, no radius change.
    Fields sit on the contact card surface (light theme) / navy card (dark);
    the semantic tokens flip with the theme. */
@@ -3195,8 +3199,10 @@ button:focus-visible {
   padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
 }
 
-.footer-nav-link:hover {
-  color: var(--color-ink);
+@media (hover: hover) and (pointer: fine) {
+  .footer-nav-link:hover {
+    color: var(--color-ink);
+  }
 }
 
 /* Generic form focus fallback for non-contact forms */
@@ -3236,13 +3242,11 @@ textarea:focus-visible {
   transition: opacity var(--dur-fast) var(--ease-out);
 }
 
-.demo-link:hover {
-  opacity: 0.75;
+@media (hover: hover) and (pointer: fine) {
+  .demo-link:hover {
+    opacity: 0.75;
+  }
 }
-
-
-
-
 
 /* ─── Process section accordion ───────────────────────────────── */
 /* Behaviour: one open at a time, first item open by default. Animated
@@ -3278,8 +3282,10 @@ textarea:focus-visible {
   transition: color var(--dur-fast) var(--ease-out);
 }
 
-.process-accordion-trigger:hover {
-  color: var(--color-ink);
+@media (hover: hover) and (pointer: fine) {
+  .process-accordion-trigger:hover {
+    color: var(--color-ink);
+  }
 }
 
 .process-accordion-trigger:focus-visible {
@@ -3368,8 +3374,10 @@ textarea:focus-visible {
   transition: opacity var(--dur-fast) var(--ease-out);
 }
 
-.process-accordion-link:hover {
-  opacity: 0.7;
+@media (hover: hover) and (pointer: fine) {
+  .process-accordion-link:hover {
+    opacity: 0.7;
+  }
 }
 
 .process-accordion-link:focus-visible {
@@ -3384,7 +3392,6 @@ textarea:focus-visible {
     transition: none;
   }
 }
-
 
 /* Mobile: shrink carousel cards further than 4715913 (was 120×280px).
  * Even at 280px (34% of an 812px viewport) the strip dominated the
@@ -3405,9 +3412,11 @@ textarea:focus-visible {
   transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
 }
 
-.card-interactive:hover {
-  transform: var(--motion-transform-hover-lift);
-  box-shadow: var(--shadow-card-elevated);
+@media (hover: hover) and (pointer: fine) {
+  .card-interactive:hover {
+    transform: var(--motion-transform-hover-lift);
+    box-shadow: var(--shadow-card-elevated);
+  }
 }
 
 /* Vinyl spin */
@@ -3477,8 +3486,6 @@ textarea:focus-visible {
 
 /* ─── Snap shell — two-view layout ────────────────────────────── */
 
-
-
 /* Mobile: relax view-landing from a fixed 100dvh "share-with-Carousel"
  * box to a flowing min-height container. Hero (flex:1 inline) still
  * stretches to fill the available space when content is short, but the
@@ -3488,13 +3495,6 @@ textarea:focus-visible {
  * Carousel up into the Hero's visual zone. overflow: visible lets the
  * Carousel sit below the fold instead of being forced into a shared
  * 812px box. */
-
-
-
-
-
-
-
 
 /* ─── Mobile: case study embed & section spacing ──────────────── */
 @media (max-width: 768px) {
@@ -3523,7 +3523,9 @@ textarea:focus-visible {
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  /* no -1px margin: a hidden h1 starts on the content edge like every
+     other (audit fix D9, 5 Oct 2026: Home's measured 191, not 192) */
+  margin: 0;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -3558,13 +3560,8 @@ textarea:focus-visible {
   padding-bottom: var(--spacing-10);
 }
 
-
-
 /* Eyebrow — mono, same treatment as home sections */
 /* §8: the case title device wrapper */
-
-
-
 
 /* §8 colour-as-identity: tags ON a case's own page wear its tint.
    Shared tags everywhere else stay neutral linen. */
@@ -3580,8 +3577,6 @@ textarea:focus-visible {
   box-shadow: inset 0 0 0 1px var(--color-semantic-border);
   color: var(--color-ink);
 }
-
-
 
 /* Title */
 /* Summary */
@@ -3664,9 +3659,6 @@ textarea:focus-visible {
   padding: var(--spacing-2) var(--spacing-4);
 }
 
-
-
-
 /* ── Right column — visual narrative ─────────────────────────── */
 
 .cs-shell__right {
@@ -3674,7 +3666,6 @@ textarea:focus-visible {
   min-width: 0;
   padding-top: clamp(var(--spacing-20), 10vh, 120px);
 }
-
 
 /* Hero media — controlled, not oversized */
 .cs-shell__hero {
@@ -3959,9 +3950,6 @@ textarea:focus-visible {
 /* ── The System map (Elleta, 21 Jul, spec system-page-v2) ──
    >=1280px: [rail | content] grid, rail sticky under the header.
    Below: the rail collapses to a sticky horizontal pill row. */
-
-
-
 
 @media (min-width: 1280px) {
   
@@ -4788,9 +4776,11 @@ textarea:focus-visible {
   font-feature-settings: var(--mono-feature);
 }
 
-.tok-annotation__trigger:hover {
-  border-color: var(--color-ink-muted);
-  color: var(--color-ink);
+@media (hover: hover) and (pointer: fine) {
+  .tok-annotation__trigger:hover {
+    border-color: var(--color-ink-muted);
+    color: var(--color-ink);
+  }
 }
 
 .tok-annotation__trigger[aria-expanded="true"] {
@@ -5501,8 +5491,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   text-overflow: ellipsis;
 }
 
-.jn-step:hover {
-  color: var(--color-ink);
+@media (hover: hover) and (pointer: fine) {
+  .jn-step:hover {
+    color: var(--color-ink);
+  }
 }
 
 .jn-step[aria-current="step"] {
@@ -5639,7 +5631,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
     opacity: 0.9;
   }
 }
-
 
 /* ── beat 03: the gate check on the specimen, RESTORED CLEANED
    (AI-flow spec, 22 Jul 2026; contract _proto/beat4.html). The
@@ -5781,7 +5772,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   }
 }
 
-
 /* ── THE case-study beat template (airtight spec, 22 Jul 2026;
    docs/briefs/case-layout-constitution.md). The headline is a CHILD
    of the text column; alternation swaps grid order only; visuals are
@@ -5918,16 +5908,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin-top: var(--spacing-2);
 }
 
-/* From Drift beat 01: the ctrl+travel recreation links sit under the
-   body copy (the specimen carries its own toggle, so the beat has no
-   control slot). A quiet row of tertiary demo links. */
-.drift-audit-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-5);
-  margin-top: var(--spacing-4);
-}
-
 /* ── From Drift beat 04 "the foundation": the OUTCOME VISUAL
    (DriftFoundationOutcome, Elleta 24 Jul). Replaces the maturity-map
    embed with an outcome hero + a qualitative Before -> After. In-page and
@@ -6046,7 +6026,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
     display: none;
   }
 }
-
 
 /* From Drift section 04: the governance STATUS BOARD (in-page, tokenised
    to BELLA, dark-adaptive via the site theme). Static; component status
@@ -6587,7 +6566,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   }
 }
 
-
 /* anchor alias: a retired band id kept alive so deep links resolve.
    Zero-size, no paint, offset so the target clears the fixed header. */
 .ds-anchor {
@@ -6730,7 +6708,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
     font-feature-settings: var(--mono-feature);
 }
 }
-
 
 /* ── BEAT 01: can an AI build with your system? (27 Jul 2026) ──
    Built to _proto/beat-agent-demo.html. Tokens only, everywhere, with
@@ -6891,12 +6868,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   .agentdemo__track, .agentdemo__knob { transition: none; }
 }
 
-
-@media (max-width: 640px) {
-  }
-
 /* rail placeholders: the structure made visible before it is built */
-
 
 /* The gate TABLE is deleted with its markup (28 Jul, readability audit).
    It was the fourth shape of the same wall (definition list, definition
@@ -7069,7 +7041,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   margin: 0 0 var(--spacing-4);
   font-family: var(--font-body);
   font-size: var(--text-display-2); /* one case h2 size, as Drift (22 Sep 2026: CHIP was 28.8 to 30px) */
-  font-weight: var(--typography-font-weight-light);
+  font-weight: var(--typography-font-weight-semibold) /* site v3: headings 600 */;
   letter-spacing: var(--tracking-h2);
   line-height: 1.08;
   color: var(--color-ink);
@@ -7257,8 +7229,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   transition: border-color var(--dur-fast) var(--ease-out);
 }
 
-.trv-card--link:hover {
-  border-color: var(--color-accent-line);
+@media (hover: hover) and (pointer: fine) {
+  .trv-card--link:hover {
+    border-color: var(--color-accent-line);
+  }
 }
 
 .trv-card--link:focus-visible {
@@ -7332,10 +7306,16 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-feature-settings: var(--mono-feature);
 }
 
-.linked-phrase.is-on,
-.linked-phrase:hover {
+.linked-phrase.is-on {
   background: var(--tint-soft);
   color: var(--color-accent-ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .linked-phrase:hover {
+    background: var(--tint-soft);
+    color: var(--color-accent-ink);
+  }
 }
 
 .linked-phrase:focus-visible {
@@ -7399,33 +7379,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 /* 01 · the button graveyard. A PICTURE (role="img"): the shapes are
    spans, the radii and weights come from the markup because being
    inconsistent IS the content. */
-.drift-grave {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(7rem, 100%), 1fr));
-  gap: var(--spacing-2);
-}
-
-.drift-gb {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-2) var(--spacing-3);
-  font-size: var(--text-meta);
-  color: var(--color-page);
-  background: var(--case-filters-text);
-}
-
-.drift-gb--outline {
-  color: var(--case-filters-text);
-  background: transparent;
-  border: 1px solid var(--case-filters-text);
-}
-
-.drift-gb--bare {
-  color: var(--color-ink);
-  background: transparent;
-  text-decoration: underline;
-}
 
 /* 02 · one decision, three problems */
 .drift-chain {
@@ -7772,62 +7725,6 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   color: var(--color-ink-muted);
 }
 
-/* ─── CHIP: zones over a cropped screenshot (20 Sep 2026) ────────────
-   The one case that annotates a raster image. Every zone wears its
-   number at all times, so the picture reads as annotated before anyone
-   touches a phrase; lighting one adds the ring and the fill, and
-   nothing anywhere fades. */
-.shot {
-  position: relative;
-  width: 100%;
-  margin-inline: auto;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.shot__img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.shot__zone {
-  position: absolute;
-  display: block;
-  pointer-events: none;
-}
-
-/* the permanent index: a small iris chip on the zone's top-left corner */
-.shot__n {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: grid;
-  place-items: center;
-  min-width: 1.25rem;
-  height: 1.25rem;
-  padding: 0 var(--spacing-1);
-  transform: translate(-35%, -35%);
-  border-radius: var(--radius-full);
-  background: var(--color-accent-ink);
-  color: var(--color-page);
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: var(--tracking-mono);
-  font-feature-settings: var(--mono-feature);
-}
-
-/* at phone width the chips crowd, so they shrink rather than hide */
-@container (max-width: 22rem) {
-  .shot__n {
-    min-width: 1rem;
-    height: 1rem;
-    transform: translate(-25%, -25%);
-  }
-}
-
 /* the page label above an h1 (Part G): code role, sentence case, muted,
    .75rem of air under it. Same line on every page, and on a page two
    levels deep the breadcrumb takes its place. */
@@ -7871,117 +7768,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   gap: var(--space-stack-sm) var(--space-stack-md);
 }
 
-.case-back:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-/* ─── Scan and read (Elleta, 20 Sep 2026, Part J item 2) ─────────────
-   A text-heavy section read two ways: the scan points on the left, the
-   paragraphs on the right, pointing at either one lighting the other.
-   Nothing is ever dimmed. Under 860px it stacks: points, then prose. */
-.scan-read {
-  display: grid;
-  gap: var(--space-stack-md);
-  margin-top: var(--space-stack-md);
-}
-
-@media (min-width: 860px) {
-  .scan-read {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-    gap: var(--layout-gutter);
-    align-items: start;
-  }
-}
-
-.scan {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--spacing-1);
-}
-
-.scan__point {
-  display: flex;
-  align-items: baseline;
-  gap: var(--spacing-3);
-  width: 100%;
-  padding: var(--spacing-2) var(--spacing-3);
-  border: 0;
-  border-radius: var(--radius-md);
-  background: none;
-  font: inherit;
-  font-size: var(--typography-font-size-base);
-  text-align: left;
-  color: inherit;
-  cursor: pointer;
-  transition: background var(--dur-fast) var(--ease-out);
-}
-
-.scan__dot {
-  flex: none;
-  width: 6px;
-  height: 6px;
-  border-radius: var(--radius-full);
-  background: var(--color-accent-ink);
-  opacity: 0.6;
-  transform: translateY(-0.2em);
-  transition: opacity var(--dur-fast) var(--ease-out), scale var(--dur-fast) var(--ease-out);
-}
-
-.scan__point--static {
-  cursor: default;
-}
-
-.scan__point.is-on {
-  background: var(--tint-soft);
-}
-
-.scan__point.is-on .scan__dot {
-  opacity: 1;
-  scale: 1.3;
-}
-
-.scan__point:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: var(--ring-focus-offset);
-}
-
-.scan__point b,
-.scan__point strong {
-  font-weight: 600;
-}
-
-/* the phrase is a TARGET, not a control, so no underline at rest: the
-   dotted underline belongs to Term, which opens a definition */
-.scan__phrase {
-  padding: 0 0.12em;
-  margin: 0 -0.12em;
-  border-radius: var(--radius-sm);
-  transition: background var(--dur-base) var(--ease-out), color var(--dur-fast) var(--ease-out);
-}
-
-/* the lit phrase: the ochre fill, on-accent ink (item 3, 22 Sep 2026) */
-.scan__phrase.is-lit {
-  background: var(--color-semantic-accent);
-  color: var(--color-semantic-text-on-accent);
-}
-
-.scan-read__prose > p {
-  max-width: 36rem;
-  margin: 0 0 var(--section-lead-gap);
-}
-
-.scan-read__prose > p:last-child {
-  margin-bottom: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scan__point,
-  .scan__dot,
-  .scan__phrase {
-    transition: none;
+@media (hover: hover) and (pointer: fine) {
+  .case-back:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 }
 
@@ -8030,7 +7820,9 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   cursor: pointer;
   transition: border-color var(--dur-fast) var(--ease-out);
 }
-.exhibit__replay:hover { border-color: var(--color-ink); }
+@media (hover: hover) and (pointer: fine) {
+  .exhibit__replay:hover { border-color: var(--color-ink); }
+}
 .exhibit__replay:focus-visible,
 .exhibit button:focus-visible,
 .exhibit [tabindex]:focus-visible {
@@ -8110,52 +7902,12 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .tag.tag--c3 { background: var(--color-chip-c3); }
 
 /* sections: eyebrow, h2, then the section's own content */
-.dfc-eyebrow { margin: 0 0 1rem; }
-.dfc-h2 { margin: 0; max-width: none; }
-.dfc-lead {
-  margin: 1.5rem 0 0;
-  max-width: 40ch;
-  font-size: 1.25rem;
-  color: var(--color-ink-muted);
-}
 
 /* claim / evidence / so what */
-.dfc-cee {
-  display: grid;
-  margin-top: var(--space-stack-lg);
-  border-top: 1px solid var(--color-semantic-border);
-}
-@media (min-width: 900px) { .dfc-cee { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.dfc-cee > div { padding: 1.25rem 1.5rem 1.25rem 0; border-bottom: 1px solid var(--color-semantic-border); }
-.dfc-cee__k {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0 0 0.5rem;
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-feature-settings: var(--mono-feature);
-  color: var(--color-ink-muted);
-}
-.dfc-cee__k i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
-.dfc-cee__v { margin: 0; font-size: 1rem; color: var(--color-ink); }
 
 /* 01 people rows */
 /* 01 the research, in words (24 Sep audit, B3): four statements on the
    old grid, no percentages, no people rows */
-.dfc-ppl { display: grid; margin: var(--space-stack-lg) 0 0; padding: 0; list-style: none; border-top: 1px solid var(--color-semantic-border); }
-@media (min-width: 768px) { .dfc-ppl { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.dfc-pc { padding: 1.25rem 1.25rem 1.25rem 0; border-bottom: 1px solid var(--color-semantic-border); }
-.dfc-pc__l { margin: 0; color: var(--color-ink); text-wrap: pretty; }
-.dfc-src-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-top: 0.75rem; }
-.dfc-src {
-  max-width: var(--measure-body);
-  margin: 0;
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-feature-settings: var(--mono-feature);
-  color: var(--color-ink-muted);
-}
 
 /* "your words" (components/diagrams/Decisions.tsx; 24 Sep audit, B5,
    F3): the "Where it broke" card (surface, card radius, 1.5rem) at the
@@ -8178,283 +7930,29 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .exhibit [data-bella-diagram] .dash { fill: none; stroke: var(--color-ink); stroke-width: 1; stroke-dasharray: 4 4; }
 
 /* 01b the zoom story */
-.dfc-zl { max-width: 44ch; }
-.dfc-mark {
-  display: inline;
-  padding: 0 2px;
-  border: 0;
-  border-bottom: 1px solid var(--color-ink-muted);
-  border-radius: 4px;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  letter-spacing: inherit;
-  text-align: inherit;
-  cursor: pointer;
-  transition: background var(--dur-base) var(--ease-out);
-}
-.dfc-mark::before {
-  content: attr(data-k);
-  margin-right: 2px;
-  vertical-align: super;
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  line-height: 0;
-  color: var(--color-ink-muted);
-}
-.dfc-mark.is-on,
-.dfc-mark:hover,
-.dfc-mark:focus-visible {
-  background: var(--color-chip-c1);
-  color: var(--color-chip-text);
-  border-color: transparent;
-}
-.dfc-mark.is-on::before,
-.dfc-mark:hover::before,
-.dfc-mark:focus-visible::before { color: var(--color-chip-text); }
-.dfc-mark:focus-visible { outline: var(--ring-focus-width) solid var(--ring-focus-color); outline-offset: var(--ring-focus-offset); }
-.dfc-ztabs { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: 2.25rem; }
-.dfc-ztabs button {
-  padding: 0.375rem 0.875rem;
-  border: 1px solid var(--color-semantic-border-strong);
-  border-radius: var(--radius-full);
-  background: transparent;
-  color: var(--color-ink-muted);
-  font-family: var(--font-body); /* buttons stay Geist (BELLA) */
-  font-size: var(--text-mono);
-  cursor: pointer;
-  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
-}
-.dfc-ztabs button:hover { color: var(--color-ink); }
-.dfc-ztabs button[aria-selected="true"] { border-color: var(--color-ink); color: var(--color-ink); }
-.dfc-ztabs button:focus-visible { outline: var(--ring-focus-width) solid var(--ring-focus-color); outline-offset: var(--ring-focus-offset); }
-.exhibit.dfc-zfig { margin-top: 1rem; }
-.dfc-zwrap { position: relative; }
-.dfc-zstack { display: grid; gap: 1.5rem; }
-.dfc-zsvg { transition: opacity 0.25s ease, transform 0.45s cubic-bezier(0.65, 0, 0.35, 1); }
-.dfc-zsvg.is-out { opacity: 0; transform: scale(0.97); }
-.dfc-zsvg .hlr { fill: var(--color-chip-c1); opacity: 0; transition: opacity 0.3s; }
-.dfc-zsvg.hl1 .k1 .hlr { opacity: 0.8 !important; }
-.dfc-zsvg.hl2 .k2 .hlr,
-.dfc-zsvg.hl3 .k3 .hlr,
-.dfc-zsvg.hl4 .k4 .hlr,
-.dfc-zsvg.hl4 .p1 .hlr,
-.dfc-zsvg.dh1 .p1 .hlr,
-.dfc-zsvg.dh2 .p2 .hlr,
-.dfc-zsvg.dh3 .p3 .hlr,
-.dfc-zsvg.dh4 .p4 .hlr,
-.dfc-zsvg.dh5 .p5 .hlr { opacity: 0.55; }
-.dfc-zsvg.lcon .lc .hlr { opacity: 0.6; }
-.dfc-zsvg .pop { transform-box: fill-box; animation: ex-rise 0.5s cubic-bezier(0.34, 1.4, 0.64, 1) both; }
-.exhibit .exhibit__replay.dfc-lcbtn { top: 0.625rem; right: 0.75rem; }
-.dfc-lcbtn[aria-pressed="true"] { background: var(--color-ink); color: var(--color-semantic-background); border-color: var(--color-ink); }
-.dfc-pins { position: absolute; inset: 0; pointer-events: none; }
-.dfc-pin {
-  position: absolute;
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  transform: translate(-50%, -50%);
-  pointer-events: auto;
-  border: 1px solid var(--color-ink);
-  border-radius: 50%;
-  color: var(--color-chip-text);
-  font-family: var(--font-body); /* buttons stay Geist (BELLA) */
-  font-size: var(--text-mono);
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.dfc-pin.is-before { background: var(--color-chip-c2); }
-.dfc-pin.is-after { background: var(--color-chip-c1); }
-.dfc-pin:hover { transform: translate(-50%, -50%) scale(1.15); }
-.dfc-pin[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--color-semantic-surface), 0 0 0 4px var(--color-ink); }
-.dfc-pin:focus-visible { outline: var(--ring-focus-width) solid var(--ring-focus-color); outline-offset: var(--ring-focus-offset); }
-.dfc-zpop {
-  position: relative;
-  max-width: 620px;
-  margin: 0.875rem auto 0;
-  padding: 0.875rem 1rem;
-  border: 1px solid var(--color-semantic-border);
-  border-radius: var(--radius-card);
-  background: var(--color-semantic-background);
-  font-size: 1rem; /* the mock's 15px, raised to the 16px reading floor */
-  animation: ex-rise 0.25s ease both;
-}
-.dfc-zpop__arrow {
-  position: absolute;
-  top: -7px;
-  left: var(--ax, 50%);
-  width: 12px;
-  height: 12px;
-  transform: translateX(-50%) rotate(45deg);
-  border-top: 1px solid var(--color-semantic-border);
-  border-left: 1px solid var(--color-semantic-border);
-  background: var(--color-semantic-background);
-  transition: left 0.3s cubic-bezier(0.65, 0, 0.35, 1);
-}
-.dfc-zpop__head { display: flex; align-items: center; gap: 0.625rem; }
-.dfc-zpop__head b { flex: 1; font-weight: var(--typography-font-weight-medium); color: var(--color-ink); }
-.dfc-zpop__n {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--color-chip-c1);
-  color: var(--color-chip-text);
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-}
-.dfc-zpop__nav { display: flex; gap: 2px; }
-.dfc-zpop__nav button {
-  padding: 2px 6px;
-  border: 0;
-  border-radius: 6px;
-  background: none;
-  color: var(--color-ink-muted);
-  font-family: var(--font-body); /* buttons stay Geist (BELLA) */
-  font-size: 0.875rem;
-  cursor: pointer;
-}
-.dfc-zpop__nav button:hover { color: var(--color-ink); background: var(--color-semantic-surface); }
-.dfc-zpop__nav button:focus-visible { outline: var(--ring-focus-width) solid var(--ring-focus-color); outline-offset: var(--ring-focus-offset); }
-.dfc-zpop p { margin: 0.375rem 0 0; color: var(--color-ink-muted); }
-.dfc-zpop__k {
-  margin-right: 2px;
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  color: var(--color-ink);
-}
-.dfc-hint {
-  margin: 0.875rem 0 0;
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-feature-settings: var(--mono-feature);
-  color: var(--color-ink-muted);
-}
-@media (max-width: 640px) {
-  .dfc-pin { width: 22px; height: 22px; }
-  .exhibit .exhibit__replay.dfc-lcbtn { position: static; display: block; margin: 0 0 0.75rem auto; }
-}
 
 /* 02 token cascade */
-.dfc-cas .fr,
-.dfc-cas .wr { stroke-dasharray: 1; stroke-dashoffset: 1; }
-.dfc-cas .sw { fill: var(--color-chip-c1); }
-.dfc-cas .ck,
-.dfc-cas .tx,
-.dfc-cas .tv { opacity: 0; }
-.dfc-cas .ck { transform-box: fill-box; transform-origin: center; }
-.dfc-cas .tv { fill: var(--color-chip-c1); stroke: var(--color-ink); stroke-width: 1; }
 /* the frames drop the dash once drawn: a 1-unit dash leaves a notch
    where it starts and ends, top left (24 Sep audit, A7) */
-.dfc-cas.is-playing .fr { animation: dfc-frame-draw 0.9s var(--motion-easing-draw) forwards; }
-.dfc-cas.is-playing .f2 { animation-delay: 0.12s; }
-.dfc-cas.is-playing .f3 { animation-delay: 0.24s; }
-.dfc-cas.is-playing .k1 { animation: ex-pop 0.45s var(--motion-easing-pop) forwards 0.9s; }
-.dfc-cas.is-playing .x1 { animation: ex-rise 0.4s ease forwards 1s; }
-.dfc-cas.is-playing .w1 { animation: ex-draw 0.5s ease forwards 1.4s; }
-.dfc-cas.is-playing .v1 { animation: dfc-hop60 0.7s var(--motion-easing-draw) forwards 1.4s; }
-.dfc-cas.is-playing .k2 { animation: ex-pop 0.45s var(--motion-easing-pop) forwards 2s; }
-.dfc-cas.is-playing .x2 { animation: ex-rise 0.4s ease forwards 2.05s; }
-.dfc-cas.is-playing .w2 { animation: ex-draw 0.5s ease forwards 2.5s; }
-.dfc-cas.is-playing .v2 { animation: dfc-hop60 0.7s var(--motion-easing-draw) forwards 2.5s; }
-.dfc-cas.is-playing .k3 { animation: ex-pop 0.45s var(--motion-easing-pop) forwards 3.1s; }
-.dfc-cas.is-playing .x3 { animation: ex-rise 0.4s ease forwards 3.15s; }
-.dfc-cas.is-playing .x4 { animation: ex-rise 0.5s ease forwards 4.4s; }
-.dfc-cas.is-playing .sw { animation: dfc-retint 1.2s ease forwards 3.9s; }
-.dfc-cas.is-final .fr,
-.dfc-cas.is-final .wr { stroke-dashoffset: 0; }
-.dfc-cas.is-final .fr { stroke-dasharray: none; }
-.dfc-cas.is-final .ck,
-.dfc-cas.is-final .tx { opacity: 1; }
-.dfc-cas.is-final .sw { fill: var(--color-chip-c3); }
 @keyframes dfc-hop60 { 0% { opacity: 0; transform: translateX(0); } 15%, 85% { opacity: 1; } 100% { opacity: 0; transform: translateX(60px); } }
 @keyframes dfc-frame-draw { 99% { stroke-dashoffset: 0; stroke-dasharray: 1; } 100% { stroke-dashoffset: 0; stroke-dasharray: none; } }
 @keyframes dfc-retint { 0% { fill: var(--color-chip-c1); } 40%, 100% { fill: var(--color-chip-c3); } }
 
 /* 03 rollout timeline */
-.dfc-tl .track { stroke-dasharray: 1; stroke-dashoffset: 1; }
-.dfc-tl .node,
-.dfc-tl .lbl { opacity: 0; }
-.dfc-tl .node { transform-box: fill-box; transform-origin: center; }
-.dfc-tl .funded { transform-box: fill-box; transform-origin: left center; transform: scaleX(0); }
-.dfc-tl .ring { fill: var(--color-chip-c1); opacity: 0; transform-box: fill-box; transform-origin: center; }
-.dfc-tl__disc { fill: var(--color-semantic-surface); stroke: var(--color-ink); stroke-width: 1; }
-.dfc-tl.is-playing .track { animation: ex-draw 2.6s cubic-bezier(0.45, 0, 0.25, 1) forwards; }
-.dfc-tl.is-playing .node { animation: ex-pop 0.45s var(--motion-easing-pop) forwards; }
-.dfc-tl.is-playing .lbl { animation: ex-rise 0.5s ease forwards; }
-.dfc-tl.is-playing .ring { animation: dfc-ring 1.1s ease-out forwards; }
-.dfc-tl.is-playing .funded { animation: dfc-grow 0.9s var(--motion-easing-draw) forwards 2.35s; }
-.dfc-tl.is-final .track { stroke-dashoffset: 0; }
-.dfc-tl.is-final .node,
-.dfc-tl.is-final .lbl { opacity: 1; }
-.dfc-tl.is-final .funded { transform: none; }
 @keyframes dfc-ring { 0% { opacity: 0.7; transform: scale(1); } 100% { opacity: 0; transform: scale(3.2); } }
 @keyframes dfc-grow { to { transform: scaleX(1); } }
 
 /* 04 turnaround */
-.dfc-turn__base { stroke: var(--color-semantic-border); stroke-width: 1; }
-.dfc-turn .flat,
-.dfc-turn .rise { stroke-dasharray: 1; stroke-dashoffset: 1; }
-.dfc-turn .sys,
-.dfc-turn .ship,
-.dfc-turn .tt { opacity: 0; }
-.dfc-turn .sys { transform-box: fill-box; transform-origin: center; }
-.dfc-turn.is-playing .flat { animation: ex-draw 1.6s linear forwards; }
-.dfc-turn.is-playing .t0 { animation: ex-rise 0.4s ease forwards 0.3s; }
-.dfc-turn.is-playing .sys { animation: ex-pop 0.5s var(--motion-easing-pop) forwards 1.7s; }
-.dfc-turn.is-playing .rise { animation: ex-draw 2.4s cubic-bezier(0.45, 0, 0.25, 1) forwards 2.2s; }
-.dfc-turn.is-playing .ship { animation: ex-rise 0.4s ease forwards; }
-.dfc-turn.is-final .flat,
-.dfc-turn.is-final .rise { stroke-dashoffset: 0; }
-.dfc-turn.is-final .sys,
-.dfc-turn.is-final .ship,
-.dfc-turn.is-final .tt { opacity: 1; }
 
 /* phones: the drawings keep their shapes, the labels move to a Mono
    list under them (the 13px floor holds; the caption carries the rest) */
-.dfc-legend { display: none; }
 @media (max-width: 640px) {
   .exhibit [data-bella-diagram] .opt { display: none; }
-  .dfc-legend {
-    display: grid;
-    gap: 0.25rem;
-    margin: 1rem 0 0;
-    padding-left: 1.25rem;
-    font-family: var(--font-code);
-    font-size: var(--text-mono);
-    font-feature-settings: var(--mono-feature);
-    color: var(--color-ink-muted);
-  }
-  .dfc-legend b { font-weight: 400; color: var(--color-ink); }
 }
 
 /* 03 / 05 the two panels */
-.dfc-two { display: grid; gap: 1.5rem; margin-top: var(--space-stack-lg); }
-@media (min-width: 768px) { .dfc-two { grid-template-columns: 1fr 1fr; } }
-.dfc-two > div { padding: 1.5rem; border-radius: var(--radius-card); background: var(--color-semantic-surface); }
-.dfc-two ul { margin: 0.625rem 0 0; padding-left: 1.125rem; font-size: 1rem; /* the mock's 15px, raised to the 16px reading floor */ list-style: disc; }
-.dfc-two li { color: var(--color-ink-muted); }
-.dfc-two li + li { margin-top: 0.375rem; }
 
 /* 04 stats */
-.dfc-stats { display: grid; margin-top: var(--space-stack-lg); border-top: 1px solid var(--color-semantic-border); }
-@media (min-width: 768px) { .dfc-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.dfc-stats > div { padding: 1.25rem 1.25rem 1.25rem 0; border-bottom: 1px solid var(--color-semantic-border); }
-.dfc-stats__n {
-  margin: 0;
-  font-size: 3rem;
-  font-weight: var(--typography-font-weight-light);
-  letter-spacing: -0.04em;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  color: var(--color-ink);
-}
-.dfc-stats__l { margin: 0; font-size: 1rem; /* the mock's 15px, raised to the 16px reading floor */ color: var(--color-ink-muted); }
 /* the mock hero: lead 20px muted at 40ch */
 .cs2--mock .l-header .text-lead,
 .cs2--mock .l-header > p:not(.l-header__kicker) {
@@ -8462,18 +7960,11 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   font-size: 1.25rem;
   color: var(--color-ink-muted);
 }
-.exhibit svg.dfc-zsvg,
-.exhibit svg.dfc-grave.is-detail { overflow: hidden; }
-.dfc-mark { display: inline; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 /* phones: the zoom pictures and the button grave scale to about a third,
    so their words would fall under the 13px floor; the pictures keep
    their shapes and the caption and popover carry the words. Below 600px
    the file and the grave show a cropped detail (.is-detail) whose labels
    stay at 13px or more, so their words show */
-@media (max-width: 640px) {
-  .exhibit svg.dfc-zsvg:not(.is-detail) text,
-  .exhibit svg.dfc-grave:not(.is-detail) text { display: none; }
-}
 /* /work index hero lead: muted, 40ch (mock Part A) */
 #work-hero .l-header__lead { max-width: 40ch; color: var(--color-ink-muted); }
 .case-hero__signals--bare { margin-top: 1.5rem; padding: 0; background: none; }

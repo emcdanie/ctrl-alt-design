@@ -19,7 +19,7 @@ session runs docs/briefs/portfolio-pass-e-reconciliation.md (nine tasks: the sev
 amendments Passes A to D missed, MetricsStrip colour, named-employers gate scoping;
 two STOP points for Elleta: primary button style, thesis direction). After Pass E,
 her content slots: NDA disclosure wording, accessibility evidence lines, CHIP
-personal lines and Loom, logo uploads (mango plus the two orgs in the employers file, ASU and BFW re-exports).
+personal lines and Loom, logo uploads (the retailer plus the two orgs in the employers file, ASU and BFW re-exports).
 
 ## Where the site stands (end of 17 Jul)
 
@@ -90,7 +90,7 @@ Brain direction (doc'd). Skills project-init + session-handoff were updated toda
 - ANTHROPIC_API_KEY + spend cap in Vercel to switch find-your-fit from deterministic to
   AI matching.
 - Confirm the contact form test submission actually reached her.
-- Logo files for About (public orgs only: BFW, Ironhack, ASU, VML, Mango-as-employer;
+- Logo files for About (public orgs only: BFW, Ironhack, ASU, VML, the retailer as employer;
   NDA'd clients stay text-only).
 - Better assets: Code First images from the BradFrostWeb folder (connect it); the
   Finviz AI version from Vitaly's workshop (she checks if usable).

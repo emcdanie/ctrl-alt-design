@@ -160,7 +160,7 @@ HARD STOP RULE: structure and wiring only. Leave clearly marked content slots
 5. Finviz exploration: if the newer finviz-kpi-tree prototype is usable, swap the Lab
    card asset and link; otherwise list what is missing.
 6. Logos: wire the logo slot for public orgs only (Brad Frost Web, Ironhack, ASU, VML,
-   Mango as employer). Abstracted clients stay text-only forever. Output the exact
+   the retailer as employer). Abstracted clients stay text-only forever. Output the exact
    file list she needs to upload; render text-only until the files exist.
 7. Operational Clarity cover and CHIP pending slots stay marked, not filled.
 8. Skills matrix truth + evidence layer (Elleta, 17 Jul evening):

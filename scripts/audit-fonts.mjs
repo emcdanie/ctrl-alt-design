@@ -1,10 +1,11 @@
-/* Type lock (2026-07-17, code role 2026-09-19): two faces plus one role.
+/* Type lock (2026-07-17; site v3, 4 Oct 2026): the text face (Figtree,
+ * Geist on pages not yet rebuilt), Unique for the wordmark, and one code role.
  * - The mono cut of Geist exists ONLY as --font-code (Elleta, 19 Sep
  *   2026): named once in the token layer (the --font-code line in
  *   app/globals.css) and loaded in app/layout.tsx. Any other mono family
- *   reference fails. --font-code is for metadata (dates, stat lines,
- *   code-comment notes, credential IDs, the inspector cursor label, the
- *   Term popover word line) and fails on headings, body, buttons or nav.
+ *   reference fails. Since site v3 --font-code is Code/Token only (real
+ *   token and code names, no mono labels) and fails on headings, body,
+ *   buttons or nav.
  *   --font-mono stays a legacy alias that resolves to Geist.
  * - No font-family literal outside the token layer (app/globals.css):
  *   components/pages may only reference var(--font-*) tokens.
@@ -50,14 +51,15 @@ const walk = (dir, out = []) => {
 };
 
 /* A BELLA component font token (var(--component-*-font-family)) passes only
-   when lib/bella/bella.css resolves it to a Geist stack; any other value
+   when lib/bella/bella.css resolves it to the site's text face: Figtree
+   (site v3, 4 Oct 2026) or Geist (pages not yet rebuilt); any other value
    still fails (Elleta, 22 Sep 2026: the vendored Button). */
 const BELLA_FONT_TOKENS = new Map(
   [...readFileSync("lib/bella/bella.css", "utf8").matchAll(/(--component-[a-z0-9-]+-font-family):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()])
 );
-const isBellaGeistToken = (v) => {
+const isBellaTextFaceToken = (v) => {
   const t = v.match(/^var\((--component-[a-z0-9-]+-font-family)\)$/)?.[1];
-  return !!t && /^Geist\b/.test(BELLA_FONT_TOKENS.get(t) ?? "");
+  return !!t && /^(Figtree|Geist)\b/.test(BELLA_FONT_TOKENS.get(t) ?? "");
 };
 for (const root of ROOTS) {
   for (const file of walk(root)) {
@@ -69,12 +71,12 @@ for (const root of ROOTS) {
         fail(file, n, `a mono family reference (${l.trim().slice(0, 50)})`, "mono only through var(--font-code)");
       if (/var\(--font-code\)/.test(l) && CODE_BANNED_ELEMENT.test(l))
         fail(file, n, "--font-code on a heading, button or nav element", "--font-code for metadata only");
-      if (OTHER_FAMILY.test(l)) fail(file, n, `a foreign family (${l.trim().slice(0, 50)})`, "the two faces: Unique display, Geist everything else");
+      if (OTHER_FAMILY.test(l)) fail(file, n, `a foreign family (${l.trim().slice(0, 50)})`, "the font tokens: Figtree text, Geist Mono code, Unique wordmark");
       // font-family / fontFamily literals must be var(--font-*) tokens
       const decl = l.match(/font-family\s*:\s*([^;{}]+)|fontFamily\s*:\s*"([^"]+)"/);
       if (decl && !TOKEN_LAYER.has(file)) {
         const val = (decl[1] ?? decl[2] ?? "").trim();
-        if (!val.startsWith("var(--font-") && !isBellaGeistToken(val)) fail(file, n, `font-family literal "${val.slice(0, 40)}"`, "a var(--font-*) token");
+        if (!val.startsWith("var(--font-") && !isBellaTextFaceToken(val)) fail(file, n, `font-family literal "${val.slice(0, 40)}"`, "a var(--font-*) token");
       }
       // Unique outside the allowed hero/bubble surfaces
       if (/--font-hero-display|--font-unique|"Unique"|'Unique'/.test(l) && !UNIQUE_ALLOWED.has(file)) {

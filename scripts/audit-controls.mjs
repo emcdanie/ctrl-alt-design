@@ -10,6 +10,7 @@ import { BASE } from "./lib/base-url.mjs";
 const routes = ["/", "/work", "/about", "/contact",
   "/point-of-view", "/case-studies/brad-frost", "/case-studies/chip",
   "/case-studies/design-system-transformation",
+  "/case-studies/federated",
   "/learning", "/design-system", "/quick"];
 
 /* ── source scan: the retired demo register must not return.
@@ -66,20 +67,19 @@ for (const r of routes) {
     return { primaries: primaries.length, footerPrimaries, chipsNoAria: chipsNoAria.length, segBad: segBad.length };
   });
   if (res.primaries > 1) fail(`${r} .btn-key--primary`, `${res.primaries} visible primaries`, "max 1 per view");
-  /* the footer's Get in touch: the one footer primary, except on
-     /contact, where it steps down to secondary beside "Send message" */
-  const onContact = r.split("?")[0] === "/contact";
-  if (onContact && res.footerPrimaries !== 0) fail(`${r} footer Get in touch`, `${res.footerPrimaries} footer primaries`, "secondary on /contact (0 footer primaries)");
-  if (!onContact && res.footerPrimaries !== 1) fail(`${r} footer Get in touch`, `${res.footerPrimaries} footer primaries`, "exactly 1 footer primary");
+  /* the footer has no primary: its Get in touch was cut in the footer
+     lock (Elleta, 4 Oct 2026; job E1, 5 Oct) */
+  if (res.footerPrimaries !== 0) fail(`${r} footer`, `${res.footerPrimaries} footer primaries`, "no footer primary (footer lock, 4 Oct 2026)");
   if (res.chipsNoAria) fail(`${r} .filter-chip`, `${res.chipsNoAria} chips without aria-pressed`, "aria-pressed on every filter chip");
   if (res.segBad) fail(`${r} .seg-control`, `${res.segBad} controls without exactly one aria-current`, "exactly one aria-current per control");
 }
 
 /* ONE theme toggle (18 Sep 2026): exactly one in the document (the
-   mobile menu carries none), and in the header it sits directly left of
-   the last control: the CTA at lg+, the menu button below lg. */
+   mobile menu carries none). In the header it is the last control at
+   lg+ (the Get in touch CTA retired, hero v3 lock, 4 Oct 2026) and sits
+   directly left of the menu button below lg. */
 for (const [w, lastSel, lastName] of [
-  [1440, ".get-in-touch__trigger", "the Get in touch CTA"],
+  [1440, '[data-component="ThemeToggle"]', null],
   [390, '[aria-controls="overlay-menu"]', "the menu button"],
 ]) {
   await page.setViewportSize({ width: w, height: 900 });
@@ -103,8 +103,36 @@ for (const [w, lastSel, lastName] of [
       };
     }, lastSel);
     if (t.count !== 1) fail(`${r} @${w} ThemeToggle`, `${t.count} toggles in the document`, "exactly one");
-    if (!t.lastOk || !t.toggleOk) fail(`${r} @${w} ThemeToggle`, "not directly left of " + lastName, `ThemeToggle, then ${lastName}, at the end of the header`);
+    if (lastName === null) {
+      if (!t.lastOk) fail(`${r} @${w} ThemeToggle`, "not the last header control", "ThemeToggle at the end of the header");
+    } else if (!t.lastOk || !t.toggleOk) fail(`${r} @${w} ThemeToggle`, "not directly left of " + lastName, `ThemeToggle, then ${lastName}, at the end of the header`);
   }
+}
+/* ONE header height (18f, 4 Oct 2026): the bar never wraps. At 360,
+   390 and 1024 it measures the same; below 380px LinkedIn and Copy
+   email leave the header and the menu sheet carries them. */
+{
+  const heights = {};
+  for (const w of [360, 390, 1024]) {
+    await page.setViewportSize({ width: w, height: 900 });
+    await page.goto(BASE + "/", { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(400);
+    const h = await page.evaluate(() => {
+      const bar = document.querySelector(".nav-row")?.parentElement;
+      const contact = document.querySelector(".nav-contact");
+      const menu = document.getElementById("overlay-menu");
+      return {
+        bar: bar ? Math.round(bar.getBoundingClientRect().height) : 0,
+        headerIcons: contact ? getComputedStyle(contact).display !== "none" : false,
+        menuHas: !!menu && /LinkedIn/.test(menu.textContent) && /Copy email/.test(menu.textContent),
+      };
+    });
+    heights[w] = h.bar;
+    if (w < 380 && h.headerIcons) fail(`/ @${w} header`, "LinkedIn and Copy email in the header", "in the menu sheet only, below 380px");
+    if (w < 1024 && !h.menuHas) fail(`/ @${w} menu`, "no LinkedIn / Copy email in the menu sheet", "both, as labelled rows");
+  }
+  const vals = Object.values(heights);
+  if (new Set(vals).size !== 1) fail("/ header height", JSON.stringify(heights), "one height at 360, 390 and 1024");
 }
 await browser.close();
 console.log(fails === 0 ? "controls gate: PASS" : `controls gate: ${fails} failure(s)`);

@@ -1,0 +1,15 @@
+/* a cover picture fills its slot; the one for the other theme stays out */
+.picture {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.picture[data-theme-only="dark"],
+:global([data-theme="dark"]) .picture[data-theme-only="light"] {
+  display: none;
+}
+
+:global([data-theme="dark"]) .picture[data-theme-only="dark"] {
+  display: block;
+}

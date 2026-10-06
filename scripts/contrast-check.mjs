@@ -21,12 +21,27 @@ const parse = (s) => {
 };
 let totalBad = 0;
 
-for (const url of [BASE + "/", BASE + "/case-studies/design-system-transformation", BASE + "/work", BASE + "/about", BASE + "/contact", BASE + "/case-studies/chip", BASE + "/case-studies/brad-frost", BASE + "/learning", BASE + "/design-system", BASE + "/quick", BASE + "/case-studies/booking-platform", BASE + "/case-studies/search-experts", BASE + "/case-studies/checkout"]) {
+for (const url of [BASE + "/", BASE + "/case-studies/design-system-transformation", BASE + "/case-studies/federated", BASE + "/work", BASE + "/about", BASE + "/contact", BASE + "/case-studies/chip", BASE + "/case-studies/brad-frost", BASE + "/learning", BASE + "/design-system", BASE + "/quick", BASE + "/case-studies/booking-platform", BASE + "/case-studies/search-experts", BASE + "/case-studies/checkout"]) {
   await page.goto(url, { waitUntil: "domcontentloaded" });
   await page.evaluate(() => { document.documentElement.dataset.theme = "dark"; });
   await page.waitForTimeout(1500);
   const fails = await page.evaluate(() => {
     const out = [];
+    /* every computed colour through a 1px canvas, so oklch(), oklab(),
+       color-mix() and color(srgb) all come back as rgba(): BELLA 159bf43
+       serves its tokens as OKLCH, which the regex parse read as RGB */
+    const cvs = document.createElement("canvas");
+    cvs.width = cvs.height = 1;
+    const ctx = cvs.getContext("2d", { willReadFrequently: true });
+    const toRgb = (c) => {
+      if (!c || c === "transparent") return "rgba(0, 0, 0, 0)";
+      ctx.clearRect(0, 0, 1, 1);
+      ctx.fillStyle = "#000";
+      ctx.fillStyle = c;
+      ctx.fillRect(0, 0, 1, 1);
+      const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data;
+      return `rgba(${r}, ${g}, ${b}, ${+(a / 255).toFixed(3)})`;
+    };
     // every element that PAINTS text itself (has a direct text node) —
     // wrappers whose text lives in styled children are judged via those
     // children, not their own inherited colour
@@ -44,13 +59,14 @@ for (const url of [BASE + "/", BASE + "/case-studies/design-system-transformatio
         const cs = getComputedStyle(n);
         const out = [];
         if (cs.backgroundImage && cs.backgroundImage !== "none") {
-          for (const m of cs.backgroundImage.matchAll(/rgba?\(\s*\d+[^)]*\)/g)) {
+          for (const m0 of cs.backgroundImage.matchAll(/(?:rgba?|oklch|oklab|color)\([^()]*\)/g)) {
+            const m = [toRgb(m0[0])];
             const a = m[0].match(/[\d.]+/g);
             if (!a || (a.length > 3 && parseFloat(a[3]) < 1)) continue; // skip translucent stops
             out.push(m[0]);
           }
         }
-        const bg = cs.backgroundColor;
+        const bg = toRgb(cs.backgroundColor);
         const opaque = bg && !bg.startsWith("rgba(0, 0, 0, 0)") && bg !== "transparent";
         if (opaque) out.push(bg);
         if (out.length) return out;
@@ -68,7 +84,7 @@ for (const url of [BASE + "/", BASE + "/case-studies/design-system-transformatio
       const uniqueTooSmall =
         /unique/i.test(cs.fontFamily || "") &&
         parseFloat(cs.fontSize) < 24;
-      out.push({ t: (el.textContent||"").trim().slice(0,32), c: cs.color, bg: bgOf(el), fs: cs.fontSize, tag: el.tagName, uniqueTooSmall });
+      out.push({ t: (el.textContent||"").trim().slice(0,32), c: toRgb(cs.color), bg: bgOf(el), fs: cs.fontSize, tag: el.tagName, uniqueTooSmall });
     }
     return out;
   });

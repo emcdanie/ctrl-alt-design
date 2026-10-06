@@ -1,0 +1,987 @@
+/* CHIP 2.0 pictures (Site v3, Figma 407:8187 / 407:10271). Picture type
+   stays at 14px or more (the 4 Oct late rules); a real keycap is 44px and
+   its depth is a shadow (--shadow-key-*), never geometry, so keys in a
+   row share one height. The restacked 390 layouts start below 640px. */
+
+.root {
+  width: 100%;
+}
+
+.inner {
+  width: 100%;
+  color: var(--color-semantic-text-body);
+  font-family: var(--font-body);
+}
+
+/* ── shared parts ── */
+.panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  min-width: 0;
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+}
+
+.headTitle {
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.3;
+  color: var(--color-semantic-text-primary);
+}
+
+.mock {
+  flex: 0 0 auto;
+  padding: 2px var(--spacing-3);
+  border: 1px dashed var(--markup-line);
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--color-semantic-text-secondary);
+  white-space: nowrap;
+}
+
+.pin {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-accent);
+  color: var(--color-semantic-text-on-accent);
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1;
+}
+
+.part {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.partText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.partTitle {
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.25;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.partSpec {
+  font-family: var(--font-code);
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--color-semantic-text-secondary);
+  white-space: nowrap;
+}
+
+/* ── the keycap (BELLA Button, primary): depth is the shadow ── */
+.key {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--component-button-primary-min-height);
+  padding: var(--spacing-3) var(--spacing-5);
+  overflow: hidden;
+  border-radius: var(--component-button-shape-default);
+  background: var(--component-button-primary-fill-hi);
+  color: var(--component-button-primary-foreground);
+  box-shadow: var(--shadow-key-resting);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  /* sentence case, untracked: the label reads "Save changes" (Figma
+     straighten pass, 5 Oct) */
+  white-space: nowrap;
+}
+
+.key[data-state="hover"] {
+  padding-block: 0;
+  background: var(--component-button-primary-fill-hi-hover);
+}
+
+/* the label rolls: a window one key high (the key clips it), a track of
+   two key-high slots that slides up one slot; so only one label ever
+   shows, in full foreground colour (job 38: no faded second label, which
+   read grey on grey in dark) */
+.roll {
+  display: block;
+  height: var(--component-button-primary-min-height);
+  overflow: hidden;
+}
+
+.rollTrack {
+  display: flex;
+  flex-direction: column;
+}
+
+.rollTrack > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--component-button-primary-min-height);
+}
+
+.key[data-state="focus"] {
+  outline: 3px solid var(--color-semantic-focus-ring);
+  outline-offset: 3px;
+}
+
+.key[data-state="press"] {
+  transform: var(--component-button-motion-press);
+  box-shadow: var(--shadow-key-pressed);
+}
+
+.key[data-state="disabled"] {
+  background: var(--color-semantic-surface-inset);
+  color: var(--color-semantic-text-secondary);
+  box-shadow: none;
+}
+
+/* ── Figure 1 · Take it apart ── */
+.apart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.restBody {
+  display: grid;
+  grid-template-columns: minmax(0, 480px) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--spacing-8);
+}
+
+.specimenBox {
+  min-width: 0;
+}
+
+.specimen {
+  position: relative;
+  width: 480px;
+  height: 260px;
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-surface-inset);
+}
+
+.specimenRing {
+  position: absolute;
+  left: 54px;
+  top: 76px;
+  width: 372px;
+  height: 108px;
+  box-sizing: border-box;
+  border: 3px dashed var(--color-semantic-focus-ring);
+  border-radius: var(--radius-card);
+}
+
+.key.specimenKey {
+  position: absolute;
+  left: 60px;
+  top: 82px;
+  width: 360px;
+  height: 96px;
+  border-radius: var(--radius-lg);
+  font-size: 18px;
+}
+
+.restLeader {
+  position: absolute;
+  background: var(--color-semantic-border-ink);
+}
+
+/* the anchor dot sits on the part the pin names */
+.restLeader::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-border-ink);
+  transform: translate(-50%, -50%);
+}
+
+.restLeader[data-n="1"] { left: 240px; top: 181px; width: 1px; height: 24px; }
+.restLeader[data-n="1"]::after { left: 50%; top: 0; }
+.restLeader[data-n="2"] { left: 32px; top: 130px; width: 28px; height: 1px; }
+.restLeader[data-n="2"]::after { left: 100%; top: 50%; }
+.restLeader[data-n="3"] { left: 42px; top: 64px; width: 25px; height: 1px; transform: rotate(45deg); transform-origin: 0 0; }
+.restLeader[data-n="3"]::after { left: 100%; top: 50%; }
+.restLeader[data-n="4"] { left: 240px; top: 56px; width: 1px; height: 26px; }
+.restLeader[data-n="4"]::after { left: 50%; top: 100%; }
+.restLeader[data-n="5"] { left: 426px; top: 110.8px; width: 20px; height: 1px; }
+.restLeader[data-n="5"]::after { left: 0; top: 50%; }
+
+/* the 390 specimen: the real key at its own size (job 38). A 280 drawing
+   placed from the stage's centre, so a narrower stage (320 screens) keeps
+   it centred and nothing crosses the page edge (job 42) */
+.phoneStage {
+  position: relative;
+  display: block;
+  width: min(280px, 100%);
+  height: 160px;
+  margin-inline: auto;
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-surface-inset);
+}
+
+.phoneRing {
+  position: absolute;
+  left: calc(50% - 76px);
+  top: 52px;
+  width: 152px;
+  height: 56px;
+  box-sizing: border-box;
+  border: 2px dashed var(--color-semantic-focus-ring);
+  border-radius: var(--radius-card);
+}
+
+.key.phoneKey {
+  position: absolute;
+  left: calc(50% - 70px);
+  top: 58px;
+  width: 140px;
+  padding-inline: 0;
+}
+
+.phoneLeader {
+  position: absolute;
+  background: var(--color-semantic-border-ink);
+}
+
+.restPin {
+  position: absolute;
+  display: flex;
+}
+
+/* the legend's specs wrap when the column narrows (1024) */
+.legend .partSpec {
+  white-space: normal;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  min-width: 0;
+}
+
+/* the exploded stack, drawn in design pixels times --s (1 at 1440) */
+.stack {
+  --s: 1;
+  --leader: 103px;
+  position: relative;
+  height: calc(471px * var(--s));
+}
+
+.layer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--k) * 78px * var(--s));
+}
+
+.plateWrap {
+  position: absolute;
+  left: calc(50px * var(--s));
+  top: calc(11px * var(--s));
+  width: calc(310px * var(--s));
+  height: calc(150px * var(--s));
+}
+
+.plate {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+  transform: matrix(0.94, -0.16, 0.34, 0.46, 0, 0);
+}
+
+.plateRing {
+  width: calc(220px * var(--s));
+  height: calc(80px * var(--s));
+  box-sizing: border-box;
+  border: calc(3px * var(--s) + 1px) solid var(--color-semantic-focus-ring);
+  border-radius: var(--radius-card);
+}
+
+.plateLabel {
+  font-size: calc(24px * var(--s));
+  font-weight: 700;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.plateBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(214px * var(--s));
+  height: calc(78px * var(--s));
+  box-sizing: border-box;
+  border: 1.5px dashed var(--markup-line);
+  border-radius: var(--radius-card);
+}
+
+.platePad {
+  width: calc(166px * var(--s));
+  height: calc(46px * var(--s));
+  box-sizing: border-box;
+  /* the padding guide is markup, not focus: neutral (job 38) */
+  border: 1px dashed var(--markup-line);
+  border-radius: var(--radius-lg);
+}
+
+.plateFill {
+  width: calc(200px * var(--s));
+  height: calc(70px * var(--s));
+  border-radius: var(--radius-card);
+  background: var(--component-button-primary-fill-hi);
+}
+
+.plateShadow {
+  width: calc(200px * var(--s));
+  height: calc(70px * var(--s));
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--color-semantic-text-primary) 40%, transparent);
+  filter: blur(calc(6px * var(--s)));
+}
+
+/* dot on the plate, one horizontal leader, the label flat on the right */
+.callout {
+  position: absolute;
+  left: calc(320.7px * var(--s));
+  top: calc(53.2px * var(--s));
+  display: flex;
+  align-items: center;
+  transform: translateY(-50%);
+}
+
+.dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-border-ink);
+}
+
+.leader {
+  flex: 0 0 auto;
+  width: var(--leader);
+  height: 1px;
+  margin-right: var(--spacing-2);
+  background: var(--markup-line);
+}
+
+/* ── The hero card · Atlas (job 38): drawn at its real size, text 16 so
+   the 1024 collage scale (0.88) keeps it at 14 or more; pins stay the
+   Pin's 14 ── */
+.atlas {
+  gap: var(--spacing-3);
+  padding: var(--spacing-5);
+}
+
+.atlasEyebrow {
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--color-semantic-text-secondary);
+  white-space: nowrap;
+}
+
+/* the Atlas card's top row wraps on a 320 screen (job 42: no page
+   overflow); the eyebrow and the mock tag then stack */
+.atlas .head {
+  flex-wrap: wrap;
+}
+
+.atlasHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2) var(--spacing-3);
+}
+
+.atlasName {
+  font-size: 28px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--color-semantic-text-primary);
+}
+
+.atlasHead .status {
+  font-size: 16px;
+}
+
+.atlasBody {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--spacing-5);
+}
+
+/* the anatomy stage: a line grid on the inset ground, the chip in the
+   middle, three pins above it and three below on straight leaders */
+.atlasStage {
+  position: relative;
+  flex: 0 0 auto;
+  width: 200px;
+  height: 200px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, var(--color-semantic-border) 1px, transparent 1px) 4px 0 / 16px 100%,
+    linear-gradient(var(--color-semantic-border) 1px, transparent 1px) 0 4px / 100% 16px,
+    var(--color-semantic-surface-inset);
+}
+
+.atlasChip {
+  position: absolute;
+  left: 40px;
+  top: 80px;
+  width: 120px;
+  height: 40px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-semantic-border-ink);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-primary);
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-semibold);
+  white-space: nowrap;
+}
+
+.atlasLeader {
+  position: absolute;
+  left: 60px;
+  width: 1px;
+  height: 22px;
+  background: var(--color-semantic-border-ink);
+}
+
+.atlasLeader[data-col="1"] { left: 100px; }
+.atlasLeader[data-col="2"] { left: 140px; }
+.atlasLeader[data-side="top"] { top: 58px; }
+.atlasLeader[data-side="bottom"] { top: 120px; }
+
+.atlasLeader .pin {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.atlasLeader[data-side="top"] .pin { bottom: 100%; }
+.atlasLeader[data-side="bottom"] .pin { top: 100%; }
+
+.atlasParts {
+  flex: 1 1 180px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.atlasPart {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: 2px var(--spacing-2);
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.atlasPart .pin {
+  width: 24px;
+  height: 24px;
+}
+
+.atlasPart[data-selected] {
+  background: var(--color-semantic-surface-inset);
+}
+
+/* ── Figure 2 · The gate ── */
+.pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: var(--spacing-6);
+}
+
+.pair .panel {
+  gap: var(--spacing-2);
+  padding: var(--spacing-5) var(--spacing-4);
+}
+
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  min-height: var(--spacing-12);
+  padding-block: var(--spacing-1);
+  border-top: 1px solid var(--color-semantic-border);
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--color-semantic-text-primary);
+}
+
+.status {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: 2px var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-success-subtle);
+  color: var(--color-semantic-success-text);
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.status::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+}
+
+/* an outline tag, not a stone fill (job 38) */
+.status[data-tone="neutral"] {
+  border: 1px solid var(--color-semantic-border-strong);
+  background: transparent;
+  color: var(--color-semantic-text-primary);
+}
+
+.status[data-tone="danger"] {
+  background: var(--color-semantic-danger-subtle);
+  color: var(--color-semantic-danger-text);
+}
+
+.source {
+  padding-top: var(--spacing-3);
+  font-family: var(--font-code);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-semantic-text-secondary);
+}
+
+/* ── Figure 3 · Lesson ── */
+.lesson {
+  gap: var(--spacing-3);
+  padding: var(--spacing-5);
+}
+
+.lesson .headTitle {
+  color: var(--color-semantic-text-secondary);
+}
+
+.lessonTitle {
+  font-size: 22px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.3;
+  color: var(--color-semantic-text-primary);
+}
+
+.lessonLead {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.states {
+  list-style: none;
+  margin: 0;
+  padding: var(--spacing-1) 0 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--spacing-4);
+}
+
+.stateCell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  min-width: 0;
+}
+
+.stateCell .key {
+  margin-bottom: var(--spacing-2);
+  margin-inline: 3px;
+}
+
+.stateName {
+  font-family: var(--font-code);
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--color-semantic-text-secondary);
+}
+
+.stateNote {
+  font-size: 15px;
+  line-height: 1.3;
+  color: var(--color-semantic-text-primary);
+}
+
+.why {
+  margin-top: var(--spacing-1);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-md);
+  background: var(--color-semantic-surface-inset);
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--color-semantic-text-primary);
+}
+
+/* ── Figure 4 · Ask, then approve ── */
+.ask {
+  display: grid;
+  grid-template-columns: minmax(0, 477fr) minmax(0, 427fr);
+  align-items: stretch;
+  gap: var(--spacing-6);
+}
+
+.obi {
+  gap: var(--spacing-3);
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  height: 56px;
+  margin-bottom: var(--spacing-1);
+  padding-inline: var(--spacing-4);
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: var(--radius-lg);
+  font-size: 17px;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.kbd {
+  font-size: 15px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.who {
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--color-semantic-text-secondary);
+}
+
+.question {
+  font-size: 19px;
+  line-height: 1.6;
+  color: var(--color-semantic-text-primary);
+}
+
+.answer {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--color-semantic-text-primary);
+}
+
+.sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+}
+
+/* outline tags, not stone-filled (job 38) */
+.source2 {
+  padding: var(--spacing-1) var(--spacing-3);
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: var(--radius-pill);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-semantic-text-body);
+}
+
+.askSide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  min-width: 0;
+}
+
+/* the terminal stays dark in both themes */
+.terminal {
+  margin: 0;
+  padding: var(--spacing-6);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-background-inverse);
+  color: var(--color-semantic-text-inverse);
+  font-family: var(--font-code);
+  font-size: 16px;
+  line-height: 2;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+:global([data-theme="dark"]) .terminal {
+  background: var(--color-semantic-surface-inset);
+  color: var(--color-semantic-text-primary);
+}
+
+.terminal code {
+  display: flex;
+  flex-direction: column;
+  font: inherit;
+}
+
+.termRow {
+  display: grid;
+  grid-template-columns: 9em auto;
+}
+
+.change {
+  flex: 1 1 auto;
+  gap: var(--spacing-4);
+}
+
+.changeLabel {
+  font-size: 15px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.3;
+  color: var(--color-semantic-text-secondary);
+}
+
+.changeText {
+  font-size: 19px;
+  line-height: 1.4;
+  color: var(--color-semantic-text-primary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.confirm,
+.cancel {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  height: var(--spacing-touch-target);
+  padding-inline: var(--spacing-5);
+  border-radius: var(--component-button-shape-default);
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-semibold);
+  white-space: nowrap;
+}
+
+.confirm {
+  background: var(--component-button-primary-fill-hi);
+  color: var(--component-button-primary-foreground);
+  box-shadow: var(--shadow-key-resting);
+}
+
+.cancel {
+  border: 1px solid var(--color-semantic-border-ink);
+  color: var(--color-semantic-text-primary);
+}
+
+.waiting {
+  padding: var(--spacing-1) var(--spacing-3);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-pill);
+  font-size: 15px;
+  color: var(--color-semantic-text-secondary);
+  white-space: nowrap;
+}
+
+/* ── 390: the frame restacks ── */
+@media (max-width: 639px) {
+  .panel {
+    padding: var(--spacing-4);
+  }
+
+  .lesson {
+    padding: var(--spacing-4) var(--spacing-3);
+  }
+
+  .states {
+    column-gap: var(--spacing-3);
+  }
+
+  /* 14 at 390 too (job 38: figure text 14 or more); the key still
+     fits its half of the row */
+  .stateCell .key {
+    padding-inline: var(--spacing-3);
+  }
+
+  .terminal {
+    padding: var(--spacing-4);
+    font-size: 14px;
+  }
+
+  .termRow {
+    grid-template-columns: 8.5em auto;
+  }
+
+  .restBody,
+  .pair,
+  .ask {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .restBody {
+    gap: var(--spacing-4);
+  }
+
+  .pair,
+  .ask {
+    gap: var(--spacing-4);
+  }
+
+  .partSpec {
+    white-space: normal;
+  }
+
+  /* 0.6, not 0.44 (job 38): the plate label stays 14 */
+  .stack {
+    --s: 0.6;
+    --leader: var(--spacing-2);
+    height: calc(471px * var(--s) + var(--spacing-4));
+  }
+
+  .plateWrap {
+    left: calc(30px * var(--s));
+  }
+
+  /* 280, not 300: "Key shadow" ran 4px past the panel (job 38, audit:contain) */
+  .callout {
+    left: calc(280px * var(--s));
+  }
+
+  .callout .partTitle {
+    white-space: normal;
+  }
+
+  .callout .partSpec {
+    display: none;
+  }
+
+  .callout .partTitle {
+    font-size: 14px;
+  }
+
+  .callout .pin {
+    width: 24px;
+    height: 24px;
+  }
+
+  .states {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--spacing-5);
+  }
+
+  .stateNote {
+    font-size: 14px;
+  }
+
+  .wide {
+    display: none;
+  }
+
+  .question {
+    font-size: 18px;
+  }
+
+  .answer {
+    font-size: 16px;
+  }
+}
+
+/* ── motion: plays once in view; reduced motion keeps the exploded frame
+   because none of this applies ── */
+@media (prefers-reduced-motion: no-preference) {
+  /* the hover specimen's roll: the label leaves upward, the next arrives,
+     holds, then the track resets unseen (both slots read the same) */
+  @keyframes roll {
+    0%,
+    45% {
+      transform: translateY(0);
+    }
+    60%,
+    100% {
+      transform: translateY(-50%);
+    }
+  }
+
+  .rollTrack {
+    /* two rolls (4.8s), then still: nothing moves on its own past 5s
+       (WCAG 2.2.2, job 34) */
+    animation: roll 2.4s cubic-bezier(0.22, 1, 0.36, 1) 2;
+  }
+
+  @keyframes explode {
+    from {
+      transform: translateY(calc((2 - var(--k)) * 78px * var(--s)));
+    }
+  }
+
+  @keyframes calloutIn {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .stack[data-play="off"] .plateWrap {
+    transform: translateY(calc((2 - var(--k)) * 78px * var(--s)));
+  }
+
+  .stack[data-play="off"] .callout {
+    opacity: 0;
+  }
+
+  .stack[data-play="on"] .plateWrap {
+    animation: explode 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .stack[data-play="on"] .callout {
+    animation: calloutIn 0.3s ease-out 0.6s both;
+  }
+}

@@ -1,0 +1,1291 @@
+/* Drift's four figures with motion (Site v3). Layout first, then the motion,
+   which only runs under prefers-reduced-motion: no-preference: everywhere
+   else every element sits in its finished frame. */
+
+/* ── shared ── */
+.stage {
+  position: relative;
+}
+
+.step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--spacing-6);
+  padding: 0 var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-background-inverse);
+  color: var(--color-semantic-text-inverse);
+  font-size: var(--text-label);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.4;
+  flex: 0 0 auto;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+  /* narrower than the stage, so the stage grid shows round it like every
+     other figure (audit fix D4, 5 Oct 2026); 52rem keeps Rollout's panels
+     from wrapping tall (job F) */
+  max-width: 52rem;
+  margin-inline: auto;
+  padding: var(--spacing-6) var(--spacing-8);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
+  padding-right: calc(var(--spacing-touch-target) * 2 + var(--spacing-4));
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: var(--typography-font-size-xl);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-success-subtle);
+  color: var(--color-semantic-success-text);
+  font-size: var(--text-label);
+  line-height: var(--typography-line-height-snug);
+}
+
+.status::before {
+  content: "";
+  width: var(--spacing-2);
+  height: var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: currentColor;
+}
+
+/* ── Figure 3 · Zoom levels ── */
+
+.levels {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--spacing-6);
+}
+
+.level {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-3) var(--spacing-5);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+
+.levelStage {
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-background);
+}
+
+.levelArt {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.levelHead {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--typography-font-size-xl);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+}
+
+.levelMeta {
+  margin: 0;
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.45;
+  color: var(--color-semantic-text-body);
+}
+
+.levelArrow {
+  position: absolute;
+  top: 45%;
+  right: calc(var(--spacing-6) * -1);
+  width: var(--spacing-6);
+  fill: none;
+  stroke: var(--markup-line);
+  stroke-width: 1.5;
+}
+
+.fileRect {
+  fill: var(--color-semantic-border);
+}
+
+.hotRect {
+  fill: var(--kit-action-subtle);
+  stroke: var(--kit-action);
+  stroke-width: 1.5;
+}
+
+.hotFill {
+  fill: var(--kit-action);
+}
+
+.hotOutline {
+  fill: var(--color-semantic-surface);
+  stroke: var(--kit-action);
+  stroke-width: 1.5;
+}
+
+.inputBox {
+  fill: var(--color-semantic-surface);
+  stroke: var(--color-semantic-border-strong);
+  stroke-width: 1;
+}
+
+/* in the 203-wide viewBox units: the art draws about 188px wide at 1440,
+   so 16 renders at 14.8px (figure text 14px floor, job 38) */
+.kitText,
+.kitTextHot,
+.kitTextInk,
+.kitTextRed {
+  font-size: 16px;
+  fill: var(--color-semantic-text-secondary);
+}
+
+.kitTextHot {
+  fill: var(--kit-action);
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.kitTextInk {
+  fill: var(--color-semantic-text-primary);
+}
+
+.kitTextRed {
+  fill: var(--markup-red);
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.markRed {
+  fill: none;
+  stroke: var(--markup-red);
+  stroke-width: 1.5;
+}
+
+/* ── Figure 4 · Token cascade ── */
+/* Figure 4, tightened one step for one screen (job F, 5 Oct 2026) */
+.cascade {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.tiers {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  /* the semantic tier is wider, so its token rows sit on one line each
+     (job F, 5 Oct 2026); the arrows below follow the same split */
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr) minmax(0, 0.9fr);
+  gap: var(--spacing-10);
+}
+
+.tier {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4) var(--spacing-5);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+
+.tierHead {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-size: var(--typography-font-size-xl);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+}
+
+.tierLead {
+  margin: 0;
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.4;
+  color: var(--color-semantic-text-body);
+}
+
+.ramp {
+  display: flex;
+  gap: var(--spacing-1);
+}
+
+.swatch,
+.swatchOn {
+  width: var(--spacing-5);
+  height: var(--spacing-10);
+  border-radius: var(--radius-sm);
+}
+
+.swatchOn {
+  outline: 2px solid var(--color-semantic-text-primary);
+  outline-offset: 1px;
+}
+
+.token {
+  font-family: var(--font-code);
+  font-size: var(--text-label);
+  color: var(--color-semantic-text-primary);
+}
+
+.tokenQuiet {
+  font-family: var(--font-code);
+  font-size: var(--text-label);
+  color: var(--color-semantic-text-secondary);
+}
+
+.tokenList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.tokenRow,
+.tokenRowOn {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--spacing-2);
+  row-gap: 0;
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-md);
+}
+
+.tokenRowOn {
+  background: var(--kit-action-subtle);
+}
+
+.tokenRowOn .token {
+  color: var(--kit-action);
+}
+
+.tokenRow .token,
+.tokenRowOn .token {
+  flex: 1 1 auto;
+}
+
+.tokenValue {
+  font-size: var(--text-label);
+  color: var(--color-semantic-text-secondary);
+  white-space: nowrap;
+}
+
+.tokenRowOn .tokenValue {
+  color: var(--kit-ramp-800);
+}
+
+/* dark: --kit-action-subtle is a fixed light tint, a near-white bar on
+   the dark card (job 38). The row takes the inset surface and keeps its
+   highlight as an action-coloured edge; text on semantic tokens */
+:global([data-theme="dark"]) .tokenRowOn {
+  background: var(--color-semantic-surface-inset);
+  box-shadow: inset 2px 0 0 var(--kit-action);
+}
+
+:global([data-theme="dark"]) .tokenRowOn .token {
+  color: var(--color-semantic-text-primary);
+}
+
+:global([data-theme="dark"]) .tokenRowOn .tokenValue {
+  color: var(--color-semantic-text-secondary);
+}
+
+.tokenDot {
+  width: var(--spacing-3);
+  height: var(--spacing-3);
+  border-radius: var(--radius-pill);
+  flex: 0 0 auto;
+  border: 1px solid var(--color-semantic-border-strong);
+}
+
+.tokenDot[data-dot="action"] {
+  background: var(--kit-action);
+  border-color: var(--kit-action);
+}
+
+.tokenDot[data-dot="ink"] {
+  background: var(--color-semantic-text-primary);
+  border-color: var(--color-semantic-text-primary);
+}
+
+.tokenDot[data-dot="line"] {
+  background: var(--color-semantic-border);
+}
+
+.priceRow {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-background);
+}
+
+.price {
+  font-size: var(--typography-font-size-xl);
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.per {
+  font-size: var(--text-label);
+  font-weight: var(--typography-font-weight-regular);
+  color: var(--color-semantic-text-secondary);
+}
+
+/* one button for the Component tier and every After button (job 40):
+   BELLA Button's box, 44 tall, its padding, weight and radius, in the
+   picture's action colour, at its natural width */
+.kitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  min-height: var(--component-button-primary-min-height);
+  padding: var(--component-button-primary-padding-y) var(--component-button-primary-padding-x);
+  border-radius: var(--radius-md);
+  background: var(--kit-action);
+  color: var(--kit-on-action);
+  font-size: var(--component-button-primary-font-size);
+  font-weight: var(--component-button-primary-font-weight);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.beforeButton {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
+.tierArrows {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.tierArrow {
+  position: absolute;
+  top: 66%;
+  width: var(--spacing-10);
+  height: var(--spacing-3);
+  fill: none;
+  stroke: var(--markup-line);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+
+.tierArrow:nth-child(1) {
+  left: calc((100% - var(--spacing-10) * 2) * 0.9 / 3.1);
+}
+
+.tierArrow:nth-child(2) {
+  left: calc((100% - var(--spacing-10) * 2) * 2.2 / 3.1 + var(--spacing-10));
+}
+
+.change {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4) var(--spacing-6);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+}
+
+.changeRow {
+  display: grid;
+  grid-template-columns: 11.875rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.changeRow + .changeRow {
+  padding-top: var(--spacing-3);
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.changeLabel {
+  margin: 0;
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+}
+
+.verticals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--spacing-3);
+}
+
+.vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+}
+
+.verticalName {
+  font-size: var(--text-label);
+  color: var(--color-semantic-text-secondary);
+}
+
+.changeNote {
+  /* capped at the body measure on every renderer (CI's Linux fonts set
+     it 748 wide, 6 Oct 2026) */
+  max-inline-size: var(--measure-body);
+  margin: 0;
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.5;
+  color: var(--color-semantic-success-text);
+}
+
+.passPop {
+  display: inline-flex;
+}
+
+/* ── Figure 6 · Rollout ── */
+
+.rollout {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: var(--spacing-3);
+  row-gap: var(--spacing-6);
+}
+
+.track {
+  position: absolute;
+  top: calc(var(--spacing-12) / 2 - 1px);
+  left: 10%;
+  right: 10%;
+  height: 2px;
+}
+
+.trackLine,
+.trackShared {
+  position: absolute;
+  top: 0;
+  height: 2px;
+  background: var(--color-semantic-text-primary);
+  transform-origin: left center;
+}
+
+.trackLine {
+  left: 0;
+  width: 75%;
+}
+
+.trackShared {
+  left: 75%;
+  width: 25%;
+  background: var(--color-semantic-success-text);
+}
+
+.rStep {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-6);
+}
+
+.disc {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-12);
+  height: var(--spacing-12);
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--color-semantic-text-primary);
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-primary);
+}
+
+.disc[data-shared] {
+  border-color: var(--color-semantic-success-text);
+  color: var(--color-semantic-success-text);
+}
+
+.rCard {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  flex: 1 1 auto;
+  padding: var(--spacing-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-surface-inset);
+  border: 1px solid transparent;
+}
+
+.rStep[data-cto] .rCard {
+  background: var(--color-semantic-surface);
+  border-color: var(--color-semantic-border-ink);
+}
+
+.rTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2);
+}
+
+/* the verdict on the leader (Elleta, 5 Oct): from 640px it sits on the
+   green 4 → 5 segment, centred between the two discs; on a phone it stays
+   in the step's top row */
+@media (min-width: 640px) {
+  .sharedTag {
+    position: absolute;
+    z-index: 1;
+    top: calc(var(--spacing-12) / 2);
+    right: calc(50% + (100% + var(--spacing-3)) / 2);
+    transform: translate(50%, -50%);
+  }
+}
+
+.no {
+  padding: 0 var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-danger-subtle);
+  color: var(--color-semantic-danger-text);
+  font-size: var(--text-label);
+  line-height: 1.6;
+}
+
+.rTitle {
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: var(--typography-line-height-snug);
+  color: var(--color-semantic-text-primary);
+}
+
+.rMeta {
+  font-size: var(--text-label);
+  line-height: 1.35;
+  color: var(--color-semantic-text-secondary);
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--spacing-3);
+}
+
+.broke,
+.changed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4) var(--spacing-5);
+  border-radius: var(--radius-lg);
+}
+
+.broke {
+  background: var(--color-semantic-danger-subtle);
+}
+
+.changed {
+  background: var(--color-semantic-success-subtle);
+}
+
+.panelTitle {
+  margin: 0;
+  font-size: var(--text-label);
+  font-weight: var(--typography-font-weight-semibold);
+}
+
+.broke .panelTitle {
+  color: var(--color-semantic-danger-text);
+}
+
+.changed .panelTitle {
+  color: var(--color-semantic-success-text);
+}
+
+.panelList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.panelList li {
+  position: relative;
+  padding-left: var(--spacing-8);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.7;
+  color: var(--color-semantic-text-primary);
+}
+
+.panelList li::before {
+  position: absolute;
+  left: var(--spacing-1);
+  font-weight: var(--typography-font-weight-semibold);
+}
+
+.broke .panelList li::before {
+  content: "×";
+  color: var(--color-semantic-danger-text);
+}
+
+.changed .panelList li::before {
+  content: "✓";
+  color: var(--color-semantic-success-text);
+}
+
+/* ── Figure 7 · Shipped staircase ── */
+
+/* the aspect ratio and --base (the baseline's height share) come from
+   the geometry, inline; the phone drawing swaps in below 640px */
+.drawing {
+  position: relative;
+}
+
+.drawingPhone {
+  display: none;
+}
+
+.areaFill {
+  stroke: none;
+}
+
+/* the soft accent fill under the stair, 12% to nothing */
+.fillStopTop {
+  stop-color: var(--color-semantic-accent);
+  stop-opacity: 0.12;
+}
+
+.fillStopEnd {
+  stop-color: var(--color-semantic-accent);
+  stop-opacity: 0;
+}
+
+.drawingSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.baseline {
+  stroke: var(--color-semantic-border);
+  stroke-width: 1.5;
+}
+
+.flat,
+.stair {
+  fill: none;
+  stroke: var(--color-semantic-text-primary);
+  stroke-width: 2;
+}
+
+.sysNode {
+  fill: var(--color-semantic-accent);
+  stroke: var(--color-semantic-text-primary);
+  stroke-width: 1.5;
+}
+
+.areaNode {
+  fill: var(--color-semantic-success-subtle);
+  stroke: var(--color-semantic-text-primary);
+  stroke-width: 1.5;
+}
+
+/* the live tick inside each area dot: the state in a shape, not only
+   the green fill (job 34, colour alone) */
+.areaTick {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sysChip,
+.areaChip,
+.nextChip,
+.sysChipList,
+.areaChipList,
+.nextChipList {
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-semantic-border);
+  background: var(--color-semantic-surface);
+  font-size: var(--typography-font-size-sm);
+  line-height: 1.2;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.sysChip {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  border-color: var(--color-semantic-accent);
+  background: linear-gradient(var(--color-semantic-surface-glass-accent), var(--color-semantic-surface-glass-accent)), var(--color-semantic-surface);
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.areaChips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.areaChip {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -100%);
+}
+
+.flatLabel {
+  position: absolute;
+  left: 0;
+  top: calc(var(--base) + var(--spacing-3));
+  font-size: var(--typography-font-size-sm);
+  color: var(--color-semantic-text-body);
+}
+
+.nextChip {
+  position: absolute;
+  right: 0;
+  top: calc(var(--base) + var(--spacing-2));
+  border-style: dashed;
+  color: var(--color-semantic-text-secondary);
+}
+
+/* ── tablet: the zoom levels two by two, the cascade tiers stacked ── */
+@media (max-width: 1023px) {
+  .levels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .levelArrow,
+  .tierArrows {
+    display: none;
+  }
+
+  .tiers {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+  }
+
+  .changeRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .changeRow .verticals {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+}
+
+/* ── phone (390 frames 303:4790) ── */
+@media (max-width: 639px) {
+  /* Figure 7, option B: the real staircase, area names as plain 16px
+     labels left of their node, the system chip under its node, "next"
+     dashed at the top right, the flat line's label under the baseline */
+  .drawingWide {
+    display: none;
+  }
+
+  .drawingPhone {
+    display: block;
+    margin-top: var(--spacing-12);
+    margin-bottom: var(--spacing-20);
+  }
+
+  .areaChip {
+    flex-direction: row;
+    gap: var(--spacing-1);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: var(--text-label);
+    /* above its tread, ending just left of the node, so no line runs
+       through the word */
+    transform: translate(-100%, calc(-100% - var(--spacing-1)));
+    line-height: 1.2;
+  }
+
+  .sysChip {
+    transform: translate(-50%, calc(100% + var(--spacing-4)));
+  }
+
+  .nextChip {
+    top: calc(var(--spacing-10) * -1);
+    right: 0;
+    font-size: var(--text-label);
+  }
+
+  .nextMore {
+    display: none;
+  }
+
+  .flatLabel {
+    top: calc(var(--base) + var(--spacing-16));
+    font-size: var(--text-label);
+  }
+
+
+  /* the levels stack, one per row, in order (job 42, mobile first) */
+  .levels {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-5);
+  }
+
+  .tokenRow,
+  .tokenRowOn {
+    padding-inline: var(--spacing-2);
+  }
+
+  .changeRow .verticals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card {
+    padding: var(--spacing-5);
+  }
+
+  .cardHead {
+    padding-right: 0;
+  }
+
+  /* the rollout runs down a vertical line */
+  .rollout {
+    grid-template-columns: 1fr;
+    row-gap: var(--spacing-3);
+  }
+
+  .track {
+    top: var(--spacing-6);
+    bottom: var(--spacing-12);
+    left: calc(var(--spacing-12) / 2 - 1px);
+    right: auto;
+    width: 2px;
+    height: auto;
+  }
+
+  .trackLine,
+  .trackShared {
+    left: 0;
+    width: 2px;
+    transform-origin: center top;
+  }
+
+  .trackLine {
+    top: 0;
+    height: 75%;
+  }
+
+  .trackShared {
+    top: 75%;
+    height: 25%;
+  }
+
+  .rStep {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+  }
+
+  .rCard {
+    flex: 1 1 auto;
+  }
+
+  .panels {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/* ── motion (draw easing, plays once; reduced motion keeps the finished
+   frame because none of this applies) ── */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(var(--spacing-3));
+    }
+  }
+
+  @keyframes zoomIn {
+    from {
+      opacity: 0;
+      transform: translateX(-30%) scale(0.4);
+    }
+  }
+
+  @keyframes pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    70% {
+      transform: scale(1.06);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes growX {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  @keyframes growY {
+    from {
+      transform: scaleY(0);
+    }
+  }
+
+  @keyframes draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+  }
+
+  @keyframes turnGreen {
+    from {
+      background: var(--color-semantic-text-primary);
+    }
+  }
+
+  /* not yet in view: hold the start frame (the figure is off screen) */
+  .stage[data-play="off"] .level,
+  .stage[data-play="off"] .levelArrow,
+  .stage[data-play="off"] [data-after],
+  .stage[data-play="off"] .passPop,
+  .stage[data-play="off"] .tierArrow,
+  .stage[data-play="off"] .rStep,
+  .stage[data-play="off"] .panels,
+  .stage[data-play="off"] .areaChip,
+  .stage[data-play="off"] .areaNode,
+  .stage[data-play="off"] .sysNode,
+  .stage[data-play="off"] .sysChip,
+  .stage[data-play="off"] .nextChip {
+    opacity: 0;
+  }
+
+  .stage[data-play="off"] .trackLine,
+  .stage[data-play="off"] .trackShared {
+    transform: scaleX(0);
+  }
+
+  .stage[data-play="off"] .flat,
+  .stage[data-play="off"] .stair {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .stage[data-play="off"] .areaFill {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  /* F4: the file appears, then each level zooms out of the one before
+     (0.6s each) while its arrow draws; then all four hold */
+  .stage[data-play="on"] .level {
+    animation: zoomIn 0.6s var(--motion-easing-draw) both;
+    animation-delay: calc(var(--i) * 0.6s);
+  }
+
+  .stage[data-play="on"] .levelArrow {
+    animation: fadeIn 0.3s var(--motion-easing-draw) both;
+    animation-delay: calc(var(--i) * 0.6s + 0.45s);
+  }
+
+  /* F1: connectors 1 → 2 → 3, the swatch to action.primary, Book now
+     fills, the Before buttons snap into the After style, then the ✓ */
+  .stage[data-play="on"] .tierArrow {
+    animation: fadeIn 0.5s var(--motion-easing-draw) both;
+    animation-delay: calc(var(--i) * 0.5s + 0.2s);
+  }
+
+  .stage[data-play="on"] .swatchOn {
+    animation: pop 0.6s var(--motion-easing-pop) both 1.2s;
+  }
+
+  .stage[data-play="on"] .tokenRowOn {
+    animation: fadeIn 0.6s var(--motion-easing-draw) both 1.4s;
+  }
+
+  .stage[data-play="on"] .kitButton[data-fill] {
+    animation: pop 0.45s var(--motion-easing-pop) both 1.9s;
+  }
+
+  .stage[data-play="on"] [data-after] {
+    animation: pop 0.45s var(--motion-easing-pop) both;
+    animation-delay: calc(var(--i) * 0.12s + 2.4s);
+  }
+
+  .stage[data-play="on"] .passPop {
+    animation: pop 0.45s var(--motion-easing-pop) both 3s;
+  }
+
+  /* F2: the line draws through five steps (2.6s); each step pops as the
+     line reaches it; 4 → 5 turns green; then the two panels rise */
+  .stage[data-play="on"] .trackLine {
+    animation: growX 2.1s linear both 0.1s;
+  }
+
+  .stage[data-play="on"] .trackShared {
+    animation: growX 0.5s linear both 2.2s, turnGreen 0.4s linear both 2.6s;
+  }
+
+  .stage[data-play="on"] .rStep {
+    animation: pop 0.45s var(--motion-easing-pop) both;
+    animation-delay: calc(var(--i) * 0.58s);
+  }
+
+  .stage[data-play="on"] .panels {
+    animation: rise 0.6s var(--motion-easing-out) both 3s;
+  }
+
+  /* F3 (Elleta, 5 Oct; about 2.6s): the flat line draws (0.5s), the
+     system pops at 0.5s, the stair draws 1.6s ease-out with the accent
+     fill revealed behind it; each area node and chip pops at its --d,
+     the moment the line reaches it (0.5s + 1.6s x its length share along
+     the stair, computed in DriftFigures.tsx); "next" fades in last */
+  .stage[data-play="on"] .flat {
+    stroke-dasharray: 1;
+    animation: draw 0.5s linear both;
+  }
+
+  .stage[data-play="on"] .sysNode,
+  .stage[data-play="on"] .sysChip {
+    animation: pop 0.4s var(--motion-easing-pop) both 0.5s;
+  }
+
+  .stage[data-play="on"] .stair {
+    stroke-dasharray: 1;
+    animation: draw 1.6s var(--motion-easing-out) both 0.5s;
+  }
+
+  .stage[data-play="on"] .areaFill {
+    animation: reveal 1.6s var(--motion-easing-out) both 0.5s;
+  }
+
+  .stage[data-play="on"] .areaNode,
+  .stage[data-play="on"] .areaChip {
+    animation: rise 0.4s var(--motion-easing-out) both;
+    animation-delay: var(--d);
+  }
+
+  .stage[data-play="on"] .nextChip {
+    animation: fadeIn 0.4s var(--motion-easing-out) both 2.2s;
+  }
+
+  @keyframes reveal {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @media (max-width: 639px) {
+    .stage[data-play="off"] .trackLine,
+    .stage[data-play="off"] .trackShared {
+      transform: scaleY(0);
+    }
+
+    .stage[data-play="on"] .trackLine {
+      animation-name: growY;
+    }
+
+    .stage[data-play="on"] .trackShared {
+      animation-name: growY, turnGreen;
+    }
+
+    /* the swipe levels sit side by side: no zoom, just appear */
+    .stage[data-play="on"] .level {
+      animation-name: fadeIn;
+    }
+  }
+}
+
+/* ── Showcase card 3 · one token, every screen (Elleta, 5 Oct) ── */
+.everywhere {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+/* the one value the card swaps; indigo is the kit's own default */
+.everywhere[data-swatch="teal"] {
+  --kit-action: var(--kit-swap-teal);
+}
+
+.everywhere[data-swatch="ochre"] {
+  --kit-action: var(--kit-swap-ochre);
+  --kit-on-action: var(--kit-on-swap-ochre);
+}
+
+.everyPill {
+  align-self: flex-start;
+  display: flex;
+  cursor: pointer;
+}
+
+.everyStay,
+.everyBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+}
+
+.everyStayText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  min-width: 0;
+}
+
+/* a figure: tabular digits, right-aligned (CLAUDE.md section 3) */
+.everyTotal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  min-width: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.everyTitle {
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.2;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.everyPrice {
+  font-size: 15px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1.2;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.everyPer {
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-regular);
+  line-height: 1.2;
+  color: var(--color-semantic-text-secondary);
+}
+
+.everySearch {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.everyInput {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.everyIcon {
+  width: var(--spacing-10);
+  height: var(--spacing-10);
+  padding: 0;
+}
+
+.everyFill {
+  font-size: 14px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes everyPulseA {
+    50% {
+      transform: scale(1.06);
+    }
+  }
+
+  @keyframes everyPulseB {
+    50% {
+      transform: scale(1.06);
+    }
+  }
+
+  .everyFill {
+    transition: background-color 0.3s ease-out, color 0.3s ease-out;
+  }
+
+  .everyPill[data-pulse="a"] {
+    animation: everyPulseA 0.24s ease-out;
+  }
+
+  .everyPill[data-pulse="b"] {
+    animation: everyPulseB 0.24s ease-out;
+  }
+}

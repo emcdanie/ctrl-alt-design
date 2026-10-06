@@ -1,13 +1,9 @@
-- region "Fluent in design, code and Bella.":
-  - paragraph: "Words with a dotted underline are buttons: focus or press one to hear what it means and when it matters."
-  - paragraph: About
-  - heading "Fluent in design, code and Bella." [level=1]:
-    - text: ""
-    - button "Bella"
-    - text: ""
-  - paragraph:
-    - text: I build design systems that give designers and developers a
-    - strong: shared language
-    - text: ":"
-    - button "tokens"
-    - text: ", components, and the decisions behind them, written down kindly so everyone can use them."
+- paragraph: About
+- heading "Fluent in design, code and Bella." [level=1]
+- paragraph: "I'm a design engineer for design systems: tokens, components, and the decisions behind them, written down kindly so designers and developers can both use them."
+- paragraph: Open to full-time roles and select freelance projects, working remotely from near Barcelona.
+- button "View CV"
+- link "Let's talk":
+  - /url: /contact
+- figure:
+  - img "Elleta McDaniel with her dog Bella, who is licking her cheek"

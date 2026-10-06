@@ -1,0 +1,1173 @@
+/* Drift figures 2, 3 and 9, drawn at their 1440 design size inside the
+   figure stage and scaled to fit (ScaledArt). Pictures only: kit type sits
+   below the site floors by design (CLAUDE.md section 1, pictures only).
+   Neutrals read the semantic tokens so each picture follows the theme. */
+
+.root {
+  /* the art carries a --spacing-8 (32) bleed so card shadows are not
+     clipped by ScaledArt's overflow; the root pulls it back out to the
+     stage edge at the same scale the art is drawn (32 of the art's
+     unbleed width, --art-w, read as a share of the stage width) */
+  margin: calc(-100% * 32 / var(--art-w));
+}
+
+.bleed {
+  padding: var(--spacing-8);
+}
+
+/* ---------- Figure 1: survey ---------- */
+
+.survey {
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--spacing-8) + var(--spacing-1)) var(--spacing-10) var(--spacing-5);
+  border-radius: var(--radius-xl);
+}
+
+.surveyHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--spacing-4);
+}
+
+.surveyEyebrow {
+  font-family: var(--font-code);
+  font-size: 15px;
+  font-weight: var(--typography-font-weight-medium);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  color: var(--color-semantic-text-secondary);
+}
+
+.surveyMeta {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--color-semantic-text-secondary);
+}
+
+.finding {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-5);
+  padding: calc(var(--spacing-4) + 2px) 0;
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.findingNum {
+  width: 20px;
+  font-family: var(--font-code);
+  font-size: 15px;
+  font-weight: var(--typography-font-weight-medium);
+  line-height: 1.4;
+  color: var(--color-semantic-text-secondary);
+}
+
+.findingLine {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: 26px;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.findingLead {
+  font-weight: var(--typography-font-weight-semibold);
+  letter-spacing: -0.015em;
+  color: var(--color-semantic-text-primary);
+}
+
+.findingWord {
+  color: var(--color-semantic-text-secondary);
+}
+
+.findingStop {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.findingMark {
+  padding: 0 calc(var(--spacing-1) + 2px);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-semantic-accent) 42%, var(--color-semantic-surface));
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--color-semantic-text-primary);
+}
+
+/* ---------- Figure 2: 17 buttons ---------- */
+
+.buttonsArt {
+  position: relative;
+  width: 928px;
+  height: 401px;
+}
+
+.auditCard {
+  position: absolute;
+  top: 14.97px;
+  left: 190.84px;
+  width: 561.29px;
+  height: 383.58px;
+}
+
+.auditHead {
+  position: absolute;
+  top: 29.94px;
+  left: 29.94px;
+  width: 501.42px;
+  height: 31.1px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.auditTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: 20px;
+  font-weight: var(--typography-font-weight-semibold);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--color-semantic-text-primary);
+}
+
+.auditCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 31.7px;
+  height: 23.74px;
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-danger-subtle);
+  color: var(--color-semantic-danger-text);
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.auditFilter {
+  display: inline-flex;
+  align-items: center;
+  height: 31.1px;
+  padding: 0 var(--spacing-3);
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  color: var(--color-semantic-text-secondary);
+  white-space: nowrap;
+}
+
+/* RESERVE (the 5th button, a near-black fill) sinks into the dark card:
+   an edge in the strong border token, dark theme only (job 38) */
+.reserveEdge {
+  display: none;
+  position: absolute;
+  top: 3.87px;
+  left: 409.1px;
+  width: 92.16px;
+  height: 35.71px;
+  pointer-events: none;
+}
+
+:global([data-theme="dark"]) .reserveEdge,
+:global([data-theme="dark"]) .driftedOne[data-n="5"]::after {
+  display: block;
+  box-shadow: inset 0 0 0 1px var(--color-semantic-border-strong);
+}
+
+.auditButtons {
+  position: absolute;
+  top: 87.23px;
+  left: 29.94px;
+  width: 501.42px;
+  height: 236.42px;
+}
+
+.drifted {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+
+.kept {
+  position: absolute;
+  top: 126.19px;
+  left: 230.52px;
+  width: 104.42px;
+  height: 43.45px;
+}
+
+.keptButton {
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+}
+
+/* the verdict tags, inside the card's bottom edge (in .auditButtons
+   units): "Drifted" on the left, "Kept" centred on the row-4 gutter
+   (x 292.97, between Book stay and Select room) under the ring */
+.auditFail,
+.keptTag {
+  position: absolute;
+  top: 252px;
+}
+
+.auditFail {
+  left: 0;
+}
+
+.keptTag {
+  left: 292.97px;
+  transform: translateX(-50%);
+}
+
+.keptLeader {
+  position: absolute;
+  top: 172px;
+  left: 286.97px;
+  overflow: visible;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.arrowHead {
+  stroke-dasharray: none;
+}
+
+.calloutSlot {
+  position: absolute;
+  display: flex;
+  height: 39.58px;
+}
+
+.calloutSlot[data-side="left"] {
+  left: 0;
+}
+
+.calloutSlot[data-side="right"] {
+  right: 0;
+}
+
+.callout > span {
+  background: var(--markup-line);
+}
+
+.callout {
+  height: 100%;
+  padding: 0 var(--spacing-4);
+  font-size: 16px;
+}
+
+/* ---------- Figure 8: shipped on the system ---------- */
+
+.shippedArt {
+  position: relative;
+  width: 960px;
+  height: 698px;
+}
+
+.atomsAt {
+  position: absolute;
+  top: 83.33px;
+  left: 0;
+  width: 264px;
+  height: 468.62px;
+}
+
+.atoms {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-6);
+}
+
+.atomsTitle {
+  font-size: 24px;
+  font-weight: var(--typography-font-weight-semibold);
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+  color: var(--color-semantic-text-primary);
+}
+
+.atomsLead {
+  margin-top: var(--spacing-1);
+  font-size: 17px;
+  line-height: 1.3;
+  color: var(--color-semantic-text-body);
+}
+
+.atomRows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-3);
+}
+
+.atomRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 var(--spacing-3) 0 calc(var(--spacing-3) + 2px);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-semantic-surface-inset) 55%, var(--color-semantic-surface));
+}
+
+.atomLabel {
+  font-size: 16px;
+  color: var(--color-semantic-text-body);
+}
+
+.atomInput {
+  width: 120px;
+}
+
+.areas {
+  position: absolute;
+  top: 0;
+  left: 384px;
+  width: 576px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.area {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-3) + 2px);
+  padding: calc(var(--spacing-4) + 2px) var(--spacing-5);
+}
+
+.areaHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 22.75px;
+}
+
+.areaTitle {
+  font-size: 19px;
+  font-weight: var(--typography-font-weight-semibold);
+  letter-spacing: -0.01em;
+  color: var(--color-semantic-text-primary);
+}
+
+.ringed {
+  position: relative;
+  display: inline-flex;
+}
+
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.searchInput {
+  width: 300px;
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  height: 60.28px;
+  padding: 0 var(--spacing-4) 0 var(--spacing-3);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-semantic-surface-inset) 55%, var(--color-semantic-surface));
+}
+
+.carrier {
+  flex: 0 0 auto;
+}
+
+.carrierGround {
+  fill: var(--kit-carrier);
+}
+
+.carrierGlyph {
+  fill: none;
+  stroke: var(--kit-on-action);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.carrierStripe {
+  stroke: var(--color-semantic-accent);
+  stroke-width: 2.4;
+}
+
+.times {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.timesMain {
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-text-primary);
+}
+
+.timesSub {
+  font-size: 15px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.price {
+  font-size: 19px;
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-text-primary);
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  height: 18.6px;
+  align-items: center;
+  font-size: 15px;
+  color: var(--color-semantic-text-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.payRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-top: var(--spacing-3);
+  border-top: 1px solid var(--color-semantic-border);
+}
+
+.totalStack {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.totalLabel {
+  font-size: 15px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.totalValue {
+  font-size: 24px;
+  font-weight: var(--typography-font-weight-semibold);
+  letter-spacing: -0.01em;
+  color: var(--color-semantic-text-primary);
+}
+
+.pay {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.secure {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing-1) + 2px);
+  font-size: 15px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.lock {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.users {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-3) + 2px);
+}
+
+.leaderDot {
+  fill: var(--markup-line);
+}
+
+.alsoAt {
+  position: absolute;
+  top: 665px;
+  left: 0;
+}
+
+.alsoLive {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-2) + 2px);
+  height: 32.6px;
+}
+
+.alsoLabel {
+  margin-right: var(--spacing-1);
+  font-size: 17px;
+  color: var(--color-semantic-text-body);
+}
+
+.alsoChip,
+.alsoNext {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  height: 32.6px;
+  padding: 0 var(--spacing-3);
+  border-radius: var(--radius-pill);
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.alsoChip {
+  border: 1px solid var(--color-semantic-border);
+  background: var(--color-semantic-surface);
+  color: var(--color-semantic-text-primary);
+}
+
+.alsoDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-success);
+}
+
+.alsoNext {
+  background: var(--color-semantic-surface-inset);
+  color: var(--color-semantic-text-secondary);
+}
+
+/* ---------- Figure 5 and the case hero: the Harbour loft stay card ----------
+   Fixed rows, so the anatomy pins in Figure 5 meet their parts: from the
+   card top, photo 0 to 180, title centre 214, location 245, stars 271,
+   divider 296, amenities 313 to 353, divider 369, footer centre 406,
+   bottom 446. 300 wide at most: the photo is a 600px source. */
+
+.stay {
+  width: 300px;
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.stayPhoto {
+  position: relative;
+  height: 180px;
+}
+
+.stayPhoto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stayControl {
+  position: absolute;
+  top: var(--spacing-3);
+  display: inline-flex;
+  padding: var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--cover-on-photo);
+  color: var(--cover-on-photo-ink);
+  box-shadow: var(--shadow-ui);
+}
+
+.stayControl[data-at="start"] {
+  left: var(--spacing-3);
+}
+
+.stayControl[data-at="end"] {
+  right: var(--spacing-3);
+}
+
+.stayGlyph,
+.stayPin,
+.stayAmenityGlyph {
+  display: block;
+  flex: 0 0 auto;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.stayGlyph {
+  width: 16px;
+  height: 16px;
+}
+
+.stayCount {
+  position: absolute;
+  left: var(--spacing-3);
+  bottom: var(--spacing-3);
+  padding: 2px var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--cover-photo-scrim);
+  color: var(--cover-on-photo);
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-medium);
+  line-height: 16px;
+}
+
+.stayBody {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-5);
+}
+
+.stayTitle {
+  font-size: 24px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 28px;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.stayWhere,
+.stayRating {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  margin-top: var(--spacing-2);
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--color-semantic-text-secondary);
+  white-space: nowrap;
+}
+
+.stayPin {
+  width: 16px;
+  height: 16px;
+}
+
+.stayStars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.stayStar {
+  width: 15px;
+  height: 15px;
+  fill: var(--color-semantic-accent);
+}
+
+.stayScore {
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-text-primary);
+}
+
+.stayReviews {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.stayAmenities {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--spacing-4);
+  padding-block: var(--spacing-4);
+  border-block: 1px solid var(--color-semantic-border);
+}
+
+.stayAmenity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-1);
+  height: 40px;
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--color-semantic-text-secondary);
+}
+
+.stayAmenityGlyph {
+  width: 20px;
+  height: 20px;
+}
+
+.stayFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  margin-top: var(--spacing-4);
+}
+
+.stayBook {
+  height: 40px;
+}
+
+.stayPrice {
+  font-size: 22px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
+}
+
+.stayNight {
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-regular);
+  color: var(--color-semantic-text-secondary);
+}
+
+/* the drifted list: each row its own type, case and button. Its inks
+   stay AA on the card in both themes: drift is shape, case and weight,
+   never an unreadable colour */
+.drift {
+  --drift-ink: var(--kit-ramp-600);
+  --drift-ink-b: var(--kit-ramp-700);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  width: 400px;
+  padding: var(--spacing-6) var(--spacing-6) var(--spacing-5);
+  border-radius: var(--radius-md);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+  color: var(--color-semantic-text-primary);
+}
+
+:global([data-theme="dark"]) .drift {
+  --drift-ink: var(--kit-ramp-300);
+  --drift-ink-b: var(--kit-ramp-200);
+}
+
+.driftHead {
+  font-size: 22px;
+  font-weight: var(--typography-font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.driftCount {
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-regular);
+  color: var(--color-semantic-text-secondary);
+}
+
+.driftRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.driftThumb {
+  display: block;
+  width: 88px;
+  height: 76px;
+  flex: 0 0 auto;
+  object-fit: cover;
+}
+
+.driftThumb[data-shape="round"] {
+  border-radius: var(--radius-lg);
+}
+
+.driftText {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.driftNameA {
+  font-size: 18px;
+  font-weight: var(--typography-font-weight-medium);
+  line-height: 1.2;
+}
+
+.driftStarsA {
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--drift-ink);
+}
+
+.driftPriceA {
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.driftNameB {
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.driftStarsB {
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--drift-ink-b);
+}
+
+.driftPriceB {
+  font-size: 18px;
+  font-weight: var(--typography-font-weight-bold);
+  line-height: 1.2;
+}
+
+.driftPerk {
+  align-self: flex-start;
+  padding: var(--spacing-1) var(--spacing-2);
+  background: color-mix(in srgb, var(--color-semantic-accent) 30%, var(--color-semantic-surface));
+  font-size: 14px;
+  font-weight: var(--typography-font-weight-bold);
+  line-height: 1.2;
+}
+
+/* one drifted button, cropped from Figure 2's picture (DriftedButton) */
+.driftedOne {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+.driftedOne::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.driftedOne img {
+  position: absolute;
+  display: block;
+  max-width: none;
+}
+
+/* Figure 5: the card at x 314, y 32 in the 928-wide art; the pins meet
+   its parts at the y the card's fixed rows put them */
+.anatomyArt {
+  position: relative;
+  width: 928px;
+  height: 510px;
+}
+
+.anatomyCard {
+  position: absolute;
+  left: 314px;
+  top: 32px;
+}
+
+.pinSlot {
+  position: absolute;
+  display: flex;
+  transform: translateY(-50%);
+}
+
+.pinSlot[data-side="left"] {
+  right: 678px;
+}
+
+.pinSlot[data-side="right"] {
+  left: 678px;
+}
+
+.pin {
+  font-family: var(--font-code);
+  font-size: 16px;
+}
+
+.pinSwatch {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: var(--radius-pill);
+}
+
+/* ---------- the showcase, "17 → 1 → everywhere" (Elleta, 5 Oct) ---------- */
+
+/* card 1: the 17 count, then six of the drifted buttons */
+.driftedSet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.countPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 100%;
+  max-width: max-content;
+  height: 28px;
+  padding: 0 var(--spacing-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-danger-subtle);
+  color: var(--color-semantic-danger-text);
+  font-size: 16px;
+  font-weight: var(--typography-font-weight-semibold);
+  line-height: 1;
+}
+
+/* card 2: the system button, three pins on dashed leaders */
+.mini {
+  position: relative;
+  display: block;
+  width: 232px;
+  height: 196px;
+}
+
+.miniButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 44px;
+  padding: 0 var(--spacing-6);
+  border-radius: var(--radius-card);
+}
+
+.miniLeaders {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.miniDot {
+  fill: var(--markup-line);
+  stroke: var(--color-semantic-surface);
+  stroke-width: 1.5;
+}
+
+.miniPin {
+  position: absolute;
+  left: 44px;
+  display: flex;
+  transform: translateY(-50%);
+}
+
+/* the hero collage's pins: a 6px float and one swatch change, motion only */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes pinFloat {
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  @keyframes pinSwap {
+    to {
+      background: var(--kit-swap-teal);
+    }
+  }
+
+  /* one float, 4s, then still: nothing moves on its own past 5s
+     (WCAG 2.2.2, job 34) */
+  .pinFloat {
+    animation: pinFloat 4s ease-in-out 1;
+  }
+
+  .pinSwap {
+    animation: pinSwap 0.3s ease-out 1s both;
+  }
+
+  .pinSwatch {
+    transition: background-color 0.3s ease-out;
+  }
+}
+
+/* Figure 8: the Case UI kit's small sizes (sm button 13, chip 13, status
+   12, email 13) lifted to 15 inside this figure, so they stay 14px or
+   more after the 0.97 scale at 1440 and on the phone panels (job 38).
+   Kit.module.css is shared; this only reaches Drift's own parts. */
+.floor .kitFloor[class] {
+  font-size: 15px;
+}
+
+.floor .users > span > span > span:last-child,
+.floor .users > span > span:last-child {
+  font-size: 15px;
+}
+
+/* ---------- the phone swipes (below 640px, job 38) ----------
+   One part per panel at its own size, nothing scaled: text 14px or more */
+.panel {
+  height: 100%;
+}
+
+.panel > div {
+  height: 100%;
+}
+
+.phoneCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  height: 100%;
+  padding: var(--spacing-5);
+}
+
+.phoneEyebrow {
+  font-family: var(--font-code);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-semantic-text-secondary);
+}
+
+.phoneFinding {
+  font-size: 22px;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.phoneFinding .findingMark {
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.phoneMeta {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-semantic-text-secondary);
+}
+
+.phoneHead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+}
+
+.phoneSet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.phoneKept {
+  height: 43px;
+  padding: 0 var(--spacing-4);
+  font-size: 14px;
+}
+
+.phoneVerdicts {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.phoneNotes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.phoneNote {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+}
+
+.phoneCallout > span {
+  background: var(--markup-line);
+}
+
+/* full column width, but never past 300: the photo's only source is
+   600px (audit:sharp, 2x; job 42) */
+.phoneStay {
+  width: 100%;
+  max-width: 300px;
+  height: 100%;
+  margin-inline: auto;
+}
+
+.phonePins {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.phonePinRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-1);
+}
+
+.phoneShip {
+  display: block;
+  height: 100%;
+}
+
+.phoneShip > * {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+.phoneShip .areaHead {
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  height: auto;
+}
+
+/* a user row: the role tag drops under the name, in line with it */
+.phoneShip .users > span {
+  flex-wrap: wrap;
+  row-gap: var(--spacing-1);
+}
+
+.phoneShip .users > span > span:last-child {
+  margin-left: var(--spacing-12); /* the 36px avatar plus its 12px gap */
+}
+
+.phoneShip .searchRow,
+.phoneShip .result,
+.phoneShip .pay,
+.phoneShip .payRow {
+  flex-wrap: wrap;
+}
+
+.phoneShip .searchInput {
+  width: 100%;
+}
+
+.phoneShip .result {
+  height: auto;
+  padding-block: var(--spacing-3);
+}
+
+.phoneShip .times {
+  flex-basis: 60%;
+}
+
+.phoneShip .line {
+  height: auto;
+  gap: var(--spacing-3);
+}
+
+.alsoPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+  padding: var(--spacing-5);
+  border-radius: var(--radius-lg);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.alsoPanel .alsoChip,
+.alsoPanel .alsoNext {
+  white-space: normal;
+  height: auto;
+  min-height: 32.6px;
+}

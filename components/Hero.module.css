@@ -1,77 +1,536 @@
-/* Home opening (home rebuild, 19 Sep 2026). The Section supplies the
- * padding and the container; one text column since Part Q (21 Sep):
- * the hero art and its scroll drift are gone. */
+/* Home hero v4 (Elleta, 5 Oct 2026, job 43c). Figma 371:37889 on its
+ * 1440 canvas: every position and size below is a Figma pixel times
+ * --u (one Figma pixel, see --hero-u), measured from the canvas's left
+ * edge and from Figma y 110. Distances inside the stage are in --k (one
+ * stage pixel of 450): --u on wide screens, the phone stage's own on a
+ * phone. --hero-p (1 apart, 0 assembled) is set on .hero by the
+ * component and drives every transform. */
+
+/* the scroll runway: the frame holds still (sticky) while the first
+   --hero-scroll of scroll assembles it */
+/* --u and --hero-h live here, not on .hero, so the runway's own height
+   can read them (I1, 6 Oct 2026: on .hero only, this calc was invalid,
+   the runway was 0 and the sticky frame never held); .hero inherits */
+.scroller {
+  --u: var(--hero-u);
+  /* the stage's bottom sits at Figma y 610 and hangs into the Section's
+     bottom padding, so the photo lands on the hero's bottom edge (18d) */
+  --hero-h: calc(500 * var(--u) - var(--section-pad-y));
+  height: calc(var(--hero-h) + var(--hero-scroll));
+}
 
 .hero {
-  display: grid;
+  --hero-p: 1;
+  --k: var(--u);
+  position: sticky;
+  top: calc(var(--header-height) + var(--section-pad-y));
+  width: var(--hero-canvas);
+  height: var(--hero-h);
+  margin-inline: calc((100% - var(--hero-canvas)) / 2);
 }
 
-/* status line: dot + availability, then name and place */
-.status {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-2) var(--spacing-4);
-  /* the mock's eyebrow gap (portfolio-preview.html, item 5): 16px to the h1 */
-  margin: 0 0 var(--spacing-4);
+.col {
+  position: absolute;
+  z-index: 6;
 }
 
-/* metadata tier, like the line it sits in */
-.metaItem {
+.left {
+  left: calc(144 * var(--u));
+  top: calc(69 * var(--u));
+}
+
+.right {
+  left: calc(975 * var(--u));
+  top: calc(47 * var(--u));
+}
+
+.word {
+  margin: 0;
+  font-size: calc(82 * var(--u));
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--color-semantic-text-primary);
   white-space: nowrap;
 }
 
+.engineer {
+  font-size: calc(78 * var(--u));
+}
+
+/* the pattern dot after "design" */
 .dot {
   display: inline-block;
-  width: 0.5rem;
-  height: 0.5rem;
-  margin-right: var(--spacing-2);
+  width: 0.2em;
+  height: 0.2em;
+  margin-left: 0.05em;
   border-radius: var(--radius-full);
-  background: var(--case-clarity-text);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--case-clarity-text) 18%, transparent);
+  background: url(/images/home/pattern-dot.webp) center / cover;
 }
 
-/* size, measure, weight, tracking, leading and the squeeze come from
-   the Heading primitive (hero tier, squeeze) */
-.headline {
-  margin: 0 0 var(--hero-lead-gap);
+.sub {
+  width: calc(268 * var(--u));
+  margin: calc(22 * var(--u)) 0 0;
+  font-size: max(1rem, calc(22 * var(--u)));
+  line-height: 1.5;
+  color: var(--color-semantic-text-body);
+  text-wrap: pretty;
 }
 
-/* the mock's lead (portfolio-preview.html, item 5): muted, 40ch */
-.lead {
-  margin: 0 0 var(--spacing-6);
-  max-width: 40ch;
-  font-size: var(--text-hero-lead);
-  line-height: 1.55;
-  color: var(--color-ink-muted);
+/* the code line wears ochre angle brackets: generated, so nothing reads
+   or measures them as text */
+.subCode {
+  position: relative;
+  width: calc(330 * var(--u));
 }
 
-.ctas {
+.subCode::before,
+.subCode::after {
+  color: var(--color-semantic-accent);
+}
+
+.subCode::before {
+  content: "<" / "";
+}
+
+.subCode::after {
+  content: ">" / "";
+}
+
+/* "engineer" in the ochre corners: 26 square, 3px, the box 22 / 54 round
+   the word (Figma) */
+.corners {
+  position: relative;
+  display: inline-block;
+  padding: 0.282em 0.692em;
+}
+
+.corners i {
+  position: absolute;
+  width: 0.333em;
+  height: 0.333em;
+  border: 3px solid var(--color-brand-ochre);
+}
+
+.tl {
+  top: 0;
+  left: 0;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  border-top-left-radius: var(--radius-sm);
+}
+
+.tr {
+  top: 0;
+  right: 0;
+  border-left: 0 !important;
+  border-bottom: 0 !important;
+  border-top-right-radius: var(--radius-sm);
+}
+
+.bl {
+  bottom: 0;
+  left: 0;
+  border-right: 0 !important;
+  border-top: 0 !important;
+  border-bottom-left-radius: var(--radius-sm);
+}
+
+.br {
+  bottom: 0;
+  right: 0;
+  border-left: 0 !important;
+  border-top: 0 !important;
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+/* the callouts (Figma "Hero / Callout chip"): flat, facing the viewer,
+   under the right lede; they come with the plates */
+.callouts {
+  display: grid;
+  justify-items: start;
+  gap: calc(7.6 * var(--u));
+  margin: calc(24 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+  opacity: var(--hero-p);
+}
+
+.callouts li {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: var(--spacing-3) var(--spacing-6);
+  gap: calc(12 * var(--u));
+  padding: calc(10 * var(--u)) calc(20 * var(--u)) calc(10 * var(--u)) calc(14 * var(--u));
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-full);
+  background: var(--color-semantic-surface);
+  box-shadow: 0 6px 9px color-mix(in srgb, var(--color-light-ink) 8%, transparent);
+  font-family: var(--font-code);
+  font-feature-settings: var(--mono-feature);
+  font-size: max(0.875rem, calc(16 * var(--u)));
+  line-height: 1.4;
+  color: var(--color-semantic-text-primary);
+  white-space: nowrap;
 }
 
-.quietLink {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--spacing-touch-target);
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink);
-  text-decoration: underline;
-  text-decoration-color: var(--color-semantic-border);
-  text-underline-offset: 4px;
+.callouts i {
+  flex: none;
+  width: max(0.875rem, calc(18 * var(--u)));
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
 }
 
-.quietLink:hover,
-.quietLink:focus-visible {
-  color: var(--color-accent-ink);
-  text-decoration-color: currentColor;
+.callouts i[data-dot="ochre"] {
+  background: var(--color-semantic-accent);
 }
 
-.quietLink:focus-visible {
-  outline: var(--ring-focus-width) solid var(--ring-focus-color);
-  outline-offset: var(--ring-focus-offset);
+.callouts i[data-dot="peach"] {
+  background: var(--color-chip-c2);
+}
+
+.callouts i[data-dot="ink"] {
+  background: var(--color-semantic-text-primary);
+}
+
+.callouts i[data-dot="ground"] {
+  border: 1px solid var(--color-semantic-border);
+  background: var(--color-semantic-background);
+}
+
+/* ── the stage: 450 x 454, its bottom at Figma y 610 ── */
+.stage {
+  position: absolute;
+  left: calc(468.5 * var(--u));
+  bottom: calc(0px - var(--section-pad-y));
+  z-index: 4;
+  width: calc(450 * var(--k));
+  height: calc(454 * var(--k));
+  perspective: calc(1800 * var(--k));
+}
+
+/* a soft contact shadow under the assembled stage (18h): ink-tinted,
+   below the photo, gone while pulled apart */
+.stage::after {
+  content: "";
+  position: absolute;
+  left: -30%;
+  right: -10%;
+  bottom: -1.75rem;
+  z-index: 0;
+  height: 3.5rem;
+  background: radial-gradient(50% 50% at 50% 50%, var(--hero-contact), transparent 70%);
+  opacity: calc(1 - var(--hero-p));
+  pointer-events: none;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+}
+
+/* the pulled-apart plate: ground, hairline and shadow fade in with
+   --hero-p. Glass in both themes (18e); the photo's plate has no fill */
+.layer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-card);
+  background: var(--hero-plate-fill);
+  outline: 1px solid var(--hero-plate-line);
+  box-shadow: var(--hero-plate-shadow);
+  opacity: var(--hero-p);
+}
+
+.you::before {
+  background: none;
+}
+
+/* the lab's turn: each plate moves in x, y and depth, turns 6deg and
+   shrinks to 70% as it pulls apart. The pattern sits behind the photo in
+   every state */
+.paint {
+  z-index: 2;
+  transform: translate3d(calc(-99 * var(--k) * var(--hero-p)), calc(-9 * var(--k) * var(--hero-p)), calc(-72 * var(--k) * var(--hero-p)))
+    rotateY(calc(var(--hero-turn) * var(--hero-p))) scale(calc(1 - var(--hero-shrink) * var(--hero-p)));
+}
+
+.you {
+  z-index: 3;
+  transform: translate3d(calc(-9 * var(--k) * var(--hero-p)), calc(-81 * var(--k) * var(--hero-p)), 0)
+    rotateY(calc(var(--hero-turn) * var(--hero-p))) scale(calc(1 - var(--hero-shrink) * var(--hero-p)));
+}
+
+.agent {
+  z-index: 5;
+  opacity: var(--hero-p);
+  transform: translate3d(calc(81 * var(--k) * var(--hero-p)), calc(-153 * var(--k) * var(--hero-p)), calc(72 * var(--k) * var(--hero-p)))
+    rotateY(calc(var(--hero-turn) * var(--hero-p))) scale(calc(1 - var(--hero-shrink) * var(--hero-p)));
+}
+
+/* the soft fill (lock 24): the pattern without its dark ground,
+   feathered, a colour cloud behind her and Bella. 112% of the plate
+   (Figma), capped at half its natural width so it stays sharp at 2x */
+.soft {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(112%, 28.125rem);
+  max-width: none;
+  height: auto;
+  opacity: 0.8;
+  transform: translate(-50%, -50%);
+  -webkit-mask-image: radial-gradient(closest-side, black 52%, transparent 100%);
+  mask-image: radial-gradient(closest-side, black 52%, transparent 100%);
+}
+
+.portrait {
+  position: absolute;
+  inset: 0;
+  display: block;
+  height: 100%;
+}
+
+/* the photo + faint code group (18h): wide enough to hold the portrait
+   (120% of the stage) and the code past it, so one mask fades both at
+   the bottom. The fade only shows assembled */
+.group {
+  --group-k: 1.6;
+  position: absolute;
+  inset: 0 calc((1 - var(--group-k)) * 100%) 0 0;
+  -webkit-mask-image: linear-gradient(to bottom, black 86%, color-mix(in srgb, black calc(var(--hero-p) * 100%), transparent) 100%);
+  mask-image: linear-gradient(to bottom, black 86%, color-mix(in srgb, black calc(var(--hero-p) * 100%), transparent) 100%);
+}
+
+.portrait {
+  z-index: 1; /* above the faint code in the same group */
+  width: calc(120% / var(--group-k));
+  max-width: none;
+  filter: drop-shadow(var(--hero-shadow));
+  clip-path: inset(0);
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-card);
+  background-image:
+    linear-gradient(var(--hero-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hero-grid-line) 1px, transparent 1px);
+  background-size: var(--spacing-4) var(--spacing-4);
+}
+
+/* --space-2, measured from the photo plate's edge to the agent plate's */
+.measure {
+  position: absolute;
+  left: 69.6%;
+  right: 0;
+  top: 93.4%;
+  height: calc(10 * var(--k));
+  overflow: visible;
+  translate: 0 -50%;
+}
+
+.measure path {
+  fill: none;
+  stroke: var(--hero-measure);
+  stroke-width: 1.5;
+}
+
+/* pin anchors, on each plate (Figma's pin centres) */
+.anchor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+}
+
+.paint .anchor {
+  left: 99.5%;
+  top: 72.5%;
+}
+
+.you .anchor {
+  left: 95.2%;
+  top: 52.2%;
+}
+
+.agent .anchor[data-anchor="03"] {
+  left: 67.7%;
+  top: 26.2%;
+}
+
+.agent .anchor[data-anchor="04"] {
+  left: 85.8%;
+  top: 93.8%;
+}
+
+/* the pins: flat, on their anchors (placed by the component) */
+.pin {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 8;
+  width: calc(18 * var(--u));
+  height: calc(18 * var(--u));
+  margin: calc(-9 * var(--u)) 0 0 calc(-9 * var(--u));
+  opacity: var(--hero-p);
+  pointer-events: none;
+}
+
+.pin circle {
+  fill: var(--color-semantic-text-primary);
+}
+
+.pin path {
+  fill: var(--color-semantic-background);
+}
+
+.pin[data-ochre] circle {
+  fill: var(--color-semantic-accent);
+}
+
+.pin[data-ochre] path {
+  fill: var(--color-chip-text);
+}
+
+/* the leaders: dashed elbows, pin to callout, an open chevron at the chip */
+.leaders {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  opacity: var(--hero-p);
+}
+
+.leaders :global(path) {
+  fill: none;
+  stroke: var(--color-semantic-text-primary);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 5;
+}
+
+.leaders :global(path[data-chev]) {
+  stroke-dasharray: none;
+}
+
+/* the pattern ribbon: behind, flowing out left, fading */
+.trail {
+  position: absolute;
+  left: calc(-500 * var(--k));
+  bottom: 0;
+  z-index: 1;
+  width: calc(620 * var(--k));
+  height: calc(260 * var(--k));
+  opacity: calc(var(--hero-ribbon) * (1 - var(--hero-p)));
+}
+
+.trail img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: linear-gradient(90deg, black 80%, transparent 100%), linear-gradient(to bottom, black 70%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, black 80%, transparent 100%), linear-gradient(to bottom, black 70%, transparent 100%);
+  mask-composite: intersect;
+  clip-path: inset(0 0 0 calc(100% * var(--hero-p)));
+}
+
+/* faint code behind the hair and shoulder (18f), gone while apart */
+.code {
+  position: absolute;
+  left: calc(76% / var(--group-k));
+  top: 56%;
+  z-index: 0;
+  width: calc(370 * var(--k));
+  max-width: none;
+  height: auto;
+  opacity: calc(0.5 * (1 - var(--hero-p)));
+}
+
+/* phone: words stacked over the stage, assembles as it scrolls into
+   view; no pins, leaders or callouts */
+@media (max-width: 900px) {
+  .scroller {
+    height: auto;
+  }
+
+  .hero {
+    --k: calc(min((100vw - var(--layout-gutter)) / 1.2, 20.625rem) / 450);
+    position: relative;
+    top: auto;
+    width: auto;
+    height: auto;
+    margin-inline: 0;
+  }
+
+  .col {
+    position: static;
+    margin-top: var(--spacing-4);
+  }
+
+  .right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .word,
+  .engineer {
+    font-size: var(--hero-word);
+  }
+
+  .engineer {
+    font-size: calc(var(--hero-word) * 0.95);
+  }
+
+  .sub,
+  .subCode {
+    align-self: stretch;
+    width: auto;
+    margin-top: var(--spacing-4);
+    font-size: var(--typography-font-size-lg);
+  }
+
+  .corners i {
+    border-width: 2px;
+  }
+
+  .stage {
+    position: relative;
+    left: auto;
+    /* the portrait runs 120% of the stage: sized so it ends on the
+       screen edge, uncropped, and sits on the hero's bottom edge */
+    width: min(calc((100% + var(--layout-gutter)) / 1.2), 20.625rem);
+    height: auto;
+    aspect-ratio: 450 / 454;
+    top: var(--section-pad-y);
+    margin: calc(var(--space-stack-md) - var(--section-pad-y)) 0 0;
+  }
+
+  .code,
+  .callouts,
+  .pin,
+  .leaders,
+  .measure {
+    display: none;
+  }
+
+  .group {
+    --group-k: 1.2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero {
+    --hero-p: 0;
+    position: relative;
+    top: auto;
+  }
+
+  .scroller {
+    height: auto;
+  }
 }

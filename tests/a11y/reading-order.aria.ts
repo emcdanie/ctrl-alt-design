@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import { HOME_STORY } from "../../lib/copy";
 
 /* Reading order as a screen reader meets it: the accessibility tree of
    each section, snapshotted per viewport. If a layout change reorders
@@ -28,8 +29,8 @@ test.describe("About", () => {
   test("experience", async ({ page }) => {
     await expect(page.locator("#track-record")).toMatchAriaSnapshot(snap("about-experience"));
   });
-  test("logo grid", async ({ page }) => {
-    await expect(page.locator("#the-pack")).toMatchAriaSnapshot(snap("about-logos"));
+  test("house rules", async ({ page }) => {
+    await expect(page.locator("#house-rules")).toMatchAriaSnapshot(snap("about-house-rules"));
   });
   test("testimonials", async ({ page }) => {
     await expect(page.locator("#word-of-mouth")).toMatchAriaSnapshot(snap("about-testimonials"));
@@ -57,11 +58,8 @@ test.describe("Home", () => {
     await open(page, "/");
   });
   test("hero", async ({ page }) => {
-    await expect(page.locator("main h1")).toHaveAccessibleName("AI-enabled design systems. Built to stop drift.");
+    await expect(page.locator("main h1")).toHaveAccessibleName(HOME_STORY);
     await expect(page.locator('[aria-labelledby="home-hero-title"]')).toMatchAriaSnapshot(snap("home-hero"));
-  });
-  test("teams row", async ({ page }) => {
-    await expect(page.getByRole("group", { name: "Worked with" })).toMatchAriaSnapshot(snap("home-logos"));
   });
   for (const id of ["selected-work", "how-i-work", "word-of-mouth"])
     test(id, async ({ page }) => {
@@ -84,8 +82,8 @@ test.describe("Nav", () => {
 });
 
 /* The experience accordion without JavaScript: the server renders every
-   panel open, so the content is all there. With JavaScript only the
-   current role stays open. */
+   panel open, so the content is all there. With JavaScript every role
+   starts collapsed. */
 test.describe("About experience without JavaScript", () => {
   test.use({ javaScriptEnabled: false });
   test("every panel is visible", async ({ page }) => {
@@ -96,12 +94,14 @@ test.describe("About experience without JavaScript", () => {
   });
 });
 
-test("About experience with JavaScript: only the current role is open", async ({ page }) => {
+/* site v3 (Figma 403:7256): every row starts collapsed to its outcome
+   line; the chevron opens the bullets */
+test("About experience with JavaScript: every role starts collapsed", async ({ page }) => {
   await open(page, "/about");
   const triggers = page.locator("#track-record .accordion__trigger");
-  await expect(triggers.first()).toHaveAttribute("aria-expanded", "true");
-  for (let i = 1; i < (await triggers.count()); i++) await expect(triggers.nth(i)).toHaveAttribute("aria-expanded", "false");
-  await expect(page.locator("#track-record .accordion__panel").nth(1)).toBeHidden();
+  await expect(triggers).toHaveCount(5);
+  for (let i = 0; i < (await triggers.count()); i++) await expect(triggers.nth(i)).toHaveAttribute("aria-expanded", "false");
+  await expect(page.locator("#track-record .accordion__panel").first()).toBeHidden();
 });
 
 test.describe("Learning", () => {
@@ -122,39 +122,22 @@ test.describe("Learning", () => {
   });
 });
 
-/* The Drift case's zoom story (Geist refresh, 22 Sep 2026). A phrase
-   reached by KEYBOARD does what a hover does: it lights its phrase and
-   switches the picture to its zoom level. The tabs are a tablist with
-   arrow keys; the users & roles pins are buttons that open the decision
-   under the picture, and Escape closes it. */
-test.describe("Case study: zoom story", () => {
+/* The Drift case on the Site v3 template (4 Oct 2026; replaces the 22 Sep
+   zoom story, whose tabs and pins left with the rebuild). A figure with
+   motion has Replay at every width; no figure has Enlarge (removed 4 Oct
+   late: the page's own pinch-zoom does the job). */
+test.describe("Case study: figures", () => {
   test.beforeEach(async ({ page }) => {
     await open(page, "/case-studies/design-system-transformation");
   });
 
-  test("focusing a phrase selects its zoom level", async ({ page }) => {
-    const phrase = page.locator(".dfc-mark").filter({ hasText: "the same field was built five ways" });
-    await phrase.focus();
-    await expect(phrase).toHaveClass(/is-on/);
-    await expect(page.getByRole("tab", { name: "02 one field" })).toHaveAttribute("aria-selected", "true");
+  test("no figure offers Enlarge or a viewer", async ({ page }) => {
+    await expect(page.getByRole("button", { name: /^Enlarge Figure/ })).toHaveCount(0);
+    await expect(page.locator("main dialog")).toHaveCount(0);
   });
 
-  test("arrow keys move along the tabs", async ({ page }) => {
-    await page.getByRole("tab", { name: "01 the file" }).focus();
-    await page.keyboard.press("ArrowRight");
-    await expect(page.getByRole("tab", { name: "02 one field" })).toBeFocused();
-    await expect(page.getByRole("tab", { name: "02 one field" })).toHaveAttribute("aria-selected", "true");
-  });
-
-  test("a pin opens its decision under the picture, Escape closes it", async ({ page }) => {
-    await page.getByRole("tab", { name: "04 in the product" }).click();
-    const pin = page.getByRole("button", { name: /Decision 2: Badges stop looking like buttons\. \(the fix, after\)/ });
-    await pin.focus();
-    await page.keyboard.press("Enter");
-    await expect(pin).toHaveAttribute("aria-pressed", "true");
-    await expect(page.getByRole("status").filter({ hasText: "Badges stop looking like buttons." })).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(pin).toHaveAttribute("aria-pressed", "false");
+  test("a figure with motion offers Replay", async ({ page }) => {
+    await expect(page.getByRole("button", { name: "Replay Figure 4" })).toBeVisible();
   });
 });
 

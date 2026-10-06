@@ -77,8 +77,10 @@
   border-bottom: none;
 }
 
-.table tbody tr:hover {
-  background: var(--color-semantic-accent-subtle);
+@media (hover: hover) and (pointer: fine) {
+  .table tbody tr:hover {
+    background: var(--color-semantic-accent-subtle);
+  }
 }
 
 /* ── Skills x projects matrix (§8) ── */
@@ -108,8 +110,10 @@
   font-feature-settings: var(--mono-feature);
 }
 
-.mxHead:hover {
-  color: var(--color-accent-ink);
+@media (hover: hover) and (pointer: fine) {
+  .mxHead:hover {
+    color: var(--color-accent-ink);
+  }
 }
 
 .mxHead[aria-pressed="true"] {
@@ -165,6 +169,12 @@
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: var(--ring-focus-offset);
   border-radius: var(--radius-full);
+}
+
+/* on the ochre fill the ochre ring disappears (1.0 to 1.7:1): the ring
+   takes the on-accent ink there, 7.8:1 or more in both themes (job 34) */
+.mxOn .mxLink:focus-visible {
+  outline-color: var(--color-semantic-text-on-accent);
 }
 
 .mxDetails {
@@ -359,7 +369,9 @@
 }
 /* the section label draws the section's one rule; the first row adds none */
 .index > li:first-child .row { border-top: 0; }
-.row:hover { transform: translateY(-2px); }
+@media (hover: hover) and (pointer: fine) {
+  .row:hover { transform: translateY(-2px); }
+}
 .row:focus-visible {
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: var(--ring-focus-offset);
@@ -378,7 +390,9 @@
   height: auto;
   transition: transform 0.4s var(--motion-easing-pop);
 }
-.row:hover .thumb svg { transform: scale(1.04); }
+@media (hover: hover) and (pointer: fine) {
+  .row:hover .thumb svg { transform: scale(1.04); }
+}
 .rowBody { display: block; min-width: 0; }
 .metaLine {
   display: block;
@@ -397,11 +411,18 @@
   line-height: 1.15;
   color: var(--color-ink);
 }
-.row:hover .rowTitle,
 .row:focus-visible .rowTitle {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 6px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .row:hover .rowTitle {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+  }
 }
 .rowClaim {
   display: block;
@@ -410,9 +431,98 @@
   color: var(--color-ink-muted);
 }
 .rowTags { display: flex; flex-wrap: wrap; gap: calc(var(--spacing-1) * 1.5); }
+/* a long tag wraps inside a narrow card rather than leaving it (Theming,
+   "consistency without fragmentation", at 390; job 33) */
+.rowTags > :global(.tag) { max-width: 100%; white-space: normal; }
 @media (prefers-reduced-motion: reduce) {
   .row,
   .thumb svg { transition: none; }
   .row:hover { transform: none; }
   .row:hover .thumb svg { transform: none; }
 }
+
+/* ── The case cards (CaseRow layout="featured" | "card"; Home · v2, Gate 2,
+   3 Oct 2026): the raised surface with a hairline, one card padding token,
+   the light specimen frame inside. ── */
+.card {
+  display: grid;
+  gap: var(--spacing-5);
+  align-content: start;
+  padding: var(--spacing-6);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--site-raised);
+  color: inherit;
+  text-decoration: none;
+}
+@media (min-width: 900px) {
+  .cardFeatured {
+    /* beside its text the featured cover already fits: no crop (H4) */
+    --cover-stage-h: auto;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--spacing-6);
+  }
+}
+a.card:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+@media (hover: hover) and (pointer: fine) {
+  a.card:hover .cardTitle,
+  a.card:hover .cardTitleFeatured {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+  }
+}
+.cardBody { display: flex; flex-direction: column; min-width: 0; height: 100%; }
+.cardTitle {
+  display: block;
+  margin: calc(var(--spacing-1) * 1.5) 0 var(--spacing-2);
+  font-size: var(--font-card-title);
+  font-weight: var(--typography-font-weight-medium);
+  line-height: 1.25;
+  color: var(--color-ink);
+}
+.cardTitleFeatured {
+  display: block;
+  margin: calc(var(--spacing-1) * 1.5) 0 var(--spacing-2);
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-weight: var(--typography-font-weight-light);
+  letter-spacing: var(--tracking-h2);
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+.cardEnd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2) var(--spacing-4);
+  min-height: var(--spacing-touch-target);
+  margin-top: auto;
+  padding-top: var(--spacing-3);
+}
+.cardPair {
+  display: grid;
+  gap: var(--spacing-6);
+}
+@media (min-width: 900px) {
+  .cardPair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* every card has the same parts in the same order, on shared rows, so
+   meta, title, description, tags and "Read the case" line up across a
+   row and the link sits on the card's bottom (K2, Elleta, 6 Oct 2026,
+   Figma 486:57509). A card without tags leaves its row empty. */
+.cardPair > .card {
+  grid-row: span 6;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+}
+.cardPair > .card > :first-child { grid-row: 1; margin-bottom: var(--spacing-5); }
+.cardPair .cardBody { display: contents; }
+.cardPair .cardBody > .metaLine { grid-row: 2; }
+.cardPair .cardBody > .cardTitle { grid-row: 3; }
+.cardPair .cardBody > .rowClaim { grid-row: 4; }
+.cardPair .cardBody > .rowTags { grid-row: 5; align-self: start; }
+.cardPair .cardBody > .cardEnd { grid-row: 6; align-self: end; }
