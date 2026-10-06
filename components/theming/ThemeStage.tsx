@@ -83,6 +83,7 @@ export function ThemeExhibit() {
   const [gen, setGen] = useState(0);
   const [hot, setHot] = useState<Role | null>(null);
   const [pinned, setPinned] = useState<Role | null>(null);
+  const [tokensOpen, setTokensOpen] = useState(false);
   const figRef = useRef<HTMLElement>(null);
   const running = !paused && !reduce && inView;
 
@@ -131,7 +132,7 @@ export function ThemeExhibit() {
   });
 
   return (
-    <>
+    <div className={s.exCol}>
       <div className={s.picker} role="group" aria-label="Theme">
         {ORDER.map((k) => (
           <button
@@ -165,7 +166,11 @@ export function ThemeExhibit() {
         style={tint}
         aria-label={`The ${key} theme: tier 1 primitives, the tier 2 roles that point into them, the tier 3 component slots that read those roles, the contrast gate, and the listing card they dress. Every theme passes the gate.`}
       >
-        <div className={s.sheets}>
+        {/* phones (job O15): the card first, the tier lists behind "Show the tokens" */}
+        <button type="button" className={`${s.play} ${s.tokBtn}`} aria-expanded={tokensOpen} aria-controls="theme-sheets" onClick={() => setTokensOpen((o) => !o)}>
+          {tokensOpen ? "Hide the tokens" : "Show the tokens"}
+        </button>
+        <div id="theme-sheets" className={s.sheets} data-open={tokensOpen}>
           <div className={s.sheet}>
             <b className={s.sheetLabel}>tier 1 · primitives</b>
             <div className={s.ramp} aria-hidden="true">
@@ -230,7 +235,7 @@ export function ThemeExhibit() {
           <span>{t.note}</span>
         </figcaption>
       </figure>
-    </>
+    </div>
   );
 }
 

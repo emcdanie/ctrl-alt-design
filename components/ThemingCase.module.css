@@ -1341,3 +1341,25 @@
     mask-image: linear-gradient(90deg, #000 calc(100% - var(--spacing-8)), transparent); /* token-waiver: mask alpha, no colour */
   }
 }
+
+/* phones (job O14, O15, 6 Oct 2026): the theme row is one row of compact
+   pills that scrolls, under the figure; the figure shows the card first,
+   the tier lists behind "Show the tokens" */
+.tokBtn { display: none; }
+@media (max-width: 40rem) {
+  .exCol { display: flex; flex-direction: column; }
+  .picker {
+    order: 2;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-top: var(--spacing-3);
+  }
+  .th,
+  .play { flex: none; }
+  .th { padding-right: var(--spacing-2); }
+  .ex > .exFace { order: 1; }
+  .ex > .cap { order: 2; }
+  .ex > .tokBtn { display: inline-flex; order: 3; justify-self: start; margin-left: 0; }
+  .ex > .sheets { order: 4; }
+  .sheets[data-open="false"] { display: none; }
+}
