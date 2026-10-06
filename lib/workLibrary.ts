@@ -211,7 +211,7 @@ export const WORK_ITEMS: WorkItem[] = [
     year: "2026",
     yearStart: 2026,
     role: "Designer and builder, BELLA",
-    impact: "Four themes on one set of components, each checked by the gate",
+    impact: "Three themes on one set of components, each checked by the gate",
     skills: ["Design systems", "Design tokens", "Accessibility", "Component libraries"],
     hi: "var(--case-drift-hi)",
     lo: "var(--case-drift-lo)",

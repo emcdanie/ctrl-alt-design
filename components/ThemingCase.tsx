@@ -219,7 +219,7 @@ export default function ThemingCase() {
               </li>
               <li>
                 <b>what shows it</b>
-                <p>Four themes above, one component tree. Switching theme swaps nine semantic pointers and touches zero components.</p>
+                <p>Three themes above, one component tree. Switching theme swaps nine semantic pointers and touches zero components.</p>
               </li>
               <li>
                 <b>why it matters</b>
