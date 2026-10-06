@@ -388,6 +388,10 @@ body {
      page ground, stone 95, and its cards the card surface, stone 99 */
   --site-ground: var(--color-semantic-background);
   --site-raised: var(--color-semantic-surface-card);
+  /* the back-to-top tab (H3, 6 Oct 2026, the adhamdannaway.com footer) */
+  --footer-chevron-hi: var(--color-semantic-surface); /* the lighter tone under the debossed chevron */
+  --footer-tab-overlap: var(--spacing-2);
+  --footer-tab-rise: 5px;
   --font-card-title: 1.25rem; /* titles: 20px (Geist refresh) */
   --font-body-size: var(--text-body);
   --font-small: 14px;
@@ -561,6 +565,8 @@ body {
 
 [data-theme="dark"] {
   /* the dark ground (also set on body below, where the dark inks live) */
+  /* dark surface is darker than raised: lift raised for the chevron highlight */
+  --footer-chevron-hi: color-mix(in oklab, var(--color-semantic-raised), white 12%);
   --color-semantic-background: var(--color-dark-bg);
   /* the picture kit's subtle action wash, dark (job 38: it stayed light) */
   --kit-action-subtle: color-mix(in srgb, var(--kit-action) 24%, var(--color-dark-bg));
@@ -2027,10 +2033,10 @@ h1.display-heading {
 }
 
 /* ─── Site footer (the footer lock, 4 Oct 2026; job E1, 5 Oct) ──────
-   Its own ground (BELLA's raised, Elleta, 6 Oct, jobs G1 + H1, as the
-   22 Sep footer mock) under a hairline; back to top as a half-round tab on
-   that hairline, the pages row, the elsewhere row, one small-print row
-   with the colophon, then the pattern ELLETA, flush with the bottom. */
+   Its own ground (BELLA's raised, Elleta, 6 Oct, jobs G1 + H1) under a
+   hairline; back to top as a half-round tab on that hairline (H3), the
+   pages row, the elsewhere row, one small-print row with the colophon,
+   then the pattern ELLETA, flush with the bottom. */
 .site-footer {
   position: relative;
   padding-top: var(--spacing-16);
@@ -2045,7 +2051,7 @@ h1.display-heading {
 }
 
 /* Home · v2: the page ground under the whole page (the footer keeps its
-   own surface, job G1), so the cards read as raised */
+   own ground, job G1), so the cards read as raised */
 body:has(main.site-ground-page) {
   background: var(--site-ground);
 }
@@ -2054,29 +2060,93 @@ body:has(main.site-ground-page) {
   margin-right: var(--spacing-2);
 }
 
-/* back to top: a half-round tab, 96 x 48, centred on the footer's top
-   edge, in the footer's ground, the hairline round its arc */
+/* back to top: a half-round tab, 96 x 48 above the edge, centred on it,
+   in the footer's ground (H3). Its foot runs --footer-tab-overlap into the
+   footer so the arc and the edge read as one line, even risen. */
 .site-footer__top {
+  --tab-y: calc(-100% + var(--footer-tab-overlap));
+  --tab-lift: 0px;
   position: absolute;
   top: 0;
   left: 50%;
   display: grid;
   place-items: center;
   width: calc(var(--spacing-touch-target) * 2 + var(--spacing-2));
-  height: calc(var(--spacing-touch-target) + var(--spacing-1));
-  padding: var(--spacing-2) 0 0;
-  border: 1px solid var(--color-semantic-border);
-  border-bottom: 0;
+  height: calc(var(--spacing-touch-target) + var(--spacing-1) + var(--footer-tab-overlap));
+  padding: var(--spacing-2) 0 var(--footer-tab-overlap);
+  overflow: hidden;
+  border: 0;
   border-radius: var(--radius-full) var(--radius-full) 0 0;
   background: var(--color-semantic-raised);
-  color: var(--color-ink);
+  color: var(--color-semantic-border-strong);
   cursor: pointer;
-  transform: translate(-50%, calc(-100% + 1px));
+  transform: translate(-50%, calc(var(--tab-y) - var(--tab-lift)));
+  transition: transform 0.3s ease;
+}
+
+/* the hairline round the arc, drawn taller than the tab and clipped at
+   the footer's edge, so it meets the footer's hairline with no seam and
+   no stubs below it (at rest and risen) */
+.site-footer__top::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 calc(var(--spacing-4) * -1);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: inherit;
+  clip-path: inset(0 0 calc(var(--spacing-4) + var(--footer-tab-overlap) - var(--tab-lift)) 0);
+  transition: clip-path 0.3s ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-footer__top:hover {
+    --tab-lift: var(--footer-tab-rise);
+  }
 }
 
 .site-footer__top:focus-visible {
+  --tab-lift: var(--footer-tab-rise);
   outline: var(--ring-focus-width) solid var(--ring-focus-color);
   outline-offset: var(--ring-focus-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer__top,
+  .site-footer__top:hover,
+  .site-footer__top:focus-visible {
+    --tab-lift: 0px;
+  }
+
+  .site-footer__top,
+  .site-footer__top::before {
+    transition: none;
+  }
+}
+
+/* the debossed chevron: wide, flat, thin, square caps; a highlight in
+   the lighter tone 1.5px under the stroke presses it in. The stroke is
+   border-strong, not border: border is about 1.2:1 on raised. */
+.site-footer__chevron {
+  position: relative;
+  width: calc(var(--spacing-8) + var(--spacing-1));
+  height: calc(var(--spacing-4) + 2px);
+  overflow: visible;
+}
+
+.site-footer__chevron path {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.site-footer__chevron-hi {
+  stroke: var(--footer-chevron-hi);
+  transform: translateY(1.5px);
+}
+
+.site-footer__chevron-line {
+  stroke: currentColor;
 }
 
 /* one row each: the label, then its links across */

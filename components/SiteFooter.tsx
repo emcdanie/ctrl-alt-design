@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import BrandWordmark from "@/components/bella/BrandWordmark/BrandWordmark";
-import { Icon } from "@/components/ui/Icon";
 import { LinkedInIcon } from "@/components/ui/LinkedInIcon";
 import { ResumeLink } from "@/components/ResumeModal";
 import { social } from "@/lib/social";
@@ -32,7 +31,11 @@ export default function SiteFooter() {
   return (
     <footer className="site-footer">
       <button type="button" className="site-footer__top" onClick={toTop} aria-label="Back to top" data-bracket="off" data-umami-event="back-to-top">
-        <Icon name="NavArrowUp" size="md" />
+        {/* the debossed chevron (H3): decorative, the button carries the name */}
+        <svg className="site-footer__chevron" viewBox="0 0 36 18" aria-hidden="true" focusable="false">
+          <path className="site-footer__chevron-hi" d="M3 15.5 18 4.5l15 11" />
+          <path className="site-footer__chevron-line" d="M3 15.5 18 4.5l15 11" />
+        </svg>
       </button>
       {/* on the content edge, x192 at 1440 like every v3 page (Site v3, 4 Oct late) */}
       <div className="container container--case">
