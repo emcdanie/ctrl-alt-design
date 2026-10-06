@@ -387,8 +387,8 @@
   .exFace { justify-content: center; }
 }
 /* from 1024 (I3, Elleta, 6 Oct 2026: the exhibit fits one screen): the
-   sheets on the left set the height, the face beside them takes it and
-   crops its lower part under a fade, never scaled; the theme name sits
+   sheets on the left, the face beside them cropped to its top: the price
+   row and booking bar drop out, nothing is scaled; the theme name sits
    under the face */
 @media (min-width: 64rem) {
   .ex {
@@ -405,18 +405,13 @@
   .sheets > .sheet:first-child,
   .sheets > .gsheet { grid-column: 1 / -1; }
   .exFace {
-    position: relative;
     grid-column: 2;
     grid-row: 1;
-    min-height: 0;
-    overflow: hidden;
-    mask-image: linear-gradient(to bottom, var(--color-ink) calc(100% - var(--spacing-12)), transparent);
+    align-items: flex-start;
   }
-  .exFace > .pv {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
+  /* the crop drops whole parts, never cuts one (audit:clip) */
+  .exFace .pvPriceRow,
+  .exFace .pvBar { display: none; }
   .cap {
     grid-column: 2;
     grid-row: 2;
@@ -1010,13 +1005,11 @@
 .pickGroup { display: grid; gap: var(--spacing-2); justify-items: start; }
 /* the button names each list, so its "What changed" head goes */
 .pick .wcHead { display: none; }
-/* below 1280 the face crops its lower part under a fade, never scaled */
+/* below 1280 the face drops its price row and booking bar, never
+   scaled, never cut through (audit:clip) */
 @media (min-width: 64rem) and (max-width: 79.9375rem) {
-  .pickFace {
-    max-height: 36rem;
-    overflow: hidden;
-    mask-image: linear-gradient(to bottom, var(--color-ink) calc(100% - var(--spacing-12)), transparent);
-  }
+  .pickFace .pvPriceRow,
+  .pickFace .pvBar { display: none; }
 }
 .wcAll { display: grid; gap: var(--spacing-6); margin-top: var(--spacing-4); }
 .wcFor { margin: 0; font-weight: 600; color: var(--color-semantic-text-primary); }
