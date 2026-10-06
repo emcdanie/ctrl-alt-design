@@ -2,11 +2,11 @@
   - paragraph: Work
   - heading "Selected work." [level=1]
   - paragraph: Each one says what I claimed, what proves it, and what changed. Tags show the signals it's evidence for.
-  - link /\d+ · Design systems · \d+ to \d+ · Lead case From Drift to Foundation Nobody asked for a system\. I built one anyway, got a CTO to fund a team, then handed it to every product team\. systems at scale governance Read the case/:
+  - link /\d+ · Design systems · \d+ to \d+ · Lead case From Drift to Foundation Nobody asked for a system\. I built one anyway, got a CTO to fund a team, then handed it to every product team\. Read the case/:
     - /url: /case-studies/design-system-transformation
   - link /\d+ · Design systems · federated · \d+ They stopped telling me what they’d done Proves a federated system can run without me as the bottleneck\. Read the case/:
     - /url: /case-studies/federated
   - link /\d+ · AI-enabled design · \d+ CHIP An agent that watches the system and never moves silently\. I show it live\. ai-compatible system judgement over ai Read the case Update coming/:
     - /url: /case-studies/chip
-  - link /\d+ · Design systems · theming · \d+ One system, many faces Themes in BELLA swap the values, never the components\. token strategy figma → code consistency without fragmentation Read the case/:
+  - link /\d+ · Design systems · theming · \d+ One system, many faces Themes in BELLA swap the values, never the components\. Read the case/:
     - /url: /case-studies/theming
