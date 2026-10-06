@@ -131,7 +131,8 @@ export default function Home() {
             </p>
           </blockquote>
           <figcaption className={styles.cite}>
-            <b>{QUOTE.name}</b> · {QUOTE.role} ·{" "}
+            <b>{QUOTE.name}</b>
+            <span>{QUOTE.role}</span>
             <TextLink href="/about#word-of-mouth">
               More on About <span aria-hidden="true">→</span>
             </TextLink>
@@ -220,7 +221,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <figcaption className={styles.doorCaption}>= the card on the site. Every value comes from BELLA.</figcaption>
+          <figcaption className={styles.doorCaption}>The card on the site. Every value comes from BELLA.</figcaption>
         </figure>
         <p className={styles.links}>
           <TextLink href="/design-system">
