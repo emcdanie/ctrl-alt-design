@@ -103,17 +103,20 @@
   text-wrap: pretty;
 }
 
-/* one quiet note under the hero (CHIP, H4, 6 Oct 2026): a tag, then
-   the line in the disclosure's voice */
+/* one quiet note under the hero (CHIP, H4, 6 Oct 2026): the label in
+   bold, then the line, Body/Small in the disclosure's voice (a Tag is
+   mono at 16, which the v3 lock rules out on rebuilt routes) */
 .heroNote {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-2) var(--spacing-3);
+  max-width: var(--measure-body);
   margin: var(--spacing-8) 0 0;
   font-size: var(--typography-font-size-base);
   line-height: 1.5;
   color: var(--color-semantic-text-secondary);
+}
+
+.heroNote strong {
+  font-weight: var(--typography-font-weight-semibold);
+  color: var(--color-semantic-text-primary);
 }
 
 /* the collage: a 528x480 canvas scaled to the box (CaseCollage sets
