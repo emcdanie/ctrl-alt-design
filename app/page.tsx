@@ -51,24 +51,25 @@ const CHIPS = [
 const at = (k: number, y: number) => ({ "--k": k, "--y": y }) as CSSProperties;
 
 function PlateArt({ n }: { n: number }) {
-  /* Content: the card's own text, laid out as on the site, under the
-     cover's place (K4, Elleta, 6 Oct 2026) */
+  /* Content: the card's parts in the card's places, under the cover's
+     place (K4, Elleta, 6 Oct 2026). Eyebrow and title are text; the
+     description, tags and link are drawn as shapes at the card's
+     proportions, since text that small would fall under the 12px floor */
   if (n === 4)
     return (
       <>
-        <span className={styles.plateEyebrow}>
-          {FEATURED.n} · {FEATURED.meta}
+        <span className={styles.plateEyebrow}>Complex SaaS · Design systems</span>
+        <span className={styles.plateTitle}>From Drift to Foundation</span>
+        <span className={styles.plateClaim}>
+          <i />
+          <i />
+          <i />
         </span>
-        <span className={styles.plateTitle}>{FEATURED.title}</span>
-        <span className={styles.plateClaim}>{FEATURED.claim}</span>
         <span className={styles.plateTags}>
-          {FEATURED.tags.slice(0, 2).map((t) => (
-            <span key={t.text} className={styles.plateTag}>
-              {t.text}
-            </span>
-          ))}
+          <i />
+          <i />
         </span>
-        <span className={styles.plateLink}>Read the case →</span>
+        <span className={styles.plateLink} />
       </>
     );
   if (n === 3)
