@@ -36,7 +36,7 @@ export default function SpecimenFrame({
       </span>
       <span
         className={`${styles.stage} ${picture ? styles.stagePicture : ""}`.trim()}
-        style={picture?.focus ? ({ "--cover-focus": picture.focus } as CSSProperties) : undefined}
+        style={picture ? ({ "--cover-focus": picture.focus, "--cover-zoom": picture.phone?.zoom, "--cover-at": picture.phone?.at } as CSSProperties) : undefined}
       >
         {picture ? (
           <CoverPicture picture={picture} eager={eager} />
