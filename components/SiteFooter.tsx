@@ -60,8 +60,11 @@ export default function SiteFooter() {
         <div className="site-footer__legal">
           <p>
             © 2026 Elleta McDaniel ·{" "}
-            <Link className="site-footer__link site-footer__link--small" href="/accessibility">Accessibility</Link> ·{" "}
-            <Link className="site-footer__link site-footer__link--small" href="/privacy">Privacy</Link>
+            {/* the two links keep one line at 390: the break comes before them */}
+            <span className="site-footer__keep">
+              <Link className="site-footer__link site-footer__link--small" href="/accessibility">Accessibility</Link> ·{" "}
+              <Link className="site-footer__link site-footer__link--small" href="/privacy">Privacy</Link>
+            </span>
           </p>
           <p>
             Built on BELLA ·{" "}

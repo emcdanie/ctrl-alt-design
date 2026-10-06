@@ -2216,8 +2216,14 @@ body:has(main.site-ground-page) {
   margin: 0;
 }
 
+.site-footer__keep {
+  white-space: nowrap;
+}
+
 .site-footer__link--small {
-  /* inline in the small print: the WCAG 2.5.8 inline exception */
+  /* inline in the small print: the WCAG 2.5.8 inline exception. Inline,
+     not inline-flex, so the space before an arrow survives */
+  display: inline;
   min-height: var(--spacing-6);
   font-size: inherit;
   color: inherit;
