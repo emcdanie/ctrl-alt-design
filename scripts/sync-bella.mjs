@@ -52,6 +52,22 @@ const FILES = [
 const sha = (p) => createHash("sha256").update(readFileSync(p)).digest("hex");
 const short = (h) => h.slice(0, 12);
 
+/* Upstream bytes for one file. Reads BELLA's origin/main, not whatever
+ * branch ~/DEV/bella has checked out: a checkout parked on a feature branch
+ * made this audit fail on every PR, with nothing wrong in this repo (S,
+ * 7 Oct 2026). Falls back to the working tree when there is no origin/main. */
+const upstream = (from) => {
+  try {
+    /* git exports GIT_DIR and friends to a commit hook, which would point
+     * -C at THIS repo; drop them so it reads BELLA's */
+    const env = Object.fromEntries(Object.entries(process.env).filter(([k]) => !k.startsWith("GIT_")));
+    return execFileSync("git", ["-C", BELLA, "show", `origin/main:${from}`], { env, stdio: ["ignore", "pipe", "ignore"], maxBuffer: 1 << 26 });
+  } catch {
+    const src = join(BELLA, from);
+    return existsSync(src) ? readFileSync(src) : null;
+  }
+};
+
 if (check) {
   if (!existsSync(MANIFEST)) {
     console.error(`sync gate: ${MANIFEST} is missing. Run npm run sync:bella.`);
@@ -82,13 +98,13 @@ if (check) {
       continue;
     }
     if (upstreamAvailable) {
-      const src = join(BELLA, from);
-      if (!existsSync(src)) {
+      const bytes = upstream(from);
+      if (!bytes) {
         console.error(`sync gate: upstream ${from} no longer exists in BELLA`);
         fails++;
         continue;
       }
-      const up = sha(src);
+      const up = createHash("sha256").update(bytes).digest("hex");
       if (up !== actual) {
         console.error(
           `sync gate: ${to} is STALE against BELLA\n  vendored ${short(actual)}, upstream ${short(up)}\n  expected: a current copy. Run npm run sync:bella and review the diff.`,

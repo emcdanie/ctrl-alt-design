@@ -311,6 +311,12 @@ Must pass before any work is "done":
 - `audit:debt` — nothing rots quietly: a doc citing a file that does not exist, a token
   nothing consumes through a `var()` chain, a gate table describing audits that no longer
   run, or an audit tracking a selector that matches nothing. Static analysis, about a second.
+- **How it runs (Elleta, 2026-10-07, gate speed).** Locally: commit with `npm run check:fast`
+  (tsc, tests, the static audits, about 10 s; the pre-commit hook runs it) and run the full
+  `npm run gate` once before opening the PR. CI splits the same audits into parallel jobs
+  (`static`, `build`, 7 `browser` shards) behind one required check named `gate`; CI is the
+  source of truth. An audit's rules and thresholds never change to make it faster.
+  `audit:sync` reads BELLA's `origin/main`, not the branch checked out in ~/DEV/bella.
 - `npm test` runs FIRST in the gate: the pure functions in `lib/bella/dtcg.ts` (vitest). A
   broken function fails in a second rather than after two minutes of browser work. Tests are
   not an audit and do not change the derived count.
