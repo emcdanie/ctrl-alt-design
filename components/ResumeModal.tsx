@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/Button";
-import { social } from "@/lib/social";
+import { assembleEmail, social } from "@/lib/social";
 
 interface ResumeModalProps {
   open: boolean;
@@ -65,7 +65,7 @@ type CvRole = {
 
 const roles: CvRole[] = [
   {
-    period: "Oct 2025, Current",
+    period: "Oct 2025, Present",
     title: "Product Designer, Design Systems",
     company: "Brad Frost Web (Maker Program) · Contract",
     highlights: [
@@ -78,7 +78,7 @@ const roles: CvRole[] = [
   /* elleta.design: the same grouping as ExperienceSection (About lock
      beat 6), so the page and the CV never disagree */
   {
-    period: "Oct 2025, Current",
+    period: "Oct 2025, Present",
     title: "Design Systems Consultant",
     company: "elleta.design",
     highlights: [],
@@ -170,6 +170,16 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
+  const [copied, setCopied] = useState(false);
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(assembleEmail());
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* no clipboard: the site's other copy buttons fail the same quiet way */
+    }
+  };
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -230,18 +240,16 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
 
         {/* Header */}
         <div data-cv-noprint className="bg-[color:var(--surface-paper)] border-b border-[color:var(--ink-on-paper-border)] px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between gap-3 rounded-t-3xl flex-shrink-0">
-          <div>
-            <p className="section-label mb-1">Curriculum Vitae</p>
-            <h2 id="resume-modal-title" className="font-display font-bold text-[length:var(--typography-font-size-lg)] text-[color:var(--ink-on-paper)] leading-tight">
-              Elleta McDaniel
-            </h2>
-          </div>
+          <p className="section-label">Curriculum Vitae</p>
           <div className="flex items-center gap-3" data-cv-noprint>
             {/* the PDF is this dialog printed (scripts/build-cv-pdf.mjs), so the
                 two never disagree */}
-            <Button variant="secondary" href="/cv/Elleta_McDaniel_Product_Designer_CV.pdf" download trackEvent="cv-download">
-              Download PDF
-            </Button>
+            {/* a wrapper hides it: .btn-key's display is unlayered, so a utility on the Button would lose */}
+            <span className="max-sm:hidden">
+              <Button variant="secondary" href="/cv/Elleta_McDaniel_Product_Designer_CV.pdf" download trackEvent="cv-download">
+                Download PDF
+              </Button>
+            </span>
             <button
               ref={closeBtnRef}
               onClick={onClose}
@@ -254,12 +262,12 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
         </div>
 
         {/* Scrollable body */}
-        <div className="overflow-y-auto no-scrollbar px-5 sm:px-8 py-5 sm:py-7 space-y-3 sm:space-y-4">
+        <div data-cv-body className="overflow-y-auto no-scrollbar px-5 sm:px-8 py-5 sm:py-7 space-y-3 sm:space-y-4">
 
           {/* Name + contact */}
           <div>
-            {/* h2 (not h1), the page h1 stays unique; dialog title is the header h2 */}
-            <h2 className="font-display font-bold text-[length:var(--typography-font-size-2xl)] text-[color:var(--ink-on-paper)] leading-snug mb-0.5">
+            {/* h2 (not h1), the page h1 stays unique; it is the dialog's title, so the header does not repeat the name (job Q) */}
+            <h2 id="resume-modal-title" className="font-display font-bold text-[length:var(--typography-font-size-2xl)] text-[color:var(--ink-on-paper)] leading-snug mb-0.5">
               Elleta McDaniel
             </h2>
             <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)] font-medium mb-2">
@@ -271,6 +279,19 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
               <span>Open to Hybrid/Remote</span>
               <span>·</span>
               <a href={social.linkedin} data-umami-event="linkedin" className="hover:text-[color:var(--ink-on-paper)] transition-colors">linkedin.com/in/elleta-mcdaniel</a>
+              <span>·</span>
+              {/* the address is never in the HTML (constitution section 6): the
+                  button assembles it on click, and scripts/build-cv-pdf.mjs
+                  writes it into the empty slot for the printed sheet */}
+              <button type="button" data-cv-noprint data-umami-event="copy-email" onClick={copyEmail} className="underline underline-offset-2 hover:text-[color:var(--ink-on-paper)] transition-colors cursor-pointer">
+                {copied ? "Email copied" : "Copy email"}
+              </button>
+              <span data-cv-email-slot />
+            </div>
+            <div className="mt-3 sm:hidden [&>a]:w-full" data-cv-noprint>
+              <Button variant="secondary" href="/cv/Elleta_McDaniel_Product_Designer_CV.pdf" download trackEvent="cv-download">
+                Download PDF
+              </Button>
             </div>
           </div>
 
@@ -286,56 +307,10 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
 
           <div className="divider" />
 
-          {/* Skills */}
-          <div>
-            <p className="section-label mb-3">Skills</p>
-            <p className="text-[length:var(--typography-font-size-base)] text-[color:var(--ink-on-paper-soft)] leading-relaxed">
-              {skills.join(" · ")}
-            </p>
-          </div>
-
-          <div className="divider" />
-
-          {/* Credentials */}
-          <div>
-            <p className="section-label mb-4">Credentials</p>
-            <div className="space-y-4">
-              {credentials.map((c) => (
-                <div key={c.title} className="grid grid-cols-[120px_1fr] gap-4">
-                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{c.period}</span>
-                  <div>
-                    <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)]">{c.title}</p>
-                    <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)]">{c.issuer}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="divider" />
-
-          {/* Education */}
-          <div>
-            <p className="section-label mb-4">Education</p>
-            <div className="space-y-4">
-              {education.map((ed) => (
-                <div key={ed.institution} className="grid grid-cols-[120px_1fr] gap-4">
-                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{ed.period}</span>
-                  <div>
-                    <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)]">{ed.institution}</p>
-                    <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)]">{ed.degree}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="divider" />
-
           {/* Employment */}
           <div>
             <p className="section-label mb-4">Employment</p>
-            <div className="space-y-6">
+            <div data-cv-entries className="space-y-6">
               {roles.map((role) => (
                 <div key={role.title + role.company} className="grid grid-cols-[120px_1fr] gap-4">
                   <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5 leading-snug">{role.period}</span>
@@ -368,6 +343,52 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
                         </ul>
                       </div>
                     ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="divider" />
+
+          {/* Skills */}
+          <div>
+            <p className="section-label mb-3">Skills</p>
+            <p className="text-[length:var(--typography-font-size-base)] text-[color:var(--ink-on-paper-soft)] leading-relaxed">
+              {skills.join(" · ")}
+            </p>
+          </div>
+
+          <div className="divider" />
+
+          {/* Credentials */}
+          <div>
+            <p className="section-label mb-4">Credentials</p>
+            <div data-cv-entries className="space-y-4">
+              {credentials.map((c) => (
+                <div key={c.title} className="grid grid-cols-[120px_1fr] gap-4">
+                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{c.period}</span>
+                  <div>
+                    <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)]">{c.title}</p>
+                    <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)]">{c.issuer}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="divider" />
+
+          {/* Education */}
+          <div>
+            <p className="section-label mb-4">Education</p>
+            <div data-cv-entries className="space-y-4">
+              {education.map((ed) => (
+                <div key={ed.institution} className="grid grid-cols-[120px_1fr] gap-4">
+                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{ed.period}</span>
+                  <div>
+                    <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)]">{ed.institution}</p>
+                    <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)]">{ed.degree}</p>
                   </div>
                 </div>
               ))}

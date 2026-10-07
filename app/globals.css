@@ -7970,16 +7970,24 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 .case-hero__signals--bare { margin-top: 1.5rem; padding: 0; background: none; }
 
 /* The CV as a PDF (job Q, 7 Oct 2026): scripts/build-cv-pdf.mjs prints the
-   open CV dialog, so the file and the dialog share one source. A4, only
-   the dialog, no site chrome, nothing scrolls or clips. */
+   open CV dialog, so the file and the dialog share one source. A4, white,
+   only the dialog, no site chrome, nothing scrolls or clips; type and
+   spacing set for a two-page CV (round 2). */
 @media print {
   @page {
     size: A4;
-    margin: 14mm;
+    margin: 18mm;
   }
 
   body > *:not([data-cv-modal]) {
     display: none !important;
+  }
+
+  /* the page ground is white too, so the dialog's edge is not a rule down the sheet */
+  html,
+  body {
+    background: Canvas !important;
+    background-image: none !important;
   }
 
   [data-cv-modal] {
@@ -7993,15 +8001,67 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
     display: none !important;
   }
 
-  [data-cv-modal] [role="dialog"] {
+  [data-cv-modal] [data-cv-email-slot]:not(:empty) {
+    display: inline;
+  }
+
+  [data-cv-modal] [role="dialog"],
+  [data-cv-modal] [data-cv-body] {
     max-width: none !important;
     max-height: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
+    background: Canvas !important;
+    overflow: visible !important;
+    padding: 0 !important;
   }
 
-  [data-cv-modal] [role="dialog"] > div {
-    overflow: visible !important;
+  [data-cv-modal] [data-cv-body] > * + * {
+    margin-top: 3.5mm !important;
+  }
+
+  [data-cv-modal] [data-cv-entries] > * + * {
+    margin-top: 2mm !important;
+  }
+
+  [data-cv-modal] [data-cv-body] ul {
+    margin-top: 1mm !important;
+  }
+
+  [data-cv-modal] [data-cv-body] li {
+    margin-top: 0.5mm !important;
+    gap: 2.5mm !important;
+  }
+
+  /* the date column narrows to its text, the entry gets the width */
+  [data-cv-modal] [data-cv-entries] > div {
+    grid-template-columns: 27mm minmax(0, 1fr) !important;
+    column-gap: 4mm !important;
+  }
+
+  [data-cv-modal] [data-cv-body] [data-cv-entries] ul + div {
+    margin-top: 2mm !important;
+  }
+
+  [data-cv-modal] [data-cv-body] .divider {
+    display: none;
+  }
+
+  [data-cv-modal] [data-cv-body] .section-label {
+    margin-bottom: 1.5mm !important;
+    font-size: 9pt !important;
+  }
+
+  [data-cv-modal] [data-cv-body] p,
+  [data-cv-modal] [data-cv-body] li,
+  [data-cv-modal] [data-cv-body] span,
+  [data-cv-modal] [data-cv-body] a {
+    font-size: 10.5pt !important;
+    line-height: 1.22 !important;
+  }
+
+  [data-cv-modal] [data-cv-body] li {
+    break-inside: avoid;
   }
 }
 
