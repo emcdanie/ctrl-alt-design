@@ -4,6 +4,7 @@ import ProofCard from "@/components/ProofCard";
 import CaseRow from "@/components/CaseRow";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
+import DoorFlat from "@/components/DoorFlat";
 import { TextLink } from "@/components/ui/TextLink";
 import { HOME_LEAD } from "@/content/cases";
 import { HOME_PROOF } from "@/lib/copy";
@@ -48,6 +49,10 @@ const CHIPS = [
   { t: "shadow.card" },
   { t: "Heading/Card" },
 ];
+/* the phone legend reads top to bottom, 1 to 4: the card's edge, its cover,
+   its words, its tokens (the exploded card on a wide screen numbers the
+   layers the other way) */
+const PHONE_PARTS = [2, 3, 4, 1].map((n) => PLATES.find((p) => p.n === n)!);
 const at = (k: number, y: number) => ({ "--k": k, "--y": y }) as CSSProperties;
 
 function PlateArt({ n }: { n: number }) {
@@ -220,6 +225,7 @@ export default function Home() {
                 </ol>
               </div>
             </div>
+            <DoorFlat parts={PHONE_PARTS} chips={CHIPS} />
           </div>
           <figcaption className={styles.doorCaption}>
             The card on the site. Every value comes from BELLA. Built to WCAG 2.2 AA, AAA contrast.
