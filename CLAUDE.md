@@ -314,7 +314,7 @@ Must pass before any work is "done":
 - **How it runs (Elleta, 2026-10-07, gate speed).** Locally: commit with `npm run check:fast`
   (tsc, tests, the static audits, about 10 s; the pre-commit hook runs it) and run the full
   `npm run gate` once before opening the PR. CI splits the same audits into parallel jobs
-  (`static`, `build`, 4 `browser` shards) behind one required check named `gate`; CI is the
+  (`static`, `build`, 7 `browser` shards) behind one required check named `gate`; CI is the
   source of truth. An audit's rules and thresholds never change to make it faster.
   `audit:sync` reads BELLA's `origin/main`, not the branch checked out in ~/DEV/bella.
 - `npm test` runs FIRST in the gate: the pure functions in `lib/bella/dtcg.ts` (vitest). A

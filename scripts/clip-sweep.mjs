@@ -55,7 +55,10 @@ const ROUTES = (process.env.ROUTES?.split(",") ?? [
   "/design-system/inspector",
   ...studies.map((id) => `/work/studies/${id}`),
   ...slugs.map((s) => `/case-studies/${s}`),
-]);
+]).filter((_, i) => i % Number((process.env.SHARD ?? "1/1").split("/")[1]) === Number((process.env.SHARD ?? "1/1").split("/")[0]) - 1);
+/* SHARD=i/n (CI only): every n-th route, so the sweep runs in parallel jobs
+   and the default list above stays the one source (S, 7 Oct 2026). Unset
+   it runs them all. */
 
 const END_STATE = `*, *::before, *::after {
   animation-delay: 0s !important; animation-duration: 0s !important;

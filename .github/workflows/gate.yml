@@ -5,7 +5,7 @@ name: gate
 # audits run, with the same rules and thresholds; only where they run changed.
 #   static   no browser, no build: tsc, tests, 10 audits
 #   build    next build once, the .next folder shared with the shards
-#   browser  4 shards, each starts the built site and runs its audits
+#   browser  7 shards (clip split three ways), each starts the built site
 #   gate     the one required check: green only if all of the above are
 # NOTE: audit:nda passes vacuously here, the banned-term lists are
 # gitignored (_private/) and never reach CI by design; NDA enforcement is
@@ -83,11 +83,21 @@ jobs:
           - shard: A
             audits: frame contain
           - shard: B
-            audits: sharp controls type clip
+            audits: sharp controls type
           - shard: C
             audits: contrast axe tokens
           - shard: D
             audits: visual dark order
+          # clip alone took 11 minutes; every third route per shard
+          - shard: E
+            audits: clip
+            sweep: 1/3
+          - shard: F
+            audits: clip
+            sweep: 2/3
+          - shard: G
+            audits: clip
+            sweep: 3/3
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -120,7 +130,10 @@ jobs:
           done
           echo "server never came up" && exit 1
       - name: Audits
+        env:
+          SWEEP: ${{ matrix.sweep }}
         run: |
+          [ -n "$SWEEP" ] && export SHARD="$SWEEP"
           fail=0
           for a in ${{ matrix.audits }}; do
             s=$SECONDS
@@ -131,7 +144,7 @@ jobs:
 
   # The required check. Branch protection asks for "gate"; this keeps that
   # name and is red if any job above is red or skipped.
-  gate:
+  result:
     name: gate
     if: always()
     needs: [static, build, browser]
