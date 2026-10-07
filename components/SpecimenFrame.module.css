@@ -98,7 +98,7 @@
   }
 
   .stagePicture[data-region] img {
-    --cw: min(100cqw / var(--rw), var(--cover-stage-h) / (var(--rh) * var(--ar)));
+    --cw: min(100cqw / (var(--rw) + 2 * var(--rp)), var(--cover-stage-h) / (var(--rh) * var(--ar)));
     position: absolute;
     width: var(--cw);
     max-width: none;

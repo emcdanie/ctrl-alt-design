@@ -12,7 +12,7 @@ import styles from "./SpecimenFrame.module.css";
    meta line. */
 /* the phone crop as fractions of the picture, for the stage's CSS (X) */
 const region = ({ phone: r, width, height }: Picture): Record<string, number> =>
-  r ? { "--rx": r.x / width, "--ry": r.y / height, "--rw": r.w / width, "--rh": r.h / height, "--ar": height / width } : {};
+  r ? { "--rx": r.x / width, "--ry": r.y / height, "--rw": r.w / width, "--rh": r.h / height, "--rp": (r.pad ?? 0) / width, "--ar": height / width } : {};
 
 export default function SpecimenFrame({
   path,
