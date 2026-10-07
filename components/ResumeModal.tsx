@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/Button";
-import { social } from "@/lib/social";
+import { Tag } from "@/components/ui/Tag";
+import { LinkedInIcon } from "@/components/ui/LinkedInIcon";
+import { assembleEmail, social } from "@/lib/social";
 
 interface ResumeModalProps {
   open: boolean;
@@ -21,6 +24,10 @@ const skills = [
    verbatim from the retired About learning section; the hackathon is
    from the CHIP case ("Five days, solo, for the Anthropic Claude Code
    hackathon"). */
+/* One date-range formatter for the dialog and the PDF: periods are stored
+   "start, end" and read "start to end" (constitution section 6). */
+const formatPeriod = (period: string) => period.replace(", ", " to ");
+
 const credentials = [
   { period: "2024, 2025", title: "Brad Frost Web Maker Program", issuer: "Brad Frost" },
   { period: "2025", title: "Design Tokens Course", issuer: "Romina Kavčič, The Design System Guide" },
@@ -64,7 +71,7 @@ type CvRole = {
 
 const roles: CvRole[] = [
   {
-    period: "Oct 2025, Current",
+    period: "Oct 2025, Present",
     title: "Product Designer, Design Systems",
     company: "Brad Frost Web (Maker Program) · Contract",
     highlights: [
@@ -77,7 +84,7 @@ const roles: CvRole[] = [
   /* elleta.design: the same grouping as ExperienceSection (About lock
      beat 6), so the page and the CV never disagree */
   {
-    period: "Oct 2025, Current",
+    period: "Oct 2025, Present",
     title: "Design Systems Consultant",
     company: "elleta.design",
     highlights: [],
@@ -106,7 +113,7 @@ const roles: CvRole[] = [
     ],
   },
   {
-    period: "July 2024, Feb 2026",
+    period: "Jul 2024, Feb 2026",
     title: "UX/UI Designer, Product & Design Systems",
     company: "a B2B travel platform",
     highlights: [
@@ -155,21 +162,94 @@ const roles: CvRole[] = [
     title: "Earlier career",
     company: "",
     highlights: [
-      "Partner Business Manager, SELLBYTEL Group (2014 - 2020)",
+      "Partner Business Manager, SELLBYTEL Group (2014 to 2020)",
       "Junior Fashion Designer, ecological fashion brand internship (2016)",
-      "B2B & Consumer Sales Representative, Apple (2011 - 2013)",
+      "B2B & Consumer Sales Representative, Apple (2011 to 2013)",
     ],
   },
 ];
+
+const PROFILE =
+  "Product designer with a focus on design systems, platform architecture, and complex multi-role interfaces. I work at the intersection of system-level thinking and engineering collaboration, building scalable component libraries, defining interaction patterns, and creating governance frameworks that reduce repeated decision-making across teams. My work spans B2B SaaS booking platforms, internal tooling, and data-dense dashboards for high-stakes environments. I’m as comfortable working upstream on system architecture as I am deep in component states and accessibility logic.";
+
+/* the one shared address (deep link, constitution: elleta.design/cv) */
+const CV_URL = "https://elleta.design/cv";
+const SHARE_TITLE = "Elleta McDaniel, CV";
+const SHARE_TEXT = "Elleta McDaniel, Product Designer, Design Systems. Curriculum vitae.";
+const MAILTO = `mailto:?subject=${encodeURIComponent(SHARE_TITLE)}&body=${encodeURIComponent(`${SHARE_TEXT}\n${CV_URL}`)}`;
+
+const track = (method: "native" | "email" | "copy-link") =>
+  (window as unknown as { umami?: { track: (n: string, d?: object) => void } }).umami?.track("cv-share", { method });
 
 export default function ResumeModal({ open, onClose }: ResumeModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
+  const [email, setEmail] = useState("");
+  const [copied, setCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [menuFrom, setMenuFrom] = useState<"header" | "bar" | null>(null);
+  const menuOpen = menuFrom !== null;
+  const focusShare = (from: string | null) =>
+    panelRef.current?.querySelector<HTMLElement>(`[data-cv-share="${from}"] button`)?.focus();
+
+  /* the address is assembled here, on open, in the browser: the dialog is
+     portalled only while open, so no static HTML or source holds it
+     (constitution section 6) */
+  useEffect(() => {
+    setEmail(open ? assembleEmail() : "");
+    if (!open) setMenuFrom(null);
+  }, [open]);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(assembleEmail());
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* no clipboard: the site's other copy buttons fail the same quiet way */
+    }
+  };
+
+  /* phones with a native share sheet use it; everything else gets the menu */
+  const share = async (from: "header" | "bar") => {
+    const native = typeof navigator.share === "function" && window.matchMedia("(pointer: coarse)").matches;
+    if (!native) {
+      setMenuFrom((v) => (v === from ? null : from));
+      return;
+    }
+    track("native");
+    try {
+      await navigator.share({ title: SHARE_TITLE, text: SHARE_TEXT, url: CV_URL });
+    } catch {
+      /* the sheet was dismissed */
+    }
+  };
+  const copyLink = async () => {
+    track("copy-link");
+    try {
+      await navigator.clipboard.writeText(CV_URL);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch {
+      /* quiet, as above */
+    }
+  };
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
+  /* modal means the page behind is out of reach: inert for focus and the
+     accessibility tree (aria-modal alone is not honoured everywhere) */
+  useEffect(() => {
+    if (!open) return;
+    const behind = [...document.body.children].filter(
+      (el): el is HTMLElement => el instanceof HTMLElement && !el.hasAttribute("data-cv-modal") && !el.inert && el.tagName !== "SCRIPT"
+    );
+    behind.forEach((el) => { el.inert = true; });
+    return () => behind.forEach((el) => { el.inert = false; });
   }, [open]);
 
   /* Focus management — capture opener, focus the dialog, restore on close */
@@ -185,7 +265,15 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { onClose(); return; }
+      if (e.key === "Escape") {
+        if (menuFrom) {
+          focusShare(menuFrom);
+          setMenuFrom(null);
+          return;
+        }
+        onClose();
+        return;
+      }
       if (e.key !== "Tab" || !panelRef.current) return;
       const focusables = panelRef.current.querySelectorAll<HTMLElement>(
         'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -203,12 +291,31 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
     };
     if (open) window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [open, onClose]);
+  }, [open, onClose, menuFrom]);
 
   if (!open) return null;
 
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+  /* through a portal to <body> (job Q, 7 Oct 2026): the dialog sat inside
+     a parent's stacking context, so the site header drew over it on a
+     phone. data-cv-modal lets the print sheet show only this dialog. */
+  const shareMenu = (
+    <div className="cv-share-menu" data-from={menuFrom} data-cv-noprint role="group" aria-label="Share this CV">
+      <a href={MAILTO} className="cv-share-menu__item" onClick={() => { track("email"); setMenuFrom(null); }}>
+        Email this CV
+      </a>
+      <button type="button" className="cv-share-menu__item" onClick={copyLink}>
+        Copy link
+      </button>
+      <span className="cv-share-menu__status" role="status" aria-live="polite">{linkCopied ? "Link copied" : ""}</span>
+    </div>
+  );
+
+  /* through a portal to <body> (job Q, 7 Oct 2026): the dialog sat inside
+     a parent's stacking context, so the site header drew over it on a
+     phone. data-cv-modal lets the print sheet show only this dialog.
+     Phones (round 5): full screen, one scroll, sticky header and action bar. */
+  return createPortal(
+    <div data-cv-modal className="fixed inset-0 z-[9996] flex items-center justify-center sm:p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-[color:var(--modal-backdrop)] modal-backdrop" onClick={onClose} />
 
@@ -218,30 +325,31 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="resume-modal-title"
-        className="relative bg-[color:var(--surface-paper)] rounded-3xl w-full max-w-3xl max-h-[92vh] flex flex-col shadow-2xl"
+        className="relative bg-[color:var(--surface-paper)] w-full max-sm:h-dvh sm:rounded-3xl sm:max-w-3xl sm:max-h-[92vh] flex flex-col sm:shadow-2xl"
       >
 
         {/* Header */}
-        <div className="bg-[color:var(--surface-paper)] border-b border-[color:var(--ink-on-paper-border)] px-8 py-5 flex items-center justify-between rounded-t-3xl flex-shrink-0">
-          <div>
-            <p className="section-label mb-1">Curriculum Vitae</p>
-            <h2 id="resume-modal-title" className="font-display font-bold text-[length:var(--typography-font-size-lg)] text-[color:var(--ink-on-paper)] leading-tight">
-              Elleta McDaniel
-            </h2>
-          </div>
-          <div className="flex items-center gap-3">
-            {/* PDF download, enabled once /public/cv/Elleta_McDaniel_Product_Designer_CV.pdf is added */}
-            <span
-              className="bg-[color:var(--ink-on-paper-border)] text-[var(--color-semantic-text-inverse)]/50 text-[length:var(--typography-font-size-tag)] font-medium px-4 py-2 rounded-full cursor-not-allowed select-none"
-              title="The PDF is not published yet"
-              aria-disabled="true"
-            >
-              Download PDF
+        <div data-cv-noprint className="bg-[color:var(--surface-paper)] border-b border-[color:var(--ink-on-paper-border)] px-5 sm:px-8 py-2 sm:py-3 flex items-center justify-between gap-3 sm:rounded-t-3xl flex-shrink-0">
+          <p className="section-label">Curriculum Vitae</p>
+          <div className="flex items-center gap-3" data-cv-noprint>
+            {/* the PDF is this dialog printed (scripts/build-cv-pdf.mjs), so the
+                two never disagree */}
+            {/* a wrapper hides it: .btn-key's display is unlayered, so a utility on the Button would lose */}
+            <span className="cv-share cv-desk" data-cv-share="header">
+              <Button variant="secondary" onClick={() => share("header")}>
+                Share
+              </Button>
+              {menuFrom === "header" && shareMenu}
+            </span>
+            <span className="max-sm:hidden">
+              <Button variant="secondary" href="/cv/Elleta_McDaniel_Product_Designer_CV.pdf" download trackEvent="cv-download">
+                Download PDF
+              </Button>
             </span>
             <button
               ref={closeBtnRef}
               onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center rounded-full border border-[color:var(--ink-on-paper-border)] hover:bg-[color:var(--ink-on-paper-border)] transition-colors cursor-pointer text-[color:var(--ink-on-paper-soft)] text-[length:var(--typography-font-size-base)]"
+              className="cv-close"
               aria-label="Close"
             >
               ✕
@@ -250,98 +358,55 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
         </div>
 
         {/* Scrollable body */}
-        <div className="overflow-y-auto no-scrollbar px-8 py-7 space-y-7">
+        <div data-cv-body className="cv-body overflow-y-auto no-scrollbar px-5 sm:px-8 py-5 sm:py-7">
 
           {/* Name + contact */}
           <div>
-            {/* h2 (not h1), the page h1 stays unique; dialog title is the header h2 */}
-            <h2 className="font-display font-bold text-[length:var(--typography-font-size-2xl)] text-[color:var(--ink-on-paper)] leading-snug mb-0.5">
+            {/* h2 (not h1), the page h1 stays unique; it is the dialog's title, so the header does not repeat the name (job Q) */}
+            <h2 id="resume-modal-title" className="font-display font-bold text-[length:var(--typography-font-size-2xl)] text-[color:var(--ink-on-paper)] leading-snug mb-0.5">
               Elleta McDaniel
             </h2>
             <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)] font-medium mb-2">
               Product Designer, Design Systems, Data Platforms &amp; Complex UX
             </p>
-            <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)]">
+            <p className="cv-where">
               <span>Barcelona, Spain</span>
-              <span>·</span>
               <span>Open to Hybrid/Remote</span>
-              <span>·</span>
-              <span>+34 633287939</span>
-              <span>·</span>
-              <a href={social.linkedin} data-umami-event="linkedin" className="hover:text-[color:var(--ink-on-paper)] transition-colors">linkedin.com/in/elleta-mcdaniel</a>
-            </div>
+            </p>
+            <ul className="cv-contacts">
+              <li>
+                <a href={social.linkedin} target="_blank" rel="noopener noreferrer" data-umami-event="cv-linkedin" className="cv-contacts__link">
+                  <span data-cv-noprint className="cv-contacts__lead"><LinkedInIcon />LinkedIn<span aria-hidden="true">↗</span></span>
+                  <span className="cv-print-only">linkedin.com/in/elleta-mcdaniel</span>
+                </a>
+              </li>
+              <li className="cv-contacts__email">
+                <span className="cv-contacts__address">{email}</span>
+                <span data-cv-noprint>
+                  <Button variant="secondary" onClick={copyEmail} trackEvent="cv-copy-email" ariaLabel="Copy email address">
+                    Copy
+                  </Button>
+                </span>
+                <span data-cv-noprint className="cv-contacts__status" role="status" aria-live="polite">{copied ? "Copied" : ""}</span>
+              </li>
+            </ul>
           </div>
-
-          <div className="divider" />
 
           {/* Profile */}
           <div>
             <p className="section-label mb-3">Profile</p>
             <p className="text-[length:var(--typography-font-size-base)] text-[color:var(--ink-on-paper-soft)] leading-relaxed">
-              Product designer with a focus on design systems, platform architecture, and complex multi-role interfaces.
-              I work at the intersection of system-level thinking and engineering collaboration, building scalable component
-              libraries, defining interaction patterns, and creating governance frameworks that reduce repeated
-              decision-making across teams. My work spans B2B SaaS booking platforms, internal tooling, and data-dense
-              dashboards for high-stakes environments. I&apos;m as comfortable working upstream on system architecture as
-              I am deep in component states and accessibility logic.
+              {PROFILE}
             </p>
           </div>
-
-          <div className="divider" />
-
-          {/* Skills */}
-          <div>
-            <p className="section-label mb-3">Skills</p>
-            <p className="text-[length:var(--typography-font-size-base)] text-[color:var(--ink-on-paper-soft)] leading-relaxed">
-              {skills.join(" · ")}
-            </p>
-          </div>
-
-          <div className="divider" />
-
-          {/* Credentials */}
-          <div>
-            <p className="section-label mb-4">Credentials</p>
-            <div className="space-y-4">
-              {credentials.map((c) => (
-                <div key={c.title} className="grid grid-cols-[120px_1fr] gap-4">
-                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{c.period}</span>
-                  <div>
-                    <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)]">{c.title}</p>
-                    <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)]">{c.issuer}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="divider" />
-
-          {/* Education */}
-          <div>
-            <p className="section-label mb-4">Education</p>
-            <div className="space-y-4">
-              {education.map((ed) => (
-                <div key={ed.institution} className="grid grid-cols-[120px_1fr] gap-4">
-                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{ed.period}</span>
-                  <div>
-                    <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)]">{ed.institution}</p>
-                    <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)]">{ed.degree}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="divider" />
 
           {/* Employment */}
-          <div>
+          <div className="cv-section">
             <p className="section-label mb-4">Employment</p>
-            <div className="space-y-6">
+            <div data-cv-entries className="cv-entries">
               {roles.map((role) => (
-                <div key={role.title + role.company} className="grid grid-cols-[120px_1fr] gap-4">
-                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5 leading-snug">{role.period}</span>
+                <div key={role.title + role.company} className="cv-row">
+                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5 leading-snug">{formatPeriod(role.period)}</span>
                   <div>
                     <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)] leading-snug">
                       {role.title}{" "}
@@ -360,7 +425,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
                       <div key={c.company} className="mt-4">
                         <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)] leading-snug">
                           {c.title}{" "}
-                          <span className="font-normal text-[color:var(--ink-on-paper-soft)]">@ {c.company} · {c.period}</span>
+                          <span className="font-normal text-[color:var(--ink-on-paper-soft)]">@ {c.company} · {formatPeriod(c.period)}</span>
                         </p>
                         <ul className="mt-2 space-y-1">
                           {c.highlights.map((h) => (
@@ -377,10 +442,67 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             </div>
           </div>
 
-          <div className="h-2" />
+          {/* Skills */}
+          <div className="cv-section">
+            <p className="section-label mb-3">Skills</p>
+            <ul className="cv-skills">
+              {skills.map((k) => (
+                <li key={k}>
+                  <Tag outline>{k}</Tag>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Credentials */}
+          <div className="cv-section">
+            <p className="section-label mb-4">Credentials</p>
+            <div data-cv-entries className="cv-entries">
+              {credentials.map((c) => (
+                <div key={c.title} className="cv-row">
+                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{formatPeriod(c.period)}</span>
+                  <div>
+                    <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)]">{c.title}</p>
+                    <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)]">{c.issuer}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Education */}
+          <div className="cv-section">
+            <p className="section-label mb-4">Education</p>
+            <div data-cv-entries className="cv-entries">
+              {education.map((ed) => (
+                <div key={ed.institution} className="cv-row">
+                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{formatPeriod(ed.period)}</span>
+                  <div>
+                    <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)]">{ed.institution}</p>
+                    <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)]">{ed.degree}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        {/* Phones: Download PDF and Share stay in reach (desktop has them in the header) */}
+        <div data-cv-noprint className="cv-actionbar">
+          <Button variant="primary" href="/cv/Elleta_McDaniel_Product_Designer_CV.pdf" download trackEvent="cv-download">
+            Download PDF
+          </Button>
+          <span className="cv-share" data-cv-share="bar">
+            <Button variant="secondary" onClick={() => share("bar")}>
+              Share
+            </Button>
+            {menuFrom === "bar" && shareMenu}
+          </span>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

@@ -19,6 +19,8 @@ const ROUTES = [
   "/",
   "/work",
   "/about",
+  /* the CV dialog open (the shareable link) */
+  "/cv",
   "/contact",
   "/privacy",
   "/accessibility",

@@ -7968,3 +7968,364 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 /* /work index hero lead: muted, 40ch (mock Part A) */
 #work-hero .l-header__lead { max-width: 40ch; color: var(--color-ink-muted); }
 .case-hero__signals--bare { margin-top: 1.5rem; padding: 0; background: none; }
+
+/* The CV as a PDF (job Q, 7 Oct 2026): scripts/build-cv-pdf.mjs prints the
+   open CV dialog, so the file and the dialog share one source. A4, white,
+   only the dialog, no site chrome, nothing scrolls or clips; type and
+   spacing set for a two-page CV (round 2). */
+@media print {
+  @page {
+    size: A4;
+    margin: 18mm;
+  }
+
+  body > *:not([data-cv-modal]) {
+    display: none !important;
+  }
+
+  /* the page ground is white too, so the dialog's edge is not a rule down the sheet */
+  html,
+  body {
+    background: Canvas !important;
+    background-image: none !important;
+  }
+
+  [data-cv-modal] {
+    position: static !important;
+    display: block !important;
+    padding: 0 !important;
+  }
+
+  [data-cv-modal] > div:first-child,
+  [data-cv-modal] [data-cv-noprint] {
+    display: none !important;
+  }
+
+  [data-cv-modal] [data-cv-email-slot]:not(:empty) {
+    display: inline;
+  }
+
+  [data-cv-modal] [role="dialog"],
+  [data-cv-modal] [data-cv-body] {
+    max-width: none !important;
+    max-height: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: Canvas !important;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+
+  [data-cv-modal] [data-cv-body] > * + * {
+    margin-top: 3.5mm !important;
+    padding-top: 0 !important;
+    border-top: 0 !important;
+  }
+
+  [data-cv-modal] .cv-entries {
+    gap: 0 !important;
+  }
+
+  [data-cv-modal] .cv-skills {
+    gap: 1.5mm !important;
+  }
+
+  [data-cv-modal] .cv-contacts {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    gap: 0 4mm !important;
+  }
+
+  [data-cv-modal] .cv-contacts > li {
+    min-height: 0 !important;
+  }
+
+  [data-cv-modal] .cv-print-only {
+    display: inline !important;
+  }
+
+  [data-cv-modal] .cv-where {
+    margin-bottom: 1mm !important;
+  }
+
+  /* space-y puts its gap on margin-bottom; print spaces entries by margin-top only */
+  [data-cv-modal] [data-cv-entries] > * {
+    margin-bottom: 0 !important;
+  }
+
+  [data-cv-modal] [data-cv-entries] > * + * {
+    margin-top: 3mm !important;
+  }
+
+  [data-cv-modal] [data-cv-body] ul {
+    margin-top: 1mm !important;
+  }
+
+  [data-cv-modal] [data-cv-body] li {
+    margin-top: 0.5mm !important;
+    gap: 2.5mm !important;
+  }
+
+  /* the date column narrows to its text, the entry gets the width */
+  [data-cv-modal] [data-cv-entries] > div {
+    grid-template-columns: 27mm minmax(0, 1fr) !important;
+    column-gap: 4mm !important;
+  }
+
+  [data-cv-modal] [data-cv-body] [data-cv-entries] ul + div {
+    margin-top: 2mm !important;
+  }
+
+  [data-cv-modal] [data-cv-body] .divider {
+    display: none;
+  }
+
+  [data-cv-modal] [data-cv-body] .section-label {
+    margin-bottom: 1.5mm !important;
+    font-size: 9pt !important;
+  }
+
+  [data-cv-modal] [data-cv-body] p,
+  [data-cv-modal] [data-cv-body] li,
+  [data-cv-modal] [data-cv-body] span,
+  [data-cv-modal] [data-cv-body] a {
+    font-size: 10.5pt !important;
+    line-height: 1.22 !important;
+  }
+
+  [data-cv-modal] [data-cv-body] li {
+    break-inside: avoid;
+  }
+}
+
+/* The CV dialog (job Q round 5, 7 Oct 2026). Phones (<640px): the dialog is
+   the whole screen (100dvh, set on the panel in ResumeModal), one scroll
+   in the body, a sticky header and a sticky action bar. Dates sit above
+   each role, contacts are a short list of 44px rows. From 640px the
+   dialog is the centred paper sheet. One gap token between sections. */
+.cv-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.cv-body > * + * {
+  margin-top: var(--space-stack-lg);
+  padding-top: var(--space-stack-lg);
+  border-top: 1px solid var(--ink-on-paper-border);
+}
+
+.cv-entries {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-stack-md);
+}
+
+.cv-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--space-xs);
+}
+
+@media (min-width: 640px) {
+  .cv-row {
+    grid-template-columns: 120px minmax(0, 1fr);
+    column-gap: var(--space-sm);
+  }
+}
+
+.cv-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-cv-modal] .tag.tag--outline {
+  box-shadow: inset 0 0 0 1px var(--ink-on-paper-border);
+  color: var(--ink-on-paper-soft);
+}
+
+.cv-where {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--space-sm);
+  margin: 0 0 var(--space-xs);
+  font-size: var(--typography-font-size-tag);
+  color: var(--ink-on-paper-muted);
+}
+
+.cv-contacts {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--typography-font-size-tag);
+  color: var(--ink-on-paper-soft);
+}
+
+.cv-contacts > li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: var(--space-sm);
+  min-height: var(--spacing-touch-target);
+}
+
+@media (min-width: 640px) {
+  .cv-contacts {
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: var(--space-md);
+  }
+}
+
+.cv-contacts__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  color: var(--ink-on-paper);
+  text-decoration: none;
+}
+
+.cv-contacts__lead {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.cv-contacts__link:hover .cv-contacts__lead {
+  text-decoration: underline;
+}
+
+.cv-contacts__address {
+  user-select: text;
+  -webkit-user-select: text;
+  overflow-wrap: anywhere;
+}
+
+.cv-contacts__status {
+  min-width: 4.5rem;
+  color: var(--ink-on-paper-muted);
+}
+
+.cv-print-only {
+  display: none;
+}
+
+.cv-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-touch-target);
+  height: var(--spacing-touch-target);
+  border: 1px solid var(--ink-on-paper-border);
+  border-radius: var(--radius-full);
+  color: var(--ink-on-paper-soft);
+  font-size: var(--typography-font-size-base);
+  cursor: pointer;
+  transition: background-color var(--dur-base) var(--ease-out);
+}
+
+.cv-close:hover {
+  background: var(--ink-on-paper-border);
+}
+
+.cv-share {
+  position: relative;
+  display: inline-flex;
+}
+
+.cv-share-menu {
+  position: absolute;
+  top: calc(100% + var(--space-xs));
+  right: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 12rem;
+  padding: var(--space-xs);
+  background: var(--surface-paper);
+  border: 1px solid var(--ink-on-paper-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+
+.cv-share-menu[data-from="bar"] {
+  top: auto;
+  bottom: calc(100% + var(--space-xs));
+}
+
+.cv-share-menu__item {
+  display: flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: 0 var(--space-sm);
+  border-radius: var(--radius-sm);
+  color: var(--ink-on-paper);
+  font-size: var(--typography-font-size-base);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cv-share-menu__item:hover {
+  background: var(--ink-on-paper-border);
+}
+
+.cv-share-menu__status {
+  padding: 0 var(--space-sm);
+  font-size: var(--typography-font-size-tag);
+  color: var(--ink-on-paper-muted);
+}
+
+.cv-share-menu__status:empty {
+  display: none;
+}
+
+.cv-actionbar {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  padding-bottom: max(var(--space-sm), env(safe-area-inset-bottom));
+  background: var(--surface-paper);
+  border-top: 1px solid var(--ink-on-paper-border);
+}
+
+/* phones only: these two have unlayered display, so the hiding is here, not a utility */
+@media (max-width: 639px) {
+  .cv-desk {
+    display: none;
+  }
+}
+
+@media (min-width: 640px) {
+  .cv-actionbar {
+    display: none;
+  }
+}
+
+.cv-actionbar > a,
+.cv-actionbar > .cv-share {
+  flex: 1 1 0;
+}
+
+.cv-actionbar .btn-key {
+  width: 100%;
+  justify-content: center;
+}
+
+/* The CV dialog is a paper surface in both themes (the paper tokens never
+   flip), so the page's own ink tokens read as paper inks inside it. The
+   unlayered p, li and heading colours would otherwise win over its
+   utility classes and draw pale text on paper in dark mode (job Q). */
+[data-cv-modal] {
+  --color-accent-ink: var(--ink-on-paper);
+  --color-border-soft: var(--ink-on-paper-border);
+  --color-ink: var(--ink-on-paper);
+  --color-ink-soft: var(--ink-on-paper-soft);
+  --color-eyebrow: var(--ink-on-paper-muted);
+}
