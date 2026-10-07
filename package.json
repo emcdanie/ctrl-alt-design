@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "build:cv": "node scripts/build-cv-pdf.mjs",
     "build": "next build",
     "vercel-build": "rm -rf .next/cache && next build",
     "start": "next start",

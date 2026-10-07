@@ -22,6 +22,7 @@ export function Button({
   children,
   ariaLabel,
   newTab = false,
+  download,
   trackEvent,
 }: {
   variant?: "primary" | "secondary";
@@ -34,6 +35,8 @@ export function Button({
   ariaLabel?: string;
   /** open in a new tab: a plain anchor with rel, not the router Link */
   newTab?: boolean;
+  /** a file to save: a plain anchor with the download attribute (the CV PDF) */
+  download?: boolean;
   /** analytics: the Umami event name, rendered as data-umami-event */
   trackEvent?: string;
 }) {
@@ -47,6 +50,13 @@ export function Button({
       </span>
     </span>
   );
+  if (href && download) {
+    return (
+      <a href={href} download className={cls} aria-label={ariaLabel} data-component="Button" data-umami-event={trackEvent}>
+        {label}
+      </a>
+    );
+  }
   if (href) {
     /* external or new-tab links are a plain anchor: the router Link has
        no job on a target="_blank" destination */
