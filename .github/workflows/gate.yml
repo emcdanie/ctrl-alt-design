@@ -1,10 +1,15 @@
 name: gate
 
-# The full BELLA gate + tsc on every PR and every push to main
-# (Elleta, 21 Jul 2026, via Cowork). NOTE: audit:nda passes vacuously
-# here, the banned-term lists are gitignored (_private/) and never
-# reach CI by design; NDA enforcement is local (pre-commit hook + the
-# local gate). Everything else runs exactly as it does locally.
+# The full BELLA gate + tsc on every PR and every push to main, split into
+# parallel jobs (S, 7 Oct 2026; was one 23 to 25 minute serial step). The same
+# audits run, with the same rules and thresholds; only where they run changed.
+#   static   no browser, no build: tsc, tests, 10 audits
+#   build    next build once, the .next folder shared with the shards
+#   browser  4 shards, each starts the built site and runs its audits
+#   gate     the one required check: green only if all of the above are
+# NOTE: audit:nda passes vacuously here, the banned-term lists are
+# gitignored (_private/) and never reach CI by design; NDA enforcement is
+# local (pre-commit hook + the local gate).
 
 on:
   pull_request:
@@ -12,29 +17,100 @@ on:
     branches: [main]
 
 jobs:
-  gate:
+  static:
+    name: static (tsc, tests, 10 audits)
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
-
       - uses: actions/setup-node@v7
         with:
           node-version: 20
           cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright chromium
-        run: npx playwright install chromium --with-deps
-
+      - run: npm ci
       - name: Type check
         run: npx tsc --noEmit
+      - name: Tests
+        run: npm test
+      - name: Static audits
+        run: |
+          fail=0
+          for a in sync layout fonts copy reuse nda parity agents contract debt; do
+            s=$SECONDS
+            npm run "audit:$a" || fail=1
+            echo "::notice title=timing::audit:$a $((SECONDS - s))s"
+          done
+          exit $fail
 
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
       - name: Build
         run: npm run build
+      # needs the production build's HTML (no TodoNote in it), so it runs here
+      - name: audit:structure
+        run: |
+          s=$SECONDS
+          npm run audit:structure
+          echo "::notice title=timing::audit:structure $((SECONDS - s))s"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: |
+            .next
+            !.next/cache
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
 
+  browser:
+    name: browser (${{ matrix.shard }})
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - shard: A
+            audits: frame contain
+          - shard: B
+            audits: sharp controls type clip
+          - shard: C
+            audits: contrast axe tokens
+          - shard: D
+            audits: visual dark order
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: next-build
+          path: .next
+      - name: Playwright browsers (cached)
+        id: pw
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - name: Install Playwright chromium
+        if: steps.pw.outputs.cache-hit != 'true'
+        run: npx playwright install chromium --with-deps
+      - name: System libraries for the cached browser
+        if: steps.pw.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
       - name: Serve the built site
         run: |
           npm run start &
@@ -43,9 +119,29 @@ jobs:
             sleep 1
           done
           echo "server never came up" && exit 1
+      - name: Audits
+        run: |
+          fail=0
+          for a in ${{ matrix.audits }}; do
+            s=$SECONDS
+            npm run "audit:$a" || fail=1
+            echo "::notice title=timing::shard ${{ matrix.shard }} audit:$a $((SECONDS - s))s"
+          done
+          exit $fail
 
-      - name: Run the gate
-        run: npm run gate
+  # The required check. Branch protection asks for "gate"; this keeps that
+  # name and is red if any job above is red or skipped.
+  gate:
+    name: gate
+    if: always()
+    needs: [static, build, browser]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Every job green
+        run: |
+          echo "static=${{ needs.static.result }} build=${{ needs.build.result }} browser=${{ needs.browser.result }}"
+          [ "${{ needs.static.result }}" = "success" ] && [ "${{ needs.build.result }}" = "success" ] && [ "${{ needs.browser.result }}" = "success" ]
 
   npm-audit:
     # Deliberately its own job, NOT in the required-checks list: at time of
