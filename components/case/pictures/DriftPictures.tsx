@@ -833,40 +833,19 @@ export function DriftAnatomy() {
         </ScaledArt>
       </div>
       <div className={caseStyles.phoneOnly}>
-        <Swipe
-          label="One stay card and the tokens it reads"
-          keep={2}
-          items={[
-            {
-              key: "card",
-              short: "the card",
-              node: (
-                <Panel label="The Harbour loft stay card: photo, title, location, a 4.9 rating, four amenities, Book now and 142 euros a night.">
-                  <StayCard className={s.phoneStay} />
-                </Panel>
-              ),
-            },
-            ...PIN_GROUPS.map((g) => ({
-              key: g.key,
-              short: g.title.toLowerCase(),
-              node: (
-                <Panel label={`${g.title}: ${g.pins.map(([t, , part]) => `${t} on ${part}`).join(", ")}.`}>
-                  <KitPanel className={s.phoneCard}>
-                    <span className={s.auditTitle}>{g.title}</span>
-                    <span className={s.phonePins}>
-                      {g.pins.map(([t, swatch, part]) => (
-                        <span key={t} className={s.phonePinRow}>
-                          <TokenPin token={t} swatch={swatch} />
-                          <span className={s.phoneMeta}>{part}</span>
-                        </span>
-                      ))}
-                    </span>
-                  </KitPanel>
-                </Panel>
-              ),
-            })),
-          ]}
-        />
+        {/* one smaller picture (job P, 7 Oct 2026): the card with a short
+            photo, its seven pins in one list beneath it */}
+        <Panel label={`The Harbour loft stay card with each part pinned to its token: ${PIN_GROUPS.flatMap((g) => g.pins).map(([t, , part]) => `${t} on ${part}`).join(", ")}.`}>
+          <StayCard className={`${s.phoneStay} ${s.phoneStayShort}`} count={false} />
+          <span className={s.phonePins}>
+            {PIN_GROUPS.flatMap((g) => g.pins).map(([t, swatch, part]) => (
+              <span key={t} className={s.phonePinRow}>
+                <TokenPin token={t} swatch={swatch} />
+                <span className={s.phoneMeta}>{part}</span>
+              </span>
+            ))}
+          </span>
+        </Panel>
       </div>
     </>
   );

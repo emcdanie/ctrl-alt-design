@@ -5,6 +5,7 @@ import { KitAvatar, KitButton, KitChip, KitStatus, KitTag, KitTheme, MarkupBadge
 import ShowAll from "@/components/case/ShowAll";
 import ScaledArt from "@/components/case/ScaledArt";
 import Swipe from "@/components/case/Swipe";
+import PhoneSwitch from "@/components/case/PhoneSwitch";
 import caseStyles from "@/components/case/Case.module.css";
 import s from "./FederatedPicturesB.module.css";
 
@@ -29,6 +30,7 @@ function Picture({
   children,
   more,
   phoneFirst,
+  phoneSwitch,
 }: {
   label: string;
   panels: PanelItem[];
@@ -36,6 +38,8 @@ function Picture({
   children: ReactNode;
   more?: { label: string; total: number; node: ReactNode };
   phoneFirst?: string;
+  /** on the phone: these panels share one slot behind a segmented switch, the rest sit behind Show the other N (job P) */
+  phoneSwitch?: { label: string; keys: string[] };
 }) {
   const wide = (l: string, node: ReactNode) => (
     <div role="img" aria-label={l} className={s.root}>
@@ -65,6 +69,15 @@ function Picture({
       }))}
     />
   );
+  const panelNode = (p: PanelItem) => (
+    <div role="img" aria-label={p.label} className={s.phonePanel}>
+      <div aria-hidden="true">
+        <KitTheme mode="federated">
+          <div className={s.phone}>{p.node}</div>
+        </KitTheme>
+      </div>
+    </div>
+  );
   return (
     <>
       <div className={caseStyles.wideOnly}>
@@ -72,7 +85,14 @@ function Picture({
         {more ? <ShowAll total={more.total}>{wide(more.label, more.node)}</ShowAll> : null}
       </div>
       <div className={caseStyles.phoneOnly}>
-        {phoneFirst ? (
+        {phoneSwitch ? (
+          <>
+            <PhoneSwitch
+              label={phoneSwitch.label}
+              items={panels.filter((p) => phoneSwitch.keys.includes(p.key)).map((p) => ({ key: p.key, label: p.short.charAt(0).toUpperCase() + p.short.slice(1), node: panelNode(p) }))}
+            />
+          </>
+        ) : phoneFirst ? (
           <>
             {stack(panels.filter((p) => p.key === phoneFirst))}
             <ShowAll total={panels.length - 1} label={`Show the other ${panels.length - 1}`}>{stack(panels.filter((p) => p.key !== phoneFirst))}</ShowAll>
@@ -174,7 +194,7 @@ const LANES_PANELS: PanelItem[] = [
 
 export function FedTwoLanes({ label }: { label: string }) {
   return (
-    <Picture label={label} panels={LANES_PANELS} swipe="Two lanes: the slow work and the decisions">
+    <Picture label={label} panels={LANES_PANELS} swipe="Two lanes: the slow work and the decisions" phoneFirst="migration">
       <div className={s.lanes}>
         <div className={s.lanesTop}>
           <Migration />
@@ -294,7 +314,7 @@ const INTAKE_PANELS: PanelItem[] = [
 
 export function FedIntake({ label }: { label: string }) {
   return (
-    <Picture label={label} panels={INTAKE_PANELS} swipe="When the system team heard about it">
+    <Picture label={label} panels={INTAKE_PANELS} swipe="When the system team heard about it" phoneSwitch={{ label: "Before or after", keys: ["before", "after"] }}>
       <div className={s.intake}>
         <Timelines />
         <Evidence />
@@ -382,36 +402,24 @@ const Outcome = () => (
   </div>
 );
 
+/* the phone's one smaller picture (job P, 7 Oct 2026): the whole slide in
+   one card, the cost cells and the KPI tree under the ask, the outcome as
+   a strip at the foot; was three stacked cards */
 const KPI_PANELS: PanelItem[] = [
   {
-    key: "ask",
-    short: "the ask",
+    key: "slide",
+    short: "the slide",
     node: (
-      <div className={`${s.card} ${s.slide}`}>
+      <div className={`${s.card} ${s.slide} ${s.slidePhone}`}>
         <SlideHead />
         <Ask />
-      </div>
-    ),
-    label:
-      "The leadership slide, 'Clean the system before scaling AI'. The ask, phase 1: bridge design and code on the top components, machine-readable descriptions, one sprint with no new budget, phases 2 and 3 only if phase 1 works.",
-  },
-  {
-    key: "case",
-    short: "the case",
-    node: (
-      <div className={`${s.card} ${s.slide}`}>
         <Cells />
         <Tree />
+        <Outcome />
       </div>
     ),
     label:
-      "The case: cost, duplicated components rebuilt squad by squad; time to market, decisions before the build; risk, AI copies whatever is there today. A KPI tree from business goals to product results to system work.",
-  },
-  {
-    key: "outcome",
-    short: "outcome",
-    node: <Outcome />,
-    label: "Two months after I left: developers on the system went from 50% to 100% on Web, iOS and Android.",
+      "The leadership slide, 'Clean the system before scaling AI'. The ask, phase 1: bridge design and code on the top components, machine-readable descriptions, one sprint with no new budget, phases 2 and 3 only if phase 1 works. The case: cost, duplicated components rebuilt squad by squad; time to market, decisions before the build; risk, AI copies whatever is there today. A KPI tree from business goals to product results to system work. Two months after I left: developers on the system went from 50% to 100% on Web, iOS and Android.",
   },
 ];
 

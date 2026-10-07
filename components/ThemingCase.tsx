@@ -6,6 +6,7 @@ import CaseShowcase, { type ShowcaseCard } from "@/components/case/CaseShowcase"
 import CaseFigure, { ReplayKey } from "@/components/case/CaseFigure";
 import NextCase from "@/components/case/NextCase";
 import ShowAll from "@/components/case/ShowAll";
+import PhoneCollapse from "@/components/case/PhoneCollapse";
 import { ThemeStage, ThemeExhibit, ThemeJson } from "@/components/theming/ThemeStage";
 import HeroExhibit from "@/components/theming/HeroExhibit";
 import OneName from "@/components/theming/OneName";
@@ -142,7 +143,12 @@ export default function ThemingCase() {
             title="One system, many faces."
             meta={["Case · Theming · BELLA", "2026"]}
             intro="Themes in BELLA swap the values, never the components. Pick a theme and watch the same screen change, token by token."
-            art={<HeroExhibit />}
+            art={
+              /* phones drop it: Figure 1 carries the same exhibit (job P) */
+              <div className={caseStyles.wideOnly}>
+                <HeroExhibit />
+              </div>
+            }
           />
         }
         showcase={<CaseShowcase label="Theming, the same card in three more themes" cards={SHOWCASE} strip />}
@@ -238,7 +244,7 @@ export default function ThemingCase() {
                 <p className={s.say}>In plain words: each name on the left has one answer for light mode and one for dark.</p>
               </div>
             </div>
-            <ShowAll total={3}>
+            <ShowAll total={2} label="Show the other 2">
               <div className={s.repo} role="img" aria-label="Two more excerpts from BELLA's public repo. The Button's contract: its variants, states and what not to do. The reading order: raw values first, then what they're for, then what uses them.">
                 <div className={s.code} aria-hidden="true">
                   <Win dark path="emcdanie/bella · tokens/component.json" short="component.json">
@@ -285,12 +291,13 @@ export default function ThemingCase() {
             <Pipeline />
           </CaseFigure>
           <CaseFigure n={7} caption="The gate in four checks, from BELLA's package.json. Every theme passes it before it ships.">
+            <PhoneCollapse rest={GATE_CHECKS.length - 1}>
             <div role="img" aria-label="The gate in four checks: rebuild every token output; stop if the rebuild differs from what's committed; check the code still matches each component's contract; screenshot every story, compare it, and run accessibility checks.">
               <div aria-hidden="true">
                 <Win path="emcdanie/bella · package.json · the gate, in four checks" short="package.json">
                   <ol className={s.plainList}>
                     {GATE_CHECKS.map(([text, cmd], i) => (
-                      <li key={cmd} className={s.plain}>
+                      <li key={cmd} className={s.plain} data-phone-rest={i > 0 || undefined}>
                         <span className={s.n}>{i + 1}</span>
                         <p>{text}</p>
                         <code className={s.ic}>{cmd}</code>
@@ -300,6 +307,7 @@ export default function ThemingCase() {
                 </Win>
               </div>
             </div>
+            </PhoneCollapse>
           </CaseFigure>
         </Beat>
 
@@ -327,7 +335,8 @@ export default function ThemingCase() {
                   short: faceTitle(k),
                   node: (
                     <div className={s.face} role="img" aria-label={FACE_LABELS[k]}>
-                      <Preview theme={THEMES[k]} face={k} />
+                      {/* the phone picture drops the search and chips (job P): the card and its changes are the point */}
+                      <Preview theme={THEMES[k]} face={k} bare />
                       <WhatChanged face={k} />
                     </div>
                   ),

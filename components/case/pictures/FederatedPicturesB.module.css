@@ -1634,3 +1634,62 @@
   height: 20px;
   color: var(--color-semantic-text-primary);
 }
+
+/* the phone's one-card slide (job P): the fixed desktop heights give way,
+   the tree wraps, the outcome sits as a strip inside the card */
+.slidePhone {
+  padding: var(--spacing-5);
+  gap: var(--spacing-4);
+}
+
+.slidePhone .ask,
+.slidePhone .cell {
+  height: auto;
+}
+
+.slidePhone .tree {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.slidePhone .treeLabel {
+  flex-basis: 100%;
+}
+
+.slidePhone .treeArrow {
+  transform: none;
+}
+
+.slidePhone .cells {
+  gap: var(--spacing-3);
+}
+
+.slidePhone .cell {
+  padding: 0;
+  background: none;
+}
+
+.slidePhone .outcome .bar {
+  display: none;
+}
+
+.slidePhone .outcome {
+  padding: var(--spacing-4);
+  background: var(--color-semantic-background);
+  box-shadow: none;
+}
+
+.slidePhone .outcome .big,
+.slidePhone .outcome .from {
+  font-size: 32px;
+}
+
+.slidePhone .outcome > .sub:last-child {
+  display: none;
+}
+
+.slidePhone .platform {
+  background: var(--color-semantic-surface);
+}
