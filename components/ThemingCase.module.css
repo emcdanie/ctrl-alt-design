@@ -1336,6 +1336,8 @@
     white-space: pre;
     overflow-wrap: normal;
   }
+  /* the highlight runs the whole line, however far it scrolls */
+  .jsonHot { width: max-content; min-width: calc(100% + var(--spacing-4)); }
 }
 
 /* phones (job O14, O15, 6 Oct 2026): the theme row is one row of compact
