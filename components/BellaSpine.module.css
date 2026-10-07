@@ -285,12 +285,14 @@
 .pin {
   display: inline-grid;
   place-items: center;
-  width: 17px;
-  height: 17px;
+  width: var(--spacing-5);
+  height: var(--spacing-5);
   margin-left: var(--spacing-2);
   border-radius: 50%;
   background: var(--bad);
   color: var(--k);
+  font-size: var(--text-mono);
+  line-height: 1;
 }
 .legend {
   display: flex;
@@ -598,6 +600,7 @@
   transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
 }
 .pipe { container-type: inline-size; }
+.tokEnd { flex-direction: row-reverse; translate: calc(-100% + 14px) 0; }
 .tok i { width: 14px; height: 14px; border: 1px solid var(--ink); border-radius: 50%; background: var(--color-brand-ochre); }
 @media (max-width: 47.5rem) {
   .pipe { grid-template-columns: 1fr; gap: var(--spacing-2); padding-bottom: 0; }
@@ -804,7 +807,7 @@
   flex-direction: column;
   gap: var(--spacing-3);
   height: 100%;
-  padding: var(--spacing-5);
+  padding: var(--spacing-4);
 }
 .triedIn p {
   margin: 0;
@@ -841,7 +844,7 @@
 }
 
 /* ── phone steps (W, 7 Oct 2026): no figure or step taller than the screen ── */
-.stepCards { display: grid; gap: var(--spacing-3); }
+.stepMinis { display: grid; gap: var(--spacing-3); }
 .pgFold { display: grid; gap: var(--spacing-3); }
 .popDemo { display: none; }
 @media (max-width: 39.99rem) {
@@ -849,7 +852,7 @@
   .axt .demo { display: none; }
   .popDemo { display: flex; margin-bottom: var(--spacing-3); }
 }
-.sideCode .sideCard { display: none; }
+.sideCode .sideMini { display: none; }
 /* the answer to the list above it, not a third problem */
 .fix {
   max-width: var(--measure-body);
@@ -862,4 +865,18 @@
 @media (max-width: 39.99rem) {
   .pgCtl { gap: var(--spacing-3); }
   .pgCtl .grp { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-1) var(--spacing-3); }
+}
+
+/* phones: the accessibility card's WCAG line sits under its title, not beside it */
+@media (max-width: 39.99rem) {
+  .ah { flex-direction: column; align-items: flex-start; gap: var(--spacing-1); }
+}
+
+/* phones: the lifecycle panel under one screen (W): the lanes, the popover and its meta sit a step closer */
+@media (max-width: 39.99rem) {
+  :global(#life) .lanes { margin-top: var(--spacing-3); gap: 0; }
+  :global(#life) .pop { margin-top: var(--spacing-3); } /* padding stays 16: a second card padding is a second signature (audit:frame) */
+  .lcMeta { gap: var(--spacing-3); }
+  :global(#life) .pop { line-height: 1.5; }
+  :global(#life) .pop p, :global(#life) .lcMeta { line-height: inherit; }
 }

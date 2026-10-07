@@ -203,7 +203,7 @@ function Duo() {
               {done ? "refused · 4 guesses" : "checking"}
             </span>
           </div>
-          <div className={s.sideCard}>
+          <div className={s.sideMini}>
             <Mini g1 />
           </div>
           <pre className={`${s.code} text-code`} aria-label="Code the agent wrote without documentation: a custom div, an invented grey, a radius off the scale, and a font size below the floor.">
@@ -223,7 +223,7 @@ function Duo() {
               {done ? "merged · 0 guesses" : "checking"}
             </span>
           </div>
-          <div className={s.sideCard}>
+          <div className={s.sideMini}>
             <Mini />
           </div>
           <pre className={`${s.code} text-code`} aria-label="Code the agent wrote with BELLA's contract: ListingCard, the panel surface, the md radius, and the primary Button.">
@@ -241,7 +241,7 @@ function Duo() {
       key: "cards",
       label: "The cards",
       node: (
-        <div className={s.stepCards}>
+        <div className={s.stepMinis}>
           <div className={s.side}>
             <div className={s.sideH}>
               <b>No documentation</b>
@@ -646,7 +646,7 @@ function Pipeline({ auditCount }: { auditCount: number }) {
             {i === 3 && <i className={`${s.tick} ${pass ? s.tickOn : ""}`}>✓</i>}
           </div>
         ))}
-        <span className={s.tok} style={{ "--i": Math.max(0, tok) } as React.CSSProperties}>
+        <span className={`${s.tok} ${tok >= 4 ? s.tokEnd : ""}`} style={{ "--i": Math.max(0, tok) } as React.CSSProperties}>
           <i />
           <span>your change</span>
         </span>
@@ -1046,7 +1046,7 @@ export default function BellaSpine({ auditCount, auditCountWord }: { auditCount:
       </Section>
 
       <Section id="way" ruled>
-        <SectionHeader kicker="06 · What got in the way" heading="Everything passed" accent="and mobile bugs still got through." />
+        <SectionHeader kicker="06 · What got in the way" heading="Everything passed" accent="and mobile bugs got through." />
         <ul className={s.way}>
           <li>The gate grew to {auditCount} checks; a full run went from about 10 to about 25 minutes.</li>
           <li>Working solo: no second reviewer.</li>
