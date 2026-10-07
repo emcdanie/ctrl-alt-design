@@ -86,10 +86,30 @@
   .strip:not(.foot) .path { overflow: hidden; overflow-wrap: normal; white-space: nowrap; text-overflow: ellipsis; }
 }
 
-/* phones: the cover is cropped in on its one part, so the UI reads (job O9) */
-@media (max-width: 39.99rem) {
-  .stagePicture img {
-    scale: var(--cover-zoom, 1);
-    transform-origin: var(--cover-at, 50% 50%);
+/* phones (X, 7 Oct 2026): the stage is taller and shows ONE whole detail of
+   the picture, scaled to fit and centred (nothing of it cut, only the photo
+   and background around it). The detail is a region of the picture, set in
+   content/cases.ts as fractions (--rx --ry --rw --rh) with the aspect --ar. */
+@media (max-width: 47.99rem) {
+  .stagePicture[data-region] {
+    --cover-stage-h: 18.125rem;
+    position: relative;
+    container-type: inline-size;
+  }
+
+  .stagePicture[data-region] img {
+    --cw: min(100cqw / var(--rw), var(--cover-stage-h) / (var(--rh) * var(--ar)));
+    position: absolute;
+    width: var(--cw);
+    max-width: none;
+    height: auto;
+    left: calc(50% - (var(--rx) + var(--rw) / 2) * var(--cw));
+    top: calc(50% - (var(--ry) + var(--rh) / 2) * var(--cw) * var(--ar));
+    /* show the region and nothing round it: the rest of the picture is
+       other parts of the cover, which a taller stage would cut in half */
+    clip-path: inset(
+      calc(var(--ry) * 100%) calc((1 - var(--rx) - var(--rw)) * 100%)
+      calc((1 - var(--ry) - var(--rh)) * 100%) calc(var(--rx) * 100%)
+    );
   }
 }

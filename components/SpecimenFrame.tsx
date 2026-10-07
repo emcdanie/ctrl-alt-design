@@ -10,6 +10,10 @@ import styles from "./SpecimenFrame.module.css";
    card. Not the Atlas specimen: no pins, no legend. A picture: hidden
    from the accessibility tree, so the card's link name starts at its
    meta line. */
+/* the phone crop as fractions of the picture, for the stage's CSS (X) */
+const region = ({ phone: r, width, height }: Picture): Record<string, number> =>
+  r ? { "--rx": r.x / width, "--ry": r.y / height, "--rw": r.w / width, "--rh": r.h / height, "--ar": height / width } : {};
+
 export default function SpecimenFrame({
   path,
   mode,
@@ -36,7 +40,8 @@ export default function SpecimenFrame({
       </span>
       <span
         className={`${styles.stage} ${picture ? styles.stagePicture : ""}`.trim()}
-        style={picture ? ({ "--cover-focus": picture.focus, "--cover-zoom": picture.phone?.zoom, "--cover-at": picture.phone?.at } as CSSProperties) : undefined}
+        data-region={picture?.phone ? "" : undefined}
+        style={picture ? ({ "--cover-focus": picture.focus, ...region(picture) } as CSSProperties) : undefined}
       >
         {picture ? (
           <CoverPicture picture={picture} eager={eager} />
