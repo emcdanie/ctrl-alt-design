@@ -8329,6 +8329,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 /* the mono cut is for text that IS code or a token name, on the elements that
    mean it (TY, 7 Oct 2026: labels, eyebrows, meta and tags are Label styles
    in the text face; audit:roles fails mono anywhere else) */
-:is(code, pre, kbd, samp) {
+:is(code, pre, kbd, samp),
+:is(code, pre, kbd, samp).text-code {
   font-family: var(--font-code);
 }
