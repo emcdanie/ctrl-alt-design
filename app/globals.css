@@ -7968,3 +7968,51 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 /* /work index hero lead: muted, 40ch (mock Part A) */
 #work-hero .l-header__lead { max-width: 40ch; color: var(--color-ink-muted); }
 .case-hero__signals--bare { margin-top: 1.5rem; padding: 0; background: none; }
+
+/* The CV as a PDF (job Q, 7 Oct 2026): scripts/build-cv-pdf.mjs prints the
+   open CV dialog, so the file and the dialog share one source. A4, only
+   the dialog, no site chrome, nothing scrolls or clips. */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  body > *:not([data-cv-modal]) {
+    display: none !important;
+  }
+
+  [data-cv-modal] {
+    position: static !important;
+    display: block !important;
+    padding: 0 !important;
+  }
+
+  [data-cv-modal] > div:first-child,
+  [data-cv-modal] [data-cv-noprint] {
+    display: none !important;
+  }
+
+  [data-cv-modal] [role="dialog"] {
+    max-width: none !important;
+    max-height: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  [data-cv-modal] [role="dialog"] > div {
+    overflow: visible !important;
+  }
+}
+
+/* The CV dialog is a paper surface in both themes (the paper tokens never
+   flip), so the page's own ink tokens read as paper inks inside it. The
+   unlayered p, li and heading colours would otherwise win over its
+   utility classes and draw pale text on paper in dark mode (job Q). */
+[data-cv-modal] {
+  --color-accent-ink: var(--ink-on-paper);
+  --color-border-soft: var(--ink-on-paper-border);
+  --color-ink: var(--ink-on-paper);
+  --color-ink-soft: var(--ink-on-paper-soft);
+  --color-eyebrow: var(--ink-on-paper-muted);
+}

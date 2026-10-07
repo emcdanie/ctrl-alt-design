@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/Button";
 import { social } from "@/lib/social";
 
@@ -162,6 +163,9 @@ const roles: CvRole[] = [
   },
 ];
 
+const PROFILE =
+  "Product designer with a focus on design systems, platform architecture, and complex multi-role interfaces. I work at the intersection of system-level thinking and engineering collaboration, building scalable component libraries, defining interaction patterns, and creating governance frameworks that reduce repeated decision-making across teams. My work spans B2B SaaS booking platforms, internal tooling, and data-dense dashboards for high-stakes environments. I’m as comfortable working upstream on system architecture as I am deep in component states and accessibility logic.";
+
 export default function ResumeModal({ open, onClose }: ResumeModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
@@ -207,8 +211,11 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
 
   if (!open) return null;
 
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+  /* through a portal to <body> (job Q, 7 Oct 2026): the dialog sat inside
+     a parent's stacking context, so the site header drew over it on a
+     phone. data-cv-modal lets the print sheet show only this dialog. */
+  return createPortal(
+    <div data-cv-modal className="fixed inset-0 z-[9996] flex items-center justify-center p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-[color:var(--modal-backdrop)] modal-backdrop" onClick={onClose} />
 
@@ -222,22 +229,19 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
       >
 
         {/* Header */}
-        <div className="bg-[color:var(--surface-paper)] border-b border-[color:var(--ink-on-paper-border)] px-8 py-5 flex items-center justify-between rounded-t-3xl flex-shrink-0">
+        <div data-cv-noprint className="bg-[color:var(--surface-paper)] border-b border-[color:var(--ink-on-paper-border)] px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between gap-3 rounded-t-3xl flex-shrink-0">
           <div>
             <p className="section-label mb-1">Curriculum Vitae</p>
             <h2 id="resume-modal-title" className="font-display font-bold text-[length:var(--typography-font-size-lg)] text-[color:var(--ink-on-paper)] leading-tight">
               Elleta McDaniel
             </h2>
           </div>
-          <div className="flex items-center gap-3">
-            {/* PDF download, enabled once /public/cv/Elleta_McDaniel_Product_Designer_CV.pdf is added */}
-            <span
-              className="bg-[color:var(--ink-on-paper-border)] text-[var(--color-semantic-text-inverse)]/50 text-[length:var(--typography-font-size-tag)] font-medium px-4 py-2 rounded-full cursor-not-allowed select-none"
-              title="The PDF is not published yet"
-              aria-disabled="true"
-            >
+          <div className="flex items-center gap-3" data-cv-noprint>
+            {/* the PDF is this dialog printed (scripts/build-cv-pdf.mjs), so the
+                two never disagree */}
+            <Button variant="secondary" href="/cv/Elleta_McDaniel_Product_Designer_CV.pdf" download trackEvent="cv-download">
               Download PDF
-            </span>
+            </Button>
             <button
               ref={closeBtnRef}
               onClick={onClose}
@@ -250,7 +254,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
         </div>
 
         {/* Scrollable body */}
-        <div className="overflow-y-auto no-scrollbar px-8 py-7 space-y-7">
+        <div className="overflow-y-auto no-scrollbar px-5 sm:px-8 py-5 sm:py-7 space-y-3 sm:space-y-4">
 
           {/* Name + contact */}
           <div>
@@ -266,8 +270,6 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
               <span>·</span>
               <span>Open to Hybrid/Remote</span>
               <span>·</span>
-              <span>+34 633287939</span>
-              <span>·</span>
               <a href={social.linkedin} data-umami-event="linkedin" className="hover:text-[color:var(--ink-on-paper)] transition-colors">linkedin.com/in/elleta-mcdaniel</a>
             </div>
           </div>
@@ -278,12 +280,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
           <div>
             <p className="section-label mb-3">Profile</p>
             <p className="text-[length:var(--typography-font-size-base)] text-[color:var(--ink-on-paper-soft)] leading-relaxed">
-              Product designer with a focus on design systems, platform architecture, and complex multi-role interfaces.
-              I work at the intersection of system-level thinking and engineering collaboration, building scalable component
-              libraries, defining interaction patterns, and creating governance frameworks that reduce repeated
-              decision-making across teams. My work spans B2B SaaS booking platforms, internal tooling, and data-dense
-              dashboards for high-stakes environments. I&apos;m as comfortable working upstream on system architecture as
-              I am deep in component states and accessibility logic.
+              {PROFILE}
             </p>
           </div>
 
@@ -380,7 +377,8 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
           <div className="h-2" />
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
