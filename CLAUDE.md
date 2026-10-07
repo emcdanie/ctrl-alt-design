@@ -317,6 +317,8 @@ Must pass before any work is "done":
   (`static`, `build`, 7 `browser` shards) behind one required check named `gate`; CI is the
   source of truth. An audit's rules and thresholds never change to make it faster.
   `audit:sync` reads BELLA's `origin/main`, not the branch checked out in ~/DEV/bella.
+  The pre-commit hook (`.git/hooks/pre-commit`, local, not in the repo) runs `check:fast`;
+  a fresh clone has to install it by hand, or commits go out unchecked.
 - `npm test` runs FIRST in the gate: the pure functions in `lib/bella/dtcg.ts` (vitest). A
   broken function fails in a second rather than after two minutes of browser work. Tests are
   not an audit and do not change the derived count.
