@@ -13,3 +13,41 @@
 :global([data-theme="dark"]) .picture[data-theme-only="dark"] {
   display: block;
 }
+
+/* the stage: a fixed aspect per band, the card's width decides the size */
+.stage {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  container-type: size;
+  aspect-ratio: var(--cover-aspect);
+}
+
+/* the detail: a region of the picture (fractions --rx --ry --rw --rh, the room
+   --rp, the aspect --ar), centred and scaled to fit the stage. Never past half
+   the picture's pixels (--pw: audit:sharp, a 2x screen). Only the detail shows:
+   the rest of the picture is other parts of the cover. */
+.stage .picture {
+  --cw: min(100cqw / (var(--rw) + 2 * var(--rp)), 100cqh / (var(--rh) * var(--ar)), var(--pw) / 2);
+  position: absolute;
+  width: var(--cw);
+  max-width: none;
+  height: auto;
+  left: calc(50% - (var(--rx) + var(--rw) / 2) * var(--cw));
+  top: calc(50% - (var(--ry) + var(--rh) / 2) * var(--cw) * var(--ar));
+  clip-path: inset(
+    calc(var(--ry) * 100%) calc((1 - var(--rx) - var(--rw)) * 100%)
+    calc((1 - var(--ry) - var(--rh)) * 100%) calc(var(--rx) * 100%)
+  );
+}
+
+/* dark: product UI drawn in the light look keeps it (the Federated panel does):
+   the light picture, cut to its card and badge */
+:global([data-theme="dark"]) .stage[data-keep-light] .picture[data-theme-only="light"] {
+  display: block;
+  clip-path: var(--keep-clip);
+}
+
+:global([data-theme="dark"]) .stage[data-keep-light] .picture[data-theme-only="dark"] {
+  display: none;
+}

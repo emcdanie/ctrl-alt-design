@@ -62,65 +62,8 @@
   fill: var(--color-semantic-accent);
 }
 
-/* a Figma cover picture (job 43): the stage IS the picture, edge to edge,
-   one per theme */
-.stagePicture {
-  display: block;
-  /* cropped, never scaled, so each card fits one screen with the nav
-     (Elleta, 6 Oct 2026, H4) */
-  height: var(--cover-stage-h);
-  overflow: hidden;
-  padding: 0;
-  background-image: none;
-}
-
-.stagePicture img {
-  height: 100%;
-  object-fit: cover;
-  object-position: var(--cover-focus, 50% 50%);
-}
-
 /* phones: the header strip is one line, the path alone (job O, 6 Oct 2026) */
 @media (max-width: 39.99rem) {
   .strip:not(.foot) > :last-child { display: none; }
   .strip:not(.foot) .path { overflow: hidden; overflow-wrap: normal; white-space: nowrap; text-overflow: ellipsis; }
-}
-
-/* phones (X, 7 Oct 2026): the stage is taller and shows ONE whole detail of
-   the picture, scaled to fit and centred (nothing of it cut, only the photo
-   and background around it). The detail is a region of the picture, set in
-   content/cases.ts as fractions (--rx --ry --rw --rh) with the aspect --ar. */
-@media (max-width: 47.99rem) {
-  .stagePicture[data-region] {
-    --cover-stage-h: 18.125rem;
-    position: relative;
-    container-type: inline-size;
-  }
-
-  .stagePicture[data-region] img {
-    --cw: min(100cqw / (var(--rw) + 2 * var(--rp)), var(--cover-stage-h) / (var(--rh) * var(--ar)));
-    position: absolute;
-    width: var(--cw);
-    max-width: none;
-    height: auto;
-    left: calc(50% - (var(--rx) + var(--rw) / 2) * var(--cw));
-    top: calc(50% - (var(--ry) + var(--rh) / 2) * var(--cw) * var(--ar));
-    /* show the region and nothing round it: the rest of the picture is
-       other parts of the cover, which a taller stage would cut in half */
-    clip-path: inset(
-      calc(var(--ry) * 100%) calc((1 - var(--rx) - var(--rw)) * 100%)
-      calc((1 - var(--ry) - var(--rh)) * 100%) calc(var(--rx) * 100%)
-    );
-  }
-
-  /* dark: the product UI keeps its light look, like the Federated panel: the
-     light picture, cut to the card and its badge (no grid showing through) */
-  :global([data-theme="dark"]) .stagePicture[data-keep-light] img[data-theme-only="light"] {
-    display: block;
-    clip-path: var(--keep-clip);
-  }
-
-  :global([data-theme="dark"]) .stagePicture[data-keep-light] img[data-theme-only="dark"] {
-    display: none;
-  }
 }
