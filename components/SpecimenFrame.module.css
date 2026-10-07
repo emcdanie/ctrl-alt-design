@@ -80,3 +80,16 @@
   object-position: var(--cover-focus, 50% 50%);
 }
 
+/* phones: the header strip is one line, the path alone (job O, 6 Oct 2026) */
+@media (max-width: 39.99rem) {
+  .strip:not(.foot) > :last-child { display: none; }
+  .strip:not(.foot) .path { overflow: hidden; overflow-wrap: normal; white-space: nowrap; text-overflow: ellipsis; }
+}
+
+/* phones: the cover is cropped in on its one part, so the UI reads (job O9) */
+@media (max-width: 39.99rem) {
+  .stagePicture img {
+    scale: var(--cover-zoom, 1);
+    transform-origin: var(--cover-at, 50% 50%);
+  }
+}

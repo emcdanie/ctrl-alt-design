@@ -24,7 +24,8 @@ import s from "@/components/ThemingCase.module.css";
    collage and showcase dress the one listing card (Preview) in the four
    themes. Theme hexes live inside the pictures only. */
 
-function Win({ path, dark = false, children }: { path: string; dark?: boolean; children: ReactNode }) {
+/** `short`: the path on a phone, where the whole one would not fit a line (job O4) */
+function Win({ path, short, dark = false, children }: { path: string; short?: string; dark?: boolean; children: ReactNode }) {
   return (
     /* a dark window is pinned dark in both page modes (job 38) */
     <div className={dark ? `${s.win} ${s.pinDark}` : s.win} data-theme={dark ? "dark" : undefined}>
@@ -34,7 +35,10 @@ function Win({ path, dark = false, children }: { path: string; dark?: boolean; c
           <i />
           <i />
         </span>
-        <span className={s.winPath}>{path}</span>
+        <span className={s.winPath}>
+          <span className={short ? s.pathFull : undefined}>{path}</span>
+          {short ? <span className={s.pathShort}>{short}</span> : null}
+        </span>
       </header>
       {children}
     </div>
@@ -61,7 +65,7 @@ const R = ({ children }: { children: string }) => (
 );
 
 const ONE_NAME_CAPTION =
-  "One name, two answers: the component asks for background; light mode answers #ffffff, dark mode answers #0d0d0d. Motion: the name changes every 2.2s while in view (background, text-primary, text-muted, surface-card, focus-ring); swatches pop and the arrows draw. Reduced motion holds background."; // token-waiver: the two answers shown as caption text
+  "One name, two answers: the component asks for background; light mode answers #ffffff, dark mode answers #0d0d0d."; // token-waiver: the two answers shown as caption text
 
 const RULES: [string, ReactNode][] = [
   ["Components never read tier 1.", "A new need gets a new named role first."],
@@ -87,7 +91,7 @@ function StorybookTable() {
   return (
     <div className={s.sbFrame} role="img" aria-label="Storybook, Foundations / Colors / Semantic: the same five names, background, text-primary, text-muted, surface-card and focus-ring, each with a light answer and a dark answer.">
       <div aria-hidden="true">
-        <Win path="Storybook · Foundations / Colors / Semantic">
+        <Win path="Storybook · Foundations / Colors / Semantic" short="Storybook · Semantic">
           <div className={s.sbPair}>
             {(["light", "dark"] as const).map((mode) => (
               <div key={mode}>
@@ -155,7 +159,7 @@ export default function ThemingCase() {
             n={1}
             replay
             replayBelow
-            caption="The exhibit, shown on theme ground (BELLA · light). Motion: the theme cycles ground → night → coast → market every 1.7s while in view; colours ease over 0.5s and the gate bars replay. Picking a theme pauses it. Reduced motion: no cycling, this frame."
+            caption="The exhibit, shown on theme ground (BELLA · light)."
           >
             <ReplayKey>
               <ThemeExhibit />
@@ -221,7 +225,7 @@ export default function ThemingCase() {
                 reading order sit behind Show all 3 (job F, 5 Oct 2026) */}
             <div className={s.repo} role="img" aria-label="The first of three excerpts from BELLA's public repo, the semantic names: each name has one answer for light mode and one for dark.">
               <div className={s.code} aria-hidden="true">
-                <Win dark path="emcdanie/bella · tokens/semantic/light.json → dark.json">
+                <Win dark path="emcdanie/bella · tokens/semantic/light.json → dark.json" short="semantic/*.json">
                   <pre className={s.hl}>
                     <K>&quot;text-primary&quot;</K>{"   "}<R>{"{color.light.ink}"}</R>{"         "}<R>{"{color.dark.ink}"}</R>{"\n"}
                     <K>&quot;text-muted&quot;</K>{"     "}<R>{"{color.light.muted}"}</R>{"       "}<R>{"{color.dark.muted}"}</R>{"\n"}
@@ -237,7 +241,7 @@ export default function ThemingCase() {
             <ShowAll total={3}>
               <div className={s.repo} role="img" aria-label="Two more excerpts from BELLA's public repo. The Button's contract: its variants, states and what not to do. The reading order: raw values first, then what they're for, then what uses them.">
                 <div className={s.code} aria-hidden="true">
-                  <Win dark path="emcdanie/bella · tokens/component.json">
+                  <Win dark path="emcdanie/bella · tokens/component.json" short="component.json">
                     <pre className={s.hl}>
                       <K>&quot;button&quot;</K>{": {\n  "}
                       <K>&quot;name&quot;</K>{": "}<V>&quot;Button&quot;</V>{",\n  "}
@@ -247,7 +251,7 @@ export default function ThemingCase() {
                     </pre>
                   </Win>
                   <p className={s.say}>In plain words: the Button&apos;s rulebook. Which versions exist, which states it has, and how not to use it. People and AI tools both read this.</p>
-                  <Win dark path="emcdanie/bella · tokens/$themes.json">
+                  <Win dark path="emcdanie/bella · tokens/$themes.json" short="$themes.json">
                     <pre className={s.hl}>
                       <K>&quot;tokenSetOrder&quot;</K>{": [\n  "}
                       <V>&quot;primitive&quot;</V>{",       "}<C>{"// tier 1 · raw values"}</C>{"\n  "}
@@ -276,14 +280,14 @@ export default function ThemingCase() {
             n={6}
             replay
             replayBelow
-            caption="BELLA's pipeline. Motion: a token chip (action) hops step to step every 0.7s, and each step lights up as it lands; check turns mint and the drawing holds on ship. Plays once at half in view; Replay restarts; reduced motion shows this finished frame."
+            caption="BELLA's pipeline."
           >
             <Pipeline />
           </CaseFigure>
           <CaseFigure n={7} caption="The gate in four checks, from BELLA's package.json. Every theme passes it before it ships.">
             <div role="img" aria-label="The gate in four checks: rebuild every token output; stop if the rebuild differs from what's committed; check the code still matches each component's contract; screenshot every story, compare it, and run accessibility checks.">
               <div aria-hidden="true">
-                <Win path="emcdanie/bella · package.json · the gate, in four checks">
+                <Win path="emcdanie/bella · package.json · the gate, in four checks" short="package.json">
                   <ol className={s.plainList}>
                     {GATE_CHECKS.map(([text, cmd], i) => (
                       <li key={cmd} className={s.plain}>

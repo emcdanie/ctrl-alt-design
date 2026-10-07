@@ -35,8 +35,8 @@ export default function WorkPage() {
         />
         <div className={homeStyles.cases}>
           <div className={caseStyles.cardPair}>
-            {WORK_CASES.map((row) => (
-              <CaseRow key={row.id} row={row} layout="card" />
+            {WORK_CASES.map((row, i) => (
+              <CaseRow key={row.id} row={row} layout="card" eager={i < 2} />
             ))}
           </div>
         </div>

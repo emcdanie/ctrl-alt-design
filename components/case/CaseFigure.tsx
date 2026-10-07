@@ -44,6 +44,12 @@ export default function CaseFigure({
 
   useEffect(() => {
     if (!replay || playing) return;
+    /* phones (job O16, 6 Oct 2026): the figure shows its final frame at
+       once, so no reserved animation space sits empty; Replay still plays it */
+    if (typeof window !== "undefined" && window.matchMedia("(max-width: 39.99rem)").matches) {
+      setPlaying(true);
+      return;
+    }
     const el = art.current;
     if (!el || typeof IntersectionObserver === "undefined") {
       setPlaying(true);

@@ -514,15 +514,27 @@ a.card:focus-visible {
    meta, title, description, tags and "Read the case" line up across a
    row and the link sits on the card's bottom (K2, Elleta, 6 Oct 2026,
    Figma 486:57509). A card without tags leaves its row empty. */
-.cardPair > .card {
-  grid-row: span 6;
-  grid-template-rows: subgrid;
-  row-gap: 0;
+@media (min-width: 900px) {
+  .cardPair > .card {
+    grid-row: span 6;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+  }
+  .cardPair > .card > :first-child { grid-row: 1; margin-bottom: var(--spacing-5); }
+  .cardPair .cardBody { display: contents; }
+  .cardPair .cardBody > .metaLine { grid-row: 2; }
+  .cardPair .cardBody > .cardTitle { grid-row: 3; }
+  .cardPair .cardBody > .rowClaim { grid-row: 4; }
+  .cardPair .cardBody > .rowTags { grid-row: 5; align-self: start; }
+  .cardPair .cardBody > .cardEnd { grid-row: 6; align-self: end; }
 }
-.cardPair > .card > :first-child { grid-row: 1; margin-bottom: var(--spacing-5); }
-.cardPair .cardBody { display: contents; }
-.cardPair .cardBody > .metaLine { grid-row: 2; }
-.cardPair .cardBody > .cardTitle { grid-row: 3; }
-.cardPair .cardBody > .rowClaim { grid-row: 4; }
-.cardPair .cardBody > .rowTags { grid-row: 5; align-self: start; }
-.cardPair .cardBody > .cardEnd { grid-row: 6; align-self: end; }
+
+/* phones (job O, 6 Oct 2026): the meta line is two clean lines without
+   the number, and a tag never wraps inside its pill */
+@media (max-width: 39.99rem) {
+  .card .metaNum { display: none; }
+  .card .metaLead { display: block; }
+  .card .metaDot { display: none; }
+  .card .rowTags { flex-direction: column; align-items: flex-start; }
+  .card .rowTags > :global(.tag) { max-width: 100%; white-space: nowrap; }
+}

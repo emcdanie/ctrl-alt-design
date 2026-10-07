@@ -1321,3 +1321,47 @@
   max-width: 100%;
   container-type: inline-size;
 }
+
+/* phones (job O4, 6 Oct 2026): the header is one line, the short path
+   in place of the whole one; the tier 2 file scrolls sideways inside its
+   card. The code in the repo windows breaks between tokens only, never
+   inside one (a scroller inside a picture is no reachable control) */
+.pathShort { display: none; }
+@media (max-width: 39.99rem) {
+  .pathFull { display: none; }
+  .pathShort { display: inline; }
+  .hl { overflow-wrap: normal; }
+  .json {
+    overflow-x: auto;
+    white-space: pre;
+    overflow-wrap: normal;
+  }
+  /* the highlight runs the whole line, however far it scrolls */
+  .jsonHot { width: max-content; min-width: calc(100% + var(--spacing-4)); }
+}
+
+/* phones (job O14, O15, 6 Oct 2026): the theme row is one row of compact
+   pills that scrolls, under the figure; the figure shows the card first,
+   the tier lists behind "Show the tokens" */
+.tokBtn { display: none; }
+@media (max-width: 40rem) {
+  .exCol { display: flex; flex-direction: column; }
+  .picker {
+    order: 2;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-top: var(--spacing-3);
+  }
+  .th,
+  .play { flex: none; }
+  .th { padding-right: var(--spacing-2); }
+  .ex > .exFace { order: 1; }
+  .ex > .cap { order: 2; }
+  .ex > .tokBtn { display: inline-flex; order: 3; justify-self: start; margin-left: 0; }
+  .ex > .sheets { order: 4; }
+  .sheets[data-open="false"] { display: none; }
+  /* the card as at 1024: the price row and booking bar drop out whole */
+  .exFace .pvPriceRow,
+  .exFace .pvBar { display: none; }
+}
+

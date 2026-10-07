@@ -3,6 +3,7 @@ import { Icon, type IconName } from "@/components/ui/Icon";
 import { KitAvatar, KitPanel, KitStatus, KitTag, KitTheme, MarkupBadge, MarkupNote } from "@/components/case/kit/Kit";
 import ScaledArt from "@/components/case/ScaledArt";
 import Swipe from "@/components/case/Swipe";
+import ShowAll from "@/components/case/ShowAll";
 import caseStyles from "@/components/case/Case.module.css";
 import s from "./FederatedPicturesA.module.css";
 
@@ -163,6 +164,24 @@ const WHO_PANELS = [
   { key: "squads", short: "product squads", node: <Squads />, label: "The product squads, each with its own designer: Checkout, Account and orders, Product page, Listing and search, Email, Assistant." },
 ];
 
+function WhoSwipe({ panels, label }: { panels: typeof WHO_PANELS; label: string }) {
+  return (
+    <Swipe
+      fit
+      label={label}
+      items={panels.map((p) => ({
+        key: p.key,
+        short: p.short,
+        node: (
+          <Pic label={p.label} className={s.phonePanel}>
+            {p.node}
+          </Pic>
+        ),
+      }))}
+    />
+  );
+}
+
 export function FederatedWho() {
   return (
     <>
@@ -184,19 +203,12 @@ export function FederatedWho() {
         </ScaledArt>
       </Pic>
       <div className={caseStyles.phoneOnly}>
-        <Swipe
-          fit
-          label="Who serves whom"
-          items={WHO_PANELS.map((p) => ({
-            key: p.key,
-            short: p.short,
-            node: (
-              <Pic label={p.label} className={s.phonePanel}>
-                {p.node}
-              </Pic>
-            ),
-          }))}
-        />
+        {/* a long list of people on a phone: the manager, and the four groups behind
+            "Show the team" until the redesign (job M; Justine's feedback) */}
+        <WhoSwipe panels={WHO_PANELS.slice(0, 1)} label="Who set the priorities" />
+        <ShowAll total={4} label="Show the team">
+          <WhoSwipe panels={WHO_PANELS.slice(1)} label="Who serves whom" />
+        </ShowAll>
       </div>
     </>
   );
@@ -211,7 +223,8 @@ const COAT = "/images/kit/coat.webp";
 function Coat({ square = false, children }: { square?: boolean; children?: ReactNode }) {
   return (
     <span className={s.photo} data-square={square || undefined}>
-      <img src={COAT} alt="" width={640} height={960} loading="lazy" decoding="async" />
+      {/* the one small file, shared with the hero card: eager, so the first screen is never empty (job O2) */}
+      <img src={COAT} alt="" width={640} height={960} decoding="async" />
       {children}
     </span>
   );

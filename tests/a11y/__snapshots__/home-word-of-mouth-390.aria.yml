@@ -1,6 +1,6 @@
 - region "Word of mouth":
   - paragraph: Word of mouth
-  - figure "Brad Frost · Author of Atomic Design · More on About":
+  - figure "Brad Frost Author of Atomic Design More on About":
     - blockquote:
       - paragraph:
         - text: She's now with us on the

@@ -11,7 +11,9 @@
  *  card size (CLAUDE.md section 9). Files: /images/case/covers/<name>-<theme>.webp */
 /** `focus`: what the card's cropped stage keeps (object-position; H4,
  *  cards fit one screen), centre when unset */
-export type CoverPicture = { name: string; alt: string; width: number; height: number; focus?: string };
+export type CoverPicture = { name: string; alt: string; width: number; height: number; focus?: string;
+  /** phones: cropped in on the one part that matters (O9, stopgap for compact covers): scale, and the point it grows from */
+  phone?: { zoom: number; at: string } };
 
 export interface CaseRowData {
   id: string;
@@ -55,7 +57,7 @@ export const CASES: CaseRowData[] = [
     title: "One system, many faces",
     claim: "Themes in BELLA swap the values, never the components.",
     href: "/case-studies/theming",
-    tags: [{ text: "token strategy figma → code" }, { text: "consistency without fragmentation", tone: "c3" }, { text: "accessibility in every theme", tone: "c2" }, { text: "ai-ready structure", outline: true }],
+    tags: [{ text: "token strategy" }, { text: "no fragmentation", tone: "c3" }, { text: "accessibility in every theme", tone: "c2" }, { text: "ai-ready structure", outline: true }],
   },
   {
     id: "search",
@@ -101,7 +103,7 @@ const DRIFT: CaseRowData = {
     path: "drift / buttons · audit",
     mode: "before → after",
     caption: "Recreated from my audit. No client UI.",
-    picture: { name: "drift", width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
+    picture: { name: "drift", phone: { zoom: 1.7, at: "46% 62%" }, width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
   },
 };
 const FEDERATED: CaseRowData = {
@@ -116,7 +118,7 @@ const FEDERATED: CaseRowData = {
     path: "federated / contribution",
     mode: "one system",
     caption: "Recreated. One chip, a new slot, nothing forked.",
-    picture: { name: "federated", width: 1392, height: 1008, focus: "50% 0%", alt: "A product page with its size chips, beside a panel: kept the old chip, added a slot. Colour and Text kept, Slot new, and three fills for the slot: size and stock, kids' age and height, a colour filter." },
+    picture: { name: "federated", phone: { zoom: 1.6, at: "68% 50%" }, width: 1392, height: 1008, focus: "50% 0%", alt: "A product page with its size chips, beside a panel: kept the old chip, added a slot. Colour and Text kept, Slot new, and three fills for the slot: size and stock, kids' age and height, a colour filter." },
   },
 };
 const CHIP: CaseRowData = {
@@ -128,7 +130,7 @@ const CHIP: CaseRowData = {
     path: "chip 2.0 / atlas",
     mode: "filter chip",
     caption: "CHIP 2.0 checks every layer of a component.",
-    picture: { name: "chip", width: 1392, height: 1008, alt: "CHIP's Atlas anatomy of the FilterChip: the Accessible chip with six numbered parts." },
+    picture: { name: "chip", phone: { zoom: 1.35, at: "50% 50%" }, width: 1392, height: 1008, alt: "CHIP's Atlas anatomy of the FilterChip: the Accessible chip with six numbered parts." },
   },
 };
 const THEMING: Omit<CaseRowData, "n"> = {
@@ -137,7 +139,7 @@ const THEMING: Omit<CaseRowData, "n"> = {
     path: "theming / theme switcher",
     mode: "on BELLA",
     caption: "Three brands, one set of components.",
-    picture: { name: "theming", width: 1392, height: 1008, alt: "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it." },
+    picture: { name: "theming", phone: { zoom: 1.5, at: "50% 72%" }, width: 1392, height: 1008, alt: "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it." },
   },
 };
 export const HOME_LEAD: CaseRowData[] = [DRIFT, FEDERATED, { ...THEMING, n: "03" }];

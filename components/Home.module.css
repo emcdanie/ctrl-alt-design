@@ -578,3 +578,16 @@
     animation: doorFade 0.3s ease-out calc(0.6s + max(0, 2 - var(--k)) * 0.12s) both;
   }
 }
+
+/* phones (job O7, 6 Oct 2026): the plates do not rise from the bottom of
+   the stack, which left a screen of empty grid above them before the
+   reveal; they sit in their slots and the legend fades in */
+@media (max-width: 639.98px) and (prefers-reduced-motion: no-preference) {
+  :global(.js-reveal) .explode:not(:global(.is-revealed)) .plate {
+    translate: none;
+  }
+
+  .explode:global(.is-revealed) .plate {
+    animation: none;
+  }
+}

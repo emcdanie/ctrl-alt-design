@@ -16,6 +16,7 @@ export default function SpecimenFrame({
   caption,
   art,
   picture,
+  eager,
 }: {
   path: string;
   mode: string;
@@ -24,6 +25,8 @@ export default function SpecimenFrame({
   art?: string;
   /** the stage as a Figma picture, light and dark (job 43), in place of `art` */
   picture?: Picture;
+  /** above the fold: load now, never wait for a scroll (job O2) */
+  eager?: boolean;
 }) {
   return (
     <span className={styles.frame} aria-hidden="true">
@@ -33,10 +36,10 @@ export default function SpecimenFrame({
       </span>
       <span
         className={`${styles.stage} ${picture ? styles.stagePicture : ""}`.trim()}
-        style={picture?.focus ? ({ "--cover-focus": picture.focus } as CSSProperties) : undefined}
+        style={picture ? ({ "--cover-focus": picture.focus, "--cover-zoom": picture.phone?.zoom, "--cover-at": picture.phone?.at } as CSSProperties) : undefined}
       >
         {picture ? (
-          <CoverPicture picture={picture} />
+          <CoverPicture picture={picture} eager={eager} />
         ) : art ? (
           <svg viewBox="0 0 300 180" aria-hidden="true" data-bella-diagram dangerouslySetInnerHTML={{ __html: art }} />
         ) : null}

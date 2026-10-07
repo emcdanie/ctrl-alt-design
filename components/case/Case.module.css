@@ -1228,3 +1228,14 @@ main .showcase + :global(.l-section.l-section) {
 .showcasePieces:has(.piecesFill) > * {
   width: 100%;
 }
+
+/* ShowAll phoneOnly (job O): collapsed under 640px, whole from there up */
+.moreBarPhone { display: none; }
+@media (max-width: 39.99rem) {
+  .moreBarPhone { display: flex; }
+  .phoneBody[data-open="false"] { display: none; }
+}
+
+@media (max-width: 39.99rem) {
+  .showcaseTrack[data-stack-open="false"] > .showcaseCard:nth-child(n + 2) { display: none; }
+}
