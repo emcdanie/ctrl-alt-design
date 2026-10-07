@@ -839,3 +839,27 @@
   font-size: var(--typography-font-size-base);
   line-height: var(--typography-line-height-relaxed);
 }
+
+/* ── phone steps (W, 7 Oct 2026): no figure or step taller than the screen ── */
+.stepCards { display: grid; gap: var(--spacing-3); }
+.pgFold { display: grid; gap: var(--spacing-3); }
+.popDemo { display: none; }
+@media (max-width: 39.99rem) {
+  /* the accessibility cards are compact; the mini-demo moves into the text below */
+  .axt .demo { display: none; }
+  .popDemo { display: flex; margin-bottom: var(--spacing-3); }
+}
+.sideCode .sideCard { display: none; }
+/* the answer to the list above it, not a third problem */
+.fix {
+  max-width: var(--measure-body);
+  margin: var(--spacing-6) 0 0;
+  font-size: var(--typography-font-size-lg, var(--typography-font-size-base));
+  font-weight: 600;
+  line-height: var(--typography-line-height-relaxed);
+}
+/* the controls: a label and its choices on one line when they fit, so the playground stays under a screen */
+@media (max-width: 39.99rem) {
+  .pgCtl { gap: var(--spacing-3); }
+  .pgCtl .grp { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-1) var(--spacing-3); }
+}

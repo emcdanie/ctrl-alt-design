@@ -203,7 +203,9 @@ function Duo() {
               {done ? "refused · 4 guesses" : "checking"}
             </span>
           </div>
-          <Mini g1 />
+          <div className={s.sideCard}>
+            <Mini g1 />
+          </div>
           <pre className={`${s.code} text-code`} aria-label="Code the agent wrote without documentation: a custom div, an invented grey, a radius off the scale, and a font size below the floor.">
             <Typed parts={CODE_L} n={n} marks={marks} bad />
           </pre>
@@ -221,13 +223,41 @@ function Duo() {
               {done ? "merged · 0 guesses" : "checking"}
             </span>
           </div>
-          <Mini />
+          <div className={s.sideCard}>
+            <Mini />
+          </div>
           <pre className={`${s.code} text-code`} aria-label="Code the agent wrote with BELLA's contract: ListingCard, the panel surface, the md radius, and the primary Button.">
             <Typed parts={CODE_R} n={n} marks={marks} bad={false} />
           </pre>
         </>
       ),
     },
+  ];
+
+  /* a phone sees three steps, none taller than the screen: the two cards
+     (they look the same), then each side's code */
+  const phoneSteps = [
+    {
+      key: "cards",
+      label: "The cards",
+      node: (
+        <div className={s.stepCards}>
+          <div className={s.side}>
+            <div className={s.sideH}>
+              <b>No documentation</b>
+            </div>
+            <Mini g1 />
+          </div>
+          <div className={s.side}>
+            <div className={s.sideH}>
+              <b>With BELLA&apos;s contract</b>
+            </div>
+            <Mini />
+          </div>
+        </div>
+      ),
+    },
+    ...sides.map((x) => ({ key: x.key, label: x.label, node: <div className={`${s.side} ${s.sideCode}`}>{x.node}</div> })),
   ];
 
   return (
@@ -244,10 +274,7 @@ function Duo() {
         <div className={s.duoG}>{sides.map((x) => <div key={x.key} className={s.side}>{x.node}</div>)}</div>
       </div>
       <div className={cs.phoneOnly}>
-        <PhoneSwitch
-          label="Compare the two"
-          items={sides.map((x) => ({ key: x.key, label: x.label, node: <div className={s.side}>{x.node}</div> }))}
-        />
+        <PhoneSwitch label="Compare the two" items={phoneSteps} />
       </div>
       <div className={`${s.legend} text-code`}>
         <span className="text-code">
@@ -422,6 +449,8 @@ const MOD = ["light", "dark"] as const;
 
 function Playground() {
   const [st, setSt] = useState({ a: 0, r: 1, d: 1, m: 0 });
+  /* the checks sit folded on a phone; a failing choice opens them, so a block is never hidden */
+  const [foldOpen, setFoldOpen] = useState(false);
   const a = ACC[st.a][1];
   const g = GROUND[MOD[st.m]];
   const edge = EDGE[ACC[st.a][0]]?.[MOD[st.m]] ?? a;
@@ -507,7 +536,9 @@ function Playground() {
             </div>
           </div>
         </div>
-        <div className={s.box} aria-live="polite">
+        <PhoneCollapse rest={1} label="Show the checks" open={foldOpen || fail > 0} onOpenChange={setFoldOpen}>
+        <div className={s.pgFold}>
+        <div className={s.box} aria-live="polite" data-phone-rest="">
           <div className={s.pgGh}>
             <span className="text-code">the gate</span>
             <span className={`${s.verdict} ${fail ? s.vBad : ""} text-code`}>{fail ? `blocked · ${fail} fail` : "ships"}</span>
@@ -520,9 +551,11 @@ function Playground() {
             </div>
           ))}
         </div>
-        <p className="text-code">
+        <p className="text-code" data-phone-rest="">
           {`// --accent: ${a} · radius: ${RAD[st.r][1]} · density: ${DEN[st.d][0]} · mode: ${MOD[st.m]}`}
         </p>
+        </div>
+        </PhoneCollapse>
       </div>
     </div>
   );
@@ -734,6 +767,9 @@ function Accessibility() {
   /* stopped until someone presses play or picks one */
   const [paused, setPaused] = useState(true);
   const [touched, setTouched] = useState(false);
+  /* two cards show on a phone; the tour (or a pick) that lands on a folded
+     one opens the fold first, so the card it describes is never hidden */
+  const [foldOpen, setFoldOpen] = useState(false);
   const gRef = useRef<HTMLDivElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const { ax, point } = useArrow(popRef);
@@ -751,6 +787,7 @@ function Accessibility() {
   }, [cur, point]);
 
   const a = A11Y[cur];
+  const open = foldOpen || cur >= 2;
   return (
     <div className={s.panel}>
       <div className={s.top}>
@@ -766,13 +803,21 @@ function Accessibility() {
           {paused ? "play" : "pause"}
         </button>
       </div>
-      <PhoneCollapse rest={A11Y.length - 3} label="Show the other 3">
+      <PhoneCollapse
+        rest={A11Y.length - 2}
+        label="Show the other 4"
+        open={open}
+        onOpenChange={(o) => {
+          setFoldOpen(o);
+          if (!o && cur >= 2) setCur(1);
+        }}
+      >
       <div ref={gRef} className={s.axG}>
         {A11Y.map((x, i) => (
           <button
             key={x.t}
             type="button"
-            data-phone-rest={i >= 3 ? "" : undefined}
+            data-phone-rest={i >= 2 ? "" : undefined}
             aria-pressed={i === cur}
             className={s.axt}
             onClick={() => {
@@ -798,6 +843,9 @@ function Accessibility() {
           <b>{a.t}</b>
           <span className="text-code">WCAG {a.ref}</span>
         </div>
+        <span className={`${s.demo} ${s.popDemo}`} aria-hidden="true">
+          <A11yDemo i={cur} cur={cur} on={touched} />
+        </span>
         <p>{a.what}</p>
         <p className={s.next}>
           <span className="text-code">checked by</span> {a.by}
@@ -1002,8 +1050,8 @@ export default function BellaSpine({ auditCount, auditCountWord }: { auditCount:
         <ul className={s.way}>
           <li>The gate grew to {auditCount} checks; a full run went from about 10 to about 25 minutes.</li>
           <li>Working solo: no second reviewer.</li>
-          <li>So the gate now runs in parallel, about 6 minutes, and I look at screenshots before it runs.</li>
         </ul>
+        <p className={s.fix}>So the gate now runs in parallel, about 6 minutes, and I look at screenshots before it runs.</p>
       </Section>
 
       <Section id="a11y" ruled>
