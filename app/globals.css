@@ -538,6 +538,13 @@ body {
   --home-field-opacity: 0.035;
 }
 
+/* phones: one spacing step less between sections, 48 not 64 (U, 7 Oct 2026) */
+@media (max-width: 639.98px) {
+  :root {
+    --section-pad-y: var(--spacing-12);
+  }
+}
+
 @media (max-width: 640px) {
   :root {
     --header-height: 70px; /* measured bar: 12px padding + 44px controls + 12px + 2px borders */

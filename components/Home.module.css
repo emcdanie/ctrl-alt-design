@@ -83,20 +83,6 @@
   margin: var(--space-stack-md) 0 0;
 }
 
-/* the accessibility line under the system links (job 34, findability):
-   the cite's quiet type, the link inline */
-.a11y {
-  max-width: var(--measure-body);
-  margin: var(--space-stack-sm) 0 0;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink-muted);
-}
-
-.keep {
-  white-space: nowrap;
-}
-
 /* the proof row (H4, 6 Oct 2026, the 4 Oct map): three ProofCards,
    equal heights, 24 apart; three columns from 900px, one below */
 .proof {
@@ -195,7 +181,7 @@
      short, so the whole figure (stage, plates, caption) fits one screen
      under the nav (I2, 6 Oct 2026). --door-chrome is what the figure
      adds round the plates: the stage padding, the gap and the caption. */
-  --door-chrome: var(--spacing-20);
+  --door-chrome: calc(var(--spacing-20) * 3);
   --u: min(100cqw / 993, (100svh - var(--header-height) - var(--door-chrome)) / 1040);
   position: relative;
   width: calc(993 * var(--u));
@@ -522,18 +508,21 @@
 /* phone: the plates fill the column, the legend follows as a list */
 @container (max-width: 39.99rem) {
   .explode {
-    --u: calc(100cqw / 640);
     /* the column's width, not the desktop figure's: the legend used to
        follow the 993-unit box past the edge (U, 7 Oct 2026). The layers
        keep their desktop spacing so none covers another's content; the
        blank above the first one is trimmed, and the legend is one line
        per layer */
     --door-lead: 24;
+    --door-scale: 0.65;
+    --u: calc(100cqw * var(--door-scale) / 640);
     width: 100%;
   }
 
   .plates {
+    width: calc(640 * var(--u));
     height: calc((1040 - 94.4 + var(--door-lead)) * var(--u));
+    margin-inline: auto;
   }
 
   .plate {

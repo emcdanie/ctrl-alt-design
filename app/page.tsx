@@ -221,7 +221,9 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <figcaption className={styles.doorCaption}>The card on the site. Every value comes from BELLA.</figcaption>
+          <figcaption className={styles.doorCaption}>
+            The card on the site. Every value comes from BELLA. Built to WCAG 2.2 AA, AAA contrast.
+          </figcaption>
         </figure>
         <p className={styles.links}>
           <TextLink href="/design-system">
@@ -230,17 +232,10 @@ export default function Home() {
           <TextLink href="/learning">
             Where I learned it <span aria-hidden="true">→</span>
           </TextLink>
-        </p>
-        {/* findability (job 34): the accessibility statement, from the system beat */}
-        <p className={styles.a11y}>
-          Built to WCAG 2.2 AA,{" "}
-          {/* the link keeps its words: the line breaks before them (job G3) */}
-          <span className={styles.keep}>
-            AAA contrast ·{" "}
-            <TextLink href="/accessibility">
-              Accessibility <span aria-hidden="true">→</span>
-            </TextLink>
-          </span>
+          {/* findability (job 34): the accessibility statement, from the system beat */}
+          <TextLink href="/accessibility">
+            Accessibility <span aria-hidden="true">→</span>
+          </TextLink>
         </p>
       </Section>
     </main>
