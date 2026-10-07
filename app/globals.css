@@ -391,8 +391,8 @@ body {
   /* the back-to-top tab (H3, 6 Oct 2026, the adhamdannaway.com footer) */
   --footer-chevron-hi: var(--color-semantic-surface); /* the lighter tone under the debossed chevron */
   --footer-tab-overlap: var(--spacing-2);
-  /* a case card's cover stage, cropped (H4: a card fits one screen) */
-  --cover-stage-h: 11.25rem;
+  /* a case card's cover stage: one aspect per band (X2), sized from the card */
+  --cover-aspect: 4 / 3;
   --footer-tab-rise: 5px;
   --font-card-title: 1.25rem; /* titles: 20px (Geist refresh) */
   --font-body-size: var(--text-body);
@@ -8328,4 +8328,18 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
   --color-ink: var(--ink-on-paper);
   --color-ink-soft: var(--ink-on-paper-soft);
   --color-eyebrow: var(--ink-on-paper-muted);
+}
+
+/* the cover stage's bands: phone 4:3, tablet (640 to 899, 768 included) 2:1,
+   desktop (900 up, the card grids go to columns) 4:3 */
+@media (min-width: 40rem) {
+  :root {
+    --cover-aspect: 2 / 1;
+  }
+}
+
+@media (min-width: 56.25rem) {
+  :root {
+    --cover-aspect: 4 / 3;
+  }
 }

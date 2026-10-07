@@ -457,8 +457,6 @@
 }
 @media (min-width: 900px) {
   .cardFeatured {
-    /* beside its text the featured cover already fits: no crop (H4) */
-    --cover-stage-h: auto;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: center;
     gap: var(--spacing-6);

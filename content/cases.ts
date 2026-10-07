@@ -9,12 +9,11 @@
  *  43): the specimen stage as a flat picture, light and dark, at 3x. A
  *  picture because the recreated UI in it runs under the 14px floor at
  *  card size (CLAUDE.md section 9). Files: /images/case/covers/<name>-<theme>.webp */
-/** `focus`: what the card's cropped stage keeps (object-position; H4,
- *  cards fit one screen), centre when unset */
-export type CoverPicture = { name: string; alt: string; width: number; height: number; focus?: string;
-  /** phones (X, 7 Oct 2026): the one whole detail the card shows, a region of the picture in its own pixels
-   *  (x, y, width, height), centred in the stage and scaled to fit it; `pad` is empty room kept each side of it, in picture pixels */
-  phone?: { x: number; y: number; w: number; h: number; pad?: number;
+export type CoverPicture = { name: string; alt: string; width: number; height: number;
+  /** the one detail the card shows at EVERY width (X, X2, 7 Oct 2026): a region of the picture in its own
+   *  pixels (x, y, width, height), centred in the stage and scaled to fit it, never past half the picture's
+   *  pixels (audit:sharp); `pad` is empty room kept each side of it, in picture pixels */
+  detail: { x: number; y: number; w: number; h: number; pad?: number;
     /** product UI drawn in the light look stays light in dark (the Federated panel does): on phones in dark, the light picture
      *  shows, cut to these shapes (rounded rects [x, y, w, h, radius] and circles [cx, cy, r], in picture pixels) */
     keepLight?: { rects: [number, number, number, number, number][]; circles: [number, number, number][] } } };
@@ -107,7 +106,7 @@ const DRIFT: CaseRowData = {
     path: "drift / buttons · audit",
     mode: "before → after",
     caption: "Recreated from my audit. No client UI.",
-    picture: { name: "drift", phone: { x: 84, y: 225, w: 672, h: 490, pad: 22, keepLight: { rects: [[90, 283, 628, 420, 14]], circles: [[700, 286, 52]] } }, width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
+    picture: { name: "drift", detail: { x: 84, y: 225, w: 672, h: 490, pad: 22, keepLight: { rects: [[90, 283, 628, 420, 14]], circles: [[700, 286, 52]] } }, width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
   },
 };
 const FEDERATED: CaseRowData = {
@@ -122,7 +121,7 @@ const FEDERATED: CaseRowData = {
     path: "federated / contribution",
     mode: "one system",
     caption: "Recreated. One chip, a new slot, nothing forked.",
-    picture: { name: "federated", phone: { x: 613, y: 60, w: 635, h: 522 }, width: 1392, height: 1008, focus: "50% 0%", alt: "A product page with its size chips, beside a panel: kept the old chip, added a slot. Colour and Text kept, Slot new, and three fills for the slot: size and stock, kids' age and height, a colour filter." },
+    picture: { name: "federated", detail: { x: 613, y: 60, w: 635, h: 522 }, width: 1392, height: 1008, alt: "A product page with its size chips, beside a panel: kept the old chip, added a slot. Colour and Text kept, Slot new, and three fills for the slot: size and stock, kids' age and height, a colour filter." },
   },
 };
 const CHIP: CaseRowData = {
@@ -134,7 +133,7 @@ const CHIP: CaseRowData = {
     path: "chip 2.0 / atlas",
     mode: "filter chip",
     caption: "CHIP 2.0 checks every layer of a component.",
-    picture: { name: "chip", phone: { x: 240, y: 152, w: 910, h: 776 }, width: 1392, height: 1008, alt: "CHIP's Atlas anatomy of the FilterChip: the Accessible chip with six numbered parts." },
+    picture: { name: "chip", detail: { x: 500, y: 245, w: 390, h: 400 }, width: 1392, height: 1008, alt: "CHIP's Atlas anatomy of the FilterChip: the Accessible chip with six numbered parts." },
   },
 };
 const THEMING: Omit<CaseRowData, "n"> = {
@@ -143,7 +142,7 @@ const THEMING: Omit<CaseRowData, "n"> = {
     path: "theming / theme switcher",
     mode: "on BELLA",
     caption: "Three brands, one set of components.",
-    picture: { name: "theming", phone: { x: 253, y: 267, w: 886, h: 705, pad: 24 }, width: 1392, height: 1008, alt: "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it." },
+    picture: { name: "theming", detail: { x: 253, y: 267, w: 886, h: 705, pad: 24 }, width: 1392, height: 1008, alt: "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it." },
   },
 };
 export const HOME_LEAD: CaseRowData[] = [DRIFT, FEDERATED, { ...THEMING, n: "03" }];
