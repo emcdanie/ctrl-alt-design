@@ -35,6 +35,8 @@
     "test": "vitest run",
     "sync:bella": "node scripts/sync-bella.mjs",
     "audit:sync": "node scripts/sync-bella.mjs --check",
+    "audit:static": "npm run audit:sync && npm run audit:layout && npm run audit:fonts && npm run audit:copy && npm run audit:reuse && npm run audit:nda && npm run audit:parity && npm run audit:agents && npm run audit:contract && npm run audit:debt",
+    "check:fast": "tsc --noEmit && npm test && npm run audit:static",
     "audit:order": "playwright test && node scripts/audit-order.mjs",
     "build:favicons": "node scripts/build-favicons.mjs"
   },
