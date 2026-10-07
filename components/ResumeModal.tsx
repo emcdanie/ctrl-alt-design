@@ -22,6 +22,10 @@ const skills = [
    verbatim from the retired About learning section; the hackathon is
    from the CHIP case ("Five days, solo, for the Anthropic Claude Code
    hackathon"). */
+/* One date-range formatter for the dialog and the PDF: periods are stored
+   "start, end" and read "start to end" (constitution section 6). */
+const formatPeriod = (period: string) => period.replace(", ", " to ");
+
 const credentials = [
   { period: "2024, 2025", title: "Brad Frost Web Maker Program", issuer: "Brad Frost" },
   { period: "2025", title: "Design Tokens Course", issuer: "Romina Kavčič, The Design System Guide" },
@@ -156,9 +160,9 @@ const roles: CvRole[] = [
     title: "Earlier career",
     company: "",
     highlights: [
-      "Partner Business Manager, SELLBYTEL Group (2014 - 2020)",
+      "Partner Business Manager, SELLBYTEL Group (2014 to 2020)",
       "Junior Fashion Designer, ecological fashion brand internship (2016)",
-      "B2B & Consumer Sales Representative, Apple (2011 - 2013)",
+      "B2B & Consumer Sales Representative, Apple (2011 to 2013)",
     ],
   },
 ];
@@ -313,7 +317,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             <div data-cv-entries className="space-y-6">
               {roles.map((role) => (
                 <div key={role.title + role.company} className="grid grid-cols-[120px_1fr] gap-4">
-                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5 leading-snug">{role.period}</span>
+                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5 leading-snug">{formatPeriod(role.period)}</span>
                   <div>
                     <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)] leading-snug">
                       {role.title}{" "}
@@ -332,7 +336,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
                       <div key={c.company} className="mt-4">
                         <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)] leading-snug">
                           {c.title}{" "}
-                          <span className="font-normal text-[color:var(--ink-on-paper-soft)]">@ {c.company} · {c.period}</span>
+                          <span className="font-normal text-[color:var(--ink-on-paper-soft)]">@ {c.company} · {formatPeriod(c.period)}</span>
                         </p>
                         <ul className="mt-2 space-y-1">
                           {c.highlights.map((h) => (
@@ -367,7 +371,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             <div data-cv-entries className="space-y-4">
               {credentials.map((c) => (
                 <div key={c.title} className="grid grid-cols-[120px_1fr] gap-4">
-                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{c.period}</span>
+                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{formatPeriod(c.period)}</span>
                   <div>
                     <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)]">{c.title}</p>
                     <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)]">{c.issuer}</p>
@@ -385,7 +389,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             <div data-cv-entries className="space-y-4">
               {education.map((ed) => (
                 <div key={ed.institution} className="grid grid-cols-[120px_1fr] gap-4">
-                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{ed.period}</span>
+                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{formatPeriod(ed.period)}</span>
                   <div>
                     <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)]">{ed.institution}</p>
                     <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)]">{ed.degree}</p>

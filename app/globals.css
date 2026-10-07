@@ -8020,8 +8020,13 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
     margin-top: 3.5mm !important;
   }
 
+  /* space-y puts its gap on margin-bottom; print spaces entries by margin-top only */
+  [data-cv-modal] [data-cv-entries] > * {
+    margin-bottom: 0 !important;
+  }
+
   [data-cv-modal] [data-cv-entries] > * + * {
-    margin-top: 2mm !important;
+    margin-top: 3mm !important;
   }
 
   [data-cv-modal] [data-cv-body] ul {
