@@ -112,4 +112,15 @@
       calc((1 - var(--ry) - var(--rh)) * 100%) calc(var(--rx) * 100%)
     );
   }
+
+  /* dark: the product UI keeps its light look, like the Federated panel: the
+     light picture, cut to the card and its badge (no grid showing through) */
+  :global([data-theme="dark"]) .stagePicture[data-keep-light] img[data-theme-only="light"] {
+    display: block;
+    clip-path: var(--keep-clip);
+  }
+
+  :global([data-theme="dark"]) .stagePicture[data-keep-light] img[data-theme-only="dark"] {
+    display: none;
+  }
 }
