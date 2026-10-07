@@ -176,7 +176,7 @@ const roles: CvRole[] = [
 ];
 
 const PROFILE =
-  "Design engineer who works where design meets code. I build token architectures, component libraries and the governance and documentation that keep them true in production, and I make them readable by AI as well as by people. I use Claude, Figma MCP and Code Connect daily to audit, document and ship faster, and I read the code so design and engineering stay aligned.";
+  "Design engineer who works where design meets code. I build token architectures, component libraries and the governance and documentation that keep them true in production, and I make them readable by AI as well as by people. I use Claude, Figma MCP and Code Connect daily to audit, document and ship faster, and I read the code so design and engineering stay aligned. Background in front-end development and product design for complex B2B SaaS, fintech and institutional platforms.";
 
 /* the one shared address (deep link, constitution: elleta.design/cv) */
 const CV_URL = "https://elleta.design/cv";
