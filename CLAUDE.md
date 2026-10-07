@@ -359,6 +359,21 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 - Commit only when `next.md` asks for it, never push. `docs/reference/inbox` is gitignored; never
   commit it.
 
+## 12. Plan first for bigger jobs (Elleta, 2026-10-07)
+- A job is "big" if next.md says [plan], or it touches more than one page/component, or a layout.
+  Small fixes (one file, no layout) skip this section.
+- Big job, step 1: open a GitHub issue with `gh issue create --label plan`, using
+  .github/ISSUE_TEMPLATE/plan.md: goal, what changes, what doesn't, the decisions with your
+  default for each, risks, how we'll verify (widths, themes, audits).
+- Step 2: run `npm run plan:review -- <issue#>`. A second model (Codex) reviews the plan and its
+  comment is posted on the issue.
+- Step 3: read the review, update the plan (edit the issue body), and list in report.md only
+  the decisions where the two models disagree or that are brand/money/taste. STOP for Elleta.
+- Step 4: on "go", build from the issue. The PR says "Closes #<issue>".
+- Defaults, not waiting: anywhere else, pick the sensible default, log it in
+  decisions-while-away.md and keep going. Stop only for brand, money, taste, merges, or a
+  rule conflict.
+
 ---
 
 # Repo operations (kept from the previous harness file)
