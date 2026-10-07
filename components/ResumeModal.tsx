@@ -83,7 +83,7 @@ const roles: CvRole[] = [
     company: "Brad Frost Web (Maker Program) · Contract",
     highlights: [
       "Build Claude-powered workflows for prototyping, component audits and system documentation.",
-      "Built a Figma component library aligned with reusable web components and a multi-theme architecture, translating an existing code-based system into production-ready Figma components.",
+      "Build a Figma component library aligned with reusable web components and a multi-theme architecture, translating an existing code-based system into production-ready Figma components.",
       "Shape governance, documentation and design-to-code alignment, applying Atomic Design across HTML, CSS, JavaScript and static-site tooling.",
     ],
   },
