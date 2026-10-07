@@ -12,8 +12,9 @@
 /** `focus`: what the card's cropped stage keeps (object-position; H4,
  *  cards fit one screen), centre when unset */
 export type CoverPicture = { name: string; alt: string; width: number; height: number; focus?: string;
-  /** phones: cropped in on the one part that matters (O9, stopgap for compact covers): scale, and the point it grows from */
-  phone?: { zoom: number; at: string } };
+  /** phones (X, 7 Oct 2026): the one whole detail the card shows, a region of the picture in its own pixels
+   *  (x, y, width, height), centred in the stage and scaled to fit it */
+  phone?: { x: number; y: number; w: number; h: number } };
 
 export interface CaseRowData {
   id: string;
@@ -103,7 +104,7 @@ const DRIFT: CaseRowData = {
     path: "drift / buttons · audit",
     mode: "before → after",
     caption: "Recreated from my audit. No client UI.",
-    picture: { name: "drift", phone: { zoom: 1.7, at: "46% 62%" }, width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
+    picture: { name: "drift", phone: { x: 80, y: 225, w: 670, h: 490 }, width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
   },
 };
 const FEDERATED: CaseRowData = {
@@ -118,7 +119,7 @@ const FEDERATED: CaseRowData = {
     path: "federated / contribution",
     mode: "one system",
     caption: "Recreated. One chip, a new slot, nothing forked.",
-    picture: { name: "federated", phone: { zoom: 1.6, at: "68% 50%" }, width: 1392, height: 1008, focus: "50% 0%", alt: "A product page with its size chips, beside a panel: kept the old chip, added a slot. Colour and Text kept, Slot new, and three fills for the slot: size and stock, kids' age and height, a colour filter." },
+    picture: { name: "federated", phone: { x: 613, y: 60, w: 635, h: 522 }, width: 1392, height: 1008, focus: "50% 0%", alt: "A product page with its size chips, beside a panel: kept the old chip, added a slot. Colour and Text kept, Slot new, and three fills for the slot: size and stock, kids' age and height, a colour filter." },
   },
 };
 const CHIP: CaseRowData = {
@@ -130,7 +131,7 @@ const CHIP: CaseRowData = {
     path: "chip 2.0 / atlas",
     mode: "filter chip",
     caption: "CHIP 2.0 checks every layer of a component.",
-    picture: { name: "chip", phone: { zoom: 1.35, at: "50% 50%" }, width: 1392, height: 1008, alt: "CHIP's Atlas anatomy of the FilterChip: the Accessible chip with six numbered parts." },
+    picture: { name: "chip", phone: { x: 240, y: 152, w: 910, h: 776 }, width: 1392, height: 1008, alt: "CHIP's Atlas anatomy of the FilterChip: the Accessible chip with six numbered parts." },
   },
 };
 const THEMING: Omit<CaseRowData, "n"> = {
@@ -139,7 +140,7 @@ const THEMING: Omit<CaseRowData, "n"> = {
     path: "theming / theme switcher",
     mode: "on BELLA",
     caption: "Three brands, one set of components.",
-    picture: { name: "theming", phone: { zoom: 1.5, at: "50% 72%" }, width: 1392, height: 1008, alt: "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it." },
+    picture: { name: "theming", phone: { x: 253, y: 262, w: 886, h: 710 }, width: 1392, height: 1008, alt: "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it." },
   },
 };
 export const HOME_LEAD: CaseRowData[] = [DRIFT, FEDERATED, { ...THEMING, n: "03" }];
