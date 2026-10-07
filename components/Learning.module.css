@@ -17,7 +17,7 @@
 }
 
 .stats b {
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-ink);
 }
 
@@ -91,16 +91,14 @@
 }
 
 .results-meta {
-  font-family: var(--font-code);
+  font-family: var(--font-body);
   font-size: var(--text-mono);
   font-variant-numeric: tabular-nums;
   color: var(--color-ink-muted);
-  letter-spacing: var(--tracking-mono);
-  font-feature-settings: var(--mono-feature);
 }
 
 .results-meta b {
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-ink);
 }
 
@@ -320,7 +318,7 @@
 .stackTitle {
   margin: 0;
   font-size: var(--text-body);
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   color: var(--color-ink);
 }
 
@@ -356,7 +354,7 @@
 }
 
 .rowTitle {
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   color: var(--color-ink);
   text-align: left;
 }
@@ -485,7 +483,7 @@
 .centreText {
   font-family: var(--font-body);
   font-size: var(--text-lead);
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   fill: var(--color-accent-ink);
 }
 
@@ -507,7 +505,7 @@
   /* in viewBox units: the map draws at about 0.73 at 1440 and 0.7 at
      1110, so 1.2x keeps names at 12.5px or more (job 38, audit:clip) */
   font-size: calc(var(--text-meta) * 1.2);
-  font-weight: 500;
+  font-weight: 600;
   fill: var(--color-ink-muted);
 }
 
@@ -580,7 +578,7 @@
 
 .nodeW text {
   font-size: var(--text-body);
-  font-weight: 700;
+  font-weight: 600;
   fill: var(--color-ink);
 }
 
@@ -722,7 +720,7 @@
 .keyTitle {
   margin: var(--spacing-1) 0 var(--spacing-2);
   font-size: var(--text-body);
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   color: var(--color-ink);
 }
 

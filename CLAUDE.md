@@ -302,6 +302,10 @@ Must pass before any work is "done":
   the served artifact.
 - `audit:axe` — axe-core over every route in BOTH themes, and the server status of each (200, never a Next error shell: a page that crashes on the server still looks fine in the browser, round 6); zero violations to pass (needs-review
   nodes are counted, not failed, and verified by hand when they change).
+- `audit:type` — also runs `scripts/audit-roles.mjs` (one type style per role, TY, 7 Oct 2026): on the rendered page chrome
+  (pictures excluded), every route at 1440 and 375: weights 400 and 600 only (700 on `<strong>`, 800 on a quote mark),
+  every h1 on the Display/Page size (Display/Hero on Home), mono only on `code`, `pre`, `kbd`, `samp`, nothing under
+  16px. `/design-system` is deferred in the script until the W PR merges. No local font-size or weight on a role.
 - `audit:type` — no Card surface renders reading text below 16px COMPUTED; the shared
   `.card-body` recipe never computes below 18px; sitewide, any P/LI with own text past ~40
   chars computes >= 16px. Metadata rows (tags/pills/eyebrows/kickers) are a deliberate

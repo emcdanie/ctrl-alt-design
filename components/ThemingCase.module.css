@@ -335,13 +335,12 @@
   color: var(--color-ink);
 }
 .cap span {
-  font-family: var(--font-code);
+  font-family: var(--font-body);
   font-size: var(--text-mono);
-  font-feature-settings: var(--mono-feature);
   color: var(--color-ink-muted);
 }
 .cap b {
-  font-weight: var(--typography-font-weight-light);
+  font-weight: 400;
   font-size: 1.625rem;
   letter-spacing: var(--tracking-h2);
   line-height: 1.1;
@@ -449,7 +448,7 @@
   padding-inline: var(--spacing-4);
 }
 .pvWhere { display: grid; gap: var(--spacing-2); }
-.pvLabel { color: var(--t-muted); font-weight: 500; font-size: var(--typography-font-size-sm); }
+.pvLabel { color: var(--t-muted); font-weight: 600; font-size: var(--typography-font-size-sm); }
 .pvField {
   display: flex;
   align-items: center;
@@ -498,7 +497,7 @@
   border: 1px solid var(--t-border);
   border-radius: var(--radius-full);
   color: var(--t-muted);
-  font-weight: 500;
+  font-weight: 600;
   font-size: var(--typography-font-size-sm);
   white-space: nowrap;
 }
@@ -880,7 +879,7 @@
   line-height: 1.6;
   color: var(--color-ink);
 }
-.say b { font-weight: 500; }
+.say b { font-weight: 600; }
 /* the code wraps (a break after each "." in a token path), so a narrow
    window never cuts a line or hides it in a scroller (job 34) */
 .hl {
@@ -924,7 +923,7 @@
 }
 .t1 {
   font-family: var(--font-body);
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   font-size: 0.9375rem;
   fill: var(--color-ink-muted);
   transition: fill 0.3s;
@@ -1024,7 +1023,7 @@
 .rules b {
   display: block;
   margin-bottom: var(--spacing-1);
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   font-size: var(--font-card-title);
   letter-spacing: var(--tracking-title-item);
   line-height: 1.3;
@@ -1303,7 +1302,7 @@
   background: transparent;
   color: var(--color-semantic-text-secondary);
   font: inherit;
-  font-weight: 500;
+  font-weight: 600;
   font-size: var(--typography-font-size-sm);
   cursor: pointer;
 }

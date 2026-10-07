@@ -765,7 +765,7 @@ main .showcase + :global(.l-section.l-section) {
 
 .quoteName {
   font-size: var(--typography-font-size-body);
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   color: var(--color-semantic-text-primary);
 }
 

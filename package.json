@@ -22,7 +22,7 @@
     "audit:controls": "node scripts/audit-controls.mjs",
     "audit:nda": "node scripts/audit-nda.mjs",
     "audit:axe": "node scripts/audit-axe.mjs",
-    "audit:type": "node scripts/audit-type.mjs",
+    "audit:type": "node scripts/audit-type.mjs && node scripts/audit-roles.mjs",
     "audit:visual": "node scripts/audit-visual.mjs",
     "audit:dark": "node scripts/audit-dark.mjs",
     "audit:reuse": "node scripts/audit-reuse.mjs",

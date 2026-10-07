@@ -72,7 +72,7 @@
   background: var(--color-semantic-accent);
   color: var(--color-semantic-text-on-accent);
   font-size: var(--text-label);
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   line-height: 1.25;
   vertical-align: middle;
 }

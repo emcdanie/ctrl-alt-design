@@ -372,7 +372,7 @@
 
 .caps {
   text-transform: uppercase;
-  font-weight: var(--typography-font-weight-bold);
+  font-weight: 600;
 }
 
 .strong {
@@ -400,7 +400,7 @@
 }
 
 .off {
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   color: var(--color-semantic-danger-text);
 }
 
@@ -417,7 +417,7 @@
 .full {
   font-size: 18px;
   line-height: 23px;
-  font-weight: var(--typography-font-weight-bold);
+  font-weight: 600;
 }
 
 /* "last units": the product's stock colour, between its sale red and ochre */
