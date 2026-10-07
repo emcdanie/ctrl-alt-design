@@ -76,8 +76,8 @@ export default function LearningPage() {
             {MORE > 0 && (
               <>
                 <span aria-hidden="true"> · </span>
-                <Link className={styles.certsMore} href="/learning?type=certificate#library">
-                  +{MORE}<span className="sr-only"> more certificates</span> <span aria-hidden="true">→</span>
+                <Link className={styles.certsMore} href="/learning?type=certificate#library" aria-label={`+${MORE} more certificates`}>
+                  +{MORE} <span aria-hidden="true">→</span>
                 </Link>
               </>
             )}
