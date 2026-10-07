@@ -292,7 +292,7 @@ Must pass before any work is "done":
   deleted component (the machine-readable component contract at /api/bella.json). bella.json is
   GENERATED from source (tokens + `lib/bella/component-contract.json`); patch the source, never
   the served artifact.
-- `audit:axe` — axe-core over every route in BOTH themes; zero violations to pass (needs-review
+- `audit:axe` — axe-core over every route in BOTH themes, and the server status of each (200, never a Next error shell: a page that crashes on the server still looks fine in the browser, round 6); zero violations to pass (needs-review
   nodes are counted, not failed, and verified by hand when they change).
 - `audit:type` — no Card surface renders reading text below 16px COMPUTED; the shared
   `.card-body` recipe never computes below 18px; sitewide, any P/LI with own text past ~40

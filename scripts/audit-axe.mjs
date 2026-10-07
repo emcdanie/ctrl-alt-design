@@ -53,7 +53,18 @@ for (const theme of ["light", "dark"]) {
   const page = await ctx.newPage();
   await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
   for (const route of ROUTES) {
-    await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 30000 });
+    const nav = await page.goto(`${BASE}${route}`, { waitUntil: "networkidle", timeout: 30000 });
+    /* the status the server sends is what link previews, crawlers and the
+       host read: 200 everywhere (404 only on the deliberate missing page),
+       and never Next's error shell. A page that crashed on the server can
+       still LOOK fine, because React re-renders it in the browser, so this
+       reads the response, not the screen (round 6, /cv returned 500). */
+    const want = route === "/no-such-page" ? 404 : 200;
+    const html = nav ? await nav.text() : "";
+    if (!nav || nav.status() !== want || (want === 200 && /name="next-error"|id="__next_error__"/.test(html))) {
+      fails += 1;
+      console.error(receipt("axe", `[${theme}] ${route}`, `HTTP ${nav?.status()}`, `server status ${want} and no Next error shell`));
+    }
     /* sweep like a reader so every .reveal enters the viewport, then
        settle the finite animations (the reveal's fade included) so the
        contrast checks read the page as it rests. Infinite loops are left

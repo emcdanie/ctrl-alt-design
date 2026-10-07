@@ -8145,6 +8145,10 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 [data-cv-modal] .tag.tag--outline {
   box-shadow: inset 0 0 0 1px var(--ink-on-paper-border);
   color: var(--ink-on-paper-soft);
+  /* round 7: skill tags read as words, in the body face, not mono */
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-tag);
+  font-feature-settings: normal;
 }
 
 .cv-where {
