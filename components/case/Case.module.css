@@ -1236,6 +1236,20 @@ main .showcase + :global(.l-section.l-section) {
   .phoneBody[data-open="false"] { display: none; }
 }
 
+/* PhoneSwitch (job P): the switch, then the picked picture */
+.switchBox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+/* PhoneCollapse (job P): the marked parts fold away under 640px */
+@media (max-width: 39.99rem) {
+  .collapse[data-collapsed="true"] [data-phone-rest] { display: none; }
+  /* beat to beat on a phone: half of 96 (job P) */
+  .page { gap: var(--spacing-12); }
+}
+
 @media (max-width: 39.99rem) {
   .showcaseTrack[data-stack-open="false"] > .showcaseCard:nth-child(n + 2) { display: none; }
 }

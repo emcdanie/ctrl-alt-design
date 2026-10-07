@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { useFigurePlay } from "./CaseFigure";
+import PhoneCollapse, { PhoneCollapseBar } from "./PhoneCollapse";
 import { KitButton, KitInput, KitPanel, MarkupBadge } from "./kit/Kit";
 import { TokenPin } from "./pictures/DriftPictures";
 import s from "./DriftFigures.module.css";
@@ -119,12 +120,13 @@ const LEVEL_ART = [FileArt, PageArt, FrameArt, FieldArt];
 export function ZoomLevels() {
   const { playing, run } = useFigurePlay();
   return (
+    <PhoneCollapse rest={LEVELS.length - 1}>
     <div className={`${s.stage}`} data-play={playing ? "on" : "off"} key={run}>
       <ol className={s.levels} aria-label="Four zoom levels">
         {LEVELS.map((l, k) => {
           const Art = LEVEL_ART[k];
           return (
-            <li key={l.title} className={s.level} style={i(k)}>
+            <li key={l.title} className={s.level} style={i(k)} data-phone-rest={k > 0 || undefined}>
               <div className={s.levelStage}>
                 <Art />
               </div>
@@ -143,6 +145,7 @@ export function ZoomLevels() {
         })}
       </ol>
     </div>
+    </PhoneCollapse>
   );
 }
 
@@ -181,6 +184,7 @@ const VERTICALS: [string, string, string, string, [number, number]][] = [
 export function TokenCascade() {
   const { playing, run } = useFigurePlay();
   return (
+    <PhoneCollapse rest={2} label="Show the 2 layers between" inline>
     <div className={`${s.stage} ${s.cascade}`} data-play={playing ? "on" : "off"} key={run}>
       <ol className={s.tiers}>
         <li className={s.tier}>
@@ -197,7 +201,7 @@ export function TokenCascade() {
           <code className={s.token}>indigo.600</code>
           <code className={s.tokenQuiet}>{RAMP_HEX}</code>
         </li>
-        <li className={s.tier}>
+        <li className={s.tier} data-phone-rest>
           <p className={s.tierHead}>
             <Step n={2} />
             Semantic
@@ -213,7 +217,7 @@ export function TokenCascade() {
             ))}
           </ul>
         </li>
-        <li className={s.tier}>
+        <li className={s.tier} data-phone-rest>
           <p className={s.tierHead}>
             <Step n={3} />
             Component
@@ -228,7 +232,7 @@ export function TokenCascade() {
             </span>
           </span>
         </li>
-        <li className={s.tierArrows} aria-hidden="true">
+        <li className={s.tierArrows} aria-hidden="true" data-phone-rest>
           <svg viewBox="0 0 36 12" className={s.tierArrow} style={i(0)}>
             <path d="M0 6h34M29 1l5 5-5 5" />
           </svg>
@@ -237,6 +241,7 @@ export function TokenCascade() {
           </svg>
         </li>
       </ol>
+      <PhoneCollapseBar />
       <div className={s.change}>
         <div className={s.changeRow}>
           <p className={s.changeLabel}>Before: each team picked</p>
@@ -269,6 +274,7 @@ export function TokenCascade() {
         <p className={s.changeNote}>Every vertical reads action.primary. Change it once, and all four follow, in design and in code.</p>
       </div>
     </div>
+    </PhoneCollapse>
   );
 }
 
@@ -284,6 +290,7 @@ const STEPS: { title: string; meta: string; icon: IconName; no?: boolean; shared
 export function Rollout() {
   const { playing, run } = useFigurePlay();
   return (
+    <PhoneCollapse rest={2}>
     <div className={`${s.stage}`} data-play={playing ? "on" : "off"} key={run}>
       <div className={s.card}>
         <div className={s.cardHead}>
@@ -316,7 +323,7 @@ export function Rollout() {
             </li>
           ))}
         </ol>
-        <div className={s.panels}>
+        <div className={s.panels} data-phone-rest>
           <div className={s.broke}>
             <p className={s.panelTitle}>Where it broke</p>
             <ul className={s.panelList}>
@@ -335,6 +342,7 @@ export function Rollout() {
         </div>
       </div>
     </div>
+    </PhoneCollapse>
   );
 }
 
