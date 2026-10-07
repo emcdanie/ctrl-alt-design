@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/Button";
+import { Tag } from "@/components/ui/Tag";
+import { LinkedInIcon } from "@/components/ui/LinkedInIcon";
 import { assembleEmail, social } from "@/lib/social";
 
 interface ResumeModalProps {
@@ -111,7 +113,7 @@ const roles: CvRole[] = [
     ],
   },
   {
-    period: "July 2024, Feb 2026",
+    period: "Jul 2024, Feb 2026",
     title: "UX/UI Designer, Product & Design Systems",
     company: "a B2B travel platform",
     highlights: [
@@ -170,11 +172,35 @@ const roles: CvRole[] = [
 const PROFILE =
   "Product designer with a focus on design systems, platform architecture, and complex multi-role interfaces. I work at the intersection of system-level thinking and engineering collaboration, building scalable component libraries, defining interaction patterns, and creating governance frameworks that reduce repeated decision-making across teams. My work spans B2B SaaS booking platforms, internal tooling, and data-dense dashboards for high-stakes environments. I’m as comfortable working upstream on system architecture as I am deep in component states and accessibility logic.";
 
+/* the one shared address (deep link, constitution: elleta.design/cv) */
+const CV_URL = "https://elleta.design/cv";
+const SHARE_TITLE = "Elleta McDaniel, CV";
+const SHARE_TEXT = "Elleta McDaniel, Product Designer, Design Systems. Curriculum vitae.";
+const MAILTO = `mailto:?subject=${encodeURIComponent(SHARE_TITLE)}&body=${encodeURIComponent(`${SHARE_TEXT}\n${CV_URL}`)}`;
+
+const track = (method: "native" | "email" | "copy-link") =>
+  (window as unknown as { umami?: { track: (n: string, d?: object) => void } }).umami?.track("cv-share", { method });
+
 export default function ResumeModal({ open, onClose }: ResumeModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
+  const [email, setEmail] = useState("");
   const [copied, setCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [menuFrom, setMenuFrom] = useState<"header" | "bar" | null>(null);
+  const menuOpen = menuFrom !== null;
+  const focusShare = (from: string | null) =>
+    panelRef.current?.querySelector<HTMLElement>(`[data-cv-share="${from}"] button`)?.focus();
+
+  /* the address is assembled here, on open, in the browser: the dialog is
+     portalled only while open, so no static HTML or source holds it
+     (constitution section 6) */
+  useEffect(() => {
+    setEmail(open ? assembleEmail() : "");
+    if (!open) setMenuFrom(null);
+  }, [open]);
+
   const copyEmail = async () => {
     try {
       await navigator.clipboard.writeText(assembleEmail());
@@ -185,9 +211,45 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
     }
   };
 
+  /* phones with a native share sheet use it; everything else gets the menu */
+  const share = async (from: "header" | "bar") => {
+    const native = typeof navigator.share === "function" && window.matchMedia("(pointer: coarse)").matches;
+    if (!native) {
+      setMenuFrom((v) => (v === from ? null : from));
+      return;
+    }
+    track("native");
+    try {
+      await navigator.share({ title: SHARE_TITLE, text: SHARE_TEXT, url: CV_URL });
+    } catch {
+      /* the sheet was dismissed */
+    }
+  };
+  const copyLink = async () => {
+    track("copy-link");
+    try {
+      await navigator.clipboard.writeText(CV_URL);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch {
+      /* quiet, as above */
+    }
+  };
+
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
+  /* modal means the page behind is out of reach: inert for focus and the
+     accessibility tree (aria-modal alone is not honoured everywhere) */
+  useEffect(() => {
+    if (!open) return;
+    const behind = [...document.body.children].filter(
+      (el): el is HTMLElement => el instanceof HTMLElement && !el.hasAttribute("data-cv-modal") && !el.inert && el.tagName !== "SCRIPT"
+    );
+    behind.forEach((el) => { el.inert = true; });
+    return () => behind.forEach((el) => { el.inert = false; });
   }, [open]);
 
   /* Focus management — capture opener, focus the dialog, restore on close */
@@ -203,7 +265,15 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { onClose(); return; }
+      if (e.key === "Escape") {
+        if (menuFrom) {
+          focusShare(menuFrom);
+          setMenuFrom(null);
+          return;
+        }
+        onClose();
+        return;
+      }
       if (e.key !== "Tab" || !panelRef.current) return;
       const focusables = panelRef.current.querySelectorAll<HTMLElement>(
         'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -221,15 +291,31 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
     };
     if (open) window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [open, onClose]);
+  }, [open, onClose, menuFrom]);
 
   if (!open) return null;
 
   /* through a portal to <body> (job Q, 7 Oct 2026): the dialog sat inside
      a parent's stacking context, so the site header drew over it on a
      phone. data-cv-modal lets the print sheet show only this dialog. */
+  const shareMenu = (
+    <div className="cv-share-menu" data-from={menuFrom} data-cv-noprint role="group" aria-label="Share this CV">
+      <a href={MAILTO} className="cv-share-menu__item" onClick={() => { track("email"); setMenuFrom(null); }}>
+        Email this CV
+      </a>
+      <button type="button" className="cv-share-menu__item" onClick={copyLink}>
+        Copy link
+      </button>
+      <span className="cv-share-menu__status" role="status" aria-live="polite">{linkCopied ? "Link copied" : ""}</span>
+    </div>
+  );
+
+  /* through a portal to <body> (job Q, 7 Oct 2026): the dialog sat inside
+     a parent's stacking context, so the site header drew over it on a
+     phone. data-cv-modal lets the print sheet show only this dialog.
+     Phones (round 5): full screen, one scroll, sticky header and action bar. */
   return createPortal(
-    <div data-cv-modal className="fixed inset-0 z-[9996] flex items-center justify-center p-4">
+    <div data-cv-modal className="fixed inset-0 z-[9996] flex items-center justify-center sm:p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-[color:var(--modal-backdrop)] modal-backdrop" onClick={onClose} />
 
@@ -239,16 +325,22 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="resume-modal-title"
-        className="relative bg-[color:var(--surface-paper)] rounded-3xl w-full max-w-3xl max-h-[92vh] flex flex-col shadow-2xl"
+        className="relative bg-[color:var(--surface-paper)] w-full max-sm:h-dvh sm:rounded-3xl sm:max-w-3xl sm:max-h-[92vh] flex flex-col sm:shadow-2xl"
       >
 
         {/* Header */}
-        <div data-cv-noprint className="bg-[color:var(--surface-paper)] border-b border-[color:var(--ink-on-paper-border)] px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between gap-3 rounded-t-3xl flex-shrink-0">
+        <div data-cv-noprint className="bg-[color:var(--surface-paper)] border-b border-[color:var(--ink-on-paper-border)] px-5 sm:px-8 py-2 sm:py-3 flex items-center justify-between gap-3 sm:rounded-t-3xl flex-shrink-0">
           <p className="section-label">Curriculum Vitae</p>
           <div className="flex items-center gap-3" data-cv-noprint>
             {/* the PDF is this dialog printed (scripts/build-cv-pdf.mjs), so the
                 two never disagree */}
             {/* a wrapper hides it: .btn-key's display is unlayered, so a utility on the Button would lose */}
+            <span className="cv-share cv-desk" data-cv-share="header">
+              <Button variant="secondary" onClick={() => share("header")}>
+                Share
+              </Button>
+              {menuFrom === "header" && shareMenu}
+            </span>
             <span className="max-sm:hidden">
               <Button variant="secondary" href="/cv/Elleta_McDaniel_Product_Designer_CV.pdf" download trackEvent="cv-download">
                 Download PDF
@@ -257,7 +349,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             <button
               ref={closeBtnRef}
               onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center rounded-full border border-[color:var(--ink-on-paper-border)] hover:bg-[color:var(--ink-on-paper-border)] transition-colors cursor-pointer text-[color:var(--ink-on-paper-soft)] text-[length:var(--typography-font-size-base)]"
+              className="cv-close"
               aria-label="Close"
             >
               ✕
@@ -266,7 +358,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
         </div>
 
         {/* Scrollable body */}
-        <div data-cv-body className="overflow-y-auto no-scrollbar px-5 sm:px-8 py-5 sm:py-7 space-y-3 sm:space-y-4">
+        <div data-cv-body className="cv-body overflow-y-auto no-scrollbar px-5 sm:px-8 py-5 sm:py-7">
 
           {/* Name + contact */}
           <div>
@@ -277,29 +369,28 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)] font-medium mb-2">
               Product Designer, Design Systems, Data Platforms &amp; Complex UX
             </p>
-            <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)]">
+            <p className="cv-where">
               <span>Barcelona, Spain</span>
-              <span>·</span>
               <span>Open to Hybrid/Remote</span>
-              <span>·</span>
-              <a href={social.linkedin} data-umami-event="linkedin" className="hover:text-[color:var(--ink-on-paper)] transition-colors">linkedin.com/in/elleta-mcdaniel</a>
-              <span>·</span>
-              {/* the address is never in the HTML (constitution section 6): the
-                  button assembles it on click, and scripts/build-cv-pdf.mjs
-                  writes it into the empty slot for the printed sheet */}
-              <button type="button" data-cv-noprint data-umami-event="copy-email" onClick={copyEmail} className="underline underline-offset-2 hover:text-[color:var(--ink-on-paper)] transition-colors cursor-pointer">
-                {copied ? "Email copied" : "Copy email"}
-              </button>
-              <span data-cv-email-slot />
-            </div>
-            <div className="mt-3 sm:hidden [&>a]:w-full" data-cv-noprint>
-              <Button variant="secondary" href="/cv/Elleta_McDaniel_Product_Designer_CV.pdf" download trackEvent="cv-download">
-                Download PDF
-              </Button>
-            </div>
+            </p>
+            <ul className="cv-contacts">
+              <li>
+                <a href={social.linkedin} target="_blank" rel="noopener noreferrer" data-umami-event="cv-linkedin" className="cv-contacts__link">
+                  <span data-cv-noprint className="cv-contacts__lead"><LinkedInIcon />LinkedIn<span aria-hidden="true">↗</span></span>
+                  <span className="cv-print-only">linkedin.com/in/elleta-mcdaniel</span>
+                </a>
+              </li>
+              <li className="cv-contacts__email">
+                <span className="cv-contacts__address">{email}</span>
+                <span data-cv-noprint>
+                  <Button variant="secondary" onClick={copyEmail} trackEvent="cv-copy-email" ariaLabel="Copy email address">
+                    Copy
+                  </Button>
+                </span>
+                <span data-cv-noprint className="cv-contacts__status" role="status" aria-live="polite">{copied ? "Copied" : ""}</span>
+              </li>
+            </ul>
           </div>
-
-          <div className="divider" />
 
           {/* Profile */}
           <div>
@@ -309,14 +400,12 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             </p>
           </div>
 
-          <div className="divider" />
-
           {/* Employment */}
-          <div>
+          <div className="cv-section">
             <p className="section-label mb-4">Employment</p>
-            <div data-cv-entries className="space-y-6">
+            <div data-cv-entries className="cv-entries">
               {roles.map((role) => (
-                <div key={role.title + role.company} className="grid grid-cols-[120px_1fr] gap-4">
+                <div key={role.title + role.company} className="cv-row">
                   <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5 leading-snug">{formatPeriod(role.period)}</span>
                   <div>
                     <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)] leading-snug">
@@ -353,24 +442,24 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             </div>
           </div>
 
-          <div className="divider" />
-
           {/* Skills */}
-          <div>
+          <div className="cv-section">
             <p className="section-label mb-3">Skills</p>
-            <p className="text-[length:var(--typography-font-size-base)] text-[color:var(--ink-on-paper-soft)] leading-relaxed">
-              {skills.join(" · ")}
-            </p>
+            <ul className="cv-skills">
+              {skills.map((k) => (
+                <li key={k}>
+                  <Tag outline>{k}</Tag>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="divider" />
-
           {/* Credentials */}
-          <div>
+          <div className="cv-section">
             <p className="section-label mb-4">Credentials</p>
-            <div data-cv-entries className="space-y-4">
+            <div data-cv-entries className="cv-entries">
               {credentials.map((c) => (
-                <div key={c.title} className="grid grid-cols-[120px_1fr] gap-4">
+                <div key={c.title} className="cv-row">
                   <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{formatPeriod(c.period)}</span>
                   <div>
                     <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)]">{c.title}</p>
@@ -381,14 +470,12 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             </div>
           </div>
 
-          <div className="divider" />
-
           {/* Education */}
-          <div>
+          <div className="cv-section">
             <p className="section-label mb-4">Education</p>
-            <div data-cv-entries className="space-y-4">
+            <div data-cv-entries className="cv-entries">
               {education.map((ed) => (
-                <div key={ed.institution} className="grid grid-cols-[120px_1fr] gap-4">
+                <div key={ed.institution} className="cv-row">
                   <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5">{formatPeriod(ed.period)}</span>
                   <div>
                     <p className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)]">{ed.institution}</p>
@@ -399,7 +486,19 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             </div>
           </div>
 
-          <div className="h-2" />
+        </div>
+
+        {/* Phones: Download PDF and Share stay in reach (desktop has them in the header) */}
+        <div data-cv-noprint className="cv-actionbar">
+          <Button variant="primary" href="/cv/Elleta_McDaniel_Product_Designer_CV.pdf" download trackEvent="cv-download">
+            Download PDF
+          </Button>
+          <span className="cv-share" data-cv-share="bar">
+            <Button variant="secondary" onClick={() => share("bar")}>
+              Share
+            </Button>
+            {menuFrom === "bar" && shareMenu}
+          </span>
         </div>
       </div>
     </div>,

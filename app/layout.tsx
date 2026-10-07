@@ -4,6 +4,7 @@ import RouteField from "@/components/RouteField";
 import type { Metadata } from "next";
 import Script from "next/script";
 import BracketCursor from "@/components/BracketCursor";
+import CvRoute from "@/components/CvRoute";
 import { Figtree, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import DevTools from "@/components/DevTools";
@@ -98,6 +99,7 @@ export default function RootLayout({
           <SiteFooter />
         </IconProvider>
         <BracketCursor />
+        <CvRoute />
         <RevealObserver />
         {umamiId && (
           <Script
