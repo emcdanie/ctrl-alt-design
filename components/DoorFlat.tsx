@@ -24,7 +24,7 @@ export default function DoorFlat({ parts, chips }: { parts: DoorPart[]; chips: D
   const [on, setOn] = useState(0);
   return (
     <div className={s.flat}>
-      <div className={s.flatCard} data-on={on + 1} aria-hidden="true">
+      <div className={s.flatFace} data-on={on + 1} aria-hidden="true">
         <Marker n={1} edge />
         <div className={s.flatPart} data-part="2">
           <span className={s.flatPhoto}>

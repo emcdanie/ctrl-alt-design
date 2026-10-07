@@ -540,7 +540,7 @@
 }
 
 /* ── the flat card on phones (U2) ── */
-.flatCard {
+.flatFace {
   position: relative;
   display: grid;
   gap: var(--spacing-3);
@@ -587,16 +587,16 @@
 }
 .mkLine { display: block; width: var(--spacing-3); border-top: 1px dashed var(--color-semantic-text-primary); }
 /* the lit part: an ochre wash and edge, the rest stay as they are */
-.flatCard[data-on="1"] { border-color: var(--color-semantic-accent); }
-.flatCard[data-on="2"] [data-part="2"],
-.flatCard[data-on="3"] [data-part="3"],
-.flatCard[data-on="4"] [data-part="4"] {
+.flatFace[data-on="1"] { border-color: var(--color-semantic-accent); }
+.flatFace[data-on="2"] [data-part="2"],
+.flatFace[data-on="3"] [data-part="3"],
+.flatFace[data-on="4"] [data-part="4"] {
   outline: 2px solid var(--color-semantic-accent);
   outline-offset: 2px;
   border-radius: var(--radius-md);
 }
-.flatCard[data-on="3"] [data-part="3"],
-.flatCard[data-on="4"] [data-part="4"] {
+.flatFace[data-on="3"] [data-part="3"],
+.flatFace[data-on="4"] [data-part="4"] {
   background: color-mix(in oklab, var(--color-semantic-accent) 16%, var(--color-semantic-surface));
 }
 .flatLegend { display: grid; gap: var(--spacing-2); margin: 0; padding: 0; list-style: none; }
