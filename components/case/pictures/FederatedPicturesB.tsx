@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { Bell, Check as CheckGlyph, Code, Component, Heart, NavArrowDown, NavArrowRight, NavArrowUp, Position, Xmark } from "iconoir-react";
 import { KitAvatar, KitButton, KitChip, KitStatus, KitTag, KitTheme, MarkupBadge } from "@/components/case/kit/Kit";
@@ -38,7 +38,7 @@ function Picture({
   children: ReactNode;
   more?: { label: string; total: number; node: ReactNode };
   phoneFirst?: string;
-  /** on the phone: these panels share one slot behind a segmented switch, the rest sit behind Show the other N (job P) */
+  /** on the phone: these panels share one slot behind a segmented switch, the rest stay in view under it (job P) */
   phoneSwitch?: { label: string; keys: string[] };
 }) {
   const wide = (l: string, node: ReactNode) => (
@@ -89,6 +89,7 @@ function Picture({
           <>
             <PhoneSwitch
               label={phoneSwitch.label}
+              below={panels.filter((p) => !phoneSwitch.keys.includes(p.key)).map((p) => <Fragment key={p.key}>{panelNode(p)}</Fragment>)}
               items={panels.filter((p) => phoneSwitch.keys.includes(p.key)).map((p) => ({ key: p.key, label: p.short.charAt(0).toUpperCase() + p.short.slice(1), node: panelNode(p) }))}
             />
           </>
