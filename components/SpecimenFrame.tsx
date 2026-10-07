@@ -14,6 +14,25 @@ import styles from "./SpecimenFrame.module.css";
 const region = ({ phone: r, width, height }: Picture): Record<string, number> =>
   r ? { "--rx": r.x / width, "--ry": r.y / height, "--rw": r.w / width, "--rh": r.h / height, "--rp": (r.pad ?? 0) / width, "--ar": height / width } : {};
 
+/* the shapes the light picture is cut to in dark on phones (see CoverPicture.phone.keepLight):
+   a clipPath in the picture's own proportions, so it scales with it */
+function KeepLightClip({ picture: { name, width: W, height: H, phone } }: { picture: Picture }) {
+  const k = phone?.keepLight;
+  if (!k) return null;
+  return (
+    <svg width="0" height="0" aria-hidden="true" focusable="false" style={{ position: "absolute" }}>
+      <clipPath id={`keep-${name}`} clipPathUnits="objectBoundingBox">
+        {k.rects.map(([x, y, w, h, r]) => (
+          <rect key={`${x}-${y}`} x={x / W} y={y / H} width={w / W} height={h / H} rx={r / W} ry={r / H} />
+        ))}
+        {k.circles.map(([cx, cy, r]) => (
+          <ellipse key={`${cx}-${cy}`} cx={cx / W} cy={cy / H} rx={r / W} ry={r / H} />
+        ))}
+      </clipPath>
+    </svg>
+  );
+}
+
 export default function SpecimenFrame({
   path,
   mode,
@@ -41,8 +60,10 @@ export default function SpecimenFrame({
       <span
         className={`${styles.stage} ${picture ? styles.stagePicture : ""}`.trim()}
         data-region={picture?.phone ? "" : undefined}
-        style={picture ? ({ "--cover-focus": picture.focus, ...region(picture) } as CSSProperties) : undefined}
+        data-keep-light={picture?.phone?.keepLight ? "" : undefined}
+        style={picture ? ({ "--cover-focus": picture.focus, ...region(picture), ...(picture.phone?.keepLight ? { "--keep-clip": `url(#keep-${picture.name})` } : {}) } as CSSProperties) : undefined}
       >
+        {picture?.phone?.keepLight ? <KeepLightClip picture={picture} /> : null}
         {picture ? (
           <CoverPicture picture={picture} eager={eager} />
         ) : art ? (

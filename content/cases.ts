@@ -14,7 +14,10 @@
 export type CoverPicture = { name: string; alt: string; width: number; height: number; focus?: string;
   /** phones (X, 7 Oct 2026): the one whole detail the card shows, a region of the picture in its own pixels
    *  (x, y, width, height), centred in the stage and scaled to fit it; `pad` is empty room kept each side of it, in picture pixels */
-  phone?: { x: number; y: number; w: number; h: number; pad?: number } };
+  phone?: { x: number; y: number; w: number; h: number; pad?: number;
+    /** product UI drawn in the light look stays light in dark (the Federated panel does): on phones in dark, the light picture
+     *  shows, cut to these shapes (rounded rects [x, y, w, h, radius] and circles [cx, cy, r], in picture pixels) */
+    keepLight?: { rects: [number, number, number, number, number][]; circles: [number, number, number][] } } };
 
 export interface CaseRowData {
   id: string;
@@ -104,7 +107,7 @@ const DRIFT: CaseRowData = {
     path: "drift / buttons · audit",
     mode: "before → after",
     caption: "Recreated from my audit. No client UI.",
-    picture: { name: "drift", phone: { x: 84, y: 225, w: 672, h: 490, pad: 22 }, width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
+    picture: { name: "drift", phone: { x: 84, y: 225, w: 672, h: 490, pad: 22, keepLight: { rects: [[90, 283, 628, 420, 14]], circles: [[700, 286, 52]] } }, width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
   },
 };
 const FEDERATED: CaseRowData = {
@@ -140,7 +143,7 @@ const THEMING: Omit<CaseRowData, "n"> = {
     path: "theming / theme switcher",
     mode: "on BELLA",
     caption: "Three brands, one set of components.",
-    picture: { name: "theming", phone: { x: 253, y: 262, w: 886, h: 710, pad: 24 }, width: 1392, height: 1008, alt: "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it." },
+    picture: { name: "theming", phone: { x: 253, y: 267, w: 886, h: 705, pad: 24 }, width: 1392, height: 1008, alt: "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it." },
   },
 };
 export const HOME_LEAD: CaseRowData[] = [DRIFT, FEDERATED, { ...THEMING, n: "03" }];
