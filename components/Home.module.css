@@ -537,7 +537,7 @@
     position: static;
     display: grid;
     grid-auto-rows: 1fr;
-    gap: var(--spacing-2);
+    gap: var(--spacing-1);
     margin-top: var(--spacing-2);
   }
 
@@ -545,7 +545,7 @@
     position: static;
     align-items: center;
     width: auto;
-    padding: var(--spacing-2) var(--spacing-3);
+    padding: var(--spacing-1) var(--spacing-3);
     gap: var(--spacing-3);
     translate: none;
   }
@@ -553,11 +553,19 @@
   /* "4 Content · Label/Eyebrow, Heading/Card": the name, then its specs */
   .legendText {
     display: block;
+    line-height: 1.25;
+  }
+
+  /* the chips are text at a 14 floor on a layer drawn small: tighter
+     lines keep all six inside it */
+  .plateChip {
+    line-height: 1.15;
   }
 
   .legendName,
   .legendSpec {
     display: inline;
+    line-height: inherit;
   }
 
   .legendName + .legendSpec::before {
