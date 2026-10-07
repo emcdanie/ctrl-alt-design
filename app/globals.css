@@ -2055,6 +2055,15 @@ h1.display-heading {
   color: var(--color-ink);
 }
 
+/* phones: sections pad 48, and the back-to-top tab rises 47 into that
+   space, so the last section's content touched it. The 16 is the footer's,
+   not a section's: every section keeps the one padding token (U, 7 Oct 2026) */
+@media (max-width: 639.98px) {
+  .site-footer {
+    margin-top: var(--spacing-4);
+  }
+}
+
 .site-footer .accent {
   color: var(--color-ink-muted);
 }
