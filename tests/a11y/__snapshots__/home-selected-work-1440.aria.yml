@@ -6,7 +6,7 @@
     - /url: /case-studies/design-system-transformation
   - link /\d+ · Design systems · federated · \d+ They stopped telling me what they’d done Proves a federated system can run without me as the bottleneck\. Read the case/:
     - /url: /case-studies/federated
-  - link /\d+ · Design systems · theming · \d+ One system, many faces Themes in BELLA swap the values, never the components\. token strategy figma → code no fragmentation Read the case/:
+  - link /\d+ · Design systems · theming · \d+ One system, many faces Themes in BELLA swap the values, never the components\. token strategy no fragmentation Read the case/:
     - /url: /case-studies/theming
   - paragraph:
     - link "See all work":

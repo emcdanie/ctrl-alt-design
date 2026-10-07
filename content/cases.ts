@@ -57,7 +57,7 @@ export const CASES: CaseRowData[] = [
     title: "One system, many faces",
     claim: "Themes in BELLA swap the values, never the components.",
     href: "/case-studies/theming",
-    tags: [{ text: "token strategy figma → code" }, { text: "no fragmentation", tone: "c3" }, { text: "accessibility in every theme", tone: "c2" }, { text: "ai-ready structure", outline: true }],
+    tags: [{ text: "token strategy" }, { text: "no fragmentation", tone: "c3" }, { text: "accessibility in every theme", tone: "c2" }, { text: "ai-ready structure", outline: true }],
   },
   {
     id: "search",
