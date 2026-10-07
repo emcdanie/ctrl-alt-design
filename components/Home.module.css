@@ -523,6 +523,21 @@
 @container (max-width: 39.99rem) {
   .explode {
     --u: calc(100cqw / 640);
+    /* the column's width, not the desktop figure's: the legend used to
+       follow the 993-unit box past the edge (U, 7 Oct 2026). The layers
+       keep their desktop spacing so none covers another's content; the
+       blank above the first one is trimmed, and the legend is one line
+       per layer */
+    --door-lead: 24;
+    width: 100%;
+  }
+
+  .plates {
+    height: calc((1040 - 94.4 + var(--door-lead)) * var(--u));
+  }
+
+  .plate {
+    top: calc((var(--y) - 94.4 + var(--door-lead)) * var(--u));
   }
 
   .leader {
@@ -532,16 +547,44 @@
   .legend {
     position: static;
     display: grid;
+    grid-auto-rows: 1fr;
     gap: var(--spacing-2);
-    margin-top: var(--spacing-5);
+    margin-top: var(--spacing-2);
   }
 
   .legendRow {
     position: static;
+    align-items: center;
     width: auto;
-    padding: var(--spacing-3) var(--spacing-4);
+    padding: var(--spacing-2) var(--spacing-3);
     gap: var(--spacing-3);
     translate: none;
+  }
+
+  /* "4 Content · Label/Eyebrow, Heading/Card": the name, then its specs */
+  .legendText {
+    display: block;
+  }
+
+  .legendName,
+  .legendSpec {
+    display: inline;
+  }
+
+  .legendName + .legendSpec::before {
+    content: " \00b7  ";
+  }
+
+  .legendSpec + .legendSpec::before {
+    content: ", ";
+  }
+}
+
+/* phones: the stage keeps a 16 margin, not 64, so the column is the width
+   the stack and legend are laid out for */
+@media (max-width: 639.98px) {
+  .doorStage {
+    padding-inline: var(--spacing-4);
   }
 }
 

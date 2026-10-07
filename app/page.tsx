@@ -188,7 +188,7 @@ export default function Home() {
           lead="This site runs on BELLA, my own design system."
         />
         <figure className={styles.door}>
-          <div className={figStyles.stage}>
+          <div className={`${figStyles.stage} ${styles.doorStage}`}>
             <div className={styles.doorFrame}>
               {/* plays once in view (RevealObserver); reduced motion and
                   no-JS show the exploded end state */}
