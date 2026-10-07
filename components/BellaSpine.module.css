@@ -785,3 +785,57 @@
    layout's BELLA modules moved the chunk order and dark text went muted) */
 .root :is(.tagv, .verdict, .vbOk, .vbBad, .bd, .bdAa, .bdNo, .triC1bg, .triC2bg, .triC3bg):global(.text-code) { color: var(--color-chip-text); }
 .root :is(.v, .sc):global(.text-code) { color: var(--ink); }
+
+/* ── What I tried: three cards, the chosen one highlighted (W) ── */
+.tried {
+  display: grid;
+  gap: var(--spacing-4);
+  margin: var(--spacing-10) 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 56.25rem) {
+  .tried { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.tried > li { display: flex; }
+.triedCard { width: 100%; }
+.triedIn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  height: 100%;
+  padding: var(--spacing-5);
+}
+.triedIn p {
+  margin: 0;
+  font-size: var(--typography-font-size-base);
+  line-height: var(--typography-line-height-relaxed);
+}
+.triedIn b { font-weight: 500; }
+.triedChosen {
+  border: 1px solid var(--color-semantic-accent);
+  background: color-mix(in oklab, var(--color-semantic-accent) 16%, var(--color-semantic-surface-card));
+}
+.chosenTag {
+  align-self: flex-start;
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-accent);
+  color: var(--color-semantic-text-on-accent);
+}
+
+/* ── What got in the way: three short lines (W) ── */
+.way {
+  display: grid;
+  gap: var(--spacing-3);
+  max-width: var(--measure-body);
+  margin: var(--spacing-10) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.way li {
+  padding-top: var(--spacing-3);
+  border-top: 1px solid var(--line);
+  font-size: var(--typography-font-size-base);
+  line-height: var(--typography-line-height-relaxed);
+}
