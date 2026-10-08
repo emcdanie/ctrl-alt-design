@@ -1394,7 +1394,7 @@
     flex-wrap: nowrap;
     overflow-x: auto;
     margin-top: calc(-1 * (var(--spacing-3) + var(--pk-h)));
-    /* block padding clears the 3px ring + 3px offset (#143's ring-clip fix) */
+    /* block padding clears the 3px focus ring and its 3px offset */
     padding: var(--spacing-2) var(--spacing-4);
     scroll-padding-inline: var(--spacing-4);
     scrollbar-width: none;
