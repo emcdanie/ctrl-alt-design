@@ -277,7 +277,7 @@ for (const theme of ["light", "dark"]) {
       const hrefs = [...document.querySelectorAll("a[href]")]
         .map((a) => a.getAttribute("href"))
         .filter((h) => h && (h.startsWith("/") || h.startsWith("#")));
-      /* demo-register leak assertion (DESIGN.md, Elleta's ruling 22
+      /* demo-register leak assertion (RULES.md, Elleta's ruling 22
          Jul): --demo-* may resolve ONLY inside a .spec-stage scope;
          root and body must resolve it to empty everywhere */
       const demoLeak =
@@ -418,7 +418,7 @@ for (const theme of ["light", "dark"]) {
       fails++;
       console.error(receipt("visual", `(${theme} ${width}) ${b}`, "content inside the reserved stage zone", "readouts and consoles below the stage"));
     }
-    /* LEADERS DO NOT CROSS (polish pass, Elleta 22 Jul; DESIGN.md
+    /* LEADERS DO NOT CROSS (polish pass, Elleta 22 Jul; RULES.md
        section 5 addendum): no annotation leader may cross another
        leader, and a leader may enter the card body at most once and
        never exit it again (it lands on its part, it does not

@@ -30,7 +30,7 @@ export interface WorkItem {
   featured?: boolean;
   /** hero bubble cluster membership (Elleta, 20 Jul): absent means in
    *  the cluster; false keeps a case out of it EXPLICITLY, on its own
-   *  row, never via a side table. Recorded in DESIGN.md. */
+   *  row, never via a side table. Recorded in RULES.md. */
   inCluster?: boolean;
   /** explicit library order; lower ranks first in the default sort */
   rank?: number;

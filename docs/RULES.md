@@ -1,0 +1,38 @@
+# RULES · the one rule source (Elleta, 8 Oct 2026)
+One rule per line, then the check that fails when it breaks. UNENFORCED = no check yet. CLAUDE.md is process only.
+- No hardcoded hex or px; tokens only, no arbitrary `text-[Npx]` or `bg-[#]` · audit:tokens, audit:structure
+- One implementation: edit the live component, delete the old one · audit:reuse, audit:parity
+- Ochre means clickable, only: buttons, links, clickable-card edge, focus ring · UNENFORCED (audit:intent, LD2)
+- Non-clickable highlight is ink wash + ink edge + a word or check · UNENFORCED (LD2)
+- Highlight edge is 3:1 against its surface, both themes · UNENFORCED (audit:contrast reads text only)
+- Selected state of SegmentedControl and FilterChip may wear ochre (they are clickable) · UNENFORCED
+- No amber · audit:structure
+- Contrast is WCAG AA minimum, AAA-minded, both themes, every state · audit:contrast, audit:axe
+- Dark mode is first-class on every surface · audit:dark
+- Focus ring is 3px, ochre-deep in light, ochre in dark · UNENFORCED
+- Figtree 400 and 600 only; Geist Mono only for real code and token names, never labels · audit:fonts
+- Unique is retired; wordmarks are SVG · UNENFORCED (audit:fonts still allows Unique, removal pending)
+- Reading text 18px or more, labels and UI 16px or more · audit:type
+- Headings render through ui/Heading, one style per role, no consumer sets size, tracking or leading · audit:type
+- Headings carry no accent word; the Heading `accent` prop is dead · UNENFORCED (removal pending)
+- h1 and h2 are 50 characters or fewer and sit within their measure · audit:frame
+- Pages are Nav, Sections (Section + SectionHeader), Footer; no custom spacing · audit:layout
+- One content edge, one section rhythm, radii from the set, at most 2 card signatures · audit:frame
+- Nothing leaves its panel; no cut-off shapes; no overlapping pins · audit:contain, audit:clip
+- Raster images render at most half their natural width on a 2x screen · audit:sharp
+- Every figure fits one screen with its caption · UNENFORCED (audit:fit, LD6b)
+- Keycap is for true actions; at most one primary per view; toggles carry aria-pressed or aria-current · audit:controls
+- Primary button fills ink; links are ink and underlined · UNENFORCED
+- Tag and StatusPill are non-interactive · UNENFORCED
+- Numbers in columns are right-aligned and tabular · audit:structure
+- Copy: no em or en dashes; "AI-enabled", never "AI-augmented" or "AI-assisted" · audit:copy
+- No email address in HTML or source as one string; `assembleEmail()` only · UNENFORCED
+- NDA: no employer or client names outside the two Experience surfaces; grep contents, not diffs · audit:nda (local only)
+- Reading order does not change unreviewed · audit:order
+- Honour prefers-reduced-motion: final frame, no animation · audit:frame (reduced-motion run)
+- Nothing starts on scroll; no scroll-driven motion; render the final frame first · UNENFORCED
+- Docs cite files that exist; no orphan tokens; no dead selectors in audits · audit:debt
+- No audit has an opt-out; an illustration that breaks a rule ships as a flat `<img>` · audit:debt (allowlist capped at 15)
+- No direct push to main; the `gate` check is required · branch protection, gate.yml
+- Beyond a one-line fix: spec first, stop for review, then build · UNENFORCED (CLAUDE.md s8)
+- Figma: assemble only (library instances, slot content, bound variables); a missing component stops the job · UNENFORCED (figma-lint, LD8)

@@ -6,7 +6,7 @@
  * but invisible in the library (filters-decision-support-system was,
  * found live 20 Jul). Side tables for case identity are rejected: the
  * EXTRA_CASES pattern is deleted; cluster exclusion is the inCluster
- * flag on the row, recorded in DESIGN.md. */
+ * flag on the row, recorded in RULES.md. */
 import { readFileSync } from "node:fs";
 import { receipt } from "./lib/receipt.mjs";
 
