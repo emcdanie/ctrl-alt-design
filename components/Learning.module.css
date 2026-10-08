@@ -280,6 +280,8 @@
 /* ── Table ── */
 .tableWrap {
   overflow-x: auto;
+  /* same ring-clip fix: overflow-x: auto forces overflow-y to auto */
+  padding-block: calc(var(--ring-focus-width) + var(--ring-focus-offset));
 }
 
 /* under 768px the table gives way to stacked rows, in the same order;
