@@ -363,15 +363,18 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 
 ---
 
-## 11. Cowork relay (Elleta, 2026-10-03; supersedes 2026-09-19)
-- When Elleta types "go" or "/go", read `docs/reference/inbox/next.md` and do the work. Log any
-  decision made alone in `docs/reference/decisions-while-away.md` and save checkpoint screenshots
+## 11. Cowork relay, lanes (Elleta, 2026-10-08; supersedes 2026-10-03)
+- Elleta types `go a`, `go b` or `go figma`. Read ONLY `docs/reference/inbox/lanes/<lane>.md` and
+  `lanes/README.md`. Plain `go`: ask "which lane: a, b or figma?" and wait. Never guess.
+- Claim a job before starting: `[ ]` to `[doing <lane> HH:MM]`. Skip any job not marked `[ ]`.
+  Done is `[done HH:MM, PR #n green]`. Only Cowork moves jobs between lanes.
+- Report to `docs/reference/inbox/reports/<lane>.md` (under 15 lines, then "Needs Elleta" as
+  numbered yes/no or pick-one items). Never write `report.md`, and never move, rename or rewrite
+  `next.md` or another lane's file.
+- Log any decision made alone in `docs/reference/decisions-while-away.md`; checkpoint screenshots go
   in `docs/reference/inbox/screens/`.
-- When done, write `docs/reference/inbox/report.md` (under 15 lines, then "Needs Elleta" as
-  numbered yes/no or pick-one items), move `next.md` to
-  `docs/reference/inbox/done/<YYYY-MM-DD-slug>.md`, and stop.
-- Commit only when `next.md` asks for it, never push. `docs/reference/inbox` is gitignored; never
-  commit it.
+- Commit only when the lane file asks for it, never push to main. `docs/reference/inbox` is
+  gitignored; never commit it.
 
 ## 12. Plan first for bigger jobs (Elleta, 2026-10-07)
 - A job is "big" if next.md says [plan], or it touches more than one page/component, or a layout.
