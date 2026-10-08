@@ -32,9 +32,10 @@ describe("one case row", () => {
     expect(src).not.toMatch(/CaseStudyCard|CaseCard/);
   });
 
-  /* H4 (Elleta, 6 Oct 2026): the three ready cases; CHIP waits on /work */
-  it("Home leads with Drift, Federated, Theming", () => {
-    expect(HOME_LEAD.map((c) => c.id)).toEqual(["drift", "federated", "theming"]);
+  /* H4 (Elleta, 6 Oct 2026): the three ready cases; CHIP waits on /work.
+     Federated leads (Elleta, 8 Oct 2026, home-fix) */
+  it("Home leads with Federated, Drift, Theming", () => {
+    expect(HOME_LEAD.map((c) => c.id)).toEqual(["federated", "drift", "theming"]);
   });
 
   it("/quick shows the first three cases, in the /work order", () => {

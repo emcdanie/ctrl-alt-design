@@ -535,3 +535,15 @@ a.card:focus-visible {
   .card .rowTags { flex-direction: column; align-items: flex-start; }
   .card .rowTags > :global(.tag) { max-width: 100%; white-space: nowrap; }
 }
+
+/* Home cards on phones (home-fix, Elleta, 8 Oct 2026): each card fits one
+   screen with the nav. A shorter cover stage, tighter padding, no tag pills
+   (the case page has them). Nothing is clipped; the claim shows whole. */
+@media (max-width: 39.99rem) {
+  .card[data-compact] { gap: var(--spacing-3); padding: var(--spacing-4); }
+  .card[data-compact] [data-region] { --cover-stage-h: 9rem; }
+  .card[data-compact] .rowTags { display: none; }
+  /* the frame's path strip is chrome (the frame is aria-hidden) */
+  .card[data-compact] > :first-child > :first-child { display: none; }
+  .card[data-compact] .rowClaim { margin-bottom: 0; }
+}

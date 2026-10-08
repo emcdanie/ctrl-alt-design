@@ -62,8 +62,9 @@
 .play,
 .askPause {
   min-height: var(--spacing-touch-target);
+  /* labels, not code: Figtree (Elleta, 8 Oct 2026); mono is for token names */
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: var(--typography-font-size-base);
   color: var(--color-ink);
   border: 1px solid var(--color-semantic-border-strong);
   border-radius: var(--radius-full);
@@ -495,6 +496,8 @@
   scroll-snap-type: x mandatory;
   scroll-padding-inline: var(--spacing-4);
   scrollbar-width: none;
+  /* a clear peek of the next chip, never a hard cut at the plate edge */
+  mask-image: linear-gradient(to right, #000 calc(100% - var(--spacing-8)), transparent); /* token-waiver: mask alpha only, no colour */
 }
 .pvChips::-webkit-scrollbar { display: none; }
 .pvChip {
@@ -1380,17 +1383,24 @@
    the tier lists behind "Show the tokens" */
 .tokBtn { display: none; }
 @media (max-width: 40rem) {
-  .exCol { display: flex; flex-direction: column; }
+  /* one left edge (Elleta, 8 Oct 2026): the theme row sits INSIDE the stage,
+     on the stage's padding, like the card plate, the caption and the button */
+  .exCol { --pk-h: calc(var(--spacing-touch-target) + var(--spacing-2) * 2); display: flex; flex-direction: column; }
+  .ex { padding-bottom: calc(var(--spacing-3) * 2 + var(--pk-h)); }
   .picker {
     order: 2;
+    position: relative;
+    z-index: 1;
     flex-wrap: nowrap;
     overflow-x: auto;
+    margin-top: calc(-1 * (var(--spacing-3) + var(--pk-h)));
+    /* block padding clears the 3px ring + 3px offset (#143's ring-clip fix) */
+    padding: var(--spacing-2) var(--spacing-4);
+    scroll-padding-inline: var(--spacing-4);
     scrollbar-width: none;
-    /* same ring-clip fix as pvChips[tabindex]: pad-block + negative margin */
-    padding-block: calc(var(--ring-focus-width) + var(--ring-focus-offset));
-    margin-block-start: calc(var(--spacing-3) - var(--ring-focus-width) - var(--ring-focus-offset));
-    margin-block-end: calc(-1 * (var(--ring-focus-width) + var(--ring-focus-offset)));
+    mask-image: linear-gradient(to right, #000 calc(100% - var(--spacing-8)), transparent); /* token-waiver: mask alpha only, no colour */
   }
+  .picker::-webkit-scrollbar { display: none; }
   .th,
   .play { flex: none; }
   .th { padding-right: var(--spacing-2); }

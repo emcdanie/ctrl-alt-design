@@ -2,10 +2,10 @@
   - paragraph: Selected work
   - heading "Start with the work." [level=2]
   - paragraph: "Three cases, up close: what drifted, what I built, and what changed."
-  - link /\d+ · Design systems · \d+ to \d+ · Lead case From Drift to Foundation Nobody asked for a system\. I built one anyway, got a CTO to fund a team, then handed it to every product team\. systems at scale governance Read the case/:
-    - /url: /case-studies/design-system-transformation
   - link /\d+ · Design systems · federated · \d+ They stopped telling me what they’d done Proves a federated system can run without me as the bottleneck\. Read the case/:
     - /url: /case-studies/federated
+  - link /\d+ · Design systems · \d+ to \d+ · Lead case From Drift to Foundation Nobody asked for a system\. I built one anyway, got a CTO to fund a team, then handed it to every product team\. systems at scale governance Read the case/:
+    - /url: /case-studies/design-system-transformation
   - link /\d+ · Design systems · theming · \d+ One system, many faces Themes in BELLA swap the values, never the components\. token strategy no fragmentation Read the case/:
     - /url: /case-studies/theming
   - paragraph:

@@ -12,8 +12,8 @@ import styles from "./WorkLibrary.module.css";
  *  the Mono meta line, the Geist Light title, the one-line claim, the
  *  signal tags. Hover lifts the row, underlines the title and eases the
  *  drawing up. Data: content/cases.ts. */
-export default function CaseRow({ row, layout = "row", eager = false }: { row: CaseRowData; layout?: "row" | "featured" | "card"; eager?: boolean }) {
-  if (layout !== "row") return <CaseCardLayout row={row} featured={layout === "featured"} eager={eager} />;
+export default function CaseRow({ row, layout = "row", eager = false, compact = false }: { row: CaseRowData; layout?: "row" | "featured" | "card"; eager?: boolean; compact?: boolean }) {
+  if (layout !== "row") return <CaseCardLayout row={row} featured={layout === "featured"} eager={eager} compact={compact} />;
   return (
     <Link
       href={row.href ?? "/work"}
@@ -58,9 +58,9 @@ export function CaseRowList({ rows }: { rows: CaseRowData[] }) {
 
 /** Home · v2 (Gate 2, 3 Oct 2026): the case as one card. `featured` puts
  *  the specimen frame beside the text; `card` stacks it on top. The
- *  whole card is the link; a case that isn't live yet carries its status
+ *  whole card is the link; `compact` (Home) trims the card on phones so it fits one screen; a case that isn't live yet carries its status
  *  instead of "Read the case". */
-function CaseCardLayout({ row, featured, eager }: { row: CaseRowData; featured: boolean; eager: boolean }) {
+function CaseCardLayout({ row, featured, eager, compact }: { row: CaseRowData; featured: boolean; eager: boolean; compact: boolean }) {
   const body = (
     <>
       <SpecimenFrame
@@ -105,10 +105,10 @@ function CaseCardLayout({ row, featured, eager }: { row: CaseRowData; featured: 
   );
   const cls = `${styles.card} ${featured ? styles.cardFeatured : ""}`;
   return row.href ? (
-    <Link href={row.href} className={cls} data-umami-event="case-open" data-umami-event-case={row.href.split("/").pop()}>
+    <Link href={row.href} className={cls} data-compact={compact || undefined} data-umami-event="case-open" data-umami-event-case={row.href.split("/").pop()}>
       {body}
     </Link>
   ) : (
-    <div className={cls}>{body}</div>
+    <div className={cls} data-compact={compact || undefined}>{body}</div>
   );
 }
