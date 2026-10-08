@@ -2,9 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Card from "@/components/ui/Card";
+import { Icon } from "@/components/ui/Icon";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { Button } from "@/components/ui/Button";
+import cs from "@/components/case/Case.module.css";
+import PhoneCollapse from "@/components/case/PhoneCollapse";
+import PhoneSwitch from "@/components/case/PhoneSwitch";
 import s from "./BellaSpine.module.css";
 
 /**
@@ -14,36 +18,14 @@ import s from "./BellaSpine.module.css";
  * maturity, 06 what your team gets. Every section is a layout Section
  * with a SectionHeader; the demos sit under the header on one panel.
  *
- * Motion plays ONCE when a demo enters view; the two auto-cycling demos
- * (lifecycle, accessibility) carry a pause button and stop for good
- * the moment someone picks a step. Reduced motion shows the final frame.
+ * Nothing starts on scroll (W, Elleta, 7 Oct 2026): every demo renders its
+ * final frame first and plays only when someone clicks (replay, play, or a
+ * step). Reduced motion shows the final frame and never animates.
  */
 
-/* ── shared: reduced motion + play once in view ── */
+/* ── shared: reduced motion ── */
 function reduced() {
   return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
-function useOnceInView<T extends Element>(cb: () => void, threshold = 0.35) {
-  const ref = useRef<T>(null);
-  const fn = useRef(cb);
-  fn.current = cb;
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (es) => {
-        if (es.some((e) => e.isIntersecting)) {
-          io.disconnect();
-          fn.current();
-        }
-      },
-      { threshold },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [threshold]);
-  return ref;
 }
 
 /* timers that die with the component or a replay */
@@ -92,49 +74,26 @@ const GATE: { name: string; stops: string }[] = [
 /* ══════════════════════════════ HERO ══════════════════════════════ */
 
 export function HeroStats({ auditCount }: { auditCount: number }) {
-  const [on, setOn] = useState(false);
-  const [n, setN] = useState([0, 0]);
-  const ref = useOnceInView<HTMLDivElement>(() => {
-    setOn(true);
-    const to = [7, auditCount];
-    if (reduced()) return setN(to);
-    const t0 = performance.now();
-    const tick = () => {
-      const now = performance.now();
-      const v = to.map((t, i) => {
-        const x = Math.max(0, Math.min(1, (now - t0 - i * 150) / 900));
-        return Math.round(t * (1 - Math.pow(1 - x, 3)));
-      });
-      setN(v);
-      if (v[0] < to[0] || v[1] < to[1]) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }, 0.4);
-
+  /* the final numbers render on the server, and the bars sit filled: no
+     count-up, nothing from 0 on first paint (W, 7 Oct 2026) */
   return (
-    <div ref={ref} className={s.stats}>
+    <div className={s.stats}>
       <div>
         <div className={`${s.sv} ${s.sv7}`} aria-hidden="true">
           {Array.from({ length: 7 }, (_, i) => (
-            <i key={i} className={on ? s.on : undefined} style={{ transitionDelay: `${i * 120}ms` }} />
+            <i key={i} className={s.on} />
           ))}
         </div>
-        <b>
-          <span aria-hidden="true">{n[0]}</span>
-          <span className="sr-only">7</span>
-        </b>
+        <b>7</b>
         <span className={s.statL}>steps, a human at every one</span>
       </div>
       <div>
         <div className={`${s.sv} ${s.sv21}`} aria-hidden="true">
           {Array.from({ length: auditCount }, (_, i) => (
-            <i key={i} className={on ? s.on : undefined} style={{ transitionDelay: `${i * 40}ms` }} />
+            <i key={i} className={s.on} />
           ))}
         </div>
-        <b>
-          <span aria-hidden="true">{n[1]}</span>
-          <span className="sr-only">{auditCount}</span>
-        </b>
+        <b>{auditCount}</b>
         <span className={s.statL}>checks that can stop a merge</span>
       </div>
       <div>
@@ -190,9 +149,10 @@ function Typed({ parts, n, marks, bad }: { parts: Part[]; n: number; marks: numb
 
 function Duo() {
   const total = Math.max(lenOf(CODE_L), lenOf(CODE_R));
-  const [n, setN] = useState(0);
-  const [marks, setMarks] = useState(0);
-  const [done, setDone] = useState(false);
+  /* the finished frame first; "replay" types it out again */
+  const [n, setN] = useState(total);
+  const [marks, setMarks] = useState(4);
+  const [done, setDone] = useState(true);
   const run = useRef(0);
   const { later, clear } = useTimers();
 
@@ -221,8 +181,6 @@ function Duo() {
     requestAnimationFrame(tick);
   }, [total, later, clear]);
 
-  const ref = useOnceInView<HTMLDivElement>(play, 0.35);
-
   const Mini = ({ g1 }: { g1?: boolean }) => (
     <div className={s.mini} aria-hidden="true">
       <div className={s.miImg} />
@@ -234,39 +192,90 @@ function Duo() {
     </div>
   );
 
-  return (
-    <div ref={ref} className={s.panel}>
-      <div className={s.top}>
-        <span className="text-code">prompt: &quot;a booking card for a rental&quot;</span>
-        <button type="button" className={s.chip} onClick={play}>
-          replay
-        </button>
-      </div>
-      <div className={s.duoG}>
-        <div className={s.side}>
+  const sides: { key: string; label: string; node: React.ReactNode }[] = [
+    {
+      key: "no",
+      label: "No documentation",
+      node: (
+        <>
           <div className={s.sideH}>
             <b>No documentation</b>
             <span className={`${s.vb} ${done ? s.vbBad : ""} text-code`} aria-live="polite">
               {done ? "refused · 4 guesses" : "checking"}
             </span>
           </div>
-          <Mini g1 />
+          <div className={s.sideMini}>
+            <Mini g1 />
+          </div>
           <pre className={`${s.code} text-code`} aria-label="Code the agent wrote without documentation: a custom div, an invented grey, a radius off the scale, and a font size below the floor.">
             <Typed parts={CODE_L} n={n} marks={marks} bad />
           </pre>
-        </div>
-        <div className={s.side}>
+        </>
+      ),
+    },
+    {
+      key: "with",
+      label: "With BELLA's contract",
+      node: (
+        <>
           <div className={s.sideH}>
             <b>With BELLA&apos;s contract</b>
             <span className={`${s.vb} ${done ? s.vbOk : ""} text-code`} aria-live="polite">
               {done ? "merged · 0 guesses" : "checking"}
             </span>
           </div>
-          <Mini />
+          <div className={s.sideMini}>
+            <Mini />
+          </div>
           <pre className={`${s.code} text-code`} aria-label="Code the agent wrote with BELLA's contract: ListingCard, the panel surface, the md radius, and the primary Button.">
             <Typed parts={CODE_R} n={n} marks={marks} bad={false} />
           </pre>
+        </>
+      ),
+    },
+  ];
+
+  /* a phone sees three steps, none taller than the screen: the two cards
+     (they look the same), then each side's code */
+  const phoneSteps = [
+    {
+      key: "cards",
+      label: "The cards",
+      node: (
+        <div className={s.stepMinis}>
+          <div className={s.side}>
+            <div className={s.sideH}>
+              <b>No documentation</b>
+            </div>
+            <Mini g1 />
+          </div>
+          <div className={s.side}>
+            <div className={s.sideH}>
+              <b>With BELLA&apos;s contract</b>
+            </div>
+            <Mini />
+          </div>
         </div>
+      ),
+    },
+    ...sides.map((x) => ({ key: x.key, label: x.label, node: <div className={`${s.side} ${s.sideCode}`}>{x.node}</div> })),
+  ];
+
+  return (
+    <div className={s.panel}>
+      <div className={s.top}>
+        <span className="text-code">prompt: &quot;a booking card for a rental&quot;</span>
+        <button type="button" className={s.chip} onClick={play}>
+          replay
+        </button>
+      </div>
+      {/* both sides together from 640px; on a phone one at a time, so
+          neither is cropped and the page is not two screens of code */}
+      <div className={cs.wideOnly}>
+        <div className={s.duoG}>{sides.map((x) => <div key={x.key} className={s.side}>{x.node}</div>)}</div>
+      </div>
+      <div className={cs.phoneOnly}>
+        <PhoneSwitch label="Compare the two" items={phoneSteps} />
       </div>
       <div className={`${s.legend} text-code`}>
         <span className="text-code">
@@ -318,23 +327,17 @@ function useArrow(pop: React.RefObject<HTMLElement | null>) {
 
 function Lifecycle() {
   const [cur, setCur] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [started, setStarted] = useState(false);
+  /* stopped until someone presses play or picks a step */
+  const [paused, setPaused] = useState(true);
   const stepsRef = useRef<HTMLDivElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const { ax, point } = useArrow(popRef);
 
-  const ref = useOnceInView<HTMLDivElement>(() => setStarted(true), 0.3);
-
   useEffect(() => {
-    if (reduced()) setPaused(true);
-  }, []);
-
-  useEffect(() => {
-    if (!started || paused) return;
+    if (paused || reduced()) return;
     const t = window.setInterval(() => setCur((c) => (c + 1) % STEPS.length), 2600);
     return () => window.clearInterval(t);
-  }, [started, paused]);
+  }, [paused]);
 
   useEffect(() => {
     const fn = () => point(stepsRef.current?.children[cur]?.querySelector("i"));
@@ -345,7 +348,7 @@ function Lifecycle() {
 
   const d = STEPS[cur];
   return (
-    <div ref={ref} className={s.panel}>
+    <div className={s.panel}>
       <div className={s.top}>
         <span className="text-code">
           step <b className={s.inkB}>{cur + 1}</b> of 7
@@ -447,12 +450,8 @@ const MOD = ["light", "dark"] as const;
 
 function Playground() {
   const [st, setSt] = useState({ a: 0, r: 1, d: 1, m: 0 });
-  const { later } = useTimers();
-  const ref = useOnceInView<HTMLDivElement>(() => {
-    if (reduced()) return;
-    ([[3, 700], [4, 1900], [0, 3300]] as const).forEach(([i, t]) => later(() => setSt((x) => ({ ...x, a: i })), t));
-  }, 0.5);
-
+  /* the checks sit folded on a phone; a failing choice opens them, so a block is never hidden */
+  const [foldOpen, setFoldOpen] = useState(false);
   const a = ACC[st.a][1];
   const g = GROUND[MOD[st.m]];
   const edge = EDGE[ACC[st.a][0]]?.[MOD[st.m]] ?? a;
@@ -485,7 +484,7 @@ function Playground() {
   );
 
   return (
-    <div ref={ref} className={`${s.panel} ${s.pg}`}>
+    <div className={`${s.panel} ${s.pg}`}>
       <div className={`${s.box} ${s.pgCtl}`}>
         <div className={s.grp} role="group" aria-labelledby="pg-acc">
           <span id="pg-acc" className="text-code">--accent</span>
@@ -538,7 +537,9 @@ function Playground() {
             </div>
           </div>
         </div>
-        <div className={s.box} aria-live="polite">
+        <PhoneCollapse rest={1} label="Show the checks" open={foldOpen || fail > 0} onOpenChange={setFoldOpen}>
+        <div className={s.pgFold}>
+        <div className={s.box} aria-live="polite" data-phone-rest="">
           <div className={s.pgGh}>
             <span className="text-code">the gate</span>
             <span className={`${s.verdict} ${fail ? s.vBad : ""} text-code`}>{fail ? `blocked · ${fail} fail` : "ships"}</span>
@@ -551,9 +552,11 @@ function Playground() {
             </div>
           ))}
         </div>
-        <p className="text-code">
+        <p className="text-code" data-phone-rest="">
           {`// --accent: ${a} · radius: ${RAD[st.r][1]} · density: ${DEN[st.d][0]} · mode: ${MOD[st.m]}`}
         </p>
+        </div>
+        </PhoneCollapse>
       </div>
     </div>
   );
@@ -565,10 +568,11 @@ function Pipeline({ auditCount }: { auditCount: number }) {
   const NODES: [string, string][] = [
     ["write", "tokens"], ["build", "build.py"], ["generate", "css · json"], ["check", `${auditCount} audits`], ["ship", "site"],
   ];
-  const [tok, setTok] = useState(-1);
-  const [lit, setLit] = useState(-1);
-  const [passed, setPassed] = useState(0);
-  const [pass, setPass] = useState(false);
+  /* the finished run first; "replay" walks a change through it again */
+  const [tok, setTok] = useState(4);
+  const [lit, setLit] = useState(4);
+  const [passed, setPassed] = useState(GATE.length);
+  const [pass, setPass] = useState(true);
   const [pick, setPick] = useState<number | null>(null);
   const run = useRef(0);
   const { later, clear } = useTimers();
@@ -615,8 +619,6 @@ function Pipeline({ auditCount }: { auditCount: number }) {
     });
   }, [clear, later]);
 
-  const ref = useOnceInView<HTMLDivElement>(play, 0.35);
-
   useEffect(() => {
     if (pick === null) return;
     const fn = () => point(gridRef.current?.children[pick]);
@@ -626,7 +628,7 @@ function Pipeline({ auditCount }: { auditCount: number }) {
   }, [pick, point]);
 
   return (
-    <div ref={ref} className={s.panel}>
+    <div className={s.panel}>
       <div className={s.pipeHead}>
         <p className="sr-only">
           A change travels through write, build, generate, check and ship. The check step runs {auditCount} audits and passes only
@@ -645,16 +647,18 @@ function Pipeline({ auditCount }: { auditCount: number }) {
             {i === 3 && <i className={`${s.tick} ${pass ? s.tickOn : ""}`}>✓</i>}
           </div>
         ))}
-        <span className={s.tok} style={{ "--i": Math.max(0, tok) } as React.CSSProperties}>
+        <span className={`${s.tok} ${tok >= 4 ? s.tokEnd : ""}`} style={{ "--i": Math.max(0, tok) } as React.CSSProperties}>
           <i />
           <span>your change</span>
         </span>
       </div>
+      <PhoneCollapse rest={GATE.length - 6} label={`Show all ${auditCount} checks`}>
       <div ref={gridRef} className={s.grid21} role="group" aria-label={`The ${auditCount} checks`}>
         {GATE.map((g, i) => (
           <button
             key={g.name}
             type="button"
+            data-phone-rest={i >= 6 ? "" : undefined}
             aria-pressed={pick === i}
             className={`${s.c21} ${i < passed ? s.c21Done : ""}`}
             onClick={() => setPick(i)}
@@ -665,6 +669,7 @@ function Pipeline({ auditCount }: { auditCount: number }) {
           </button>
         ))}
       </div>
+      </PhoneCollapse>
       <p className={`${s.count} text-code`} aria-live="polite">
         <b>{passed}</b> of {auditCount} passed
       </p>
@@ -699,12 +704,13 @@ const A11Y: { t: string; ref: string; what: string; by: string }[] = [
   { t: "Reflow and zoom", ref: "1.4.10 · 1.4.4", what: "Layouts reflow to 320px and survive 200% text zoom with no sideways scroll.", by: "audit:frame at 390 · 200% zoom by hand" },
 ];
 
-function A11yDemo({ i, cur }: { i: number; cur: number }) {
+/* a demo moves only after someone has pressed play or picked a card */
+function A11yDemo({ i, cur, on }: { i: number; cur: number; on: boolean }) {
   const active = i === cur;
   const [f, setF] = useState(1);
   const [dx, setDx] = useState(0);
   useEffect(() => {
-    if (!active || reduced()) return;
+    if (!active || !on || reduced()) return;
     if (i === 0) {
       const t = window.setInterval(() => setF((k) => (k + 1) % 3), 500);
       return () => window.clearInterval(t);
@@ -718,7 +724,7 @@ function A11yDemo({ i, cur }: { i: number; cur: number }) {
         window.clearTimeout(b);
       };
     }
-  }, [active, i]);
+  }, [active, i, on]);
   switch (i) {
     case 0:
       return (
@@ -759,21 +765,21 @@ function A11yDemo({ i, cur }: { i: number; cur: number }) {
 
 function Accessibility() {
   const [cur, setCur] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [started, setStarted] = useState(false);
+  /* stopped until someone presses play or picks one */
+  const [paused, setPaused] = useState(true);
+  const [touched, setTouched] = useState(false);
+  /* two cards show on a phone; the tour (or a pick) that lands on a folded
+     one opens the fold first, so the card it describes is never hidden */
+  const [foldOpen, setFoldOpen] = useState(false);
   const gRef = useRef<HTMLDivElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const { ax, point } = useArrow(popRef);
-  const ref = useOnceInView<HTMLDivElement>(() => setStarted(true), 0.3);
 
   useEffect(() => {
-    if (reduced()) setPaused(true);
-  }, []);
-  useEffect(() => {
-    if (!started || paused) return;
+    if (paused || reduced()) return;
     const t = window.setInterval(() => setCur((c) => (c + 1) % A11Y.length), 2600);
     return () => window.clearInterval(t);
-  }, [started, paused]);
+  }, [paused]);
   useEffect(() => {
     const fn = () => point(gRef.current?.children[cur]);
     fn();
@@ -782,24 +788,41 @@ function Accessibility() {
   }, [cur, point]);
 
   const a = A11Y[cur];
+  const open = foldOpen || cur >= 2;
   return (
-    <div ref={ref} className={s.panel}>
+    <div className={s.panel}>
       <div className={s.top}>
         <span className="text-code">
           <b className={s.inkB}>{cur + 1}</b> of 6
         </span>
-        <button type="button" className={s.chip} onClick={() => setPaused((p) => !p)} aria-label={paused ? "Play the tour" : "Pause the tour"}>
+        <button type="button" className={s.chip} onClick={() => {
+            setTouched(true);
+            setPaused((p) => !p);
+          }}
+          aria-label={paused ? "Play the tour" : "Pause the tour"}
+        >
           {paused ? "play" : "pause"}
         </button>
       </div>
+      <PhoneCollapse
+        rest={A11Y.length - 2}
+        label="Show the other 4"
+        open={open}
+        onOpenChange={(o) => {
+          setFoldOpen(o);
+          if (!o && cur >= 2) setCur(1);
+        }}
+      >
       <div ref={gRef} className={s.axG}>
         {A11Y.map((x, i) => (
           <button
             key={x.t}
             type="button"
+            data-phone-rest={i >= 2 ? "" : undefined}
             aria-pressed={i === cur}
             className={s.axt}
             onClick={() => {
+              setTouched(true);
               setPaused(true);
               setCur(i);
             }}
@@ -809,17 +832,21 @@ function Accessibility() {
               <span className="text-code">WCAG {x.ref}</span>
             </span>
             <span className={s.demo} aria-hidden="true">
-              <A11yDemo i={i} cur={cur} />
+              <A11yDemo i={i} cur={cur} on={touched} />
             </span>
           </button>
         ))}
       </div>
+      </PhoneCollapse>
       <div ref={popRef} className={s.pop} aria-live="polite" style={ax === null ? undefined : ({ "--ax": `${ax}px` } as React.CSSProperties)}>
         <span className={s.ar} aria-hidden="true" />
         <div className={s.popH}>
           <b>{a.t}</b>
           <span className="text-code">WCAG {a.ref}</span>
         </div>
+        <span className={`${s.demo} ${s.popDemo}`} aria-hidden="true">
+          <A11yDemo i={cur} cur={cur} on={touched} />
+        </span>
         <p>{a.what}</p>
         <p className={s.next}>
           <span className="text-code">checked by</span> {a.by}
@@ -840,13 +867,11 @@ function Maturity({ auditCount }: { auditCount: number }) {
     ["Measurement & impact", 1, "V1", "Deliberately no vanity metrics; the working system is the evidence.", "Track time from design to merged component, and drift caught by the gate."],
     ["AI readiness", 3, "teenage", "The newest test of a system is the path an AI takes, and this one defaults agents into it.", "Skills shipped with the system, so agents can scaffold safely."],
   ];
-  const [filled, setFilled] = useState(false);
+  const filled = true; /* the bars sit filled; no fill-in on scroll */
   const [pick, setPick] = useState<number | null>(null);
   const rowsRef = useRef<HTMLDivElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const { ax, point } = useArrow(popRef);
-  const ref = useOnceInView<HTMLDivElement>(() => setFilled(true), 0.3);
-  const motion = !reduced();
 
   useEffect(() => {
     if (pick === null) return;
@@ -859,7 +884,7 @@ function Maturity({ auditCount }: { auditCount: number }) {
 
   const tone = (n: number) => (n >= 3 ? "" : n === 2 ? s.fG : s.fV);
   return (
-    <div ref={ref} className={s.panel}>
+    <div className={s.panel}>
       <div className={`${s.mtScale} text-code`} aria-hidden="true">
         <span />
         <div>
@@ -886,7 +911,6 @@ function Maturity({ auditCount }: { auditCount: number }) {
                 <i
                   key={k}
                   className={filled && k < m[1] ? `${s.f} ${tone(m[1])}` : undefined}
-                  style={motion ? { transitionDelay: `${i * 160 + k * 120}ms` } : undefined}
                 />
               ))}
             </span>
@@ -912,6 +936,34 @@ function Maturity({ auditCount }: { auditCount: number }) {
         )}
       </div>
     </div>
+  );
+}
+
+/* ══════════════════════════════ WHAT I TRIED ══════════════════════════════ */
+
+/* three BELLA Cards in a row, stacked on phones; the chosen one wears the
+   selected treatment (an ink wash, ink edge and an ink tag with a check), the other two stay
+   at rest: highlight, never dim (W, Elleta, 7 Oct 2026). Local to this page. */
+const TRIED: { lead: string; rest: string; chosen?: boolean }[] = [
+  { lead: "Docs only:", rest: "the agent might read them." },
+  { lead: "A style file for the agent:", rest: "gives it a look, not limits." },
+  { lead: "A contract per component and a gate that can fail the merge.", rest: "", chosen: true },
+];
+
+function Tried() {
+  return (
+    <ul className={s.tried} aria-label="Three options I tried">
+      {TRIED.map((t) => (
+        <li key={t.lead}>
+          <Card className={s.triedCard} innerClassName={t.chosen ? `${s.triedIn} ${s.triedChosen}` : s.triedIn}>
+            {t.chosen ? <span className={`${s.chosenTag} text-code`}><Icon name="Check" size="sm" />Chosen</span> : null}
+            <p>
+              <b>{t.lead}</b> {t.rest}
+            </p>
+          </Card>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -953,9 +1005,14 @@ export default function BellaSpine({ auditCount, auditCountWord }: { auditCount:
         </div>
       </Section>
 
+      <Section id="tried" ruled>
+        <SectionHeader kicker="02 · What I tried" heading="The only one of the three" accent="that can say no." />
+        <Tried />
+      </Section>
+
       <Section id="life" ruled>
         <SectionHeader
-          kicker="02 · How a component gets made"
+          kicker="03 · How a component gets made"
           heading="A human at every step,"
           accent="AI where it helps."
           lead="My workflow, adapted from TJ Pitre's context-based design systems lifecycle and run for real on BELLA."
@@ -965,7 +1022,7 @@ export default function BellaSpine({ auditCount, auditCountWord }: { auditCount:
 
       <Section id="try" ruled>
         <SectionHeader
-          kicker="03 · Try your brand"
+          kicker="04 · Try your brand"
           heading="Bring your brand."
           accent="The system decides what ships."
           lead="Pick an accent, a corner and a density. The card follows, and the gate checks every choice live. Some brand colours won't make it, and it tells you why."
@@ -980,7 +1037,7 @@ export default function BellaSpine({ auditCount, auditCountWord }: { auditCount:
 
       <Section id="gate" ruled>
         <SectionHeader
-          kicker="04 · Every merge"
+          kicker="05 · Every merge"
           heading="A system that can't refuse"
           accent="is a suggestion."
           lead={`Colour is one check of ${auditCountWord}. Every change walks this path, and any one of them can stop it.`}
@@ -989,9 +1046,18 @@ export default function BellaSpine({ auditCount, auditCountWord }: { auditCount:
         <p className={s.note}>Tap any check to see what it stops.</p>
       </Section>
 
+      <Section id="way" ruled>
+        <SectionHeader kicker="06 · What got in the way" heading="Everything passed" accent="and mobile bugs got through." />
+        <ul className={s.way}>
+          <li>The gate grew to {auditCount} checks; a full run went from about 10 to about 25 minutes.</li>
+          <li>Working solo: no second reviewer.</li>
+        </ul>
+        <p className={s.fix}>So the gate now runs in parallel, about 6 minutes, and I look at screenshots before it runs.</p>
+      </Section>
+
       <Section id="a11y" ruled>
         <SectionHeader
-          kicker="04b · Accessibility"
+          kicker="07 · Accessibility"
           heading="More than contrast."
           accent="Built in, not bolted on."
           lead="Contrast is the easy check. These are the other six BELLA holds itself to, on every component, before anything merges."
@@ -1008,7 +1074,7 @@ export default function BellaSpine({ auditCount, auditCountWord }: { auditCount:
 
       <Section id="stand" ruled>
         <SectionHeader
-          kicker="05 · Self-assessment"
+          kicker="08 · Self-assessment"
           heading="Where the system"
           accent="honestly stands."
           lead="Not a scoreboard. Scored against zeroheight's six-axis maturity model: strong where it can be for a team of one, early where it needs a team."
@@ -1021,7 +1087,7 @@ export default function BellaSpine({ auditCount, auditCountWord }: { auditCount:
       </Section>
 
       <Section id="value" ruled>
-        <SectionHeader kicker="06 · What your team gets" heading="One language," accent="three kinds of people." />
+        <SectionHeader kicker="09 · What your team gets" heading="One language," accent="three kinds of people." />
         <div className={s.val}>
           <div>
             <span className={`${s.tagv} ${s.triC1bg} text-code`}>designers</span>
@@ -1042,9 +1108,6 @@ export default function BellaSpine({ auditCount, auditCountWord }: { auditCount:
         <div className={s.cta}>
           <p>This is how I&apos;d start with your system: an audit, one component through the whole lifecycle, and a gate your team owns.</p>
           <div className={s.ctaB}>
-            <Button href="/contact" variant="primary" trackEvent="lets-talk">
-              Let&apos;s talk
-            </Button>
             <a className={s.chip} href="https://emcdanie.github.io/bella" target="_blank" rel="noopener noreferrer" data-umami-event="storybook">
               Storybook ↗
             </a>

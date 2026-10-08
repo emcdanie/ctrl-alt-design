@@ -26,8 +26,14 @@ export function PhoneCollapseBar() {
   );
 }
 
-export default function PhoneCollapse({ rest, label, inline = false, children }: { rest: number; /** the figure places <PhoneCollapseBar /> itself */ inline?: boolean; /** the closed button's words, when "Show the other N" would not say what opens */ label?: string; children: ReactNode }) {
-  const [open, setOpen] = useState(false);
+export default function PhoneCollapse({ rest, label, inline = false, open: openProp, onOpenChange, children }: { rest: number; /** the figure places <PhoneCollapseBar /> itself */ inline?: boolean; /** the closed button's words, when "Show the other N" would not say what opens */ label?: string; /** controlled: the figure decides when it is open (the accessibility tour opens it before it reaches a folded card) */ open?: boolean; onOpenChange?: (open: boolean) => void; children: ReactNode }) {
+  const [openState, setOpenState] = useState(false);
+  const open = openProp ?? openState;
+  const setOpen = (f: (o: boolean) => boolean) => {
+    const next = f(open);
+    onOpenChange?.(next);
+    if (openProp === undefined) setOpenState(next);
+  };
   const id = useId();
   const text = label ?? `Show the other ${rest}`;
   return (
