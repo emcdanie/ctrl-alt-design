@@ -98,8 +98,8 @@ export const CASES: CaseRowData[] = [
 export const HOME_CASES: CaseRowData[] = CASES.slice(0, 3);
 
 /* Home (Elleta, 6 Oct 2026, H4, back to the 4 Oct map; supersedes Home ·
- * v2's lead three): the three READY cases, Drift featured, then Federated
- * and Theming as cards. CHIP waits on /work with "Update coming". */
+ * v2's lead three): the three READY cases. Federated leads (Elleta, 8 Oct 2026,
+ * home-fix), then Drift and Theming as cards. CHIP waits on /work with "Update coming". */
 const byId = (id: string) => CASES.find((c) => c.id === id)!;
 const DRIFT: CaseRowData = {
   ...byId("drift"),
@@ -146,7 +146,11 @@ const THEMING: Omit<CaseRowData, "n"> = {
     picture: { name: "theming", phone: { x: 253, y: 267, w: 886, h: 705, pad: 24 }, width: 1392, height: 1008, alt: "A night, coast and market switcher over the bel·la homes listing screen on night, with the saltstay and verdello faces fanned behind it." },
   },
 };
-export const HOME_LEAD: CaseRowData[] = [DRIFT, FEDERATED, { ...THEMING, n: "03" }];
+export const HOME_LEAD: CaseRowData[] = [
+  { ...FEDERATED, n: "01" },
+  { ...DRIFT, n: "02" },
+  { ...THEMING, n: "03" },
+];
 
 /* /work (Site v3, job 33, Elleta 5 Oct 2026): Home's case cards, four
  * cases in this order: Drift, Federated (live since 4 Oct), CHIP,

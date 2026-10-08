@@ -29,7 +29,9 @@ const PIN_DIGIT: Record<string, string> = {
   "04": "M12.2625 12V10.65H9.22048V9.831L12.1635 5.61H13.2075V9.777H13.9725V10.65H13.2075V12H12.2625ZM10.1475 9.777H12.2625V6.87L10.1475 9.777Z",
 };
 
-/* the callouts, top to bottom (Figma), each with the pin it leads from */
+/* the callouts, top to bottom (Figma), each with the pin it leads from. The
+   digit a pin SHOWS counts down the callouts, 1 at the top (Elleta, 8 Oct
+   2026); `pin` stays the key the anchors and leaders find it by. */
 const CALLOUTS = [
   { pin: "03", token: "--radius-full", dot: "ochre" },
   { pin: "04", token: "--space-2", dot: "peach" },
@@ -207,7 +209,7 @@ export default function Hero() {
           {CALLOUTS.map((c) => (
             <svg key={c.pin} className={styles.pin} data-pin={c.pin} data-ochre={c.pin === "03" || undefined} viewBox="0 0 18 18" aria-hidden="true">
               <circle cx="9" cy="9" r="9" />
-              <path d={PIN_ZERO + PIN_DIGIT[c.pin]} />
+              <path d={PIN_ZERO + PIN_DIGIT[`0${CALLOUTS.indexOf(c) + 1}`]} />
             </svg>
           ))}
         </div>

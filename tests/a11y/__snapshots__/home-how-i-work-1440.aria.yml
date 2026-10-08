@@ -1,9 +1,38 @@
 - region "How I work":
   - paragraph: How I work
   - heading "The system behind the site." [level=2]
-  - paragraph: This site runs on BELLA, my own design system.
+  - paragraph: This site runs on BELLA, my own design system. Here’s one card, taken apart.
+  - 'img "A case card from this site, pulled apart into four layers: the words, the picture, the card, and the tokens every value comes from."'
+  - list "The four layers":
+    - listitem:
+      - button "1 The words Every size is a role, not a number. Label/Eyebrow · Heading/Card":
+        - text: ""
+        - code: Label/Eyebrow
+        - text: ""
+        - code: Heading/Card
+    - listitem:
+      - button "2 The picture The cover, clipped to the card. radius/inner":
+        - text: ""
+        - code: radius/inner
+    - listitem:
+      - button "3 The card Edge, corner and shadow. surface · shadow.card":
+        - text: ""
+        - code: surface
+        - text: ""
+        - code: shadow.card
+    - listitem:
+      - button "4 The tokens One source for every value. Change one, every card follows. action.primary":
+        - text: ""
+        - code: action.primary
+  - text: Whole
+  - slider "Pull the card apart": /\d+/
+  - text: Apart
+  - button "Rebuild as another brand"
+  - paragraph: The card on the site. Every value comes from BELLA.
   - paragraph:
     - link "Inspect BELLA":
       - /url: /design-system
     - link "Where I learned it":
       - /url: /learning
+    - link "Accessibility":
+      - /url: /accessibility

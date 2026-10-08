@@ -1,0 +1,428 @@
+/* The Home system beat (Elleta, 8 Oct 2026; Claude outputs/system-beat-hifi.html).
+   Drawn in design units (--u): the card is 300 x 336 units, so the picture
+   scales with its column and never reflows, and no transform: scale is used.
+   The stage is the container; --u is one unit, a pixel at most, less when the
+   column is narrow or the viewport is short, so the figure fits one screen
+   under the nav. Art text keeps a floor (16px); the art is aria-hidden. */
+
+.fig {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-areas:
+    "stage pins"
+    "ctl ctl"
+    "cap cap";
+  align-items: center;
+  column-gap: var(--spacing-6);
+  margin: var(--space-stack-lg) 0 0;
+  --t: 1;
+  --rot: calc(var(--t) * 56deg);
+  --spin: calc(var(--t) * -40deg);
+  /* BELLA by default; the Coast demo brand overrides these inline */
+  --r-card: var(--radius-card);
+  --r-inner: var(--radius-md);
+  --c-surface: var(--color-semantic-surface-card);
+  --c-ink: var(--color-ink);
+  --c-muted: var(--color-ink-muted);
+  --c-action: var(--color-ink);
+  --c-accent: var(--color-semantic-accent);
+  --c-tag: var(--color-semantic-surface-inset);
+}
+
+.fig[data-brand="coast"] {
+  --r-card: 0.1875rem;
+  --r-inner: 0.125rem;
+}
+
+.stage {
+  grid-area: stage;
+  container-type: inline-size;
+}
+
+.world {
+  --sh: 800;
+  --g: 130;
+  --k1: 2.3;
+  --beat-chrome: calc(var(--spacing-20) * 3);
+  --u: min(0.0625rem, 100cqw / 420, (100svh - var(--header-height) - var(--beat-chrome)) / var(--sh));
+  --gap: calc(var(--t) * var(--g) * var(--u));
+  position: relative;
+  height: calc(var(--sh) * var(--u));
+}
+
+.pl {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - var(--lift, 0) * var(--u));
+  width: calc(300 * var(--u));
+  height: calc(336 * var(--u));
+  margin: calc(-168 * var(--u)) 0 0 calc(-150 * var(--u));
+  border-radius: var(--r-card);
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+  transition: outline-color 0.2s;
+}
+
+.pl[data-i="1"] { transform: translateY(calc(var(--gap) * var(--k1))) rotateX(var(--rot)) rotateZ(var(--spin)); z-index: 1; }
+.pl[data-i="2"] { transform: translateY(calc(var(--gap) * 0.55)) rotateX(var(--rot)) rotateZ(var(--spin)); z-index: 2; }
+.pl[data-i="3"] { transform: translateY(calc(var(--gap) * -0.45)) rotateX(var(--rot)) rotateZ(var(--spin)); z-index: 3; }
+.pl[data-i="4"] { transform: translateY(calc(var(--gap) * -2.05)) rotateX(var(--rot)) rotateZ(var(--spin)); z-index: 4; }
+
+/* a pressed pin highlights its part, never dims the others */
+.on { outline-color: var(--color-semantic-accent-border); }
+.on::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: color-mix(in oklab, var(--color-semantic-accent) 18%, transparent);
+  pointer-events: none;
+}
+.ph.on, .plate.on { outline: 2px solid var(--color-semantic-accent-border); outline-offset: 3px; }
+
+/* 1 tokens: chips on grid paper */
+.p1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: calc(8 * var(--u));
+  padding: calc(22 * var(--u));
+  border: 1px solid var(--color-semantic-border-strong);
+  background-color: var(--color-semantic-background);
+  background-image:
+    linear-gradient(var(--color-semantic-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-semantic-border) 1px, transparent 1px);
+  background-size: calc(16 * var(--u)) calc(16 * var(--u));
+  box-shadow: var(--shadow-card);
+}
+.tk { display: flex; flex-wrap: wrap; gap: calc(8 * var(--u)); }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+  padding: calc(4 * var(--u)) calc(11 * var(--u));
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-surface-card);
+  font-family: var(--font-code);
+  font-feature-settings: var(--mono-feature);
+  font-size: max(1rem, calc(14 * var(--u)));
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+.chip i {
+  width: calc(10 * var(--u));
+  height: calc(10 * var(--u));
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: 50%;
+  transition: background 0.4s;
+}
+.dotAction { background: var(--c-action); }
+.dotInk { background: var(--c-ink); }
+.dotAccent { background: var(--c-accent); }
+
+/* 2 card: edge, corner, shadow, and the dashed slots the parts sit in */
+.p2 {
+  border: 1px solid var(--color-semantic-border-strong);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);
+  transition: background 0.4s, border-radius 0.4s;
+}
+.slot {
+  position: absolute;
+  border: 1.5px dashed var(--color-ink-muted);
+  border-radius: var(--r-inner);
+  opacity: var(--t);
+}
+.s1 { left: calc(12 * var(--u)); right: calc(12 * var(--u)); top: calc(12 * var(--u)); height: calc(196 * var(--u)); }
+.s2 { left: calc(20 * var(--u)); width: calc(150 * var(--u)); top: calc(224 * var(--u)); height: calc(14 * var(--u)); border-radius: var(--radius-sm); }
+.s3 { left: calc(20 * var(--u)); width: calc(220 * var(--u)); top: calc(248 * var(--u)); height: calc(26 * var(--u)); border-radius: var(--radius-sm); }
+.s4 { left: calc(20 * var(--u)); width: calc(150 * var(--u)); top: calc(290 * var(--u)); height: calc(24 * var(--u)); border-radius: var(--radius-pill); }
+.rad {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: calc(30 * var(--u));
+  height: calc(30 * var(--u));
+  border-right: 2px solid var(--c-ink);
+  border-bottom: 2px solid var(--c-ink);
+  border-bottom-right-radius: var(--r-card);
+  opacity: var(--t);
+  transition: border-radius 0.4s;
+}
+
+/* 3 picture: the real cover */
+.ph {
+  position: absolute;
+  left: calc(12 * var(--u));
+  right: calc(12 * var(--u));
+  top: calc(12 * var(--u));
+  height: calc(196 * var(--u));
+  border-radius: var(--r-inner);
+  overflow: hidden;
+  transition: border-radius 0.4s;
+}
+.ph img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.ui {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--cover-on-photo);
+  color: var(--cover-on-photo-ink);
+  font-family: var(--font-code);
+  font-size: max(1rem, calc(13 * var(--u)));
+}
+.back { left: calc(10 * var(--u)); top: calc(10 * var(--u)); width: calc(30 * var(--u)); height: calc(30 * var(--u)); }
+.heart { right: calc(10 * var(--u)); top: calc(10 * var(--u)); width: calc(30 * var(--u)); height: calc(30 * var(--u)); }
+.count { left: calc(10 * var(--u)); bottom: calc(10 * var(--u)); padding: calc(2 * var(--u)) calc(9 * var(--u)); }
+.ui svg { width: calc(16 * var(--u)); height: calc(16 * var(--u)); }
+
+/* 4 words on a frosted plate */
+.plate {
+  position: absolute;
+  left: calc(8 * var(--u));
+  right: calc(8 * var(--u));
+  top: calc(208 * var(--u));
+  bottom: calc(8 * var(--u));
+  border-radius: calc(var(--r-card) - 0.25rem);
+  background: color-mix(in srgb, var(--color-semantic-surface-card) calc(var(--t) * 88%), transparent);
+  border: 1px solid color-mix(in srgb, var(--color-semantic-border-strong) calc(var(--t) * 100%), transparent);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(calc(var(--t) * 0.25rem));
+  transition: border-radius 0.4s;
+}
+.wd {
+  position: absolute;
+  left: calc(20 * var(--u));
+  right: calc(20 * var(--u));
+  top: calc(222 * var(--u));
+  color: var(--c-ink);
+}
+.eb { margin: 0 0 calc(4 * var(--u)); font-size: max(1rem, calc(14 * var(--u))); line-height: 1.2; color: var(--c-muted); }
+.tt {
+  margin: 0 0 calc(10 * var(--u));
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: max(1rem, calc(22 * var(--u)));
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.tags { display: flex; flex-wrap: wrap; gap: calc(6 * var(--u)); }
+.tag {
+  padding: calc(2 * var(--u)) calc(10 * var(--u));
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--c-tag);
+  font-size: max(1rem, calc(14 * var(--u)));
+  line-height: 1.3;
+  color: var(--c-ink);
+  transition: background 0.4s;
+}
+.fig[data-brand="coast"] .tag { border-radius: var(--r-inner); }
+
+/* leaders and pins */
+.leadLines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.leadLines :global(path) { fill: none; stroke: var(--color-ink); stroke-width: 1.25; }
+.leadLines :global(circle) { fill: var(--color-ink); }
+.leadLines :global(.on) { stroke: var(--color-semantic-accent-border); }
+.leadLines :global(circle.on) { fill: var(--color-semantic-accent-border); }
+
+.pins {
+  grid-area: pins;
+  position: relative;
+  z-index: 5;
+  display: grid;
+  gap: var(--spacing-3);
+  margin: 0;
+  padding: 0 0 0 var(--spacing-6);
+  list-style: none;
+}
+.pin {
+  all: unset;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: var(--spacing-1) var(--spacing-3);
+  align-items: start;
+  width: 100%;
+  min-height: var(--spacing-touch-target);
+  padding: var(--spacing-3);
+  border: 2px solid transparent;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.pin:hover, .pin[aria-pressed="true"] {
+  background: var(--color-semantic-accent-subtle);
+  border-color: var(--color-semantic-accent-border);
+}
+.pin:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+}
+.num {
+  grid-row: 1 / 3;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--color-ink);
+  color: var(--color-semantic-background);
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  /* the digit's cap height sits on the circle's centre, not the line box's */
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
+}
+/* Figtree's tabular 1 carries a foot and sits right of its cell: nudged back
+   so its stem is optically centred like 2, 3 and 4 (measured, +1px right).
+   Padding moves the glyph only; a translate would move the circle too. */
+.num[data-digit="1"], .badge[data-digit="1"] { padding-right: 0.1em; }
+.pn { font-family: var(--font-body); font-size: var(--typography-font-size-lg); font-weight: 600; line-height: 1.3; color: var(--color-ink); }
+.pd { font-family: var(--font-body); font-size: var(--typography-font-size-base); line-height: 1.5; color: var(--color-ink-muted); }
+.pd code { font-family: var(--font-code); font-feature-settings: var(--mono-feature); font-size: var(--text-mono); color: var(--color-ink); white-space: nowrap; }
+
+.badge {
+  position: absolute;
+  z-index: 6;
+  display: none;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--color-ink);
+  box-shadow: 0 0 0 3px var(--color-semantic-background);
+  color: var(--color-semantic-background);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
+  pointer-events: none;
+}
+
+/* controls */
+.ctl {
+  grid-area: ctl;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3) var(--spacing-6);
+  margin-top: var(--spacing-3);
+}
+.sl {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+}
+.sl input[type="range"] {
+  appearance: none;
+  width: min(14rem, 40vw);
+  height: var(--spacing-touch-target);
+  background: transparent;
+  cursor: pointer;
+}
+.sl input[type="range"]::-webkit-slider-runnable-track { height: 0.25rem; border-radius: 0.125rem; background: var(--color-semantic-border-strong); }
+.sl input[type="range"]::-moz-range-track { height: 0.25rem; border-radius: 0.125rem; background: var(--color-semantic-border-strong); }
+.sl input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  translate: 0 calc((0.25rem - 1.5rem) / 2);
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-semantic-surface-card);
+}
+.sl input[type="range"]::-moz-range-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-semantic-surface-card);
+}
+.sl input[type="range"]:focus-visible {
+  outline: var(--ring-focus-width) solid var(--ring-focus-color);
+  outline-offset: var(--ring-focus-offset);
+  border-radius: var(--radius-sm);
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-height: var(--spacing-touch-target);
+  padding: 0 var(--spacing-4);
+  border: 1.5px solid var(--color-ink);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn:hover { border-color: var(--color-semantic-accent-border); box-shadow: inset 0 0 0 1px var(--color-semantic-accent-border); }
+.btn:focus-visible { outline: var(--ring-focus-width) solid var(--ring-focus-color); outline-offset: var(--ring-focus-offset); }
+.btn svg { width: 1.125rem; height: 1.125rem; }
+.cap {
+  grid-area: cap;
+  max-width: 42rem;
+  margin: var(--spacing-2) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--typography-font-size-base);
+  color: var(--color-ink-muted);
+}
+
+/* phones: no leaders; numbered badges on the planes, the four layers as a
+   2 x 2 of 44px buttons under them */
+@media (max-width: 51.25rem) {
+  .fig {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "stage"
+      "pins"
+      "ctl"
+      "cap";
+  }
+  /* the prototype's phone block, ported exactly (NOW v4): one unit is 0.72px
+     (its scale .72, without transform: scale), gap 108 units, a stage of 450px
+     with margin-top -10px, the planes at the prototype's multipliers. Only
+     the tokens plane (--k1) sits lower than the prototype's 1.55, so its six
+     chips are not under the card plate. No height fit: the page scrolls. */
+  .stage { margin-top: calc(-1 * (var(--spacing-2) + 2px)); margin-bottom: var(--spacing-touch-target); } /* the tokens plane hangs below the 450px stage */
+  .world { --sh: 625; --g: 108; --k1: 2.3; --u: min(0.045rem, 100cqw / 420); }
+  /* art text keeps the smallest size audit:clip allows once the planes' tilt
+     is counted (12px on screen); the prototype's is smaller still */
+  .chip { font-size: 0.9375rem; line-height: 1.1; padding: calc(1 * var(--u)) calc(8 * var(--u)); gap: calc(6 * var(--u)); }
+  .eb, .tag { font-size: 0.9375rem; }
+  .tt { font-size: 1rem; }
+  /* the words plate is taller on phones, so its larger text fits (the plane
+     is a stack of separate layers; the picture's slot above it is empty) */
+  .plate { top: calc(150 * var(--u)); }
+  .wd { top: calc(162 * var(--u)); }
+  .tk { gap: calc(6 * var(--u)); }
+  .p1 { padding: calc(14 * var(--u)); }
+  .leadLines { display: none; }
+  .badge { display: grid; }
+  .pins { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-1); padding: 0; }
+  .pd { display: none; }
+  .pin { grid-template-columns: 1.75rem 1fr; gap: var(--spacing-1) var(--spacing-2); padding: var(--spacing-1); }
+  .num { grid-row: 1; width: 1.75rem; height: 1.75rem; }
+  .pn { align-self: center; font-size: var(--typography-font-size-base); white-space: nowrap; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fig * { transition: none !important; }
+}
