@@ -26,8 +26,8 @@ override the constitution.
 ## 1. Tokens (never hardcode)
 - **No hardcoded hex or px in components.** Reference tokens only. No arbitrary Tailwind `text-[Npx]` /
   `bg-[#...]`. Spacing and type come from the scale, not ad-hoc values.
-- **Reading text 18px or more; labels and UI 16px or more; nothing smaller** (Elleta, 4 Oct 2026,
-  site v3; supersedes "Body min 16px").
+- **Body text 20px (Body/Base), small 18, labels and UI 16; nothing smaller** (Elleta, 4 Oct 2026,
+  site v3, sizes from Figma 8 Oct; supersedes "Body min 16px").
 - **Colour B (Elleta, 4 Oct 2026, site v3; supersedes the 22 Sep Geist refresh palette: ink
   `#121212`, pure white ground, the grey panel set).** BELLA's colour B tokens (`lib/bella/bella.css`,
   synced from BELLA, never restated as hex in the site). Light: background `#f6f7f9`, surface `#fff`,
@@ -41,7 +41,7 @@ override the constitution.
   decoration. A non-clickable highlight is an ink wash, an ink edge and a word or check icon.
   (text-primary on ochre; surface-glass-accent is its 15% tint, layered over `surface` wherever it must
   be opaque); the focus ring is 3px ochre-deep `#b97a14` in light, ochre in dark, 3px offset, focus
-  only; links are ink + underline; the primary button fills ink. Iris and periwinkle stay retired.
+  only; links are ink text with a 2px ochre-deep underline (ochre in dark); the primary button is ochre with an ink label. Iris and periwinkle stay retired.
   **No amber anywhere.**
 - **Pictures only (Elleta, 4 Oct 2026, site v3).** Inside case figures, and nowhere in site
   chrome: the Case UI kit (product theme, Default blue `#4A5BD4`, Federated `#121212`) and the
@@ -167,11 +167,12 @@ override the constitution.
 ## 5. Controls (one taxonomy)
 The raised **keycap** is reserved for TRUE actions only. Do not use it for filters,
 toggles, or sort.
-- **Button (grammar v6, Elleta, 8 Oct 2026; supersedes the iris grammar v5):** PRIMARY = the BELLA
-  primary, a flat ink fill (no gloss, gradient, shadow or travelling light), max ONE per view; hover
-  and press only deepen the fill, it never lifts; focus ring as every control. SECONDARY = flat ink
-  outline, ink text, no fill, no elevation. TERTIARY = text link, ink + underlined. Ochre appears on
-  buttons only as the focus ring and hover edge. The neutral keycap is retired.
+- **Button (grammar v6, Elleta, 5 Oct 2026 lock, repeated 8 Oct; supersedes the iris grammar v5):**
+  ochre is the CTA colour. PRIMARY = the BELLA keycap in ochre with an ink label (7.76:1), max ONE per
+  view; hover and press only deepen the fill. SECONDARY = transparent, 1.5px ink outline (light) or
+  light outline (dark), ink label, 44px. TERTIARY = text link: ink text + 2px ochre-deep underline
+  (light) or ochre (dark). Targets 44px or more for primary and secondary, 24px or more elsewhere.
+  Focus ring as every control. Source: concept-lock-2026-10-05-interaction-colour.
 - **SegmentedControl:** mutually exclusive views (e.g. TABLE/MAP/TIMELINE). Single-select, `aria-current`,
   lighter than a keycap.
 - **FilterChip:** multi-select filters. Flat/outline, `aria-pressed`. Not a keycap.

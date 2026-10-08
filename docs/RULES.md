@@ -2,17 +2,14 @@
 One rule per line, then the check that fails when it breaks. UNENFORCED = no check yet. CLAUDE.md is process only.
 - No hardcoded hex or px; tokens only, no arbitrary `text-[Npx]` or `bg-[#]` · audit:tokens, audit:structure
 - One implementation: edit the live component, delete the old one · audit:reuse, audit:parity
-- Ochre means clickable, only: buttons, links, clickable-card edge, focus ring · UNENFORCED (audit:intent, LD2)
-- Non-clickable highlight is ink wash + ink edge + a word or check · UNENFORCED (LD2)
-- Highlight edge is 3:1 against its surface, both themes · UNENFORCED (audit:contrast reads text only)
-- Selected state of SegmentedControl and FilterChip may wear ochre (they are clickable) · UNENFORCED
+- Ochre means clickable, only: buttons, links, clickable-card edge, focus ring, and the selected state of SegmentedControl and FilterChip · UNENFORCED (audit:intent, LD2)
+- Non-clickable highlight is ink wash + ink edge + a word or check; the edge is 3:1 against its surface, both themes · UNENFORCED (LD2; audit:contrast reads text only)
 - No amber · audit:structure
-- Contrast is WCAG AA minimum, AAA-minded, both themes, every state · audit:contrast, audit:axe
-- Dark mode is first-class on every surface · audit:dark
+- Contrast is WCAG AA minimum, AAA-minded, every state; dark mode is first-class on every surface · audit:contrast, audit:axe, audit:dark
 - Focus ring is 3px, ochre-deep in light, ochre in dark · UNENFORCED
 - Figtree 400 and 600 only; Geist Mono only for real code and token names, never labels · audit:fonts
 - Unique is retired; wordmarks are SVG · UNENFORCED (audit:fonts still allows Unique, removal pending)
-- Reading text 18px or more, labels and UI 16px or more · audit:type
+- Body text 20px (Figma Body/Base), small 18, labels and UI 16 · audit:type (floors only; sizes UNENFORCED until LD3)
 - Headings render through ui/Heading, one style per role, no consumer sets size, tracking or leading · audit:type
 - Headings carry no accent word; the Heading `accent` prop is dead · UNENFORCED (removal pending)
 - h1 and h2 are 50 characters or fewer and sit within their measure · audit:frame
@@ -21,8 +18,12 @@ One rule per line, then the check that fails when it breaks. UNENFORCED = no che
 - Nothing leaves its panel; no cut-off shapes; no overlapping pins · audit:contain, audit:clip
 - Raster images render at most half their natural width on a 2x screen · audit:sharp
 - Every figure fits one screen with its caption · UNENFORCED (audit:fit, LD6b)
+- Targets 44px or more for primary and secondary, 24px or more elsewhere · UNENFORCED (LD6)
+- Mobile-first: no horizontal overflow from 320 to 1440 · UNENFORCED (LD6)
+- No `transform: scale` for layout, no fixed widths over 320, no phone and desktop forks of a figure · UNENFORCED (LD5)
+- Figma export is the type and colour expectation; a changed export fails CI until code matches · UNENFORCED (LD3)
 - Keycap is for true actions; at most one primary per view; toggles carry aria-pressed or aria-current · audit:controls
-- Primary button fills ink; links are ink and underlined · UNENFORCED
+- CTA colour is ochre: primary = BELLA keycap in ochre with ink label, one per view; secondary = transparent, 1.5px ink outline (light) or light outline (dark), ink label; text links = ink text + 2px ochre-deep underline (light) or ochre (dark) · UNENFORCED
 - Tag and StatusPill are non-interactive · UNENFORCED
 - Numbers in columns are right-aligned and tabular · audit:structure
 - Copy: no em or en dashes; "AI-enabled", never "AI-augmented" or "AI-assisted" · audit:copy

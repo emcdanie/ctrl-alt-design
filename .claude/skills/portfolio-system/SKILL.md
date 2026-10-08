@@ -19,7 +19,7 @@ This skill is the enforcement summary.
 - Grid gap: `var(--grid-gap)` = `--spacing-8` (32px), everywhere.
 - Touch targets ≥ 44px (`--spacing-touch-target`).
 - Featured panels (`.feature-panel`) are the recorded exception: `--radius-3xl`.
-- Type: Figtree 400 and 600 only, one style per role (`docs/RULES.md`). Reading text 18px or more, labels and UI 16px or more. Geist Mono only for real code and token names.
+- Type: Figtree 400 and 600 only, one style per role (`docs/RULES.md`). Body 20px, small 18, labels and UI 16. Geist Mono only for real code and token names.
 
 ## Working rules
 

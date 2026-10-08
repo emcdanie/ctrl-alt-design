@@ -834,7 +834,7 @@ function Accessibility() {
 function Maturity({ auditCount }: { auditCount: number }) {
   const M: [string, number, string, string, string][] = [
     ["Foundations", 3, "teenage", "Three token tiers, a 4px grid, AAA-minded contrast, zero hard-coded values.", "Motion and layout tokens get the same depth as colour."],
-    ["Documentation & knowledge", 2, "growing", "Every token carries machine-readable metadata, plus DESIGN.md, bella.json and an llms.txt map.", "Usage guidance written for product teams, not just for me."],
+    ["Documentation & knowledge", 2, "growing", "Every token carries machine-readable metadata, plus RULES.md, bella.json and an llms.txt map.", "Usage guidance written for product teams, not just for me."],
     ["Governance & team", 2, "growing", `Governance as code: a ${auditCount}-audit gate that fails the build on drift, run by a team of one.`, "A contribution model and a second maintainer."],
     ["Adoption", 1, "V1", "Powers elleta.design today, with CHIP next. Few consumers, by design.", "A second product on the system, with its own theme."],
     ["Measurement & impact", 1, "V1", "Deliberately no vanity metrics; the working system is the evidence.", "Track time from design to merged component, and drift caught by the gate."],
