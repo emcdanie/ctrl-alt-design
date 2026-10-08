@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/Button";
 import { Tag } from "@/components/ui/Tag";
@@ -12,11 +12,18 @@ interface ResumeModalProps {
   onClose: () => void;
 }
 
-const skills = [
-  "Product Design", "Interaction Design", "UX Strategy", "Data Visualization",
-  "Design Systems", "Token Architecture", "Component Libraries", "Figma (Advanced)",
-  "Prototyping", "Information Architecture", "User Research", "Usability Testing",
-  "Accessibility", "Agile / Scrum", "Multi-role Dashboards", "Cross-functional Collaboration",
+/* Grouped, design systems first (round 7, 7 Oct 2026); content from
+   _private/content/cv-2026-09.md. */
+const skillGroups = [
+  { label: "Design systems", items: ["Token architecture", "Component APIs", "Governance and contribution", "Documentation", "Adoption metrics", "Accessibility (WCAG 2.2 AA)"] },
+  { label: "AI workflows", items: ["Claude / Claude Code", "Figma MCP", "Code Connect", "AI-readable docs"] },
+  { label: "Build", items: ["Figma (advanced)", "Storybook", "React", "TypeScript", "HTML/CSS", "Next.js", "Git"] },
+  { label: "Product", items: ["Research and usability testing", "Information architecture", "Complex B2B flows", "Multi-role dashboards"] },
+];
+
+const projects = [
+  { name: "BELLA", text: "My open design system: token pipeline, React components in Storybook, visual and contract tests, and docs written for people and AI (MCP-readable). Powers elleta.design." },
+  { name: "CHIP", text: "A design-system agent built solo in five days for the Anthropic Claude Code hackathon: it watches for drift, drafts fixes and waits for approval." },
 ];
 
 /* Courses, workshops, conferences, hackathons: these live in the CV
@@ -72,13 +79,12 @@ type CvRole = {
 const roles: CvRole[] = [
   {
     period: "Oct 2025, Present",
-    title: "Product Designer, Design Systems",
+    title: "AI-Enabled Design Systems Engineer",
     company: "Brad Frost Web (Maker Program) · Contract",
     highlights: [
-      "Building a scalable Figma component library aligned with Brad Frost's Atomic Design methodology, contributing to a production-ready design system used across client web interfaces.",
-      "Defining reusable UI components and interaction patterns to support consistent implementation, with direct input into accessibility standards and usage documentation.",
-      "Contributing to design system governance: component ownership criteria, documentation structure, and the framework for deciding when to extend the system versus build feature-specific solutions.",
-      "Working closely with front-end developers to validate feasibility and ensure design decisions.",
+      "Build Claude-powered workflows for prototyping, component audits and system documentation.",
+      "Build a Figma component library aligned with reusable web components and a multi-theme architecture, translating an existing code-based system into production-ready Figma components.",
+      "Shape governance, documentation and design-to-code alignment, applying Atomic Design across HTML, CSS, JavaScript and static-site tooling.",
     ],
   },
   /* elleta.design: the same grouping as ExperienceSection (About lock
@@ -94,33 +100,33 @@ const roles: CvRole[] = [
         title: "Design Systems Specialist",
         company: "a global fashion retailer",
         highlights: [
-          "Owned cross-platform component governance across Web, iOS, and Android, defining, governing, and releasing reusable components across multiple shared Figma libraries, documented in Zeroheight.",
-          "Established AI-enabled design-system workflows with Claude, Figma MCP, and the Desktop Bridge, enabling automated audits, machine-readable component patterns, and scalable documentation.",
-          "Led design-to-code parity initiatives, bridging Figma and production codebases so the system stays true across design and build.",
-          "Ran accessibility and dark-mode audits across the system, and defined metrics for adoption, coverage, efficiency, and quality.",
+          "Owned component governance for the retailer's cross-platform design system across Web, iOS and Android: defined, governed and released components across shared Figma libraries, documented in Zeroheight.",
+          "First to bring AI into the team's design-system work: built workflows with Claude, Figma MCP and the Desktop Bridge for automated audits, machine-readable component patterns and documentation.",
+          "Built the tooling and docs the team needed to adopt Code Connect themselves, so design-to-code parity didn't depend on me.",
+          "Ran accessibility and dark-mode audits; defined metrics for adoption, coverage, efficiency and quality.",
         ],
       },
       {
         period: "Oct 2025, Dec 2025",
-        title: "Product Designer, Data Dashboard Prototype",
+        title: "UX / Product Designer",
         company: "UN Office at Geneva (UNOG)" /* TODO(elleta): exact entry wording is yours; the name is restored per _private/nda-employers.txt (Pass E task 9) */,
         highlights: [
-          "Designed a high-fidelity dashboard prototype supporting operational transparency across multiple UN teams, translating complex organisational workflows into clear data visualisations and interactive analytics interfaces.",
-          "Conducted stakeholder interviews and requirements gathering across technical and non-technical users to define information architecture and layout structure.",
-          "Created modular UI components and scalable layout patterns suited to a high-stakes, multi-role enterprise environment with strict accessibility and usability requirements.",
+          "Designed a high-fidelity operational dashboard prototype across multiple teams, turning complex workflows into clear data visualisation.",
+          "Ran stakeholder interviews with technical and non-technical users; designed modular components and layouts for a scalable, accessible dashboard.",
         ],
       },
     ],
   },
   {
     period: "Jul 2024, Feb 2026",
-    title: "UX/UI Designer, Product & Design Systems",
+    title: "Product & Design Systems Designer",
     company: "a B2B travel platform",
     highlights: [
-      "Led the UX transformation of a complex B2B SaaS travel platform, redesigning the booking foundation across flights, car rentals, finance, admin, and multi-role dashboards.",
-      "Built and implemented the company's first scalable design system from scratch: token architecture, reusable component library, and theme support, with tokens integrated directly into production code.",
-      "Re-architected end-to-end booking verticals including search, filtering, sorting, seat selection, and post-booking management, designing consistent interaction patterns across API and edge-case constraints.",
-      "Delivered high-fidelity prototypes for executive and investor presentations, contributing to funding that accelerated product development and team expansion.",
+      "Built the company's first design system from scratch (tokens, components, themes) and integrated the tokens into production code with engineering; wrote the documentation from day one.",
+      "Led the UX transformation of a legacy platform across booking, admin, finance and multi-role dashboards.",
+      "Re-architected and shipped end-to-end booking for flights and car rental: search, filters, sorting, seat selection, upsells and post-booking, within API and edge-case constraints.",
+      "Ran research with clients and shipped the features they requested.",
+      "Delivered prototypes for executive and investor presentations that supported funding for product and team growth.",
     ],
   },
   {
@@ -128,8 +134,8 @@ const roles: CvRole[] = [
     title: "UX/UI Designer",
     company: "VML",
     highlights: [
-      "Designed mobile-native interfaces and digital products for client-facing applications, from wireframes through high-fidelity prototypes.",
-      "Conducted UX research, benchmarking, and usability evaluations; collaborated cross-functionally with product managers and developers to ensure consistent implementation of user-centred designs.",
+      "Designed mobile-native banking experiences on a client team, from wireframes to high-fidelity prototypes.",
+      "Ran UX research, benchmarking and usability evaluations; worked with product managers and developers on consistent, accessible implementation.",
     ],
   },
   /* Pre-design roles (Elleta, 21 Jul, via Cowork): public on her
@@ -162,7 +168,7 @@ const roles: CvRole[] = [
     title: "Earlier career",
     company: "",
     highlights: [
-      "Partner Business Manager, SELLBYTEL Group (2014 to 2020)",
+      "Project Partner Manager, HP (2014 to 2020)",
       "Junior Fashion Designer, ecological fashion brand internship (2016)",
       "B2B & Consumer Sales Representative, Apple (2011 to 2013)",
     ],
@@ -170,18 +176,26 @@ const roles: CvRole[] = [
 ];
 
 const PROFILE =
-  "Product designer with a focus on design systems, platform architecture, and complex multi-role interfaces. I work at the intersection of system-level thinking and engineering collaboration, building scalable component libraries, defining interaction patterns, and creating governance frameworks that reduce repeated decision-making across teams. My work spans B2B SaaS booking platforms, internal tooling, and data-dense dashboards for high-stakes environments. I’m as comfortable working upstream on system architecture as I am deep in component states and accessibility logic.";
+  "Design engineer who works where design meets code. I build token architectures, component libraries and the governance and documentation that keep them true in production, and I make them readable by AI as well as by people. I use Claude, Figma MCP and Code Connect daily to audit, document and ship faster, and I read the code so design and engineering stay aligned. Background in front-end development and product design for complex B2B SaaS, fintech and institutional platforms.";
 
 /* the one shared address (deep link, constitution: elleta.design/cv) */
 const CV_URL = "https://elleta.design/cv";
 const SHARE_TITLE = "Elleta McDaniel, CV";
-const SHARE_TEXT = "Elleta McDaniel, Product Designer, Design Systems. Curriculum vitae.";
+const SHARE_TEXT = "Elleta McDaniel, Design Engineer, Design Systems. Curriculum vitae.";
 const MAILTO = `mailto:?subject=${encodeURIComponent(SHARE_TITLE)}&body=${encodeURIComponent(`${SHARE_TEXT}\n${CV_URL}`)}`;
 
 const track = (method: "native" | "email" | "copy-link") =>
   (window as unknown as { umami?: { track: (n: string, d?: object) => void } }).umami?.track("cv-share", { method });
 
-export default function ResumeModal({ open, onClose }: ResumeModalProps) {
+/* false on the server and during hydration, true after: the portal target
+   (document.body) must not be touched while rendering on the server, or
+   /cv, which renders with the dialog open, crashes with a 500 (round 6) */
+const noopSubscribe = () => () => {};
+const useMounted = () => useSyncExternalStore(noopSubscribe, () => true, () => false);
+
+export default function ResumeModal({ open: wanted, onClose }: ResumeModalProps) {
+  const mounted = useMounted();
+  const open = wanted && mounted;
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -367,7 +381,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
               Elleta McDaniel
             </h2>
             <p className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-soft)] font-medium mb-2">
-              Product Designer, Design Systems, Data Platforms &amp; Complex UX
+              Design Engineer · Design Systems
             </p>
             <p className="cv-where">
               <span>Barcelona, Spain</span>
@@ -442,16 +456,36 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             </div>
           </div>
 
-          {/* Skills */}
+          {/* Projects */}
           <div className="cv-section">
-            <p className="section-label mb-3">Skills</p>
-            <ul className="cv-skills">
-              {skills.map((k) => (
-                <li key={k}>
-                  <Tag outline>{k}</Tag>
-                </li>
+            <p className="section-label mb-4">Projects</p>
+            <div data-cv-entries className="cv-entries">
+              {projects.map((p) => (
+                <div key={p.name} className="cv-row">
+                  <span className="text-[length:var(--typography-font-size-tag)] font-semibold text-[color:var(--ink-on-paper)] pt-0.5 leading-snug">{p.name}</span>
+                  <p className="text-[length:var(--typography-font-size-base)] text-[color:var(--ink-on-paper-soft)] leading-relaxed">{p.text}</p>
+                </div>
               ))}
-            </ul>
+            </div>
+          </div>
+
+          {/* Skills: four labelled groups, design systems first */}
+          <div className="cv-section">
+            <p className="section-label mb-4">Skills</p>
+            <div data-cv-entries className="cv-entries">
+              {skillGroups.map((g) => (
+                <div key={g.label} className="cv-row">
+                  <span className="text-[length:var(--typography-font-size-tag)] text-[color:var(--ink-on-paper-muted)] font-medium pt-0.5 leading-snug">{g.label}</span>
+                  <ul className="cv-skills">
+                    {g.items.map((k) => (
+                      <li key={k}>
+                        <Tag outline>{k}</Tag>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Credentials */}
