@@ -1,3 +1,4 @@
+"use client";
 import { Fragment, useState, type ReactNode } from "react";
 import { CasePage, Beat } from "@/components/case/CasePage";
 import caseStyles from "@/components/case/Case.module.css";
