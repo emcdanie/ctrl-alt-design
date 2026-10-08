@@ -51,6 +51,7 @@ const ROUTES = {
   "app/accessibility/page.tsx": "section",
   "app/work/page.tsx": "section",
   "app/work/studies/[slug]/page.tsx": "section",
+  "app/cv/page.tsx": "section",
 };
 
 const SPACING_DIRS = ["app", "components/sections"];
