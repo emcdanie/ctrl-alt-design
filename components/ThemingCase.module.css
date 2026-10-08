@@ -385,6 +385,13 @@
 @media (max-width: 59.9375rem) {
   .exFace { justify-content: center; }
 }
+/* ≤ 520px: the exhibit face drops the "Where to" row and the chip row so the
+   listing card is the focus; both rows are secondary chrome that wraps
+   awkwardly at this width */
+@media (max-width: 32.5rem) {
+  .exFace .pvWhere,
+  .exFace .pvChips { display: none; }
+}
 /* from 1024 (I3, Elleta, 6 Oct 2026: the exhibit fits one screen): the
    sheets on the left, the face beside them cropped to its top: the price
    row and booking bar drop out, nothing is scaled; the theme name sits
@@ -966,8 +973,10 @@
 .plain p { margin: 0; max-width: var(--measure-body); font-size: var(--text-body); line-height: 1.5; color: var(--color-ink); }
 .plain code {
   grid-column: 2;
-  min-width: 0;
-  overflow-wrap: anywhere;
+  /* scroll sideways, never wrap mid-token */
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
   font-family: var(--font-code);
   font-size: var(--text-mono);
   font-feature-settings: var(--mono-feature);
