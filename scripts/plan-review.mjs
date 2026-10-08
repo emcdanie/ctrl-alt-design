@@ -1,5 +1,5 @@
 // Second-model review of a plan issue (CLAUDE.md section 12).
-// Run: npm run plan:review -- <issue#>
+// Run: npm run plan:review -- <issue#> [--repo owner/name]
 // Reads the issue, asks Codex (read-only sandbox, uses Elleta's own sign-in) to
 // challenge it, posts the answer as an issue comment. If Codex is missing or out
 // of quota it says so and exits 0: the plan still goes to Elleta.
@@ -9,13 +9,15 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const issue = process.argv[2];
+const ri = process.argv.indexOf("--repo");
+const repoArgs = ri > 0 && process.argv[ri + 1] ? ["-R", process.argv[ri + 1]] : [];
 if (!issue || !/^\d+$/.test(issue)) {
-  console.error("usage: npm run plan:review -- <issue#>");
+  console.error("usage: npm run plan:review -- <issue#> [--repo owner/name]");
   process.exit(1);
 }
 
 const { title, body } = JSON.parse(
-  execFileSync("gh", ["issue", "view", issue, "--json", "title,body"], { encoding: "utf8" }),
+  execFileSync("gh", ["issue", "view", issue, ...repoArgs, "--json", "title,body"], { encoding: "utf8" }),
 );
 
 const prompt = `You're a senior design engineer reviewing a plan for elleta.design (Next.js, BELLA design system, CLAUDE.md rules). Find what's wrong or missing: wrong defaults, accessibility, phones (375), dark mode, scope creep, cheaper alternatives. Max 10 points, most important first. Say 'agree' for decisions you'd keep. Read CLAUDE.md in the working directory for the rules. Do not edit any file.
@@ -42,5 +44,5 @@ if (run.error || run.status !== 0 || !review) {
   process.exit(0);
 }
 
-execFileSync("gh", ["issue", "comment", issue, "--body", `## Second opinion (Codex)\n\n${review}`], { stdio: "inherit" });
+execFileSync("gh", ["issue", "comment", issue, ...repoArgs, "--body", `## Second opinion (Codex)\n\n${review}`], { stdio: "inherit" });
 console.log(`plan:review: posted on #${issue}`);
