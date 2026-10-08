@@ -62,22 +62,22 @@ export default function DoorFlat({ parts, chips }: { parts: DoorPart[]; chips: D
       <ol className={s.flatLegend}>
         {parts.map((p, i) => (
           <li key={p.name}>
-            <button type="button" className={s.flatItem} aria-pressed={on === i} onClick={() => setOn(i)}>
+            <button type="button" className={s.flatItem} aria-label={p.name} aria-pressed={on === i} onClick={() => setOn(i)}>
               <span className={s.legendNum}>{i + 1}</span>
-              <b>{p.name}</b>
-              {on === i ? (
-                <span className={s.flatPills}>
-                  {p.specs.map((t) => (
-                    <span key={t} className={s.flatPill}>
-                      {t}
-                    </span>
-                  ))}
-                </span>
-              ) : null}
             </button>
           </li>
         ))}
       </ol>
+      <div className={s.flatDetail} aria-live="polite">
+        <b>{parts[on].name}</b>
+        <span className={s.flatPills}>
+          {parts[on].specs.map((t) => (
+            <span key={t} className={s.flatPill}>
+              {t}
+            </span>
+          ))}
+        </span>
+      </div>
     </div>
   );
 }
