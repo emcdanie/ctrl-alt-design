@@ -271,12 +271,20 @@
   border-radius: 50%;
   background: var(--color-ink);
   color: var(--color-semantic-background);
+  padding: 0;
   font-family: var(--font-body);
   font-size: var(--typography-font-size-base);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   text-align: right;
+  /* the digit's cap height sits on the circle's centre, not the line box's */
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
 }
+/* Figtree's tabular 1 carries a foot and sits right of its cell: nudged back
+   so its stem is optically centred like 2, 3 and 4 (measured, +1px right).
+   Padding moves the glyph only; a translate would move the circle too. */
+.num[data-digit="1"], .badge[data-digit="1"] { padding-right: 0.1em; }
 .pn { font-family: var(--font-body); font-size: var(--typography-font-size-lg); font-weight: 600; line-height: 1.3; color: var(--color-ink); }
 .pd { font-family: var(--font-body); font-size: var(--typography-font-size-base); line-height: 1.5; color: var(--color-ink-muted); }
 .pd code { font-family: var(--font-code); font-feature-settings: var(--mono-feature); font-size: var(--text-mono); color: var(--color-ink); white-space: nowrap; }
@@ -298,6 +306,8 @@
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   text-align: right;
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
   pointer-events: none;
 }
 

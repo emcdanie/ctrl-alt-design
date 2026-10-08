@@ -275,7 +275,7 @@ export default function SystemBeat() {
         {PINS.map((p) => (
           <li key={p.i}>
             <button type="button" className={styles.pin} data-pin={p.i} aria-pressed={active === p.i} onClick={() => press(p.i)}>
-              <span className={styles.num} data-num>
+              <span className={styles.num} data-num data-digit={shown(p.i)}>
                 {shown(p.i)}
               </span>
               <span className={styles.pn}>{p.name}</span>
@@ -295,7 +295,7 @@ export default function SystemBeat() {
 
       <svg ref={lines} className={styles.leadLines} aria-hidden="true" />
       {PINS.map((p) => (
-        <span key={p.i} className={styles.badge} data-badge={p.i} aria-hidden="true">
+        <span key={p.i} className={styles.badge} data-badge={p.i} data-digit={shown(p.i)} aria-hidden="true">
           {shown(p.i)}
         </span>
       ))}
