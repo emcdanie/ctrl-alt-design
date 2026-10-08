@@ -1161,6 +1161,8 @@ li {
 .skip-link {
   position: absolute;
   left: -9999px;
+  display: inline-block;
+  min-height: var(--spacing-touch-target);
 }
 
 .skip-link:focus {
@@ -2225,10 +2227,11 @@ body:has(main.site-ground-page) {
 }
 
 .site-footer__link--small {
-  /* inline in the small print: the WCAG 2.5.8 inline exception. Inline,
-     not inline-flex, so the space before an arrow survives */
+  /* inline in the small print so text flow is unaffected; padding-block on
+     an inline element extends the tap target without shifting surrounding
+     lines (WCAG 2.5.5 AAA: 44px; min-height has no effect on inline) */
   display: inline;
-  min-height: var(--spacing-6);
+  padding-block: calc((var(--spacing-touch-target) - 1em) / 2);
   font-size: inherit;
   color: inherit;
   text-decoration: underline;

@@ -25,7 +25,12 @@
  *    is the smallest rect in the same drawing that holds the text's
  *    first letter, measured to the inside of its stroke with 0.25px of
  *    slack: a label never touches or crosses its frame.
- * 4. The receipt: theme, width, route, element, measured, expected.
+ * 4. Focus rings unclipped (R-bugs item 4, 8 Oct 2026): every horizontal
+ *    scroll container that holds interactive children must have
+ *    padding-block >= ring-focus-width + ring-focus-offset so the 3px
+ *    ring + 3px offset is not swallowed. overflow-x: auto forces
+ *    overflow-y to auto (CSS spec), clipping the outline.
+ * 5. The receipt: theme, width, route, element, measured, expected.
  *
  * Browser audit: reads AUDIT_URL like the others. */
 import { readdirSync } from "node:fs";
@@ -249,6 +254,35 @@ function check() {
        (A7) sat 0.72px into the stroke at 1440, so 1px let it pass */
     if (over > 0.25) out.push([`svg text "${t.textContent.trim().slice(0, 32)}"`, `${Math.round(over)}px past its frame`, "every label inside the shape it sits in"]);
   }
+
+  /* 4. Focus rings unclipped: horizontal scroll containers that hold
+     interactive children need padding-block >= ring width + offset. */
+  const cs = getComputedStyle(document.documentElement);
+  const ringNeed = parseFloat(cs.getPropertyValue("--ring-focus-width") || "3") +
+                   parseFloat(cs.getPropertyValue("--ring-focus-offset") || "3");
+  const INTERACTIVE = "a[href], button, [tabindex]";
+  const seenScroller = new Set();
+  for (const el of document.querySelectorAll(INTERACTIVE)) {
+    if (!shown(el)) continue;
+    for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
+      if (seenScroller.has(a)) break;
+      const ac = getComputedStyle(a);
+      const scrollsX = ac.overflowX === "auto" || ac.overflowX === "scroll";
+      if (!scrollsX) continue;
+      seenScroller.add(a);
+      const padTop = parseFloat(ac.paddingTop);
+      const padBot = parseFloat(ac.paddingBottom);
+      if (padTop < ringNeed || padBot < ringNeed) {
+        out.push([
+          name(a),
+          `padding-block: ${Math.round(padTop)}px / ${Math.round(padBot)}px`,
+          `>= ${ringNeed}px (ring ${ringNeed / 2}px + offset ${ringNeed / 2}px)`,
+        ]);
+      }
+      break;
+    }
+  }
+
   return out;
 }
 

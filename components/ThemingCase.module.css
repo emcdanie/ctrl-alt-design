@@ -486,7 +486,11 @@
   height: auto;
   margin-inline: calc(-1 * var(--spacing-4));
   padding-inline: var(--spacing-4);
+  /* overflow-x: auto clips the block axis too (CSS spec: visible becomes auto);
+     pad-block gives the 3px ring + 3px offset room; negative margin restores flow */
   overflow-x: auto;
+  padding-block: calc(var(--ring-focus-width) + var(--ring-focus-offset));
+  margin-block: calc(-1 * (var(--ring-focus-width) + var(--ring-focus-offset)));
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scroll-padding-inline: var(--spacing-4);
@@ -1381,7 +1385,11 @@
     order: 2;
     flex-wrap: nowrap;
     overflow-x: auto;
-    margin-top: var(--spacing-3);
+    scrollbar-width: none;
+    /* same ring-clip fix as pvChips[tabindex]: pad-block + negative margin */
+    padding-block: calc(var(--ring-focus-width) + var(--ring-focus-offset));
+    margin-block-start: calc(var(--spacing-3) - var(--ring-focus-width) - var(--ring-focus-offset));
+    margin-block-end: calc(-1 * (var(--ring-focus-width) + var(--ring-focus-offset)));
   }
   .th,
   .play { flex: none; }
