@@ -83,20 +83,6 @@
   margin: var(--space-stack-md) 0 0;
 }
 
-/* the accessibility line under the system links (job 34, findability):
-   the cite's quiet type, the link inline */
-.a11y {
-  max-width: var(--measure-body);
-  margin: var(--space-stack-sm) 0 0;
-  font-family: var(--font-body);
-  font-size: var(--typography-font-size-base);
-  color: var(--color-ink-muted);
-}
-
-.keep {
-  white-space: nowrap;
-}
-
 /* the proof row (H4, 6 Oct 2026, the 4 Oct map): three ProofCards,
    equal heights, 24 apart; three columns from 900px, one below */
 .proof {
@@ -195,7 +181,7 @@
      short, so the whole figure (stage, plates, caption) fits one screen
      under the nav (I2, 6 Oct 2026). --door-chrome is what the figure
      adds round the plates: the stage padding, the gap and the caption. */
-  --door-chrome: var(--spacing-20);
+  --door-chrome: calc(var(--spacing-20) * 3);
   --u: min(100cqw / 993, (100svh - var(--header-height) - var(--door-chrome)) / 1040);
   position: relative;
   width: calc(993 * var(--u));
@@ -264,14 +250,6 @@
   font-size: max(1rem, calc(22 * var(--u)));
   font-weight: 500;
   line-height: 1.3;
-}
-
-/* on phones the plate is too small for both: the title alone (Elleta,
-   6 Oct 2026, pick 4b) */
-@media (max-width: 639.98px) {
-  .plate[data-n="4"] > :not(.plateTitle) {
-    display: none;
-  }
 }
 
 /* the description, tags and link as shapes, in the card's proportions */
@@ -519,30 +497,12 @@
   color: var(--color-semantic-text-body);
 }
 
-/* phone: the plates fill the column, the legend follows as a list */
-@container (max-width: 39.99rem) {
-  .explode {
-    --u: calc(100cqw / 640);
-  }
-
-  .leader {
-    display: none;
-  }
-
-  .legend {
-    position: static;
-    display: grid;
-    gap: var(--spacing-2);
-    margin-top: var(--spacing-5);
-  }
-
-  .legendRow {
-    position: static;
-    width: auto;
-    padding: var(--spacing-3) var(--spacing-4);
-    gap: var(--spacing-3);
-    translate: none;
-  }
+/* phones (U2): the exploded card gives way to the flat one (DoorFlat) */
+.flat { display: none; }
+@media (max-width: 47.99rem) {
+  .doorFrame { display: none; }
+  .flat { --u: 0.9px; /* the plate classes' unit, for the pieces the flat card shares with them */ display: grid; gap: var(--spacing-4); }
+  .doorStage { padding-inline: var(--spacing-4); }
 }
 
 /* motion (Figma annotation): starts as the assembled card; once in view
@@ -579,15 +539,95 @@
   }
 }
 
-/* phones (job O7, 6 Oct 2026): the plates do not rise from the bottom of
-   the stack, which left a screen of empty grid above them before the
-   reveal; they sit in their slots and the legend fades in */
-@media (max-width: 639.98px) and (prefers-reduced-motion: no-preference) {
-  :global(.js-reveal) .explode:not(:global(.is-revealed)) .plate {
-    translate: none;
-  }
-
-  .explode:global(.is-revealed) .plate {
-    animation: none;
-  }
+/* ── the flat card on phones (U2) ── */
+.flatFace {
+  position: relative;
+  display: grid;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+  box-shadow: var(--shadow-card);
+}
+.flatPhoto {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+.flatPhoto { aspect-ratio: 16 / 9; }
+.flatPhoto img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.flatBody { display: grid; gap: var(--spacing-1); padding-inline: var(--spacing-1); }
+.flatTitle { font-size: var(--font-card-title); font-weight: 500; line-height: 1.3; letter-spacing: -0.015em; }
+.flatChips { display: flex; flex-wrap: wrap; gap: var(--spacing-1) var(--spacing-2); padding-inline: var(--spacing-1); }
+/* the numbered markers sit on the card's right edge, centred on their part,
+   with a short dashed leader into the card's own padding (never over content) */
+.flatPart { position: relative; }
+.mk {
+  position: absolute;
+  top: 50%;
+  right: calc(var(--spacing-6) * -1 - 1px);
+  display: flex;
+  align-items: center;
+  translate: 0 -50%;
+}
+.mk[data-edge] { top: var(--spacing-5); right: calc(var(--spacing-6) / -2); translate: 0 -50%; }
+.mk b {
+  display: grid;
+  place-items: center;
+  width: var(--spacing-6);
+  height: var(--spacing-6);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-text-primary);
+  color: var(--color-semantic-surface);
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  font-weight: 400;
+}
+.mkLine { display: block; width: var(--spacing-3); border-top: 1px dashed var(--color-semantic-text-primary); }
+/* the lit part: an ochre wash and edge, the rest stay as they are */
+.flatFace[data-on="1"] { border-color: var(--color-semantic-accent); }
+.flatFace[data-on="2"] [data-part="2"],
+.flatFace[data-on="3"] [data-part="3"],
+.flatFace[data-on="4"] [data-part="4"] {
+  outline: 2px solid var(--color-semantic-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}
+.flatFace[data-on="3"] [data-part="3"],
+.flatFace[data-on="4"] [data-part="4"] {
+  background: color-mix(in oklab, var(--color-semantic-accent) 16%, var(--color-semantic-surface));
+}
+.flatLegend { display: grid; gap: var(--spacing-2); margin: 0; padding: 0; list-style: none; }
+.flatItem {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2) var(--spacing-3);
+  width: 100%;
+  min-height: var(--spacing-touch-target);
+  padding: var(--spacing-1) var(--spacing-3);
+  border: 1px solid var(--color-semantic-border);
+  border-radius: var(--radius-card);
+  background: var(--color-semantic-surface);
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.flatItem[aria-pressed="true"] {
+  padding-block: var(--spacing-2);
+  border-color: var(--color-semantic-accent);
+  background: color-mix(in oklab, var(--color-semantic-accent) 16%, var(--color-semantic-surface));
+}
+.flatItem b { font-weight: 500; font-size: var(--typography-font-size-base); }
+.flatPills { display: flex; flex-wrap: wrap; flex-basis: 100%; gap: var(--spacing-2); }
+.flatPill {
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-semantic-surface-inset);
+  font-family: var(--font-code);
+  font-size: var(--text-mono);
+  line-height: 1.4;
 }
