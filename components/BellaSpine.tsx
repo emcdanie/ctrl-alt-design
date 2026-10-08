@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
+import { Icon } from "@/components/ui/Icon";
 import Section from "@/components/layout/Section";
 import SectionHeader from "@/components/layout/SectionHeader";
 import cs from "@/components/case/Case.module.css";
@@ -941,7 +942,7 @@ function Maturity({ auditCount }: { auditCount: number }) {
 /* ══════════════════════════════ WHAT I TRIED ══════════════════════════════ */
 
 /* three BELLA Cards in a row, stacked on phones; the chosen one wears the
-   selected treatment (an ochre wash and an ochre label), the other two stay
+   selected treatment (an ink wash, ink edge and an ink tag with a check), the other two stay
    at rest: highlight, never dim (W, Elleta, 7 Oct 2026). Local to this page. */
 const TRIED: { lead: string; rest: string; chosen?: boolean }[] = [
   { lead: "Docs only:", rest: "the agent might read them." },
@@ -955,7 +956,7 @@ function Tried() {
       {TRIED.map((t) => (
         <li key={t.lead}>
           <Card className={s.triedCard} innerClassName={t.chosen ? `${s.triedIn} ${s.triedChosen}` : s.triedIn}>
-            {t.chosen ? <span className={`${s.chosenTag} text-code`}>chosen</span> : null}
+            {t.chosen ? <span className={`${s.chosenTag} text-code`}><Icon name="Check" size="sm" />Chosen</span> : null}
             <p>
               <b>{t.lead}</b> {t.rest}
             </p>

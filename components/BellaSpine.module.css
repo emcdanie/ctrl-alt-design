@@ -601,7 +601,7 @@
 }
 .pipe { container-type: inline-size; }
 .tokEnd { flex-direction: row-reverse; translate: calc(-100% + 14px) 0; }
-.tok i { width: 14px; height: 14px; border: 1px solid var(--ink); border-radius: 50%; background: var(--color-brand-ochre); }
+.tok i { width: 14px; height: 14px; border: 1px solid var(--ink); border-radius: 50%; background: var(--ink); }
 @media (max-width: 47.5rem) {
   .pipe { grid-template-columns: 1fr; gap: var(--spacing-2); padding-bottom: 0; }
   .pipeLine, .tok { display: none; }
@@ -702,7 +702,7 @@
 }
 .dOk { background: var(--color-chip-c3); }
 .dNo { background: var(--bad); }
-.dDot { width: 36px; height: 36px; border-radius: 50%; background: var(--color-brand-ochre); transition: transform 0.7s ease; }
+.dDot { width: 36px; height: 36px; border-radius: 50%; background: var(--ink); transition: transform 0.7s ease; }
 .dHit { position: absolute; width: 44px; height: 44px; border: 1px dashed var(--ink); border-radius: var(--radius-md); }
 .dSr {
   padding: 3px var(--spacing-2);
@@ -816,15 +816,18 @@
 }
 .triedIn b { font-weight: 500; }
 .triedChosen {
-  border: 1px solid var(--color-semantic-accent);
-  background: color-mix(in oklab, var(--color-semantic-accent) 16%, var(--color-semantic-surface-card));
+  border: 1px solid var(--ink);
+  background: color-mix(in oklab, var(--ink) 8%, var(--color-semantic-surface-card));
 }
 .chosenTag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
   align-self: flex-start;
   padding: var(--spacing-1) var(--spacing-3);
   border-radius: var(--radius-pill);
-  background: var(--color-semantic-accent);
-  color: var(--color-semantic-text-on-accent);
+  background: var(--ink);
+  color: var(--color-page);
 }
 
 /* ── What got in the way: three short lines (W) ── */
