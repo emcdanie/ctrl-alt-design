@@ -1,16 +1,16 @@
 {
   "bella": {
     "version": "0.3.0",
-    "commit": "b27bd8edae7a06f14c49af55d3b26a4e81824b86",
-    "describe": "v0.3.0-bella-168-gb27bd8e",
+    "commit": "571fc0e52f7a6fbaf408f07991ffb33133e6e99c",
+    "describe": "v0.3.0-bella-169-g571fc0e",
     "syncedFrom": "https://github.com/emcdanie/bella"
   },
   "files": {
-    "lib/bella/bella.css": "f4e83abfdfcefecfc1e26c872a5ef249da88c5a556a739c977d217d0a8a39bd1",
+    "lib/bella/bella.css": "45a90c6fd75a8182f9b01d7c510c167d2b1cea1620a83d7c0789c1b4bcf67efd",
     "components/bella/Card/Card.tsx": "922523de152f8e68536a71c9e40e2130c2b67eb625c30a1ecad7122a9b82f761",
     "components/bella/Card/Card.module.css": "47f5b734fe25bc72fe449bcb725e0865d5edeee318093694eb9daaab0fd8e41a",
     "components/bella/shared/Trace.module.css": "6988e4a4137d1fbebeaee4cbb7a241c0aacc0ec97f2332f63b5e6dcbadc3b7fb",
-    "tokens/bella.json": "52bf575e07343c4d031c7bc34242d772a83941f427180fd5945d4d39770e7367",
+    "tokens/bella.json": "f18b84b07b07a06ecd04d4256b2c193b8899b80d416bf0ddc13fe73993e9a9f1",
     "components/brand/pattern.ts": "61d68eecd7f816441fa8381a57bdf56e80910597b5e2b106017c67d766bfca50",
     "components/brand/pattern-core.mjs": "f0dd67f262911f9b793ab89bfee3d6e5db5f83673d8462f8f50820a72e62cdac",
     "components/brand/pattern-core.d.mts": "883df6106de67e9ecf2ee26ad9fd55814a1c657e5d529365c363c1e02770a084",
