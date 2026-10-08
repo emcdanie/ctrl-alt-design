@@ -107,7 +107,7 @@ const DRIFT: CaseRowData = {
     path: "drift / buttons · audit",
     mode: "before → after",
     caption: "Recreated from my audit. No client UI.",
-    picture: { name: "drift", phone: { x: 84, y: 225, w: 672, h: 490, pad: 22, keepLight: { rects: [[90, 283, 628, 420, 14]], circles: [[700, 286, 52]] } }, width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
+    picture: { name: "drift", phone: { x: 673, y: 24, w: 622, h: 810, pad: 20 }, width: 1458, height: 1020, alt: "Before: a drifted Stays in Lisbon list with two different Book buttons, marked with a red cross. After: the Harbour loft card on BELLA, marked with a green tick." },
   },
 };
 const FEDERATED: CaseRowData = {
