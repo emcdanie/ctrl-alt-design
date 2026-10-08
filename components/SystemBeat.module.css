@@ -391,7 +391,7 @@
      with margin-top -10px, the planes at the prototype's multipliers. Only
      the tokens plane (--k1) sits lower than the prototype's 1.55, so its six
      chips are not under the card plate. No height fit: the page scrolls. */
-  .stage { margin-top: -0.625rem; margin-bottom: 2.75rem; } /* the tokens plane hangs below the 450px stage */
+  .stage { margin-top: calc(-1 * (var(--spacing-2) + 2px)); margin-bottom: var(--spacing-touch-target); } /* the tokens plane hangs below the 450px stage */
   .world { --sh: 625; --g: 108; --k1: 2.3; --u: min(0.045rem, 100cqw / 420); }
   /* art text keeps the smallest size audit:clip allows once the planes' tilt
      is counted (12px on screen); the prototype's is smaller still */
