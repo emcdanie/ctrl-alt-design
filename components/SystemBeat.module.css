@@ -386,20 +386,31 @@
       "ctl"
       "cap";
   }
-  /* the prototype's phone spacing (v2): gap 108; the tokens plane sits a
-     little lower so all six chips show below the card plate. No height fit
-     here, the figure keeps its size and the page scrolls */
-  .world { --sh: 730; --lift: 20; --g: 108; --k1: 2.4; --u: min(0.0625rem, 100cqw / 420); }
-  .chip { font-size: 1rem; padding: calc(2 * var(--u)) calc(8 * var(--u)); gap: calc(6 * var(--u)); }
+  /* the prototype's phone block, ported exactly (NOW v4): one unit is 0.72px
+     (its scale .72, without transform: scale), gap 108 units, a stage of 450px
+     with margin-top -10px, the planes at the prototype's multipliers. Only
+     the tokens plane (--k1) sits lower than the prototype's 1.55, so its six
+     chips are not under the card plate. No height fit: the page scrolls. */
+  .stage { margin-top: -0.625rem; margin-bottom: 2.75rem; } /* the tokens plane hangs below the 450px stage */
+  .world { --sh: 625; --g: 108; --k1: 2.3; --u: min(0.045rem, 100cqw / 420); }
+  /* art text keeps the smallest size audit:clip allows once the planes' tilt
+     is counted (12px on screen); the prototype's is smaller still */
+  .chip { font-size: 0.9375rem; line-height: 1.1; padding: calc(1 * var(--u)) calc(8 * var(--u)); gap: calc(6 * var(--u)); }
+  .eb, .tag { font-size: 0.9375rem; }
+  .tt { font-size: 1rem; }
+  /* the words plate is taller on phones, so its larger text fits (the plane
+     is a stack of separate layers; the picture's slot above it is empty) */
+  .plate { top: calc(150 * var(--u)); }
+  .wd { top: calc(162 * var(--u)); }
   .tk { gap: calc(6 * var(--u)); }
   .p1 { padding: calc(14 * var(--u)); }
   .leadLines { display: none; }
   .badge { display: grid; }
   .pins { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-1); padding: 0; }
   .pd { display: none; }
-  .pin { grid-template-columns: 2rem 1fr; padding: var(--spacing-1) var(--spacing-2); }
-  .num { grid-row: 1; }
-  .pn { align-self: center; font-size: var(--typography-font-size-base); }
+  .pin { grid-template-columns: 1.75rem 1fr; gap: var(--spacing-1) var(--spacing-2); padding: var(--spacing-1); }
+  .num { grid-row: 1; width: 1.75rem; height: 1.75rem; }
+  .pn { align-self: center; font-size: var(--typography-font-size-base); white-space: nowrap; }
 }
 
 @media (prefers-reduced-motion: reduce) {
