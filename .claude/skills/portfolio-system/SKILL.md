@@ -5,8 +5,8 @@ description: Layout & frame contract for elleta.design — conform every section
 
 # Portfolio layout system
 
-Read `DESIGN.md` at the repo root before styling anything. It is the source of
-truth for every frame on elleta.design. This skill is the enforcement summary.
+Read `docs/RULES.md` before styling anything. It is the one rule source for elleta.design.
+This skill is the enforcement summary.
 
 ## Hard numbers
 
@@ -19,11 +19,11 @@ truth for every frame on elleta.design. This skill is the enforcement summary.
 - Grid gap: `var(--grid-gap)` = `--spacing-8` (32px), everywhere.
 - Touch targets ≥ 44px (`--spacing-touch-target`).
 - Featured panels (`.feature-panel`) are the recorded exception: `--radius-3xl`.
-- Type ramp (§5): 13/14/16/18/20/24/32/40/56 px only; body ≥16px. Faces (TYPE LOCK, per DESIGN.md §5): exactly two. Unique = hero/bubble display surfaces ONLY (bubble-heading title, home hero headline, keycap brand lockup); Geist = everything else including all section heads, eyebrows (caps + `--tracking-eyebrow`), and meta. No mono face exists; `--font-mono` is a legacy alias for Geist. Enforced by `audit:fonts` + `audit:tokens` in the gate. No ad-hoc clamp() — use the fluid tokens defined in globals (`--font-hero`, `--font-section-title`, `--font-subsection`, `--font-card-title`, `--font-body-size`). Font stacks are declared once, on `body` in `globals.css` (next/font vars only exist there); the `@theme inline` block just maps utilities onto them.
+- Type: Figtree 400 and 600 only, one style per role (`docs/RULES.md`). Body 20px, small 18, labels and UI 16. Geist Mono only for real code and token names.
 
 ## Working rules
 
 1. Never write a raw px or hex where a token exists (BELLA `lib/bella/bella.css` + `app/globals.css` `@theme`).
-2. If a value is genuinely missing, add a named token and record it in `DESIGN.md` BEFORE using it.
+2. If a value is genuinely missing, add a named token in the `:root` BEFORE using it.
 3. New sections: `Section` (`.section` + `.container`). No custom vertical padding.
-4. After visual changes, re-check the frames against `DESIGN.md` (radius, padding, border+shadow tier, gap, section rhythm) at 1440/768/390.
+4. After visual changes, re-check the frames against `docs/RULES.md` (radius, padding, border+shadow tier, gap, section rhythm) at 1440/768/390.

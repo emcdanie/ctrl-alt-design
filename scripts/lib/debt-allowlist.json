@@ -4,11 +4,6 @@
   "staleAfterDays": 180,
   "entries": [
     {
-      "id": "refs:docs/CODE-AUDIT.md",
-      "reason": "A DATED historical audit of a codebase state that no longer exists. Its citations (Carousel, CaseStudyHero, WorkSidebar, data/caseStudies.ts and others) were accurate when written and describe components deleted in the case migration. Repointing them would falsify the record; deleting the file would lose it. The document is history, not instruction.",
-      "date": "2026-07-27"
-    },
-    {
       "id": "refs:docs/briefs/system-annotation-audit.md",
       "reason": "A dated brief describing the annotation rebuild. It cites components/DesignSystemSpecimens.tsx, retired 27 Jul when /design-system became an explorable explanation. The brief is a record of what was decided then; repointing it would falsify the record.",
       "date": "2026-07-27"

@@ -43,6 +43,7 @@ const walk = (dir, exts, out = []) => {
   for (const e of readdirSync(dir)) {
     if (e === "node_modules" || e === ".next" || e.startsWith(".")) continue;
     const p = join(dir, e);
+    if (p === join("docs", "archive")) continue; // dated records kept by git history, not instruction (Elleta, 8 Oct 2026)
     if (p === join("docs", "reference", "inbox")) continue; // gitignored relay working notes, not docs (Elleta, 4 Oct 2026)
     if (statSync(p).isDirectory()) walk(p, exts, out);
     else if (exts.includes(extname(p))) out.push(p);

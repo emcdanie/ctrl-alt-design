@@ -155,7 +155,7 @@ body {
   --section-field-opacity: 0.04;
   /* the dot grid behind every page opening (Part V, Elleta, 21 Sep
      2026: a quiet Figma-style frame now the hero art is gone). Recorded
-     addition in DESIGN.md. Faint enough to leave text contrast alone. */
+     addition in RULES.md. Faint enough to leave text contrast alone. */
   --border-faint: var(--color-semantic-border);
   --radius-card: 1rem;
   --radius-pill: 999px;
@@ -313,7 +313,7 @@ body {
   /* the title measures: ONE token for every page h1 and one for the
      Home hero, so a title can never run full width. Part Q (21 Sep)
      widened them from 8.5em, which made every hero look timid. em, like
-     every heading measure (DESIGN.md) */
+     every heading measure (RULES.md) */
   --measure-title: 15em;
   --measure-hero: 11em; /* 11em (hero break, 23 Sep 2026; was 13em): "AI-enabled design systems." no longer fits one line at 76px, so the h1 reads in three lines: AI-enabled / design systems. / Built to stop drift. */
   /* the hero lead (Part Q): bigger, 1.5rem under the h1, 34em max */
@@ -557,15 +557,15 @@ body {
   }
 }
 
-/* ─── Fluid typography scale — DESIGN.md §5 ─────────────────────
+/* ─── Fluid typography scale — RULES.md §5 ─────────────────────
    Ramp: 13/14/16/18/20/24/32/40/56. One fluid pair per step, endpoints
    on the ramp, defined ONCE here. No other clamp() in components. */
 
-/* ─── Case-cover + atom tokens (DESIGN.md: recorded additions) ────
+/* ─── Case-cover + atom tokens (RULES.md: recorded additions) ────
    Cover plates for the label-style case cards and the atom hero
-   nucleus. Text pairs are AAA on their plates (verified in DESIGN.md). */
+   nucleus. Text pairs are AAA on their plates (verified in RULES.md). */
 
-/* ─── Bubble-hero + keycap-logo tokens (DESIGN.md: recorded additions) ──
+/* ─── Bubble-hero + keycap-logo tokens (RULES.md: recorded additions) ──
    From the vetted _proto/_hero.html (2026-07-16). Per-case bubble
    gradients (hi/lo), a deep readable accent per case (AA+ on the white
    reveal card), the iris hub, and the keycap logo plates. The reveal
@@ -1083,7 +1083,7 @@ body {
 /* Navy dark mode — surfaces flip via BELLA [data-theme="dark"]; every
    app-level surface/ink/border alias flips here (single place, no
    per-component hex). Components must consume THESE tokens, never raw
-   grounds/inks — see DESIGN.md "Global theming contract". */
+   grounds/inks — see RULES.md "Global theming contract". */
 [data-theme="dark"] body {
   --color-ink: var(--color-dark-ink);
   --color-ink-soft: var(--color-dark-ink);
@@ -1293,7 +1293,7 @@ body {
 .glass-card {
   background: linear-gradient(180deg, var(--color-glass-strong) 0%, var(--color-glass) 100%);
   border: 1px solid var(--color-alpha-glass-72);
-  /* DESIGN.md: one card radius everywhere */
+  /* RULES.md: one card radius everywhere */
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-layered);
   backdrop-filter: blur(var(--bella-blur-lg));
@@ -2544,7 +2544,7 @@ body:has(main.site-ground-page) {
   backdrop-filter: blur(var(--bella-blur-sm));
   -webkit-backdrop-filter: blur(var(--bella-blur-sm));
   border: 1px solid var(--color-alpha-glass-55);
-  /* DESIGN.md: one card radius everywhere */
+  /* RULES.md: one card radius everywhere */
   border-radius: var(--radius-2xl);
   box-shadow: 0 1px 4px var(--color-alpha-shadow-warm-03), 0 4px 16px var(--color-alpha-shadow-warm-04),
     inset 0 1px 0 var(--color-semantic-border-glass-top);
@@ -3525,7 +3525,7 @@ textarea:focus-visible {
   }
 
   .cs-shell__hero-frame {
-    /* DESIGN.md: one card radius everywhere */
+    /* RULES.md: one card radius everywhere */
     border-radius: var(--radius-2xl);
   }
 }
@@ -3693,7 +3693,7 @@ textarea:focus-visible {
   aspect-ratio: 16 / 9;
   width: 100%;
   overflow: hidden;
-  /* DESIGN.md: one card radius everywhere */
+  /* RULES.md: one card radius everywhere */
   border-radius: var(--radius-2xl);
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: #110f12;
@@ -3837,7 +3837,7 @@ textarea:focus-visible {
     display: none;
   }
 
-  /* Same radius as every other card frame (DESIGN.md) */
+  /* Same radius as every other card frame (RULES.md) */
   .cs-shell__hero-frame {
     border-radius: var(--radius-2xl);
   }
@@ -5079,7 +5079,7 @@ textarea:focus-visible {
 
 /* the corner target hugs the BOTTOM-right corner: the corner leader
    takes a short low path and never routes up past META (the
-   leaders-do-not-cross rule, DESIGN.md section 5 addendum) */
+   leaders-do-not-cross rule, RULES.md section 5 addendum) */
 .csp-corner {
   position: absolute;
   bottom: 0;
@@ -6146,7 +6146,7 @@ section[aria-labelledby="cs2-b2"] .beat-body .cs2-body {
 
 /* ── beat 04, the takeaway band (pre-merge spec, 23 Jul 2026): the
    About statement-card treatment on the case page, a DELIBERATE
-   recorded card exception (DESIGN.md; audit:visual allows thesis
+   recorded card exception (RULES.md; audit:visual allows thesis
    cards on case routes only inside this band). Intro above, three
    equal cards, the quiet no-numbers foot below. ── */
 .cs2-takeaway {

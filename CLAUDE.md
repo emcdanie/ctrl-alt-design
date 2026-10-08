@@ -2,8 +2,10 @@
 
 This is the persistent brain for the `ctrl-alt-design` repo (Next.js + Tailwind, deployed to Vercel).
 Every session, every ticket, every agent obeys this file. It is the constitution, not notes.
-Pairs with `docs/portfolio-conformance-spec.md` (visual contract), `docs/portfolio-ia-spec.md`
-(navigation/IA), and `docs/harness-and-baseline.md` (how to make changes safely).
+**`docs/RULES.md` is the one rule source** (one line per rule plus the check that enforces it; Elleta,
+8 Oct 2026). Where this file and RULES.md disagree, RULES.md wins. Pairs with
+`docs/harness-and-baseline.md` (how to make changes safely). The older DESIGN.md, conformance spec,
+visual-language, motion and code-audit docs are in `docs/archive/` (history, not instruction).
 
 If anything below conflicts with what a prompt asks, STOP and surface the conflict — do not silently
 override the constitution.
@@ -24,8 +26,8 @@ override the constitution.
 ## 1. Tokens (never hardcode)
 - **No hardcoded hex or px in components.** Reference tokens only. No arbitrary Tailwind `text-[Npx]` /
   `bg-[#...]`. Spacing and type come from the scale, not ad-hoc values.
-- **Reading text 18px or more; labels and UI 16px or more; nothing smaller** (Elleta, 4 Oct 2026,
-  site v3; supersedes "Body min 16px").
+- **Body text 20px (Body/Base), small 18, labels and UI 16; nothing smaller** (Elleta, 4 Oct 2026,
+  site v3, sizes from Figma 8 Oct; supersedes "Body min 16px").
 - **Colour B (Elleta, 4 Oct 2026, site v3; supersedes the 22 Sep Geist refresh palette: ink
   `#121212`, pure white ground, the grey panel set).** BELLA's colour B tokens (`lib/bella/bella.css`,
   synced from BELLA, never restated as hex in the site). Light: background `#f6f7f9`, surface `#fff`,
@@ -34,9 +36,12 @@ override the constitution.
   surface `#171a22`, text-body `#eceef3`, and the rest from BELLA's dark theme. Chip fills
   chip-1/2/3, chip-text, danger-subtle/text and success-subtle/text come from BELLA too.
   **Colour lives in fills only**, plus focus and status. Ochre is the one accent fill
-  (text-primary on it; surface-glass-accent is its 15% tint, layered over `surface` wherever it must
+  and means CLICKABLE only (Elleta, 8 Oct 2026): buttons, links, a clickable card's hover and focus
+  edge, the focus ring. Never on a tag, label, "chosen", key point, stat bar, annotation or
+  decoration. A non-clickable highlight is an ink wash, an ink edge and a word or check icon.
+  (text-primary on ochre; surface-glass-accent is its 15% tint, layered over `surface` wherever it must
   be opaque); the focus ring is 3px ochre-deep `#b97a14` in light, ochre in dark, 3px offset, focus
-  only; links are ink + underline; the primary button fills ink. Iris and periwinkle stay retired.
+  only; links are ink text with a 2px ochre-deep underline (ochre in dark); the primary button is ochre with an ink label. Iris and periwinkle stay retired.
   **No amber anywhere.**
 - **Pictures only (Elleta, 4 Oct 2026, site v3).** Inside case figures, and nowhere in site
   chrome: the Case UI kit (product theme, Default blue `#4A5BD4`, Federated `#121212`) and the
@@ -115,6 +120,9 @@ override the constitution.
   commit that rebuilds it. Until then the shared tokens carry the older pages.
 - Unique never renders below 24px (the gate enforces this; the ELLETA wordmark is 44/36px), and never in
   body, UI, card titles, eyebrows, meta, nav links, buttons, or chips.
+- **Unique is retired (Elleta, 8 Oct 2026):** the wordmarks are SVG; the font, its tokens and the
+  `audit:fonts` / `audit:type` allowances go in a follow-up PR (RULES.md marks it UNENFORCED).
+  Until then the lines below about Unique describe the code, not the intent.
 - **Unique never renders inside a Card (Elleta, 2026-07-21, card-voice).** Cards use the text
   face only (Figtree since site v3); card statements use the shared `.card-statement` recipe, card
   titles the shared `.heading-item` (Heading/Card). Enforced by the Unique-in-card check in
@@ -148,7 +156,7 @@ override the constitution.
 ## 4. Color & dark mode
 - **Colour roles (Elleta, 4 Oct 2026, site v3; supersedes the 17 Jul iris affordance rule).**
   Text is text-primary (headings, labels), text-body (reading text) or text-secondary (meta, the
-  quiet half). Ochre is a fill (accent bars, highlights, the active row), never text. Links are
+  quiet half). Ochre is a fill for clickable things only (see s1), never text; highlights are ink. Links are
   ink + underline; status uses the danger/success subtle fills with their text tokens; eyebrows are
   text-secondary. Case identity colours live inside the case pictures, not on site chrome. The live
   AA sweep in `audit:contrast` enforces contrast in both themes.
@@ -156,15 +164,15 @@ override the constitution.
 - Dark mode is a first-class contract on EVERY surface, not an afterthought — case pages included.
 - The ELLETA wordmark is live text in `--color-ink`, so it flips with the theme; no plate, no glow.
 
-## 5. Controls (one taxonomy — see conformance spec §7)
+## 5. Controls (one taxonomy)
 The raised **keycap** is reserved for TRUE actions only. Do not use it for filters,
 toggles, or sort.
-- **Button (grammar v5 + primary pick, 2026-07-20):** purple means clickable at every tier.
-  PRIMARY = the standard BELLA primary, a flat iris fill (revised 2026-09-18: no gloss, gradient,
-  shadow or travelling light), max ONE per view; hover and press only deepen the fill, it never
-  lifts; focus ring as every control. SECONDARY = flat iris outline, iris text,
-  no fill, no elevation (periwinkle on dark and fixed-dark chrome). TERTIARY = text link, iris +
-  underlined. The neutral keycap is retired.
+- **Button (grammar v6, Elleta, 5 Oct 2026 lock, repeated 8 Oct; supersedes the iris grammar v5):**
+  ochre is the CTA colour. PRIMARY = the BELLA keycap in ochre with an ink label (7.76:1), max ONE per
+  view; hover and press only deepen the fill. SECONDARY = transparent, 1.5px ink outline (light) or
+  light outline (dark), ink label, 44px. TERTIARY = text link: ink text + 2px ochre-deep underline
+  (light) or ochre (dark). Targets 44px or more for primary and secondary, 24px or more elsewhere.
+  Focus ring as every control. Source: concept-lock-2026-10-05-interaction-colour.
 - **SegmentedControl:** mutually exclusive views (e.g. TABLE/MAP/TIMELINE). Single-select, `aria-current`,
   lighter than a keycap.
 - **FilterChip:** multi-select filters. Flat/outline, `aria-pressed`. Not a keycap.
@@ -406,7 +414,7 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 - If git is in use for the change, commit with a descriptive message.
 
 ## Key references
-- Layout & frame contract: `DESIGN.md` (tokens, ramps, recorded exceptions; audit tooling points here).
+- Layout & frame contract: `docs/RULES.md` (rules and their checks; the old DESIGN.md is in `docs/archive/`).
 - Finviz project: `finviz-event-storming.md` + `finviz-ai-solution-canvas.md`, brief at interface-design-patterns-ux-training.notion.site (Brief #2).
 - Voice & content rules: the `linkedin-post` skill (installed in Claude, not this repo).
 
