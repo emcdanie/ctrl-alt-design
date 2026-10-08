@@ -62,9 +62,8 @@
 .play,
 .askPause {
   min-height: var(--spacing-touch-target);
-  font-family: var(--font-code);
-  font-size: var(--text-mono);
-  font-feature-settings: var(--mono-feature);
+  font-family: var(--font-body);
+  font-size: 1rem;
   color: var(--color-ink);
   border: 1px solid var(--color-semantic-border-strong);
   border-radius: var(--radius-full);
@@ -336,7 +335,7 @@
 }
 .cap span {
   font-family: var(--font-body);
-  font-size: var(--text-mono);
+  font-size: 1rem;
   color: var(--color-ink-muted);
 }
 .cap b {
@@ -384,6 +383,13 @@
 }
 @media (max-width: 59.9375rem) {
   .exFace { justify-content: center; }
+}
+/* ≤ 520px: the exhibit face drops the "Where to" row and the chip row so the
+   listing card is the focus; both rows are secondary chrome that wraps
+   awkwardly at this width */
+@media (max-width: 32.5rem) {
+  .exFace .pvWhere,
+  .exFace .pvChips { display: none; }
 }
 /* from 1024 (I3, Elleta, 6 Oct 2026: the exhibit fits one screen): the
    sheets on the left, the face beside them cropped to its top: the price
@@ -880,13 +886,13 @@
   color: var(--color-ink);
 }
 .say b { font-weight: 600; }
-/* the code wraps (a break after each "." in a token path), so a narrow
-   window never cuts a line or hides it in a scroller (job 34) */
+/* code scrolls sideways; the Win clips for border-radius but lets the
+   child scroll inside it */
 .hl {
   margin: 0;
   padding: var(--spacing-4);
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+  overflow-x: auto;
+  white-space: pre;
   font-family: var(--font-code);
   font-size: var(--text-mono);
   font-feature-settings: var(--mono-feature);
@@ -966,8 +972,10 @@
 .plain p { margin: 0; max-width: var(--measure-body); font-size: var(--text-body); line-height: 1.5; color: var(--color-ink); }
 .plain code {
   grid-column: 2;
-  min-width: 0;
-  overflow-wrap: anywhere;
+  /* scroll sideways, never wrap mid-token */
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
   font-family: var(--font-code);
   font-size: var(--text-mono);
   font-feature-settings: var(--mono-feature);
@@ -1272,6 +1280,30 @@
   color: var(--color-semantic-text-secondary);
 }
 
+/* Fig 3 light/dark toggle row — one table at a time on phones */
+.sbToggleRow {
+  display: flex;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-4) 0;
+}
+.sbToggle {
+  padding: var(--spacing-1) var(--spacing-3);
+  border: 1px solid var(--color-semantic-border-strong);
+  border-radius: var(--radius-full);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.sbToggle[aria-pressed="true"] {
+  border-color: var(--color-ink);
+  background: var(--color-semantic-surface);
+}
+.sbTable {
+  margin: var(--spacing-3) var(--spacing-4);
+}
+
 @media (max-width: 639px) {
   .sbPair {
     grid-template-columns: 1fr;
@@ -1362,5 +1394,9 @@
   /* the card as at 1024: the price row and booking bar drop out whole */
   .exFace .pvPriceRow,
   .exFace .pvBar { display: none; }
+  /* Fig 8 reel: booking bar secondary in a compare view; shorter photo
+     keeps each slide under 740px */
+  .face .pvBar { display: none; }
+  .face .pvImg { height: 7rem; }
 }
 

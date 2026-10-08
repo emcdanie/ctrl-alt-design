@@ -1,4 +1,5 @@
-import { Fragment, type ReactNode } from "react";
+"use client";
+import { Fragment, useState, type ReactNode } from "react";
 import { CasePage, Beat } from "@/components/case/CasePage";
 import caseStyles from "@/components/case/Case.module.css";
 import CaseHero from "@/components/case/CaseHero";
@@ -89,30 +90,33 @@ const GATE_CHECKS = [
 ];
 
 function StorybookTable() {
+  const [mode, setMode] = useState<"light" | "dark">("light");
   return (
-    <div className={s.sbFrame} role="img" aria-label="Storybook, Foundations / Colors / Semantic: the same five names, background, text-primary, text-muted, surface-card and focus-ring, each with a light answer and a dark answer.">
-      <div aria-hidden="true">
-        <Win path="Storybook · Foundations / Colors / Semantic" short="Storybook · Semantic">
-          <div className={s.sbPair}>
-            {(["light", "dark"] as const).map((mode) => (
-              <div key={mode}>
-                {/* each table pinned to the mode it shows, whatever the page's (job 38) */}
-                <ul className={`${s.sbTable} ${mode === "dark" ? s.pinDark : s.pinLight}`} data-theme={mode}>
-                  {STORYBOOK_SEMANTIC.map((row) => (
-                    <li key={row.name}>
-                      <span className={s.sbSwatch} style={{ background: row[mode] }} />
-                      <code>{row.name}</code>
-                      <code className={s.sbHex}>{row[mode]}</code>
-                    </li>
-                  ))}
-                </ul>
-                <p className={s.sbNote}>
-                  {mode} · semantic/{mode}.json
-                </p>
-              </div>
-            ))}
-          </div>
-        </Win>
+    <div className={s.sbFrame}>
+      {/* toggle outside role="img" and aria-hidden so buttons are reachable */}
+      <div className={s.sbToggleRow} role="group" aria-label="Theme mode">
+        {(["light", "dark"] as const).map((m) => (
+          <button key={m} type="button" className={s.sbToggle} aria-pressed={m === mode} onClick={() => setMode(m)}>
+            {m}
+          </button>
+        ))}
+      </div>
+      <div role="img" aria-label={`Storybook, Foundations / Colors / Semantic, ${mode} mode: the same five names (background, text-primary, text-muted, surface-card and focus-ring) with their ${mode} answers.`}>
+        <div aria-hidden="true">
+          <Win path="Storybook · Foundations / Colors / Semantic" short="Storybook · Semantic">
+            {/* each table pinned to the mode it shows, whatever the page's (job 38) */}
+            <ul className={`${s.sbTable} ${mode === "dark" ? s.pinDark : s.pinLight}`} data-theme={mode}>
+              {STORYBOOK_SEMANTIC.map((row) => (
+                <li key={row.name}>
+                  <span className={s.sbSwatch} style={{ background: row[mode] }} />
+                  <code>{row.name}</code>
+                  <code className={s.sbHex}>{row[mode]}</code>
+                </li>
+              ))}
+            </ul>
+            <p className={s.sbNote}>{mode} · semantic/{mode}.json</p>
+          </Win>
+        </div>
       </div>
     </div>
   );
@@ -244,8 +248,10 @@ export default function ThemingCase() {
                 <p className={s.say}>In plain words: each name on the left has one answer for light mode and one for dark.</p>
               </div>
             </div>
-            <ShowAll total={2} label="Show the other 2">
-              <div className={s.repo} role="img" aria-label="Two more excerpts from BELLA's public repo. The Button's contract: its variants, states and what not to do. The reading order: raw values first, then what they're for, then what uses them.">
+            {/* one excerpt at a time: each ShowAll reveals one Win so the
+                figure stays under 740px at 375 even after expansion */}
+            <ShowAll total={1} label="Show the button contract">
+              <div className={s.repo} role="img" aria-label="The Button's contract: its variants, states and what not to do.">
                 <div className={s.code} aria-hidden="true">
                   <Win dark path="emcdanie/bella · tokens/component.json" short="component.json">
                     <pre className={s.hl}>
@@ -257,6 +263,12 @@ export default function ThemingCase() {
                     </pre>
                   </Win>
                   <p className={s.say}>In plain words: the Button&apos;s rulebook. Which versions exist, which states it has, and how not to use it. People and AI tools both read this.</p>
+                </div>
+              </div>
+            </ShowAll>
+            <ShowAll total={1} label="Show the token order">
+              <div className={s.repo} role="img" aria-label="The reading order: raw values first, then what they're for, then what uses them.">
+                <div className={s.code} aria-hidden="true">
                   <Win dark path="emcdanie/bella · tokens/$themes.json" short="$themes.json">
                     <pre className={s.hl}>
                       <K>&quot;tokenSetOrder&quot;</K>{": [\n  "}
