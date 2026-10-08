@@ -317,6 +317,8 @@ Must pass before any work is "done":
   (`static`, `build`, 7 `browser` shards) behind one required check named `gate`; CI is the
   source of truth. An audit's rules and thresholds never change to make it faster.
   `audit:sync` reads BELLA's `origin/main`, not the branch checked out in ~/DEV/bella.
+  The pre-commit hook (`.git/hooks/pre-commit`, local, not in the repo) runs `check:fast`;
+  a fresh clone has to install it by hand, or commits go out unchecked.
 - `npm test` runs FIRST in the gate: the pure functions in `lib/bella/dtcg.ts` (vitest). A
   broken function fails in a second rather than after two minutes of browser work. Tests are
   not an audit and do not change the derived count.
@@ -358,6 +360,21 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
   `docs/reference/inbox/done/<YYYY-MM-DD-slug>.md`, and stop.
 - Commit only when `next.md` asks for it, never push. `docs/reference/inbox` is gitignored; never
   commit it.
+
+## 12. Plan first for bigger jobs (Elleta, 2026-10-07)
+- A job is "big" if next.md says [plan], or it touches more than one page/component, or a layout.
+  Small fixes (one file, no layout) skip this section.
+- Big job, step 1: open a GitHub issue with `gh issue create --label plan`, using
+  .github/ISSUE_TEMPLATE/plan.md: goal, what changes, what doesn't, the decisions with your
+  default for each, risks, how we'll verify (widths, themes, audits).
+- Step 2: run `npm run plan:review -- <issue#>`. A second model (Codex) reviews the plan and its
+  comment is posted on the issue.
+- Step 3: read the review, update the plan (edit the issue body), and list in report.md only
+  the decisions where the two models disagree or that are brand/money/taste. STOP for Elleta.
+- Step 4: on "go", build from the issue. The PR says "Closes #<issue>".
+- Defaults, not waiting: anywhere else, pick the sensible default, log it in
+  decisions-while-away.md and keep going. Stop only for brand, money, taste, merges, or a
+  rule conflict.
 
 ---
 
