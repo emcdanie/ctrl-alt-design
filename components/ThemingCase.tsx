@@ -91,30 +91,32 @@ const GATE_CHECKS = [
 
 function StorybookTable() {
   const [mode, setMode] = useState<"light" | "dark">("light");
-  const other = mode === "light" ? "dark" : "light";
   return (
-    <div className={s.sbFrame} role="img" aria-label={`Storybook, Foundations / Colors / Semantic: the same five names in ${mode} mode. Toggle to see the ${other} answers.`}>
-      <div aria-hidden="true">
-        <Win path="Storybook · Foundations / Colors / Semantic" short="Storybook · Semantic">
-          <div className={s.sbToggleRow}>
-            {(["light", "dark"] as const).map((m) => (
-              <button key={m} type="button" className={s.sbToggle} aria-pressed={m === mode} onClick={() => setMode(m)}>
-                {m}
-              </button>
-            ))}
-          </div>
-          {/* each table pinned to the mode it shows, whatever the page's (job 38) */}
-          <ul className={`${s.sbTable} ${mode === "dark" ? s.pinDark : s.pinLight}`} data-theme={mode}>
-            {STORYBOOK_SEMANTIC.map((row) => (
-              <li key={row.name}>
-                <span className={s.sbSwatch} style={{ background: row[mode] }} />
-                <code>{row.name}</code>
-                <code className={s.sbHex}>{row[mode]}</code>
-              </li>
-            ))}
-          </ul>
-          <p className={s.sbNote}>{mode} · semantic/{mode}.json</p>
-        </Win>
+    <div className={s.sbFrame}>
+      {/* toggle outside role="img" and aria-hidden so buttons are reachable */}
+      <div className={s.sbToggleRow} role="group" aria-label="Theme mode">
+        {(["light", "dark"] as const).map((m) => (
+          <button key={m} type="button" className={s.sbToggle} aria-pressed={m === mode} onClick={() => setMode(m)}>
+            {m}
+          </button>
+        ))}
+      </div>
+      <div role="img" aria-label={`Storybook, Foundations / Colors / Semantic, ${mode} mode: the same five names (background, text-primary, text-muted, surface-card and focus-ring) with their ${mode} answers.`}>
+        <div aria-hidden="true">
+          <Win path="Storybook · Foundations / Colors / Semantic" short="Storybook · Semantic">
+            {/* each table pinned to the mode it shows, whatever the page's (job 38) */}
+            <ul className={`${s.sbTable} ${mode === "dark" ? s.pinDark : s.pinLight}`} data-theme={mode}>
+              {STORYBOOK_SEMANTIC.map((row) => (
+                <li key={row.name}>
+                  <span className={s.sbSwatch} style={{ background: row[mode] }} />
+                  <code>{row.name}</code>
+                  <code className={s.sbHex}>{row[mode]}</code>
+                </li>
+              ))}
+            </ul>
+            <p className={s.sbNote}>{mode} · semantic/{mode}.json</p>
+          </Win>
+        </div>
       </div>
     </div>
   );
