@@ -63,13 +63,11 @@
 }
 
 .table thead th {
-  font-family: var(--font-code);
+  font-family: var(--font-body);
   font-size: var(--text-mono);
   font-weight: 400;
-  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
   white-space: nowrap;
-  font-feature-settings: var(--mono-feature);
 }
 
 .table tbody tr:last-child th,
@@ -98,16 +96,14 @@
 .mxHead {
   all: unset;
   cursor: pointer;
-  font-family: var(--font-code);
+  font-family: var(--font-body);
   font-size: var(--text-mono);
   font-weight: 400;
-  letter-spacing: var(--tracking-mono);
   color: var(--color-ink-muted);
   min-height: var(--spacing-touch-target);
   display: inline-flex;
   align-items: center;
   transition: color var(--dur-fast) var(--ease-out);
-  font-feature-settings: var(--mono-feature);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -235,7 +231,7 @@
 }
 
 .more {
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-accent-ink);
   text-decoration: underline;
   text-underline-offset: 4px;
@@ -396,18 +392,16 @@
 .rowBody { display: block; min-width: 0; }
 .metaLine {
   display: block;
-  font-family: var(--font-code);
+  font-family: var(--font-body);
   font-size: var(--text-mono);
-  letter-spacing: var(--tracking-mono);
-  font-feature-settings: var(--mono-feature);
   color: var(--color-ink-muted);
 }
 .rowTitle {
   display: block;
   margin: calc(var(--spacing-1) * 1.5) 0 var(--spacing-2);
-  font-size: clamp(1.5rem, 2.6vw, 2rem);
-  font-weight: var(--typography-font-weight-light);
-  letter-spacing: var(--tracking-h2);
+  font-size: var(--font-card-title);
+  font-weight: 600;
+  letter-spacing: var(--tracking-title-item);
   line-height: 1.15;
   color: var(--color-ink);
 }
@@ -481,16 +475,16 @@ a.card:focus-visible {
   display: block;
   margin: calc(var(--spacing-1) * 1.5) 0 var(--spacing-2);
   font-size: var(--font-card-title);
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   line-height: 1.25;
   color: var(--color-ink);
 }
 .cardTitleFeatured {
   display: block;
   margin: calc(var(--spacing-1) * 1.5) 0 var(--spacing-2);
-  font-size: clamp(1.5rem, 2.6vw, 2rem);
-  font-weight: var(--typography-font-weight-light);
-  letter-spacing: var(--tracking-h2);
+  font-size: var(--font-card-title);
+  font-weight: 600;
+  letter-spacing: var(--tracking-title-item);
   line-height: 1.15;
   color: var(--color-ink);
 }

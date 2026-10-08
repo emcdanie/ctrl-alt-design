@@ -34,7 +34,7 @@
 .surveyEyebrow {
   font-family: var(--font-code);
   font-size: 15px;
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   letter-spacing: 0.04em;
   line-height: 1.4;
   color: var(--color-semantic-text-secondary);
@@ -58,7 +58,7 @@
   width: 20px;
   font-family: var(--font-code);
   font-size: 15px;
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   line-height: 1.4;
   color: var(--color-semantic-text-secondary);
 }
@@ -93,7 +93,7 @@
   padding: 0 calc(var(--spacing-1) + 2px);
   border-radius: var(--radius-sm);
   background: color-mix(in srgb, var(--color-semantic-accent) 42%, var(--color-semantic-surface));
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   color: var(--color-semantic-text-primary);
 }
 
@@ -145,7 +145,7 @@
   background: var(--color-semantic-danger-subtle);
   color: var(--color-semantic-danger-text);
   font-size: 14px;
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
 }
 
 .auditFilter {
@@ -616,7 +616,7 @@
   background: var(--cover-photo-scrim);
   color: var(--cover-on-photo);
   font-size: 14px;
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   line-height: 16px;
 }
 
@@ -746,7 +746,7 @@
 
 .driftHead {
   font-size: 22px;
-  font-weight: var(--typography-font-weight-bold);
+  font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.01em;
 }
@@ -785,7 +785,7 @@
 
 .driftNameA {
   font-size: 18px;
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
   line-height: 1.2;
 }
 
@@ -803,7 +803,7 @@
 .driftNameB {
   white-space: nowrap;
   font-size: 14px;
-  font-weight: var(--typography-font-weight-bold);
+  font-weight: 600;
   line-height: 1.2;
   letter-spacing: 0.02em;
 }
@@ -816,7 +816,7 @@
 
 .driftPriceB {
   font-size: 18px;
-  font-weight: var(--typography-font-weight-bold);
+  font-weight: 600;
   line-height: 1.2;
 }
 
@@ -825,7 +825,7 @@
   padding: var(--spacing-1) var(--spacing-2);
   background: color-mix(in srgb, var(--color-semantic-accent) 30%, var(--color-semantic-surface));
   font-size: 14px;
-  font-weight: var(--typography-font-weight-bold);
+  font-weight: 600;
   line-height: 1.2;
 }
 

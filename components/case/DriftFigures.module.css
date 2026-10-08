@@ -174,7 +174,7 @@
 
 .kitTextHot {
   fill: var(--kit-action);
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
 }
 
 .kitTextInk {
@@ -183,7 +183,7 @@
 
 .kitTextRed {
   fill: var(--markup-red);
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
 }
 
 .markRed {
@@ -780,7 +780,7 @@
   transform: translate(-50%, -100%);
   border-color: var(--color-semantic-accent);
   background: linear-gradient(var(--color-semantic-surface-glass-accent), var(--color-semantic-surface-glass-accent)), var(--color-semantic-surface);
-  font-weight: var(--typography-font-weight-medium);
+  font-weight: 600;
 }
 
 .areaChips {

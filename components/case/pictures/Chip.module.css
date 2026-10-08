@@ -108,7 +108,7 @@
   color: var(--component-button-primary-foreground);
   box-shadow: var(--shadow-key-resting);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.25;
   /* sentence case, untracked: the label reads "Save changes" (Figma
      straighten pass, 5 Oct) */
@@ -332,7 +332,7 @@
 
 .plateLabel {
   font-size: calc(24px * var(--s));
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-semantic-text-primary);
   white-space: nowrap;
 }

@@ -487,7 +487,7 @@ function Playground() {
     <div className={`${s.panel} ${s.pg}`}>
       <div className={`${s.box} ${s.pgCtl}`}>
         <div className={s.grp} role="group" aria-labelledby="pg-acc">
-          <span id="pg-acc" className="text-code">--accent</span>
+          <code id="pg-acc" className="text-code">--accent</code>
           <div className={s.sws}>
             {ACC.map(([name, hex], i) => (
               <button key={name} type="button" aria-label={name} aria-pressed={st.a === i} style={{ background: hex }} onClick={() => setSt((v) => ({ ...v, a: i }))} />
@@ -495,15 +495,15 @@ function Playground() {
           </div>
         </div>
         <div className={s.grp} role="group" aria-labelledby="pg-rad">
-          <span id="pg-rad" className="text-code">--radius</span>
+          <code id="pg-rad" className="text-code">--radius</code>
           <Seg k="r" items={RAD.map((x) => x[0])} />
         </div>
         <div className={s.grp} role="group" aria-labelledby="pg-den">
-          <span id="pg-den" className="text-code">--density</span>
+          <code id="pg-den" className="text-code">--density</code>
           <Seg k="d" items={DEN.map((x) => x[0])} />
         </div>
         <div className={s.grp} role="group" aria-labelledby="pg-mode">
-          <span id="pg-mode" className="text-code">--mode</span>
+          <code id="pg-mode" className="text-code">--mode</code>
           <Seg k="m" items={MOD} />
         </div>
         <button type="button" className={s.chip} onClick={() => setSt({ a: 0, r: 1, d: 1, m: 0 })}>

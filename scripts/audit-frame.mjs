@@ -15,7 +15,7 @@
  *    the band's own case-body edge (x192 at 1440, the Figma Hero slot),
  *    and those routes share that edge, compared only with each other.
  * 2. Three title recipes: `display` (the Home hero), `case title` (the h1
- *    in a case hero band: --text-display-case, or -long) and `page`
+ *    in a case hero band: Display/Page, the same size as `page`) and `page`
  *    (everything else). An h1 renders its recipe's size and is never
  *    wider than its measure. Every h1 and h2 in main is 50 characters or
  *    fewer.
@@ -112,8 +112,10 @@ for (const motion of MOTIONS) for (const width of WIDTHS) {
       const header = px(probe({ paddingTop: "var(--header-height)" }, "paddingTop"));
       const radii = ["sm", "md", "lg", "card"].map((k) => px(probe({ borderRadius: `var(--radius-${k})` }, "borderTopLeftRadius")));
       const pageSize = px(probe({ fontSize: "var(--text-display-1)" }, "fontSize"));
-      const caseTitleSize = px(probe({ fontSize: "var(--text-display-case)" }, "fontSize"));
-      const caseTitleLong = px(probe({ fontSize: "var(--text-display-case-long)" }, "fontSize"));
+      /* TY (Elleta, 7 Oct 2026): every h1, case titles included, is Display/Page;
+         the two case-title tokens were retired with it */
+      const caseTitleSize = px(probe({ fontSize: "var(--typography-font-size-display-page)" }, "fontSize"));
+      const caseTitleLong = caseTitleSize;
       const blockGap = px(probe({ paddingTop: "var(--case-gap-block)" }, "paddingTop"));
       const displaySize = px(probe({ fontSize: "var(--component-heading-hero-font-size)" }, "fontSize"));
       const cardShadow = probe({ boxShadow: "var(--shadow-card)" }, "boxShadow");
