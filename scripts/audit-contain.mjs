@@ -2,7 +2,7 @@
  * the users & roles pins and the token cascade spilled out of their
  * panels). audit:frame checks the page's frame; this checks what sits
  * INSIDE a picture. Every route, one case of each slug, at 1440, 1024
- * and 390, in both themes, and in every tab state (the page as loaded,
+ * 820, 768 and 390, in both themes, and in every tab state (the page as loaded,
  * then after each [role=tab]):
  *
  * 1. Contained: for every panel or figure in main (figure, .exhibit,
@@ -38,7 +38,7 @@ import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
 import { BASE } from "./lib/base-url.mjs";
 
-const WIDTHS = [1440, 1024, 390];
+const WIDTHS = [1440, 1024, 820, 768, 390];
 const THEMES = ["light", "dark"];
 
 const slugs = readdirSync("content/case-studies")
