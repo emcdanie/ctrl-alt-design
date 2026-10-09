@@ -117,7 +117,7 @@ export default function SystemBeat() {
       if (bd) {
         bd.style.left = `${ax}px`;
         bd.style.top = `${ay}px`;
-        bd.style.opacity = String(show);
+        // opacity is CSS-driven (clamp on --t) so no inline override here
       }
     });
     svg.innerHTML = html;

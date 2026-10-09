@@ -411,11 +411,16 @@
   .stage { margin-top: calc(-1 * (var(--spacing-2) + 2px)); }
   /* from 600 up the planes grow with the column (0.72px at 375, 1px from
      about 560px wide) instead of staying at the 375 size */
-  .world { --sh: 625; --g: 108; --k1: 2.3; --u: clamp(0.045rem, 100cqw / 450, 0.0625rem); margin-top: 0; margin-bottom: calc(var(--over-bot) * var(--t)); }
+  /* --sh shrinks with --t so at t=0 the stage hugs the card (400u ≈ card +32u/side)
+     and at t=1 it is full-height (625u) for the flyout. --over-bot inherits the
+     interpolation automatically since it uses var(--sh). */
+  .world { --sh: calc(400 + 225 * var(--t)); --g: 108; --k1: 2.3; --u: clamp(0.045rem, 100cqw / 450, 0.0625rem); margin-top: 0; margin-bottom: calc(var(--over-bot) * var(--t)); }
   /* art text keeps the smallest size audit:clip allows once the planes' tilt
      is counted (12px on screen); the prototype's is smaller still */
   .chip { font-size: 0.9375rem; line-height: 1.1; padding: calc(1 * var(--u)) calc(8 * var(--u)); gap: calc(6 * var(--u)); }
   .eb, .tag { font-size: 0.9375rem; }
+  /* prevent 2-line wrap that pushes tags past the card bottom edge */
+  .eb { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tt { font-size: 1rem; }
   /* the words plate is taller on phones, so its larger text fits (the plane
      is a stack of separate layers; the picture's slot above it is empty) */
@@ -426,7 +431,9 @@
   .tk { gap: calc(6 * var(--u)); }
   .p1 { padding: calc(14 * var(--u)); }
   .leadLines { display: none; }
-  .badge { display: grid; }
+  /* CSS fallback mirrors show = clamp((t-.55)/.35); JS inline opacity overrides
+     this once draw() runs, but they agree, so the badge is always invisible at t=0 */
+  .badge { display: grid; opacity: clamp(0, calc((var(--t) - 0.55) / 0.35), 1); }
   .pins { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-1); padding: 0; }
   .pd { display: none; }
   .pin { grid-template-columns: 1.75rem 1fr; gap: var(--spacing-1) var(--spacing-2); padding: var(--spacing-1); }
