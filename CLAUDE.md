@@ -371,6 +371,7 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
   in `docs/reference/inbox/screens/`.
 - Commit only when the lane file asks for it, never push to main. `docs/reference/inbox` is
   gitignored; never commit it.
+- Read `docs/RULES.md` before any build or Figma step.
 
 ## 12. Plan first for bigger jobs (Elleta, 2026-10-07)
 - A job is "big" if next.md says [plan], or it touches more than one page/component, or a layout.
