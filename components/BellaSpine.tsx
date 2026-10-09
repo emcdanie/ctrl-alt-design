@@ -1052,7 +1052,7 @@ export default function BellaSpine({ auditCount, auditCountWord }: { auditCount:
           <li>The gate grew to {auditCount} checks; a full run went from about 10 to about 25 minutes.</li>
           <li>Working solo: no second reviewer.</li>
         </ul>
-        <p className={s.fix}>So the gate now runs in parallel, about 6 minutes, and I look at screenshots before it runs.</p>
+        <p className={s.fix}>Next: a parallel gate, and screenshots before CI.</p>
       </Section>
 
       <Section id="a11y" ruled>
