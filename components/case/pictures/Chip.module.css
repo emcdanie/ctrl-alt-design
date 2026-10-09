@@ -275,8 +275,7 @@
 }
 
 /* the legend's specs wrap when the column narrows (1024) */
-.legend .partSpec,
-.legend .partTitle {
+.legend .partSpec {
   white-space: normal;
 }
 
@@ -833,9 +832,10 @@
   white-space: nowrap;
 }
 
-/* ── 820 and below: ask figure stacks to single column so the OBI field
-   is wide enough to show its full placeholder text ── */
+/* ── 820 and below: restBody and ask stack to single column so the legend
+   column is not squeezed to ~64px and the OBI field has room ── */
 @media (max-width: 959px) {
+  .restBody,
   .ask {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--spacing-4);
