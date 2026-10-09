@@ -569,8 +569,6 @@
   flex-direction: column;
   gap: var(--spacing-2);
   flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
   padding: var(--spacing-4);
   border-radius: var(--radius-lg);
   background: var(--color-semantic-surface-inset);
@@ -817,6 +815,11 @@
 
 /* ── tablet: the zoom levels two by two, the cascade tiers stacked ── */
 @media (max-width: 1023px) {
+  /* 5-step rollout is too tight at tablet: give each card room */
+  .rollout {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .levels {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

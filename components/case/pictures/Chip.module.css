@@ -275,7 +275,8 @@
 }
 
 /* the legend's specs wrap when the column narrows (1024) */
-.legend .partSpec {
+.legend .partSpec,
+.legend .partTitle {
   white-space: normal;
 }
 
@@ -284,7 +285,6 @@
   flex-direction: column;
   gap: var(--spacing-3);
   min-width: 0;
-  overflow: hidden;
 }
 
 /* the exploded stack, drawn in design pixels times --s (1 at 1440) */
@@ -697,7 +697,6 @@
   font-size: 17px;
   color: var(--color-semantic-text-primary);
   white-space: nowrap;
-  overflow: hidden;
 }
 
 .kbd {
@@ -832,6 +831,15 @@
   font-size: 15px;
   color: var(--color-semantic-text-secondary);
   white-space: nowrap;
+}
+
+/* ── 820 and below: ask figure stacks to single column so the OBI field
+   is wide enough to show its full placeholder text ── */
+@media (max-width: 959px) {
+  .ask {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-4);
+  }
 }
 
 /* ── 390: the frame restacks ── */
