@@ -516,7 +516,7 @@ function Playground() {
             <span className={s.lstNew}>new</span>
             <svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
               <rect x="0" y="150" width="400" height="70" className={s.sea} />
-              <path d="M0 150 H400 M150 150 V92 L200 60 L250 92 V150 M180 150 V118 H200 V150" className={s.ln} />
+              <path d="M150 150 V92 L200 60 L250 92 V150 M180 150 V118 H200 V150" className={s.ln} />
               <rect x="214" y="104" width="22" height="16" rx="3" className={`${s.ac} ${s.ln}`} />
               <circle cx="320" cy="52" r="15" className={`${s.ac} ${s.ln}`} />
             </svg>
