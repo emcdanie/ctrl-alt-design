@@ -411,7 +411,7 @@
   .stage { margin-top: calc(-1 * (var(--spacing-2) + 2px)); }
   /* from 600 up the planes grow with the column (0.72px at 375, 1px from
      about 560px wide) instead of staying at the 375 size */
-  .world { --sh: 625; --g: 108; --k1: 2.3; --u: clamp(0.045rem, 100cqw / 450, 0.0625rem); margin-top: 0; }
+  .world { --sh: 625; --g: 108; --k1: 2.3; --u: clamp(0.045rem, 100cqw / 450, 0.0625rem); margin-top: 0; margin-bottom: calc(var(--over-bot) * var(--t)); }
   /* art text keeps the smallest size audit:clip allows once the planes' tilt
      is counted (12px on screen); the prototype's is smaller still */
   .chip { font-size: 0.9375rem; line-height: 1.1; padding: calc(1 * var(--u)) calc(8 * var(--u)); gap: calc(6 * var(--u)); }
@@ -419,8 +419,10 @@
   .tt { font-size: 1rem; }
   /* the words plate is taller on phones, so its larger text fits (the plane
      is a stack of separate layers; the picture's slot above it is empty) */
-  .plate { top: calc(150 * var(--u)); }
-  .wd { top: calc(162 * var(--u)); }
+  /* at t=0 (whole) place text below the picture (208u/222u); interpolate to
+     the phone-tuned apart position (150u/162u) as t → 1 */
+  .plate { top: calc((208 - 58 * var(--t)) * var(--u)); }
+  .wd { top: calc((222 - 60 * var(--t)) * var(--u)); }
   .tk { gap: calc(6 * var(--u)); }
   .p1 { padding: calc(14 * var(--u)); }
   .leadLines { display: none; }
