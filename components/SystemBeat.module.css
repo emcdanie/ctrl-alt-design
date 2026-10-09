@@ -419,11 +419,14 @@
      is counted (12px on screen); the prototype's is smaller still */
   .chip { font-size: 0.9375rem; line-height: 1.1; padding: calc(1 * var(--u)) calc(8 * var(--u)); gap: calc(6 * var(--u)); }
   .eb, .tag { font-size: 0.9375rem; }
-  /* prevent 2-line wrap that pushes tags past the card bottom edge */
-  .eb { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tt { font-size: 1rem; }
   /* the words plate is taller on phones, so its larger text fits (the plane
      is a stack of separate layers; the picture's slot above it is empty) */
+  /* planes grow from 336u to 360u at t=0 so the plate gains 24u of height and
+     the 2-line eyebrow + pills fit without clipping; margin-top re-centres the
+     taller card in the world. All planes grow together so plane 2 (card bg)
+     always covers plane 1 (tokens) in the extended area. */
+  .pl { height: calc((336 + 24 * (1 - var(--t))) * var(--u)); margin-top: calc((-168 - 12 * (1 - var(--t))) * var(--u)); }
   /* at t=0 (whole) place text below the picture (208u/222u); interpolate to
      the phone-tuned apart position (150u/162u) as t → 1 */
   .plate { top: calc((208 - 58 * var(--t)) * var(--u)); }
