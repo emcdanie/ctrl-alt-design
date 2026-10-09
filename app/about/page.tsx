@@ -62,7 +62,7 @@ export default function AboutPage() {
       </Section>
 
       {/* ── Experience ──────────────────────────────── */}
-      <Section width="case-edge" labelledBy="short-lead-h">
+      <Section width="case-edge">
         <div className={st.page}>
           {/* 1 · The short lead */}
           <Beat
@@ -145,7 +145,7 @@ export default function AboutPage() {
       </Section>
 
       {/* ── Stack ───────────────────────────────────── */}
-      <Section width="case-edge" labelledBy="word-of-mouth-h">
+      <Section width="case-edge">
         <div className={st.page}>
           {/* 4 · Word of mouth */}
           <Beat
