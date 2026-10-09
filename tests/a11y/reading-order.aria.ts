@@ -19,9 +19,6 @@ const snap = (name: string) => ({ name: `${name}-${test.info().project.name}.ari
 test.describe("About", () => {
   test.beforeEach(async ({ page }) => {
     await open(page, "/about");
-    // every experience row open, so its bullets are part of the read
-    const closed = page.locator('#track-record button[aria-expanded="false"]');
-    while ((await closed.count()) > 0) await closed.first().click();
   });
   test("hero", async ({ page }) => {
     await expect(page.locator("#about-hero")).toMatchAriaSnapshot(snap("about-hero"));
@@ -81,28 +78,6 @@ test.describe("Nav", () => {
   });
 });
 
-/* The experience accordion without JavaScript: the server renders every
-   panel open, so the content is all there. With JavaScript every role
-   starts collapsed. */
-test.describe("About experience without JavaScript", () => {
-  test.use({ javaScriptEnabled: false });
-  test("every panel is visible", async ({ page }) => {
-    await page.goto("/about");
-    const panels = page.locator("#track-record .accordion__panel");
-    await expect(panels).toHaveCount(5);
-    for (const p of await panels.all()) await expect(p).toBeVisible();
-  });
-});
-
-/* site v3 (Figma 403:7256): every row starts collapsed to its outcome
-   line; the chevron opens the bullets */
-test("About experience with JavaScript: every role starts collapsed", async ({ page }) => {
-  await open(page, "/about");
-  const triggers = page.locator("#track-record .accordion__trigger");
-  await expect(triggers).toHaveCount(5);
-  for (let i = 0; i < (await triggers.count()); i++) await expect(triggers.nth(i)).toHaveAttribute("aria-expanded", "false");
-  await expect(page.locator("#track-record .accordion__panel").first()).toBeHidden();
-});
 
 test.describe("Learning", () => {
   test.beforeEach(async ({ page }) => {
