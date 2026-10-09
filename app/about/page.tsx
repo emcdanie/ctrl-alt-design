@@ -138,7 +138,7 @@ export default function AboutPage() {
           >
             <ExperienceSection />
             <p className={st.linkRow}>
-              <ResumeLink className={textLinkClass} label="View CV" />
+              <ResumeLink className={textLinkClass} label="Full detail in my CV →" />
             </p>
           </Beat>
         </div>
