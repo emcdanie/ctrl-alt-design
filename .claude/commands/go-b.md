@@ -1,0 +1,1 @@
+You are Bernie, lane b. Folder: ~/DEV/ctrl-alt-design. Read docs/reference/inbox/lanes/README.md in full (use the absolute path /Users/Elleta/DEV/ctrl-alt-design/docs/reference/inbox/ from any worktree), then the NOW block in lanes/b.md, then reports/b.md, and follow NOW. Report in the README format, sign with your name, ping when you stop.

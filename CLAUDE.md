@@ -20,8 +20,7 @@ override the constitution.
 3. **Spec before build.** For anything beyond a one-line fix, write a spec first (see §8). Do not vibe-code.
 4. **Baseline before change.** Before altering an existing page, rebuild/confirm its current state from the
    real components as a baseline, THEN apply the change (see `docs/harness-and-baseline.md`).
-5. **Prove it globally.** After any change, run `npm run gate`, tsc, all routes 200 (light + dark), and the
-   NDA content-grep. Report a diff summary. Green or it isn't done.
+5. **Prove it globally.** After any change, run `npm run check:fast` and the browser audits for the pages you touched (frame, contain, type, dark, axe on those routes). Do not run the full `npm run gate` locally (25 min; CI is the merge guard). Report a diff summary. Green or it isn't done.
 
 ## 1. Tokens (never hardcode)
 - **No hardcoded hex or px in components.** Reference tokens only. No arbitrary Tailwind `text-[Npx]` /
@@ -323,11 +322,7 @@ Must pass before any work is "done":
 - `audit:debt` — nothing rots quietly: a doc citing a file that does not exist, a token
   nothing consumes through a `var()` chain, a gate table describing audits that no longer
   run, or an audit tracking a selector that matches nothing. Static analysis, about a second.
-- **How it runs (Elleta, 2026-10-07, gate speed).** Locally: commit with `npm run check:fast`
-  (tsc, tests, the static audits, about 10 s; the pre-commit hook runs it) and run the full
-  `npm run gate` once before opening the PR. CI splits the same audits into parallel jobs
-  (`static`, `build`, 7 `browser` shards) behind one required check named `gate`; CI is the
-  source of truth. An audit's rules and thresholds never change to make it faster.
+- **How it runs (Elleta, 2026-10-07, gate speed; updated 2026-10-09).** Locally: `npm run check:fast` (tsc, tests, the static audits, about 10 s; the pre-commit hook runs it) plus the browser audits for the pages you touched (frame, contain, type, dark, axe on those routes — about 2–5 min). Do NOT run the full `npm run gate` locally (25 min). CI splits the audits into parallel jobs (`static`, `build`, 7 `browser` shards) behind one required check named `gate`; CI is the merge guard and the source of truth. An audit's rules and thresholds never change to make it faster.
   `audit:sync` reads BELLA's `origin/main`, not the branch checked out in ~/DEV/bella.
   The pre-commit hook (`.git/hooks/pre-commit`, local, not in the repo) runs `check:fast`;
   a fresh clone has to install it by hand, or commits go out unchecked.
@@ -364,8 +359,9 @@ keep `docs/fixes/README.md` current. Before debugging a familiar-feeling symptom
 ---
 
 ## 11. Cowork relay, lanes (Elleta, 2026-10-08; supersedes 2026-10-03)
-- Elleta types `go a`, `go b` or `go figma`. Read ONLY `docs/reference/inbox/lanes/<lane>.md` and
+- Elleta types `go a`, `go b` or `go figma` (or `/go-a`, `/go-b`, `/go-figma`). Read ONLY `docs/reference/inbox/lanes/<lane>.md` and
   `lanes/README.md`. Plain `go`: ask "which lane: a, b or figma?" and wait. Never guess.
+- On session start, after /clear or after compaction: re-read `lanes/README.md` and your lane file before anything else.
 - Claim a job before starting: `[ ]` to `[doing <lane> HH:MM]`. Skip any job not marked `[ ]`.
   Done is `[done HH:MM, PR #n green]`. Only Cowork moves jobs between lanes.
 - Report to `docs/reference/inbox/reports/<lane>.md` (under 15 lines, then "Needs Elleta" as
