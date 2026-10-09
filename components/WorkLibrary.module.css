@@ -537,13 +537,23 @@ a.card:focus-visible {
 }
 
 /* Home cards on phones (home-fix, Elleta, 8 Oct 2026): each card fits one
-   screen with the nav. A shorter cover stage, tighter padding, no tag pills
-   (the case page has them). Nothing is clipped; the claim shows whole. */
+   screen with the nav. Tighter padding, no tag pills (the case page has
+   them). Nothing is clipped; the claim shows whole. */
 @media (max-width: 39.99rem) {
   .card[data-compact] { gap: var(--spacing-3); padding: var(--spacing-4); }
-  .card[data-compact] [data-region] { --cover-stage-h: 9rem; }
   .card[data-compact] .rowTags { display: none; }
   /* the frame's path strip is chrome (the frame is aria-hidden) */
   .card[data-compact] > :first-child > :first-child { display: none; }
   .card[data-compact] .rowClaim { margin-bottom: 0; }
+}
+/* the shorter cover only on real phones; from 576px the cover is /work's
+   (the 290px detail stage up to 767px) */
+@media (max-width: 35.99rem) {
+  .card[data-compact] [data-region] { --cover-stage-h: 9rem; }
+}
+/* tablet and desktop (hotfix, 8 Oct 2026): a Home card shows its whole
+   picture at the picture's own aspect, never the 180px crop (Drift is a
+   small card now, not the featured one) */
+@media (min-width: 48rem) {
+  .card[data-compact] { --cover-stage-h: auto; }
 }

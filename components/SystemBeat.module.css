@@ -41,14 +41,21 @@
 }
 
 .world {
-  --sh: 800;
+  /* the prototype's desktop proportions: a 720 stage, the card at full scale
+     (one unit = 1px), narrower columns scale it down. No height fit: the
+     page scrolls, as the prototype does. The tokens plane hangs past the
+     stage by --over-bot (and the words plane above it by --over-top), so
+     the stage keeps that room: 126 is half the tilted plane's box in units. */
+  --sh: 720;
   --g: 130;
   --k1: 2.3;
-  --beat-chrome: calc(var(--spacing-20) * 3);
-  --u: min(0.0625rem, 100cqw / 420, (100svh - var(--header-height) - var(--beat-chrome)) / var(--sh));
+  --u: min(0.0625rem, 100cqw / 420);
   --gap: calc(var(--t) * var(--g) * var(--u));
+  --over-top: calc((2.05 * var(--g) + 126 - var(--sh) / 2) * var(--u));
+  --over-bot: calc((var(--k1) * var(--g) + 126 - var(--sh) / 2) * var(--u));
   position: relative;
   height: calc(var(--sh) * var(--u));
+  margin-block: var(--over-top) var(--over-bot);
 }
 
 .pl {
@@ -401,8 +408,10 @@
      with margin-top -10px, the planes at the prototype's multipliers. Only
      the tokens plane (--k1) sits lower than the prototype's 1.55, so its six
      chips are not under the card plate. No height fit: the page scrolls. */
-  .stage { margin-top: calc(-1 * (var(--spacing-2) + 2px)); margin-bottom: var(--spacing-touch-target); } /* the tokens plane hangs below the 450px stage */
-  .world { --sh: 625; --g: 108; --k1: 2.3; --u: min(0.045rem, 100cqw / 420); }
+  .stage { margin-top: calc(-1 * (var(--spacing-2) + 2px)); }
+  /* from 600 up the planes grow with the column (0.72px at 375, 1px from
+     about 560px wide) instead of staying at the 375 size */
+  .world { --sh: 625; --g: 108; --k1: 2.3; --u: clamp(0.045rem, 100cqw / 450, 0.0625rem); margin-top: 0; }
   /* art text keeps the smallest size audit:clip allows once the planes' tilt
      is counted (12px on screen); the prototype's is smaller still */
   .chip { font-size: 0.9375rem; line-height: 1.1; padding: calc(1 * var(--u)) calc(8 * var(--u)); gap: calc(6 * var(--u)); }
