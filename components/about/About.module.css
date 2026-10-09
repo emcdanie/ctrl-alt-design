@@ -1,8 +1,8 @@
 /* About on Template / Page (Site v3, Figma 403:7256 / 403:7591; Elleta,
-   4 Oct 2026): one layout Section on the 1056 case body, text on the
-   body's left edge (Section width="case-edge"), 96 between sections
-   (64 at 390). Type from BELLA's Foundations styles, colour from the
-   semantic tokens. */
+   4 Oct 2026): three layout Sections on the 1056 case body (hero /
+   experience / stack), text on the body's left edge (Section
+   width="case-edge"), 96 between beats inside a section (64 at 390).
+   Type from BELLA's Foundations styles, colour from the semantic tokens. */
 
 .page {
   display: flex;
