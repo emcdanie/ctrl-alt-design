@@ -5,7 +5,7 @@ One rule per line, then the check that fails when it breaks. UNENFORCED = no che
 - Ochre means clickable, only: buttons, links, clickable-card edge, focus ring, and the selected state of SegmentedControl and FilterChip · UNENFORCED (audit:intent, LD2)
 - Non-clickable highlight is ink wash + ink edge + a word or check; the edge is 3:1 against its surface, both themes · UNENFORCED (LD2; audit:contrast reads text only)
 - No amber · audit:structure
-- Contrast is WCAG AA minimum, AAA-minded, every state; dark mode is first-class on every surface · audit:contrast, audit:axe, audit:dark
+- Contrast is AAA for all text, both themes, every state; non-text edges 3:1 · audit:contrast, audit:axe, audit:dark
 - Focus ring is 3px, ochre-deep in light, ochre in dark · UNENFORCED
 - Figtree 400 and 600 only; Geist Mono only for real code and token names, never labels · audit:fonts
 - Unique is retired; wordmarks are SVG · UNENFORCED (audit:fonts still allows Unique, removal pending)
@@ -17,9 +17,10 @@ One rule per line, then the check that fails when it breaks. UNENFORCED = no che
 - One content edge, one section rhythm, radii from the set, at most 2 card signatures · audit:frame
 - Nothing leaves its panel; no cut-off shapes; no overlapping pins · audit:contain, audit:clip
 - Raster images render at most half their natural width on a 2x screen · audit:sharp
-- Every figure fits one screen with its caption · UNENFORCED (audit:fit, LD6b)
+- Every section and figure fits one screen with its caption (≤ 1.0 × viewport height) at 390×844 and 1440×900; longer content splits into beats or opens on request · audit:fit (new, see FR-frame-rule-2026-10-09.md)
+- Card cover images show ≥ 95% of the picture at every width (no cover crop) · audit:fit
 - Targets 44px or more for primary and secondary, 24px or more elsewhere · UNENFORCED (LD6)
-- Mobile-first: no horizontal overflow from 320 to 1440 · UNENFORCED (LD6)
+- Mobile-first: no horizontal overflow from 320 to 1440, page or inner box; a sideways reel is allowed only when it has visible scroll affordance and is listed in audit:fit's allowlist · audit:fit
 - No `transform: scale` for layout, no fixed widths over 320, no phone and desktop forks of a figure · UNENFORCED (LD5)
 - Figma export is the type and colour expectation; a changed export fails CI until code matches · UNENFORCED (LD3)
 - Keycap is for true actions; at most one primary per view; toggles carry aria-pressed or aria-current · audit:controls
@@ -34,6 +35,17 @@ One rule per line, then the check that fails when it breaks. UNENFORCED = no che
 - Nothing starts on scroll; no scroll-driven motion; render the final frame first · UNENFORCED
 - Docs cite files that exist; no orphan tokens; no dead selectors in audits · audit:debt
 - No audit has an opt-out; an illustration that breaks a rule ships as a flat `<img>` · audit:debt (allowlist capped at 15)
+- Every visual change: 375, 768, 1024, 1440, light + dark, every interactive state; Elleta sees the shots before she's asked to OK · contact sheet (#155)
 - No direct push to main; the `gate` check is required · branch protection, gate.yml
 - Beyond a one-line fix: spec first, stop for review, then build · UNENFORCED (CLAUDE.md s8)
 - Figma: assemble only (library instances, slot content, bound variables); a missing component stops the job · UNENFORCED (figma-lint, LD8)
+
+## Figma canvas
+- Never stack frames; nothing overlaps; nothing sits outside its section · figma-lint
+- Current work lives in "CURRENT · …" sections; superseded frames are renamed "OLD · …" and move to an "Archive · OLD …" section below · figma-lint
+- Sections run left to right; long case pages stay one tall frame · figma-lint
+- Doc items sit in their own "X · component" card (auto layout, padding 40, radius 16, file card fill and stroke), states side by side · figma-lint
+- Doc pages use the site's dark background · figma-lint
+- No loose layers on a page (every node is in a section) · figma-lint
+- Hi-fi only: real UI, real photos; nothing tilted except exploded stacks and the pattern quote mark · UNENFORCED
+- Before anyone says "done" or "have a look": run figma-lint, then open the frame for Elleta · process
