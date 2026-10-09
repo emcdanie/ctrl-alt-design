@@ -284,6 +284,7 @@
   flex-direction: column;
   gap: var(--spacing-3);
   min-width: 0;
+  overflow: hidden;
 }
 
 /* the exploded stack, drawn in design pixels times --s (1 at 1440) */
@@ -696,6 +697,7 @@
   font-size: 17px;
   color: var(--color-semantic-text-primary);
   white-space: nowrap;
+  overflow: hidden;
 }
 
 .kbd {
