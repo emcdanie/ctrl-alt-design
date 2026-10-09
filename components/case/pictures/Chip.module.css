@@ -832,6 +832,16 @@
   white-space: nowrap;
 }
 
+/* ── 820 and below: restBody and ask stack to single column so the legend
+   column is not squeezed to ~64px and the OBI field has room ── */
+@media (max-width: 959px) {
+  .restBody,
+  .ask {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-4);
+  }
+}
+
 /* ── 390: the frame restacks ── */
 @media (max-width: 639px) {
   .panel {

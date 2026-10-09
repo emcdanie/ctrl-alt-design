@@ -1,6 +1,6 @@
 /* The frame gate (Elleta, 21 Sep 2026: "make a gate", after a reference
  * site's published frame). audit:layout reads the code; this reads the
- * PIXELS. Every route, one case of each slug, at 1440, 1024 and 390, against the few frame
+ * PIXELS. Every route, one case of each slug, at 1440, 1024, 820, 768 and 390, against the few frame
  * tokens every page shares:
  *
  * 1. One content edge: the h1 and the first section's content start at the
@@ -52,7 +52,7 @@ import { chromium } from "playwright";
 import { receipt } from "./lib/receipt.mjs";
 import { BASE } from "./lib/base-url.mjs";
 
-const WIDTHS = [1440, 1024, 390];
+const WIDTHS = [1440, 1024, 820, 768, 390];
 const MOTIONS = ["reduce", "no-preference"];
 let MOTION = ""; // receipt label for the current pass
 const LIMIT = 50;
@@ -286,6 +286,65 @@ for (const motion of MOTIONS) for (const width of WIDTHS) {
         const w = Math.max(...rects.map((x) => x.right)) - Math.min(...rects.map((x) => x.left));
         if (w > measure + 2) F(p, `a ${Math.round(w)}px line`, `at most --measure-body, ${Math.round(measure)}px`);
       }
+      /* 7. cover-aspect: at ≥ 768px every .stagePicture on a data-compact card
+         uses --cover-stage-h: auto, so its rendered AR must match the source
+         image's natural AR within 5% (catches a fixed-height crop at tablet). */
+      if (innerWidth >= 768) {
+        for (const card of main.querySelectorAll("[data-compact]")) {
+          for (const stage of card.querySelectorAll("[class*='stagePicture']")) {
+            if (!visible(stage)) continue;
+            const img = [...stage.querySelectorAll("img")].find(
+              (i) => i.getAttribute("data-theme-only") !== "dark" && i.naturalWidth > 0
+            );
+            if (!img) continue;
+            const naturalAR = img.naturalWidth / img.naturalHeight;
+            const box = stage.getBoundingClientRect();
+            if (box.height < 1) continue;
+            const renderedAR = box.width / box.height;
+            if (Math.abs(renderedAR - naturalAR) / naturalAR > 0.05) {
+              F(stage, `cover aspect ${renderedAR.toFixed(3)} (${Math.round(box.width)}×${Math.round(box.height)}px)`, `within 5% of source ${naturalAR.toFixed(3)} (${img.naturalWidth}×${img.naturalHeight})`);
+            }
+          }
+        }
+      }
+
+      /* 8. text-inside-plate: at t=0 and t=1 for both brands (bella + coast).
+         The .wd label block stays within the frosted .plate. Both are
+         absolutely positioned inside plane 4; text floors at 1rem but the
+         plate scales with --u, so it overflows downward when --u is very
+         small (bfb5f16's svh constraint gave --u ≈ 0.44px on short viewports). */
+      const plane4 = main.querySelector("[data-i='4']");
+      const fig4 = plane4?.closest("[data-brand]");
+      if (plane4 && fig4) {
+        const plate = plane4.querySelector(":scope > [data-a]");
+        const wd = plate?.nextElementSibling;
+        if (plate && wd) {
+          const origT = fig4.style.getPropertyValue("--t") || "";
+          const origBrand = fig4.getAttribute("data-brand") || "bella";
+          const checkPlate = (label) => {
+            void plane4.offsetHeight;
+            if (!visible(plate) || !visible(wd)) return;
+            const pr = plate.getBoundingClientRect();
+            const wr = wd.getBoundingClientRect();
+            const SLACK = 2;
+            const overRight = wr.right - pr.right;
+            const overBottom = wr.bottom - pr.bottom;
+            if (overRight > SLACK || overBottom > SLACK)
+              F(wd, `beat text overflows plate (${label}) — right +${overRight.toFixed(1)}px bottom +${overBottom.toFixed(1)}px`, "text within the frosted plate bounds");
+          };
+          for (const brand of ["bella", "coast"]) {
+            fig4.setAttribute("data-brand", brand);
+            for (const tv of [1, 0]) {
+              fig4.style.setProperty("--t", String(tv));
+              checkPlate(`t=${tv} ${brand}`);
+            }
+          }
+          fig4.setAttribute("data-brand", origBrand);
+          if (origT) fig4.style.setProperty("--t", origT);
+          else fig4.style.removeProperty("--t");
+        }
+      }
+
       return out;
     }, { LIMIT });
 
