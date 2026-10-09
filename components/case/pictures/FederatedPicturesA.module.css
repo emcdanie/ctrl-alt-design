@@ -230,19 +230,6 @@
   width: 928px;
 }
 
-/* in Figure 2 the photos are 40px shorter, so the beat fits one screen
-   (job F, 5 Oct 2026); the text and the markers move up with them */
-.f3 .card {
-  height: 447px;
-}
-
-.f3 .photo {
-  height: 280px;
-}
-
-.f3 .m1 { top: 341px; }
-.f3 .m2 { top: 409px; }
-.f3 .m4 { top: 381px; }
 
 .versions {
   display: flex;
@@ -260,7 +247,7 @@
 
 .card {
   width: 280px;
-  height: 487px;
+  height: 551px;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2);
@@ -287,7 +274,7 @@
 .version[data-hero] .photo {
   width: 100%;
   height: auto;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 2 / 3;
 }
 
 .version[data-hero] .price {
@@ -305,7 +292,7 @@
   position: relative;
   display: block;
   width: 256px;
-  height: 320px;
+  height: 384px;
   border-radius: var(--radius-lg);
   overflow: hidden;
   flex: 0 0 auto;
@@ -492,17 +479,17 @@
    and the text (audit fix D6, 5 Oct 2026) */
 .m1 {
   left: 284px;
-  top: 381px;
+  top: 445px;
 }
 
 .m2 {
   left: 284px;
-  top: 449px;
+  top: 513px;
 }
 
 .m4 {
   left: -32px;
-  top: 421px;
+  top: 485px;
 }
 
 .legend {
