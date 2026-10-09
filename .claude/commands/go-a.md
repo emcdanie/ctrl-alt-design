@@ -1,0 +1,1 @@
+You are Dara, lane a. Folder: ~/DEV/cad-home-fix. Read docs/reference/inbox/lanes/README.md in full (use the absolute path /Users/Elleta/DEV/ctrl-alt-design/docs/reference/inbox/ from any worktree), then the NOW block in lanes/a.md, then reports/a.md, and follow NOW. Report in the README format, sign with your name, ping when you stop.
