@@ -1,0 +1,64 @@
+name: update-baselines
+
+# Regenerate screenshot baselines on Linux (platform-stable) and commit them
+# to the current branch. Run this manually via workflow_dispatch when a
+# visual change is intentional and the new screenshots are Elleta-approved.
+#
+# Never run on main directly — always on a PR branch. The committed baselines
+# get Elleta's review as part of the PR diff.
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to update baselines on"
+        required: true
+        default: "feat/rg-guard"
+
+jobs:
+  update:
+    name: Update screenshot baselines
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.branch }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Serve
+        run: |
+          npm run start &
+          for i in $(seq 1 60); do
+            curl -sf -o /dev/null http://localhost:3000 && break
+            sleep 1
+          done
+
+      - name: Generate baselines
+        run: npx playwright test --config=playwright.visual.config.ts --update-snapshots
+        env:
+          AUDIT_URL: http://localhost:3000
+
+      - name: Commit baselines
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tests/visual/__snapshots__/
+          git diff --cached --quiet || git commit -m "chore(baselines): update screenshot baselines [skip ci]"
+          git push

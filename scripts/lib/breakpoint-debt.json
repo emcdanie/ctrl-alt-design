@@ -1,0 +1,100 @@
+{
+  "$description": "Breakpoint/position/scale violations recorded on guard install day. May only shrink.",
+  "updatedAt": "2026-10-10",
+  "breakpoints": {
+    "app/globals.css": [
+      "639.98px",
+      "767px",
+      "767.98px",
+      "1023.98px",
+      "900px",
+      "700px",
+      "1279px",
+      "400px",
+      "600px",
+      "480px",
+      "1080px",
+      "1400px",
+      "1280px",
+      "1023px",
+      "479px",
+      "720px",
+      "719px",
+      "519px",
+      "560px",
+      "899px",
+      "860px",
+      "699.98px",
+      "899.98px",
+      "639px"
+    ],
+    "components/BellaSpine.module.css": [
+      "47.99rem",
+      "43.74rem",
+      "56.25rem",
+      "47.5rem",
+      "39.99rem"
+    ],
+    "components/Hero.module.css": [
+      "900px"
+    ],
+    "components/Home.module.css": [
+      "900px",
+      "39.99rem"
+    ],
+    "components/Learning.module.css": [
+      "767px",
+      "860px",
+      "699px"
+    ],
+    "components/SpecimenFrame.module.css": [
+      "39.99rem",
+      "47.99rem"
+    ],
+    "components/SystemBeat.module.css": [
+      "51.25rem"
+    ],
+    "components/ThemingCase.module.css": [
+      "40.0625rem",
+      "60rem",
+      "72rem",
+      "59.9375rem",
+      "32.5rem",
+      "80rem",
+      "43.75rem",
+      "56.25rem",
+      "639px",
+      "39.99rem"
+    ],
+    "components/WorkLibrary.module.css": [
+      "900px",
+      "56.1875rem",
+      "39.99rem",
+      "35.99rem"
+    ],
+    "components/about/About.module.css": [
+      "1023px",
+      "767px",
+      "639px"
+    ],
+    "components/case/Case.module.css": [
+      "1179.98px",
+      "959.98px",
+      "639.98px",
+      "639px",
+      "1100px",
+      "1023px",
+      "39.99rem"
+    ],
+    "components/case/DriftFigures.module.css": [
+      "1023px",
+      "639px"
+    ],
+    "components/case/pictures/Chip.module.css": [
+      "959px",
+      "639px"
+    ]
+  },
+  "position": [],
+  "scale": []
+}

@@ -3,9 +3,9 @@ name: gate
 # The full BELLA gate + tsc on every PR and every push to main, split into
 # parallel jobs (S, 7 Oct 2026; was one 23 to 25 minute serial step). The same
 # audits run, with the same rules and thresholds; only where they run changed.
-#   static   no browser, no build: tsc, tests, 10 audits
+#   static   no browser, no build: tsc, tests, 11 audits (+ breakpoints, RG guard)
 #   build    next build once, the .next folder shared with the shards
-#   browser  7 shards (clip split three ways), each starts the built site
+#   browser  8 shards (clip split three ways + sweep/visual:baseline, RG guard)
 #   gate     the one required check: green only if all of the above are
 # NOTE: audit:nda passes vacuously here, the banned-term lists are
 # gitignored (_private/) and never reach CI by design; NDA enforcement is
@@ -35,7 +35,7 @@ jobs:
       - name: Static audits
         run: |
           fail=0
-          for a in sync layout fonts copy reuse nda parity agents contract debt; do
+          for a in sync layout breakpoints fonts copy reuse nda parity agents contract debt; do
             s=$SECONDS
             npm run "audit:$a" || fail=1
             echo "::notice title=timing::audit:$a $((SECONDS - s))s"
@@ -98,6 +98,10 @@ jobs:
           - shard: G
             audits: clip
             sweep: 3/3
+          # RG guard (10 Oct 2026): width sweep + screenshot baselines
+          - shard: H
+            audits: sweep
+            visual_baseline: "1"
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -132,6 +136,7 @@ jobs:
       - name: Audits
         env:
           SWEEP: ${{ matrix.sweep }}
+          VISUAL_BASELINE: ${{ matrix.visual_baseline }}
         run: |
           [ -n "$SWEEP" ] && export SHARD="$SWEEP"
           fail=0
@@ -140,7 +145,19 @@ jobs:
             npm run "audit:$a" || fail=1
             echo "::notice title=timing::shard ${{ matrix.shard }} audit:$a $((SECONDS - s))s"
           done
+          if [ -n "$VISUAL_BASELINE" ]; then
+            s=$SECONDS
+            npm run audit:visual:baseline || fail=1
+            echo "::notice title=timing::shard ${{ matrix.shard }} audit:visual:baseline $((SECONDS - s))s"
+          fi
           exit $fail
+      - name: Upload visual diff artifacts
+        if: failure() && matrix.visual_baseline == '1'
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diff-${{ github.run_id }}
+          path: test-results/
+          retention-days: 7
 
   # The required check. Branch protection asks for "gate"; this keeps that
   # name and is red if any job above is red or skipped.

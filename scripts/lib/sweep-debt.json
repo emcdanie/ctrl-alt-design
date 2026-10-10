@@ -1,0 +1,18 @@
+{
+  "$description": "audit:sweep failures recorded on guard install day (RG guard, 10 Oct 2026). May only shrink. Regenerate: UPDATE_SWEEP_DEBT=1 npm run audit:sweep",
+  "updatedAt": "2026-10-10",
+  "entries": [
+    {
+      "route": "/",
+      "check": "balance",
+      "el": "div.Z8hQ_W__stage \"\"",
+      "detail": "drift 35px > threshold 22px; spans 76%"
+    },
+    {
+      "route": "/design-system",
+      "check": "overflow",
+      "el": "html",
+      "detail": "scrollWidth 326 > clientWidth 320"
+    }
+  ]
+}
