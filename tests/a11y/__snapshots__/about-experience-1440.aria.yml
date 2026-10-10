@@ -2,69 +2,26 @@
   - paragraph: 3 Track record
   - heading "Where I've been." [level=2]
   - paragraph: "Five teams, one thread: making the system the thing people trust."
-  - heading /Oct \d+ to now Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program/ [level=3]:
-    - button /Oct \d+ to now Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program/ [expanded]
-  - paragraph: Built a Figma component library aligned with reusable web components and a multi-theme architecture.
+  - text: Oct 2025 to now
+  - paragraph: Brad Frost Web , current role
+  - paragraph: AI-Assisted Design Systems Engineer · Maker Program
+  - link "Case study":
+    - /url: /case-studies/brad-frost
+  - text: Apr to Jul 2026
+  - paragraph: A global fashion retailer
+  - paragraph: Design Systems Specialist
+  - link "Case study":
+    - /url: /case-studies/federated
+  - text: Jul 2024 to Feb 2026
+  - paragraph: A B2B travel platform
+  - paragraph: Product & Design Systems Designer
+  - link "Case study":
+    - /url: /case-studies/design-system-transformation
+  - text: Oct to Dec 2025
+  - paragraph: United Nations Geneva
+  - paragraph: UX / Product Designer
+  - text: Feb 2023 to Feb 2024
+  - paragraph: VML
+  - paragraph: UX/UI Designer
   - paragraph:
-    - 'link "Case study: Code First →"':
-      - /url: /case-studies/brad-frost
-  - region /Oct \d+ to now Brad Frost Web , current role AI-Assisted Design Systems Engineer · Maker Program/:
-    - list:
-      - listitem: Built a Figma component library aligned with reusable web components and a multi-theme architecture.
-      - listitem: Translated an existing code-based design system into production-ready Figma components.
-      - listitem: Explored AI-enabled governance workflows for design-system compliance and automation.
-  - heading /Apr to Jul \d+ A global fashion retailer Design Systems Specialist/ [level=3]:
-    - button /Apr to Jul \d+ A global fashion retailer Design Systems Specialist/ [expanded]
-  - paragraph: Brought AI into the retailer's design-system work for the first time.
-  - paragraph:
-    - 'link "Case study: They stopped telling me what they’d done →"':
-      - /url: /case-studies/federated
-  - region /Apr to Jul \d+ A global fashion retailer Design Systems Specialist/:
-    - list:
-      - listitem:
-        - text: Brought AI into the retailer's design-system work for the first time. With
-        - strong: Claude, Figma MCP and Code Connect
-        - text: I automated audits and made components machine-readable, so I could ship far more in a few months while keeping the retailer's design system up to date.
-      - listitem:
-        - text: Built the tooling and documentation the team needed to
-        - strong: adopt Code Connect themselves
-        - text: ", so design-to-code parity didn't depend on me."
-      - listitem:
-        - text: Owned cross-platform component governance across
-        - strong: web, iOS and Android
-        - text: within the retailer's design system, during a leadership transition.
-  - heading /Jul \d+ to Feb \d+ A B2B travel platform Product & Design Systems Designer/ [level=3]:
-    - button /Jul \d+ to Feb \d+ A B2B travel platform Product & Design Systems Designer/ [expanded]
-  - paragraph: Built the company's first design system from scratch (tokens, components, themes), with AI in mind from day one.
-  - paragraph:
-    - 'link "Case study: From Drift to Foundation →"':
-      - /url: /case-studies/design-system-transformation
-  - region /Jul \d+ to Feb \d+ A B2B travel platform Product & Design Systems Designer/:
-    - paragraph: Clients included an airline and a travel start-up.
-    - list:
-      - listitem:
-        - text: Built the company's
-        - strong: first design system from scratch
-        - text: (tokens, components, themes), with AI in mind from day one, and integrated the tokens into production with engineering.
-      - listitem:
-        - strong: Wrote the documentation
-        - text: even when I was told it wasn't important, because a system nobody can read is a system nobody uses.
-      - listitem: "Led the UX transformation of a legacy SaaS travel platform: booking, admin, finance and multi-role dashboards."
-  - heading /Oct to Dec \d+ United Nations Geneva UX \/ Product Designer/ [level=3]:
-    - button /Oct to Dec \d+ United Nations Geneva UX \/ Product Designer/ [expanded]
-  - paragraph: Defined user roles, permission structures and dashboard frameworks for a multi-stakeholder institutional platform.
-  - region /Oct to Dec \d+ United Nations Geneva UX \/ Product Designer/:
-    - list:
-      - listitem: Defined user roles, permission structures and dashboard frameworks for a multi-stakeholder institutional platform.
-      - listitem: Designed scalable information architecture for operational workflows across departments.
-      - listitem: Delivered interactive prototypes for executive review and funding discussions.
-  - heading /Feb \d+ to Feb \d+ VML UX\/UI Designer/ [level=3]:
-    - button /Feb \d+ to Feb \d+ VML UX\/UI Designer/ [expanded]
-  - paragraph: Designed enterprise banking and SaaS platform experiences for digital clients.
-  - region /Feb \d+ to Feb \d+ VML UX\/UI Designer/:
-    - paragraph: "Client: a bank in the Gulf."
-    - list:
-      - listitem: Designed enterprise banking and SaaS platform experiences for digital clients.
-      - listitem: Ran user research and usability testing to validate complex workflows.
-  - paragraph:
-    - button "View CV"
+    - button "Full detail in my CV →"

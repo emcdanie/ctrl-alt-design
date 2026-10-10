@@ -1,8 +1,58 @@
 # design.md, system-page-redesign
 
-**Status:** spec only, awaiting Elleta's review. Nothing built.
+**Status:** Built as `a3c5a1d` (case-shell migration). UNVERIFIED in a browser. Judged against the Concept Lock below.
 **Branch:** `spec/system-page-redesign`, cut from `main` at `e787503`.
 **Supersedes:** the `ds-contract` beat on `spec/system-contract-visible` (`329f32a`). See §2.
+
+---
+
+## CONCEPT LOCK, 2026-07-27 (Elleta + Cowork)
+
+**Authoritative. Supersedes the section 3 spine ordering below wherever they differ.**
+Locked after a day of four rebuilds. The rule it enforces: lock concept and format
+before building. A build already exists (`a3c5a1d`, the case-shell migration) and is
+UNVERIFIED in a browser; this lock is what it gets judged against.
+
+### One thesis, the whole page proves this one sentence
+> A design system is AI-ready when a machine can build with it correctly. BELLA can prove it.
+
+### Format (locked)
+Linear essay on the real case-study shell (`CaseStudyLayout` to `CaseShellV2` to
+`CaseBeats`), which is exactly what `a3c5a1d` set up. We KEEP that migration, we do not
+scrap it. One container, one left edge. Each beat is eyebrow + Heading + one demo. Max one
+primary action per beat. No card walls.
+
+### Spine (locked, in order). Each beat is one idea plus one real demo
+1. **The claim, "Can an AI build with your system?"** The toggle: same agent, guessing vs
+   grounded by the contract. This is the hook and it LEADS the page. It is the demo that
+   landed on 27 Jul, and the current page buries it.
+2. **How it is possible, the contract.** BELLA generated from source into the
+   machine-readable `bella.json`. Show the real artifact, not a description of one.
+3. **How it stays true, the gate.** The 16 deterministic audits, real live counts. The
+   system governs itself.
+4. **How honest it is, maturity.** Where BELLA is and where it is not. No inflation.
+
+Closing coda: rules + status (the existing `ds-close`), kept as a footer, not a numbered beat.
+
+### Cut from the prior spine
+The specimen shelf (`ds-specimens`). It is the swatch gallery Vitaly kills and the showcase
+the team already retired. Do not reintroduce it.
+
+### Out of scope for shipping this page
+Distribution, "how you would consume BELLA" (install + agents model). That is v2.
+
+### Why this, in three lenses
+- **Brad Frost:** shows the system AS a system. Governance and the contract are the story,
+  not a parts bin.
+- **Vitaly Friedman:** one scannable idea per beat, each with something to DO. The wall of
+  grey cards is gone.
+- **Craft / design engineering:** the demos run on the REAL contract and REAL gate counts.
+  The page is built the way it preaches.
+
+### Acceptance for "done"
+The four beats above, in order, on the case shell, verified in a browser at
+360 / 390 / 768 / 1024 / 1440 in both themes (live-qa), gate green. Green alone is not done.
+The page must be looked at.
 
 ---
 

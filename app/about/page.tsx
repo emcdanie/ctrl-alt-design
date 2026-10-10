@@ -37,30 +37,33 @@ export default function AboutPage() {
     <main id="main-content" className="page-shell min-h-screen text-[var(--color-ink-soft)]">
       <OverlayNav />
 
+      {/* ── Hero ─────────────────────────────────────── */}
       <Section width="case-edge" labelledBy="about-title">
-        <div className={st.page}>
-          {/* 0 · Hero */}
-          <div id="about-hero" className={st.hero}>
-            <div className={st.head}>
-              <p className={st.kicker}>About</p>
-              <Heading tier="page" id="about-title" className={st.title} accent="Bella.">
-                Fluent in design, code and
-              </Heading>
-              <p className={st.lead}>
-                I&apos;m a design engineer for design systems: tokens, components, and the decisions behind them, written
-                down kindly so designers and developers can both use them.
-              </p>
-              <p className={st.avail}>Open to full-time roles and select freelance projects, working remotely from near Barcelona.</p>
-              <div className={st.actions}>
-                <ResumeLink button="primary" label="View CV" />
-                <Button href="/contact">Let&apos;s talk</Button>
-              </div>
-            </div>
-            <div className={st.plates}>
-              <HeroPlates />
+        <div id="about-hero" className={st.hero}>
+          <div className={st.head}>
+            <p className={st.kicker}>About</p>
+            <Heading tier="page" id="about-title" className={st.title} accent="Bella.">
+              Fluent in design, code and
+            </Heading>
+            <p className={st.lead}>
+              I&apos;m a design engineer for design systems: tokens, components, and the decisions behind them, written
+              down kindly so designers and developers can both use them.
+            </p>
+            <p className={st.avail}>Open to full-time roles and select freelance projects, working remotely from near Barcelona.</p>
+            <div className={st.actions}>
+              <ResumeLink button="primary" label="View CV" />
+              <Button href="/contact">Let&apos;s talk</Button>
             </div>
           </div>
+          <div className={st.plates}>
+            <HeroPlates />
+          </div>
+        </div>
+      </Section>
 
+      {/* ── Experience ──────────────────────────────── */}
+      <Section width="case-edge">
+        <div className={st.page}>
           {/* 1 · The short lead */}
           <Beat
             id="short-lead"
@@ -135,10 +138,15 @@ export default function AboutPage() {
           >
             <ExperienceSection />
             <p className={st.linkRow}>
-              <ResumeLink className={textLinkClass} label="View CV" />
+              <ResumeLink className={textLinkClass} label="Full detail in my CV →" />
             </p>
           </Beat>
+        </div>
+      </Section>
 
+      {/* ── Stack ───────────────────────────────────── */}
+      <Section width="case-edge">
+        <div className={st.page}>
           {/* 4 · Word of mouth */}
           <Beat
             id="word-of-mouth"
