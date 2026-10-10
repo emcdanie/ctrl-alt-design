@@ -7,7 +7,7 @@ import styles from "./ProofCard.module.css";
    the link line. The whole card is the one target. */
 export default function ProofCard({ title, link, href }: { title: string; link: string; href: string }) {
   return (
-    <Link href={href} className={styles.card}>
+    <Link href={href} className={styles.card} data-card>
       <span className={styles.bar} aria-hidden="true" />
       <span className={`${styles.title} heading-item`}>{title}</span>
       <span className={styles.link}>

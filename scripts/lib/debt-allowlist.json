@@ -4,6 +4,11 @@
   "staleAfterDays": 180,
   "entries": [
     {
+      "id": "visual:baselines-missing",
+      "reason": "First-screen visual baselines (tests/visual/__snapshots__/*.png) have not been seeded yet. audit:visual:baseline skips (not fails) when no .png files exist. Remove this entry after running the update-baselines workflow_dispatch on the merged branch.",
+      "date": "2026-10-10"
+    },
+    {
       "id": "refs:docs/briefs/system-annotation-audit.md",
       "reason": "A dated brief describing the annotation rebuild. It cites components/DesignSystemSpecimens.tsx, retired 27 Jul when /design-system became an explorable explanation. The brief is a record of what was decided then; repointing it would falsify the record.",
       "date": "2026-07-27"

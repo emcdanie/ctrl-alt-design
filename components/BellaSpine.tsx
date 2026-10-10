@@ -68,6 +68,8 @@ const GATE: { name: string; stops: string }[] = [
   { name: "audit:visual", stops: "a second page ground, or sibling cards of unequal height" },
   { name: "audit:dark", stops: "an embedded demo that ships one skin in dark mode" },
   { name: "audit:order", stops: "a change to what a screen reader reads, and in which order" },
+  { name: "audit:sweep", stops: "a route that overflows or leaves a card at any width from 320 to 1440" },
+  { name: "audit:breakpoints", stops: "a @media width outside the four BELLA breakpoints, or a stray position:absolute or transform:scale" },
   { name: "audit:debt", stops: "a doc citing a missing file, or a token nothing uses" },
 ];
 

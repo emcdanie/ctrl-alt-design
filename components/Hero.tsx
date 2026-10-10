@@ -156,7 +156,7 @@ export default function Hero() {
             </ul>
           </div>
 
-          <div className={styles.stage} data-stage>
+          <div className={styles.stage} data-stage data-balance>
             <div className={styles.trail} aria-hidden="true">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/images/home/pattern-ribbon.webp" alt="" width={1240} height={520} decoding="async" fetchPriority="low" />

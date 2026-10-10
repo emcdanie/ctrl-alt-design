@@ -112,7 +112,7 @@ const Accent = () => <span className={s.accent} />;
 const PEOPLE = ["avatar-r9", "avatar-r4", "avatar-r6", "avatar-r10"];
 
 const Migration = () => (
-  <div className={`${s.card} ${s.migration}`}>
+  <div className={`${s.card} ${s.migration}`} data-card>
     <Accent />
     <span className={s.title}>Spacing migration</span>
     <span className={s.sub}>3,882 bindings moved to the new spacing tokens</span>
@@ -133,7 +133,7 @@ const Migration = () => (
 );
 
 const DarkMode = () => (
-  <div className={`${s.card} ${s.darkMode}`}>
+  <div className={`${s.card} ${s.darkMode}`} data-card>
     <Accent />
     <span className={s.ring}>84/84</span>
     <span className={s.body}>Brand tokens ready for dark mode. Design stopped being the blocker.</span>
@@ -141,7 +141,7 @@ const DarkMode = () => (
 );
 
 const Cleanup = () => (
-  <div className={`${s.card} ${s.cleanup}`}>
+  <div className={`${s.card} ${s.cleanup}`} data-card>
     <Accent />
     <span className={s.bigStat}>
       <span className={s.big}>280</span>
@@ -155,7 +155,7 @@ const Cleanup = () => (
 );
 
 const People = () => (
-  <div className={`${s.card} ${s.people}`}>
+  <div className={`${s.card} ${s.people}`} data-card>
     <span className={s.stack}>
       {PEOPLE.map((p) => (
         <KitAvatar key={p} src={`/images/kit/${p}.jpg`} size={32} className={s.stackAvatar} />
@@ -261,7 +261,7 @@ function Bullets({ items, className = "" }: { items: string[]; className?: strin
 const LANE_TITLE = "When did the system team hear about it?";
 
 const Timelines = () => (
-  <div className={`${s.card} ${s.timelines}`}>
+  <div className={`${s.card} ${s.timelines}`} data-card>
     <Accent />
     <span className={s.title}>{LANE_TITLE}</span>
     <Lane kind="fail" head="Before: after the build" steps={BEFORE} />
@@ -271,7 +271,7 @@ const Timelines = () => (
 );
 
 const OneLane = ({ after }: { after: boolean }) => (
-  <div className={`${s.card} ${s.timelines}`}>
+  <div className={`${s.card} ${s.timelines}`} data-card>
     <Accent />
     <span className={s.title}>{LANE_TITLE}</span>
     {after ? <Lane kind="pass" head="After: before the build" steps={AFTER} /> : <Lane kind="fail" head="Before: after the build" steps={BEFORE} />}
@@ -279,7 +279,7 @@ const OneLane = ({ after }: { after: boolean }) => (
 );
 
 const Evidence = () => (
-  <div className={`${s.card} ${s.evidence}`}>
+  <div className={`${s.card} ${s.evidence}`} data-card>
     <Accent />
     <span className={s.title18}>From the team retro</span>
     <span className={s.note}>“Technical feedback reaches us after the open desk, not before.”</span>
@@ -380,7 +380,7 @@ const Tree = () => (
 );
 
 const Outcome = () => (
-  <div className={`${s.card} ${s.outcome}`}>
+  <div className={`${s.card} ${s.outcome}`} data-card>
     <Accent />
     <span className={s.sub}>Two months after I left</span>
     <span className={s.title}>Developers on the system</span>
@@ -411,7 +411,7 @@ const KPI_PANELS: PanelItem[] = [
     key: "slide",
     short: "the slide",
     node: (
-      <div className={`${s.card} ${s.slide} ${s.slidePhone}`}>
+      <div className={`${s.card} ${s.slide} ${s.slidePhone}`} data-card>
         <SlideHead />
         <Ask />
         <Cells />
@@ -428,7 +428,7 @@ export function FedKpi({ label }: { label: string }) {
   return (
     <Picture label={label} panels={KPI_PANELS} swipe="The leadership slide">
       <div className={s.kpi}>
-        <div className={`${s.card} ${s.slide}`}>
+        <div className={`${s.card} ${s.slide}`} data-card>
           <SlideHead />
           <span className={s.columns}>
             <Ask />
@@ -649,7 +649,7 @@ export function TrimDuo() {
 /** the chip group with slots: pick a group, its labels come with it */
 export function ChipGroupCard() {
   return (
-    <div className={`${s.card} ${s.group}`}>
+    <div className={`${s.card} ${s.group}`} data-card>
       <span className={s.groupTitle}>Chip group, with slots</span>
       <span className={s.verdict}>
         <span className={s.verdictIcon} data-kind="fail">
@@ -699,7 +699,7 @@ export function ChipGroupCard() {
 
 const Asked = () => (
   <div className={s.stackCol}>
-    <div className={`${s.card} ${s.request}`}>
+    <div className={`${s.card} ${s.request}`} data-card>
       <span className={s.from}>
         <KitAvatar src="/images/kit/avatar-r8.jpg" size={32} />
         <span className={s.fromText}>
@@ -709,7 +709,7 @@ const Asked = () => (
       </span>
       <span className={`${s.body} ${s.bubble}`}>The new card needs its own size selector chip. Can we add one?</span>
     </div>
-    <div className={`${s.card} ${s.review}`}>
+    <div className={`${s.card} ${s.review}`} data-card>
       <span className={s.reviewHead}>
         <span className={s.label16}>I’ll review it with the devs</span>
         <span className={s.stack}>
@@ -727,7 +727,7 @@ const Asked = () => (
 );
 
 const Kept = () => (
-  <div className={`${s.card} ${s.kept}`}>
+  <div className={`${s.card} ${s.kept}`} data-card>
     <span className={s.title18}>Kept the old chip, added a slot</span>
     <Layout chip={<ColourChip />} label="Colour" end={<KitTag>Kept</KitTag>} />
     <Layout chip={<TextChip />} label="Text" end={<KitTag>Kept</KitTag>} />
@@ -761,7 +761,7 @@ const Kept = () => (
 );
 
 const TrimCard = () => (
-  <div className={`${s.card} ${s.trimCard}`}>
+  <div className={`${s.card} ${s.trimCard}`} data-card>
     <span className={s.title18}>The stock marks, aligned</span>
     <span className={s.trimPair}>
       <TrimBox on={false} />
@@ -775,7 +775,7 @@ const TrimCard = () => (
 );
 
 const ProductScreen = ({ cell }: { cell: number }) => (
-  <div className={`${s.card} ${s.screen}`}>
+  <div className={`${s.card} ${s.screen}`} data-card>
     <KitTag>Product page</KitTag>
     <img className={s.photo} src="/images/kit/coat.jpg" alt="" width={1200} height={1800} loading="lazy" decoding="async" />
     <span className={s.product}>Wool blend belted coat</span>
@@ -798,7 +798,7 @@ const ProductScreen = ({ cell }: { cell: number }) => (
 );
 
 const BagScreen = ({ cell }: { cell: number }) => (
-  <div className={`${s.card} ${s.screen}`}>
+  <div className={`${s.card} ${s.screen}`} data-card>
     <KitTag>Bag</KitTag>
     <span className={s.bagItem}>
       <img className={s.thumb} src="/images/kit/coat.jpg" alt="" width={1200} height={1800} loading="lazy" decoding="async" />
@@ -827,7 +827,7 @@ const BagScreen = ({ cell }: { cell: number }) => (
 );
 
 const GuideScreen = ({ cell }: { cell: number }) => (
-  <div className={`${s.card} ${s.screen}`}>
+  <div className={`${s.card} ${s.screen}`} data-card>
     <KitTag>Size guide</KitTag>
     <span className={s.guideHead}>
       <span className={s.title18}>Size guide</span>
@@ -861,7 +861,7 @@ const GuideScreen = ({ cell }: { cell: number }) => (
 );
 
 const Filters = () => (
-  <div className={`${s.card} ${s.filters}`}>
+  <div className={`${s.card} ${s.filters}`} data-card>
     <span className={s.colourCol}>
       <KitTag>Filters</KitTag>
       <span className={s.sectionHead}>
