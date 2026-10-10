@@ -54,12 +54,26 @@ const END_STATE = `*, *::before, *::after {
   transition: none !important;
 }`;
 
-const debtKey = (route, check, el) => `${route}|${check}|${el}`;
+/* Routes that MUST contain at least 1 [data-card] — floor check.
+ * If a route has 0 matches the card-leak check is silently useless. */
+const CARD_ROUTES = new Set([
+  "/", "/work", "/about",
+  "/case-studies/federated",
+  "/case-studies/drift",
+]);
+
+const debtKey = (route, check, el, width) => `${route}|${check}|${el}|${width}`;
 
 const debt = existsSync(DEBT_PATH)
   ? JSON.parse(readFileSync(DEBT_PATH, "utf8"))
   : { entries: [] };
-const debtSet = new Set((debt.entries ?? []).map((e) => debtKey(e.route, e.check, e.el)));
+/* Build a set of allowed (route, check, el, width) tuples from debt.
+ * Each debt entry stores { route, check, el, detail, widths: number[] }. */
+const debtSet = new Set(
+  (debt.entries ?? []).flatMap((e) =>
+    (e.widths ?? []).map((w) => debtKey(e.route, e.check, e.el, w))
+  )
+);
 
 /* ── in-page measure function (runs in browser context) ── */
 function measure() {
@@ -143,20 +157,31 @@ await ctx.addInitScript(() => {
 });
 const page = await ctx.newPage();
 
-/* keyed by debtKey → {route, check, el, detail, widths:[]} */
+/* keyed by route|check|el → {route, check, el, detail, widths:[]} */
 const byKey = {};
+/* per-route card count (for floor check) */
+const cardCounts = {};
 
 for (const route of ROUTES) {
   await page.goto(BASE + route, { waitUntil: "networkidle" });
   await page.addStyleTag({ content: END_STATE });
 
+  /* floor check: count [data-card] at 1440 */
+  await page.setViewportSize({ width: 1440, height: 900 });
+  if (CARD_ROUTES.has(route)) {
+    const count = await page.evaluate(() =>
+      document.querySelectorAll("[data-card]").length
+    );
+    cardCounts[route] = count;
+  }
+
   for (const width of WIDTHS) {
     await page.setViewportSize({ width, height: 900 });
     const findings = await page.evaluate(measure);
     for (const { check, el, detail } of findings) {
-      const key = debtKey(route, check, el);
-      if (!byKey[key]) byKey[key] = { route, check, el, detail, widths: [] };
-      byKey[key].widths.push(width);
+      const base = `${route}|${check}|${el}`;
+      if (!byKey[base]) byKey[base] = { route, check, el, detail, widths: [] };
+      byKey[base].widths.push(width);
     }
   }
 }
@@ -164,12 +189,30 @@ for (const route of ROUTES) {
 await ctx.close();
 await browser.close();
 
-/* ── output ── */
-const allKeys = Object.keys(byKey);
-const newKeys = allKeys.filter((k) => !debtSet.has(k));
-const knownKeys = allKeys.filter((k) => debtSet.has(k));
+/* ── floor failures ── */
+const floorFailures = Object.entries(cardCounts)
+  .filter(([, count]) => count === 0)
+  .map(([route]) => route);
 
-if (allKeys.length === 0) {
+/* ── output — width-aware new/known split ── */
+/* A finding is "new" if ANY of its widths is not in the debt set */
+const allKeys = Object.keys(byKey);
+const newKeys = allKeys.filter((k) => {
+  const { route, check, el, widths } = byKey[k];
+  return widths.some((w) => !debtSet.has(debtKey(route, check, el, w)));
+});
+const knownKeys = allKeys.filter((k) => {
+  const { route, check, el, widths } = byKey[k];
+  return widths.every((w) => debtSet.has(debtKey(route, check, el, w)));
+});
+
+if (floorFailures.length > 0) {
+  for (const route of floorFailures) {
+    console.error(receipt("sweep", route, "card-floor — 0 [data-card] found; card-leak check is testing nothing", "add data-card to card roots"));
+  }
+}
+
+if (allKeys.length === 0 && floorFailures.length === 0) {
   console.log("audit:sweep — clean (0 findings)");
 } else {
   const newCount = newKeys.length;
@@ -180,7 +223,9 @@ if (allKeys.length === 0) {
     console.error("NEW (not in debt list):");
     for (const k of newKeys) {
       const { route, check, el, detail, widths } = byKey[k];
-      const wrange = widths.length === 1 ? `${widths[0]}px` : `${widths[0]}–${widths[widths.length - 1]}px`;
+      /* report only widths not in debt */
+      const newWidths = widths.filter((w) => !debtSet.has(debtKey(route, check, el, w)));
+      const wrange = newWidths.length === 1 ? `${newWidths[0]}px` : `${newWidths[0]}–${newWidths[newWidths.length - 1]}px`;
       console.error(receipt("sweep", `${route} @${wrange}`, `${check} — ${el}: ${detail}`, "none"));
     }
   }
@@ -195,9 +240,10 @@ if (allKeys.length === 0) {
 }
 
 if (UPDATE) {
+  /* write entries with widths arrays */
   const entries = allKeys.map((k) => {
-    const { route, check, el, detail } = byKey[k];
-    return { route, check, el, detail };
+    const { route, check, el, detail, widths } = byKey[k];
+    return { route, check, el, detail, widths };
   });
   writeFileSync(DEBT_PATH, JSON.stringify({
     "$description": "audit:sweep failures recorded on guard install day (RG guard, 10 Oct 2026). May only shrink. Regenerate: UPDATE_SWEEP_DEBT=1 npm run audit:sweep",
@@ -208,5 +254,5 @@ if (UPDATE) {
   process.exit(0);
 }
 
-if (STRICT) process.exit(allKeys.length > 0 ? 1 : 0);
-else process.exit(newKeys.length > 0 ? 1 : 0);
+if (STRICT) process.exit((allKeys.length + floorFailures.length) > 0 ? 1 : 0);
+else process.exit((newKeys.length + floorFailures.length) > 0 ? 1 : 0);

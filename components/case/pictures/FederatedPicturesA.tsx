@@ -242,7 +242,7 @@ export function Published({ bare = false, hero = false }: { bare?: boolean; hero
   return (
     <div className={s.version} data-hero={hero || undefined}>
       {hero ? <KitTag>Published</KitTag> : bare ? null : <KitStatus>Published</KitStatus>}
-      <div className={s.card}>
+      <div className={s.card} data-card>
         <Coat>
           <span className={s.close}>
             <Icon name="Xmark" size="md" />
@@ -286,7 +286,7 @@ export function Draft({ bare = false, hero = false }: { bare?: boolean; hero?: b
   return (
     <div className={s.version} data-hero={hero || undefined}>
       <KitTag>New draft</KitTag>
-      <div className={s.card} data-draft>
+      <div className={s.card} data-card data-draft>
         <Coat square>
           <span className={s.discount}>-33%</span>
           <span className={s.closeSmall}>
@@ -317,7 +317,7 @@ export function Copy({ bare = false, hero = false }: { bare?: boolean; hero?: bo
   return (
     <div className={s.version} data-hero={hero || undefined}>
       <KitTag>Post-purchase copy</KitTag>
-      <div className={s.card}>
+      <div className={s.card} data-card>
         <Coat />
         <p className={`${s.cardTitle} ${s.strong}`}>Wool blend belted coat with wide lapels</p>
         <p className={s.full}>€179.99</p>

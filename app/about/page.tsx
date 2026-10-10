@@ -180,14 +180,14 @@ export default function AboutPage() {
           <Beat id="house-rules" num="5" label="House rules" heading="Four things I care about." align="edge">
             <ul className={st.cards}>
               <li>
-                <div className={st.card}>
+                <div className={st.card} data-card>
                   <h3 className="heading-item">Kindness</h3>
                   <p>Docs written for the person reading them at 5pm on a Friday.</p>
                   <KindnessProof className={st.proof} />
                 </div>
               </li>
               <li>
-                <div className={st.card}>
+                <div className={st.card} data-card>
                   <h3 className="heading-item">Respect</h3>
                   <p>For the designer&apos;s craft and the engineer&apos;s time. I check it can be built before I design it three ways.</p>
                   <p className={st.proof}>
@@ -197,7 +197,7 @@ export default function AboutPage() {
                 </div>
               </li>
               <li>
-                <div className={st.card}>
+                <div className={st.card} data-card>
                   <h3 className="heading-item">Sharing</h3>
                   <p>
                     I learned all of this in public, from Brad Frost, Vitaly Friedman, Nathan Curtis, Romina Kavčić and the
@@ -207,7 +207,7 @@ export default function AboutPage() {
                 </div>
               </li>
               <li>
-                <div className={st.card}>
+                <div className={st.card} data-card>
                   <h3 className="heading-item">Love of the craft</h3>
                   <p>Naming, tokens, governance. The unglamorous stuff is my favourite stuff.</p>
                   <p className={st.proof}>Proof: on Drift I counted seventeen buttons doing one job; the system kept one.</p>

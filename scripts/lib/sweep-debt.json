@@ -4,15 +4,178 @@
   "entries": [
     {
       "route": "/",
+      "check": "card-leak",
+      "el": "img.yzT_1a__picture \"\"",
+      "detail": "overflows a.jO_P6a__card \"federated / contributionone \"",
+      "widths": [
+        320,
+        320,
+        320,
+        360,
+        360,
+        360,
+        400,
+        400,
+        440,
+        440,
+        480,
+        480,
+        520,
+        520,
+        560,
+        600,
+        600,
+        600,
+        639,
+        639,
+        639,
+        640,
+        640,
+        640,
+        641,
+        641,
+        641,
+        680,
+        680,
+        680,
+        720,
+        720,
+        720,
+        760,
+        760,
+        760,
+        767,
+        767
+      ]
+    },
+    {
+      "route": "/",
       "check": "balance",
       "el": "div.Z8hQ_W__stage \"\"",
-      "detail": "drift 35px > threshold 22px; spans 76%"
+      "detail": "drift 35px > threshold 22px; spans 76%",
+      "widths": [
+        480,
+        520,
+        560,
+        600,
+        639,
+        640,
+        641,
+        680,
+        720,
+        760,
+        767,
+        768,
+        769,
+        800,
+        840,
+        880
+      ]
+    },
+    {
+      "route": "/work",
+      "check": "card-leak",
+      "el": "img.yzT_1a__picture \"\"",
+      "detail": "overflows a.jO_P6a__card \"drift / buttons · auditbefor\"",
+      "widths": [
+        320,
+        320,
+        320,
+        320,
+        360,
+        360,
+        360,
+        360,
+        400,
+        400,
+        400,
+        400,
+        440,
+        440,
+        440,
+        440,
+        480,
+        480,
+        480,
+        480,
+        520,
+        520,
+        520,
+        520,
+        560,
+        560,
+        560,
+        560,
+        600,
+        600,
+        600,
+        639,
+        639,
+        639,
+        640,
+        640,
+        640,
+        641,
+        641,
+        641,
+        680,
+        680,
+        680,
+        720,
+        720,
+        720,
+        760,
+        760,
+        760,
+        767,
+        767
+      ]
     },
     {
       "route": "/design-system",
       "check": "overflow",
       "el": "html",
-      "detail": "scrollWidth 326 > clientWidth 320"
+      "detail": "scrollWidth 326 > clientWidth 320",
+      "widths": [
+        320
+      ]
+    },
+    {
+      "route": "/case-studies/design-system-transformation",
+      "check": "card-leak",
+      "el": "li.vfvoXG__rStep \"1NoProposedTold it wasn’t ne\"",
+      "detail": "overflows div.vfvoXG__card \"RolloutEvery product team1No\"",
+      "widths": [
+        320
+      ]
+    },
+    {
+      "route": "/case-studies/design-system-transformation",
+      "check": "card-leak",
+      "el": "li.vfvoXG__areaChip \"systemin code\"",
+      "detail": "overflows div.vfvoXG__card \"Shipped on the system6 areas\"",
+      "widths": [
+        320
+      ]
+    },
+    {
+      "route": "/case-studies/federated",
+      "check": "card-leak",
+      "el": "span.-OPznG__sizeGrid \"XXSXSSMLXLXXL1XL2XL3XL4XL\"",
+      "detail": "overflows div.-OPznG__card \"Product pageWool blend belte\"",
+      "widths": [
+        320
+      ]
+    },
+    {
+      "route": "/case-studies/federated",
+      "check": "card-leak",
+      "el": "span.-OPznG__big \"100%\"",
+      "detail": "overflows div.-OPznG__card \"State of the design system ·\"",
+      "widths": [
+        320,
+        320
+      ]
     }
   ]
 }

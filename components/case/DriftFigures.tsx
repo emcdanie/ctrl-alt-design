@@ -292,7 +292,7 @@ export function Rollout() {
   return (
     <PhoneCollapse rest={2}>
     <div className={`${s.stage}`} data-play={playing ? "on" : "off"} key={run}>
-      <div className={s.card}>
+      <div className={s.card} data-card>
         <div className={s.cardHead}>
           <p className={s.cardTitle}>Rollout</p>
           <span className={s.status}>Every product team</span>
@@ -478,7 +478,7 @@ export function Staircase() {
     <div className={`${s.stage}`} data-play={playing ? "on" : "off"} key={run}>
       {/* the real staircase at every width; at 390 its labels sit at 16px
          left of each node (Figma option B, build spec 4 Oct late) */}
-      <div className={s.card}>
+      <div className={s.card} data-card>
         <div className={s.cardHead}>
           <p className={s.cardTitle}>Shipped on the system</p>
           <span className={s.status}>

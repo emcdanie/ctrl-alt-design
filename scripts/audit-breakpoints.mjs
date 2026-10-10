@@ -27,29 +27,9 @@ const DEBT_PATH = "scripts/lib/breakpoint-debt.json";
 const ALLOWED_PX = new Set([640, 768, 1024, 1440]);
 const ALLOWED_REM = new Set([40, 48, 64, 90]);
 
-/* Files where position:absolute/fixed and transform:scale are structural */
-const POSITION_EXEMPT = new Set([
-  "components/Hero.module.css",
-  "components/Home.module.css",
-  "components/BellaSpine.module.css",
-  "components/SpecimenFrame.module.css",
-  "components/ThemingCase.module.css",
-  "components/SystemBeat.module.css",
-  "components/about/AboutPictures.module.css",
-  "components/case/Case.module.css",
-  "components/case/DriftFigures.module.css",
-  "components/case/pictures/Chip.module.css",
-  "components/case/pictures/FederatedPicturesA.module.css",
-  "components/case/pictures/FederatedPicturesB.module.css",
-  "components/case/pictures/DriftPictures.module.css",
-  "components/case/kit/Kit.module.css",
-  "components/bella/shared/Trace.module.css",
-  "components/bella/Button/Button.module.css",
-  "components/WorkLibrary.module.css",
-  "components/Learning.module.css",
-  "app/globals.css",
-]);
-const SCALE_EXEMPT = POSITION_EXEMPT;
+/* position:absolute/fixed and transform:scale are tracked by COUNT per file
+ * (debt stores the count; only increases above the stored count are new).
+ * No files are fully exempt: the ratchet records today's count. */
 
 const walk = (dir, exts, out = []) => {
   if (!existsSync(dir)) return out;
@@ -79,24 +59,32 @@ function checkBreakpoints(file) {
   return [...new Set(bad)];
 }
 
-function checkPosition(file) {
-  if (POSITION_EXEMPT.has(file)) return false;
-  return /position\s*:\s*(absolute|fixed)/.test(readFileSync(file, "utf8"));
+function countPosition(src) {
+  return (src.match(/position\s*:\s*(absolute|fixed)/g) ?? []).length;
 }
 
-function checkScale(file) {
-  if (SCALE_EXEMPT.has(file)) return false;
-  return /transform\s*:[^;]*scale\s*\(/.test(readFileSync(file, "utf8"));
+function countScale(src) {
+  return (src.match(/transform\s*:[^;]*scale\s*\(/g) ?? []).length;
 }
 
-const violations = { breakpoints: {}, position: [], scale: [] };
+function countHeight(src) {
+  /* height or max-height with a raw px or rem value (not var(), not %) */
+  return (src.match(/\b(?:max-)?height\s*:\s*[0-9]+(?:\.[0-9]+)?(?:px|rem)\b/g) ?? []).length;
+}
+
+const violations = { breakpoints: {}, position: {}, scale: {}, height: {} };
 
 for (const file of cssFiles) {
   const rel = relative(process.cwd(), file).replace(/\\/g, "/");
+  const src = readFileSync(file, "utf8");
   const bad = checkBreakpoints(file);
   if (bad.length) violations.breakpoints[rel] = bad;
-  if (checkPosition(file)) violations.position.push(rel);
-  if (checkScale(file)) violations.scale.push(rel);
+  const pc = countPosition(src);
+  if (pc > 0) violations.position[rel] = pc;
+  const sc = countScale(src);
+  if (sc > 0) violations.scale[rel] = sc;
+  const hc = countHeight(src);
+  if (hc > 0) violations.height[rel] = hc;
 }
 
 const debt = existsSync(DEBT_PATH)
@@ -105,13 +93,17 @@ const debt = existsSync(DEBT_PATH)
 
 if (UPDATE) {
   writeFileSync(DEBT_PATH, JSON.stringify({
-    "$description": "Breakpoint/position/scale violations recorded on guard install day. May only shrink.",
+    "$description": "Breakpoint/position/scale/height violations recorded on guard install day. May only shrink.",
     updatedAt: new Date().toISOString().slice(0, 10),
     breakpoints: violations.breakpoints,
     position: violations.position,
     scale: violations.scale,
+    height: violations.height,
   }, null, 2) + "\n");
-  console.log(`Debt file updated: ${Object.keys(violations.breakpoints).length} files with stray breakpoints, ${violations.position.length} with position, ${violations.scale.length} with scale → ${DEBT_PATH}`);
+  const posCt = Object.values(violations.position).reduce((s, v) => s + v, 0);
+  const scaleCt = Object.values(violations.scale).reduce((s, v) => s + v, 0);
+  const htCt = Object.values(violations.height).reduce((s, v) => s + v, 0);
+  console.log(`Debt file updated: ${Object.keys(violations.breakpoints).length} files with stray breakpoints, ${posCt} position, ${scaleCt} scale, ${htCt} height → ${DEBT_PATH}`);
   process.exit(0);
 }
 
@@ -131,31 +123,55 @@ for (const [file, vals] of Object.entries(violations.breakpoints)) {
     console.error(receipt("breakpoints", file, `${vals.length} stray (${extra.join(", ")})`, `<= ${knownCount} (debt)`));
   }
 }
-/* file not in debt at all but has violations */
-for (const [file] of Object.entries(violations.breakpoints)) {
-  if (bpDebt[file] === undefined && violations.breakpoints[file].length > 0) {
-    /* already reported above */
-  }
-}
 const bpDebtTotal = Object.values(bpDebt).reduce((s, v) => s + v.length, 0);
 console.log(`audit:breakpoints  breakpoints: ${bpTotal} stray value(s) in ${Object.keys(violations.breakpoints).length} file(s) (debt: ${bpDebtTotal}; new files with violations: ${bpNew})`);
 
-/* position */
-const posDebt = new Set(debt.position ?? []);
-const posNew = violations.position.filter((f) => !posDebt.has(f));
-if (posNew.length) {
-  fails++;
-  for (const f of posNew) console.error(receipt("breakpoints", f, "position:absolute/fixed outside exempt list", "use layout tokens"));
+/* position — count per file */
+const posDebt = debt.position ?? {};
+let posTotal = 0;
+let posNew = 0;
+for (const [file, count] of Object.entries(violations.position)) {
+  posTotal += count;
+  const knownCount = posDebt[file] ?? 0;
+  if (count > knownCount) {
+    fails++;
+    posNew++;
+    console.error(receipt("breakpoints", file, `${count} position:absolute/fixed (debt: ${knownCount})`, "count may only shrink"));
+  }
 }
-console.log(`  position: ${violations.position.length} file(s) (debt: ${posDebt.size}; new: ${posNew.length})`);
+const posDebtTotal = Object.values(posDebt).reduce((s, v) => s + v, 0);
+console.log(`  position: ${posTotal} in ${Object.keys(violations.position).length} file(s) (debt: ${posDebtTotal}; new: ${posNew})`);
 
-/* scale */
-const scaleDebt = new Set(debt.scale ?? []);
-const scaleNew = violations.scale.filter((f) => !scaleDebt.has(f));
-if (scaleNew.length) {
-  fails++;
-  for (const f of scaleNew) console.error(receipt("breakpoints", f, "transform:scale outside exempt list", "use intrinsic sizing"));
+/* scale — count per file */
+const scaleDebt = debt.scale ?? {};
+let scaleTotal = 0;
+let scaleNew = 0;
+for (const [file, count] of Object.entries(violations.scale)) {
+  scaleTotal += count;
+  const knownCount = scaleDebt[file] ?? 0;
+  if (count > knownCount) {
+    fails++;
+    scaleNew++;
+    console.error(receipt("breakpoints", file, `${count} transform:scale (debt: ${knownCount})`, "count may only shrink"));
+  }
 }
-console.log(`  scale: ${violations.scale.length} file(s) (debt: ${scaleDebt.size}; new: ${scaleNew.length})`);
+const scaleDebtTotal = Object.values(scaleDebt).reduce((s, v) => s + v, 0);
+console.log(`  scale: ${scaleTotal} in ${Object.keys(violations.scale).length} file(s) (debt: ${scaleDebtTotal}; new: ${scaleNew})`);
+
+/* height/max-height — count per file */
+const htDebt = debt.height ?? {};
+let htTotal = 0;
+let htNew = 0;
+for (const [file, count] of Object.entries(violations.height)) {
+  htTotal += count;
+  const knownCount = htDebt[file] ?? 0;
+  if (count > knownCount) {
+    fails++;
+    htNew++;
+    console.error(receipt("breakpoints", file, `${count} fixed height/max-height px/rem (debt: ${knownCount})`, "count may only shrink"));
+  }
+}
+const htDebtTotal = Object.values(htDebt).reduce((s, v) => s + v, 0);
+console.log(`  height: ${htTotal} in ${Object.keys(violations.height).length} file(s) (debt: ${htDebtTotal}; new: ${htNew})`);
 
 process.exit(fails > 0 ? 1 : 0);

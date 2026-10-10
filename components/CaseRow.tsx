@@ -105,10 +105,10 @@ function CaseCardLayout({ row, featured, eager, compact }: { row: CaseRowData; f
   );
   const cls = `${styles.card} ${featured ? styles.cardFeatured : ""}`;
   return row.href ? (
-    <Link href={row.href} className={cls} data-compact={compact || undefined} data-umami-event="case-open" data-umami-event-case={row.href.split("/").pop()}>
+    <Link href={row.href} className={cls} data-card data-compact={compact || undefined} data-umami-event="case-open" data-umami-event-case={row.href.split("/").pop()}>
       {body}
     </Link>
   ) : (
-    <div className={cls} data-compact={compact || undefined}>{body}</div>
+    <div className={cls} data-card data-compact={compact || undefined}>{body}</div>
   );
 }
